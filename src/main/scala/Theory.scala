@@ -5,20 +5,29 @@ import provingGround.Structures._
 
 /** The Meta-logical layer, including Definitions, Propositions, Proofs etc. */
 object Theory{
-  /** Paragraph: Any scope level */
-  trait Paragraph
   
-  /** A label for something */
-  trait Label[A]{
-    val ref: A
-    }
-
-  /** Wrap ref in a label */
-  case class Ref[A](ref: A) extends Label[A]    
+  trait Phrases
+  
+  /** Any block of full sentences*/
+  trait Paragraph extends Phrases
+  
+  /** Recursive Paragraph */
+  case class Para(phraseList: List[Phrases]) extends Paragraph
+  
+  def para(phrases: Phrases*) = Para(phrases.toList)
+  
+  
+  /** Text not to be translated into mathematics */ 
+  case class Text(text: String) extends Paragraph 
   
   /** Axiom */
-  trait Axiom extends Paragraph{
+  trait Axiom extends Phrases{
     val axiom: Formula
+    }
+    
+  case class Axioms(axioms: Formula*) extends Paragraph with Axiom{
+    val axiomList = axioms.toList
+    val axiom = axiomList reduce (_ & _)
     }
     
   /** Data: A collection of terms and an axiom they are supposed to satisfy */  
@@ -63,23 +72,48 @@ object Theory{
   /** Constructs a DataList from several data parameters */ 
   def given(ds: Data*) = DataList(ds.toList)
   
+  /** A result, may be just a reference to one */
+  trait Result extends Phrases
+  
+  case class ResultRef(name: String) extends Result
+  
   /** A claim */
-  trait Claim extends Paragraph{val claim: Formula}
+  trait Claim extends Paragraph with Result{val claim: Formula}   
+
+  def TruePropt: PartialFunction[Data, Formula] = {case _ => True}
 
   /** Property: Given data gives a formula corresponding to satisfying this */
   trait Property{
-    def apply(d: Data): Formula
+    val defn: PartialFunction[Data, Formula]
+  
+    def apply(d: Data): Formula = (defn orElse (TruePropt))(d)
     
     def ::(d: Data)= DataCond(d, apply(d))
   }
   
-  trait Justification extends Paragraph
+  trait Justification extends Phrases
+  
+
   
   trait Method
   
+  case class NamedMethod(name: String) extends Method
+  
   case class By(meth: Method) extends Justification
   
-  case class Using(result: Claim) extends Justification
+  def by(meth: Method) = By(meth)
+  
+  def by(name: String) = By(NamedMethod(name))
+  
+  
+  
+  case class Using(result: Result) extends Justification
+  
+  def using(result: Result) = Using(result)
+  
+  def using(name: String) = Using(ResultRef(name))
+  
+  
   
   trait Because{
     val because: List[Justification]
@@ -87,24 +121,43 @@ object Theory{
     
   trait Assertion extends Claim with Because{
     def by(meth: Method) = Assert(claim, because :+ By(meth))
+    def by(name: String) = Assert(claim, because :+ By(NamedMethod(name)))
+    
     def using(result: Claim) = Assert(claim, because :+ Using(result))
+    def using(name: String) = Assert(claim, because :+ Using(ResultRef(name)))
   }
   
   case class Assert(claim: Formula, because: List[Justification] = List()) extends Assertion
   
+  implicit def assert(p: Formula): Assertion = Assert(p)
+  
+  
+  case object ByAbove extends Justification
+  
+  def thus(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
+  
+  def hence(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
+
+  def therefore(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
+
+  def deduce(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
+
+
   class Proposition(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim{
     val claim = (data.axiom & hypothesis) implies conclusion
     }
 
   trait ProofSketch extends Paragraph
   
-  trait Proof extends ProofSketch{
+  case class Proof(p: Paragraph) extends ProofSketch
+  
+  trait CheckedProof extends ProofSketch{
     val hyp : Set[Formula]
     val concl : Set[Formula]
     def verify: Boolean
   }
   
-  trait LogicProof extends Proof
+  trait LogicProof extends CheckedProof
   
   case class ModusPoens(p: Formula, q: Formula) extends LogicProof{
     val hyp = Set(p, p implies q)
@@ -143,7 +196,7 @@ object Theory{
     (allMaps(atoms(p.formula), Set(true, false)) map (recValue(p.formula, _))) reduce (_ && _)
   }
   
-  case class Tautology(f: Schema, ps: Formula*) extends Proof{
+  case class Tautology(f: Schema, ps: Formula*) extends LogicProof{
     val hyp: Set[Formula] = Set.empty
     val fmla =f(ps.toList)
     val concl = Set(fmla)
@@ -151,49 +204,3 @@ object Theory{
   }
 }
 
-object ZF{
-  import Theory._
-
-  trait AbsSet extends Const{
-    def contains(that: AbsSet): Formula = BinRel("in")(this, that)
-    def <::(that: AbsSet): Formula = BinRel("in")(that, this)
-    }
-  
-  val belongs = BinRel("in")
-
-  case class FiniteUnion(sets: List[AbsSet]) extends AbsSet{
-//    val freeVars: Set[Var] = Set.empty
-    def this(ss: AbsSet*) = this(ss.toList)
-//    def subs(xt: Var=> Term): Term = this
-  }
-  
-  case class SetUnion(sets: AbsSet) extends AbsSet
-  
-  case class FiniteProd(sets: List[AbsSet]) extends AbsSet{
-    def this(ss: AbsSet*) = this(ss.toList)
-    def this(s: AbsSet, n:Int) = this(((1 to n) map (_ => s)).toList)
-    }
-    
-  case class PowerSet(s: AbsSet) extends AbsSet
-  
-  case class RestSet(s: AbsSet, p: Formula) extends AbsSet
-  
-  case class FiniteSet(ss: AbsSet*) extends AbsSet
-  
-  case class IntSet(ss: Stream[Int]) extends AbsSet
-  
-  val NatNums = IntSet(Stream.from (1))
-  
-  abstract class AbsFunc extends AbsSet{
-    val domain: AbsSet
-    val codom: AbsSet
-    }
-  
-  abstract class AbsBinRel extends AbsSet{
-    val domain: AbsSet
-    }    
-    
-  case class AbsFuncSym(name: String, domain: AbsSet, codom: AbsSet) extends AbsFunc
-
-  case class AbsBinRelSym(name: String, domain: AbsSet) extends AbsBinRel
-}
