@@ -23,12 +23,28 @@ object Theory{
   /** Axiom */
   trait Axiom extends Phrases{
     val axiom: Formula
+    
+//    def &(that: Formula) = Axioms(axiom, that)
+    def &(that: Axiom) = Axioms(axiom, that.axiom) 
     }
     
   case class Axioms(axioms: Formula*) extends Paragraph with Axiom{
     val axiomList = axioms.toList
     val axiom = axiomList reduce (_ & _)
     }
+    
+  val x = Var("X")
+  val y = Var("y")
+  val z = Var("z")
+    
+  def symmetric(r: BinRel): Axiom = Axioms(forAll(x, y)(r(x,y) implies r(y,x)))
+    
+  def transitive(r: BinRel): Axiom = Axioms(forAll(x, y, z)((r(x,y) & r(y,z)) implies r(x,z)))
+  
+  def reflexive(r: BinRel): Axiom = Axioms(forAll(x)(r(x,x)))
+  
+  def equivRelation(r: BinRel): Axiom = symmetric(r) & reflexive(r) & transitive(r)
+
     
   /** Data: A collection of terms and an axiom they are supposed to satisfy */  
   trait Data extends Axiom{
@@ -47,7 +63,22 @@ object Theory{
     
     /** Add a data term */
     def &(that: Data) = and(that)
+    
+    /** Quotient Data */
+    def upto(r: EquivRelation) = QuotientData(this, r)
   }
+
+  case class EquivRelation(rel: BinRel, generator: Axiom) extends Data{
+    val terms: List[Term] = List()
+    val axiom = (generator & equivRelation(rel)).axiom
+    }
+  
+  case class QuotientData(d: Data, r: EquivRelation) extends Data{
+    val terms = d.terms
+    val axiom = (d.axiom) & (r.axiom) 
+    }
+  
+  case class Fix(d: Data) extends Paragraph
   
   /** A single term as data */
   case class DataTerm(term: Term, axiom: Formula = True) extends Data{

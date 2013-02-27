@@ -251,6 +251,10 @@ case class UnivQuantFormula(v: Var, p:Formula) extends Formula{
 //  val freeVars: Set[Var] = p.freeVars - v
   }
 
+def forAll(xs: Var*)(p: Formula): Formula = (xs :\ p) (UnivQuantFormula(_,_))
+
+def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
+
 
 /** Atomic Formulas */  
 case class AtomFormula(p: Pred, params: List[Term]) extends Formula{
