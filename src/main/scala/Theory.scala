@@ -47,12 +47,10 @@ object Theory{
 
     
   /** Data: A collection of terms and an axiom they are supposed to satisfy */  
-  trait Data extends Axiom{
-    /** Terms in the data */
-    val terms : List[Term]
-    /** The axiom they satisy : axioms can be joined with & */
-    val axiom : Formula
-    
+  trait Data extends Term with Axiom{
+    /** Substitute in terms but keep axiom with substitutions */
+    def subsData(xt: Var => Term): Data = DataTerm(subs(xt), axiom.subs(xt))
+      
     /** Such that : Add an axiom */
     def suchthat(cond: Formula) = DataCond(this, cond)
     /** Such that: Add an axiom */
@@ -68,13 +66,15 @@ object Theory{
     def upto(r: EquivRelation) = QuotientData(this, r)
   }
 
-  case class EquivRelation(rel: BinRel, generator: Axiom) extends Data{
-    val terms: List[Term] = List()
+
+
+  case class EquivRelation(rel: BinRel, generator: Axiom) extends Axiom{
     val axiom = (generator & equivRelation(rel)).axiom
     }
   
   case class QuotientData(d: Data, r: EquivRelation) extends Data{
-    val terms = d.terms
+    val freeVars = d.freeVars
+    def subs(xt: Var => Term): Term = QuotientData(d.subsData(xt), r)
     val axiom = (d.axiom) & (r.axiom) 
     }
   
@@ -82,21 +82,24 @@ object Theory{
   
   /** A single term as data */
   case class DataTerm(term: Term, axiom: Formula = True) extends Data{
-     val terms = List(term)
-  }
+    def subs(xt: Var=> Term): Term = DataTerm(term.subs(xt))
+    val freeVars = term.freeVars
+    } 
   
   /** Convert term to data */
   implicit def dataTerm(term: Term): Data = DataTerm(term)
   
   /** A list of terms as data */
   case class DataList(lt: List[Data]) extends Data{
-    val terms = lt flatMap (_.terms)
+    def subs(xt: Var=> Term): Term = DataList(lt map (_.subsData(xt)))
+    val freeVars: Set[Var] = (lt map (_.freeVars)) reduce (_ union _)
     val axiom = True
   }
   
   /** Add a condition to the data */
   case class DataCond(data: Data, cond: Formula) extends Data{
-    val terms = data.terms
+    def subs(xt: Var=> Term): Term = DataCond(subsData(xt), cond.subs(xt))
+    def freeVars = data.freeVars
     val axiom = data.axiom & cond
   }
   

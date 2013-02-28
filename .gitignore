@@ -21,3 +21,12 @@ src/main/scala/index.html
 
 src/main/scala/index.js
 
+doc/*.log
+
+doc/*.aux
+
+doc/*.synctex
+
+doc/*.synctex.gz
+
+src/main/scala/proving*
