@@ -24,8 +24,11 @@ object Theory{
   trait Axiom extends Phrases{
     val axiom: Formula
     
-//    def &(that: Formula) = Axioms(axiom, that)
+    def &(that: Formula) = Axioms(axiom, that)
     def &(that: Axiom) = Axioms(axiom, that.axiom) 
+    
+    def have(that: Formula): Formula = axiom implies that
+    def have(that: Axiom): Formula = axiom implies (that.axiom)
     }
     
   case class Axioms(axioms: Formula*) extends Paragraph with Axiom{
@@ -112,20 +115,32 @@ object Theory{
   case class ResultRef(name: String) extends Result
   
   /** A claim */
-  trait Claim extends Paragraph with Result{val claim: Formula}   
-
-  def TruePropt: PartialFunction[Data, Formula] = {case _ => True}
+  trait Claim extends Paragraph with Result{val claim: Formula}
+  
+  case object Contradiction extends Claim{val claim: Formula = False}
+  
 
   /** Property: Given data gives a formula corresponding to satisfying this */
-  trait Property{
-    val defn: PartialFunction[Data, Formula]
-  
-    def apply(d: Data): Formula = (defn orElse (TruePropt))(d)
-    
+  abstract class Property(deg: Int) extends Pred(deg) with Axiom{       
     def ::(d: Data)= DataCond(d, apply(d))
   }
   
-  trait Justification extends Phrases
+  case class PropertyDefn(deg: Int, defn: Pred => Formula) extends Property(deg){
+    val axiom = defn(this)
+  }
+  
+  abstract class Mapping(deg: Int) extends Func(deg) with Axiom
+  
+  case class MapDefn(deg: Int, defn: Func => Formula) extends Mapping(deg){
+    val axiom = defn(this)
+  }
+                         
+  trait Justification extends Phrases{
+    def &(that: Justification) = PolyJust(this, that)
+    def and(that: Justification) = PolyJust(this, that)
+  }
+  
+  case class PolyJust(first: Justification, second: Justification) extends Justification
   
 
   
@@ -148,6 +163,36 @@ object Theory{
   def using(name: String) = Using(ResultRef(name))
   
   
+  trait Condition extends Phrases{
+    def apply(p: Formula): Formula
+    
+    def then(p: Formula) = apply(p)
+
+    }
+
+  case class If(q: Formula) extends Condition{
+    def apply(p: Formula) = q implies p
+    }    
+    
+  case class As(c: Condition) extends Justification
+  
+  def as(c: Condition) = As(c)
+  
+  def as(result: Result) = Using(result)
+  
+  trait Assumption extends Condition with Axiom{
+    def apply(p: Formula) = axiom implies p
+  }
+  
+  case class Assume(axiom: Formula) extends Assumption
+      
+  trait Consequence extends Axiom
+  
+  case class Then(axiom: Formula) extends Consequence
+ 
+  def then(p: Formula) = Then(p)
+  
+  def have(p: Formula) = Then(p)
   
   trait Because{
     val because: List[Justification]
@@ -163,6 +208,17 @@ object Theory{
   
   case class Assert(claim: Formula, because: List[Justification] = List()) extends Assertion
   
+  trait Conclusion extends Assertion
+  
+  case class Conclude(claim: Formula, because: List[Justification] = List()) extends Conclusion
+  
+  case object QED extends Paragraph
+    
+  case object ThisPara extends Paragraph
+  
+  case class BeginProof(result: Paragraph= ThisPara) extends Paragraph 
+  
+  
   implicit def assert(p: Formula): Assertion = Assert(p)
   
   
@@ -177,9 +233,42 @@ object Theory{
   def deduce(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
 
 
-  class Proposition(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim{
+  class Propn(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim{
     val claim = (data.axiom & hypothesis) implies conclusion
     }
+  
+  trait Label{
+    val label: String
+    }
+  
+
+  def theorem(name: Any)(clm: Claim) = new Claim with Label{val claim = clm.claim; val label = name.toString}
+  
+  def theorem(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
+
+
+
+  def thm(name: Any)(clm: Claim) = new Claim with Label{val claim = clm.claim; val label = name.toString}
+
+  def thm(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
+
+
+  def lemma(name: Any)(clm: Claim) = new Claim with Label{val claim = clm.claim; val label = name.toString}
+
+  def lemma(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
+
+
+  def proposition(name: Any)(clm: Claim) = new Claim with Label{val claim = clm.claim; val label = name.toString}
+
+  def proposition(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
+
+
+  def propn(name: Any)(clm: Claim) = new Claim with Label{val claim = clm.claim; val label = name.toString}
+
+  def propn(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
+
+  
+  
 
   trait ProofSketch extends Paragraph
   
