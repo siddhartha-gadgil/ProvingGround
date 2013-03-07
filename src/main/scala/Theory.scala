@@ -81,8 +81,6 @@ object Theory{
     val axiom = (d.axiom) & (r.axiom) 
     }
   
-  case class Fix(d: Data) extends Paragraph
-  
   /** A single term as data */
   case class DataTerm(term: Term, axiom: Formula = True) extends Data{
     def subs(xt: Var=> Term): Term = DataTerm(term.subs(xt))
@@ -185,6 +183,10 @@ object Theory{
   }
   
   case class Assume(axiom: Formula) extends Assumption
+ 
+  trait Fix extends Data with Paragraph
+  
+  trait Choose extends Data with Paragraph
       
   trait Consequence extends Axiom
   
