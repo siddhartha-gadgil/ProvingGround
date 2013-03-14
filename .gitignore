@@ -30,3 +30,5 @@ doc/*.synctex
 doc/*.synctex.gz
 
 src/main/scala/proving*
+
+*~
