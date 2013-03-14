@@ -2,6 +2,7 @@ package provingGround
 
 import provingGround.Logic._
 import provingGround.Structures._
+import provingGround.Aware._
 
 /** The Meta-logical layer, including Definitions, Propositions, Proofs etc. */
 object Theory{
@@ -118,7 +119,7 @@ object Theory{
   case object Contradiction extends Claim{val claim: Formula = False}
   
 
-  /** Property: Given data gives a formula corresponding to satisfying this */
+  /** Property: Given data gives a Formula corresponding to satisfying this */
   abstract class Property(deg: Int) extends Pred(deg) with Axiom{       
     def ::(d: Data)= DataCond(d, apply(d))
   }
@@ -206,6 +207,9 @@ object Theory{
     
     def using(result: Claim) = Assert(claim, because :+ Using(result))
     def using(name: String) = Assert(claim, because :+ Using(ResultRef(name)))
+	
+	def where(assumption: Formula) = Assert(assumption implies claim, because)
+	
   }
   
   case class Assert(claim: Formula, because: List[Justification] = List()) extends Assertion
@@ -233,6 +237,16 @@ object Theory{
   def therefore(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
 
   def deduce(ass: Assertion) = Assert(ass.claim, ByAbove :: ass.because)
+
+
+	def thus(p: Formula) = Assert(p, List(ByAbove))
+  
+  def hence(p: Formula) = Assert(p, List(ByAbove))
+
+  def therefore(p: Formula) = Assert(p, List(ByAbove))
+
+  def deduce(p: Formula) = Assert(p, List(ByAbove))
+
 
 
   class Propn(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim{
@@ -269,8 +283,29 @@ object Theory{
 
   def propn(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
 
-  
-  
+ 
+	case class Prove(p: Formula) extends DeterminateTask 
+
+	case class Solve(p: Formula, xs: List[Var]=List()) extends Task 
+	
+
+	def solve(p: Formula) = Solve(p, p.freeVars.toList)
+
+	def solve(p: Formula, x: Var) = Solve(p, List(x))
+
+	def solve(p: Formula, xs: List[Var]) = Solve(p, xs)
+
+	case class NextProve(task: Prove) extends Attention[Prove] with Promise{
+		val subject = task
+	}
+
+	trait WillProve extends Attention[Prove] with Promise
+
+	case class Consider(para: Paragraph) extends Attention[Paragraph]{
+		val subject = para
+		}
+
+	type Transformation = PartialFunction[Para, Para]
 
   trait ProofSketch extends Paragraph
   
