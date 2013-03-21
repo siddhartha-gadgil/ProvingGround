@@ -1,5 +1,8 @@
 package provingGround
 
+import provingGround.NlpProse._
+import provingGround.ParseProse._
+
 import java.io._
 // import java.util.*;
 import scala.collection.JavaConverters._
@@ -14,9 +17,56 @@ import edu.stanford.nlp.trees.semgraph._
 import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations._
 
 object CoreNLP extends App{
-		def gov(e: SemanticGraphEdge) = (e.getGovernor().word, e.getGovernor().index)
-		def dep(e: SemanticGraphEdge) = (e.getDependent().word, e.getDependent().index)
-		def depType(e: SemanticGraphEdge) = (e.getRelation().getShortName(), e.getRelation.getSpecific())
+
+		def gov(e: SemanticGraphEdge) = Token(e.getGovernor().word, e.getGovernor().index)
+		def dep(e: SemanticGraphEdge) = Token(e.getDependent().word, e.getDependent().index)
+		
+		def depWord(short: String, specific: String) = if (short=="prep") short+"_"+specific else short
+		
+		def depType(e: SemanticGraphEdge) = depWord(e.getRelation().getShortName(), e.getRelation.getSpecific())
+
+		def newPipe = {
+			val props = new java.util.Properties()
+    	props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
+			new StanfordCoreNLP(props)
+			}
+
+		def annotatedDoc(text: String, pipe: StanfordCoreNLP) ={
+			val document = new Annotation(text)
+			pipe.annotate(document)
+			document
+			}
+
+		def sentences(document:Annotation) : List[CoreMap] = {
+			(document.get[java.util.List[CoreMap],CoreAnnotations.SentencesAnnotation](classOf[CoreAnnotations.SentencesAnnotation])).asScala.toList
+			}
+
+		def depRelIterable(sentence: CoreMap) = {
+      val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](classOf[CollapsedCCProcessedDependenciesAnnotation]);
+			val dependencyIterable = dependencies.edgeIterable().asScala
+			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
+			}
+
+		def proseTrees(text: String, pipe: StanfordCoreNLP) = {
+			for (sentence<-sentences(annotatedDoc(text, pipe))) yield {
+				 new ProseTree(depRelIterable(sentence).toList)
+				}
+			}
+
+
+		def coreLabelList(sentence: CoreMap) = {
+			(sentence.get[java.util.List[CoreLabel], TokensAnnotation](classOf[TokensAnnotation])).asScala.toList
+			}
+
+		def word(token: CoreLabel) = token.get[String, TextAnnotation](classOf[TextAnnotation])
+
+		def pos(token: CoreLabel) = token.get[String, PartOfSpeechAnnotation](classOf[PartOfSpeechAnnotation])
+
+		def ne(token: CoreLabel) = token.get[String, NamedEntityTagAnnotation](classOf[NamedEntityTagAnnotation])
+
+
+
+// The part below is for testing.
 
     val props = new java.util.Properties()
     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
@@ -55,7 +105,7 @@ object CoreNLP extends App{
       // this is the Stanford dependency graph of the current sentence
       val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](classOf[CollapsedCCProcessedDependenciesAnnotation]);
 			val dependencyIterable = dependencies.edgeIterable().asScala
-			dependencyIterable map ((e: SemanticGraphEdge) => (depType(e), gov(e), dep(e)))  
+			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))  
     }
 		for (t<-depTrees; e<- t) println(e)
 
@@ -65,5 +115,8 @@ object CoreNLP extends App{
     // Both sentence and token offsets start at 1!
 //    Map<Integer, CorefChain> graph = 
 //      document.get(CorefChainAnnotation.class);
+
+		val tree =proseTrees("if a prime number p divides mn, p divides one of m and n", pipeline).head
+		println(toFormula(tree, Global))
 	
 }
