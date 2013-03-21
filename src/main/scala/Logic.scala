@@ -131,7 +131,7 @@ case class Var(name: String) extends Term{
 val varstream: Stream[Var] = (Stream.from (0)) map ((x: Int) => Var((x + 'a').toChar.toString))
 
 /** Logical constants */
-trait Const extends Term{
+trait Const extends Term{ 
   override val freeVars: Set[Var] = Set()
   override def subs(xt: Var=> Term)  = this
   }
