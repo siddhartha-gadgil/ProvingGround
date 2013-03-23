@@ -386,6 +386,7 @@ def recFormula(f: Formula, r: PartialFunction[Formula, Formula]): Formula = f ma
     case p: Formula => (r orElse idFormula)(p)
 }
 
+
 /** Formula with an explicit list of Formula variables*/
 trait Schema extends Formula{
   /** Formula depending on Formula variables */

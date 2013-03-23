@@ -177,6 +177,15 @@ object Theory{
   case class MapDefn(deg: Int, defn: Func => Formula) extends Mapping(deg){
     val axiom = defn(this)
   }
+
+	case class TermDefn(term: Term, defn: Term => Formula) extends Assumption{
+		val axiom = defn(term)
+		}
+
+	implicit def termPropt(p: Var => Formula) : Term => Formula = (t: Term) => {
+				p(Var("x")).subs(Var("x"), t)
+			}
+			 
                          
 	/** Justification for a claim */
   trait Justification extends Phrases{
@@ -219,8 +228,8 @@ object Theory{
 	/** Justification: using result with the given name */
   def using(name: String) = Using(ResultRef(name))
   
-  /** Condition for a Formula */
-  trait Condition extends Phrases{
+  /** ConditionClause for a Formula */
+  trait ConditionClause extends Phrases{
 		/** returns formula given condition */
     def apply(p: Formula): Formula
     
@@ -230,21 +239,21 @@ object Theory{
     }
 
 	/** If condition */
-  case class If(q: Formula) extends Condition{
+  case class If(q: Formula) extends ConditionClause{
     def apply(p: Formula) = q implies p
     }    
   
 	/** Justification: As condition holds */  
-  case class As(c: Condition) extends Justification
+  case class As(c: ConditionClause) extends Justification
   
 	/** Justification: As condtion holds */
-  def as(c: Condition) = As(c)
+  def as(c: ConditionClause) = As(c)
   
 	/** Justification: As result holds */
   def as(result: Result) = Using(result)
   
-	/** An assumption */
-  trait Assumption extends Condition with Axiom with Paragraph{
+	/** An Assumption */
+  trait Assumption extends ConditionClause with Axiom with Paragraph{
     def apply(p: Formula) = axiom implies p
   }
   
@@ -359,7 +368,7 @@ object Theory{
   def deduce(p: Formula) = Assert(p, List(ByAbove))
 
 
-
+	/** Claim in the form of Data, Hypothesis and Conclusion */
   class Propn(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim{
     val claim = (data.axiom & hypothesis) implies conclusion
     }

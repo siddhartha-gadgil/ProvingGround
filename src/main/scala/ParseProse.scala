@@ -3,6 +3,7 @@ package provingGround
 import provingGround.NlpProse._
 import provingGround.Logic._
 import provingGround.TextToInt._
+import provingGround.Theory._
 // import provingGround.Arithmetic._
 // import provingGround.Collections._
 
@@ -35,6 +36,10 @@ object Global extends Scope
 trait ProsePrint{
    val t: ProseTree
    override def toString = t.toString
+}
+
+val unParsed: PartialFunction[Formula, ProseTree] = {
+   case p: ProsePrint => p.t
 }
 
 /** Makes unparsed prose function, predicate etc to unparsed formula */
@@ -230,6 +235,17 @@ def toCondition(d: ParseData, scope:Scope): Formula=> Formula = {
     }
     
   }
+  
+/** Optional Formula */
+def optFormula(d: ParseData, scope: Scope): Option[Formula] = {
+  val p = toFormula(d, scope)
+  val unparsed = atoms(p) collect (unParsed)
+  if (unparsed.isEmpty) Some(p) else {
+    println(p)
+    unparsed.foreach(println)
+    None
+  }
+}
 
 /** returns Formula from ProseTree */
 def toFormula(d:ParseData, scope: Scope): Formula ={
@@ -309,5 +325,18 @@ def toCondPropt(d:ParseData, scope: Scope): (Var, Formula) => Formula ={
     case t: ProseTree => new ProseCondPropt(t)  
     }
   }
+
+/** Optionally parses to Fmla(Formula) */ 
+def optFmla(d: ParseData, scope: Scope): Option[Paragraph] = optFormula(d, scope) map (Fmla)
   
+/** Optionally parses to an Assertion */
+def optAssert(d: ParseData, scope: Scope): Option[Paragraph] = None
+
+/** Parses to a paragraph, fallback to Text() */
+def toPara(d: ParseData, scope: Scope): Paragraph = {
+  val tryParse = (optFmla(d, scope) 
+									orElse optAssert(d, scope)
+								)
+  tryParse.getOrElse(Text(d.toString))
+}
 }
