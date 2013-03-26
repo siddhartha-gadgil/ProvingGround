@@ -49,7 +49,9 @@ trait MapProseFormula[A]{
 }
 
 /** Unparsed  formula */
-case class ProseFormula(val t: ProseTree) extends Formula with ProsePrint
+case class ProseFormula(val t: ProseTree) extends Formula with ProsePrint{
+	val freeVars: Set[Var] = Set()
+	}
 
 /** Unparsed Property */
 case class ProsePropt(val t: ProseTree) extends Propt  with MapProseFormula[Var] with ProsePrint

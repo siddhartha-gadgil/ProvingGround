@@ -456,7 +456,7 @@ object Theory{
     val freeVars: Set[Var] =Set()
   }
   
-  class FormulaVar extends Formula 
+
   
   def atoms(p: Formula): Set[Formula] = p match {
     case NegFormula(p) => atoms(p)

@@ -218,10 +218,7 @@ trait Formula extends Expression{
   /** ForAll added for free variables */
   val sentence = (freeVars :\ this) (UnivQuantFormula(_,_)) 
   
-  def freeVars: Set[Var] = this match {
-    case AtomFormula(_, params) => (params flatMap (_.freeVars)).toSet
-    case _ => desc(this) flatMap (_.freeVars) 
-  }
+  def freeVars: Set[Var] 
 }
 
 
@@ -233,22 +230,22 @@ def or(p: Formula, q: Formula) : Formula = p | q
 
 /** Formulas built Conjunctions */
 case class ConjFormula(p:Formula, conj:String, q:Formula) extends RecFormula{
-//  val freeVars: Set[Var] = p.freeVars union q.freeVars
+  val freeVars: Set[Var] = p.freeVars union q.freeVars
   }
 
 /** Formulas built by Negation */
 case class NegFormula(p:Formula) extends RecFormula{
-//  val freeVars: Set[Var] = p.freeVars
+  val freeVars: Set[Var] = p.freeVars
   }
 
 /** Exists(x) Formula */
 case class ExQuantFormula(v: Var, p:Formula) extends Formula{
-//  val freeVars: Set[Var] = p.freeVars - v
+  val freeVars: Set[Var] = p.freeVars - v
   }
 
 /** ForAll(x) Formula */
 case class UnivQuantFormula(v: Var, p:Formula) extends Formula{
-//  val freeVars: Set[Var] = p.freeVars - v
+  val freeVars: Set[Var] = p.freeVars - v
   }
 
 def forAll(xs: Var*)(p: Formula): Formula = (xs :\ p) (UnivQuantFormula(_,_))
@@ -259,21 +256,25 @@ def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
 /** Atomic Formulas */  
 case class AtomFormula(p: Pred, params: List[Term]) extends Formula{
   def this(p:Pred, t: Term)= this(p, List(t))
-//  val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
+  val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
   }
 
 /** Equality formula; equality may also be given by conjunction formula */  
 case class Eq(p: Term, q: Term) extends Formula{
-//  val freeVars: Set[Var] = p.freeVars union q.freeVars
+  val freeVars: Set[Var] = p.freeVars union q.freeVars
   }
   
 implicit def eqFmla(pq: Eq) : AtomFormula = AtomFormula(BinRel("="), List(pq.p, pq.q))
   
 /** Boolean True as Formula */
-case object True extends Formula
+case object True extends Formula{
+	val freeVars: Set[Var] = Set()
+	}
 
 /** Boolean False as Formula */
-case object False extends Formula
+case object False extends Formula{
+	val freeVars: Set[Var] = Set()
+	}
 
 /** Treat Boolean as Formula */
 implicit def trueFalse(b: Boolean): Formula = b match{
@@ -283,7 +284,9 @@ implicit def trueFalse(b: Boolean): Formula = b match{
   
   
 /** Formula valued variable */
-class FormulaVar extends Formula 
+class FormulaVar(val freeVars: Set[Var]) extends Formula{
+	def this() = this(Set())
+	} 
 
 
 private def dual(x: Var): (Var=> Formula) => Formula = {
