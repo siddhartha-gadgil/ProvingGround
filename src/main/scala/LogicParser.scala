@@ -3,7 +3,7 @@ package provingGround
 import scala.util.parsing.combinator._
 import provingGround.Logic._
 
-object LogicParser extends JavaTokenParsers{
+class LogicParser extends JavaTokenParsers{
     def sym: Parser[String] = "[a-zA-Z]".r | """\\(\w)+""".r
     def conj: Parser[String] = "&" | "|" | "=>" | "<=>"
     def baseFormula: Parser[Formula] = "("~>formula<~")" | atomFormula
