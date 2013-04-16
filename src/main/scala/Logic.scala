@@ -218,9 +218,10 @@ trait Formula extends Expression{
   }
   
   /** ForAll added for free variables */
-  val sentence = (freeVars :\ this) (UnivQuantFormula(_,_)) 
+ lazy val sentence = if (freeVars == Set.empty) this else (freeVars :\ this) (UnivQuantFormula(_,_)) 
   
-  def freeVars: Set[Var] 
+  
+  val freeVars: Set[Var] 
 }
 
 
@@ -259,6 +260,7 @@ def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
 case class AtomFormula(p: Pred, params: List[Term]) extends Formula{
   def this(p:Pred, t: Term)= this(p, List(t))
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
+  println(freeVars)
   }
 
 /** Equality formula; equality may also be given by conjunction formula */  

@@ -8,5 +8,7 @@ object Test extends App{
   private val filename = if (args.isEmpty) "example.xml" else args(0)
 	private val tree = proseTree(filename)
 	println(tree)
-	println(toFormula(tree, Global))
+	val formula = toFormula(tree, Global)
+	println(formula)
+	println(formula.freeVars)
 	}
