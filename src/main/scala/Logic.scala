@@ -1,5 +1,7 @@
 package provingGround 
 
+import scala.language.implicitConversions
+
 /** Defines predicate calculus and several associated methods, including:
   *
   * $ - interpretations;

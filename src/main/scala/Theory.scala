@@ -3,6 +3,7 @@ package provingGround
 import provingGround.Logic._
 import provingGround.Structures._
 import provingGround.Aware._
+import scala.language.implicitConversions
 
 /** The Meta-logical layer, including Definitions, Propositions, Proofs etc. */
 object Theory{
@@ -234,7 +235,7 @@ object Theory{
     def apply(p: Formula): Formula
     
 		/** returns formula given condition */
-    def then(p: Formula) = apply(p)
+    def thenhave(p: Formula) = apply(p)
 
     }
 
@@ -277,9 +278,6 @@ object Theory{
   
 	/** A consequence of some assumptions */
   case class Then(axiom: Formula) extends Consequence
- 
-	/** A consequence of some assumptions */
-  def then(p: Formula) = Then(p)
 
 	/** A consequence of some assumptions */  
   def have(p: Formula) = Then(p)

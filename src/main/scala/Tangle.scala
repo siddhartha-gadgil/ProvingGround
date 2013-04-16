@@ -1,6 +1,7 @@
 package provingGround
 import provingGround.Structures._
 import provingGround.StackedEvolver._
+import scala.language.implicitConversions
 
 /** Tangles defined and various constructions
   *
