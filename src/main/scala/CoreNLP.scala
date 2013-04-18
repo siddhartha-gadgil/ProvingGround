@@ -16,7 +16,7 @@ import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.trees.semgraph._
 import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations._
 
-object CoreNLP extends App{
+object CoreNLP{
 
 		def gov(e: SemanticGraphEdge) = Token(e.getGovernor().word, e.getGovernor().index)
 		def dep(e: SemanticGraphEdge) = Token(e.getDependent().word, e.getDependent().index)
@@ -27,7 +27,7 @@ object CoreNLP extends App{
 
 		def newPipe = {
 			val props = new java.util.Properties()
-    	props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
+			props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
 			new StanfordCoreNLP(props)
 			}
 
@@ -64,9 +64,12 @@ object CoreNLP extends App{
 
 		def ne(token: CoreLabel) = token.get[String, NamedEntityTagAnnotation](classOf[NamedEntityTagAnnotation])
 
+		}
 
 
 // The part below is for testing.
+	object CoreNLPTest extends App{
+		import provingGround.CoreNLP._
 
     val props = new java.util.Properties()
     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
