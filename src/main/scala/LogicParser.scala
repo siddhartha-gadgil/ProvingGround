@@ -12,7 +12,7 @@ object LogicParser extends JavaTokenParsers{
     def conjFormula: Parser[Formula] = baseFormula~conj~formula ^^ {case p~cnj~q => ConjFormula(p, cnj, q)}
 		def formula: Parser[Formula] = negFormula | conjFormula | baseFormula
 	
-		def variable: Parser[Var] = sym ^^ {case name => Var(name)}
+		def variable: Parser[Var] = sym ^^ {case name => VarSym(name)}
 		def baseTerm: Parser[Term] = intConst | variable | recTerm | "("~>term<~")"
 		def binOpSym: Parser[String] ="+" | "-" | "*" | "/" | "|"
 		def recTerm: Parser[Term] = sym~"("~repsep(term, ",")~")" ^^ {case p~"("~ts~")" => FuncSym(p, ts.length)(ts)}

@@ -123,14 +123,18 @@ trait Term extends Expression{
   }
 
 /** Logical Variable */
-case class Var(name: String) extends Term{
-  override def toString = name 
+class Var extends Term{
   val freeVars = Set(this)
   def subs(xt: Var => Term): Term = xt(this)
   }
  
+/** Logical Variable determined by Name */
+case class VarSym(name: String) extends Var{
+	  override def toString = name 
+		}
+
 /** stream of Variables starting with Var("a") */
-val varstream: Stream[Var] = (Stream.from (0)) map ((x: Int) => Var((x + 'a').toChar.toString))
+val varstream: Stream[Var] = (Stream.from (0)) map ((x: Int) => VarSym((x + 'a').toChar.toString))
 
 /** Logical constants */
 trait Const extends Term{ 
