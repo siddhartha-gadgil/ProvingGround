@@ -173,24 +173,17 @@ object Structures{
  
   /** Words of length n in generators as lists */
 	def words[A](gen: Set[A], n: Int): Set[List[A]] = {
-    if (n<=1) gen map (List(_)) else {
+     if (n<=1) gen map (List(_)) else {
       val prev:Set[List[A]] = words[A](gen, n-1)
-      def prepend(a:A): Set[List[A]] = {
-        def prepa(l:List[A]) = a :: l
-        prev map (prepa)
-      }
-      gen flatMap (prepend)
-    }
-  
+			for (a<- gen; w <- prev) yield (a :: w)
+    }  
   }
   
+  
   private def wordSetNew[A](gen: Set[A], prev: Set[List[A]]):Set[List[A]] = {
-    def prepend(a:A): Set[List[A]] = {
-      def prepa(l:List[A]) = a :: l
-        prev map (prepa)
-        }
-      gen flatMap (prepend)
+    for (a <- gen; w <- prev) yield (a :: w)
       }
+  
   /** Stream with nth entry words of length n in the generators */
   def wordSetStream[A](gen: Set[A]): Stream[Set[List[A]]]= {
     (gen map (List(_))) #:: (wordSetStream[A](gen) map (wordSetNew[A](gen,_)))

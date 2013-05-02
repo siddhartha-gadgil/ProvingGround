@@ -1,3 +1,5 @@
+package provingGround
+
 import provingGround.Logic._
 import provingGround.Structures._
 import provingGround.Theory._

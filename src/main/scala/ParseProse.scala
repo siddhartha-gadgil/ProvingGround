@@ -50,6 +50,7 @@ trait MapProseFormula[A]{
 
 /** Unparsed  formula */
 case class ProseFormula(val t: ProseTree) extends Formula with ProsePrint{
+	def subs(xt: Var => Term): Formula = this
 	val freeVars: Set[Var] = Set()
 	}
 
@@ -98,6 +99,9 @@ val Nsubj = TypeMatch("nsubj")
 
 /** Extractor for relative clause modifier */
 val Rcmod = TypeMatch("rcmod")
+
+/** Extractor for Clausal complement */
+val Ccomp = TypeMatch("ccomp")
 
 private val copFn: PartialFunction[ProseTree, (ProseTree, ProseTree)] = {
   case CopRel(_,_,Nsubj(_,s,t)) => (s,t)
@@ -249,6 +253,8 @@ def optFormula(d: ParseData, scope: Scope): Option[Formula] = {
   }
 }
 
+def isFormula(d: ParseData) = optFormula(d, Global).isDefined
+
 /** returns Formula from ProseTree */
 def toFormula(d:ParseData, scope: Scope): Formula ={
   d match {
@@ -330,15 +336,29 @@ def toCondPropt(d:ParseData, scope: Scope): (Var, Formula) => Formula ={
 
 /** Optionally parses to Fmla(Formula) */ 
 def optFmla(d: ParseData, scope: Scope): Option[Paragraph] = optFormula(d, scope) map (Fmla)
+
+/** Pattern for Fmla(Formula) */
+object FmlaData{
+	def unapply(d: ParseData): Option[ParseData] = optFmla(d, Global) map {(p: Paragraph) => d}
+	}
   
 /** Optionally parses to an Assertion */
 def optAssert(d: ParseData, scope: Scope): Option[Paragraph] = None
 
+def toAction(d:ParseData): Formula => Paragraph = d match {
+		case t: ProseTree =>
+			val rootWord = t.root.word.toLowerCase
+			rootWord match {
+				case "assume" => ((p: Formula) => Assume(p))
+				case _ => Fmla(_)
+				}
+			}
+
 /** Parses to a paragraph, fallback to Text() */
-def toPara(d: ParseData, scope: Scope): Paragraph = {
-  val tryParse = (optFmla(d, scope) 
-									orElse optAssert(d, scope)
-								)
-  tryParse.getOrElse(Text(d.toString))
+def toPara(d: ParseData, scope: Scope): Paragraph = d match {
+		case Ccomp(_,p, q) => toAction(p)(toFormula(q, scope))
+		case FmlaData(data) => Fmla(toFormula(data, scope))
+		case d => Text(d.toString)
+
 }
 }

@@ -23,8 +23,11 @@ trait Expression{
   def freeVars: Set[Var]
   }
 
+/** Parameters for a First-Order Language */
+trait LanguageParam
+
 /** Logical Functions */
-class Func(val degree: Int){
+class Func(val degree: Int) extends LanguageParam{
     /** Substitute parameters in the function */
     def apply(params: List[Term]): Term = RecTerm(this, params)
     /** Substitute parameters in the function */
@@ -38,7 +41,7 @@ class Func(val degree: Int){
 case class FuncSym(name: String, d: Int) extends Func(d)
 
 /** Logical Predicates */
-class Pred(val degree: Int){
+class Pred(val degree: Int) extends LanguageParam{
   /** Substitute parameters in the predicate */
   def apply(params: List[Term]): AtomFormula = AtomFormula(this, params)
   /** Substitute parameters in the function */
@@ -84,7 +87,7 @@ trait Term extends Expression{
   /** Formula giving equality */
   def eqls(that:Term) = Eq(this, that)
 
-  /** Substitutes variables by terms: should make xt a PartialFunction */
+  /** Substitutes variables by terms*/
   def subs(xt: Var=> Term): Term
   
   /** Single variable substituted by a term */
@@ -137,7 +140,7 @@ case class VarSym(name: String) extends Var{
 val varstream: Stream[Var] = (Stream.from (0)) map ((x: Int) => VarSym((x + 'a').toChar.toString))
 
 /** Logical constants */
-trait Const extends Term{ 
+trait Const extends Term with LanguageParam{ 
   override val freeVars: Set[Var] = Set()
   override def subs(xt: Var=> Term)  = this
   }
@@ -186,34 +189,10 @@ trait Formula extends Expression{
   def equiv(that:Formula) : Formula = ConjFormula(this, "<=>", that) // change to <-> ??
   /** Logical not */
   def unary_! : Formula = NegFormula(this)
-  override def toString = {
-    this match {
-        case AtomFormula(PredSym(name, deg), params) => 
-          if (deg != 2) stringFn(name, params map (_.toString)) else {
-            params.head.toString+" "+ name +" "+params.tail.head.toString
-            }  
-        case AtomFormula(BinRel(name), params) => 
-          params.head.toString+" "+ name +" "+params.tail.head.toString 
-        case ConjFormula(p, conj, q) => "("+p.toString +") "+conj+" ("+ q.toString+")"
-        case NegFormula(p) => "!"+p.toString
-        case ExQuantFormula(v, p) => "Exists "+ v.toString + " " + p.toString
-        case UnivQuantFormula(v, p) => "Forall "+ v.toString + " " + p.toString
-        case Eq(p, q) => p.toString+" = "+q.toString
-        case _ => "Some other formula" 
-        }
+
   
-  }
-  
-  /** Substitute terms for variables, should be rewritten using recFormula */
-  def subs(xt: Var=> Term): Formula = this match {
-    case AtomFormula(p, params) => AtomFormula(p, params map (_.subs(xt)))
-    case ConjFormula(p, conj, q) => ConjFormula(p.subs(xt), conj, q.subs(xt))
-    case NegFormula(p) => NegFormula(p.subs(xt))
-    case ExQuantFormula(v, p) => ExQuantFormula(v, p.subs(xt))
-    case UnivQuantFormula(v,p) => UnivQuantFormula(v, p.subs(xt))
-    case Eq(p,q) => Eq(p.subs(xt), q.subs(xt))
-    case p: Formula => p
-  }
+  /** Substitute terms for variables, should be abstract*/
+  def subs(xt: Var=> Term): Formula 
   
   /** Substituting a sigle variable */
   def subs(x: Var, t: Term): Formula = {
@@ -237,21 +216,25 @@ def or(p: Formula, q: Formula) : Formula = p | q
 
 /** Formulas built Conjunctions */
 case class ConjFormula(p:Formula, conj:String, q:Formula) extends RecFormula{
+  override def subs(xt: Var => Term): Formula = ConjFormula(p subs xt, conj, q subs xt)
   val freeVars: Set[Var] = p.freeVars union q.freeVars
   }
 
 /** Formulas built by Negation */
 case class NegFormula(p:Formula) extends RecFormula{
+  def subs(xt: Var => Term): Formula = NegFormula(p subs xt)
   val freeVars: Set[Var] = p.freeVars
   }
 
 /** Exists(x) Formula */
 case class ExQuantFormula(v: Var, p:Formula) extends Formula{
+  def subs(xt: Var => Term): Formula = ExQuantFormula(v, p subs xt)
   val freeVars: Set[Var] = p.freeVars - v
   }
 
 /** ForAll(x) Formula */
 case class UnivQuantFormula(v: Var, p:Formula) extends Formula{
+  def subs(xt: Var => Term): Formula = UnivQuantFormula(v, p subs xt)
   val freeVars: Set[Var] = p.freeVars - v
   }
 
@@ -263,12 +246,14 @@ def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
 /** Atomic Formulas */  
 case class AtomFormula(p: Pred, params: List[Term]) extends Formula{
   def this(p:Pred, t: Term)= this(p, List(t))
+  def subs(xt: Var => Term): Formula = AtomFormula(p, params map (_.subs(xt)) )
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
   println(freeVars)
   }
 
 /** Equality formula; equality may also be given by conjunction formula */  
 case class Eq(p: Term, q: Term) extends Formula{
+  def subs(xt: Var => Term): Formula = Eq(p subs xt, q subs xt)
   val freeVars: Set[Var] = p.freeVars union q.freeVars
   }
   
@@ -276,11 +261,13 @@ implicit def eqFmla(pq: Eq) : AtomFormula = AtomFormula(BinRel("="), List(pq.p, 
   
 /** Boolean True as Formula */
 case object True extends Formula{
+	def subs(xt: Var => Term): Formula = this
 	val freeVars: Set[Var] = Set()
 	}
 
 /** Boolean False as Formula */
 case object False extends Formula{
+	def subs(xt: Var => Term): Formula = this
 	val freeVars: Set[Var] = Set()
 	}
 
@@ -293,6 +280,7 @@ implicit def trueFalse(b: Boolean): Formula = b match{
   
 /** Formula valued variable */
 class FormulaVar(val freeVars: Set[Var]) extends Formula{
+	def subs(xt: Var => Term): Formula = this
 	def this() = this(Set())
 	} 
 
@@ -384,19 +372,19 @@ def recValue(f: Formula, r: Formula => Boolean): Boolean = f match {
     case p: Formula => r(p)
 }
 
-def idFormula: PartialFunction[Formula,Formula] = {case x: Formula => x}
+/* def idFormula: PartialFunction[Formula,Formula] = {case x: Formula => x} */
 
 /** Given a map on base formulas (eg Formula variables), recursively extends to Conjunctions and Negations. */
-def recFormula(f: Formula, r: PartialFunction[Formula, Formula]): Formula = f match {
-    case AtomFormula(p, params) => AtomFormula(p, params)
+def recLogicFormula(r: PartialFunction[Formula, Formula]): PartialFunction[Formula, Formula] ={
     case ConjFormula(p, conj, q) => ConjFormula(r(p), conj, r(q))
     case NegFormula(p) => NegFormula(r(p))
     case ExQuantFormula(v, p) => ExQuantFormula(v, r(p))
     case UnivQuantFormula(v,p) => UnivQuantFormula(v, r(p))
     case Eq(p,q) => Eq(p, q)
-    case p: Formula => (r orElse idFormula)(p)
 }
 
+/** Given a map on base formulas, recursively extends to Conjunctions and Negations and default to Identity */
+def recFormula(f: Formula, r: PartialFunction[Formula, Formula]): Formula = recLogicFormula(r).applyOrElse(f, (q: Formula) => q)
 
 /** Formula with an explicit list of Formula variables*/
 trait Schema extends Formula{
