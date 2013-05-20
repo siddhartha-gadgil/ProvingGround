@@ -226,7 +226,7 @@ object Structures{
     pairClosure(prevSet, prevSet)
     }
 
-	private def spanNew[A<:Groupoid[A]](gens: Stream[A], n: Int): Set[A] = {
+	private def spanNew[A<:Groupoid[A]](gens: Stream[A], n: Int): Set[A] = {  
 		if (n>1) span(gens, n) -- span(gens, n-1) else span(gens, 1)
 	}
 	
