@@ -244,17 +244,24 @@ def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
 
 
 /** Atomic Formulas */  
-case class AtomFormula(p: Pred, params: List[Term]) extends Formula{
+trait AtomicFormula extends Formula{
+  val pred: Pred
+  val params: List[Term]
+}
+
+case class AtomFormula(pred: Pred, params: List[Term]) extends AtomicFormula{
   def this(p:Pred, t: Term)= this(p, List(t))
-  def subs(xt: Var => Term): Formula = AtomFormula(p, params map (_.subs(xt)) )
+  def subs(xt: Var => Term): Formula = AtomFormula(pred, params map (_.subs(xt)) )
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
   println(freeVars)
   }
 
 /** Equality formula; equality may also be given by conjunction formula */  
-case class Eq(p: Term, q: Term) extends Formula{
+case class Eq(p: Term, q: Term) extends AtomicFormula{
   def subs(xt: Var => Term): Formula = Eq(p subs xt, q subs xt)
   val freeVars: Set[Var] = p.freeVars union q.freeVars
+  val pred: Pred = BinRel("=")
+  val params = List(p,q)
   }
   
 implicit def eqFmla(pq: Eq) : AtomFormula = AtomFormula(BinRel("="), List(pq.p, pq.q))

@@ -1,6 +1,8 @@
 package provingGround
 
 import provingGround.Logic._
+import scala.language.postfixOps
+import scala.util._
 
 import provingGround.Structures._
 
@@ -12,8 +14,8 @@ object Resolution{
   
   	def splitList[A](l: List[A]): List[SplitList[A]] = l match{
   	  case List() => List()
-  	  case List(a: A) => List(SplitList(List(), a, List()))
-  	  case (a: A) :: (l : List[A]) =>   	    
+  	  case List(a) => List(SplitList(List(), a, List()))
+  	  case (a) :: (l : List[A]) =>   	    
   	    val tailList = for (sl <- splitList(l)) yield (SplitList(a :: sl.head, sl.cursor, sl.tail)) 
   	    SplitList(List.empty, a, l) :: tailList
   	} 
@@ -160,7 +162,6 @@ object Resolution{
 
   def cnf(fmla: Formula) : CNF = fmla match {
     case p: AtomicFormula => CNF(Set(Clause(Set(PosLit(p)))))
-    case p: Eq => CNF(Set(Clause(Set(PosLit(p)))))
     case ConjFormula(p, "&", q) => cnf(p) & cnf(q)
     case ConjFormula(p, "|", q) => cnf(p) | cnf(q)
     case ConjFormula(p, "=>", q) => cnf(!p) | cnf(q)
