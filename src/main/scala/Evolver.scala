@@ -2,8 +2,11 @@ package provingGround
 
 import Stream._
 import Structures._
+import annotation.tailrec
+import scala.util._
+import scala.language.postfixOps
 
-/** Generic Evolver built from base by adding spans and weights */
+/** Generic Memoised Evolver built from base by adding spans and weights */
 object StackedEvolver{
   /** Function for evolving from given dynamics */
   def evolveFn[A,B](gens:B, init:A, nxt:(B, A, Int)=> A, n: Int): A = {
@@ -21,11 +24,11 @@ object StackedEvolver{
     val gens: Stream[A]
     /** Weight function : mixed in by critics*/
     def weight(a: A, n: Int): Int = 0
-    /** Initial set; should be overridden for efficiency if generators are a finite set.*/ 
-    val init: Set[A] = (gens take 1).toSet
+    /** Initial set*/ 
+    val init: Set[A] = if (gens.hasDefiniteSize) gens.toSet else (gens take 1).toSet
 
     /** Overridden for mixing in dynamics safely */
-    def mixinSpan(S: Set[A], n: Int): Set[A] = Set.empty 
+    def mixinSpan(S: Set[A], n: Int): Set[A]  = Set.empty
            
     private def nxt(gens: Stream[A], S: Set[A], n: Int) = {
       val genSet: Set[A] = ((gens take n).toSet union S) filter (weight(_, n)<=n)
@@ -50,6 +53,11 @@ object StackedEvolver{
     	*/
     def take(n: Int): Stream[A] = (newSetStream take n).flatten  
     }
+  
+  	/** Evolver without weights depending on local moves  */
+  	class SimpleEvolver[A](val gens: Stream[A], span: A => Set[A]) extends BaseEvolver[A]{
+  	  override def mixinSpan(S: Set[A], n: Int): Set[A]= S flatMap ((a:A) => span(a))
+  	}
 
 	/** Critics assign scores to elements */
 	trait Critic[A]{
@@ -111,9 +119,138 @@ object StackedEvolver{
   class GroupoidEvolver[A <: Groupoid[A]](val gens: Stream[A]) extends BaseEvolver[A] with SpanGroupoid[A]
 }
 
+object GeneticEvolver{
+  
+  def listMap[A](f: A => A) ={
+    (l: List[A]) => if (l.isEmpty) l else f(l.head) :: l
+  }
+  
+  trait BinaryTree[A]{
+    val root: A
+  }
+  
+  case class AtomicTree[A](root: A) extends BinaryTree[A]
+  
+  case class RecTree[A](root: A, left: BinaryTree[A], right: BinaryTree[A]) extends BinaryTree[A]
   
   
+  def treeMap[A](prod: (A, A) => A) ={
+    def lr(left: BinaryTree[A], right: BinaryTree[A]) = RecTree(prod(left.root, right.root), left, right)
+    lr(_, _)
+  }
+  
+  @tailrec def pickByWeight[A](l : List[A], weight: A=> Int, n: Int): A ={
+    if (weight(l.head) < n) l.head
+    else pickByWeight(l.tail, weight, n-weight(l.head))
+  }
+  
+  def pickRandByWeight[A](l : List[A], weight: A=> Int)(implicit rand: scala.util.Random): A ={
+    val total = (l map (weight(_))).sum
+    pickByWeight(l, weight, rand.nextInt(total))
+  }
+  
+  def sampleByWeight[A](l: List[A], weight: A=> Int, n: Int)(implicit rand: Random) ={
+    (for (i <- 0 until n) yield (pickRandByWeight(l, weight)(rand))).toList
+  }
+  
+  @tailrec def sampleMaxSize[A](l: List[A], weight: A=> Int, size: A => Long, n: Long, soFar: Set[A] = Set.empty)(implicit rand: Random): Set[A] ={
+    if (n<0) soFar
+    else {val newElem = pickRandByWeight(l, weight)
+    sampleMaxSize[A](l, weight, size, n - size(newElem), soFar + newElem)
+    }
+  }
+  
+  case class Markov[A](dyn: Set[A] => Set[A]){
+    def apply(s: Set[A]) = dyn(s)
+    
+    def andThen(d: Markov[A]) = Markov(dyn andThen d.dyn)
+    
+    def ++(d: Markov[A]) = Markov((s: Set[A]) => dyn(s) union d.dyn(s))
+    
+    def circ(d: Markov[A]) = d andThen this
+    
+    def andThen(dmap: Set[A] => Set[A]) = Markov(dyn andThen dmap)
+    
+    def ++(dmap: Set[A] => Set[A]) = Markov((s: Set[A]) => dyn(s) union dmap(s))
+    
+    def circ(dmap: Set[A] => Set[A]) = Markov(dmap) andThen this
+  }
+  
+  object Markov{
+    def unary[A](f: A => Set[A]) = Markov((s: Set[A]) => s flatMap f)
+    
+    def prodSet[A](prodSet: (A, A) => Set[A]) ={
+      Markov[A]((s: Set[A]) => (for (x<-s; y<-s) yield prodSet(x,y)).flatten)
+    }
+    
+    def prod[A](prod: (A, A) => A) ={
+      Markov[A]((s: Set[A]) => for (x<-s; y<-s) yield prod(x,y))
+    }
+    
+    def prune[A](weight: A => Int, cutoff : Int) = {
+      Markov((s: Set[A]) => s filter (weight(_) <= cutoff))
+    }
+      
+    def pruneNumber[A](weight: A => Int, number: Int) ={
+        Markov((s: Set[A]) => s.toList.sortBy(weight(_)).take(number).toSet)   
+    }
+    
+    
+    
+    
+    def pruneTotal[A](weight: A => Int, number: Int) ={
+    	@tailrec def pruneListTotal(l: List[A], total: Int, headList: List[A] =List.empty): List[A] = {
+    			if (total <0 || l.isEmpty) headList
+    			else pruneListTotal(l.tail, total - weight(l.head), l.head :: headList)
+    	}
+      
+        Markov((s: Set[A]) => pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)   
+    }
+    
+    def pruneTotalSize[A](weight: A => Int, number: Int, size: A => Int) ={
+    	@tailrec def pruneListTotal(l: List[A], total: Int, headList: List[A] =List.empty): List[A] = {
+    			if (total <0 || l.isEmpty) headList
+    			else pruneListTotal(l.tail, total - size(l.head), l.head :: headList)
+    	}
+      
+       Markov((s: Set[A]) => pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
+    }
+  }
+  
+  class MarkovEvolver[A](val base: Set[A], dynaBase: Markov[A], core: Set[A]= Set.empty) extends provingGround.Aware.Seeker[A, Set[A]]{
 
+    def dyn(s: Set[A]) = dynaBase.dyn(s) union s
+    
+    def this(base: Set[A], dyn: Set[A] => Set[A]) = this(base, Markov(dyn), Set.empty: Set[A])
+    
+    def this(base: Set[A], dyn: Set[A] => Set[A], coreSet: Set[A]) = this(base, Markov(dyn), coreSet)
+    
+    @tailrec final def evolution(init: Set[A], n: Long): Set[A] = {
+      if (n<1) init
+      else evolution(dyn(init), n-1)
+    }
+    
+    @tailrec final def findEvolve(init: Set[A], p: A => Boolean, n: Long): Option[A] ={
+      if (n<0) None 
+      else if (init exists p) init find p
+      else findEvolve(dyn(init), p, n-1)
+    }
+    
+    def find(p: A => Boolean, n: Int) = findEvolve(base, p, n)
+    
+    @tailrec final def seek(p: A => Boolean, n: Long, init: Set[A] = base): Either[Set[A], A] ={
+      if (n<0) Left(init) 
+      else if (init exists p) Right(init find p get)
+      else seek(p, n-1, dyn(init))
+    }
+    
+    def apply(n: Int) = evolution(base, n)
+    
+    def pruneByWeight(weight: A => Int, cutoff: Int) = new MarkovEvolver(base, dynaBase andThen Markov.prune(weight, cutoff), core)
+    
+    def pruneByNumber(weight: A => Int, number: Int) = new MarkovEvolver(base, dynaBase andThen Markov.pruneNumber(weight, number), core)
+  }
+}  
 
 
 
