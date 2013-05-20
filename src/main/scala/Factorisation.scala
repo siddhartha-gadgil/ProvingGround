@@ -8,7 +8,7 @@ import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.postfixOps
-
+import scala.util._
  
 
 import provingGround.CoreNLP._
@@ -97,17 +97,15 @@ object Factorisation extends SimpleSwingApplication{
 
 	reactions +={
 		case swing.event.ButtonClicked(`factorButton`) =>
-			factorResult.text = toFactor.text match {
+			toFactor.text match {
 				case Int(m: Int) if m>=0 =>
 						val ans = askFactors(m)
-						ans onSuccess {
-							case s: List[Int] => factorResult.text = s.toString; println(s)
+						Await.ready(ans, 5 seconds)
+						ans onComplete {
+							case Success(s: List[Int]) => factorResult.text = s.toString; println(s)
+							case Failure(_) => factorResult.text = " could not compute the result"; println("failed")
 							}
-						ans onFailure {
-							case _ => factorResult.text = " could not compute the result"; println("failed")
-							}
-						"Sent the task to the actor"
-				case _ => "I can only factorize non-negative integers"
+				case _ => factorResult.text = "I can only factorize non-negative integers"
 				}
 		}
 	}
