@@ -135,6 +135,13 @@ object Theory{
     val axiom = True
   }
   
+  /** A list of terms as data to be viewed as folded by */
+    case class DataFoldList(lt: List[Data], b: BinOp) extends Data{
+    def subs(xt: Var=> Term): Term = DataFoldList(lt map (_.subsData(xt)), b)
+    val freeVars: Set[Var] = (lt map (_.freeVars)) reduce (_ union _)
+    val axiom = True
+  }
+  
   /** Add a condition to the data */
   case class DataCond(data: Data, cond: Formula) extends Data{
     def subs(xt: Var=> Term): Term = DataCond(subsData(xt), cond.subs(xt))
@@ -163,7 +170,7 @@ object Theory{
   
   case class Structure(signature: List[LanguageParam], axiom: Formula) extends Axiom
   
-  class SetObject(val set: ZFC.AbsSet, val struct: Structure, lm: LanguageMap = DefaultLangMap)
+  class SetObject(val struct: Structure, lm: LanguageMap = DefaultLangMap) extends ZFC.AbsSet
   
   /** A result; may be just a reference to one */
   trait Result extends Phrases
@@ -433,28 +440,28 @@ object Theory{
   def propn(name: Any)(clm: Formula) = new Claim with Label{val claim = clm; val label = name.toString}
 
  
-	case class Prove(p: Formula) extends DeterminateTask 
+  case class Prove(p: Formula) extends DeterminateTask 
 
-	case class Solve(p: Formula, xs: List[Var]=List()) extends Task 
+  case class Solve(p: Formula, xs: List[Var]=List()) extends Task 
 	
 
-	def solve(p: Formula) = Solve(p, p.freeVars.toList)
+  def solve(p: Formula) = Solve(p, p.freeVars.toList)
 
-	def solve(p: Formula, x: Var) = Solve(p, List(x))
+  def solve(p: Formula, x: Var) = Solve(p, List(x))
 
-	def solve(p: Formula, xs: List[Var]) = Solve(p, xs)
+  def solve(p: Formula, xs: List[Var]) = Solve(p, xs)
 
-	case class NextProve(task: Prove) extends Attention[Prove] with Promise{
-		val subject = task
+  case class NextProve(task: Prove) extends Attention[Prove]{
+	val subject = task
 	}
 
-	trait WillProve extends Attention[Prove] with Promise
+  trait WillProve extends Attention[Prove]
 
-	case class Consider(para: Paragraph) extends Attention[Paragraph]{
-		val subject = para
-		}
+  case class Consider(para: Paragraph) extends Attention[Paragraph]{
+	val subject = para
+	}
 
-	type Transformation = PartialFunction[Para, Para]
+  type Transformation = PartialFunction[Para, Para]
 
   trait ProofSketch extends Paragraph
   
