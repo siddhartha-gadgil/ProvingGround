@@ -29,12 +29,12 @@ object Resolution{
 
 	case class SubTermSubsTerm(term: Term, onSubs: Term => Term){
 	  def apply(t: Term) = onSubs(t)
-	  def subs(m : Map[Var, Term]) = SubTermSubsTerm(term subs(m), (t: Term) => onSubs(t).subs(m))
+	  def subs(m : PartialFunction[Var, Term]) = SubTermSubsTerm(term subs(m), (t: Term) => onSubs(t).subs(m))
 	      }
 
 	case class SubTermSubsLit(term: Term, onSubs: Term => Literal){
 	  def apply(t: Term) = onSubs(t)
-	  def subs(m : Map[Var, Term]) = SubTermSubsLit(term subs(m), (t: Term) => onSubs(t).subs(m))
+	  def subs(m : PartialFunction[Var, Term]) = SubTermSubsLit(term subs(m), (t: Term) => onSubs(t).subs(m))
 	  def unify(t: Term)(s: Term) = mgu(t, term) map (subs(_)(s))
 	}
 	
@@ -98,17 +98,17 @@ object Resolution{
 	trait Literal{
 	  val p: AtomicFormula
 	  def apply(p: AtomicFormula): Literal
-	  def subs(m: Map[Var, Term]): Literal
+	  def subs(m: PartialFunction[Var, Term]): Literal
 	}
 
 	case class PosLit(p: AtomicFormula) extends Literal{
 	  def apply(p: AtomicFormula): Literal = PosLit(p)
-	  def subs(m: Map[Var, Term]): Literal = PosLit(p.subs(m).asInstanceOf[AtomicFormula])
+	  def subs(m: PartialFunction[Var, Term]): Literal = PosLit(p.subs(m).asInstanceOf[AtomicFormula])
 	}
 
 	case class NegLit(p: AtomicFormula) extends Literal{
 	  def apply(p: AtomicFormula): Literal = NegLit(p)
-	  def subs(m: Map[Var, Term]): Literal = NegLit(p.subs(m).asInstanceOf[AtomicFormula])
+	  def subs(m: PartialFunction[Var, Term]): Literal = NegLit(p.subs(m).asInstanceOf[AtomicFormula])
 	}
 	
 	def oppSnse(a: Literal, b: Literal): Boolean =(a, b) match {
@@ -118,13 +118,14 @@ object Resolution{
 	      
 	}
 
-	def mguFmla(f: AtomicFormula, g: AtomicFormula): Option[Map[Var, Term]] = {
+	def mguFmla(f: AtomicFormula, g: AtomicFormula): Option[PartialFunction[Var, Term]] = {
 		if (f.pred != g.pred) None 
 		else mguList(f.params, g.params) 
 	}
 
 	case class Clause(ls: Set[Literal]){
 	  def |(that: Clause) = Clause(this.ls ++ that.ls)
+	  def subs(m: PartialFunction[Var, Term]) = Clause(ls map ((l: Literal)=> l.subs(m)))
 	}
 	
 	case class CNF(clauses: Set[Clause]){
@@ -133,6 +134,8 @@ object Resolution{
 	  def |(that: CNF) ={
 	    CNF(for (a <- this.clauses; b <- that.clauses) yield (a | b))
 	  }
+	  
+	  def subs(m: PartialFunction[Var, Term]) = CNF(clauses map ((l: Clause)=> l.subs(m)))
 	}
 
 	case class SplitClause(one: Literal, rest: Set[Literal])
@@ -141,14 +144,11 @@ object Resolution{
 
 	def idVar: PartialFunction[Var, Term] = {case x: Var => x}
 	
-	def subs(f: Map[Var,Term], l: Literal) = l match {
-	  case PosLit(p) => PosLit((p subs (f orElse idVar)).asInstanceOf[AtomicFormula])
-	  case NegLit(p) => NegLit((p subs (f orElse idVar)).asInstanceOf[AtomicFormula])
-	}
+
 
 	  
 	def unify(a: SplitClause, b: SplitClause) = {
-	  mguFmla(a.one.p, b.one.p) map ((f: Map[Var, Term]) => (a.rest map (subs(f, _))) union (b.rest map (subs(f, _))))
+	  mguFmla(a.one.p, b.one.p) map ((f: PartialFunction[Var, Term]) => (a.rest map (_.subs(f))) union (b.rest map (_.subs(f))))
 	}
 
 	
@@ -157,30 +157,44 @@ object Resolution{
 	  for (x <- c.clauses; y <- c.clauses; a <- splitClause(x); b <- splitClause(y) if oppSnse(a.one, b.one)) yield unify(a,b)
 	}
 	
+	
+	def negate(fmla: Formula): Formula = fmla match{
+	  case p: AtomicFormula => NegFormula(p)
+	  case NegFormula(p) => p
+	  case ConjFormula(p, "&", q) => negate(p) | negate(q)
+	  case ConjFormula(p, "|", q) => negate(p) & negate(q)
+	  case ConjFormula(p, "=>", q) => p & negate(q)
+	  case ConjFormula(p, "<=>", q) => (p & negate(q)) | (q & negate(p))
+	  case ExQuantFormula(x, p) => UnivQuantFormula(x, negate(p))
+	  case UnivQuantFormula(x, p) => ExQuantFormula(x, negate(p))
+	}
 
-  case class Skolem(x: Var, d: Int) extends Func(d)
+  class Skolem(x: Var, d: Int) extends Func(d)
 
-  def cnf(fmla: Formula) : CNF = fmla match {
-    case p: AtomicFormula => CNF(Set(Clause(Set(PosLit(p)))))
-    case ConjFormula(p, "&", q) => cnf(p) & cnf(q)
-    case ConjFormula(p, "|", q) => cnf(p) | cnf(q)
-    case ConjFormula(p, "=>", q) => cnf(!p) | cnf(q)
-    case ConjFormula(p, "<=>", q) => (cnf(p) & cnf(q)) | (cnf(!p) & cnf(!q))
-    case NegFormula(NegFormula(p)) => cnf(p)
+  def cnf(fmla: Formula, outerVars: List[Var]) : CNF = fmla match {
+    case p: AtomicFormula => CNF(Set(Clause(Set(PosLit(p))))) 
+    case ConjFormula(p, "&", q) => cnf(p, outerVars) & cnf(q, outerVars)
+    case ConjFormula(p, "|", q) => cnf(p, outerVars) | cnf(q, outerVars)
+    case ConjFormula(p, "=>", q) => cnf(!p, outerVars) | cnf(q, outerVars)
+    case ConjFormula(p, "<=>", q) => (cnf(p, outerVars) & cnf(q, outerVars)) | (cnf(!p, outerVars) & cnf(!q, outerVars))
+    case NegFormula(NegFormula(p)) => cnf(p, outerVars)
     case NegFormula(p: AtomicFormula) => CNF(Set(Clause(Set(NegLit(p))))) 
-    case UnivQuantFormula(_, p) => cnf(p)
+    case NegFormula(p: Formula) => cnf(negate(p), outerVars)
+    
+    case UnivQuantFormula(x: Var, p) => cnf(p, x :: outerVars)
     case ExQuantFormula(x, p) => 
-      val vars = p.freeVars.toList
-      val t = Skolem(x, vars.length)(vars)
-      val skolemP = p subs (Map(x->t) orElse idVar)
-      cnf(skolemP)
+      val vars = outerVars
+      val t = new Skolem(x, vars.length)(vars)
+      cnf(p, outerVars) subs (Map(x->t) orElse idVar)
   }
+  
+  def cnf(fmla: Formula) : CNF = cnf(fmla, fmla.freeVars.toList)
   
   def paraSubs(e: Formula, t: Term): Option[Term] = e match{
     case AtomFormula(BinRel("="), List(a, b)) =>
-      mgu(b, t) map ((m: Map[Var, Term]) => a subs m)
+      mgu(b, t) map ((m: PartialFunction[Var, Term]) => a subs m)
     case Eq(a, b) =>
-      mgu(b, t) map ((m: Map[Var, Term]) => a subs m)
+      mgu(b, t) map ((m: PartialFunction[Var, Term]) => a subs m)
     case _ => None
   }
   
