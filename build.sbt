@@ -18,3 +18,4 @@ libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.1.0"
 
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "1.3.4" classifier("models") classifier("")
 
+libraryDependencies += "xom" % "xom" % "1.2.5"
