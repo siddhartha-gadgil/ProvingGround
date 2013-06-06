@@ -13,7 +13,7 @@ object Aware{
 	  }
 	}
 	
-	
+	 
 	trait DeterminateTask extends Task
 	
 	trait OpenEndedTask extends Task
@@ -23,11 +23,38 @@ object Aware{
 	  val goal: Task
 	}
 	
+	
+	/** Checks if a task can be translated to a form applicable to a resource; if so returns it.
+	 *  
+	 */
+	trait PreResource{
+	  def apply(task: Task): Option[Task]
+	}
+	
+	
 	trait Result[+A]{
 	  val result: A
 	}
+
+	trait Contribution[+A]{
+		val result: A
+	}
+	
+	
+	
+	
 	
 	case class TaskUsing[A](task: Task, using: Result[A]) extends Task
+
+	
+	/**Find related task */
+	trait TaskHelpers{
+	  def apply(task: Task): Set[TaskHelps]
+	}
+	
+	case class TaskHelps(goal: Task, helper: Task, measure: Option[Int] = None)
+	
+	case class UsefulForTask[A](goal: Task, a: A, measure: Option[Int] = None)
 	
 	case class BoundedTask(task: Task, bound: Long) extends Task
 	

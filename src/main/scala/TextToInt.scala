@@ -1,9 +1,10 @@
 package provingGround
+import scala.util.control.Exception._
 
 /** Converts prose numbers to Integers without checking for bad cases */
 object TextToInt{
   
-private val wordNumber = Map("one" -> 1,
+private val wordNumber: Map[String, Long] = Map("one" -> 1,
   "two"->2,
   "three" -> 3,
   "four"-> 4,
@@ -39,24 +40,24 @@ private val wordNumber = Map("one" -> 1,
   "and" -> 0
   )
 
-	object Int {
-  	def unapply(s : String) : Option[Int] = try {
-    	Some(s.toInt)
-  	} catch {
-    	case _  => None
- 	 }
-	}
+	object Long {
+  	def unapply(s : String) : Option[Long] = allCatch.opt(s.toLong) 
+  	}
   
+	object Int {
+		def unapply(s : String) : Option[Long] = allCatch.opt(s.toLong) 
+  		}
+
   /** Returns a number for a single word*/
   def wordNum(w: String) = w match {
-  	case Int(x) => x
+  	case Long(x) => x
   	case _ => wordNumber(w.toLowerCase)
   }
   
   /** Returns a number for a list of words */
-  def wordListNumber(l: List[String]): Int = numListNumber(l map wordNum)
+  def wordListNumber(l: List[String]): Long = numListNumber(l map wordNum)
   
-  private def numListNumber(nums : List[Int]) : Int = if (nums.isEmpty) 0 else {      
+  private def numListNumber(nums : List[Long]) : Long = if (nums.isEmpty) 0 else {      
     val maxNum = nums.max
     val splitPos = nums.indexOf(maxNum)
     if (maxNum < 100) nums.sum else {
@@ -72,5 +73,5 @@ private val wordNumber = Map("one" -> 1,
   def splitString(t: String) : List[String] = t.split("[ ,.]+").toList
   
   /** Returns a number from a string of many words */
-  def stringNumber(t: String) : Int = wordListNumber(splitString(t)) 
+  def stringNumber(t: String) : Long = wordListNumber(splitString(t)) 
 }

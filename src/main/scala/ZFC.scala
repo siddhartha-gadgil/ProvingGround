@@ -23,7 +23,7 @@ object ZFC{
   
   case class FiniteProd(sets: List[AbsSet]) extends AbsSet{
     def this(ss: AbsSet*) = this(ss.toList)
-    def this(s: AbsSet, n:Int) = this(((1 to n) map (_ => s)).toList)
+    def this(s: AbsSet, n:Int) = this(((1 to n) map (_ => s)).toList) 
     }
     
   case class PowerSet(s: AbsSet) extends AbsSet

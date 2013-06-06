@@ -262,7 +262,7 @@ object Structures{
       
     case class Element[A](elem: A, g: Struct[A]) extends Elem{
       def *(a: Elem): Elem = a match 
-        {case Element(x: A, g) => Element(g.prod(this.elem, x), g)
+        {case Element(x, g) => Element(g.prod(this.elem, x), g)
         case _ => Broken
         } 
     }
@@ -292,7 +292,7 @@ object Structures{
     
     case class Element[A](elem: A, g: Struct[A]) extends Elem{
       def *(a: Monoid.Elem): Elem = a match 
-        {case Element(x: A, g) => Element(g.prod(this.elem, x), g)
+        {case Element(x, g) => Element(g.prod(this.elem, x), g)
         case _ => Broken
         }
       def inv = Element(g.inv(this.elem), g)

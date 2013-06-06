@@ -4,6 +4,7 @@ import provingGround.NlpProse._
 import provingGround.Logic._
 import provingGround.TextToInt._
 import provingGround.Theory._
+import provingGround.Theory.Document._
 // import provingGround.Arithmetic._
 // import provingGround.Collections._
 
@@ -227,7 +228,7 @@ object OneOf{
       case None => None
         }
       }
-  }
+  } 
 
 /** returns condition (Formula => Formula) from ProseTree */
 def toCondition(d: ParseData, scope:Scope): Formula=> Formula = {
@@ -245,7 +246,7 @@ def toCondition(d: ParseData, scope:Scope): Formula=> Formula = {
 /** Optional Formula */
 def optFormula(d: ParseData, scope: Scope): Option[Formula] = {
   val p = toFormula(d, scope)
-  val unparsed = atoms(p) collect (unParsed)
+  val unparsed = desc(p) collect (unParsed)
   if (unparsed.isEmpty) Some(p) else {
     println(p)
     unparsed.foreach(println)
@@ -262,7 +263,11 @@ def toFormula(d:ParseData, scope: Scope): Formula ={
     case PredParams(p, params) =>{
         val n=params.length
         val xs=scope.newVars(n)
-        val pred = PredSym(p, n)   
+        val pred = n match {
+          case 1=> UnRel(p)
+          case 2 => BinRel(p)
+          case _ => PredSym(p, n)
+        }
         val baseFormula = AtomFormula(pred, xs)
         val condPropts = params map (toCondPropt(_,scope))
         zipSubs(condPropts, xs, baseFormula)

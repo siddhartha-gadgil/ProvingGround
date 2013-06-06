@@ -5,81 +5,210 @@ import provingGround.Structures._
 import provingGround.Aware._
 import scala.language.implicitConversions
 
-/** The Meta-logical layer, including Definitions, Propositions, Proofs etc. */
+/** The Meta-logical layer;
+ *  Contains: core of a mathematical theory
+ *  
+ *  Separate objects as:
+ *  
+ *    Targets of documents
+ *   
+ *   Data
+ *   
+ *   Proofs 
+ *     */
 object Theory{
-  
-	/** Fragments of sentences */
-  trait Phrases
-  
-  /** Any block of full sentences*/
-  trait Paragraph extends Phrases
-  
-  /** Recursive Paragraph */
-  case class Para(paraList: List[Paragraph]) extends Paragraph
-  
-	/** Sequences of Paragraphs made into a recursive paragraph */
-  def para(paras: Paragraph*) = Para(paras.toList)
-  
-  
-  /** Text not to be translated into mathematics */ 
-  case class Text(text: String) extends Paragraph 
 
-  /** Formula regarded as a paragraph */
-  case class Fmla(p: Formula) extends Paragraph
+
+
+  case class Context(boundedVars: Set[Var] = Set.empty, assumptions: Set[Formula] = Set.empty){
+		def subs(xt: Var => Term)  = {
+			val newVars = for (x<- boundedVars) yield (
+				xt(x) match {
+					case y: Var => y
+					case _  => x 
+					}
+						)
+			Context(newVars,  assumptions map (_.subs(xt)))
+			}
+
+		lazy val formula = assumptions reduce (_ & _)
+		
+		def +(x: Var) = Context(boundedVars + x, assumptions)
+		
+		def +(p: Formula) = Context(boundedVars, assumptions + p)
+		}
+
+	object Context{
+		val empty = Context(Set.empty: Set[Var], Set.empty: Set[Formula])
+
+		def apply(xs: Var*)(ps: Formula*): Context = Context(xs.toSet, ps.toSet)
+	 }
+
+  trait FOLformula{
+    def folFormula: Formula
+  }
+	
+  trait Claim extends FOLformula{
+		val claim: Formula
+		val context: Context
+		lazy val folFormula = (context.formula) implies claim
+	}
+
+	trait Assertion extends Result with Claim with Justification
+
+	case class Construction(given: Context, result: Term, condition: Formula = Formula.empty) extends Term{
+		def freeVars = result.freeVars -- given.boundedVars
+		def subs(xt: Var=> Term) = new Construction(given subs xt, result subs xt, condition subs xt)
+		}
+
+
+	case class Definition(given: Context, require: Formula) extends Formula{
+		override val freeVars = require.freeVars -- given.boundedVars
+		def subs(xt: Var=> Term) = new Definition(given subs xt, require subs xt)
+		}
+
+	case class Canonical(constr: Construction) extends Formula{
+	  def subs(xt: Var=> Term) = Canonical(constr subs xt)
+		val freeVars = constr.freeVars
+	}
+	
+	/** A result */
+	trait Result
+
+	/** Result refered to by name */
+  case class ResultRef(name: String) extends Result
+
+		/** Justification for a claim */
+  trait Justification{
+		/** combining justifications */
+    def &(that: Justification) = Justification.PolyJust(this, that)
+		/** combining justifications */ 
+    def and(that: Justification) = Justification.PolyJust(this, that)
+
+		/** Assertion based on justification */
+//		def have(p: Formula) = Assert(p, List(this))
+		/** Assertion based on justification */
+//		def observe(p: Formula) = Assert(p, List(this))
+  }
   
-  /** Paragraph in a fixed domain */
-  case class InDomain(S: ZFC.AbsSet, p: Paragraph) extends Paragraph
+	
+	object Tasks{
+	  case class Prove(statement: Claim) extends Task
+
+		case class Contradict(statement: Claim) extends Task
+
+	  case class Solve(vars: List[Var], statement: Claim) extends Task
+	  object Solve{
+	    def apply(xs: Var*)(claim: Claim): Solve = Solve(xs.toList, claim)
+	  }
+
+	  case class Find(vars: List[Var], statement: Claim) extends Task
+	  object Find{
+	    def apply(xs: Var*)(claim: Claim): Find = Find(xs.toList, claim)
+	  }
+
+		case class Generate(vars: List[Var], statement: Claim) extends Task
+	  object Generate{
+	    def apply(xs: Var*)(claim: Claim): Find = Find(xs.toList, claim)
+	  }
+
+		case class Consequences(hypothesis: Claim) extends Task
+
+		case class ImpliedBy(conclusion: Claim) extends Task
+
+		case class Check(result: Claim) extends Task
+	}
+
+	object Justification{
+	/** No justification */
+	case object empty extends Justification
+
+	/** Recursive step for a collection of justifications*/
+  case class PolyJust(first: Justification, second: Justification) extends Justification
   
-  def inDomain(S: ZFC.AbsSet)(paras: Paragraph*) = InDomain(S, Para(paras.toList)) 
+
+  /** A method of proving, e.g. induction */
+  trait Method
   
-  /** Axiom */
-  trait Axiom extends Phrases{
+	/** Method given by its name */
+  case class NamedMethod(name: String) extends Method
+  
+	/** Justification: by method */
+  case class By(meth: Method) extends Justification
+  
+	/** Justification: by method */
+  def by(meth: Method) = By(meth)
+  
+	/** Justification: by method with the given name */
+  def by(name: String) = By(NamedMethod(name))
+  
+  /** Justification: using result */
+  case class Using(result: Result) extends Justification
+  
+	/** Justification: using result */
+  def using(result: Result) = Using(result)
+  
+	/** Justification: using result with the given name */
+  def using(name: String) = Using(ResultRef(name))
+      
+	/** Justification: As result holds */
+  def as(result: Result) = Using(result)
+	}  
+
+	object Relation{
+		val x = VarSym("X")
+		val y = VarSym("y")
+	  val z = VarSym("z")
+    
+		
+	/** Formula saying a Binary relation is symmetric */
+  def symmetric(r: BinRel): Formula = forAll(x, y)(r(x,y) implies r(y,x))
+
+	/** Formula saying a Binary relation is anti-symmetric */
+  def antiSymmetric(r: BinRel): Formula = forAll(x, y)((r(x,y) & r(y,x)) implies x =:= y)
+
+	
+    
+	/** Formula saying a Binary relation is transitive */
+  def transitive(r: BinRel): Formula = forAll(x, y, z)((r(x,y) & r(y,z)) implies r(x,z))
+
+	/** Formula saying a Binary relation is reflexive */  
+  def reflexive(r: BinRel): Formula = forAll(x)(r(x,x))
+  
+	/** Formula saying a Binary relation is an Equivalence relation */
+  def equivalence(r: BinRel): Formula = symmetric(r) & reflexive(r) & transitive(r)
+	}
+
+object DSL{
+  implicit def varSym(s: String) = VarSym(s)  
+
+  implicit def binOpSym(s: String) = BinOp(s)
+
+}
+	
+object Data{
+	/** Axiom */
+	trait Axiom{
 		/** the assumption of the Axiom */
     val axiom: Formula
     
 		/** New Axiom adding Formula to axiom */
-    def &(that: Formula) = Axioms(axiom, that)
+    def &(that: Formula) = new AxiomSet(axiom, that)
 
 		/** New Axiom combining Axioms */
-    def &(that: Axiom) = Axioms(axiom, that.axiom) 
+    def &(that: Axiom) = new AxiomSet(axiom, that.axiom) 
     
 		/** Returns (axiom => formula) given Formula */
     def have(that: Formula): Formula = axiom implies that
 		/** Returns (axiom => claim) given Claim */
     def have(that: Claim): Formula = axiom implies (that.claim)
     }
-    
-	/** A collection of axioms giving an Axiom*/	
-  case class Axioms(axioms: Formula*) extends Paragraph with Axiom{
-    val axiomList = axioms.toList
-    val axiom = axiomList reduce (_ & _)
-    }
 
-	/** Generator for axioms from a list */
-	def axiom(axioms:List[Formula]) = Axioms(axioms reduce (_ & _)) 
-    
-	
-  val x = VarSym("X")
-  val y = VarSym("y")
-  val z = VarSym("z")
-    
-	/** Axiom saying a Binary relation is symmetric */
-  def symmetric(r: BinRel): Axiom = Axioms(forAll(x, y)(r(x,y) implies r(y,x)))
-    
-	/** Axiom saying a Binary relation is transitive */
-  def transitive(r: BinRel): Axiom = Axioms(forAll(x, y, z)((r(x,y) & r(y,z)) implies r(x,z)))
+	class AxiomSet(val axioms: Set[Formula]) extends Axiom{
+		val axiom = axioms reduce (_ & _)
+		def this(axioms: Formula*) = this(axioms.toSet)
+		}
 
-	/** Axiom saying a Binary relation is reflexive */  
-  def reflexive(r: BinRel): Axiom = Axioms(forAll(x)(r(x,x)))
-  
-	/** Axiom saying a Binary relation is an Equivalence relation */
-  def equivRelation(r: BinRel): Axiom = symmetric(r) & reflexive(r) & transitive(r)
-
-    
-  /** Data: A collection of terms and an axiom they are supposed to satisfy 
-		*
-		* In practice, the axiom is a collection of axioms combined with &
-		*/  
   trait Data extends Term with Axiom{
     /** Substitute in term as well as in the assumed axiom */
     def subsData(xt: Var => Term): Data = DataTerm(subs(xt), axiom.subs(xt))
@@ -107,11 +236,12 @@ object Theory{
 		val freeVars: Set[Var] = Set.empty
   }
 
-	/** The equivalence relation generated by the given generator axiom */
-  case class EquivRelation(rel: BinRel, generator: Axiom) extends Axiom{
-    val axiom = (generator & equivRelation(rel)).axiom
+	/** The equivalence relation generated by the given generator Formula */
+  case class EquivRelation(rel: BinRel, generator: Formula) extends Axiom{
+    val axiom = generator & Relation.equivalence(rel)
     }
-  
+
+
 	/** Data considered upto an Equivalence relation */
   case class QuotientData(d: Data, r: EquivRelation) extends Data{
     val freeVars = d.freeVars
@@ -151,6 +281,84 @@ object Theory{
   
   /** Constructs a DataList from several data parameters */ 
   def given(ds: Data*) = DataList(ds.toList)
+
+	}
+
+
+
+  /* Target of documents */
+  object Document{ 
+
+	import Justification._
+
+	import Data._
+
+	/** Fragments of sentences */
+  trait Phrases
+  
+  /** Any block of full sentences*/
+  trait Paragraph extends Phrases
+  
+  /** Recursive Paragraph */
+  case class Para(paraList: List[Paragraph]) extends Paragraph
+  
+	/** Sequences of Paragraphs made into a recursive paragraph */
+  def para(paras: Paragraph*) = Para(paras.toList)
+  
+  
+  /** Text not to be translated into mathematics */ 
+  case class Text(text: String) extends Paragraph 
+
+  /** Formula regarded as a paragraph */
+  case class Fmla(p: Formula) extends Paragraph
+  
+  /** Paragraph in a fixed domain */
+  case class InDomain(S: ZFC.AbsSet, p: Paragraph) extends Paragraph
+  
+  object InDomain{ 
+    def apply(S: ZFC.AbsSet)(paras: Paragraph*): InDomain = InDomain(S, Para(paras.toList)) 
+  }
+  
+  
+    
+	/** A collection of axioms giving an Axiom*/	
+  case class Axioms(axioms: Formula*) extends Paragraph with Axiom{
+    val axiomList = axioms.toList
+    val axiom = axiomList reduce (_ & _)
+    }
+
+	/** Generator for axioms from a list */
+	def axiom(axioms:List[Formula]) = Axioms(axioms reduce (_ & _)) 
+
+    
+	  /** ConditionClause for a Formula */
+  trait ConditionClause extends Phrases{
+		/** returns formula given condition */
+    def apply(p: Formula): Formula
+    
+		/** returns formula given condition */
+    def thenhave(p: Formula) = apply(p)
+
+    }
+
+	/** If condition */
+  case class If(q: Formula) extends ConditionClause{
+    def apply(p: Formula) = q implies p
+    } 
+
+
+		/** Justification: As condition holds */  
+  case class As(c: ConditionClause) extends Justification
+  
+	/** Justification: As condtion holds */
+  def as(c: ConditionClause) = As(c)
+  
+
+  /** Data: A collection of terms and an axiom they are supposed to satisfy 
+		*
+		* In practice, the axiom is a collection of axioms combined with &
+		*/  
+
   
   class LanguageMap(cm: Map[Const, Const] = Map.empty, fm: Map[Func, Func]= Map.empty, pm: Map[Pred, Pred]=Map.empty){
     def apply(t: Term): Term = t match {
@@ -173,10 +381,9 @@ object Theory{
   class SetObject(val struct: Structure, lm: LanguageMap = DefaultLangMap) extends ZFC.AbsSet
   
   /** A result; may be just a reference to one */
-  trait Result extends Phrases
+//  trait Result extends Phrases
   
-	/** Result refered to by name */
-  case class ResultRef(name: String) extends Result
+
   
   /** A claim */
   trait Claim extends Paragraph with Result{val claim: Formula}
@@ -226,70 +433,7 @@ object Theory{
 				p(VarSym("x")).subs(VarSym("x"), t)
 			}
                          
-	/** Justification for a claim */
-  trait Justification extends Phrases{
-		/** combining justifications */
-    def &(that: Justification) = PolyJust(this, that)
-		/** combining justifications */ 
-    def and(that: Justification) = PolyJust(this, that)
 
-		/** Assertion based on justification */
-		def have(p: Formula) = Assert(p, List(this))
-		/** Assertion based on justification */
-		def observe(p: Formula) = Assert(p, List(this))
-  }
-  
-	/** Recursive step for a collection of justifications*/
-  case class PolyJust(first: Justification, second: Justification) extends Justification
-  
-
-  /** A method of proving, e.g. induction */
-  trait Method
-  
-	/** Method given by its name */
-  case class NamedMethod(name: String) extends Method
-  
-	/** Justification: by method */
-  case class By(meth: Method) extends Justification
-  
-	/** Justification: by method */
-  def by(meth: Method) = By(meth)
-  
-	/** Justification: by method with the given name */
-  def by(name: String) = By(NamedMethod(name))
-  
-  /** Justification: using result */
-  case class Using(result: Result) extends Justification
-  
-	/** Justification: using result */
-  def using(result: Result) = Using(result)
-  
-	/** Justification: using result with the given name */
-  def using(name: String) = Using(ResultRef(name))
-  
-  /** ConditionClause for a Formula */
-  trait ConditionClause extends Phrases{
-		/** returns formula given condition */
-    def apply(p: Formula): Formula
-    
-		/** returns formula given condition */
-    def thenhave(p: Formula) = apply(p)
-
-    }
-
-	/** If condition */
-  case class If(q: Formula) extends ConditionClause{
-    def apply(p: Formula) = q implies p
-    }    
-  
-	/** Justification: As condition holds */  
-  case class As(c: ConditionClause) extends Justification
-  
-	/** Justification: As condtion holds */
-  def as(c: ConditionClause) = As(c)
-  
-	/** Justification: As result holds */
-  def as(result: Result) = Using(result)
   
 	/** An Assumption */
   trait Assumption extends ConditionClause with Axiom with Paragraph{
@@ -463,9 +607,14 @@ object Theory{
 
   type Transformation = PartialFunction[Para, Para]
 
-  trait ProofSketch extends Paragraph
+  }
   
-  case class Proof(p: Paragraph) extends ProofSketch
+  
+  
+  object Proof{
+  trait ProofSketch extends Document.Paragraph
+  
+  case class Proof(p: Document.Paragraph) extends ProofSketch
   
   trait CheckedProof extends ProofSketch{
     val hyp : Set[Formula]
@@ -517,6 +666,7 @@ object Theory{
     val fmla =f(ps.toList)
     val concl = Set(fmla)
     lazy val verify = isTautology(f)
+  }
   }
 }
 

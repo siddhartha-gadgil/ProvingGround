@@ -98,8 +98,8 @@ object Factorisation extends SimpleSwingApplication{
 	reactions +={
 		case swing.event.ButtonClicked(`factorButton`) =>
 			toFactor.text match {
-				case Int(m: Int) if m>=0 =>
-						val ans = askFactors(m)
+				case Int(m) if m>=0 =>
+						val ans = askFactors(m.toInt)
 						Await.ready(ans, 5 seconds)
 						ans onComplete {
 							case Success(s: List[Int]) => factorResult.text = s.toString; println(s)

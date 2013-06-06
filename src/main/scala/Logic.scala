@@ -1,6 +1,6 @@
 package provingGround 
 
-import scala.language.implicitConversions
+import scala.language.implicitConversions 
 
 /** Defines predicate calculus and several associated methods, including:
   *
@@ -52,7 +52,9 @@ class Pred(val degree: Int) extends LanguageParam{
   }
 
 /** Predicate determined by its name */
-case class PredSym(name: String, d :Int) extends Pred(d)
+case class PredSym(name: String, d :Int) extends Pred(d){
+	override def toString = name
+}
 
 @deprecated("Use instead formal relations", "8/2/2012") object Pred{
     val Eql = BinRel("=")
@@ -76,9 +78,16 @@ implicit def UnOpFun(u: UnOp): FuncSym = FuncSym(u.name, 1)
 
 
 /** Binary relation */
-case class BinRel(name: String) extends Pred(2)
+case class BinRel(name: String) extends Pred(2){
+  def apply(term: Term) = UnRel(name+"("+term.toString +")")
+}
 
 implicit def binRelPred(b: BinRel) = PredSym(b.name, 2)
+
+case class UnRel(name: String) extends Pred(1){
+  def ::(term: Term) = apply(term)
+}
+
 
 
 /** Logical terms */
@@ -94,7 +103,7 @@ trait Term extends Expression{
   def subs(x: Var, t: Term): Term = {
     val xt: (Var => Term) = (y: Var) => if (y==x) t else y
     subs(xt)
-    }
+  }  
    
   /** Formal + operation */  
   def +(that: Term) = BinOp("+")(this, that)
@@ -115,6 +124,10 @@ trait Term extends Expression{
   def <(that: Term): Formula = BinRel("<")(this, that)
   /** Formal > relation */
   def >(that: Term): Formula = BinRel(">")(this, that)
+    /** Formal < relation */
+  def <<(that: Term): Formula = BinRel("<")(this, that)
+  /** Formal > relation */
+  def >>(that: Term): Formula = BinRel(">")(this, that)
   /** Formal = relation */
   def =:=(that: Term): Formula = BinRel("=")(this, that)
   /** Formal <= relation */
@@ -123,6 +136,10 @@ trait Term extends Expression{
   def >=(that: Term): Formula = BinRel(">=")(this, that)
   /** Formal ~ relation */
   def ~(that: Term): Formula = BinRel("~")(this, that)
+  
+  def apply(b: BinRel) = (that: Term) => b(this, that)
+  
+  def is (u: UnRel) = u(this)
   }
 
 /** Logical Variable */
@@ -149,7 +166,7 @@ trait Const extends Term with LanguageParam{
 case class ConstSym(name: String) extends Const
 
 /** Integer constant */
-case class IntConst(value: Int) extends Const{
+case class IntConst(value: Long) extends Const{
 	override def toString = value.toString
 }
   
@@ -166,6 +183,7 @@ case class RecTerm(f: Func, params: List[Term]) extends Term{
     
   override def toString = f match {
      case FuncSym(name, _) => stringFn(name, params map (_.toString))
+     case BinOp(name) => params.head.toString+name+params.last.toString
      case _ => super.toString
      }
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
@@ -207,6 +225,13 @@ trait Formula extends Expression{
   val freeVars: Set[Var] 
 }
 
+object Formula{
+	object empty extends Formula{
+		def subs(xt: Var => Term): Formula = this
+		val freeVars: Set[Var] = Set.empty
+		}
+	}
+
 
 
 /** Formulas built by Conjunctions and Negations */
@@ -218,24 +243,31 @@ def or(p: Formula, q: Formula) : Formula = p | q
 case class ConjFormula(p:Formula, conj:String, q:Formula) extends RecFormula{
   override def subs(xt: Var => Term): Formula = ConjFormula(p subs xt, conj, q subs xt)
   val freeVars: Set[Var] = p.freeVars union q.freeVars
+	override def toString = p.toString + conj + q.toString
   }
 
 /** Formulas built by Negation */
 case class NegFormula(p:Formula) extends RecFormula{
   def subs(xt: Var => Term): Formula = NegFormula(p subs xt)
   val freeVars: Set[Var] = p.freeVars
+	override def toString = "!" + p.toString
+
   }
 
 /** Exists(x) Formula */
 case class ExQuantFormula(v: Var, p:Formula) extends Formula{
   def subs(xt: Var => Term): Formula = ExQuantFormula(v, p subs xt)
   val freeVars: Set[Var] = p.freeVars - v
+
+	override def toString = "Ex. "+v.toString+" "+p.toString
   }
 
 /** ForAll(x) Formula */
 case class UnivQuantFormula(v: Var, p:Formula) extends Formula{
   def subs(xt: Var => Term): Formula = UnivQuantFormula(v, p subs xt)
   val freeVars: Set[Var] = p.freeVars - v
+
+	override def toString = "ForAll "+v.toString+" "+p.toString
   }
 
 def forAll(xs: Var*)(p: Formula): Formula = (xs :\ p) (UnivQuantFormula(_,_))
@@ -249,11 +281,13 @@ trait AtomicFormula extends Formula{
   val params: List[Term]
 }
 
+
 case class AtomFormula(pred: Pred, params: List[Term]) extends AtomicFormula{
   def this(p:Pred, t: Term)= this(p, List(t))
   def subs(xt: Var => Term): Formula = AtomFormula(pred, params map (_.subs(xt)) )
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
-  println(freeVars)
+
+	override def toString = stringFn(pred.toString, params map (_.toString))
   }
 
 /** Equality formula; equality may also be given by conjunction formula */  
@@ -262,6 +296,7 @@ case class Eq(p: Term, q: Term) extends AtomicFormula{
   val freeVars: Set[Var] = p.freeVars union q.freeVars
   val pred: Pred = BinRel("=")
   val params = List(p,q)
+	override def toString = p.toString + "=" + q.toString
   }
   
 implicit def eqFmla(pq: Eq) : AtomFormula = AtomFormula(BinRel("="), List(pq.p, pq.q))

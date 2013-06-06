@@ -1,20 +1,23 @@
 
-# Paradoxes and  Foundations #
+# Paradoxes and  Foundations
 
 Formally, in set theory a function is just a set, and its application to an element is given by a formula. However, both during translation and for efficient use of FOL theorem proving, we would like to treat functions like functions of predicate calculus. We have a similar ambiguity regarding properties to be treated as sets/classes or as predicates, but the function case is more important as not much is lost in treating properties as sets/classes only.
 
+
 We explore here the various issues and foundations that protect from these. We fix foundations that protect us from paradox at the cost of a loss of information. However, enough meta-logic should be preserved to translate to Set theory (in First Order Logic) or Higher Order Logic to the extent that it is safe to do so. The meta-logic should also determine, if it is possible, translation to a full set of FOL axioms or to second-order arithmetic.
+
 
 First we turn to a paradox.
 
-## Liberal foundations ##
+# Liberal foundations
 
-Assume that
+Assume that* We can treat functions as terms, and so apply functions to functions. 
 
-- We can treat functions as terms, and so apply functions to functions. 
-- Functions are everywhere defined (perhaps by arbitrarily extending them).
-- A function defined on a class of terms can be extended to all terms.
-- The degree of a function gives a function to non-negative integers (with value 0 for non-functions).
+* Functions are everywhere defined (perhaps by arbitrarily extending them).
+
+* A function defined on a class of terms can be extended to all terms.
+
+*The degree of a function gives a function to non-negative integers (with value 0 for non-functions).
 - Any formula that satisfies the conditions for giving a function gives a function.
  
 Functions have associated to them degrees, so we can regard terms as functions of degree $0$, so everything is a function. Introducing a few constants, we can replace predicates and sets by (Boolean) functions.
