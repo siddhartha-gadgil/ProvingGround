@@ -10,7 +10,7 @@ object HoTT{
   }
   
   /** A HoTT type with objects of this type having scala type A*/
-  trait Typ[A] extends SubTypOf[A]{
+  trait Typ[A] extends SubTypOf[A] with Expression{
     type typ = A
     
     def ->[B](codom: Typ[B]) = FuncTyp(this, codom)
@@ -24,9 +24,11 @@ object HoTT{
     def ::(s: SymVar) = TypedVar(s, this)
   }
   
-  case class SymVar(sym: Symbol) extends Expression{
+  trait VarExpression extends Expression{
     def -> (that: Expression) = Mapping(this, that)
   }
+  
+  case class SymVar(sym: Symbol) extends VarExpression
   
   implicit def symVar(sym: Symbol) = SymVar(sym)
   
@@ -46,7 +48,7 @@ object HoTT{
   
   case class Application(f: Expression, t: Expression) extends Expression  
   
-  case class Mapping(s: SymVar, result: Expression) extends Expression
+  case class Mapping(s: VarExpression, result: Expression) extends Expression
   
   case class IntExpr(value: Long) extends Expression
   
@@ -54,14 +56,12 @@ object HoTT{
   
   case class RealExpr(value: Double) extends Expression
   
-  implicit def realExpr(value: Double) = RealExpr(value)
+  implicit def realExpr(value: Double) = RealExpr(value)  
   
-  val test = 'x + 3
-  
-  case class TypedVar[A](s: SymVar, override val ty: Typ[A]) extends Obj[A](ty)
+  case class TypedVar[A](sym: SymVar, override val ty: Typ[A]) extends Obj[A](ty) with VarExpression
   
   /** An object with a specified HoTT type */
-  class Obj[A](val ty: Typ[A])
+  class Obj[A](val ty: Typ[A]) extends Expression
   
   /** These are those with verified types */
   sealed class VerifiedObj[A](ty: Typ[A]) extends Obj[A](ty)

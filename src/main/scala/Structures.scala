@@ -21,7 +21,7 @@ object Structures{
   
   /** Returns fixed point of a function. Loops forever if there is none */
   def fixedPoint[A](x: A, f: A=>A): A = if (f(x)==x) x else fixedPoint(f(x), f)
-
+ 
   /** Returns all maps from S to T as PartialFunctions */
   def allMaps[A,B](S: Set[A], T: Set[B]): Set[PartialFunction[A, B]] = {
     if (S.isEmpty) Set((Map.empty: PartialFunction[A,B])) else {

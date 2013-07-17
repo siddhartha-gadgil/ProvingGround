@@ -1,5 +1,5 @@
 package provingGround
-import scala.util.control.Exception._
+import scala.util._
 
 /** Converts prose numbers to Integers without checking for bad cases */
 object TextToInt{
@@ -14,7 +14,7 @@ private val wordNumber: Map[String, Long] = Map("one" -> 1,
   "eight" -> 8,
   "nine" -> 9,
   "ten" -> 10,
-  "eleven" -> 11,
+  "eleven" -> 11, 
   "twelve" -> 12,
   "thirteen" -> 13,
   "fourteen" -> 14,
@@ -41,11 +41,11 @@ private val wordNumber: Map[String, Long] = Map("one" -> 1,
   )
 
 	object Long {
-  	def unapply(s : String) : Option[Long] = allCatch.opt(s.toLong) 
+  	def unapply(s : String) : Option[Long] = Try(s.toLong).toOption 
   	}
   
 	object Int {
-		def unapply(s : String) : Option[Long] = allCatch.opt(s.toLong) 
+		def unapply(s : String) : Option[Int] = Try(s.toInt).toOption 
   		}
 
   /** Returns a number for a single word*/

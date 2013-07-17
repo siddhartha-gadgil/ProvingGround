@@ -3,12 +3,12 @@ package provingGround
 import akka.actor._
 
 object Aware{
-  
+   
 
 	trait Task{
 	  val goal: Task = this match{
 	    case TaskUsing(task, _) => task.goal
-	    case BoundedTask(task, _) => task.goal
+	    case BoundedTask(task, _) => task.goal 
 	    case t: Task => t
 	  }
 	}

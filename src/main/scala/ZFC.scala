@@ -6,7 +6,7 @@ import provingGround.Theory._
 
 object ZFC{
   
-  trait AbsSet extends Const{
+  trait AbsSet extends Const{ 
     def contains(that: AbsSet): Formula = BinRel("in")(this, that)
     def <::(that: AbsSet): Formula = BinRel("in")(that, this)
     }

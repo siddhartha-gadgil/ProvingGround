@@ -1,5 +1,5 @@
 package provingGround 
-
+ 
 import scala.language.implicitConversions 
 
 /** Defines predicate calculus and several associated methods, including:
@@ -8,7 +8,7 @@ import scala.language.implicitConversions
   *
   * $ - substitutions to be used by an evolver
   */
- 
+   
 object Logic {
 
 private def stringFn(name:String, params: List[String])={
@@ -18,8 +18,8 @@ private def stringFn(name:String, params: List[String])={
   }
 
 /** Logical expressions */
-trait Expression{
-  /** Free variables in an expression */
+trait Expression{ 
+  /** Free variables in an expression */ 
   def freeVars: Set[Var]
   }
 
