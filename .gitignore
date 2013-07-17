@@ -33,3 +33,7 @@ doc/*.synctex.gz
 src/main/scala/proving*
 
 *~
+
+.cache
+
+
