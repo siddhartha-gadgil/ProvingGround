@@ -161,15 +161,34 @@ object HoTT{
       val typ: Typ
     }
     
+    case class Univ(n: Int) extends Typ{
+      override val typ = Univ(n+1)
+    }
+    
+    val SetSort = Univ(0)
+    
+    class NextUniv(u: Typ) extends Universe
+    
+    
+    trait Universe extends Typ{
+      val myself = this
+      trait Obj extends super.Obj with Typ{   
+        override val typ: Typ = myself
+       }
+      
+      
+    }
+    
+    
     trait Typ extends AbsObj{
-      val typ = SetSort
+      val typ: Typ  = new NextUniv(this)
       
       val self = this
       
       def -->(that: Typ) = FuncTyp(this, that)
       
       trait Obj extends AbsObj{
-        final val typ = self
+        val typ = self
       }
       
       case class TypedVar(sym: Symbol)
@@ -206,11 +225,7 @@ object HoTT{
     }
     
     
-    case class Univ(n: Int) extends Typ{
-      override val typ = Univ(n+1)
-    }
-    
-    val SetSort = Univ(0)
+ 
     
     case class FuncTyp(dom: Typ, codom: Typ) extends Typ{
       case class Appl(f: Obj, arg: dom.Obj) extends codom.Obj
