@@ -3,7 +3,7 @@ package provingGround
 import scala.language.implicitConversions 
 
 object HoTT{
-  
+  object Scala{
   /** A universe of types, with underlying scala types subtypes of A */
   trait SubTypOf[+A]{ 
     type typ <: A
@@ -133,7 +133,7 @@ object HoTT{
   
   case object Nat extends Typ[Long]
   
-  case object one extends VerifiedValueObj[Long](Nat){
+  case object zero extends VerifiedValueObj[Long](Nat){
     val value: Long = 1
   }
   
@@ -154,5 +154,130 @@ object HoTT{
   def reflFamily[A](base: Typ[A]) = TypFamily(base, (a: A) => IdFamily(base)((a,a)))
   
   def refl[A, Boolean](base: Typ[A]) = DepFunc((a: A) => Refl(base, a), reflFamily(base))
+  }
   
+  object Pure{    
+    trait AbsObj{
+      val typ: Typ
+    }
+    
+    trait Typ extends AbsObj{
+      val typ = SetSort
+      
+      val self = this
+      
+      def -->(that: Typ) = FuncTyp(this, that)
+      
+      trait Obj extends AbsObj{
+        final val typ = self
+      }
+      
+      case class TypedVar(sym: Symbol)
+      
+      def ::(sym: Symbol)= TypedVar(sym)
+      
+      def ::(maybe: Some[AbsObj]) = maybe match {
+        case Some(obj) if (obj.typ == self) => Some(obj)
+        case _ => None
+      }
+      
+    }
+    
+    implicit class IndexTyp(val tp: Typ){
+      case class DepFuncTyp(section: tp.Obj => Typ) extends Typ{
+        case class Index(arg: tp.Obj){
+          val codomain = section(arg)
+          case class Dappl(f: Obj) extends codomain.Obj
+          
+          case class DepPair(value: codomain.Obj) extends Typ
+        }
+        
+        trait Obj extends super.Obj{
+          def apply(arg: tp.Obj) = {
+            val domain = Index(arg)
+            (domain.Dappl)(this)
+            }
+          
+          def apply(maybe: Option[AbsObj]): Option[AbsObj] = maybe match {
+            case Some(arg) if arg.typ == tp => val domain = Index(arg.asInstanceOf[tp.Obj]); Some((domain.Dappl)(this))
+          }
+        }
+      }            
+    }
+    
+    
+    case class Univ(n: Int) extends Typ{
+      override val typ = Univ(n+1)
+    }
+    
+    val SetSort = Univ(0)
+    
+    case class FuncTyp(dom: Typ, codom: Typ) extends Typ{
+      case class Appl(f: Obj, arg: dom.Obj) extends codom.Obj
+      
+      
+      trait Obj extends super.Obj{
+        def apply(arg: dom.Obj): codom.Obj  =  Appl(this, arg)
+        
+        def apply(maybe: Option[AbsObj]): Option[codom.Obj] = maybe match {
+          case Some(obj) if (obj.typ == dom) =>  Some(Appl(this, obj.asInstanceOf[dom.Obj]))
+        } 
+      }
+      
+      case class Lambda(defn: dom.Obj => codom.Obj) extends Obj
+       
+    }
+    
+    val Fn = (Nat --> Nat)
+    
+    case object s extends Fn.Obj
+    
+    val t = s(Some(zero))
+    
+    val id = Fn.Lambda((n: Fn.dom.Obj) => n.asInstanceOf[Fn.codom.Obj])
+   
+    
+    case object ZeroTyp extends Typ
+    
+    case object OneTyp extends Typ
+    
+    case object star extends OneTyp.Obj
+    
+    trait ConstructorDomain{
+      val dom: Typ => Typ 
+      
+      def apply(that: Typ) = dom(that)
+    }
+    
+    
+    case class ConstContrDom(typ: Typ) extends ConstructorDomain{
+      val dom = (that: Typ) => typ
+    }
+    
+    case class ToThis(domdom: ConstructorDomain) extends ConstructorDomain{
+      val dom = (that: Typ) =>  domdom.dom(that) --> that
+    }
+    
+    case class InductiveTyp(constructors: Map[Symbol, ConstructorDomain]) extends Typ{
+      val constrs = constructors map (_._2)
+      
+      def rec(that: Typ) = {}
+    }
+    
+    case object Nat extends Typ{
+      case class To(that: Typ){
+        val fn = FuncTyp(Nat, that)
+        val tgt = Nat --> (that --> that)
+        case class rec(base: that.Obj, step: tgt.Obj) extends fn.Obj 
+      }
+    }
+    
+    case object zero extends Nat.Obj 
+    
+    case class succ(n: Nat.Obj) extends Nat.Obj
+    
+    val one = succ(zero)
+ 
+    
+  }
 }
