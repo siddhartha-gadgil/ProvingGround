@@ -156,24 +156,32 @@ object HoTT{
   def refl[A, Boolean](base: Typ[A]) = DepFunc((a: A) => Refl(base, a), reflFamily(base))
   }
   
+  
+  
+  
+  
+  
+  
   object Pure{    
     trait AbsObj{
       val typ: Typ
+      
+      val freeVars: Set[Variable]
+      
+      def as(that: Typ) = {assert (typ==that); this.asInstanceOf[that.Obj]}
     }
-    
-    case class Univ(n: Int) extends Typ{
-      override val typ = Univ(n+1)
-    }
-    
-    val SetSort = Univ(0)
-    
+       
     class NextUniv(u: Typ) extends Universe
     
+    
+    trait Variable
     
     trait Universe extends Typ{
       val myself = this
       trait Obj extends super.Obj with Typ{   
         override val typ: Typ = myself
+        
+        override val freeVars: Set[Variable] = Set.empty
        }
       
       
@@ -181,6 +189,8 @@ object HoTT{
     
     
     trait Typ extends AbsObj{
+      val freeVars: Set[Variable] = Set.empty
+      
       val typ: Typ  = new NextUniv(this)
       
       val self = this
@@ -189,37 +199,63 @@ object HoTT{
       
       trait Obj extends AbsObj{
         val typ = self
+        
+        val freeVars: Set[Variable] = self.freeVars
+        
+        val id = Identity(this, this)
+        
+        case object refl extends id.Obj
       }
       
-      case class TypedVar(sym: Symbol)
-      
-      def ::(sym: Symbol)= TypedVar(sym)
-      
-      def ::(maybe: Some[AbsObj]) = maybe match {
-        case Some(obj) if (obj.typ == self) => Some(obj)
-        case _ => None
+      case class TypedVar(sym: Symbol) extends Obj with Variable{
+        override val freeVars: Set[Variable] = Set(this)
       }
+      
+      implicit def ::(sym: Symbol)= TypedVar(sym)
+      
+      def ::(obj: AbsObj) = obj.as(this)
+      
+      case class Identity(left: Obj, right: Obj) extends Typ{
+        override val freeVars: Set[Variable] = self.freeVars
+      }
+      
+      case class lambda(x: Variable)(result: Obj) extends Obj{
+        override val freeVars = result.freeVars - x
+      }      
       
     }
+    
+    implicit def me(arg: AbsObj): arg.typ.Obj = arg as arg.typ
+    
+    val i = Nat.lambda('x :: Nat)('x)
+    
+    def lambda(x: Variable)(res: AbsObj) = {
+      val tp = res.typ
+      tp.lambda(x)(res as tp)
+    }
+    
+    def id(typ: Typ)(left: AbsObj, right: AbsObj) = typ.Identity(left as typ, right as typ) 
     
     implicit class IndexTyp(val tp: Typ){
       case class DepFuncTyp(section: tp.Obj => Typ) extends Typ{
         case class Index(arg: tp.Obj){
           val codomain = section(arg)
-          case class Dappl(f: Obj) extends codomain.Obj
+          case class Dappl(f: Obj) extends codomain.Obj{
+            override val freeVars = f.freeVars ++ arg.freeVars
+          }
           
           case class DepPair(value: codomain.Obj) extends Typ
         }
         
         trait Obj extends super.Obj{
-          def apply(arg: tp.Obj) = {
+          def act(arg: tp.Obj) = {
             val domain = Index(arg)
             (domain.Dappl)(this)
             }
           
-          def apply(maybe: Option[AbsObj]): Option[AbsObj] = maybe match {
-            case Some(arg) if arg.typ == tp => val domain = Index(arg.asInstanceOf[tp.Obj]); Some((domain.Dappl)(this))
-          }
+          def apply(arg:tp.Obj) = act(arg)
+          
+          def apply(arg: AbsObj) = act(arg.as(tp))
         }
       }            
     }
@@ -227,30 +263,35 @@ object HoTT{
     
  
     
-    case class FuncTyp(dom: Typ, codom: Typ) extends Typ{
-      case class Appl(f: Obj, arg: dom.Obj) extends codom.Obj
+    case class FuncTyp(dom: Typ, codom: Typ) extends Funcs
+    
+    case class TypFamily(dom: Typ, codom: Universe) extends Funcs
+    
+    trait Funcs extends Typ{
+      val dom: Typ
+      val codom: Typ
+      
+      override val freeVars = dom.freeVars ++ codom.freeVars
+      
+      case class Appl(f: Obj, arg: dom.Obj) extends codom.Obj{
+        override val freeVars = arg.freeVars ++ f.freeVars
+      }
       
       
       trait Obj extends super.Obj{
-        def apply(arg: dom.Obj): codom.Obj  =  Appl(this, arg)
+        def act(arg: dom.Obj) : codom.Obj = Appl(this, arg)
         
-        def apply(maybe: Option[AbsObj]): Option[codom.Obj] = maybe match {
-          case Some(obj) if (obj.typ == dom) =>  Some(Appl(this, obj.asInstanceOf[dom.Obj]))
-        } 
+        def apply(arg: dom.Obj): codom.Obj  =  act(arg)
+        
+        def apply(arg: AbsObj): codom.Obj = act(arg.as(dom))
+        
+        case class Defn(defn: dom.Obj => codom.Obj) extends Obj{ 
+          override def act(arg: dom.Obj) = defn(arg)
+        }
       }
-      
-      case class Lambda(defn: dom.Obj => codom.Obj) extends Obj
        
     }
-    
-    val Fn = (Nat --> Nat)
-    
-    case object s extends Fn.Obj
-    
-    val t = s(Some(zero))
-    
-    val id = Fn.Lambda((n: Fn.dom.Obj) => n.asInstanceOf[Fn.codom.Obj])
-   
+     
     
     case object ZeroTyp extends Typ
     
@@ -279,11 +320,20 @@ object HoTT{
       def rec(that: Typ) = {}
     }
     
+
+    
     case object Nat extends Typ{
-      case class To(that: Typ){
-        val fn = FuncTyp(Nat, that)
+      case class Rec(that: Typ){
+        val fnTyp = FuncTyp(Nat, that)
+        type domTyp = fnTyp.dom.Obj
         val tgt = Nat --> (that --> that)
-        case class rec(base: that.Obj, step: tgt.Obj) extends fn.Obj 
+        case class rec(base: that.Obj, step: tgt.Obj) extends fnTyp.Obj{
+          val atZero = this(zero.as(fnTyp.dom)).as(that)
+          val baseIdtyp = that.Identity(atZero, base)
+          case object baseId extends baseIdtyp.Obj
+        } 
+        
+        
       }
     }
     
@@ -293,6 +343,7 @@ object HoTT{
     
     val one = succ(zero)
  
+    def mk(a: Typ, b: Typ): a.Obj => b.Obj = {assert(a==b); (x:a.Obj) => x.asInstanceOf[b.Obj]}
     
   }
 }
