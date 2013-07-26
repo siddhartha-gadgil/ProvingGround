@@ -43,32 +43,66 @@ object HoTT{
 
     trait ElemTyp extends Typ[AbsObj]{
     	def asU(obj: Obj): AbsObj = obj
+    	
+    	val typ: Typ[AbsObj] = FirstUniv
+
+			override def mkelem(ob: Obj): AbsObj = ob
     }
 
 
-    trait Univ[U <: WithFormal[U] with AbsObj] extends Typ[Typ[U]]{
+     
+    
+    object FirstUniv extends Typ[Typ[AbsObj]]{
+      case class Tp(tp: Typ[AbsObj]) extends Obj{
+        override def elem: Typ[AbsObj] = tp
+      }
+      
+			case class TypVar(sym: Symbol) extends TypedVarTrait with Typ[AbsObj]{
+				override val freeVars: Set[Variable] = Set(this)
+				override val elem: Typ[AbsObj] = this
+			}
 
+      lazy val typ = NextUniv[Typ[AbsObj]]
+			
+			implicit override def ::(sym: Symbol): TypedVarTrait = TypVar(sym)
     }
     
-		case class FormalTyp[U <: WithFormal[U] with AbsObj]() extends Typ[U] 
+	case class NextUniv[U <: WithFormal[U] with AbsObj]() extends Typ[Typ[U]]{
+      case class Tp(tp: Typ[U]) extends Obj{
+        override def elem: Typ[U] = tp
+      }
 
+			case class TypVar(sym: Symbol) extends TypedVarTrait with Typ[U]{
+				override val freeVars: Set[Variable] = Set(this)
+				override val elem: Typ[U] = this
+			}
+
+			implicit override def ::(sym: Symbol): TypedVarTrait = TypVar(sym)
+
+			lazy val typ = NextUniv[Typ[U]] 
+    }
+    
+	case class FormalTyp[U <: WithFormal[U] with AbsObj]() extends Typ[U]{
+			lazy val typ = NextUniv[U]
+		} 
     
     trait Typ[+U <: WithFormal[U] with AbsObj] extends AbsObj with WithFormal[Typ[U]]{
       val freeVars: Set[Variable] = Set.empty
       
       def formalElem : Typ[U] = FormalTyp[U]()
 
-      lazy val typ: Typ[AbsObj]  = this
+      val typ: Typ[AbsObj]   
       
       val self = this
-      
-      def asU(obj: Obj): U
+     
       
       def -->[V <: WithFormal[V] with AbsObj](that: Typ[V]) = FuncTyp(this, that)		 
                        
-      
+			def mkelem(ob: Obj) : U = formalElem[U]      
+
+
       trait Obj extends AbsObj with Base[U]{
-        def elem : U = formalElem[U]
+        def elem : U = mkelem(this)
         
         lazy val typ = self
         
@@ -87,19 +121,24 @@ object HoTT{
 		 
       }
       
-      case class TypedVar(sym: Symbol) extends Obj with Variable{
+      case class TypedVar(sym: Symbol) extends TypedVarTrait
+
+
+			trait TypedVarTrait extends Obj with Variable{
         override val freeVars: Set[Variable] = Set(this)
         
         def --> (result: AbsObj) = {val tp = result.typ; tp.lambda(this)(result as tp)}
       }
-      
-      implicit def ::(sym: Symbol)= TypedVar(sym)
+
+      implicit def ::(sym: Symbol): TypedVarTrait = TypedVar(sym)
       
       def :::(obj: AbsObj) = obj.as(this)
       
       def :::(tryobj: Try[AbsObj])=Try(tryobj.get as this)
       
-      case class Identity(left: Obj, right: Obj) extends Typ[U]{
+			def ::(obj: AbsObj) = obj.as(this).elem
+
+      case class Identity(left: Obj, right: Obj) extends ElemTyp{
         override val freeVars: Set[Variable] = self.freeVars
       }
       
@@ -203,7 +242,6 @@ object HoTT{
        
       case class Defn(defn: dom.Obj => codom.Obj) extends FunctionalObj{ 
           def act(arg: dom.Obj) = defn(arg)
-        
       }
        
     }
