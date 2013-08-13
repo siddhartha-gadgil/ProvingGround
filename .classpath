@@ -62,7 +62,7 @@
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/com.h2database/h2/1.3.168/jars/h2.jar" kind="lib"></classpathentry>
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/tyrex/tyrex/1.0.1/jars/tyrex.jar" kind="lib"></classpathentry>
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/play/anorm_2.10/2.1.0/jars/anorm_2.10.jar" kind="lib"></classpathentry>
-  <classpathentry path="/home/gadgil/bin/play-2.1.0/framework/../repository/cache/org.scala-lang/scala-swing/jars/scala-swing-2.10.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/gadgil/bin/play-2.1.0/framework/../repository/cache/org.scala-lang/scala-swing/jars/scala-swing-2.10.2.jar" kind="lib"></classpathentry>
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/play/play-test_2.10/2.1.0/jars/play-test_2.10.jar" kind="lib"></classpathentry>
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/junit/junit-dep/4.10/jars/junit-dep.jar" kind="lib"></classpathentry>
   <classpathentry path="/home/gadgil/bin/play-2.1.0/repository/local/org.hamcrest/hamcrest-core/1.1/jars/hamcrest-core.jar" kind="lib"></classpathentry>

@@ -3,6 +3,7 @@ package provingGround
 import scala.language.implicitConversions 
 import scala.util._
 
+
 object HoTT{
   
    
@@ -21,7 +22,7 @@ object HoTT{
     
     implicit def baseElem[A](b: Elem[A]): A = b.elem
     
-    trait Variable
+    trait Variable extends AbsObj
     
 	
  	   
@@ -38,7 +39,7 @@ object HoTT{
 
 			def -->(that: FormalTyp) = FuncTyp(this, that)
 
-			case class TypedVar(sym: Symbol) extends FormalObj with Variable
+			case class TypedVar(sym: Symbol) extends FormalObj with VarObj
 
 			implicit def asObj(sym: Symbol) : FormalObj = TypedVar(sym)
 
@@ -46,13 +47,35 @@ object HoTT{
 
 			trait FormalObj extends Obj{
 				def elem : AbsObj = this
+				
+				def -->:(x: Variable) = LambdaObj(x, this)
+
+				def ->:(x: Variable) = asLambda(x)
+
+				def asLambda(x: Variable) = {
+					val dom = x.typ
+					val funcTyp = FuncTyp(dom, typ)
+					x match {
+						case varx: funcTyp.dom.VarObj => funcTyp.Lambda(varx, this as funcTyp.codom) 
+						}
+					}
 				}
 
-			case class lambda(x: Variable)(result: Obj) extends FormalObj{
-        override val freeVars = result.freeVars - x
-      }
+//			case class lambda(x: Variable)(result: Obj) extends FormalObj{
+//					override val freeVars = result.freeVars - x
+//			}
+			
+			case class LambdaObj(x: Variable, result: Obj) extends FormalObj{
+			  override val freeVars = result.freeVars - x
+			}
+
 
     }
+
+
+//		def lambda(x: Variable)(res: AbsObj) = res.typ match {
+//				case ttp: FormalTyp => ttp.lambda(x)(res as ttp)
+//				}
 
 
 		trait Univ[U<: AbsObj] extends Typ[Typ[U]]{
@@ -60,9 +83,19 @@ object HoTT{
 				def elem: Typ[U] = this
 
 				override val freeVars: Set[Variable] = Set.empty
+
+				def ->:(x: Variable) = asLambda(x)
+
+				def asLambda(x: Variable) = {
+					val dom = x.typ
+					val funcTyp = TypFamily(dom, typ.asInstanceOf[Univ[U]])
+					x match {
+						case varx: funcTyp.dom.VarObj => funcTyp.Lambda(varx, this as funcTyp.codom) 
+						}
+					}
 				}
 
-			case class TypedVar(sym: Symbol) extends TypObj with Variable
+			case class TypedVar(sym: Symbol) extends TypObj with VarObj
 
 			def ::(sym: Symbol) =TypedVar(sym)
 
@@ -87,7 +120,8 @@ object HoTT{
       
       val self = this
 
-
+      trait VarObj extends Obj with Variable
+      
       trait Obj extends AbsObj with Elem[U]{
         def elem : U 
         
@@ -106,14 +140,7 @@ object HoTT{
         def =:=(that:AbsObj) = eql(typ)(this, that)		 
       }
       
-    
-
-
-			trait TypedVarTrait extends Obj with Variable{
-        override val freeVars: Set[Variable] = Set(this)
-        
-     //   def --> (result: AbsObj) = {val tp = result.typ; tp.lambda(this)(result as tp)}
-      }
+   
       
       def :::(obj: AbsObj) = obj.as(this)
       
@@ -130,19 +157,24 @@ object HoTT{
     //  }      
       
     }
-    
+
+	case class Formal[T](implicit tag: scala.reflect.runtime.universe.TypeTag[T]) extends FormalTyp{
+		implicit class AsFormalObj(ob: T) extends FormalObj
+		
+		def ::(t: T) = AsFormalObj(t)
+		} 
+
+	
     implicit def me(arg: AbsObj): arg.typ.Obj = arg as arg.typ
     
-    val i = Nat.lambda('x :: Nat)('x)
+ //   val i = Nat.lambda('x :: Nat)('x)
     
-  //  def lambda(x: Variable)(res: AbsObj) = {
-  //    val tp = res.typ
-  //    tp.lambda(x)(res as tp)
-  //  }
     
     def eql(typ: Typ[AbsObj])(left: AbsObj, right: AbsObj) = typ.Identity(left as typ, right as typ) 
     
-        
+    3 :: Formal[Long]
+    
+	
     case class IndexTyp(tp: Typ[AbsObj]){
       case class ForSection(section: tp.Obj => FormalTyp) extends FormalTyp{
         case class Index(arg: tp.Obj){
@@ -196,7 +228,7 @@ object HoTT{
       }
  
     
-		case class FuncTyp[U<: AbsObj](dom: Typ[U], codom: FormalTyp) extends FormalTyp{
+	case class FuncTyp[U<: AbsObj](dom: Typ[U], codom: FormalTyp) extends FormalTyp{
 	    case class Appl(f: Obj, arg: dom.Obj) extends codom.FormalObj{
   	    override val freeVars = arg.freeVars ++ f.freeVars
         }     
@@ -224,9 +256,45 @@ object HoTT{
       case class Defn(defn: dom.Obj => codom.Obj) extends FunctionalObj{ 
           def act(arg: dom.Obj) = defn(arg)
       }
+      
+      case class Lambda(variable: dom.VarObj, value: codom.Obj) extends FormalObj
        
     }
      
+
+	case class TypFamily[U<: AbsObj, V<: AbsObj](dom: Typ[U], codom: Univ[V]) extends FormalTyp{
+	    case class Appl(f: Obj, arg: dom.Obj) extends codom.TypObj{
+  	    override val freeVars = arg.freeVars ++ f.freeVars
+        }     
+      
+      override val freeVars = dom.freeVars ++ codom.freeVars
+     
+      
+      trait FormalFunction extends FunctionalObj{
+        def act(arg: dom.Obj) : codom.Obj = Appl(this, arg)
+      }
+      
+
+      trait FunctionalObj extends FormalObj{
+        def act(arg: dom.Obj) : codom.Obj  
+        
+        def apply(arg: dom.Obj): codom.Obj  =  act(arg)
+        
+        def apply(arg: AbsObj): codom.Obj = act(arg.as(dom))
+        
+        def apply(tryarg: Try[AbsObj]) = Try(act(tryarg.get as dom))
+        
+       
+      }
+       
+      case class Defn(defn: dom.Obj => codom.Obj) extends FunctionalObj{ 
+          def act(arg: dom.Obj) = defn(arg)
+      }
+       
+      case class Lambda(variable: dom.VarObj, value: codom.Obj) extends FormalObj
+    }
+
+
   //  val idtest = ('n :: Nat) --> ('n :: Nat)
     
     
