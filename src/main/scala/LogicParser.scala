@@ -18,5 +18,8 @@ object LogicParser extends JavaTokenParsers{
 	def recTerm: Parser[Term] = sym~"("~repsep(term, ",")~")" ^^ {case p~"("~ts~")" => FuncSym(p, ts.length)(ts)}
 	def term: Parser[Term] = baseTerm | baseTerm~binOpSym~term ^^ {case a~m~b => BinOp(m)(a,b)}
 	def intConst: Parser[IntConst] = wholeNumber ^^ {case n => IntConst(n.toInt)}
-}   
-
+	 
+	
+	def isWord(word: String): Parser[String] = literal(word)
+	def isSomeWord(words: List[String]) = words map (literal(_)) reduce (_ | _)
+	}

@@ -45,9 +45,9 @@ object TheoryTypes{
 	  
 	  def equality: Parser[Term] = noRelTerm~"="~term ^^ {case lhs~"="~rhs => Equality(lhs, rhs)}
 	  
-	  def subScript: Parser[Term] = simpleTerm~"_"~term ^^ {case lhs~"_"~rhs => SubScript(lhs, rhs)}
+	  def subScript: Parser[Term] = simpleTerm~"_"~simpleTerm ^^ {case lhs~"_"~rhs => SubScript(lhs, rhs)}
 	  
-	  def supScript: Parser[Term] = simpleTerm~"^"~term ^^ {case lhs~"^"~rhs => SupScript(lhs, rhs)}
+	  def supScript: Parser[Term] = simpleTerm~"^"~simpleTerm ^^ {case lhs~"^"~rhs => SupScript(lhs, rhs)}
 	  
 	  def binOpTerm(op: String): Parser[Term] = noOpTerm~literal(op)~term ^^{case lhs~(_: String)~rhs => BinOpTerm(op, lhs, rhs)}
 	  
