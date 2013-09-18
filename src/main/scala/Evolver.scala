@@ -6,6 +6,15 @@ import annotation.tailrec
 import scala.util._
 import scala.language.postfixOps
 
+import akka.actor._
+import akka.pattern.ask
+import scala.concurrent._
+import scala.concurrent.duration._
+
+import provingGround.HoTT._
+
+import ExecutionContext.Implicits.global
+
 /** Generic Memoised Evolver built from base by adding spans and weights */
 object StackedEvolver{
   /** Function for evolving from given dynamics */
@@ -250,7 +259,213 @@ object GeneticEvolver{
     
     def pruneByNumber(weight: A => Int, number: Int) = new MarkovEvolver(base, dynaBase andThen Markov.pruneNumber(weight, number), core)
   }
-}  
+}
+
+
+
+
+
+object Evolver{
+    trait Inbox[A] extends Outbox[A]{
+        def get(n: Int): Set[A]
+        def pull(n: Int): Set[A]
+        
+        
+        
+        def getAll: Set[A]
+        def pullAll: Set[A]
+    }
+    
+    class ListInbox[A] extends Inbox[A]{
+        private var mem: List[A] = List()
+        def get(n: Int) = (mem take n).toSet
+        def pull(n: Int) = {
+            val (head, tail) = mem splitAt n
+            mem = tail
+            head.toSet
+        }
+        
+       
+        def push = (a: A) => {mem = a:: mem; }
+        
+        def getAll = mem.toSet
+        def pullAll = {val head = mem; mem = List(); head.toSet}
+    }
+    
+   trait Outbox[A]{
+    def push: A => Unit
+    
+    def pushAll(s: Traversable[A]) = s foreach (push(_))
+    
+    def pushTrav: PartialFunction[Traversable[A], Unit] = {case s : Traversable[A] => pushAll(s)}
+    
+    def bind(f : Future[Traversable[A]]) = f.onSuccess(pushTrav)
+   }
+   
+   case class SimpleOutbox[A](push: A => Unit) extends Outbox[A]
+    
+   case class VanishBox[A]() extends Outbox[A]{
+     def push: A => Unit = {_ => }
+   }
+   
+   case object EvolverTyp extends FormalTyp
+   
+   class Gen(dyn: => (Set[AbsObj] => Set[AbsObj]), 		   		 
+		   		state:  => Set[AbsObj] = Set.empty, 
+		   		mapping:  AbsObj => AbsObj = {(x : AbsObj) => x},
+		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends EvolverTyp.FormalObj{
+     def nextState = dyn(state)
+     def nextGen = new Gen(dyn, nextState, mapping, outbox)
+     def nextSet = nextState map (mapping(_))
+   } 
+   
+   trait Evolver[A]{
+       val inbox: Inbox[A]
+       
+       val outbox: Outbox[A]
+       
+       def generate(S: Set[A]): Set[A]
+       
+       def purge(S: Set[A]): Set[A]
+       
+       private def evolveStep(S: Set[A]) = purge(generate(S) union inbox.pullAll)
+       
+       @tailrec final def getNow(S: Set[A], n: Int): Set[A] = if (n<1) S else getNow(evolveStep(S), n-1)
+       
+       def get(S: Set[A], n: Int) = Future(getNow(S, n))
+       
+       @tailrec final def seekNowWithState(S: Set[A], p: A => Boolean, n: Int): (Option[A], Set[A]) = {
+         if (!(S find p).isEmpty) (S find p, S) 
+         else if (n<1) (None, S)
+         else seekNowWithState(evolveStep(S), p, n-1)
+       }
+       
+       def seekNow(S: Set[A], p: A=> Boolean, n: Int) = seekNowWithState(S, p, n)._1
+       
+       def seek(S: Set[A], p: A => Boolean, n: Int) = Future(seekNow(S, p, n)) 
+   }
+   
+   
+   def fromGen(gen: Gen) = Set((gen.nextGen: AbsObj)) union (gen.nextSet)
+   
+   def expandGen(obj: AbsObj) = obj match {
+     case gen: Gen => fromGen(gen)
+     case ob: AbsObj => Set(ob)
+   }
+   
+   class Dyn[A](step: Set[A] => Set[A]) extends Function1[Set[A], Set[A]]{
+     def apply(s: Set[A]) = step(s)
+     
+     def union(thatStep: Set[A] => Set[A]) = new Dyn((s: Set[A])=> step(s) union thatStep(s))
+     
+     def ++(thatStep: Set[A] => Set[A]) = union(thatStep)
+     
+     def andThen(thatStep: Set[A] => Set[A]) = new Dyn((s: Set[A]) => thatStep(step(s)))
+     
+     def ||(thatStep: Set[A] => Set[A]) = andThen(thatStep)
+     
+     def this(pf: PartialFunction[A, A]) = this((s: Set[A])=> s collect pf)         
+   }
+   
+   object Dyn{
+     def id[A] = new Dyn((s: Set[A]) => s)
+     
+     def lift[A](f: A => A) = new Dyn((s: Set[A]) => (s map f))
+     
+     def plift[A](pf: PartialFunction[A,A]) = new Dyn((s: Set[A]) => (s collect pf))
+     
+     def pairs[A](pairing: PartialFunction[(A, A), A]) = {
+       (s : Set[A]) => (for(x<- s; y<-s) yield (x,y)) collect pairing
+     }
+     
+     def triples[A](tripling: PartialFunction[(A, A, A), A]) = {
+       (s : Set[A]) => (for(x<- s; y<-s; z <-s) yield (x,y, z)) collect tripling
+     }
+   }
+   
+   
+   val run = java.lang.Runtime.getRuntime()
+   
+   def  freeMem = run.freeMemory()
+   
+   trait StatefulEvolver[A] extends Evolver[A]{
+     val init: Set[A]
+     
+     var state = init
+     
+     def getShift(n: Int) = get(state, n) map {x => {state = x ; x}}
+     
+     def seekShift(p: A => Boolean, n: Int) = Future(seekNowWithState(state, p, n)) map {x => {state = x._2 ; x._1}}
+   }
+   
+   
+   case class SeekMemo[A](set: Set[A], pred: A => Boolean, soln: A){
+     val problem = (set, pred)
+   }
+   
+   trait MemoEvolver[A] extends StatefulEvolver[A]{
+     private var memopad: Set[SeekMemo[A]] = Set.empty
+     
+     private def note(solution: SeekMemo[A]) = {memopad += solution}
+     
+     private def note(set: Set[A], p: A=> Boolean, soln: A) = {memopad += SeekMemo(set, p, soln)}
+     
+     def askNow(set: Set[A] = state, p: A => Boolean, n: Int): Option[A] = {
+       val fromMemo = (memopad find (_.problem == (set, p)) map (_.soln)) 
+       fromMemo orElse seekNow(set, p, n ).map (x => {note(set, p, x); x})
+     }
+     
+     def askNowShift(p: A => Boolean, n: Int): Option[A] = {
+       val fromMemo = (memopad find (_.problem == (state, p)) map (_.soln)) 
+       fromMemo orElse {val result = seekNowWithState(state, p, n); state = result._2; result._1 map (x => {note(state, p, x); x})}
+     }
+     
+     def ask(set: Set[A] = state, p: A => Boolean, n: Int, shift: Boolean = false) = Future(askNow(set, p, n))
+     
+     def askShift(p: A => Boolean, n: Int) = Future(askNowShift(p, n))
+   }
+   
+   case class Atom[A](atom: A)
+   
+   case class Trav[A](trav: Traversable[A])
+   
+   case class GetQuery[A](set: Set[A], n: Int)
+   
+   case class SeekQuery[A](set: Set[A], p: A=> Boolean, n: Int)
+   
+   trait EvolverActor[A] extends Evolver[A] with Actor{
+       val upstream: ActorRef
+       
+       def channel: Receive = {
+         case GetQuery(set, n) => sender ! get(set.asInstanceOf[Set[A]], n)
+         case SeekQuery(set, p, n) => sender ! seek(set.asInstanceOf[Set[A]], p, n)
+        		 	     
+         case Trav(trav: Traversable[A]) => inbox.pushAll(trav)
+         case Atom(atom: A) => inbox.push(atom)
+       }
+       
+       def receive = channel
+       
+       val outbox = SimpleOutbox((a: A) => upstream ! Atom(a))
+   }
+   
+   case class GetShiftQuery(n: Int)
+   
+   case class AskQuery[A](set: Set[A] =Set.empty, p: A => Boolean, n: Int)
+   
+   case class AskShiftQuery[A](p: Function1[A, Boolean], n: Int)
+   
+   trait StatefulEvolverActor[A] extends EvolverActor[A] with MemoEvolver[A]{
+     def asyncChannel : Receive = {
+       case GetShiftQuery(n) => sender ! getShift(n)
+       case AskQuery(set, p, n) => sender !  ask(set.asInstanceOf[Set[A]], p ,n)
+       case AskShiftQuery(p: Function1[A, Boolean], n: Int) => sender ! askShift(p , n)
+     }
+     
+     override def receive = channel orElse asyncChannel
+   }
+   
+}
 
 
 

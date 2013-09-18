@@ -41,7 +41,7 @@ object TheoryTypes{
   class ExpressionParser(binOps: List[String], binRels: List[String], bigOps: List[String]) extends JavaTokenParsers{
 	  def sym: Parser[Term] = ("[a-zA-Z]".r | """\\(\w)+""".r) ^^ {case s: String => TermSym(s)}
 	  
-	  def underscore: Parser[Term] = " _ " ^^ {case _ => Underscore}
+	  def underscore: Parser[Term] = "__" ^^ {case _ => Underscore}
 	  
 	  def equality: Parser[Term] = noRelTerm~"="~term ^^ {case lhs~"="~rhs => Equality(lhs, rhs)}
 	  
