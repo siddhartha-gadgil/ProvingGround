@@ -308,18 +308,28 @@ object Evolver{
      def push: A => Unit = {_ => }
    }
    
-   case object EvolverTyp extends FormalTyp
+   case class EmptyBox[A]() extends Inbox[A]{
+     def get(n: Int): Set[A] = Set.empty
+     def pull(n: Int): Set[A] = Set.empty
+        
+     def push: A => Unit = {_ => }   
+        
+     def getAll: Set[A] = Set.empty
+     def pullAll: Set[A] = Set.empty
+   }
+   
+   case object EvolverTyp extends LogicalTyp
    
    class Gen(dyn: => (Set[AbsObj] => Set[AbsObj]), 		   		 
 		   		state:  => Set[AbsObj] = Set.empty, 
 		   		mapping:  AbsObj => AbsObj = {(x : AbsObj) => x},
-		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends EvolverTyp.FormalObj{
+		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends EvolverTyp.LogicalObj{
      def nextState = dyn(state)
      def nextGen = new Gen(dyn, nextState, mapping, outbox)
      def nextSet = nextState map (mapping(_))
    } 
    
-   trait Evolver[A]{
+   trait Evolver[A] extends DynSys[A]{
        val inbox: Inbox[A]
        
        val outbox: Outbox[A]
@@ -328,16 +338,16 @@ object Evolver{
        
        def purge(S: Set[A]): Set[A]
        
-       private def evolveStep(S: Set[A]) = purge(generate(S) union inbox.pullAll)
-       
-       @tailrec final def getNow(S: Set[A], n: Int): Set[A] = if (n<1) S else getNow(evolveStep(S), n-1)
+       def step: Set[A] => Set[A] = (S: Set[A]) => purge(generate(S) union inbox.pullAll)
+
+       @tailrec final def getNow(S: Set[A], n: Int): Set[A] = if (n<1) S else getNow(step(S), n-1)
        
        def get(S: Set[A], n: Int) = Future(getNow(S, n))
        
        @tailrec final def seekNowWithState(S: Set[A], p: A => Boolean, n: Int): (Option[A], Set[A]) = {
          if (!(S find p).isEmpty) (S find p, S) 
          else if (n<1) (None, S)
-         else seekNowWithState(evolveStep(S), p, n-1)
+         else seekNowWithState(step(S), p, n-1)
        }
        
        def seekNow(S: Set[A], p: A=> Boolean, n: Int) = seekNowWithState(S, p, n)._1
@@ -345,6 +355,15 @@ object Evolver{
        def seek(S: Set[A], p: A => Boolean, n: Int) = Future(seekNow(S, p, n)) 
    }
    
+   class BasicEvolver[A](gen: Set[A] => Set[A], val pur: Set[A]=> Set[A] = {(s : Set[A]) => s}) extends Evolver[A]{
+     def generate(s: Set[A]) = gen(s)
+     
+     def purge(s: Set[A]) = pur(s)
+     
+     val inbox = EmptyBox[A]
+     
+     val outbox = VanishBox[A]
+   }
    
    def fromGen(gen: Gen) = Set((gen.nextGen: AbsObj)) union (gen.nextSet)
    
@@ -353,36 +372,92 @@ object Evolver{
      case ob: AbsObj => Set(ob)
    }
    
-   class Dyn[A](step: Set[A] => Set[A]) extends Function1[Set[A], Set[A]]{
+   def expandGens(s: Set[AbsObj]) = s flatMap (expandGen _)
+   
+   case class Dyn[A](step: Set[A] => Set[A]) extends DynSys[A]
+
+	 trait DynSys[A] extends Function1[Set[A], Set[A]]{
+		 def step: Set[A] => Set[A]
+
      def apply(s: Set[A]) = step(s)
      
-     def union(thatStep: Set[A] => Set[A]) = new Dyn((s: Set[A])=> step(s) union thatStep(s))
+     def union(thatStep: Set[A] => Set[A]) = Dyn((s: Set[A])=> step(s) union thatStep(s))
      
      def ++(thatStep: Set[A] => Set[A]) = union(thatStep)
      
-     def andThen(thatStep: Set[A] => Set[A]) = new Dyn((s: Set[A]) => thatStep(step(s)))
+     def andThen(thatStep: Set[A] => Set[A]) = Dyn((s: Set[A]) => thatStep(step(s)))
      
      def ||(thatStep: Set[A] => Set[A]) = andThen(thatStep)
      
-     def this(pf: PartialFunction[A, A]) = this((s: Set[A])=> s collect pf)         
+     def mixin(thatStep: Set[A] => ( =>(Set[A] => Set[A])) => Set[A]) = {
+		   Dyn((s: Set[A])=> step(s) union thatStep(s)(this))
+		 }
+              
    }
    
    object Dyn{
-     def id[A] = new Dyn((s: Set[A]) => s)
+     def id[A] = Dyn((s: Set[A]) => s)
      
      def lift[A](f: A => A) = new Dyn((s: Set[A]) => (s map f))
      
      def plift[A](pf: PartialFunction[A,A]) = new Dyn((s: Set[A]) => (s collect pf))
      
-     def pairs[A](pairing: PartialFunction[(A, A), A]) = {
+     def pairs[A](pairing: PartialFunction[(A, A), A]) = Dyn(
        (s : Set[A]) => (for(x<- s; y<-s) yield (x,y)) collect pairing
-     }
+     )
      
      def triples[A](tripling: PartialFunction[(A, A, A), A]) = {
        (s : Set[A]) => (for(x<- s; y<-s; z <-s) yield (x,y, z)) collect tripling
      }
+
+		 def apply[A](pf: PartialFunction[A, A]): Dyn[A] = Dyn((s: Set[A])=> s collect pf)
    }
    
+	
+	object HottEvolvers{
+
+	type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
+    
+	def Applications[U<: AbsObj]: Pairing = {
+	  case (f: AbsFunc[U], x: AbsObj) if f.domain == x.typ => f(x) 
+	}
+	
+	def Arrows[U<: AbsObj, V <: AbsObj]: Pairing = {
+	  case (dom: Typ[U], codom: EffectiveTyp[V]) => FuncTyp(dom, codom)
+	}
+	
+	def LogicalArrows[V <: AbsObj]: Pairing = {
+		case (dom: LogicalTyp, codom: EffectiveTyp[V]) => dom --> codom
+		}
+
+	def lambdaMap(x: AbsObj)(y: AbsObj) ={
+		val dom= x.typ
+		val codom = y.typ.asInstanceOf[EffectiveTyp[AbsObj]]
+		val fnTyp = FuncTyp(dom, codom)
+		println(fnTyp.dom, dom, x, y, fnTyp.codom, codom);
+		fnTyp.Lambda(x as fnTyp.dom, y as fnTyp.codom)
+	}
+		
+	def lambdaGen(x: AbsObj, dyn: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+	  new Gen(dyn, state, lambdaMap(x) _)
+	}
+	
+	def lambdaGens(state: Set[AbsObj])(dyn: => (Set[AbsObj] => Set[AbsObj])) ={
+	  val newVarSym = nextChar(usedChars(state))
+	  val gens: PartialFunction[AbsObj, AbsObj] = {
+	    case typ: EffectiveTyp[_] =>
+	      val obj = typ.symbObj(newVarSym)
+	      lambdaGen(obj , dyn, state + obj)
+	  }
+	  state collect gens
+	}
+	
+	val InferenceDyn = Dyn.pairs(LogicalArrows) mixin (lambdaGens _) andThen (expandGens _)
+	
+	val InferenceEvolver = new BasicEvolver(InferenceDyn)
+  }
+
+
    
    val run = java.lang.Runtime.getRuntime()
    
@@ -441,7 +516,7 @@ object Evolver{
          case SeekQuery(set, p, n) => sender ! seek(set.asInstanceOf[Set[A]], p, n)
         		 	     
          case Trav(trav: Traversable[A]) => inbox.pushAll(trav)
-         case Atom(atom: A) => inbox.push(atom)
+         case Atom(atom) => Try(inbox.push(atom.asInstanceOf[A]))
        }
        
        def receive = channel

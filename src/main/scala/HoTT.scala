@@ -2,7 +2,8 @@ package provingGround
 
 import scala.language.implicitConversions 
 import scala.util._
-
+import scala.language.existentials
+//import scala.reflect.runtime.universe._
 
 object HoTT{
   
@@ -10,11 +11,9 @@ object HoTT{
     trait AbsObj {
       val typ: Typ[AbsObj]
       
-      val freeVars: Set[Variable]
-      
       def as[U <: AbsObj](that: Typ[U]) = {assert (typ==that); this.asInstanceOf[that.Obj]}
 
-			def as(that: FormalTyp) = {assert (typ==that); this.asInstanceOf[that.FormalObj]}
+			def as(that: LogicalTyp) = {assert (typ==that); this.asInstanceOf[that.LogicalObj]}
      }
          
 
@@ -22,112 +21,141 @@ object HoTT{
     
     implicit def baseElem[A](b: Elem[A]): A = b.elem
     
-    trait Variable extends AbsObj
+     
     
 	
  	   
-	implicit class AsFormalTyp[U<: AbsObj](typ: Typ[U]) extends FormalTyp{
-		implicit class AsFormalObj(obj: Obj) extends FormalObj
-		} 
+//	implicit class AsLogicalTyp[U<: AbsObj](typ: Typ[U]) extends LogicalTyp{
+//		implicit class AsLogicalObj(obj: Obj) extends LogicalObj
+//		} 
 
+	trait Symbolic[A]{
+	    val name: A
+//	    val tpe: 
+	}
 
     trait EffectiveTyp[+U <: AbsObj] extends Typ[U]{self =>
-      /** Object given by its identity */
-      def idObj[A](id: A): Obj
+      /** Object given by its name */
+      def symbObj[A](id: A): Obj   
+      
+      implicit def asObj(sym: Symbol) = symbObj(sym)
 
-      def applObj[F, A](f: F, a: A): Obj
-      
-      def typedVar[A](sym: A): VarObj
-      
+      def ::(sym: Symbol) = symbObj(sym)
     }
-		 
-
     
-    trait FormalTyp extends EffectiveTyp[AbsObj]{
+    case class FnSym[F, A](func: F, arg: A){
+      override def toString = func.toString+"("+arg.toString+")"
+    }
+    
+    /** Any type that exists for a reason better than being a universe */
+    trait LogicalTyp extends EffectiveTyp[AbsObj]{
     	
-    	lazy val typ: Typ[AbsObj] = FirstUniv
+    	lazy val typ: Typ[AbsObj] = LogicalUniv
 
-			def -->[V <: AbsObj](that: EffectiveTyp[V]) = FuncTyp(this, that)
+		def -->[V <: AbsObj](that: EffectiveTyp[V]) = FuncTyp(this, that)
 
-			case class TypedVar[A](sym: A) extends FormalObj with VarObj
-
-			def typedVar[A](sym: A) = TypedVar(sym)
-
-			case class IdObj[A](name: A) extends FormalObj
+		case class SymbObj[A](name: A) extends LogicalObj{
+			override def toString = name.toString + " : " + typ.toString
+		}
 			
-			def idObj[A](id: A) = IdObj(id)
+		def symbObj[A](id: A) : LogicalObj = SymbObj(id)
 			
-			case class ApplObj[F, A](func: F, arg: A) extends FormalObj{
-			  override def toString = func.toString+"("+arg.toString+")"
+		case class ApplObj[F, A](func: F, arg: A) extends LogicalObj{
+			override def toString = func.toString+"("+arg.toString+")"
+		}
+
+		def applObj[F, A](f: F, a: A) = ApplObj(f,a)
+									
+		class LogicalObj extends Obj{
+			def elem : AbsObj = this		
 			}
 
-			def applObj[F, A](f: F, a: A) = ApplObj(f,a)
-			
-			implicit def asObj(sym: Symbol) : FormalObj = typedVar(sym)
-
-			def ::(sym: Symbol) = typedVar(sym)
-			
-			class FormalObj extends Obj{
-				def elem : AbsObj = this
-				
-		
-				}
-
     }
 
+		case class PairTyp[U<: AbsObj, V <: AbsObj](first: EffectiveTyp[U], second: EffectiveTyp[V]) extends 
+						EffectiveTyp[AbsPair[U, V]]{
 
+			lazy val typ = PairTyp(first, second)
+
+			class PairObj(val fst: first.Obj, val scnd: second.Obj) extends Obj{
+					def elem = ObjPair(fst.elem, scnd.elem)
+					}
+
+			def symbObj[A](id: A): Obj = new PairObj(first.symbObj(id), second.symbObj(id))
+
+   
+			}	
+
+		trait AbsPair[U<: AbsObj, V <: AbsObj] extends AbsObj
+
+		case class ObjPair[U <: AbsObj, V <: AbsObj](fst: U, scnd: V) extends AbsPair[U, V]{
+			lazy val typ = PairTyp(fst.typ.asInstanceOf[EffectiveTyp[U]], scnd.typ.asInstanceOf[EffectiveTyp[V]])
+			}
+
+		implicit def BinFunc[U<: AbsObj, V <: AbsObj, W <: AbsObj](first: EffectiveTyp[U], 
+																															second: EffectiveTyp[V],
+                                                              target: EffectiveTyp[W])(
+																																defn : (first.Obj, second.Obj) => target.Obj) = {
+						val fn = FuncTyp(PairTyp(first, second), target)
+						val castDefn: fn.dom.Obj => fn.codom.Obj = {
+								arg: fn.dom.Obj => defn(arg.asInstanceOf[(first.Obj, second.Obj)]._1,
+																													arg.asInstanceOf[(first.Obj, second.Obj)]._2).as(fn.codom)}
+						fn.Defn(castDefn)
+						}
 
 
 		trait Univ[+U<: AbsObj] extends EffectiveTyp[Typ[U]]{
 			trait TypObj extends Obj with Typ[U]{
 				def elem: Typ[U] = this
-
-				override val freeVars: Set[Variable] = Set.empty
-
-				}
-
-			case class TypedVar[A](sym: A) extends TypObj with VarObj
-
-			def typedVar[A](sym: A) = TypedVar(sym)
-
-			case class IdObj[A](name: A) extends TypObj
-
-			def idObj[A](name: A) = IdObj(name)
-
-			case class ApplObj[F, A](func: F, arg: A) extends TypObj{
-			  override def toString = func.toString+"("+arg.toString+")"
 			}
-
-			def applObj[F, A](f: F, a: A) = ApplObj(f,a)
-
-			def ::(sym: Symbol) = typedVar(sym)
 
 			} 
 	
      
     
-    object FirstUniv extends Typ[FormalTyp] with Univ[AbsObj]{
+    object LogicalUniv extends Typ[LogicalTyp] with Univ[AbsObj]{
+      class TypObj extends Obj with LogicalTyp{
+        def elem: LogicalTyp = this
+        override lazy val typ = LogicalUniv
+      }
+      
+      case class SymbObj[A](name: A) extends TypObj{
+			override def toString = name.toString + ":" + typ.toString
+		}
+
+      def symbObj[A](name: A) = SymbObj(name)
+      
       lazy val typ = NextUniv[Typ[AbsObj], Typ[Typ[AbsObj]]]
       
-      implicit class InUniv(tp: FormalTyp) extends TypObj
+      implicit class InUniv(tp: LogicalTyp) extends TypObj
+      
+      override def toString = " _ "
     }
     
+	val __ = LogicalUniv
+
+	val A = 'a :: __
+
+	'b :: A
+
 	case class NextUniv[U <: AbsObj, V <: Typ[U]]() extends Typ[V] with Univ[U]{
 		lazy val typ = NextUniv[V, Typ[V]]
 		
 		implicit class InUniv(tp: Typ[U]) extends TypObj
-				
+			
+		case class SymbObj[A](name: A) extends TypObj
+
+		def symbObj[A](name: A) = SymbObj(name)
     }
     
 
     
     trait Typ[+U <: AbsObj] extends AbsObj {self =>
-      val freeVars: Set[Variable] = Set.empty
            
       val typ: Typ[AbsObj]   
    
 
-      trait VarObj extends Obj with Variable
+      
 
       trait Obj extends AbsObj with Elem[U]{
         def elem : U 
@@ -136,15 +164,14 @@ object HoTT{
         
         val obj = this
         
-        val freeVars: Set[Variable] = self.freeVars
         
         val id = Identity(this, this)
         
-        case object refl extends id.FormalObj
+        case object refl extends id.LogicalObj
         
         def =:=(that: Obj) = Identity(this, that)
         
-        def =:=(that:AbsObj) = eql(typ)(this, that)		 
+        def =:=(that:AbsObj) = eql(typ)(this)(that)		 
       }
       
    
@@ -155,17 +182,13 @@ object HoTT{
       
 			def ::(obj: AbsObj) = obj.as(this).elem
 
-      case class Identity(left: Obj, right: Obj) extends FormalTyp{
-        override val freeVars: Set[Variable] = self.freeVars
-      }
-            
-      
+      case class Identity(left: Obj, right: Obj) extends LogicalTyp      
     }
 
-	case class Formal[T](implicit tag: scala.reflect.runtime.universe.TypeTag[T]) extends FormalTyp{
-		implicit class AsFormalObj(ob: T) extends FormalObj
+	case class Logical[T](implicit tag: scala.reflect.runtime.universe.TypeTag[T]) extends LogicalTyp{
+		implicit class AsLogicalObj(ob: T) extends LogicalObj
 		
-		def ::(t: T) = AsFormalObj(t)
+		def ::(t: T) = AsLogicalObj(t)
 		} 
 
 	
@@ -173,9 +196,9 @@ object HoTT{
     
     
     
-    def eql(typ: Typ[AbsObj])(left: AbsObj, right: AbsObj) = typ.Identity(left as typ, right as typ) 
+    def eql(typ: Typ[AbsObj])(left: AbsObj)(right: AbsObj) = typ.Identity(left as typ, right as typ) 
     
-    3 :: Formal[Long]
+    3 :: Logical[Long]
     
     trait AbsFunc[+U <: AbsObj] extends AbsObj{
       val domain: Typ[U];
@@ -184,21 +207,21 @@ object HoTT{
     
 	
     case class IndexTyp(tp: Typ[AbsObj]){
-      case class ForSection[+U <: AbsObj](section: tp.Obj => EffectiveTyp[U]) extends FormalTyp{
+      case class ForSection[+U <: AbsObj](section: tp.Obj => EffectiveTyp[U]) extends LogicalTyp{
         case class Index(arg: tp.Obj){
           val codomain = section(arg)
 
           
-          case class DepPair(value: codomain.Obj) extends DepPairTyp.FormalObj
+          case class DepPair(value: codomain.Obj) extends DepPairTyp.LogicalObj
         }
         
-        case object DepFnTyp extends FormalTyp{
+        case object DepFnTyp extends LogicalTyp{
 	
-        	trait FunctionalObj extends FormalObj with AbsFunc[AbsObj]{
+        	trait FunctionalObj extends LogicalObj with AbsFunc[AbsObj]{
         		def act(arg: tp.Obj) = {
         			val domain = Index(arg)
 
-							domain.codomain.applObj(this, arg)
+							domain.codomain.symbObj(FnSym(this, arg))
         		}
           
         		def apply(arg:tp.Obj) = act(arg)
@@ -208,7 +231,7 @@ object HoTT{
         	
         }
         
-        case object DepPairTyp extends FormalTyp{
+        case object DepPairTyp extends LogicalTyp{
 //          def ::(indx: tp.Obj, obj: AbsObj) = {
 //            val indxTyp = Index(indx)
 //            indxTyp.DepPair(obj as indxTyp.codomain)
@@ -220,33 +243,33 @@ object HoTT{
     
     implicit def indexTyp(tp: Typ[AbsObj]) = IndexTyp(tp) 
     
-    def Pi(base: Typ[AbsObj])(section:base.Obj => FormalTyp) ={
+    def Pi[U<: AbsObj](base: Typ[AbsObj])(section:base.Obj => EffectiveTyp[U]) ={
     	val indx = IndexTyp(base)
     	val sect = (x: indx.tp.Obj) => section(x as base)
     	indx.ForSection(sect).DepFnTyp
       }
     
-    def Sigma(base: Typ[AbsObj])(section:base.Obj => FormalTyp) ={
+    def Sigma[U <: AbsObj](base: Typ[AbsObj])(section:base.Obj => EffectiveTyp[U]) ={
     	val indx = IndexTyp(base)
     	val sect = (x: indx.tp.Obj) => section(x as base)
     	indx.ForSection(sect).DepPairTyp
       }
  
     
-	case class FuncTyp[U<: AbsObj, V <: AbsObj](dom: Typ[U], codom: EffectiveTyp[V]) extends FormalTyp{
-	  //  case class Appl(f: Obj, arg: dom.Obj) extends codom.FormalObj{
+	case class FuncTyp[U<: AbsObj, V <: AbsObj](dom: Typ[U], codom: EffectiveTyp[V]) extends LogicalTyp{
+	  //  case class Appl(f: Obj, arg: dom.Obj) extends codom.LogicalObj{
   	//    override val freeVars = arg.freeVars ++ f.freeVars
     //    }     
       
-      override val freeVars = dom.freeVars ++ codom.freeVars
-     
+      override def toString = dom.toString+" -> "+codom.toString
       
-      trait FormalFunction extends FunctionalObj{
-        def act(arg: dom.Obj) : codom.Obj = codom.applObj(this, arg)
+	  case class LogicalFunction[A](sym: A) extends FunctionalObj{
+        def act(arg: dom.Obj) : codom.Obj = codom.symbObj(FnSym(sym, arg))
       }
       
+	  override def symbObj[A](sym: A) = LogicalFunction(sym)
 
-      trait FunctionalObj extends FormalObj  with AbsFunc[AbsObj]{
+      trait FunctionalObj extends LogicalObj  with AbsFunc[AbsObj]{
         val domain = dom
         
         def act(arg: dom.Obj) : codom.Obj  
@@ -264,14 +287,14 @@ object HoTT{
           def act(arg: dom.Obj) = defn(arg)
       }
       
-      case class Lambda(variable: dom.VarObj, value: codom.Obj) extends FormalObj
+      case class Lambda(variable: dom.Obj, value: codom.Obj) extends LogicalObj
        
     }
      
 
-	def lambda[U<: AbsObj, V <: AbsObj](dom: Typ[U], codom: EffectiveTyp[V])(variable: dom.VarObj, value: codom.Obj) ={
+	def lambda[U<: AbsObj, V <: AbsObj](dom: Typ[U], codom: EffectiveTyp[V])(variable: dom.Obj, value: codom.Obj) ={
 					val fnTyp = FuncTyp(dom, codom)
-					fnTyp.Lambda(variable.asInstanceOf[fnTyp.dom.VarObj], value as fnTyp.codom)
+					fnTyp.Lambda(variable.asInstanceOf[fnTyp.dom.Obj], value as fnTyp.codom)
 				}
 
  
@@ -279,79 +302,74 @@ object HoTT{
  
 	def mk(a: Typ[AbsObj], b: Typ[AbsObj]): a.Obj => b.Obj = {assert(a==b); (x:a.Obj) => x.asInstanceOf[b.Obj]}
 
-  //  val idtest = ('n :: Nat) --> ('n :: Nat)
-    
+  //  val idtest = ('n :: Nat) --> ('n :: Nat) 
 	
-  object HottEvolvers{
-    import Evolver._
-    
-	def Applications[U<: AbsObj]: PartialFunction[(AbsObj, AbsObj),AbsObj] = {
-	  case (f: AbsFunc[U], x: AbsObj) if f.domain == x.typ => f(x) 
+	def nextChar(s: Set[Char]) = if (s.isEmpty) 'a' else (s.max + 1).toChar
+  
+	def usedChars(s: Set[AbsObj]): Set[Char] = {
+	    def charOpt (obj:AbsObj) : Option[Char] = obj match {
+	      case sym: Symbolic[_] => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
+	      case _ => None
+	    }
+	    
+	    
+	    s collect (Function.unlift(charOpt _))
 	}
-	
-	def Arrows[U<: AbsObj, V <: AbsObj]: PartialFunction[(AbsObj, AbsObj), AbsObj] = {
-	  case (dom: Typ[U], codom: EffectiveTyp[V]) => FuncTyp(dom, codom)
-	}
-	
-	
-  } 
-	
-	
 	
   object Nat{
-    case object ZeroTyp extends FormalTyp
+    case object ZeroTyp extends LogicalTyp
     
-    case object OneTyp extends FormalTyp
+    case object OneTyp extends LogicalTyp
     
-    case object star extends OneTyp.FormalObj
+    case object star extends OneTyp.LogicalObj
     
     trait ConstructorDomain{
-      val dom: FormalTyp => FormalTyp 
+      val dom: LogicalTyp => LogicalTyp 
       
-      def apply(that: FormalTyp) = dom(that)
+      def apply(that: LogicalTyp) = dom(that)
     }
     
     
-    case class ConstContrDom(typ: FormalTyp) extends ConstructorDomain{
-      val dom = (that: FormalTyp) => typ
+    case class ConstContrDom(typ: LogicalTyp) extends ConstructorDomain{
+      val dom = (that: LogicalTyp) => typ
     }
     
     case class ToThis(domdom: ConstructorDomain) extends ConstructorDomain{
-      val dom = (that: FormalTyp) =>  domdom.dom(that) --> that
+      val dom = (that: LogicalTyp) =>  domdom.dom(that) --> that
     }
     
-    case class InductiveTyp(constructors: Map[Symbol, ConstructorDomain]) extends FormalTyp{
+    case class InductiveTyp(constructors: Map[Symbol, ConstructorDomain]) extends LogicalTyp{
       val constrs = constructors map (_._2)
       
-      def rec(that: FormalTyp) = {}
+      def rec(that: LogicalTyp) = {}
     }
     
 
     
-    case object Nat extends FormalTyp{
-      case class Rec(that: FormalTyp){
+    case object Nat extends LogicalTyp{
+      case class Rec(that: LogicalTyp){
         val fnTyp = FuncTyp(Nat, that)
         type domTyp = fnTyp.dom.Obj
         val tgt = Nat --> (that --> that)
-        case class rec(base: that.Obj, step: tgt.Obj) extends fnTyp.FormalFunction{
-          val atZero = this(zero.as(fnTyp.dom)).as(that)
-          val baseIdtyp = that.Identity(atZero, base)
-          case object baseId extends baseIdtyp.FormalObj
-        }
+//        case class rec(base: that.Obj, step: tgt.Obj) extends fnTyp.LogicalFunction{
+//          val atZero = this(zero.as(fnTyp.dom)).as(that)
+//          val baseIdtyp = that.Identity(atZero, base)
+//          case object baseId extends baseIdtyp.LogicalObj
+//        }
         
       }
       
-      def rec[U <: AbsObj, V<: AbsObj](base: AbsObj)(step: FuncTyp[U, V]) = step.typ match {
-        case FuncTyp(Nat, FuncTyp(that : FormalTyp, other)) if that == other =>
-        val R = Rec(that)
-        val stp = step.asInstanceOf[R.tgt.Obj]
-        R.rec(base as R.that, stp)
-      }
+//      def rec[U <: AbsObj, V<: AbsObj](base: AbsObj)(step: FuncTyp[U, V]) = step.typ match {
+//        case FuncTyp(Nat, FuncTyp(that : LogicalTyp, other)) if that == other =>
+//        val R = Rec(that)
+//        val stp = step.asInstanceOf[R.tgt.Obj]
+//        R.rec(base as R.that, stp)
+//      }
     }
     
-    case object zero extends Nat.FormalObj 
+    case object zero extends Nat.LogicalObj 
     
-    case class succ(n: Nat.Obj) extends Nat.FormalObj
+    case class succ(n: Nat.Obj) extends Nat.LogicalObj
     
     val one = succ(zero)
  
