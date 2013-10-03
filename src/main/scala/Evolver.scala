@@ -326,7 +326,15 @@ object Evolver{
 		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends EvolverTyp.LogicalObj{
      def nextState = dyn(state)
      def nextGen = new Gen(dyn, nextState, mapping, outbox)
-     def nextSet = nextState map (mapping(_))
+     def nextSet = {
+//         println(state)
+//         println(nextChar(usedChars(state)))
+//         println(nextState map (mapping(_)))
+//         println(state filter (_.isInstanceOf[LogicalTyp]))
+         nextState map (mapping(_))
+     }
+//     println(state)
+//     println(nextChar(usedChars((state))))
    } 
    
    trait Evolver[A] extends DynSys[A]{
@@ -414,7 +422,7 @@ object Evolver{
    }
    
 	
-	object HottEvolvers{
+	object HottInnerEvolvers{
 
 	type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
     
@@ -434,25 +442,25 @@ object Evolver{
 		val dom= x.typ
 		val codom = y.typ.asInstanceOf[EffectiveTyp[AbsObj]]
 		val fnTyp = FuncTyp(dom, codom)
-		println(fnTyp.dom, dom, x, y, fnTyp.codom, codom);
-		fnTyp.Lambda(x as fnTyp.dom, y as fnTyp.codom)
+//		println(fnTyp.dom, dom, x, y, fnTyp.codom, codom);
+		fnTyp.Lambda(x as fnTyp.dom, y)
 	}
 		
-	def lambdaGen(x: AbsObj, dyn: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
-	  new Gen(dyn, state, lambdaMap(x) _)
+	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+	  new Gen(dynam, state, lambdaMap(x) _)
 	}
 	
-	def lambdaGens(state: Set[AbsObj])(dyn: => (Set[AbsObj] => Set[AbsObj])) ={
+	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
 	  val newVarSym = nextChar(usedChars(state))
 	  val gens: PartialFunction[AbsObj, AbsObj] = {
 	    case typ: EffectiveTyp[_] =>
 	      val obj = typ.symbObj(newVarSym)
-	      lambdaGen(obj , dyn, state + obj)
+	      lambdaGen(obj , dynam, state + obj)
 	  }
 	  state collect gens
 	}
 	
-	val InferenceDyn = Dyn.pairs(LogicalArrows) mixin (lambdaGens _) andThen (expandGens _)
+	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
 	
 	val InferenceEvolver = new BasicEvolver(InferenceDyn)
   }

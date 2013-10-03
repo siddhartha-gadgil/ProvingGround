@@ -5,6 +5,182 @@ import scala.util._
 import scala.language.existentials
 //import scala.reflect.runtime.universe._
 
+
+// T
+object HoTTouter{
+    trait AbsObj {
+        val typ: Typ[AbsObj]
+    }
+    
+    trait Typ[+U <: AbsObj] extends AbsObj{
+        type Obj = U
+        
+        def symbObj[A](name: A): Obj
+        
+        def ::[A](name:A) = symbObj(name) 
+    }
+    
+    type EffectiveTyp[U <: AbsObj] = Typ[U]
+
+    trait Symbolic[A]{
+      val name: A
+      override def toString = name.toString
+    }
+    
+    case class SymbObj[A, U<: AbsObj](name: A, typ: Typ[U]) extends AbsObj with Symbolic[A] 
+    
+    
+    case class SymbTyp[A, U<:AbsObj](name: A, univ: Univ[U]) extends Typ[U] with Symbolic[A]{
+      lazy val typ = univ
+      
+      def symbObj[A](name: A) = this.symbObj(name)
+    }
+
+    class LogicalTyp extends Typ[AbsObj]{
+      
+      lazy val typ = LogicalUniv
+      
+      def symbObj[A](name: A): AbsObj with Symbolic[A] = SymbObj(name, this)
+      
+      def -->[V <: AbsObj](that: Typ[V]) = FuncTyp(this, that)
+    }
+    
+    trait Univ[U<:AbsObj] extends Typ[Typ[U]]{
+      def symbObj[A](name: A) = SymbTyp(name, this)
+    }
+    
+    case class NextUniv[U<: AbsObj]() extends Univ[U]{
+      lazy val typ = NextUniv[Typ[U]]
+      
+    }
+    
+    object LogicalUniv extends Univ[AbsObj]{
+      lazy val typ = NextUniv[AbsObj]
+      
+      override def toString ="__"
+    }
+    
+    val __ = LogicalUniv
+    
+    
+    case class PairTyp[U<: AbsObj, V <: AbsObj](first: Typ[U], second: Typ[V]) extends 
+						Typ[AbsPair[U, V]]{
+      
+
+		lazy val typ = PairTyp(first, second)
+
+			
+			// The name is lost
+		def symbObj[A](name: A): AbsPair[U, V] = PairObj(first.symbObj(name), second.symbObj(name))
+
+   
+			}	
+    
+    case class PairObj[U <: AbsObj, V <: AbsObj](val fst: U, val scnd: V) extends AbsPair[U, V]{
+    	lazy val typ = PairTyp(fst.typ, scnd.typ)
+					}
+
+	trait AbsPair[U<: AbsObj, V <: AbsObj] extends AbsObj
+    
+    case class FuncTyp[U<: AbsObj](dom: LogicalTyp, codom: Typ[U]) extends LogicalTyp{
+	  override def symbObj[A](name: A) = FuncSymb(name, dom, codom)
+	  
+	  override def toString = dom.toString + " -> " + codom.toString
+	}
+    
+    trait FuncObj[U <: AbsObj] extends AbsObj{
+	  val dom: LogicalTyp 
+	  val codom: Typ[U]
+	  
+	  lazy val typ = FuncTyp(dom, codom)
+	  
+	  def act(arg: AbsObj): Option[U]
+	  
+	  def apply(arg: AbsObj) = act(arg)
+	  
+	}
+
+	trait FormalFunc[U <: AbsObj] extends FuncObj[AbsObj]{
+	  def act(arg: AbsObj) = if (arg.typ == dom) Some(FormalApplication(this, arg)) else None
+	}
+	
+    case class FuncSymb[A, U<: AbsObj](name: A, dom: LogicalTyp, codom: Typ[U]) extends FormalFunc[U] with Symbolic[A]
+	
+    private case class FormalApplication[U<: AbsObj](func: FuncObj[U], arg: AbsObj) extends AbsObj{
+      lazy val typ = func.codom
+      
+      override def toString = func.toString + "("+ arg.toString +")"
+    }
+	
+	case class FnSym[F, A](func: F, arg: A){
+      override def toString = func.toString+"("+arg.toString+")"
+    }
+	
+	case class FuncDefn[U <: AbsObj](func: AbsObj => U, dom: LogicalTyp, codom: Typ[U]) extends FuncObj[U]{
+	  def act(arg: AbsObj) = if (arg.typ == dom) Some(func(arg)) else None
+	}
+	
+	case class Lambda[U<: AbsObj, V <: AbsObj](variable: U, value : V) extends AbsObj{
+	  lazy val typ = (variable.typ.asInstanceOf[LogicalTyp]) --> value.typ
+	}
+			
+	def lambda[U<: AbsObj, V <: AbsObj](variable: U)(value : V) = Lambda(variable, value)
+	
+	type TypFamily[U <: AbsObj] = FuncObj[Typ[U]]
+	
+	case class PiTyp[U <: AbsObj](fibers: TypFamily[U]) extends LogicalTyp
+	
+	case class SigmaTyp[U <: AbsObj](fibers: TypFamily[U]) extends LogicalTyp
+	
+	trait DepFuncObj[U <: AbsObj] extends AbsObj{
+	  val fibers: TypFamily[U] 
+	   
+	  
+	  lazy val typ = PiTyp(fibers)
+	  
+	  def act(arg: AbsObj): Option[U]
+	  
+	  def apply(arg: AbsObj) = act(arg)
+	  
+	}
+	
+	trait FormalDepFunc[U<: AbsObj] extends DepFuncObj[AbsObj]{
+	  def act(arg: AbsObj) = if (arg.typ == fibers.dom) Some(FormalDepApplication(this, arg)) else None
+	}
+	
+	case class DepFuncSym[A, U <: AbsObj](name: A, fibers: TypFamily[AbsObj]) extends FormalDepFunc[U] with Symbolic[A]
+	
+	private case class FormalDepApplication[U<: AbsObj](func: DepFuncObj[U], arg: AbsObj) extends AbsObj{
+	  val typFamily = func.fibers
+      lazy val typ : Typ[U] = (typFamily(arg)).get
+      
+      override def toString = func.toString + "("+ arg.toString +")"
+    }
+	
+	case class IdentityTyp[U <: AbsObj](dom: Typ[U], lhs: AbsObj, rhs: AbsObj) extends LogicalTyp
+	
+	
+	
+	
+	val x = 'x' :: __
+	
+	val y = "y" :: x
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 object HoTT{
   
    
@@ -13,7 +189,7 @@ object HoTT{
       
       def as[U <: AbsObj](that: Typ[U]) = {assert (typ==that); this.asInstanceOf[that.Obj]}
 
-			def as(that: LogicalTyp) = {assert (typ==that); this.asInstanceOf[that.LogicalObj]}
+	  def as(that: LogicalTyp) = {assert (typ==that); this.asInstanceOf[that.LogicalObj]}
      }
          
 
@@ -54,7 +230,7 @@ object HoTT{
 
 		def -->[V <: AbsObj](that: EffectiveTyp[V]) = FuncTyp(this, that)
 
-		case class SymbObj[A](name: A) extends LogicalObj{
+		case class SymbObj[A](name: A) extends LogicalObj with Symbolic[A]{
 			override def toString = name.toString + " : " + typ.toString
 		}
 			
@@ -119,7 +295,7 @@ object HoTT{
         override lazy val typ = LogicalUniv
       }
       
-      case class SymbObj[A](name: A) extends TypObj{
+      case class SymbObj[A](name: A) extends TypObj with Symbolic[A]{
 			override def toString = name.toString + ":" + typ.toString
 		}
 
@@ -180,7 +356,7 @@ object HoTT{
       
       def :::(tryobj: Try[AbsObj])=Try(tryobj.get as this)
       
-			def ::(obj: AbsObj) = obj.as(this).elem
+	  def ::(obj: AbsObj) = obj.as(this).elem
 
       case class Identity(left: Obj, right: Obj) extends LogicalTyp      
     }
@@ -192,7 +368,7 @@ object HoTT{
 		} 
 
 	
-    implicit def me(arg: AbsObj): arg.typ.Obj = arg as arg.typ
+    implicit def me(arg: AbsObj): arg.typ.Obj = arg ::: arg.typ
     
     
     
@@ -287,7 +463,7 @@ object HoTT{
           def act(arg: dom.Obj) = defn(arg)
       }
       
-      case class Lambda(variable: dom.Obj, value: codom.Obj) extends LogicalObj
+      case class Lambda(variable: dom.Obj, value: AbsObj) extends LogicalObj
        
     }
      
