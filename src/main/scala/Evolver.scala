@@ -321,9 +321,11 @@ object Evolver{
    case object EvolverTyp extends LogicalTyp
    
    class Gen(dyn: => (Set[AbsObj] => Set[AbsObj]), 		   		 
-		   		state:  => Set[AbsObj] = Set.empty, 
+		   		state:  => Set[AbsObj], 
 		   		mapping:  AbsObj => AbsObj = {(x : AbsObj) => x},
-		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends EvolverTyp.LogicalObj{
+		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends AbsObj{
+     lazy val typ = new LogicalTyp
+     
      def nextState = dyn(state)
      def nextGen = new Gen(dyn, nextState, mapping, outbox)
      def nextSet = {
@@ -418,11 +420,52 @@ object Evolver{
        (s : Set[A]) => (for(x<- s; y<-s; z <-s) yield (x,y, z)) collect tripling
      }
 
-		 def apply[A](pf: PartialFunction[A, A]): Dyn[A] = Dyn((s: Set[A])=> s collect pf)
+	def apply[A](pf: PartialFunction[A, A]): Dyn[A] = Dyn((s: Set[A])=> s collect pf)
    }
    
+   
 	
+   	object HottEvolvers{
+	 
+	  
+     type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
+    
+	def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
+	  case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+	}
+
+	
+	def LogicalArrows[V <: AbsObj]: Pairing = {
+		case (dom: LogicalTyp, codom: Typ[_]) => dom --> codom
+		}
+
+
+		
+	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+	  new Gen(dynam, state, lambda(x) _)
+	}
+	
+	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
+	  val newVarSym = nextChar(usedChars(state))
+	  val gens: PartialFunction[AbsObj, AbsObj] = {
+	    case typ: Typ[_] =>
+	      val obj = typ.symbObj(newVarSym)
+	      lambdaGen(obj , dynam, state + obj)
+	  }
+	  state collect gens
+	}
+	
+	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
+	
+	val InferenceEvolver = new BasicEvolver(InferenceDyn)
+   }
+   
+
+   
+   
 	object HottInnerEvolvers{
+	  
+	import provingGround.HoTTinner._
 
 	type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
     
@@ -446,23 +489,23 @@ object Evolver{
 		fnTyp.Lambda(x as fnTyp.dom, y)
 	}
 		
-	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
-	  new Gen(dynam, state, lambdaMap(x) _)
-	}
+//	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+//	  new Gen(dynam, state, lambdaMap(x) _)
+//	}
 	
-	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
-	  val newVarSym = nextChar(usedChars(state))
-	  val gens: PartialFunction[AbsObj, AbsObj] = {
-	    case typ: EffectiveTyp[_] =>
-	      val obj = typ.symbObj(newVarSym)
-	      lambdaGen(obj , dynam, state + obj)
-	  }
-	  state collect gens
-	}
+//	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
+//	  val newVarSym = nextChar(usedChars(state))
+//	  val gens: PartialFunction[AbsObj, AbsObj] = {
+//	    case typ: EffectiveTyp[_] =>
+//	      val obj = typ.symbObj(newVarSym)
+//	      lambdaGen(obj , dynam, state + obj)
+//	  }
+//	  state collect gens
+//	}
 	
-	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
+//	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
 	
-	val InferenceEvolver = new BasicEvolver(InferenceDyn)
+//	val InferenceEvolver = new BasicEvolver(InferenceDyn)
   }
 
 

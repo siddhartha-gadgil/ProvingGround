@@ -1,6 +1,7 @@
 package provingGround
 import provingGround.HoTT._
 import scala.util.parsing.combinator._
+import scala.language.implicitConversions
 
 object TheoryTypes{
   
@@ -37,51 +38,61 @@ object TheoryTypes{
   
   case object Underscore extends Term
   
+  case class IntSym(value: Int) extends Term
+  
+  case class RealSym(value: Double) extends Term
+  
   
   class ExpressionParser(binOps: List[String], binRels: List[String], bigOps: List[String]) extends JavaTokenParsers{
-	  def sym: Parser[Term] = ("[a-zA-Z]".r | """\\(\w)+""".r) ^^ {case s: String => TermSym(s)}
+	  def varSym: Parser[Term] = ("[a-zA-Z]".r | """\\(\w)+""".r) ^^ {case s: String => TermSym(s)}
+	  
+	  def intSym: Parser[Term] = wholeNumber ^^ {case n => IntSym(n.toInt)}
+	  
+	  def realSym: Parser[Term] = floatingPointNumber ^^ {case x => RealSym(x.toDouble)}
+	  
+	  def sym: Parser[Term] = varSym | realSym | intSym
 	  
 	  def underscore: Parser[Term] = "__" ^^ {case _ => Underscore}
 	  
 	  def equality: Parser[Term] = noRelTerm~"="~term ^^ {case lhs~"="~rhs => Equality(lhs, rhs)}
 	  
-	  def subScript: Parser[Term] = simpleTerm~"_"~simpleTerm ^^ {case lhs~"_"~rhs => SubScript(lhs, rhs)}
+	  def subScript: Parser[Term] = sym~"_"~simpleTerm ^^ {case lhs~"_"~rhs => SubScript(lhs, rhs)}
 	  
-	  def supScript: Parser[Term] = simpleTerm~"^"~simpleTerm ^^ {case lhs~"^"~rhs => SupScript(lhs, rhs)}
+	  def supScript: Parser[Term] = sym~"^"~simpleTerm ^^ {case lhs~"^"~rhs => SupScript(lhs, rhs)}
 	  
-	  def binOpTerm(op: String): Parser[Term] = noOpTerm~literal(op)~term ^^{case lhs~(_: String)~rhs => BinOpTerm(op, lhs, rhs)}
+	  def binOpTerm(op: String): Parser[Term] = noOpTerm~literal(op)~noRelTerm ^^{case lhs~(_: String)~rhs => BinOpTerm(op, lhs, rhs)}
 	  
 	  def binRelTerm(op: String): Parser[Term] = noRelTerm~literal(op)~term ^^{case lhs~(_: String)~rhs => BinOpTerm(op, lhs, rhs)}
 	  
-	  def bigOpTerm(op: String): Parser[Term] = literal(op)~simpleTerm~term ^^{case (_: String)~(lhs: Expression)~(rhs: Expression) => BigOpTerm(op, lhs, rhs)}
+	  def bigOpTerm(op: String): Parser[Term] = literal(op)~simpleTerm~noRelTerm ^^{case (_: String)~(lhs: Expression)~(rhs: Expression) => BigOpTerm(op, lhs, rhs)}
 	  
 	  def application: Parser[Term] = simpleTerm~term ^^ {case f~a => Apply(f, a)}
 	  
 	  def func: Parser[Term] = noRelTerm~"->"~term ^^ {case lhs~"->"~rhs => FuncTerm(lhs, rhs)}
 	  
 	  
+	  def nullTerm: Parser[Term] = failure("") ^^ { _ =>Underscore}
 	  
+	  def binOpParse: Parser[Term] = (binOps map (binOpTerm(_))).foldLeft(nullTerm)((s, t) => s | t) 
 	  
-	  def binOpParse: Parser[Term] = binOps map (binOpTerm(_)) reduce (_ | _) 
+	  def bigOpParse: Parser[Term] = (bigOps map (bigOpTerm(_))).foldLeft(nullTerm)((s, t) => s | t) 
 	  
-	  def bigOpParse: Parser[Term] = bigOps map (bigOpTerm(_)) reduce (_ | _)
-	  
-	  def binRelParse: Parser[Term] = binRels map (binRelTerm(_)) reduce (_ | _)
+	  def binRelParse: Parser[Term] = (binRels map (binRelTerm(_))).foldLeft(nullTerm)((s, t) => s | t) 
 	  
 	  
 	  def braces: Parser[Term] = "{"~expression~"|"~term~"}" ^^ {case "{"~index~"|"~arg~"}" => Braces(index, arg)}
 	  
 	  def parenTerm: Parser[Term] = "("~term~")" ^^ {case "("~t~")" => t}
 	  
-	  def texBraces: Parser[Term] = """\{"""~expression~"|"~term~"""\}""" ^^ {case """\{"""~index~"|"~arg~"""\}""" => Braces(index, arg)}
+	  def texBraces: Parser[Term] = "{"~term~"}" ^^ {case "{"~arg~"}" => arg}
 	  
-	  def term: Parser[Term] = noRelTerm | equality |binRelParse
+	  def term: Parser[Term] =  equality | binRelParse | lambda | noRelTerm 
 	  
-	  def simpleTerm: Parser[Term] = sym | typedTerm | parenTerm | braces | texBraces | underscore | subScript | supScript // without operations, relations, bigOps, 	  	  
+	  def simpleTerm: Parser[Term] = typedTerm | parenTerm | texBraces | braces | underscore | subScript | supScript | sym // without operations, relations, bigOps, 	  	  
 	   
-	  def noOpTerm: Parser[Term] = simpleTerm | bigOpParse
+	  def noOpTerm: Parser[Term] = bigOpParse | simpleTerm 
 	  
-	  def noRelTerm: Parser[Term] = noOpTerm | binOpParse
+	  def noRelTerm: Parser[Term] = binOpParse | noOpTerm 
 	  
 	  def colon: Parser[Expression] = term~":"~term ^^ {case obj~":"~typ => Colon(obj, typ)}
 	  
@@ -96,18 +107,18 @@ object TheoryTypes{
   
   
   
-  trait TheoryTyp extends FormalTyp
+  trait TheoryTyp extends LogicalTyp
   
   case class TextTyp(text: String) extends TheoryTyp
   
   trait Claim extends TheoryTyp{
-    val claim: FormalTyp
+    val claim: LogicalTyp
   }
   
-  case class Using(using: FormalTyp, claim: FormalTyp) extends Claim
+  case class Using(using: LogicalTyp, claim: LogicalTyp) extends Claim
   
   trait Method
   
-  case class Para(sentences: FormalTyp) extends TheoryTyp
+  case class Para(sentences: LogicalTyp) extends TheoryTyp
   
 }
