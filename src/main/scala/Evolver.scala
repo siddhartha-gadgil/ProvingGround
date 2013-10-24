@@ -430,9 +430,9 @@ object Evolver{
 	  
      type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
     
-	def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
-	  case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
-	}
+//	def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
+//	  case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+//	}
 
 	
 	def LogicalArrows[V <: AbsObj]: Pairing = {

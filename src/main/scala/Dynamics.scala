@@ -55,6 +55,13 @@ object Dynamics{
        (s : Set[A]) => (for(x<- s; y<-s) yield (x,y)) collect pairing
      )
      
+     def chPairs[A](pairing: PartialFunction[A, PartialFunction[A, A]]) = StatDynSys(
+         (s: Set[A]) => {
+        	val fns = s collect pairing
+        	fns flatMap (fn => s collect fn)
+         }
+           )
+     
      def triples[A](tripling: PartialFunction[(A, A, A), A]) = StatDynSys(
        (s : Set[A]) => (for(x<- s; y<-s; z <-s) yield (x,y, z)) collect tripling
      )
@@ -100,13 +107,23 @@ object Dynamics{
     
     object HottDyn{
        type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
+       
+       type CHPairing = PartialFunction[AbsObj, PartialFunction[AbsObj, AbsObj]]
     
-       def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
-           case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+//       def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
+//           case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+//       }
+       
+       def applyFn[W<: AbsObj, V<: Typ[W], U<: AbsObj](f: FuncObj[W, V, U]): PartialFunction[AbsObj, AbsObj] = {
+         case arg if arg.typ == f.dom => f(arg)
        }
 
+       val applications: PartialFunction[AbsObj, PartialFunction[AbsObj, AbsObj]] = {
+         case f: FuncObj[_,_,_] => applyFn(f)
+       }
+       
 	
-       def LogicalArrows[V <: AbsObj]: Pairing = {
+       def logicalArrows[V <: AbsObj]: Pairing = {
            case (dom: LogicalTyp, codom: Typ[_]) => dom --> codom
 		    }
 
@@ -120,7 +137,7 @@ object Dynamics{
 	     state collect gens
 	   }
 			
-	val InferenceDyn : DynSys[AbsObj] = DynSys.id[AbsObj] ++ DynSys.pairs(LogicalArrows) spawnSet(lambdaIsles(InferenceDyn) _)
+	val inferenceDyn : DynSys[AbsObj] = DynSys.id[AbsObj] ++ DynSys.pairs(logicalArrows) spawnSet(lambdaIsles(inferenceDyn) _)
 	
 //	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
     }

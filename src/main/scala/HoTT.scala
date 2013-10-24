@@ -8,176 +8,229 @@ import scala.language.existentials
 
 // To Do:
 //
-// * Use symbObj for formal function application : DONE
-// * Identity type families
-// * type A + B
-// * objects in Pi and Sigma types: may need just functions instead
+// Dynamics: Most types.
+// Substitution: All types except functions and dependent functions.
+// 
 //
+
+
+
+/** The Homotopy type theory objects, types and utility functions
+ *  
+ */
 object HoTT{
+  /** Abstract object */
     trait AbsObj {
+      /** The HoTT type */
         val typ: Typ[AbsObj]
         
     }
+   
     
-    object AbsObj{
-      def subs(Var: AbsObj, value: AbsObj): AbsObj => AbsObj ={
-        case Var => value
-        case SymbObj(FormalApplication(func, Var), _) => func(value).get
-        case SymbTyp(FormalApplication(func, Var), _, _) => func(value).get
-        case x => x
-      }
-      
-      def subs(F: FuncObj[AbsObj, Typ[AbsObj], AbsObj], value: FuncObj[AbsObj, Typ[AbsObj], AbsObj]): AbsObj => AbsObj ={
-        case F => value
-        case SymbObj(FormalApplication(F, arg), _) => value(arg).get
-        case SymbTyp(FormalApplication(F, arg), _, _) => value(arg).get
-        case x => x
-      }
+  
+  	/** Substitutions of Var by value in target;
+  	 *  should implement for all types
+  	 */
+    def substitute[U<: AbsObj, V<: AbsObj](Var: U, value: U)(target: V): V = (value, target) match {
+      case (Var, _) => target
+      case (_, sym: Symbolic[_]) =>
+        sym.name match {
+          case fnsym : FormalApplication[_, _,_] =>
+        	(fnsym.func, fnsym.arg) match {
+        		case (fn, Var) => substitute(Var, value)((fn(value)).asInstanceOf[V]).asInstanceOf[V]
+        		case (fn, arg) if fn == Var => substitute(Var, value)((fn(value)).asInstanceOf[V]).asInstanceOf[V]
+        		case _ => target
+        	}
+          case fnsym : FormalDepApplication[_, _,_] =>
+        	(fnsym.func, fnsym.arg) match {
+        		case (fn, Var) => substitute(Var, value)((fn(value)).asInstanceOf[V]).asInstanceOf[V]
+        		case (fn, arg) if fn == Var => substitute(Var, value)((fn(value)).asInstanceOf[V]).asInstanceOf[V]
+        		case _ => target
+        	}
+          case _ => target
+        }
+      case _ => target
     }
     
+    /** HoTT Type;
+     *  The compiler knows that objects have scala-type extending U.
+     *  In particular, we can specify that the objects are types, types of types etc.
+     */
     trait Typ[+U <: AbsObj] extends AbsObj{
+    	/** scala type of objects with this HoTT-type */
         type Obj <: U
         
-        def symbObj[A](name: A): Obj
+        /** A symbolic object with specified HoTT type, by default this, and with scala-type Obj*/
+        def symbObj[A, W<: AbsObj](name: A, tp: Typ[W] = this): Obj
         
+        /** Make symbolic object */
         def ::[A](name:A) = symbObj(name) 
     }
     
-    type EffectiveTyp[U <: AbsObj] = Typ[U]
+    
 
-    trait Symbolic[A, +Z <: AbsObj]{
+    /** traits that are given by name;
+     *  does not include, for instance, pairs each of whose instance is given by a name;
+     *  same considerations for functions etc.
+     */
+    trait Symbolic[A]{
       val name: A
       override def toString = name.toString
-      def elem: Z
     }
     
-    case class SymbObj[A, +U<: AbsObj](name: A, typ: Typ[U]) extends AbsObj with Symbolic[A, AbsObj]{
+    /** Constructing symbolic objects that are AbsObj but no more refined*/
+    case class SymbObj[A, +U<: AbsObj](name: A, typ: Typ[U]) extends AbsObj with Symbolic[A]{
       override def toString = name.toString+" : "+typ.toString
-      def elem = this
     } 
     
-    
-    case class SymbTyp[A, U<:AbsObj](name: A, univ: Univ[U], base: Typ[U])extends Typ[U] with Symbolic[A, Typ[U]]{
+    /** Symbolic types, which the compiler knows are types.
+     *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
+     */
+    case class SymbTyp[A, U<:AbsObj, T<: AbsObj](name: A, univ: Typ[T], base: Typ[U]) extends Typ[U] with Symbolic[A]{
       lazy val typ = univ
       
       type Obj = base.Obj
       
-      def symbObj[B](name: B) = base.symbObj(name)
+      def symbObj[B, W <: AbsObj](name: B, tp: Typ[W] ) = base.symbObj(name, tp)
       
       override def toString = name.toString+" : "+typ.toString
       
       def elem = this
     }
     
-    case class SymbLogicTyp[A](name: A) extends LogicalTyp with Symbolic[A, LogicalTyp]{
+    case class SymbLogicTyp[A](name: A) extends LogicalTyp with Symbolic[A]{
       override def toString = name.toString+" : "+typ.toString
     }
 
+    /** HoTT types with underlying scala type AbsObj.
+     *  They belong to the LogicalUniv
+     */
     class LogicalTyp extends Typ[AbsObj]{
       
       type Obj = AbsObj
       
       lazy val typ = LogicalUniv
       
-      def symbObj[A](name: A): AbsObj = SymbObj(name, this)
+      def symbObj[A, W <: AbsObj](name: A, tp: Typ[W]): AbsObj = SymbObj(name, tp)
       
+      /** returns function type A -> B */
       def -->[U <: AbsObj](that: Typ[U]) = FuncTyp[AbsObj, LogicalTyp, U](this, that)
-      
-      def elem = this
+ 
     }
     
-    
+    /** Universes. Can be just a type so far */
     trait Univ[U<:AbsObj] extends Typ[Typ[U]]
     
+    /** Inductive construction of the next universe */
     case class NextUniv[U<: AbsObj](base: Typ[U]) extends Univ[U]{
       lazy val typ = NextUniv[Typ[U]](this)
       
       type Obj = Typ[U]
       
-      def symbObj[A](name: A)= SymbTyp(name, this, base)
+      def symbObj[A, W<: AbsObj](name: A, tp: Typ[W])= SymbTyp(name, tp, base)
     }
     
+    /** The first universe, consisting of logical types */
     object LogicalUniv extends Univ[AbsObj]{
       lazy val typ = NextUniv[AbsObj](this)
       
       type Obj = LogicalTyp
       
-      def symbObj[A](name: A) = SymbLogicTyp(name)
+      def symbObj[A, W<: AbsObj](name: A, tp: Typ[W]) = SymbLogicTyp(name)
       
       override def toString ="__"
     }
     
     val __ = LogicalUniv
     
-    
+    /** Pair of types (A, B) */
     case class PairTyp[U<: AbsObj, V <: AbsObj](first: Typ[U], second: Typ[V]) extends 
 						Typ[AbsPair[U, V]]{
 
     	type Obj = AbsPair[U, V]
 
-		lazy val typ = PairTyp(first, second)
+		lazy val typ = PairTyp(first.typ, second.typ)
 
 			
-			// The name is lost
-		def symbObj[A](name: A): AbsPair[U, V] = PairObj(first.symbObj(name), second.symbObj(name))
-
-  
+			// The name is lost as `name', but can be recovered using pattern matching.
+		def symbObj[A, W<: AbsObj](name: A, tp: Typ[W]): AbsPair[U, V] = PairObj(first.symbObj(name), second.symbObj(name))
 			}	
     
+    /** Object (a, b) in (A, B) */
     case class PairObj[U <: AbsObj, V <: AbsObj](val fst: U, val scnd: V) extends AbsPair[U, V]{
     	lazy val typ = PairTyp(fst.typ, scnd.typ)
 					}
 
+    /** Abstract pair, parametrized by scala types of components */
 	trait AbsPair[U<: AbsObj, V <: AbsObj] extends AbsObj
     
+	/** Function type */
     case class FuncTyp[W<: AbsObj, V <: Typ[W], U<: AbsObj](dom: V, codom: Typ[U]) extends LogicalTyp{
-	  override def symbObj[A](name: A) = FuncSymb[A, W, V, U](name, dom, codom)
+	  override def symbObj[A, T<: AbsObj](name: A, tp: Typ[T]) = FuncSymb[A, W, V, U](name, dom, codom)
 	  
 	  override def toString = dom.toString + " -> " + codom.toString
 	}
     
+	/** a function, i.e.,  an object in a function type */
     trait FuncObj[W<: AbsObj, V<: Typ[W], U<: AbsObj] extends AbsObj{
+      /** domain*/
 	  val dom: V
+	  /** codomain */
 	  val codom: Typ[U]
 	  
 	  lazy val typ = FuncTyp[W, V, U](dom, codom)
 	  
-	  def act(arg: AbsObj): Option[U]
+@deprecated("use action","")	  def act(arg: AbsObj): Option[U]
 	  
-	  def apply(arg: AbsObj) = act(arg)
+	  /** Action, i.e., function application */
+	  def action(arg:dom.Obj): codom.Obj 
+	  
+	  /** Function application */
+	  def apply(arg: AbsObj) = action(arg.asInstanceOf[dom.Obj])
 	  
 	}
 
+    /** Formal function, i.e., with application purely symbolic. */
 	trait FormalFunc[W<: AbsObj, V<: Typ[W], U<: AbsObj] extends FuncObj[W, V, U]{
 	  def act(arg: AbsObj) = if (arg.typ == dom) Some(codom.symbObj(FormalApplication[W, V, U](this, arg))) else None
+	  
+	  def action(arg: dom.Obj) = codom.symbObj(FormalApplication[W, V, U](this, arg))
 	}
 	
-    case class FuncSymb[A, W<: AbsObj, V<: Typ[W], U<: AbsObj](name: A, dom: V, codom: Typ[U]) extends FormalFunc[W, V, U] with Symbolic[A, AbsObj]{
-      def elem = this
-    }
+	/** Symbol containing function info */
+    case class FuncSymb[A, W<: AbsObj, V<: Typ[W], U<: AbsObj](name: A, dom: V, codom: Typ[U]) extends FormalFunc[W, V, U] with Symbolic[A]
 	
+    /** A formal structure representing func(arg) - especially used for pattern matching */
     private case class FormalApplication[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: FuncObj[W, V, U], arg: AbsObj) extends AbsObj{
       lazy val typ = func.codom
       
       override def toString = func.toString + "("+ arg.toString +")"
-      
-      def elem = this
+
     }
 	
-	case class FnSym[F, A](func: F, arg: A){
-      override def toString = func.toString+"("+arg.toString+")"
-    }
-	
+    /** A function given by a scala function */
 	case class FuncDefn[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: AbsObj => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U]{
 	  def act(arg: AbsObj) = if (arg.typ == dom) Some(func(arg)) else None
+	  
+	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
 	}
 	
-	case class Lambda[U<: AbsObj, V <: AbsObj](variable: U, value : V) extends AbsObj{
+	/** A lambda-expression.
+	 *  variable is mapped to value.
+	 *  
+	 *  Correction? should allow general variables.
+	 *  Should revisit if LogicalTyp variables are too restricitive.
+	 */
+	case class Lambda[X<: AbsObj, Y <: AbsObj](variable: X, value : Y) extends AbsObj{
 	  lazy val typ = (variable.typ.asInstanceOf[LogicalTyp]) --> value.typ
 	  
-	  def apply(target: AbsObj) = AbsObj.subs(variable, target)(value)
+	  def apply(arg: AbsObj) = substitute(variable, arg)(value)
 	}
-			
+	
+	
+	/** Lambda constructor
+	 *  
+	 */		
 	def lambda[U<: AbsObj, V <: AbsObj](variable: U)(value : V) = Lambda(variable, value)
 	
 	type TypFamily[W<: AbsObj, V<: Typ[W], U<: AbsObj] = FuncObj[W, V, Typ[U]]
@@ -194,25 +247,27 @@ object HoTT{
 	  
 	  def act(arg: AbsObj): Option[U]
 	  
-	  def apply(arg: AbsObj) = act(arg)
+	  def apply(arg: AbsObj) = action(arg.asInstanceOf[fibers.dom.Obj])
+	  
+	  def action(arg: fibers.dom.Obj): U
 	  
 	}
 	
 	trait FormalDepFunc[W<: AbsObj, V<: Typ[W], U<: AbsObj] extends DepFuncObj[W, V, U]{
 	  def act(arg: AbsObj) = if (arg.typ == fibers.dom) {
-	    val typ =fibers(arg).get
-	    Some(typ.symbObj(FormalDepApplication[W, V, U](this, arg))) 
+	    val typ =fibers(arg) 
+	    Some(typ.symbObj(FormalDepApplication[W, V, U](this, arg)).asInstanceOf[U]) 
 	  }
 	  else None
 	  
-	  def elem = this
+	  
+	  def action(arg: fibers.dom.Obj) = fibers(arg).symbObj(FormalDepApplication[W, V, U](this, arg)).asInstanceOf[U]
 	}
 	
-	case class DepFuncSym[A, W<: AbsObj, V<: Typ[W], U<: AbsObj](name: A, fibers: TypFamily[W, V, U]) extends FormalDepFunc[W, V, U] with Symbolic[A, AbsObj]
 	
 	private case class FormalDepApplication[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: DepFuncObj[W, V, U], arg: AbsObj) extends AbsObj{
 	  val typFamily = func.fibers
-      lazy val typ : Typ[U] = (typFamily(arg)).get
+      lazy val typ : Typ[U] = (typFamily(arg)) 
       
       override def toString = func.toString + "("+ arg.toString +")"
     }
@@ -221,6 +276,8 @@ object HoTT{
 	
 	case class DepFuncDefn[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: AbsObj => U, dom: V, fibers: TypFamily[W, V,U]) extends DepFuncObj[W, V, U]{
 	  def act(arg: AbsObj) = if (arg.typ == dom) Some(func(arg)) else None
+	  
+	  def action(arg: fibers.dom.Obj): U = func(arg)
 	}
 	
 	object DepFuncObj{
@@ -241,7 +298,7 @@ object HoTT{
   
 	def usedChars(s: Set[AbsObj]): Set[Char] = {
 	    def charOpt (obj:AbsObj) : Option[Char] = obj match {
-	      case sym: Symbolic[_, _] => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
+	      case sym: Symbolic[_] => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
 	      case _ => None
 	    }
 	    
@@ -264,6 +321,9 @@ object HoTT{
 
 
 
+/** Deprecated object
+ *  
+ */
 
 object HoTTinner{
   
@@ -353,9 +413,9 @@ object HoTTinner{
 			}
 
 		implicit def BinFunc[U<: AbsObj, V <: AbsObj, W <: AbsObj](first: EffectiveTyp[U], 
-																															second: EffectiveTyp[V],
+															second: EffectiveTyp[V],
                                                               target: EffectiveTyp[W])(
-																																defn : (first.Obj, second.Obj) => target.Obj) = {
+						defn : (first.Obj, second.Obj) => target.Obj) = {
 						val fn = FuncTyp(PairTyp(first, second), target)
 						val castDefn: fn.dom.Obj => fn.codom.Obj = {
 								arg: fn.dom.Obj => defn(arg.asInstanceOf[(first.Obj, second.Obj)]._1,
