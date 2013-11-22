@@ -22,7 +22,7 @@ case class DepRel(gov: Token, dep: Token, deptype: String){
 /** Returns root of dependency tree */
 def findroot(t : List[DepRel]): Token = {
   val roots = t filter (_.deptype == "root")
-  if (roots.length >0) roots.head.gov else {
+  (roots.headOption map ((d: DepRel) => d.gov)).getOrElse {
     val govs = t map (_.gov)
     val deps = t map (_.dep)
     def notdep(g : Token) = !(deps contains g)
@@ -38,6 +38,7 @@ case class ProseTree(root: Token, tree: List[DepRel]) extends ParseData {
 
   /** Dependence relations with governor a given token */
   def offspring(node: Token) : List[DepRel] = tree filter (_.gov == node)
+  
   /** Dependence relations with governor the root */
   def heirs : List[DepRel] = offspring(root)  
   
@@ -53,7 +54,7 @@ case class ProseTree(root: Token, tree: List[DepRel]) extends ParseData {
       }
   }
   
-  /** Remove dependency relations with dependent a given toke */
+  /** Remove dependency relations with dependent a given token */
   def -(node: Token) = ProseTree(root, (tree filter (_.dep != node)))
   
   /** Remove all edges contained in ProseTree s and with dependent in s */
@@ -115,6 +116,9 @@ def mweTail(t: ProseTree, node: Token): Token = {
   }
 }
 
+case class SplitTree(edge: DepRel, subtree: ProseTree, pruned: ProseTree)
+
+
 /** returns Dependency Relation obtained by merging in multi-word expressions */ 
 def mweMerge(t: ProseTree, d: DepRel) = DepRel(mweTail(t, d.gov), mweTail(t, d.dep), d.deptype)
 
@@ -123,4 +127,88 @@ def mweFold(t: ProseTree) = {
   val foldList = (t.tree map (mweMerge(t,_))) filter (_.deptype != "mwe")
   ProseTree(mweTail(t, t.root), foldList)
 }
+
+
+/** Generic Extractor from ProseTree*/
+case class ProseExtractor[A](fn: ProseTree => Option[A]){
+  def unapply(t: ProseTree): Option[A] = fn(t)
+  
+  def this(fn:PartialFunction[ProseTree, A]) = this(fn.lift)
+  } 
+
+/** Extractor matching Dependency type */
+case class TypeMatch(depType: String){
+  def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType)
+}
+
+/** Extractor matching Dependency type and Word of Dependent Token*/
+case class TypeWordMatch(depType: String, w: String){
+  def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType, w)
+}
+  
+  
+case class TypeListMatch(typList: List[String]){
+  def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findAll(typList).headOption map (t.split)
+}
+
+object Conj{
+  def splitConj(t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) = (r) => (r.deptype drop 5, r, t-<r.dep, t - (t-<r.dep))
+  
+  def unapply(t: ProseTree): Option[(String, DepRel, ProseTree, ProseTree)] = t.find("conj").map(splitConj(t)) 
+}
+
+object Prep{
+  def splitPrep(t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) = (r) => (r.deptype drop 5, r, t-<r.dep, t - (t-<r.dep))
+  
+  def unapply(t: ProseTree): Option[(String, DepRel, ProseTree, ProseTree)] = t.find("prep").map(splitPrep(t)) 
+}
+
+/** Fallback for all modifiers */
+val Modifier = TypeListMatch(List("abbrev", "amod", "appos", "advcl", "purpcl", "det", "predet",
+							"preconj", "infmod", "partmod", "advmod", "mwe", "neg", "rcmod", "quantmod",
+							"nn", "npadvmod", "tmod", "num", "number", "prep", "possesive", "prt",
+							"aux", "auxpass")) // These are not technically modifiers but behave the same way
+
+/** Fallback for all arguments */
+val Argument = TypeListMatch(List("agent", "comp", "acomp", "attr", "ccomp", "xcomp", "complm", "obj", 
+					"dobj", "iobj", "pobj", "mark", "rel", "subj", "nsubj", "nsubjpass", "csubj", "csubjpass"))					
+					
+val Advcl = TypeMatch("advcl")
+
+val IfMark = TypeWordMatch("mark", "if")
+
+/** Extractor for quantmod */
+val QuantMod = TypeMatch("quantmod")
+// use stringNumber()
+/** Extractor for > */
+val Gt = TypeWordMatch("quantmod", "greater than")
+
+/** Extractor for < */
+val Lt = TypeWordMatch("quantmod", "less than")
+
+/** Extractor for "cop" relation */
+val CopRel = TypeMatch("cop")
+
+/** Extractor for nsubj */
+val Nsubj = TypeMatch("nsubj")
+
+/** Extractor for relative clause modifier */
+val Rcmod = TypeMatch("rcmod")
+
+/** Extractor for Clausal complement */
+val Ccomp = TypeMatch("ccomp")
+
+private val copFn: PartialFunction[ProseTree, (ProseTree, ProseTree)] = {
+  case CopRel(_,_,Nsubj(_,s,t)) => (s,t)
+}
+
+/** Extractor for "cop" identifying the subject */
+val Cop = ProseExtractor(copFn.lift)
+
+/** Extractor for "which" */
+val Which=TypeWordMatch("nsubj", "which")
+
+val Parataxis = TypeMatch("parataxis")
+
+
 }

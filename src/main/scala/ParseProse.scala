@@ -66,53 +66,7 @@ case class ProseCondPropt(val t: ProseTree) extends CondPropt with ProsePrint{
   def apply(x: Var, p: Formula) = new ProseFormula(t)
 }
 
-/** Generic Extractor from ProseTree*/
-case class ProseExtractor[A](fn: ProseTree => Option[A]){
-  def unapply(t: ProseTree): Option[A] = fn(t)
-  
-  def this(fn:PartialFunction[ProseTree, A]) = this(fn.lift)
-  } 
 
-/** Extractor matching Dependency type */
-case class TypeMatch(depType: String){
-  def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType)
-}
-
-/** Extractor matching Dependency type and Word of Dependent Token*/
-case class TypeWordMatch(depType: String, w: String){
-  def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType, w)
-}
-  
-/** Extractor for quantmod */
-val QuantMod = TypeMatch("quantmod")
-// use stringNumber()
-/** Extractor for > */
-val Gt = TypeWordMatch("quantmod", "greater than")
-
-/** Extractor for < */
-val Lt = TypeWordMatch("quantmod", "less than")
-
-/** Extractor for "cop" relation */
-val CopRel = TypeMatch("cop")
-
-/** Extractor for nsubj */
-val Nsubj = TypeMatch("nsubj")
-
-/** Extractor for relative clause modifier */
-val Rcmod = TypeMatch("rcmod")
-
-/** Extractor for Clausal complement */
-val Ccomp = TypeMatch("ccomp")
-
-private val copFn: PartialFunction[ProseTree, (ProseTree, ProseTree)] = {
-  case CopRel(_,_,Nsubj(_,s,t)) => (s,t)
-}
-
-/** Extractor for "cop" identifying the subject */
-val Cop = ProseExtractor(copFn.lift)
-
-/** Extractor for "which" */
-val Which=TypeWordMatch("nsubj", "which")
 
 /** Extractor for Adverbial Clause */
 object Advcl{

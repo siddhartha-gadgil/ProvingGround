@@ -19,6 +19,7 @@ import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations._
 object CoreNLP{
 
 		def gov(e: SemanticGraphEdge) = Token(e.getGovernor().word, e.getGovernor().index)
+		
 		def dep(e: SemanticGraphEdge) = Token(e.getDependent().word, e.getDependent().index)
 		
 		def depWord(short: String, specific: String) = if (short=="prep") short+"_"+specific else short
@@ -38,11 +39,13 @@ object CoreNLP{
 			}
 
 		def sentences(document:Annotation) : List[CoreMap] = {
-			(document.get[java.util.List[CoreMap],CoreAnnotations.SentencesAnnotation](classOf[CoreAnnotations.SentencesAnnotation])).asScala.toList
+			(document.get[java.util.List[CoreMap],CoreAnnotations.SentencesAnnotation](
+			    classOf[CoreAnnotations.SentencesAnnotation])).asScala.toList
 			}
 
 		def depRelIterable(sentence: CoreMap) = {
-      val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](classOf[CollapsedCCProcessedDependenciesAnnotation]);
+      val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](
+          classOf[CollapsedCCProcessedDependenciesAnnotation]);
 			val dependencyIterable = dependencies.edgeIterable().asScala
 			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
 			}

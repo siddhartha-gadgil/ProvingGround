@@ -2,6 +2,8 @@ provingGround/
 
 target/
 
+.target/
+
 lib/
 
 index/
@@ -35,5 +37,7 @@ src/main/scala/proving*
 *~
 
 .cache
+
+
 
 

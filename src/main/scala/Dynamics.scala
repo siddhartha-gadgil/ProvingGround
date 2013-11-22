@@ -15,7 +15,108 @@ import provingGround.HoTT._
 
 import ExecutionContext.Implicits.global
 
+object Entropy{
+  type Resolver[S] = S => Option[List[S]]
+  
+  case class Relation[S](src: S, target:S) extends Resolver[S]{
+    def apply(s: S) = if (s==src) Some(List(target)) else None
+  }
+  
+  object Resolver{
+    def fromTuple[S](unapp: S => Option[Product]): Resolver[S] = {
+      case (s) => unapp(s) map (_.productIterator.toList.map(_.asInstanceOf[S])) 
+    }
+    
+    def apply[S](unapp: S => Option[Product]): Resolver[S] = fromTuple(unapp)
+  }
+  
+  
+  trait Rec[S]{
+    /** The given entropies */
+    val base: S => Option[Double]
+    
+    /** Resolving objects into others */
+    val resolvers: Set[Resolver[S]]
+    
+    /** The cost of resolving */
+    val resolverWeight: Resolver[S] => Double
+    
+    private def sum(a: Double, b: Double) = a + b
+    
+    private def entSum(l: List[S], bound: Double, withBase: S => Option[Double]): Double = l map ((s) => recEntropy(s, bound))reduce (sum) 
+    
+    def recEntropy(s: S, bound: Double, withBase: S => Option[Double] = base): Double = {
+      if  (bound < 0) 0 else {
+        base(s) match {
+          case Some(ent) if ent < bound =>
+            math.min(ent, recEntropy(s, ent, withBase))
+          case _ => 
+            val offspring = for (res <- resolvers; l <- res(s)) yield (entSum(l, bound - resolverWeight(res), withBase) + resolverWeight(res))
+            (offspring + (bound+1)).min
+        }      
+      }
+    }
+    
+    def entropyBounded(bound: Double)(s: S) = recEntropy(s, bound) < bound
+    
+    def addBase(newBase: S => Option[Double])(s: S) = base(s) orElse newBase(s) 
+    
+    def addGens(gens: Set[S], weight: Double = 1)(s: S) = {
+      val newBase: S => Option[Double] = {
+        case s => 
+        	if (gens contains (s)) Some(weight) else None
+        	}
+      addBase(newBase)(s)
+    }
+    
+    @tailrec final def cumulEntropy(ss: List[S], bound: Double, accum: Double = 0): Double =  ss match {
+      case List() => 0
+      case List(s) => recEntropy(s, bound)
+      case s :: l => cumulEntropy(l, bound, accum + recEntropy(s, bound, addGens(l.toSet)))
+    }
+    
+    def cmpndRecEntropy(s: S, bound: Double): Double = {
+      if  (bound < 0) 0 else {
+        base(s) match {
+          case Some(ent) if ent < bound =>
+            math.min(ent, cmpndRecEntropy(s, ent))
+          case _ => 
+            val offspring = for (res <- resolvers; l <- res(s)) yield (cumulEntropy(l, bound - resolverWeight(res)) + resolverWeight(res))
+            (offspring + (bound+1)).min
+        }      
+      }
+    }
+  }
+  
+  object Rec{
+    def unionBase[S](bs: List[S => Option[Double]])(s: S) = bs.map(_(s)).foldLeft(None: Option[Double])(_ orElse _)
+  }
+  
+  case class SimpleRecData[S](gen: Set[S], resolvers: Set[Resolver[S]]) extends Rec[S]{
+    val base: S => Option[Double] = {case s => 
+      if (gen contains (s)) Some(1) else None}
+    
+    val resolverWeight: Resolver[S] => Double = {case r => 1}
+  }
+}
+
 object Dynamics{
+  
+	// e.g. Represent Integer as product of primes.
+	trait Represent[A, B]{
+	  def construct(src: A): Option[B]
+	  def resolve(target: B): Option[A]
+	}
+  
+	trait SimpleRep[A, B] extends Represent[A,B]{
+	  def build(src: A): B
+	  def construct(src: A) = Some(build(src))
+	}
+	
+	case class Representation[S, T](src: S, func: S => T){
+	  lazy val target = func(src)
+	}
+  
     trait DynSys[A]{
         def act: Set[A] => DynState[A]
                 
