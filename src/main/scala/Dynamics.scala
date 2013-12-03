@@ -15,6 +15,43 @@ import provingGround.HoTT._
 
 import ExecutionContext.Implicits.global
 
+object Goals{
+  trait Goal[U]{
+    def achieves(soln: U): Boolean
+  }
+  
+  case class FindSolution[U, V](target: V, fn: U => V) extends Goal[U]{
+    def achieves(soln: U) = fn(soln) == target
+    
+  }
+  
+  trait Reduction[U]{
+    val target: Goal[U]
+    
+    val newGoals: Set[Goal[U]]
+    
+    def solution(solns: Goal[U] => Option[U]): Option[U]
+    
+    def apply(solns: Goal[U] => Option[U]) = solution(solns)
+    
+    def apply(solns: PartialFunction[Goal[U], U]) = solution(solns.lift)
+  }
+  
+  case class SimpleReduction[U](target: Goal[U], newGoal: Goal[U], reduction: U => U) extends Reduction[U]{
+    val newGoals = Set(newGoal)
+    
+    def solution(solns: Goal[U] => Option[U]) = solns(newGoal) map (reduction)
+    
+    def reduce: U => Option[U] = {
+      case soln if newGoal.achieves(soln) => Some(reduction(soln))
+      case _ => None
+    } 
+    
+    def apply(soln: U) = reduce(soln)
+  }
+}
+
+
 object Entropy{
   type Resolver[S] = S => Option[List[S]]
   
