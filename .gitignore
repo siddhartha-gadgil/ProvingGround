@@ -1,5 +1,7 @@
 provingGround/
 
+bin/
+
 target/
 
 .target/
@@ -38,6 +40,6 @@ src/main/scala/proving*
 
 .cache
 
+.worksheet/
 
-
-
+*.log

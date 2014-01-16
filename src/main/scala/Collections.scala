@@ -6,6 +6,8 @@ import scala.util._
 import scala.language.implicitConversions
 
 object Collections{
+    implicit val ZeroReal : Double = 0
+    
     trait InfSeq[T]{
       val head: T
       val tail: InfSeq[T]
@@ -135,7 +137,7 @@ object Collections{
       def normalized = new FiniteDistribution(posmf map (_.scale(1.0/postotal)))
     }
     
-    class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A)
+    case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A)
     
     trait LabelledArray[L,T] extends Traversable[T]{
       val support: Traversable[L]
@@ -145,36 +147,59 @@ object Collections{
       def get(label: L): Option[T]
         
       def apply(label: L)(implicit zero: T)  = get(label).getOrElse(zero)
+      
+      def incl(label: L)(arg: T) = ArrayMap(Map(label -> arg))
+      
+      def proj(label : L)(arr: ArrayMap[L, T])(implicit zero: T) = arr(label)(zero)
+      
+      def inclusion(label: L)(implicit zero: T) = {
+        require (!((support find (_ == label)).isEmpty))
+        
+        DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
+      }
     }
     
-    implicit val zero: Double = 0
     
-    case class ArrayMap[L, T](coords: Map[L, T]) extends LabelledArray[L, T]{
-      lazy val support = coords.keys  
+    
+    case class ArrayMap[L, T](coords: Map[L, T], supp: Option[Traversable[L]] = None) extends LabelledArray[L, T]{
+      lazy val support = supp getOrElse (coords.keys)  
         
       def get(label: L) = coords.get(label)
+      
+      def map[S](f: T => S) = {
+        val newmap = (for ((k, t) <- coords) yield (k -> f(t))).toMap
+        ArrayMap(newmap, supp)
+      }
+      
+      def total(implicit zero: T, ls: LinearStructure[T]) = coords.values.foldLeft(zero)(ls.sum(_,_))
+      
+      def ++(that: ArrayMap[L, T])(implicit zero: T, ls: LinearStructure[T]) ={
+        val unionmap = (for (k <- coords.keySet.union(that.coords.keySet)) yield (k -> ls.sum(this(k), that(k)))).toMap
+        
+        ArrayMap(unionmap, supp)
+      }
     }
     
     implicit class Shift[B](val shift: (B, B, Double) => B)
     
     def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) = s.shift(init, tangent, epsilon)
     
-    trait DiffBleFunction[A, B] extends (A => B){self =>
+    trait DiffbleFunction[A, B] extends (A => B){self =>
     	def grad(a: A) : B => A   
     	
     	/**
     	 * Composition f *: g is f(g(_))
     	 */
-    	def *:[C](that: DiffBleFunction[B, C]) = andThen(that)
+    	def *:[C](that: DiffbleFunction[B, C]) = andThen(that)
     	
-    	def andThen[C](that: DiffBleFunction[B, C]): DiffBleFunction[A, C] = DiffBleFunction((a: A) => that(this(a)))(
+    	def andThen[C](that: DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
     													(a: A) => 
     	  													(c: C) =>
     	  													  grad(a)(that.grad(this(a))(c)))
     	}
     
-    object DiffBleFunction{
-      def apply[A, B](f: A => B)(grd: A => (B => A)) = new DiffBleFunction[A, B]{
+    object DiffbleFunction{
+      def apply[A, B](f: A => B)(grd: A => (B => A)) = new DiffbleFunction[A, B]{
         def apply(a: A) = f(a)
         
         def grad(a: A) = grd(a)
@@ -182,16 +207,83 @@ object Collections{
     }
     
     
-    trait LearningSystem[I, P, O] extends DiffBleFunction[(I, P), O]{
+    trait LearningSystem[I, P, O] extends DiffbleFunction[(I, P), O]{
         def apply(inp: I, param: P): O = this.apply((inp,param))
         
         def update(feedback: O, inp: I, param: P, epsilon: Double)(implicit s: Shift[P]) = s.shift(param, grad(inp, param)(feedback)._2, epsilon)
 
-//        def stack[Q, X](that: LearningSystem[O, Q, X]) = asLearner(this andThen (that)
+        def stack[Q, X](that: LearningSystem[O, Q, X]) = {
+            
+            def fwd(inp: I, pq: (P, Q)) = that(this(inp, pq._1), pq._2) 
+            
+            def bck(inp: I, pq: (P, Q))(x: X) = {
+              val p = pq._1
+              val q= pq._2
+              val midval : O = this(inp, p) 
+              val thatdiff  = that.grad((midval, q))(x)
+              val odiff = thatdiff._1
+              val thisdiff = grad((inp, p))(odiff)
+              (thisdiff._1, (thisdiff._2, thatdiff._2))
+              
+            }
+            
+            LearningSystem(fwd, bck)
+        }
+    }
+    
+    object LearningSystem{
+      def aggregate[L, I, P, O](edge: LearningSystem[I, P, O], base: Traversable[L])(implicit zero: O,ls: LinearStructure[O]) ={
+        def fwd(inps: ArrayMap[L, I], params: ArrayMap[L, P]) ={
+          val terms = for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield edge(in, p)
+          terms.foldLeft(zero)(ls.sum(_,_))
+        }
+        
+        def bck(inps: ArrayMap[L, I], params: ArrayMap[L, P])(o: O) ={
+          val inpmap = (for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._1)).toMap
+          
+          val parammap = (for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._2)).toMap
+          
+          (ArrayMap(inpmap, inps.supp), ArrayMap(parammap, params.supp))
+        }
+        
+        LearningSystem(fwd, bck)
+      }
+      
+      def apply[I, P, O](fwd: (I, P) => O, bck: (I, P) => O =>(I, P))={
+        def forward(ip: (I, P)) = fwd(ip._1, ip._2)
+        
+        def back(ip : (I, P))(out: O): (I, P) = back(ip._1, ip._2)(out)
+        
+        asLearner(DiffbleFunction[(I,P), O](forward)(back))
+      } 
+      
+      def edge[I](f: DiffbleFunction[I, Double]) ={
+        def fwd(inp: I, wt: Double) = wt * f(inp)
+        
+        def bck(inp: I, wt: Double)(o: Double) = (f.grad(inp)(wt * o), fwd(inp, wt))
+        
+        LearningSystem[I, Double, Double](fwd, bck)
+      }
+      
+      def collect[I, P, O, E](comps: Map[E, LearningSystem[I, P, O]])(implicit zi: I, zp: P, zo: O, ls: LinearStructure[I]) ={
+        val exits = comps.keys
+        
+        def fwd(inp: I, param: ArrayMap[E, P]) = ArrayMap((exits map ((k) => (k ->comps(k)(inp,param(k))))).toMap)
+        
+        def bck(inp: I, param: ArrayMap[E, P])(out: ArrayMap[E, O]) ={
+          val parammap = (for (e <- exits) yield (e -> comps(e).grad(inp, param(e))(out(e))._2)).toMap
+          
+          val inpterms = for (e <- exits) yield comps(e).grad(inp, param(e))(out(e))._1
+
+          ((zi /: inpterms)(ls.sum(_,_)), ArrayMap(parammap))
+        }
+        
+        LearningSystem[I, ArrayMap[E, P], ArrayMap[E, O]](fwd, bck)
+      }
     }
     
     
-    implicit def asLearner[I, P, O](f: DiffBleFunction[(I, P), O]): LearningSystem[I, P, O] = new LearningSystem[I, P, O]{
+    implicit def asLearner[I, P, O](f: DiffbleFunction[(I, P), O]): LearningSystem[I, P, O] = new LearningSystem[I, P, O]{
     	def apply(a: (I, P)) = f(a)
     	
     	def grad(a: (I, P)) = f.grad(a)

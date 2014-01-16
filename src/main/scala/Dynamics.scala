@@ -139,6 +139,27 @@ object Entropy{
 
 object Dynamics{
   
+	trait Feedback[I, O]{
+	  def feedback(value: O, trueVal: O, arg: I, epsilon: Double): I 
+	}
+	
+	case class FeedbackFunction[I, O](forward: I => O, back:(O, O, I, Double) => I) extends Feedback[I, O] with (I => O){
+	  def feedback(value: O, trueVal: O, arg: I, epsilon: Double) = back(value, trueVal, arg, epsilon)
+	  
+	  def apply(arg:I) = forward(arg)
+	}
+  
+	trait SimpleGradientFlow[I, O]{
+	  def dyn(fn: FeedbackFunction[I, O]): I => I
+	}
+	
+	
+	case class GradFlowPoint[I, O](point: I, flow: GradFlow[I, O])
+	
+	trait GradFlow[I, O]{
+	  def dyndyn(fn: FeedbackFunction[I, O]): I => GradFlowPoint[I, O]
+	}
+	
 	// e.g. Represent Integer as product of primes.
 	trait Represent[A, B]{
 	  def construct(src: A): Option[B]
