@@ -8,6 +8,8 @@ import scala.language.implicitConversions
 object Collections{
     implicit val ZeroReal : Double = 0
     
+    implicit def ZeroPair[A, B](za: A, zb: B): (A, B) = (za, zb)
+    
     trait InfSeq[T]{
       val head: T
       val tail: InfSeq[T]
@@ -55,6 +57,10 @@ object Collections{
       override def map[S](f: T =>S): ApproxSeq[S] = ApproxSeq.cons(f(head), tail.map(f))
     }
 
+    /*
+     * Does this change on disc?
+     */
+    
     object ApproxSeq{
       case class Const[T](t: T) extends ApproxSeq[T]{
         lazy val head = t
@@ -121,7 +127,7 @@ object Collections{
       def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)
     }
     
-    class FiniteDistribution[T](pmf: Seq[Weighted[T]]) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
+    case class FiniteDistribution[T](pmf: Seq[Weighted[T]]) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
       lazy val support = pmf map (_.elem)
         
       lazy val rand = new Random
@@ -129,15 +135,36 @@ object Collections{
       def next = Weighted.pick(pmf, rand.nextDouble)
       
       def get(label: T) = pmf find (_.elem == label) map (_.weight)
+      
+      def apply(label: T) = get(label).getOrElse(0.0)
     
       private def posmf = pmf filter (_.weight > 0)
       
       private def postotal = ((posmf map (_.weight)) :\ 0.0)(_ + _) ensuring (_ > 0)
       
       def normalized = new FiniteDistribution(posmf map (_.scale(1.0/postotal)))
+      
+      def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
+      
+      def ++(that: FiniteDistribution[T]) = new FiniteDistribution(pmf ++ that.pmf)
     }
     
-    case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A)
+    case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A){
+      def diff(frm: A, remove: A) = sum(frm, mult(-1.0, remove))
+    }
+    
+    implicit val RealsAsLinearStructure = LinearStructure[Double]((_+_), (_*_))
+    
+    implicit def VectorPairs[A, B](implicit lsa: LinearStructure[A], lsb: LinearStructure[B]): LinearStructure[(A, B)] = {
+       def sumpair(fst: (A, B), scnd: (A, B)) =(lsa.sum(fst._1, scnd._1), lsb.sum(fst._2, scnd._2)) 
+       
+       def multpair(sc: Double, vect: (A, B)) = (lsa.mult(sc, vect._1), lsb.mult(sc, vect._2))
+       
+       LinearStructure(sumpair, multpair)
+    }
+
+    implicit def FiniteDistVec[T] = LinearStructure[FiniteDistribution[T]](_++_, (w, d) => d * w)
+    
     
     trait LabelledArray[L,T] extends Traversable[T]{
       val support: Traversable[L]
@@ -180,9 +207,24 @@ object Collections{
       }
     }
     
-    implicit class Shift[B](val shift: (B, B, Double) => B)
+    implicit def ZeroMap[L, T] : ArrayMap[L, T] = ArrayMap(Map.empty: Map[L, T])
     
-    def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) = s.shift(init, tangent, epsilon)
+    implicit def VectorArray[L, T](implicit zero: T, ls: LinearStructure[T]): LinearStructure[ArrayMap[L, T]] = {
+      def mult(sc: Double, arr: ArrayMap[L, T]) = arr map ((t: T) => ls.mult(sc,t))
+      
+      LinearStructure[ArrayMap[L, T]](_++_, mult)
+    }
+    
+
+    
+    
+    implicit class Shift[B](shift: (B, B, Double) => B){
+      def apply(base: B, tang: B, sc: Double) = shift(base, tang, sc)
+    }
+    
+    implicit def shiftFromVS[V](implicit ls: LinearStructure[V]) = Shift((base: V, tang : V, e: Double) => ls.diff(base, ls.mult(e,tang)))
+    
+    def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) = s(init, tangent, epsilon)
     
     trait DiffbleFunction[A, B] extends (A => B){self =>
     	def grad(a: A) : B => A   
@@ -204,13 +246,17 @@ object Collections{
         
         def grad(a: A) = grd(a)
       }
+  
+       
+      
+      val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
     }
     
     
     trait LearningSystem[I, P, O] extends DiffbleFunction[(I, P), O]{
         def apply(inp: I, param: P): O = this.apply((inp,param))
         
-        def update(feedback: O, inp: I, param: P, epsilon: Double)(implicit s: Shift[P]) = s.shift(param, grad(inp, param)(feedback)._2, epsilon)
+        def update(feedback: O, inp: I, param: P, epsilon: Double)(implicit s: Shift[P]) = s(param, grad(inp, param)(feedback)._2, epsilon)
 
         def stack[Q, X](that: LearningSystem[O, Q, X]) = {
             
@@ -280,6 +326,17 @@ object Collections{
         
         LearningSystem[I, ArrayMap[E, P], ArrayMap[E, O]](fwd, bck)
       }
+      
+      def ANN[D, C](f: DiffbleFunction[Double, Double], dom: Traversable[D], codom: Traversable[C], inc: (D, C) => Boolean) ={
+        val ed = edge(f)
+        
+        def toexit(y: C) = aggregate(ed, dom filter (inc(_, y)))
+        
+        val exitMap = (for (y<- codom) yield (y -> toexit(y))).toMap
+        
+        collect(exitMap)
+      }
+            
     }
     
     
@@ -289,5 +346,111 @@ object Collections{
     	def grad(a: (I, P)) = f.grad(a)
     }
     
+    case class MultiSet[A](wts: Map[A, Int]) extends Set[A]{
+      def weight(elem: A) = wts.getOrElse(elem, 0)
+      
+      lazy val support = wts.keySet
+     
+      // May not be needed - comes from iterator
+ //     override def foreach[U](f: A => U): Unit = wts.keys.foreach((k) =>
+ //       	(1 to wts(k)).foreach((j) =>
+ //       	  f(k)))
+
+      def ++(that: MultiSet[A]) = {
+        val newmap = ((wts.keySet union that.wts.keySet) map ((k : A) => (k, weight(k) + that.weight(k)))).toMap
+        MultiSet(newmap)
+      }
+      
+      def +(elem: A) = {
+        MultiSet(wts updated (elem, weight(elem)+ 1)) 
+      }
+      
+      def -(elem: A) ={
+        MultiSet(wts updated (elem, math.min(weight(elem)-1,0)))
+      }
+      
+      def contains(elem: A) = weight(elem)>0
+      
+      def asSeq = (wts map ( kn =>
+        (1 to kn._2) map ( _ => kn._1))).flatten
+        
+      def iterator = asSeq.iterator
+    }
+    
+    object MultiSet{
+      def empty[A] = MultiSet[A](Map.empty)
+    }
+    
+    
+    // Eventually move this elsewhere:
+    //Deprecate what is below and create a new object with the correct version of the code
+    object dooomed{
+    lazy val binTrees : Stream[Long] = Stream from (1) map ((n: Int) => 
+      if (n == 1) (1 : Long) 
+      else (for (i <- 1 to n-1) yield (binTrees(i-1) * binTrees(n-i-1))).sum
+        )
+      
+    lazy val factorial: Stream[Long] = Stream from (0) map ((n) =>
+      if (n==0) 1: Long else n * factorial(n-1))
+      
+    trait RandomWord[A]{
+      val value: A
+      
+      val prob: Double
+    }
+    
+ 
+    
+    case class RandomLetter[A](value: A, prob: Double) extends RandomWord[A]  
+    
+    trait RecRandomWord[A] extends RandomWord[A]{
+      def compWtdOffspring: Traversable[(RandomWord[A], Double)]
+      
+      def offspring = compWtdOffspring map (_._1)
+      
+      def compWeight(wrd: RandomWord[A]) = compWtdOffspring.toMap.getOrElse(wrd, 0)
+    }
+    
+    case class UnOpWord[E](unop: E => E, wrd: RandomWord[E], opwt: Double, elemwt: Double) extends RecRandomWord[E]{
+      val prob = opwt * elemwt 
+      
+      val value = unop(wrd.value)
+      
+      def compWtdOffspring = List((wrd, opwt))
+    }
+    
+    case class BinOpWord[E](binop: (E, E) => E, first: RandomWord[E], second: RandomWord[E], opwt: Double, fstwt: Double, scndwt: Double) extends RecRandomWord[E]{
+      val prob = opwt * fstwt *scndwt
+      
+      val value = binop(first.value, second.value)
+      
+      def compWtdOffspring = List((first, opwt * scndwt), (second, opwt * fstwt))
+    }
+    
+    
+    case class AssocOpWord[E](binop: (E, E) => E, wtdwords: List[(RandomWord[E], Double)], opwt: Double) extends RecRandomWord[E]{
+      def problist = wtdwords map (_._2)
+      
+      def length = wtdwords.length
+      
+      def simplify = if (length ==1) RandomLetter(value, prob) else this
+      
+      val prob = ((problist :\ 1.0)(_ * _)) * math.pow(opwt, length-1) * binTrees(length)
+      
+      def valuelist = wtdwords map (_._1.value)
+      
+      val value = valuelist reduce (binop(_, _))
+      
+      def childrenAt(n: Int) = {
+        val fst = AssocOpWord(binop, wtdwords take n, opwt)
+        val scnd = AssocOpWord(binop, wtdwords drop n, opwt)
+        
+        List((fst, scnd.prob), (scnd, fst.prob))
+      }
+      
+      //This is wrong - have all breakups
+      def compWtdOffspring = for (j<-1 to length -1; child <- childrenAt(j)) yield child
+    }
+    }
 }
 
