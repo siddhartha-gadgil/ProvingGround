@@ -274,7 +274,7 @@ object Dynamics{
 //       }
        
        def applyFn[W<: AbsObj, V<: Typ[W], U<: AbsObj](f: FuncObj[W, V, U]): PartialFunction[AbsObj, AbsObj] = {
-         case arg if arg.typ == f.dom => f(arg)
+         case arg if arg.typ == f.dom => f(arg.asInstanceOf[W])
        }
 
        val applications: PartialFunction[AbsObj, PartialFunction[AbsObj, AbsObj]] = {
