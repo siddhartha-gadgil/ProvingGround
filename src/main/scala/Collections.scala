@@ -146,7 +146,10 @@ object Collections{
       
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
       
-      def ++(that: FiniteDistribution[T]) = new FiniteDistribution(pmf ++ that.pmf)
+      def ++(that: FiniteDistribution[T]) = {
+        val combined = (for (k <- support.toSet union that.support.toSet) yield Weighted(k, apply(k) + that(k))).toSeq
+        new FiniteDistribution(combined)   
+      }
     }
     
     case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A){
@@ -182,7 +185,7 @@ object Collections{
       def inclusion(label: L)(implicit zero: T) = {
         require (!((support find (_ == label)).isEmpty))
         
-        DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
+        LearningSystem.DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
       }
     }
     
@@ -226,126 +229,8 @@ object Collections{
     
     def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) = s(init, tangent, epsilon)
     
-    trait DiffbleFunction[A, B] extends (A => B){self =>
-    	def grad(a: A) : B => A   
-    	
-    	/**
-    	 * Composition f *: g is f(g(_))
-    	 */
-    	def *:[C](that: DiffbleFunction[B, C]) = andThen(that)
-    	
-    	def andThen[C](that: DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
-    													(a: A) => 
-    	  													(c: C) =>
-    	  													  grad(a)(that.grad(this(a))(c)))
-    	}
-    
-    object DiffbleFunction{
-      def apply[A, B](f: A => B)(grd: A => (B => A)) = new DiffbleFunction[A, B]{
-        def apply(a: A) = f(a)
-        
-        def grad(a: A) = grd(a)
-      }
-  
-       
-      
-      val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
-    }
-    
-    
-    trait LearningSystem[I, P, O] extends DiffbleFunction[(I, P), O]{
-        def apply(inp: I, param: P): O = this.apply((inp,param))
-        
-        def update(feedback: O, inp: I, param: P, epsilon: Double)(implicit s: Shift[P]) = s(param, grad(inp, param)(feedback)._2, epsilon)
 
-        def stack[Q, X](that: LearningSystem[O, Q, X]) = {
-            
-            def fwd(inp: I, pq: (P, Q)) = that(this(inp, pq._1), pq._2) 
-            
-            def bck(inp: I, pq: (P, Q))(x: X) = {
-              val p = pq._1
-              val q= pq._2
-              val midval : O = this(inp, p) 
-              val thatdiff  = that.grad((midval, q))(x)
-              val odiff = thatdiff._1
-              val thisdiff = grad((inp, p))(odiff)
-              (thisdiff._1, (thisdiff._2, thatdiff._2))
-              
-            }
-            
-            LearningSystem(fwd, bck)
-        }
-    }
-    
-    object LearningSystem{
-      def aggregate[L, I, P, O](edge: LearningSystem[I, P, O], base: Traversable[L])(implicit zero: O,ls: LinearStructure[O]) ={
-        def fwd(inps: ArrayMap[L, I], params: ArrayMap[L, P]) ={
-          val terms = for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield edge(in, p)
-          terms.foldLeft(zero)(ls.sum(_,_))
-        }
-        
-        def bck(inps: ArrayMap[L, I], params: ArrayMap[L, P])(o: O) ={
-          val inpmap = (for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._1)).toMap
-          
-          val parammap = (for (k <-inps.coords.keys; in <-inps.get(k); p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._2)).toMap
-          
-          (ArrayMap(inpmap, inps.supp), ArrayMap(parammap, params.supp))
-        }
-        
-        LearningSystem(fwd, bck)
-      }
-      
-      def apply[I, P, O](fwd: (I, P) => O, bck: (I, P) => O =>(I, P))={
-        def forward(ip: (I, P)) = fwd(ip._1, ip._2)
-        
-        def back(ip : (I, P))(out: O): (I, P) = back(ip._1, ip._2)(out)
-        
-        asLearner(DiffbleFunction[(I,P), O](forward)(back))
-      } 
-      
-      def edge[I](f: DiffbleFunction[I, Double]) ={
-        def fwd(inp: I, wt: Double) = wt * f(inp)
-        
-        def bck(inp: I, wt: Double)(o: Double) = (f.grad(inp)(wt * o), fwd(inp, wt))
-        
-        LearningSystem[I, Double, Double](fwd, bck)
-      }
-      
-      def collect[I, P, O, E](comps: Map[E, LearningSystem[I, P, O]])(implicit zi: I, zp: P, zo: O, ls: LinearStructure[I]) ={
-        val exits = comps.keys
-        
-        def fwd(inp: I, param: ArrayMap[E, P]) = ArrayMap((exits map ((k) => (k ->comps(k)(inp,param(k))))).toMap)
-        
-        def bck(inp: I, param: ArrayMap[E, P])(out: ArrayMap[E, O]) ={
-          val parammap = (for (e <- exits) yield (e -> comps(e).grad(inp, param(e))(out(e))._2)).toMap
-          
-          val inpterms = for (e <- exits) yield comps(e).grad(inp, param(e))(out(e))._1
 
-          ((zi /: inpterms)(ls.sum(_,_)), ArrayMap(parammap))
-        }
-        
-        LearningSystem[I, ArrayMap[E, P], ArrayMap[E, O]](fwd, bck)
-      }
-      
-      def ANN[D, C](f: DiffbleFunction[Double, Double], dom: Traversable[D], codom: Traversable[C], inc: (D, C) => Boolean) ={
-        val ed = edge(f)
-        
-        def toexit(y: C) = aggregate(ed, dom filter (inc(_, y)))
-        
-        val exitMap = (for (y<- codom) yield (y -> toexit(y))).toMap
-        
-        collect(exitMap)
-      }
-            
-    }
-    
-    
-    implicit def asLearner[I, P, O](f: DiffbleFunction[(I, P), O]): LearningSystem[I, P, O] = new LearningSystem[I, P, O]{
-    	def apply(a: (I, P)) = f(a)
-    	
-    	def grad(a: (I, P)) = f.grad(a)
-    }
-    
     case class MultiSet[A](wts: Map[A, Int]) extends Set[A]{
       def weight(elem: A) = wts.getOrElse(elem, 0)
       
@@ -382,75 +267,6 @@ object Collections{
     }
     
     
-    // Eventually move this elsewhere:
-    //Deprecate what is below and create a new object with the correct version of the code
-    object dooomed{
-    lazy val binTrees : Stream[Long] = Stream from (1) map ((n: Int) => 
-      if (n == 1) (1 : Long) 
-      else (for (i <- 1 to n-1) yield (binTrees(i-1) * binTrees(n-i-1))).sum
-        )
-      
-    lazy val factorial: Stream[Long] = Stream from (0) map ((n) =>
-      if (n==0) 1: Long else n * factorial(n-1))
-      
-    trait RandomWord[A]{
-      val value: A
-      
-      val prob: Double
-    }
-    
- 
-    
-    case class RandomLetter[A](value: A, prob: Double) extends RandomWord[A]  
-    
-    trait RecRandomWord[A] extends RandomWord[A]{
-      def compWtdOffspring: Traversable[(RandomWord[A], Double)]
-      
-      def offspring = compWtdOffspring map (_._1)
-      
-      def compWeight(wrd: RandomWord[A]) = compWtdOffspring.toMap.getOrElse(wrd, 0)
-    }
-    
-    case class UnOpWord[E](unop: E => E, wrd: RandomWord[E], opwt: Double, elemwt: Double) extends RecRandomWord[E]{
-      val prob = opwt * elemwt 
-      
-      val value = unop(wrd.value)
-      
-      def compWtdOffspring = List((wrd, opwt))
-    }
-    
-    case class BinOpWord[E](binop: (E, E) => E, first: RandomWord[E], second: RandomWord[E], opwt: Double, fstwt: Double, scndwt: Double) extends RecRandomWord[E]{
-      val prob = opwt * fstwt *scndwt
-      
-      val value = binop(first.value, second.value)
-      
-      def compWtdOffspring = List((first, opwt * scndwt), (second, opwt * fstwt))
-    }
-    
-    
-    case class AssocOpWord[E](binop: (E, E) => E, wtdwords: List[(RandomWord[E], Double)], opwt: Double) extends RecRandomWord[E]{
-      def problist = wtdwords map (_._2)
-      
-      def length = wtdwords.length
-      
-      def simplify = if (length ==1) RandomLetter(value, prob) else this
-      
-      val prob = ((problist :\ 1.0)(_ * _)) * math.pow(opwt, length-1) * binTrees(length)
-      
-      def valuelist = wtdwords map (_._1.value)
-      
-      val value = valuelist reduce (binop(_, _))
-      
-      def childrenAt(n: Int) = {
-        val fst = AssocOpWord(binop, wtdwords take n, opwt)
-        val scnd = AssocOpWord(binop, wtdwords drop n, opwt)
-        
-        List((fst, scnd.prob), (scnd, fst.prob))
-      }
-      
-      //This is wrong - have all breakups
-      def compWtdOffspring = for (j<-1 to length -1; child <- childrenAt(j)) yield child
-    }
-    }
+   
 }
 

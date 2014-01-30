@@ -2,6 +2,8 @@ package provingGround
 
 import provingGround.Collections._
 
+import provingGround.LearningSystem._
+
 object RandomWords{
 /*
  * A symbol is either an element of E wrapped, a word in E or an operation on E.
@@ -80,7 +82,10 @@ object RandomWords{
     def pushmass(m: FiniteDistribution[Symbol[E]]) = (pushforward(m) map (_.weight)).sum
     
     def forward(m: FiniteDistribution[Symbol[E]]) = FiniteDistribution((pushforward(m) map (_.scale(1.0/pushmass(m)))).toSeq)
-  
+    
+    /*
+     * There is no assumption that vector is normalized, so feedback does not have to do this.
+     */
     def back(m: FiniteDistribution[Symbol[E]])(vect: FiniteDistribution[Word[E]]) = {
       val support = (m.support ++ supp).toSet
       
@@ -96,5 +101,17 @@ object RandomWords{
     DiffbleFunction(forward)(back)
   }
   
+  def relEntropy[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) ={
+    (for (Weighted(x, w) <- bg.pmf if d(x) >0) yield (w * math.log(1/d(x)))).sum
+  }
+  
+  def entropyFeedback[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) ={
+    FiniteDistribution(for (Weighted(x, w) <- bg.pmf if d(x) >0) yield (Weighted(x, w/d(x))))
+  }
+  
+  def simpleLearn[E](supp : Set[Word[E]], target: FiniteDistribution[Word[E]], epsilon: Double)(init: FiniteDistribution[Symbol[E]]) = {
+    val estimate = evolution(supp)(init)
+    (init ++ evolution(supp).grad(init)(entropyFeedback(target, estimate) * epsilon)).normalized
+  }
   
 }
