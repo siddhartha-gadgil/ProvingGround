@@ -2,6 +2,28 @@ provingGround/
 
 bin/
 
+doc/*.log
+
+doc/*.aux
+
+doc/*.synctex
+
+doc/*.synctex.gz
+
+src/main/scala/proving*
+
+*~
+
+.cache
+
+.classpath
+
+.settings/*
+
+.worksheet/
+
+*.log
+
 target/
 
 .target/
@@ -26,20 +48,4 @@ src/main/scala/index.html
 
 src/main/scala/index.js
 
-doc/*.log
 
-doc/*.aux
-
-doc/*.synctex
-
-doc/*.synctex.gz
-
-src/main/scala/proving*
-
-*~
-
-.cache
-
-.worksheet/
-
-*.log

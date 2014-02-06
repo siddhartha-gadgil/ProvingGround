@@ -323,7 +323,7 @@ object Evolver{
    class Gen(dyn: => (Set[AbsObj] => Set[AbsObj]), 		   		 
 		   		state:  => Set[AbsObj], 
 		   		mapping:  AbsObj => AbsObj = {(x : AbsObj) => x},
-		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends AbsObj{
+		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends AtomicObj{
      lazy val typ = new LogicalTyp
      
      def nextState = dyn(state)
