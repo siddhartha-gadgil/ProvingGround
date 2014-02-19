@@ -139,6 +139,9 @@ object HoTT{
     case class SymbLogicTyp[A](name: A) extends LogicalSTyp with Symbolic[A]{
       override def toString = name.toString+" : "+typ.toString
     }
+    
+    
+
 
     /** HoTT types with underlying scala type AbsObj.
      *  They belong to the LogicalUniv
@@ -147,7 +150,7 @@ object HoTT{
       
 //      type Obj = AbsObj
       
-      lazy val typ = LogicalUniv
+      lazy val typ = new LogicalUniv
       
 //      def symbObj[A, W <: AbsObj](name: A, tp: Typ[W]): AbsObj = SymbObj(name, tp)
       
@@ -156,7 +159,7 @@ object HoTT{
  
       def ~>[U <: AbsObj](fibers: TypFamily[AbsObj, LogicalTyp, U]) = PiTyp(fibers)
       
-      def ~~>(fibers : AbsObj => LogicalTyp) = PiTyp(TypFamilyDefn(this, fibers))
+      def ~~>(fibers : AbsObj => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
     }
     
     class LogicalSTyp extends LogicalTyp{
@@ -166,10 +169,10 @@ object HoTT{
     }
     
     /** Universes. Can be just a type so far */
-    trait Univ[U<:AbsObj] extends Typ[Typ[U]] with AtomicTyp[Typ[U]]
+    trait Univ[U<:AbsObj] extends Typ[Typ[U]] 
     
     /** Inductive construction of the next universe */
-    case class NextUniv[U<: AbsObj](base: Typ[U]) extends Univ[U]{
+    case class NextUniv[U<: AbsObj](base: Typ[U]) extends Univ[U] with AtomicTyp[Typ[U]]{
       lazy val typ = NextUniv[Typ[U]](this)
       
       type Obj = Typ[U]
@@ -178,17 +181,26 @@ object HoTT{
     }
     
     /** The first universe, consisting of logical types */
-    object LogicalUniv extends Univ[AbsObj]{
+    class LogicalUniv extends Univ[AbsObj] with Typ[LogicalTyp]{
       lazy val typ = NextUniv[AbsObj](this)
+      
+      def -->[U <: AbsObj](that: Typ[U]) = FuncTyp[LogicalTyp, LogicalUniv, U](this, that)
+      
+      def ~>[U <: AbsObj](fibers: TypFamily[LogicalTyp, LogicalUniv, U]) = PiTyp(fibers)
+
+      // For the below, must generalise the domains of type families beyond logicaltyp
+//      def ~~>(fibers : AbsObj => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
       
       type Obj = LogicalTyp
       
       def symbObj[A, W<: AbsObj](name: A, tp: Typ[W]) = SymbLogicTyp(name)
       
+      override def subs(variable: AbsObj, value: AbsObj): LogicalUniv = this
+      
       override def toString ="__"
     }
     
-    val __ = LogicalUniv
+    val __ = new LogicalUniv
     
     /** Pair of types (A, B) */
     case class PairTyp[U<: AbsObj, V <: AbsObj](first: Typ[U], second: Typ[V]) extends 
@@ -313,12 +325,12 @@ object HoTT{
 	 *  Should have a trait with the basic properties and inductive definitions
 	 *  The below is a lambda defined function.
 	 */
-	case class Lambda[X<: AbsObj, Y <: AbsObj](variable: X, value : Y) extends AbsObj{
+	case class Lambda[X<: AbsObj, Y <: AbsObj](variable: X, value : Y) extends FuncLikeObj[AbsObj, AbsObj]{
 	  lazy val typ = (variable.typ.asInstanceOf[LogicalTyp]) --> value.typ
 	  
 	  def apply(arg: AbsObj) = value.subs(variable, arg)
 	  
-	  def subs(x: AbsObj, y: AbsObj) = Lambda(variable, value.subs(x, y))
+	  def subs(x: AbsObj, y: AbsObj) = Lambda(variable.subs(x,y), value.subs(x, y))
 	}
 	
 	
@@ -327,40 +339,14 @@ object HoTT{
 	 */		
 	def lambda[U<: AbsObj, V <: AbsObj](variable: U)(value : V) = Lambda(variable, value)
 	
-	/** Context
-	 *  
- 
-	trait Context{
-	  val givens: Stream[AbsObj]
-	  
-	  def export(obj: AbsObj): AbsObj
-	  
-	  def apply(obj: AbsObj) = export(obj)	  
-	  
-	  def typed[A](name: A) = givens find (sameName(name))
-	  
-	  def allTyped[A](name: A) = givens filter (sameName(name))
-	}
-	*/
 	
-	/** Context given by chain of lambdas. 
-	 *  The first object is the latest
-	 
-	case class LambdaContext(givens: Stream[AbsObj]) extends Context{
-	  def export(obj: AbsObj) = (obj /: givens)((a, x) => lambda(x)(a))
-	  
-	  def +(variable: AbsObj) = LambdaContext(variable #:: givens)
-	  
-	  def assume(ass: AbsObj) = this + ass
-	}
-	*/
 	
 	/** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]*/
 	type TypFamily[W<: AbsObj, V<: Typ[W], U<: AbsObj] = FuncObj[W, V, Typ[U]]
 	
 	trait LogicalTypFamily extends TypFamily[AbsObj, LogicalTyp, AbsObj] with (AbsObj => LogicalTyp){
 	  /** codomain */
-	  val codom = LogicalUniv
+	  val codom = new LogicalUniv
 	   
 //	  lazy val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, codom)
 	  
@@ -515,11 +501,14 @@ object HoTT{
 	  
 	  def fulltyp(tp: LogicalTyp) : LogicalTyp 
 	  
-	  def export(value: AbsObj) : AbsObj => AbsObj
 	  
-	  def apply(value: AbsObj) = FuncDefn[AbsObj, Typ[AbsObj], AbsObj](export(value), dom, value.typ)
+	  def get(value: AbsObj): AbsObj
 	  
 	  def subs(x: AbsObj, y: AbsObj): Context
+	  
+	  def /\:[U <: AbsObj](obj: U) = ContextSeq(LambdaContext(obj), this) 
+	  
+	  def |:[U <: AbsObj](obj: U) = ContextSeq(KappaContext(obj), this)
 	}
 	
 	object Context{
@@ -536,8 +525,7 @@ object HoTT{
 	  val dom = cnst.typ.asInstanceOf[LogicalTyp]
 	  
 	  val constants = List(cnst)
-	  
-	  def export(value: AbsObj) : AbsObj => AbsObj
+	 
 	  
 	  def fulltyp(tp: LogicalTyp) = dom --> tp
 	  
@@ -551,7 +539,7 @@ object HoTT{
 	  
 	  val dom = head.dom
 	  
-	  def export(value: AbsObj): AbsObj => AbsObj = head.export(tail.apply(value))
+	  def get(value: AbsObj) = head.get(tail.get(value))
 	  
 	  def exptyp(tp: LogicalTyp) = head.exptyp(tail.exptyp(tp))
 	  
@@ -563,6 +551,8 @@ object HoTT{
 	case class LambdaContext[U <: AbsObj](cnst: U) extends AtomicContext{
 	  def export(value: AbsObj) : AbsObj => AbsObj =  (obj) => value.subs(cnst, obj)	  
 	  
+	  def get(value: AbsObj) = Lambda(cnst, value)
+	  
 	  def exptyp(tp: LogicalTyp) = dom --> tp
 	  
 	  val variables = List(cnst)
@@ -573,6 +563,8 @@ object HoTT{
 	case class KappaContext[U <: AbsObj](cnst: U) extends AtomicContext{
 	  def export(value: AbsObj) : AbsObj => AbsObj = _ => value
 	  
+	  def get(value: AbsObj) = value
+	  
 	  def exptyp(tp: LogicalTyp) = tp
 	  
 	  val variables = List()
@@ -580,6 +572,13 @@ object HoTT{
 	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y))
 	}
 	
+	
+	class InductiveTyp(cnstrFns: Seq[LogicalTyp => Context]) extends LogicalSTyp{
+	  val cnstrs = cnstrFns map (_(this))
+	}
+	
+	
+	// May not be needed
 	trait InductiveConstructor[+A]{
 	  val sym: A
 	}
