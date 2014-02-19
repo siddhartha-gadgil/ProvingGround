@@ -30,6 +30,10 @@ target/
 
 lib/
 
+.idea/
+
+*.iml
+
 index/
 
 index.html
