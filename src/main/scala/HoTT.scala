@@ -117,14 +117,20 @@ object HoTT{
     }
     
     /** Constructing symbolic objects that are AbsObj but no more refined*/
-    case class SymbObj[A, +U<: AbsObj](name: A, typ: Typ[U]) extends AtomicObj with Symbolic[A]{
+    case class SymbObj[A, +U<: AbsObj](name: A, typ: Typ[U]) extends AbsObj with Symbolic[A]{
       override def toString = name.toString+" : "+typ.toString
+      
+      def subs(x: AbsObj, y: AbsObj) = name match {
+        case fa: FormalApplication[_,_,_] => 
+          fa.subs(x,y)
+        case _ => this
+      }
     } 
     
     /** Symbolic types, which the compiler knows are types.
      *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
      */
-    case class SymbTyp[A, U<:AbsObj, T<: AbsObj](name: A, univ: Typ[T], base: Typ[U]) extends AtomicTyp[U] with Symbolic[A]{
+    case class SymbTyp[A, U<:AbsObj, T<: AbsObj](name: A, univ: Typ[T], base: Typ[U]) extends Typ[U] with Symbolic[A]{
       lazy val typ = univ
       
       type Obj = base.Obj
@@ -134,6 +140,12 @@ object HoTT{
       override def toString = name.toString+" : "+typ.toString
       
       def elem = this
+      
+      def subs(x: AbsObj, y: AbsObj) = name match {
+        case fa: FormalTypAppl[w, U] => 
+          fa.func.subs(x, y)(fa.arg.subs(x,y).asInstanceOf[w])
+        case _ => this
+      }
     }
     
     case class SymbLogicTyp[A](name: A) extends LogicalSTyp with Symbolic[A]{
@@ -244,7 +256,9 @@ object HoTT{
 	}
     
     trait FuncLikeObj[-W <: AbsObj, +U <: AbsObj] extends AbsObj with (W => U){
+      
       def apply(arg: W): U
+      
       
       def subs(x: AbsObj, y: AbsObj) : FuncLikeObj[W, U]
     }
@@ -287,11 +301,18 @@ object HoTT{
       val arg: W
     }
     
+    trait FormalTypAppl[W <: AbsObj, U <: AbsObj]{
+      val func: FuncLikeObj[W, Typ[U]]
+      
+      val arg: W
+      
+    }
+    
     object FormalAppl{
-      def unapply[W <: AbsObj, U <: AbsObj](obj: U): Option[(FuncLikeObj[W, U], W)] =obj match{
+      def unapply(obj: AbsObj): Option[(FuncObj[AbsObj,Typ[AbsObj], AbsObj], AbsObj)] =obj match{
         case sym: Symbolic[_] =>
         sym.name match {
-          case fnsym : FormalAppl[W, U] => Some(((fnsym.func : FuncLikeObj[W, U]), (fnsym.arg: W)))
+          case FormalApplication(f, a) => Some((f, a))
           case _ => None
         }
         case _ => None
@@ -306,12 +327,23 @@ object HoTT{
 
       def subs(x: AbsObj, y: AbsObj) = func.subs(x, y)(arg.subs(x, y).asInstanceOf[W])
     }
+    
 	
     /** A function given by a scala function */
 	case class FuncDefn[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: AbsObj => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with FormalFuncObj[W, U]{
 	  def act(arg: AbsObj) = if (arg.typ == dom) Some(func(arg)) else None
 	  
 	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
+	}
+	
+	// We need a hybrid of the FuncDefm and FuncSymb, with a function determined by a partial function with formal application outside
+	// As formal application acts on substitution by a fresh application, this can be used.
+	// This can still extend FormalFuncObj
+	
+	trait PartiallyFormalFunc[W<: AbsObj, V<: Typ[W], U<: AbsObj] extends FuncObj[W, V, U] with FormalFuncObj[W, U]{
+	  val predef: PartialFunction[dom.Obj, codom.Obj]
+	  
+	  def action(arg: dom.Obj) = predef.applyOrElse(arg, (obj: dom.Obj) => codom.symbObj(FormalApplication[W, V, U](this, arg)))
 	}
 	
 	/** A lambda-expression.
@@ -448,25 +480,55 @@ object HoTT{
 	trait ConstFmlyTmpl extends AbsObj with AtomicObj{
 	  val typ : LogicalTyp
 	  
+	  type ObjTyp <: AbsObj
+	  
 	  def map(Q: LogicalTyp) : ConstFmlyTmpl
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl
 	  
 	  def ->:(A : LogicalTyp) = ParamConstTmpl(A, this)
+	  
+	  def pushforward(f: AbsObj => AbsObj)(arg: ObjTyp) : AbsObj
+	}
+	
+	trait ConstFmly extends AbsObj{
+	  val tmpl: ConstFmlyTmpl
+	  
+	  val typ = tmpl.typ
+	  
+	  def subs(x: AbsObj, y: AbsObj): ConstFmly
 	}
 	
 	case class ConstTmpl(typ: LogicalTyp) extends ConstFmlyTmpl{
 //	  val fullTyp = typ
 	  
+	  type ObjTyp = typ.Obj
+	  
 	  def map(Q: LogicalTyp) = ConstTmpl(Q)
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = (obj) => ConstTmpl(Q(obj))
+	  
+	  def pushforward(f: AbsObj => AbsObj)(arg: ObjTyp) = f(arg)
 	}
 	
 	case class ParamConstTmpl(base: LogicalTyp, cod: ConstFmlyTmpl) extends ConstFmlyTmpl{
 	  val typ : FuncTyp[AbsObj, LogicalTyp, AbsObj] = base --> cod.typ
 	  
-	  def map(Q: LogicalTyp) = base ->: cod.map(Q)
+	  type ObjTyp = FuncObj[AbsObj, LogicalTyp, AbsObj]
+	  
+	  def push(func: ObjTyp)(arg: base.Obj): cod.ObjTyp = func(arg).asInstanceOf[cod.ObjTyp] 
+	  
+	  def pushforward(f: AbsObj => AbsObj)(func: ObjTyp) = {
+	    val g = cod.pushforward(f) _
+	    
+	    val s : base.Obj => AbsObj = (arg: base.Obj) => g(push(func)(arg))
+	    
+	    val ss : AbsObj => AbsObj = (arg) => s(arg.asInstanceOf[base.Obj])
+	    
+	    FuncDefn[AbsObj, LogicalTyp, AbsObj](ss, base, cod.typ)
+	  }
+	  
+	  def map(Q: LogicalTyp): ParamConstTmpl = base ->: cod.map(Q)
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
@@ -478,7 +540,28 @@ object HoTT{
 	case class DepParamConstTmpl(base: LogicalTyp, fibre: AbsObj => ConstFmlyTmpl) extends ConstFmlyTmpl{
 	  val typ = base ~~> ((obj) => fibre(obj).typ)
 	  
-	  def map(Q: LogicalTyp) = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
+	  type ObjTyp = DepFuncObj[AbsObj, LogicalTyp, AbsObj]
+	  
+	  def push(func: ObjTyp)(arg: base.Obj) = {
+	    val cod = fibre(arg)
+	    func(arg).asInstanceOf[cod.ObjTyp]
+	  }
+	  
+	  def pushforward(f: AbsObj => AbsObj)(func: ObjTyp) = {	    
+	    val s : base.Obj => AbsObj = (arg: base.Obj) => {
+	      val cod = fibre(arg)
+	      val g = cod.pushforward(f) _
+	      g(push(func)(arg).asInstanceOf[cod.ObjTyp])
+	    }
+	    
+	    val ss : AbsObj => AbsObj = (arg) => s(arg.asInstanceOf[base.Obj])
+	    
+	    def fibretyp(arg: AbsObj) = fibre(arg).typ
+	    
+	    DepFuncDefn[AbsObj, LogicalTyp, AbsObj](ss, base, TypFamilyDefn(base, fibretyp _))
+	  }
+	  
+	  def map(Q: LogicalTyp): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
 	  
 	   def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
@@ -490,10 +573,10 @@ object HoTT{
 	
 	// Inductive types can be constructed from a context.
 	
-	trait Context{
-	  val constants: List[AbsObj]
+	trait ContextElem[+X <: AbsObj]{
+	  val constants: List[X]
 	  
-	  val variables: List[AbsObj]
+	  val variables: List[X]
 	  
 	  val dom: LogicalTyp
 	  
@@ -504,23 +587,111 @@ object HoTT{
 	  
 	  def get(value: AbsObj): AbsObj
 	  
-	  def subs(x: AbsObj, y: AbsObj): Context
+	  def subs(x: AbsObj, y: AbsObj): ContextElem[X]
+	  
+
+	}
+	
+	trait Context[+X <: AbsObj] extends ContextElem[X]{
+	  /*
+	   * The codomain for the multi-function given by the context.
+	   */
+	  val target: LogicalTyp
+	  
+	  /*
+	   * The type of the object : a multivariate function : that comes from the context.
+	   */
+	  val typ : LogicalTyp
+	  
+	  type ObjTyp = typ.Obj
+	  
 	  
 	  def /\:[U <: AbsObj](obj: U) = ContextSeq(LambdaContext(obj), this) 
 	  
 	  def |:[U <: AbsObj](obj: U) = ContextSeq(KappaContext(obj), this)
+	  	  
+	  def subs(x: AbsObj, y: AbsObj): Context[X]
+	  
+	  def recContext(f : AbsObj => AbsObj): Context[X] 
+	  
+	  def patternMatch(obj: AbsObj) : Option[(AbsObj, List[AbsObj])]
+	  
+	  object Pattern{
+	    def unapply(obj: AbsObj): Option[(AbsObj, List[AbsObj])] = patternMatch(obj)
+	  }
+	  
+	  /*
+	   * This can be applied to the ctx being a recursive/inductive one, besides this.
+	   */
+	  def patternDefn(ctx: Context[AbsObj], fn: AbsObj, obj : AbsObj): PartialFunction[AbsObj, AbsObj] = {
+	    case Pattern(`fn`, l) => Context.fold(ctx, l)(obj)
+	  }
+	  
 	}
 	
+	
 	object Context{
-	  def instantiate(x: AbsObj, y: AbsObj): Context => Context = {
-	    case ContextSeq(LambdaContext(`x`), tail) => ContextSeq(KappaContext(y), tail.subs(x, y))
+	  def instantiate[X <: AbsObj](x: X, y: X): Context[X] => Context[X] = {
+	    case ContextSeq(LambdaContext(`x`), tail)  => ContextSeq(KappaContext(y), tail.subs(x, y))
 	    case ContextSeq(head, tail) => ContextSeq(head.subs(x,y), instantiate(x,y)(tail))
-	    case atm: AtomicContext => atm.subs(x,y)
+	    case ctx => ctx
+	  }
+	  
+	  def instantiateHead[X <: AbsObj](y: AbsObj) : Context[X] => Context[X] = {
+	    case ContextSeq(LambdaContext(x), tail) => tail subs (x,y)
+	    case ContextSeq(head, tail) => ContextSeq(head, instantiateHead(y)(tail))
+	    case ctx => ctx
+	  }
+	  
+	  def apply(dom: LogicalTyp) = simple(dom)
+	  
+	  def fold[X <: AbsObj](ctx: Context[X], seq: Seq[AbsObj])(obj : AbsObj) : AbsObj = {
+			  if  (seq.isEmpty) ctx.get(obj) 
+			  else fold(instantiateHead(seq.head)(ctx), seq.tail)(obj)
+	  }
+	  
+	  def symbpattern[A, X <: AbsObj](symbs: List[A], ctx: Context[X]) : List[AbsObj] = ctx match {
+	    case ContextSeq(head, tail) => head.cnst.typ.symbObj(symbs.head) :: symbpattern(symbs.tail, tail) 
+	    case _ => List()
+	  }
+	  
+	  def recsymbpattern(f: AbsObj => AbsObj, Q : LogicalTyp, symbs : List[AbsObj], ctx : Context[ConstFmlyTmpl]) : Context[AbsObj] = ctx match {
+	    case ContextSeq(LambdaContext(a), tail) => 
+	      val b = a map (Q)
+	      ContextSeq(LambdaContext(a.typ.symbObj(symbs.head)), 
+	          ContextSeq(KappaContext(f(a.typ.symbObj(symbs.head))),recsymbpattern(f, Q, symbs.tail,tail)))
+	    case cntx => cntx
+	  }
+	  
+	  case class simple[X <: AbsObj](dom: LogicalTyp) extends Context[X]{
+	    val target = dom
+	    
+	    val typ = dom
+	    
+	    val constants = List()
+	    
+	    val variables = List()
+	    
+	    def exptyp(tp: LogicalTyp) : LogicalTyp = dom
+	  
+	    def fulltyp(tp: LogicalTyp) : LogicalTyp = dom
+	  
+	    def get(value: AbsObj): AbsObj = value
+	  
+	    def subs(x: AbsObj, y: AbsObj): Context[X] = simple(dom)
+	    
+	    def patternMatch(obj: AbsObj) = if (obj.typ == typ) Some((obj, List())) else None
+	    
+	    //Should be applied to an appropriate induced map
+	    def recContext(f : AbsObj => AbsObj): Context[X] = this
+	    
 	  }
 	}
 	
-	trait AtomicContext extends Context{
-	  val cnst: AbsObj
+	
+	
+	trait AtomicContext[+X <: AbsObj] extends ContextElem[X]{
+	  val cnst: X
 	  
 	  val dom = cnst.typ.asInstanceOf[LogicalTyp]
 	  
@@ -529,10 +700,14 @@ object HoTT{
 	  
 	  def fulltyp(tp: LogicalTyp) = dom --> tp
 	  
-	  def subs(x: AbsObj, y: AbsObj): AtomicContext
+	  def subs(x: AbsObj, y: AbsObj): AtomicContext[X]
 	}
 	
-	case class ContextSeq(head: AtomicContext, tail: Context) extends Context{
+	case class ContextSeq[+X <: AbsObj](head: AtomicContext[X], tail: Context[X]) extends Context[X]{
+	  val target = tail.target
+	  
+	  val typ = head.exptyp(tail.typ)
+	  
 	  lazy val constants = head.cnst :: tail.constants
 	  
 	  lazy val variables = head.variables ::: tail.variables
@@ -546,9 +721,27 @@ object HoTT{
 	  def fulltyp(tp: LogicalTyp) = head.exptyp(tail.exptyp(tp))
 	  
 	  def subs(x: AbsObj, y: AbsObj) = ContextSeq(head.subs(x,y), tail.subs(x, y))
+	  
+	  /*
+	   * The types should be checked
+	   */
+	  def patternMatch(obj: AbsObj) : Option[(AbsObj, List[AbsObj])] = head match {
+	    case l : LambdaContext[_] => 
+	      tail.patternMatch(obj) flatMap ((xl) =>  xl._1 match{
+	        case FormalAppl(func, arg) if (func.dom == dom && func.codom == tail.typ) => Some((func, arg :: xl._2))
+	        case _ => None
+	      }	      
+	      )
+	    case _ => tail.patternMatch(obj)
+	  }
+	  
+	  def recContext(f : AbsObj => AbsObj): Context[X] = head match {
+	    case _ : KappaContext[_] => this
+	    case l: LambdaContext[_] => ContextSeq(l, ContextSeq(KappaContext(f(l.cnst).asInstanceOf[X]), tail))
+	  }
 	}
 	
-	case class LambdaContext[U <: AbsObj](cnst: U) extends AtomicContext{
+	case class LambdaContext[U <: AbsObj](cnst: U) extends AtomicContext[U]{
 	  def export(value: AbsObj) : AbsObj => AbsObj =  (obj) => value.subs(cnst, obj)	  
 	  
 	  def get(value: AbsObj) = Lambda(cnst, value)
@@ -557,10 +750,10 @@ object HoTT{
 	  
 	  val variables = List(cnst)
 	  
-	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y))
+	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y).asInstanceOf[U])
 	}
 	
-	case class KappaContext[U <: AbsObj](cnst: U) extends AtomicContext{
+	case class KappaContext[U <: AbsObj](cnst: U) extends AtomicContext[U]{
 	  def export(value: AbsObj) : AbsObj => AbsObj = _ => value
 	  
 	  def get(value: AbsObj) = value
@@ -569,12 +762,54 @@ object HoTT{
 	  
 	  val variables = List()
 	  
-	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y))
+	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y).asInstanceOf[U])
 	}
 	
+	class ConstructorDefn(defn : LogicalTyp => Context[ConstFmlyTmpl], target: => LogicalTyp){
+	  lazy val context = defn(target)
+	}
 	
-	class InductiveTyp(cnstrFns: Seq[LogicalTyp => Context]) extends LogicalSTyp{
-	  val cnstrs = cnstrFns map (_(this))
+	class InductiveTyp(constructors : List[ConstructorDefn]){
+	  lazy val constructorContexts = constructors map (_.context)
+	  
+	  // Pattern matching functions are defined in terms of maps from Constructors.
+	  class Constructor(ctx: Context[ConstFmlyTmpl]){
+	    // have simple/recursive/inductive contexts and definitions here
+	  }
+	  
+	  type SimpleDefn = Constructor => AbsObj
+	  
+	  // Deprecate
+	  def namedConstructors[A](syms: List[A]) = for ((n, t) <- syms zip constructorContexts) yield (t.typ.symbObj(n))
+	}
+	
+	object Old{
+	
+	class InductiveTyp(cnstrFns: List[LogicalTyp => Context[ConstFmlyTmpl]]) extends LogicalSTyp{self =>
+	  lazy val cnstrCtxs = cnstrFns map (_(this))
+	  
+	  class Constructor(val ctx: Context[ConstFmlyTmpl]){
+	    def apply(pattern: List[AbsObj]) = ObjPattern(this, pattern)
+	  }
+	  
+	  
+	  val constructors = cnstrCtxs map (new Constructor(_))
+	  
+	  /*
+	   * The patterns in contexts should replace these
+	   */
+	  case class ObjPattern(cnst: Constructor, pattern: List[AbsObj]) extends AbsObj{
+	    val typ = self
+	    
+	    def subs(x: AbsObj, y: AbsObj) = ObjPattern(cnst, pattern map (_.subs(x,y)))
+	  }
+	  
+	  /* 
+	   * There must be a match between the lambda types of the base and ctx. One should be using the patterns in contexts.
+	   */
+	  def patternMatch(base: Constructor, ctx: Context[ConstFmlyTmpl], value: AbsObj): PartialFunction[AbsObj, AbsObj] = {
+	    case ObjPattern(`base`, pattern) => Context.fold(ctx, pattern)(value) 
+	  }
 	}
 	
 	
@@ -592,7 +827,7 @@ object HoTT{
 	case class IndctParam[A, B](sym: A, head: LogicalTyp, tail: InductiveConstructor[B]) extends InductiveConstructor[A]
 	
 	// Should also add dependent function
-	
+	}
 	
 	val x = 'x' :: __
 	
