@@ -480,6 +480,7 @@ object HoTT{
 	trait ConstFmlyTmpl extends AbsObj with AtomicObj{
 	  val typ : LogicalTyp
 	  
+	  
 	  type ObjTyp <: AbsObj
 	  
 	  def map(Q: LogicalTyp) : ConstFmlyTmpl
@@ -491,13 +492,6 @@ object HoTT{
 	  def pushforward(f: AbsObj => AbsObj)(arg: ObjTyp) : AbsObj
 	}
 	
-	trait ConstFmly extends AbsObj{
-	  val tmpl: ConstFmlyTmpl
-	  
-	  val typ = tmpl.typ
-	  
-	  def subs(x: AbsObj, y: AbsObj): ConstFmly
-	}
 	
 	case class ConstTmpl(typ: LogicalTyp) extends ConstFmlyTmpl{
 //	  val fullTyp = typ
@@ -765,6 +759,240 @@ object HoTT{
 	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y).asInstanceOf[U])
 	}
 	
+	
+	trait DefnPattern{
+	  /*
+	   * This is not based on the full branch structure, but only the top layer.
+	   */
+	  val typ : LogicalTyp
+	  
+	  val multiCodom : LogicalTyp
+	  
+	  val head: AbsObj
+	  
+	  val fold : AbsObj
+	  
+	  val contextHead : List[LambdaContext[AbsObj]]
+	  
+	  val contextTail : Context[AbsObj] = Context.simple(multiCodom)
+	  
+	  lazy val context = (contextHead :\ contextTail)(ContextSeq( _, _))
+	  
+	  def recContextHead(f :AbsObj => Option[AbsObj]) : List[AtomicContext[AbsObj]]
+	  
+	  def recContext(f :AbsObj => Option[AbsObj]) = (recContextHead(f) :\ contextTail)(ContextSeq( _, _))
+	  
+	  
+	}
+	
+	object DefnPattern{
+	  
+	}
+	
+	case class Const(head: AbsObj) extends DefnPattern{
+	  val typ = head.typ.asInstanceOf[LogicalTyp]
+	  
+	  val multiCodom = typ
+	  
+	  val fold = head
+	  
+	  lazy val contextHead = List(LambdaContext(head)) 
+	  
+	  def recContextHead(f :AbsObj => Option[AbsObj]) = LambdaContext(head) :: (f(head).map(KappaContext(_)).toList)
+	}
+	
+	case class FuncPattern(head: AbsObj, tail: DefnPattern) extends DefnPattern{
+	  val typ = head.typ.asInstanceOf[LogicalTyp] --> tail.typ
+	  
+	  val multiCodom = head match {
+	    case f : FuncObj[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
+	  } 
+	  
+	  val fold  = head match {
+	    case f : FuncObj[d, _,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
+	  } 
+	  
+	  // This is not correct, we need to flatten the context associated to the head.
+	  lazy val contextHead = LambdaContext(head) :: tail.contextHead.filter(_ != LambdaContext(head))
+	  
+	  def recContextHead(f :AbsObj => Option[AbsObj]) = {
+	    LambdaContext(head) :: (f(head).map(KappaContext(_)).toList) ::: tail.recContextHead(f).filter(_.cnst != head)
+	  }
+	}
+	
+	
+	trait TypPattern{
+	  /*
+	   * This is not based on the full branch structure, but only the top layer.
+	   */
+	  val typ : LogicalTyp
+	  
+	  val multiCodom : LogicalTyp
+	  
+	  val head: LogicalTyp
+	
+	}
+	
+	case class ConstTyp(head : LogicalTyp) extends TypPattern{
+	  val typ = head
+	  
+	  val multiCodom = typ
+	 
+	}
+	
+	case class FuncTypPattern(head: LogicalTyp, tail: TypPattern) extends TypPattern{
+	  val typ = head.typ.asInstanceOf[LogicalTyp] --> tail.typ
+	  
+	  val multiCodom = head match {
+	    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
+	  } 
+	  
+	}
+	
+	
+	object AlsoOld{
+	
+	trait ConstructorPattern{
+	  val typ : LogicalTyp
+	  
+	  /*
+	   * closed means no free variables
+	   */
+	  val isClosed : Boolean
+	  
+	  val dom: LogicalTyp
+	  
+	}
+	
+	object ConstructorPattern{
+	  case class Overfull(typ : LogicalTyp) extends ConstructorPattern{
+	    val isClosed = false
+	    
+	    val dom = typ
+	  }
+	}
+	
+	case class SimpleConstructor(typ: LogicalTyp) extends ConstructorPattern{
+	  val isClosed = true
+	  
+	  val dom = Unit
+	}
+	
+	case class FuncConstructor(dom : LogicalTyp, tail: ConstructorPattern) extends ConstructorPattern{
+	  val typ = dom --> tail.typ
+	  
+	  val isClosed = false	  	  
+	}
+	
+	class Constructor(pattern: ConstructorPattern) extends RecDefnPattern{
+	  val typ = pattern.typ
+	  
+	  val isClosed = pattern.isClosed
+	  
+	  val isValid = true
+	  
+	  val tail   = pattern match {
+	    case f : FuncConstructor => f.tail
+	    case _ => ConstructorPattern.Overfull(typ)
+	  }
+	  
+	  val argsTotal = true
+	  
+	  val head = this
+	}
+	
+	/*
+	 * A typed pattern for defining objects, given recursively except for its head. Can also have constants in place of the variables
+	 */
+	trait DefnPattern{
+	  val typ : LogicalTyp
+	  
+	  /*
+	   * totality of a definition based on this pattern
+	   */
+	  val isTotal : Boolean
+	  
+	  /*
+	   * Checks if the types are correct and we have not applied where there is no free vairable
+	   */
+	  val isValid : Boolean
+	}
+	
+	trait RecDefnPattern extends DefnPattern{
+	  val isClosed : Boolean
+	  
+	  val tail: ConstructorPattern
+	  
+	  val isTotal = false
+	  
+	  val argsTotal : Boolean
+	  
+	  val head: Constructor
+	}
+	
+	
+	case class Var(obj: AbsObj) extends DefnPattern{
+	  val typ = obj.typ.asInstanceOf[LogicalTyp]
+	  
+	  val isTotal = true
+	  
+	  val isValid = true
+	}
+	
+	case class VarFamily(name: AbsObj, tmpl: ConstFmlyTmpl) extends DefnPattern{
+	  
+	  val typ = tmpl.typ
+	  
+ 
+	  
+	  val isTotal = true
+	  
+	  val isValid = true
+	}
+	
+	case class ApplyPattern(func: RecDefnPattern, arg: DefnPattern) extends RecDefnPattern{
+	  val typ = func.tail.typ
+	  
+	  val argsTotal = arg.isTotal && func.argsTotal
+	  
+	  val tail = func.tail match {
+	    case f : FuncConstructor => f.tail
+	    case _ => ConstructorPattern.Overfull(typ)
+	  }
+	  
+	  val isClosed = func.tail.isClosed
+	  
+	  val isValid = arg.isValid && func.isValid && (func match {
+	    case f : FuncConstructor => arg.typ == f.dom 
+	    case _ => false
+	  }
+	  )
+	  
+	  val head = func.head
+	}
+	
+	trait InductiveTypLike extends LogicalTyp{self =>
+	  val constrs: Set[Constructor]
+	  
+	  case class AggregatePattern(ps : Set[RecDefnPattern]) extends DefnPattern{
+	    val typ =self
+	    
+	    val mtch = ps.map(_.head) == constrs
+	    
+	    val isValid = (mtch /: ps.map(_.isValid))(_ && _)
+	    
+	    val isTotal = (mtch /: ps.map(_.argsTotal))(_ && _)
+	  }
+	}
+	
+	
+	
+
+//	def totalPatterns(defs : List[DefnPattern]) : Boolean
+	
+	
+	
+	
 	class ConstructorDefn(defn : LogicalTyp => Context[ConstFmlyTmpl], target: => LogicalTyp){
 	  lazy val context = defn(target)
 	}
@@ -782,7 +1010,7 @@ object HoTT{
 	  // Deprecate
 	  def namedConstructors[A](syms: List[A]) = for ((n, t) <- syms zip constructorContexts) yield (t.typ.symbObj(n))
 	}
-	
+	}
 	object Old{
 	
 	class InductiveTyp(cnstrFns: List[LogicalTyp => Context[ConstFmlyTmpl]]) extends LogicalSTyp{self =>
