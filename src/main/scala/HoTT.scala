@@ -483,7 +483,7 @@ object HoTT{
 	  
 	  type ObjTyp <: AbsObj
 	  
-	  def map(Q: LogicalTyp) : ConstFmlyTmpl
+	  def map(Q: => LogicalTyp) : ConstFmlyTmpl
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl
 	  
@@ -498,7 +498,7 @@ object HoTT{
 	  
 	  type ObjTyp = typ.Obj
 	  
-	  def map(Q: LogicalTyp) = ConstTmpl(Q)
+	  def map(Q: => LogicalTyp) = ConstTmpl(Q)
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = (obj) => ConstTmpl(Q(obj))
 	  
@@ -522,7 +522,7 @@ object HoTT{
 	    FuncDefn[AbsObj, LogicalTyp, AbsObj](ss, base, cod.typ)
 	  }
 	  
-	  def map(Q: LogicalTyp): ParamConstTmpl = base ->: cod.map(Q)
+	  def map(Q: => LogicalTyp): ParamConstTmpl = base ->: cod.map(Q)
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
@@ -555,7 +555,7 @@ object HoTT{
 	    DepFuncDefn[AbsObj, LogicalTyp, AbsObj](ss, base, TypFamilyDefn(base, fibretyp _))
 	  }
 	  
-	  def map(Q: LogicalTyp): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
+	  def map(Q: => LogicalTyp): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
 	  
 	   def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
@@ -762,25 +762,21 @@ object HoTT{
 	
 	trait DefnPattern{
 	  /*
-	   * This is not based on the full branch structure, but only the top layer.
+	   * This is the type of the object defined by the pattern
 	   */
 	  val typ : LogicalTyp
 	  
-	  val multiCodom : LogicalTyp
-	  
-	  val head: AbsObj
 	  
 	  val fold : AbsObj
 	  
-	  val contextHead : List[LambdaContext[AbsObj]]
+	  val contextPrep : Context[AbsObj] => Context[AbsObj]
 	  
-	  val contextTail : Context[AbsObj] = Context.simple(multiCodom)
+	  lazy val context = contextPrep(Context.simple(typ))
 	  
-	  lazy val context = (contextHead :\ contextTail)(ContextSeq( _, _))
+	   
+	  def recContextPrep(f :AbsObj => Option[AbsObj]) : Context[AbsObj] => Context[AbsObj]
 	  
-	  def recContextHead(f :AbsObj => Option[AbsObj]) : List[AtomicContext[AbsObj]]
-	  
-	  def recContext(f :AbsObj => Option[AbsObj]) = (recContextHead(f) :\ contextTail)(ContextSeq( _, _))
+	  def recContext(f :AbsObj => Option[AbsObj]) = recContextPrep(f)(Context.simple(typ))
 	  
 	  
 	}
@@ -792,62 +788,116 @@ object HoTT{
 	case class Const(head: AbsObj) extends DefnPattern{
 	  val typ = head.typ.asInstanceOf[LogicalTyp]
 	  
-	  val multiCodom = typ
-	  
 	  val fold = head
 	  
-	  lazy val contextHead = List(LambdaContext(head)) 
+	  lazy val contextPrep : Context[AbsObj] => Context[AbsObj] = (ctx) => ContextSeq(LambdaContext(head), ctx) 
 	  
-	  def recContextHead(f :AbsObj => Option[AbsObj]) = LambdaContext(head) :: (f(head).map(KappaContext(_)).toList)
+	  def recContextPrep(f :AbsObj => Option[AbsObj]) : Context[AbsObj] => Context[AbsObj] = (ctx) =>
+	    f(head) match {
+	      case Some(fx) => ContextSeq(LambdaContext(head), ContextSeq(KappaContext(fx), ctx))
+	      case None => ContextSeq(LambdaContext(head), ctx)
+	    }
+	  
 	}
 	
-	case class FuncPattern(head: AbsObj, tail: DefnPattern) extends DefnPattern{
-	  val typ = head.typ.asInstanceOf[LogicalTyp] --> tail.typ
+	case class FuncPattern(head: DefnPattern, tail: DefnPattern) extends DefnPattern{
 	  
-	  val multiCodom = head match {
-	    case f : FuncObj[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
+	  val typ = head.typ match {
+	    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
 	  } 
 	  
-	  val fold  = head match {
+	  val fold  = head.fold match {
 	    case f : FuncObj[d, _,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
 	  } 
 	  
-	  // This is not correct, we need to flatten the context associated to the head.
-	  lazy val contextHead = LambdaContext(head) :: tail.contextHead.filter(_ != LambdaContext(head))
 	  
-	  def recContextHead(f :AbsObj => Option[AbsObj]) = {
-	    LambdaContext(head) :: (f(head).map(KappaContext(_)).toList) ::: tail.recContextHead(f).filter(_.cnst != head)
-	  }
+	  lazy val contextPrep : Context[AbsObj] => Context[AbsObj] = (ctx) => head.contextPrep(tail.contextPrep(ctx)) 
+	  
+	  def recContextPrep(f :AbsObj => Option[AbsObj]) : Context[AbsObj] => Context[AbsObj] = (ctx) => 
+	    head.recContextPrep(f)(tail.recContextPrep(f)(ctx))
+	 
 	}
 	
 	
 	trait TypPattern{
 	  /*
-	   * This is not based on the full branch structure, but only the top layer.
+	   * This is the type of the object defined by the pattern
 	   */
 	  val typ : LogicalTyp
-	  
-	  val multiCodom : LogicalTyp
-	  
-	  val head: LogicalTyp
 	
+	}
+	
+	object TypPattern{
+	  val fromConstFmlyTmpl: ConstFmlyTmpl => TypPattern = {
+	    case ConstTmpl(tp : LogicalTyp) => ConstTyp(tp)
+	    case ParamConstTmpl(head, tail) => FuncTypPattern(ConstTyp(head), fromConstFmlyTmpl(tail))
+	  }
 	}
 	
 	case class ConstTyp(head : LogicalTyp) extends TypPattern{
 	  val typ = head
-	  
-	  val multiCodom = typ
+
 	 
 	}
 	
-	case class FuncTypPattern(head: LogicalTyp, tail: TypPattern) extends TypPattern{
-	  val typ = head.typ.asInstanceOf[LogicalTyp] --> tail.typ
+	case class FuncTypPattern(head: TypPattern, tail: TypPattern) extends TypPattern{
 	  
-	  val multiCodom = head match {
+	  val typ = head.typ match {
 	    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
 	  } 
 	  
 	}
+	
+	
+	trait InductSeq{
+	  val typ: LogicalTyp
+	  
+	  val pattern: TypPattern
+	  
+	  def map(Q : => LogicalTyp): InductSeq
+	}
+	
+	/*
+	 * This is for constant sequences not ending in the type W being defined
+	 */
+	case class CnstInductSeq(fm : ConstTmpl) extends InductSeq{
+	  val typ = fm.typ
+	  
+	  val pattern = TypPattern.fromConstFmlyTmpl(fm)
+	  
+	  def map(Q : => LogicalTyp) = this
+	}
+	
+	/*
+	 * These are families ending in the type being defined
+	 */
+	case class TargetInductSeq(w: ConstFmlyTmpl) extends InductSeq{
+	  val typ = w.typ
+	  
+	  val pattern = TypPattern.fromConstFmlyTmpl(w)
+	  
+	  def map(Q : => LogicalTyp) = TargetInductSeq(w map Q)
+	}
+	
+	case class InductSeqCons(head: ConstFmlyTmpl, tail: InductSeq) extends InductSeq{
+	  val typ = head.typ --> tail.typ 
+	  
+	  val pattern = FuncTypPattern(TypPattern.fromConstFmlyTmpl(head), tail.pattern)
+	  
+	  def map(Q : => LogicalTyp) = InductSeqCons(head map Q, tail map Q)
+	}
+	
+	case class InductCons(name: AbsObj, constyp : InductSeq){
+	  def map(Q: => LogicalTyp) = InductCons(name, constyp map Q)
+	  
+	  val obj = constyp.typ.symbObj(name)
+	}
+	
+	class InductiveTyp(consPatterns : List[InductCons]) extends LogicalSTyp{
+	  lazy val cons = consPatterns map (_.map(this).obj)
+	}
+	
+	
 	
 	
 	object AlsoOld{
