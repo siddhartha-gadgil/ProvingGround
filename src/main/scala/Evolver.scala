@@ -13,6 +13,8 @@ import scala.concurrent.duration._
 
 import provingGround.HoTT._
 
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+
 import ExecutionContext.Implicits.global
 
 /** Generic Memoised Evolver built from base by adding spans and weights */
@@ -435,8 +437,8 @@ object Evolver{
 //	}
 
 	
-	def LogicalArrows[V <: AbsObj]: Pairing = {
-		case (dom: LogicalTyp, codom: Typ[_]) => dom --> codom
+	def LogicalArrows[V <: AbsObj : TypeTag]: Pairing = {
+		case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, codom)
 		}
 
 

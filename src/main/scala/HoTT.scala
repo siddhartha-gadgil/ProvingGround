@@ -3,7 +3,7 @@ package provingGround
 import scala.language.implicitConversions 
 import scala.util._
 import scala.language.existentials
-//import scala.reflect.runtime.universe._
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 
 // To Do:
@@ -85,9 +85,12 @@ object HoTT{
         
         def subs(x: AbsObj, y: AbsObj) : Typ[U]
         
-        // Template for a method allowing covariance. The problem is FuncTyp is not contravariant
-//        def -->[W <: AbsObj](that : Typ[W]) = FuncTyp[Obj, Typ[Obj], W](this, that)
+        // Template for a method allowing covariance. 
+        def -->:[W <: AbsObj : TypeTag, V<: Typ[W], UU >: U <: AbsObj : TypeTag](that : V) = FuncTyp[W, V, UU](that, this)
+        
+        def :::(that: AbsObj) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
     }
+    
     
     trait AtomicTyp[U <: AbsObj] extends Typ[U]{
       def subs(x: AbsObj, y: AbsObj) : Typ[U] = if (x == this) y.asInstanceOf[Typ[U]] else this
@@ -166,12 +169,17 @@ object HoTT{
       
 //      def symbObj[A, W <: AbsObj](name: A, tp: Typ[W]): AbsObj = SymbObj(name, tp)
       
-      /** returns function type A -> B */
-      def -->[U <: AbsObj](that: Typ[U]) = FuncTyp[AbsObj, LogicalTyp, U](this, that)
+      /** returns function type A -> B, not used in main code */
+      def -->[U <: AbsObj : TypeTag](that: Typ[U]) = FuncTyp[AbsObj, LogicalTyp, U](this, that)
  
-      def ~>[U <: AbsObj](fibers: TypFamily[AbsObj, LogicalTyp, U]) = PiTyp(fibers)
+      def ~>[U <: AbsObj : TypeTag](fibers: TypFamily[AbsObj, LogicalTyp, U]) = PiTyp(fibers)
       
       def ~~>(fibers : AbsObj => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
+    }
+    
+    trait SmallTyp extends LogicalTyp{
+     
+      
     }
     
     class LogicalSTyp extends LogicalTyp{
@@ -196,9 +204,9 @@ object HoTT{
     class LogicalUniv extends Univ[AbsObj] with Typ[LogicalTyp]{
       lazy val typ = NextUniv[AbsObj](this)
       
-      def -->[U <: AbsObj](that: Typ[U]) = FuncTyp[LogicalTyp, LogicalUniv, U](this, that)
+      def -->[U <: AbsObj : TypeTag](that: Typ[U]) = FuncTyp[LogicalTyp, LogicalUniv, U](this, that)
       
-      def ~>[U <: AbsObj](fibers: TypFamily[LogicalTyp, LogicalUniv, U]) = PiTyp(fibers)
+      def ~>[U <: AbsObj : TypeTag](fibers: TypFamily[LogicalTyp, LogicalUniv, U]) = PiTyp(fibers)
 
       // For the below, must generalise the domains of type families beyond logicaltyp
 //      def ~~>(fibers : AbsObj => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
@@ -247,7 +255,7 @@ object HoTT{
 	}
     
 	/** Function type */
-    case class FuncTyp[W<: AbsObj, V <: Typ[W], U<: AbsObj](dom: V, codom: Typ[U]) extends LogicalTyp{
+    case class FuncTyp[W<: AbsObj : TypeTag, V <: Typ[W], U<: AbsObj : TypeTag](dom: V, codom: Typ[U]) extends LogicalTyp{
       type Obj = FuncObj[W, V, U]
       
 	  override def symbObj[A, T<: AbsObj](name: A, tp: Typ[T]) = FuncSymb[A, W, V, U](name, dom, codom)
@@ -256,6 +264,9 @@ object HoTT{
 	}
     
     trait FuncLikeObj[-W <: AbsObj, +U <: AbsObj] extends AbsObj with (W => U){
+      val domobjtpe : Type
+      
+      val codomobjtpe: Type
       
       def apply(arg: W): U
       
@@ -268,13 +279,14 @@ object HoTT{
     }
     
 	/** a function, i.e.,  an object in a function type */
-    trait FuncObj[W<: AbsObj, V<: Typ[W], U<: AbsObj] extends FuncLikeObj[W, U]{
+    trait FuncObj[W<: AbsObj  , V<: Typ[W], U<: AbsObj ] extends FuncLikeObj[W, U]{
       /** domain*/
 	  val dom: V
 	  /** codomain */
 	  val codom: Typ[U]
+	  
 	   
-	  lazy val typ = FuncTyp[W, V, U](dom, codom)
+//	  lazy val typ = FuncTyp[W, V, U](dom, codom)
 	  
 
 	  /** Action, i.e., function application */
@@ -293,7 +305,13 @@ object HoTT{
 	}
 	
 	/** Symbol containing function info */
-    case class FuncSymb[A, W<: AbsObj, V<: Typ[W], U<: AbsObj](name: A, dom: V, codom: Typ[U]) extends FormalFunc[W, V, U] with Symbolic[A]
+    case class FuncSymb[A, W<: AbsObj : TypeTag, V<: Typ[W], U<: AbsObj : TypeTag](name: A, dom: V, codom: Typ[U]) extends FormalFunc[W, V, U] with Symbolic[A]{
+      val domobjtpe = typeOf[W]
+	  
+	  val codomobjtpe = typeOf[U]
+      
+      lazy val typ = FuncTyp[W, V, U](dom, codom)
+    }
 	
     trait FormalAppl[W <: AbsObj, U <: AbsObj]{
       val func: FuncLikeObj[W, U]
@@ -306,6 +324,10 @@ object HoTT{
       
       val arg: W
       
+    }
+    
+    case class FuncAppl[W <: AbsObj, V<: Typ[W], U <: AbsObj](){
+      def unapply(obj: AbsObj): Option[AbsObj] = None
     }
     
     object FormalAppl{
@@ -330,7 +352,13 @@ object HoTT{
     
 	
     /** A function given by a scala function */
-	case class FuncDefn[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: AbsObj => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with FormalFuncObj[W, U]{
+	case class FuncDefn[W<: AbsObj : TypeTag, V<: Typ[W], U<: AbsObj : TypeTag](func: AbsObj => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with FormalFuncObj[W, U]{
+	  val domobjtpe = typeOf[W]
+	  
+	  val codomobjtpe = typeOf[U]
+	  
+	  lazy val typ = FuncTyp[W, V, U](dom, codom)
+	  
 	  def act(arg: AbsObj) = if (arg.typ == dom) Some(func(arg)) else None
 	  
 	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
@@ -357,8 +385,12 @@ object HoTT{
 	 *  Should have a trait with the basic properties and inductive definitions
 	 *  The below is a lambda defined function.
 	 */
-	case class Lambda[X<: AbsObj, Y <: AbsObj](variable: X, value : Y) extends FuncLikeObj[AbsObj, AbsObj]{
-	  lazy val typ = (variable.typ.asInstanceOf[LogicalTyp]) --> value.typ
+	case class Lambda[X<: AbsObj : TypeTag, Y <: AbsObj : TypeTag](variable: X, value : Y) extends FuncLikeObj[AbsObj, AbsObj]{
+	  	  val domobjtpe = typeOf[X]
+	  
+	  val codomobjtpe = typeOf[Y]
+	  
+	  lazy val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](variable.typ.asInstanceOf[LogicalTyp] , value.typ)
 	  
 	  def apply(arg: AbsObj) = value.subs(variable, arg)
 	  
@@ -369,7 +401,7 @@ object HoTT{
 	/** Lambda constructor
 	 *  
 	 */		
-	def lambda[U<: AbsObj, V <: AbsObj](variable: U)(value : V) = Lambda(variable, value)
+	def lambda[U<: AbsObj : TypeTag, V <: AbsObj  : TypeTag](variable: U)(value : V) = Lambda(variable, value)
 	
 	
 	
@@ -377,6 +409,10 @@ object HoTT{
 	type TypFamily[W<: AbsObj, V<: Typ[W], U<: AbsObj] = FuncObj[W, V, Typ[U]]
 	
 	trait LogicalTypFamily extends TypFamily[AbsObj, LogicalTyp, AbsObj] with (AbsObj => LogicalTyp){
+	  val domobjtep = typeOf[AbsObj]
+	  
+	  val codomobjtpe = typeOf[AbsObj]
+	  
 	  /** codomain */
 	  val codom = new LogicalUniv
 	   
@@ -394,13 +430,19 @@ object HoTT{
 	}
 	
 	case class TypFamilyDefn(dom: LogicalTyp, f: AbsObj => LogicalTyp) extends LogicalTypFamily{
+	  val domobjtpe = typeOf[AbsObj]
+	  
+	//  val codomobjtpe = typeOf[LogicalTyp]
+	  
+	  val typ = FuncTyp[AbsObj, LogicalTyp, LogicalTyp](dom, __)
+	  
 	  def action(arg: dom.Obj) = f(arg)
 	  
 	  def subs(x: AbsObj, y: AbsObj) : LogicalTypFamily = this
 	}
 	
 	/** For all/Product for a type family. This is the type of dependent functions */
-	case class PiTyp[W<: AbsObj, V<: Typ[W], U<: AbsObj](fibers: TypFamily[W, V, U]) extends LogicalTyp{
+	case class PiTyp[W<: AbsObj : TypeTag, V<: Typ[W], U<: AbsObj : TypeTag](fibers: TypFamily[W, V, U]) extends LogicalTyp{
 	  type Obj = DepFuncObj[W, V, U]
 	  
 	  override def symbObj[A, T<: AbsObj](name: A, tp: Typ[T]) = DepFuncSymb[A, W, V, U](name, fibers)
@@ -416,7 +458,7 @@ object HoTT{
 	  val fibers: TypFamily[W, V, U] 
 	   
 	  
-	  lazy val typ = PiTyp(fibers)
+//	  lazy val typ = PiTyp(fibers)
 	  
 	  def apply(arg: W) = action(arg.asInstanceOf[fibers.dom.Obj])
 	  
@@ -439,7 +481,13 @@ object HoTT{
 	}
 	
 	
-	case class DepFuncSymb[A, W<: AbsObj, V<: Typ[W], U<: AbsObj](name: A, fibers: TypFamily[W, V, U]) extends FormalDepFunc[W, V, U] with Symbolic[A]
+	case class DepFuncSymb[A, W<: AbsObj : TypeTag, V<: Typ[W], U<: AbsObj : TypeTag](name: A, fibers: TypFamily[W, V, U]) extends FormalDepFunc[W, V, U] with Symbolic[A]{
+	  val domobjtpe = typeOf[W]
+	  
+	  val codomobjtpe = typeOf[U]
+	  
+	  lazy val typ = PiTyp(fibers)
+	}
 	
 	/** A symbol capturing formal application
 	 *  of a dependent function.
@@ -459,7 +507,13 @@ object HoTT{
 	case class IdentityTyp[U <: AbsObj](dom: Typ[U], lhs: AbsObj, rhs: AbsObj) extends LogicalSTyp
 	
 	/** A dependent function given by a scala funcion */
-	case class DepFuncDefn[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: W => U, dom: V, fibers: TypFamily[W, V,U]) extends DepFuncObj[W, V, U] with FormalFuncObj[W, U]{
+	case class DepFuncDefn[W<: AbsObj : TypeTag, V<: Typ[W], U<: AbsObj : TypeTag](func: W => U, dom: V, fibers: TypFamily[W, V,U]) extends DepFuncObj[W, V, U] with FormalFuncObj[W, U]{
+	  val domobjtpe = typeOf[W]
+	  
+	  val codomobjtpe = typeOf[U]
+	  
+	  lazy val typ = PiTyp[W, V, U](fibers)
+	  
 	  def act(arg: W) = if (arg.typ == dom) Some(func(arg)) else None
 	  
 	  def action(arg: fibers.dom.Obj): U = func(arg)
@@ -467,7 +521,7 @@ object HoTT{
 	
 	/** Companion to dependent functions */
 	object DepFuncObj{
-	  def apply[W<: AbsObj, V<: Typ[W], U<: AbsObj](func: AbsObj => U, dom: V, univ: Univ[U]): DepFuncObj[W, V, U] = {
+	  def apply[W<: AbsObj : TypeTag, V<: Typ[W] : TypeTag, U<: AbsObj : TypeTag](func: AbsObj => U, dom: V, univ: Univ[U]): DepFuncObj[W, V, U] = {
 	    def section(arg: AbsObj) = func(arg).typ.asInstanceOf[Typ[U]]
 	    val fibers: FuncObj[W, V, Typ[U]] = FuncDefn[W, V, Typ[U]](section, dom, univ)
 	    DepFuncDefn(func, dom, fibers)
@@ -506,7 +560,11 @@ object HoTT{
 	}
 	
 	case class ParamConstTmpl(base: LogicalTyp, cod: ConstFmlyTmpl) extends ConstFmlyTmpl{
-	  val typ : FuncTyp[AbsObj, LogicalTyp, AbsObj] = base --> cod.typ
+	  type baseObjTyp = Typ[baseObj]
+	  
+	  type baseObj = base.Obj
+	  
+	  val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](base.asInstanceOf[LogicalTyp], cod.typ)
 	  
 	  type ObjTyp = FuncObj[AbsObj, LogicalTyp, AbsObj]
 	  
@@ -526,13 +584,13 @@ object HoTT{
 	  
 	  def dmap(Q: AbsObj => LogicalTyp) : AbsObj => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
-	      val fibre: AbsObj => ConstFmlyTmpl = (obj) => ConstTmpl(Q(f(obj)))
+	      val fibre: AbsObj => ConstFmlyTmpl = (obj) => ConstTmpl(Q(f(obj.asInstanceOf[base.Obj])))
 	      DepParamConstTmpl(typ, fibre)
 	  } 
 	}
 	
 	case class DepParamConstTmpl(base: LogicalTyp, fibre: AbsObj => ConstFmlyTmpl) extends ConstFmlyTmpl{
-	  val typ = base ~~> ((obj) => fibre(obj).typ)
+	  val typ = PiTyp(TypFamilyDefn(base, ((obj) => fibre(obj).typ)))
 	  
 	  type ObjTyp = DepFuncObj[AbsObj, LogicalTyp, AbsObj]
 	  
@@ -600,9 +658,9 @@ object HoTT{
 	  type ObjTyp = typ.Obj
 	  
 	  
-	  def /\:[U <: AbsObj](obj: U) = ContextSeq(LambdaContext(obj), this) 
+	  def /\:[U <: AbsObj : TypeTag](obj: U) = ContextSeq(LambdaContext(obj), this) 
 	  
-	  def |:[U <: AbsObj](obj: U) = ContextSeq(KappaContext(obj), this)
+	  def |:[U <: AbsObj : TypeTag](obj: U) = ContextSeq(KappaContext(obj), this)
 	  	  
 	  def subs(x: AbsObj, y: AbsObj): Context[X]
 	  
@@ -625,23 +683,29 @@ object HoTT{
 	
 	
 	object Context{
-	  def instantiate[X <: AbsObj](x: X, y: X): Context[X] => Context[X] = {
+	  def instantiate[X <: AbsObj : TypeTag](x: X, y: X): Context[X] => Context[X] = {
 	    case ContextSeq(LambdaContext(`x`), tail)  => ContextSeq(KappaContext(y), tail.subs(x, y))
-	    case ContextSeq(head, tail) => ContextSeq(head.subs(x,y), instantiate(x,y)(tail))
+	    case ContextSeq(head, tail) => 
+	      val inst = instantiate(x,y)
+	      ContextSeq(head.subs(x,y), inst(tail))
 	    case ctx => ctx
 	  }
 	  
-	  def instantiateHead[X <: AbsObj](y: AbsObj) : Context[X] => Context[X] = {
+	  def instantiateHead[X <: AbsObj : TypeTag](y: AbsObj) : Context[X] => Context[X] = {
 	    case ContextSeq(LambdaContext(x), tail) => tail subs (x,y)
-	    case ContextSeq(head, tail) => ContextSeq(head, instantiateHead(y)(tail))
+	    case ContextSeq(head, tail) => 
+	      val inst = instantiateHead(y)
+	      ContextSeq(head, inst(tail))
 	    case ctx => ctx
 	  }
 	  
 	  def apply(dom: LogicalTyp) = simple(dom)
 	  
-	  def fold[X <: AbsObj](ctx: Context[X], seq: Seq[AbsObj])(obj : AbsObj) : AbsObj = {
+	  def fold[X <: AbsObj : TypeTag](ctx: Context[X], seq: Seq[AbsObj])(obj : AbsObj) : AbsObj = {
 			  if  (seq.isEmpty) ctx.get(obj) 
-			  else fold(instantiateHead(seq.head)(ctx), seq.tail)(obj)
+			  else {val inst = instantiateHead[X](seq.head)
+			    fold(inst(ctx), seq.tail)(obj)
+			  }
 	  }
 	  
 	  def symbpattern[A, X <: AbsObj](symbs: List[A], ctx: Context[X]) : List[AbsObj] = ctx match {
@@ -692,12 +756,12 @@ object HoTT{
 	  val constants = List(cnst)
 	 
 	  
-	  def fulltyp(tp: LogicalTyp) = dom --> tp
+	  def fulltyp(tp: LogicalTyp) = FuncTyp[AbsObj, LogicalTyp, AbsObj](dom , tp)
 	  
 	  def subs(x: AbsObj, y: AbsObj): AtomicContext[X]
 	}
 	
-	case class ContextSeq[+X <: AbsObj](head: AtomicContext[X], tail: Context[X]) extends Context[X]{
+	case class ContextSeq[+X <: AbsObj : TypeTag](head: AtomicContext[X], tail: Context[X]) extends Context[X]{
 	  val target = tail.target
 	  
 	  val typ = head.exptyp(tail.typ)
@@ -735,19 +799,19 @@ object HoTT{
 	  }
 	}
 	
-	case class LambdaContext[U <: AbsObj](cnst: U) extends AtomicContext[U]{
+	case class LambdaContext[U <: AbsObj  : TypeTag](cnst: U) extends AtomicContext[U]{
 	  def export(value: AbsObj) : AbsObj => AbsObj =  (obj) => value.subs(cnst, obj)	  
 	  
 	  def get(value: AbsObj) = Lambda(cnst, value)
 	  
-	  def exptyp(tp: LogicalTyp) = dom --> tp
+	  def exptyp(tp: LogicalTyp) = FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, tp)
 	  
 	  val variables = List(cnst)
 	  
 	  def subs(x: AbsObj, y: AbsObj) = LambdaContext(cnst.subs(x, y).asInstanceOf[U])
 	}
 	
-	case class KappaContext[U <: AbsObj](cnst: U) extends AtomicContext[U]{
+	case class KappaContext[U <: AbsObj : TypeTag](cnst: U) extends AtomicContext[U]{
 	  def export(value: AbsObj) : AbsObj => AbsObj = _ => value
 	  
 	  def get(value: AbsObj) = value
@@ -821,9 +885,9 @@ object HoTT{
 	
 	trait TypPattern{
 	  /*
-	   * This is the type of the object defined by the pattern
+	   * The pattern does not determine the type in the case of dependent types
 	   */
-	  val typ : LogicalTyp
+//	  val typ : LogicalTyp
 	
 	}
 	
@@ -831,22 +895,27 @@ object HoTT{
 	  val fromConstFmlyTmpl: ConstFmlyTmpl => TypPattern = {
 	    case ConstTmpl(tp : LogicalTyp) => ConstTyp(tp)
 	    case ParamConstTmpl(head, tail) => FuncTypPattern(ConstTyp(head), fromConstFmlyTmpl(tail))
+	    case DepParamConstTmpl(head, tail) => DepFuncTypPattern(ConstTyp(head), (obj) =>  fromConstFmlyTmpl(tail(obj)))
+	    
 	  }
 	}
 	
 	case class ConstTyp(head : LogicalTyp) extends TypPattern{
-	  val typ = head
+	//  val typ = head
 
 	 
 	}
 	
 	case class FuncTypPattern(head: TypPattern, tail: TypPattern) extends TypPattern{
 	  
-	  val typ = head.typ match {
-	    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
-	  } 
+	//  val typ = head.typ match {
+	//    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp]  
+	//  } 
 	  
 	}
+	
+	case class DepFuncTypPattern(head: TypPattern, tail: AbsObj => TypPattern) extends TypPattern
+
 	
 	
 	trait InductSeq{
@@ -880,11 +949,19 @@ object HoTT{
 	}
 	
 	case class InductSeqCons(head: ConstFmlyTmpl, tail: InductSeq) extends InductSeq{
-	  val typ = head.typ --> tail.typ 
+	  val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](head.typ, tail.typ) 
 	  
 	  val pattern = FuncTypPattern(TypPattern.fromConstFmlyTmpl(head), tail.pattern)
 	  
 	  def map(Q : => LogicalTyp) = InductSeqCons(head map Q, tail map Q)
+	}
+	
+	case class InductSeqDepCons(head: ConstFmlyTmpl, tail : AbsObj => InductSeq) extends InductSeq{
+	  val typ = PiTyp[AbsObj, LogicalTyp, AbsObj](TypFamilyDefn(head.typ, (obj) => tail(obj).typ))
+	  
+	  val pattern = DepFuncTypPattern(TypPattern.fromConstFmlyTmpl(head), (obj) => tail(obj).pattern)
+	  
+	  def map(Q : => LogicalTyp) = InductSeqDepCons(head map Q, (obj) => tail(obj) map Q)
 	}
 	
 	case class InductCons(name: AbsObj, constyp : InductSeq){
@@ -929,7 +1006,7 @@ object HoTT{
 	}
 	
 	case class FuncConstructor(dom : LogicalTyp, tail: ConstructorPattern) extends ConstructorPattern{
-	  val typ = dom --> tail.typ
+	  val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, tail.typ)
 	  
 	  val isClosed = false	  	  
 	}

@@ -11,6 +11,8 @@ import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
 
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+
 import provingGround.HoTT._
 
 import ExecutionContext.Implicits.global
@@ -282,14 +284,14 @@ object Dynamics{
        }
        
 	
-       def logicalArrows[V <: AbsObj]: Pairing = {
-           case (dom: LogicalTyp, codom: Typ[_]) => dom --> codom
+       def logicalArrows[V <: AbsObj : TypeTag]: Pairing = {
+           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, codom)
 		    }
 
 	   def lambdaIsles(dyn:  => DynSys[AbsObj])(state: Set[AbsObj]) ={
 	     val newVarSym = nextChar(usedChars(state))
 	     val gens: PartialFunction[AbsObj, DynIsle[AbsObj, AbsObj]] = {
-	       case typ: Typ[_] => 
+	       case typ: Typ[AbsObj] => 
 	         val obj = typ.symbObj(newVarSym)
 	         DynIsle(DynState(state+obj, dyn), lambda(obj) _)
 	     }
