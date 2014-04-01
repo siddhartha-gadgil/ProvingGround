@@ -128,7 +128,7 @@ object Collections{
     }
     
     case class FiniteDistribution[T](pmf: Seq[Weighted[T]]) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
-      lazy val support = pmf map (_.elem)
+      lazy val support = (pmf map (_.elem)).toSet
         
       lazy val rand = new Random
       
@@ -136,7 +136,14 @@ object Collections{
       
       def get(label: T) = pmf find (_.elem == label) map (_.weight)
       
-      def apply(label: T) = get(label).getOrElse(0.0)
+      def getsum(label : T) = (0.0 /: (pmf filter (_.elem == label) map (_.weight)))(_ + _)
+      
+      def apply(label: T) = getsum(label)
+      
+      def flatten = {
+        val newpmf = support map ((l) => Weighted(l, getsum(l)))
+        FiniteDistribution(newpmf.toSeq)
+      }
     
       private def posmf = pmf filter (_.weight > 0)
       
@@ -146,9 +153,16 @@ object Collections{
       
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
       
+      def +(elem: T , prob : Double) = ++(FiniteDistribution(Seq(Weighted(elem, prob))))
+      
       def ++(that: FiniteDistribution[T]) = {
         val combined = (for (k <- support.toSet union that.support.toSet) yield Weighted(k, apply(k) + that(k))).toSeq
         new FiniteDistribution(combined)   
+      }
+      
+      override def map[S](f: T => S) = {
+        val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt) 
+        FiniteDistribution(newpmf).flatten
       }
     }
     

@@ -198,6 +198,8 @@ object HoTT{
       type Obj = Typ[U]
       
       def symbObj[A, W<: AbsObj](name: A, tp: Typ[W])= SymbTyp(name, tp, base)
+      
+      val __ = symbObj(None)
     }
     
     /** The first universe, consisting of logical types */
@@ -267,6 +269,8 @@ object HoTT{
       val domobjtpe : Type
       
       val codomobjtpe: Type
+      
+      val dom: Typ[AbsObj]
       
       def apply(arg: W): U
       
@@ -386,9 +390,11 @@ object HoTT{
 	 *  The below is a lambda defined function.
 	 */
 	case class Lambda[X<: AbsObj : TypeTag, Y <: AbsObj : TypeTag](variable: X, value : Y) extends FuncLikeObj[AbsObj, AbsObj]{
-	  	  val domobjtpe = typeOf[X]
+	  val domobjtpe = typeOf[X]
 	  
 	  val codomobjtpe = typeOf[Y]
+	  
+	  val dom = variable.typ
 	  
 	  lazy val typ = FuncTyp[AbsObj, LogicalTyp, AbsObj](variable.typ.asInstanceOf[LogicalTyp] , value.typ)
 	  
@@ -485,6 +491,8 @@ object HoTT{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
+	  
+	  val dom = fibers.dom
 	  
 	  lazy val typ = PiTyp(fibers)
 	}
@@ -864,14 +872,16 @@ object HoTT{
 	  
 	}
 	
+	/*
+	 * This also includes the case of dependent functions.
+	 */
 	case class FuncPattern(head: DefnPattern, tail: DefnPattern) extends DefnPattern{
 	  
-	  val typ = head.typ match {
-	    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp] 
-	  } 
+	  val typ = fold.typ.asInstanceOf[LogicalTyp]
 	  
 	  val fold  = head.fold match {
 	    case f : FuncObj[d, _,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
+	    case f : FuncLikeObj[d, _] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
 	  } 
 	  
 	  
@@ -882,6 +892,22 @@ object HoTT{
 	 
 	}
 	
+	case class CasesSymb[U <: AbsObj](cases: List[AbsObj], typ : Typ[U]) extends AbsObj{
+	  def subs(x: AbsObj, y: AbsObj) = CasesSymb(cases map (_.subs(x,y)), typ.subs(x,y))
+	}
+	
+	case class UnionPattern(ps: List[DefnPattern]) extends DefnPattern{
+	  val typ = ps.head.typ
+	  
+	  val fold = typ.symbObj(CasesSymb(ps map ((pat) => (pat.fold)), typ))
+	  
+	  val contextPrep : Context[AbsObj] => Context[AbsObj] = (ctx) => ctx
+	  
+	  def recContextPrep(f :AbsObj => Option[AbsObj]) : Context[AbsObj] => Context[AbsObj] = (ctx) => ctx
+	}
+	
+	
+	// Avoid using type patterns, instead use only defn patterns with blanks where no object is needed.
 	
 	trait TypPattern{
 	  /*

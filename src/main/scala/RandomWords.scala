@@ -91,7 +91,7 @@ object RandomWords{
       
       def xterms(x: Symbol[E]) = (for (Weighted(w, p) <- pushforward(m).toSeq) yield p * partial(m)(w, x)).sum
       
-      val eachshift = (support map (xterms(_))).sum /(m.support.length)    
+      val eachshift = (support map (xterms(_))).sum /(m.support.size)    
       
       def xshift(x: Symbol[E]) = if (m.support contains x) xterms(x) - eachshift else xterms(x)
       

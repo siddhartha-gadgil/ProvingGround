@@ -36,6 +36,14 @@ lib/
 
 index/
 
+activator*
+
+.classpath
+
+.project
+
+.settings/
+
 index.html
 
 package.html 
