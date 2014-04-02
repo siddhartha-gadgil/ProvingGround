@@ -1,10 +1,10 @@
 package provingGround
-
+ 
 import provingGround.Collections._
 
 import provingGround.LearningSystem._
 
-object RandomWords{
+object RandomWords{ 
 /*
  * A symbol is either an element of E wrapped, a word in E or an operation on E.
  */

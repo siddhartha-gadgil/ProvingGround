@@ -8,10 +8,10 @@ import scala.language.implicitConversions
 import provingGround.Collections._
 
 object LearningSystem{
-  
+   
 	trait DiffbleFunction[A, B] extends (A => B){self =>
     	def grad(a: A) : B => A   
-    	
+    	 
     	/**
     	 * Composition f *: g is f(g(_))
     	 */

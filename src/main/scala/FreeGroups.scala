@@ -1,6 +1,6 @@
 package provingGround
 
-/*
+/* 
  * Free group in n generators
  * An element is represented as a word in integers, together with rank of the corresponding group
  * The negative of a number represents the inverse generator
@@ -42,7 +42,7 @@ object FreeGroups{
     def rmvtop(rank : Int) = Word (ls filter (_.abs < rank))
   }
   
-  def wordWeight(w : Word, p: Double, rank : Double) = (1 - p) * math.pow(p / (2 * rank), w.ls.length)
+  def wordWeight(w : Word, wrdCntn: Double, rank : Double) = (1 - wrdCntn) * math.pow(wrdCntn / (2 * rank), w.ls.length)
   
   /*
    * Objects involved in Andrews-Curtis evolution : Presentations and Moves
@@ -88,9 +88,9 @@ object FreeGroups{
     }
   }
   
-  def presentationWeight(pres : Presentation, pp : Double, p : Double) = {
-    val wordwts = pres.rels map (wordWeight(_, p, pres.rank))
-    (1 - pp) * math.pow(pp, pres.rank) * ((wordwts :\ 1.0)(_ * _))
+  def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
+    val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
+    (1 - presCntn) * math.pow(presCntn, pres.rank) * ((wordwts :\ 1.0)(_ * _))
   }
   
 }

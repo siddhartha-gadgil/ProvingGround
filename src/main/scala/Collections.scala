@@ -9,7 +9,7 @@ object Collections{
     implicit val ZeroReal : Double = 0
     
     implicit def ZeroPair[A, B](za: A, zb: B): (A, B) = (za, zb)
-    
+     
     trait InfSeq[T]{
       val head: T
       val tail: InfSeq[T]
@@ -128,7 +128,7 @@ object Collections{
     }
     
     case class FiniteDistribution[T](pmf: Seq[Weighted[T]]) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
-      lazy val support = (pmf map (_.elem)).toSet
+      lazy val support = (pmf filter (_.weight > 0) map (_.elem)).toSet 
         
       lazy val rand = new Random
       
