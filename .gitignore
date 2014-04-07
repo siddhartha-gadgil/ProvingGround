@@ -42,7 +42,7 @@ activator*
 
 .project
 
-.settings/
+.settings
 
 index.html
 
@@ -60,4 +60,8 @@ src/main/scala/index.html
 
 src/main/scala/index.js
 
+build/
 
+packages/
+
+test/packages
