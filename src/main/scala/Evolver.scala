@@ -5,7 +5,7 @@ import Structures._
 import annotation.tailrec
 import scala.util._
 import scala.language.postfixOps
-
+ 
 import akka.actor._
 import akka.pattern.ask
 import scala.concurrent._
@@ -509,12 +509,6 @@ object Evolver{
 	
 //	val InferenceEvolver = new BasicEvolver(InferenceDyn)
   }
-
-
-   
-   val run = java.lang.Runtime.getRuntime()
-   
-   def  freeMem = run.freeMemory()
    
    trait StatefulEvolver[A] extends Evolver[A]{
      val init: Set[A]

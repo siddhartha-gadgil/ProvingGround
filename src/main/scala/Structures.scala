@@ -4,10 +4,10 @@ package provingGround
 object Structures{
 
 	/** Flips co-ordinates of a tuple */
-  def flip[A](r: (A, A)): (A,A) = (r._2, r._1)
+  def flip[A](r: (A, A)): (A,A) = (r._2, r._1) 
 
   /** Cartesian product of Sets */
-  def setProd[A, B](s: Set[A], t: Set[B]): Set[(A,B)] = (for (x<-s ; y<-t) yield (x,y)).toSet
+  def setProd[A, B](s: Set[A], t: Set[B]): Set[(A,B)] = (for (x<-s ; y<-t) yield (x,y)).toSet 
 
   /** Product of a List of Sets */
   def listProd[A](ls: List[Set[A]]): Set[List[A]] = if (ls.isEmpty) Set(List()) else {

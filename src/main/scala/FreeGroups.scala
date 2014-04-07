@@ -6,12 +6,16 @@ package provingGround
  * The negative of a number represents the inverse generator
  */
 object FreeGroups{
+  def letterString(n : Int) = if (n > 0) ('a' + n -1).toChar.toString +"." else ('a' - n -1).toChar.toString+"!."
+  
   case class Word(ls: List[Int]) extends AnyVal{
     def reduce : Word = ls match {
       case x :: y :: zs if x == -y => Word(zs).reduce
       case x :: ys => x :: Word(ys).reduce
       case _ => this
     } 
+    
+    override def toString = (ls map (letterString(_))).foldLeft("")(_+_)
     
     def ::(let : Int) = Word(let :: ls)
     
@@ -51,6 +55,12 @@ object FreeGroups{
   
   case class Presentation(rels : List[Word], rank : Int) extends ACobject{
     val sz = rels.length
+    
+    override def toString = {
+      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + " , "+ y)
+      val relstring = (for (rel <- rels) yield rel.toString).foldLeft("")((x ,y) => x + " , "+ y)
+      "< "+gens+";"+rels+">"
+    }
     
     val defect = rank - sz
     

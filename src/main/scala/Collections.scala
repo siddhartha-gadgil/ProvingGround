@@ -6,6 +6,14 @@ import scala.util._
 import scala.language.implicitConversions
 
 object Collections{
+    val runTime = java.lang.Runtime.getRuntime()
+   
+    def  freeMem = runTime.freeMemory()
+   
+    def maxMem = runTime.maxMemory
+  
+    def totalMem = runTime.totalMemory
+    
     implicit val ZeroReal : Double = 0
     
     implicit def ZeroPair[A, B](za: A, zb: B): (A, B) = (za, zb)
@@ -280,7 +288,11 @@ object Collections{
       def empty[A] = MultiSet[A](Map.empty)
     }
     
+    /* 
+     * Should move this elsewhere
+     */
     
+    @tailrec def IterateDyn[A](init: A, step: A => A, n: Int) : A = if (n < 1) init else IterateDyn(step(init), step, n-1)
    
 }
 
