@@ -41,6 +41,10 @@ packages:
     description: intl
     source: hosted
     version: "0.8.10+4"
+  js:
+    description: js
+    source: hosted
+    version: "0.2.2"
   logging:
     description: logging
     source: hosted
