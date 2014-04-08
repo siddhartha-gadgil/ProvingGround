@@ -3,7 +3,7 @@ package provingGround
 import scala.annotation._
 import scala.util._
 
-import scala.language.implicitConversions
+import scala.language.implicitConversions 
 
 import provingGround.Collections._
 

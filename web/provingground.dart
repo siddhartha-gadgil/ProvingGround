@@ -1,13 +1,15 @@
 import 'dart:html';
 import 'package:angular/angular.dart';
-import 'package:js/js.dart';
+import 'dart:js';
 
 // Temporary, please follow https://github.com/angular/angular.dart/issues/476
 @MirrorsUsed(override: '*')
 import 'dart:mirrors';
 
 
-var hub = context['MathJax']['Hub'];
+JsObject hub = context['MathJax']['Hub'];
+
+
 
 void main() {
   
@@ -24,7 +26,7 @@ void reverseText(MouseEvent event) {
   for (int i = text.length - 1; i >= 0; i--) {
     buffer.write(text[i]);
   }
-  hub;
-//  hub.callMethod("Typeset", []);
+  var mathjax = hub.callMethod("getAllJax" ,["texthis"])[0];
+  mathjax.callMethod("Text",['x^2+1']);
   querySelector("#sample_text_id").text = buffer.toString();
 }
