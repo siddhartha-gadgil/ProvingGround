@@ -293,4 +293,7 @@ object AndrewsCurtis{
    * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
    */
   def bestChain(pres: Presentation , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
+
+// Short Loop: Flow for a while, purge and report survivors
+// Long loop : Repeat short loop
 }
