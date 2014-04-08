@@ -62,6 +62,8 @@ src/main/scala/index.js
 
 build/
 
+web/packages
+
 packages/
 
 test/packages

@@ -153,11 +153,11 @@ object Collections{
         FiniteDistribution(newpmf.toSeq)
       }
     
-      private def posmf = pmf filter (_.weight > 0)
+      private def posmf(t : Double = 0.0) = pmf filter (_.weight > 0)
       
-      private def postotal = ((posmf map (_.weight)) :\ 0.0)(_ + _) ensuring (_ > 0)
+      private def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight)) :\ 0.0)(_ + _) ensuring (_ > 0)
       
-      def normalized = new FiniteDistribution(posmf map (_.scale(1.0/postotal)))
+      def normalized(t : Double = 0.0) = new FiniteDistribution(posmf(t) map (_.scale(1.0/postotal(t))))
       
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
       

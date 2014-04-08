@@ -21,7 +21,7 @@ object AndrewsCurtis{
   /*
    * Distribution on dynobjects - this is what evolves during learning.
    */
-  type DynDist = FiniteDistribution[DynObj]
+  type DynDstbn = FiniteDistribution[DynObj]
   
   val isPresentation : ACobject => Boolean = {
     case pres : Presentation => true
@@ -32,9 +32,9 @@ object AndrewsCurtis{
     case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
   }
   
-  def FDpresentation(d : DynDist) : FiniteDistribution[Presentation] = {
+  def FDpresentation(d : DynDstbn) : FiniteDistribution[Presentation] = {
      val rawpmf = d.pmf collect WtdPresentation
-     FiniteDistribution(rawpmf).normalized
+     FiniteDistribution(rawpmf).normalized()
   }
   
   
@@ -70,9 +70,9 @@ object AndrewsCurtis{
   def multiplicity(rk: Int) : MoveType => Long = {
     case ACStabMv => 1 : Long
     case ACDeStabMv => (1 : Long) // can be zero in practise
-    case RtMultMv => (rk : Long) * (rk : Long)
-    case LftMultMv => (rk : Long) * (rk : Long)
-    case ConjMv => (rk : Long) * (rk : Long)
+    case RtMultMv => (rk : Long) * ((rk : Long) - 1)
+    case LftMultMv => (rk : Long) * ((rk : Long) - 1)
+    case ConjMv => (rk : Long) * ((rk : Long) - 1)
     case InvMv => (rk : Long)
   }
   
@@ -135,11 +135,15 @@ object AndrewsCurtis{
     
     val mvType = ACStabMv
   }
-  
+
+  /*
+   * A chain of moves starting at foot and ending at head.
+   */  
   trait Chain{
+
     val head: Presentation
     
-    def prob(d: DynDist) : Double
+    def prob(d: DynDstbn) : Double
     
     val foot : Presentation
     
@@ -148,7 +152,7 @@ object AndrewsCurtis{
   
   case class AtomicChain(head : Presentation) extends Chain{
     // choose the head, then don't continue
-    def prob(d: DynDist) = d(head) * (1 - d(PathContinue))
+    def prob(d: DynDstbn) = d(head) * (1 - d(PathContinue))
     
     val foot = head
     
@@ -167,21 +171,21 @@ object AndrewsCurtis{
      * The latter involves diving by the multiplicity of the move type.
      * We need to multiply by the probability of not continuing, but this is part of start.prob already.
      */
-    def prob(d: DynDist) = start.prob(d) * d(move.mvType) * d(PathContinue) / multiplicity(head.rank)(move.mvType) 
+    def prob(d: DynDstbn) = start.prob(d) * d(move.mvType) * d(PathContinue) / multiplicity(head.rank)(move.mvType) 
   }
   
   object Chain{
-      @annotation.tailrec def addMoves(start : Chain, moveStack : List[Move]) : Chain = moveStack match {
+      @tailrec def addMoves(start : Chain, moveStack : List[Move]) : Chain = moveStack match {
         case List() => start
-        case x :: xs => addMoves(RecChain(start, x), xs)
+        case xs => addMoves(RecChain(start, xs.last), xs.dropRight(1))
       }
       
       /*
-       * Subchains with the same head
+       * Subchains with the same head. Recursively defined with tail being moves to be appended to each chain
        */
       @tailrec def subchains(chain: Chain, tail : List[Move] = List(), accum : Set[Chain] =Set()) : Set[Chain] =  chain match {
-        case chn @ AtomicChain(head) => accum + addMoves(chn, tail)
-        case chn @ RecChain(start, move) => subchains(start, tail :+ move, accum + addMoves(chn, tail))
+        case AtomicChain(head) => accum + addMoves(chain, tail)
+        case RecChain(start, move) => subchains(start, tail :+ move, accum + addMoves(chain, tail))
       }
       
       def apply(foot: Presentation, moveStack : List[Move]) = addMoves(AtomicChain(foot), moveStack)
@@ -199,7 +203,7 @@ object AndrewsCurtis{
 	   * This should be used with care because of overlapping chains, so multiple count.
 	   * In particular, we backprop multiplying only by start.prob(d), and not the cumulative.
 	   */
-	  @annotation.tailrec def backprop(chain: Chain, mult : Double, d : DynDist, accum : DynDist) : DynDist = chain match {
+	  @annotation.tailrec def backprop(chain: Chain, mult : Double, d : DynDstbn, accum : DynDstbn) : DynDstbn = chain match {
 	    case AtomicChain(head) => 
 	      accum + (head, mult * (1 - d(PathContinue))) + (PathContinue, -mult * d(head))
 	    case chn @ RecChain(start, move) =>
@@ -207,63 +211,86 @@ object AndrewsCurtis{
 	      val multplcty = multiplicity(chain.head.rank)(move.mvType)
 	      val newmult = mult * d(move.mvType) * d(PathContinue) / multplcty // to be passed on to the previous chain
 	      val mvTypWeight = start.prob(d) *  d(PathContinue) / multplcty
-	      val acContWt = start.prob(d) * d(move.mvType) / multplcty
+	      val cntnWt = start.prob(d) * d(move.mvType) / multplcty
 	      val newaccum = accum + 
-	      					(move.mvType, mvTypWeight) + 
-	      					(PathContinue, acContWt) 
+	      					(move.mvType, mult * mvTypWeight) + 
+	      					(PathContinue, mult * cntnWt) 
 	      backprop(start, newmult, d, newaccum)
 	  }
   }
   
-  def dstbn(chains : Seq[Chain], d : DynDist) = {
+  /*
+  * The distribution on presentations via head of chains induced by that on presentations, moves and continuation.
+  */ 
+  def dstbn(chains : Seq[Chain], d : DynDstbn) = {
     val fdchains = FiniteDistribution(for (chn <- chains) yield Weighted(chn, chn.prob(d)))
-    fdchains map ((chn : Chain) => chn.head)
+    (fdchains map ((chn : Chain) => chn.head)).flatten
   }
   
-  def backpropdstbn(chains: Set[Chain], feedback : FiniteDistribution[Presentation], d : DynDist) = {
+
+  /*
+  * Back-propagate a feedback on distribution on presentations.
+  */
+  def backpropdstbn(chains: Set[Chain], feedback : FiniteDistribution[Presentation], d : DynDstbn) = {
     val empty = FiniteDistribution[DynObj](Seq())
     val bcklist = chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
-    (bcklist :\ empty)(_ ++ _)
-  }
-  
-  def subchains(chain: Chain , accum: Set[Chain] = Set()) : Set[Chain] = chain match {
-    case chn : AtomicChain => Set(chn)
+    ((bcklist :\ empty)(_ ++ _)).flatten
   }
   
   
-  def ChnFeedback(chains: Set[Chain], d : DynDist, presCntn : Double, wrdCntn : Double) = {
+  /*
+   * Feedback for distribution on presentations, comparing probabilities from generating presentations by words
+   * with generating from Andrews-Curtis moves. This has total zero. 
+   * A high (raw) feedback is for a simple distribution needing a lot of moves. 
+   */
+  def dstbnFeedback(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double) = {
     val dstbnpmf = dstbn(chains.toSeq, d).pmf
-    val rawpmf = for (Weighted(pres, prob) <- dstbnpmf) yield (Weighted(pres,presentationWeight(pres, presCntn, wrdCntn) / prob))
-    val pmftot = (rawpmf map (_.weight)).sum
-    val pmf = rawpmf map ((x) => Weighted(x.elem, x.weight - (pmftot/rawpmf.length)))
-    FiniteDistribution(pmf)
-  }
-  
-  def dstbnflow(chains: Set[Chain], d : DynDist, presCntn : Double, wrdCntn : Double , epsilon: Double) = {
-    val feedback = ChnFeedback(chains: Set[Chain], d : DynDist, presCntn : Double, wrdCntn : Double) * epsilon
-    val shift : DynDist = backpropdstbn(chains, feedback, d)
-    (d ++ shift).normalized
-  }
-  
-  @annotation.tailrec def chainEvolvCutoff(chains: Set[Chain], d : DynDist , cutoff: Double) : Set[Chain] ={
-    val prune: Chain => Boolean = (chain) => chain.prob(d) > cutoff
-    val nextgen = Chain.prunednextgen(chains, prune)
-    if  (chains == nextgen) chains else chainEvolvCutoff(nextgen, d, cutoff)
+    val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf) yield (Weighted(pres,presentationWeight(pres, presCntn, wrdCntn) / prob))
+    val fdbkpmftot = (fdbkrawpmf map (_.weight)).sum
+    val fdbkpmf = fdbkrawpmf map ((x) => Weighted(x.elem, x.weight - (fdbkpmftot/fdbkrawpmf.length)))
+    FiniteDistribution(fdbkpmf)
   }
   
   /*
-   * Presentations in the support of the evolving distribution
+   * Change the initial distribution based on feedback, possibly pruning at threshold. This is the learning step.
    */
-  def presSupp(d : DynDist) = (d.pmf collect (WtdPresentation) map (_.elem)).toSet
+  def dstbnflow(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double , epsilon: Double, threshold: Double = 0) = {
+    val feedback = dstbnFeedback(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double) * epsilon
+    val shift : DynDstbn = backpropdstbn(chains, feedback, d)
+    (d ++ shift).normalized(threshold)
+  }
   
-  def initChains(d : DynDist) : Set[Chain] = presSupp(d) map (AtomicChain(_))  
+  /*
+   * Generate chains based on a cutoff (which stops descendants).
+   */
+  @annotation.tailrec def chainGenCutoff(chains: Set[Chain], d : DynDstbn , cutoff: Double) : Set[Chain] ={
+    val prune: Chain => Boolean = (chain) => chain.prob(d) > cutoff
+    val nextgen = Chain.prunednextgen(chains, prune)
+    if  (chains == nextgen) chains else chainGenCutoff(nextgen, d, cutoff)
+  }
+  
+  /*
+   * Presentations in the support of the evolving distribution.
+   */
+  def presSupp(d : DynDstbn) = (d.pmf collect (WtdPresentation) map (_.elem)).toSet
+  
+  /*
+   * The initial chains, based on the dynamic distribution, from which chains are generated.
+   * This is also useful for reporting interesting presentations.
+   */
+  def initChains(d : DynDstbn) : Set[Chain] = presSupp(d) map (AtomicChain(_))  
   
   /*
    * Next step of the evolution of the distribution, assuming selection of sequences based on cutoff
    *
    */
-  def dstbnFlowCutoff(d : DynDist, presCntn : Double, wrdCntn : Double , epsilon: Double, cutoff : Double) : DynDist = {
-    val chainSet = chainEvolvCutoff(initChains(d), d, cutoff) flatMap (subchains(_)) 
+  def dstbnFlowCutoff(d : DynDstbn, presCntn : Double, wrdCntn : Double , epsilon: Double, cutoff : Double) : DynDstbn = {
+    val chainSet = chainGenCutoff(initChains(d), d, cutoff) flatMap (Chain.subchains(_)) 
     dstbnflow(chainSet, d, presCntn, wrdCntn, epsilon)
   }
+  
+  /*
+   * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
+   */
+  def bestChain(pres: Presentation , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
 }
