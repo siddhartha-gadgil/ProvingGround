@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>ProvingGround</title>
     <link rel="stylesheet" href="provingground.css">
-    <!-- mathjax config similar to math.stackexchange -->
+    <!-- mathjax config similar to math.stackexchange
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   jax: ["input/TeX", "output/HTML-CSS"],
@@ -20,6 +20,7 @@ MathJax.Hub.Config({
 });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+ -->
   </head>
   <body>
     <h1>ProvingGround</h1>
@@ -30,8 +31,8 @@ MathJax.Hub.Config({
       <p id="sample_text_id">Click me!</p>
     </div>
     
-    Latex:<h3 id="texthis">$eqn$</h3>
-  Equation: <input type="text" ng-model="equation" value="$x^2+ y^2 =1$">
+    Output:<h3 id="texthis">{{equation}}</h3>
+  Equation: <input type="text" ng-model="equation">
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>
     <script type="application/dart" src="provingground.dart"></script>
