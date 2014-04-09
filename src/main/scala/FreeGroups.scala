@@ -33,11 +33,11 @@ object FreeGroups{
     
     def *(that: Word) = Word(ls ++ that.ls).reduce
     
-    def conj(that: Word) = that * this * (that.inv)
+    def conj(that: Word) = that.inv * this * that
     
     def ^(that: Word) = conj(that)
     
-    def conjGen(k: Int) = Word(k :: (ls :+ (-k)))
+    def conjGen(k: Int) = Word((-k) :: (ls :+ k))
     
     def ^^(k: Int)  = conjGen(k)
     
@@ -100,7 +100,7 @@ object FreeGroups{
   
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
     val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
-    (1 - presCntn) * math.pow(presCntn, pres.rank) * ((wordwts :\ 1.0)(_ * _))
+    (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
   }
   
 }

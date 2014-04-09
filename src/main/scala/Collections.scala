@@ -14,6 +14,8 @@ object Collections{
   
     def totalMem = runTime.totalMemory
     
+    def gc = runTime.gc
+    
     implicit val ZeroReal : Double = 0
     
     implicit def ZeroPair[A, B](za: A, zb: B): (A, B) = (za, zb)
@@ -144,27 +146,27 @@ object Collections{
       
       def get(label: T) = pmf find (_.elem == label) map (_.weight)
       
-      def getsum(label : T) = (0.0 /: (pmf filter (_.elem == label) map (_.weight)))(_ + _)
+      def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
       
       def apply(label: T) = getsum(label)
       
-      def flatten = {
-        val newpmf = support map ((l) => Weighted(l, getsum(l)))
-        FiniteDistribution(newpmf.toSeq)
-      }
+      lazy val flatdist = support map ((l) => Weighted(l, getsum(l)))
+      
+      lazy val flatten = FiniteDistribution(flatdist.toSeq)
+      
     
-      private def posmf(t : Double = 0.0) = pmf filter (_.weight > 0)
+      private def posmf(t : Double = 0.0) = flatdist filter (_.weight > 0)
       
-      private def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight)) :\ 0.0)(_ + _) ensuring (_ > 0)
+      private def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
       
-      def normalized(t : Double = 0.0) = new FiniteDistribution(posmf(t) map (_.scale(1.0/postotal(t))))
+      def normalized(t : Double = 0.0) = new FiniteDistribution(posmf(t).toSeq map (_.scale(1.0/postotal(t))))
       
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
       
-      def +(elem: T , prob : Double) = ++(FiniteDistribution(Seq(Weighted(elem, prob))))
+      def +(elem: T , prob : Double) = FiniteDistribution(Weighted(elem, prob) +: pmf)
       
       def ++(that: FiniteDistribution[T]) = {
-        val combined = (for (k <- support.toSet union that.support.toSet) yield Weighted(k, apply(k) + that(k))).toSeq
+        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k))).toSeq
         new FiniteDistribution(combined)   
       }
       

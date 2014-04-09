@@ -1,7 +1,6 @@
 package provingGround
 
 import provingGround.FreeGroups._
-import provingGround.RandomWords._
 import provingGround.Collections._
 import annotation._
 
@@ -23,6 +22,9 @@ object AndrewsCurtis{
    */
   type DynDstbn = FiniteDistribution[DynObj]
   
+  type Vert = Presentation
+  
+  
   val isPresentation : ACobject => Boolean = {
     case pres : Presentation => true
     case _ => false
@@ -32,7 +34,7 @@ object AndrewsCurtis{
     case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
   }
   
-  def FDpresentation(d : DynDstbn) : FiniteDistribution[Presentation] = {
+  def FDVert(d : DynDstbn) : FiniteDistribution[Vert] = {
      val rawpmf = d.pmf collect WtdPresentation
      FiniteDistribution(rawpmf).normalized()
   }
@@ -96,7 +98,7 @@ object AndrewsCurtis{
   
   
   
-  trait Move extends (Presentation => Presentation){
+  trait Move extends (Vert => Vert){
     val mvType : MoveType
   }
   
@@ -141,16 +143,16 @@ object AndrewsCurtis{
    */  
   trait Chain{
 
-    val head: Presentation
+    val head: Vert
     
     def prob(d: DynDstbn) : Double
     
-    val foot : Presentation
+    val foot : Vert
     
     val moveStack : List[Move]
   }
   
-  case class AtomicChain(head : Presentation) extends Chain{
+  case class AtomicChain(head : Vert) extends Chain{
     // choose the head, then don't continue
     def prob(d: DynDstbn) = d(head) * (1 - d(PathContinue))
     
@@ -188,7 +190,7 @@ object AndrewsCurtis{
         case RecChain(start, move) => subchains(start, tail :+ move, accum + addMoves(chain, tail))
       }
       
-      def apply(foot: Presentation, moveStack : List[Move]) = addMoves(AtomicChain(foot), moveStack)
+      def apply(foot: Vert, moveStack : List[Move]) = addMoves(AtomicChain(foot), moveStack)
     
 	  def offspring(chain : Chain) = for (mvTyp <- MoveTypeList; mv <- allMoves(chain.head)(mvTyp)) yield RecChain(chain, mv)
 	  
@@ -231,7 +233,7 @@ object AndrewsCurtis{
   /*
   * Back-propagate a feedback on distribution on presentations.
   */
-  def backpropdstbn(chains: Set[Chain], feedback : FiniteDistribution[Presentation], d : DynDstbn) = {
+  def backpropdstbn(chains: Set[Chain], feedback : FiniteDistribution[Vert], d : DynDstbn) = {
     val empty = FiniteDistribution[DynObj](Seq())
     val bcklist = chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
     ((bcklist :\ empty)(_ ++ _)).flatten
@@ -239,13 +241,19 @@ object AndrewsCurtis{
   
   
   /*
+   * The background weights in the Andrews-Curtis case
+   */
+  
+  def ACbgkWt(presCntn : Double, wrdCntn : Double) : Vert => Double = presentationWeight(_, presCntn, wrdCntn)
+  
+  /*
    * Feedback for distribution on presentations, comparing probabilities from generating presentations by words
    * with generating from Andrews-Curtis moves. This has total zero. 
    * A high (raw) feedback is for a simple distribution needing a lot of moves. 
    */
-  def dstbnFeedback(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double) = {
-    val dstbnpmf = dstbn(chains.toSeq, d).pmf
-    val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf) yield (Weighted(pres,presentationWeight(pres, presCntn, wrdCntn) / prob))
+  def dstbnFeedback(presdstbn : FiniteDistribution[Vert] , bgwt : Vert => Double) = {
+    val dstbnpmf = presdstbn.pmf
+    val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf) yield (Weighted(pres,bgwt(pres) / prob))
     val fdbkpmftot = (fdbkrawpmf map (_.weight)).sum
     val fdbkpmf = fdbkrawpmf map ((x) => Weighted(x.elem, x.weight - (fdbkpmftot/fdbkrawpmf.length)))
     FiniteDistribution(fdbkpmf)
@@ -254,8 +262,9 @@ object AndrewsCurtis{
   /*
    * Change the initial distribution based on feedback, possibly pruning at threshold. This is the learning step.
    */
-  def dstbnflow(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double , epsilon: Double, threshold: Double = 0) = {
-    val feedback = dstbnFeedback(chains: Set[Chain], d : DynDstbn, presCntn : Double, wrdCntn : Double) * epsilon
+  def dstbnflow(chains: Set[Chain], d : DynDstbn, bgwt : Vert => Double , epsilon: Double, threshold: Double = 0) = {
+    val presdstbn = dstbn(chains.toSeq, d)
+    val feedback = dstbnFeedback(presdstbn, bgwt) * epsilon
     val shift : DynDstbn = backpropdstbn(chains, feedback, d)
     (d ++ shift).normalized(threshold)
   }
@@ -284,15 +293,22 @@ object AndrewsCurtis{
    * Next step of the evolution of the distribution, assuming selection of sequences based on cutoff
    *
    */
-  def dstbnFlowCutoff(d : DynDstbn, presCntn : Double, wrdCntn : Double , epsilon: Double, cutoff : Double) : DynDstbn = {
+  def dstbnFlowCutoff(d : DynDstbn, bgwt : Vert => Double , epsilon: Double, cutoff : Double) : DynDstbn = {
     val chainSet = chainGenCutoff(initChains(d), d, cutoff) flatMap (Chain.subchains(_)) 
-    dstbnflow(chainSet, d, presCntn, wrdCntn, epsilon)
+    dstbnflow(chainSet, d, bgwt, epsilon)
+  }
+  
+  /*
+   * flow for tuning, without adding vertices to the support. This is accomplished by not propogating on subchains
+   */  
+  def tuneFlowCutOff(d : DynDstbn, bgwt : Vert => Double , epsilon: Double, cutoff : Double) ={
+    dstbnflow(chainGenCutoff(initChains(d), d, cutoff), d, bgwt, epsilon)
   }
   
   /*
    * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
    */
-  def bestChain(pres: Presentation , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
+  def bestChain(pres: Vert , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop
