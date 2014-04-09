@@ -4,6 +4,14 @@ import provingGround.FreeGroups._
 import provingGround.Collections._
 import annotation._
 
+// Play Json imports
+import play.api.libs.json._
+
+import play.api.Play.current
+
+import play.api.libs.iteratee._
+import play.api.libs.EventSource
+
 object AndrewsCurtis{
   
   /*
@@ -309,6 +317,21 @@ object AndrewsCurtis{
    * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
    */
   def bestChain(pres: Vert , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
+  
+  def wtdPresJson(pw : Weighted[Presentation]) = {
+      val listlist = pw.elem.rels map (_.ls)
+      Json.obj("rank" -> pw.elem.rank, "words" -> listlist, "prob" -> pw.weight)
+    }
+  
+  def dstbnJson(dstbn : FiniteDistribution[Presentation]) = Json.toJson(dstbn.pmf.toList map (wtdPresJson(_))) 
+  
+  def sendDstbn(dstbn : FiniteDistribution[Presentation]) = dstbnChannel.push(dstbnJson(dstbn))
+  
+  /*
+   * sending out distributions on presentations to frontend : the dstbnout Enumerator is sent in response to an sse request
+   * 
+   */
+  val (dstbnout, dstbnChannel) = Concurrent.broadcast[JsValue]
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop

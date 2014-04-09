@@ -1,5 +1,13 @@
 package provingGround
 
+// Play Json imports
+import play.api.libs.json._
+
+import play.api.Play.current
+
+import play.api.libs.iteratee._
+import play.api.libs.EventSource
+
 /* 
  * Free group in n generators
  * An element is represented as a word in integers, together with rank of the corresponding group
@@ -95,6 +103,11 @@ object FreeGroups{
     def ACdestab = {
       val newrels = rels filter ((w : Word) => w != Word(List(rank+1))) map (_.rmvtop(rank))
       Presentation(newrels, rank -1)
+    }
+    
+    def toJson = {
+      val listlist = rels map (_.ls)
+      Json.obj("rank" -> rank, "words" -> listlist)
     }
   }
   

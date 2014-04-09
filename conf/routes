@@ -13,3 +13,5 @@ GET     /web/*file               controllers.Assets.at(path="/web", file)
 GET     /packages/*file               controllers.Assets.at(path="/packages", file)
 
 GET     /build/*file               controllers.Assets.at(path="/build", file)
+
+GET     /dstbnstream               controllers.Application.dstbnstream 
