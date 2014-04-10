@@ -76,7 +76,7 @@ packages:
   stack_trace:
     description: stack_trace
     source: hosted
-    version: "0.9.3"
+    version: "0.9.3+1"
   utf:
     description: utf
     source: hosted
