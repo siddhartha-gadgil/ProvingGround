@@ -174,6 +174,11 @@ object Collections{
         val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt) 
         FiniteDistribution(newpmf).flatten
       }
+      
+      override def toString = {
+        val terms = (for (Weighted(elem, wt) <- pmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
+        "[" + terms.dropRight(2) + "]"
+      }
     }
     
     case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A){

@@ -23,7 +23,7 @@ object FreeGroups{
       case _ => this
     } 
     
-    override def toString = (ls map (letterString(_))).foldLeft("")(_+_)
+    override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
     
     def ::(let : Int) = Word(let :: ls)
     
@@ -45,7 +45,7 @@ object FreeGroups{
     
     def ^(that: Word) = conj(that)
     
-    def conjGen(k: Int) = Word((-k) :: (ls :+ k))
+    def conjGen(k: Int) = Word((-k) :: (ls :+ k)).reduce
     
     def ^^(k: Int)  = conjGen(k)
     
@@ -65,9 +65,9 @@ object FreeGroups{
     val sz = rels.length
     
     override def toString = {
-      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + " , "+ y)
-      val relstring = (for (rel <- rels) yield rel.toString).foldLeft("")((x ,y) => x + " , "+ y)
-      "< "+gens+";"+rels+">"
+      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + ","+ y)
+      val relstring = (for (rel <- rels) yield rel.toString).foldLeft("")((x ,y) => x + ", "+ y)
+      "<"+gens.drop(1)+"; "+relstring.drop(2)+">"
     }
     
     val defect = rank - sz

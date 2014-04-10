@@ -82,7 +82,7 @@ object AndrewsCurtis{
     case ACDeStabMv => (1 : Long) // can be zero in practise
     case RtMultMv => (rk : Long) * ((rk : Long) - 1)
     case LftMultMv => (rk : Long) * ((rk : Long) - 1)
-    case ConjMv => (rk : Long) * ((rk : Long) - 1)
+    case ConjMv => (rk : Long) * ((rk : Long) * 2 - 1)
     case InvMv => (rk : Long)
   }
   
@@ -98,7 +98,7 @@ object AndrewsCurtis{
       (for (j <-0 to n-1; k <- 0 to n-1 if j != k) yield LftMult(j, k)).toList
     case ConjMv => 
       val n = pres.rank
-      (for (j <-0 to n-1; k <- 0 to n-1 if j != k) yield Conj(j, k)).toList
+      (for (j <-0 to n-1; k <- -n to n if k != 0) yield Conj(j, k)).toList
     case InvMv => 
       val n = pres.rank
       (for (j <-0 to n-1) yield Inv(j)).toList
@@ -252,7 +252,7 @@ object AndrewsCurtis{
    * The background weights in the Andrews-Curtis case
    */
   
-  def ACbgkWt(presCntn : Double, wrdCntn : Double) : Vert => Double = presentationWeight(_, presCntn, wrdCntn)
+  def ACbgWt(presCntn : Double, wrdCntn : Double) : Vert => Double = presentationWeight(_, presCntn, wrdCntn)
   
   /*
    * Feedback for distribution on presentations, comparing probabilities from generating presentations by words
@@ -335,4 +335,12 @@ object AndrewsCurtis{
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop
+  
+  def initDstbn(pthCntn: Double, allmvs : Double) = {
+    val mvdist : List[(DynObj, Double)] = for (x <- MoveTypeList) yield (x, allmvs/MoveTypeList.length)    
+    val initwt = 1.0 - pthCntn - allmvs
+    val rawpairs = (nullpres, initwt) :: (PathContinue, pthCntn) :: mvdist
+    val wtdpairs  = for ((x, y) <- rawpairs) yield Weighted(x, y)
+    FiniteDistribution(wtdpairs)
+  }
 }
