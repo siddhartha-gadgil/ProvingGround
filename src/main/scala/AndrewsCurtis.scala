@@ -18,7 +18,7 @@ object AndrewsCurtis{
    * The vertices (e.g. presentations) and edgetype/movetype for the dynamics. We assume there are no combinations here.
    * Other generic objects also extend this.
    */
-  type DynObj = ACobject
+//  type DynObj = ACobject
   
   /*
    * Empty presentation
@@ -28,30 +28,54 @@ object AndrewsCurtis{
   /*
    * Distribution on dynobjects - this is what evolves during learning.
    */
-  type DynDstbn = FiniteDistribution[DynObj]
+//  type DynDstbn = FiniteDistribution[DynObj]
+  
+  type DynDstbn = DynDst[Presentation, ACMoveType]
+  
+  case class DynDst[V, E](vrtdst: FiniteDistribution[V], edgdst : FiniteDistribution[E], cntn : Double){
+    def probV (v : V) = vrtdst(v)
+    
+    def probE (e : E) = edgdst(e)
+    
+    def ++ (that : DynDst[V, E]) = DynDst(vrtdst ++ that.vrtdst, edgdst ++ that.edgdst, cntn + that.cntn)
+    
+    def addV (v : V, p : Double) = DynDst(vrtdst + (v, p), edgdst, cntn)
+    
+    def addE ( e : E, p : Double) = DynDst(vrtdst, edgdst + (e, p), cntn)
+    
+    def addC (p : Double) = DynDst(vrtdst, edgdst, cntn + p)
+    
+    def normalized(c : Double) = DynDst(vrtdst.normalized(c), edgdst.normalized(c), cntn)
+    
+    def flatten = DynDst(vrtdst.flatten, edgdst.flatten, cntn)
+  }
+  
+  object DynDst{
+    def empty[V, E] = DynDst(FiniteDistribution(Seq()), FiniteDistribution(Seq()), 0)
+  }
   
   type Vert = Presentation
   
   
-  val isPresentation : ACobject => Boolean = {
-    case pres : Presentation => true
-    case _ => false
-  }
+//  val isPresentation : ACobject => Boolean = {
+//    case pres : Presentation => true
+//    case _ => false
+//  }
   
-  val WtdPresentation : PartialFunction[Weighted[DynObj], Weighted[Presentation]] = {
-    case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
-  }
+//  val WtdPresentation : PartialFunction[Weighted[DynObj], Weighted[Presentation]] = {
+//    case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
+//  }
   
-  def FDVert(d : DynDstbn) : FiniteDistribution[Vert] = {
-     val rawpmf = d.pmf collect WtdPresentation
-     FiniteDistribution(rawpmf).normalized()
-  }
+//  def FDVert(d : DynDstbn) : FiniteDistribution[Vert] = {
+//     val rawpmf = d.pmf collect WtdPresentation
+//     FiniteDistribution(rawpmf).normalized()
+//  }
   
   
   /*
    * Extend a path by another move. Need to do this differently while abstracting.
    */
-  case object PathContinue extends DynObj
+//  case object PathContinue extends DynObj
   
   
   /*
@@ -63,7 +87,7 @@ object AndrewsCurtis{
   /*
    * Andrews-Curtis moves
    */
-  trait ACMoveType extends ACobject
+  trait ACMoveType 
   
   case object ACStabMv extends ACMoveType
   case object ACDeStabMv extends ACMoveType
@@ -162,7 +186,7 @@ object AndrewsCurtis{
   
   case class AtomicChain(head : Vert) extends Chain{
     // choose the head, then don't continue
-    def prob(d: DynDstbn) = d(head) * (1 - d(PathContinue))
+    def prob(d: DynDstbn) = d.probV(head) * (1 - d.cntn)
     
     val foot = head
     
@@ -181,7 +205,7 @@ object AndrewsCurtis{
      * The latter involves diving by the multiplicity of the move type.
      * We need to multiply by the probability of not continuing, but this is part of start.prob already.
      */
-    def prob(d: DynDstbn) = start.prob(d) * d(move.mvType) * d(PathContinue) / multiplicity(head.rank)(move.mvType) 
+    def prob(d: DynDstbn) = start.prob(d) * d.probE(move.mvType) * d.cntn / multiplicity(head.rank)(move.mvType) 
   }
   
   object Chain{
@@ -215,16 +239,14 @@ object AndrewsCurtis{
 	   */
 	  @annotation.tailrec def backprop(chain: Chain, mult : Double, d : DynDstbn, accum : DynDstbn) : DynDstbn = chain match {
 	    case AtomicChain(head) => 
-	      accum + (head, mult * (1 - d(PathContinue))) + (PathContinue, -mult * d(head))
+	      accum.addV (head, mult * (1 - d.cntn)) addC  (-mult * d.probV(head))
 	    case chn @ RecChain(start, move) =>
 	      // Number of moves of the given move type for the presentation.
 	      val multplcty = multiplicity(chain.head.rank)(move.mvType)
-	      val newmult = mult * d(move.mvType) * d(PathContinue) / multplcty // to be passed on to the previous chain
-	      val mvTypWeight = start.prob(d) *  d(PathContinue) / multplcty
-	      val cntnWt = start.prob(d) * d(move.mvType) / multplcty
-	      val newaccum = accum + 
-	      					(move.mvType, mult * mvTypWeight) + 
-	      					(PathContinue, mult * cntnWt) 
+	      val newmult = mult * d.probE(move.mvType) * d.cntn / multplcty // to be passed on to the previous chain
+	      val mvTypWeight = start.prob(d) *  d.cntn / multplcty
+	      val cntnWt = start.prob(d) * d.probE(move.mvType) / multplcty
+	      val newaccum = accum.addE(move.mvType, mult * mvTypWeight) addC (mult * cntnWt) 
 	      backprop(start, newmult, d, newaccum)
 	  }
   }
@@ -242,7 +264,8 @@ object AndrewsCurtis{
   * Back-propagate a feedback on distribution on presentations.
   */
   def backpropdstbn(chains: Set[Chain], feedback : FiniteDistribution[Vert], d : DynDstbn) = {
-    val empty = FiniteDistribution[DynObj](Seq())
+//    val empty = FiniteDistribution[DynObj](Seq())
+    val empty = DynDst(FiniteDistribution[Presentation](Seq()), FiniteDistribution[MoveType](Seq()), 0)
     val bcklist = chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
     ((bcklist :\ empty)(_ ++ _)).flatten
   }
@@ -289,7 +312,7 @@ object AndrewsCurtis{
   /*
    * Presentations in the support of the evolving distribution.
    */
-  def presSupp(d : DynDstbn) = (d.pmf collect (WtdPresentation) map (_.elem)).toSet
+  def presSupp(d : DynDstbn) = (d.vrtdst.pmf  map (_.elem)).toSet
   
   /*
    * The initial chains, based on the dynamic distribution, from which chains are generated.
@@ -336,11 +359,5 @@ object AndrewsCurtis{
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop
   
-  def initDstbn(pthCntn: Double, allmvs : Double) = {
-    val mvdist : List[(DynObj, Double)] = for (x <- MoveTypeList) yield (x, allmvs/MoveTypeList.length)    
-    val initwt = 1.0 - pthCntn - allmvs
-    val rawpairs = (nullpres, initwt) :: (PathContinue, pthCntn) :: mvdist
-    val wtdpairs  = for ((x, y) <- rawpairs) yield Weighted(x, y)
-    FiniteDistribution(wtdpairs)
-  }
+  def initDstbn(pthCntn: Double) =  DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), FiniteDistribution[Presentation](Seq()), pthCntn)
 }

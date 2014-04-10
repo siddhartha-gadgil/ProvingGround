@@ -59,9 +59,9 @@ object FreeGroups{
   /*
    * Objects involved in Andrews-Curtis evolution : Presentations and Moves
    */
-  trait ACobject
+//  trait ACobject
   
-  case class Presentation(rels : List[Word], rank : Int) extends ACobject{
+  case class Presentation(rels : List[Word], rank : Int){
     val sz = rels.length
     
     override def toString = {
