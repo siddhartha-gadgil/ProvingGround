@@ -43,6 +43,12 @@ object AndrewsCurtis{
     
     def addE ( e : E, p : Double) = DynDst(vrtdst, edgdst + (e, p), cntn)
     
+    def updtV (vd : FiniteDistribution[E]) = DynDst(vd, edgdst, cntn)
+    
+    def updtE (ed : FiniteDistribution[E]) = DynDst(vrtdst, ed, cntn)
+    
+    def updtC(c : Double) = DynDst(vrtdst, edgdst, c)
+    
     def addC (p : Double) = DynDst(vrtdst, edgdst, cntn + p)
     
     def normalized(c : Double) = DynDst(vrtdst.normalized(c), edgdst.normalized(c), cntn)
@@ -96,7 +102,23 @@ object AndrewsCurtis{
   case object ConjMv extends ACMoveType
   case object InvMv extends ACMoveType
   
+  object ACMoveType{
+    def fromString(mv : String) : ACMoveType = (MoveTypeList find (_ == mv)).get
+  }
+  
   val MoveTypeList = List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
+  
+  
+  implicit object ACMoveFreqFormat extends Format[FiniteDistribution[ACMoveType]]{
+    def reads(js : JsValue) : JsResult[FiniteDistribution[ACMoveType]] = {
+      val pmf = for ((x, y) <- js.as[Map[String, Double]]) yield Weighted(ACMoveType.fromString(x), y)
+      JsSuccess(FiniteDistribution(pmf.toSeq))
+    }
+    
+    def writes(fd : FiniteDistribution[ACMoveType]): JsValue = {
+      Json.toJson((for (Weighted(x, y) <- fd.pmf) yield (x.toString, y)).toMap)
+    } 
+  }
   
   /*
    * Multiplicity of moves of a given type given a presentation. In general this should be a function of the presentation.

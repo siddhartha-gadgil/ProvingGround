@@ -16,6 +16,8 @@ import play.api.libs.EventSource
 object FreeGroups{
   def letterString(n : Int) = if (n > 0) ('a' + n -1).toChar.toString +"." else ('a' - n -1).toChar.toString+"!."
   
+  def letterUnic(n : Int) = if (n > 0) ('a' + n -1).toChar.toString else ('a' - n -1).toChar.toString+ '\u0305'.toString
+  
   case class Word(ls: List[Int]) extends AnyVal{
     def reduce : Word = ls match {
       case x :: y :: zs if x == -y => Word(zs).reduce
@@ -24,6 +26,8 @@ object FreeGroups{
     } 
     
     override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
+    
+    def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_+_))
     
     def ::(let : Int) = Word(let :: ls)
     
@@ -64,11 +68,19 @@ object FreeGroups{
   case class Presentation(rels : List[Word], rank : Int){
     val sz = rels.length
     
-    override def toString = {
+    def toPlainString = {
       val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + ","+ y)
       val relstring = (for (rel <- rels) yield rel.toString).foldLeft("")((x ,y) => x + ", "+ y)
       "<"+gens.drop(1)+"; "+relstring.drop(2)+">"
     }
+    
+    def toUnicode = {
+      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + ","+ y)
+      val relstring = (for (rel <- rels) yield rel.toUnicode).foldLeft("")((x ,y) => x + ", "+ y)
+      "<"+gens.drop(1)+"; "+relstring.drop(2)+">"
+    }
+    
+    override def toString = toUnicode
     
     val defect = rank - sz
     

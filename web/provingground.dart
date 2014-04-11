@@ -37,6 +37,8 @@ String unilet(int k){
 
 String uniword (List<int> lets) => lets.map(unilet).fold("", (a, b) => a + b);
 
+EventSource dstbnsrc;
+
 @NgController (
     selector: "ACdistribution",
     publishAs : "dstbn")
@@ -47,10 +49,18 @@ class ACDstbnController{
     distbn = newdstbn;
   }
   
-  var sse = new EventSource("../dstbns")..onMessage.listen((event){
+  void _init() {
+  dstbnsrc = new EventSource("../dstbns")
+        ..onMessage.listen((event){
     List wps = JSON.decode(event.data);
     List <WtdPres> newdistbn = wps.map((wp) => new WtdPres.fromJson(wp));
+    updateDstbn(newdistbn);
       });
+  }
+  
+  ACDstbnController(){
+    _init();
+  }
 }
 
 class MyAppModule extends Module {

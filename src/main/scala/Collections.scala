@@ -176,7 +176,8 @@ object Collections{
       }
       
       override def toString = {
-        val terms = (for (Weighted(elem, wt) <- pmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
+        val sortedpmf = pmf.sortBy(1 - _.weight)
+        val terms = (for (Weighted(elem, wt) <- sortedpmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
         "[" + terms.dropRight(2) + "]"
       }
     }
