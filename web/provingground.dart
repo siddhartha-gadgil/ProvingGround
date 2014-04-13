@@ -40,7 +40,7 @@ String uniword (List<int> lets) => lets.map(unilet).fold("", (a, b) => a + b);
 EventSource dstbnsrc;
 
 @NgController (
-    selector: "ACdistribution",
+    selector: "[ACdistribution]",
     publishAs : "dstbn")
 class ACDstbnController{
   List <WtdPres> distbn;
