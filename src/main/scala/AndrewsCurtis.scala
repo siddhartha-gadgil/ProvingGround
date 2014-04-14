@@ -11,6 +11,13 @@ import play.api.Play.current
 
 import play.api.libs.iteratee._
 import play.api.libs.EventSource
+import play.api.libs.concurrent._
+
+import akka.actor._
+import play.api.libs.concurrent.Execution.Implicits._
+
+
+import scala.concurrent._
 
 object AndrewsCurtis{
   
@@ -25,13 +32,22 @@ object AndrewsCurtis{
    */
   val nullpres = Presentation(List(), 0)
   
+
+  
   /*
    * Distribution on dynobjects - this is what evolves during learning.
    */
 //  type DynDstbn = FiniteDistribution[DynObj]
   
   type DynDstbn = DynDst[Presentation, ACMoveType]
-  
+
+  val baseDstbn : DynDstbn = {
+    val vrtdst = FiniteDistribution(Seq(Weighted(nullpres, 1.0)))
+    val edgseq = for (mvtyp <- MoveTypeList) yield Weighted(mvtyp : ACMoveType, 1.0/ MoveTypeList.length)
+    val edgdst  = FiniteDistribution(edgseq)
+    DynDst(vrtdst, edgdst, 0.3)
+  }
+
   case class DynDst[V, E](vrtdst: FiniteDistribution[V], edgdst : FiniteDistribution[E], cntn : Double){
     def probV (v : V) = vrtdst(v)
     
@@ -354,7 +370,7 @@ object AndrewsCurtis{
   /*
    * flow for tuning, without adding vertices to the support. This is accomplished by not propogating on subchains
    */  
-  def tuneFlowCutOff(d : DynDstbn, bgwt : Vert => Double , epsilon: Double, cutoff : Double) ={
+  def tuneFlowCutoff(d : DynDstbn, bgwt : Vert => Double , epsilon: Double, cutoff : Double) ={
     dstbnflow(chainGenCutoff(initChains(d), d, cutoff), d, bgwt, epsilon)
   }
   
@@ -372,6 +388,8 @@ object AndrewsCurtis{
   
   def sendDstbn(dstbn : FiniteDistribution[Presentation]) = dstbnChannel.push(dstbnJson(dstbn))
   
+  def pushDstbn(d : DynDstbn) = sendDstbn(d.vrtdst)
+  
   /*
    * sending out distributions on presentations to frontend : the dstbnout Enumerator is sent in response to an sse request
    * 
@@ -382,4 +400,64 @@ object AndrewsCurtis{
 // Long loop : Repeat short loop
   
   def initDstbn(pthCntn: Double) =  DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), FiniteDistribution[Presentation](Seq()), pthCntn)
+  
+  case class ACparameters(
+      epsilon: Double = 1.0/100.0,
+      cutoff : Double = 1.0/1000000.0,
+      purgeLevel : Double = 1.0/10000.0,
+      pthCntn : Double = 0.7,
+      presCntn : Double = 0.7,
+      wrdCntn : Double =0.7,
+      tuneLoops : Int = 25,
+      growLoops : Int =15
+      ){
+    
+    def bgwt = ACbgWt(presCntn, wrdCntn)
+    
+    def tuneflow : DynDstbn => DynDstbn = tuneFlowCutoff(_, bgwt, epsilon, cutoff)
+    
+    def dstbnflow : DynDstbn => DynDstbn = dstbnFlowCutoff(_, bgwt, epsilon, cutoff)
+    
+    def multituneflow : DynDstbn => DynDstbn = IterateDyn(_, tuneflow, tuneLoops)
+    
+    def growflow : DynDstbn => DynDstbn = (d) => dstbnflow(multituneflow(d))
+    
+    def multigrowflow : DynDstbn => DynDstbn = IterateDyn(_, growflow, growLoops)
+    
+    val flow : DynDstbn => DynDstbn = (d) => multigrowflow(d).normalized(purgeLevel)
+  }
+  
+  
+  case class ACFlowData(params : ACparameters, dstbn : DynDstbn)
+  
+  class FlowController(initParams: ACparameters, worker : ActorRef, output : DynDstbn => Unit = pushDstbn) extends Actor{
+    var params = initParams
+    
+    var dstbn : DynDstbn = baseDstbn
+    
+    def receive = {
+      case p : ACparameters => 
+        params = p
+      case d : DynDstbn => 
+        dstbn = d
+        output(d)
+        worker ! ACFlowData(params, d)
+      case _ => 
+    }
+  }
+  
+  object FlowController{
+    def props(initParams: ACparameters, output : DynDstbn => Unit = pushDstbn) = Props(new FlowController(initParams, flowWorker, output))
+  }
+  
+  class FlowWorker extends Actor{
+    def receive = {
+      case ACFlowData(p, d) => sender ! p.flow(d)
+      case _ =>
+    }
+  }
+  
+  val flowWorker = Akka.system.actorOf(Props[FlowWorker])
+    
+  val flowController = FlowController.props(ACparameters())
 }

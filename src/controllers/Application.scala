@@ -21,6 +21,10 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
   
+  def redirect = Action {
+    Redirect("build/web/provingground.html")
+  }
+  
   def dstbnstream = Action {
       implicit request => {                   
           Ok.feed(dstbnout &> EventSource()).as("text/event-stream")
