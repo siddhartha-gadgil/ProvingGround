@@ -267,40 +267,40 @@ object Dynamics{
     }
     
     object HottDyn{
-       type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
+       type Pairing = PartialFunction[(Term, Term),Term]
        
-       type CHPairing = PartialFunction[AbsObj, PartialFunction[AbsObj, AbsObj]]
+       type CHPairing = PartialFunction[Term, PartialFunction[Term, Term]]
     
-//       def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
-//           case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+//       def Applications[W<: Term, V<: Typ[U], U<: Term]: Pairing = {
+//           case (f: FuncObj[_, _, _], x: Term) if f.dom == x.typ => f(x).get 
 //       }
        
-       def applyFn[W<: AbsObj, V<: Typ[W], U<: AbsObj](f: FuncObj[W, V, U]): PartialFunction[AbsObj, AbsObj] = {
+       def applyFn[W<: Term, V<: Typ[W], U<: Term](f: FuncObj[W, V, U]): PartialFunction[Term, Term] = {
          case arg if arg.typ == f.dom => f(arg.asInstanceOf[W])
        }
 
-       val applications: PartialFunction[AbsObj, PartialFunction[AbsObj, AbsObj]] = {
+       val applications: PartialFunction[Term, PartialFunction[Term, Term]] = {
          case f: FuncObj[_,_,_] => applyFn(f)
        }
        
 	
-       def logicalArrows[V <: AbsObj : TypeTag]: Pairing = {
-           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, codom)
+       def logicalArrows[V <: Term : TypeTag]: Pairing = {
+           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term, LogicalTyp, Term](dom, codom)
 		    }
 
-	   def lambdaIsles(dyn:  => DynSys[AbsObj])(state: Set[AbsObj]) ={
+	   def lambdaIsles(dyn:  => DynSys[Term])(state: Set[Term]) ={
 	     val newVarSym = nextChar(usedChars(state))
-	     val gens: PartialFunction[AbsObj, DynIsle[AbsObj, AbsObj]] = {
-	       case typ: Typ[AbsObj] => 
+	     val gens: PartialFunction[Term, DynIsle[Term, Term]] = {
+	       case typ: Typ[Term] => 
 	         val obj = typ.symbObj(newVarSym)
 	         DynIsle(DynState(state+obj, dyn), lambda(obj) _)
 	     }
 	     state collect gens
 	   }
 			
-	val inferenceDyn : DynSys[AbsObj] = DynSys.id[AbsObj] ++ DynSys.pairs(logicalArrows) spawnSet(lambdaIsles(inferenceDyn) _)
+	val inferenceDyn : DynSys[Term] = DynSys.id[Term] ++ DynSys.pairs(logicalArrows) spawnSet(lambdaIsles(inferenceDyn) _)
 	
-//	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
+//	val InferenceDyn = Dyn.id[Term] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
     }
     
 }

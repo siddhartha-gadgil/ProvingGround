@@ -322,10 +322,10 @@ object Evolver{
    
    case object EvolverTyp extends LogicalSTyp
    
-   class Gen(dyn: => (Set[AbsObj] => Set[AbsObj]), 		   		 
-		   		state:  => Set[AbsObj], 
-		   		mapping:  AbsObj => AbsObj = {(x : AbsObj) => x},
-		   		outbox: Outbox[AbsObj] = VanishBox[AbsObj]) extends AtomicObj{
+   class Gen(dyn: => (Set[Term] => Set[Term]), 		   		 
+		   		state:  => Set[Term], 
+		   		mapping:  Term => Term = {(x : Term) => x},
+		   		outbox: Outbox[Term] = VanishBox[Term]) extends AtomicObj{
      lazy val typ = new LogicalSTyp 
      
      def nextState = dyn(state)
@@ -377,14 +377,14 @@ object Evolver{
      val outbox = VanishBox[A]
    }
    
-   def fromGen(gen: Gen) = Set((gen.nextGen: AbsObj)) union (gen.nextSet)
+   def fromGen(gen: Gen) = Set((gen.nextGen: Term)) union (gen.nextSet)
    
-   def expandGen(obj: AbsObj) = obj match {
+   def expandGen(obj: Term) = obj match {
      case gen: Gen => fromGen(gen)
-     case ob: AbsObj => Set(ob)
+     case ob: Term => Set(ob)
    }
    
-   def expandGens(s: Set[AbsObj]) = s flatMap (expandGen _)
+   def expandGens(s: Set[Term]) = s flatMap (expandGen _)
    
    case class Dyn[A](step: Set[A] => Set[A]) extends DynSys[A]
 
@@ -430,26 +430,26 @@ object Evolver{
    	object HottEvolvers{
 	 
 	  
-     type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
+     type Pairing = PartialFunction[(Term, Term),Term]
     
-//	def Applications[W<: AbsObj, V<: Typ[U], U<: AbsObj]: Pairing = {
-//	  case (f: FuncObj[_, _, _], x: AbsObj) if f.dom == x.typ => f(x).get 
+//	def Applications[W<: Term, V<: Typ[U], U<: Term]: Pairing = {
+//	  case (f: FuncObj[_, _, _], x: Term) if f.dom == x.typ => f(x).get 
 //	}
 
 	
-	def LogicalArrows[V <: AbsObj : TypeTag]: Pairing = {
-		case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[AbsObj, LogicalTyp, AbsObj](dom, codom)
+	def LogicalArrows[V <: Term : TypeTag]: Pairing = {
+		case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term, LogicalTyp, Term](dom, codom)
 		}
 
 
 		
-	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+	def lambdaGen(x: Term, dynam: => (Set[Term] => Set[Term]), state: Set[Term]) = {
 	  new Gen(dynam, state, lambda(x) _)
 	}
 	
-	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
+	def lambdaGens(state: Set[Term])(dynam: => (Set[Term] => Set[Term])) ={
 	  val newVarSym = nextChar(usedChars(state))
-	  val gens: PartialFunction[AbsObj, AbsObj] = {
+	  val gens: PartialFunction[Term, Term] = {
 	    case typ: Typ[_] =>
 	      val obj = typ.symbObj(newVarSym)
 	      lambdaGen(obj , dynam, state + obj)
@@ -457,7 +457,7 @@ object Evolver{
 	  state collect gens
 	}
 	
-	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
+	val InferenceDyn = Dyn.id[Term] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
 	
 	val InferenceEvolver = new BasicEvolver(InferenceDyn)
    }
@@ -491,13 +491,13 @@ object Evolver{
 		fnTyp.Lambda(x as fnTyp.dom, y)
 	}
 		
-//	def lambdaGen(x: AbsObj, dynam: => (Set[AbsObj] => Set[AbsObj]), state: Set[AbsObj]) = {
+//	def lambdaGen(x: Term, dynam: => (Set[Term] => Set[Term]), state: Set[Term]) = {
 //	  new Gen(dynam, state, lambdaMap(x) _)
 //	}
 	
-//	def lambdaGens(state: Set[AbsObj])(dynam: => (Set[AbsObj] => Set[AbsObj])) ={
+//	def lambdaGens(state: Set[Term])(dynam: => (Set[Term] => Set[Term])) ={
 //	  val newVarSym = nextChar(usedChars(state))
-//	  val gens: PartialFunction[AbsObj, AbsObj] = {
+//	  val gens: PartialFunction[Term, Term] = {
 //	    case typ: EffectiveTyp[_] =>
 //	      val obj = typ.symbObj(newVarSym)
 //	      lambdaGen(obj , dynam, state + obj)
@@ -505,7 +505,7 @@ object Evolver{
 //	  state collect gens
 //	}
 	
-//	val InferenceDyn = Dyn.id[AbsObj] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
+//	val InferenceDyn = Dyn.id[Term] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _) 
 	
 //	val InferenceEvolver = new BasicEvolver(InferenceDyn)
   }

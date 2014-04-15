@@ -1,7 +1,7 @@
 package provingGround
 
 import provingGround.NlpProse._
-import provingGround.HoTT._
+//import provingGround.HoTT._
 import provingGround.TheoryTypes._ 
 
 
