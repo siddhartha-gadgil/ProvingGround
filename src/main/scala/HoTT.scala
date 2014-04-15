@@ -20,7 +20,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
  */
 object HoTT{
   /** Abstract object */
-    trait Term {
+    trait Term extends Subs[Term]{
       /** 
        * Gives limited information on types when the types are universes, so should not be used in this case.
        * The type `LogicalUniverse' should only be read as some universe.
@@ -30,6 +30,10 @@ object HoTT{
         
     
     def subs(x: Term, y: Term): Term
+    }
+    
+    trait Subs[+U <: Term]{
+      def subs(x: Term, y: Term) : U
     }
     
     /*
@@ -71,9 +75,9 @@ object HoTT{
      *  In particular, we can specify that the objects are types, types of types etc.
      *  We should handle covariance better and move methods to this.
      */
-    trait Typ[+U <: Term] extends Term{
+    trait Typ[+U <: Term] extends Term with Subs[Typ[U]]{
     	/** scala type of objects with this HoTT-type */
-        type Obj <: U
+        type Obj <: U with Subs[U]
         
         /** A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj*/
         def symbObj[A, W<: Term](name: A, tp: Typ[W] = this): Obj
@@ -158,11 +162,13 @@ object HoTT{
     /** HoTT types with underlying scala type Term.
      *  They belong to the LogicalUniv
      */
-    trait LogicalTyp extends AtomicTyp[Term]{
+    trait LogicalTyp extends Typ[Term] with Subs[LogicalTyp]{
       
 //      type Obj = Term
       
       lazy val typ = new LogicalUniv
+      
+      def subs(x: Term, y: Term) : LogicalTyp = if (x == this) y.asInstanceOf[LogicalTyp] else this
       
 //      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)
       
@@ -189,7 +195,7 @@ object HoTT{
     trait Univ[U<:Term] extends Typ[Typ[U]] 
     
     /** Inductive construction of the next universe */
-    case class NextUniv[U<: Term](base: Typ[U]) extends Univ[U] with AtomicTyp[Typ[U]]{
+    case class NextUniv[U<: Term : TypeTag](base: Typ[U]) extends Univ[U] with AtomicTyp[Typ[U]]{
       lazy val typ = NextUniv[Typ[U]](this)
       
       type Obj = Typ[U]
@@ -222,24 +228,24 @@ object HoTT{
     val __ = new LogicalUniv
     
     /** Pair of types (A, B) */
-    case class PairTyp[U<: Term, V <: Term](first: Typ[U], second: Typ[V]) extends 
+    case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](first: Typ[U], second: Typ[V]) extends 
 						Typ[AbsPair[U, V]] with AbsPair[Typ[U], Typ[V]]{
 
-    	type Obj = AbsPair[U, V]
+    	type Obj = AbsPair[U, V] with Subs[AbsPair[U, V]]
 
 		lazy val typ = PairTyp(first.typ, second.typ)
 		
 		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
 			
 			// The name is lost as `name', but can be recovered using pattern matching.
-		def symbObj[A, W<: Term](name: A, tp: Typ[W]): AbsPair[U, V] = PairObj(first.symbObj(name), second.symbObj(name))
+		def symbObj[A, W<: Term](name: A, tp: Typ[W]): Obj = PairObj(first.symbObj(name), second.symbObj(name))
 			}	
     
     /** Object (a, b) in (A, B) */
-    case class PairObj[U <: Term, V <: Term](val first: U, val second: V) extends AbsPair[U, V]{
+    case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](val first: U, val second: V) extends AbsPair[U, V] with Subs[AbsPair[U, V]]{
     	lazy val typ = PairTyp(first.typ, second.typ)
     	
-    	def subs(x: Term, y: Term) = PairObj(first.subs(x, y), second.subs(x, y))
+    	def subs(x: Term, y: Term) = PairObj[U, V](first.subs(x, y).asInstanceOf[U], second.subs(x, y).asInstanceOf[V])
 					}
 
     /** Abstract pair, parametrized by scala types of components */
@@ -248,10 +254,10 @@ object HoTT{
 	  val second: V
 	}
 	
-	def mkPair[U<: Term, V<: Term](f: U, s: V) = (f, s) match{
-	  case (fst: Typ[_], scnd: Typ[_]) => PairTyp(fst, scnd)
-	  case (fst, scnd) => PairObj(fst, scnd)
-	}
+//	def mkPair(f: Term, s: Term) = (f, s) match{
+//	  case (fst: Typ[u], scnd: Typ[v]) => PairTyp[u with Subs[u], v with Subs[v]](fst, scnd)
+//	  case (fst, scnd) => PairObj(fst, scnd)
+//	}
     
 	/** Function type */
     case class FuncTyp[W<: Term : TypeTag, V <: Typ[W], U<: Term : TypeTag](dom: V, codom: Typ[U]) extends LogicalTyp{
@@ -265,7 +271,9 @@ object HoTT{
     /*
      * Includes both functions and dependent functions
      */
-    trait FuncTerm[-W <: Term, +U <: Term] extends Term with (W => U){
+    trait FuncTerm[-W <: Term, +U <: Term] extends Term with (W => U) with Subs[FuncTerm[W, U]]{
+      type Obj <: FuncTerm[W, U]
+      
       val domobjtpe : Type
       
       val codomobjtpe: Type
