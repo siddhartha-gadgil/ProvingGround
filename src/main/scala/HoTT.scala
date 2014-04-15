@@ -125,7 +125,7 @@ object HoTT{
     /** Symbolic types, which the compiler knows are types.
      *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
      */
-    case class SymbTyp[A, U<:Term, T<: Term](name: A, univ: Typ[T], base: Typ[U]) extends Typ[U] with Symbolic[A]{
+    case class SymbTyp[A, U<:Term : TypeTag, T<: Term](name: A, univ: Typ[T], base: Typ[U]) extends Typ[U] with Symbolic[A]{
       lazy val typ = univ
       
       type Obj = base.Obj
@@ -136,9 +136,14 @@ object HoTT{
       
       def elem = this
       
+      
+      val applptntypu = ApplnPattern[Term, Typ[U]]()
+      
+      // Change this to remove first case after checking
       def subs(x: Term, y: Term) = name match {
         case fa: FormalTypAppl[w, U] => 
           fa.func.subs(x, y)(fa.arg.subs(x,y).asInstanceOf[w])
+        case applptntypu(func, arg) => func.subs(x,y)(arg.subs(x, y))
         case _ => this
       }
     }
