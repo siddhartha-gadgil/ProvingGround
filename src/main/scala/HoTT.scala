@@ -9,9 +9,9 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 // To Do:
 //
 // * A cleaner substitution, parametrised by type.
-// * Properly abstracted Formal Function Application
-// * Inductive type trait, with Sigma type etc. having this.
-// * Clean up universes.
+// * Properly abstracted Formal Function Application - done to some extent
+// * Inductive type trait, with Sigma type etc. having this. - done to some extent
+// * Clean up universes, LogicalTyp etc.
 //
 
 
@@ -572,7 +572,47 @@ object HoTT{
 	
 	case object Unit extends LogicalSTyp
 	
+	trait CnstrPtnPiece extends (LogicalTyp => LogicalTyp)
+	
+	trait CnstrPtn extends CnstrPtnPiece{
+	  def -->:(that : CnstrPtnPiece) = FuncPtn(that, this)
+	}
 
+	case object IdW extends CnstrPtn{
+	  def apply(W : LogicalTyp) = W
+	}
+	
+	case class OtherPtn(tp : LogicalTyp) extends CnstrPtnPiece{
+	  def apply(W : LogicalTyp) = tp
+	}
+	
+	case class FuncPtn(tail: CnstrPtnPiece, head : CnstrPtn) extends CnstrPtn{
+	  def apply(W : LogicalTyp) = FuncTyp[Term, LogicalTyp, Term](tail(W), head(W))
+	}
+	
+	case class DepFuncPtn(tail: CnstrPtnPiece, headfibre : Term => CnstrPtn){
+	  def apply(W : LogicalTyp) = {
+	    val fiber = TypFamilyDefn(tail(W), (t : Term) => headfibre(t)(W))
+	    PiTyp[Term, LogicalTyp, Term](fiber)
+	  }
+	}
+	
+	trait InductiveTypLike extends LogicalTyp{
+	  val ptns : List[CnstrPtn]
+	  
+	  val constructors : List[Term]
+	  
+	  assert((constructors.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
+	}
+	
+	class InductiveTyp[A](symptns : List[(A, CnstrPtn)]) extends LogicalSTyp with InductiveTypLike{
+	  val constructors : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
+	  
+	  val ptns = for ((a, p) <- symptns) yield p
+	} 
+	
+	val W = IdW
+	
 	
 	val x = 'x' :: __
 	

@@ -1,8 +1,8 @@
 package provingGround
 
 import provingGround.NlpProse._
-//import provingGround.HoTT._
-import provingGround.TheoryTypes._ 
+import provingGround.HoTT._
+import provingGround.TheoryTypes.{Term => TheoryTerm, _} 
 
 
 import scala.language.implicitConversions
@@ -12,7 +12,7 @@ import scala.language.implicitConversions
  *  Warning: Should handle conjunctions carefully
  */
 object NLPHoTT{
-  val parse: ProseTree =>  Term = {
+  val parse: ProseTree =>  TheoryTerm = {
     case ProseTree(root, List()) => TermSym(root.word)
     
     case Cop(first, second) => Is(parse(first), parse(second))
