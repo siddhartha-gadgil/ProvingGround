@@ -21,11 +21,10 @@ title: Universes in ProvingGround and HoTT
 ### To avoid, and how:
 
 * Using "logical universe" etc.
-* __Especially__, the identity type cannot be  
-* Having all function and induction types in the first universe.
-* Avoid covariance issues  by having parametrized methods and functions.
-* As a term determines its type, avoid specifying both types and terms as parameters.
+* __Especially__, the identity type cannot be having all function and induction types in the first universe.
+* Avoid covariance issues in --> etc. by having parametrized methods and functions.
+* As a term determines its type, avoid specifying both types and terms as parameters. If we need to say terms have a specific type, this can be a trait to be mixed in.
 
 ### Issues:
 
-* Symbolic objects in various universes.
+* Symbolic objects in various universes. __Solved:__ as all universes contain the first, the best we can do is have SymbTyp as the type in all cases. 
