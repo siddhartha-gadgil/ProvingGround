@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import scala.util._
 import scala.language.existentials
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-
+import Math._
 
 // To Do:
 //
@@ -35,6 +35,7 @@ object HoTT{
     trait Subs[+U <: Term]{
       def subs(x: Term, y: Term) : U
     }
+    
     
     /*
      * Objects with simple substitution.
@@ -77,7 +78,11 @@ object HoTT{
      */
     trait Typ[+U <: Term] extends Term with Subs[Typ[U]]{
     	/** scala type of objects with this HoTT-type */
-        type Obj <: U with Subs[U]
+        type Obj <: U // with Subs[U]
+        
+        val typ : Univ
+        
+        lazy val typlevel : Int = typ.level 
         
         /** A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj*/
         def symbObj[A, W<: Term](name: A, tp: Typ[W] = this): Obj
@@ -129,23 +134,23 @@ object HoTT{
     /** Symbolic types, which the compiler knows are types.
      *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
      */
-    case class SymbTyp[A, U<:Term : TypeTag, T<: Term](name: A, univ: Typ[T], base: Typ[U]) extends Typ[U] with Symbolic[A]{
-      lazy val typ = univ
+    case class SymbTyp[A](name: A) extends Typ[Term] with Symbolic[A]{
+      lazy val typ = Universe(0)
       
-      type Obj = base.Obj
+      type Obj = Term
       
-      def symbObj[B, W <: Term](name: B, tp: Typ[W] ) = base.symbObj(name, tp)
+      def symbObj[B, W <: Term](name: B, tp: Typ[W] ) = SymbObj(name, tp)
       
       override def toString = name.toString+" : "+typ.toString
       
       def elem = this
       
       
-      val applptntypu = ApplnPattern[Term, Typ[U]]()
+      val applptntypu = ApplnPattern[Term, Typ[Term]]()
       
       // Change this to remove first case after checking
       def subs(x: Term, y: Term) = name match {
-        case fa: FormalTypAppl[w, U] => 
+        case fa: FormalTypAppl[w, _] => 
           fa.func.subs(x, y)(fa.arg.subs(x,y).asInstanceOf[w])
         case applptntypu(func, arg) => func.subs(x,y)(arg.subs(x, y))
         case _ => this
@@ -157,32 +162,39 @@ object HoTT{
     }
     
     
-
+    
+    
+    
 
     /** HoTT types with underlying scala type Term.
-     *  They belong to the LogicalUniv
+     *  They belong to the first universe.
+     *  Should eventually avoid using this.
      */
     trait LogicalTyp extends Typ[Term] with Subs[LogicalTyp]{
       
 //      type Obj = Term
       
-      lazy val typ = new LogicalUniv
+      lazy val typ = Universe(0)
       
       def subs(x: Term, y: Term) : LogicalTyp = if (x == this) y.asInstanceOf[LogicalTyp] else this
       
 //      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)
       
       /** returns function type A -> B, not used in main code */
-      def -->[U <: Term : TypeTag](that: Typ[U]) = FuncTyp[Term, LogicalTyp, U](this, that)
+//      def -->[U <: Term : TypeTag](that: Typ[U]) = FuncTyp[Term, LogicalTyp, U](this, that)
  
-      def ~>[U <: Term : TypeTag](fibers: TypFamily[Term, LogicalTyp, U]) = PiTyp(fibers)
+//      def ~>[U <: Term : TypeTag](fibers: TypFamily[Term, LogicalTyp, U]) = PiTyp(fibers)
       
-      def ~~>(fibers : Term => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
+//      def ~~>(fibers : Term => LogicalTyp) = ~>(TypFamilyDefn(this, fibers))
     }
     
-    trait SmallTyp extends LogicalTyp{
-     
+    /*
+     * Types with symbolic objects not refined.
+     */
+    trait SmallTyp extends Typ[Term] with LogicalTyp{
+     type Obj = Term
       
+      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)      
     }
     
     class LogicalSTyp extends LogicalTyp{
@@ -192,21 +204,32 @@ object HoTT{
     }
     
     /** Universes. Can be just a type so far */
-    trait Univ[U<:Term] extends Typ[Typ[U]] 
+    trait Univ extends Typ[Typ[Term]] with Subs[Typ[Term]]{
+      val typ : Typ[Typ[Term]] with Univ
+      
+      type Obj = Typ[Term]
+      
+      val level : Int
+      
+//      def symbObj[A, W<: Term](name : A, tp: Typ[W] with Univ) : Obj = SymbTyp(name, tp)
+      
+      def subs(x : Term, y : Term): Typ[Typ[Term]] with Subs[Typ[Term]] = this
+    } 
     
-    /** Inductive construction of the next universe */
-    case class NextUniv[U<: Term : TypeTag](base: Typ[U]) extends Univ[U] with AtomicTyp[Typ[U]]{
-      lazy val typ = NextUniv[Typ[U]](this)
+    /** Th universes */
+    case class Universe(level : Int) extends Univ{
+      require(level >= 0)
       
-      type Obj = Typ[U]
+      lazy val typ = Universe(level +1)
       
-      def symbObj[A, W<: Term](name: A, tp: Typ[W])= SymbTyp(name, tp, base)
+      
+      def symbObj[A, W<: Term](name: A, tp: Typ[W])= SymbTyp(name)
       
       val __ = symbObj(None)
     }
     
-    /** The first universe, consisting of logical types */
-    class LogicalUniv extends Univ[Term] with Typ[LogicalTyp]{
+    /** The first universe, consisting of logical types 
+    class LogicalUniv extends Univ with Typ[LogicalTyp]{
       lazy val typ = NextUniv[Term](this)
       
       def -->[U <: Term : TypeTag](that: Typ[U]) = FuncTyp[LogicalTyp, LogicalUniv, U](this, that)
@@ -224,8 +247,9 @@ object HoTT{
       
       override def toString ="__"
     }
+    */
     
-    val __ = new LogicalUniv
+    val __ = Universe(0)
     
     /** Pair of types (A, B) */
     case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](first: Typ[U], second: Typ[V]) extends 
@@ -233,7 +257,7 @@ object HoTT{
 
     	type Obj = AbsPair[U, V] with Subs[AbsPair[U, V]]
 
-		lazy val typ = PairTyp(first.typ, second.typ)
+		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 		
 		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
 			
@@ -260,12 +284,16 @@ object HoTT{
 //	}
     
 	/** Function type */
-    case class FuncTyp[W<: Term : TypeTag, V <: Typ[W], U<: Term : TypeTag](dom: V, codom: Typ[U]) extends LogicalTyp{
+    case class FuncTyp[W<: Term : TypeTag, V <: Typ[W], U<: Term : TypeTag](dom: V, codom: Typ[U]) extends Typ[Term]{
       type Obj = FuncObj[W, V, U]
       
-	  override def symbObj[A, T<: Term](name: A, tp: Typ[T]) = FuncSymb[A, W, V, U](name, dom, codom)
+      lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
+      
+	  def symbObj[A, T<: Term](name: A, tp: Typ[T]) = FuncSymb[A, W, V, U](name, dom, codom)
 	  
 	  override def toString = dom.toString + " -> " + codom.toString
+	  
+	  def subs(x : Term, y: Term) = FuncTyp[Term, Typ[Term], Term](dom.subs(x, y), codom.subs(x,y))
 	}
     
     /*
@@ -317,7 +345,7 @@ object HoTT{
     }
     
 	/** a function, i.e.,  an object in a function type, has a codomain and a fixed type for the domain. */
-    trait FuncObj[W<: Term  , V<: Typ[W], U<: Term ] extends FuncTerm[W, U]{
+    trait FuncObj[W<: Term  , V<: Typ[W], U<: Term] extends FuncTerm[W, U]{
       /** domain*/
 	  val dom: V
 	  /** codomain */
@@ -329,6 +357,8 @@ object HoTT{
 	  /** Function application */
 	  def apply(arg: W) = action(arg.asInstanceOf[dom.Obj])
 	  
+	  def subs(x: Term, y : Term) : FuncObj[W, V, U]
+	  
 	}
 
     /** Formal function, i.e., with application purely symbolic. */
@@ -337,7 +367,7 @@ object HoTT{
 //	}
 	
 	/** Symbol containing function info */
-    case class FuncSymb[A, W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](name: A, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with FormalFuncTerm[W, U] with Symbolic[A]{
+    case class FuncSymb[A, W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](name: A, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with Symbolic[A]{
       val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -345,6 +375,8 @@ object HoTT{
       lazy val typ = FuncTyp[W, V, U](dom, codom)
       
       def action(arg: dom.Obj) = codom.symbObj(ApplnSym(this, arg))
+      
+      def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncObj[W, V, U]] else this
     }
 	
     trait FormalAppl[W <: Term, U <: Term]{
@@ -386,7 +418,7 @@ object HoTT{
     
 	
     /** A function given by a scala function */
-	case class FuncDefn[W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](func: Term => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U] with FormalFuncTerm[W, U]{
+	case class FuncDefn[W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](func: Term => U, dom: V, codom: Typ[U]) extends FuncObj[W, V, U]{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -396,6 +428,8 @@ object HoTT{
 	  def act(arg: Term) = if (arg.typ == dom) Some(func(arg)) else None
 	  
 	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
+	  
+	  def subs(x: Term, y: Term) = this
 	}
 	
 	// We need a hybrid of the FuncDefm and FuncSymb, with a function determined by a partial function with formal application outside
@@ -428,7 +462,7 @@ object HoTT{
 	  
 	  val dom = variable.typ
 	  
-	  lazy val typ = FuncTyp[Term, LogicalTyp, Term](variable.typ.asInstanceOf[LogicalTyp] , value.typ)
+	  lazy val typ = FuncTyp[Term, Typ[Term], Term](variable.typ , value.typ)
 	  
 	  def apply(arg: Term) = value.subs(variable, arg)
 	  
@@ -446,13 +480,14 @@ object HoTT{
 	/** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]*/
 	type TypFamily[W<: Term, V<: Typ[W], U<: Term] = FuncObj[W, V, Typ[U]]
 	
+	/*
 	trait LogicalTypFamily extends TypFamily[Term, LogicalTyp, Term] with (Term => LogicalTyp){
 	  val domobjtep = typeOf[Term]
 	  
 	  val codomobjtpe = typeOf[Term]
 	  
 	  /** codomain */
-	  val codom = new LogicalUniv
+	  val codom = Universe(0)
 	   
 //	  lazy val typ = FuncTyp[Term, LogicalTyp, Term](dom, codom)
 	  
@@ -463,31 +498,48 @@ object HoTT{
 	  /** Function application */
 	  override def apply(arg: Term) = action(arg.asInstanceOf[dom.Obj])
 	  
-	  def -->(cod: LogicalTyp) = TypFamilyDefn(dom, (arg : Term) => apply(arg) --> cod)
+	  def -->(cod: LogicalTyp) = TypFamilyDefn(dom, (arg : Term) => FuncTyp[Term, Typ[Term], Term](apply(arg), cod))
 	  
 	}
+	*
+	*/
+
 	
-	case class TypFamilyDefn(dom: LogicalTyp, f: Term => LogicalTyp) extends LogicalTypFamily{
+	case class TypFamilyDefn(dom: Typ[Term], f: Term => Typ[Term]) extends TypFamily[Term, Typ[Term], Term]{
 	  val domobjtpe = typeOf[Term]
 	  
-	//  val codomobjtpe = typeOf[LogicalTyp]
+	  val codomobjtpe = typeOf[Typ[Term]]
 	  
-	  val typ = FuncTyp[Term, LogicalTyp, LogicalTyp](dom, __)
+	  val codom = Universe(0)
 	  
-	  def action(arg: dom.Obj) = f(arg)
+	  val typ = FuncTyp[Term, Typ[Term], Term](dom, __ )
 	  
-	  def subs(x: Term, y: Term) : LogicalTypFamily = this
+	  def action(arg: dom.Obj) = f(arg).asInstanceOf[codom.Obj]
+	  
+	  def subs(x: Term, y: Term) : TypFamily[Term, Typ[Term], Term] = this
 	}
 	
 	/** For all/Product for a type family. This is the type of dependent functions */
-	case class PiTyp[W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](fibers: TypFamily[W, V, U]) extends LogicalTyp{
+	case class PiTyp[W<: Term : TypeTag, V<: Typ[W], U<: Term : TypeTag](fibers: TypFamily[W, V, U]) extends Typ[Term]{
 	  type Obj = DepFuncObj[W, V, U]
 	  
+	  lazy val typ = Universe(0)
+	  
 	  override def symbObj[A, T<: Term](name: A, tp: Typ[T]) = DepFuncSymb[A, W, V, U](name, fibers)
+	  
+	  def subs(x: Term, y: Term) = PiTyp[W, V, U](fibers.subs(x, y))
 	}
 	
 	/** Exists/Sum for a type family */
-	case class SigmaTyp[W<: Term, V<: Typ[W], U<: Term](fibers: TypFamily[W, V, U]) extends LogicalSTyp
+	case class SigmaTyp[W<: Term, V<: Typ[W], U<: Term](fibers: TypFamily[W, V, U]) extends Typ[Term]{
+	  lazy val typ = Universe(0)
+	  
+	  type Obj = Term
+	  
+	  def symbObj[A, W <: Term](name : A, tp: Typ[W]) = SymbObj(name, tp)
+	  
+	  def subs(x: Term, y: Term) = SigmaTyp[W, V, U](fibers.subs(x, y))
+	}
 	
 	/** Object in a dependent function type, i.e.,
 	 *  a dependent function. Has a family of codomains 
@@ -563,7 +615,7 @@ object HoTT{
 	
 	/** Companion to dependent functions */
 	object DepFuncObj{
-	  def apply[W<: Term : TypeTag, V<: Typ[W] : TypeTag, U<: Term : TypeTag](func: Term => U, dom: V, univ: Univ[U]): DepFuncObj[W, V, U] = {
+	  def apply[W<: Term : TypeTag, V<: Typ[W] : TypeTag, U<: Term : TypeTag](func: Term => U, dom: V, univ: Univ with Typ[Typ[U]]): DepFuncObj[W, V, U] = {
 	    def section(arg: Term) = func(arg).typ.asInstanceOf[Typ[U]]
 	    val fibers: FuncObj[W, V, Typ[U]] = FuncDefn[W, V, Typ[U]](section, dom, univ)
 	    DepFuncDefn(func, dom, fibers)
@@ -572,32 +624,32 @@ object HoTT{
 	
 	case object Unit extends LogicalSTyp
 	
-	trait CnstrPtnPiece extends (LogicalTyp => LogicalTyp)
+	trait CnstrPtnPiece extends (Typ[Term] => Typ[Term])
 	
 	trait CnstrPtn extends CnstrPtnPiece{
 	  def -->:(that : CnstrPtnPiece) = FuncPtn(that, this)
 	}
 
 	case object IdW extends CnstrPtn{
-	  def apply(W : LogicalTyp) = W
+	  def apply(W : Typ[Term]) = W
 	}
 	
-	case class OtherPtn(tp : LogicalTyp) extends CnstrPtnPiece{
-	  def apply(W : LogicalTyp) = tp
+	case class OtherPtn(tp : Typ[Term]) extends CnstrPtnPiece{
+	  def apply(W : Typ[Term]) = tp
 	}
 	
 	case class FuncPtn(tail: CnstrPtnPiece, head : CnstrPtn) extends CnstrPtn{
-	  def apply(W : LogicalTyp) = FuncTyp[Term, LogicalTyp, Term](tail(W), head(W))
+	  def apply(W : Typ[Term]) = FuncTyp[Term, Typ[Term], Term](tail(W), head(W))
 	}
 	
 	case class DepFuncPtn(tail: CnstrPtnPiece, headfibre : Term => CnstrPtn){
-	  def apply(W : LogicalTyp) = {
+	  def apply(W : Typ[Term]) = {
 	    val fiber = TypFamilyDefn(tail(W), (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, LogicalTyp, Term](fiber)
+	    PiTyp[Term, Typ[Term], Term](fiber)
 	  }
 	}
 	
-	trait InductiveTypLike extends LogicalTyp{
+	trait InductiveTypLike extends Typ[Term]{
 	  val ptns : List[CnstrPtn]
 	  
 	  val constructors : List[Term]
@@ -611,8 +663,7 @@ object HoTT{
 	  val ptns = for ((a, p) <- symptns) yield p
 	} 
 	
-	val W = IdW
-	
+
 	
 	val x = 'x' :: __
 	

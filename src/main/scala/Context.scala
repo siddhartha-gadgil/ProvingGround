@@ -6,41 +6,41 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 object Context{
   	
 	trait ConstFmlyTmpl extends Term with AtomicObj{
-	  val typ : LogicalTyp
+	  val typ : Typ[Term]
 	  
 	  
 	  type ObjTyp <: Term
 	  
-	  def map(Q: => LogicalTyp) : ConstFmlyTmpl
+	  def map(Q: => Typ[Term]) : ConstFmlyTmpl
 	  
-	  def dmap(Q: Term => LogicalTyp) : Term => ConstFmlyTmpl
+	  def dmap(Q: Term => Typ[Term]) : Term => ConstFmlyTmpl
 	  
-	  def ->:(A : LogicalTyp) = ParamConstTmpl(A, this)
+	  def ->:(A : Typ[Term]) = ParamConstTmpl(A, this)
 	  
 	  def pushforward(f: Term => Term)(arg: ObjTyp) : Term
 	}
 	
 	
-	case class ConstTmpl(typ: LogicalTyp) extends ConstFmlyTmpl{
+	case class ConstTmpl(typ: Typ[Term]) extends ConstFmlyTmpl{
 //	  val fullTyp = typ
 	  
 	  type ObjTyp = typ.Obj
 	  
-	  def map(Q: => LogicalTyp) = ConstTmpl(Q)
+	  def map(Q: => Typ[Term]) = ConstTmpl(Q)
 	  
-	  def dmap(Q: Term => LogicalTyp) : Term => ConstFmlyTmpl = (obj) => ConstTmpl(Q(obj))
+	  def dmap(Q: Term => Typ[Term]) : Term => ConstFmlyTmpl = (obj) => ConstTmpl(Q(obj))
 	  
 	  def pushforward(f: Term => Term)(arg: ObjTyp) = f(arg)
 	}
 	
-	case class ParamConstTmpl(base: LogicalTyp, cod: ConstFmlyTmpl) extends ConstFmlyTmpl{
+	case class ParamConstTmpl(base: Typ[Term], cod: ConstFmlyTmpl) extends ConstFmlyTmpl{
 	  type baseObjTyp = Typ[baseObj]
 	  
 	  type baseObj = base.Obj
 	  
-	  val typ = FuncTyp[Term, LogicalTyp, Term](base.asInstanceOf[LogicalTyp], cod.typ)
+	  val typ = FuncTyp[Term, Typ[Term], Term](base.asInstanceOf[Typ[Term]], cod.typ)
 	  
-	  type ObjTyp = FuncObj[Term, LogicalTyp, Term]
+	  type ObjTyp = FuncObj[Term, Typ[Term], Term]
 	  
 	  def push(func: ObjTyp)(arg: base.Obj): cod.ObjTyp = func(arg).asInstanceOf[cod.ObjTyp] 
 	  
@@ -51,22 +51,22 @@ object Context{
 	    
 	    val ss : Term => Term = (arg) => s(arg.asInstanceOf[base.Obj])
 	    
-	    FuncDefn[Term, LogicalTyp, Term](ss, base, cod.typ)
+	    FuncDefn[Term, Typ[Term], Term](ss, base, cod.typ)
 	  }
 	  
-	  def map(Q: => LogicalTyp): ParamConstTmpl = base ->: cod.map(Q)
+	  def map(Q: => Typ[Term]): ParamConstTmpl = base ->: cod.map(Q)
 	  
-	  def dmap(Q: Term => LogicalTyp) : Term => ConstFmlyTmpl = {
+	  def dmap(Q: Term => Typ[Term]) : Term => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
 	      val fibre: Term => ConstFmlyTmpl = (obj) => ConstTmpl(Q(f(obj.asInstanceOf[base.Obj])))
 	      DepParamConstTmpl(typ, fibre)
 	  } 
 	}
 	
-	case class DepParamConstTmpl(base: LogicalTyp, fibre: Term => ConstFmlyTmpl) extends ConstFmlyTmpl{
+	case class DepParamConstTmpl(base: Typ[Term], fibre: Term => ConstFmlyTmpl) extends ConstFmlyTmpl{
 	  val typ = PiTyp(TypFamilyDefn(base, ((obj) => fibre(obj).typ)))
 	  
-	  type ObjTyp = DepFuncObj[Term, LogicalTyp, Term]
+	  type ObjTyp = DepFuncObj[Term, Typ[Term], Term]
 	  
 	  def push(func: ObjTyp)(arg: base.Obj) = {
 	    val cod = fibre(arg)
@@ -84,12 +84,12 @@ object Context{
 	    
 	    def fibretyp(arg: Term) = fibre(arg).typ
 	    
-	    DepFuncDefn[Term, LogicalTyp, Term](ss, base, TypFamilyDefn(base, fibretyp _))
+	    DepFuncDefn[Term, Typ[Term], Term](ss, base, TypFamilyDefn(base, fibretyp _))
 	  }
 	  
-	  def map(Q: => LogicalTyp): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
+	  def map(Q: => Typ[Term]): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
 	  
-	   def dmap(Q: Term => LogicalTyp) : Term => ConstFmlyTmpl = {
+	   def dmap(Q: Term => Typ[Term]) : Term => ConstFmlyTmpl = {
 	    case f: typ.Obj => 
 	      val fibre: Term => ConstFmlyTmpl = (obj) => ConstTmpl(Q(f(obj)))
 	      DepParamConstTmpl(typ, fibre)
@@ -104,11 +104,11 @@ object Context{
 	  
 	  val variables: List[X]
 	  
-	  val dom: LogicalTyp
+	  val dom: Typ[Term]
 	  
-	  def exptyp(tp: LogicalTyp) : LogicalTyp 
+	  def exptyp(tp: Typ[Term]) : Typ[Term] 
 	  
-	  def fulltyp(tp: LogicalTyp) : LogicalTyp 
+	  def fulltyp(tp: Typ[Term]) : Typ[Term] 
 	  
 	  
 	  def get(value: Term): Term
@@ -122,12 +122,12 @@ object Context{
 	  /*
 	   * The codomain for the multi-function given by the context.
 	   */
-	  val target: LogicalTyp
+	  val target: Typ[Term]
 	  
 	  /*
 	   * The type of the object : a multivariate function : that comes from the context.
 	   */
-	  val typ : LogicalTyp
+	  val typ : Typ[Term]
 	  
 	  type ObjTyp = typ.Obj
 	  
@@ -173,7 +173,7 @@ object Context{
 	    case ctx => ctx
 	  }
 	  
-	  def apply(dom: LogicalTyp) = simple(dom)
+	  def apply(dom: Typ[Term]) = simple(dom)
 	  
 	  def fold[X <: Term : TypeTag](ctx: Context[X], seq: Seq[Term])(obj : Term) : Term = {
 			  if  (seq.isEmpty) ctx.get(obj) 
@@ -187,7 +187,7 @@ object Context{
 	    case _ => List()
 	  }
 	  
-	  def recsymbpattern(f: Term => Term, Q : LogicalTyp, symbs : List[Term], ctx : Context[ConstFmlyTmpl]) : Context[Term] = ctx match {
+	  def recsymbpattern(f: Term => Term, Q : Typ[Term], symbs : List[Term], ctx : Context[ConstFmlyTmpl]) : Context[Term] = ctx match {
 	    case ContextSeq(LambdaContext(a), tail) => 
 	      val b = a map (Q)
 	      ContextSeq(LambdaContext(a.typ.symbObj(symbs.head)), 
@@ -195,7 +195,7 @@ object Context{
 	    case cntx => cntx
 	  }
 	  
-	  case class simple[X <: Term](dom: LogicalTyp) extends Context[X]{
+	  case class simple[X <: Term](dom: Typ[Term]) extends Context[X]{
 	    val target = dom
 	    
 	    val typ = dom
@@ -204,9 +204,9 @@ object Context{
 	    
 	    val variables = List()
 	    
-	    def exptyp(tp: LogicalTyp) : LogicalTyp = dom
+	    def exptyp(tp: Typ[Term]) : Typ[Term] = dom
 	  
-	    def fulltyp(tp: LogicalTyp) : LogicalTyp = dom
+	    def fulltyp(tp: Typ[Term]) : Typ[Term] = dom
 	  
 	    def get(value: Term): Term = value
 	  
@@ -225,12 +225,12 @@ object Context{
 	trait AtomicContext[+X <: Term] extends ContextElem[X]{
 	  val cnst: X
 	  
-	  val dom = cnst.typ.asInstanceOf[LogicalTyp]
+	  val dom = cnst.typ.asInstanceOf[Typ[Term]]
 	  
 	  val constants = List(cnst)
 	 
 	  
-	  def fulltyp(tp: LogicalTyp) = FuncTyp[Term, LogicalTyp, Term](dom , tp)
+	  def fulltyp(tp: Typ[Term]) = FuncTyp[Term, Typ[Term], Term](dom , tp)
 	  
 	  def subs(x: Term, y: Term): AtomicContext[X]
 	}
@@ -248,9 +248,9 @@ object Context{
 	  
 	  def get(value: Term) = head.get(tail.get(value))
 	  
-	  def exptyp(tp: LogicalTyp) = head.exptyp(tail.exptyp(tp))
+	  def exptyp(tp: Typ[Term]) = head.exptyp(tail.exptyp(tp))
 	  
-	  def fulltyp(tp: LogicalTyp) = head.exptyp(tail.exptyp(tp))
+	  def fulltyp(tp: Typ[Term]) = head.exptyp(tail.exptyp(tp))
 	  
 	  def subs(x: Term, y: Term) = ContextSeq(head.subs(x,y), tail.subs(x, y))
 	  
@@ -278,7 +278,7 @@ object Context{
 	  
 	  def get(value: Term) = Lambda(cnst, value)
 	  
-	  def exptyp(tp: LogicalTyp) = FuncTyp[Term, LogicalTyp, Term](dom, tp)
+	  def exptyp(tp: Typ[Term]) = FuncTyp[Term, Typ[Term], Term](dom, tp)
 	  
 	  val variables = List(cnst)
 	  
@@ -290,7 +290,7 @@ object Context{
 	  
 	  def get(value: Term) = value
 	  
-	  def exptyp(tp: LogicalTyp) = tp
+	  def exptyp(tp: Typ[Term]) = tp
 	  
 	  val variables = List()
 	  
@@ -302,7 +302,7 @@ object Context{
 	  /*
 	   * This is the type of the object defined by the pattern
 	   */
-	  val typ : LogicalTyp
+	  val typ : Typ[Term]
 	  
 	  
 	  val fold : Term
@@ -324,7 +324,7 @@ object Context{
 	}
 	
 	case class Const(head: Term) extends DefnPattern{
-	  val typ = head.typ.asInstanceOf[LogicalTyp]
+	  val typ = head.typ.asInstanceOf[Typ[Term]]
 	  
 	  val fold = head
 	  
@@ -343,7 +343,7 @@ object Context{
 	 */
 	case class FuncPattern(head: DefnPattern, tail: DefnPattern) extends DefnPattern{
 	  
-	  val typ = fold.typ.asInstanceOf[LogicalTyp]
+	  val typ = fold.typ.asInstanceOf[Typ[Term]]
 	  
 	  val fold  = head.fold match {
 	    case f : FuncObj[d, _,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
@@ -379,20 +379,20 @@ object Context{
 	  /*
 	   * The pattern does not determine the type in the case of dependent types
 	   */
-//	  val typ : LogicalTyp
+//	  val typ : Typ[Term]
 	
 	}
 	
 	object TypPattern{
 	  val fromConstFmlyTmpl: ConstFmlyTmpl => TypPattern = {
-	    case ConstTmpl(tp : LogicalTyp) => ConstTyp(tp)
+	    case ConstTmpl(tp : Typ[Term]) => ConstTyp(tp)
 	    case ParamConstTmpl(head, tail) => FuncTypPattern(ConstTyp(head), fromConstFmlyTmpl(tail))
 	    case DepParamConstTmpl(head, tail) => DepFuncTypPattern(ConstTyp(head), (obj) =>  fromConstFmlyTmpl(tail(obj)))
 	    
 	  }
 	}
 	
-	case class ConstTyp(head : LogicalTyp) extends TypPattern{
+	case class ConstTyp(head : Typ[Term]) extends TypPattern{
 	//  val typ = head
 
 	 
@@ -401,7 +401,7 @@ object Context{
 	case class FuncTypPattern(head: TypPattern, tail: TypPattern) extends TypPattern{
 	  
 	//  val typ = head.typ match {
-	//    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[LogicalTyp]  
+	//    case f : FuncTyp[_, _, _] if f.dom == tail.typ => f.codom.asInstanceOf[Typ[Term]]  
 	//  } 
 	  
 	}
@@ -411,11 +411,11 @@ object Context{
 	
 	
 	trait InductSeq{
-	  val typ: LogicalTyp
+	  val typ: Typ[Term]
 	  
 	  val pattern: TypPattern
 	  
-	  def map(Q : => LogicalTyp): InductSeq
+	  def map(Q : => Typ[Term]): InductSeq
 	}
 	
 	/*
@@ -426,7 +426,7 @@ object Context{
 	  
 	  val pattern = TypPattern.fromConstFmlyTmpl(fm)
 	  
-	  def map(Q : => LogicalTyp) = this
+	  def map(Q : => Typ[Term]) = this
 	}
 	
 	/*
@@ -437,27 +437,27 @@ object Context{
 	  
 	  val pattern = TypPattern.fromConstFmlyTmpl(w)
 	  
-	  def map(Q : => LogicalTyp) = TargetInductSeq(w map Q)
+	  def map(Q : => Typ[Term]) = TargetInductSeq(w map Q)
 	}
 	
 	case class InductSeqCons(head: ConstFmlyTmpl, tail: InductSeq) extends InductSeq{
-	  val typ = FuncTyp[Term, LogicalTyp, Term](head.typ, tail.typ) 
+	  val typ = FuncTyp[Term, Typ[Term], Term](head.typ, tail.typ) 
 	  
 	  val pattern = FuncTypPattern(TypPattern.fromConstFmlyTmpl(head), tail.pattern)
 	  
-	  def map(Q : => LogicalTyp) = InductSeqCons(head map Q, tail map Q)
+	  def map(Q : => Typ[Term]) = InductSeqCons(head map Q, tail map Q)
 	}
 	
 	case class InductSeqDepCons(head: ConstFmlyTmpl, tail : Term => InductSeq) extends InductSeq{
-	  val typ = PiTyp[Term, LogicalTyp, Term](TypFamilyDefn(head.typ, (obj) => tail(obj).typ))
+	  val typ = PiTyp[Term, Typ[Term], Term](TypFamilyDefn(head.typ, (obj) => tail(obj).typ))
 	  
 	  val pattern = DepFuncTypPattern(TypPattern.fromConstFmlyTmpl(head), (obj) => tail(obj).pattern)
 	  
-	  def map(Q : => LogicalTyp) = InductSeqDepCons(head map Q, (obj) => tail(obj) map Q)
+	  def map(Q : => Typ[Term]) = InductSeqDepCons(head map Q, (obj) => tail(obj) map Q)
 	}
 	
 	case class InductCons(name: Term, constyp : InductSeq){
-	  def map(Q: => LogicalTyp) = InductCons(name, constyp map Q)
+	  def map(Q: => Typ[Term]) = InductCons(name, constyp map Q)
 	  
 	  val obj = constyp.typ.symbObj(name)
 	}
@@ -472,33 +472,33 @@ object Context{
 	object AlsoOld{
 	
 	trait ConstructorPattern{
-	  val typ : LogicalTyp
+	  val typ : Typ[Term]
 	  
 	  /*
 	   * closed means no free variables
 	   */
 	  val isClosed : Boolean
 	  
-	  val dom: LogicalTyp
+	  val dom: Typ[Term]
 	  
 	}
 	
 	object ConstructorPattern{
-	  case class Overfull(typ : LogicalTyp) extends ConstructorPattern{
+	  case class Overfull(typ : Typ[Term]) extends ConstructorPattern{
 	    val isClosed = false
 	    
 	    val dom = typ
 	  }
 	}
 	
-	case class SimpleConstructor(typ: LogicalTyp) extends ConstructorPattern{
+	case class SimpleConstructor(typ: Typ[Term]) extends ConstructorPattern{
 	  val isClosed = true
 	  
 	  val dom = Unit
 	}
 	
-	case class FuncConstructor(dom : LogicalTyp, tail: ConstructorPattern) extends ConstructorPattern{
-	  val typ = FuncTyp[Term, LogicalTyp, Term](dom, tail.typ)
+	case class FuncConstructor(dom : Typ[Term], tail: ConstructorPattern) extends ConstructorPattern{
+	  val typ = FuncTyp[Term, Typ[Term], Term](dom, tail.typ)
 	  
 	  val isClosed = false	  	  
 	}
@@ -524,7 +524,7 @@ object Context{
 	 * A typed pattern for defining objects, given recursively except for its head. Can also have constants in place of the variables
 	 */
 	trait DefnPattern{
-	  val typ : LogicalTyp
+	  val typ : Typ[Term]
 	  
 	  /*
 	   * totality of a definition based on this pattern
@@ -551,7 +551,7 @@ object Context{
 	
 	
 	case class Var(obj: Term) extends DefnPattern{
-	  val typ = obj.typ.asInstanceOf[LogicalTyp]
+	  val typ = obj.typ.asInstanceOf[Typ[Term]]
 	  
 	  val isTotal = true
 	  
@@ -590,7 +590,7 @@ object Context{
 	  val head = func.head
 	}
 	
-	trait InductiveTypLike extends LogicalTyp{self =>
+	trait InductiveTypLike extends Typ[Term]{self =>
 	  val constrs: Set[Constructor]
 	  
 	  case class AggregatePattern(ps : Set[RecDefnPattern]) extends DefnPattern{
@@ -612,7 +612,7 @@ object Context{
 	
 	
 	
-	class ConstructorDefn(defn : LogicalTyp => Context[ConstFmlyTmpl], target: => LogicalTyp){
+	class ConstructorDefn(defn : Typ[Term] => Context[ConstFmlyTmpl], target: => Typ[Term]){
 	  lazy val context = defn(target)
 	}
 	
@@ -632,7 +632,7 @@ object Context{
 	}
 	object Old{
 	
-	class InductiveTyp(cnstrFns: List[LogicalTyp => Context[ConstFmlyTmpl]]) extends LogicalSTyp{self =>
+	class InductiveTyp(cnstrFns: List[Typ[Term] => Context[ConstFmlyTmpl]]) extends LogicalSTyp{self =>
 	  lazy val cnstrCtxs = cnstrFns map (_(this))
 	  
 	  class Constructor(val ctx: Context[ConstFmlyTmpl]){
@@ -669,9 +669,9 @@ object Context{
 	  case class const[A](sym: A)  extends InductiveConstructor[A]
 	}
 	
-	case class ToW[A, B](sym: A, head: LogicalTyp => ConstFmlyTmpl, tail: InductiveConstructor[B]) extends InductiveConstructor[A]
+	case class ToW[A, B](sym: A, head: Typ[Term] => ConstFmlyTmpl, tail: InductiveConstructor[B]) extends InductiveConstructor[A]
 	
-	case class IndctParam[A, B](sym: A, head: LogicalTyp, tail: InductiveConstructor[B]) extends InductiveConstructor[A]
+	case class IndctParam[A, B](sym: A, head: Typ[Term], tail: InductiveConstructor[B]) extends InductiveConstructor[A]
 	
 	// Should also add dependent function
 	}
