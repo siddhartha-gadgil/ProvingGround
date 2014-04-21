@@ -24,7 +24,7 @@ title: Universes in ProvingGround and HoTT
 * Using "logical universe" etc.
 * __Especially__, the identity type cannot be  having all function and induction types in the first universe.
 * Similarly use maxima to describe universes for other inductive types: products, sums etc. and general inductive ones.
-* Avoid covariance issues  by having parametrized methods and functions.
+* Avoid covariance issues in --> etc.  by having parametrized methods and functions.
 * As a term determines its type, avoid specifying both types and terms as parameters.
 
 ### Hierarchy and scala code:
