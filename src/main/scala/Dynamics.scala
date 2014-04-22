@@ -275,17 +275,17 @@ object Dynamics{
 //           case (f: FuncObj[_, _, _], x: Term) if f.dom == x.typ => f(x).get 
 //       }
        
-       def applyFn[W<: Term, V<: Typ[W], U<: Term](f: FuncObj[W, V, U]): PartialFunction[Term, Term] = {
+       def applyFn[W<: Term, U<: Term](f: FuncObj[W, U]): PartialFunction[Term, Term] = {
          case arg if arg.typ == f.dom => f(arg.asInstanceOf[W])
        }
 
        val applications: PartialFunction[Term, PartialFunction[Term, Term]] = {
-         case f: FuncObj[_,_,_] => applyFn(f)
+         case f: FuncObj[_,_] => applyFn(f)
        }
        
 	
        def logicalArrows[V <: Term : TypeTag]: Pairing = {
-           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term, LogicalTyp, Term](dom, codom)
+           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term,  Term](dom, codom)
 		    }
 
 	   def lambdaIsles(dyn:  => DynSys[Term])(state: Set[Term]) ={
