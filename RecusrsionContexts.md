@@ -38,3 +38,8 @@ title: Recursion and Contexts
 * We also have anonymous objects, generally created by evolution, that can be added to the context. These can have weights on them.
 * **Context events:** These change the context, based on both interpretation and  evolution.
 * We have to also introduce definitions, including those based on cases.
+
+### Contexts: get methods
+* To define functions using cases etc. we not only have methods to change contexts and export from them, but also to get a specific object (given by a definition).
+* This is an option type, defined recursively.
+* We should also be able to get a list of all defined objects.

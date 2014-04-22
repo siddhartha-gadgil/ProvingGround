@@ -4,7 +4,7 @@ title: Universes in ProvingGround and HoTT
 
 ---
 
-## Universes in Proving Ground and HoTT
+# Universes in Proving Ground and HoTT
 
 ### Specifying universes:
 
@@ -23,7 +23,7 @@ title: Universes in ProvingGround and HoTT
 
 * Using "logical universe" etc.
 * __Especially__, the identity type cannot be  having all function and induction types in the first universe.
-* Similarly use maxima to describe universes for other inductive types: products, sums etc. and general inductive ones.
+* Similarly use maxima to describe universes for other inductive types: products, sums etc. and general inductive ones (more details below).
 * Avoid covariance issues in --> etc.  by having parametrized methods and functions.
 * As a term determines its type, avoid specifying both types and terms as parameters.
 
@@ -32,3 +32,7 @@ title: Universes in ProvingGround and HoTT
 * As the universes are cumulative, we can only ensure that the  objects of a universe (even a higher one) are types.
 * This is true at the  level of HoTT as well, so there is no loss in expressiveness in not making more refined  statements.
 * Hence it suffices to make Symbolic Types with parameter _Term_ only, and have these as symbolic objects in all universes.
+
+### Universes for Inductive types.
+
+* It is mainly the HoTT type, not so much as the scala type, that should be correctly specified.
