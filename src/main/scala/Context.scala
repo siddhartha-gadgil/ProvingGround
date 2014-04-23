@@ -4,6 +4,77 @@ import provingGround.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object Context{
+  trait DefnEquality{
+    val lhs : Term
+    val rhs: Term
+  }
+  
+  case class Defn[+A](lhsname : A, typ : Typ[Term], rhs: Term) extends DefnEquality{    
+    val lhs = typ.symbObj(lhsname)
+    
+    def map(f : Term => Term, F : Typ[Term]=> Typ[Term]) = Defn(lhsname, F(typ), f(rhs))
+  }
+  
+  object Defn{
+    def infer[A](name: A, rhs : Term) : Defn[A] = Defn(name, rhs.typ, rhs)
+    
+    def apply[A](name: A, rhs : Term) = infer(name, rhs)
+  }
+  
+  trait Context[+A]{
+    def constants : Seq[Term]
+    
+    def defns : Seq[Defn[A]]
+    
+    def defnEqualities : Seq[DefnEquality]
+    
+    def eliminate(x : Term): Term => Term
+  }
+  
+  object Context{
+    def empty[A] = new Context[A]{
+      
+    	def constants : Seq[Term] = List.empty
+    
+    	def defns : Seq[Defn[A]] = List.empty
+    
+    	def defnEqualities : Seq[DefnEquality] = List.empty
+    
+    	def eliminate(x : Term): Term => Term = (x) => x
+      
+    }
+  }
+  
+
+  
+  case class LambdaMixin[+A](variable: Term, tail: Context[A]) extends Context[A]{
+    def constants = variable +: tail.constants
+    
+    def eliminator(y : Term) = Lambda(variable, y)
+    
+    def defns : Seq[Defn[A]] = tail.defns 
+    
+    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = (y) => 
+      x match {
+      case `variable` => Lambda(x,tail.eliminate(x)(y))
+      case _ => tail.eliminate(x)(y)
+    }
+  }
+  
+  case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
+    def constants = const +: tail.constants
+    
+    def defns : Seq[Defn[A]] = tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+  }
+}
+
+object ContextOldCode{
   	
 	trait ConstFmlyTmpl extends Term with AtomicObj{
 	  val typ : Typ[Term]

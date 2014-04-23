@@ -109,7 +109,7 @@ object HoTT{
      *  does not include, for instance, pairs each of whose instance is given by a name;
      *  same considerations for functions etc.
      */
-    trait Symbolic[A]{
+    trait Symbolic[+A]{
       val name: A
       override def toString = name.toString
     }
@@ -479,6 +479,10 @@ object HoTT{
 	 */		
 	def lambda[U<: Term : TypeTag, V <: Term  : TypeTag](variable: U)(value : V) = Lambda(variable, value)
 	
+	def optlambda(variable: Term) : Term => Term = value =>
+	  {
+	  	    if (subObjs(value) contains variable)  lambda(variable)(value) else value
+	  }
 	
 	
 	/** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]
@@ -587,7 +591,15 @@ object HoTT{
 	/** The identity type. 
 	 *  This is the type lhs = rhs
 	 */
-	case class IdentityTyp[U <: Term](dom: Typ[U], lhs: Term, rhs: Term) extends LogicalSTyp
+	case class IdentityTyp[U <: Term](dom: Typ[U], lhs: U, rhs: U) extends Typ[Term]{
+	  type Obj = Term
+	  
+	  lazy val typ = Universe(max(lhs.typ.typ.level, rhs.typ.typ.level))
+	  
+	  def subs(x: Term, y: Term) = IdentityTyp(dom.subs(x, y), lhs.subs(x,y), rhs.subs(x,y))
+	  
+	  def symbObj[A, W<: Term](name: A, tp: Typ[W])= SymbObj(name, tp)
+	}
 	
 	/** A dependent function given by a scala funcion */
 	case class DepFuncDefn[W<: Term : TypeTag, U<: Term : TypeTag](func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFuncObj[W, U] with FormalFuncTerm[W, U]{
