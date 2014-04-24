@@ -7,12 +7,21 @@ object Context{
   trait DefnEquality{
     val lhs : Term
     val rhs: Term
+    
+    def map(f: Term => Term): DefnEquality
+    
+  }
+  
+  case class DefnEqual(lhs: Term, rhs: Term) extends DefnEquality{
+    def map(f : Term => Term) = DefnEqual(f(lhs), f(rhs))
   }
   
   case class Defn[+A](lhsname : A, typ : Typ[Term], rhs: Term) extends DefnEquality{    
     val lhs = typ.symbObj(lhsname)
     
     def map(f : Term => Term, F : Typ[Term]=> Typ[Term]) = Defn(lhsname, F(typ), f(rhs))
+    
+    def map(f: Term => Term) = Defn(lhsname, f(rhs))
   }
   
   object Defn{
@@ -29,10 +38,20 @@ object Context{
     def defnEqualities : Seq[DefnEquality]
     
     def eliminate(x : Term): Term => Term
+    
+    def elim : Term => Term
+    
+    def lmbda(x : Term) = LambdaMixin(x, this)
+    
+    def cnst(x: Term) = KappaMixin(x, this)
+    
+    def dfn(x: Term, y: Term, local: Boolean = true) = DefnMixin(Defn(x, y), this, local)
+    
+    def dfneql(lhs: Term, rhs: Term, simp: Boolean = false) = DefnEqualityMixin(DefnEqual(lhs, rhs), this, simp)
   }
   
   object Context{
-    def empty[A] = new Context[A]{
+    case class empty[A]() extends Context[A]{
       
     	def constants : Seq[Term] = List.empty
     
@@ -41,8 +60,12 @@ object Context{
     	def defnEqualities : Seq[DefnEquality] = List.empty
     
     	def eliminate(x : Term): Term => Term = (x) => x
+    	
+    	def elim = (y) => y
       
     }
+    
+    def apply[A] = empty[A]
   }
   
 
@@ -52,15 +75,17 @@ object Context{
     
     def eliminator(y : Term) = Lambda(variable, y)
     
-    def defns : Seq[Defn[A]] = tail.defns 
+    def defns : Seq[Defn[A]] = tail.defns map ((dfn) => dfn.map(optlambda(variable)))
     
-    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
+    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities map ((dfn) => dfn.map(optlambda(variable)))
     
     def eliminate(x : Term): Term => Term = (y) => 
       x match {
       case `variable` => Lambda(x,tail.eliminate(x)(y))
       case _ => tail.eliminate(x)(y)
     }
+      
+    def elim = (y) => Lambda(variable, tail.elim(y))
   }
   
   case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
@@ -71,6 +96,36 @@ object Context{
     def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
     
     def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    def elim = tail.elim
+  }
+  
+  case class DefnMixin[+A](dfn : Defn[A], tail: Context[A], local: Boolean = true) extends Context[A]{
+    def constants : Seq[Term] = tail.constants
+    
+    def defns : Seq[Defn[A]] = dfn +: tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = dfn +: tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    def elim : Term => Term = (y) => if (local) tail.elim(y).subs(dfn.lhs, dfn.rhs) 
+    								else tail.elim(y)
+    
+  } 
+  
+  case class DefnEqualityMixin[+A](eqlty : DefnEquality, tail: Context[A], simp: Boolean = false) extends Context[A]{
+    def constants : Seq[Term] = tail.constants
+    
+    def defns : Seq[Defn[A]] = tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = eqlty +: tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    def elim : Term => Term = (y) => if (simp) tail.elim(y).subs(eqlty.lhs, eqlty.rhs) 
+    								else tail.elim(y)
+    
   }
 }
 
