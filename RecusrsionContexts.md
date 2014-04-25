@@ -29,6 +29,7 @@ title: Recursion and Contexts
 * Thus, we can give the function _f_ in terms of these induced functions, by applying the appropriate _rec_ or _ind_ function.
 * Each induced function is given by pattern matching of the above form.
 * The equality relations for functions just constructed are added to the context.
+* For each pattern, we associate a context so that the _elim_ value is the function. This must have the function being defined passed by name to the context.
 
 ### Contexts
 * These are used to both interpret and construct functions easily.
