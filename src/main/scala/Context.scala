@@ -39,7 +39,7 @@ object Context{
     
     def eliminate(x : Term): Term => Term
     
-    def elim : Term => Term
+    val elim : Lambda[Term, Term]
     
     def lmbda(x : Term) = LambdaMixin(x, this)
     
@@ -61,7 +61,7 @@ object Context{
     
     	def eliminate(x : Term): Term => Term = (x) => x
     	
-    	def elim = (y) => y
+    	val elim = idFunc
       
     }
     
@@ -85,7 +85,7 @@ object Context{
       case _ => tail.eliminate(x)(y)
     }
       
-    def elim = (y) => Lambda(variable, tail.elim(y))
+    val elim = Lambda(variable, tail.elim(y))
   }
   
   case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
@@ -97,7 +97,7 @@ object Context{
     
     def eliminate(x : Term): Term => Term = tail.eliminate(x)
     
-    def elim = tail.elim
+    val elim = tail.elim
   }
   
   case class DefnMixin[+A](dfn : Defn[A], tail: Context[A], local: Boolean = true) extends Context[A]{
@@ -109,8 +109,8 @@ object Context{
     
     def eliminate(x : Term): Term => Term = tail.eliminate(x)
     
-    def elim : Term => Term = (y) => if (local) tail.elim(y).subs(dfn.lhs, dfn.rhs) 
-    								else tail.elim(y)
+    val elim  =  if (local) tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
+    								else tail.elim
     
   } 
   
@@ -123,8 +123,8 @@ object Context{
     
     def eliminate(x : Term): Term => Term = tail.eliminate(x)
     
-    def elim : Term => Term = (y) => if (simp) tail.elim(y).subs(eqlty.lhs, eqlty.rhs) 
-    								else tail.elim(y)
+    val elim  =  if (simp) tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
+    								else tail.elim
     
   }
 }

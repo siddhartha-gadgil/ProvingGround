@@ -32,6 +32,12 @@ object HoTT{
     def subs(x: Term, y: Term): Term
     }
     
+    trait TmpTerm extends Term{
+      lazy val typ = Unit
+      
+      def subs(x : Term, y: Term) = this
+    }
+    
     trait Subs[+U <: Term]{
       def subs(x: Term, y: Term) : U
     }
@@ -471,8 +477,19 @@ object HoTT{
 	  def apply(arg: Term) = value.subs(variable, arg)
 	  
 	  def subs(x: Term, y: Term) = Lambda(variable.subs(x,y), value.subs(x, y))
+	  
+	  object myvar extends TmpTerm
+	  
+	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myvar), f(value.subs(variable, myvar)))
+	  
+	  def andThen[Z<: Term : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
 	
+	val idFunc : Lambda[Term, Term] = {
+	  object myvar extends TmpTerm
+	  
+	  Lambda(myvar, myvar)
+	} 
 	
 	/** Lambda constructor
 	 *  
