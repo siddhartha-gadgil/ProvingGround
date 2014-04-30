@@ -190,7 +190,7 @@ object ContextOldCode{
 	}
 	
 	case class DepParamConstTmpl(base: Typ[Term], fibre: Term => ConstFmlyTmpl) extends ConstFmlyTmpl{
-	  val typ = PiTyp(TypFamilyDefn(base, __, 0, ((obj : Term) => fibre(obj).typ)))
+	  val typ = PiTyp(typFamilyDefn(base, __,  ((obj : Term) => fibre(obj).typ)))
 	  
 	  type ObjTyp = DepFuncObj[Term,  Term]
 	  
@@ -210,7 +210,7 @@ object ContextOldCode{
 	    
 	    def fibretyp(arg: Term) = fibre(arg).typ
 	    
-	    DepFuncDefn[Term,  Term](ss, base, TypFamilyDefn(base, __, 0, fibretyp _))
+	    DepFuncDefn[Term,  Term](ss, base, typFamilyDefn(base, __,  fibretyp _))
 	  }
 	  
 	  def map(Q: => Typ[Term]): DepParamConstTmpl = DepParamConstTmpl(base, (obj) => fibre(obj).map(Q))
@@ -575,7 +575,7 @@ object ContextOldCode{
 	}
 	
 	case class InductSeqDepCons(head: ConstFmlyTmpl, tail : Term => InductSeq) extends InductSeq{
-	  val typ = PiTyp[Term,  Term](TypFamilyDefn(head.typ, __, 0, (obj) => tail(obj).typ))
+	  val typ = PiTyp[Term,  Term](typFamilyDefn(head.typ, __, (obj) => tail(obj).typ))
 	  
 	  val pattern = DepFuncTypPattern(TypPattern.fromConstFmlyTmpl(head), (obj) => tail(obj).pattern)
 	  
