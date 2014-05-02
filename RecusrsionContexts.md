@@ -44,3 +44,6 @@ title: Recursion and Contexts
 * To define functions using cases etc. we not only have methods to change contexts and export from them, but also to get a specific object (given by a definition).
 * This is an option type, defined recursively.
 * We should also be able to get a list of all defined objects.
+
+### Details of Recursion contexts
+
