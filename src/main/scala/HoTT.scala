@@ -667,46 +667,38 @@ object HoTT{
 	
 	case object Unit extends LogicalSTyp
 	
+
 	
 	
-	trait CnstrPtnPiece{	  
+	trait TypPtn[U <: Term] extends PolyPtn{
+	  	 type PtnType = U
+	  	 
+	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
+	}
+	
+	
+	
+	/*
+	 * Make this extend term, specify types and substitutions.
+	 */
+	trait PolyPtn{
+	  def -->:[V <: Term](that : TypPtn[V]) = FuncPtn(that, this)
+	  
 	  def apply(tp : Typ[Term]) : Typ[PtnType]
 	  
 	  type PtnType <: Term
 	  
 	  val univLevel : Int
+	 
 	}
 	
-//	trait CnstrPtnTail extends CnstrPtnPiece
-	
-	trait SimpleCnstrPtn[U <: Term] extends CnstrPtn{
-	  	 type PtnType = U
-	}
-	
-	
-	trait ToW[U <: Term] extends SimpleCnstrPtn[U]{
-//	  type PtnType <: Term
-	  
-	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
-	  
-//	  def -->:[V <: Term : TypeTag](that: Typ[Term]) = SimpleFuncPtn(that, this)
-	}
-	
-	/*
-	 * Make this extend term, specify types and substitutions.
-	 */
-	trait CnstrPtn extends CnstrPtnPiece{
-	  def -->:[V <: Term](that : SimpleCnstrPtn[V]) = FuncPtn(that, this)
-	  
-	  
-	  val univLevel : Int
-	}
-	
-	object CnstrPtn{
+	object PolyPtn{
 	  val W = IdW
+	  
+	  
 	}
 
-	case object IdW extends CnstrPtn with SimpleCnstrPtn[Term] with ToW[Term]{
+	case object IdW extends PolyPtn with TypPtn[Term]{
 	  def apply(W : Typ[Term]) = W
 	  
 	  val univLevel = 0
@@ -715,8 +707,9 @@ object HoTT{
 	  
 	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) = f
 	} 
-	
-	case class OtherPtn(tp : Typ[Term]) extends SimpleCnstrPtn[Term]{
+
+	/*
+	case class OtherPtn(tp : Typ[Term]) extends TypPtn[Term]{
 	  
 //	  type PtnType = Term
 	  
@@ -724,8 +717,9 @@ object HoTT{
 	  
 	  val univLevel = univlevel(tp.typ)
 	}
+	*/
 	
-	case class FuncPtn[V <: Term](tail: SimpleCnstrPtn[V], head : CnstrPtn) extends CnstrPtn{
+	case class FuncPtn[V <: Term](tail: TypPtn[V], head : PolyPtn) extends PolyPtn{
 	  type PtnType = Term
 	  
 	  def apply(W : Typ[Term]) = FuncTyp[Term, Term](tail(W), head(W))
@@ -733,7 +727,15 @@ object HoTT{
 	  val univLevel = max(head.univLevel, tail.univLevel)
 	}
 	
-	case class SimpleFuncPtn[V <: Term : TypeTag](tail : Typ[Term], head : SimpleCnstrPtn[V] with ToW[V]) extends CnstrPtn with SimpleCnstrPtn[FuncTerm[Term, V]] with ToW[FuncTerm[Term, V]]{
+	case class CnstFncPtn(tail: Typ[Term], head : PolyPtn) extends PolyPtn{
+	  type PtnType = Term
+	  
+	  def apply(W : Typ[Term]) = FuncTyp[Term, Term](tail, head(W))
+	  
+	  val univLevel = head.univLevel
+	}
+	
+	case class SimpleFuncPtn[V <: Term : TypeTag](tail : Typ[Term], head : TypPtn[V]) extends TypPtn[FuncTerm[Term, V]]{
 	  def apply(W: Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
 	  val univLevel = max(head.univLevel, univlevel(tail.typ))
@@ -749,7 +751,7 @@ object HoTT{
 	}
 	
 	
-	case class DepFuncPtn[V <: Term : TypeTag](tail: SimpleCnstrPtn[V], headfibre : Term => CnstrPtn, headlevel: Int = 0) extends CnstrPtn{
+	case class DepFuncPtn[V <: Term : TypeTag](tail: TypPtn[V], headfibre : Term => PolyPtn, headlevel: Int = 0) extends PolyPtn{
 	  def apply(W : Typ[Term]) = {
 	    val fiber = typFamilyDefn[Term, Term](tail(W), Universe(0),  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, Term](fiber)
@@ -760,11 +762,22 @@ object HoTT{
 	  val univLevel = max(tail.univLevel, headlevel)
 	}
 	
+	case class CnstDepFuncPtn(tail: Typ[Term], headfibre : Term => PolyPtn, headlevel: Int = 0) extends PolyPtn{
+	  def apply(W : Typ[Term]) = {
+	    val fiber = typFamilyDefn[Term, Term](tail, Universe(0),  (t : Term) => headfibre(t)(W))
+	    PiTyp[Term, Term](fiber)
+	  }
+	  
+	  type PtnType = Term
+	  
+	  val univLevel = headlevel
+	}
+	
 	/*
 	 * Issues: Replace codomain Universe(0) by something reasonable - done.
 	 * Correct the induced function
 	 */
-	case class SimpleDepFuncPtn[V <: Term : TypeTag](tail: Typ[Term], headfibre : Term => SimpleCnstrPtn[V] with ToW[V], headlevel: Int = 0) extends SimpleCnstrPtn[FuncTerm[Term,V]]{
+	case class SimpleDepFuncPtn[V <: Term : TypeTag](tail: Typ[Term], headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : Typ[Term]) = {
 	    val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, head.PtnType](fiber)
@@ -787,14 +800,14 @@ object HoTT{
 
 	
 	trait InductiveTypLike extends Typ[Term]{
-	  val ptns : List[CnstrPtn]
+	  val ptns : List[PolyPtn]
 	  
 	  val constructors : List[Term]
 	  
 	  assert((constructors.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 	}
 	
-	class InductiveTyp[A](symptns : List[(A, CnstrPtn)]) extends Typ[Term] with InductiveTypLike{
+	class InductiveTyp[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTypLike{
 	  type Obj = Term
 	  
 	  val constructors : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))

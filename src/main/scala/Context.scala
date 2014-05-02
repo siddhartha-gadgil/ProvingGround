@@ -68,7 +68,24 @@ object Context{
     def apply[A] = empty[A]
   }
   
+  /*
+   * Change in context for a TypPatn (i.e., simple pattern ending in W)
+   */
+  def recContextChange[A, U <: Term](f : => (Term => Term), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[Term] => Context[Term] = {
+    val x = ptn(X).symbObj(varname)
+    ctx => ctx lmbda(x) cnst(ptn.induced(W, X)(f)(x))
+  }
+  
+  @annotation.tailrec def recContext[A](f : => (Term => Term), ptn : PolyPtn, varnames : List[A], W : Typ[Term], X : Typ[Term], ctx: Context[Term]) : Context[Term] = {
+    ptn match {
+      case tp: TypPtn[_] => recContextChange(f, tp, varnames.head, W, X)(ctx)
+      case FuncPtn(tail, head) => recContext(f, head, varnames.tail, W, X, recContextChange(f, tail, varnames.head, W, X)(ctx))
+      case CnstFncPtn(tail : Typ[_], head) => recContext(f, head, varnames.tail, W, X, ctx lmbda(tail.symbObj(varnames.head)))
+    }
+  }
+  
 
+  
   
   case class LambdaMixin[+A](variable: Term, tail: Context[A]) extends Context[A]{
     def constants = variable +: tail.constants
