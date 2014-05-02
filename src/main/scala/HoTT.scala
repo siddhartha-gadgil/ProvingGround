@@ -674,6 +674,8 @@ object HoTT{
 	  	 type PtnType = U
 	  	 
 	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
+	  	  
+	  	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
 	
@@ -706,6 +708,8 @@ object HoTT{
 //	  type PtnType = Term
 	  
 	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) = f
+	  
+	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) = f
 	} 
 
 	/*
@@ -745,8 +749,16 @@ object HoTT{
 	  def induced(W : Typ[Term], X: Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
 	      val func =((t : Term) => head.induced(W, X)(f) (g(t)))
-	      val codomain = head.apply(X)
+	      val codomain = head(X)
 	      FuncDefn[Term, head.PtnType](func, tail, codomain)
+	  }
+	  
+	  def inducedDep(W : Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
+	    (g : PtnType) => 
+	      val func =((t : Term) => head.induced(W, Xs(t))(f) (g(t)))
+	      val section = (t : Term) => head(Xs(t))
+	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)), section)
+	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
 	  }
 	}
 	
@@ -791,7 +803,13 @@ object HoTT{
 	    (g : PtnType) => 
 	      val func =((t : Term) => head.induced(W, X)(f) (g(t)))
 	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(X)),  (t : Term) => headfibre(t)(X))
-	      val codomain = head.apply(X)
+	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
+	  }
+	   
+	  def inducedDep(W : Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
+	    (g : PtnType) => 
+	      val func =((t : Term) => head.induced(W, Xs(t))(f) (g(t)))
+	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(t)))
 	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
 	  }
 	   
