@@ -91,7 +91,7 @@ object HoTT{
         lazy val typlevel : Int = univlevel(typ) 
         
         /** A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj*/
-        def symbObj[A, W<: Term](name: A, tp: Typ[W] = this): Obj
+        def symbObj[A](name: A): Obj
         
         /** Make symbolic object */
         def ::[A](name:A) = symbObj(name) 
@@ -145,7 +145,7 @@ object HoTT{
       
       type Obj = Term
       
-      def symbObj[B, W <: Term](name: B, tp: Typ[W] ) = SymbObj(name, tp)
+      def symbObj[B](name: B) = SymbObj(name, this)
       
       override def toString = name.toString+" : "+typ.toString
       
@@ -200,13 +200,13 @@ object HoTT{
     trait SmallTyp extends Typ[Term] with LogicalTyp{
      type Obj = Term
       
-      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)      
+      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, this)      
     }
     
     class LogicalSTyp extends LogicalTyp{
       type Obj = Term
       
-      def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)
+      def symbObj[A](name: A): Term = SymbObj(name, this)
     }
     
     /** Universes. Can be just a type so far 
@@ -233,7 +233,7 @@ object HoTT{
       lazy val typ  = Universe(level +1)
       
       
-      def symbObj[A, W<: Term](name: A, tp: Typ[W])= SymbTyp(name)
+      def symbObj[A](name: A)= SymbTyp(name)
       
       val __ = symbObj(None)
       
@@ -250,7 +250,7 @@ object HoTT{
       
       lazy val typ = MiniVerse[Typ[U]](this)
       
-      def symbObj[A, W<: Term](name: A, tp: Typ[W])= sample
+      def symbObj[A](name: A)= sample
       
       def subs(x : Term, y : Term) = this
     }
@@ -289,7 +289,7 @@ object HoTT{
 		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
 			
 			// The name is lost as `name', but can be recovered using pattern matching.
-		def symbObj[A, W<: Term](name: A, tp: Typ[W]): Obj = PairObj(first.symbObj(name), second.symbObj(name))
+		def symbObj[A](name: A): Obj = PairObj(first.symbObj(name), second.symbObj(name))
 			}	
     
     /** Object (a, b) in (A, B) */
@@ -316,7 +316,7 @@ object HoTT{
       
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
       
-	  def symbObj[A, T<: Term](name: A, tp: Typ[T]) = FuncSymb[A, W, U](name, dom, codom)
+	  def symbObj[A](name: A) = FuncSymb[A, W, U](name, dom, codom)
 	  
 	  override def toString = dom.toString + " -> " + codom.toString
 	  
@@ -354,9 +354,10 @@ object HoTT{
      * Pattern matching for a formal application.
      */
     case class ApplnPattern[W <: Term : TypeTag, U <: Term : TypeTag](){
-      def unapply(term : Term) : Option[(FuncTerm[W, U], U)] = term match {
+      def unapply(term : Term) : Option[(FuncTerm[W, U], W)] = term match {
         case sym : Symbolic[_] => sym.name match {
-          case ApplnSym(func : FuncTerm[W, U], arg : U) if typeOf[W] <:< func.domobjtpe && func.codomobjtpe <:< typeOf[U] => Some((func, arg)) 
+          case sm @ ApplnSym(func : FuncTerm[W, U], arg : W) if typeOf[W] <:< func.domobjtpe & func.codomobjtpe <:< typeOf[U]  => 
+            Some((func, arg)) 
           case _ => None
         }
         case _ => None
@@ -484,14 +485,22 @@ object HoTT{
 	 *  Check: Is this the type? It may be a dependent type.
 	 *  The below is a lambda defined function.
 	 */
-	case class Lambda[X<: Term : TypeTag, Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y, dep : Boolean = false) extends FuncTerm[X, Y]{
+	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y, dep : Boolean = false) extends FuncTerm[X, Y]{
 	  val domobjtpe = typeOf[X]
 	  
 	  val codomobjtpe = typeOf[Y]
 	  
 	  val dom = variable.typ
 	  
-	  lazy val typ = FuncTyp[Term,  Term](variable.typ , value.typ)
+	  
+	  
+	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
+	    val fibre = (t : Term) => value.typ subs (x, t)
+	    
+	    val family = typFamilyDefn[Term, Term](variable.typ, value.typ.typ, fibre)
+	    PiTyp(family)
+	  }
+		  else FuncTyp[Term,  Term](variable.typ , value.typ)
 	  
 	  def apply(arg: X) = value.subs(variable, arg)
 	  
@@ -507,7 +516,7 @@ object HoTT{
 	val idFunc : Lambda[Term, Term] = {
 	  object myvar extends TmpTerm
 	  
-	  Lambda(myvar, myvar)
+	  Lambda[Term, Term](myvar, myvar)
 	} 
 	
 	/** Lambda constructor
@@ -560,7 +569,7 @@ object HoTT{
 	  
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 	  
-	  override def symbObj[A, T<: Term](name: A, tp: Typ[T]) = DepFuncSymb[A, W, U](name, fibers)
+	  override def symbObj[A](name: A) = DepFuncSymb[A, W, U](name, fibers)
 	  
 	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.subs(x, y))
 	}
@@ -571,7 +580,7 @@ object HoTT{
 	  
 	  type Obj = Term
 	  
-	  def symbObj[A, W <: Term](name : A, tp: Typ[W]) = SymbObj(name, tp)
+	  def symbObj[A](name : A) = SymbObj(name, this)
 	  
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
 	}
@@ -640,7 +649,7 @@ object HoTT{
 	  
 	  def subs(x: Term, y: Term) = IdentityTyp(dom.subs(x, y), lhs.subs(x,y), rhs.subs(x,y))
 	  
-	  def symbObj[A, W<: Term](name: A, tp: Typ[W])= SymbObj(name, tp)
+	  def symbObj[A](name: A)= SymbObj(name, this)
 	}
 	
 	/** A dependent function given by a scala funcion */
@@ -840,7 +849,7 @@ object HoTT{
 	  
 	  def subs(x : Term, y: Term) = this
 	  
-	  def symbObj[A, W <: Term](name: A, tp: Typ[W]): Term = SymbObj(name, tp)
+	  def symbObj[A](name: A): Term = SymbObj(name, this)
 	} 
 	
 

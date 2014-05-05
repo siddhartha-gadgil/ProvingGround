@@ -31,6 +31,8 @@ object Context{
   }
   
   trait Context[+A]{
+    val typ: Typ[Term]
+    
     def constants : Seq[Term]
     
     def defns : Seq[Defn[A]]
@@ -68,15 +70,90 @@ object Context{
     def apply[U <: Term : TypeTag](typ: Typ[U]) = empty[U](typ)
   }
   
-  /*
-   * Change in context for a TypPatn (i.e., simple pattern ending in W)
+
+  
+  
+  case class LambdaMixin[+A](variable: Term, tail: Context[A], dep: Boolean = false) extends Context[A]{
+    def constants = variable +: tail.constants
+    
+    def eliminator(y : Term) = Lambda(variable, y)
+    
+    def defns : Seq[Defn[A]] = tail.defns map ((dfn) => dfn.map(optlambda(variable)))
+    
+    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities map ((dfn) => dfn.map(optlambda(variable)))
+    
+    def eliminate(x : Term): Term => Term = (y) => 
+      x match {
+      case `variable` => Lambda(x,tail.eliminate(x)(y))
+      case _ => tail.eliminate(x)(y)
+    }
+      
+    val elim = Lambda(variable, tail.elim(y))
+    
+    // If tail.typ is a function of variable, we get a Pi-type instead.
+    val typ = if (dep) {
+      val fibre = (t : Term) => tail.typ subs (x, t)
+	    
+	    val family = typFamilyDefn[Term, Term](variable.typ, tail.typ.typ, fibre)
+	    PiTyp(family)
+    }
+    else FuncTyp(variable.typ, tail.typ)
+  }
+  
+  case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
+    def constants = const +: tail.constants
+    
+    def defns : Seq[Defn[A]] = tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    val elim = tail.elim
+    
+    val typ = tail.typ
+  }
+  
+  case class DefnMixin[+A](dfn : Defn[A], tail: Context[A], local: Boolean = true) extends Context[A]{
+    def constants : Seq[Term] = tail.constants
+    
+    def defns : Seq[Defn[A]] = dfn +: tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = dfn +: tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    val elim  =  if (local) tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
+    								else tail.elim
+    
+    val typ = if (local) FuncTyp(dfn.lhs.typ, tail.typ) else tail.typ								
+  } 
+  
+  case class DefnEqualityMixin[+A](eqlty : DefnEquality, tail: Context[A], simp: Boolean = false) extends Context[A]{
+    def constants : Seq[Term] = tail.constants
+    
+    def defns : Seq[Defn[A]] = tail.defns
+    
+    def defnEqualities : Seq[DefnEquality] = eqlty +: tail.defnEqualities
+    
+    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    
+    val elim  =  if (simp) tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
+    								else tail.elim
+    
+    val typ = if (simp) FuncTyp(eqlty.lhs.typ, tail.typ) else tail.typ								
+  }
+
+    /*
+   * Change in context for a TypPatn (i.e., simple pattern ending in W).
+   * Should allow for dependent types when making a lambda.
    */
   def recContextChange[A, U <: Term](f : => (Term => Term), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[Term] => Context[Term] = {
     val x = ptn(X).symbObj(varname)
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
-  /*
+    /*
    * Change in context (as function on W) for Induction - check
    */
   def indContextChange[A, U <: Term](f : => (Term => Term), ptn : TypPtn[U], varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[Term]) => (Term => Context[Term]) = {
@@ -103,64 +180,6 @@ object Context{
   
 
   
-  
-  case class LambdaMixin[+A](variable: Term, tail: Context[A]) extends Context[A]{
-    def constants = variable +: tail.constants
-    
-    def eliminator(y : Term) = Lambda(variable, y)
-    
-    def defns : Seq[Defn[A]] = tail.defns map ((dfn) => dfn.map(optlambda(variable)))
-    
-    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities map ((dfn) => dfn.map(optlambda(variable)))
-    
-    def eliminate(x : Term): Term => Term = (y) => 
-      x match {
-      case `variable` => Lambda(x,tail.eliminate(x)(y))
-      case _ => tail.eliminate(x)(y)
-    }
-      
-    val elim = Lambda(variable, tail.elim(y))
-  }
-  
-  case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
-    def constants = const +: tail.constants
-    
-    def defns : Seq[Defn[A]] = tail.defns
-    
-    def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
-    
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
-    
-    val elim = tail.elim
-  }
-  
-  case class DefnMixin[+A](dfn : Defn[A], tail: Context[A], local: Boolean = true) extends Context[A]{
-    def constants : Seq[Term] = tail.constants
-    
-    def defns : Seq[Defn[A]] = dfn +: tail.defns
-    
-    def defnEqualities : Seq[DefnEquality] = dfn +: tail.defnEqualities
-    
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
-    
-    val elim  =  if (local) tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
-    								else tail.elim
-    
-  } 
-  
-  case class DefnEqualityMixin[+A](eqlty : DefnEquality, tail: Context[A], simp: Boolean = false) extends Context[A]{
-    def constants : Seq[Term] = tail.constants
-    
-    def defns : Seq[Defn[A]] = tail.defns
-    
-    def defnEqualities : Seq[DefnEquality] = eqlty +: tail.defnEqualities
-    
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
-    
-    val elim  =  if (simp) tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
-    								else tail.elim
-    
-  }
 }
 
 object ContextOldCode{

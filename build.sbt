@@ -2,7 +2,7 @@ name := "ProvingGround"
 
 version := "0.3"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.11.0"
 
 libraryDependencies <+= scalaVersion { "org.scala-lang" % "scala-swing" % _ }
 
