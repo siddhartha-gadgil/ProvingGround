@@ -91,8 +91,8 @@ object HoTT{
         lazy val typlevel : Int = univlevel(typ) 
         
         /** A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj*/
-        def symbObj[A](name: A): Obj
-        
+        def symbObj[A](name: A): U with Subs[U]
+         
         /** Make symbolic object */
         def ::[A](name:A) = symbObj(name) 
         
@@ -403,7 +403,7 @@ object HoTT{
       
       lazy val typ = FuncTyp[W, U](dom, codom)
       
-      def action(arg: dom.Obj) = codom.symbObj(ApplnSym(this, arg))
+      def action(arg: dom.Obj) = codom.symbObj(ApplnSym(this, arg)).asInstanceOf[codom.Obj]
       
       def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncObj[W, U]] else this
     }
