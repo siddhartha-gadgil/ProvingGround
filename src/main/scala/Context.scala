@@ -51,11 +51,11 @@ object Context{
   }
   
   object Context{
-    case class empty[A]() extends Context[A]{
+    case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[U]{
       
     	def constants : Seq[Term] = List.empty
     
-    	def defns : Seq[Defn[A]] = List.empty
+    	def defns : Seq[Defn[U]] = List.empty
     
     	def defnEqualities : Seq[DefnEquality] = List.empty
     
@@ -65,7 +65,7 @@ object Context{
       
     }
     
-    def apply[A] = empty[A]
+    def apply[U <: Term : TypeTag](typ: Typ[U]) = empty[U](typ)
   }
   
   /*
@@ -73,14 +73,31 @@ object Context{
    */
   def recContextChange[A, U <: Term](f : => (Term => Term), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[Term] => Context[Term] = {
     val x = ptn(X).symbObj(varname)
-    ctx => ctx lmbda(x) cnst(ptn.induced(W, X)(f)(x))
+    ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
-  @annotation.tailrec def recContext[A](f : => (Term => Term), ptn : PolyPtn, varnames : List[A], W : Typ[Term], X : Typ[Term], ctx: Context[Term]) : Context[Term] = {
+  /*
+   * Change in context (as function on W) for Induction - check
+   */
+  def indContextChange[A, U <: Term](f : => (Term => Term), ptn : TypPtn[U], varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[Term]) => (Term => Context[Term]) = {
+    val xs =  (t : Term) => ptn(Xs(t)).symbObj(varname)
+    ctxs => (t : Term) => ctxs(t) lmbda(xs(t)) lmbda(ptn.inducedDep(W, Xs)(f)(xs(t)))
+  }
+  
+  /*
+   * This is also a change, to be applied by default to the empty context of the target type.
+   */
+  @annotation.tailrec def recContext[A](f : => (Term => Term), ptn : PolyPtn, varnames : List[A], W : Typ[Term], X : Typ[Term])(ctx: Context[Term] = Context.empty[Term](X)) : Context[Term] = {
     ptn match {
       case tp: TypPtn[_] => recContextChange(f, tp, varnames.head, W, X)(ctx)
-      case FuncPtn(tail, head) => recContext(f, head, varnames.tail, W, X, recContextChange(f, tail, varnames.head, W, X)(ctx))
-      case CnstFncPtn(tail : Typ[_], head) => recContext(f, head, varnames.tail, W, X, ctx lmbda(tail.symbObj(varnames.head)))
+      case FuncPtn(tail, head) => recContext(f, head, varnames.tail, W, X)( recContextChange(f, tail, varnames.head, W, X)(ctx))
+      case CnstFncPtn(tail : Typ[_], head) => recContext(f, head, varnames.tail, W, X)( ctx lmbda(tail.symbObj(varnames.head)))
+      case DepFuncPtn(tail, headfibre , _) =>
+        val x = tail(X).symbObj(varnames.head)
+        recContext(f, headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
+      case CnstDepFuncPtn(tail, headfibre , _) =>
+        val x = tail.symbObj(varnames.head)
+        recContext(f, headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
     }
   }
   

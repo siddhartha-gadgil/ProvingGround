@@ -669,7 +669,9 @@ object HoTT{
 	
 
 	
-	
+	/*
+	 * A simple pattern, for inductive type constructors as well as type families.
+	 */
 	trait TypPtn[U <: Term] extends PolyPtn{
 	  	 type PtnType = U
 	  	 
@@ -681,7 +683,7 @@ object HoTT{
 	
 	
 	/*
-	 * Make this extend term, specify types and substitutions.
+	 * A composite pattern for inductive types.
 	 */
 	trait PolyPtn{
 	  def -->:[V <: Term](that : TypPtn[V]) = FuncPtn(that, this)
