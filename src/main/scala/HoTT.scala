@@ -827,19 +827,24 @@ object HoTT{
 	  val univLevel = max(univlevel(tail.typ), headlevel)
 	}
 
-	
-	trait InductiveTypLike extends Typ[Term]{
-	  val ptns : List[PolyPtn]
-	  
-	  val constructors : List[Term]
-	  
-	  assert((constructors.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
+	case class Constructor(cons: Term, pattern : PolyPtn, typ : Typ[Term]){
+	  require(cons.typ == pattern(typ))
 	}
 	
-	class InductiveTyp[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTypLike{
+	trait InductiveTyp extends Typ[Term]{
+	  val ptns : List[PolyPtn]
+	  
+	  val constructorFns : List[Term]
+	  
+	  val constructors = for ((f, p)<-(constructorFns zip ptns)) yield Constructor(f, p, this)
+	  
+	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
+	}
+	
+	class InductiveTypDefn[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTyp{
 	  type Obj = Term
 	  
-	  val constructors : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
+	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
 	  
 	  val ptns = for ((a, p) <- symptns) yield p
 	  
