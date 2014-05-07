@@ -513,6 +513,16 @@ object HoTT{
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
 	
+	def instantiate(substitutions : Map[Term, Term], target: Typ[Term]) : Term => Option[Term] = {
+	  case t: Term if t.typ ==target => Some(t)
+	  case Lambda(variable, value : Term, _) => 
+	    substitutions.get(variable) flatMap ((cnst) => {  
+	      val reduced = (value.subs(variable, cnst))
+	       instantiate(substitutions, target)(reduced)})	   
+	  case _ => None
+	}
+	
+	
 	val idFunc : Lambda[Term, Term] = {
 	  object myvar extends TmpTerm
 	  
