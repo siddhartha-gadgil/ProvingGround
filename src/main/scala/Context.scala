@@ -12,8 +12,22 @@ object Context{
     
   }
   
-  case class DefnEqual(lhs: Term, rhs: Term) extends DefnEquality{
-    def map(f : Term => Term) = DefnEqual(f(lhs), f(rhs))
+  case class DefnEqual(lhs: Term, rhs: Term, freevars : List[Term] = List()) extends DefnEquality{
+    def map(f : Term => Term) = DefnEqual(f(lhs), f(rhs), freevars map (f))
+    
+    def apply(substitutions : Term => Option[Term]) = DefnEqual.instantiate(substitutions)(this)
+    
+    def apply(substitutions : PartialFunction[Term, Term]) = DefnEqual.instantiate(substitutions.lift)(this)
+  }
+  
+  object DefnEqual{
+    def instantiate(substitutions : Term => Option[Term])(dfn : DefnEqual) : Option[DefnEquality] = {
+      if (dfn.freevars.isEmpty) Some(dfn) 
+      else for (headvar <- dfn.freevars.headOption; 
+      value <- substitutions(headvar); 
+      recval <- instantiate(substitutions)(DefnEqual(dfn.lhs.subs(headvar, value), dfn.rhs.subs(headvar, value), dfn.freevars.tail))) 
+        yield recval
+    }
   }
   
   case class Defn[+A](lhsname : A, typ : Typ[Term], rhs: Term) extends DefnEquality{    
@@ -31,9 +45,13 @@ object Context{
   }
   
   trait Context[+A]{
-    val typ: Typ[Term]
+    val typ: Typ[CtxType]
     
     type CtxType <: Term
+    
+    def foldin : CtxType => Term
+    
+    def fonldinSym[A](name: A) = foldin(typ.symbObj(name))
     
     def constants : Seq[Term]
     
@@ -41,7 +59,7 @@ object Context{
     
     def defnEqualities : Seq[DefnEquality]
     
-    def eliminate(x : Term): Term => Term
+    def eliminate(isVar : Term => Boolean): Term => Term
     
     val elim : Term => Term
     
@@ -62,14 +80,15 @@ object Context{
     case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[U]{
     	type CtxType = Term
       
-      
+    	def foldin : CtxType => Term = (t) => t
+    	
     	def constants : Seq[Term] = List.empty
     
     	def defns : Seq[Defn[U]] = List.empty
     
     	def defnEqualities : Seq[DefnEquality] = List.empty
     
-    	def eliminate(x : Term): Term => Term = (x) => x
+    	def eliminate(isVar : Term => Boolean): Term => Term = (x) => x
     	
     	val elim = (t: Term) => t
       
@@ -84,6 +103,8 @@ object Context{
   case class LambdaMixin[+A](variable: Term, tail: Context[A], dep: Boolean = false) extends Context[A]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
+    def foldin : CtxType => Term = (f) => tail.foldin(f(variable))
+    
     def constants = variable +: tail.constants
     
     def eliminator(y : Term) = Lambda(variable, y)
@@ -92,11 +113,10 @@ object Context{
     
     def defnEqualities : Seq[DefnEquality] = tail.defnEqualities map ((dfn) => dfn.map(optlambda(variable)))
     
-    def eliminate(x : Term): Term => Term = (y) => 
-      x match {
-      case `variable` => Lambda(x,tail.eliminate(x)(y))
-      case _ => tail.eliminate(x)(y)
-    }
+    def eliminate(isVar : Term => Boolean): Term => Term = (y) => 
+      if (isVar(variable)) Lambda(x, tail.eliminate(isVar)(y))
+      else tail.eliminate(isVar)(y)
+    
       
     val elim = Lambda(variable, tail.elim(y))
     
@@ -104,7 +124,7 @@ object Context{
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, Term](variable.typ, tail.typ.typ, fibre)
+	    val family = typFamilyDefn[Term, tail.CtxType](variable.typ, MiniVerse(tail.typ), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(variable.typ, tail.typ)
@@ -113,13 +133,15 @@ object Context{
   case class KappaMixin[+A](const : Term, tail: Context[A]) extends Context[A]{
     type CtxType = tail.CtxType
     
+    def foldin : CtxType => Term = tail.foldin
+    
     def constants = const +: tail.constants
     
     def defns : Seq[Defn[A]] = tail.defns
     
     def defnEqualities : Seq[DefnEquality] = tail.defnEqualities
     
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim = tail.elim
     
@@ -129,13 +151,15 @@ object Context{
   case class DefnMixin[+A](dfn : Defn[A], tail: Context[A], dep: Boolean = false) extends Context[A]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
+    def foldin : CtxType => Term = (f) => tail.foldin(f(dfn.lhs))
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = dfn +: tail.defns
     
     def defnEqualities : Seq[DefnEquality] = dfn +: tail.defnEqualities
     
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
     								
@@ -143,8 +167,8 @@ object Context{
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, Term](dfn.lhs.typ, tail.typ.typ, fibre)
-	    PiTyp(family)
+	    val family = typFamilyDefn[Term, tail.CtxType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
+	    PiTyp[Term, tail.CtxType](family)
     }
     else FuncTyp(dfn.lhs.typ, tail.typ)
   } 
@@ -152,13 +176,15 @@ object Context{
   case class GlobalDefnMixin[+A](dfn : Defn[A], tail: Context[A]) extends Context[A]{
     type CtxType = tail.CtxType
     
+    def foldin : CtxType => Term = (t) => t
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = dfn +: tail.defns
     
     def defnEqualities : Seq[DefnEquality] = dfn +: tail.defnEqualities
     
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  = tail.elim
     
@@ -168,13 +194,15 @@ object Context{
   case class DefnEqualityMixin[+A](eqlty : DefnEquality, tail: Context[A]) extends Context[A]{
     type CtxType = tail.CtxType
     
+    def foldin : CtxType => Term = (t) => t
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = tail.defns
     
     def defnEqualities : Seq[DefnEquality] = eqlty +: tail.defnEqualities
     
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  = tail.elim
     
@@ -184,20 +212,22 @@ object Context{
   case class SimpEqualityMixin[+A](eqlty : DefnEquality, tail: Context[A], dep : Boolean = false) extends Context[A]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
+    def foldin : CtxType => Term = (f) => tail.foldin(f(eqlty.lhs))
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = tail.defns
     
     def defnEqualities : Seq[DefnEquality] = eqlty +: tail.defnEqualities
     
-    def eliminate(x : Term): Term => Term = tail.eliminate(x)
+    def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
     								
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, Term](eqlty.lhs.typ, tail.typ.typ, fibre)
+	    val family = typFamilyDefn[Term, tail.CtxType](eqlty.lhs.typ, MiniVerse(tail.typ), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(eqlty.lhs.typ, tail.typ) 							
@@ -243,12 +273,14 @@ object Context{
     
   }
   
+  case class CnstrRecSymb(cons : Term)
+  
   def addConstructor(f : => (FuncTerm[Term, Term]), 
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
       X : Typ[Term]) : Context[Any] => Context[Any] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
-        val name = cnstrctx.typ.symbObj(cnstr.cons)
+        val name = cnstrctx.typ.symbObj(CnstrRecSymb(cnstr.cons))
       		ctx lmbda (name)
       }
       

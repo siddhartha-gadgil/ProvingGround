@@ -356,8 +356,8 @@ object HoTT{
     case class ApplnPattern[W <: Term : TypeTag, U <: Term : TypeTag](){
       def unapply(term : Term) : Option[(FuncTerm[W, U], W)] = term match {
         case sym : Symbolic[_] => sym.name match {
-          case sm @ ApplnSym(func : FuncTerm[W, U], arg : W) if typeOf[W] <:< func.domobjtpe & func.codomobjtpe <:< typeOf[U]  => 
-            Some((func, arg)) 
+          case sm @ ApplnSym(func : FuncTerm[W, U], arg) if typeOf[W] <:< func.domobjtpe & func.codomobjtpe <:< typeOf[U]  => 
+            Some((func, arg.asInstanceOf[W])) 
           case _ => None
         }
         case _ => None
@@ -513,10 +513,10 @@ object HoTT{
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
 	
-	def instantiate(substitutions : Map[Term, Term], target: Typ[Term]) : Term => Option[Term] = {
+	def instantiate(substitutions : Term => Option[Term], target: Typ[Term]) : Term => Option[Term] = {
 	  case t: Term if t.typ ==target => Some(t)
 	  case Lambda(variable, value : Term, _) => 
-	    substitutions.get(variable) flatMap ((cnst) => {  
+	    substitutions(variable) flatMap ((cnst) => {  
 	      val reduced = (value.subs(variable, cnst))
 	       instantiate(substitutions, target)(reduced)})	   
 	  case _ => None
