@@ -44,12 +44,12 @@ object Context{
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
   
-  trait Context[+A, + U <: Term]{
+  trait Context[+A, + U <: Term , +V <: Term]{
     val typ: Typ[CtxType]
     
     type CtxType <: U
     
-    def foldin : CtxType => Term
+    def foldin : CtxType => V
     
     def fonldinSym[B](name: B) = foldin(typ.symbObj(name))
     
@@ -77,10 +77,10 @@ object Context{
   }
   
   object Context{
-    case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[Any, U]{
+    case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[Any, U, U]{
     	type CtxType = U
       
-    	def foldin : CtxType => Term = (t) => t
+    	def foldin : CtxType => U = (t) => t
     	
     	def constants : Seq[Term] = List.empty
     
@@ -100,10 +100,10 @@ object Context{
 
   
   
-  case class LambdaMixin[+A, +U<: Term](variable: Term, tail: Context[A, U], dep: Boolean = false) extends Context[A, FuncTerm[Term,U]]{
+  case class LambdaMixin[+A, +U<: Term, +V <: Term](variable: Term, tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
-    def foldin : CtxType => Term = (f) => tail.foldin(f(variable))
+    def foldin : CtxType => V = (f) => tail.foldin(f(variable))
     
     def constants = variable +: tail.constants
     
@@ -130,10 +130,10 @@ object Context{
     else FuncTyp(variable.typ, tail.typ)
   }
   
-  case class KappaMixin[+A, +U<: Term](const : Term, tail: Context[A, U]) extends Context[A, U]{
+  case class KappaMixin[+A, +U<: Term, +V <: Term](const : Term, tail: Context[A, U, V]) extends Context[A, U, V]{
     type CtxType = tail.CtxType
     
-    def foldin : CtxType => Term = tail.foldin
+    def foldin : CtxType => V = tail.foldin
     
     def constants = const +: tail.constants
     
@@ -148,10 +148,10 @@ object Context{
     val typ = tail.typ
   }
   
-  case class DefnMixin[+A, +U<: Term](dfn : Defn[A], tail: Context[A, U], dep: Boolean = false) extends Context[A, FuncTerm[Term,U]]{
+  case class DefnMixin[+A, +U<: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
-    def foldin : CtxType => Term = (f) => tail.foldin(f(dfn.lhs))
+    def foldin : CtxType => V = (f) => tail.foldin(f(dfn.lhs))
     
     def constants : Seq[Term] = tail.constants
     
@@ -173,10 +173,10 @@ object Context{
     else FuncTyp(dfn.lhs.typ, tail.typ)
   } 
   
-  case class GlobalDefnMixin[+A, +U <: Term](dfn : Defn[A], tail: Context[A, U]) extends Context[A, U]{
+  case class GlobalDefnMixin[+A, +U <: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V]) extends Context[A, U, V]{
     type CtxType = tail.CtxType
     
-    def foldin : CtxType => Term = (t) => t
+    def foldin : CtxType => V = tail.foldin
     
     def constants : Seq[Term] = tail.constants
     
@@ -191,10 +191,10 @@ object Context{
     val typ = tail.typ								
   }
   
-  case class DefnEqualityMixin[+A, +U <: Term](eqlty : DefnEquality, tail: Context[A, U]) extends Context[A, U]{
+  case class DefnEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V]) extends Context[A, U, V]{
     type CtxType = tail.CtxType
     
-    def foldin : CtxType => Term = (t) => t
+    def foldin : CtxType => V = tail.foldin
     
     def constants : Seq[Term] = tail.constants
     
@@ -209,10 +209,10 @@ object Context{
     val typ = tail.typ								
   }
   
-  case class SimpEqualityMixin[+A, +U <: Term](eqlty : DefnEquality, tail: Context[A, U], dep : Boolean = false) extends Context[A, FuncTerm[Term,U]]{
+  case class SimpEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V], dep : Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
-    def foldin : CtxType => Term = (f) => tail.foldin(f(eqlty.lhs))
+    def foldin : CtxType => V = (f) => tail.foldin(f(eqlty.lhs))
     
     def constants : Seq[Term] = tail.constants
     
@@ -237,7 +237,7 @@ object Context{
    * Change in context for a TypPatn (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
-  def recContextChange[A, U <: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term] => Context[A, Term] = {
+  def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
     val x = ptn(X).symbObj(varname)
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
@@ -245,7 +245,7 @@ object Context{
     /*
    * Change in context (as function on W) for Induction - check
    */
-  def indContextChange[A, U <: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[A, Term]) => (Term => Context[A, Term]) = {
+  def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[A, Term, V]) => (Term => Context[A, Term, V]) = {
     val xs =  (t : Term) => ptn(Xs(t)).symbObj(varname)
     ctxs => (t : Term) => ctxs(t) lmbda(xs(t)) lmbda(ptn.inducedDep(W, Xs)(f)(xs(t)))
   }
@@ -254,10 +254,10 @@ object Context{
    * The context, recursively defined, for the constructor of a single context.
    * This is also a change, to be applied by default to the empty context of the target type.
    */
-  @annotation.tailrec def cnstrRecContext[A](f : => (FuncTerm[Term, Term]), 
+  @annotation.tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
       W : Typ[Term], 
-      X : Typ[Term])(ctx: Context[A, Term] = Context.empty[Term](X)) : Context[A, Term] = {
+      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](X)) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => recContextChange(f, tp, varnames.head, W, X)(ctx)
       case FuncPtn(tail, head) => cnstrRecContext(f, head, varnames.tail, W, X)( recContextChange(f, tail, varnames.head, W, X)(ctx))
@@ -275,10 +275,10 @@ object Context{
   
   case class CnstrRecSymb(cons : Term)
   
-  def addConstructor(f : => (FuncTerm[Term, Term]), 
+  def addConstructor[V <: Term](f : => (FuncTerm[Term, Term]), 
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
-      X : Typ[Term]) : Context[Any, Term] => Context[Any, Term] = ctx => {
+      X : Typ[Term]) : Context[Any, Term, V] => Context[Any, Term, V] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
         val name = cnstrctx.typ.symbObj(CnstrRecSymb(cnstr.cons))
       		ctx lmbda (name)
@@ -288,9 +288,9 @@ object Context{
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       X : Typ[Term]) ={
-    val add : (Context[Any, Term], (Constructor, List[Any])) => Context[Any, Term] = (ctx, cnvr) =>
+    val add : (Context[Any, Term, FuncTerm[Term, Term]], (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addConstructor(f, cnvr._1, cnvr._2, W, X)(ctx)
-      val empty : Context[Any, Term] = Context.empty(FuncTyp(W, X))
+      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(FuncTyp(W, X))
     (empty /: cnstrvars)(add)
   }
   
