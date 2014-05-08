@@ -44,7 +44,7 @@ object Context{
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
   
-  trait Context[+A, + U <: Term]{
+  trait Context[+A, +U <: Term]{
     val typ: Typ[CtxType]
     
     type CtxType <: U
@@ -278,7 +278,7 @@ object Context{
   def addConstructor(f : => (FuncTerm[Term, Term]), 
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
-      X : Typ[Term]) : Context[Any, Term] => Context[Any, Term] = ctx => {
+      X : Typ[Term]) : Context[Any, FuncTerm[Term, Term]] => Context[Any, FuncTerm[Term, Term]] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
         val name = cnstrctx.typ.symbObj(CnstrRecSymb(cnstr.cons))
       		ctx lmbda (name)
@@ -288,9 +288,9 @@ object Context{
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       X : Typ[Term]) ={
-    val add : (Context[Any, Term], (Constructor, List[Any])) => Context[Any, Term] = (ctx, cnvr) =>
+    val add : (Context[Any, FuncTerm[Term, Term]], (Constructor, List[Any])) => Context[Any, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addConstructor(f, cnvr._1, cnvr._2, W, X)(ctx)
-      val empty : Context[Any, Term] = Context.empty(FuncTyp(W, X))
+      val empty : Context[Any, FuncTerm[Term, Term]] = Context.empty(FuncTyp(W, X))
     (empty /: cnstrvars)(add)
   }
   
