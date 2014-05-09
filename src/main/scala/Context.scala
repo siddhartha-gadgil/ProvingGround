@@ -2,6 +2,7 @@ package provingGround
 
 import provingGround.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import annotation._
 
 object Context{
   trait DefnEquality{
@@ -51,7 +52,7 @@ object Context{
     
     def foldin : CtxType => V
     
-    def fonldinSym[B](name: B) = foldin(typ.symbObj(name))
+    def foldinSym[B](name: B) = foldin(typ.symbObj(name))
     
     def constants : Seq[Term]
     
@@ -242,6 +243,11 @@ object Context{
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
+  def simpleContextChange[A, U <: Term, V<: Term](ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+    val x = ptn(X).symbObj(varname)
+    ctx => ctx lmbda(x)
+  }
+  
     /*
    * Change in context (as function on W) for Induction - check
    */
@@ -254,7 +260,7 @@ object Context{
    * The context, recursively defined, for the constructor of a single context.
    * This is also a change, to be applied by default to the empty context of the target type.
    */
-  @annotation.tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
+  @tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
       W : Typ[Term], 
       X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](X)) : Context[A, Term, V] = {
@@ -269,18 +275,53 @@ object Context{
         val x = tail.symbObj(varnames.head)
         cnstrRecContext(f, headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
     }
-    
-    
   }
   
-  case class CnstrRecSymb(cons : Term)
+  @tailrec def cnstrIndContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
+      ptn : PolyPtn, varnames : List[A], 
+      W : Typ[Term], 
+      Xs :  Term => Typ[Term])(ctx: Term  => Context[A, Term, V] = (t: Term) => Context.empty[Term](Xs(t))) : Term => Context[A, Term, V] = {
+    ptn match {
+      case tp: TypPtn[_] => indContextChange(f, tp, varnames.head, W, Xs)(ctx)
+      case FuncPtn(tail, head) => cnstrIndContext(f, head, varnames.tail, W, Xs)( indContextChange(f, tail, varnames.head, W, Xs)(ctx))
+      case CnstFncPtn(tail : Typ[_], head) => 
+        cnstrIndContext(f, head, varnames.tail, W, Xs)((t: Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
+      case DepFuncPtn(tail, headfibre , _) =>
+//            val x = tail(Xs(t)).symbObj(varnames.head)
+            cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t: Term) =>  ctx(t) lmbda(tail(Xs(t)).symbObj(varnames.head)))
+      case CnstDepFuncPtn(tail, headfibre , _) =>
+//        	val x = tail.symbObj(varnames.head)
+        	cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t : Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
+    }
+  }
+  
+  
+  @tailrec def cnstrSimpleContext[A, V<: Term]( 
+      ptn : PolyPtn, varnames : List[A], 
+      W : Typ[Term], 
+      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](X)) : Context[A, Term, V] = {
+    ptn match {
+      case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W, X)(ctx)
+      case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W, X)( simpleContextChange(tail, varnames.head, W, X)(ctx))
+      case CnstFncPtn(tail : Typ[_], head) => cnstrSimpleContext(head, varnames.tail, W, X)( ctx lmbda(tail.symbObj(varnames.head)))
+      case DepFuncPtn(tail, headfibre , _) =>
+        val x = tail(X).symbObj(varnames.head)
+        cnstrSimpleContext(headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
+      case CnstDepFuncPtn(tail, headfibre , _) =>
+        val x = tail.symbObj(varnames.head)
+        cnstrSimpleContext(headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
+    }
+  }
+  
+  
+  case class RecInduced(cons : Term, func: Term => Term)
   
   def addConstructor[V <: Term](f : => (FuncTerm[Term, Term]), 
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
       X : Typ[Term]) : Context[Any, Term, V] => Context[Any, Term, V] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
-        val name = cnstrctx.typ.symbObj(CnstrRecSymb(cnstr.cons))
+        val name = cnstrctx.foldinSym(RecInduced(cnstr.cons, f))
       		ctx lmbda (name)
       }
       
@@ -292,6 +333,36 @@ object Context{
       addConstructor(f, cnvr._1, cnvr._2, W, X)(ctx)
       val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(FuncTyp(W, X))
     (empty /: cnstrvars)(add)
+  }
+  
+  def recFunction(f : => (FuncTerm[Term, Term]), 
+      cnstrvars : List[(Constructor, List[Any])], 
+      W : Typ[Term], 
+      X : Typ[Term]) = {
+
+    recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))}
+  
+  // Should avoid type coercion by having proper types for constructors and polypatterns.
+  def recIdentity(f : => (FuncTerm[Term, Term]), 
+      cnstrvars : List[(Constructor, List[Any])], 
+      W : Typ[Term], 
+      X : Typ[Term]) = {
+
+    val recfn = recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))
+    
+ //   def eqn(k : Int) = {
+    def eqn(cnstr : Constructor, varnames : List[Any]) = {	
+    	val ptn = cnstr.pattern
+    	val argctx = cnstrSimpleContext(ptn, varnames, W, X)()
+    	val cons = cnstr.cons.asInstanceOf[argctx.CtxType]
+    	val arg = argctx.foldin(cons)
+    	val lhs = recfn(arg)
+    	val rhsctx = cnstrRecContext(f, ptn, varnames, W, X)()
+    	val rhs = rhsctx.foldinSym(RecInduced(cons, f))
+    	DefnEqual(lhs, rhs)
+    }
+	
+    DefnEqual(f, recfn) :: (for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames))
   }
   
   /*

@@ -2,6 +2,8 @@ package src.main.scala
 import provingGround.Logic._
 import scala.language.implicitConversions
 
+
+
 object generaltests {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
@@ -15,4 +17,7 @@ object generaltests {
 	val c = "x" << "y"                        //> c  : provingGround.Logic.Formula = BinRel(<)(x, y)
 	
 	println(c.toString)                       //> BinRel(<)(x, y)
+	
+	2 + 3                                     //> res0: Int(5) = 5
+	
 }

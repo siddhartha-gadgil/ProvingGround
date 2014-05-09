@@ -745,17 +745,17 @@ object HoTT{
 	*/
 	
 	case class FuncPtn[V <: Term](tail: TypPtn[V], head : PolyPtn) extends PolyPtn{
-	  type PtnType = Term
+	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
-	  def apply(W : Typ[Term]) = FuncTyp[Term, Term](tail(W), head(W))
+	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail(W), head(W))
 	  
 	  val univLevel = max(head.univLevel, tail.univLevel)
 	}
 	
 	case class CnstFncPtn(tail: Typ[Term], head : PolyPtn) extends PolyPtn{
-	  type PtnType = Term
+	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
-	  def apply(W : Typ[Term]) = FuncTyp[Term, Term](tail, head(W))
+	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
 	  val univLevel = head.univLevel
 	}
@@ -837,16 +837,35 @@ object HoTT{
 	  val univLevel = max(univlevel(tail.typ), headlevel)
 	}
 
-	case class Constructor(cons: Term, pattern : PolyPtn, typ : Typ[Term]){
-	  require(cons.typ == pattern(typ))
+//	case class Constructor(cons: Term, pattern : PolyPtn, typ : Typ[Term]){
+//	  require(cons.typ == pattern(typ))
+//	}
+	
+	trait Constructor{
+	  val pattern : PolyPtn
+	  
+	  val typ: Typ[Term]
+	  
+	  val cons: pattern.PtnType
 	}
 	
+	object Constructor{
+	  def apply(ptn : PolyPtn, tp: Typ[Term])(f : ptn.PtnType) = new Constructor {
+	    val pattern = ptn
+	    
+	    val typ = tp
+	    
+	    val cons = f.asInstanceOf[pattern.PtnType]
+	  }
+	}
+	
+	
 	trait InductiveTyp extends Typ[Term]{
-	  val ptns : List[PolyPtn]
+	  val ptns : List[PolyPtn] = constructors map (_.pattern)
 	  
-	  val constructorFns : List[Term]
+	  val constructorFns : List[Term] = constructors map (_.cons)
 	  
-	  val constructors = for ((f, p)<-(constructorFns zip ptns)) yield Constructor(f, p, this)
+	  val constructors : List[Constructor]
 	  
 	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 	}
@@ -854,9 +873,11 @@ object HoTT{
 	class InductiveTypDefn[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTyp{
 	  type Obj = Term
 	  
-	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
+//	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
 	  
-	  val ptns = for ((a, p) <- symptns) yield p
+//	  val ptns = for ((a, p) <- symptns) yield p
+	  
+	  val constructors = for ((name, ptn) <- symptns) yield Constructor(ptn, this)(ptn(this).symbObj(name)) 
 	  
 	  val univLevel = (ptns map (_.univLevel)).max
 	  
