@@ -35,17 +35,16 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Lambda</span><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>, <span name="value">value: <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$19">evidence$19: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>]</span>, <span name="evidence$20">evidence$20: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>)</span><span class="result"> extends <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Lambda</span><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="Y">+Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>, <span name="value">value: <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>, <span name="dep">dep: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$13">evidence$13: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>]</span>, <span name="evidence$14">evidence$14: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>)</span><span class="result"> extends <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A lambda-expression.
- variable is mapped to value.</p><p> Correction? should allow general variables.
- Should revisit if LogicalTyp variables are too restricitive.</p><p> Refine to include a domain and codomain, and extend FuncObj.</p><p> Should have a trait with the basic properties and inductive definitions
+ variable is mapped to value.</p><p> Refine to include a domain and codomain (maybe not - can have dependent type), and extend FuncObj.</p><p> Should have a trait with the basic properties and inductive definitions</p><p> Check: Is this the type? It may be a dependent type.
  The below is a lambda defined function.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>], (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>], (<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>) ⇒ <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -84,7 +83,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingGround.HoTT.Lambda#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(variable:X,value:Y)(implicitevidence$19:reflect.runtime.universe.TypeTag[X],implicitevidence$20:reflect.runtime.universe.TypeTag[Y]):provingGround.HoTT.Lambda[X,Y]"></a>
+      <a id="&lt;init&gt;(variable:X,value:Y,dep:Boolean)(implicitevidence$13:reflect.runtime.universe.TypeTag[X],implicitevidence$14:reflect.runtime.universe.TypeTag[Y]):provingGround.HoTT.Lambda[X,Y]"></a>
       <a id="&lt;init&gt;:Lambda[X,Y]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,7 +91,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Lambda</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>, <span name="value">value: <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>)</span>
+        <span class="name">Lambda</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>, <span name="value">value: <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>, <span name="dep">dep: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>)</span>
       </span>
       </h4>
       
@@ -110,7 +109,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Obj</span><span class="result"> &lt;: <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+        <span class="name">Obj</span><span class="result"> &lt;: <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
@@ -186,32 +185,58 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="scala.Function1#andThen" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a>
-      <a id="andThen[A]((Term)⇒A):(Term)⇒A"></a>
+    </li><li name="provingGround.HoTT.Lambda#andThen" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="andThen[Z&lt;:provingGround.HoTT.TermwithprovingGround.HoTT.Subs[Z]](f:Y=&gt;Z)(implicitevidence$15:reflect.runtime.universe.TypeTag[Z]):provingGround.HoTT.Lambda[X,Z]"></a>
+      <a id="andThen[Z&lt;:TermwithSubs[Z]]((Y)⇒Z)(scala.reflect.api.JavaUniverse.TypeTag[Z]):Lambda[X,Z]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">andThen</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>
+        <span class="name">andThen</span><span class="tparams">[<span name="Z">Z &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<span class="extype" name="provingGround.HoTT.Lambda.andThen.Z">Z</span>]</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>) ⇒ <span class="extype" name="provingGround.HoTT.Lambda.andThen.Z">Z</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.Lambda.andThen.Z">Z</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.andThen.Z">Z</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="scala.Function1#andThen" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a>
+      <a id="andThen[A]((Y)⇒A):(X)⇒A"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andThen</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>)</span><span class="result">: (<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingGround.HoTT.Lambda#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(arg:provingGround.HoTT.Term):provingGround.HoTT.Term"></a>
-      <a id="apply(Term):Term"></a>
+    </li><li name="provingGround.HoTT.Lambda#andthen" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="andthen(f:provingGround.HoTT.Term=&gt;provingGround.HoTT.Term):provingGround.HoTT.Lambda[provingGround.HoTT.Term,provingGround.HoTT.Term]"></a>
+      <a id="andthen((Term)⇒Term):Lambda[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>
+        <span class="name">andthen</span><span class="params">(<span name="f">f: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.HoTT.Lambda#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(arg:X):Y"></a>
+      <a id="apply(X):Y"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>)</span><span class="result">: <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a> → Function1</dd></dl></div>
@@ -262,20 +287,33 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
     </li><li name="scala.Function1#compose" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a>
-      <a id="compose[A]((A)⇒Term):(A)⇒Term"></a>
+      <a id="compose[A]((A)⇒X):(A)⇒Y"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">compose</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>
+        <span class="name">compose</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingGround.HoTT.Lambda.X">X</span></span>)</span><span class="result">: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingGround.HoTT.Lambda#dep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dep:Boolean"></a>
+      <a id="dep:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dep</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
     </li><li name="provingGround.HoTT.Lambda#dom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dom:provingGround.HoTT.Typ[provingGround.HoTT.Term]"></a>
       <a id="dom:Typ[Term]"></a>
@@ -360,6 +398,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingGround.HoTT.Lambda.myvar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="myvar"></a>
+      <a id="myvar:myvar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Lambda$myvar$.html"><span class="name">myvar</span></a><span class="result"> extends <a href="HoTT$$TmpTerm.html" class="extype" name="provingGround.HoTT.TmpTerm">TmpTerm</a></span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -400,18 +451,18 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingGround.HoTT.Lambda#subs" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subs(x:provingGround.HoTT.Term,y:provingGround.HoTT.Term):provingGround.HoTT.Lambda[provingGround.HoTT.Term,provingGround.HoTT.Term]"></a>
-      <a id="subs(Term,Term):Lambda[Term,Term]"></a>
+      <a id="subs(x:provingGround.HoTT.Term,y:provingGround.HoTT.Term):provingGround.HoTT.Lambda[provingGround.HoTT.Term,Y]"></a>
+      <a id="subs(Term,Term):Lambda[Term,Y]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a> → <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -439,15 +490,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingGround.HoTT.Lambda#typ" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="typ:provingGround.HoTT.FuncTyp[provingGround.HoTT.Term,provingGround.HoTT.LogicalTyp,provingGround.HoTT.Term]"></a>
-      <a id="typ:FuncTyp[Term,LogicalTyp,Term]"></a>
+      <a id="typ:provingGround.HoTT.Typ[provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term]]"></a>
+      <a id="typ:Typ[FuncTerm[Term,Term]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">typ</span><span class="result">: <a href="HoTT$$FuncTyp.html" class="extype" name="provingGround.HoTT.FuncTyp">FuncTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+        <span class="name">typ</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.Lambda">Lambda</a> → <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></dd></dl></div>
@@ -552,13 +603,13 @@
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingGround.HoTT.FuncTerm">
-              <h3>Inherited from <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</h3>
+              <h3>Inherited from <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]</h3>
             </div><div class="parent" name="scala.Function1">
-              <h3>Inherited from (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></h3>
+              <h3>Inherited from (<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>) ⇒ <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span></h3>
             </div><div class="parent" name="provingGround.HoTT.Term">
               <h3>Inherited from <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></h3>
             </div><div class="parent" name="provingGround.HoTT.Subs">
-              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]]</h3>
+              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.Lambda.X">X</span>, <span class="extype" name="provingGround.HoTT.Lambda.Y">Y</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

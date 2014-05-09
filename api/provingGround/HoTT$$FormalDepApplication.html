@@ -35,7 +35,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">FormalDepApplication</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">V &lt;: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="func">func: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.V">V</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>, <span name="arg">arg: <span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span></span>)</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$FormalAppl.html" class="extype" name="provingGround.HoTT.FormalAppl">FormalAppl</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">FormalDepApplication</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="func">func: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>, <span name="arg">arg: <span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span></span>)</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$FormalAppl.html" class="extype" name="provingGround.HoTT.FormalAppl">FormalAppl</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -82,15 +82,15 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingGround.HoTT.FormalDepApplication#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(func:provingGround.HoTT.DepFuncObj[W,V,U],arg:W):provingGround.HoTT.FormalDepApplication[W,V,U]"></a>
-      <a id="&lt;init&gt;:FormalDepApplication[W,V,U]"></a>
+      <a id="&lt;init&gt;(func:provingGround.HoTT.DepFuncObj[W,U],arg:W):provingGround.HoTT.FormalDepApplication[W,U]"></a>
+      <a id="&lt;init&gt;:FormalDepApplication[W,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">FormalDepApplication</span><span class="params">(<span name="func">func: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.V">V</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>, <span name="arg">arg: <span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span></span>)</span>
+        <span class="name">FormalDepApplication</span><span class="params">(<span name="func">func: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>, <span name="arg">arg: <span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span></span>)</span>
       </span>
       </h4>
       
@@ -246,15 +246,15 @@
               
         </dd></dl></div>
     </li><li name="provingGround.HoTT.FormalDepApplication#func" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="func:provingGround.HoTT.DepFuncObj[W,V,U]"></a>
-      <a id="func:DepFuncObj[W,V,U]"></a>
+      <a id="func:provingGround.HoTT.DepFuncObj[W,U]"></a>
+      <a id="func:DepFuncObj[W,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">func</span><span class="result">: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.V">V</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>
+        <span class="name">func</span><span class="result">: <a href="HoTT$$DepFuncObj.html" class="extype" name="provingGround.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FormalDepApplication">FormalDepApplication</a> → <a href="HoTT$$FormalAppl.html" class="extype" name="provingGround.HoTT.FormalAppl">FormalAppl</a></dd></dl></div>
@@ -335,7 +335,7 @@
         <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FormalDepApplication">FormalDepApplication</a> → <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FormalDepApplication">FormalDepApplication</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -376,15 +376,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FormalDepApplication">FormalDepApplication</a> → <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingGround.HoTT.FormalDepApplication#typFamily" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="typFamily:provingGround.HoTT.TypFamily[W,V,U]"></a>
-      <a id="typFamily:TypFamily[W,V,U]"></a>
+      <a id="typFamily:provingGround.HoTT.TypFamily[W,U]"></a>
+      <a id="typFamily:TypFamily[W,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">typFamily</span><span class="result">: <a href="HoTT$.html#TypFamily[W&lt;:provingGround.HoTT.Term,V&lt;:provingGround.HoTT.Typ[W],U&lt;:provingGround.HoTT.Term]=provingGround.HoTT.FuncObj[W,V,provingGround.HoTT.Typ[U]]" class="extmbr" name="provingGround.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.V">V</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>
+        <span class="name">typFamily</span><span class="result">: <a href="HoTT$.html#TypFamily[W&lt;:provingGround.HoTT.Term,+U&lt;:provingGround.HoTT.Term]=provingGround.HoTT.FuncObj[W,provingGround.HoTT.Typ[U]]" class="extmbr" name="provingGround.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingGround.HoTT.FormalDepApplication.W">W</span>, <span class="extype" name="provingGround.HoTT.FormalDepApplication.U">U</span>]</span>
       </span>
       </h4>
       

@@ -81,341 +81,159 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingGround.Context.AtomicContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="AtomicContext[+X&lt;:provingGround.HoTT.Term]extendsContext.ContextElem[X]"></a>
-      <a id="AtomicContext[+X&lt;:Term]:AtomicContext[X]"></a>
+              <ol><li name="provingGround.Context.Context" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Context[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsAnyRef"></a>
+      <a id="Context[+A,+U&lt;:Term,+V&lt;:Term]:Context[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Context$$AtomicContext.html"><span class="name">AtomicContext</span></a><span class="tparams">[<span name="X">+X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="Context$$ContextElem.html" class="extype" name="provingGround.Context.ContextElem">ContextElem</a>[<span class="extype" name="provingGround.Context.AtomicContext.X">X</span>]</span>
+        <a href="Context$$Context.html"><span class="name">Context</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.CasesSymb" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CasesSymb[U&lt;:provingGround.HoTT.Term]extendsHoTT.TermwithProductwithSerializable"></a>
-      <a id="CasesSymb[U&lt;:Term]:CasesSymb[U]"></a>
+    </li><li name="provingGround.Context.Defn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Defn[+A]extendsContext.DefnEqualitywithProductwithSerializable"></a>
+      <a id="Defn[+A]:Defn[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$CasesSymb.html"><span class="name">CasesSymb</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="cases">cases: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.Context.CasesSymb.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$Defn.html"><span class="name">Defn</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="params">(<span name="lhsname">lhsname: <span class="extype" name="provingGround.Context.Defn.A">A</span></span>, <span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result"> extends <a href="Context$$DefnEquality.html" class="extype" name="provingGround.Context.DefnEquality">DefnEquality</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.CnstInductSeq" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CnstInductSeqextendsContext.InductSeqwithProductwithSerializable"></a>
-      <a id="CnstInductSeq:CnstInductSeq"></a>
+    </li><li name="provingGround.Context.DefnEqual" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefnEqualextendsContext.DefnEqualitywithProductwithSerializable"></a>
+      <a id="DefnEqual:DefnEqual"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$CnstInductSeq.html"><span class="name">CnstInductSeq</span></a><span class="params">(<span name="fm">fm: <a href="Context$$ConstTmpl.html" class="extype" name="provingGround.Context.ConstTmpl">ConstTmpl</a></span>)</span><span class="result"> extends <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$DefnEqual.html"><span class="name">DefnEqual</span></a><span class="params">(<span name="lhs">lhs: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="freevars">freevars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>] = <span class="symbol">immutable.this.Nil</span></span>)</span><span class="result"> extends <a href="Context$$DefnEquality.html" class="extype" name="provingGround.Context.DefnEquality">DefnEquality</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.Const" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConstextendsContext.DefnPatternwithProductwithSerializable"></a>
-      <a id="Const:Const"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$Const.html"><span class="name">Const</span></a><span class="params">(<span name="head">head: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result"> extends <a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.ConstFmlyTmpl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ConstFmlyTmplextendsHoTT.TermwithHoTT.AtomicObj"></a>
-      <a id="ConstFmlyTmpl:ConstFmlyTmpl"></a>
+    </li><li name="provingGround.Context.DefnEquality" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DefnEqualityextendsAnyRef"></a>
+      <a id="DefnEquality:DefnEquality"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Context$$ConstFmlyTmpl.html"><span class="name">ConstFmlyTmpl</span></a><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> with <a href="HoTT$$AtomicObj.html" class="extype" name="provingGround.HoTT.AtomicObj">AtomicObj</a></span>
+        <a href="Context$$DefnEquality.html"><span class="name">DefnEquality</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.ConstTmpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConstTmplextendsContext.ConstFmlyTmplwithProductwithSerializable"></a>
-      <a id="ConstTmpl:ConstTmpl"></a>
+    </li><li name="provingGround.Context.DefnEqualityMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefnEqualityMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,U,V]withProductwithSerializable"></a>
+      <a id="DefnEqualityMixin[+A,+U&lt;:Term,+V&lt;:Term]:DefnEqualityMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$ConstTmpl.html"><span class="name">ConstTmpl</span></a><span class="params">(<span name="typ">typ: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>)</span><span class="result"> extends <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$DefnEqualityMixin.html"><span class="name">DefnEqualityMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="eqlty">eqlty: <a href="Context$$DefnEquality.html" class="extype" name="provingGround.Context.DefnEquality">DefnEquality</a></span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.DefnEqualityMixin.A">A</span>, <span class="extype" name="provingGround.Context.DefnEqualityMixin.U">U</span>, <span class="extype" name="provingGround.Context.DefnEqualityMixin.V">V</span>]</span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.DefnEqualityMixin.A">A</span>, <span class="extype" name="provingGround.Context.DefnEqualityMixin.U">U</span>, <span class="extype" name="provingGround.Context.DefnEqualityMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.ConstTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConstTypextendsContext.TypPatternwithProductwithSerializable"></a>
-      <a id="ConstTyp:ConstTyp"></a>
+    </li><li name="provingGround.Context.DefnMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefnMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,U],V]withProductwithSerializable"></a>
+      <a id="DefnMixin[+A,+U&lt;:Term,+V&lt;:Term]:DefnMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$ConstTyp.html"><span class="name">ConstTyp</span></a><span class="params">(<span name="head">head: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>)</span><span class="result"> extends <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$DefnMixin.html"><span class="name">DefnMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="dfn">dfn: <a href="Context$$Defn.html" class="extype" name="provingGround.Context.Defn">Defn</a>[<span class="extype" name="provingGround.Context.DefnMixin.A">A</span>]</span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.DefnMixin.A">A</span>, <span class="extype" name="provingGround.Context.DefnMixin.U">U</span>, <span class="extype" name="provingGround.Context.DefnMixin.V">V</span>]</span>, <span name="dep">dep: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.DefnMixin.A">A</span>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.DefnMixin.U">U</span>], <span class="extype" name="provingGround.Context.DefnMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.Context" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Context[+X&lt;:provingGround.HoTT.Term]extendsContext.ContextElem[X]"></a>
-      <a id="Context[+X&lt;:Term]:Context[X]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$Context.html"><span class="name">Context</span></a><span class="tparams">[<span name="X">+X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="Context$$ContextElem.html" class="extype" name="provingGround.Context.ContextElem">ContextElem</a>[<span class="extype" name="provingGround.Context.Context.X">X</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.ContextElem" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ContextElem[+X&lt;:provingGround.HoTT.Term]extendsAnyRef"></a>
-      <a id="ContextElem[+X&lt;:Term]:ContextElem[X]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$ContextElem.html"><span class="name">ContextElem</span></a><span class="tparams">[<span name="X">+X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.ContextSeq" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ContextSeq[+X&lt;:provingGround.HoTT.Term]extendsContext.Context[X]withProductwithSerializable"></a>
-      <a id="ContextSeq[+X&lt;:Term]:ContextSeq[X]"></a>
+    </li><li name="provingGround.Context.GlobalDefnMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GlobalDefnMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,U,V]withProductwithSerializable"></a>
+      <a id="GlobalDefnMixin[+A,+U&lt;:Term,+V&lt;:Term]:GlobalDefnMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$ContextSeq.html"><span class="name">ContextSeq</span></a><span class="tparams">[<span name="X">+X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="head">head: <a href="Context$$AtomicContext.html" class="extype" name="provingGround.Context.AtomicContext">AtomicContext</a>[<span class="extype" name="provingGround.Context.ContextSeq.X">X</span>]</span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.ContextSeq.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$6">evidence$6: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.ContextSeq.X">X</span>]</span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.ContextSeq.X">X</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$GlobalDefnMixin.html"><span class="name">GlobalDefnMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="dfn">dfn: <a href="Context$$Defn.html" class="extype" name="provingGround.Context.Defn">Defn</a>[<span class="extype" name="provingGround.Context.GlobalDefnMixin.A">A</span>]</span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.GlobalDefnMixin.A">A</span>, <span class="extype" name="provingGround.Context.GlobalDefnMixin.U">U</span>, <span class="extype" name="provingGround.Context.GlobalDefnMixin.V">V</span>]</span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.GlobalDefnMixin.A">A</span>, <span class="extype" name="provingGround.Context.GlobalDefnMixin.U">U</span>, <span class="extype" name="provingGround.Context.GlobalDefnMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.DefnPattern" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="DefnPatternextendsAnyRef"></a>
-      <a id="DefnPattern:DefnPattern"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$DefnPattern.html"><span class="name">DefnPattern</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.DepFuncTypPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DepFuncTypPatternextendsContext.TypPatternwithProductwithSerializable"></a>
-      <a id="DepFuncTypPattern:DepFuncTypPattern"></a>
+    </li><li name="provingGround.Context.KappaMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="KappaMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,U,V]withProductwithSerializable"></a>
+      <a id="KappaMixin[+A,+U&lt;:Term,+V&lt;:Term]:KappaMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$DepFuncTypPattern.html"><span class="name">DepFuncTypPattern</span></a><span class="params">(<span name="head">head: <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a></span>, <span name="tail">tail: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a></span>)</span><span class="result"> extends <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$KappaMixin.html"><span class="name">KappaMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="const">const: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.KappaMixin.A">A</span>, <span class="extype" name="provingGround.Context.KappaMixin.U">U</span>, <span class="extype" name="provingGround.Context.KappaMixin.V">V</span>]</span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.KappaMixin.A">A</span>, <span class="extype" name="provingGround.Context.KappaMixin.U">U</span>, <span class="extype" name="provingGround.Context.KappaMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.DepParamConstTmpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DepParamConstTmplextendsContext.ConstFmlyTmplwithProductwithSerializable"></a>
-      <a id="DepParamConstTmpl:DepParamConstTmpl"></a>
+    </li><li name="provingGround.Context.LambdaMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LambdaMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,U],V]withProductwithSerializable"></a>
+      <a id="LambdaMixin[+A,+U&lt;:Term,+V&lt;:Term]:LambdaMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$DepParamConstTmpl.html"><span class="name">DepParamConstTmpl</span></a><span class="params">(<span name="base">base: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>, <span name="fibre">fibre: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a></span>)</span><span class="result"> extends <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$LambdaMixin.html"><span class="name">LambdaMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="variable">variable: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.LambdaMixin.A">A</span>, <span class="extype" name="provingGround.Context.LambdaMixin.U">U</span>, <span class="extype" name="provingGround.Context.LambdaMixin.V">V</span>]</span>, <span name="dep">dep: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.LambdaMixin.A">A</span>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.LambdaMixin.U">U</span>], <span class="extype" name="provingGround.Context.LambdaMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.FuncPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FuncPatternextendsContext.DefnPatternwithProductwithSerializable"></a>
-      <a id="FuncPattern:FuncPattern"></a>
+    </li><li name="provingGround.Context.RecInduced" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecInducedextendsProductwithSerializable"></a>
+      <a id="RecInduced:RecInduced"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$FuncPattern.html"><span class="name">FuncPattern</span></a><span class="params">(<span name="head">head: <a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a></span>, <span name="tail">tail: <a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a></span>)</span><span class="result"> extends <a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$RecInduced.html"><span class="name">RecInduced</span></a><span class="params">(<span name="cons">cons: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="func">func: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.FuncTypPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FuncTypPatternextendsContext.TypPatternwithProductwithSerializable"></a>
-      <a id="FuncTypPattern:FuncTypPattern"></a>
+    </li><li name="provingGround.Context.RecSymbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecSymbolextendsProductwithSerializable"></a>
+      <a id="RecSymbol:RecSymbol"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$FuncTypPattern.html"><span class="name">FuncTypPattern</span></a><span class="params">(<span name="head">head: <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a></span>, <span name="tail">tail: <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a></span>)</span><span class="result"> extends <a href="Context$$TypPattern.html" class="extype" name="provingGround.Context.TypPattern">TypPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$RecSymbol.html"><span class="name">RecSymbol</span></a><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.InductCons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InductConsextendsProductwithSerializable"></a>
-      <a id="InductCons:InductCons"></a>
+    </li><li name="provingGround.Context.SimpEqualityMixin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpEqualityMixin[+A,+U&lt;:provingGround.HoTT.Term,+V&lt;:provingGround.HoTT.Term]extendsContext.Context[A,provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,U],V]withProductwithSerializable"></a>
+      <a id="SimpEqualityMixin[+A,+U&lt;:Term,+V&lt;:Term]:SimpEqualityMixin[A,U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$InductCons.html"><span class="name">InductCons</span></a><span class="params">(<span name="name">name: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="constyp">constyp: <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.InductSeq" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="InductSeqextendsAnyRef"></a>
-      <a id="InductSeq:InductSeq"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$InductSeq.html"><span class="name">InductSeq</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.InductSeqCons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InductSeqConsextendsContext.InductSeqwithProductwithSerializable"></a>
-      <a id="InductSeqCons:InductSeqCons"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$InductSeqCons.html"><span class="name">InductSeqCons</span></a><span class="params">(<span name="head">head: <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a></span>, <span name="tail">tail: <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a></span>)</span><span class="result"> extends <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.InductSeqDepCons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InductSeqDepConsextendsContext.InductSeqwithProductwithSerializable"></a>
-      <a id="InductSeqDepCons:InductSeqDepCons"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$InductSeqDepCons.html"><span class="name">InductSeqDepCons</span></a><span class="params">(<span name="head">head: <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a></span>, <span name="tail">tail: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a></span>)</span><span class="result"> extends <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.InductiveTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InductiveTypextendsHoTT.LogicalSTyp"></a>
-      <a id="InductiveTyp:InductiveTyp"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$InductiveTyp.html"><span class="name">InductiveTyp</span></a><span class="result"> extends <a href="HoTT$$LogicalSTyp.html" class="extype" name="provingGround.HoTT.LogicalSTyp">LogicalSTyp</a></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.KappaContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="KappaContext[U&lt;:provingGround.HoTT.Term]extendsContext.AtomicContext[U]withProductwithSerializable"></a>
-      <a id="KappaContext[U&lt;:Term]:KappaContext[U]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$KappaContext.html"><span class="name">KappaContext</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="cnst">cnst: <span class="extype" name="provingGround.Context.KappaContext.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$8">evidence$8: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.KappaContext.U">U</span>]</span>)</span><span class="result"> extends <a href="Context$$AtomicContext.html" class="extype" name="provingGround.Context.AtomicContext">AtomicContext</a>[<span class="extype" name="provingGround.Context.KappaContext.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.LambdaContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LambdaContext[U&lt;:provingGround.HoTT.Term]extendsContext.AtomicContext[U]withProductwithSerializable"></a>
-      <a id="LambdaContext[U&lt;:Term]:LambdaContext[U]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$LambdaContext.html"><span class="name">LambdaContext</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="cnst">cnst: <span class="extype" name="provingGround.Context.LambdaContext.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$7">evidence$7: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.LambdaContext.U">U</span>]</span>)</span><span class="result"> extends <a href="Context$$AtomicContext.html" class="extype" name="provingGround.Context.AtomicContext">AtomicContext</a>[<span class="extype" name="provingGround.Context.LambdaContext.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.ParamConstTmpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ParamConstTmplextendsContext.ConstFmlyTmplwithProductwithSerializable"></a>
-      <a id="ParamConstTmpl:ParamConstTmpl"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$ParamConstTmpl.html"><span class="name">ParamConstTmpl</span></a><span class="params">(<span name="base">base: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>, <span name="cod">cod: <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a></span>)</span><span class="result"> extends <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.TargetInductSeq" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TargetInductSeqextendsContext.InductSeqwithProductwithSerializable"></a>
-      <a id="TargetInductSeq:TargetInductSeq"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$TargetInductSeq.html"><span class="name">TargetInductSeq</span></a><span class="params">(<span name="w">w: <a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a></span>)</span><span class="result"> extends <a href="Context$$InductSeq.html" class="extype" name="provingGround.Context.InductSeq">InductSeq</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.TypPattern" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="TypPatternextendsAnyRef"></a>
-      <a id="TypPattern:TypPattern"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$TypPattern.html"><span class="name">TypPattern</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.UnionPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="UnionPatternextendsContext.DefnPatternwithProductwithSerializable"></a>
-      <a id="UnionPattern:UnionPattern"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$UnionPattern.html"><span class="name">UnionPattern</span></a><span class="params">(<span name="ps">ps: <span class="extype" name="scala.List">List</span>[<a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a>]</span>)</span><span class="result"> extends <a href="Context$$DefnPattern.html" class="extype" name="provingGround.Context.DefnPattern">DefnPattern</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$SimpEqualityMixin.html"><span class="name">SimpEqualityMixin</span></a><span class="tparams">[<span name="A">+A</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="eqlty">eqlty: <a href="Context$$DefnEquality.html" class="extype" name="provingGround.Context.DefnEquality">DefnEquality</a></span>, <span name="tail">tail: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.SimpEqualityMixin.A">A</span>, <span class="extype" name="provingGround.Context.SimpEqualityMixin.U">U</span>, <span class="extype" name="provingGround.Context.SimpEqualityMixin.V">V</span>]</span>, <span name="dep">dep: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.SimpEqualityMixin.A">A</span>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.SimpEqualityMixin.U">U</span>], <span class="extype" name="provingGround.Context.SimpEqualityMixin.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -491,19 +309,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingGround.Context.AlsoOld" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AlsoOld"></a>
-      <a id="AlsoOld:AlsoOld"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="Context$$AlsoOld$.html"><span class="name">AlsoOld</span></a>
-      </span>
-      </h4>
-      
     </li><li name="provingGround.Context.Context" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Context"></a>
       <a id="Context:Context"></a>
@@ -517,42 +322,42 @@
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.DefnPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DefnPattern"></a>
-      <a id="DefnPattern:DefnPattern"></a>
+    </li><li name="provingGround.Context.Defn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Defn"></a>
+      <a id="Defn:Defn"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Context$$DefnPattern$.html"><span class="name">DefnPattern</span></a>
+        <a href="Context$$Defn$.html"><span class="name">Defn</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.Old" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Old"></a>
-      <a id="Old:Old"></a>
+    </li><li name="provingGround.Context.DefnEqual" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefnEqual"></a>
+      <a id="DefnEqual:DefnEqual"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Context$$Old$.html"><span class="name">Old</span></a>
+        <a href="Context$$DefnEqual$.html"><span class="name">DefnEqual</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-    </li><li name="provingGround.Context.TypPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TypPattern"></a>
-      <a id="TypPattern:TypPattern"></a>
+    </li><li name="provingGround.Context#addConstructor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addConstructor[V&lt;:provingGround.HoTT.Term](f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],cnstr:provingGround.HoTT.Constructor,varnames:List[Any],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.Context.Context[Any,provingGround.HoTT.Term,V]=&gt;provingGround.Context.Context[Any,provingGround.HoTT.Term,V]"></a>
+      <a id="addConstructor[V&lt;:Term](⇒FuncTerm[Term,Term],Constructor,List[Any],Typ[Term],Typ[Term]):(Context[Any,Term,V])⇒Context[Any,Term,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <a href="Context$$TypPattern$.html"><span class="name">TypPattern</span></a>
+        <span class="name">addConstructor</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="cnstr">cnstr: <a href="HoTT$$Constructor.html" class="extype" name="provingGround.HoTT.Constructor">Constructor</a></span>, <span name="varnames">varnames: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Any">Any</span>]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: (<a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="scala.Any">Any</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.addConstructor.V">V</span>]) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="scala.Any">Any</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.addConstructor.V">V</span>]</span>
       </span>
       </h4>
       
@@ -586,6 +391,54 @@
       
       <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingGround.Context#cnstrIndContext" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cnstrIndContext[A,V&lt;:provingGround.HoTT.Term](f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],ptn:provingGround.HoTT.PolyPtn,varnames:List[A],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],Xs:provingGround.HoTT.Term=&gt;provingGround.HoTT.Typ[provingGround.HoTT.Term])(ctx:provingGround.HoTT.Term=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V]):provingGround.HoTT.Term=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V]"></a>
+      <a id="cnstrIndContext[A,V&lt;:Term](⇒FuncTerm[Term,Term],PolyPtn,List[A],Typ[Term],(Term)⇒Typ[Term])((Term)⇒Context[A,Term,V]):(Term)⇒Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cnstrIndContext</span><span class="tparams">[<span name="A">A</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="ptn">ptn: <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>, <span name="varnames">varnames: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingGround.Context.cnstrIndContext.A">A</span>]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="Xs">Xs: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="ctx">ctx: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrIndContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrIndContext.V">V</span>] = <span class="defval" name='<span class="name"><a href="Context$$Context$.html">(t: Term) =&gt; Context.empty[Term](Xs(t))</a></span>'>...</span></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrIndContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrIndContext.V">V</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingGround.Context#cnstrRecContext" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cnstrRecContext[A,V&lt;:provingGround.HoTT.Term](f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],ptn:provingGround.HoTT.PolyPtn,varnames:List[A],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term])(ctx:provingGround.Context.Context[A,provingGround.HoTT.Term,V]):provingGround.Context.Context[A,provingGround.HoTT.Term,V]"></a>
+      <a id="cnstrRecContext[A,V&lt;:Term](⇒FuncTerm[Term,Term],PolyPtn,List[A],Typ[Term],Typ[Term])(Context[A,Term,V]):Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cnstrRecContext</span><span class="tparams">[<span name="A">A</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="ptn">ptn: <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>, <span name="varnames">varnames: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingGround.Context.cnstrRecContext.A">A</span>]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="ctx">ctx: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrRecContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrRecContext.V">V</span>] = <span class="symbol"><span class="name"><a href="Context$$Context$.html">Context.empty[Term](X)</a></span></span></span>)</span><span class="result">: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrRecContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrRecContext.V">V</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingGround.Context#cnstrSimpleContext" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cnstrSimpleContext[A,V&lt;:provingGround.HoTT.Term](ptn:provingGround.HoTT.PolyPtn,varnames:List[A],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term])(ctx:provingGround.Context.Context[A,provingGround.HoTT.Term,V]):provingGround.Context.Context[A,provingGround.HoTT.Term,V]"></a>
+      <a id="cnstrSimpleContext[A,V&lt;:Term](PolyPtn,List[A],Typ[Term],Typ[Term])(Context[A,Term,V]):Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cnstrSimpleContext</span><span class="tparams">[<span name="A">A</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="ptn">ptn: <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>, <span name="varnames">varnames: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingGround.Context.cnstrSimpleContext.A">A</span>]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="ctx">ctx: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrSimpleContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrSimpleContext.V">V</span>] = <span class="symbol"><span class="name"><a href="Context$$Context$.html">Context.empty[Term](X)</a></span></span></span>)</span><span class="result">: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.cnstrSimpleContext.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.cnstrSimpleContext.V">V</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -659,6 +512,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingGround.Context#indContextChange" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="indContextChange[A,U&lt;:provingGround.HoTT.Term,V&lt;:provingGround.HoTT.Term](f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],ptn:provingGround.HoTT.TypPtn[U],varname:A,W:provingGround.HoTT.Typ[provingGround.HoTT.Term],Xs:provingGround.HoTT.Term=&gt;provingGround.HoTT.Typ[provingGround.HoTT.Term]):(provingGround.HoTT.Term=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V])=&gt;(provingGround.HoTT.Term=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V])"></a>
+      <a id="indContextChange[A,U&lt;:Term,V&lt;:Term](⇒FuncTerm[Term,Term],TypPtn[U],A,Typ[Term],(Term)⇒Typ[Term]):((Term)⇒Context[A,Term,V])⇒(Term)⇒Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">indContextChange</span><span class="tparams">[<span name="A">A</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="ptn">ptn: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.Context.indContextChange.U">U</span>]</span>, <span name="varname">varname: <span class="extype" name="provingGround.Context.indContextChange.A">A</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="Xs">Xs: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: ((<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.indContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.indContextChange.V">V</span>]) ⇒ (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.indContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.indContextChange.V">V</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -711,6 +577,71 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingGround.Context#recContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recContext(f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],cnstrvars:List[(provingGround.HoTT.Constructor,List[Any])],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.Context.Context[Any,provingGround.HoTT.Term,provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term]]"></a>
+      <a id="recContext(⇒FuncTerm[Term,Term],List[(Constructor,List[Any])],Typ[Term],Typ[Term]):Context[Any,Term,FuncTerm[Term,Term]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recContext</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="cnstrvars">cnstrvars: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Constructor.html" class="extype" name="provingGround.HoTT.Constructor">Constructor</a>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Any">Any</span>])]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="scala.Any">Any</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.Context#recContextChange" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recContextChange[A,U&lt;:provingGround.HoTT.Term,V&lt;:provingGround.HoTT.Term](f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],ptn:provingGround.HoTT.TypPtn[U],varname:A,W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.Context.Context[A,provingGround.HoTT.Term,V]=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V]"></a>
+      <a id="recContextChange[A,U&lt;:Term,V&lt;:Term](⇒FuncTerm[Term,Term],TypPtn[U],A,Typ[Term],Typ[Term]):(Context[A,Term,V])⇒Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recContextChange</span><span class="tparams">[<span name="A">A</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="ptn">ptn: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.Context.recContextChange.U">U</span>]</span>, <span name="varname">varname: <span class="extype" name="provingGround.Context.recContextChange.A">A</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: (<a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.recContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.recContextChange.V">V</span>]) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.recContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.recContextChange.V">V</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.Context#recFunction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recFunction(f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],cnstrvars:List[(provingGround.HoTT.Constructor,List[Any])],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term]"></a>
+      <a id="recFunction(⇒FuncTerm[Term,Term],List[(Constructor,List[Any])],Typ[Term],Typ[Term]):FuncTerm[Term,Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recFunction</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="cnstrvars">cnstrvars: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Constructor.html" class="extype" name="provingGround.HoTT.Constructor">Constructor</a>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Any">Any</span>])]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.Context#recIdentity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recIdentity(f:=&gt;provingGround.HoTT.FuncTerm[provingGround.HoTT.Term,provingGround.HoTT.Term],cnstrvars:List[(provingGround.HoTT.Constructor,List[Any])],W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):List[provingGround.Context.DefnEqual]"></a>
+      <a id="recIdentity(⇒FuncTerm[Term,Term],List[(Constructor,List[Any])],Typ[Term],Typ[Term]):List[DefnEqual]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recIdentity</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="cnstrvars">cnstrvars: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Constructor.html" class="extype" name="provingGround.HoTT.Constructor">Constructor</a>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Any">Any</span>])]</span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Context$$DefnEqual.html" class="extype" name="provingGround.Context.DefnEqual">DefnEqual</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.Context#simpleContextChange" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="simpleContextChange[A,U&lt;:provingGround.HoTT.Term,V&lt;:provingGround.HoTT.Term](ptn:provingGround.HoTT.TypPtn[U],varname:A,W:provingGround.HoTT.Typ[provingGround.HoTT.Term],X:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.Context.Context[A,provingGround.HoTT.Term,V]=&gt;provingGround.Context.Context[A,provingGround.HoTT.Term,V]"></a>
+      <a id="simpleContextChange[A,U&lt;:Term,V&lt;:Term](TypPtn[U],A,Typ[Term],Typ[Term]):(Context[A,Term,V])⇒Context[A,Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">simpleContextChange</span><span class="tparams">[<span name="A">A</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="ptn">ptn: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.Context.simpleContextChange.U">U</span>]</span>, <span name="varname">varname: <span class="extype" name="provingGround.Context.simpleContextChange.A">A</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: (<a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.simpleContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.simpleContextChange.V">V</span>]) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.simpleContextChange.A">A</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <span class="extype" name="provingGround.Context.simpleContextChange.V">V</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

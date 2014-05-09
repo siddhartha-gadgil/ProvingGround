@@ -81,16 +81,16 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingGround.Context.Context.simple" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="simple[X&lt;:provingGround.HoTT.Term]extendsContext.Context[X]withProductwithSerializable"></a>
-      <a id="simple[X&lt;:Term]:simple[X]"></a>
+              <ol><li name="provingGround.Context.Context.empty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="empty[U&lt;:provingGround.HoTT.Term]extendsContext.Context[Any,U,U]withProductwithSerializable"></a>
+      <a id="empty[U&lt;:Term]:empty[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Context$$Context$$simple.html"><span class="name">simple</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="dom">dom: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.simple.X">X</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Context$$Context$$empty.html"><span class="name">empty</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.Context.Context.empty.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.Context.empty.U">U</span>]</span>)</span><span class="result"> extends <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="scala.Any">Any</span>, <span class="extype" name="provingGround.Context.Context.empty.U">U</span>, <span class="extype" name="provingGround.Context.Context.empty.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -167,15 +167,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingGround.Context.Context#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(dom:provingGround.HoTT.LogicalTyp):provingGround.Context.Context.simple[Nothing]"></a>
-      <a id="apply(LogicalTyp):simple[Nothing]"></a>
+      <a id="apply[U&lt;:provingGround.HoTT.Term](typ:provingGround.HoTT.Typ[U])(implicitevidence$2:reflect.runtime.universe.TypeTag[U]):provingGround.Context.Context.empty[U]"></a>
+      <a id="apply[U&lt;:Term](Typ[U])(scala.reflect.api.JavaUniverse.TypeTag[U]):empty[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="dom">dom: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>)</span><span class="result">: <a href="Context$$Context$$simple.html" class="extype" name="provingGround.Context.Context.simple">simple</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.Context.Context.apply.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.Context.apply.U">U</span>]</span>)</span><span class="result">: <a href="Context$$Context$$empty.html" class="extype" name="provingGround.Context.Context.empty">empty</a>[<span class="extype" name="provingGround.Context.Context.apply.U">U</span>]</span>
       </span>
       </h4>
       
@@ -256,19 +256,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingGround.Context.Context#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fold[X&lt;:provingGround.HoTT.Term](ctx:provingGround.Context.Context[X],seq:Seq[provingGround.HoTT.Term])(obj:provingGround.HoTT.Term)(implicitevidence$5:reflect.runtime.universe.TypeTag[X]):provingGround.HoTT.Term"></a>
-      <a id="fold[X&lt;:Term](Context[X],Seq[Term])(Term)(scala.reflect.api.JavaUniverse.TypeTag[X]):Term"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fold</span><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="ctx">ctx: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.fold.X">X</span>]</span>, <span name="seq">seq: <span class="extype" name="scala.Seq">Seq</span>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="obj">obj: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.Context.fold.X">X</span>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -295,32 +282,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingGround.Context.Context#instantiate" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="instantiate[X&lt;:provingGround.HoTT.Term](x:X,y:X)(implicitevidence$3:reflect.runtime.universe.TypeTag[X]):provingGround.Context.Context[X]=&gt;provingGround.Context.Context[X]"></a>
-      <a id="instantiate[X&lt;:Term](X,X)(scala.reflect.api.JavaUniverse.TypeTag[X]):(Context[X])⇒Context[X]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">instantiate</span><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="x">x: <span class="extype" name="provingGround.Context.Context.instantiate.X">X</span></span>, <span name="y">y: <span class="extype" name="provingGround.Context.Context.instantiate.X">X</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.Context.instantiate.X">X</span>]</span>)</span><span class="result">: (<a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.instantiate.X">X</span>]) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.instantiate.X">X</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.Context#instantiateHead" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="instantiateHead[X&lt;:provingGround.HoTT.Term](y:provingGround.HoTT.Term)(implicitevidence$4:reflect.runtime.universe.TypeTag[X]):provingGround.Context.Context[X]=&gt;provingGround.Context.Context[X]"></a>
-      <a id="instantiateHead[X&lt;:Term](Term)(scala.reflect.api.JavaUniverse.TypeTag[X]):(Context[X])⇒Context[X]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">instantiateHead</span><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.Context.Context.instantiateHead.X">X</span>]</span>)</span><span class="result">: (<a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.instantiateHead.X">X</span>]) ⇒ <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.instantiateHead.X">X</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -373,32 +334,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingGround.Context.Context#recsymbpattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recsymbpattern(f:provingGround.HoTT.Term=&gt;provingGround.HoTT.Term,Q:provingGround.HoTT.LogicalTyp,symbs:List[provingGround.HoTT.Term],ctx:provingGround.Context.Context[provingGround.Context.ConstFmlyTmpl]):provingGround.Context.Context[provingGround.HoTT.Term]"></a>
-      <a id="recsymbpattern((Term)⇒Term,LogicalTyp,List[Term],Context[ConstFmlyTmpl]):Context[Term]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">recsymbpattern</span><span class="params">(<span name="f">f: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="Q">Q: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>, <span name="symbs">symbs: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>, <span name="ctx">ctx: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<a href="Context$$ConstFmlyTmpl.html" class="extype" name="provingGround.Context.ConstFmlyTmpl">ConstFmlyTmpl</a>]</span>)</span><span class="result">: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="provingGround.Context.Context#symbpattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="symbpattern[A,X&lt;:provingGround.HoTT.Term](symbs:List[A],ctx:provingGround.Context.Context[X]):List[provingGround.HoTT.Term]"></a>
-      <a id="symbpattern[A,X&lt;:Term](List[A],Context[X]):List[Term]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">symbpattern</span><span class="tparams">[<span name="A">A</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="symbs">symbs: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingGround.Context.Context.symbpattern.A">A</span>]</span>, <span name="ctx">ctx: <a href="Context$$Context.html" class="extype" name="provingGround.Context.Context">Context</a>[<span class="extype" name="provingGround.Context.Context.symbpattern.X">X</span>]</span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

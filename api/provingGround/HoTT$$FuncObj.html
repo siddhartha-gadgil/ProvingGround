@@ -35,7 +35,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">FuncObj</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="V">V &lt;: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>]</span>
+        <span class="name">FuncObj</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>]</span>
       </span>
       </h4>
       
@@ -44,7 +44,7 @@
           <div class="superTypes hiddenContent"><a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>], (<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>) ⇒ <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a href="HoTT$$FuncDefn.html" class="extype" name="provingGround.HoTT.FuncDefn">FuncDefn</a>, <a href="HoTT$$FuncSymb.html" class="extype" name="provingGround.HoTT.FuncSymb">FuncSymb</a>, <a href="HoTT$$LogicalTypFamily.html" class="extype" name="provingGround.HoTT.LogicalTypFamily">LogicalTypFamily</a>, <a href="HoTT$$TypFamilyDefn.html" class="extype" name="provingGround.HoTT.TypFamilyDefn">TypFamilyDefn</a></div>
+          <div class="subClasses hiddenContent"><a href="HoTT$$FuncDefn.html" class="extype" name="provingGround.HoTT.FuncDefn">FuncDefn</a>, <a href="HoTT$$FuncSymb.html" class="extype" name="provingGround.HoTT.FuncSymb">FuncSymb</a></div>
         </div></div>
         
 
@@ -104,14 +104,14 @@
               <h3>Abstract Value Members</h3>
               <ol><li name="provingGround.HoTT.FuncObj#action" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="action(arg:FuncObj.this.dom.Obj):FuncObj.this.codom.Obj"></a>
-      <a id="action(V.Obj):Typ.Obj"></a>
+      <a id="action(Typ.Obj):Typ.Obj"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">action</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingGround.HoTT.Typ.Obj">V.Obj</span></span>)</span><span class="result">: <a href="HoTT$$Typ.html#Obj&lt;:UwithprovingGround.HoTT.Subs[U]" class="extmbr" name="provingGround.HoTT.Typ.Obj">Typ.Obj</a></span>
+        <span class="name">action</span><span class="params">(<span name="arg">arg: <a href="HoTT$$Typ.html#Obj&lt;:UwithprovingGround.HoTT.Subs[U]" class="extmbr" name="provingGround.HoTT.Typ.Obj">Typ.Obj</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html#Obj&lt;:UwithprovingGround.HoTT.Subs[U]" class="extmbr" name="provingGround.HoTT.Typ.Obj">Typ.Obj</a></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Action, i.</p><div class="fullcomment"><div class="comment cmt"><p>Action, i.e., function application</p></div></div>
@@ -142,15 +142,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
     </li><li name="provingGround.HoTT.FuncObj#dom" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="dom:V"></a>
-      <a id="dom:V"></a>
+      <a id="dom:provingGround.HoTT.Typ[W]"></a>
+      <a id="dom:Typ[W]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">dom</span><span class="result">: <span class="extype" name="provingGround.HoTT.FuncObj.V">V</span></span>
+        <span class="name">dom</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">domain</p><div class="fullcomment"><div class="comment cmt"><p>domain</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FuncObj">FuncObj</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
@@ -167,19 +167,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
-    </li><li name="provingGround.HoTT.FuncTerm#subs" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="subs(x:provingGround.HoTT.Term,y:provingGround.HoTT.Term):provingGround.HoTT.FuncTerm[W,U]"></a>
-      <a id="subs(Term,Term):FuncTerm[W,U]"></a>
+    </li><li name="provingGround.HoTT.FuncObj#subs" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingGround.HoTT.Term,y:provingGround.HoTT.Term):provingGround.HoTT.FuncObj[W,U]"></a>
+      <a id="subs(Term,Term):FuncObj[W,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>]</span>
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingGround.HoTT.FuncObj">FuncObj</a>[<span class="extype" name="provingGround.HoTT.FuncObj.W">W</span>, <span class="extype" name="provingGround.HoTT.FuncObj.U">U</span>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a> → <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.FuncObj">FuncObj</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingGround.HoTT.FuncTerm">FuncTerm</a> → <a href="HoTT$$Subs.html" class="extype" name="provingGround.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="provingGround.HoTT.Term#typ" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="typ:provingGround.HoTT.Typ[provingGround.HoTT.Term]"></a>
       <a id="typ:Typ[Term]"></a>

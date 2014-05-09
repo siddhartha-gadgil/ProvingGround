@@ -35,13 +35,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">DepFuncPtn</span><span class="params">(<span name="tail">tail: <a href="HoTT$$CnstrPtnPiece.html" class="extype" name="provingGround.HoTT.CnstrPtnPiece">CnstrPtnPiece</a></span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$CnstrPtn.html" class="extype" name="provingGround.HoTT.CnstrPtn">CnstrPtn</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">DepFuncPtn</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.HoTT.DepFuncPtn.V">V</span>]</span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>, <span name="headlevel">headlevel: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$29">evidence$29: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.DepFuncPtn.V">V</span>]</span>)</span><span class="result"> extends <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +59,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingGround.HoTT.DepFuncPtn"><span>DepFuncPtn</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingGround.HoTT.DepFuncPtn"><span>DepFuncPtn</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingGround.HoTT.PolyPtn"><span>PolyPtn</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -80,22 +80,38 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingGround.HoTT.DepFuncPtn#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(tail:provingGround.HoTT.CnstrPtnPiece,headfibre:provingGround.HoTT.Term=&gt;provingGround.HoTT.CnstrPtn):provingGround.HoTT.DepFuncPtn"></a>
-      <a id="&lt;init&gt;:DepFuncPtn"></a>
+      <a id="&lt;init&gt;(tail:provingGround.HoTT.TypPtn[V],headfibre:provingGround.HoTT.Term=&gt;provingGround.HoTT.PolyPtn,headlevel:Int)(implicitevidence$29:reflect.runtime.universe.TypeTag[V]):provingGround.HoTT.DepFuncPtn[V]"></a>
+      <a id="&lt;init&gt;:DepFuncPtn[V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DepFuncPtn</span><span class="params">(<span name="tail">tail: <a href="HoTT$$CnstrPtnPiece.html" class="extype" name="provingGround.HoTT.CnstrPtnPiece">CnstrPtnPiece</a></span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$CnstrPtn.html" class="extype" name="provingGround.HoTT.CnstrPtn">CnstrPtn</a></span>)</span>
+        <span class="name">DepFuncPtn</span><span class="params">(<span name="tail">tail: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.HoTT.DepFuncPtn.V">V</span>]</span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>, <span name="headlevel">headlevel: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingGround.HoTT.DepFuncPtn.V">V</span>]</span>)</span>
       </span>
       </h4>
       
     </li></ol>
             </div>
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingGround.HoTT.DepFuncPtn.PtnType" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PtnType=provingGround.HoTT.Term"></a>
+      <a id="PtnType:PtnType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">PtnType</span><span class="result"> = <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.DepFuncPtn">DepFuncPtn</a> → <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></dd></dl></div>
+    </li></ol>
+            </div>
 
         
 
@@ -140,6 +156,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingGround.HoTT.PolyPtn#--&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="--&gt;:[V&lt;:provingGround.HoTT.Term](that:provingGround.HoTT.TypPtn[V]):provingGround.HoTT.FuncPtn[V]"></a>
+      <a id="--&gt;:[V&lt;:Term](TypPtn[V]):FuncPtn[V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$minus$greater$colon" class="name">--&gt;:</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.HoTT.PolyPtn.--&gt;:.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncPtn.html" class="extype" name="provingGround.HoTT.FuncPtn">FuncPtn</a>[<span class="extype" name="provingGround.HoTT.PolyPtn.--&gt;:.V">V</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:AnyRef):Boolean"></a>
       <a id="==(AnyRef):Boolean"></a>
@@ -166,19 +195,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingGround.HoTT.DepFuncPtn#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(W:provingGround.HoTT.LogicalTyp):provingGround.HoTT.PiTyp[provingGround.HoTT.Term,provingGround.HoTT.LogicalTyp,provingGround.HoTT.Term]"></a>
-      <a id="apply(LogicalTyp):PiTyp[Term,LogicalTyp,Term]"></a>
+    </li><li name="provingGround.HoTT.DepFuncPtn#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(W:provingGround.HoTT.Typ[provingGround.HoTT.Term]):provingGround.HoTT.PiTyp[provingGround.HoTT.Term,provingGround.HoTT.Term]"></a>
+      <a id="apply(Typ[Term]):PiTyp[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="W">W: <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a></span>)</span><span class="result">: <a href="HoTT$$PiTyp.html" class="extype" name="provingGround.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$LogicalTyp.html" class="extype" name="provingGround.HoTT.LogicalTyp">LogicalTyp</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
+        <span class="name">apply</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingGround.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$PiTyp.html" class="extype" name="provingGround.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>]</span>
       </span>
       </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.DepFuncPtn">DepFuncPtn</a> → <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -257,15 +286,28 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingGround.HoTT.DepFuncPtn#headfibre" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="headfibre:provingGround.HoTT.Term=&gt;provingGround.HoTT.CnstrPtn"></a>
-      <a id="headfibre:(Term)⇒CnstrPtn"></a>
+      <a id="headfibre:provingGround.HoTT.Term=&gt;provingGround.HoTT.PolyPtn"></a>
+      <a id="headfibre:(Term)⇒PolyPtn"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">headfibre</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$CnstrPtn.html" class="extype" name="provingGround.HoTT.CnstrPtn">CnstrPtn</a></span>
+        <span class="name">headfibre</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingGround.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingGround.HoTT.DepFuncPtn#headlevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="headlevel:Int"></a>
+      <a id="headlevel:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">headlevel</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -335,18 +377,31 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingGround.HoTT.DepFuncPtn#tail" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="tail:provingGround.HoTT.CnstrPtnPiece"></a>
-      <a id="tail:CnstrPtnPiece"></a>
+      <a id="tail:provingGround.HoTT.TypPtn[V]"></a>
+      <a id="tail:TypPtn[V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">tail</span><span class="result">: <a href="HoTT$$CnstrPtnPiece.html" class="extype" name="provingGround.HoTT.CnstrPtnPiece">CnstrPtnPiece</a></span>
+        <span class="name">tail</span><span class="result">: <a href="HoTT$$TypPtn.html" class="extype" name="provingGround.HoTT.TypPtn">TypPtn</a>[<span class="extype" name="provingGround.HoTT.DepFuncPtn.V">V</span>]</span>
       </span>
       </h4>
       
+    </li><li name="provingGround.HoTT.DepFuncPtn#univLevel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="univLevel:Int"></a>
+      <a id="univLevel:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">univLevel</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingGround.HoTT.DepFuncPtn">DepFuncPtn</a> → <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -421,6 +476,8 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingGround.HoTT.PolyPtn">
+              <h3>Inherited from <a href="HoTT$$PolyPtn.html" class="extype" name="provingGround.HoTT.PolyPtn">PolyPtn</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
