@@ -1,5 +1,7 @@
 import 'dart:html';
+//import 'package:angular/angular_dynamic.dart';
 import 'package:angular/angular.dart';
+import 'package:angular/application_factory.dart';
 import 'dart:convert';
 
 // Temporary, please follow https://github.com/angular/angular.dart/issues/476
@@ -39,7 +41,7 @@ String uniword (List<int> lets) => lets.map(unilet).fold("", (a, b) => a + b);
 
 EventSource dstbnsrc;
 
-@NgController (
+@Controller (
     selector: "[ACdistribution]",
     publishAs : "dstbn")
 class ACDstbnController{
@@ -72,7 +74,7 @@ class MyAppModule extends Module {
 
 void main() {
   
-  ngBootstrap(module : new MyAppModule());
+  ngDynamicApp().addModule(new MyAppModule()).run();
   
   querySelector("#sample_text_id")
       ..text = "Click me!"

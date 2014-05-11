@@ -1,7 +1,9 @@
 name: ProvingGround
 description: A sample web application
 dependencies:
-  angular: any
+  angular: 0.10.0
   browser: any
   js: any
   shadow_dom: any
+tranformer:
+- angular
