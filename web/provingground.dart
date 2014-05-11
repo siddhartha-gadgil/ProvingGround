@@ -74,7 +74,7 @@ class MyAppModule extends Module {
 
 void main() {
   
-  ngDynamicApp().addModule(new MyAppModule()).run();
+  applicationFactory().addModule(new MyAppModule()).run();
   
   querySelector("#sample_text_id")
       ..text = "Click me!"
