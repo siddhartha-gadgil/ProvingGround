@@ -8,6 +8,7 @@ object Context{
   trait DefnEquality{
     val lhs : Term
     val rhs: Term
+    val freevars: List[Term]
     
     def map(f: Term => Term): DefnEquality
     
@@ -31,16 +32,16 @@ object Context{
     }
   }
   
-  case class Defn[+A](lhsname : A, typ : Typ[Term], rhs: Term) extends DefnEquality{    
+  case class Defn[+A](lhsname : A, typ : Typ[Term], rhs: Term, freevars: List[Term]) extends DefnEquality{    
     val lhs = typ.symbObj(lhsname)
     
-    def map(f : Term => Term, F : Typ[Term]=> Typ[Term]) = Defn(lhsname, F(typ), f(rhs))
+    def map(f : Term => Term, F : Typ[Term]=> Typ[Term]) = Defn(lhsname, F(typ), f(rhs), freevars map (f))
     
     def map(f: Term => Term) = Defn(lhsname, f(rhs))
   }
   
   object Defn{
-    def infer[A](name: A, rhs : Term) : Defn[A] = Defn(name, rhs.typ, rhs)
+    def infer[A](name: A, rhs : Term) : Defn[A] = Defn(name, rhs.typ, rhs, List())
     
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
@@ -53,6 +54,8 @@ object Context{
     def foldin : CtxType => V
     
     def foldinSym[B](name: B) = foldin(typ.symbObj(name))
+    
+    def symblist[A](varnames: List[A]): List[Term]
     
     def constants : Seq[Term]
     
@@ -83,6 +86,8 @@ object Context{
       
     	def foldin : CtxType => U = (t) => t
     	
+    	def symblist[A](varnames: List[A]) = List()
+    	
     	def constants : Seq[Term] = List.empty
     
     	def defns : Seq[Defn[U]] = List.empty
@@ -105,6 +110,8 @@ object Context{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
     def foldin : CtxType => V = (f) => tail.foldin(f(variable))
+    
+    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
     
     def constants = variable +: tail.constants
     
@@ -136,6 +143,8 @@ object Context{
     
     def foldin : CtxType => V = tail.foldin
     
+    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    
     def constants = const +: tail.constants
     
     def defns : Seq[Defn[A]] = tail.defns
@@ -153,6 +162,8 @@ object Context{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
     def foldin : CtxType => V = (f) => tail.foldin(f(dfn.lhs))
+    
+    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -179,6 +190,8 @@ object Context{
     
     def foldin : CtxType => V = tail.foldin
     
+    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = dfn +: tail.defns
@@ -197,6 +210,8 @@ object Context{
     
     def foldin : CtxType => V = tail.foldin
     
+    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    
     def constants : Seq[Term] = tail.constants
     
     def defns : Seq[Defn[A]] = tail.defns
@@ -214,6 +229,8 @@ object Context{
     type CtxType = FuncTerm[Term, tail.CtxType]
     
     def foldin : CtxType => V = (f) => tail.foldin(f(eqlty.lhs))
+    
+    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -269,7 +286,7 @@ object Context{
       case FuncPtn(tail, head) => cnstrRecContext(f, head, varnames.tail, W, X)( recContextChange(f, tail, varnames.head, W, X)(ctx))
       case CnstFncPtn(tail : Typ[_], head) => cnstrRecContext(f, head, varnames.tail, W, X)( ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
-        val x = tail(X).symbObj(varnames.head)
+        val x  = tail(X).symbObj(varnames.head).asInstanceOf[Term]
         cnstrRecContext(f, headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
@@ -288,7 +305,7 @@ object Context{
         cnstrIndContext(f, head, varnames.tail, W, Xs)((t: Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
 //            val x = tail(Xs(t)).symbObj(varnames.head)
-            cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t: Term) =>  ctx(t) lmbda(tail(Xs(t)).symbObj(varnames.head)))
+            cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t: Term) =>  ctx(t) lmbda((tail(Xs(t)).symbObj(varnames.head)).asInstanceOf[Term]))
       case CnstDepFuncPtn(tail, headfibre , _) =>
 //        	val x = tail.symbObj(varnames.head)
         	cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t : Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
@@ -305,7 +322,7 @@ object Context{
       case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W, X)( simpleContextChange(tail, varnames.head, W, X)(ctx))
       case CnstFncPtn(tail : Typ[_], head) => cnstrSimpleContext(head, varnames.tail, W, X)( ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
-        val x = tail(X).symbObj(varnames.head)
+        val x = tail(X).symbObj(varnames.head).asInstanceOf[Term]
         cnstrSimpleContext(headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
@@ -343,14 +360,13 @@ object Context{
     recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))}
   
   // Should avoid type coercion by having proper types for constructors and polypatterns.
-  def recIdentity(f : => (FuncTerm[Term, Term]), 
+  def recIdentities(f : => (FuncTerm[Term, Term]), 
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       X : Typ[Term]) = {
 
     val recfn = recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))
     
- //   def eqn(k : Int) = {
     def eqn(cnstr : Constructor, varnames : List[Any]) = {	
     	val ptn = cnstr.pattern
     	val argctx = cnstrSimpleContext(ptn, varnames, W, X)()
@@ -359,10 +375,14 @@ object Context{
     	val lhs = recfn(arg)
     	val rhsctx = cnstrRecContext(f, ptn, varnames, W, X)()
     	val rhs = rhsctx.foldinSym(RecInduced(cons, f))
-    	DefnEqual(lhs, rhs)
+    	DefnEqual(lhs, rhs, argctx.symblist(varnames))
     }
+    
+    val eqntail = for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames)
 	
-    DefnEqual(f, recfn) :: (for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames))
+    val allvars = eqntail flatMap (_.freevars)
+    
+    DefnEqual(f, recfn, allvars) :: eqntail
   }
   
   /*

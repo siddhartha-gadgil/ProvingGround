@@ -447,7 +447,7 @@ object HoTT{
     
 	
     /** A function given by a scala function */
-	case class FuncDefn[W<: Term : TypeTag, U<: Term : TypeTag](func: W => U, dom: Typ[W], codom: Typ[U]) extends FuncObj[W, U]{
+	case class FuncDefn[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](func: W => U, dom: Typ[W], codom: Typ[U]) extends FuncObj[W, U]{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -458,7 +458,7 @@ object HoTT{
 	  
 	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
 	  
-	  def subs(x: Term, y: Term) = this
+	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom, codom.subs(x, y))
 	}
 	
 	// We need a hybrid of the FuncDefm and FuncSymb, with a function determined by a partial function with formal application outside
@@ -663,7 +663,7 @@ object HoTT{
 	}
 	
 	/** A dependent function given by a scala funcion */
-	case class DepFuncDefn[W<: Term : TypeTag, U<: Term : TypeTag](func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFuncObj[W, U] with FormalFuncTerm[W, U]{
+	case class DepFuncDefn[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFuncObj[W, U]{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -673,11 +673,13 @@ object HoTT{
 	  def act(arg: W) = if (arg.typ == dom) Some(func(arg)) else None
 	  
 	  def action(arg: fibers.dom.Obj): U = func(arg)
+	  
+	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
 	}
 	
 	/** Companion to dependent functions */
 	object DepFuncObj{
-	  def apply[W<: Term : TypeTag,  U<: Term : TypeTag](func: Term => U, dom: Typ[W], univ: Univ with Typ[Typ[U]]): DepFuncObj[W, U] = {
+	  def apply[W<: Term : TypeTag,  U<: Term with Subs[U] : TypeTag](func: Term => U, dom: Typ[W], univ: Univ with Typ[Typ[U]]): DepFuncObj[W, U] = {
 	    def section(arg: Term) = func(arg).typ.asInstanceOf[Typ[U]]
 	    val fibers: TypFamily[W, U] = typFamilyDefn[W, U](dom, univ, section)
 	    DepFuncDefn(func, dom, fibers)
@@ -760,12 +762,10 @@ object HoTT{
 	  val univLevel = head.univLevel
 	}
 	
-	case class SimpleFuncPtn[V <: Term : TypeTag](tail : Typ[Term], head : TypPtn[V]) extends TypPtn[FuncTerm[Term, V]]{
+	case class SimpleFuncPtn[V <: Term with Subs[V]: TypeTag](tail : Typ[Term], head : TypPtn[V]) extends TypPtn[FuncTerm[Term, V]]{
 	  def apply(W: Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
 	  val univLevel = max(head.univLevel, univlevel(tail.typ))
-	  
-//	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def induced(W : Typ[Term], X: Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
@@ -810,7 +810,7 @@ object HoTT{
 	 * Issues: Replace codomain Universe(0) by something reasonable - done.
 	 * Correct the induced function
 	 */
-	case class SimpleDepFuncPtn[V <: Term : TypeTag](tail: Typ[Term], headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0) extends TypPtn[FuncTerm[Term,V]]{
+	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : Typ[Term]) = {
 	    val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, head.PtnType](fiber)
@@ -824,14 +824,14 @@ object HoTT{
 	    (g : PtnType) => 
 	      val func =((t : Term) => head.induced(W, X)(f) (g(t)))
 	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(X)),  (t : Term) => headfibre(t)(X))
-	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
+	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
 	  def inducedDep(W : Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
 	      val func =((t : Term) => head.induced(W, Xs(t))(f) (g(t)))
 	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(t)))
-	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
+	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
 	  val univLevel = max(univlevel(tail.typ), headlevel)
@@ -841,19 +841,12 @@ object HoTT{
 //	  require(cons.typ == pattern(typ))
 //	}
 	
-	trait Constructor{
-	  val pattern : PolyPtn
-	  
-	  val typ: Typ[Term]
-	  
+	abstract class Constructor(val pattern : PolyPtn, val typ: Typ[Term]){
 	  val cons: pattern.PtnType
 	}
 	
 	object Constructor{
-	  def apply(ptn : PolyPtn, tp: Typ[Term])(f : ptn.PtnType) = new Constructor {
-	    val pattern = ptn
-	    
-	    val typ = tp
+	  def apply(pattern : PolyPtn, typ: Typ[Term])(f : pattern.PtnType) = new Constructor(pattern, typ) {
 	    
 	    val cons = f.asInstanceOf[pattern.PtnType]
 	  }
