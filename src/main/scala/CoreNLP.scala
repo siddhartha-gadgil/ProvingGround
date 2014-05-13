@@ -12,9 +12,9 @@ import edu.stanford.nlp.ling._
 import edu.stanford.nlp.pipeline._
 import edu.stanford.nlp.trees._
 import edu.stanford.nlp.util._
-import edu.stanford.nlp.ling.CoreAnnotations._
-import edu.stanford.nlp.trees.semgraph._
-import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations._
+import edu.stanford.nlp.ling.CoreAnnotations._ 
+import edu.stanford.nlp.semgraph._
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
 
 object CoreNLP{
 
@@ -39,12 +39,11 @@ object CoreNLP{
 			}
 
 		def sentences(document:Annotation) : List[CoreMap] = {
-			(document.get[java.util.List[CoreMap],CoreAnnotations.SentencesAnnotation](
-			    classOf[CoreAnnotations.SentencesAnnotation])).asScala.toList
+			(document.get(classOf[SentencesAnnotation])).asScala.toList
 			}
 
 		def depRelIterable(sentence: CoreMap) = {
-      val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](
+      val dependencies = sentence.get(
           classOf[CollapsedCCProcessedDependenciesAnnotation]);
 			val dependencyIterable = dependencies.edgeIterable().asScala
 			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
@@ -58,14 +57,14 @@ object CoreNLP{
 
 
 		def coreLabelList(sentence: CoreMap) = {
-			(sentence.get[java.util.List[CoreLabel], TokensAnnotation](classOf[TokensAnnotation])).asScala.toList
+			(sentence.get(classOf[TokensAnnotation])).asScala.toList
 			}
 
-		def word(token: CoreLabel) = token.get[String, TextAnnotation](classOf[TextAnnotation])
+		def word(token: CoreLabel) = token.get(classOf[TextAnnotation])
 
-		def pos(token: CoreLabel) = token.get[String, PartOfSpeechAnnotation](classOf[PartOfSpeechAnnotation])
+		def pos(token: CoreLabel) = token.get(classOf[PartOfSpeechAnnotation])
 
-		def ne(token: CoreLabel) = token.get[String, NamedEntityTagAnnotation](classOf[NamedEntityTagAnnotation])
+		def namedentity(token: CoreLabel) = token.get(classOf[NamedEntityTagAnnotation])
 
 		}
 
@@ -89,7 +88,7 @@ object CoreNLP{
     
     // these are all the sentences in this document
     // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
-    val sentencesJava = (document.get[java.util.List[CoreMap],CoreAnnotations.SentencesAnnotation](classOf[CoreAnnotations.SentencesAnnotation]))
+    val sentencesJava = (document.get(classOf[CoreAnnotations.SentencesAnnotation]))
     import scala.collection.JavaConverters._
     val sentences: List[CoreMap] = sentencesJava.asScala.toList
     
@@ -109,7 +108,7 @@ object CoreNLP{
 //      Tree tree = sentence.get(TreeAnnotation.class);
 
       // this is the Stanford dependency graph of the current sentence
-      val dependencies = sentence.get[SemanticGraph, CollapsedCCProcessedDependenciesAnnotation](classOf[CollapsedCCProcessedDependenciesAnnotation]);
+      val dependencies = sentence.get(classOf[CollapsedCCProcessedDependenciesAnnotation]);
 			val dependencyIterable = dependencies.edgeIterable().asScala
 			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))  
     }
