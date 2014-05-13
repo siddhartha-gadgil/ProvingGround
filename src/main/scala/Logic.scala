@@ -17,7 +17,7 @@ private def stringFn(name:String, params: List[String])={
   (head/:terms)(_+_)  + ")"
   }
 
-/** Logical expressions */
+/** Logical expressions */ 
 trait Expression{ 
   /** Free variables in an expression */ 
   def freeVars: Set[Var]

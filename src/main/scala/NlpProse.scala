@@ -12,7 +12,7 @@ case class Token(word:String, idx: Int){
   def +(that: Token) = Token(word+" "+that.word, idx)
   
   override def toString = "(" + word + "," + idx.toString+")" 
-  }
+  } 
  
 /** Stanford dependency relation */ 
 case class DepRel(gov: Token, dep: Token, deptype: String){

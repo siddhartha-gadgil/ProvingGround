@@ -1,4 +1,4 @@
-package provingGround
+package provingGround 
 
 /** Effective structures, collections and Utility functions for these */
 object Structures{

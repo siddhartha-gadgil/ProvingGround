@@ -15,7 +15,7 @@ import edu.stanford.nlp.util._
 import edu.stanford.nlp.ling.CoreAnnotations._ 
 import edu.stanford.nlp.semgraph._
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
-
+ 
 object CoreNLP{
 
 		def gov(e: SemanticGraphEdge) = Token(e.getGovernor().word, e.getGovernor().index)

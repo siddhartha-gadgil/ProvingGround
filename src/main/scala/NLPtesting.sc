@@ -13,19 +13,19 @@ object NLPtesting {
                                                   //| Adding annotator lemma
                                                   //| Adding annotator ner
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.all.3class.dists
-                                                  //| im.crf.ser.gz ... done [3.2 sec].
+                                                  //| im.crf.ser.gz ... done [3.0 sec].
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.muc.7class.dists
-                                                  //| im.crf.ser.gz ... done [2.4 sec].
+                                                  //| im.crf.ser.gz ... done [2.0 sec].
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.conll.4class.dis
                                                   //| tsim.crf.ser.gz ... done [1.7 sec].
                                                   //| Reading TokensRegex rules from edu/stanford/nlp/models/sutime/defs.sutime.tx
                                                   //| t
                                                   //| Reading TokensRegex rules from edu/stanford/nlp/models/sutime/english.sutime
                                                   //| .txt
-                                                  //| May 13, 2014 12:31:41 PM edu.stanford.nlp.ling.tokensregex.CoreMapExpression
-                                                  //| Extractor appendRules
+                                                  //| May 13, 2014 2:14:20 PM edu.stanford.nlp.ling.tokensregex.CoreMapExpressionE
+                                                  //| xtractor appendRules
                                                   //| INFO: Ignoring inactive rule: null
-                                                  //| May 13, 2014 12:31:41 PM edu.sta
+                                                  //| May 13, 2014 2:14:20 PM edu.stanf
                                                   //| Output exceeds cutoff limit.
                                                   
   val text ="While Lagrange's theorem states that for any finite group G the order (number of elements) of every subgroup of G divides the order of G, the Sylow theorems state that for any prime factor p of the order of a finite group G, there exists a Sylow p-subgroup of G"
@@ -86,7 +86,4 @@ object NLPtesting {
                                                   //| ), det((G,47),(a,44)), a
                                                   //| Output exceeds cutoff limit.
   trees.head.tree.length                          //> res0: Int = 41
-
-//  CoreNLPTest.tree
-
 }

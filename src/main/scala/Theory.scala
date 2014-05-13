@@ -6,7 +6,7 @@ import provingGround.Aware._
 import scala.language.implicitConversions
 
 /**
- * The Meta-logical layer;
+ * The Meta-logical layer; 
  *  Contains: core of a mathematical theory
  *
  *  Separate objects as:

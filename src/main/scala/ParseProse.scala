@@ -11,7 +11,7 @@ import provingGround.Theory.Document._
 /** Translates Stanford Dependency tree to Logical expression */                               
 object ParseProse{
 
-/** Factory for variable symbols */  
+/** Factory for variable symbols */   
 trait Variables{
     
     private var usedVars : Set[Var] = Set()
