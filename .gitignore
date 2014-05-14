@@ -34,6 +34,8 @@ lib/
 
 *.iml
 
+*.orig
+
 index/
 
 activator*

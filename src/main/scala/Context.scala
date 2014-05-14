@@ -69,6 +69,8 @@ object Context{
     
     def lmbda(x : Term) = LambdaMixin(x, this)
     
+    def deplmbda(x : Term) = LambdaMixin(x, this, true)
+    
     def cnst(x: Term) = KappaMixin(x, this)
     
     def dfn(x: Term, y: Term, local: Boolean = true) = DefnMixin(Defn(x, y), this)
@@ -255,7 +257,8 @@ object Context{
    * Change in context for a TypPatn (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
-  def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+  def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), 
+      ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
     val x = ptn(X).symbObj(varname)
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
@@ -268,7 +271,8 @@ object Context{
     /*
    * Change in context (as function on W) for Induction - check
    */
-  def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U], varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[A, Term, V]) => (Term => Context[A, Term, V]) = {
+  def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U],
+      varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[A, Term, V]) => (Term => Context[A, Term, V]) = {
     val xs =  (t : Term) => ptn(Xs(t)).symbObj(varname)
     ctxs => (t : Term) => ctxs(t) lmbda(xs(t)) lmbda(ptn.inducedDep(W, Xs)(f)(xs(t)))
   }
@@ -333,6 +337,8 @@ object Context{
   
   case class RecInduced(cons : Term, func: Term => Term)
   
+  case class IndInduced(cons: Term, func: Term => Term)
+  
   def addConstructor[V <: Term](f : => (FuncTerm[Term, Term]), 
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
@@ -342,11 +348,23 @@ object Context{
       		ctx lmbda (name)
       }
       
+  def addIndConstructor[V <: Term](f : => (FuncTerm[Term, Term]), 
+      cnstr : Constructor, varnames : List[Any], 
+      W : Typ[Term], 
+      Xs : Term => Typ[Term]) : (Context[Any, Term, V]) => (Context[Any, Term, V]) =  ctx => {
+        val cnstrctxs = cnstrIndContext(f, cnstr.pattern, varnames, W, Xs)()
+        val silly = Unit.symbObj("silly")
+        val term : Term = cnstrSimpleContext(cnstr.pattern, varnames, W, Xs(silly))().foldinSym(varnames)
+        val name = cnstrctxs(term).foldinSym(IndInduced(cnstr.cons, f))
+      		 ctx lmbda (name)
+      }
+      
   def recContext(f : => (FuncTerm[Term, Term]), 
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       X : Typ[Term]) ={
-    val add : (Context[Any, Term, FuncTerm[Term, Term]], (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
+    val add : (Context[Any, Term, FuncTerm[Term, Term]], 
+        (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addConstructor(f, cnvr._1, cnvr._2, W, X)(ctx)
       val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(FuncTyp(W, X))
     (empty /: cnstrvars)(add)
