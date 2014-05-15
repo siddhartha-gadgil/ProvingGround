@@ -1,0 +1,57 @@
+---
+
+title : Dynamical (aware) mathematics and Prose
+
+---
+
+## Static mathematics
+
+* Context
+* Terms and Types
+* Definitions
+
+__Note__: Types include _representations_, such as implies(P, Q) which maps to P->Q.
+
+* Goals: Not part of knowledge, but convenient to have here as they become objects for the dynamics.
+* Metadata: Used in determining the dynamics - can be viewed either as objects or as part of the function giving dynamics.
+
+## Dynamical hierarchy:
+* Objects with generation/combination rules: includes both knowledge and goals.
+* Attention: Picking objects (and rules) to combine and generate.
+* Relations: Picking objects together.
+* Representations: Auxillaries for deciding attention and relations. 
+* Judgement: Evolution of attention and relations, in particular for newly generated objects (beyond simple rules for attention).
+* Reflection: Evolution of judgement: with a lot of data.
+
+## Dynamic (aware) additions (partly obsolete):
+
+* *Dynamics:* Forward and backward reasoning, with plenty of branching and spawning.
+* Goals: relevant for backward reasoning and mixed reasoning 
+    - value judgements based on goals.
+    - seeking a weaker statement.
+* Attention
+* Judgements of value (as numbers and functions, including relative ones)
+* Relations and Representations:
+    - Named theorems, concepts, techniques etc.
+    - Relation between named concepts (e.g., Sylow theorems in algebra).
+    - Equality/similarity of concepts, possibly up to transformation (if precide, this is statis content).
+    - Judgements, e.g., P is useful for Q.(these map to relative judgements of value)
+    - Implicit ones, as with word2vec.
+* Main relations: useful for; part of; synonym/variant of.
+    - Useful has many variants - partial result, used in proof of etc., whcih can be at a subcode level.
+
+* Rough/ambiguous/conditional versions of static contents: includes meta-terms such as maximal and context dependent ones such as unique (up to what? - implicits).
+
+### Important relations:
+* useful for: includes partial result/special case.
+* proximity: e.g. commons
+* part of a subject
+* converse to a theorem
+* synonym, or equal up to exchanging parameters.
+
+## Prose
+
+* Should translate to static and dynamic content and changes to this.
+* There may be ambiguity.
+* We interpret "relative to" in functional terms, with congruence mod n, for example, being a type which is a function of n.
+
