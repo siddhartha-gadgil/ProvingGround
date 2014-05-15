@@ -4,24 +4,87 @@ title : Dynamical (aware) mathematics and Prose
 
 ---
 
-## Static mathematics
+## Basic Layers: 
+* Knowledge (Mathematical state)
+* Dynamics
+* Learning: based on backprop.
+* Communication.
+* Ambiguity
+
+### (Meta)data : Associated to each layer.
+
+
+## Mathematical state (knowledge)
 
 * Context
-* Terms and Types
+* Terms and Types : terms can be viewed as assertions with proof.
 * Definitions
+* Goals/Assertions.
+* Notation: Like definitions, but with ambiguity: can be global definitions with stochastic export.
+* Modular structure (including for contexts).
 
 __Note__: Types include _representations_, such as implies(P, Q) which maps to P->Q.
 
-* Goals: Not part of knowledge, but convenient to have here as they become objects for the dynamics.
-* Metadata: Used in determining the dynamics - can be viewed either as objects or as part of the function giving dynamics.
+## Dynamics:
+* Actions on and combinations of objects.
+* Backward reasoning from goals
+* Spawning islands based on goals, ambiguity etc.
+* Actions (such as analogies) on modules.
 
-## Dynamical hierarchy:
+## Parameters for dynamics:
+* Weight of objects.
+* Relations between objects
+* Relations between objects and goals (use).
+* More complex relations such as dictionaries.
+
+## Indirect parameters for dynamics:
+* Named clusters (concepts, theorems etc.).
+* Named relations
+* Representations (a la word2vec).
+
+## Communication channels:
+* Affect both knowledge and dynamics (via its metadata).
+* Has its own metadata, especially for translating prose.
+
+## Ambiguities:
+
+#### Types:
+* Overloding - same name for different things.
+* Terms in a context, but context variables unknown (or ambiguous - deal with recursively).
+* Need a lift/choice.
+* Not clear if an assumption applies.
+
+#### Resolutions:
+* Pick statistically (similar rules as picking objects for generation).
+* Split - spawn offspring with different choices and evolve, based on global fitness of the modules.
+* Propogate the ambiguity - sometimes eventually resolve (independence of ...).
+
+## Special heuristics needed (later phase):
+* Equality
+* Unification
+* Independence of choices.
+* Analogies.
+* Experiments.
+* Reverse Engineering
+* External solvers and tools
+
+
+
+
+## Older stuff below:
+
+
+## Dynamical hierarchy: No clear separation of later levels.
 * Objects with generation/combination rules: includes both knowledge and goals.
 * Attention: Picking objects (and rules) to combine and generate.
 * Relations: Picking objects together.
+* Use: Special instance of relation when one is a goal.
+* __Analogies/Dictionaries/Categories__: More complicated rules for generating collections of objects.
 * Representations: Auxillaries for deciding attention and relations. 
+* Meta objects: such as _group theory_, which have no mathematical meaning but are used in specifying relations and representations.
 * Judgement: Evolution of attention and relations, in particular for newly generated objects (beyond simple rules for attention).
 * Reflection: Evolution of judgement: with a lot of data.
+
 
 ## Dynamic (aware) additions (partly obsolete):
 
@@ -34,7 +97,7 @@ __Note__: Types include _representations_, such as implies(P, Q) which maps to P
 * Relations and Representations:
     - Named theorems, concepts, techniques etc.
     - Relation between named concepts (e.g., Sylow theorems in algebra).
-    - Equality/similarity of concepts, possibly up to transformation (if precide, this is statis content).
+    - Equality/similarity of concepts, possibly up to transformation (if precise, this is static content).
     - Judgements, e.g., P is useful for Q.(these map to relative judgements of value)
     - Implicit ones, as with word2vec.
 * Main relations: useful for; part of; synonym/variant of.
@@ -45,8 +108,8 @@ __Note__: Types include _representations_, such as implies(P, Q) which maps to P
 ### Important relations:
 * useful for: includes partial result/special case.
 * proximity: e.g. commons
-* part of a subject
-* converse to a theorem
+* part of a subject: relation to a group name.
+* converse to a theorem etc.
 * synonym, or equal up to exchanging parameters.
 
 ## Prose
@@ -54,4 +117,5 @@ __Note__: Types include _representations_, such as implies(P, Q) which maps to P
 * Should translate to static and dynamic content and changes to this.
 * There may be ambiguity.
 * We interpret "relative to" in functional terms, with congruence mod n, for example, being a type which is a function of n.
+* Also has notational information, relevant to the translation process, especially synonyms.
 
