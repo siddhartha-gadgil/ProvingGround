@@ -259,22 +259,22 @@ object Context{
    */
   def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
-    val x = ptn(X).symbObj(varname)
+    val x = ptn(W).symbObj(varname)
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
-  def simpleContextChange[A, U <: Term, V<: Term](ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
-    val x = ptn(X).symbObj(varname)
+  def simpleContextChange[A, U <: Term, V<: Term](ptn : TypPtn[U], varname : A, W : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+    val x = ptn(W).symbObj(varname)
     ctx => ctx lmbda(x)
   }
   
     /*
-   * Change in context (as function on W) for Induction - check
+   * Change in context  for Induction for a TypPattern - check
    */
   def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U],
-      varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : (Term => Context[A, Term, V]) => (Term => Context[A, Term, V]) = {
-    val xs =  (t : Term) => ptn(Xs(t)).symbObj(varname)
-    ctxs => (t : Term) => ctxs(t) lmbda(xs(t)) lmbda(ptn.inducedDep(W, Xs)(f)(xs(t)))
+      varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+    val x =  ptn(W).symbObj(varname)
+    ctx =>  ctx lmbda(x) lmbda(ptn.inducedDep(W, Xs)(f)(x))
   }
   
   /*
@@ -301,36 +301,35 @@ object Context{
   @tailrec def cnstrIndContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
       W : Typ[Term], 
-      Xs :  Term => Typ[Term])(ctx: Term  => Context[A, Term, V] = (t: Term) => Context.empty[Term](Xs(t))) : Term => Context[A, Term, V] = {
+      Xs :  Term => Typ[Term])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => indContextChange(f, tp, varnames.head, W, Xs)(ctx)
       case FuncPtn(tail, head) => cnstrIndContext(f, head, varnames.tail, W, Xs)( indContextChange(f, tail, varnames.head, W, Xs)(ctx))
       case CnstFncPtn(tail : Typ[_], head) => 
-        cnstrIndContext(f, head, varnames.tail, W, Xs)((t: Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
+        cnstrIndContext(f, head, varnames.tail, W, Xs)(ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
 //            val x = tail(Xs(t)).symbObj(varnames.head)
-            cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t: Term) =>  ctx(t) lmbda((tail(Xs(t)).symbObj(varnames.head)).asInstanceOf[Term]))
+            cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)(ctx lmbda((tail(W).symbObj(varnames.head)).asInstanceOf[Term]))
       case CnstDepFuncPtn(tail, headfibre , _) =>
 //        	val x = tail.symbObj(varnames.head)
-        	cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)((t : Term) => ctx(t) lmbda(tail.symbObj(varnames.head)))
+        	cnstrIndContext(f, headfibre(x), varnames.tail, W, Xs)(ctx lmbda(tail.symbObj(varnames.head)))
     }
   }
   
   
   @tailrec def cnstrSimpleContext[A, V<: Term]( 
       ptn : PolyPtn, varnames : List[A], 
-      W : Typ[Term], 
-      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](X)) : Context[A, Term, V] = {
+      W : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](W)) : Context[A, Term, V] = {
     ptn match {
-      case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W, X)(ctx)
-      case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W, X)( simpleContextChange(tail, varnames.head, W, X)(ctx))
-      case CnstFncPtn(tail : Typ[_], head) => cnstrSimpleContext(head, varnames.tail, W, X)( ctx lmbda(tail.symbObj(varnames.head)))
+      case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W)(ctx)
+      case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W)( simpleContextChange(tail, varnames.head, W)(ctx))
+      case CnstFncPtn(tail : Typ[_], head) => cnstrSimpleContext(head, varnames.tail, W)( ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
-        val x = tail(X).symbObj(varnames.head).asInstanceOf[Term]
-        cnstrSimpleContext(headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
+        val x = tail(W).symbObj(varnames.head).asInstanceOf[Term]
+        cnstrSimpleContext(headfibre(x), varnames.tail, W)( ctx lmbda(x))
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
-        cnstrSimpleContext(headfibre(x), varnames.tail, W, X)( ctx lmbda(x))
+        cnstrSimpleContext(headfibre(x), varnames.tail, W)( ctx lmbda(x))
     }
   }
   
@@ -352,10 +351,11 @@ object Context{
       cnstr : Constructor, varnames : List[Any], 
       W : Typ[Term], 
       Xs : Term => Typ[Term]) : (Context[Any, Term, V]) => (Context[Any, Term, V]) =  ctx => {
-        val cnstrctxs = cnstrIndContext(f, cnstr.pattern, varnames, W, Xs)()
-        val silly = Unit.symbObj("silly")
-        val term : Term = cnstrSimpleContext(cnstr.pattern, varnames, W, Xs(silly))().foldinSym(varnames)
-        val name = cnstrctxs(term).foldinSym(IndInduced(cnstr.cons, f))
+        val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
+        val variable = varctx.foldin(cnstr.cons.asInstanceOf[varctx.CtxType])
+        val target = Context.empty(Xs(variable))
+        val cnstrctx = cnstrIndContext(f, cnstr.pattern, varnames, W, Xs)(target)
+        val name = cnstrctx.foldinSym(IndInduced(cnstr.cons, f))
       		 ctx lmbda (name)
       }
       
@@ -370,12 +370,32 @@ object Context{
     (empty /: cnstrvars)(add)
   }
   
+  def indContext(f : => (FuncTerm[Term, Term]), 
+      cnstrvars : List[(Constructor, List[Any])], 
+      W : Typ[Term], 
+      Xs : Term => Typ[Term], univ : Typ[Typ[Term]]) ={
+    val add : (Context[Any, Term, FuncTerm[Term, Term]], 
+        (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
+      addIndConstructor(f, cnvr._1, cnvr._2, W, Xs)(ctx)
+      val family = typFamilyDefn(W, univ, Xs)
+      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(PiTyp(family))
+    (empty /: cnstrvars)(add)
+  }
+  
+  
   def recFunction(f : => (FuncTerm[Term, Term]), 
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       X : Typ[Term]) = {
 
     recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))}
+  
+  def indFunction(f : => (FuncTerm[Term, Term]), 
+      cnstrvars : List[(Constructor, List[Any])], 
+      W : Typ[Term], 
+      Xs : Term => Typ[Term], univ : Typ[Typ[Term]]) = {
+    indContext(f, cnstrvars, W, Xs, univ).foldinSym(IndSymbol(W, Xs))
+  }
   
   // Should avoid type coercion by having proper types for constructors and polypatterns.
   def recIdentities(f : => (FuncTerm[Term, Term]), 
@@ -387,7 +407,7 @@ object Context{
     
     def eqn(cnstr : Constructor, varnames : List[Any]) = {	
     	val ptn = cnstr.pattern
-    	val argctx = cnstrSimpleContext(ptn, varnames, W, X)()
+    	val argctx = cnstrSimpleContext(ptn, varnames, W)()
     	val cons = cnstr.cons.asInstanceOf[argctx.CtxType]
     	val arg = argctx.foldin(cons)
     	val lhs = recfn(arg)
@@ -403,10 +423,41 @@ object Context{
     DefnEqual(f, recfn, allvars) :: eqntail
   }
   
+  def indIdentities(f : => (FuncTerm[Term, Term]), 
+      cnstrvars : List[(Constructor, List[Any])], 
+      W : Typ[Term], 
+      Xs : Term => Typ[Term], univ : Typ[Typ[Term]]) = {
+    
+    val indfn = indFunction(f, cnstrvars, W, Xs, univ)
+    
+     def eqn(cnstr : Constructor, varnames : List[Any]) = {	
+    	val ptn = cnstr.pattern
+    	val argctx = cnstrSimpleContext(ptn, varnames, W)()
+    	val cons = cnstr.cons.asInstanceOf[argctx.CtxType]
+    	val arg = argctx.foldin(cons)
+    	val lhs = indfn(arg)
+    	val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
+        val variable = varctx.foldin(cnstr.cons.asInstanceOf[varctx.CtxType])
+        val target = Context.empty(Xs(variable))
+    	val rhsctx = cnstrIndContext(f, ptn, varnames, W, Xs)(target)
+    	val rhs = rhsctx.foldinSym(RecInduced(cons, f))
+    	DefnEqual(lhs, rhs, argctx.symblist(varnames))
+    }
+    
+    val eqntail = for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames)
+	
+    val allvars = eqntail flatMap (_.freevars)
+    
+    DefnEqual(f, indfn, allvars) :: eqntail
+    
+  }
+  
   /*
    * The symbolic object for defining a recursion function from a context.
    */
   case class RecSymbol(W : Typ[Term], X : Typ[Term])
+  
+  case class IndSymbol(W : Typ[Term], Xs : Term => Typ[Term])
   
 }
 
