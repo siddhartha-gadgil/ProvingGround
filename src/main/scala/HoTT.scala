@@ -686,7 +686,7 @@ object HoTT{
 	  }
 	}
 	
-	case object Unit extends LogicalSTyp
+	case object Unit extends LogicalSTyp 
 	
 
 	
