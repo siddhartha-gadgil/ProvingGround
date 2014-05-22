@@ -41,12 +41,7 @@ object AndrewsCurtis{
   
   type DynDstbn = DynDst[Presentation, ACMoveType]
 
-  val baseDstbn : DynDstbn = {
-    val vrtdst = FiniteDistribution(Seq(Weighted(nullpres, 1.0)))
-    val edgseq = for (mvtyp <- MoveTypeList) yield Weighted(mvtyp : ACMoveType, 1.0/ MoveTypeList.length)
-    val edgdst  = FiniteDistribution(edgseq)
-    DynDst(vrtdst, edgdst, 0.3)
-  }
+
 
   case class DynDst[V, E](vrtdst: FiniteDistribution[V], edgdst : FiniteDistribution[E], cntn : Double){
     def probV (v : V) = vrtdst(v)
@@ -119,10 +114,10 @@ object AndrewsCurtis{
   case object InvMv extends ACMoveType
   
   object ACMoveType{
-    def fromString(mv : String) : ACMoveType = (MoveTypeList find (_ == mv)).get
+    def fromString(mv : String) : ACMoveType = (MoveTypeList find (_.toString == mv)).get
   }
   
-  val MoveTypeList = List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
+  val MoveTypeList : List[ACMoveType] = List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
   
   
   implicit object ACMoveFreqFormat extends Format[FiniteDistribution[ACMoveType]]{
@@ -386,15 +381,7 @@ object AndrewsCurtis{
   
   def dstbnJson(dstbn : FiniteDistribution[Presentation]) = Json.toJson(dstbn.pmf.toList map (wtdPresJson(_))) 
   
-  def sendDstbn(dstbn : FiniteDistribution[Presentation]) = dstbnChannel.push(dstbnJson(dstbn))
-  
-  def pushDstbn(d : DynDstbn) = sendDstbn(d.vrtdst)
-  
-  /*
-   * sending out distributions on presentations to frontend : the dstbnout Enumerator is sent in response to an sse request
-   * 
-   */
-  val (dstbnout, dstbnChannel) = Concurrent.broadcast[JsValue]
+
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop
@@ -430,34 +417,7 @@ object AndrewsCurtis{
   
   case class ACFlowData(params : ACparameters, dstbn : DynDstbn)
   
-  class FlowController(initParams: ACparameters, worker : ActorRef, output : DynDstbn => Unit = pushDstbn) extends Actor{
-    var params = initParams
-    
-    var dstbn : DynDstbn = baseDstbn
-    
-    def receive = {
-      case p : ACparameters => 
-        params = p
-      case d : DynDstbn => 
-        dstbn = d
-        output(d)
-        worker ! ACFlowData(params, d)
-      case _ => 
-    }
-  }
   
-  object FlowController{
-    def props(initParams: ACparameters, output : DynDstbn => Unit = pushDstbn) = Props(new FlowController(initParams, flowWorker, output))
-  }
-  
-  class FlowWorker extends Actor{
-    def receive = {
-      case ACFlowData(p, d) => sender ! p.flow(d)
-      case _ =>
-    }
-  }
-  
-  val flowWorker = Akka.system.actorOf(Props[FlowWorker])
-    
-  val flowController = FlowController.props(ACparameters())
+
+ 
 }

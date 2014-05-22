@@ -9,23 +9,23 @@ object NLPtesting {
                                                   //| Adding annotator ssplit
                                                   //| Adding annotator pos
                                                   //| Reading POS tagger model from edu/stanford/nlp/models/pos-tagger/english-lef
-                                                  //| t3words/english-left3words-distsim.tagger ... done [1.8 sec].
+                                                  //| t3words/english-left3words-distsim.tagger ... done [0.8 sec].
                                                   //| Adding annotator lemma
                                                   //| Adding annotator ner
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.all.3class.dists
-                                                  //| im.crf.ser.gz ... done [4.9 sec].
+                                                  //| im.crf.ser.gz ... done [3.1 sec].
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.muc.7class.dists
-                                                  //| im.crf.ser.gz ... done [4.3 sec].
+                                                  //| im.crf.ser.gz ... done [2.0 sec].
                                                   //| Loading classifier from edu/stanford/nlp/models/ner/english.conll.4class.dis
-                                                  //| tsim.crf.ser.gz ... done [3.3 sec].
+                                                  //| tsim.crf.ser.gz ... done [1.7 sec].
                                                   //| Reading TokensRegex rules from edu/stanford/nlp/models/sutime/defs.sutime.tx
                                                   //| t
                                                   //| Reading TokensRegex rules from edu/stanford/nlp/models/sutime/english.sutime
                                                   //| .txt
-                                                  //| May 21, 2014 9:37:42 PM edu.stanford.nlp.ling.tokensregex.CoreMapExpressionE
-                                                  //| xtractor appendRules
+                                                  //| May 22, 2014 10:16:57 AM edu.stanford.nlp.ling.tokensregex.CoreMapExpression
+                                                  //| Extractor appendRules
                                                   //| INFO: Ignoring inactive rule: null
-                                                  //| May 21, 2014 9:37:42
+                                                  //| May 22, 2014 10:16:57 AM edu.sta
                                                   //| Output exceeds cutoff limit.
                                                   
   val text ="While Lagrange's theorem states that for any finite group G the order (number of elements) of every subgroup of G divides the order of G, the Sylow theorems state that for any prime factor p of the order of a finite group G, there exists a Sylow p-subgroup of G"

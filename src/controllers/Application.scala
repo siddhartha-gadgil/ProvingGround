@@ -14,6 +14,7 @@ import play.api.libs.iteratee._
 import play.api.libs.EventSource
 
 import provingGround.AndrewsCurtis._
+import provingGround.AndrewsCurtisInterface._
 
 object Application extends Controller {
   
