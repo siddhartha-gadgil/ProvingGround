@@ -7,7 +7,7 @@ title : Dynamical (aware) mathematics and Prose
 ## Basic Layers: 
 * Knowledge (Mathematical state)
 * Dynamics
-* Learning: based on backprop.
+* Learning
 * Communication.
 * Ambiguity
 
@@ -35,12 +35,18 @@ __Note__: Types include _representations_, such as implies(P, Q) which maps to P
 * Weight of objects.
 * Relations between objects
 * Relations between objects and goals (use).
-* More complex relations such as dictionaries.
+* __Representations__: Combine all of the above (plus named relations and clusters) as vector representations of terms and types. Also model function action etc. in representations.
+* More complex relations such as dictionaries : may or may not be captured by linear structure.
 
 ## Indirect parameters for dynamics:
 * Named clusters (concepts, theorems etc.).
 * Named relations
-* Representations (a la word2vec).
+
+
+## Learning:
+* Dynamics itself changes based on feedback and communication.
+* Widget-learning: given complexity on goals (types here), we can learn complexity on generators, especially which to remember.
+* Mirror learning: Can derive goals from the data, and also objects that are used in initial generation.
 
 ## Communication channels:
 * Affect both knowledge and dynamics (via its metadata).
