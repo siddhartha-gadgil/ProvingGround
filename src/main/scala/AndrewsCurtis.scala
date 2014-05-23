@@ -161,7 +161,10 @@ object AndrewsCurtis{
       (for (j <-0 to n-1) yield Inv(j)).toList
   }
   
-  
+  private val vrtdst = FiniteDistribution(Seq(Weighted(nullpres, 1.0)))
+  private val edgseq = for (mvtyp <- MoveTypeList) yield Weighted(mvtyp, 1.0/ MoveTypeList.length)
+  private val edgdst  = FiniteDistribution(edgseq)
+  val baseDstbn = DynDst(vrtdst, edgdst, 0.3)
   
   trait Move extends (Vert => Vert){
     val mvType : MoveType

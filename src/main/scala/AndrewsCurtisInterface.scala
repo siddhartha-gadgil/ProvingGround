@@ -21,13 +21,6 @@ import scala.concurrent._
 
 object AndrewsCurtisInterface {
   
-  val baseDstbn : DynDstbn = {
-    val vrtdst = FiniteDistribution(Seq(Weighted(nullpres, 1.0)))
-    val edgseq = for (mvtyp <- MoveTypeList) yield Weighted(mvtyp, 1.0/ MoveTypeList.length)
-    val edgdst  = FiniteDistribution(edgseq)
-    DynDst(vrtdst, edgdst, 0.3)
-  }
-  
   def sendDstbn(dstbn : FiniteDistribution[Presentation]) = dstbnChannel.push(dstbnJson(dstbn))
   
   def pushDstbn(d : DynDstbn) = sendDstbn(d.vrtdst)
