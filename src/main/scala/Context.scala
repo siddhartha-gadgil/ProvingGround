@@ -46,7 +46,7 @@ object Context{
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
   
-  trait Context[+A, +U <: Term , +V <: Term] extends TypSeq[U]{
+  trait Context[+A, +U <: Term , V <: Term] extends TypSeq[U, Term]{
 //    val typ: Typ[PtnType]
     
     type PtnType <: U
@@ -112,7 +112,7 @@ object Context{
 
   
   
-  case class LambdaMixin[+A, +U<: Term, +V <: Term](variable: Term, tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
+  case class LambdaMixin[+A, +U<: Term, V <: Term](variable: Term, tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
     def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
@@ -156,7 +156,7 @@ object Context{
     
   }
   
-  case class KappaMixin[+A, +U<: Term, +V <: Term](const : Term, tail: Context[A, U, V]) extends Context[A, U, V]{
+  case class KappaMixin[+A, +U<: Term, V <: Term](const : Term, tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
     def foldin : Typ[Term] => PtnType => V = tail.foldin
@@ -178,7 +178,7 @@ object Context{
     def apply(tp : Typ[Term]) : Typ[PtnType] =tail(tp)
   }
   
-  case class DefnMixin[+A, +U<: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
+  case class DefnMixin[+A, +U<: Term, V <: Term](dfn : Defn[A], tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
     def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
@@ -214,7 +214,7 @@ object Context{
     else FuncTyp(dfn.lhs.typ, tail(tp))
   } 
   
-  case class GlobalDefnMixin[+A, +U <: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V]) extends Context[A, U, V]{
+  case class GlobalDefnMixin[+A, +U <: Term, V <: Term](dfn : Defn[A], tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
     def foldin : Typ[Term] => PtnType => V = tail.foldin
@@ -236,7 +236,7 @@ object Context{
     def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
   }
   
-  case class DefnEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V]) extends Context[A, U, V]{
+  case class DefnEqualityMixin[+A, +U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
     def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
@@ -258,7 +258,7 @@ object Context{
 //    val typ = tail.typ								
   }
   
-  case class SimpEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V], dep : Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
+  case class SimpEqualityMixin[+A, +U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[A, U, V], dep : Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
     def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
@@ -386,7 +386,7 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) : Context[Any, Term, V] => Context[Any, Term, V] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
-        val name = cnstrctx.foldinSym(W)(RecInduced(cnstr.cons, f))
+        val name = cnstrctx.foldinSym(FuncTyp(W, X))(RecInduced(cnstr.cons, f))
       		ctx lmbda (name)
       }
       
@@ -420,7 +420,7 @@ object Context{
     val add : (Context[Any, Term, FuncTerm[Term, Term]], 
         (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addIndConstructor(f, cnvr._1, cnvr._2, W, Xs)(ctx)
-      val family = typFamilyDefn(W, univ, Xs)
+      
       val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty[FuncTerm[Term, Term]]
     (empty /: cnstrvars)(add)
   }
@@ -431,13 +431,14 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) = {
 
-    recContext(f, cnstrvars, W, X).foldinSym(W)(RecSymbol(W, X))}
+    recContext(f, cnstrvars, W, X).foldinSym(FuncTyp(W, X))(RecSymbol(W, X))}
   
   def indFunction(f : => (FuncTerm[Term, Term]), 
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       Xs : Term => Typ[Term], univ : Typ[Typ[Term]]) = {
-    indContext(f, cnstrvars, W, Xs, univ).foldinSym(W)(IndSymbol(W, Xs))
+    val family = typFamilyDefn(W, univ, Xs)
+    indContext(f, cnstrvars, W, Xs, univ).foldinSym(PiTyp(family))(IndSymbol(W, Xs))
   }
   
   // Should avoid type coercion by having proper types for constructors and polypatterns.
@@ -446,7 +447,7 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) = {
 
-    val recfn = recContext(f, cnstrvars, W, X).foldinSym(W)(RecSymbol(W, X))
+    val recfn = recContext(f, cnstrvars, W, X).foldinSym(FuncTyp(W, X))(RecSymbol(W, X))
     
     def eqn(cnstr : Constructor, varnames : List[Any]) = {	
     	val ptn = cnstr.pattern
@@ -455,7 +456,7 @@ object Context{
     	val arg = argctx.foldin(W)(cons)
     	val lhs = recfn(arg)
     	val rhsctx = cnstrRecContext(f, ptn, varnames, W, X)()
-    	val rhs = rhsctx.foldinSym(W)(RecInduced(cons, f))
+    	val rhs = rhsctx.foldinSym(FuncTyp(W, X))(RecInduced(cons, f))
     	DefnEqual(lhs, rhs, argctx.symblist(W)(varnames))
     }
     
