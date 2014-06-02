@@ -688,12 +688,20 @@ object HoTT{
 	
 	case object Unit extends LogicalSTyp 
 	
-
+	/*
+	 * A common trait for contexts and typpatterns
+	 */
+	trait TypSeq[+U <: Term]{
+	  type PtnType <: U
+	  
+	  def apply(tp : Typ[Term]) : Typ[PtnType]
+	}
+	
 	
 	/*
 	 * A simple pattern, for inductive type constructors as well as type families.
 	 */
-	trait TypPtn[U <: Term] extends PolyPtn{
+	trait TypPtn[U <: Term] extends PolyPtn with TypSeq[U]{
 	  	 type PtnType = U
 	  	 
 	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType

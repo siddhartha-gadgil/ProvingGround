@@ -46,16 +46,16 @@ object Context{
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
   
-  trait Context[+A, + U <: Term , +V <: Term]{
-    val typ: Typ[CtxType]
+  trait Context[+A, +U <: Term , +V <: Term] extends TypSeq[U]{
+//    val typ: Typ[PtnType]
     
-    type CtxType <: U
+    type PtnType <: U
     
-    def foldin : CtxType => V
+    def foldin : Typ[Term] => PtnType => V
     
-    def foldinSym[B](name: B) = foldin(typ.symbObj(name))
+    def foldinSym[B](tp: Typ[Term])(name: B) = foldin(tp)(apply(tp).symbObj(name))
     
-    def symblist[A](varnames: List[A]): List[Term]
+    def symblist[A](tp: Typ[Term])(varnames: List[A]): List[Term]
     
     def constants : Seq[Term]
     
@@ -84,11 +84,13 @@ object Context{
   
   object Context{
     case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[Any, U, U]{
-    	type CtxType = U
-      
-    	def foldin : CtxType => U = (t) => t
+    	type PtnType = U
+
+    	def apply(tp : Typ[Term]) : Typ[PtnType] = tp.asInstanceOf[Typ[U]]
     	
-    	def symblist[A](varnames: List[A]) = List()
+    	def foldin : Typ[Term] => PtnType => U = _ => (t) => t
+    	
+    	def symblist[A](tp: Typ[Term])(varnames: List[A]) = List()
     	
     	def constants : Seq[Term] = List.empty
     
@@ -103,17 +105,19 @@ object Context{
     }
     
     def apply[U <: Term : TypeTag](typ: Typ[U]) = empty[U](typ)
+    
+    
   }
   
 
   
   
   case class LambdaMixin[+A, +U<: Term, +V <: Term](variable: Term, tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
-    type CtxType = FuncTerm[Term, tail.CtxType]
+    type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : CtxType => V = (f) => tail.foldin(f(variable))
+    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
     
-    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
+    def symblist[A](tp: Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants = variable +: tail.constants
     
@@ -131,21 +135,33 @@ object Context{
     val elim = Lambda(variable, tail.elim(y))
     
     // If tail.typ is a function of variable, we get a Pi-type instead.
+    /*
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, tail.CtxType](variable.typ, MiniVerse(tail.typ), fibre)
+	    val family = typFamilyDefn[Term, tail.PtnType](variable.typ, MiniVerse(tail.typ), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(variable.typ, tail.typ)
+    */
+    
+    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+      val fibre = (t : Term) => tail(tp) subs (x, t)
+	    
+	    val family = typFamilyDefn[Term, tail.PtnType](variable.typ, MiniVerse(tail(tp)), fibre)
+	    PiTyp(family)
+    }
+    else FuncTyp(variable.typ, tail(tp))
+    
+    
   }
   
   case class KappaMixin[+A, +U<: Term, +V <: Term](const : Term, tail: Context[A, U, V]) extends Context[A, U, V]{
-    type CtxType = tail.CtxType
+    type PtnType = tail.PtnType
     
-    def foldin : CtxType => V = tail.foldin
+    def foldin : Typ[Term] => PtnType => V = tail.foldin
     
-    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    def symblist[A](tp: Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants = const +: tail.constants
     
@@ -157,15 +173,17 @@ object Context{
     
     val elim = tail.elim
     
-    val typ = tail.typ
+//    val typ = tail.typ
+    
+    def apply(tp : Typ[Term]) : Typ[PtnType] =tail(tp)
   }
   
   case class DefnMixin[+A, +U<: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
-    type CtxType = FuncTerm[Term, tail.CtxType]
+    type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : CtxType => V = (f) => tail.foldin(f(dfn.lhs))
+    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
     
-    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
+    def symblist[A](tp : Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -177,22 +195,31 @@ object Context{
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
     								
-    
+    /*
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, tail.CtxType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
-	    PiTyp[Term, tail.CtxType](family)
+	    val family = typFamilyDefn[Term, tail.PtnType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
+	    PiTyp[Term, tail.PtnType](family)
     }
     else FuncTyp(dfn.lhs.typ, tail.typ)
+    */
+    
+    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+      val fibre = (t : Term) => tail(tp) subs (x, t)
+	    
+	    val family = typFamilyDefn[Term, tail.PtnType](dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
+	    PiTyp[Term, tail.PtnType](family)
+    }
+    else FuncTyp(dfn.lhs.typ, tail(tp))
   } 
   
   case class GlobalDefnMixin[+A, +U <: Term, +V <: Term](dfn : Defn[A], tail: Context[A, U, V]) extends Context[A, U, V]{
-    type CtxType = tail.CtxType
+    type PtnType = tail.PtnType
     
-    def foldin : CtxType => V = tail.foldin
+    def foldin : Typ[Term] => PtnType => V = tail.foldin
     
-    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    def symblist[A](tp : Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants : Seq[Term] = tail.constants
     
@@ -204,15 +231,19 @@ object Context{
     
     val elim  = tail.elim
     
-    val typ = tail.typ								
+//    val typ = tail.typ		
+    
+    def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
   }
   
   case class DefnEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V]) extends Context[A, U, V]{
-    type CtxType = tail.CtxType
+    type PtnType = tail.PtnType
     
-    def foldin : CtxType => V = tail.foldin
+    def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
     
-    def symblist[A](varnames: List[A]) = tail.symblist(varnames)
+    def foldin : Typ[Term] => PtnType => V = tail.foldin
+    
+    def symblist[A](tp: Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants : Seq[Term] = tail.constants
     
@@ -224,15 +255,15 @@ object Context{
     
     val elim  = tail.elim
     
-    val typ = tail.typ								
+//    val typ = tail.typ								
   }
   
   case class SimpEqualityMixin[+A, +U <: Term, +V <: Term](eqlty : DefnEquality, tail: Context[A, U, V], dep : Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
-    type CtxType = FuncTerm[Term, tail.CtxType]
+    type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : CtxType => V = (f) => tail.foldin(f(eqlty.lhs))
+    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
     
-    def symblist[A](varnames: List[A]) = typ.symbObj(varnames.head) :: tail.symblist(varnames.tail)
+    def symblist[A](tp : Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -243,15 +274,27 @@ object Context{
     def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
-    								
+    
+    /*
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, tail.CtxType](eqlty.lhs.typ, MiniVerse(tail.typ), fibre)
+	    val family = typFamilyDefn[Term, tail.PtnType](eqlty.lhs.typ, MiniVerse(tail.typ), fibre)
 	    PiTyp(family)
     }
-    else FuncTyp(eqlty.lhs.typ, tail.typ) 							
+    else FuncTyp(eqlty.lhs.typ, tail.typ)
+    */
+    
+    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+      val fibre = (t : Term) => tail(tp) subs (x, t)
+	    
+	    val family = typFamilyDefn[Term, tail.PtnType](eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
+	    PiTyp(family)
+    }
+    else FuncTyp(eqlty.lhs.typ, tail(tp))
   }
+  
+  
 
     /*
    * Change in context for a TypPatn (i.e., simple pattern ending in W).
@@ -343,7 +386,7 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) : Context[Any, Term, V] => Context[Any, Term, V] = ctx => {
         val cnstrctx = cnstrRecContext(f, cnstr.pattern, varnames, W, X)()
-        val name = cnstrctx.foldinSym(RecInduced(cnstr.cons, f))
+        val name = cnstrctx.foldinSym(W)(RecInduced(cnstr.cons, f))
       		ctx lmbda (name)
       }
       
@@ -352,10 +395,10 @@ object Context{
       W : Typ[Term], 
       Xs : Term => Typ[Term]) : (Context[Any, Term, V]) => (Context[Any, Term, V]) =  ctx => {
         val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
-        val variable = varctx.foldin(cnstr.cons.asInstanceOf[varctx.CtxType])
+        val variable = varctx.foldin(W)(cnstr.cons.asInstanceOf[varctx.PtnType])
         val target = Context.empty(Xs(variable))
         val cnstrctx = cnstrIndContext(f, cnstr.pattern, varnames, W, Xs)(target)
-        val name = cnstrctx.foldinSym(IndInduced(cnstr.cons, f))
+        val name = cnstrctx.foldinSym(W)(IndInduced(cnstr.cons, f))
       		 ctx lmbda (name)
       }
       
@@ -388,13 +431,13 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) = {
 
-    recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))}
+    recContext(f, cnstrvars, W, X).foldinSym(W)(RecSymbol(W, X))}
   
   def indFunction(f : => (FuncTerm[Term, Term]), 
       cnstrvars : List[(Constructor, List[Any])], 
       W : Typ[Term], 
       Xs : Term => Typ[Term], univ : Typ[Typ[Term]]) = {
-    indContext(f, cnstrvars, W, Xs, univ).foldinSym(IndSymbol(W, Xs))
+    indContext(f, cnstrvars, W, Xs, univ).foldinSym(W)(IndSymbol(W, Xs))
   }
   
   // Should avoid type coercion by having proper types for constructors and polypatterns.
@@ -403,17 +446,17 @@ object Context{
       W : Typ[Term], 
       X : Typ[Term]) = {
 
-    val recfn = recContext(f, cnstrvars, W, X).foldinSym(RecSymbol(W, X))
+    val recfn = recContext(f, cnstrvars, W, X).foldinSym(W)(RecSymbol(W, X))
     
     def eqn(cnstr : Constructor, varnames : List[Any]) = {	
     	val ptn = cnstr.pattern
     	val argctx = cnstrSimpleContext(ptn, varnames, W)()
-    	val cons = cnstr.cons.asInstanceOf[argctx.CtxType]
-    	val arg = argctx.foldin(cons)
+    	val cons = cnstr.cons.asInstanceOf[argctx.PtnType]
+    	val arg = argctx.foldin(W)(cons)
     	val lhs = recfn(arg)
     	val rhsctx = cnstrRecContext(f, ptn, varnames, W, X)()
-    	val rhs = rhsctx.foldinSym(RecInduced(cons, f))
-    	DefnEqual(lhs, rhs, argctx.symblist(varnames))
+    	val rhs = rhsctx.foldinSym(W)(RecInduced(cons, f))
+    	DefnEqual(lhs, rhs, argctx.symblist(W)(varnames))
     }
     
     val eqntail = for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames)
@@ -433,15 +476,15 @@ object Context{
      def eqn(cnstr : Constructor, varnames : List[Any]) = {	
     	val ptn = cnstr.pattern
     	val argctx = cnstrSimpleContext(ptn, varnames, W)()
-    	val cons = cnstr.cons.asInstanceOf[argctx.CtxType]
-    	val arg = argctx.foldin(cons)
+    	val cons = cnstr.cons.asInstanceOf[argctx.PtnType]
+    	val arg = argctx.foldin(W)(cons)
     	val lhs = indfn(arg)
     	val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
-        val variable = varctx.foldin(cnstr.cons.asInstanceOf[varctx.CtxType])
+        val variable = varctx.foldin(W)(cnstr.cons.asInstanceOf[varctx.PtnType])
         val target = Context.empty(Xs(variable))
     	val rhsctx = cnstrIndContext(f, ptn, varnames, W, Xs)(target)
-    	val rhs = rhsctx.foldinSym(RecInduced(cons, f))
-    	DefnEqual(lhs, rhs, argctx.symblist(varnames))
+    	val rhs = rhsctx.foldinSym(W)(RecInduced(cons, f))
+    	DefnEqual(lhs, rhs, argctx.symblist(W)(varnames))
     }
     
     val eqntail = for ((cnstr, varnames) <- cnstrvars) yield eqn(cnstr, varnames)
