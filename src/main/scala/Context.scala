@@ -46,16 +46,16 @@ object Context{
     def apply[A](name: A, rhs : Term) = infer(name, rhs)
   }
   
-  trait Context[+A, +U <: Term , V <: Term] extends TypSeq[U, Term]{
+  trait Context[+A, +U <: Term , V <: Term] extends TypSeq[U, V]{
 //    val typ: Typ[PtnType]
     
     type PtnType <: U
     
-    def foldin : Typ[Term] => PtnType => V
+    def foldin : Typ[V] => PtnType => V
     
-    def foldinSym[B](tp: Typ[Term])(name: B) = foldin(tp)(apply(tp).symbObj(name))
+    def foldinSym[B](tp: Typ[V])(name: B) = foldin(tp)(apply(tp).symbObj(name))
     
-    def symblist[A](tp: Typ[Term])(varnames: List[A]): List[Term]
+    def symblist[A](tp: Typ[V])(varnames: List[A]): List[Term]
     
     def constants : Seq[Term]
     
@@ -86,11 +86,11 @@ object Context{
     case class empty[U <: Term : TypeTag]() extends Context[Any, U, U]{
     	type PtnType = U
 
-    	def apply(tp : Typ[Term]) : Typ[PtnType] = tp.asInstanceOf[Typ[U]]
+    	def apply(tp : Typ[U]) : Typ[PtnType] = tp
     	
-    	def foldin : Typ[Term] => PtnType => U = _ => (t) => t
+    	def foldin : Typ[U] => PtnType => U = _ => (t) => t
     	
-    	def symblist[A](tp: Typ[Term])(varnames: List[A]) = List()
+    	def symblist[A](tp: Typ[U])(varnames: List[A]) = List()
     	
     	def constants : Seq[Term] = List.empty
     
@@ -115,9 +115,9 @@ object Context{
   case class LambdaMixin[+A, +U<: Term, V <: Term](variable: Term, tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
+    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
     
-    def symblist[A](tp: Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
+    def symblist[A](tp: Typ[V])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants = variable +: tail.constants
     
@@ -145,7 +145,7 @@ object Context{
     else FuncTyp(variable.typ, tail.typ)
     */
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (x, t)
 	    
 	    val family = typFamilyDefn[Term, tail.PtnType](variable.typ, MiniVerse(tail(tp)), fibre)
@@ -159,9 +159,9 @@ object Context{
   case class KappaMixin[+A, +U<: Term, V <: Term](const : Term, tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
-    def foldin : Typ[Term] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => PtnType => V = tail.foldin
     
-    def symblist[A](tp: Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
+    def symblist[A](tp: Typ[V])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants = const +: tail.constants
     
@@ -175,15 +175,15 @@ object Context{
     
 //    val typ = tail.typ
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] =tail(tp)
+    def apply(tp : Typ[V]) : Typ[PtnType] =tail(tp)
   }
   
   case class DefnMixin[+A, +U<: Term, V <: Term](dfn : Defn[A], tail: Context[A, U, V], dep: Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
+    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
     
-    def symblist[A](tp : Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
+    def symblist[A](tp : Typ[V])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -205,7 +205,7 @@ object Context{
     else FuncTyp(dfn.lhs.typ, tail.typ)
     */
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (x, t)
 	    
 	    val family = typFamilyDefn[Term, tail.PtnType](dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
@@ -217,9 +217,9 @@ object Context{
   case class GlobalDefnMixin[+A, +U <: Term, V <: Term](dfn : Defn[A], tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
-    def foldin : Typ[Term] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => PtnType => V = tail.foldin
     
-    def symblist[A](tp : Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
+    def symblist[A](tp : Typ[V])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants : Seq[Term] = tail.constants
     
@@ -233,17 +233,17 @@ object Context{
     
 //    val typ = tail.typ		
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
+    def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
   }
   
   case class DefnEqualityMixin[+A, +U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[A, U, V]) extends Context[A, U, V]{
     type PtnType = tail.PtnType
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] = tail(tp)
+    def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
     
-    def foldin : Typ[Term] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => PtnType => V = tail.foldin
     
-    def symblist[A](tp: Typ[Term])(varnames: List[A]) = tail.symblist(tp)(varnames)
+    def symblist[A](tp: Typ[V])(varnames: List[A]) = tail.symblist(tp)(varnames)
     
     def constants : Seq[Term] = tail.constants
     
@@ -261,9 +261,9 @@ object Context{
   case class SimpEqualityMixin[+A, +U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[A, U, V], dep : Boolean = false) extends Context[A, FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def foldin : Typ[Term] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
+    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
     
-    def symblist[A](tp : Typ[Term])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
+    def symblist[A](tp : Typ[V])(varnames: List[A]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
     def constants : Seq[Term] = tail.constants
     
@@ -285,7 +285,7 @@ object Context{
     else FuncTyp(eqlty.lhs.typ, tail.typ)
     */
     
-    def apply(tp : Typ[Term]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (x, t)
 	    
 	    val family = typFamilyDefn[Term, tail.PtnType](eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
@@ -301,12 +301,12 @@ object Context{
    * Should allow for dependent types when making a lambda.
    */
   def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), 
-      ptn : TypPtn[U], varname : A, W : Typ[Term], X : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+      ptn : TypPtn[U], varname : A, W : Typ[V], X : Typ[V]) : Context[A, Term, V] => Context[A, Term, V] = {
     val x = ptn(W).symbObj(varname)
     ctx => ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
-  def simpleContextChange[A, U <: Term, V<: Term](ptn : TypPtn[U], varname : A, W : Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+  def simpleContextChange[A, U <: Term, V<: Term](ptn : TypPtn[U], varname : A, W : Typ[V]) : Context[A, Term, V] => Context[A, Term, V] = {
     val x = ptn(W).symbObj(varname)
     ctx => ctx lmbda(x)
   }
@@ -315,7 +315,7 @@ object Context{
    * Change in context  for Induction for a TypPattern - check
    */
   def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), ptn : TypPtn[U],
-      varname : A, W : Typ[Term], Xs : Term => Typ[Term]) : Context[A, Term, V] => Context[A, Term, V] = {
+      varname : A, W : Typ[V], Xs : Term => Typ[V]) : Context[A, Term, V] => Context[A, Term, V] = {
     val x =  ptn(W).symbObj(varname)
     ctx =>  ctx lmbda(x) lmbda(ptn.inducedDep(W, Xs)(f)(x))
   }
@@ -326,8 +326,8 @@ object Context{
    */
   @tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
-      W : Typ[Term], 
-      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
+      W : Typ[V], 
+      X : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => recContextChange(f, tp, varnames.head, W, X)(ctx)
       case FuncPtn(tail, head) => cnstrRecContext(f, head, varnames.tail, W, X)( recContextChange(f, tail, varnames.head, W, X)(ctx))
@@ -343,8 +343,8 @@ object Context{
   
   @tailrec def cnstrIndContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
-      W : Typ[Term], 
-      Xs :  Term => Typ[Term])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
+      W : Typ[V], 
+      Xs :  Term => Typ[V])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => indContextChange(f, tp, varnames.head, W, Xs)(ctx)
       case FuncPtn(tail, head) => cnstrIndContext(f, head, varnames.tail, W, Xs)( indContextChange(f, tail, varnames.head, W, Xs)(ctx))
@@ -362,7 +362,7 @@ object Context{
   
   @tailrec def cnstrSimpleContext[A, V<: Term]( 
       ptn : PolyPtn, varnames : List[A], 
-      W : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
+      W : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W)(ctx)
       case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W)( simpleContextChange(tail, varnames.head, W)(ctx))
