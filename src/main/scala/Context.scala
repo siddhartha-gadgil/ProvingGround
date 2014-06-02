@@ -83,7 +83,7 @@ object Context{
   }
   
   object Context{
-    case class empty[U <: Term : TypeTag](typ : Typ[U]) extends Context[Any, U, U]{
+    case class empty[U <: Term : TypeTag]() extends Context[Any, U, U]{
     	type PtnType = U
 
     	def apply(tp : Typ[Term]) : Typ[PtnType] = tp.asInstanceOf[Typ[U]]
@@ -104,7 +104,7 @@ object Context{
       
     }
     
-    def apply[U <: Term : TypeTag](typ: Typ[U]) = empty[U](typ)
+    def apply[U <: Term : TypeTag] = empty[U]
     
     
   }
@@ -327,7 +327,7 @@ object Context{
   @tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn, varnames : List[A], 
       W : Typ[Term], 
-      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](X)) : Context[A, Term, V] = {
+      X : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => recContextChange(f, tp, varnames.head, W, X)(ctx)
       case FuncPtn(tail, head) => cnstrRecContext(f, head, varnames.tail, W, X)( recContextChange(f, tail, varnames.head, W, X)(ctx))
@@ -362,7 +362,7 @@ object Context{
   
   @tailrec def cnstrSimpleContext[A, V<: Term]( 
       ptn : PolyPtn, varnames : List[A], 
-      W : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term](W)) : Context[A, Term, V] = {
+      W : Typ[Term])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W)(ctx)
       case FuncPtn(tail, head) => cnstrSimpleContext(head, varnames.tail, W)( simpleContextChange(tail, varnames.head, W)(ctx))
@@ -396,9 +396,9 @@ object Context{
       Xs : Term => Typ[Term]) : (Context[Any, Term, V]) => (Context[Any, Term, V]) =  ctx => {
         val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
         val variable = varctx.foldin(W)(cnstr.cons.asInstanceOf[varctx.PtnType])
-        val target = Context.empty(Xs(variable))
+        val target = Context.empty[Term]
         val cnstrctx = cnstrIndContext(f, cnstr.pattern, varnames, W, Xs)(target)
-        val name = cnstrctx.foldinSym(W)(IndInduced(cnstr.cons, f))
+        val name = cnstrctx.foldinSym(Xs(variable))(IndInduced(cnstr.cons, f))
       		 ctx lmbda (name)
       }
       
@@ -409,7 +409,7 @@ object Context{
     val add : (Context[Any, Term, FuncTerm[Term, Term]], 
         (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addConstructor(f, cnvr._1, cnvr._2, W, X)(ctx)
-      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(FuncTyp(W, X))
+      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty[FuncTerm[Term, Term]]
     (empty /: cnstrvars)(add)
   }
   
@@ -421,7 +421,7 @@ object Context{
         (Constructor, List[Any])) => Context[Any, Term, FuncTerm[Term, Term]] = (ctx, cnvr) =>
       addIndConstructor(f, cnvr._1, cnvr._2, W, Xs)(ctx)
       val family = typFamilyDefn(W, univ, Xs)
-      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty(PiTyp(family))
+      val empty : Context[Any, Term, FuncTerm[Term, Term]] = Context.empty[FuncTerm[Term, Term]]
     (empty /: cnstrvars)(add)
   }
   
@@ -481,9 +481,9 @@ object Context{
     	val lhs = indfn(arg)
     	val varctx = cnstrSimpleContext(cnstr.pattern, varnames, W)()
         val variable = varctx.foldin(W)(cnstr.cons.asInstanceOf[varctx.PtnType])
-        val target = Context.empty(Xs(variable))
+        val target = Context.empty[Term]
     	val rhsctx = cnstrIndContext(f, ptn, varnames, W, Xs)(target)
-    	val rhs = rhsctx.foldinSym(W)(RecInduced(cons, f))
+    	val rhs = rhsctx.foldinSym(Xs(variable))(RecInduced(cons, f))
     	DefnEqual(lhs, rhs, argctx.symblist(W)(varnames))
     }
     
