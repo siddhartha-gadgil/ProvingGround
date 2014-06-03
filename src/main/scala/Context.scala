@@ -67,6 +67,10 @@ object Context{
     
     val elim : Term => Term
     
+    type ArgType
+    
+    val instantiate : ArgType => Term => Term
+    
     def lmbda(x : Term) = LambdaMixin(x, this)
     
     def deplmbda(x : Term) = LambdaMixin(x, this, true)
@@ -101,6 +105,10 @@ object Context{
     	def eliminate(isVar : Term => Boolean): Term => Term = (x) => x
     	
     	val elim = (t: Term) => t
+    	
+    	type ArgType = Unit
+    	
+    	val instantiate : ArgType => Term => Term = _ => (t) => t
       
     }
     
@@ -132,7 +140,16 @@ object Context{
       else tail.eliminate(isVar)(y)
     
       
-    val elim = Lambda(variable, tail.elim(y))
+    val elim = (y: Term) => Lambda(variable, tail.elim(y))
+    
+    type ArgType = (Term, tail.ArgType)
+    
+    val instantiate : ArgType => Term => Term = (fstrest) => (t) => {
+      val rest: tail.ArgType = fstrest._2
+      val fst = fstrest._1
+      val func = Lambda(variable,tail.instantiate(rest)(t))
+      func(fst)
+    }
     
     // If tail.typ is a function of variable, we get a Pi-type instead.
     /*
@@ -173,6 +190,10 @@ object Context{
     
     val elim = tail.elim
     
+    type ArgType = tail.ArgType
+    
+    val instantiate : ArgType => Term => Term = _ => (t) => t
+    
 //    val typ = tail.typ
     
     def apply(tp : Typ[V]) : Typ[PtnType] =tail(tp)
@@ -194,6 +215,14 @@ object Context{
     def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(dfn.lhs, dfn.rhs))
+    
+    type ArgType = (Term, tail.ArgType)
+    
+    val instantiate : ArgType => Term => Term = (fstrest) => (t) => {
+      val rest: tail.ArgType = fstrest._2
+      val fst = fstrest._1
+      (tail.instantiate(rest)(t)).subs(dfn.lhs, dfn.rhs)
+    }
     								
     /*
     val typ = if (dep) {
@@ -231,6 +260,10 @@ object Context{
     
     val elim  = tail.elim
     
+    type ArgType = tail.ArgType
+    
+    val instantiate : ArgType => Term => Term = _ => (t) => t
+    
 //    val typ = tail.typ		
     
     def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
@@ -255,6 +288,9 @@ object Context{
     
     val elim  = tail.elim
     
+    type ArgType = tail.ArgType
+    
+    val instantiate : ArgType => Term => Term = _ => (t) => t
 //    val typ = tail.typ								
   }
   
@@ -274,6 +310,14 @@ object Context{
     def eliminate(isVar : Term => Boolean): Term => Term = tail.eliminate(isVar)
     
     val elim  =  tail.elim andThen ((t : Term) => t.subs(eqlty.lhs, eqlty.rhs))
+    
+    type ArgType = (Term, tail.ArgType)
+    
+    val instantiate : ArgType => Term => Term = (fstrest) => (t) => {
+      val rest: tail.ArgType = fstrest._2
+      val fst = fstrest._1
+      (tail.instantiate(rest)(t)).subs(eqlty.lhs, eqlty.rhs)
+    }
     
     /*
     val typ = if (dep) {
@@ -503,5 +547,26 @@ object Context{
   
   case class IndSymbol(W : Typ[Term], Xs : Term => Typ[Term])
   
+  
+  trait PolyPtnInstance[D]{
+    
+    def apply(tp: Typ[Term]) : Typ[Term]
+  }
+  
+  case class TypPtnInstance[D](ptn: TypPtn[Term], arg: D) extends PolyPtnInstance[D]{
+    def apply(tp: Typ[Term]) : Typ[Term] = ptn(tp)
+  }
+  
+  case class FuncTypPtnInstance[D](head: TypPtnInstance[D], tail: TypPtnInstance[D]) extends PolyPtnInstance[D]{
+    def apply(tp: Typ[Term]) = FuncTyp(head(tp), tail(tp))
+   
+  }
+  
+  case class CnstFuncTypPtnInstance[D](tail: Typ[Term], headfibre: Term => PolyPtnInstance[D]) extends PolyPtnInstance[D]{
+    def apply(W : Typ[Term]) = {
+	    val fiber = typFamilyDefn[Term, Term](tail, Universe(0),  (t : Term) => headfibre(t)(W))
+	    PiTyp[Term, Term](fiber)
+	  }
+  }
 }
 
