@@ -373,17 +373,17 @@ object Context{
   def cnstrContext[A, V<: Term](
       ptn : PolyPtn[Term], varnames : List[A], 
       W : Typ[V], 
-      X : Typ[V], change: Change[A, Term, V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
+      change: Change[A, Term, V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[Term] => change(varnames.head, tp, ctx)
-      case FuncPtn(tail, head) => cnstrContext(head, varnames.tail, W, X, change)(change(varnames.head, tail, ctx))
-      case CnstFncPtn(tail : Typ[_], head) => cnstrContext(head, varnames.tail, W, X, change)( ctx lmbda(tail.symbObj(varnames.head)))
+      case FuncPtn(tail, head) => cnstrContext(head, varnames.tail, W, change)(change(varnames.head, tail, ctx))
+      case CnstFncPtn(tail : Typ[_], head) => cnstrContext(head, varnames.tail, W, change)( ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
-        val x  = tail(X).symbObj(varnames.head).asInstanceOf[Term]
-        cnstrContext(headfibre(x), varnames.tail, W, X, change)( ctx lmbda(x))
+        val x  = tail(W).symbObj(varnames.head).asInstanceOf[Term]
+        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
-        cnstrContext(headfibre(x), varnames.tail, W, X, change)( ctx lmbda(x))
+        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
     }
   }
   
@@ -392,7 +392,7 @@ object Context{
       W : Typ[V], 
       X : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     val change = recContextChange[A, Term, V](f, W, X)
-    cnstrContext(ptn, varnames, W, X, change)(ctx)
+    cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
   def cnstrIndContext[A, V<: Term, U <: Term](f : => (FuncTerm[Term, Term]), 
@@ -400,7 +400,7 @@ object Context{
       W : Typ[V], 
       Xs :  Term => Typ[V])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
     val change = indContextChange[A, Term, V](f, W, Xs)
-    cnstrContext(ptn, varnames, W, W, change)(ctx)
+    cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
   
@@ -408,7 +408,7 @@ object Context{
       ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
 		  val change = simpleContextChange[A, Term, V](W)
-    cnstrContext(ptn, varnames, W, W, change)(ctx)
+    cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
   
