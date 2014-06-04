@@ -368,8 +368,8 @@ object Context{
    * The context, recursively defined, for the constructor of a single context.
    * This is also a change, to be applied by default to the empty context of the target type.
    */
-  @tailrec def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
-      ptn : PolyPtn, varnames : List[A], 
+  def cnstrRecContext[A, V<: Term, U<: Term](f : => (FuncTerm[Term, Term]), 
+      ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V], 
       X : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
@@ -385,8 +385,8 @@ object Context{
     }
   }
   
-  @tailrec def cnstrIndContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
-      ptn : PolyPtn, varnames : List[A], 
+  def cnstrIndContext[A, V<: Term, U <: Term](f : => (FuncTerm[Term, Term]), 
+      ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V], 
       Xs :  Term => Typ[V])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
     ptn match {
@@ -404,8 +404,8 @@ object Context{
   }
   
   
-  @tailrec def cnstrSimpleContext[A, V<: Term]( 
-      ptn : PolyPtn, varnames : List[A], 
+  def cnstrSimpleContext[A, V<: Term, U <: Term]( 
+      ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
       case tp: TypPtn[_] => simpleContextChange(tp, varnames.head, W)(ctx)

@@ -701,8 +701,8 @@ object HoTT{
 	/*
 	 * A simple pattern, for inductive type constructors as well as type families.
 	 */
-	trait TypPtn[U <: Term] extends PolyPtn with TypSeq[U, Term]{
-	  	 type PtnType = U
+	trait TypPtn[U <: Term] extends PolyPtn[U] with TypSeq[U, Term]{
+//	  	 type PtnType = U
 	  	 
 	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
 	  	  
@@ -714,12 +714,12 @@ object HoTT{
 	/*
 	 * A composite pattern for inductive types.
 	 */
-	trait PolyPtn{
-	  def -->:[V <: Term](that : TypPtn[V]) = FuncPtn(that, this)
+	trait PolyPtn[+U <: Term]{
+//	  def -->:[V <: Term : TypeTag](that : TypPtn[V]) = FuncPtn(that, this)
 	  
 	  def apply(tp : Typ[Term]) : Typ[PtnType]
 	  
-	  type PtnType <: Term
+	  type PtnType = U
 	  
 	  val univLevel : Int
 	 
@@ -731,7 +731,7 @@ object HoTT{
 	  
 	}
 
-	case object IdW extends PolyPtn with TypPtn[Term]{
+	case object IdW extends  TypPtn[Term]{
 	  def apply(W : Typ[Term]) = W
 	  
 	  val univLevel = 0
@@ -754,16 +754,16 @@ object HoTT{
 	}
 	*/
 	
-	case class FuncPtn[V <: Term](tail: TypPtn[V], head : PolyPtn) extends PolyPtn{
-	  type PtnType = FuncTerm[Term, head.PtnType]
+	case class FuncPtn[U<:Term : TypeTag, V <: Term](tail: TypPtn[V], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+//	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail(W), head(W))
 	  
 	  val univLevel = max(head.univLevel, tail.univLevel)
 	}
 	
-	case class CnstFncPtn(tail: Typ[Term], head : PolyPtn) extends PolyPtn{
-	  type PtnType = FuncTerm[Term, head.PtnType]
+	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+//	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
@@ -792,24 +792,28 @@ object HoTT{
 	}
 	
 	
-	case class DepFuncPtn[V <: Term : TypeTag](tail: TypPtn[V], headfibre : Term => PolyPtn, headlevel: Int = 0) extends PolyPtn{
-	  def apply(W : Typ[Term]) = {
-	    val fiber = typFamilyDefn[Term, Term](tail(W), Universe(0),  (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, Term](fiber)
+	case class DepFuncPtn[U <: Term : TypeTag,V <: Term : TypeTag](tail: TypPtn[V], headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
+	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
+	    val head = headfibre(W.symbObj(""))
+	    val fiber = typFamilyDefn[Term, U](tail(W), MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
+	    PiTyp[Term, U](fiber)
 	  }
 	  
-	  type PtnType = Term
+	  
+	  
+//	  type PtnType = Term
 	  
 	  val univLevel = max(tail.univLevel, headlevel)
 	}
 	
-	case class CnstDepFuncPtn(tail: Typ[Term], headfibre : Term => PolyPtn, headlevel: Int = 0) extends PolyPtn{
-	  def apply(W : Typ[Term]) = {
-	    val fiber = typFamilyDefn[Term, Term](tail, Universe(0),  (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, Term](fiber)
+	case class CnstDepFuncPtn[U <: Term : TypeTag](tail: Typ[Term], headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
+	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]] = {
+	    val head = headfibre(tail.symbObj(""))
+	    val fiber = typFamilyDefn[Term, U](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
+	    PiTyp[Term, U](fiber)
 	  }
 	  
-	  type PtnType = Term
+//	  type PtnType = Term
 	  
 	  val univLevel = headlevel
 	}
@@ -849,20 +853,32 @@ object HoTT{
 //	  require(cons.typ == pattern(typ))
 //	}
 	
-	abstract class Constructor(val pattern : PolyPtn, val typ: Typ[Term]){
-	  val cons: pattern.PtnType
+	trait Constructor{
+	  type PtnType <: Term
+	  
+	  val pattern : PolyPtn[PtnType];
+	  val typ: Typ[Term]
+	  
+	  val cons: PtnType
 	}
 	
+	case class ConstructorDefn[U <: Term](pattern: PolyPtn[U], typ: Typ[Term], cons: U) extends Constructor{
+	  type PtnType = U
+	}
+	
+	/*
 	object Constructor{
 	  def apply(pattern : PolyPtn, typ: Typ[Term])(f : pattern.PtnType) = new Constructor(pattern, typ) {
 	    
 	    val cons = f.asInstanceOf[pattern.PtnType]
 	  }
 	}
+	* 
+	*/
 	
 	
 	trait InductiveTyp extends Typ[Term]{
-	  val ptns : List[PolyPtn] = constructors map (_.pattern)
+	  val ptns : List[PolyPtn[Term]] = constructors map (_.pattern)
 	  
 	  val constructorFns : List[Term] = constructors map (_.cons)
 	  
@@ -871,6 +887,7 @@ object HoTT{
 	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 	}
 	
+	/*
 	class InductiveTypDefn[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTyp{
 	  type Obj = Term
 	  
@@ -888,7 +905,7 @@ object HoTT{
 	  
 	  def symbObj[A](name: A): Term = SymbObj(name, this)
 	} 
-	
+	*/
 
 	
 	val x = 'x' :: __
