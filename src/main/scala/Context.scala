@@ -539,25 +539,6 @@ object Context{
   case class IndSymbol(W : Typ[Term], Xs : Term => Typ[Term])
   
   
-  trait PolyPtnInstance[D]{
-    
-    def apply(tp: Typ[Term]) : Typ[Term]
-  }
   
-  case class TypPtnInstance[D](ptn: TypPtn[Term], arg: D) extends PolyPtnInstance[D]{
-    def apply(tp: Typ[Term]) : Typ[Term] = ptn(tp)
-  }
-  
-  case class FuncTypPtnInstance[D](head: TypPtnInstance[D], tail: TypPtnInstance[D]) extends PolyPtnInstance[D]{
-    def apply(tp: Typ[Term]) = FuncTyp(head(tp), tail(tp))
-   
-  }
-  
-  case class CnstFuncTypPtnInstance[D](tail: Typ[Term], headfibre: Term => PolyPtnInstance[D]) extends PolyPtnInstance[D]{
-    def apply(W : Typ[Term]) = {
-	    val fiber = typFamilyDefn[Term, Term](tail, Universe(0),  (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, Term](fiber)
-	  }
-  }
 }
 
