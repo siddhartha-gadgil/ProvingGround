@@ -866,13 +866,14 @@ object HoTT{
 	trait Constructor{
 	  type PtnType <: Term
 	  
-	  val pattern : PolyPtn[PtnType];
-	  val typ: Typ[Term]
+	  val pattern : PolyPtn[PtnType]
+	  
+//	  val typ: Typ[Term]
 	  
 	  val cons: PtnType
 	}
 	
-	case class ConstructorDefn[U <: Term](pattern: PolyPtn[U], typ: Typ[Term], cons: U) extends Constructor{
+	case class ConstructorDefn[U <: Term](pattern: PolyPtn[U], cons: U) extends Constructor{
 	  type PtnType = U
 	}
 	
@@ -916,7 +917,77 @@ object HoTT{
 	  def symbObj[A](name: A): Term = SymbObj(name, this)
 	} 
 	*/
+	
+	trait PolyPtnInstance[D <: Term, +U <: Term]{
+    
+		def apply(tps: D => Typ[Term]) : Typ[PolyPtnType]
+		
+		type PolyPtnType = U
+	}
+  
+	case class TypPtnInstance[D <: Term](ptns: D => TypPtn[Term], arg: D) extends PolyPtnInstance[D, Term]{
+		def apply(tps: D => Typ[Term]) : Typ[Term] = ptns(arg)(tps(arg))
+	}
+  
+	case class FuncPtnInstance[D <: Term, U <: Term : TypeTag](tail: TypPtnInstance[D], head: PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term, U]]{
+		def apply(tps: D => Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(tps), head(tps))
+   
+	}
+  
+	
+	case class CnstDepFuncPtnInstance[D <: Term, +U <: Term : TypeTag](tail: Typ[Term], headfibre: Term => PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term,U]]{
+		def apply(Ws : D => Typ[Term]) : Typ[FuncTerm[Term, U]] = {
+			val head = headfibre(tail.symbObj(""))
+			val fiber = typFamilyDefn[Term, U](tail, MiniVerse(head(Ws)),  (t : Term) => headfibre(t)(Ws))
+					PiTyp[Term, U](fiber)
+		}
+	}
+	
+	case class CnstFuncPtnInstance[D <: Term, U <: Term : TypeTag](tail: Typ[Term], head: PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term, U]]{
+		def apply(tps: D => Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(tps))
+   
+	}
+  
+	
+	case class DepFuncPtnInstance[D <: Term, +U <: Term : TypeTag](tail: TypPtnInstance[D], headfibre: Term => PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term,U]]{
+		def apply(Ws : D => Typ[Term]) : Typ[FuncTerm[Term, U]] = {
+			val head = headfibre(tail(Ws).symbObj(""))
+			val fiber = typFamilyDefn[Term, U](tail(Ws), MiniVerse(head(Ws)),  (t : Term) => headfibre(t)(Ws))
+					PiTyp[Term, U](fiber)
+		}
+	}
 
+	trait ConstructorFmly[D <: Term]{
+	  type PtnType <: Term
+	  
+	  type DomType = D
+	  
+//	  val domain : Typ[DomType]
+	  
+	  val pattern : PolyPtnInstance[DomType, PtnType]
+	  
+	  
+	  val cons: PtnType
+	}
+	
+	case class ConstructorFmlyDefn[D <: Term, U <: Term](domain: Typ[D], pattern: PolyPtnInstance[D, U], cons: U) extends ConstructorFmly[D]{
+	  type PtnType = U
+	  
+//	  type DomType = D
+	}
+	
+	trait InductiveTypFmly[D <: Term] extends (D => Typ[Term]){
+//	  val ptns : List[PolyPtn[Term]] = constructors map (_.pattern)
+	  
+//	  val constructorFns : List[Term] = constructors map (_.cons)
+	  
+	  val constructors : List[ConstructorFmly[D]]
+	  
+	  val domain: Typ[D]
+	  
+	}
+	
+	
 	
 	val x = 'x' :: __
 	
