@@ -344,13 +344,13 @@ object Context{
    * Change in context for a TypPatn (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
-  def recContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), 
-        W : Typ[V], X : Typ[V]) : (A, TypPtn[U], Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) => {
+  def recContextChange[A, V<: Term](f : => (FuncTerm[Term, Term]), 
+        W : Typ[V], X : Typ[V]) : (A, TypPtnLike, Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
     ctx lmbda(x) lmbda(ptn.induced(W, X)(f)(x))
   }
   
-  def simpleContextChange[A, U <: Term, V<: Term](W : Typ[V]) : (A, TypPtn[U], Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) => {
+  def simpleContextChange[A, V<: Term](W : Typ[V]) : (A, TypPtnLike, Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
     ctx lmbda(x)
   }
@@ -358,13 +358,13 @@ object Context{
     /*
    * Change in context  for Induction for a TypPattern - check
    */
-  def indContextChange[A, U <: Term, V<: Term](f : => (FuncTerm[Term, Term]), 
-      W : Typ[V], Xs : Term => Typ[V]) : (A, TypPtn[U], Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) =>   {
+  def indContextChange[A, V<: Term](f : => (FuncTerm[Term, Term]), 
+      W : Typ[V], Xs : Term => Typ[V]) : (A, TypPtnLike, Context[A, Term, V]) => Context[A, Term, V] = (varname, ptn, ctx) =>   {
     val x =  ptn(W).symbObj(varname)
     ctx lmbda(x) lmbda(ptn.inducedDep(W, Xs)(f)(x))
   }
       
-  private type Change[A, U <: Term, V <: Term] = (A, TypPtn[U], Context[A, Term, V]) => Context[A, Term, V]
+  private type Change[A, V <: Term] = (A, TypPtnLike, Context[A, Term, V]) => Context[A, Term, V]
   
   /*
    * The context, recursively defined, for the constructor of a single context.
@@ -373,9 +373,9 @@ object Context{
   def cnstrContext[A, V<: Term](
       ptn : PolyPtn[Term], varnames : List[A], 
       W : Typ[V], 
-      change: Change[A, Term, V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
+      change: Change[A, V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
     ptn match {
-      case tp: TypPtn[Term] => change(varnames.head, tp, ctx)
+      case tp: TypPtnLike => change(varnames.head, tp, ctx)
       case FuncPtn(tail, head) => cnstrContext(head, varnames.tail, W, change)(change(varnames.head, tail, ctx))
       case CnstFncPtn(tail : Typ[_], head) => cnstrContext(head, varnames.tail, W, change)( ctx lmbda(tail.symbObj(varnames.head)))
       case DepFuncPtn(tail, headfibre , _) =>
@@ -391,7 +391,7 @@ object Context{
       ptn : PolyPtn[Term], varnames : List[A], 
       W : Typ[V], 
       X : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
-    val change = recContextChange[A, Term, V](f, W, X)
+    val change = recContextChange[A, V](f, W, X)
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
@@ -399,7 +399,7 @@ object Context{
       ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V], 
       Xs :  Term => Typ[V])(ctx: Context[A, Term, V]) : Context[A, Term, V] = {
-    val change = indContextChange[A, Term, V](f, W, Xs)
+    val change = indContextChange[A, V](f, W, Xs)
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
@@ -407,7 +407,7 @@ object Context{
   def cnstrSimpleContext[A, V<: Term, U <: Term]( 
       ptn : PolyPtn[U], varnames : List[A], 
       W : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {
-		  val change = simpleContextChange[A, Term, V](W)
+		  val change = simpleContextChange[A, V](W)
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
   

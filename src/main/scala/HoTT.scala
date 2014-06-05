@@ -701,12 +701,22 @@ object HoTT{
 	/*
 	 * A simple pattern, for inductive type constructors as well as type families.
 	 */
-	trait TypPtn[U <: Term] extends PolyPtn[U] with TypSeq[U, Term]{
-//	  	 type PtnType = U
+	trait TypPtn[U <: Term] extends TypPtnLike with TypSeq[U, Term]{
+	  	 type PtnType = U
 	  	 
 	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
 	  	  
 	  	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
+	}
+	
+	trait TypPtnLike extends PolyPtn[Term]{
+	  	 type PtnType <:  Term
+	  	 
+	  	 def apply(tp : Typ[Term]) : Typ[PtnType]
+	  	 
+	  	 def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
+	  	  
+	  	 def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
 	
@@ -717,9 +727,9 @@ object HoTT{
 	trait PolyPtn[+U <: Term]{
 //	  def -->:[V <: Term : TypeTag](that : TypPtn[V]) = FuncPtn(that, this)
 	  
-	  def apply(tp : Typ[Term]) : Typ[PtnType]
+	  def apply(tp : Typ[Term]) : Typ[PolyPtnType]
 	  
-	  type PtnType = U
+	  type PolyPtnType = U
 	  
 	  val univLevel : Int
 	 
@@ -754,10 +764,10 @@ object HoTT{
 	}
 	*/
 	
-	case class FuncPtn[U<:Term : TypeTag, V <: Term](tail: TypPtn[V], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+	case class FuncPtn[U<:Term : TypeTag](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
-	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail(W), head(W))
+	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
 	  
 	  val univLevel = max(head.univLevel, tail.univLevel)
 	}
@@ -765,7 +775,7 @@ object HoTT{
 	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
-	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
+	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(W))
 	  
 	  val univLevel = head.univLevel
 	}
@@ -792,7 +802,7 @@ object HoTT{
 	}
 	
 	
-	case class DepFuncPtn[U <: Term : TypeTag,V <: Term : TypeTag](tail: TypPtn[V], headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
+	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
 	    val head = headfibre(W.symbObj(""))
 	    val fiber = typFamilyDefn[Term, U](tail(W), MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
