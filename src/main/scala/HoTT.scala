@@ -99,7 +99,7 @@ object HoTT{
 //        def subs(x: Term, y: Term) : Typ[U]
         
         // Template for a method allowing covariance. 
-        def -->:[W <: Term : TypeTag, V<: Typ[W], UU >: U <: Term : TypeTag](that : V) = FuncTyp[W, UU](that, this)
+        def ->:[W <: Term : TypeTag, UU >: U <: Term : TypeTag](that : Typ[W]) = FuncTyp[W, UU](that, this)
         
         def :::(that: Term) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
     }
@@ -128,7 +128,7 @@ object HoTT{
     
     /** Constructing symbolic objects that are Term but no more refined*/
     case class SymbObj[A, +U<: Term](name: A, typ: Typ[U]) extends Term with Symbolic[A]{
-      override def toString = name.toString+" : "+typ.toString
+      override def toString = "("+name.toString+" : "+typ.toString+")"
       
       def subs(x: Term, y: Term) = this match {
         case applptnterm(func, arg) => 
@@ -147,7 +147,7 @@ object HoTT{
       
       def symbObj[B](name: B) = SymbObj(name, this)
       
-      override def toString = name.toString+" : "+typ.toString
+      override def toString = "("+name.toString+" : "+typ.toString+")"
       
       def elem = this
       
@@ -235,7 +235,7 @@ object HoTT{
       
       def symbObj[A](name: A)= SymbTyp(name)
       
-      val __ = symbObj(None)
+      val __ = symbObj(())
       
       def subs(x : Term, y : Term) = this
     }
@@ -318,7 +318,7 @@ object HoTT{
       
 	  def symbObj[A](name: A) = FuncSymb[A, W, U](name, dom, codom)
 	  
-	  override def toString = dom.toString + " -> " + codom.toString
+	  override def toString = "("+dom.toString + " -> " + codom.toString+")"
 	  
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
@@ -532,13 +532,16 @@ object HoTT{
 	/** Lambda constructor
 	 *  
 	 */		
-	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) = Lambda(variable, value)
+	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncTerm[U, V] = Lambda(variable, value)
 	
 	def optlambda(variable: Term) : Term => Term = value =>
 	  {
 	  	    if (subObjs(value) contains variable)  lambda(variable)(value) else value
 	  }
 	
+	implicit class TermOps[U <: Term : TypeTag](value: Term){
+	  def :->[V <: Term with Subs[V] : TypeTag](that : V) = lambda(this.value)(that)
+	}
 	
 	/** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]
 	 *  Unable to specify that the codomain is a universe, which is needed for extracting the level.
@@ -725,11 +728,16 @@ object HoTT{
 	 * A composite pattern for inductive types.
 	 */
 	trait PolyPtn[+U <: Term]{
-//	  def -->:[V <: Term : TypeTag](that : TypPtn[V]) = FuncPtn(that, this)
+	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)
 	  
 	  def apply(tp : Typ[Term]) : Typ[PolyPtnType]
 	  
 	  type PolyPtnType = U
+	  
+	  def constructor[A](tp: Typ[Term], name: A) : Constructor = {
+	    val cons = apply(tp).symbObj(name)
+	    ConstructorDefn(this, cons)
+	  }
 	  
 	  val univLevel : Int
 	 
@@ -898,15 +906,15 @@ object HoTT{
 	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 	}
 	
-	/*
-	class InductiveTypDefn[A](symptns : List[(A, PolyPtn)]) extends Typ[Term] with InductiveTyp{
+	
+	class InductiveTypDefn[A](symptns : List[(A, PolyPtn[Term])]) extends Typ[Term] with InductiveTyp{
 	  type Obj = Term
 	  
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
 	  
 //	  val ptns = for ((a, p) <- symptns) yield p
 	  
-	  val constructors = for ((name, ptn) <- symptns) yield Constructor(ptn, this)(ptn(this).symbObj(name)) 
+	  lazy val constructors = for ((name, ptn) <- symptns) yield ptn.constructor(this, name) 
 	  
 	  val univLevel = (ptns map (_.univLevel)).max
 	  
@@ -916,7 +924,6 @@ object HoTT{
 	  
 	  def symbObj[A](name: A): Term = SymbObj(name, this)
 	} 
-	*/
 	
 	trait PolyPtnInstance[D <: Term, +U <: Term]{
     
@@ -927,6 +934,15 @@ object HoTT{
   
 	case class TypPtnInstance[D <: Term](ptns: D => TypPtn[Term], arg: D) extends PolyPtnInstance[D, Term]{
 		def apply(tps: D => Typ[Term]) : Typ[Term] = ptns(arg)(tps(arg))
+		
+		def induced(W : D => Typ[Term], X : Typ[Term])(f : Term => Term) : Term => Term = {
+		  ptns(arg).induced(W(arg), X)(f)
+		}
+	  	  
+	  	def inducedDep(W : D => Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : Term => Term ={
+	  	  ptns(arg).inducedDep(W(arg), Xs)(f)
+	  	}
+		
 	}
   
 	case class FuncPtnInstance[D <: Term, U <: Term : TypeTag](tail: TypPtnInstance[D], head: PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term, U]]{
