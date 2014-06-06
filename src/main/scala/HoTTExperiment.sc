@@ -91,4 +91,6 @@ object HoTTExperiment {
 	xy.typ                                    //> res6: provingGround.HoTT.Typ[provingGround.HoTT.Term] = ((X : Universe(0)) -
                                                   //| > (Y : Universe(0)))
 	xy(x).typ                                 //> res7: provingGround.HoTT.Typ[provingGround.HoTT.Term] = (Y : Universe(0))
+	MPall(X)(Y).typ                           //> res8: provingGround.HoTT.Typ[provingGround.HoTT.Term] = ((A : Universe(0)) -
+                                                  //| > (((A : Universe(0)) -> (B : Universe(0))) -> (B : Universe(0))))
 }
