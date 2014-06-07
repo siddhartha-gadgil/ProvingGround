@@ -4,6 +4,9 @@ import play.api._
 import play.api.mvc._
 import provingGround.Logic._
 
+import play.api.data._
+import play.api.data.Forms._
+
 
 // Play Json imports
 import play.api.libs.json._
@@ -31,4 +34,32 @@ object Application extends Controller {
           Ok.feed(dstbnout &> EventSource()).as("text/event-stream")
       }
   }
+  
+  val (bounceOut, bounceChannel) = Concurrent.broadcast[String]
+  
+  def bouncestream = Action {
+      implicit request => {                   
+          Ok.feed(bounceOut &> EventSource()).as("text/event-stream")
+      }
+  }
+  
+  case class bouncePair(value: String, mult: Int){
+    def send = (0 to mult) foreach ((_) => bounceChannel.push(value))
+  }
+  
+  val bounceForm = Form(
+      mapping(
+          "value" -> text,
+          "mult" -> number)
+          (bouncePair.apply)(bouncePair.unapply)
+          )
+          
+  def bounce = Action {
+    implicit request =>
+      val p = bounceForm.bindFromRequest.get
+      bounceChannel.push("tick")
+      p.send
+      Ok("bounced")    
+  }
+
 }

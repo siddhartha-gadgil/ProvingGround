@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html ng-app>
   <head>
     <meta charset="utf-8">
     <title>ProvingGround</title>
@@ -25,7 +25,25 @@ MathJax.Hub.Config({
   <body>
     <h1>ProvingGround</h1>
     
-    <p>Hello world from Dart!$x^y+y^x$</p>
+    <p>Hello world from Dart!</p>
+    <div bouncer>
+    <form action="../../bounce" method="POST">
+    <input type="text" name="value" ng-model="bnc.value">
+    <input type="number" name="mult" ng-model="bnc.mult">
+    <button type="button" ng-click="bnc.push()">Bounce</button>
+    <input type="submit" value="Bounce">
+    </form>
+    <span ng-repeat="b in bnc.bounces">{{b}}</span>
+    <div>{{bnc.mult}}</div>
+        <div>
+    Logs:<UL>
+    <li ng-repeat="l in bnc.logs">{{l}}
+    </UL>
+    Raw: {{bnc.logs}}
+    </div>
+    
+    </div>
+
     
     <div id="sample_container_id">
       <p id="sample_text_id">Click me!</p>

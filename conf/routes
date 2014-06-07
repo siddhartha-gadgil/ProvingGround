@@ -15,3 +15,7 @@ GET     /packages/*file               controllers.Assets.at(path="/packages", fi
 GET     /build/*file               controllers.Assets.at(path="/build", file)
 
 GET     /dstbnstream               controllers.Application.dstbnstream 
+
+GET		/bouncestream				controllers.Application.bouncestream
+
+POST	/bounce						controllers.Application.bounce

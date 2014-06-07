@@ -41,6 +41,41 @@ String uniword (List<int> lets) => lets.map(unilet).fold("", (a, b) => a + b);
 
 EventSource dstbnsrc;
 
+EventSource bouncesrc;
+
+
+@Controller(
+    selector:"[bouncer]",
+    publishAs : 'bnc')
+class BounceController{
+  String value;
+  num mult;
+  List<String> bounces=["init"];
+  List<String> logs =["started"];
+  
+  void push(){
+    logs.add("pushed");
+    var map = {"value" : value, 'mult' : mult.toString()};
+    HttpRequest.postFormData("../../bounce", map)
+    .then((resp){
+      logs.add(resp.responseText);
+      })
+    .catchError((e){
+      logs.add("could not push");
+    });
+  }
+  
+  BounceController(){
+    bounces.add(";create");
+    bouncesrc = new EventSource("../../bouncestream")
+          ..onMessage.listen((event){
+      bounces.add(event.data);
+      logs.add("tick");
+        });
+  }
+}
+
+
 @Controller (
     selector: "[ACdistribution]",
     publishAs : "dstbn")
@@ -67,7 +102,7 @@ class ACDstbnController{
 
 class MyAppModule extends Module {
   MyAppModule() {
-    type(ACDstbnController);
+    bind(BounceController);
   }
 }
 
