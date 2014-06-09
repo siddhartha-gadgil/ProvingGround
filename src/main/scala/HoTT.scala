@@ -155,10 +155,11 @@ object HoTT{
       val applptntypu = ApplnPattern[Term, Typ[Term]]()
       
       // Change this to remove first case after checking
-      def subs(x: Term, y: Term) = name match {
-        case fa: FormalTypAppl[w, _] => 
+      def subs(x: Term, y: Term) = (x, y, name) match {
+        case (u: Typ[_], v: Typ[_], _) if (u == this) => v
+        case (_, _, fa: FormalTypAppl[w, _]) => 
           fa.func.subs(x, y)(fa.arg.subs(x,y).asInstanceOf[w])
-        case applptntypu(func, arg) => func.subs(x,y)(arg.subs(x, y))
+        case (_, _,applptntypu(func, arg)) => func.subs(x,y)(arg.subs(x, y))
         case _ => this
       }
     }
@@ -238,6 +239,8 @@ object HoTT{
       val __ = symbObj(())
       
       def subs(x : Term, y : Term) = this
+      
+      override def toString = "_"
     }
     
     def univlevel: Typ[Typ[Term]] => Int = {
@@ -405,7 +408,13 @@ object HoTT{
       
       def action(arg: dom.Obj) = codom.symbObj(ApplnSym(this, arg)).asInstanceOf[codom.Obj]
       
-      def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncObj[W, U]] else this
+      def subs(x: Term, y: Term) = (x, y, name) match {
+        case (u: Typ[_], v: Typ[_], _) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+        case (u, v: FuncObj[W, U], _) if (u == this) => v
+        case _ => this
+      }
+      
+      override def toString = "("+name.toString+" : "+typ.toString+")"
     }
 	
     trait FormalAppl[W <: Term, U <: Term]{
@@ -492,10 +501,10 @@ object HoTT{
 	  
 	  val dom = variable.typ
 	  
-	  
+	  override def toString = "("+variable.toString+") |-> "+value.toString
 	  
 	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
-	    val fibre = (t : Term) => value.typ subs (x, t)
+	    val fibre = (t : Term) => value.typ subs (variable, t)
 	    
 	    val family = typFamilyDefn[Term, Term](variable.typ, value.typ.typ, fibre)
 	    PiTyp(family)
@@ -504,13 +513,23 @@ object HoTT{
 	  
 	  def apply(arg: X) = value.subs(variable, arg)
 	  
-	  def subs(x: Term, y: Term) = Lambda(variable.subs(x,y), value.subs(x, y))
+	  def subs(x: Term, y: Term) = (x, y) match {
+		    case (u : Typ[_], v : Typ[_]) if (typ.subs(u, v) != typ) => 
+		      val newvar = changeTyp(variable, typ.subs(u, v))
+		      Lambda(newvar , value.subs(x,y))
+		    case _ => Lambda(variable.subs(x,y), value.subs(x, y))
+		  }
 	  
 	  object myvar extends TmpTerm
 	  
 	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myvar), f(value.subs(variable, myvar)))
 	  
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
+	}
+	
+	def changeTyp(term: Term, newtyp : Typ[Term]) : Term = term match {
+	  case sym : Symbolic[_] => newtyp.symbObj(sym.name)
+	  case _ => newtyp.symbObj(term)
 	}
 	
 	def instantiate(substitutions : Term => Option[Term], target: Typ[Term]) : Term => Option[Term] = {
@@ -931,8 +950,12 @@ object HoTT{
 		
 		type PolyPtnType = U
 	}
+	
+
   
 	case class TypPtnInstance[D <: Term](ptns: D => TypPtn[Term], arg: D) extends PolyPtnInstance[D, Term]{
+		val ptn = ptns(arg)
+	  
 		def apply(tps: D => Typ[Term]) : Typ[Term] = ptns(arg)(tps(arg))
 		
 		def induced(W : D => Typ[Term], X : Typ[Term])(f : Term => Term) : Term => Term = {
@@ -950,7 +973,7 @@ object HoTT{
    
 	}
   
-	
+	/*
 	case class CnstDepFuncPtnInstance[D <: Term, +U <: Term : TypeTag](tail: Typ[Term], headfibre: Term => PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term,U]]{
 		def apply(Ws : D => Typ[Term]) : Typ[FuncTerm[Term, U]] = {
 			val head = headfibre(tail.symbObj(""))
@@ -958,6 +981,7 @@ object HoTT{
 					PiTyp[Term, U](fiber)
 		}
 	}
+	*/
 	
 	case class CnstFuncPtnInstance[D <: Term, U <: Term : TypeTag](tail: Typ[Term], head: PolyPtnInstance[D, U]) extends PolyPtnInstance[D, FuncTerm[Term, U]]{
 		def apply(tps: D => Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(tps))
@@ -980,13 +1004,13 @@ object HoTT{
 	  
 //	  val domain : Typ[DomType]
 	  
-	  val pattern : PolyPtnInstance[DomType, PtnType]
+	  val pattern : TypPtnInstance[DomType]
 	  
 	  
 	  val cons: PtnType
 	}
 	
-	case class ConstructorFmlyDefn[D <: Term, U <: Term](domain: Typ[D], pattern: PolyPtnInstance[D, U], cons: U) extends ConstructorFmly[D]{
+	case class ConstructorFmlyDefn[D <: Term, U <: Term](domain: Typ[D], pattern: TypPtnInstance[D], cons: U) extends ConstructorFmly[D]{
 	  type PtnType = U
 	  
 //	  type DomType = D
@@ -1005,9 +1029,9 @@ object HoTT{
 	
 	
 	
-	val x = 'x' :: __
+//	val x = 'x' :: __
 	
-	val y = "y" :: x
+//	val y = "y" :: x
 	
 	/** Symbol factory */	
 	def nextChar(s: Set[Char]) = if (s.isEmpty) 'a' else (s.max + 1).toChar
