@@ -133,7 +133,8 @@ object HoTT{
       def subs(x: Term, y: Term) = this match {
         case applptnterm(func, arg) => 
           func.subs(x,y)(arg.subs(x, y))
-        case _ => this
+        case `x` => y
+        case _ => SymbObj(name, typ.subs(x, y))
       }
     } 
     
@@ -514,8 +515,8 @@ object HoTT{
 	  def apply(arg: X) = value.subs(variable, arg)
 	  
 	  def subs(x: Term, y: Term) = (x, y) match {
-		    case (u : Typ[_], v : Typ[_]) if (typ.subs(u, v) != typ) => 
-		      val newvar = changeTyp(variable, typ.subs(u, v))
+		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) => 
+		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
 		      Lambda(newvar , value.subs(x,y))
 		    case _ => Lambda(variable.subs(x,y), value.subs(x, y))
 		  }
