@@ -106,7 +106,7 @@ object HoTT{
           PiTyp(fiber)
         }
         
-        def :::(that: Term) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
+//        def :::(that: Term) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
     }
     
     
@@ -818,6 +818,15 @@ object HoTT{
 	trait PolyPtn[+U <: Term]{
 	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)
 	  
+	  def -->:[UU >: U <: Term : TypeTag](that : Typ[Term])(implicit self : Typ[Term]) : PolyPtn[FuncTerm[Term, UU]] = {
+	    if (that == self) FuncPtn[UU](IdW, this) else CnstFncPtn[UU](that, this) 
+	  }
+	  
+	  def :::[A](name : A)(implicit mytyp: Typ[Term]) : Constructor = {
+	    val cons = this(mytyp).symbObj(name)
+	    ConstructorDefn(this, cons)
+	  }
+	  
 	  def apply(tp : Typ[Term]) : Typ[PolyPtnType]
 	  
 	  type PolyPtnType = U
@@ -992,6 +1001,10 @@ object HoTT{
 	  val constructors : List[Constructor]
 	  
 	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
+	  
+	  implicit def thisAsPtn(me :this.type): PolyPtn[Term] = IdW
+	  
+	  implicit val self: Typ[Term] = this
 	}
 	
 	
