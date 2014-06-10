@@ -60,7 +60,7 @@ object HoTT{
 //      case obj: FormalApplication[_,_,_] => subObjs(obj.arg) ::: subObjs(obj.func)
       case eq: IdentityTyp[_] => subObjs(eq.lhs) ::: subObjs(eq.rhs)
       case fnTyp : FuncTyp[_, _] => subObjs(fnTyp.dom) ::: subObjs(fnTyp.codom) 
-      case Lambda(variable, value : Term, _) => subObjs(value) map (lambda(variable))
+      case Lambda(variable, value : Term) => subObjs(value) map (lambda(variable))
       case PiTyp(fibers) => subObjs(fibers)
       case SigmaTyp(fibers) => subObjs(fibers)
 //      case fx: FormalAppl[_,_] => subObjs(fx.func) ::: subObjs(fx.arg)
@@ -373,9 +373,9 @@ object HoTT{
     /*
      * A formal function term, no non-trivial substitutions. Can be a dependent function.
      */
-    trait FormalFuncTerm[-W <: Term, +U <: Term] extends FuncTerm[W, U]{
-      def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncTerm[W, U]] else this
-    }
+//    trait FormalFuncTerm[-W <: Term, +U <: Term] extends FuncTerm[W, U]{
+//      def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncTerm[W, U]] else this
+//    }
     
 	/** a function, i.e.,  an object in a function type, has a codomain and a fixed type for the domain. */
     trait FuncObj[W<: Term, +U <: Term] extends FuncTerm[W, U]{
@@ -385,10 +385,12 @@ object HoTT{
 	  val codom: Typ[U]
 
 	  /** Action, i.e., function application */
-	  def action(arg:dom.Obj): codom.Obj 
+//	  def action(arg:dom.Obj): codom.Obj 
 	  
 	  /** Function application */
-	  def apply(arg: W) = action(arg.asInstanceOf[dom.Obj])
+//	  def apply(arg: W) = action(arg.asInstanceOf[dom.Obj])
+	
+	  def apply(arg: W) : codom.Obj
 	  
 	  def subs(x: Term, y : Term) : FuncObj[W, U]
 	  
@@ -407,7 +409,7 @@ object HoTT{
       
       lazy val typ = FuncTyp[W, U](dom, codom)
       
-      def action(arg: dom.Obj) = codom.symbObj(ApplnSym(this, arg)).asInstanceOf[codom.Obj]
+      def apply(arg: W) :codom.Obj = codom.symbObj(ApplnSym(this, arg)).asInstanceOf[codom.Obj]
       
       def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
@@ -466,7 +468,9 @@ object HoTT{
 	  
 //	  def act(arg: Term) = if (arg.typ == dom) Some(func(arg)) else None
 	  
-	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
+//	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
+	
+	  def apply(arg: W) = func(arg).asInstanceOf[codom.Obj]
 	  
 	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom, codom.subs(x, y))
 	}
@@ -495,7 +499,7 @@ object HoTT{
 	 *  Check: Is this the type? It may be a dependent type.
 	 *  The below is a lambda defined function.
 	 */
-	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y, dep : Boolean = false) extends FuncTerm[X, Y]{
+	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends FuncTerm[X, Y]{
 	  val domobjtpe = typeOf[X]
 	  
 	  val codomobjtpe = typeOf[Y]
@@ -503,6 +507,12 @@ object HoTT{
 	  val dom = variable.typ
 	  
 	  override def toString = "("+variable.toString+") |-> "+value.toString
+	  
+	  object mysym
+	  
+	  val myvar = variable.typ.symbObj(mysym)
+	  
+	  val dep = value.subs(variable, myvar) != value
 	  
 	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
 	    val fibre = (t : Term) => value.typ subs (variable, t)
@@ -521,9 +531,9 @@ object HoTT{
 		    case _ => Lambda(variable.subs(x,y), value.subs(x, y))
 		  }
 	  
-	  object myvar extends TmpTerm
+	  object myv extends TmpTerm
 	  
-	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myvar), f(value.subs(variable, myvar)))
+	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myv), f(value.subs(variable, myvar)))
 	  
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
@@ -535,7 +545,7 @@ object HoTT{
 	
 	def instantiate(substitutions : Term => Option[Term], target: Typ[Term]) : Term => Option[Term] = {
 	  case t: Term if t.typ ==target => Some(t)
-	  case Lambda(variable, value : Term, _) => 
+	  case Lambda(variable, value : Term) => 
 	    substitutions(variable) flatMap ((cnst) => {  
 	      val reduced = (value.subs(variable, cnst))
 	       instantiate(substitutions, target)(reduced)})	   
@@ -605,6 +615,7 @@ object HoTT{
 	  override def symbObj[A](name: A) = DepFuncSymb[A, W, U](name, fibers)
 	  
 	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.subs(x, y))
+	  
 	}
 	
 	/** Exists/Sum for a type family */
@@ -635,7 +646,8 @@ object HoTT{
 	
 	/** A formal dependent function, with application symbolic
 	 *  
-	 */
+	 *  
+	 
 	trait FormalDepFunc[W<: Term with Subs[W],  U<: Term with Subs[U]] extends DepFuncObj[W, U] with FormalFuncTerm[W, U]{
 //	  def act(arg: W) = if (arg.typ == fibers.dom) {
 //	    val typ =fibers(arg) 
@@ -646,9 +658,9 @@ object HoTT{
 	  
 	  def action(arg: fibers.dom.Obj) = fibers(arg).symbObj(FormalDepApplication[W, U](this, arg)).asInstanceOf[U]
 	}
+	*/
 	
-	
-	case class DepFuncSymb[A, W<: Term : TypeTag,  U<: Term : TypeTag](name: A, fibers: TypFamily[W, U]) extends DepFuncObj[W, U] with FormalFuncTerm[W, U] with Symbolic[A]{
+	case class DepFuncSymb[A, W<: Term : TypeTag,  U<: Term : TypeTag](name: A, fibers: TypFamily[W, U]) extends DepFuncObj[W, U] with Symbolic[A]{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -658,6 +670,12 @@ object HoTT{
 	  lazy val typ = PiTyp(fibers)
 	  
 	  def action(arg: fibers.dom.Obj) = fibers(arg).symbObj(ApplnSym(this, arg)).asInstanceOf[U]
+	  
+	  def subs(x: Term, y: Term) = (x, y, name) match {
+        case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.subs(u, v))
+        case (u, v: FuncObj[W, U], _) if (u == this) => v
+        case _ => this
+      }
 	}
 	
 	/** A symbol capturing formal application
