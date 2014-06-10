@@ -499,7 +499,7 @@ object HoTT{
 	 *  Check: Is this the type? It may be a dependent type.
 	 *  The below is a lambda defined function.
 	 */
-	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends FuncTerm[X, Y]{
+	abstract class LambdaLike[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends FuncTerm[X, Y]{
 	  val domobjtpe = typeOf[X]
 	  
 	  val codomobjtpe = typeOf[Y]
@@ -508,16 +508,14 @@ object HoTT{
 	  
 	  override def toString = "("+variable.toString+") |-> "+value.toString
 	  
-	  object mysym
-	  
-	  val myvar = variable.typ.symbObj(mysym)
-	  
-	  val dep = value.subs(variable, myvar) != value
+	  val dep : Boolean
 	  
 	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
 	    val fibre = (t : Term) => value.typ subs (variable, t)
 	    
-	    val family = typFamilyDefn[Term, Term](variable.typ, value.typ.typ, fibre)
+//	    val family = typFamilyDefn[Term, Term](variable.typ, value.typ.typ, fibre)
+	    
+	    val family : FuncObj[Term, Typ[Term]] = LambdaFixed(variable, value.typ)
 	    PiTyp(family)
 	  }
 		  else FuncTyp[Term,  Term](variable.typ , value.typ)
@@ -530,12 +528,40 @@ object HoTT{
 		      Lambda(newvar , value.subs(x,y))
 		    case _ => Lambda(variable.subs(x,y), value.subs(x, y))
 		  }
+	 
 	  
 	  object myv extends TmpTerm
 	  
-	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myv), f(value.subs(variable, myvar)))
+	  def andthen(f : Term => Term) = Lambda(variable.subs(variable, myv), f(value.subs(variable, myv)))
 	  
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
+	}
+	
+	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends LambdaLike(variable, value){
+	  object mysym
+	  
+	  val myvar = variable.typ.symbObj(mysym)
+	  
+	  val dep = value.typ.subs(variable, myvar) != value.typ
+	}
+	
+	case class LambdaFixed[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) 
+		extends LambdaLike(variable, value) with FuncObj[X, Y]{
+	  override val dom = variable.typ.asInstanceOf[Typ[X]]
+	  
+	  val codom = value.typ.asInstanceOf[Typ[Y]]
+	  
+	  val dep = false
+	  
+	  override def apply(arg : X) = super.apply(arg).asInstanceOf[codom.Obj]
+	  
+	  override	def subs(x: Term, y: Term) : FuncObj[X, Y] = (x, y) match {
+		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) => 
+		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
+		      LambdaFixed(newvar.asInstanceOf[X] , value.subs(x,y))
+		    case _ => LambdaFixed(variable.subs(x,y).asInstanceOf[X], value.subs(x, y))
+		  }
+	  
 	}
 	
 	def changeTyp(term: Term, newtyp : Typ[Term]) : Term = term match {

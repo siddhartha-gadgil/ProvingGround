@@ -43,7 +43,8 @@ object HoTTExperiment {
   Id(A)(a)                                        //> res3: provingGround.HoTT.Term with provingGround.HoTT.Subs[provingGround.HoT
                                                   //| T.Term] = (a : (A : _))
    
-  Id.typ                                          //> res4: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+  Id.typ                                          //> res4: provingGround.HoTT.Typ[provingGround.HoTT.Term] = PiTyp(((A : _)) |-> 
+                                                  //| ((A : _) -> (A : _)))
 	val MPall = {
 		val A = "A" :: __
 		val B = "B" :: __
@@ -67,7 +68,8 @@ object HoTTExperiment {
                                                   //| ,provingGround.HoTT.Term]],provingGround.HoTT.Term]]]] = ((A : _)) |-> ((B :
                                                   //|  _)) |-> ((a : (A : _))) |-> ((a->b : ((A : _) -> (B : _)))) |-> ((a->b : ((
                                                   //| A : _) -> (B : _)))((a : (A : _))) : (B : _))
-  MPall.typ                                       //> res5: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+  MPall.typ                                       //> res5: provingGround.HoTT.Typ[provingGround.HoTT.Term] = PiTyp(((A : _)) |-> 
+                                                  //| PiTyp(((B : _)) |-> ((A : _) -> (((A : _) -> (B : _)) -> (B : _)))))
 	val MP = {
 		val A = "A" :: __
 		val B = "B" :: __
@@ -85,7 +87,8 @@ object HoTTExperiment {
                                                   //| gGround.HoTT.Term]],provingGround.HoTT.Term]] = ((a : (A : _))) |-> ((a->b :
                                                   //|  ((A : _) -> (B : _)))) |-> ((a->b : ((A : _) -> (B : _)))((a : (A : _))) : 
                                                   //| (B : _))
-	MP.typ                                    //> res6: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+	MP.typ                                    //> res6: provingGround.HoTT.Typ[provingGround.HoTT.Term] = ((A : _) -> (((A : _
+                                                  //| ) -> (B : _)) -> (B : _)))
 
 	val X = "X" :: __                         //> X  : provingGround.HoTT.Typ[provingGround.HoTT.Term] with provingGround.HoTT
                                                   //| .Subs[provingGround.HoTT.Typ[provingGround.HoTT.Term]] = (X : _)
@@ -161,7 +164,8 @@ object HoTTExperiment {
                                                   //| > ((B : _)) |-> ((a : (A : _))) |-> ((a->b : ((A : _) -> (B : _)))) |-> ((a
                                                   //| ->b : ((A : _) -> (B : _)))((a : (A : _))) : (B : _))
 	
-	MPall.typ                                 //> res20: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+	MPall.typ                                 //> res20: provingGround.HoTT.Typ[provingGround.HoTT.Term] = PiTyp(((A : _)) |-
+                                                  //| > PiTyp(((B : _)) |-> ((A : _) -> (((A : _) -> (B : _)) -> (B : _)))))
 	
 	__.subs(A, X)                             //> res21: provingGround.HoTT.Universe = _
 	
@@ -226,7 +230,8 @@ object HoTTExperiment {
                                                   //|  : (X : _))) |-> ((a->b : ((X : _) -> (B : _)))) |-> ((a->b : ((X : _) -> (
                                                   //| B : _)))((a : (X : _))) : (B : _))
 	
-	MPall(X).typ                              //> res32: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+	MPall(X).typ                              //> res32: provingGround.HoTT.Typ[provingGround.HoTT.Term] = PiTyp(((B : _)) |-
+                                                  //| > ((X : _) -> (((X : _) -> (B : _)) -> (B : _))))
 	
 	MPall(X)(Y)                               //> res33: provingGround.HoTT.FuncTerm[provingGround.HoTT.Term with provingGrou
                                                   //| nd.HoTT.Subs[provingGround.HoTT.Term],provingGround.HoTT.FuncTerm[provingGr
@@ -236,9 +241,11 @@ object HoTTExperiment {
                                                   //| a->b : ((X : _) -> (Y : _)))) |-> ((a->b : ((X : _) -> (Y : _)))((a : (X : 
                                                   //| _))) : (Y : _))
 	
-	MPall(X)(Y).typ                           //> res34: provingGround.HoTT.Typ[provingGround.HoTT.Term] = Pi[<function1>]
+	MPall(X)(Y).typ                           //> res34: provingGround.HoTT.Typ[provingGround.HoTT.Term] = ((X : _) -> (((X :
+                                                  //|  _) -> (Y : _)) -> (Y : _)))
 	 
 	
-	
+	MPall.typ                                 //> res35: provingGround.HoTT.Typ[provingGround.HoTT.Term] = PiTyp(((A : _)) |-
+                                                  //| > PiTyp(((B : _)) |-> ((A : _) -> (((A : _) -> (B : _)) -> (B : _)))))
 	
 }
