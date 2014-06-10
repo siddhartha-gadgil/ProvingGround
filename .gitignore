@@ -28,7 +28,7 @@ target/
 
 .target/
 
-lib/
+lib/*.jar
 
 .idea/
 

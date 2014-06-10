@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:angular/application_factory.dart';
 import 'dart:convert';
+import 'package:ProvingGround/Components/bouncer.dart';
 
 // Temporary, please follow https://github.com/angular/angular.dart/issues/476
 @MirrorsUsed(override: '*')
@@ -103,6 +104,7 @@ class ACDstbnController{
 class MyAppModule extends Module {
   MyAppModule() {
     bind(BounceController);
+    bind(BounceComponent);
   }
 }
 

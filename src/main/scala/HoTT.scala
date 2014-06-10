@@ -101,6 +101,11 @@ object HoTT{
         // Template for a method allowing covariance. 
         def ->:[W <: Term : TypeTag, UU >: U <: Term : TypeTag](that : Typ[W]) = FuncTyp[W, UU](that, this)
         
+        def ~>:[UU >: U <: Term :  TypeTag](variable: Term) = {
+          val fiber = LambdaFixed[Term, Typ[UU]](variable, this)
+          PiTyp(fiber)
+        }
+        
         def :::(that: Term) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
     }
     
@@ -109,7 +114,23 @@ object HoTT{
       def subs(x: Term, y: Term) : Typ[U] = if (x == this) y.asInstanceOf[Typ[U]] else this
     }
     
-
+    
+    object SimpleSyms{
+    	val Arrow = "->"
+    	val MapsTo = "|->"
+    	val Pi ="Pi"
+    	val Sigma = "S"
+    }
+    
+    object UnicodeSyms{
+    	val Arrow = '\u27F6'.toString
+    	val MapsTo = "\u27FC"
+    	val Pi ="Pi"
+    	val Sigma = "S"
+    }
+    
+  //  import SimpleSyms._
+    import UnicodeSyms._
 
     /** traits that are given by name;
      *  does not include, for instance, pairs each of whose instance is given by a name;
@@ -148,7 +169,7 @@ object HoTT{
       
       def symbObj[B](name: B) = SymbObj(name, this)
       
-      override def toString = "("+name.toString+" : "+typ.toString+")"
+      override def toString = name.toString
       
       def elem = this
       
@@ -322,7 +343,7 @@ object HoTT{
       
 	  def symbObj[A](name: A) = FuncSymb[A, W, U](name, dom, codom)
 	  
-	  override def toString = "("+dom.toString + " -> " + codom.toString+")"
+	  override def toString = "("+dom.toString + Arrow + codom.toString+")"
 	  
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
@@ -506,7 +527,7 @@ object HoTT{
 	  
 	  val dom = variable.typ
 	  
-	  override def toString = "("+variable.toString+") |-> "+value.toString
+	  override def toString = "("+variable.toString+ MapsTo +value.toString
 	  
 	  val dep : Boolean
 	  
@@ -641,7 +662,8 @@ object HoTT{
 	  override def symbObj[A](name: A) = DepFuncSymb[A, W, U](name, fibers)
 	  
 	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.subs(x, y))
-	  
+	 
+	  override def toString = Pi+"("+fibers.toString+")"
 	}
 	
 	/** Exists/Sum for a type family */
@@ -653,6 +675,8 @@ object HoTT{
 	  def symbObj[A](name : A) = SymbObj(name, this)
 	  
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
+	  
+	  override def toString = Sigma+"("+fibers.toString+")"
 	}
 	
 	/** Object in a dependent function type, i.e.,
