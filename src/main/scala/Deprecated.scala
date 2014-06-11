@@ -840,7 +840,7 @@ object HoTTinner{
 	  val obj = constyp.typ.symbObj(name)
 	}
 	
-	class InductiveTyp(consPatterns : List[InductCons]) extends LogicalSTyp{
+	class InductiveTyp(consPatterns : List[InductCons]) extends SmallTyp{
 	  lazy val cons = consPatterns map (_.map(this).obj)
 	}
 	
@@ -1010,7 +1010,7 @@ object HoTTinner{
 	}
 	object Old{
 	
-	class InductiveTyp(cnstrFns: List[Typ[Term] => Context[ConstFmlyTmpl]]) extends LogicalSTyp{self =>
+	class InductiveTyp(cnstrFns: List[Typ[Term] => Context[ConstFmlyTmpl]]) extends SmallTyp{self =>
 	  lazy val cnstrCtxs = cnstrFns map (_(this))
 	  
 	  class Constructor(val ctx: Context[ConstFmlyTmpl]){

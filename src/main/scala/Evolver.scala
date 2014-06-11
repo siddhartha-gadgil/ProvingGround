@@ -320,13 +320,14 @@ object Evolver{
      def pullAll: Set[A] = Set.empty
    }
    
-   case object EvolverTyp extends LogicalSTyp
+   case object EvolverTyp extends SmallTyp
    
    class Gen(dyn: => (Set[Term] => Set[Term]), 		   		 
 		   		state:  => Set[Term], 
 		   		mapping:  Term => Term = {(x : Term) => x},
 		   		outbox: Outbox[Term] = VanishBox[Term]) extends AtomicObj{
-     lazy val typ = new LogicalSTyp 
+     
+     object typ extends SmallTyp
      
      def nextState = dyn(state)
      def nextGen = new Gen(dyn, nextState, mapping, outbox)

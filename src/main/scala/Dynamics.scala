@@ -283,6 +283,7 @@ object Dynamics{
          case f: FuncObj[_,_] => applyFn(f)
        }
        
+       
 	
        def logicalArrows[V <: Term : TypeTag]: Pairing = {
            case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term,  Term](dom, codom)

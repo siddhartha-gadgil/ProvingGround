@@ -133,7 +133,7 @@ object TheoryTypes{
   
   
   
-  trait TheoryTyp extends LogicalSTyp
+  trait TheoryTyp extends SmallTyp
   
   case class TextTyp(text: String) extends TheoryTyp
   
