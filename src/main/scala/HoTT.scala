@@ -157,9 +157,9 @@ object HoTT{
       override def toString = "("+name.toString+" : "+typ.toString+")"
       
       def subs(x: Term, y: Term) = this match {
+        case `x` => y
         case applptnterm(func, arg) => 
           func.subs(x,y)(arg.subs(x, y))
-        case `x` => y
         case _ => SymbObj(name, typ.subs(x, y))
       }
     } 
@@ -572,7 +572,10 @@ object HoTT{
 		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) => 
 		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
 		      Lambda(newvar , value.subs(x,y))
-		    case _ => Lambda(variable.subs(x,y), value.subs(x, y))
+		    case _ =>
+		      val newvar = variable.typ.obj
+		      val newval = value.subs(variable, newvar).subs(x, y).subs(newvar, variable)
+		      Lambda(variable, newval)
 		  }
 	 
 	  
