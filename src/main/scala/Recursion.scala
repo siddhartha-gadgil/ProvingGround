@@ -35,8 +35,8 @@ object Recursion{
   private type Change[A, V <: Term] = (A, TypPtnLike, Context[A, Term, V]) => Context[A, Term, V]
   
   /*
-   * The context, recursively defined, for the constructor of a single context.
-   * This is also a change, to be applied by default to the empty context of the target type.
+   * Returns the context for a polypattern given change in context for a typepattern.
+   * Recursively defined as a change, applied  by default to an empty context.
    */
   private def cnstrContext[A, V<: Term](
       ptn : PolyPtn[Term], varnames : List[A], 
@@ -55,7 +55,7 @@ object Recursion{
     }
   }
   
-  private def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
+  def cnstrRecContext[A, V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[Term], varnames : List[A], 
       W : Typ[V], 
       X : Typ[V])(ctx: Context[A, Term, V] = Context.empty[Term]) : Context[A, Term, V] = {

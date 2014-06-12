@@ -254,9 +254,9 @@ object HoTTExperiment {
         lazy val constructors = List(this.constructor(this, "true"), cnstr(this))
   }
   BoolType.constructors                           //> res38: List[provingGround.HoTT.Constructor] = List(ConstructorDefn(IdW,(tru
-                                                  //| e : src.main.scala.HoTTExperiment$$anonfun$main$1$BoolType$2$@3337854f)), C
-                                                  //| onstructorDefn(IdW,(provingGround.HoTT$Typ$newname$2$@2111fce : src.main.sc
-                                                  //| ala.HoTTExperiment$$anonfun$main$1$BoolType$2$@3337854f)))
+                                                  //| e : src.main.scala.HoTTExperiment$$anonfun$main$1$BoolType$2$@79636870)), C
+                                                  //| onstructorDefn(IdW,(provingGround.HoTT$Typ$newname$2$@6d5dcf52 : src.main.s
+                                                  //| cala.HoTTExperiment$$anonfun$main$1$BoolType$2$@79636870)))
  
  
  object NatTyp extends InductiveTyp with SmallTyp{
@@ -266,14 +266,14 @@ object HoTTExperiment {
  }
  
  val List(zero, succ) = NatTyp.constructors       //> zero  : provingGround.HoTT.Constructor = ConstructorDefn(IdW,(provingGround
-                                                  //| .HoTT$Typ$newname$2$@1079ac30 : src.main.scala.HoTTExperiment$$anonfun$main
-                                                  //| $1$NatTyp$2$@24178bc3))
+                                                  //| .HoTT$Typ$newname$2$@23a35b19 : src.main.scala.HoTTExperiment$$anonfun$main
+                                                  //| $1$NatTyp$2$@39b1d896))
                                                   //| succ  : provingGround.HoTT.Constructor = ConstructorDefn(CnstFncPtn(src.mai
-                                                  //| n.scala.HoTTExperiment$$anonfun$main$1$NatTyp$2$@24178bc3,IdW),(provingGrou
-                                                  //| nd.HoTT$Typ$newname$2$@5d8c1b8 : (src.main.scala.HoTTExperiment$$anonfun$ma
-                                                  //| in$1$NatTyp$2$@24178bc3?src.main.scala.HoTTExperiment$$anonfun$main$1$NatTy
-                                                  //| p$2$@24178bc3)))
+                                                  //| n.scala.HoTTExperiment$$anonfun$main$1$NatTyp$2$@39b1d896,IdW),(provingGrou
+                                                  //| nd.HoTT$Typ$newname$2$@4b027d71 : (src.main.scala.HoTTExperiment$$anonfun$m
+                                                  //| ain$1$NatTyp$2$@39b1d896?src.main.scala.HoTTExperiment$$anonfun$main$1$NatT
+                                                  //| yp$2$@39b1d896)))
  succ.cons.typ                                    //> res39: provingGround.HoTT.Typ[provingGround.HoTT.Term] = (src.main.scala.Ho
-                                                  //| TTExperiment$$anonfun$main$1$NatTyp$2$@24178bc3?src.main.scala.HoTTExperime
-                                                  //| nt$$anonfun$main$1$NatTyp$2$@24178bc3)
+                                                  //| TTExperiment$$anonfun$main$1$NatTyp$2$@39b1d896?src.main.scala.HoTTExperime
+                                                  //| nt$$anonfun$main$1$NatTyp$2$@39b1d896)
 }

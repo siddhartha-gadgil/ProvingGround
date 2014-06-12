@@ -972,7 +972,7 @@ object HoTT{
 	/*
 	 * Issues: Replace codomain Universe(0) by something reasonable - done.
 	 * Correct the induced function
-	 */
+	 */ 
 	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : Typ[Term]) = {
 	    val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
