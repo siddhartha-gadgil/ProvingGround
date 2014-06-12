@@ -8,6 +8,19 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 import annotation._
 
 object Recursion{
+  
+  case class CnstrLHS[+A](cnstr: Constructor, vars: List[A]){
+    val lhs = foldnames(cnstr.cons, vars)
+    
+    def recCtxChange[A,U <: Term](f: FuncObj[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
+      (ctx) => ctx
+    }
+    
+    def indCtxChange[A,U <: Term](f: FuncTerm[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
+      (ctx) => ctx
+    }
+  }
+  
       /*
    * Change in context for a TypPatn (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.

@@ -1149,6 +1149,19 @@ object HoTT{
 	}
 	
 	
+	def foldterms: (Term, Seq[Term]) => Term = {
+	  case (f: FuncTerm[u, _], ts: Seq[Term]) if f.domobjtpe <:< typeOf[Term] => 
+	    foldterms(f(ts.head.asInstanceOf[u]), ts.tail)
+	  case (t, _) => t
+	}
+	
+	def foldnames[A] : (Term, Seq[A]) => Term = {
+	  case (f: FuncTerm[u, _], ts)  =>
+	    val newvar = f.dom.symbObj(ts.head)
+	    foldnames(f(newvar.asInstanceOf[u]), ts.tail)
+	  case (t, _) => t
+	}
+	
 	
 //	val x = 'x' :: __
 	
