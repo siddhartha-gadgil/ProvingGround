@@ -560,7 +560,7 @@ object HoTTinner{
 			  }
 	  }
 	  
-	  def symbpattern[A, X <: Term](symbs: List[A], ctx: Context[X]) : List[Term] = ctx match {
+	  def symbpattern[A, X <: Term](symbs: List[AnySym], ctx: Context[X]) : List[Term] = ctx match {
 	    case ContextSeq(head, tail) => head.cnst.typ.symbObj(symbs.head) :: symbpattern(symbs.tail, tail) 
 	    case _ => List()
 	  }
@@ -1005,7 +1005,7 @@ object HoTTinner{
 	  type SimpleDefn = Constructor => Term
 	  
 	  // Deprecate
-	  def namedConstructors[A](syms: List[A]) = for ((n, t) <- syms zip constructorContexts) yield (t.typ.symbObj(n))
+	  def namedConstructors(syms: List[AnySym]) = for ((n, t) <- syms zip constructorContexts) yield (t.typ.symbObj(n))
 	}
 	}
 	object Old{
@@ -1042,15 +1042,15 @@ object HoTTinner{
 	trait InductiveConstructor[+A]{
 	  val sym: A
 	}
-	
+	/*
 	object InductiveConstructor{
-	  case class const[A](sym: A)  extends InductiveConstructor[A]
+	  case class const(sym: AnySym)  extends InductiveConstructor
 	}
 	
-	case class ToW[A, B](sym: A, head: Typ[Term] => ConstFmlyTmpl, tail: InductiveConstructor[B]) extends InductiveConstructor[A]
+	case class ToW[A, B](sym: A, head: Typ[Term] => ConstFmlyTmpl, tail: InductiveConstructor[B]) extends InductiveConstructor
 	
-	case class IndctParam[A, B](sym: A, head: Typ[Term], tail: InductiveConstructor[B]) extends InductiveConstructor[A]
-	
+	case class IndctParam[A, B](sym: A, head: Typ[Term], tail: InductiveConstructor[B]) extends InductiveConstructor
+	*/
 	// Should also add dependent function
 	}
 }

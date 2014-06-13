@@ -290,10 +290,10 @@ object Dynamics{
 		    }
 
 	   def lambdaIsles(dyn:  => DynSys[Term])(state: Set[Term]) ={
-	     val newVarSym = nextChar(usedChars(state))
+	     val newVarSym = nextChar(usedChars(state)).toString
 	     val gens: PartialFunction[Term, DynIsle[Term, Term]] = {
 	       case typ: Typ[Term] => 
-	         val obj = typ.symbObj(newVarSym)
+	         val obj = typ.symbObj(newVarSym.toString)
 	         DynIsle(DynState(state+obj, dyn), lambda(obj) _)
 	     }
 	     state collect gens

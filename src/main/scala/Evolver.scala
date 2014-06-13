@@ -452,7 +452,7 @@ object Evolver{
 	  val newVarSym = nextChar(usedChars(state))
 	  val gens: PartialFunction[Term, Term] = {
 	    case typ: Typ[_] =>
-	      val obj = typ.symbObj(newVarSym)
+	      val obj = typ.symbObj(newVarSym.toString)
 	      lambdaGen(obj , dynam, state + obj)
 	  }
 	  state collect gens

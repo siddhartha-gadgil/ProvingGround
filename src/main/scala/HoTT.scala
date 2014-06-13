@@ -19,6 +19,14 @@ import Math._
  *  
  */
 object HoTT{
+	trait AnySym
+	
+	case class Name(val name: String) extends AnySym{
+	  override def toString = name.toString
+	}
+	
+	implicit def stringSym(name: String) = Name(name)
+  
   /** Abstract object */
     trait Term extends Subs[Term]{
       /** 
@@ -66,7 +74,7 @@ object HoTT{
 //      case fx: FormalAppl[_,_] => subObjs(fx.func) ::: subObjs(fx.arg)
       
       /* Above case should cover this
-      case sym: Symbolic[_] =>
+      case sym: Symbolic =>
         sym.name match {
           case fnsym : FormalApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
           case fnsym : FormalDepApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
@@ -87,7 +95,7 @@ object HoTT{
         type Obj <: U with Subs[U]
         
         def obj: U = {
-          object newname
+          object newname extends AnySym
           symbObj(newname)
         }
         
@@ -96,10 +104,10 @@ object HoTT{
         lazy val typlevel : Int = univlevel(typ) 
         
         /** A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj*/
-        def symbObj[A](name: A): U with Subs[U]
+        def symbObj(name: AnySym): U with Subs[U]
          
         /** Make symbolic object */
-        def ::[A](name:A) = symbObj(name) 
+        def ::(name:AnySym) = symbObj(name) 
         
 //        def subs(x: Term, y: Term) : Typ[U]
         
@@ -141,19 +149,19 @@ object HoTT{
      *  does not include, for instance, pairs each of whose instance is given by a name;
      *  same considerations for functions etc.
      */
-    trait Symbolic[+A]{
-      val name: A
+    trait Symbolic{
+      val name: AnySym
       override def toString = name.toString
     }
     
     def sameName[A](sym: A): Term => Boolean = {
-      case obj : Symbolic[_] =>
+      case obj : Symbolic =>
         obj.name == sym
       case _ => false
     }
     
     /** Constructing symbolic objects that are Term but no more refined*/
-    case class SymbObj[A, +U<: Term](name: A, typ: Typ[U]) extends Term with Symbolic[A]{
+    case class SymbObj[+U<: Term](name: AnySym, typ: Typ[U]) extends Term with Symbolic{
       override def toString = "("+name.toString+" : "+typ.toString+")"
       
       def subs(x: Term, y: Term) = this match {
@@ -167,12 +175,12 @@ object HoTT{
     /** Symbolic types, which the compiler knows are types.
      *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
      */
-    case class SymbTyp[A](name: A) extends Typ[Term] with Symbolic[A]{
+    case class SymbTyp(name: AnySym) extends Typ[Term] with Symbolic{
       lazy val typ = Universe(0)
       
       type Obj = Term
       
-      def symbObj[B](name: B) = SymbObj(name, this)
+      def symbObj(name: AnySym) = SymbObj(name, this)
       
       override def toString = name.toString
       
@@ -192,7 +200,7 @@ object HoTT{
     }
     
     /*
-    case class SymbLogicTyp[A](name: A) extends LogicalSTyp with Symbolic[A]{
+    case class SymbLogicTyp[A](name: A) extends LogicalSTyp with Symbolic{
       override def toString = name.toString+" : "+typ.toString
     }
     */
@@ -235,7 +243,7 @@ object HoTT{
     	val typ = Universe(0)
     
      
-    	def symbObj[A](name: A): Term = SymbObj(name, this)      
+    	def symbObj(name: AnySym): Term = SymbObj(name, this)      
       
     	def subs(x: Term, y: Term) = (x, y) match {
     		case (xt: Typ[_], yt : Typ[_]) if (xt == this) => yt
@@ -274,9 +282,11 @@ object HoTT{
       lazy val typ  = Universe(level +1)
       
       
-      def symbObj[A](name: A)= SymbTyp(name)
+      def symbObj(name: AnySym)= SymbTyp(name)
       
-      val __ = symbObj(())
+      object Underscore extends AnySym
+      
+      val __ = symbObj(Underscore)
       
       def subs(x : Term, y : Term) = this
       
@@ -293,7 +303,7 @@ object HoTT{
       
       lazy val typ = MiniVerse[Typ[U]](this)
       
-      def symbObj[A](name: A)= sample
+      def symbObj(name: AnySym)= sample
       
       def subs(x : Term, y : Term) = this
     }
@@ -332,7 +342,7 @@ object HoTT{
 		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
 			
 			// The name is lost as `name', but can be recovered using pattern matching.
-		def symbObj[A](name: A): Obj = PairObj(first.symbObj(name), second.symbObj(name))
+		def symbObj(name: AnySym): Obj = PairObj(first.symbObj(name), second.symbObj(name))
 			}	
     
     /** Object (a, b) in (A, B) */
@@ -359,7 +369,7 @@ object HoTT{
       
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
       
-	  def symbObj[A](name: A) = FuncSymb[A, W, U](name, dom, codom)
+	  def symbObj(name: AnySym) = FuncSymb[W, U](name, dom, codom)
 	  
 	  override def toString = "("+dom.toString + Arrow + codom.toString+")"
 	  
@@ -390,7 +400,7 @@ object HoTT{
     /*
      * A symbol representing a formal application
      */
-    case class ApplnSym[W <: Term : TypeTag, U <: Term : TypeTag](func : FuncTerm[W, U], arg : W){
+    case class ApplnSym[W <: Term : TypeTag, U <: Term : TypeTag](func : FuncTerm[W, U], arg : W) extends AnySym{
       override def toString = func.toString + "("+ arg.toString +")"
     }
     
@@ -400,7 +410,7 @@ object HoTT{
      */
     case class ApplnPattern[W <: Term : TypeTag, U <: Term : TypeTag](){
       def unapply(term : Term) : Option[(FuncTerm[W, U], W)] = term match {
-        case sym : Symbolic[_] => sym.name match {
+        case sym : Symbolic => sym.name match {
           case sm @ ApplnSym(func : FuncTerm[W, U], arg) if typeOf[W] <:< func.domobjtpe & func.codomobjtpe <:< typeOf[U]  => 
             Some((func, arg.asInstanceOf[W])) 
           case _ => None
@@ -445,7 +455,8 @@ object HoTT{
 //	}
 	
 	/** Symbol containing function info */
-    case class FuncSymb[A, W<: Term : TypeTag, U<: Term : TypeTag](name: A, dom: Typ[W], codom: Typ[U]) extends FuncObj[W, U] with Symbolic[A]{
+    case class FuncSymb[W<: Term : TypeTag, U<: Term : TypeTag](name: AnySym, dom: Typ[W], codom: Typ[U]) extends 
+              FuncObj[W, U] with Symbolic with AnySym{
       val domobjtpe = typeOf[W]
       
 	  val codomobjtpe = typeOf[U]
@@ -483,7 +494,7 @@ object HoTT{
     /*
     object FormalAppl{
       def unapply(obj: Term): Option[(FuncObj[Term, Term], Term)] =obj match{
-        case sym: Symbolic[_] =>
+        case sym: Symbolic =>
         sym.name match {
           case FormalApplication(f, a : Term) => Some((f.asInstanceOf[FuncObj[Term, Term]], a))
           case _ => None
@@ -587,7 +598,7 @@ object HoTT{
 	}
 	
 	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends LambdaLike(variable, value){
-	  object mysym
+	  object mysym extends AnySym
 	  
 	  val depcodom : X => Typ[Y] = (t : X) => value.typ.subs(variable, t).asInstanceOf[Typ[Y]]
 	  
@@ -615,8 +626,10 @@ object HoTT{
 	  
 	}
 	
+	implicit class TermSymbol(term: Term) extends AnySym
+	
 	def changeTyp(term: Term, newtyp : Typ[Term]) : Term = term match {
-	  case sym : Symbolic[_] => newtyp.symbObj(sym.name)
+	  case sym : Symbolic => newtyp.symbObj(sym.name)
 	  case _ => newtyp.symbObj(term)
 	}
 	
@@ -689,7 +702,7 @@ object HoTT{
 	  
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 	  
-	  override def symbObj[A](name: A) = DepFuncSymb[A, W, U](name, fibers)
+	  override def symbObj(name: AnySym) = DepFuncSymb[ W, U](name, fibers)
 	  
 	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.subs(x, y))
 	 
@@ -702,7 +715,7 @@ object HoTT{
 	  
 	  type Obj = Term
 	  
-	  def symbObj[A](name : A) = SymbObj(name, this)
+	  def symbObj(name : AnySym) = SymbObj(name, this)
 	  
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
 	  
@@ -740,7 +753,8 @@ object HoTT{
 	}
 	*/
 	
-	case class DepFuncSymb[A, W<: Term : TypeTag,  U<: Term : TypeTag](name: A, fibers: TypFamily[W, U]) extends DepFuncObj[W, U] with Symbolic[A]{
+	case class DepFuncSymb[W<: Term : TypeTag,  U<: Term : TypeTag](name: AnySym, fibers: TypFamily[W, U]) extends 
+	DepFuncObj[W, U] with Symbolic with AnySym{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
@@ -782,7 +796,7 @@ object HoTT{
 	  
 	  def subs(x: Term, y: Term) = IdentityTyp(dom.subs(x, y), lhs.subs(x,y), rhs.subs(x,y))
 	  
-	  def symbObj[A](name: A)= SymbObj(name, this)
+	  def symbObj(name: AnySym)= SymbObj(name, this)
 	}
 	
 	/** A dependent function given by a scala funcion */
@@ -862,7 +876,7 @@ object HoTT{
 	  
 	  type PolyPtnType = U
 	  
-	  def constructor[A](tp: => Typ[Term], name: A) : Constructor = {
+	  def constructor[A](tp: => Typ[Term], name: AnySym) : Constructor = {
 	    val cons = apply(tp).symbObj(name)
 	    ConstructorDefn(this, cons)
 	  }
@@ -911,7 +925,7 @@ object HoTT{
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
 	  
 	  val univLevel = max(head.univLevel, tail.univLevel)
-	}
+	} 
 	
 	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
@@ -1047,7 +1061,7 @@ object HoTT{
 	}
 	
 	
-	class InductiveTypDefn[A](symptns : List[(A, PolyPtn[Term])]) extends Typ[Term] with InductiveTyp{
+	class InductiveTypDefn(symptns : List[(AnySym, PolyPtn[Term])]) extends Typ[Term] with InductiveTyp{
 	  type Obj = Term
 	  
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
@@ -1062,7 +1076,7 @@ object HoTT{
 	  
 	  def subs(x : Term, y: Term) = this
 	  
-	  def symbObj[A](name: A): Term = SymbObj(name, this)
+	  def symbObj(name: AnySym): Term = SymbObj(name, this)
 	} 
 	
 	trait PolyPtnInstance[D <: Term, +U <: Term]{
@@ -1155,7 +1169,7 @@ object HoTT{
 	  case (t, _) => t
 	}
 	
-	def foldnames[A] : (Term, List[A]) => Term = {
+	def foldnames : (Term, List[AnySym]) => Term = {
 	  case (f: FuncTerm[u, _], x :: ys)  =>
 	    val newvar = f.dom.symbObj(x)
 	    foldnames(f(newvar.asInstanceOf[u]), ys)
@@ -1173,7 +1187,7 @@ object HoTT{
 	/** Helper for symbol factory */
 	def usedChars(s: Set[Term]): Set[Char] = {
 	    def charOpt (obj:Term) : Option[Char] = obj match {
-	      case sym: Symbolic[_] => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
+	      case sym: Symbolic => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
 	      case _ => None
 	    }
 	    
