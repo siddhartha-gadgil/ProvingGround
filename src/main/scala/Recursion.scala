@@ -12,11 +12,11 @@ object Recursion{
   case class CnstrLHS[+A](cnstr: Constructor, vars: List[A]){
     val lhs = foldnames(cnstr.cons, vars)
     
-    def recCtxChange[A,U <: Term](f: FuncObj[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
+    def recCtxChange[A,U <: Term](f: => FuncObj[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
       (ctx) => ctx
     }
     
-    def indCtxChange[A,U <: Term](f: FuncTerm[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
+    def indCtxChange[A,U <: Term](f: => FuncTerm[Term, U]) : Context[A, _, _] => Context[A, _, _] = {
       (ctx) => ctx
     }
   }

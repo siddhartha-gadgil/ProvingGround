@@ -11,7 +11,7 @@ object Contexts{
     val freevars: List[Term]
     
     def map(f: Term => Term): DefnEquality
-    
+   
   }
   
   case class DefnEqual(lhs: Term, rhs: Term, freevars : List[Term] = List()) extends DefnEquality{
@@ -48,6 +48,8 @@ object Contexts{
   
   trait Context[+A, +U <: Term , V <: Term] extends TypSeq[U, V]{
 //    val typ: Typ[PtnType]
+    
+    def tail: Context[A, _, V]
     
     type PtnType <: U
     
@@ -88,6 +90,9 @@ object Contexts{
   
   object Context{
     case class empty[U <: Term : TypeTag]() extends Context[Any, U, U]{
+    	def tail: Nothing = 
+    			throw new NoSuchElementException("tail of empty context") 
+      
     	type PtnType = U
 
     	def apply(tp : Typ[U]) : Typ[PtnType] = tp
