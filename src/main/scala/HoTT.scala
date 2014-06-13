@@ -21,7 +21,7 @@ import Math._
 object HoTT{
 	trait AnySym
 	
-	case class Name(val name: String) extends AnySym{
+	case class Name(name: String) extends AnySym{
 	  override def toString = name.toString
 	}
 	

@@ -49,7 +49,9 @@ object Contexts{
   trait Context[+U <: Term , V <: Term] extends TypSeq[U, V]{
 //    val typ: Typ[PtnType]
     
-    def tail: Context[_, V]
+    def tail: Context[Term, V]
+    
+    def newtail(newtail: Context[Term, V]): Context[Term, V]
     
     type PtnType <: U
     
@@ -93,6 +95,8 @@ object Contexts{
     	def tail: Nothing = 
     			throw new NoSuchElementException("tail of empty context") 
       
+    	def newtail(newtail: Context[Term, U]) = this
+    	
     	type PtnType = U
 
     	def apply(tp : Typ[U]) : Typ[PtnType] = tp
@@ -127,6 +131,8 @@ object Contexts{
   
   case class LambdaMixin[+U<: Term, V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
+    
+    def newtail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
     
@@ -181,6 +187,8 @@ object Contexts{
   case class KappaMixin[+U<: Term, V <: Term](const : Term, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
+    def newtail(newtail: Context[Term, V]) = KappaMixin(const, newtail)
+    
     def foldin : Typ[V] => PtnType => V = tail.foldin
     
     def symblist(tp: Typ[V])(varnames: List[AnySym]) = tail.symblist(tp)(varnames)
@@ -206,6 +214,8 @@ object Contexts{
   
   case class DefnMixin[+U<: Term, V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
+    
+    def newtail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
     
@@ -251,6 +261,8 @@ object Contexts{
   case class GlobalDefnMixin[+U <: Term, V <: Term](dfn : Defn, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
+    def newtail(newtail: Context[Term, V]) = GlobalDefnMixin(dfn, newtail)
+    
     def foldin : Typ[V] => PtnType => V = tail.foldin
     
     def symblist(tp : Typ[V])(varnames: List[AnySym]) = tail.symblist(tp)(varnames)
@@ -277,6 +289,8 @@ object Contexts{
   case class DefnEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
+    def newtail(newtail: Context[Term, V]) = DefnEqualityMixin(eqlty, newtail)
+    
     def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
     
     def foldin : Typ[V] => PtnType => V = tail.foldin
@@ -301,6 +315,8 @@ object Contexts{
   
   case class SimpEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
+    
+    def newtail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
     
@@ -351,6 +367,10 @@ object Contexts{
     case comp => extract(inner, comp.tail, maps)
   }
 
+  def immerse[V <: Term](inner: Context[Term, V]): Context[Term, V] => Context[Term, V] ={
+    case _ : Context.empty[_] => inner
+    case outer => inner.newtail(immerse(inner)(outer.tail))
+  }
   
   
 }

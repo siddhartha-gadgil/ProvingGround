@@ -16,7 +16,8 @@ object Recursion{
     val lhs = foldnames(cnstr.cons, vars)
     
     /*
-     * Context for recursion: given rhs gives image of constructor
+     * Context for recursion: given rhs gives image of constructor.
+     * The type of this is also used for recursion to 
      */
     def recCtx[U <: Term](f: => FuncObj[Term, U]) : Context[_, _] = {
       cnstrRecContext[Term](f, cnstr.pattern, vars,f.dom, f.codom)(Context.empty[Term])
