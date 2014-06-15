@@ -360,7 +360,7 @@ object Contexts{
   }
   
   
-  def extract(inner: Term, ctx: Context[_, _], maps: PartialFunction[Term, Term]) : Option[Term] = ctx match {
+  def extract[V <: Term](inner: Term, ctx: Context[Term, V], maps: PartialFunction[Term, Term]) : Option[Term] = ctx match {
     case _ : Context.empty[_] => Some(inner)
     case LambdaMixin(x, tail, _) => for(y <-maps.lift(x); t <- extract(inner.subs(x,y), tail, maps)) yield t
     case SimpEqualityMixin(eql, tail, _) => extract(inner, tail, Map(eql.lhs -> eql.rhs) orElse maps)
