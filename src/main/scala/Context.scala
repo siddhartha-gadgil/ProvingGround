@@ -77,6 +77,8 @@ object Contexts{
     
     def lmbda(x : Term) = LambdaMixin(x, this)
     
+    def kappa(x : Term) = KappaMixin(x, this)
+    
     def deplmbda(x : Term) = LambdaMixin(x, this, true)
     
     def cnst(x: Term) = KappaMixin(x, this)
