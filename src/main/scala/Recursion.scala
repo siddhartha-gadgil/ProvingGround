@@ -2,6 +2,7 @@ package provingGround
 
 import provingGround.HoTT._
 import provingGround.Contexts._
+import provingGround.InductiveTypes._
 //import provingGround.Context.Context.empty
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}

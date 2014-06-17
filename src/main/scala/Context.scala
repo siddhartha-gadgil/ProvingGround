@@ -3,6 +3,7 @@ package provingGround
 import provingGround.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
+import provingGround.InductiveTypes._
 
 object Contexts{
   trait DefnEquality{
