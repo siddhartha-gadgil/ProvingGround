@@ -12,7 +12,7 @@ import annotation._
  * We import the indexed version of Inductive Types and associated patterns.
  */
 class RecursionIndexed(indices : Typ[Term]){
-   val indxind =  new IndexedInductiveTypes[Typ[Term]]
+   val indxind =  new IndexedInductiveTypes[Term]
    import indxind._
    
      case class CnstrLHS(cnstr: Constructor, vars: List[AnySym]){
@@ -39,46 +39,48 @@ class RecursionIndexed(indices : Typ[Term]){
     
     def recCtxRHS(f: => Term => FuncObj[Term, Term], X: Typ[Term]) = recCtx(f, X).foldinSym(X)(recCtxVar(f, X))
     
-    /*
+    
     def indCtx(f: => Term => FuncTerm[Term, Term]) : Context[Term, Term] = {
       cnstrIndContext[Term, Term](f, cnstr.pattern, vars,(t) => f(t).dom, (t) => f(t).depcodom)(Context.empty[Term])
     }
     
     
-    def indCtxTyp(f: => Term => FuncTerm[Term, Term]) : Typ[Term]  = {
-      indCtx(f)(f.depcodom(arg))
+    def indCtxTyp(f: => Term => FuncTerm[Term, Term], tps: Term => Typ[Term]) : Typ[Term]  = {
+      indCtx(f)(tps(arg))
     }
     
-    def indCtxVar(f: => FuncTerm[Term, Term]) : Term  = {
-      indCtxTyp(f).symbObj(IndInduced(cnstr.cons, f))
+    
+    def indCtxVar(f: => Term => FuncTerm[Term, Term], tps: Term => Typ[Term]) : Term  = {
+      indCtxTyp(f, tps).symbObj(IndInduced(cnstr.cons, f))
     }
     
-    def indCtxRHS(f: => FuncTerm[Term, Term]) = indCtx(f).foldinSym(f.depcodom(arg))(indCtxVar(f))
+    def indCtxRHS(f: => Term => FuncTerm[Term, Term], tps: Term => Typ[Term]) = indCtx(f).foldinSym(tps(arg))(indCtxVar(f, tps))
     
-    private def kappaChange(f: => Term => FuncObj[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
-    val x = ptn(f.dom).symbObj(varname)
-    ctx  kappa(ptn.induced(f.dom, f.codom)(f)(x)) lmbda(x)
+    
+    private def kappaChange(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Change[Term] = (varname, ptn, ctx) => {
+    val x = ptn((t: Term) =>f(t).dom).symbObj(varname)
+    ctx  kappa(ptn.induced((t: Term) => f(t).dom, X)(f)(x)) lmbda(x)
     	}
     
-    def recKappaCtx(f: => Term => FuncObj[Term, Term]) : Context[Term, Term] = {
-      cnstrContext[Term](cnstr.pattern, vars,f.dom, kappaChange(f))(Context.empty[Term])
+    
+    def recKappaCtx(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Context[Term, Term] = {
+      cnstrContext[Term](cnstr.pattern, vars, (t: Term) => f(t).dom, kappaChange(f, X))(Context.empty[Term])
     }
     
-    private def kappaIndChange(f: => FuncTerm[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
-    val x = ptn(f.dom).symbObj(varname)
-    ctx  kappa(ptn.inducedDep(f.dom, f.depcodom)(f)(x)) lmbda(x)
+    private def kappaIndChange(f: => Term => FuncTerm[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
+    val x = ptn((t: Term) =>f(t).dom).symbObj(varname)
+    ctx  kappa(ptn.inducedDep((t: Term) => f(t).dom, (t) => f(t).depcodom)(f)(x)) lmbda(x)
     	}
     
-    def indKappaCtx(f: => FuncTerm[Term, Term]) : Context[Term, Term] = {
-      cnstrContext[Term](cnstr.pattern, vars,f.dom, kappaIndChange(f))(Context.empty[Term])
+    def indKappaCtx(f: => Term => FuncTerm[Term, Term]) : Context[Term, Term] = {
+      cnstrContext[Term](cnstr.pattern, vars, (t: Term) => f(t).dom, kappaIndChange(f))(Context.empty[Term])
     }
     
     
-    def recIdentity(f: => Term => FuncObj[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, recCtx(f, X).symblist(f.dom)(vars))
+    def recIdentity(f: => Term => FuncObj[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, recCtx(f, X).symblist(arg.typ)(vars))
     
-    def indIdentity(f: => Term => FuncTerm[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f, X).symblist(f.dom)(vars))
-    * 
-    */
+    def indIdentity(f: => Term => FuncTerm[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f).symblist(arg.typ)(vars))
+   
   }
   
       /*
@@ -96,8 +98,9 @@ class RecursionIndexed(indices : Typ[Term]){
    * Change in context  for Induction for a TypPattern - check
    */
   private def indContextChange[V<: Term](f : => Term => (FuncTerm[Term, Term]), 
-      W : Term => Typ[V], Xs : Term => Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
-    val x =  ptn(W).symbObj(varname)
+      W : Term => Typ[V], 
+      Xs : Term => Term => Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
+    val x = ptn(W).symbObj(varname)
     ctx lmbda(ptn.inducedDep(W, Xs)(f)(x)) lmbda(x)
   }
       
@@ -136,7 +139,7 @@ class RecursionIndexed(indices : Typ[Term]){
   private def cnstrIndContext[V<: Term, U <: Term](f :  => Term => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[U], varnames : List[AnySym], 
       W : Term => Typ[V], 
-      Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
+      Xs :  Term => Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
     val change = indContextChange[V](f, W, Xs)
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
@@ -164,22 +167,22 @@ class RecursionIndexed(indices : Typ[Term]){
     })
   }
   
-  /*
-  case class IndDefinition(f: FuncTerm[Term, Term], cs: List[CnstrLHS]){
-    val types = for (c <- cs) yield c.indCtxTyp(f)
+  
+  case class IndDefinition(f: FuncTerm[Term, FuncTerm[Term, Term]], tps: Term => Typ[Term], cs: List[CnstrLHS]){
+    val types = for (c <- cs) yield c.indCtxTyp(f, tps)
     val typ = (types :\ f.typ)(_ ->: _)
-    val recfn = typ.symbObj(IndSymbol(f.dom, f.depcodom))
+    val recfn = typ.symbObj(IndSymbol((t) => f(t).dom, f.depcodom))
     
-    val consvars = cs map (_.indCtxVar(f))
+    val consvars = cs map (_.indCtxVar(f, tps))
     val freevars = f :: consvars
     
     val identitites = cs map ((c) => {
       val lhs = foldterms(recfn, consvars :+ c.arg)
-      val rhs = c.indCtxRHS(f)
+      val rhs = c.indCtxRHS(f, tps)
       DefnEqual(lhs, rhs, freevars)
     })
   }
-  */
+  
   
   /*
    * The symbolic object for defining a recursion function from a context.

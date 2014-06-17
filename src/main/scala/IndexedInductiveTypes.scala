@@ -11,7 +11,7 @@ import Math._
 	/*
 	 * Indexed version of induction
 	 */
-	class IndexedInductiveTypes[I <: Typ[Term]]{
+	class IndexedInductiveTypes[I <: Term]{
 	  	trait TypPtn[U <: Term] extends TypPtnLike{
 	  	 type PtnType = U
 	  	 
@@ -31,7 +31,7 @@ import Math._
 	  	 
 	  	def induced(W : I => Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
 	  	  
-	  	def inducedDep(W : I => Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
+	  	def inducedDep(W : I => Typ[Term], Xs : Term => Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
 	
@@ -78,7 +78,7 @@ import Math._
 	  
 	  def induced(W : I => Typ[Term], X : Typ[Term])(f : Term => Term) = f
 	  
-	  def inducedDep(W : I => Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) = f
+	  def inducedDep(W : I => Typ[Term], Xs : Term => Term => Typ[Term])(f : Term => Term) = f
 	} 
 
 
@@ -113,10 +113,10 @@ import Math._
 	      FuncDefn[Term, head.PtnType](func, tail, codomain)
 	  }
 	  
-	  def inducedDep(W : I => Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
+	  def inducedDep(W : I => Typ[Term], Xs: Term => Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
-	      val func =((t : Term) => head.induced(W, Xs(t))(f) (g(t)))
-	      val section = (t : Term) => head.at(Xs(t))
+	      val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
+	      val section = (t : Term) => head(Xs(_)(t))
 	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)), section)
 	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
 	  }
@@ -175,10 +175,10 @@ import Math._
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
-	  def inducedDep(W : I => Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
+	  def inducedDep(W : I => Typ[Term], Xs: Term => Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
-	      val func =((t : Term) => head.induced(W, Xs(t))(f) (g(t)))
-	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t).at(Xs(t)))
+	      val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
+	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(_)(t)))
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
