@@ -1,78 +1,115 @@
 package provingGround
 
+import scala.util.parsing.combinator._
+
+import scala.util._
+
+import provingGround.HoTT._
+
 object AgdaExpressions{
+  
+  object AgdaParse extends JavaTokenParsers{
+    override val skipWhitespace = false
+    def sp: Parser[Unit] = whiteSpace ^^ ((_) => ())
+    
+    def token : Parser[Token] = "[^\\s]".r ^^ (Token(_))
+    
+    
+    def colon : Parser[String] = ":"
+      
+    def To : Parser[String] = "->" | "\\to"
+    
+    def mapsTo : Parser[String] = ":->" |"\\mapsto" | "|->"
+    
+    
+    def appl : Parser[Expression] = term~sp~expr ^^ {case f~_~x => Apply(f, x)}
+    
+    def arrow: Parser[Expression] = term~sp~To~sp~expr ^^{case a~_~_~_~b => Arrow(a, b)}
+    
+    def lambda : Parser[Expression] = typedvar~sp~mapsTo~sp~expr ^^{case x~_~_~_~y => Lambda(x, y)}
+    
+    def deparrow : Parser[Expression] = typedvar~sp~To~sp~expr ^^{case x~_~_~_~y => DepArrow(x, y)}
+    
+    def univ : Parser[Expression] = "_" ^^ {(_) => U}
+    
+    
+    def typedvar : Parser[TypedVar] = token~sp~colon~sp~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
+
+    def term : Parser[Expression] = token | "("~>expr<~")"
+    
+    def expr : Parser[Expression] = term | appl | arrow | lambda | deparrow | univ
+  }
+  
   
   /*
    * All Expressions, but not statements or blocks
    */
-  trait Expression
-  
-  /*
-   * Statement: Declaration of type, pattern based definitions, postulates
-   */
-  trait Statement
-  
-  /*
-   * Blocks: definitions of types and functions, postulates etc.
-   */
-  trait Block
-  
-  trait Pattern extends Expression
-  
-  trait PatternList
-  
-  object PatternList{
-    object empty extends PatternList
-    
-    def apply = empty
+  trait Expression{
+    def asTerm(names: String => Option[Term]): Option[Term]
   }
   
-  trait Variable extends PatternHead with PatternList{
-    val name: String
-    
-    val func = name
+
+  
+  def symbterm(name: String, tp: Term) : Option[Term] = tp match {
+    case t : Typ[_] => Some(t.symbObj(name))
+    case _ => None
   }
   
-  case class Var(name: String) extends Variable
-  
-  case class TypedVar(name: String, typ: String) extends Variable
-  
-  trait PatternHead extends Pattern{
-    val func: String
+  case class TypedVar(name: String, typ: Expression) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = 
+      for (tp <- typ.asTerm(names); x <- symbterm(name, tp)) yield x
   }
   
-  case class RecPattern(head: PatternHead, tail: Pattern) extends PatternHead{
-    val func = head.func
+  case class Lambda(x : TypedVar, y: Expression) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = 
+      for (a <- x.asTerm(names); b <- y.asTerm(names)) yield lambda(a)(b)
+    }
+
+  
+  case class Token(name: String) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = names(name)
   }
   
-  case class PatternCons(head: PatternHead, tail: PatternList) extends PatternList
+  def applyterm(f : Term, arg: Term) : Option[Term] = f match {
+    case f : FuncTerm[u, v] => Try(f(arg.asInstanceOf[u])).toOption
+    case _ => None
+  }
+  
+  
+  case class Apply(func: Expression, arg: Expression) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = 
+      for (a <- func.asTerm(names); b <- arg.asTerm(names); z <- applyterm(a, b)) yield z
+  }
+  
+
+  
+  case object U extends Expression{
+    def asTerm(name: String => Option[Term]) = Some(__)
+  }
+  
+  
+  def arrowtyp(x : Term, y: Term) : Option[Term] = (x, y) match {
+    case (a : Typ[Term], b: Typ[Term]) => Some(a ->: b)
+    case _ => None
+  }
+  
+  case class Arrow(lhs: Expression, rhs: Expression) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = 
+      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- arrowtyp(a, b)) yield z
+  }
  
-  case class ConstructorDefn(name: String, typ: Pattern) extends Statement
+  def pityp(x: Term, y: Term) = y match {
+    case tp : Typ[Term] =>
+      	val fibre = (t : Term) => tp subs (x, t)
+	    val family : FuncObj[Term, Typ[Term]] = LambdaFixed(x, tp)
+	    Some(PiTyp(family))
+    case _ => None
+  }
   
-  trait Term extends Expression with TypSpec
-  
-  case class Token(name: String) extends Term
-  
-  case class Apply(func: Term, arg: Term) extends Term
-  
-  case class TypedTerm(obj: Term, typ: Term) extends Term
-  
-  trait TypSpec extends Expression
-  
-  case class TypName(name: String) extends TypSpec
-  
-  case object __ extends TypSpec
-  
-  case class Arrow(lhs: TypSpec, rhs: TypSpec) extends TypSpec
-  
-  case class DefnEquality(lhs: Pattern, rhs: Term) extends Statement
-  
-  case class DataTypHeader(name: String, params: TypSpec = __) extends Statement
-  
-  case class DataTypDefn(header: DataTypHeader, constructors: List[ConstructorDefn]) extends Block
-  
-  case class DataTypFmlyHeader(name: String, params: TypSpec = __) extends Statement
-  
-  case class DataTypFmlyDefn(header: DataTypFmlyHeader, constructors: List[ConstructorDefn]) 
+  case class DepArrow(lhs: TypedVar, rhs: Expression) extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Term] = 
+      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- pityp(a, b)) yield z
+  }
+ 
   
 }
