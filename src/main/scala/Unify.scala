@@ -8,7 +8,10 @@ object Unify{
   }
 
   def unify(source: Term, target: Term, freevars: Set[Term]) : Option[Map[Term,Term]] = (source, target) match {
-    case (x, y) if freevars contains x => Some(Map(x -> target))
+    case (x, y) if freevars contains x => Some(Map(x -> y))
+    case (x: Symbolic, y: Symbolic) if x.typ != y.typ =>
+      unify(x.typ, y.typ, freevars) flatMap((m) =>
+      unify(multisub(x, m), y, freevars -- m.keySet))
     case (applptnterm(f, x), applptnterm(g, y)) =>
       for (mx <- unify(f, g, freevars); my <- unify(multisub(x, mx), y, freevars -- mx.keySet)) yield (mx ++ my)
     case (FuncTyp(a, b), FuncTyp(c, d)) => 
