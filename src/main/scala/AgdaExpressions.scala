@@ -48,7 +48,9 @@ object AgdaExpressions{
     def asTerm(names: String => Option[Term]): Option[Term]
   }
   
-
+  trait TypExpression extends Expression{
+    def asTerm(names: String => Option[Term]): Option[Typ[Term]]
+  }
   
   def symbterm(name: String, tp: Term) : Option[Term] = tp match {
     case t : Typ[_] => Some(t.symbObj(name))
@@ -83,18 +85,18 @@ object AgdaExpressions{
   
 
   
-  case object U extends Expression{
+  case object U extends TypExpression{
     def asTerm(name: String => Option[Term]) = Some(__)
   }
   
   
-  def arrowtyp(x : Term, y: Term) : Option[Term] = (x, y) match {
+  def arrowtyp(x : Term, y: Term) : Option[Typ[Term]] = (x, y) match {
     case (a : Typ[Term], b: Typ[Term]) => Some(a ->: b)
     case _ => None
   }
   
-  case class Arrow(lhs: Expression, rhs: Expression) extends Expression{
-    def asTerm(names: String => Option[Term]): Option[Term] = 
+  case class Arrow(lhs: Expression, rhs: Expression) extends TypExpression{
+    def asTerm(names: String => Option[Term]): Option[Typ[Term]] = 
       for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- arrowtyp(a, b)) yield z
   }
  
@@ -106,8 +108,8 @@ object AgdaExpressions{
     case _ => None
   }
   
-  case class DepArrow(lhs: TypedVar, rhs: Expression) extends Expression{
-    def asTerm(names: String => Option[Term]): Option[Term] = 
+  case class DepArrow(lhs: TypedVar, rhs: Expression) extends TypExpression{
+    def asTerm(names: String => Option[Term]): Option[Typ[Term]] = 
       for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- pityp(a, b)) yield z
   }
  
