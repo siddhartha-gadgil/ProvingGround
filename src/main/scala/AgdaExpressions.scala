@@ -50,7 +50,7 @@ object AgdaExpressions{
     
     def defn = typedvar~crlf~eqlty(wspc) ^^ {case x~_~y => (x, y)}
     
-    def casedefn = typedvar~opt("where")~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
+    def casedefn = typedvar~"where"~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
   }
   
   
