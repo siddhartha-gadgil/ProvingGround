@@ -10,10 +10,11 @@ object AgdaExpressions{
   
   object AgdaParse extends JavaTokenParsers{
     override val skipWhitespace = false
-    def sp: Parser[Unit] = whiteSpace ^^ ((_) => ())
+    def spc: Parser[Unit] = "[ \\t]+".r ^^ ((_) => ())
     
     def token : Parser[Token] = "[^\\s]".r ^^ (Token(_))
     
+    def wspc: Parser[Unit] = whiteSpace ^^ ((_) => ())
     
     def colon : Parser[String] = ":"
       
@@ -22,24 +23,38 @@ object AgdaExpressions{
     def mapsTo : Parser[String] = ":->" |"\\mapsto" | "|->"
     
     
-    def appl : Parser[Expression] = term~sp~expr ^^ {case f~_~x => Apply(f, x)}
+    def appl(sp: Parser[Unit] = spc) : Parser[Expression] = term~sp~expr ^^ {case f~_~x => Apply(f, x)}
     
-    def arrow: Parser[Expression] = term~sp~To~sp~expr ^^{case a~_~_~_~b => Arrow(a, b)}
+    def arrow(sp: Parser[Unit] = spc) : Parser[Expression] = term~sp~To~sp~expr ^^{case a~_~_~_~b => Arrow(a, b)}
     
-    def lambda : Parser[Expression] = typedvar~sp~mapsTo~sp~expr ^^{case x~_~_~_~y => Lambda(x, y)}
+    def lambda(sp: Parser[Unit] = spc) : Parser[Expression] = typedvar~sp~mapsTo~sp~expr ^^{case x~_~_~_~y => Lambda(x, y)}
     
-    def deparrow : Parser[Expression] = typedvar~sp~To~sp~expr ^^{case x~_~_~_~y => DepArrow(x, y)}
+    def deparrow(sp: Parser[Unit] = spc) : Parser[Expression] = typedvar~sp~To~sp~expr ^^{case x~_~_~_~y => DepArrow(x, y)}
     
-    def univ : Parser[Expression] = "_" ^^ {(_) => U}
+    def univ : Parser[Expression] = "_" ^^ {(_) => U} // never reached
     
     
-    def typedvar : Parser[TypedVar] = token~sp~colon~sp~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
+    def typedvar : Parser[TypedVar] = token~spc~colon~spc~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
 
-    def term : Parser[Expression] = token | "("~>expr<~")"
+    def term : Parser[Expression] = token | "("~opt(wspc)~>expr<~opt(wspc)~")" | "begin"~wspc~>expr<~wspc~"end"
     
-    def expr : Parser[Expression] = term | appl | arrow | lambda | deparrow | univ
+    def expr : Parser[Expression] = term | appl() | arrow() | lambda() | deparrow() | univ | typedvar | eqlty()
+    									 arrow(wspc) | lambda(wspc) | deparrow(wspc) | eqlty(wspc)
+
+    
+    def eqlty(sp: Parser[Unit] = spc): Parser[Equality] = expr~sp~"="~sp~expr ^^ {case lhs~_~_~_~rhs => Equality(lhs, rhs)}
+    									
+    def data = "data"~>typedvar~"where"~rep(typedvar)<~"end" ^^ {case x~_~ls => (x, ls)}
+    
+    def crlf = opt(spc)~"\\n".r~opt(spc)
+    
+    def defn = typedvar~crlf~eqlty(wspc) ^^ {case x~_~y => (x, y)}
+    
+    def casedefn = typedvar~opt("where")~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
   }
   
+  
+  trait Statement
   
   /*
    * All Expressions, but not statements or blocks
@@ -50,6 +65,10 @@ object AgdaExpressions{
   
   trait TypExpression extends Expression{
     def asTerm(names: String => Option[Term]): Option[Typ[Term]]
+  }
+  
+  case class Equality(lhs: Expression, rhs: Expression) extends Statement with Expression{
+    def asTerm(names: String => Option[Term]) = rhs.asTerm(names)
   }
   
   def symbterm(name: String, tp: Term) : Option[Term] = tp match {
