@@ -119,15 +119,9 @@ object HoTT{
           PiTyp(fiber)
         }
         
-//        def :::(that: Term) = {require(that.typ == this, "coercion to the wrong type"); that.asInstanceOf[this.Obj]}
     }
     
- /*   
-    trait AtomicTyp[U <: Term] extends Typ[U]{
-      def subs(x: Term, y: Term) : Typ[U] = if (x == this) y.asInstanceOf[Typ[U]] else this
-    }
-   */ 
-    
+
     object SimpleSyms{
     	val Arrow = "->"
     	val MapsTo = "|->"
@@ -166,8 +160,8 @@ object HoTT{
       
       def subs(x: Term, y: Term) = this match {
         case `x` => y
-        case applptnterm(func, arg) => 
-          func.subs(x,y)(arg.subs(x, y))
+        case applptnterm(func : FuncTerm[u, Term], arg) => 
+          Try(func.subs(x,y)(arg.subs(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.subs(x, y)))
         case _ => SymbObj(name, typ.subs(x, y))
       }
     } 
@@ -332,6 +326,29 @@ object HoTT{
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
     
+    
+    trait FuncTermLike extends Term with Subs[FuncTermLike]{
+      type D
+      type Cod
+      
+      type Obj <: FuncTermLike
+      
+      val domobjtpe : Type
+      
+      val codomobjtpe: Type
+      
+      val dom: Typ[Term]
+      
+//      val depcodom : D => Typ[Cod]
+      
+      def apply(arg: D): Cod
+      
+//      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncTerm[WW, UU]
+      
+      def subs(x: Term, y: Term) : FuncTermLike
+    }
+    
+    
     /*
      * Includes both functions and dependent functions
      */
@@ -375,7 +392,19 @@ object HoTT{
       }
     }
     
-    val applptnterm = ApplnPattern[Term, Term]()
+    class ApplnPatternAny{
+      def unapply(term : Term) : Option[(FuncTermLike, Term)] = term match {
+        case sym : Symbolic => sym.name match {
+          case sm @ ApplnSym(func : FuncTermLike, arg)  => 
+            Some((func, arg)) 
+          case _ => None
+        }
+        case _ => None
+      }
+    }
+    
+ //   val applptnterm = ApplnPattern[Term, Term]()
+    val applptnterm = new ApplnPatternAny
     
     /*
      * A formal function term, no non-trivial substitutions. Can be a dependent function.
@@ -477,6 +506,10 @@ object HoTT{
 	  
 	  val codomobjtpe = typeOf[U]
 	  
+	  type D = W
+	  
+	  type Cod = U
+	  
 	  lazy val typ = FuncTyp[W, U](dom, codom)
 	  
 //	  def act(arg: Term) = if (arg.typ == dom) Some(func(arg)) else None
@@ -517,6 +550,10 @@ object HoTT{
 	  
 	  val codomobjtpe = typeOf[Y]
 	  
+	  type D= X
+	  
+	  type Cod = Y
+	  
 	  val dom = variable.typ
 	  
 	  override def toString = "("+variable.toString+ MapsTo +value.toString
@@ -553,8 +590,12 @@ object HoTT{
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
 	
-	case class Lambda[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends LambdaLike(variable, value){
+	case class Lambda[X<: Term : TypeTag, Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends LambdaLike(variable, value){
 	  object mysym extends AnySym
+	  
+	  // type D = X
+	  
+	  // type Cod = Y
 	  
 	  val depcodom : X => Typ[Y] = (t : X) => value.typ.subs(variable, t).asInstanceOf[Typ[Y]]
 	  
@@ -684,6 +725,9 @@ object HoTT{
 	trait DepFuncObj[W<: Term, U<: Term] extends FuncTerm[W, U]{
 	  val fibers: TypFamily[W, U] 
 	   
+	  type D = W
+	  
+	  type Cod = U
 	  
 //	  lazy val typ = PiTyp(fibers)
 	  
@@ -714,6 +758,10 @@ object HoTT{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
+	  
+	  // type D = W
+	  
+	  // type Cod = U
 	  
 	  val dom = fibers.dom
 	  
@@ -760,6 +808,10 @@ object HoTT{
 	  val domobjtpe = typeOf[W]
 	  
 	  val codomobjtpe = typeOf[U]
+	  
+	 // type D = W
+	  
+	 // type Cod = U
 	  
 	  val depcodom : W => Typ[U] = (arg: W) => fibers(arg)
 	  
