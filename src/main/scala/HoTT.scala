@@ -186,8 +186,6 @@ object HoTT{
       // Change this to remove first case after checking
       def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) if (u == this) => v
- //       case (_, _, fa: FormalTypAppl[w, _]) => 
- //         fa.func.subs(x, y)(fa.arg.subs(x,y).asInstanceOf[w])
         case (_, _,applptntypu(func, arg)) => func.subs(x,y)(arg.subs(x, y))
         case _ => this
       }
@@ -381,7 +379,7 @@ object HoTT{
     /*
      * Pattern matching for a formal application.
      */
-    case class ApplnPattern[W <: Term : TypeTag, U <: Term : TypeTag](){
+    @deprecated("June 2014", "use general version") case class ApplnPattern[W <: Term : TypeTag, U <: Term : TypeTag](){
       def unapply(term : Term) : Option[(FuncTerm[W, U], W)] = term match {
         case sym : Symbolic => sym.name match {
           case sm @ ApplnSym(func : FuncTerm[W, U], arg) if typeOf[W] <:< func.domobjtpe & func.codomobjtpe <:< typeOf[U]  => 
@@ -406,12 +404,6 @@ object HoTT{
  //   val applptnterm = ApplnPattern[Term, Term]()
     val applptnterm = new ApplnPatternAny
     
-    /*
-     * A formal function term, no non-trivial substitutions. Can be a dependent function.
-     */
-//    trait FormalFuncTerm[-W <: Term, +U <: Term] extends FuncTerm[W, U]{
-//      def subs(x: Term, y: Term) = if (x==this) y.asInstanceOf[FuncTerm[W, U]] else this
-//    }
     
 	/** a function, i.e.,  an object in a function type, has a codomain and a fixed type for the domain. */
     trait FuncObj[W<: Term, +U <: Term] extends FuncTerm[W, U]{
@@ -426,7 +418,7 @@ object HoTT{
 //	  def action(arg:dom.Obj): codom.Obj 
 	  
 	  /** Function application */
-//	  def apply(arg: W) = action(arg.asInstanceOf[dom.Obj])
+
 	
 	  def apply(arg: W) : U
 	  
@@ -476,19 +468,7 @@ object HoTT{
       def unapply(obj: Term): Option[Term] = None
     }
     
-    /*
-    object FormalAppl{
-      def unapply(obj: Term): Option[(FuncObj[Term, Term], Term)] =obj match{
-        case sym: Symbolic =>
-        sym.name match {
-          case FormalApplication(f, a : Term) => Some((f.asInstanceOf[FuncObj[Term, Term]], a))
-          case _ => None
-        }
-        case _ => None
-      }
-    }
-    * 
-    */
+
     
     /** A formal structure representing func(arg) - especially used for pattern matching */
     case class FormalApplication[W<: Term with Subs[W], U<: Term](func: FuncObj[W, U], arg: W) extends Term with FormalAppl[W, U]{
@@ -512,10 +492,6 @@ object HoTT{
 	  
 	  lazy val typ = FuncTyp[W, U](dom, codom)
 	  
-//	  def act(arg: Term) = if (arg.typ == dom) Some(func(arg)) else None
-	  
-//	  def action(arg: dom.Obj) = func(arg).asInstanceOf[codom.Obj]
-	 
 	  def apply(arg: W) = func(arg)
 	  
 	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom, codom.subs(x, y))
