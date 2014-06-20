@@ -136,7 +136,7 @@ object AndrewsCurtis{
    */
   def multiplicity(rk: Int) : MoveType => Long = {
     case ACStabMv => 1 : Long
-    case ACDeStabMv => (1 : Long) // can be zero in practise
+    case ACDeStabMv => (1 : Long) // can be zero in practice
     case RtMultMv => (rk : Long) * ((rk : Long) - 1)
     case LftMultMv => (rk : Long) * ((rk : Long) - 1)
     case ConjMv => (rk : Long) * ((rk : Long) * 2 - 1)

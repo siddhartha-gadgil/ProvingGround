@@ -36,6 +36,24 @@ object AgdaExpressions{
     
     def typedvar : Parser[TypedVar] = token~spc~colon~spc~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
 
+    private def recptnmatch(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
+      case List("_") => expr ^^ {List(_)}
+      case "_" :: word :: tail => expr~word~recptnmatch(tail, sp) ^^ {case x~_~ys => x :: ys}
+      case word :: tail => word~>recptnmatch(tail, sp)
+    } 
+    
+    private def ptnmatchlist(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
+      case List("_") => term ^^ {List(_)}
+      case List(word) => word ^^ {(_) => List(Token(word))}
+      case "_" :: tail => term~recptnmatch(tail, sp) ^^ {case x~ys => x :: ys}
+      case ys => recptnmatch(ys, sp)
+    } 
+    
+    def ptnmatch(ptn : List[String], sp: Parser[Unit]) ={
+      val token: Expression = Token(("" /: ptn)(_+_))
+      ptnmatchlist(ptn, sp) ^^ {(l) => (token /: l)(Apply(_,_))}
+    }
+      
     def term : Parser[Expression] = token | "("~opt(wspc)~>expr<~opt(wspc)~")" | "begin"~wspc~>expr<~wspc~"end"
     
     def expr : Parser[Expression] = term | appl() | arrow() | lambda() | deparrow() | univ | typedvar | eqlty()
@@ -51,6 +69,19 @@ object AgdaExpressions{
     def defn = typedvar~crlf~eqlty(wspc) ^^ {case x~_~y => (x, y)}
     
     def casedefn = typedvar~"where"~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
+  }
+  
+  
+  object AgdaPatternParser extends JavaTokenParsers{
+    override val skipWhitespace = false
+    
+    def word : Parser[String] = "^[ \t]+".r
+    
+    def blank : Parser[String] ="_"
+      
+    def prefixPtn: Parser[List[String]] = blank~mixfixPtn ^^ {case head~tail => head :: tail} | word ^^ {List(_)} 
+    
+    def mixfixPtn: Parser[List[String]] = word~prefixPtn ^^ {case head~tail => head :: tail} | word ^^ {List(_)}
   }
   
   
