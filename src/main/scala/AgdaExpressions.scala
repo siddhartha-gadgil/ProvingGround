@@ -8,7 +8,7 @@ import provingGround.HoTT._
 
 object AgdaExpressions{
   
-  object AgdaParse extends JavaTokenParsers{
+  class AgdaParse(patterns : List[List[String]]) extends JavaTokenParsers{
     override val skipWhitespace = false
     def spc: Parser[Unit] = "[ \\t]+".r ^^ ((_) => ())
     
@@ -56,8 +56,10 @@ object AgdaExpressions{
       
     def term : Parser[Expression] = token | "("~opt(wspc)~>expr<~opt(wspc)~")" | "begin"~wspc~>expr<~wspc~"end"
     
-    def expr : Parser[Expression] = term | appl() | arrow() | lambda() | deparrow() | univ | typedvar | eqlty()
-    									 arrow(wspc) | lambda(wspc) | deparrow(wspc) | eqlty(wspc)
+    def expr : Parser[Expression] = ((term | appl() | arrow() | lambda() | 
+    									deparrow() | univ | typedvar | eqlty()) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
+    									((arrow(wspc) | lambda(wspc) | deparrow(wspc) 
+    									    | eqlty(wspc)) /: patterns.map(ptnmatch(_, wspc)))(_ | _)
 
     
     def eqlty(sp: Parser[Unit] = spc): Parser[Equality] = expr~sp~"="~sp~expr ^^ {case lhs~_~_~_~rhs => Equality(lhs, rhs)}
