@@ -54,7 +54,7 @@ object AndrewsCurtis{
     
     def addE ( e : E, p : Double) = DynDst(vrtdst, edgdst + (e, p), cntn)
     
-    def updtV (vd : FiniteDistribution[E]) = DynDst(vd, edgdst, cntn)
+    def updtV (vd : FiniteDistribution[V]) = DynDst(vd, edgdst, cntn)
     
     def updtE (ed : FiniteDistribution[E]) = DynDst(vrtdst, ed, cntn)
     
