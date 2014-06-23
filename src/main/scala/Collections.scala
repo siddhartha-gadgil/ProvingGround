@@ -142,6 +142,8 @@ object Collections{
         
       lazy val rand = new Random
       
+      lazy val norm = (pmf map (_.weight.abs)).sum
+      
       def next = Weighted.pick(pmf, rand.nextDouble)
       
       def get(label: T) = pmf find (_.elem == label) map (_.weight)

@@ -9,6 +9,8 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
   def multiplicity(vert: V, movetype: M) = moves(vert, movetype).size
   
   case class DynDst(vrtdst: FiniteDistribution[V], edgdst : FiniteDistribution[M], cntn : Double){
+    lazy val  norm = vrtdst.norm + edgdst.norm + cntn.abs
+    
     def probV (v : V) = vrtdst(v)
     
     def probM (e : M) = edgdst(e)
@@ -109,22 +111,24 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
   
   
   
-  class LearningLoop(cutoff: Double, stableLevel : Double, maxSteps: Int, epsilon: Double)(implicit feedback: Feedback){
+  class LearningLoop(cutoff: Double, stableLevel : Double, stablSteps: Int, outerSteps: Int, epsilon: Double)(implicit feedback: Feedback){
     def spannedchains(d: DynDst) = {
       val startchains : Set[Chain] = d.vrtdst.support map (AtomicChain(_))
       val prune = (ch: Chain) => ch.prob(d) > cutoff
       propagate(startchains, prune)
     }
       
-    @tailrec final def stablelearn(d: DynDst, steps: Int = maxSteps) : DynDst = 
-        if (steps <1) d else 
-          stablelearn(learnstep(d, epsilon, spannedchains(d), cutoff)(feedback), steps -1)
+    @tailrec final def stablelearn(d: DynDst, steps: Int = stablSteps, isStable: Boolean = false) : DynDst = 
+        if (steps < 1 ||  isStable) d else {
+        	val nxt = learnstep(d, epsilon, spannedchains(d), cutoff)(feedback)
+        	stablelearn(nxt, steps -1, nxt.norm < (stableLevel * epsilon))
+        }
     
-    
-    @tailrec final def proplearn(d: DynDst, steps: Int): DynDst = 
-      if (steps <1) d else proplearn(stablelearn(d), steps -1)
-      
-    @tailrec final def replearn(d: DynDst, loopsteps: Int, steps: Int): DynDst = 
-      if (steps <1) d else replearn(proplearn(d, loopsteps), loopsteps, steps -1)
+    @tailrec final def replearn(d: DynDst, steps: Int = outerSteps, isStable: Boolean = false): DynDst = 
+      if (steps <1 || isStable) d else {
+        val nxt = stablelearn(d)
+        replearn(nxt, steps -1, nxt.norm < (stableLevel * epsilon))
+      }
   }
+    
 }
