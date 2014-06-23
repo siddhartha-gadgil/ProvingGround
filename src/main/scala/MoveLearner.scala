@@ -69,12 +69,12 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
   def prunednextgen(chains : Set[Chain], prune : Chain => Boolean) = (chains filter (prune(_)) flatMap (offspring(_))) ++ chains
   
   
-  @tailrec final def propogateSteps(chains: Set[Chain], steps: Int) : Set[Chain] = 
-    if (steps <1) chains else propogateSteps(fullnextgen(chains), steps -1)
+  @tailrec final def propagateSteps(chains: Set[Chain], steps: Int) : Set[Chain] = 
+    if (steps <1) chains else propagateSteps(fullnextgen(chains), steps -1)
   
-  @tailrec final def propogate(chains: Set[Chain], prune : Chain => Boolean, 
+  @tailrec final def propagate(chains: Set[Chain], prune : Chain => Boolean, 
       prev: Set[Chain] = Set.empty) : Set[Chain] = 
-    if (prev == chains) chains else propogate(fullnextgen(chains), prune, chains)
+    if (prev == chains) chains else propagate(fullnextgen(chains), prune, chains)
   
   def finaldist(initdstbn: DynDst, chains: Set[Chain]) = {
       val dist = chains map (_.weightedHead(initdstbn))
@@ -105,5 +105,26 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
   def learnstep(d: DynDst, epsilon: Double, chains: Set[Chain], cutoff: Double =0.0)(implicit correction : Feedback) = {
     val error = correction(finaldist(d, chains)) * epsilon
     (d ++ backprop(d, error, chains)).normalized(cutoff)
+  }
+  
+  
+  
+  class LearningLoop(cutoff: Double, stableLevel : Double, maxSteps: Int, epsilon: Double)(implicit feedback: Feedback){
+    def spannedchains(d: DynDst) = {
+      val startchains : Set[Chain] = d.vrtdst.support map (AtomicChain(_))
+      val prune = (ch: Chain) => ch.prob(d) > cutoff
+      propagate(startchains, prune)
+    }
+      
+    @tailrec final def stablelearn(d: DynDst, steps: Int = maxSteps) : DynDst = 
+        if (steps <1) d else 
+          stablelearn(learnstep(d, epsilon, spannedchains(d), cutoff)(feedback), steps -1)
+    
+    
+    @tailrec final def proplearn(d: DynDst, steps: Int): DynDst = 
+      if (steps <1) d else proplearn(stablelearn(d), steps -1)
+      
+    @tailrec final def replearn(d: DynDst, loopsteps: Int, steps: Int): DynDst = 
+      if (steps <1) d else replearn(proplearn(d, loopsteps), loopsteps, steps -1)
   }
 }
