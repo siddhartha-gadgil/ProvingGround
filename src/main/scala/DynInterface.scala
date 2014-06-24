@@ -2,6 +2,8 @@ package provingGround
 
 import play.api.libs.json._
 
+import play.api.libs.EventSource
+
 import play.api.Play.current
 
 import scala.concurrent._
@@ -24,5 +26,7 @@ object DynInterface{
     }
     
     def enumerator = Enumerator.generateM(genOpt)
+    
+    def source(implicit jsEnum : Enumeratee[A, String]) = enumerator &> jsEnum &> EventSource() 
   }
 }

@@ -385,7 +385,7 @@ object AndrewsCurtis{
   
   def dstbnJson(dstbn : FiniteDistribution[Presentation]) = Json.toJson(dstbn.pmf.toList map (wtdPresJson(_))) 
   
-  val dstbnToJson = Enumeratee.map((dstbn : FiniteDistribution[Presentation]) => dstbnJson(dstbn))
+  implicit val dstbnToJson = Enumeratee.map((dstbn : FiniteDistribution[Presentation]) => dstbnJson(dstbn))
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop

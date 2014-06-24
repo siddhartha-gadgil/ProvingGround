@@ -4,7 +4,7 @@ import provingGround.FreeGroups._
 import provingGround.Collections._
 import annotation._
 
-class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]){
+class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
   
   def multiplicity(vert: V, movetype: M) = moves(vert, movetype).size
   
@@ -16,6 +16,8 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
     def probM (e : M) = edgdst(e)
     
     def ++ (that : DynDst) = DynDst(vrtdst ++ that.vrtdst, edgdst ++ that.edgdst, cntn + that.cntn)
+    
+    def -- (that : DynDst) = DynDst(vrtdst ++ (that.vrtdst * (-1)), edgdst ++ (that.edgdst * (-1)), cntn - that.cntn)
     
     def addV (v : V, p : Double) = DynDst(vrtdst + (v, p), edgdst, cntn)
     
@@ -129,6 +131,21 @@ class MoveLearner[V, M <: (V => V)](movetypes: List[M], moves : (V, M) => Set[V]
         val nxt = stablelearn(d)
         replearn(nxt, steps -1, nxt.norm < (stableLevel * epsilon))
       }
+    
+    import DynInterface._
+    
+    def gen(init: DynDst) = new Generator[DynDst](init, 
+        replearn(_ : DynDst), (fst, scnd) => (fst -- scnd).norm < stableLevel * epsilon)
+  }
+  
+  
+  object ACLearner{
+    import AndrewsCurtis._
+    
+    val moves = (pres: Presentation, mvtyp : ACMoveType) => allMoves(pres)(mvtyp).toSet map ((mv : Move) => mv(pres))
+    
+    val learner = new MoveLearner(MoveTypeList, moves)
+    
   }
     
 }
