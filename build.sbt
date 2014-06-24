@@ -11,3 +11,5 @@ resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/release
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.1.0"
 
 scalaSource in Compile <<= baseDirectory(_ / "src")
+
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")

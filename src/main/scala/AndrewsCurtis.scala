@@ -3,6 +3,7 @@ package provingGround
 import provingGround.FreeGroups._
 import provingGround.Collections._
 import annotation._
+import scala.language.reflectiveCalls
 
 // Play Json imports
 import play.api.libs.json._
@@ -384,7 +385,7 @@ object AndrewsCurtis{
   
   def dstbnJson(dstbn : FiniteDistribution[Presentation]) = Json.toJson(dstbn.pmf.toList map (wtdPresJson(_))) 
   
-
+  val dstbnToJson = Enumeratee.map((dstbn : FiniteDistribution[Presentation]) => dstbnJson(dstbn))
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop

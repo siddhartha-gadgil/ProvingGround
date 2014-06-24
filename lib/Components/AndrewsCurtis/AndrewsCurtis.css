@@ -10,3 +10,20 @@ body {
 h1, p {
   color: #333;
 }
+
+.wordlist {
+  display: inline;
+  list-style: none;
+}
+
+.wordlist li {
+  display: inline;
+}
+
+.wordlist li:after {
+  content: ", ";
+}
+
+.wordlist li:last-child:after {
+    content: ""
+}

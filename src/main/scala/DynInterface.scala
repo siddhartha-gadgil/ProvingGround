@@ -13,7 +13,7 @@ import play.api.libs.concurrent._
 import akka.actor._
 import play.api.libs.concurrent.Execution.Implicits._
 
-object DynInetrface{
+object DynInterface{
   class Generator[A](init: A, initdyn: A => A, initIsStable : (A, A) => Boolean = ((_ : A, _ : A) => false)){
     var isStable = initIsStable
     var state = init
