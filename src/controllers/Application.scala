@@ -18,22 +18,43 @@ import play.api.libs.EventSource
 
 import provingGround.AndrewsCurtis._
 import provingGround.AndrewsCurtisInterface._
+import provingGround.AndrewsCurtisModel._
 
 object Application extends Controller {
+  
+  
   
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
   
+  
+  
   def redirect = Action {
     Redirect("build/web/provingground.html")
   }
   
+  def ACUpdate = Action {
+    implicit request => {
+      val params = ACform.bindFromRequest.get
+      params.updateGen()
+      Ok(params.toString)
+    }
+  }
+  
+  def dstbnstream = Action {
+      implicit request => {                   
+          Ok.feed(ACsource).as("text/event-stream")
+      }
+  }
+  /*
   def dstbnstream = Action {
       implicit request => {                   
           Ok.feed(dstbnout &> EventSource()).as("text/event-stream")
       }
   }
+  * 
+  */
   
   val (bounceOut, bounceChannel) = Concurrent.broadcast[String]
   

@@ -177,12 +177,28 @@ object Collections{
         FiniteDistribution(newpmf).flatten
       }
       
+      def feedback(baseweights: T => Double, damp : Double = 0.1) ={
+        val rawdiff = for (Weighted(pres, prob) <- pmf) yield (Weighted(pres, baseweights(pres)/(baseweights(pres)* damp + prob)))
+        val shift = rawdiff.map(_.weight).sum/(support.size)
+        val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob- shift)
+        FiniteDistribution(normaldiff)
+      }
+      
       override def toString = {
         val sortedpmf = pmf.sortBy(1 - _.weight)
         val terms = (for (Weighted(elem, wt) <- sortedpmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
         "[" + terms.dropRight(2) + "]"
       }
     }
+    
+    object FiniteDistribution{
+      def uniform[A](s: Traversable[A]) = {
+        val prob = 1.0/s.size
+        val pmf = (s map (Weighted(_, prob))).toSeq
+        FiniteDistribution(pmf)
+      }
+    }
+    
     
     case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A){
       def diff(frm: A, remove: A) = sum(frm, mult(-1.0, remove))

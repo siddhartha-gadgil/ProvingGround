@@ -139,13 +139,6 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
   }
   
   
-  object ACLearner{
-    import AndrewsCurtis._
-    
-    val moves = (pres: Presentation, mvtyp : ACMoveType) => allMoves(pres)(mvtyp).toSet map ((mv : Move) => mv(pres))
-    
-    val learner = new MoveLearner(MoveTypeList, moves)
-    
-  }
+  
     
 }
