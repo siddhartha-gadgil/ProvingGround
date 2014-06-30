@@ -18,7 +18,10 @@ object ApplicationBuild extends Build {
     // Add your own project settings here      
 	playAssetsDirectories <+= baseDirectory / "/web",
 	playAssetsDirectories <+= baseDirectory / "/packages",
-	playAssetsDirectories <+= baseDirectory / "/build"
+	playAssetsDirectories <+= baseDirectory / "/build",
+	libraryDependencies ++= Seq(
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2"
+)
   )
 
 }

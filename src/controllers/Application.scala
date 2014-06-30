@@ -34,7 +34,7 @@ object Application extends Controller {
     Redirect("build/web/provingground.html")
   }
   
-  def ACUpdate = Action {
+  def ACupdate = Action {
     implicit request => {
       val params = ACform.bindFromRequest.get
       params.updateGen()
