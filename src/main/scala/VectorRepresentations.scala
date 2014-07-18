@@ -25,7 +25,15 @@ object VectorRepresentations{
     @tailrec def sum(vs: Seq[Vector[Double]], accum: Vector[Double] = Vector(0)) : Vector[Double] = if (vs.isEmpty) Vector(0) 
     	else if (vs.tail.isEmpty) vs.head
     	else sum(vs.tail, vs.head)
+    
   }
+  
+  def randomVec(length: Int, damp: Double=0.0) = {
+    	  val rnd = new Random
+    	  val raw = ((0 until length) map (_ => damp + (1-damp) * rnd.nextDouble)).toVector 
+    	  val total = raw.sum
+    	  raw map (_ * (1/total))
+    	} 
   
   case class Representation[T](rep: Seq[WeightVect[T]]) extends  LabelledArray[T, Vector[Double]]{    
 	  lazy val pmf = rep map (_.weighted)
