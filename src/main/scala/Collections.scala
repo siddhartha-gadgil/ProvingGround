@@ -157,7 +157,7 @@ object Collections{
       lazy val flatten = FiniteDistribution(flatdist.toSeq)
       
     
-      private def posmf(t : Double = 0.0) = flatdist filter (_.weight > 0)
+      private def posmf(t : Double = 0.0) = flatdist filter (_.weight > t)
       
       private def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
       
