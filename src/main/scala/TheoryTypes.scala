@@ -1,5 +1,5 @@
-package provingGround
-import provingGround.HoTT._
+package provingground
+import provingground.HoTT._
 import scala.util.parsing.combinator._
 import scala.language.implicitConversions
 

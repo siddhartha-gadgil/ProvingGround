@@ -1,11 +1,11 @@
-package provingGround
+package provingground
 
 import scala.annotation._
 import scala.util._
 
 import scala.language.implicitConversions 
 
-import provingGround.Collections._
+import provingground.Collections._
 
 object LearningSystem{
    

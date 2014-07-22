@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import com.microsoft.z3._
 import scala.collection.JavaConversions._

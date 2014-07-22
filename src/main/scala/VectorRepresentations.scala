@@ -1,8 +1,8 @@
-package provingGround
+package provingground
  
 import scala.annotation._
 import scala.util._
-import provingGround.Collections._
+import provingground.Collections._
 import math._
 
 import scala.language.implicitConversions

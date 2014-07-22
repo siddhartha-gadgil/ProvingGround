@@ -1,5 +1,5 @@
-import provingGround.HoTT._
-import provingGround.Contexts._
+import provingground.HoTT._
+import provingground.Contexts._
 
 object Unify{
   def multisub(x: Term, m : Map[Term, Term]): Term = m.toList  match {

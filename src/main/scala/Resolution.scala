@@ -1,10 +1,10 @@
-package provingGround
+package provingground
 
-import provingGround.Logic._
+import provingground.Logic._
 import scala.language.postfixOps
 import scala.util._
 
-import provingGround.Structures._
+import provingground.Structures._
 
 /** A basic resolution theorem prover */
 object Resolution{

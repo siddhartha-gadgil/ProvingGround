@@ -1,10 +1,10 @@
-package provingGround
+package provingground
 
 import scala.util.parsing.combinator._
 
 import scala.util._
 
-import provingGround.HoTT._
+import provingground.HoTT._
 
 object AgdaExpressions{
   

@@ -1,6 +1,6 @@
 package controllers
 
-import provingGround.AndrewsCurtisModel
+import provingground.AndrewsCurtisModel
 
 
 import play.api._
@@ -22,8 +22,8 @@ object DataStore extends Controller with MongoController{
    * Chains with weights and meta-data, saved if the head has significant weight.
    */
   def chainCollection: JSONCollection = db.collection[JSONCollection]("ACchains")
-  
+
   def saveChain(chain: JsValue) = chainCollection.insert(chain)
   }
-  
+
 }

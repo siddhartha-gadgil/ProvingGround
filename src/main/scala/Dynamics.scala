@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import Stream._
 import Structures._
@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
-import provingGround.HoTT._
+import provingground.HoTT._
 
 import ExecutionContext.Implicits.global
 

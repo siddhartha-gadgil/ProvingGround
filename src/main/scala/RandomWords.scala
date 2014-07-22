@@ -1,8 +1,8 @@
-package provingGround
+package provingground
  
-import provingGround.Collections._
+import provingground.Collections._
 
-import provingGround.LearningSystem._
+import provingground.LearningSystem._
  
 object RandomWords{ 
 /*

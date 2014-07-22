@@ -1,7 +1,7 @@
-package provingGround
+package provingground
 
-import provingGround.FreeGroups._
-import provingGround.Collections._
+import provingground.FreeGroups._
+import provingground.Collections._
 import annotation._
 import scala.language.reflectiveCalls
 

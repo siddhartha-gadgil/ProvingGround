@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 // Play Json imports
 import play.api.libs.json._

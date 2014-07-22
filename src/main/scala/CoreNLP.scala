@@ -1,7 +1,7 @@
-package provingGround
+package provingground
 
-import provingGround.NlpProse._
-import provingGround.ParseProse._
+import provingground.NlpProse._
+import provingground.ParseProse._
 
 import java.io._
 // import java.util.*;
@@ -71,7 +71,7 @@ object CoreNLP{
 
 // The part below is for testing.
 	object CoreNLPTest extends App{
-		import provingGround.CoreNLP._
+		import provingground.CoreNLP._
 
     val props = new java.util.Properties()
     props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")

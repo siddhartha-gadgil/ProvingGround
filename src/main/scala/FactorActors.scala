@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import annotation.tailrec
 import scala.swing._

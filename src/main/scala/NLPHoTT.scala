@@ -1,8 +1,8 @@
-package provingGround
+package provingground
 
-import provingGround.NlpProse._
-import provingGround.HoTT._
-import provingGround.TheoryTypes.{Term => TheoryTerm, _} 
+import provingground.NlpProse._
+import provingground.HoTT._
+import provingground.TheoryTypes.{Term => TheoryTerm, _} 
 
 
 import scala.language.implicitConversions

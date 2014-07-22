@@ -1,8 +1,8 @@
-package provingGround
+package provingground
 
-import provingGround.Logic._
-import provingGround.Structures._
-import provingGround.Theory._
+import provingground.Logic._
+import provingground.Structures._
+import provingground.Theory._
 
 object ZFC{
   

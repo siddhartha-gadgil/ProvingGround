@@ -1,12 +1,12 @@
-package provingGround
+package provingground
 
 import scala.swing._
 import java.awt.Dimension
 
-import provingGround.CoreNLP._
-import provingGround.Logic._
-import provingGround.NlpProse._
-import provingGround.ParseProse._
+import provingground.CoreNLP._
+import provingground.Logic._
+import provingground.NlpProse._
+import provingground.ParseProse._
 
  object ParserGUI extends SimpleSwingApplication{
     val s = new Dimension(1500, 1500)

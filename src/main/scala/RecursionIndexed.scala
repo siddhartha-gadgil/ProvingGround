@@ -1,9 +1,9 @@
-package provingGround
+package provingground
 
-import provingGround.HoTT._
-import provingGround.Contexts._
+import provingground.HoTT._
+import provingground.Contexts._
 
-//import provingGround.Context.Context.empty
+//import provingground.Context.Context.empty
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._

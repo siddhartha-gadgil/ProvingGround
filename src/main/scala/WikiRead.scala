@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import scala.xml._
 import play.api.libs.ws._

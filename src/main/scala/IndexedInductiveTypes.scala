@@ -1,6 +1,6 @@
-package provingGround
+package provingground
 
-import provingGround.HoTT._
+import provingground.HoTT._
 
 import scala.language.implicitConversions 
 import scala.util._

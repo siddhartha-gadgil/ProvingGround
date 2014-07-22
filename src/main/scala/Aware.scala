@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import akka.actor._
 

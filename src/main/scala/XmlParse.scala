@@ -1,7 +1,7 @@
-package provingGround
+package provingground
 
-// import provingGround.Logic._
-import provingGround.NlpProse._
+// import provingground.Logic._
+import provingground.NlpProse._
 
 object XmlParse{
 

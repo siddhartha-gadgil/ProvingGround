@@ -1,6 +1,6 @@
 package src.main.scala
-import provingGround.CoreNLP._
-import provingGround.CoreNLPTest
+import provingground.CoreNLP._
+import provingground.CoreNLPTest
 
 object NLPtesting {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
@@ -57,7 +57,7 @@ object NLPtesting {
                                                   //| , O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O,
                                                   //|  O, O, O, O, O, O, O, O, O, O, O, O, MISC, O, O, O)
   
-  val trees = proseTrees(text, pipe)              //> trees  : List[provingGround.NlpProse.ProseTree] = List((state,33):List(poss(
+  val trees = proseTrees(text, pipe)              //> trees  : List[provingground.NlpProse.ProseTree] = List((state,33):List(poss(
                                                   //| (states,5),(Lagrange,2)), prep_of((states,5),(subgroup,21)), nn((states,5),(
                                                   //| theorem,4)), rcmod((states,5),(for,7)), dep((states,5),(order,13)), dep((sta
                                                   //| tes,5),(number,15)), dep((for,7),(that,6)), pobj((for,7),(G,11)), det((G,11)

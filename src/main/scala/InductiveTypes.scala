@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import HoTT._
 import scala.language.implicitConversions 

@@ -1,7 +1,7 @@
-package provingGround
+package provingground
 
-import provingGround.XmlParse._
-import provingGround.ParseProse._
+import provingground.XmlParse._
+import provingground.ParseProse._
 
 /** Parses the sentence in a given xml file */
 object Test extends App{

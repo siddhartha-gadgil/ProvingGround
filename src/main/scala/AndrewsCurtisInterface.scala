@@ -1,8 +1,8 @@
-package provingGround
+package provingground
 
-import provingGround.AndrewsCurtis._
-import provingGround.Collections._
-import provingGround.FreeGroups._
+import provingground.AndrewsCurtis._
+import provingground.Collections._
+import provingground.FreeGroups._
 
 import play.api.libs.json._
 

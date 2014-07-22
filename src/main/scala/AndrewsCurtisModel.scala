@@ -1,8 +1,8 @@
-package provingGround
-import provingGround.AndrewsCurtis._
-import provingGround.Collections._
-import provingGround.FreeGroups._
-import provingGround.DynInterface._
+package provingground
+import provingground.AndrewsCurtis._
+import provingground.Collections._
+import provingground.FreeGroups._
+import provingground.DynInterface._
 import scala.language.reflectiveCalls
 
 import scala.language.implicitConversions

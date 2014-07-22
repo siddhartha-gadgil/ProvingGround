@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import annotation.tailrec
 import scala.swing._
@@ -11,11 +11,11 @@ import scala.language.postfixOps
 import scala.util._
  
 
-import provingGround.CoreNLP._
-import provingGround.Logic._
-import provingGround.NlpProse._
-import provingGround.ParseProse._
-import provingGround.TextToInt._
+import provingground.CoreNLP._
+import provingground.Logic._
+import provingground.NlpProse._
+import provingground.ParseProse._
+import provingground.TextToInt._
 
 /** This is to experiment with using actors for background computations
 		We use a Naive algorithm as this suits our purposes

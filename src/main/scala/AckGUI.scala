@@ -1,14 +1,14 @@
-package provingGround
+package provingground
 
 import scala.swing._
 import java.awt.Dimension
 import akka.actor._
 
-import provingGround.CoreNLP._
-import provingGround.Logic._
-import provingGround.NlpProse._
-import provingGround.ParseProse._
-import provingGround.TextToInt._
+import provingground.CoreNLP._
+import provingground.Logic._
+import provingground.NlpProse._
+import provingground.ParseProse._
+import provingground.TextToInt._
 
  object AckGUI extends SimpleSwingApplication{
     val s = new Dimension(1500, 1500)

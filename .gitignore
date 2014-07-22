@@ -1,4 +1,4 @@
-provingGround/
+provingground/
 
 bin/
 
@@ -54,7 +54,7 @@ index.js
 
 scratch/
 
-src/main/scala/provingGround
+src/main/scala/provingground
 
 src/main/scala/package.htm
 

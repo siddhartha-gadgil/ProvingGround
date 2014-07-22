@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import scala.language.implicitConversions 
 import scala.util._
@@ -380,7 +380,7 @@ object HoTTinner{
   
 }
   object ContextOldCode{
-    import provingGround.HoTT._
+    import provingground.HoTT._
     import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
   	
 	trait ConstFmlyTmpl extends Term with AtomicObj{

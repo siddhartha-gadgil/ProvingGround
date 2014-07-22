@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 /**
  * Combining various atomic solvers to give a solver, with one or many solutions.

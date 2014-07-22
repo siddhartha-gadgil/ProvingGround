@@ -1,12 +1,12 @@
-package provingGround
+package provingground
 
-import provingGround.NlpProse._
-import provingGround.Logic._
-import provingGround.TextToInt._
-import provingGround.Theory._
-import provingGround.Theory.Document._
-// import provingGround.Arithmetic._
-// import provingGround.Collections._
+import provingground.NlpProse._
+import provingground.Logic._
+import provingground.TextToInt._
+import provingground.Theory._
+import provingground.Theory.Document._
+// import provingground.Arithmetic._
+// import provingground.Collections._
 
 /** Translates Stanford Dependency tree to Logical expression */                               
 object ParseProse{

@@ -1,4 +1,4 @@
-package provingGround
+package provingground
 
 import Stream._
 import Structures._
@@ -11,7 +11,7 @@ import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
 
-import provingGround.HoTT._
+import provingground.HoTT._
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
@@ -228,7 +228,7 @@ object GeneticEvolver{
     }
   }
   
-  class MarkovEvolver[A](val base: Set[A], dynaBase: Markov[A], core: Set[A]= Set.empty) extends provingGround.Aware.Seeker[A, Set[A]]{
+  class MarkovEvolver[A](val base: Set[A], dynaBase: Markov[A], core: Set[A]= Set.empty) extends provingground.Aware.Seeker[A, Set[A]]{
 
     def dyn(s: Set[A]) = dynaBase.dyn(s) union s
     
@@ -468,7 +468,7 @@ object Evolver{
    
 	object HottInnerEvolvers{
 	  
-	import provingGround.HoTTinner._
+	import provingground.HoTTinner._
 
 	type Pairing = PartialFunction[(AbsObj, AbsObj),AbsObj]
     

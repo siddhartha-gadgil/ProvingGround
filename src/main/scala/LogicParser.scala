@@ -1,7 +1,7 @@
-package provingGround
+package provingground
 
 import scala.util.parsing.combinator._
-import provingGround.Logic._ 
+import provingground.Logic._ 
 
 object LogicParser extends JavaTokenParsers{
     def sym: Parser[String] = "[a-zA-Z]".r | """\\(\w)+""".r

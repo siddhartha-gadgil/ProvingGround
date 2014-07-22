@@ -1,8 +1,8 @@
-package provingGround
+package provingground
 
-import provingGround.Logic._
-import provingGround.Structures._
-import provingGround.Aware._
+import provingground.Logic._
+import provingground.Structures._
+import provingground.Aware._
 import scala.language.implicitConversions
 
 /**
