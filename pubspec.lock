@@ -28,7 +28,7 @@ packages:
   collection:
     description: collection
     source: hosted
-    version: "0.9.3+1"
+    version: "0.9.4"
   di:
     description: di
     source: hosted
@@ -52,7 +52,7 @@ packages:
   path:
     description: path
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   perf_api:
     description: perf_api
     source: hosted
@@ -68,7 +68,7 @@ packages:
   source_maps:
     description: source_maps
     source: hosted
-    version: "0.9.1"
+    version: "0.9.3"
   stack_trace:
     description: stack_trace
     source: hosted
@@ -76,4 +76,4 @@ packages:
   utf:
     description: utf
     source: hosted
-    version: "0.9.0"
+    version: "0.9.0+1"
