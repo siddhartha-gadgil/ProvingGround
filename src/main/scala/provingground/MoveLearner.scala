@@ -133,9 +133,9 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
       }
     
     import DynInterface._
-    
+    /*
     def gen(init: DynDst) = new Generator[DynDst](init, 
-        replearn(_ : DynDst), (fst, scnd) => (fst -- scnd).norm < stableLevel * epsilon)
+        replearn(_ : DynDst), (fst, scnd) => (fst -- scnd).norm < stableLevel * epsilon) */
   }
   
   

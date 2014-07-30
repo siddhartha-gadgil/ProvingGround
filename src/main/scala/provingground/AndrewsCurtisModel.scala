@@ -10,9 +10,9 @@ import scala.language.implicitConversions
 import play.api.data._
 import play.api.data.Forms._
 
-import play.api.libs.iteratee._
+//import play.api.libs.iteratee._
 
-import play.api.libs.EventSource
+//import play.api.libs.EventSource
 
 
 import math.pow
@@ -43,23 +43,24 @@ object AndrewsCurtisModel{
       
       val learnLoop = new LearningLoop(cutoff: Double, stableLevel : Double, stablSteps, outerSteps: Int, epsilon: Double)
       
+      /*
       def updateGen(gen: Generator[DynDst] = basegen) = {
         gen.dyn = learnLoop.replearn(_)
         gen.isStable = (fst, scnd) => (fst -- scnd).norm < stableLevel * epsilon
-      }
+      }*/
     }
     
     val unifmoves = FiniteDistribution.uniform(MoveTypeList)
     
     val defaultdstbn =  DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), unifmoves, 0.7)
-    
+    /*
     val basegen = ACparams().learnLoop.gen(defaultdstbn)
     
     val ACenum = basegen.enumerator
+    */
+//    val dynDstToJson = Enumeratee.map((dstbn : DynDst) => dstbnJson(dstbn.vrtdst))
     
-    val dynDstToJson = Enumeratee.map((dstbn : DynDst) => dstbnJson(dstbn.vrtdst))
-    
-    val ACsource = ACenum &> dynDstToJson &> EventSource()
+//    val ACsource = ACenum &> dynDstToJson &> EventSource()
     
     val ACform = Form(
         mapping(

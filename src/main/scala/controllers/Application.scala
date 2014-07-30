@@ -13,8 +13,8 @@ import play.api.libs.json._
 
 import play.api.Play.current
 
-import play.api.libs.iteratee._
-import play.api.libs.EventSource
+//import play.api.libs.iteratee._
+//import play.api.libs.EventSource
 
 import provingground.AndrewsCurtis._
 import provingground.AndrewsCurtisInterface._
@@ -33,7 +33,7 @@ object Application extends Controller {
   def redirect = Action {
     Redirect("build/web/provingground.html")
   }
-
+/*
   def ACupdate = Action {
     implicit request => {
       val params = ACform.bindFromRequest.get
@@ -41,12 +41,17 @@ object Application extends Controller {
       Ok(params.toString)
     }
   }
+  */
+  /*
 
   def dstbnstream = Action {
       implicit request => {
           Ok.feed(ACsource).as("text/event-stream")
       }
   }
+  * 
+  * 
+  */
   /*
   def dstbnstream = Action {
       implicit request => {
@@ -55,7 +60,7 @@ object Application extends Controller {
   }
   *
   */
-
+/*
   val (bounceOut, bounceChannel) = Concurrent.broadcast[String]
 
   def bouncestream = Action {
@@ -82,5 +87,5 @@ object Application extends Controller {
       p.send
       Ok("bounced")
   }
-
+*/
 }

@@ -15,7 +15,7 @@ import play.api.libs.concurrent._
 import akka.actor._
 import play.api.libs.concurrent.Execution.Implicits._
 
-object DynInterface{
+object DynInterface{/*
   class Generator[A](init: A, initdyn: A => A, initIsStable : (A, A) => Boolean = ((_ : A, _ : A) => false)){
     var isStable = initIsStable
     var state = init
@@ -28,5 +28,5 @@ object DynInterface{
     def enumerator = Enumerator.generateM(genOpt)
     
     def source(implicit jsEnum : Enumeratee[A, String]) = enumerator &> jsEnum &> EventSource() 
-  }
+  }*/
 }
