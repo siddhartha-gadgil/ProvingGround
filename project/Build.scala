@@ -16,12 +16,12 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here      
-	playAssetsDirectories <+= baseDirectory / "/web",
-	playAssetsDirectories <+= baseDirectory / "/packages",
-	playAssetsDirectories <+= baseDirectory / "/build",
-	libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2"
-)
+//	playAssetsDirectories <+= baseDirectory / "/web",
+//	playAssetsDirectories <+= baseDirectory / "/packages",
+//	playAssetsDirectories <+= baseDirectory / "/build",
+//	libraryDependencies ++= Seq(
+//  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2"
+//)
   )
 
 }

@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import provingground.Logic._
+//import provingground.Logic._
 
 import play.api.data._
 import play.api.data.Forms._
@@ -15,11 +15,11 @@ import play.api.Play.current
 
 //import play.api.libs.iteratee._
 //import play.api.libs.EventSource
-
+/*
 import provingground.AndrewsCurtis._
 import provingground.AndrewsCurtisInterface._
 import provingground.AndrewsCurtisModel._
-
+*/
 object Application extends Controller {
 
 
