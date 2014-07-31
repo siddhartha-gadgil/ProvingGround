@@ -1,4 +1,4 @@
-package src.main.scala
+package worksheets
 import provingground.Logic._
 import scala.language.implicitConversions
 
