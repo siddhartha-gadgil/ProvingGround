@@ -14,6 +14,7 @@ import Math._
 // * Clean up universes, LogicalTyp etc.
 //
 
+// TODO: Sigma and equality types as inductive types
 
 /** The Homotopy type theory objects, types and utility functions
  *  
