@@ -9,6 +9,7 @@ doc/*.synctex
 
 doc/*.synctex.gz
 
+RUNNING_PID
 
 *~
 
