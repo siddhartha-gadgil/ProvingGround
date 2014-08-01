@@ -35,13 +35,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">main</span><span class="result"> extends <span class="extype" name="play.templates.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.templates.Format">Format</span>[<span class="extype" name="play.api.templates.Html">Html</span>]] with <span class="extype" name="play.api.templates.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.api.templates.Html">Html</span>]</span>
+        <span class="name">main</span><span class="result"> extends <span class="extype" name="play.twirl.api.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>, <span class="extype" name="play.twirl.api.Format">Format</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]] with <span class="extype" name="play.twirl.api.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.twirl.api.Html">Html</span>, <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="play.api.templates.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.api.templates.Html">Html</span>], <span class="extype" name="play.templates.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.templates.Format">Format</span>[<span class="extype" name="play.api.templates.Html">Html</span>]], <span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="play.twirl.api.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.twirl.api.Html">Html</span>, <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>], <span class="extype" name="play.twirl.api.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>, <span class="extype" name="play.twirl.api.Format">Format</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]], <span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +59,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="views.html.main"><span>main</span></li><li class="in" name="play.api.templates.Template2"><span>Template2</span></li><li class="in" name="play.templates.BaseScalaTemplate"><span>BaseScalaTemplate</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="views.html.main"><span>main</span></li><li class="in" name="play.twirl.api.Template2"><span>Template2</span></li><li class="in" name="play.twirl.api.BaseScalaTemplate"><span>BaseScalaTemplate</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -150,29 +150,94 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="play.templates.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="_display_(o:Any)(implicitct:scala.reflect.ClassTag[T]):T"></a>
-      <a id="_display_(Any)(ClassTag[Html]):Html"></a>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(o:Any)(implicitm:Manifest[T]):T"></a>
+      <a id="_display_(Any)(Manifest[play.twirl.api.HtmlFormat.Appendable]):play.twirl.api.HtmlFormat.Appendable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">_display_</span><span class="params">(<span name="o">o: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ct">ct: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="play.api.templates.Html">Html</span>]</span>)</span><span class="result">: <span class="extype" name="play.api.templates.Html">Html</span></span>
+        <span class="name">_display_</span><span class="params">(<span name="o">o: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="m">m: <span class="extype" name="scala.Predef.Manifest">Manifest</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]</span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(x:T):T"></a>
+      <a id="_display_(play.twirl.api.HtmlFormat.Appendable):play.twirl.api.HtmlFormat.Appendable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_display_</span><span class="params">(<span name="x">x: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(x:scala.xml.NodeSeq):T"></a>
+      <a id="_display_(NodeSeq):play.twirl.api.HtmlFormat.Appendable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_display_</span><span class="params">(<span name="x">x: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(x:Unit):T"></a>
+      <a id="_display_(Unit):play.twirl.api.HtmlFormat.Appendable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_display_</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(x:String):T"></a>
+      <a id="_display_(String):play.twirl.api.HtmlFormat.Appendable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_display_</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
+    </li><li name="play.twirl.api.BaseScalaTemplate#_display_" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_display_(x:AnyVal):T"></a>
+      <a id="_display_(AnyVal):play.twirl.api.HtmlFormat.Appendable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_display_</span><span class="params">(<span name="x">x: <span class="extype" name="scala.AnyVal">AnyVal</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
     </li><li name="views.html.main#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(title:String)(content:play.api.templates.Html):play.api.templates.Html"></a>
-      <a id="apply(String)(Html):Html"></a>
+      <a id="apply(title:String)(content:play.twirl.api.Html):play.twirl.api.HtmlFormat.Appendable"></a>
+      <a id="apply(String)(Html):play.twirl.api.HtmlFormat.Appendable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="title">title: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="content">content: <span class="extype" name="play.api.templates.Html">Html</span></span>)</span><span class="result">: <span class="extype" name="play.api.templates.Html">Html</span></span>
+        <span class="name">apply</span><span class="params">(<span name="title">title: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="content">content: <span class="extype" name="play.twirl.api.Html">Html</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p>
@@ -222,15 +287,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="views.html.main#f" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="f:String=&gt;(play.api.templates.Html=&gt;play.api.templates.Html)"></a>
-      <a id="f:(String)⇒(Html)⇒Html"></a>
+      <a id="f:String=&gt;(play.twirl.api.Html=&gt;play.twirl.api.HtmlFormat.Appendable)"></a>
+      <a id="f:(String)⇒(Html)⇒play.twirl.api.HtmlFormat.Appendable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">f</span><span class="result">: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ (<span class="extype" name="play.api.templates.Html">Html</span>) ⇒ <span class="extype" name="play.api.templates.Html">Html</span></span>
+        <span class="name">f</span><span class="result">: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ (<span class="extype" name="play.twirl.api.Html">Html</span>) ⇒ <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
       </span>
       </h4>
       
@@ -253,16 +318,16 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="play.templates.BaseScalaTemplate#format" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="play.twirl.api.BaseScalaTemplate#format" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="format:F"></a>
-      <a id="format:Format[Html]"></a>
+      <a id="format:Format[play.twirl.api.HtmlFormat.Appendable]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">format</span><span class="result">: <span class="extype" name="play.templates.Format">Format</span>[<span class="extype" name="play.api.templates.Html">Html</span>]</span>
+        <span class="name">format</span><span class="result">: <span class="extype" name="play.twirl.api.Format">Format</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BaseScalaTemplate</dd></dl></div>
@@ -345,15 +410,15 @@
       </h4>
       
     </li><li name="views.html.main#render" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="render(title:String,content:play.api.templates.Html):play.api.templates.Html"></a>
-      <a id="render(String,Html):Html"></a>
+      <a id="render(title:String,content:play.twirl.api.Html):play.twirl.api.HtmlFormat.Appendable"></a>
+      <a id="render(String,Html):play.twirl.api.HtmlFormat.Appendable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">render</span><span class="params">(<span name="title">title: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="content">content: <span class="extype" name="play.api.templates.Html">Html</span></span>)</span><span class="result">: <span class="extype" name="play.api.templates.Html">Html</span></span>
+        <span class="name">render</span><span class="params">(<span name="title">title: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="content">content: <span class="extype" name="play.twirl.api.Html">Html</span></span>)</span><span class="result">: <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="views.html.main">main</a> → Template2</dd></dl></div>
@@ -436,10 +501,10 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="play.api.templates.Template2">
-              <h3>Inherited from <span class="extype" name="play.api.templates.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.api.templates.Html">Html</span>]</h3>
-            </div><div class="parent" name="play.templates.BaseScalaTemplate">
-              <h3>Inherited from <span class="extype" name="play.templates.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.api.templates.Html">Html</span>, <span class="extype" name="play.templates.Format">Format</span>[<span class="extype" name="play.api.templates.Html">Html</span>]]</h3>
+        <div class="parent" name="play.twirl.api.Template2">
+              <h3>Inherited from <span class="extype" name="play.twirl.api.Template2">Template2</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="play.twirl.api.Html">Html</span>, <span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]</h3>
+            </div><div class="parent" name="play.twirl.api.BaseScalaTemplate">
+              <h3>Inherited from <span class="extype" name="play.twirl.api.BaseScalaTemplate">BaseScalaTemplate</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>, <span class="extype" name="play.twirl.api.Format">Format</span>[<span class="extype" name="play.twirl.api.Format.Appendable">play.twirl.api.HtmlFormat.Appendable</span>]]</h3>
             </div><div class="parent" name="scala.Serializable">
               <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
             </div><div class="parent" name="java.io.Serializable">

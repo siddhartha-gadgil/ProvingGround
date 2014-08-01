@@ -1,0 +1,620 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>RandomWords - provingground.RandomWords</title>
+          <meta name="description" content="RandomWords - provingground.RandomWords" />
+          <meta name="keywords" content="RandomWords provingground.RandomWords" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.RandomWords$';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../lib/object_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1>RandomWords</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RandomWords</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.RandomWords"><span>RandomWords</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.RandomWords.AggregateWord" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AggregateWord[E]extendsRandomWords.Symbol[E]withRandomWords.Word[E]"></a>
+      <a id="AggregateWord[E]:AggregateWord[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$AggregateWord.html"><span class="name">AggregateWord</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.AggregateWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.AggregateWord.E">E</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.AssocWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AssocWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.AggregateWord[E]withProductwithSerializable"></a>
+      <a id="AssocWord[E,N]:AssocWord[E,N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$AssocWord.html"><span class="name">AssocWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$BinOpSym.html" class="extype" name="provingground.RandomWords.BinOpSym">BinOpSym</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>, <span class="extype" name="provingground.RandomWords.AssocWord.N">N</span>]</span>, <span name="elems">elems: <span class="extype" name="scala.List">List</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>]]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>] with <a href="RandomWords$$AggregateWord.html" class="extype" name="provingground.RandomWords.AggregateWord">AggregateWord</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.BinOpSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BinOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable"></a>
+      <a id="BinOpSym[E,N]:BinOpSym[E,N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$BinOpSym.html"><span class="name">BinOpSym</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="provingground.RandomWords.BinOpSym.N">N</span></span>, <span name="op">op: (<span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>, <span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>) ⇒ <span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.BinOpWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BinOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
+      <a id="BinOpWord[E,N]:BinOpWord[E,N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$BinOpWord.html"><span class="name">BinOpWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$BinOpSym.html" class="extype" name="provingground.RandomWords.BinOpSym">BinOpSym</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>, <span class="extype" name="provingground.RandomWords.BinOpWord.N">N</span>]</span>, <span name="first">first: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>]</span>, <span name="second">second: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.Letter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Letter[E]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
+      <a id="Letter[E]:Letter[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$Letter.html"><span class="name">Letter</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.RandomWords.Letter.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.Letter.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.Letter.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.Symbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Symbol[E]extendsAnyRef"></a>
+      <a id="Symbol[E]:Symbol[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$Symbol.html"><span class="name">Symbol</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.UnOpSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable"></a>
+      <a id="UnOpSym[E,N]:UnOpSym[E,N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$UnOpSym.html"><span class="name">UnOpSym</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="provingground.RandomWords.UnOpSym.N">N</span></span>, <span name="op">op: (<span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span>) ⇒ <span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.UnOpWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
+      <a id="UnOpWord[E,N]:UnOpWord[E,N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$UnOpWord.html"><span class="name">UnOpWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$UnOpSym.html" class="extype" name="provingground.RandomWords.UnOpSym">UnOpSym</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>, <span class="extype" name="provingground.RandomWords.UnOpWord.N">N</span>]</span>, <span name="elem">elem: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords.Word" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Word[E]extendsRandomWords.Symbol[E]"></a>
+      <a id="Word[E]:Word[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomWords$$Word.html"><span class="name">Word</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.Word.E">E</span>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.RandomWords#entropyFeedback" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="entropyFeedback[E](bg:provingground.Collections.FiniteDistribution[E],d:provingground.Collections.FiniteDistribution[E]):provingground.Collections.FiniteDistribution[E]"></a>
+      <a id="entropyFeedback[E](FiniteDistribution[E],FiniteDistribution[E]):FiniteDistribution[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">entropyFeedback</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="bg">bg: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>, <span name="d">d: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.RandomWords#evolution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="evolution[E](supp:Set[provingground.RandomWords.Word[E]]):provingground.LearningSystem.DiffbleFunction[provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]],provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]]]"></a>
+      <a id="evolution[E](Set[Word[E]]):DiffbleFunction[FiniteDistribution[Symbol[E]],FiniteDistribution[Word[E]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">evolution</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="supp">supp: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]]</span>)</span><span class="result">: <a href="LearningSystem$$DiffbleFunction.html" class="extype" name="provingground.LearningSystem.DiffbleFunction">DiffbleFunction</a>[<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]], <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.RandomWords#partial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="partial[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E],x:provingground.RandomWords.Symbol[E]):Double"></a>
+      <a id="partial[E](FiniteDistribution[Symbol[E]])(Word[E],Symbol[E]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">partial</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="m">m: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]]</span>)</span><span class="params">(<span name="w">w: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]</span>, <span name="x">x: <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords#recprob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recprob[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E]):Double"></a>
+      <a id="recprob[E](FiniteDistribution[Symbol[E]])(Word[E]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recprob</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="m">m: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.recprob.E">E</span>]]</span>)</span><span class="params">(<span name="w">w: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.recprob.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords#relEntropy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="relEntropy[E](bg:provingground.Collections.FiniteDistribution[E],d:provingground.Collections.FiniteDistribution[E]):Double"></a>
+      <a id="relEntropy[E](FiniteDistribution[E],FiniteDistribution[E]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">relEntropy</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="bg">bg: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.relEntropy.E">E</span>]</span>, <span name="d">d: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.relEntropy.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="provingground.RandomWords#simpleLearn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="simpleLearn[E](supp:Set[provingground.RandomWords.Word[E]],target:provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]],epsilon:Double)(init:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]):provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]"></a>
+      <a id="simpleLearn[E](Set[Word[E]],FiniteDistribution[Word[E]],Double)(FiniteDistribution[Symbol[E]]):FiniteDistribution[Symbol[E]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">simpleLearn</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="supp">supp: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>, <span name="target">target: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="init">init: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+    </body>
+      </html>
