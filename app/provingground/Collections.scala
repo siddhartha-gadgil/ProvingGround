@@ -5,6 +5,8 @@ import scala.util._
 
 import scala.language.implicitConversions
 
+// TODO document finite distributions
+
 object Collections{
     val runTime = java.lang.Runtime.getRuntime()
    
@@ -157,9 +159,9 @@ object Collections{
       lazy val flatten = FiniteDistribution(flatdist.toSeq)
       
     
-      private def posmf(t : Double = 0.0) = flatdist filter (_.weight > t)
+      def posmf(t : Double = 0.0) = flatdist filter (_.weight > t)
       
-      private def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
+      def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
       
       def normalized(t : Double = 0.0) = new FiniteDistribution(posmf(t).toSeq map (_.scale(1.0/postotal(t))))
       
