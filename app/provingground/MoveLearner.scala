@@ -197,6 +197,25 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
   }
   
   /**
+   * sub-chains of a chain, with the same head but starting at different stages.
+   * Recursively defined.
+   *
+   * 
+   * @param chn chain for which we find sub-chains
+   * 
+   * @param accum accumulator, should contain chains with given head
+   * 
+   * @param gives chains with initial head from those with the head of the recursively passed chain.
+   */
+  	@tailrec final def subChains(chn: Chain, accum: Set[Chain]= Set(), append: Chain => Chain = (c) => c) : Set[Chain] = chn match {
+  	  case chain: AtomicChain => accum + (append(chain))
+  	  case RecChain(head, tail, mvTyp) => 
+  	    val newAppend = (c: Chain) => RecChain(head, append(c), mvTyp) : Chain
+  	    val newAccum = accum + append(chn)
+  	    subChains(tail, newAccum, newAppend)
+  	}
+  
+  /**
    * offspring of a chain, applying all possible moves to its head.
    */
   def offspring(chain: Chain) = for (mvtyp <- movetypes; res <- moves(chain.head, mvtyp)) yield
@@ -238,19 +257,22 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
     if (prev == chains) chains else propagate(prunednextgen(chains, prune), prune, chains)
   
     /**
-     * The distribution on vertices as heads of chains, given a set of chains and the (initial) parameters.
+     * The distribution on vertices as heads of chains.
+     * 
+     * @param dstbn dynamical distribution.
+     * 
+     * @param chains support for which probability is calculated and mapped to heads.
      */
-  def finaldist(initdstbn: DynDst, chains: Set[Chain]) = {
-      val dist = chains map (_.weightedHead(initdstbn))
+  def finaldist(dstbn: DynDst, chains: Set[Chain]) = {
+      val dist = chains map (_.weightedHead(dstbn))
       FiniteDistribution(dist.toSeq).normalized()
     }
   
   /**
    * Recursively back-propagate along a single chain. 
-   * The error (feedback) at head changes probability of choosing an atomic chain with head.
-   * If chain is not atomic, it also propagates to the tail of the chain.
+   * For an atomic chain, the probability of choosing the head is changed, as is the probability of continuing.
+   * If chain is not atomic, the error propagates to the tail of the chain.
    * 
-   * TODO check backprop
    * 
    * @param initdstbn - the initial distribution
    * 
@@ -258,41 +280,62 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
    * 
    * @param accum accumulator
    * 
-   * @param chain along which to back-propgate.
+   * @param chain along which to back-propagate.
    * 
    * @return change in distribution
    */
   @tailrec final def backpropchain(initdstbn: DynDst, 
-		  error: Double, accum: DynDst, chain: Chain) : DynDst =  chain match {
+		  error: Double, accum: DynDst = DynDst.empty, chain: Chain) : DynDst =  chain match {
     case AtomicChain(head) => 
       val headWt = error * (1 - initdstbn.cntn)
       val cntnWt = - error * initdstbn.probV(head)
       accum addV(head, headWt) addC(cntnWt)
     case rec@ RecChain(head, tail, mvtyp) =>
       val errorprop = error * (initdstbn.edgdst(mvtyp) * initdstbn.cntn /rec.mult)
-      val headWt = error * (1 - initdstbn.cntn)
-      val cntnWt = error * (tail.prob(initdstbn) * initdstbn.edgdst(mvtyp) /rec.mult - initdstbn.probV(head))
-      val headdst = DynDst.empty addV(head, headWt) addC(cntnWt)
-      backpropchain(initdstbn, errorprop, headdst, tail) 
+      val mvWt = error * (tail.prob(initdstbn) * initdstbn.cntn /rec.mult)
+      val newAccum  = accum addM (mvtyp, mvWt)
+//      val headWt = error * (1 - initdstbn.cntn)
+//      val cntnWt = error * (tail.prob(initdstbn) * initdstbn.edgdst(mvtyp) /rec.mult - initdstbn.probV(head))
+//      val headdst = accum addV(head, headWt) addC(cntnWt)
+      backpropchain(initdstbn, errorprop, newAccum, tail) 
   }
   
+  /**
+   * total back-propagation over a collection of chains
+   */
   def backprop(initdstbn: DynDst, error: FiniteDistribution[V], chains: Set[Chain]) = 
     (DynDst.empty /: (chains map ((chain) => backpropchain(initdstbn, error(chain.head), DynDst.empty, chain ))))(_ ++ _)
     
   type Feedback = FiniteDistribution[V] => FiniteDistribution[V]
   
+  /**
+   * change of dynamical distribution in a single learning step, not changing the chains.
+   * 
+   * @param d initial distribution
+   * 
+   * @param epsilon scale for shifting
+   * 
+   * @param chains support for learning
+   * 
+   * @param cutoff purge support below cutoff
+   * 
+   * @param correction feedback given the final distribution.
+   */
   def learnstep(d: DynDst, epsilon: Double, chains: Set[Chain], cutoff: Double =0.0)(implicit correction : Feedback) = {
     val error = correction(finaldist(d, chains)) * epsilon
     (d ++ backprop(d, error, chains)).normalized(cutoff)
   }
   
   
-  
+  /**
+   * loop for learning, with an inner loop changing only the distribution and 
+   * an outer one where chains are recomputed with the new purge.
+   */
   class LearningLoop(cutoff: Double, stableLevel : Double, stablSteps: Int, outerSteps: Int, epsilon: Double)(implicit feedback: Feedback){
     def spannedchains(d: DynDst) = {
       val startchains : Set[Chain] = d.vrtdst.support map (AtomicChain(_))
       val prune = (ch: Chain) => ch.prob(d) > cutoff
-      propagate(startchains, prune)
+      propagate(startchains, prune) flatMap (subChains(_))
     }
       
     @tailrec final def stablelearn(d: DynDst, steps: Int = stablSteps, isStable: Boolean = false) : DynDst = 
