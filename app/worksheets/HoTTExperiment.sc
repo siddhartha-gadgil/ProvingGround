@@ -33,7 +33,7 @@ object HoTTExperiment {
                                                   //| .Term]],provingground.HoTT.FuncTerm[provingground.HoTT.Term with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggr
                                                   //| ound.HoTT.Subs[provingground.HoTT.Term]]] = (A?((a : A)?(a : A)
-  
+		
   Id(A)                                           //> res2: provingground.HoTT.FuncTerm[provingground.HoTT.Term with provingground
                                                   //| .HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Term]] = ((a : A)?(a : A)
@@ -231,9 +231,9 @@ object HoTTExperiment {
         lazy val constructors = List(this.constructor(this, "true"), cnstr(this))
   }
   BoolType.constructors                           //> res32: List[provingground.InductiveTypes.Constructor] = List(ConstructorDef
-                                                  //| n(IdW,(true : worksheets.HoTTExperiment$$anonfun$main$1$BoolType$2$@54666df
-                                                  //| 2)), ConstructorDefn(IdW,(provingground.HoTT$Typ$newname$2$@10bc5628 : work
-                                                  //| sheets.HoTTExperiment$$anonfun$main$1$BoolType$2$@54666df2)))
+                                                  //| n(IdW,(true : worksheets.HoTTExperiment$$anonfun$main$1$BoolType$2$@438f17e
+                                                  //| b)), ConstructorDefn(IdW,(provingground.HoTT$Typ$newname$2$@676b67f3 : work
+                                                  //| sheets.HoTTExperiment$$anonfun$main$1$BoolType$2$@438f17eb)))
  
  
  object NatTyp extends InductiveTyp with SmallTyp{
@@ -243,14 +243,14 @@ object HoTTExperiment {
  }
  
  val List(zero, succ) = NatTyp.constructors       //> zero  : provingground.InductiveTypes.Constructor = ConstructorDefn(IdW,(pro
-                                                  //| vingground.HoTT$Typ$newname$2$@3de2dbf3 : worksheets.HoTTExperiment$$anonfu
-                                                  //| n$main$1$NatTyp$2$@78d64e42))
+                                                  //| vingground.HoTT$Typ$newname$2$@77866a29 : worksheets.HoTTExperiment$$anonfu
+                                                  //| n$main$1$NatTyp$2$@19a3e70d))
                                                   //| succ  : provingground.InductiveTypes.Constructor = ConstructorDefn(CnstFncP
-                                                  //| tn(worksheets.HoTTExperiment$$anonfun$main$1$NatTyp$2$@78d64e42,IdW),(provi
-                                                  //| ngground.HoTT$Typ$newname$2$@3dac0d08 : (worksheets.HoTTExperiment$$anonfun
-                                                  //| $main$1$NatTyp$2$@78d64e42?worksheets.HoTTExperiment$$anonfun$main$1$NatTyp
-                                                  //| $2$@78d64e42)))
+                                                  //| tn(worksheets.HoTTExperiment$$anonfun$main$1$NatTyp$2$@19a3e70d,IdW),(provi
+                                                  //| ngground.HoTT$Typ$newname$2$@579613a1 : (worksheets.HoTTExperiment$$anonfun
+                                                  //| $main$1$NatTyp$2$@19a3e70d?worksheets.HoTTExperiment$$anonfun$main$1$NatTyp
+                                                  //| $2$@19a3e70d)))
  succ.cons.typ                                    //> res33: provingground.HoTT.Typ[provingground.HoTT.Term] = (worksheets.HoTTEx
-                                                  //| periment$$anonfun$main$1$NatTyp$2$@78d64e42?worksheets.HoTTExperiment$$anon
-                                                  //| fun$main$1$NatTyp$2$@78d64e42)
+                                                  //| periment$$anonfun$main$1$NatTyp$2$@19a3e70d?worksheets.HoTTExperiment$$anon
+                                                  //| fun$main$1$NatTyp$2$@19a3e70d)
 }

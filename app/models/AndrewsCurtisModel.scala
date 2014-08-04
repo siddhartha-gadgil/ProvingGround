@@ -41,7 +41,7 @@ object AndrewsCurtisModel{
       
       implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.feedback(baseweights)
       
-      val learnLoop = new LearningLoop(cutoff: Double, stableLevel : Double, stablSteps, outerSteps: Int, epsilon: Double)
+      lazy val learnLoop = LearningLoop(cutoff: Double, stableLevel : Double, stablSteps, outerSteps: Int, epsilon: Double)
       
       /*
       def updateGen(gen: Generator[DynDst] = basegen) = {

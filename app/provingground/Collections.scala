@@ -139,51 +139,119 @@ object Collections{
       def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)
     }
     
-    case class FiniteDistribution[T](pmf: Seq[Weighted[T]]) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
-      lazy val support = (pmf filter (_.weight > 0) map (_.elem)).toSet 
-        
+    /**
+     * Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.
+     * 
+     * @param pmf probability mass function, may have same object split.
+     * 
+     * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
+     */
+    case class FiniteDistribution[T](pmf: Seq[Weighted[T]], epsilon: Double = 0.0) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
+      /**
+       * support of the distribution.
+       */
+      lazy val support = (pmf filter (_.weight > epsilon) map (_.elem)).toSet 
+      
+      /**
+       * random number generator
+       */
       lazy val rand = new Random
       
+      /**
+       * l^1-norm 
+       */
       lazy val norm = (pmf map (_.weight.abs)).sum
       
+      /**
+       * next instance of a random variable with the given distribution
+       */
       def next = Weighted.pick(pmf, rand.nextDouble)
       
-      def get(label: T) = pmf find (_.elem == label) map (_.weight)
+      /**
+       * get weight, not collapsing, unsafe.
+       */
+      @deprecated("use getsum or apply", "1/8/2014") def get(label: T) = pmf find (_.elem == label) map (_.weight)
       
+      /**
+       * add together all probabilities for 
+       */
       def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
       
+      /**
+       * weight of the label.
+       */
       def apply(label: T) = getsum(label)
       
-      lazy val flatdist = support map ((l) => Weighted(l, getsum(l)))
+      /**
+       * distribution as set with collation 
+       */
+      def flatdist = support map ((l) => Weighted(l, getsum(l)))
       
-      lazy val flatten = FiniteDistribution(flatdist.toSeq)
+      /**
+       * flatten distribution collating elements.
+       */
+      def flatten  = FiniteDistribution(flatdist.toSeq)
       
-    
+      /**
+       * objects with positive probability (or bounded below by a threshhold)
+       */
       def posmf(t : Double = 0.0) = flatdist filter (_.weight > t)
       
+      /**
+       * total of the positive weights
+       */
       def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
       
-      def normalized(t : Double = 0.0) = new FiniteDistribution(posmf(t).toSeq map (_.scale(1.0/postotal(t))))
+      /**
+       * normalized so all probabilities are positive and the total is 1.
+       */
+      def normalized(t : Double = 0.0) = FiniteDistribution(posmf(t).toSeq map (_.scale(1.0/postotal(t))))
       
+      /**
+       * scale the distribution
+       */
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
       
+      /**
+       * add weighted element without normailizing
+       */
       def +(elem: T , prob : Double) = FiniteDistribution(Weighted(elem, prob) +: pmf)
       
+      /**
+       * add another distribution without normalizing
+       */
       def ++(that: FiniteDistribution[T]) = {
         val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k))).toSeq
-        new FiniteDistribution(combined)   
+        FiniteDistribution(combined, epsilon)   
       }
       
+      /**
+       * subtract distribution
+       */
+      def --(that: FiniteDistribution[T]) = {
+        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) - that(k))).toSeq
+        FiniteDistribution(combined)   
+      }
+      
+      /**
+       * map distribution without normalizing.
+       */
       override def map[S](f: T => S) = {
         val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt) 
-        FiniteDistribution(newpmf).flatten
+        FiniteDistribution(newpmf, epsilon)
       }
       
+      /**
+       * entropy feedback for the finite distribution to move in the direction of the base distribution, 
+       * however values ouside tsupport are ignored.
+       * 
+       * @param baseweights
+       */
       def feedback(baseweights: T => Double, damp : Double = 0.1) ={
-        val rawdiff = for (Weighted(pres, prob) <- pmf) yield (Weighted(pres, baseweights(pres)/(baseweights(pres)* damp + prob)))
-        val shift = rawdiff.map(_.weight).sum/(support.size)
-        val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob- shift)
-        FiniteDistribution(normaldiff)
+        val rawdiff = for (elem <- support) yield (Weighted(elem, baseweights(elem)/(baseweights(elem)* damp + apply(elem))))
+        val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
+        val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
+        FiniteDistribution(normaldiff.toSeq, epsilon)
       }
       
       override def toString = {
