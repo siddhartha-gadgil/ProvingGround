@@ -5,35 +5,77 @@ import scala.util.parsing.combinator._
 import scala.util._
 
 import provingground.HoTT._
-
+/**
+ * Parsing an Agda-like language in two steps.
+ * First there is a combinator parser that recognizes agda tokens.
+ * At the next level, we note names and try to parse to terms.
+ * 
+ * There is also an object to recognize agda tokens.
+ */
 object AgdaExpressions{
   
   class AgdaParse(patterns : List[List[String]]) extends JavaTokenParsers{
+    /** 
+     * do not ignore whitespaces 
+     */
     override val skipWhitespace = false
+    
+    /**
+     * spaces and tabs, but not newlines
+     */
     def spc: Parser[Unit] = "[ \\t]+".r ^^ ((_) => ())
     
+    /**
+     * tokens - sequence of characters without whitespaces.
+     */
     def token : Parser[Token] = "[^\\s]".r ^^ (Token(_))
     
+    /**
+     * whitespaces, including newlines.
+     */
     def wspc: Parser[Unit] = whiteSpace ^^ ((_) => ())
     
+    /**
+     * colon
+     */
     def colon : Parser[String] = ":"
       
-    def To : Parser[String] = "->" | "\\to"
-    
+    /**
+     *   -> or its latex altenrnatives
+     */  
+    def To : Parser[String] = "->" | "\\to" | "\\rightarrow"
+ 
+    /**
+     * mapsto symbols
+     */
     def mapsTo : Parser[String] = ":->" |"\\mapsto" | "|->"
     
-    
+    /**
+     * one function applied to another, separated by spc which is usually either a space or a whitespace.
+     */
     def appl(sp: Parser[Unit] = spc) : Parser[Expression] = term~sp~expr ^^ {case f~_~x => Apply(f, x)}
     
+    /**
+     * expression A -> B
+     */
     def arrow(sp: Parser[Unit] = spc) : Parser[Expression] = term~sp~To~sp~expr ^^{case a~_~_~_~b => Arrow(a, b)}
     
+    /**
+     * expression a \mapsto b parsing to lambda.
+     */
     def lambda(sp: Parser[Unit] = spc) : Parser[Expression] = typedvar~sp~mapsTo~sp~expr ^^{case x~_~_~_~y => Lambda(x, y)}
     
+    /**
+     * expression (a : A) -> B with B a function of a.
+     */
     def deparrow(sp: Parser[Unit] = spc) : Parser[Expression] = typedvar~sp~To~sp~expr ^^{case x~_~_~_~y => DepArrow(x, y)}
     
     def univ : Parser[Expression] = "_" ^^ {(_) => U} // never reached
     
-    
+    /**
+     * expression a : A with A a general expression.
+     * TODO we may need parenthesis around typed expressions to avoid ambiguities.
+     */
     def typedvar : Parser[TypedVar] = token~spc~colon~spc~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
 
     private def recptnmatch(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
@@ -49,27 +91,56 @@ object AgdaExpressions{
       case ys => recptnmatch(ys, sp)
     } 
     
+    /**
+     * An agda pattern, parsed into a corresponding composition.
+     */
     def ptnmatch(ptn : List[String], sp: Parser[Unit]) ={
       val token: Expression = Token(("" /: ptn)(_+_))
       ptnmatchlist(ptn, sp) ^^ {(l) => (token /: l)(Apply(_,_))}
     }
-      
+     
+    /**
+     * a term - either a single token or expression enclosed in ( ) or begin...end
+     */
     def term : Parser[Expression] = token | "("~opt(wspc)~>expr<~opt(wspc)~")" | "begin"~wspc~>expr<~wspc~"end"
     
+    /**
+     * An expression, to parse to an agda term.
+     */
     def expr : Parser[Expression] = ((term | appl() | arrow() | lambda() | 
     									deparrow() | univ | typedvar | eqlty()) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
     									((arrow(wspc) | lambda(wspc) | deparrow(wspc) 
     									    | eqlty(wspc)) /: patterns.map(ptnmatch(_, wspc)))(_ | _)
 
-    
+    /**
+     * expression A = B
+     */
     def eqlty(sp: Parser[Unit] = spc): Parser[Equality] = expr~sp~"="~sp~expr ^^ {case lhs~_~_~_~rhs => Equality(lhs, rhs)}
-    									
+    
+    /**
+     * data definition:
+     * data A : _ where
+     * f : A -> A
+     * ..
+     * end
+     * FIXME linebreaks/whitespaces
+     */
     def data = "data"~>typedvar~"where"~rep(typedvar)<~"end" ^^ {case x~_~ls => (x, ls)}
     
+    /**
+     * 
+     * line breaks
+     */
     def crlf = opt(spc)~"\\n".r~opt(spc)
     
+    /** 
+     *  definition
+     */
     def defn = typedvar~crlf~eqlty(wspc) ^^ {case x~_~y => (x, y)}
     
+    /**
+     * pattern matching definition
+     */
     def casedefn = typedvar~"where"~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
   }
   
