@@ -5,7 +5,6 @@ import scala.util._
 
 import scala.language.implicitConversions
 
-// TODO document finite distributions
 
 object Collections{
     val runTime = java.lang.Runtime.getRuntime()
