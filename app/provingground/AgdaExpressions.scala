@@ -30,9 +30,9 @@ object AgdaExpressions{
     def spc: Parser[Unit] = "[ \\t]+".r ^^ ((_) => ())
     
     /**
-     * tokens - sequence of characters without whitespaces and not just one colon or underscore (universe).
+     * tokens - sequence of characters without whitespaces and not just one colon, equality or underscore (universe).
      */
-    def token : Parser[Token] = """[^\s:_\(\)]|[^\s\(\)][^\s\(\)]+""".r ^^ (Token(_))
+    def token : Parser[Token] = """[^\s:_\(\)=]|[^\s\(\)][^\s\(\)]+""".r ^^ (Token(_))
     
     /**
      * whitespaces, including newlines.
@@ -122,10 +122,13 @@ object AgdaExpressions{
      * An expression, to parse to an agda term.
      */
     def expr : Parser[Expression] = ((arrow()  | lambda() | 
-    									deparrow() | univ | typedvar  |  appl() | term) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
+    									deparrow() | univ | typedvar  |  appl() ) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
     									((arrow(wspc) | lambda(wspc) | deparrow(wspc) 
-    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _)
+    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _) | term
 
+    def asTerm(e: String, names: String => Option[Term] = (_) => None) = {
+      Try(parseAll(expr, e).get).toOption flatMap (_.asTerm(names))
+    }
     /**
      * expression A = B
      */

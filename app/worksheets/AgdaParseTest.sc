@@ -6,7 +6,7 @@ object AgdaParseTest {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
   val parser = new AgdaParse                      //> parser  : provingground.AgdaExpressions.AgdaParse = provingground.AgdaExpres
-                                                  //| sions$AgdaParse@673c8b91
+                                                  //| sions$AgdaParse@5a62a404
 
 	import parser._
 	
@@ -44,4 +44,12 @@ object AgdaParseTest {
                                                   //| ions.Expression] = [1.4] parsed: Apply(Token(a),Token(b))
 	parseAll(expr, "a b c")                   //> res15: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
                                                   //| ions.Expression] = [1.6] parsed: Apply(Token(a),Apply(Token(b),Token(c)))
+  asTerm("(x : _) :-> x")                         //> res16: Option[provingground.HoTT.Term] = Some((x?_)
+  parseAll(expr, "(x : _) :-> x").get.asTerm((_) => None)
+                                                  //> res17: Option[provingground.HoTT.Term] = Some((x?_)
+  asTerm("(y : _) :-> (y -> y)")                  //> res18: Option[provingground.HoTT.Term] = Some((y?(_?_))
+  
+  parseAll(eqlty(), "x -> z = f y")               //> res19: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
+                                                  //| ions.Equality] = [1.13] parsed: Equality(Arrow(Token(x),Token(z)),Apply(Toke
+                                                  //| n(f),Token(y)))
 }
