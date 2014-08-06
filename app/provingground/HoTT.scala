@@ -533,7 +533,7 @@ object HoTT{
 	  
 	  val dom = variable.typ
 	  
-	  override def toString = "("+variable.toString+ MapsTo +value.toString
+	  override def toString = "("+variable.toString+ MapsTo +value.toString+")"
 	  
 	  val dep : Boolean
 	  

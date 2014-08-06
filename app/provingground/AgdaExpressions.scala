@@ -32,7 +32,7 @@ object AgdaExpressions{
     /**
      * tokens - sequence of characters without whitespaces and not just one colon, equality or underscore (universe).
      */
-    def token : Parser[Token] = """[^\s:_\(\)=]|[^\s\(\)][^\s\(\)]+""".r ^^ (Token(_))
+    def token : Parser[Token] = """[^\s\(\)][^\s\(\)]+|[^\s:_\(\)=]""".r ^^ (Token(_))
     
     /**
      * whitespaces, including newlines.
@@ -87,15 +87,16 @@ object AgdaExpressions{
      * expression (x : A) with A a general expression and x just a token.
      * 
      */
-    def typedvar : Parser[TypedVar] = "("~>token~spc~colon~spc~expr<~")" ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
+    def typedvar : Parser[TypedVar] = "("~opt(wspc)~>token~spc~colon~spc~expr<~opt(wspc)~")" ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
 
     def typdefn : Parser[TypedVar] = token~spc~colon~spc~expr ^^ {case x~_~_~_~t => TypedVar(x.name, t)} | 
-    									"("~>token~spc~colon~spc~expr<~")" ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
+    									"("~opt(wspc)~>token~spc~colon~spc~expr<~opt(wspc)~")" ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
     
     private def recptnmatch(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
       case List("_") => expr ^^ {List(_)}
-      case "_" :: word :: tail => expr~word~recptnmatch(tail, sp) ^^ {case x~_~ys => x :: ys}
-      case word :: tail => word~>recptnmatch(tail, sp)
+      case List("_", word) => expr<~sp~word ^^ {case x => List(x)}
+      case "_" :: word :: tail => expr~sp~word~sp~recptnmatch(tail, sp) ^^ {case x~_~_~_~ys => x :: ys}
+      case word :: tail => word~sp~>recptnmatch(tail, sp)
     } 
     
     private def ptnmatchlist(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
@@ -108,7 +109,7 @@ object AgdaExpressions{
     /**
      * An agda pattern, parsed into a corresponding composition.
      */
-    def ptnmatch(ptn : List[String], sp: Parser[Unit]) ={
+    def ptnmatch(ptn : List[String], sp: Parser[Unit] = spc) ={
       val token: Expression = Token(("" /: ptn)(_+_))
       ptnmatchlist(ptn, sp) ^^ {(l) => (token /: l)(Apply(_,_))}
     }
@@ -122,9 +123,9 @@ object AgdaExpressions{
      * An expression, to parse to an agda term.
      */
     def expr : Parser[Expression] = ((arrow()  | lambda() | 
-    									deparrow() | univ | typedvar  |  appl() ) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
+    									deparrow() | univ | typedvar ) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
     									((arrow(wspc) | lambda(wspc) | deparrow(wspc) 
-    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _) | term
+    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _) |  appl() | term
 
     def asTerm(e: String, names: String => Option[Term] = (_) => None) = {
       Try(parseAll(expr, e).get).toOption flatMap (_.asTerm(names))
@@ -162,16 +163,18 @@ object AgdaExpressions{
   }
   
   
-  object AgdaPatternParser extends JavaTokenParsers{
+  class AgdaPatternParser extends JavaTokenParsers{
     override val skipWhitespace = false
     
-    def word : Parser[String] = "^[ \t]+".r
+    def word : Parser[String] = "[^ \t_]+".r
     
     def blank : Parser[String] ="_"
       
-    def prefixPtn: Parser[List[String]] = blank~mixfixPtn ^^ {case head~tail => head :: tail} | word ^^ {List(_)} 
+    def prefixPtn: Parser[List[String]] = blank~mixfixPtn ^^ {case head~tail => head :: tail} | blank ^^ {List(_)} 
     
     def mixfixPtn: Parser[List[String]] = word~prefixPtn ^^ {case head~tail => head :: tail} | word ^^ {List(_)}
+    
+    def agdaPtn : Parser[List[String]] = mixfixPtn | prefixPtn
   }
   
   
@@ -183,7 +186,7 @@ object AgdaExpressions{
   trait Expression{
     def asTerm(names: String => Option[Term]): Option[Term]
     
-    def asTyp(names: String => Option[Term]) = asTerm(names) map {
+    def asTyp(names: String => Option[Term]) = asTerm(names) flatMap {
       case tp : Typ[_] => Some(tp)
       case _ => None
     }
@@ -222,9 +225,9 @@ object AgdaExpressions{
    */
   case class LambdaExp(x : TypedVar, y: Expression) extends Expression{
     def asTerm(names: String => Option[Term]): Option[Term] = {
-      val tpname = x.name
+      val symb = x.name
       val newnames : String => Option[Term] = {
-        case `tpname` => x.asTerm(names) map (_.typ)
+        case `symb` => x.typ.asTyp(names) map (_.symbObj(symb))
         case y => names(y)
       } 
       for (a <- x.asTerm(names); b <- y.asTerm(newnames)) yield lambda(a)(b)
