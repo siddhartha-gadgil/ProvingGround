@@ -13,6 +13,9 @@ import provingground.HoTT._
  * There is also an object to recognize agda tokens.
  */
 object AgdaExpressions{
+  val blnkline="""\n[ \t]*\n"""
+  
+  def splitblocks(code: String) = code.split(blnkline) map (_.trim)
   
   /**
    * Parsing an agda expression.
@@ -93,10 +96,11 @@ object AgdaExpressions{
     									"("~opt(wspc)~>token~spc~colon~spc~expr<~opt(wspc)~")" ^^ {case x~_~_~_~t => TypedVar(x.name, t)}
     
     private def recptnmatch(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
-      case List("_") => expr ^^ {List(_)}
-      case List("_", word) => expr<~sp~word ^^ {case x => List(x)}
-      case "_" :: word :: tail => expr~sp~word~sp~recptnmatch(tail, sp) ^^ {case x~_~_~_~ys => x :: ys}
-      case word :: tail => word~sp~>recptnmatch(tail, sp)
+      case List("_") => term ^^ {List(_)}
+      case List("_", word) => term<~sp~word ^^ {case x => List(x)}
+      case "_" :: word :: tail => term~sp~word~sp~recptnmatch(tail, sp) ^^ {case x~_~_~_~ys => x :: ys}
+      case word :: tail =>
+        word~sp~>recptnmatch(tail, sp)
     } 
     
     private def ptnmatchlist(ptn : List[String],sp: Parser[Unit]) : Parser[List[Expression]] = ptn match {
@@ -122,13 +126,14 @@ object AgdaExpressions{
     /**
      * An expression, to parse to an agda term.
      */
-    def expr : Parser[Expression] = ((arrow()  | lambda() | 
+    def expr : Parser[Expression] = (((arrow()  | lambda() | 
     									deparrow() | univ | typedvar ) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
     									((arrow(wspc) | lambda(wspc) | deparrow(wspc) 
-    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _) |  appl() | term
+    									    ) /: patterns.map(ptnmatch(_, wspc)))(_ | _) |  appl() | term)
 
+    									    
     def asTerm(e: String, names: String => Option[Term] = (_) => None) = {
-      Try(parseAll(expr, e).get).toOption flatMap (_.asTerm(names))
+      Try(parseAll(expr, e.trim).get).toOption flatMap (_.asTerm(names))
     }
     /**
      * expression A = B
@@ -154,12 +159,8 @@ object AgdaExpressions{
     /** 
      *  definition
      */
-    def defn = typdefn~crlf~eqlty(wspc) ^^ {case x~_~y => (x, y)}
+    def defn = typdefn~wspc~repsep(eqlty(wspc), wspc) ^^ {case x~_~y => (x, y)}
     
-    /**
-     * pattern matching definition
-     */
-    def casedefn = typdefn~"where"~crlf~repsep(eqlty(wspc), crlf)<~opt("end")
   }
   
   
