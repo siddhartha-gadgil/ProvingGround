@@ -6,14 +6,17 @@ object AgdaParseTest {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
   val parser = new AgdaParse                      //> parser  : provingground.AgdaExpressions.AgdaParse = provingground.AgdaExpres
-                                                  //| sions$AgdaParse@59fd01f7
+                                                  //| sions$AgdaParse@1529d183
 
 	import parser._
 	
 	parseAll(expr, "x")                       //> res0: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpressi
                                                   //| ons.Expression] = [1.2] parsed: Token(x)
   parseAll(expr, "::")                            //> res1: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpressi
-                                                  //| ons.Expression] = [1.3] parsed: Token(::)
+                                                  //| ons.Expression] = [1.1] failure: Expected failure
+                                                  //| 
+                                                  //| ::
+                                                  //| ^
   
   parseAll(To, "->")                              //> res2: worksheets.AgdaParseTest.parser.ParseResult[String] = [1.3] parsed: ->
                                                   //| 
@@ -28,7 +31,10 @@ object AgdaParseTest {
   parseAll(expr, "(x -> y)")                      //> res7: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpressi
                                                   //| ons.Expression] = [1.9] parsed: Arrow(Token(x),Token(y))
 	parseAll(token, "::")                     //> res8: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpressi
-                                                  //| ons.Token] = [1.3] parsed: Token(::)
+                                                  //| ons.Token] = [1.1] failure: Expected failure
+                                                  //| 
+                                                  //| ::
+                                                  //| ^
   parseAll(expr, "(x : A)")                       //> res9: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpressi
                                                   //| ons.Expression] = [1.8] parsed: TypedVar(x,Token(A))
   parseAll(expr, "a -> b -> c")                   //> res10: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
@@ -47,17 +53,17 @@ object AgdaParseTest {
                                                   //| ions.Expression] = [1.4] parsed: Apply(Token(a),Token(b))
 	parseAll(expr, "a b c")                   //> res16: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
                                                   //| ions.Expression] = [1.6] parsed: Apply(Token(a),Apply(Token(b),Token(c)))
-  asTerm("(x : _) :-> x")                         //> res17: Option[provingground.HoTT.Term] = Some((x?x))
+  asTerm("(x : _) :-> x")                         //> res17: Option[provingground.HoTT.Term] = Some((x⟼x))
   parseAll(expr, "(x : _) :-> x")                 //> res18: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
                                                   //| ions.Expression] = [1.14] parsed: LambdaExp(TypedVar(x,U),Token(x))
-  asTerm("(y : _) :-> (y -> y)")                  //> res19: Option[provingground.HoTT.Term] = Some((y?(y?y)))
+  asTerm("(y : _) :-> (y -> y)")                  //> res19: Option[provingground.HoTT.Term] = Some((y⟼(y⟶y)))
   
   parseAll(eqlty(), "x -> z = f y")               //> res20: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpress
                                                   //| ions.Equality] = [1.13] parsed: Equality(Arrow(Token(x),Token(z)),Apply(Toke
                                                   //| n(f),Token(y)))
   
   val ag = new AgdaPatternParser                  //> ag  : provingground.AgdaExpressions.AgdaPatternParser = provingground.AgdaEx
-                                                  //| pressions$AgdaPatternParser@4f15cfc9
+                                                  //| pressions$AgdaPatternParser@38b930e4
 	  
   
   val agda = ag.agdaPtn                           //> agda  : worksheets.AgdaParseTest.ag.Parser[List[String]] = Parser (|)
@@ -72,7 +78,7 @@ object AgdaParseTest {
  
   val ifparser = new AgdaParse(List(List("for", "_"),List("if","_","then","_", "else","_")))
                                                   //> ifparser  : provingground.AgdaExpressions.AgdaParse = provingground.AgdaExp
-                                                  //| ressions$AgdaParse@67182607
+                                                  //| ressions$AgdaParse@48363d6a
 	ifparser.parseAll(ifparser.expr, "(x : _) :-> x")
                                                   //> res23: worksheets.AgdaParseTest.ifparser.ParseResult[provingground.AgdaExpr
                                                   //| essions.Expression] = [1.14] parsed: LambdaExp(TypedVar(x,U),Token(x))
@@ -118,25 +124,23 @@ object AgdaParseTest {
   
   parseAll(expr, m)                               //> res32: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpres
                                                   //| sions.Expression] = [2.7] parsed: Arrow(Token(a),Apply(Token(b),Token(c)))
-                                                  //| 
 	parseAll(arrow(wspc), m)                  //> res33: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpres
                                                   //| sions.Expression] = [2.7] parsed: Arrow(Token(a),Apply(Token(b),Token(c)))
-                                                  //| 
 	
 	val dfn =
 	"""x : A -> B ->
 	C
- x = y
+  x = y
  """                                              //> dfn  : String = "x : A -> B ->
                                                   //| 	C
-                                                  //|  x = y
+                                                  //|   x = y
                                                   //|  "
 	 
 	 parse(typdefn, dfn)                      //> res34: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpres
                                                   //| sions.TypedVar] = [2.3] parsed: TypedVar(x,Arrow(Token(A),Arrow(Token(B),To
                                                   //| ken(C))))
    parse(defn, dfn.trim)                          //> res35: worksheets.AgdaParseTest.parser.ParseResult[(provingground.AgdaExpre
-                                                  //| ssions.TypedVar, List[provingground.AgdaExpressions.Equality])] = [3.7] par
+                                                  //| ssions.TypedVar, List[provingground.AgdaExpressions.Equality])] = [3.8] par
                                                   //| sed: (TypedVar(x,Arrow(Token(A),Arrow(Token(B),Token(C)))),List(Equality(To
                                                   //| ken(x),Token(y))))
   val cdfn =
@@ -179,4 +183,43 @@ object AgdaParseTest {
    splitblocks(blocks)                            //> res37: Array[String] = Array(first
                                                   //|    two lines, second block
                                                   //|    is this, then a third, and a fourth)
+   
+   parseAll(expr, "f g where")                    //> res38: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpres
+                                                  //| sions.Expression] = [1.5] failure: Expected failure
+                                                  //| 
+                                                  //| f g where
+                                                  //|     ^
+   val datadfn="""
+   data A : B -> _ where
+   gen : A
+   """                                            //> datadfn  : String = "
+                                                  //|    data A : B -> _ where
+                                                  //|    gen : A
+                                                  //|    "
+   
+   parseAll(data, datadfn.trim)                   //> res39: worksheets.AgdaParseTest.parser.ParseResult[(provingground.AgdaExpre
+                                                  //| ssions.TypedVar, List[provingground.AgdaExpressions.TypedVar])] = [2.11] pa
+                                                  //| rsed: (TypedVar(A,Arrow(Token(B),U)),List(TypedVar(gen,Token(A))))
+   
+   val par1 =" "                                  //> par1  : String = " "
+   
+   val par2cont ="\n \n beyond"                   //> par2cont  : String = "
+                                                  //|  
+                                                  //|  beyond"
+   
+   parseAll(eop, par1)                            //> res40: worksheets.AgdaParseTest.parser.ParseResult[String] = [1.2] parsed: 
+                                                  //| 
+   
+   val partial = parse(eop, par2cont)             //> partial  : worksheets.AgdaParseTest.parser.ParseResult[String] = [3.2] pars
+                                                  //| ed: 
+                                                  //|  
+                                                  //|  
+   parseAll(expr, partial.next)                   //> res41: worksheets.AgdaParseTest.parser.ParseResult[provingground.AgdaExpres
+                                                  //| sions.Expression] = [3.8] parsed: Token(beyond)
+   
+   parseAll(eop, par2cont)                        //> res42: worksheets.AgdaParseTest.parser.ParseResult[String] = [3.2] failure:
+                                                  //|  string matching regex `\z' expected but `b' found
+                                                  //| 
+                                                  //|  beyond
+                                                  //|  ^
 }

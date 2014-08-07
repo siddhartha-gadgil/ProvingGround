@@ -13,13 +13,19 @@ import provingground.HoTT._
  * There is also an object to recognize agda tokens.
  */
 object AgdaExpressions{
-  val blnkline="""\n[ \t]*\n"""
+  val blnkline="""[ \t]*\n[ \t]*\n[ \t]*"""
   
   def splitblocks(code: String) = code.split(blnkline) map (_.trim)
   
   /**
-   * Parsing an agda expression.
+   * Parses an agda expression.
    * following scala, we first look for a valid expression without including line breaks, then include line breaks.
+   * 
+   * tokens cannot contain whitespaces or parenthesis, and also cannot be reserved words/symbols.
+   * 
+   * parses expressions, defns, data statements.
+   * 
+   * have helpers for space, whitespace, end of paragraph, to mapsto etc.
    * 
    * @param patterns agda patterns such as _and_ parsed to lists of strings, each '_' or a token.
    */
@@ -28,14 +34,26 @@ object AgdaExpressions{
     override val skipWhitespace = false // whitespaces not ignored.
     
     /**
+     * end of paragraph
+     */
+    def eop : Parser[String] = blnkline.r | opt(wspc)~>"""\z""".r
+    
+    /**
      * spaces and tabs, but not newlines
      */
     def spc: Parser[Unit] = "[ \\t]+".r ^^ ((_) => ())
     
     /**
+     * reserved words
+     */
+    def reserved: Parser[String] = "where" | "data" | "=" | ":" | "_" | To | mapsTo | "begin" | "end" | "fix" | "let" | "assume"
+    
+    /**
      * tokens - sequence of characters without whitespaces and not just one colon, equality or underscore (universe).
      */
-    def token : Parser[Token] = """[^\s\(\)][^\s\(\)]+|[^\s:_\(\)=]""".r ^^ (Token(_))
+    def token : Parser[Token] = not(reserved)~>"""[^\s\(\)]+""".r ^^ (Token(_))
+ //   def token : Parser[Token] = not(reserved)~>"""[^\s\(\)][^\s\(\)]+|[^\s:_\(\)=]""".r ^^ (Token(_))
+    	
     
     /**
      * whitespaces, including newlines.
@@ -138,7 +156,7 @@ object AgdaExpressions{
     /**
      * expression A = B
      */
-    def eqlty(sp: Parser[Unit] = spc): Parser[Equality] = expr~sp~"="~sp~expr ^^ {case lhs~_~_~_~rhs => Equality(lhs, rhs)}
+    def eqlty(sp: Parser[Unit] = spc): Parser[Equality] = opt(spc)~>expr~sp~"="~sp~expr<~opt(spc) ^^ {case lhs~_~_~_~rhs => Equality(lhs, rhs)}
     
     /**
      * data definition:
@@ -148,7 +166,7 @@ object AgdaExpressions{
      * end
      * 
      */
-    def data = "data"~>typdefn~"where"~rep(crlf~>typdefn)<~"end" ^^ {case x~_~ls => (x, ls)}
+    def data = "data"~spc~>typdefn~spc~"where"~wspc~repsep(typdefn, wspc)<~eop ^^ {case x~_~_~_~ls => (x, ls)}
     
     /**
      * 
@@ -157,7 +175,7 @@ object AgdaExpressions{
     def crlf = opt(spc)~""""\n|(\r\n)"""".r~opt(spc)
     
     /** 
-     *  definition
+     *  definition, possibly multi-line
      */
     def defn = typdefn~wspc~repsep(eqlty(wspc), wspc) ^^ {case x~_~y => (x, y)}
     
@@ -174,7 +192,9 @@ object AgdaExpressions{
     def prefixPtn: Parser[List[String]] = blank~mixfixPtn ^^ {case head~tail => head :: tail} | blank ^^ {List(_)} 
     
     def mixfixPtn: Parser[List[String]] = word~prefixPtn ^^ {case head~tail => head :: tail} | word ^^ {List(_)}
-    
+    /**
+     * parses an agda pattern to a list of underscores and words
+     */
     def agdaPtn : Parser[List[String]] = mixfixPtn | prefixPtn
   }
   
