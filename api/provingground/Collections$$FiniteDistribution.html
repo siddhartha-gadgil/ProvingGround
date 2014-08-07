@@ -35,11 +35,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">FiniteDistribution</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>)</span><span class="result"> extends <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>] with <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">FiniteDistribution</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result"> extends <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>] with <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.
+</p></div><dl class="paramcmts block"><dt class="param">pmf</dt><dd class="cmt"><p>probability mass function, may have same object split.
+</p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
+</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversable">GenTraversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.GenericTraversableTemplate">GenericTraversableTemplate</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>], <span class="extype" name="scala.collection.TraversableLike">TraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.GenTraversableLike">GenTraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.Parallelizable">Parallelizable</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.parallel.ParIterable">ParIterable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.TraversableOnce">TraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.FilterMonadic">FilterMonadic</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.generic.HasNewBuilder">HasNewBuilder</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,8 +82,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.Collections.FiniteDistribution#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(pmf:Seq[provingground.Collections.Weighted[T]]):provingground.Collections.FiniteDistribution[T]"></a>
+              <ol><li name="provingground.Collections.FiniteDistribution#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(pmf:Seq[provingground.Collections.Weighted[T]],epsilon:Double):provingground.Collections.FiniteDistribution[T]"></a>
       <a id="&lt;init&gt;:FiniteDistribution[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +91,12 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">FiniteDistribution</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>)</span>
+        <span class="name">FiniteDistribution</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">pmf</dt><dd class="cmt"><p>probability mass function, may have same object split.
+</p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -181,7 +186,8 @@
         <span title="gt4s: $times" class="name">*</span><span class="params">(<span name="sc">sc: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">scale the distribution
+</p>
     </li><li name="provingground.Collections.FiniteDistribution#+" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="+(elem:T,prob:Double):provingground.Collections.FiniteDistribution[T]"></a>
       <a id="+(T,Double):FiniteDistribution[T]"></a>
@@ -194,7 +200,8 @@
         <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>, <span name="prob">prob: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">add weighted element without normailizing
+</p>
     </li><li name="provingground.Collections.FiniteDistribution#++" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="++(that:provingground.Collections.FiniteDistribution[T]):provingground.Collections.FiniteDistribution[T]"></a>
       <a id="++(FiniteDistribution[T]):FiniteDistribution[T]"></a>
@@ -207,7 +214,8 @@
         <span title="gt4s: $plus$plus" class="name">++</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">add another distribution without normalizing
+</p>
     </li><li name="scala.collection.TraversableLike#++" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++[B&gt;:A,That](that:scala.collection.GenTraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
       <a id="++[B&gt;:Double,That](GenTraversableOnce[B])(CanBuildFrom[Traversable[Double],B,That]):That"></a>
@@ -247,6 +255,20 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#--" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="--(that:provingground.Collections.FiniteDistribution[T]):provingground.Collections.FiniteDistribution[T]"></a>
+      <a id="--(FiniteDistribution[T]):FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$minus" class="name">--</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">subtract distribution
+</p>
     </li><li name="scala.collection.TraversableOnce#/:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="/:[B](z:B)(op:(B,A)=&gt;B):B"></a>
       <a id="/:[B](B)((B,Double)⇒B):B"></a>
@@ -363,7 +385,7 @@
         <span class="name">apply</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">weight of the label.</p>
     </li><li name="provingground.Collections.LabelledArray#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(label:L)(implicitzero:T):T"></a>
       <a id="apply(T)(Double):Double"></a>
@@ -539,6 +561,20 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#epsilon" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="epsilon:Double"></a>
+      <a id="epsilon:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">epsilon</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">cutoff below which some methods ignore objects.</p><div class="fullcomment"><div class="comment cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
+</p></div></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -565,7 +601,7 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
-    </li><li name="provingground.Collections.FiniteDistribution#feedback" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Collections.FiniteDistribution#feedback" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="feedback(baseweights:T=&gt;Double,damp:Double):provingground.Collections.FiniteDistribution[T]"></a>
       <a id="feedback((T)⇒Double,Double):FiniteDistribution[T]"></a>
       <h4 class="signature">
@@ -577,7 +613,11 @@
         <span class="name">feedback</span><span class="params">(<span name="baseweights">baseweights: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="damp">damp: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">entropy feedback for the finite distribution to move in the direction of the base distribution,
+however values ouside tsupport are ignored.</p><div class="fullcomment"><div class="comment cmt"><p>entropy feedback for the finite distribution to move in the direction of the base distribution,
+however values ouside tsupport are ignored.
+</p></div><dl class="paramcmts block"><dt class="param">baseweights</dt><dd class="cmt"><p>
+</p></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#filter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="filter(p:A=&gt;Boolean):Repr"></a>
       <a id="filter((Double)⇒Boolean):Traversable[Double]"></a>
@@ -668,13 +708,27 @@
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">lazy val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">flatdist</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">distribution as set with collation
+</p>
+    </li><li name="provingground.Collections.FiniteDistribution#flatten" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="flatten:provingground.Collections.FiniteDistribution[T]"></a>
+      <a id="flatten:FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flatten</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">flatten distribution collating elements.</p>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#flatten" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatten[B](implicitasTraversable:A=&gt;scala.collection.GenTraversableOnce[B]):CC[B]"></a>
       <a id="flatten[B]((Double)⇒GenTraversableOnce[B]):Traversable[B]"></a>
@@ -688,19 +742,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
-    </li><li name="provingground.Collections.FiniteDistribution#flatten" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="flatten:provingground.Collections.FiniteDistribution[T]"></a>
-      <a id="flatten:FiniteDistribution[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">lazy val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">flatten</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.collection.TraversableOnce#fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fold[A1&gt;:A](z:A1)(op:(A1,A1)=&gt;A1):A1"></a>
       <a id="fold[A1&gt;:Double](A1)((A1,A1)⇒A1):A1"></a>
@@ -779,19 +820,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
-    </li><li name="provingground.Collections.FiniteDistribution#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="get(label:T):Option[Double]"></a>
-      <a id="get(T):Option[Double]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">get</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -817,7 +845,8 @@
         <span class="name">getsum</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">add together all probabilities for
+</p>
     </li><li name="scala.collection.TraversableLike#groupBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="groupBy[K](f:A=&gt;K):scala.collection.immutable.Map[K,Repr]"></a>
       <a id="groupBy[K]((Double)⇒K):Map[K,Traversable[Double]]"></a>
@@ -1012,7 +1041,8 @@
         <span class="name">map</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="provingground.Collections.FiniteDistribution.map.S">S</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.map.S">S</span>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
+      <p class="shortcomment cmt">map distribution without normalizing.</p><div class="fullcomment"><div class="comment cmt"><p>map distribution without normalizing.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="map[B,That](f:A=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
       <a id="map[B,That]((Double)⇒B)(CanBuildFrom[Traversable[Double],B,That]):That"></a>
@@ -1155,7 +1185,9 @@
         <span class="name">next</span><span class="result">: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
+      <p class="shortcomment cmt">next instance of a random variable with the given distribution
+</p><div class="fullcomment"><div class="comment cmt"><p>next instance of a random variable with the given distribution
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#nonEmpty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="nonEmpty:Boolean"></a>
       <a id="nonEmpty:Boolean"></a>
@@ -1181,7 +1213,8 @@
         <span class="name">norm</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">l^1-norm
+</p>
     </li><li name="provingground.Collections.FiniteDistribution#normalized" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="normalized(t:Double):provingground.Collections.FiniteDistribution[T]"></a>
       <a id="normalized(Double):FiniteDistribution[T]"></a>
@@ -1194,7 +1227,7 @@
         <span class="name">normalized</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">normalized so all probabilities are positive and the total is 1.</p>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -1272,7 +1305,7 @@
         <span class="name">pmf</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">probability mass function, may have same object split.</p>
     </li><li name="provingground.Collections.FiniteDistribution#posmf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="posmf(t:Double):scala.collection.immutable.Set[provingground.Collections.Weighted[T]]"></a>
       <a id="posmf(Double):Set[Weighted[T]]"></a>
@@ -1285,7 +1318,8 @@
         <span class="name">posmf</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">objects with positive probability (or bounded below by a threshhold)
+</p>
     </li><li name="provingground.Collections.FiniteDistribution#postotal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="postotal(t:Double):Double"></a>
       <a id="postotal(Double):Double"></a>
@@ -1298,7 +1332,8 @@
         <span class="name">postotal</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">total of the positive weights
+</p>
     </li><li name="scala.collection.TraversableOnce#product" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="product[B&gt;:A](implicitnum:Numeric[B]):B"></a>
       <a id="product[B&gt;:Double](Numeric[B]):B"></a>
@@ -1337,7 +1372,8 @@
         <span class="name">rand</span><span class="result">: <span class="extype" name="scala.util.Random">Random</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">random number generator
+</p>
     </li><li name="scala.collection.TraversableOnce#reduce" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduce[A1&gt;:A](op:(A1,A1)=&gt;A1):A1"></a>
       <a id="reduce[A1&gt;:Double]((A1,A1)⇒A1):A1"></a>
@@ -1587,7 +1623,8 @@
         <span class="name">support</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
+      <p class="shortcomment cmt">support of the distribution.</p><div class="fullcomment"><div class="comment cmt"><p>support of the distribution.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -2022,6 +2059,23 @@
                 <span class="name">@deprecated</span>
               
         </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 2.10.0)</i> use fold instead</p></dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="get(label:T):Option[Double]"></a>
+      <a id="get(T):Option[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name deprecated" title="Deprecated: (Since version 1/8/2014) use getsum or apply">get</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">get weight, not collapsing, unsafe.</p><div class="fullcomment"><div class="comment cmt"><p>get weight, not collapsing, unsafe.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 1/8/2014)</i> use getsum or apply</p></dd></dl></div>
     </li></ol>
             </div>
         </div>

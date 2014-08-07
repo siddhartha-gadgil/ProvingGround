@@ -41,7 +41,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Learning dynamical system where we only have moves, not combinations.
 Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains by making moves</p><p>A parameter deciding whether to continue a chain.</p><p>A move type chosen if a chain is to be continued.</p><p>A move of the type chosen with equal probability - warning: avoid 0/0</p><p>A chain is a sequence of moves.</p><p>We start with singleton chains and evolve according to the moves to get a distribution on chains.</p><p>This gives a distribution on vertices as well</p><p>This is used to determine feedback for learning.</p></div><dl class="paramcmts block"><dt class="tparam">V</dt><dd class="cmt"><p>vertices
-</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>movetypes (not moves)</p></dd></dl><div class="toggleContainer block">
+</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>move types (not moves)</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -141,7 +141,7 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
       </span>
       </h4>
       <p class="comment cmt">The state of the learning system.</p>
-    </li><li name="provingground.MoveLearner.Feedback" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.MoveLearner.Feedback" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]"></a>
       <a id="Feedback:(FiniteDistribution[V])⇒FiniteDistribution[V]"></a>
       <h4 class="signature">
@@ -153,20 +153,23 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">Feedback</span><span class="result"> = (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">feedback for learning, generally given by an implicit object.</p><div class="fullcomment"><div class="comment cmt"><p>feedback for learning, generally given by an implicit object.
+can be constructed using the feedback method on a finite distribution, comparing to a base that need not be finite.
+</p></div></div>
     </li><li name="provingground.MoveLearner.LearningLoop" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LearningLoopextendsAnyRef"></a>
+      <a id="LearningLoopextendsProductwithSerializable"></a>
       <a id="LearningLoop:LearningLoop"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="MoveLearner$LearningLoop.html"><span class="name">LearningLoop</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="MoveLearner$LearningLoop.html"><span class="name">LearningLoop</span></a><span class="params">(<span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevel">stableLevel: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="feedback">feedback: (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">loop for learning, with an inner loop changing only the distribution and
+an outer one where chains are recomputed with the new purge.</p>
     </li><li name="provingground.MoveLearner.RecChain" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="RecChainextendsMoveLearner.this.ChainwithProductwithSerializable"></a>
       <a id="RecChain:RecChain"></a>
@@ -292,7 +295,31 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">backprop</span><span class="params">(<span name="initdstbn">initdstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="error">error: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">total back-propagation over a collection of chains
+</p>
+    </li><li name="provingground.MoveLearner#backpropchain" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="backpropchain(initdstbn:MoveLearner.this.DynDst,error:Double,accum:MoveLearner.this.DynDst,chain:MoveLearner.this.Chain):MoveLearner.this.DynDst"></a>
+      <a id="backpropchain(DynDst,Double,DynDst,Chain):DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">backpropchain</span><span class="params">(<span name="initdstbn">initdstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="error">error: <span class="extype" name="scala.Double">Double</span></span>, <span name="accum">accum: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a> = <span class="symbol"><span class="name"><a href="MoveLearner$DynDst$.html">DynDst.empty</a></span></span></span>, <span name="chain">chain: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Recursively back-propagate along a single chain.</p><div class="fullcomment"><div class="comment cmt"><p>Recursively back-propagate along a single chain.
+For an atomic chain, the probability of choosing the head is changed, as is the probability of continuing.
+If chain is not atomic, the error propagates to the tail of the chain.</p></div><dl class="paramcmts block"><dt class="param">initdstbn</dt><dd class="cmt"><p>- the initial distribution
+</p></dd><dt class="param">error</dt><dd class="cmt"><p>- the error to recursively propagate.
+</p></dd><dt class="param">accum</dt><dd class="cmt"><p>accumulator
+</p></dd><dt class="param">chain</dt><dd class="cmt"><p>along which to back-propagate.
+</p></dd><dt>returns</dt><dd class="cmt"><p>change in distribution
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -338,8 +365,8 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.MoveLearner#finaldist" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="finaldist(initdstbn:MoveLearner.this.DynDst,chains:Set[MoveLearner.this.Chain]):provingground.Collections.FiniteDistribution[V]"></a>
+    </li><li name="provingground.MoveLearner#finaldist" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finaldist(dstbn:MoveLearner.this.DynDst,chains:Set[MoveLearner.this.Chain]):provingground.Collections.FiniteDistribution[V]"></a>
       <a id="finaldist(DynDst,Set[Chain]):FiniteDistribution[V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -347,10 +374,13 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finaldist</span><span class="params">(<span name="initdstbn">initdstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>
+        <span class="name">finaldist</span><span class="params">(<span name="dstbn">dstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">The distribution on vertices as heads of chains.</p><div class="fullcomment"><div class="comment cmt"><p>The distribution on vertices as heads of chains.
+</p></div><dl class="paramcmts block"><dt class="param">dstbn</dt><dd class="cmt"><p>dynamical distribution.
+</p></dd><dt class="param">chains</dt><dd class="cmt"><p>support for which probability is calculated and mapped to heads.
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -382,7 +412,7 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">fullnextgen</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">offspring of chains as well as the chains themselves.</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -422,7 +452,7 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.MoveLearner#learnstep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.MoveLearner#learnstep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="learnstep(d:MoveLearner.this.DynDst,epsilon:Double,chains:Set[MoveLearner.this.Chain],cutoff:Double)(implicitcorrection:provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]):MoveLearner.this.DynDst"></a>
       <a id="learnstep(DynDst,Double,Set[Chain],Double)((FiniteDistribution[V])⇒FiniteDistribution[V]):DynDst"></a>
       <h4 class="signature">
@@ -434,7 +464,13 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">learnstep</span><span class="params">(<span name="d">d: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="correction">correction: (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">change of dynamical distribution in a single learning step, not changing the chains.</p><div class="fullcomment"><div class="comment cmt"><p>change of dynamical distribution in a single learning step, not changing the chains.
+</p></div><dl class="paramcmts block"><dt class="param">d</dt><dd class="cmt"><p>initial distribution
+</p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>scale for shifting
+</p></dd><dt class="param">chains</dt><dd class="cmt"><p>support for learning
+</p></dd><dt class="param">cutoff</dt><dd class="cmt"><p>purge support below cutoff
+</p></dd><dt class="param">correction</dt><dd class="cmt"><p>feedback given the final distribution.
+</p></dd></dl></div>
     </li><li name="provingground.MoveLearner#multiplicity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="multiplicity(vert:V,movetype:M):Int"></a>
       <a id="multiplicity(V,M):Int"></a>
@@ -500,7 +536,7 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">offspring</span><span class="params">(<span name="chain">chain: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="MoveLearner$RecChain.html" class="extype" name="provingground.MoveLearner.RecChain">RecChain</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">offspring of a chain, applying all possible moves to its head.</p>
     </li><li name="provingground.MoveLearner#propagate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="propagate(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean,prev:Set[MoveLearner.this.Chain]):Set[MoveLearner.this.Chain]"></a>
       <a id="propagate(Set[Chain],(Chain)⇒Boolean,Set[Chain]):Set[Chain]"></a>
@@ -513,7 +549,10 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">propagate</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="prune">prune: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="prev">prev: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>] = <span class="symbol">Set.empty</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">forward propagate the dynamics while pruning until stable.</p><div class="fullcomment"><div class="comment cmt"><p>forward propagate the dynamics while pruning until stable.
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial set of chains
+</p></dd><dt class="param">prune</dt><dd class="cmt"><p>boolean function for pruning.
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@tailrec</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -529,11 +568,15 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">propagateSteps</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">forward propagate the dynamics
+</p><div class="fullcomment"><div class="comment cmt"><p>forward propagate the dynamics
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial set of chains
+</p></dd><dt class="param">steps</dt><dd class="cmt"><p>number of steps
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@tailrec</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.MoveLearner#prunednextgen" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.MoveLearner#prunednextgen" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="prunednextgen(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean):scala.collection.immutable.Set[MoveLearner.this.Chain]"></a>
       <a id="prunednextgen(Set[Chain],(Chain)⇒Boolean):Set[Chain]"></a>
       <h4 class="signature">
@@ -545,7 +588,30 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
         <span class="name">prunednextgen</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="prune">prune: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">offspring of chains which are accepted by prune together with the chains.</p><div class="fullcomment"><div class="comment cmt"><p>offspring of chains which are accepted by prune together with the chains.
+Note that chains failing prune are not removed but only not propagatted.
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial chains
+</p></dd><dt class="param">prune</dt><dd class="cmt"><p>boolean function determining chains allowed to propagate.
+</p></dd></dl></div>
+    </li><li name="provingground.MoveLearner#subChains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subChains(chn:MoveLearner.this.Chain,accum:Set[MoveLearner.this.Chain],append:MoveLearner.this.Chain=&gt;MoveLearner.this.Chain):Set[MoveLearner.this.Chain]"></a>
+      <a id="subChains(Chain,Set[Chain],(Chain)⇒Chain):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subChains</span><span class="params">(<span name="chn">chn: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>, <span name="accum">accum: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>] = <span class="symbol">Set()</span></span>, <span name="append">append: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a> = <span class="symbol">(c) =&gt; c</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">sub-chains of a chain, with the same head but starting at different stages.</p><div class="fullcomment"><div class="comment cmt"><p>sub-chains of a chain, with the same head but starting at different stages.
+Recursively defined.</p></div><dl class="paramcmts block"><dt class="param">chn</dt><dd class="cmt"><p>chain for which we find sub-chains
+</p></dd><dt class="param">accum</dt><dd class="cmt"><p>accumulator, should contain chains with given head
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

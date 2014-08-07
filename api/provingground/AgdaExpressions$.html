@@ -39,7 +39,10 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Parsing an Agda-like language in two steps.
+First there is a combinator parser that recognizes agda tokens.
+At the next level, we note names and try to parse to terms.</p><p>There is also an object to recognize agda tokens.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -93,6 +96,19 @@
         <a href="AgdaExpressions$$AgdaParse.html"><span class="name">AgdaParse</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
       </span>
       </h4>
+      <p class="comment cmt">Parses an agda expression.</p>
+    </li><li name="provingground.AgdaExpressions.AgdaPatternParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AgdaPatternParserextendsJavaTokenParsers"></a>
+      <a id="AgdaPatternParser:AgdaPatternParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AgdaExpressions$$AgdaPatternParser.html"><span class="name">AgdaPatternParser</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
+      </span>
+      </h4>
       
     </li><li name="provingground.AgdaExpressions.Apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ApplyextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
@@ -106,7 +122,8 @@
         <a href="AgdaExpressions$$Apply.html"><span class="name">Apply</span></a><span class="params">(<span name="func">func: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="arg">arg: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">expression func(arg)
+</p>
     </li><li name="provingground.AgdaExpressions.Arrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable"></a>
       <a id="Arrow:Arrow"></a>
@@ -119,7 +136,8 @@
         <a href="AgdaExpressions$$Arrow.html"><span class="name">Arrow</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">expression for A -&gt; B
+</p>
     </li><li name="provingground.AgdaExpressions.DepArrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DepArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable"></a>
       <a id="DepArrow:DepArrow"></a>
@@ -132,9 +150,10 @@
         <a href="AgdaExpressions$$DepArrow.html"><span class="name">DepArrow</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$TypedVar.html" class="extype" name="provingground.AgdaExpressions.TypedVar">TypedVar</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">expression for pi-type
+</p>
     </li><li name="provingground.AgdaExpressions.Equality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="EqualityextendsAgdaExpressions.StatementwithAgdaExpressions.ExpressionwithProductwithSerializable"></a>
+      <a id="EqualityextendsAgdaExpressions.StatementwithProductwithSerializable"></a>
       <a id="Equality:Equality"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -142,10 +161,11 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="AgdaExpressions$$Equality.html"><span class="name">Equality</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Statement.html" class="extype" name="provingground.AgdaExpressions.Statement">Statement</a> with <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="AgdaExpressions$$Equality.html"><span class="name">Equality</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Statement.html" class="extype" name="provingground.AgdaExpressions.Statement">Statement</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Expression a = b
+</p>
     </li><li name="provingground.AgdaExpressions.Expression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExpressionextendsAnyRef"></a>
       <a id="Expression:Expression"></a>
@@ -158,20 +178,22 @@
         <a href="AgdaExpressions$$Expression.html"><span class="name">Expression</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
-    </li><li name="provingground.AgdaExpressions.Lambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LambdaextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
-      <a id="Lambda:Lambda"></a>
+      <p class="comment cmt">All Expressions, but not statements or blocks
+</p>
+    </li><li name="provingground.AgdaExpressions.LambdaExp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LambdaExpextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
+      <a id="LambdaExp:LambdaExp"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="AgdaExpressions$$Lambda.html"><span class="name">Lambda</span></a><span class="params">(<span name="x">x: <a href="AgdaExpressions$$TypedVar.html" class="extype" name="provingground.AgdaExpressions.TypedVar">TypedVar</a></span>, <span name="y">y: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="AgdaExpressions$$LambdaExp.html"><span class="name">LambdaExp</span></a><span class="params">(<span name="x">x: <a href="AgdaExpressions$$TypedVar.html" class="extype" name="provingground.AgdaExpressions.TypedVar">TypedVar</a></span>, <span name="y">y: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">LambdaExpression maps to a lambda
+</p>
     </li><li name="provingground.AgdaExpressions.Statement" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="StatementextendsAnyRef"></a>
       <a id="Statement:Statement"></a>
@@ -197,7 +219,8 @@
         <a href="AgdaExpressions$$Token.html"><span class="name">Token</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">token
+</p>
     </li><li name="provingground.AgdaExpressions.TypExpression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="TypExpressionextendsAgdaExpressions.Expression"></a>
       <a id="TypExpression:TypExpression"></a>
@@ -223,7 +246,8 @@
         <a href="AgdaExpressions$$TypedVar.html"><span class="name">TypedVar</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Symbolic variable with given type
+</p>
     </li></ol>
             </div>
 
@@ -296,19 +320,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.AgdaExpressions.AgdaPatternParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AgdaPatternParser"></a>
-      <a id="AgdaPatternParser:AgdaPatternParser"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="AgdaExpressions$$AgdaPatternParser$.html"><span class="name">AgdaPatternParser</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
-      </span>
-      </h4>
-      
     </li><li name="provingground.AgdaExpressions.U" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="U"></a>
       <a id="U:U"></a>
@@ -321,7 +332,8 @@
         <a href="AgdaExpressions$$U$.html"><span class="name">U</span></a><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">the first universe
+</p>
     </li><li name="provingground.AgdaExpressions#applyterm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="applyterm(f:provingground.HoTT.Term,arg:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a>
       <a id="applyterm(Term,Term):Option[Term]"></a>
@@ -334,7 +346,8 @@
         <span class="name">applyterm</span><span class="params">(<span name="f">f: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">apply function to term if legal
+</p>
     </li><li name="provingground.AgdaExpressions#arrowtyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="arrowtyp(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Option[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a>
       <a id="arrowtyp(Term,Term):Option[Typ[Term]]"></a>
@@ -347,7 +360,8 @@
         <span class="name">arrowtyp</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">try to interpret as A -&gt; B
+</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -361,6 +375,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.AgdaExpressions#blnkline" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="blnkline:String"></a>
+      <a id="blnkline:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blnkline</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -515,6 +542,20 @@
         <span class="name">pityp</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       </h4>
+      <p class="shortcomment cmt">try to interpret as pi-type
+</p>
+    </li><li name="provingground.AgdaExpressions#splitblocks" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="splitblocks(code:String):Array[String]"></a>
+      <a id="splitblocks(String):Array[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitblocks</span><span class="params">(<span name="code">code: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
       
     </li><li name="provingground.AgdaExpressions#symbterm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="symbterm(name:String,tp:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a>
@@ -528,7 +569,7 @@
         <span class="name">symbterm</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="tp">tp: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Symbolic term of given type if tp is a type.</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
