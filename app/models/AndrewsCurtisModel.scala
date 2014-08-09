@@ -66,7 +66,7 @@ object AndrewsCurtisModel{
         mapping(
             "cutoff"  -> number,
             "stable-level" -> number, 
-            "stable-steps" -> number,
+            "inner-steps" -> number,
             "outer-steps" -> number, 
             "epsilon" -> number,
             "pres-cntn" -> number, 

@@ -258,6 +258,10 @@ object Collections{
         val terms = (for (Weighted(elem, wt) <- sortedpmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
         "[" + terms.dropRight(2) + "]"
       }
+      
+      def entropy(elem: T) = math.log(apply(elem))/math.log(2)
+      
+      def entropyView(lines: Int = 20) = support.toList.map((x)=>Weighted(x.toString, entropy(x))).sortBy(_.weight)
     }
     
     object FiniteDistribution{
