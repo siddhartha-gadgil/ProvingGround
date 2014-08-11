@@ -7,35 +7,69 @@ import scala.language.existentials
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import Math._
 
-
+/**
+ * Inductively defined types in homotopy type theory
+ */
 object InductiveTypes{
-  	/*
+  	/**
 	 * A simple pattern, for inductive type constructors as well as type families.
+	 * for instance A -> B -> W, where W is the type to be defined;
+	 * ends with the type being defined.
+	 * 
+	 * @typparam U (upper bound on) scala type of an object with the pattern - especially functions.
 	 */
 	trait TypPtn[U <: Term] extends TypPtnLike with TypSeq[U, Term]{
+		/**
+		 * scala type (upper bound)
+		 */
 	  	 type PtnType = U
 	  	 
+	  	 /**
+	  	  * function induced by f: W -> X of type (A -> W) -> (A -> X) etc 
+	  	  */
 	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
 	  	  
+	  	  /**
+	  	  * dependent function induced by dependent f: W -> X(s) of type (A -> W) -> (A ~> X(s)) etc 
+	  	  */
 	  	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
+	/**
+	 * a single trait to hold all type patterns.
+	 */
 	trait TypPtnLike{
-		val univLevel : Int
+	  /**
+	   * the universe containing the type
+	   */
+	  val univLevel : Int
 	  
-	  	 type PtnType <:  Term
+	  /**
+	   * scala type (upper bound)
+	   */
+	  type PtnType <:  Term
 	  	 
-	  	 def apply(tp : Typ[Term]) : Typ[PtnType]
-	  	 
-	  	 def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
-	  	  
-	  	 def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
+	  /**
+	   * returns a type such as A -> W given the (inductive) type W
+	   */
+	  def apply(tp : Typ[Term]) : Typ[PtnType]
+	  
+	  /**
+	  * function induced by f: W -> X of type (A -> W) -> (A -> X) etc 
+	  */
+	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
+	  
+	  /**
+	  * dependent function induced by dependent f: W -> X(s) of type (A -> W) -> (A ~> X(s)) etc 
+	  */
+	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
 	
 	
-	/*
+	/**
 	 * A composite pattern for inductive types.
+	 * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W
 	 */
 	trait PolyPtn[+U <: Term]{
 	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)

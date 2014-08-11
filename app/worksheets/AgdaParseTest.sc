@@ -6,7 +6,7 @@ object AgdaParseTest {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
   val parser = new AgdaParse                      //> parser  : provingground.AgdaExpressions.AgdaParse = provingground.AgdaExpres
-                                                  //| sions$AgdaParse@1529d183
+                                                  //| sions$AgdaParse@66c9844e
 
 	import parser._
 	
@@ -63,7 +63,7 @@ object AgdaParseTest {
                                                   //| n(f),Token(y)))
   
   val ag = new AgdaPatternParser                  //> ag  : provingground.AgdaExpressions.AgdaPatternParser = provingground.AgdaEx
-                                                  //| pressions$AgdaPatternParser@38b930e4
+                                                  //| pressions$AgdaPatternParser@2190b03c
 	  
   
   val agda = ag.agdaPtn                           //> agda  : worksheets.AgdaParseTest.ag.Parser[List[String]] = Parser (|)
@@ -78,7 +78,7 @@ object AgdaParseTest {
  
   val ifparser = new AgdaParse(List(List("for", "_"),List("if","_","then","_", "else","_")))
                                                   //> ifparser  : provingground.AgdaExpressions.AgdaParse = provingground.AgdaExp
-                                                  //| ressions$AgdaParse@48363d6a
+                                                  //| ressions$AgdaParse@53744222
 	ifparser.parseAll(ifparser.expr, "(x : _) :-> x")
                                                   //> res23: worksheets.AgdaParseTest.ifparser.ParseResult[provingground.AgdaExpr
                                                   //| essions.Expression] = [1.14] parsed: LambdaExp(TypedVar(x,U),Token(x))

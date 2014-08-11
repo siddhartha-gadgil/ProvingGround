@@ -1,0 +1,13 @@
+@* EntropyDiv Template File *@
+@(ents: List[provingground.Collections.Weighted[String]])
+
+<div class="entropies">
+  <ul>
+  @for(ent <- ents) {
+    <li>
+      <span class="entropy"> @ent.weight</span>
+      <span class="element"> @ent.elem</span>
+    </li>
+  }
+</ul>
+</div>

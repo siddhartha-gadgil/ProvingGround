@@ -9,6 +9,7 @@ import scala.language.implicitConversions
 
 import play.api.data._
 import play.api.data.Forms._
+import math._
 
 //import play.api.libs.iteratee._
 
@@ -72,5 +73,35 @@ object AndrewsCurtisModel{
             "pres-cntn" -> number, 
             "word-cntn" -> number
             )(ACparams.apply)(ACparams.unapply))
-    
-  }
+   
+   private def roundoff(t: (Double, Double, Int, Int, Double)) = (
+       round(t._1).toInt, round(t._2).toInt : Int, t._3, t._4, round(t._5).toInt)
+   
+   //Note: Uses import learner and implicit feedback, should have these as parameters while abstracting.
+   val learnerForm = Form(
+       mapping(
+            "cutoff"  -> number,
+            "stable-level" -> number, 
+            "inner-steps" -> number,
+            "outer-steps" -> number, 
+            "epsilon" -> number
+            )((a: Int, b: Int, c: Int, d: Int, e: Int) => LearningLoop(a, b,c, d, e))(
+                (x) => LearningLoop.unapply(x).map(roundoff)))
+   
+    case class PresentationGen(presCntnSc : Int = 70, wrdCntnSc : Int = 70){
+      val presCntn = 0.01 * presCntnSc
+      
+      val wrdCntn = 0.01 * wrdCntnSc
+      
+      def baseweights = presentationWeight(_ : Presentation, presCntn : Double, wrdCntn : Double) 
+      
+      implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.feedback(baseweights)
+    }
+
+    val presentationGenForm = Form(
+        mapping(
+            "pres-cntn" -> number, 
+            "word-cntn" -> number
+            )(PresentationGen.apply)(PresentationGen.unapply))
+}
+

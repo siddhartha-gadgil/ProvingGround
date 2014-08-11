@@ -377,6 +377,7 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
         outerlearn(nxt, steps -1, (d -- nxt).norm < (stableLevel * epsilon))
       }
     
+    
     import DynInterface._
     /*
     def gen(init: DynDst) = new Generator[DynDst](init, 
