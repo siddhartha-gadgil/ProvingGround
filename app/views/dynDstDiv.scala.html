@@ -1,0 +1,16 @@
+@* dynDstDiv Template File *@
+@(dyndst: provingground.MoveLearner.DynDstView)
+
+<div>
+<div class="move-types">
+<h2> Move types</h2>
+@entropyDiv(dyndst.edgdst)
+  </div>
+
+<div class="veritces">
+<h2> Vertices</h2>
+@entropyDiv(dyndst.vrtdst)
+  </div>
+
+<h2> Probablity of continuation : @dyndst.cntn</h2>
+</div>
