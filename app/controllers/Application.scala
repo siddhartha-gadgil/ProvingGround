@@ -15,11 +15,13 @@ import play.api.Play.current
 
 //import play.api.libs.iteratee._
 //import play.api.libs.EventSource
-/*
+
 import provingground.AndrewsCurtis._
 import provingground.AndrewsCurtisInterface._
+
 import provingground.AndrewsCurtisModel._
-*/
+import provingground.MoveLearner._
+
 object Application extends Controller {
 
 
@@ -33,6 +35,17 @@ object Application extends Controller {
   def redirect = Action {
     Redirect("build/web/provingground.html")
   }
+
+  def acLoopStart = Action {
+    Ok(views.html.acLoopStart())
+  }
+
+  def acLoop = Action {implicit request =>
+    val presGen = presentationGenForm.bindFromRequest.get
+    val learnLoop = learnerForm(presGen.feedback).bindFromRequest.get
+    val finalDst = learnLoop.outerlearn(defaultdstbn)
+    Ok(views.html.acLoop(finalDst.entropyView()))
+    }
 /*
   def ACupdate = Action {
     implicit request => {
@@ -49,8 +62,8 @@ object Application extends Controller {
           Ok.feed(ACsource).as("text/event-stream")
       }
   }
-  * 
-  * 
+  *
+  *
   */
   /*
   def dstbnstream = Action {

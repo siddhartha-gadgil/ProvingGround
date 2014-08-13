@@ -42,7 +42,8 @@ object AndrewsCurtisModel{
       
       implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.feedback(baseweights)
       
-      lazy val learnLoop = LearningLoop(cutoff: Double, stableLevel : Double, stablSteps, outerSteps: Int, epsilon: Double)
+      lazy val learnLoop = LearningLoop(cutoff: Double, stableLevel : Double, 
+          stablSteps, outerSteps: Int, epsilon: Double)(feedback)
       
       /*
       def updateGen(gen: Generator[DynDst] = basegen) = {
@@ -78,14 +79,14 @@ object AndrewsCurtisModel{
        round(t._1).toInt, round(t._2).toInt : Int, t._3, t._4, round(t._5).toInt)
    
    //Note: Uses import learner and implicit feedback, should have these as parameters while abstracting.
-   val learnerForm = Form(
+   def learnerForm(fd: Feedback) = Form(
        mapping(
             "cutoff"  -> number,
             "stable-level" -> number, 
             "inner-steps" -> number,
             "outer-steps" -> number, 
             "epsilon" -> number
-            )((a: Int, b: Int, c: Int, d: Int, e: Int) => LearningLoop(a, b,c, d, e))(
+            )((a: Int, b: Int, c: Int, d: Int, e: Int) => LearningLoop(a, b,c, d, e)(fd))(
                 (x) => LearningLoop.unapply(x).map(roundoff)))
    
     case class PresentationGen(presCntnSc : Int = 70, wrdCntnSc : Int = 70){

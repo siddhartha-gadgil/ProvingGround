@@ -1,10 +1,11 @@
+@* dynamical queries - a list to include in a form. *@
 @()
+
 <div class="dynamics-queries">
-<ul>
-  <li><input name="cutoff" type="number">logarithm of cut-off</input></li>
-  <li><input name="stable-level" type="number">logarithm of stable level, changes below this </input></li>
-  <li><input name="epsilon" type="number">logarithm of epsilon (scaling for the flow)</input></li>
-  <li><input name="inner-steps" type="number">steps in the inner loop (not re-computing chains)</input></li>
-  <li><input name="outer-steps" type="number">steps in the outer loop</input></li>
-</ul>
+  <label>Entropy cut-off for pruning:</label> <input name="cutoff" type="number" value="10">
+  <label>Entropy of stable level: </label><input name="stable-level" type="number" value="10">
+  <label>Negative logarithm of epsilon (scaling for the flow): </label><input name="epsilon" type="number" value="15">
+  <label>Steps in the inner loop (not re-computing chains): </label><input name="inner-steps" type="number" value="25">
+  <label>Steps in the outer loop: </label><input name="outer-steps" type="number" value="25">
+
 </div>

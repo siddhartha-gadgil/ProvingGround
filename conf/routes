@@ -3,18 +3,22 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                 controllers.Application.index
 
 # GET		/index						controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file      controllers.Assets.at(path="/public", file)
 
-# GET     /build/*file               controllers.Assets.at(path="/build", file)
+# GET   /build/*file       controllers.Assets.at(path="/build", file)
 
 
-# GET     /dstbnstream               controllers.Application.dstbnstream
+# GET   /dstbnstream               controllers.Application.dstbnstream
 
 # GET		/bouncestream				controllers.Application.bouncestream
 
 # POST	/bounce						controllers.Application.bounce
+
+GET    /andrewscurtis      controllers.Application.acLoopStart
+
+POST  /andrewscurtis        controllers.Application.acLoop

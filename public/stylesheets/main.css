@@ -1,0 +1,29 @@
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 400px;
+    text-align: left;
+}
+input {
+  display: inline-block;
+  float: left;
+}
+
+.entropies {
+  height: 200px;
+  overflow-y: auto;
+}
+
+.entropies ul {
+  list-style-type: none;
+}
+
+.entropy {
+  width: 100px;
+  color: green;
+}
+
+.element {
+  color: blue;
+}
