@@ -696,7 +696,8 @@ object HoTT{
 	  override def toString = Sigma+"("+fibers.toString+")"
 	}
 	
-	/** Object in a dependent function type, i.e.,
+	/** 
+	 *  Object in a dependent function type, i.e.,
 	 *  a dependent function. Has a family of codomains 
 	 */
 	trait DepFuncObj[W<: Term, U<: Term] extends FuncTerm[W, U]{
@@ -714,7 +715,8 @@ object HoTT{
 	  
 	}
 	
-	/** A formal dependent function, with application symbolic
+	/** 
+	 *  A formal dependent function, with application symbolic
 	 *  
 	 *  
 	 
@@ -824,13 +826,20 @@ object HoTT{
 	
 
 	
-	
+	/**
+	 * folds in as many terms of the list as possible, 
+	 * applying terms as long as the result is a function and the list is non-empty. 
+	 */
 	def foldterms: (Term, List[Term]) => Term = {
 	  case (f: FuncTerm[u, _], x :: ys) if f.dom == x.typ => 
 	    foldterms(f(x.asInstanceOf[u]), ys)
 	  case (t, _) => t
 	}
 	
+	/**
+	 * folds in as many terms with names given by the list as possible, 
+	 * applying terms as long as the result is a function and the list is non-empty. 
+	 */
 	def foldnames : (Term, List[AnySym]) => Term = {
 	  case (f: FuncTerm[u, _], x :: ys)  =>
 	    val newvar = f.dom.symbObj(x)

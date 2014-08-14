@@ -8,15 +8,25 @@ import provingground.InductiveTypes._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
 
+/**
+ * Recursion and induction for inductive types.
+ */
 object Recursion{
   
+  /**
+   * argument of the lhs of an equation corresponding to a specific constructor
+   * 
+   *  @param cnstr constructor
+   *  
+   *  @param vars variable names to be applied to the constructor. 
+   */
   case class CnstrLHS(cnstr: Constructor, vars: List[AnySym]){
-    /*
-     * Term of type W
+    /**
+     * term of type W obtained by applying the constructor to terms with given names.
      */
     val arg = foldnames(cnstr.cons, vars)
     
-    /*
+    /**
      * Context for recursion: given rhs gives image of constructor.
      * The type of this is also used for recursion to 
      */
