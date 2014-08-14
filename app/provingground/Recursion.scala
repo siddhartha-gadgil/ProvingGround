@@ -10,6 +10,8 @@ import annotation._
 
 /**
  * Recursion and induction for inductive types.
+ * 
+ * The type of recursion and induction functions are constructed, as well as contexts which export appropriate values.
  */
 object Recursion{
   
@@ -27,17 +29,23 @@ object Recursion{
     val arg = foldnames(cnstr.cons, vars)
     
     /**
-     * Context for recursion: given rhs gives image of constructor.
-     * The type of this is also used for recursion to 
+     * Context for recursion
+     * The type of this is also used for recursion 
      */
     def recCtx[U <: Term](f: => FuncObj[Term, U]) : Context[Term, Term] = {
       cnstrRecContext[Term](f, cnstr.pattern, vars,f.dom, f.codom)(Context.empty[Term])
     }
     
+    /**
+     * A formal object representing the type of the recursion function.
+     */
     def recCtxVar(f: => FuncObj[Term, Term]) : Term  = {
       recCtxTyp(f).symbObj(RecInduced(cnstr.cons, f))
     }
     
+    /**
+     * the type of the recursion function
+     */
     def recCtxTyp(f: => FuncObj[Term, Term]) : Typ[Term]  = {
       recCtx(f)(f.codom)
     }
@@ -81,8 +89,8 @@ object Recursion{
     def indIdentity(f: => FuncTerm[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f).symblist(f.dom)(vars))
   }
   
-      /*
-   * Change in context for a TypPatn (i.e., simple pattern ending in W).
+      /**
+   * Change in context for a TypPattern (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
   private def recContextChange[V<: Term](f : => (FuncTerm[Term, Term]), 
@@ -92,7 +100,7 @@ object Recursion{
   }
   
   
-    /*
+    /**
    * Change in context  for Induction for a TypPattern - check
    */
   private def indContextChange[V<: Term](f : => (FuncTerm[Term, Term]), 

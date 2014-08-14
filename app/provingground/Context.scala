@@ -5,7 +5,14 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 import annotation._
 import provingground.InductiveTypes._
 
+/**
+ * Contexts, from which objects can be exported.
+ * Most fundamental case is lambda's
+ */
 object Contexts{
+  /**
+   * definitional equality trait
+   */
   trait DefnEquality{
     val lhs : Term
     val rhs: Term
@@ -24,6 +31,11 @@ object Contexts{
   }
   
   object DefnEqual{
+    /**
+     * instantiate all the free variables in the definition using substitutions if possible
+     * 
+     *  @param substitutions optional result of substitution. 
+     */
     def instantiate(substitutions : Term => Option[Term])(dfn : DefnEqual) : Option[DefnEquality] = {
       if (dfn.freevars.isEmpty) Some(dfn) 
       else for (headvar <- dfn.freevars.headOption; 
