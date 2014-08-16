@@ -13,7 +13,7 @@ import math._
 
 //import play.api.libs.iteratee._
 
-//import play.api.libs.EventSource
+//import play.api.libs.EventSource - move this away from this object, so that this can be used in worksheets.
 
 
 import math.pow

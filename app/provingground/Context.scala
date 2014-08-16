@@ -34,7 +34,9 @@ object Contexts{
     /**
      * instantiate all the free variables in the definition using substitutions if possible
      * 
-     *  @param substitutions optional result of substitution. 
+     *  @param substitutions optional result of substitution.
+     *  
+     *  @param dfn definitional equality 
      */
     def instantiate(substitutions : Term => Option[Term])(dfn : DefnEqual) : Option[DefnEquality] = {
       if (dfn.freevars.isEmpty) Some(dfn) 
@@ -59,29 +61,84 @@ object Contexts{
     def apply(name: AnySym, rhs : Term) = infer(name, rhs)
   }
   
+  /**
+   * A context, typically a sequence of lambdas
+   * 
+   * @typparam V scala type of objects that are intended to be in the context: typically Term, maybe Typ[Term] or Func
+   * 
+   * @typparam U upper bound for 
+   *  scala type of an object in context when viewed outside, typically a function because of lambdas
+   * 
+   */
   trait Context[+U <: Term , V <: Term] extends TypSeq[U, V]{
-//    val typ: Typ[PtnType]
     
+    /**
+     * scala type of an object in context when viewed outside, typically a function because of lambdas
+     */
+    type PtnType <: U 
+    
+    /**
+     * the type as seen from outside of an object within the context of HoTT-type Typ[V].
+     */
+    def apply(tp : Typ[V]) : Typ[PtnType]
+    
+    /**
+     * the tail of a context, which is viewed as lying inside the head for consistency with right associativity.
+     * 
+     */
     def tail: Context[Term, V]
     
-    def newtail(newtail: Context[Term, V]): Context[Term, V]
+    /**
+     * the context with tail changed but the same head, to be used recursively to put contexts inside given ones.
+     */
+    def withNewTail(newtail: Context[Term, V]): Context[Term, V]
     
-    type PtnType <: U
-    
+
+    /**
+     * an object of the export type with all the variables of the context folded in.
+     * for examply for lambda-context (x : A) -> and fixed type B, we fold in x to a function y to get y(x) : B
+     * 
+     */
     def foldin : Typ[V] => PtnType => V
     
+    /**
+     * given the name of an object and a HoTT-type in context, we fold in a symbolic object of the exported type.
+     * Example, given $lambda$-context (x: A) -> , type B and symbol y, we get y(x) : B 
+     * 
+     * 
+     */
     def foldinSym(tp: Typ[V])(name: AnySym) = foldin(tp)(apply(tp).symbObj(name))
     
+    /**
+     * symbols, i.e., variable names, associated to a context.
+     */
     def symblist(tp: Typ[V])(varnames: List[AnySym]): List[Term]
     
+    /**
+     * constants defined in the context
+     */
     def constants : Seq[Term]
     
+    /**
+     * definitions 
+     */
     def defns : Seq[Defn]
     
+    /**
+     * definitional equalities, including defintions.
+     */
     def defnEqualities : Seq[DefnEquality]
     
+    /**
+     * export an object
+     */
     def eliminate(isVar : Term => Boolean): Term => Term
     
+    /**
+     * export term, 
+     * TODO check if this can be upgraded to Term => PtnTyp (or U)
+     * the issue seems to be the Susb bound for Lambda case class.
+     */
     val elim : Term => Term
     
     type ArgType
@@ -106,11 +163,14 @@ object Contexts{
   }
   
   object Context{
+    /**
+     * empty context.
+     */
     case class empty[U <: Term : TypeTag]() extends Context[U, U]{
     	def tail: Nothing = 
     			throw new NoSuchElementException("tail of empty context") 
       
-    	def newtail(newtail: Context[Term, U]) = this
+    	def withNewTail(newtail: Context[Term, U]) = this
     	
     	type PtnType = U
 
@@ -147,7 +207,7 @@ object Contexts{
   case class LambdaMixin[+U<: Term, V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def newtail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
+    def withNewTail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
     
@@ -165,7 +225,7 @@ object Contexts{
       if (isVar(variable)) Lambda(variable, tail.eliminate(isVar)(y))
       else tail.eliminate(isVar)(y)
     
-      
+    //TODO refine the type of this so that it is recursively a pattern type.  
     val elim = (y: Term) => Lambda(variable, tail.elim(y))
     
     type ArgType = (Term, tail.ArgType)
@@ -202,7 +262,7 @@ object Contexts{
   case class KappaMixin[+U<: Term, V <: Term](const : Term, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
-    def newtail(newtail: Context[Term, V]) = KappaMixin(const, newtail)
+    def withNewTail(newtail: Context[Term, V]) = KappaMixin(const, newtail)
     
     def foldin : Typ[V] => PtnType => V = tail.foldin
     
@@ -230,7 +290,7 @@ object Contexts{
   case class DefnMixin[+U<: Term, V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def newtail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
+    def withNewTail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
     
@@ -276,7 +336,7 @@ object Contexts{
   case class GlobalDefnMixin[+U <: Term, V <: Term](dfn : Defn, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
-    def newtail(newtail: Context[Term, V]) = GlobalDefnMixin(dfn, newtail)
+    def withNewTail(newtail: Context[Term, V]) = GlobalDefnMixin(dfn, newtail)
     
     def foldin : Typ[V] => PtnType => V = tail.foldin
     
@@ -304,7 +364,7 @@ object Contexts{
   case class DefnEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V]) extends Context[U, V]{
     type PtnType = tail.PtnType
     
-    def newtail(newtail: Context[Term, V]) = DefnEqualityMixin(eqlty, newtail)
+    def withNewTail(newtail: Context[Term, V]) = DefnEqualityMixin(eqlty, newtail)
     
     def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
     
@@ -331,7 +391,7 @@ object Contexts{
   case class SimpEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncTerm[Term,U], V]{
     type PtnType = FuncTerm[Term, tail.PtnType]
     
-    def newtail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
+    def withNewTail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
     
     def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
     
@@ -384,7 +444,7 @@ object Contexts{
 
   def immerse[V <: Term](inner: Context[Term, V]): Context[Term, V] => Context[Term, V] ={
     case _ : Context.empty[_] => inner
-    case outer => inner.newtail(immerse(inner)(outer.tail))
+    case outer => inner.withNewTail(immerse(inner)(outer.tail))
   }
   
   
