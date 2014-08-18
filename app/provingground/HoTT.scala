@@ -325,7 +325,10 @@ object HoTT{
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
     
-    
+    /**
+     * (dependent) function, wraps around FuncTerm but without requiring type parameters.
+     * 
+     */
     trait FuncTermLike extends Term with Subs[FuncTermLike]{
       type D
       type Cod
@@ -348,7 +351,7 @@ object HoTT{
     }
     
     
-    /*
+    /**
      * Includes both functions and dependent functions
      */
     trait FuncTerm[-W <: Term, +U <: Term] extends Term with (W => U) with Subs[FuncTerm[W, U]]{
@@ -406,7 +409,10 @@ object HoTT{
     val applptnterm = new ApplnPatternAny
     
     
-	/** a function, i.e.,  an object in a function type, has a codomain and a fixed type for the domain. */
+	/** 
+	 *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain. 
+	 *  
+	 */
     trait FuncObj[W<: Term, +U <: Term] extends FuncTerm[W, U]{
       /** domain*/
 	  val dom: Typ[W]
@@ -512,22 +518,18 @@ object HoTT{
 	
 	/** A lambda-expression.
 	 *  variable is mapped to value.
-	 *  
+	 *  This may or may not be a dependent function.
+	 *  If it is important to note that it is not dependent, and hence has scala type FuncObj, then use LambdaFixed
 	 * 
 	 *  
-	 *  Refine to include a domain and codomain (maybe not - can have dependent type), and extend FuncObj.
 	 *  
-	 *  Should have a trait with the basic properties and inductive definitions
-	 *  
-	 *  Check: Is this the type? It may be a dependent type.
-	 *  The below is a lambda defined function.
 	 */
 	abstract class LambdaLike[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends FuncTerm[X, Y]{
 	  val domobjtpe = typeOf[X]
 	  
 	  val codomobjtpe = typeOf[Y]
 	  
-	  type D= X
+	  type D = X
 	  
 	  type Cod = Y
 	  
@@ -539,8 +541,6 @@ object HoTT{
 	  
 	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
 	    val fibre = (t : Term) => value.typ subs (variable, t)
-	    
-//	    val family = typFamilyDefn[Term, Term](variable.typ, value.typ.typ, fibre)
 	    
 	    val family : FuncObj[Term, Typ[Term]] = LambdaFixed(variable, value.typ)
 	    PiTyp(family)
@@ -567,6 +567,9 @@ object HoTT{
 	  def andThen[Z<: Term with Subs[Z] : TypeTag](f : Y => Z) = Lambda(variable, f(value))
 	}
 	
+	/**
+	 * functions given by lambda, which may be dependent - this is checked by making a substitution.
+	 */
 	case class Lambda[X<: Term : TypeTag, Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends LambdaLike(variable, value){
 	  object mysym extends AnySym
 	  
