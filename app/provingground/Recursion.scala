@@ -44,7 +44,7 @@ object Recursion{
     }
     
     /**
-     * the type of the recursion function
+     * HoTT type of the recursion function
      */
     def recCtxTyp(f: => FuncObj[Term, Term]) : Typ[Term]  = {
       recCtx(f)(f.codom)
@@ -52,10 +52,16 @@ object Recursion{
     
     def recCtxRHS(f: => FuncObj[Term, Term]) = recCtx(f).foldinSym(f.codom)(recCtxVar(f))
     
+    /**
+     * context for inductive definitions.
+     */
     def indCtx[U <: Term](f: => FuncTerm[Term, U]) : Context[Term, Term] = {
       cnstrIndContext[Term, Term](f, cnstr.pattern, vars,f.dom, f.depcodom)(Context.empty[Term])
     }
     
+    /**
+     * HoTT type of the induction function 
+     */
     def indCtxTyp(f: => FuncTerm[Term, Term]) : Typ[Term]  = {
       indCtx(f)(f.depcodom(arg))
     }
@@ -125,7 +131,7 @@ object Recursion{
    * 
    * @param ctx accumulator for context.
    * 
-   * FIXME check if the application of change is in the correct order, and if the variable names are correctly picked.
+   * 
    */
   private def cnstrContext[V<: Term](
       ptn : PolyPtn[Term], varnames : List[AnySym], 
@@ -134,19 +140,26 @@ object Recursion{
     ptn match {
       case IdW => ctx // the final co-domain. We have just this for constant constructors.
       case FuncPtn(tail, head) => 
-        cnstrContext(head, varnames.init, W, change)(change(varnames.last, tail, ctx))
+        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
+        change(varnames.head, tail, headctx)
       case CnstFncPtn(tail , head) =>
-        val x = tail.symbObj(varnames.last)
-        cnstrContext(head, varnames.init, W, change)(x /: ctx)
+        val x = tail.symbObj(varnames.head)
+        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
+        x /: headctx
       case DepFuncPtn(tail, headfibre , _) =>
-        val x  = tail(W).symbObj(varnames.last).asInstanceOf[Term]
-        cnstrContext(headfibre(x), varnames.init, W, change)(x /: ctx)
+        val x : Term = tail(W).symbObj(varnames.head)
+        val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
+        change(varnames.head, tail, headctx)
       case CnstDepFuncPtn(tail, headfibre , _) =>
-        val x = tail.symbObj(varnames.last)
-        cnstrContext(headfibre(x), varnames.init, W, change)(x /: ctx)
+        val x = tail.symbObj(varnames.head)
+        val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
+        x /: headctx
     }
   }
   
+  /**
+   *  context for recursive definition for a constructor.
+   */
   def cnstrRecContext[V<: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[Term], varnames : List[AnySym], 
       W : Typ[V], 
@@ -155,7 +168,10 @@ object Recursion{
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
-  private def cnstrIndContext[V<: Term, U <: Term](f : => (FuncTerm[Term, Term]), 
+  /**
+   *  context for inductive definition for a constructor.
+   */
+  def cnstrIndContext[V<: Term, U <: Term](f : => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[U], varnames : List[AnySym], 
       W : Typ[V], 
       Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
@@ -166,10 +182,16 @@ object Recursion{
   
 
   
-  
+  /**
+   * formal symbol
+   */
   case class RecInduced(cons : Term, func: Term => Term) extends AnySym
   
+  /**
+   * formal symbol
+   */
   case class IndInduced(cons: Term, func: Term => Term) extends AnySym
+  
   
   case class RecDefinition(f: FuncObj[Term, Term], cs: List[CnstrLHS]){
     val types = for (c <- cs) yield c.recCtxTyp(f)

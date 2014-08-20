@@ -106,9 +106,11 @@ class RecursionIndexed(indices : Typ[Term]){
       
   private type Change[V <: Term] = (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V]
   
-  /*
+  /**
    * Returns the context for a polypattern given change in context for a typepattern.
    * Recursively defined as a change, applied  by default to an empty context.
+   * 
+   * FIXME make the same correction (applying change after computing for head) as for recursion (un-indexed).
    */
   private def cnstrContext[V<: Term](
       ptn : PolyPtn[Term], varnames : List[AnySym], 
