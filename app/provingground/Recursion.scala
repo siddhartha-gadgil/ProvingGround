@@ -68,7 +68,8 @@ object Recursion{
     
     private def kappaChange(f: => FuncObj[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
-    ctx  kappa(ptn.induced(f.dom, f.codom)(f)(x)) lmbda(x)
+    val fx = (ptn.induced(f.dom, f.codom)(f))(x)
+    x /: (fx |: ctx)
     	}
     
     def recKappaCtx(f: => FuncObj[Term, Term]) : Context[Term, Term] = {
@@ -77,7 +78,8 @@ object Recursion{
     
     private def kappaIndChange(f: => FuncTerm[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
-    ctx  kappa(ptn.inducedDep(f.dom, f.depcodom)(f)(x)) lmbda(x)
+    val fx = ptn.inducedDep(f.dom, f.depcodom)(f)(x)
+     x /: (fx |: ctx)
     	}
     
     def indKappaCtx(f: => FuncTerm[Term, Term]) : Context[Term, Term] = {
@@ -89,47 +91,59 @@ object Recursion{
     def indIdentity(f: => FuncTerm[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f).symblist(f.dom)(vars))
   }
   
-      /**
+   /**
    * Change in context for a TypPattern (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
   private def recContextChange[V<: Term](f : => (FuncTerm[Term, Term]), 
         W : Typ[Term], X : Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
-    ctx  lmbda(ptn.induced(W, X)(f)(x)) lmbda(x)
+    val fx = ptn.induced(W, X)(f)(x)
+    x /: fx /: ctx
   }
   
   
     /**
-   * Change in context  for Induction for a TypPattern - check
+   * Change in context  for Induction for a TypPattern
    */
   private def indContextChange[V<: Term](f : => (FuncTerm[Term, Term]), 
       W : Typ[V], Xs : Term => Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
     val x =  ptn(W).symbObj(varname)
-    ctx lmbda(ptn.inducedDep(W, Xs)(f)(x)) lmbda(x)
+    val fx = ptn.inducedDep(W, Xs)(f)(x)
+    x /: fx /: ctx
   }
-      
+  
+  /**
+   * change in contexts given a type-pattern and a variable name.
+   */
   private type Change[V <: Term] = (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V]
   
-  /*
-   * Returns the context for a polypattern given change in context for a typepattern.
+  /**
+   * Returns the context for a poly-pattern given change in context for a type-pattern.
    * Recursively defined as a change, applied  by default to an empty context.
+   * Note that as both contexts and Poly-patterns are built right to left, it is natural to get consistency.
+   * 
+   * @param ctx accumulator for context.
+   * 
+   * FIXME check if the application of change is in the correct order, and if the variable names are correctly picked.
    */
   private def cnstrContext[V<: Term](
       ptn : PolyPtn[Term], varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
-      case IdW => ctx
- //     case tp: TypPtnLike => change(varnames.head, tp, ctx)
-      case FuncPtn(tail, head) => cnstrContext(head, varnames.tail, W, change)(change(varnames.head, tail, ctx))
-      case CnstFncPtn(tail : Typ[_], head) => cnstrContext(head, varnames.tail, W, change)( ctx lmbda(tail.symbObj(varnames.head)))
+      case IdW => ctx // the final co-domain. We have just this for constant constructors.
+      case FuncPtn(tail, head) => 
+        cnstrContext(head, varnames.init, W, change)(change(varnames.last, tail, ctx))
+      case CnstFncPtn(tail , head) =>
+        val x = tail.symbObj(varnames.last)
+        cnstrContext(head, varnames.init, W, change)(x /: ctx)
       case DepFuncPtn(tail, headfibre , _) =>
-        val x  = tail(W).symbObj(varnames.head).asInstanceOf[Term]
-        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
+        val x  = tail(W).symbObj(varnames.last).asInstanceOf[Term]
+        cnstrContext(headfibre(x), varnames.init, W, change)(x /: ctx)
       case CnstDepFuncPtn(tail, headfibre , _) =>
-        val x = tail.symbObj(varnames.head)
-        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
+        val x = tail.symbObj(varnames.last)
+        cnstrContext(headfibre(x), varnames.init, W, change)(x /: ctx)
     }
   }
   

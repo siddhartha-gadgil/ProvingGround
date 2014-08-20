@@ -20,7 +20,7 @@ object InductiveTypes{
 	 * @typparam U (upper bound on) scala type of an object with the pattern - especially functions.
 	 * this is needed to ensure that families have a common scala type that can be used inductively.
 	 */
-	trait TypPtn[U <: Term] extends TypPtnLike with TypSeq[U, Term]{
+	sealed trait TypPtn[U <: Term] extends TypPtnLike with TypSeq[U, Term]{
 		/**
 		 * scala type (upper bound)
 		 */
@@ -85,7 +85,7 @@ object InductiveTypes{
 	 * A composite pattern for inductive types.
 	 * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W as a function of W
 	 */
-	trait PolyPtn[+U <: Term]{
+	sealed trait PolyPtn[+U <: Term]{
 	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)
 	  
 	  def -->:[UU >: U <: Term : TypeTag](that : Typ[Term])(implicit self : Typ[Term]) : PolyPtn[FuncTerm[Term, UU]] = {
