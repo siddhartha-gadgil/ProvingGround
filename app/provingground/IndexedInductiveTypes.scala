@@ -20,6 +20,9 @@ import Math._
 //	  	  def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : PtnType => PtnType
 	}
 	
+	/**
+	 * a single trait to hold all type patterns, independent of U.
+	 */
 	trait TypPtnLike{
 		val univLevel : Int
 	  
@@ -83,6 +86,9 @@ import Math._
 
 
 	
+	/**
+	 * Extending a poly-pattern by a type pattern.
+	 */
 	case class FuncPtn[U<:Term : TypeTag](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
@@ -91,6 +97,9 @@ import Math._
 	  val univLevel = max(head.univLevel, tail.univLevel)
 	} 
 	
+	/**
+	 * Extending a poly-pattern by a constant type, i.e., not depending on W.
+	 */
 	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
@@ -170,15 +179,15 @@ import Math._
 	  
 	   def induced(W : I => Typ[Term], X: Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
-	      val func =((t : Term) => head.induced(W, X)(f) (g(t)))
-	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head.at(X)),  (t : Term) => headfibre(t).at(X))
+	      val func =((t : Term) => headfibre(t).induced(W, X)(f) (g(t)))
+	      val fiber = typFamilyDefn[Term, V](tail, MiniVerse(head.at(X)),  (t : Term) => headfibre(t).at(X))
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
 	  def inducedDep(W : I => Typ[Term], Xs: Term => Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
-	      val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
-	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(_)(t)))
+	      val func =((t : Term) => headfibre(t).inducedDep(W, Xs)(f) (g(t)))
+	      val fiber = typFamilyDefn[Term, V](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(_)(t)))
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   

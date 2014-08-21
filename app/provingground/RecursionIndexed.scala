@@ -7,23 +7,39 @@ import provingground.Contexts._
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
-/*
- * Similar to Recursion, but in families.
- * We import the indexed version of Inductive Types and associated patterns.
+/**
+ * Recursion and induction for inductive type families.
+ * A lot of the same code as recursion is used, but with a different import, so constructors etc are indexed.
+ * 
+ * Recursion and induction are given in two ways:
+ * * A context for each constructor, from which an identity is generated given an rhs: the kappaCtx maybe the better one for this.
+ * * A formal recursion/induction function.
+ * 
+ * 
  */
 class RecursionIndexed(indices : Typ[Term]){
    val indxind =  new IndexedInductiveTypes[Term]
    import indxind._
    
-     case class CnstrLHS(cnstr: Constructor, vars: List[AnySym]){
-    /*
-     * Term of type W
+   /**
+   * argument of the lhs of an equation corresponding to a specific constructor.
+   * 
+   *  @param cnstr constructor
+   *  
+   *  @param vars variable names to be applied to the constructor. 
+   */
+  case class CnstrLHS(cnstr: Constructor, vars: List[AnySym]){
+    /**
+     * the argument of the lhs of identities for this constructor, which is a
+     * term of type W obtained by applying the constructor to terms with given names.
+     * 
      */
     val arg = foldnames(cnstr.cons, vars)
     
-    /*
-     * Context for recursion: given rhs gives image of constructor.
-     * The type of this is also used for recursion to 
+    def varterms(W : Term => Typ[Term]) = symbTerms(cnstr.pattern, vars, W)
+    /**
+     * Context for recursion
+     * The type of this is also used for recursion 
      */
     def recCtx[U <: Term](f: => Term => FuncObj[Term, U], X: Typ[Term]) : Context[Term, Term] = {
       cnstrRecContext[Term](f, cnstr.pattern, vars,(t) => f(t).dom, X)(Context.empty[Term])
@@ -33,13 +49,18 @@ class RecursionIndexed(indices : Typ[Term]){
       recCtxTyp(f, X).symbObj(RecInduced(cnstr.cons, f))
     }
     
-    def recCtxTyp(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Typ[Term]  = {
+    /**
+     * HoTT type of the recursion function
+     */
+	def recCtxTyp(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Typ[Term]  = {
       recCtx(f, X)(X)
     }
     
     def recCtxRHS(f: => Term => FuncObj[Term, Term], X: Typ[Term]) = recCtx(f, X).foldinSym(X)(recCtxVar(f, X))
     
-    
+     /**
+     * context for inductive definitions.
+     */
     def indCtx(f: => Term => FuncTerm[Term, Term]) : Context[Term, Term] = {
       cnstrIndContext[Term, Term](f, cnstr.pattern, vars,(t) => f(t).dom, (t) => f(t).depcodom)(Context.empty[Term])
     }
@@ -56,41 +77,57 @@ class RecursionIndexed(indices : Typ[Term]){
     
     def indCtxRHS(f: => Term => FuncTerm[Term, Term], tps: Term => Typ[Term]) = indCtx(f).foldinSym(tps(arg))(indCtxVar(f, tps))
     
-    
+     /**
+     * change for building a kappa-context for recursion
+     */
     private def kappaChange(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn((t: Term) =>f(t).dom).symbObj(varname)
     ctx  kappa(ptn.induced((t: Term) => f(t).dom, X)(f)(x)) lmbda(x)
     	}
     
-    
+    /**
+     * kappa-context for recursion, with f(n) etc. additional constants for parsing, but not variables.
+     */
     def recKappaCtx(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars, (t: Term) => f(t).dom, kappaChange(f, X))(Context.empty[Term])
     }
     
+	/**
+     * change for building a kappa-context for recursion
+     */
     private def kappaIndChange(f: => Term => FuncTerm[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn((t: Term) =>f(t).dom).symbObj(varname)
     ctx  kappa(ptn.inducedDep((t: Term) => f(t).dom, (t) => f(t).depcodom)(f)(x)) lmbda(x)
     	}
     
-    def indKappaCtx(f: => Term => FuncTerm[Term, Term]) : Context[Term, Term] = {
+    /**
+     * kappa-context for induction, with f(n) etc. additional constants for parsing, but not variables.
+     */    
+	def indKappaCtx(f: => Term => FuncTerm[Term, Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars, (t: Term) => f(t).dom, kappaIndChange(f))(Context.empty[Term])
     }
     
-    
+    /**
+     * identity corresponding to the given constructor for a recursive definition.
+     */
     def recIdentity(f: => Term => FuncObj[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, recCtx(f, X).symblist(arg.typ)(vars))
-    
+
+    /**
+     * identity corresponding to the given constructor for an inductive definition.
+     */    
     def indIdentity(f: => Term => FuncTerm[Term, Term], X: Typ[Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f).symblist(arg.typ)(vars))
    
   }
   
-      /*
-   * Change in context for a TypPatn (i.e., simple pattern ending in W).
+   /**
+   * Change in context for a TypPattern (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
   private def recContextChange[V<: Term](f : => Term => (FuncTerm[Term, Term]), 
         W : Term => Typ[Term], X : Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
-    ctx  lmbda(ptn.induced(W, X)(f)(x)) lmbda(x)
+    val fx = ptn.induced(W, X)(f)(x)
+    x /: fx /: ctx
   }
   
   
@@ -101,36 +138,70 @@ class RecursionIndexed(indices : Typ[Term]){
       W : Term => Typ[V], 
       Xs : Term => Term => Typ[V]) : (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
     val x = ptn(W).symbObj(varname)
-    ctx lmbda(ptn.inducedDep(W, Xs)(f)(x)) lmbda(x)
+	val fx = ptn.inducedDep(W, Xs)(f)(x)
+    x /: fx /: ctx
   }
-      
+  
+  /**
+   * change in contexts given a type-pattern and a variable name.
+   */
   private type Change[V <: Term] = (AnySym, TypPtnLike, Context[Term, V]) => Context[Term, V]
   
   /**
    * Returns the context for a polypattern given change in context for a typepattern.
    * Recursively defined as a change, applied  by default to an empty context.
    * 
-   * FIXME make the same correction (applying change after computing for head) as for recursion (un-indexed).
+   * @param ctx accumulator for context.
+   * 
+   * 
    */
-  private def cnstrContext[V<: Term](
+  def cnstrContext[V<: Term](
       ptn : PolyPtn[Term], varnames : List[AnySym], 
       W : Term => Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
-      case IndxW(_) => ctx
- //     case tp: TypPtnLike => change(varnames.head, tp, ctx)
-      case FuncPtn(tail, head) => cnstrContext(head, varnames.tail, W, change)(change(varnames.head, tail, ctx))
-      case CnstFncPtn(tail : Typ[_], head) => cnstrContext(head, varnames.tail, W, change)( ctx lmbda(tail.symbObj(varnames.head)))
+      case FuncPtn(tail, head) => 
+        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
+        change(varnames.head, tail, headctx)
+      case CnstFncPtn(tail , head) =>
+        val x = tail.symbObj(varnames.head)
+        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
+        x /: headctx
       case DepFuncPtn(tail, headfibre , _) =>
-        val x  = tail(W).symbObj(varnames.head).asInstanceOf[Term]
-        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
+        val x : Term = tail(W).symbObj(varnames.head)
+        val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
+        change(varnames.head, tail, headctx)
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
-        cnstrContext(headfibre(x), varnames.tail, W, change)( ctx lmbda(x))
+        val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
+        x /: headctx
     }
   }
   
-  def cnstrRecContext[V<: Term](f : => Term => (FuncTerm[Term, Term]), 
+  /**
+   * returns symbolic terms of type according to a poly-pattern
+   */
+  private def symbTerms(ptn : PolyPtn[Term], varnames : List[AnySym], 
+      W : Term => Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
+    case IndxW(_) => accum
+    case FuncPtn(tail, head) => 
+      val x = tail(W).symbObj(varnames.head)
+      symbTerms(head, varnames.tail, W, x :: accum)
+    case CnstFncPtn(tail , head) =>
+      val x = tail.symbObj(varnames.head)
+      symbTerms(head, varnames.tail, W, x :: accum)  
+    case DepFuncPtn(tail, headfibre , _) =>
+      val x : Term = tail(W).symbObj(varnames.head)
+      symbTerms(headfibre(x), varnames.tail, W, x :: accum)
+    case CnstDepFuncPtn(tail, headfibre , _) =>
+      val x : Term = tail.symbObj(varnames.head)
+      symbTerms(headfibre(x), varnames.tail, W, x :: accum)
+  }
+  
+  /**
+   *  context for recursive definition for a constructor.
+   */
+  def cnstrRecContext[V<: Term](f : => Term  => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[Term], varnames : List[AnySym], 
       W : Term => Typ[V], 
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
@@ -138,7 +209,10 @@ class RecursionIndexed(indices : Typ[Term]){
     cnstrContext(ptn, varnames, W, change)(ctx)
   }
   
-  private def cnstrIndContext[V<: Term, U <: Term](f :  => Term => (FuncTerm[Term, Term]), 
+  /**
+   *  context for inductive definition for a constructor.
+   */
+  def cnstrIndContext[V<: Term, U <: Term](f : => Term => (FuncTerm[Term, Term]), 
       ptn : PolyPtn[U], varnames : List[AnySym], 
       W : Term => Typ[V], 
       Xs :  Term => Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {

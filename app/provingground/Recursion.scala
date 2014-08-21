@@ -11,12 +11,16 @@ import annotation._
 /**
  * Recursion and induction for inductive types.
  * 
- * The type of recursion and induction functions are constructed, as well as contexts which export appropriate values.
+ * Recursion and induction are given in two ways:
+ * * A context for each constructor, from which an identity is generated given an rhs: the kappaCtx maybe the better one for this.
+ * * A formal recursion/induction function.
+ * 
+ * 
  */
 object Recursion{
   
   /**
-   * argument of the lhs of an equation corresponding to a specific constructor
+   * argument of the lhs of an equation corresponding to a specific constructor.
    * 
    *  @param cnstr constructor
    *  
@@ -24,10 +28,13 @@ object Recursion{
    */
   case class CnstrLHS(cnstr: Constructor, vars: List[AnySym]){
     /**
+     * the argument of the lhs of identities for this constructor, which is a
      * term of type W obtained by applying the constructor to terms with given names.
+     * 
      */
     val arg = foldnames(cnstr.cons, vars)
     
+    def varterms(W : Typ[Term]) = symbTerms(cnstr.pattern, vars, W)
     /**
      * Context for recursion
      * The type of this is also used for recursion 
@@ -50,7 +57,7 @@ object Recursion{
       recCtx(f)(f.codom)
     }
     
-    def recCtxRHS(f: => FuncObj[Term, Term]) = recCtx(f).foldinSym(f.codom)(recCtxVar(f))
+    def recCtxIdRHS(f: => FuncObj[Term, Term]) = recCtx(f).foldinSym(f.codom)(recCtxVar(f))
     
     /**
      * context for inductive definitions.
@@ -70,31 +77,49 @@ object Recursion{
       indCtxTyp(f).symbObj(IndInduced(cnstr.cons, f))
     }
     
-    def indCtxRHS(f: => FuncTerm[Term, Term]) = indCtx(f).foldinSym(f.depcodom(arg))(indCtxVar(f))
+    def indCtxIdRHS(f: => FuncTerm[Term, Term]) = indCtx(f).foldinSym(f.depcodom(arg))(indCtxVar(f))
     
+    /**
+     * change for building a kappa-context for recursion
+     */
     private def kappaChange(f: => FuncObj[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
     val fx = (ptn.induced(f.dom, f.codom)(f))(x)
     x /: (fx |: ctx)
     	}
     
+    /**
+     * kappa-context for recursion, with f(n) etc. additional constants for parsing, but not variables.
+     */
     def recKappaCtx(f: => FuncObj[Term, Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars,f.dom, kappaChange(f))(Context.empty[Term])
     }
     
+    /**
+     * change for building a kappa-context for recursion
+     */
     private def kappaIndChange(f: => FuncTerm[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
     val fx = ptn.inducedDep(f.dom, f.depcodom)(f)(x)
      x /: (fx |: ctx)
     	}
     
+    /**
+     * kappa-context for induction, with f(n) etc. additional constants for parsing, but not variables.
+     */
     def indKappaCtx(f: => FuncTerm[Term, Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars,f.dom, kappaIndChange(f))(Context.empty[Term])
     }
     
-    def recIdentity(f: => FuncObj[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, recCtx(f).symblist(f.dom)(vars))
+    /**
+     * identity corresponding to the given constructor for a recursive definition.
+     */
+    def recIdentity(f: => FuncObj[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, varterms(f.dom))
     
-    def indIdentity(f: => FuncTerm[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, indCtx(f).symblist(f.dom)(vars))
+    /**
+     * identity corresponding to the given constructor for an inductive definition.
+     */
+    def indIdentity(f: => FuncTerm[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, varterms(f.dom))
   }
   
    /**
@@ -133,7 +158,7 @@ object Recursion{
    * 
    * 
    */
-  private def cnstrContext[V<: Term](
+  def cnstrContext[V<: Term](
       ptn : PolyPtn[Term], varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
@@ -155,6 +180,26 @@ object Recursion{
         val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
         x /: headctx
     }
+  }
+  
+  /**
+   * returns symbolic terms of type according to a poly-pattern
+   */
+  private def symbTerms(ptn : PolyPtn[Term], varnames : List[AnySym], 
+      W : Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
+    case IdW => accum
+    case FuncPtn(tail, head) => 
+      val x = tail(W).symbObj(varnames.head)
+      symbTerms(head, varnames.tail, W, x :: accum)
+    case CnstFncPtn(tail , head) =>
+      val x = tail.symbObj(varnames.head)
+      symbTerms(head, varnames.tail, W, x :: accum)  
+    case DepFuncPtn(tail, headfibre , _) =>
+      val x : Term = tail(W).symbObj(varnames.head)
+      symbTerms(headfibre(x), varnames.tail, W, x :: accum)
+    case CnstDepFuncPtn(tail, headfibre , _) =>
+      val x : Term = tail.symbObj(varnames.head)
+      symbTerms(headfibre(x), varnames.tail, W, x :: accum)
   }
   
   /**
@@ -192,7 +237,9 @@ object Recursion{
    */
   case class IndInduced(cons: Term, func: Term => Term) extends AnySym
   
-  
+  /**
+   * Identities satisfied by the recursion function from f.dom to f.codom.
+   */
   case class RecDefinition(f: FuncObj[Term, Term], cs: List[CnstrLHS]){
     val types = for (c <- cs) yield c.recCtxTyp(f)
     val typ = (types :\ f.typ)(_ ->: _)
@@ -203,11 +250,14 @@ object Recursion{
     
     val identitites = cs map ((c) => {
       val lhs = foldterms(recfn, consvars :+ c.arg)
-      val rhs = c.recCtxRHS(f)
+      val rhs = c.recCtxIdRHS(f)
       DefnEqual(lhs, rhs, freevars)
     })
   }
   
+  /**
+   * Identities satisfied by the induction dependent function from f.dom to f.depcodom.
+   */
   case class IndDefinition(f: FuncTerm[Term, Term], cs: List[CnstrLHS]){
     val types = for (c <- cs) yield c.indCtxTyp(f)
     val typ = (types :\ f.typ)(_ ->: _)
@@ -218,17 +268,20 @@ object Recursion{
     
     val identitites = cs map ((c) => {
       val lhs = foldterms(recfn, consvars :+ c.arg)
-      val rhs = c.indCtxRHS(f)
+      val rhs = c.indCtxIdRHS(f)
       DefnEqual(lhs, rhs, freevars)
     })
   }
   
   
-  /*
-   * The symbolic object for defining a recursion function from a context.
+  /**
+   * symbolic object for defining a recursion function for functions from W to X.
    */
   case class RecSymbol(W : Typ[Term], X : Typ[Term]) extends AnySym
   
+  /**
+   * symbolic object for defining an induction function for dependent functions from W to Xs(w: W).
+   */
   case class IndSymbol(W : Typ[Term], Xs : Term => Typ[Term]) extends AnySym  
   
   
