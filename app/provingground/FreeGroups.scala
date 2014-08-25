@@ -128,4 +128,9 @@ object FreeGroups{
     (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
   }
   
+  /*
+   * Empty presentation
+   */
+  val nullpres = Presentation(List(), 0)
+  
 }

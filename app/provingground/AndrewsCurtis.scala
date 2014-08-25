@@ -28,10 +28,6 @@ object AndrewsCurtis{
    */
 //  type DynObj = ACobject
   
-  /*
-   * Empty presentation
-   */
-  val nullpres = Presentation(List(), 0)
   
 
   

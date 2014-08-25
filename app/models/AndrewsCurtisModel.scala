@@ -1,5 +1,5 @@
 package provingground
-import provingground.AndrewsCurtis._
+import provingground.AndrewsCurtis.{ACMoveType, allMoves, MoveTypeList, Move}
 import provingground.Collections._
 import provingground.FreeGroups._
 import provingground.DynInterface._
@@ -78,7 +78,7 @@ object AndrewsCurtisModel{
    private def roundoff(t: (Double, Double, Int, Int, Double)) = (
        round(t._1).toInt, round(t._2).toInt : Int, t._3, t._4, round(t._5).toInt)
    
-   //Note: Uses import learner and implicit feedback, should have these as parameters while abstracting.
+   //Note: Uses import learner, should have this as a parameter while abstracting.
    def learnerForm(fd: Feedback) = Form(
        mapping(
             "cutoff"  -> number,

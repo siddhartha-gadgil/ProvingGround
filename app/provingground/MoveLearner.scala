@@ -27,6 +27,7 @@ import annotation._
  *
  * This is used to determine feedback for learning.
  *
+ * FIXME MoveLearner gives infinite loops
  *
  * @param movetypes Move types
  *
