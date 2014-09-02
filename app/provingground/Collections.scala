@@ -145,7 +145,7 @@ object Collections{
      * 
      * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
      */
-    case class FiniteDistribution[T](pmf: Seq[Weighted[T]], epsilon: Double = 0.0) extends ProbabilityDistribution[T] with LabelledArray[T, Double]{    
+    case class FiniteDistribution[T](pmf: Seq[Weighted[T]], epsilon: Double = 0.0) extends ProbabilityDistribution[T] with LabelledVector[T]{    
       /**
        * support of the distribution.
        */
@@ -270,6 +270,13 @@ object Collections{
         val pmf = (s map (Weighted(_, prob))).toSeq
         FiniteDistribution(pmf)
       }
+      
+      def empty[T] = FiniteDistribution[T](Seq())
+      
+      def linearCombination[T](terms: Seq[(Double, FiniteDistribution[T])]) = {
+        val scaled = for ((a, d) <- terms) yield d * a
+        (empty[T] /: scaled)(_ ++ _)
+      }
     }
     
     
@@ -310,6 +317,11 @@ object Collections{
       }
     }
     
+    trait LabelledVector[L] extends LabelledArray[L, Double]{
+      def sum  = (for (l <- support; value <-get(l)) yield value).sum
+      
+      def innerProduct(that: LabelledVector[L]) = (for (l <- support; fst <-get(l); scnd <- that.get(l)) yield fst * scnd).sum
+    }
     
     
     case class ArrayMap[L, T](coords: Map[L, T], supp: Option[Traversable[L]] = None) extends LabelledArray[L, T]{
