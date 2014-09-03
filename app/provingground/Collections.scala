@@ -321,7 +321,10 @@ object Collections{
       def sum  = (for (l <- support; value <-get(l)) yield value).sum
       
       def innerProduct(that: LabelledVector[L]) = (for (l <- support; fst <-get(l); scnd <- that.get(l)) yield fst * scnd).sum
+    
+      def dot(that: LabelledVector[L]) = innerProduct(that)
     }
+    
     
     
     case class ArrayMap[L, T](coords: Map[L, T], supp: Option[Traversable[L]] = None) extends LabelledArray[L, T]{

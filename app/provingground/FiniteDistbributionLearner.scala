@@ -9,23 +9,84 @@ object FiniteDistbributionLearner {
 	type DF[X, Y] = DiffbleFunction[X, Y]
 	
 	/**
-	 * A combined differentiable function from ones on FD[V] labeled by elements of M.
-	 * This has domain arrays with labels in M (temporarily just maps) as well as an element of FD[V].
-	 * It maps to just FD[V], but this can be further composed.
+	 * differentiable function from a given one by composing with scalar multiplication
 	 */
-	def combined[M, V](terms: Map[M, DF[FD[V], FD[V]]] ) ={
-	  val func = (wd : (M => Double, FD[V])) => {
-	  	val wtd = for ((m, fn) <- terms.toSeq) yield (wd._1(m), fn(wd._2))
-	  	FiniteDistribution.linearCombination(wtd)	  			
+	def scProdFn[V](fn : DF[FD[V], FD[V]]) = {
+	  def func(cv: (Double, FD[V])) = fn(cv._2) * cv._1
+	  
+	  def grad(cv: (Double, FD[V]))(w: FD[V]) = {
+	    val x = fn.grad(cv._2)(w)
+	    (x dot cv._2, x * cv._1)
+	  } 
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	type DynFn[M, V] = DF[(FD[M], FD[V]), FD[V]]
+	
+	def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
+	
+	def sumFn[M, V](fst: DynFn[M, V], scnd : DynFn[M, V]) = {
+	  def func(st : (FD[M], FD[V])) = fst(st) ++ scnd(st)
+	  
+	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
+	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
 	  }
-	  /**
-	   * the adjoint has first component the inner product of the linear combination of pullbacks with the original vector.
-	   */
-	  def adj(wd : (M => Double, FD[V]))(v : FD[V]) = {
-	   val wtd = for ((m, fn) <- terms.toSeq) yield (wd._1(m), fn.grad(wd._2)(v))
-	   val pullback = FiniteDistribution.linearCombination(wtd) 
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def atM[M, V](cv: (Double, FD[V]), m: M) = {
+	  val dstM = FiniteDistribution.empty[M] + (m, cv._1)  
+	  (dstM, cv._2)
+	}
+	
+	def mixinFn[M, V](m: M, fn: DF[(Double, FD[V]), FD[V]]) ={
+	  def func(csv: (FD[M], FD[V])) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    fn((c, v))
+	  }
+	  
+	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    val cterm = fn.grad((c, v))(w)
+	    atM(cterm, m)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def isleMultFn[M, V](fn: DynFn[M, V], m: M) = {
+	  def func(csv: (FD[M], FD[V])) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    fn((csv._1, v)) * c
+	  }
+	  
+	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    val mv = fn.grad((csv._1, v))(w)
+	    val shift = mv._2 dot v
+	    (mv._1 + (m, shift), mv._2)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def pair[V] = {
+	  def func(d: FD[V]) = {
+	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
+	    FiniteDistribution(pmf)
+	  }
+	  
+	  def grad(d: FD[V])(pd: FD[(V, V)]) = {
+	    pd.pmf.flatMap(ab => Seq(ab, ab))
 	  }
 	}
+	
 	
 	
 }
