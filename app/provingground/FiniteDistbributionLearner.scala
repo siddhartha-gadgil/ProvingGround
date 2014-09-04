@@ -2,12 +2,26 @@ package provingground
 
 import LearningSystem._
 import Collections._
+import annotation._
 
 object FiniteDistbributionLearner {
 	type FD[V] = FiniteDistribution[V] 
 	
 	type DF[X, Y] = DiffbleFunction[X, Y]
 	
+	def IdMV[M, V] = DiffbleFunction((mv : (FD[M], FD[V])) => mv)( 
+	      (mv : (FD[M], FD[V])) => {(mw : (FD[M], FD[V])) => mw}
+	    )
+	    
+	def IdV[V] = DiffbleFunction((d : FD[V]) => d)( 
+	      (d : FD[V]) => {(w : FD[V]) => w}
+	    )
+	
+	@tailrec def repeat[M, V](fn: DF[(FD[M], FD[V]), (FD[M], FD[V])],
+	    n: Int, accum: DF[(FD[M], FD[V]), (FD[M], FD[V])]= IdMV): DF[(FD[M], FD[V]), (FD[M], FD[V])] = {
+		if (n<1) accum else repeat(fn, n-1, accum andThen fn)
+	}
+	    
 	/**
 	 * differentiable function from a given one by composing with scalar multiplication
 	 */
@@ -83,10 +97,52 @@ object FiniteDistbributionLearner {
 	  }
 	  
 	  def grad(d: FD[V])(pd: FD[(V, V)]) = {
-	    pd.pmf.flatMap(ab => Seq(ab, ab))
+	    val rawpmf = pd.pmf.flatMap(ab => Seq(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
+	    FiniteDistribution(rawpmf).flatten
 	  }
+	  
+	  DiffbleFunction(func)(grad)
 	}
 	
+	def formalSmooth[A](f: A => A) = DiffbleFunction(f)((a : A) => {(b : A) => b})
 	
+	def moveFn[V](f: V => Option[V]) = {
+	  def func(d: FD[V]) = {
+	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
+	    FiniteDistribution(rawpmf).flatten
+	  }
+	  
+	  def grad(d: FD[V])(w: FD[V]) = {
+	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, w(y))
+	    FiniteDistribution(rawpmf).flatten
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
 	
+	def simpleIsleInitFn[M, V](v: V, t: M) = {
+	  def func(ds: (FD[M], FD[V])) ={
+	    val p = ds._1(t)
+	    (ds._1, ds._2 * (1.0 - p) + (v, p))
+	  }
+	  
+	  def grad(ds: (FD[M], FD[V]))(ws: (FD[M], FD[V])) ={
+	    val p = ds._1(t)
+	    val c = ws._1(t)
+	    val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
+	    (ws._1 + (t, c), shift)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def extendM[M, V](fn: DF[(FD[M], FD[V]), FD[V]]) = {
+	  def func(mv: (FD[M], FD[V])) = (mv._1, fn(mv))
+	  
+	  def grad(mv: (FD[M], FD[V]))(mw: (FD[M], FD[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+	}
+	
+	def pruneV[M, V](t: Double) = formalSmooth((mv: (FD[M], FD[V])) => (mv._1, mv._2 normalized(t)))
+	
+	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))
 }

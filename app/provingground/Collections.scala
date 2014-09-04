@@ -240,6 +240,8 @@ object Collections{
         FiniteDistribution(newpmf, epsilon)
       }
       
+      def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
+      
       /**
        * entropy feedback for the finite distribution to move in the direction of the base distribution, 
        * however values ouside tsupport are ignored.
