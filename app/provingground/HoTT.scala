@@ -47,7 +47,7 @@ object HoTT{
       def subs(x : Term, y: Term) = this
     }
     
-    trait Constant extends Term{
+    trait ConstTerm extends Term{
       def subs(x : Term, y: Term) = this
     }
     
