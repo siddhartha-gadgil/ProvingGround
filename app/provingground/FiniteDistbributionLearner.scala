@@ -5,10 +5,13 @@ import Collections._
 import annotation._
 
 object FiniteDistbributionLearner {
-	type FD[V] = FiniteDistribution[V] 
+	private type FD[V] = FiniteDistribution[V] 
 	
-	type DF[X, Y] = DiffbleFunction[X, Y]
+	private type DF[X, Y] = DiffbleFunction[X, Y]
 	
+	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
+	
+	/**
 	def IdMV[M, V] = DiffbleFunction((mv : (FD[M], FD[V])) => mv)( 
 	      (mv : (FD[M], FD[V])) => {(mw : (FD[M], FD[V])) => mw}
 	    )
@@ -16,10 +19,10 @@ object FiniteDistbributionLearner {
 	def IdV[V] = DiffbleFunction((d : FD[V]) => d)( 
 	      (d : FD[V]) => {(w : FD[V]) => w}
 	    )
+	*/
 	
-	@tailrec def repeat[M, V](fn: DF[(FD[M], FD[V]), (FD[M], FD[V])],
-	    n: Int, accum: DF[(FD[M], FD[V]), (FD[M], FD[V])]= IdMV): DF[(FD[M], FD[V]), (FD[M], FD[V])] = {
-		if (n<1) accum else repeat(fn, n-1, accum andThen fn)
+	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = Id[X]): DF[X, X] = {
+		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
 	}
 	    
 	/**
@@ -145,4 +148,10 @@ object FiniteDistbributionLearner {
 	def pruneV[M, V](t: Double) = formalSmooth((mv: (FD[M], FD[V])) => (mv._1, mv._2 normalized(t)))
 	
 	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))
+	
+	def learnstep[M, V](f: DF[(FD[M], FD[V]), (FD[M], FD[V])], epsilon: Double, feedback: (FD[M], FD[V]) => (FD[M], FD[V])) = {
+	  (init : (FD[M], FD[V])) => 
+	    val fb = feedback(f(init)._1, f(init)._2)
+	    (init._1 ++ (fb._1 * epsilon), init._2 ++ (fb._2 * epsilon))
+	}
 }
