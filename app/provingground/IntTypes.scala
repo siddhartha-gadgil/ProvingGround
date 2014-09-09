@@ -4,7 +4,103 @@ import HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object IntTypes {
-	trait ConstTerm[T] extends Term{
+  // Abstract code, to eventually move to another object.
+  trait ScalaRep[U <: Term, V]{
+    val typ : Typ[U]
+    
+    type tpe = V
+    
+    def apply(v: V) : U
+    
+    def unapply(u: Term) : Option[V]
+  }
+  
+  //An example
+  object IntRep extends ScalaRep[Term, Long]{
+    val typ = Z
+    
+    def apply(n: Long) = Zcnst(n)
+    
+    def unapply(u: Term) = u match {
+      case Zcnst(n, _) => Some(n)
+      case _ => None
+    }
+
+  }
+  
+  case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
+      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncTerm[U, X], V => Y]{
+    val typ = domrep.typ ->: codomrep.typ
+    
+    def apply(f: V => Y) = ExtendedFunction(f, domrep, codomrep)
+    
+    def unapply(u: Term) : Option[V => Y] = u match {
+      case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
+      case _ => None
+    }
+  }
+  
+  case class ExtendedFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y, 
+      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends FuncObj[U, X]{
+    
+	  val dom = domrep.typ
+	  
+	  val codom = codomrep.typ
+	  
+	  val typ = dom ->: codom
+	  
+	  def apply(u : U) = u match {
+	    case domrep(v) => codomrep(dfn(v))
+	    case _ => codom.symbObj(ApplnSym(this, u))
+	  }
+	  
+	  val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
+	  
+	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
+	  
+//	  val depcodom: provingground.HoTT.Term => provingground.HoTT.Typ[X] = (t) => codom
+
+	  
+	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
+	    case (u, v: FuncObj[U ,X]) if u == this => v
+	    case _ => this
+	  }
+    
+  }
+  
+  
+  
+  
+    case class ExtendedDepFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y, 
+      domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends FuncTerm[U, X]{
+    
+	  val dom = domrep.typ
+	  
+	  val depcodom : U => Typ[X] = (arg : U) => fibers(arg)
+	  
+	  val typ = PiTyp(fibers)
+	  
+	  def apply(u : U) = u match {
+	    case domrep(v) => codomreps(v)(dfn(v))
+	    case arg => fibers(arg).symbObj(ApplnSym(this, arg))
+	  }
+	  
+	  val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
+	  
+	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[U]
+	  
+
+	  
+	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
+	    case (u, v: FuncTerm[U ,X]) if u == this => v
+	    case _ => this
+	  }
+    
+  }
+  
+  
+
+  trait ConstTerm[T] extends Term{
 	  val value: T
 	  
 	  type scalaType = T
@@ -90,5 +186,9 @@ object IntTypes {
 	  IntFn((a: Long) => 
 	  	{IntFn((b: Long) => binop(a, b), codom, domb)}, 
 	  	domb ->: codom, doma)
+	}
+	
+	def bigsum(n: Term)(f: FuncTerm[Term, Term])  =  {
+	  assert (f.typ == fin(n) ->: Z) 
 	}
 }
