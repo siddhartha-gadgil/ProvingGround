@@ -5,6 +5,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 
 object IntTypes {
   // Abstract code, to eventually move to another object.
+  // should build combinators for scala representations. 
   trait ScalaRep[U <: Term, V]{
     val typ : Typ[U]
     
@@ -12,7 +13,7 @@ object IntTypes {
     
     def apply(v: V) : U
     
-    def unapply(u: Term) : Option[V]
+    def unapply(u: U) : Option[V]
   }
   
   //An example
@@ -34,8 +35,19 @@ object IntTypes {
     
     def apply(f: V => Y) = ExtendedFunction(f, domrep, codomrep)
     
-    def unapply(u: Term) : Option[V => Y] = u match {
+    def unapply(u: FuncTerm[U, X]) : Option[V => Y] = u match {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
+      case _ => None
+    }
+  }
+  
+  case class SimpleConst[V](value: V, typ: Typ[Term]) extends ConstTerm[V]
+  
+  case class SimpleRep[V](typ: Typ[Term]) extends ScalaRep[Term, V]{
+    def apply(v: V) = SimpleConst(v, typ)
+    
+    def unapply(u : Term) : Option[V] = u match  {
+      case smp: SimpleConst[V] => Some(smp.value)
       case _ => None
     }
   }
