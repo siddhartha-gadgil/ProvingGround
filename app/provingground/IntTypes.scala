@@ -140,6 +140,18 @@ object IntTypes {
     }
   }
   
+  case class DepFuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
+      domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends ScalaRep[FuncTerm[U, X], V => Y]{
+    val typ = PiTyp(fibers)
+    
+    def apply(f: V => Y) = ExtendedDepFunction(f, domrep, codomreps, fibers)
+    
+    def unapply(u: Term) : Option[V => Y] = u match {
+      case ext: ExtendedDepFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomreps == codomreps => Some(ext.dfn)
+      case _ => None
+    }
+  }
+  
   
     case class ExtendedDepFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y, 
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends FuncTerm[U, X]{
@@ -229,6 +241,11 @@ object IntTypes {
 	  
 	  def make(f: Long => U, codom : Typ[U]) = IntFn(f, codom, dom)
 	  
+	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
+	    case (u, v: FuncTerm[Term,U]) if u == this => v
+	    case _ => make((n: Long) => f(n).subs(x, y), codom)
+	  }
+	  
 	}
 	
 	case object N extends SmallTyp
@@ -259,10 +276,7 @@ object IntTypes {
 
 	  def make(f: Long => U, codom : Typ[U]) : IntLkFn[U]
 	  
-	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
-	    case (u, v: FuncTerm[Term,U]) if u == this => v
-	    case _ => make((n: Long) => f(n).subs(x, y), codom)
-	  }
+
 	  
 	}
 	
