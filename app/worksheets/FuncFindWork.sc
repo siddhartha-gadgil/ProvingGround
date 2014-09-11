@@ -2,6 +2,8 @@ package worksheets
 
 import provingground.IntTypes._
 
+import provingground.HoTT._
+
 object FuncFindWork {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
@@ -47,11 +49,19 @@ object FuncFindWork {
    
    sty.fibers(n(1))                               //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = (FinTyp(1)⟶N)
    
+   
+   sty.typ                                        //> res6: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT
+                                                  //| .Term] = SigmaTyp(<function1>)
+   SigmaTyp(sty.fibers)                           //> res7: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT
+                                                  //| .Term] = SigmaTyp(<function1>)
+   sty.typ.fibers                                 //> res8: provingground.HoTT.TypFamily[provingground.HoTT.Term,provingground.HoT
+                                                  //| T.Term] = <function1>
+   
    def sum(kf: (Int, Int => Int)) = ((0 to (kf._1 -1)) map (kf._2)).sum
                                                   //> sum: (kf: (Int, Int => Int))Int
    
-   r(sum)                                         //> res6: provingground.IntTypes.ExtendedFunction[provingground.HoTT.Term,(Int, 
+   r(sum)                                         //> res9: provingground.IntTypes.ExtendedFunction[provingground.HoTT.Term,(Int, 
                                                   //| Int => Int),provingground.HoTT.Term,Int] = <function1>
-   r(sum).typ                                     //> res7: provingground.HoTT.FuncTyp[provingground.HoTT.Term,provingground.HoTT.
-                                                  //| Term] = (SigmaTyp(null)⟶N)
+   r(sum).typ                                     //> res10: provingground.HoTT.FuncTyp[provingground.HoTT.Term,provingground.HoTT
+                                                  //| .Term] = (SigmaTyp(<function1>)⟶N)
       }

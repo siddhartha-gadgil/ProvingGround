@@ -121,7 +121,7 @@ object IntTypes {
   case class SigmaRep[U <: Term with Subs[U] : TypeTag, V, X <: Term with Subs[X]: TypeTag, Y](domrep: ScalaRep[U, V],
       codrepfmly: V => ScalaRep[X, Y]) extends ScalaRep[Term, (V, Y)]{
 
-    val typ = SigmaTyp(fibers)
+    lazy val typ = SigmaTyp(fibers)
     
     val rep = SimpleFuncRep(domrep, __)
     
