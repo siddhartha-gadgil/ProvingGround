@@ -696,7 +696,18 @@ object HoTT{
 	  
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
 	  
-	  override def toString = Sigma+"("+fibers.toString+")"
+	//  override def toString = Sigma+"("+fibers.toString+")"
+	}
+	
+	/**
+	 * Dependent pair (a: A, b : B(a)) - element of a sigma type.
+	 * TODO have objects inside pair types that map to the components.
+	 */
+	case class DepPair[W<: Term with Subs[W], U<: Term with Subs[U]](a : W, b: U, fibers: TypFamily[W, U]) extends Term with
+		Subs[DepPair[W, U]]{
+	  val typ = SigmaTyp(fibers)
+	  
+	  def subs(x: Term, y: Term) = DepPair(a.subs(x,y), b.subs(x,y), fibers.subs(x, y))
 	}
 	
 	/** 
