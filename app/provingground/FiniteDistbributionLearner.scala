@@ -151,6 +151,9 @@ object FiniteDistbributionLearner {
 	 */
 	def formalSmooth[A](f: A => A) = DiffbleFunction(f)((a : A) => {(b : A) => b})
 	
+	/**
+	 * smooth function applying move wherever applicable 
+	 */
 	def moveFn[V](f: V => Option[V]) = {
 	  def func(d: FD[V]) = {
 	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
@@ -165,6 +168,10 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	/**
+	 * smooth function creating initial distribution for isle creating an object v with weight given by parameter t.
+	 * To actually create an isle, we compose this with the corresponding mixin.
+	 */
 	def simpleIsleInitFn[M, V](v: V, t: M) = {
 	  def func(ds: (FD[M], FD[V])) ={
 	    val p = ds._1(t)
@@ -181,16 +188,41 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	/**
+	 * Spawns an island, that can be mixed in with other dynamics
+	 * One should call this with f modified by updating depth, which should affect number of steps.
+	 *
+	 */
+	def spawnSimpleIsle[M, V](v: V, t: M, m : M, f : => DynFn[M, V]) = {
+	  val g = simpleIsleInitFn(v, t) andThen f
+	  isleMultFn(g, m)
+	}
+	
+	
+	/**
+	 * Extend differentiable function by identity on M.
+	 */
 	def extendM[M, V](fn: DF[(FD[M], FD[V]), FD[V]]) = {
 	  def func(mv: (FD[M], FD[V])) = (mv._1, fn(mv))
 	  
 	  def grad(mv: (FD[M], FD[V]))(mw: (FD[M], FD[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+	  
+	  DiffbleFunction(func)(grad)
 	}
 	
+	/**
+	 * prune the distribution on vertices without changing the one on M.
+	 */
 	def pruneV[M, V](t: Double) = formalSmooth((mv: (FD[M], FD[V])) => (mv._1, mv._2 normalized(t)))
 	
+	/**
+	 * prune a distribution
+	 */
 	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))
 	
+	/**
+	 * step for learning based on feedback.
+	 */
 	def learnstep[M, V](f: DF[(FD[M], FD[V]), (FD[M], FD[V])], epsilon: Double, feedback: (FD[M], FD[V]) => (FD[M], FD[V])) = {
 	  (init : (FD[M], FD[V])) => 
 	    val fb = feedback(f(init)._1, f(init)._2)
