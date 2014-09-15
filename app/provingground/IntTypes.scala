@@ -14,9 +14,10 @@ object IntTypes {
     
     def unapply(u: Term) : Option[V]
     
-    def ->:[W <: Term : TypeTag, X, UU >: U <: Term : TypeTag](that : ScalaRep[W, X]) = 
+    def -->:[W <: Term : TypeTag, X, UU >: U <: Term : TypeTag](that : ScalaRep[W, X]) = 
       FuncRep[W, X, UU, V](that, this)
-    
+     
+      
     def ++[UU >: U <: Term with Subs[UU]: TypeTag, X <: Term with Subs[X]: TypeTag, Y](
         codrepfmly: V => ScalaRep[X, Y]) = SigmaRep[UU, V, X, Y](this, codrepfmly)
   }
@@ -34,9 +35,37 @@ object IntTypes {
       case _ => None
     }
   }
-  
  
+  implicit class IdRep[U <: Term : TypeTag](val typ: Typ[U]) extends ScalaRep[U, U]{
+    def apply(v : U) = v
+    
+    def unapply(u: Term): Option[U] = u match{
+      case t: U => Some(t)
+      case _ => None
+    }
+  }
   
+  // TODO make this tail recursive
+  private def inducFn[U<: Term](f0 : U, g: Int => U => U) : Int => U = {
+   case n if n > 0 => g(n)(inducFn(f0, g)(n -1))
+   case 0 => f0
+  }
+  
+  /*
+  private def induccurry[U <: Term: TypeTag]: U => (Int => U => U) => (Int => U) = {
+    (f0: U) => g: (Int => U => U) => inducFn(f0, g)
+  }
+  */
+  
+  def recursion[U <: Term : TypeTag](u: Typ[U]) = {
+    val n = dsl.i[Int](N)
+    val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
+    def induccurry: U => (Int => U => U) => (Int => U) = {
+    (f0: U) => g: (Int => U => U) => inducFn(f0, g)
+    }
+    rep(induccurry)
+  }
+ 
   case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncTerm[U, X], V => Y]{
     val typ = domrep.typ ->: codomrep.typ
@@ -152,6 +181,12 @@ object IntTypes {
     }
   }
   
+  implicit class FmlyReps[U <: Term: TypeTag, X <: Term : TypeTag](fibers: TypFamily[U, X]){
+        
+    def ~>:[V](domrep : ScalaRep[U, V]) = {
+      DepFuncRep(domrep, (v: V) => IdRep(fibers(domrep(v))), fibers)
+    }
+  }
   
     case class ExtendedDepFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y, 
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends FuncTerm[U, X]{

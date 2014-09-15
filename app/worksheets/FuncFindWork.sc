@@ -11,7 +11,7 @@ object FuncFindWork {
   
   val z = i[Long](Z)                              //> z  : provingground.IntTypes.SimpleRep[Long] = SimpleRep(Z)
   
-  val zz = z ->: z                                //> zz  : provingground.IntTypes.FuncRep[provingground.HoTT.Term,Long,provinggro
+  val zz = z -->: z                               //> zz  : provingground.IntTypes.FuncRep[provingground.HoTT.Term,Long,provinggro
                                                   //| und.HoTT.Term,Long] = FuncRep(SimpleRep(Z),SimpleRep(Z))
   val double = (n: Long) => n *2                  //> double  : Long => Long = <function1>
   
@@ -23,7 +23,7 @@ object FuncFindWork {
    
    val n = i[Int](N)                              //> n  : provingground.IntTypes.SimpleRep[Int] = SimpleRep(N)
    
-   def f(k: Int) = i[Int](FinTyp(n(k))) ->: n     //> f: (k: Int)provingground.IntTypes.FuncRep[provingground.HoTT.Term,Int,provin
+   def f(k: Int) = i[Int](FinTyp(n(k))) -->: n    //> f: (k: Int)provingground.IntTypes.FuncRep[provingground.HoTT.Term,Int,provin
                                                   //| gground.HoTT.Term,Int]
   
    
@@ -33,14 +33,14 @@ object FuncFindWork {
    
    def fin(k: Int) = i[Int](FinTyp(n(k)))         //> fin: (k: Int)provingground.IntTypes.SimpleRep[Int]
    
-   val r= (s(n)((k: Int) => fin(k) ->: n)) ->: n  //> r  : provingground.IntTypes.FuncRep[provingground.HoTT.Term,(Int, Int => Int
+   val r= (s(n)((k: Int) => fin(k) -->: n)) -->: n//> r  : provingground.IntTypes.FuncRep[provingground.HoTT.Term,(Int, Int => Int
                                                   //| ),provingground.HoTT.Term,Int] = FuncRep(SigmaRep(SimpleRep(N),<function1>),
                                                   //| SimpleRep(N))
    r.apply _                                      //> res3: (((Int, Int => Int)) => Int) => provingground.IntTypes.ExtendedFunctio
                                                   //| n[provingground.HoTT.Term,(Int, Int => Int),provingground.HoTT.Term,Int] = <
                                                   //| function1>
    
-   val sty = s(n)((k: Int) => fin(k) ->: n)       //> sty  : provingground.IntTypes.SigmaRep[provingground.HoTT.Term,Int,provinggr
+   val sty = s(n)((k: Int) => fin(k) -->: n)      //> sty  : provingground.IntTypes.SigmaRep[provingground.HoTT.Term,Int,provinggr
                                                   //| ound.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term],Int => I
                                                   //| nt] = SigmaRep(SimpleRep(N),<function1>)
    
