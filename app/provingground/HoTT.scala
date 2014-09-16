@@ -686,6 +686,11 @@ object HoTT{
 	  override def toString = Pi+"("+fibers.toString+")"
 	}
 	
+	def typFamily[W <: Term : TypeTag, U <: Term : TypeTag](dom: Typ[W], f: W => Typ[U]) = {
+	  val codom = MiniVerse(f(dom.symbObj("")))
+	  FuncDefn[W, Typ[U]](f, dom, codom)
+	}
+	
 	/** Exists/Sum for a type family */
 	case class SigmaTyp[W<: Term, U<: Term](fibers: TypFamily[W, U]) extends Typ[Term]{
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))

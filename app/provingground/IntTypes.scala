@@ -51,26 +51,40 @@ object IntTypes {
    case 0 => f0
   }
   
-  /*
-  private def induccurry[U <: Term: TypeTag]: U => (Int => U => U) => (Int => U) = {
+  
+  private def inducCurry[U <: Term: TypeTag]: U => (Int => U => U) => (Int => U) = {
     (f0: U) => g: (Int => U => U) => inducFn(f0, g)
   }
-  */
   
-  def recursion[U <: Term : TypeTag](u: Typ[U]) = {
-    val n = dsl.i[Int](N)
+  private val indCurry = inducCurry[Term]
+  
+  private val n = dsl.i[Int](N)
+  
+  def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
     val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
     def induccurry: U => (Int => U => U) => (Int => U) = {
     (f0: U) => g: (Int => U => U) => inducFn(f0, g)
     }
     rep(induccurry)
   }
+  
+  private def recRep[U <: Term : TypeTag](u: Typ[U]) = {
+    u -->: (n -->: u -->: u) -->: (n -->: u)
+  } 
+  
+  val recAllRep = __ ~>: ((u: Typ[Term]) => recRep(u))
  
+  private val recAppl = recAllRep.apply _
+  
+  
+  val recAll = recAllRep((u: Typ[Term]) => indCurry)
+  
+  
   case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncTerm[U, X], V => Y]{
     val typ = domrep.typ ->: codomrep.typ
     
-    def apply(f: V => Y) = ExtendedFunction(f, domrep, codomrep)
+    def apply(f: V => Y) : FuncTerm[U, X] = ExtendedFunction(f, domrep, codomrep)
     
     def unapply(u: Term) : Option[V => Y] = u match {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
@@ -173,7 +187,7 @@ object IntTypes {
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends ScalaRep[FuncTerm[U, X], V => Y]{
     val typ = PiTyp(fibers)
     
-    def apply(f: V => Y) = ExtendedDepFunction(f, domrep, codomreps, fibers)
+    def apply(f: V => Y) : FuncTerm[U, X] = ExtendedDepFunction(f, domrep, codomreps, fibers)
     
     def unapply(u: Term) : Option[V => Y] = u match {
       case ext: ExtendedDepFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomreps == codomreps => Some(ext.dfn)
@@ -185,6 +199,16 @@ object IntTypes {
         
     def ~>:[V](domrep : ScalaRep[U, V]) = {
       DepFuncRep(domrep, (v: V) => IdRep(fibers(domrep(v))), fibers)
+    }
+  }
+  
+  implicit class RepSection[U <: Term: TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y]){
+    
+    def ~>:[V](domrep : ScalaRep[U, V]) = {
+      val fmly = (u: U) => section(u).typ
+      val fibers = typFamily(domrep.typ, fmly)
+        
+      DepFuncRep(domrep, (v: V) => section(domrep(v)), fibers)
     }
   }
   
