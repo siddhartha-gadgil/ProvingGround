@@ -79,6 +79,7 @@ object IntTypes {
   
   val recAll = recAllRep((u: Typ[Term]) => indCurry)
   
+  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
   
   case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncTerm[U, X], V => Y]{

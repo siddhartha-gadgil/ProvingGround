@@ -49,6 +49,9 @@ object HoTT{
     
     trait Subs[+U <: Term]{
       def subs(x: Term, y: Term) : U
+     
+      //TODO refine types so this is allowed
+  //     def typ: Typ[U]
     }
     
     
@@ -820,6 +823,11 @@ object HoTT{
 	  def action(arg: fibers.dom.Obj): U = func(arg)
 	  
 	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
+	}
+	
+	def depFunc[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](dom: Typ[W], func: W => U): FuncTerm[W, U] = {
+	  val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
+	  DepFuncDefn(func, dom, fibers)
 	}
 	
 	/** Companion to dependent functions */
