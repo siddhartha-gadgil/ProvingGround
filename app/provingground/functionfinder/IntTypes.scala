@@ -6,7 +6,8 @@ import ScalaRep._
 
 object IntTypes {
 
-    
+
+  
     //An example - should change to use SimpleRep and SimpleConst
   object IntRep extends ScalaRep[Term, Long]{
     val typ = Z
@@ -35,6 +36,7 @@ object IntTypes {
   
   private val n = dsl.i[Int](N)
   
+  
   def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
     val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
     def induccurry: U => (Int => U => U) => (Int => U) = {
@@ -42,18 +44,23 @@ object IntTypes {
     }
     rep(induccurry)
   }
+  /*
   
   private def recRep[U <: Term : TypeTag](u: Typ[U]) = {
     u -->: (n -->: u -->: u) -->: (n -->: u)
   } 
   
+  
   val recAllRep = __ ~>: ((u: Typ[Term]) => recRep(u))
  
+  
+  
   private val recAppl = recAllRep.apply _
   
   
   val recAll = recAllRep((u: Typ[Term]) => indCurry)
   
+  */
   val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
 
   
@@ -64,6 +71,7 @@ object IntTypes {
 	
     case object Z extends SmallTyp
 	
+    
 	trait IntCnst extends ConstTerm[Long]{
 	  val value: Long
 	}
