@@ -316,7 +316,7 @@ object HoTT{
 //	}
     
 	/** Function type */
-    case class FuncTyp[W<: Term : TypeTag, U<: Term : TypeTag](dom: Typ[W], codom: Typ[U]) extends Typ[FuncTerm[W, U]]{
+    case class FuncTyp[W<: Term : TypeTag, U<: Term : TypeTag](dom: Typ[W], codom: Typ[U]) extends Typ[FuncObj[W, U]]{
       type Obj = FuncObj[W, U]
       
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
@@ -416,7 +416,7 @@ object HoTT{
 	 *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain. 
 	 *  
 	 */
-    trait FuncObj[W<: Term, +U <: Term] extends FuncTerm[W, U]{
+    trait FuncObj[W<: Term, +U <: Term] extends FuncTerm[W, U] with Subs[FuncObj[W, U]]{
       /** domain*/
 	  val dom: Typ[W]
 	  /** codomain */
@@ -443,7 +443,7 @@ object HoTT{
 	
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term : TypeTag, U<: Term : TypeTag](name: AnySym, dom: Typ[W], codom: Typ[U]) extends 
-              FuncObj[W, U] with Symbolic with AnySym{
+              FuncObj[W, U] with Subs[FuncObj[W, U]] with Symbolic with AnySym{
       val domobjtpe = typeOf[W]
       
 	  val codomobjtpe = typeOf[U]

@@ -98,10 +98,10 @@ object ScalaRep {
    * Representations for functions given ones for the domain and codomain.
    */
   case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
-      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncTerm[U, X], V => Y]{
+      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncObj[U, X], V => Y]{
     val typ = domrep.typ ->: codomrep.typ
     
-    def apply(f: V => Y) : FuncTerm[U, X] = ExtendedFunction(f, domrep, codomrep)
+    def apply(f: V => Y) : FuncObj[U, X] = ExtendedFunction(f, domrep, codomrep)
     
     def unapply(u: Term) : Option[V => Y] = u match {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
@@ -192,7 +192,7 @@ object ScalaRep {
     
 //    val rep = SimpleFuncRep(domrep, __)
     
-    val rep = SimpleFuncRep(domrep, __)
+    val rep = FuncRep(domrep, __)
     
     val fibers = rep((v: V) => codrepfmly(v).typ)
     

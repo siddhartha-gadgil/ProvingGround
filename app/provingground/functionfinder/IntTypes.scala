@@ -44,6 +44,8 @@ object IntTypes {
     }
     rep(induccurry)
   }
+  
+  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
   /*
   
   private def recRep[U <: Term : TypeTag](u: Typ[U]) = {
@@ -61,7 +63,6 @@ object IntTypes {
   val recAll = recAllRep((u: Typ[Term]) => indCurry)
   
   */
-  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
 
   
   
