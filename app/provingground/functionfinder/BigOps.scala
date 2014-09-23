@@ -13,16 +13,21 @@ object BigOps {
     val value = (0 to (n-1).toInt).toList map ((k: Int) => dsl.i[Long](Fin(n))(k))
   }
   
-  def bigSumPolyFunc[U <: Term : TypeTag](typ: Typ[U], en: EnumTerm[U], f: U => Term) = {
-	assert(typ == en.elemTyp)
-	val lst = enumlist(en.elemTyp)(en)
-	fold(typ)(N)(lst)(Nrep(0))(Nsum)
-  }
+  val A = "A" :: __ // a type symbol
   
-  def bigSumFunc[U <: Term : TypeTag](typ: Typ[U]) = {
-    val rep = EnumRep(typ) -->: (typ -->: N) -->: N
-    rep((en: EnumTerm[U]) => (f : U => Term) => bigSumPolyFunc(typ, en, f))
-  }
+  val f = "f" :: A ->: N
   
-  val bigSum = depFunc(__, bigSumFunc[Term])
+  val en = "enumeration" :: EnumTyp(A)
+  
+  val bigsum = {
+    lambda(A)(  
+      lambda(en)(
+          lambda(f)({
+              val lst = lmap(A)(N)(f)(enumlist(A)(en))
+              fold(N)(N)(lst)(Nsum)}
+              )
+              )
+      )
+  }  
+  
 }

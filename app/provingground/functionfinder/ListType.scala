@@ -30,6 +30,13 @@ object ListType {
     rep(fld)
   }
   
+  def lmapFunc[U <: Term : TypeTag, V <: Term : TypeTag](u: Typ[U], v: Typ[V]) = {
+    val rep = (u -->: v) -->: ListRep(u) -->: ListRep(v)
+    rep((f: U => V) => (l: List[U]) => l map (f))
+  }
+  
+  val lmap = depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
+  
   val fold = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
 }
