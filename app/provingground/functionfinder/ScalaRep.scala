@@ -279,7 +279,7 @@ object ScalaRep {
     
   }
   
-    
+    /*
     case class InclRep[U <: Term : TypeTag, V <: U : TypeTag](typ: Typ[U]) extends ScalaRep[U, V]{
       def apply(v: V) = v
       
@@ -288,6 +288,7 @@ object ScalaRep {
         case _ => None
       }
     }
+    */
     
     object dsl{
       def i[V](typ: Typ[Term]) = SimpleRep[V](typ)

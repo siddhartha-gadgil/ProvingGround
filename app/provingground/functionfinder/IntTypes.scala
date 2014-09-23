@@ -34,6 +34,8 @@ object IntTypes {
   
   val Nsum = Nop((a: Long) => (b: Long) => a + b)
   
+  
+  
   val SimpleFinRep = n ~>: FinFn
   
   val finrep = (n: Term) => dsl.i[Long](FinFn(n))
@@ -50,7 +52,9 @@ object IntTypes {
   
   private val indCurry = inducCurry[Term]
   
-  private val n = dsl.i[Long](N)
+  val Nrep = dsl.i[Long](N)
+  
+  private val n = Nrep
   
   
 
@@ -116,7 +120,7 @@ object IntTypes {
 	  def make(f: Long => U, codom : Typ[U]) = IntFn(f, codom, dom)
 	  
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
-	    case (u, v: FuncTerm[Term,U]) if u == this => v
+	    case (u, v: FuncTerm[_, _])  if codomobjtpe <:< typeOf[U] &&  u == this  => v.asInstanceOf[FuncTerm[Term, U]]
 	    case _ => make((n: Long) => f(n).subs(x, y), codom)
 	  }
 	  
