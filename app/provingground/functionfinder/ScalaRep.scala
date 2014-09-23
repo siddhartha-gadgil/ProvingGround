@@ -51,7 +51,7 @@ object ScalaRep {
 	  
 	  type scalaType = T
 	  
-      def subs(x : Term, y: Term) = this 
+      def subs(x : Term, y: Term) = if (x==this) y else this 
     }
   
   /**
@@ -239,7 +239,7 @@ object ScalaRep {
     /**
    * implicit class associated to a family of scalareps to create dependent functions scalareps.
    */
-  implicit class RepSection[U <: Term: TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y]){
+  implicit class RepSection[U <: Term : TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y]){
     
     def ~>:[V](domrep : ScalaRep[U, V]) = {
       val fmly = (u: U) => section(u).typ
@@ -279,6 +279,15 @@ object ScalaRep {
     
   }
   
+    
+    case class InclRep[U <: Term : TypeTag, V <: U : TypeTag](typ: Typ[U]) extends ScalaRep[U, V]{
+      def apply(v: V) = v
+      
+      def unapply(u: Term) = u match {
+        case v : V => Some(v)
+        case _ => None
+      }
+    }
     
     object dsl{
       def i[V](typ: Typ[Term]) = SimpleRep[V](typ)

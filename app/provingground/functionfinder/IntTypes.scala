@@ -6,9 +6,57 @@ import ScalaRep._
 
 object IntTypes {
 
+  case object N extends SmallTyp
+  
+    // TODO make this tail recursive
+  private def inducFn[U<: Term](f0 : U, g: Long => U => U) : Long => U = {
+   case n if n > 0 => g(n)(inducFn(f0, g)(n -1))
+   case 0 => f0
+  }
+
+  def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
+    val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
+    def induccurry: U => (Long => U => U) => (Long => U) = {
+    (f0: U) => g: (Long => U => U) => inducFn(f0, g)
+    }
+    rep(induccurry)
+  }
+  
+  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
+  
+  case class Fin(n: Long) extends SmallTyp
+  
+  val Nfmly = n -->: __
+  
+  val FinFn = Nfmly((n: Long) => Fin(n))
+  
+  val Nop = n -->: n -->: n
+  
+  val Nsum = Nop((a: Long) => (b: Long) => a + b)
+  
+  val SimpleFinRep = n ~>: FinFn
+  
+  val finrep = (n: Term) => dsl.i[Long](FinFn(n))
+  
+  val FinRep = n ~>: (finrep)
+  
+  val NFinRep = n -->: FinRep
+  
+  val kmodn = NFinRep((k: Long) => (n : Long) => k % n)
+  
+  private def inducCurry[U <: Term: TypeTag]: U => (Long => U => U) => (Long => U) = {
+    (f0: U) => g: (Long => U => U) => inducFn(f0, g)
+  }
+  
+  private val indCurry = inducCurry[Term]
+  
+  private val n = dsl.i[Long](N)
+  
+  
 
   
-    //An example - should change to use SimpleRep and SimpleConst
+  
+      //An example - should change to use SimpleRep and SimpleConst
   object IntRep extends ScalaRep[Term, Long]{
     val typ = Z
     
@@ -21,31 +69,7 @@ object IntTypes {
 
   }   
   
-    // TODO make this tail recursive
-  private def inducFn[U<: Term](f0 : U, g: Int => U => U) : Int => U = {
-   case n if n > 0 => g(n)(inducFn(f0, g)(n -1))
-   case 0 => f0
-  }
   
-  
-  private def inducCurry[U <: Term: TypeTag]: U => (Int => U => U) => (Int => U) = {
-    (f0: U) => g: (Int => U => U) => inducFn(f0, g)
-  }
-  
-  private val indCurry = inducCurry[Term]
-  
-  private val n = dsl.i[Int](N)
-  
-  
-  def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
-    val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
-    def induccurry: U => (Int => U => U) => (Int => U) = {
-    (f0: U) => g: (Int => U => U) => inducFn(f0, g)
-    }
-    rep(induccurry)
-  }
-  
-  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
   /*
   
   private def recRep[U <: Term : TypeTag](u: Typ[U]) = {
@@ -98,13 +122,13 @@ object IntTypes {
 	  
 	}
 	
-	case object N extends SmallTyp
+
 	
-	case class Fin(n: Long) extends SmallTyp
+	
 	
 	case class FinTyp(n: Term) extends SmallTyp
 	
-	val fin = IntFn(Fin(_), __)
+//	val fin = IntFn(Fin(_), __)
 	
 	
 	abstract class IntLkFn[U <: Term with Subs[U]](f: Long => U, codom : Typ[U])(implicit tag: TypeTag[U]) extends FuncTerm[Term, U]{
@@ -146,7 +170,10 @@ object IntTypes {
 	  	domb ->: codom, doma)
 	}
 	
+	/*
 	def bigsum(n: Term)(f: FuncTerm[Term, Term])  =  {
 	  assert (f.typ == fin(n) ->: Z) 
 	}
+	* 
+	*/
 }
