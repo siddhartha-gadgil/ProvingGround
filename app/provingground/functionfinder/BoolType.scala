@@ -51,12 +51,16 @@ object BoolType {
   val ite = depFunc(__, iteFunc[Term])
   
   def iteDepFunc(u: Typ[Term], v : Typ[Term]) = {
-    def restyp = (c: Boolean) => if (c) u else v
-    val typrep = b -->: __
+    def restyp = (c: Boolean) => if (c) (u ->: v ->: u) else (u ->: v ->: v)
+    val uni = MiniVerse(u ->: v ->: u)
+    val typrep = b -->: uni
+    
+    type FnFn = FuncObj[Term, FuncObj[Term, Term]]
+    
     val typfmly = typrep(restyp)
 
-    val yesrep : ScalaRep[Term, Term] = IdRep(u ->: v ->: u)
-    val norep : ScalaRep[Term, Term] = IdRep(u ->: v ->: v)
+    val yesrep : ScalaRep[FnFn, FnFn] = IdRep(u ->: v ->: u)
+    val norep : ScalaRep[FnFn, FnFn] = IdRep(u ->: v ->: v)
     val ifrep = (c: Boolean) => if (c) yesrep else norep
     
     val yestermrep = (u -->: v -->: u)
@@ -65,10 +69,14 @@ object BoolType {
     val notermrep = (u -->: v -->: u)
     val no = yestermrep((u: Term) => (v: Term) => u)
     
-    val rep = DepFuncRep[Term, Boolean, Term, Term](b, ifrep, typfmly)
+    val rep = DepFuncRep(b, ifrep, typfmly)
     
     rep((c: Boolean) => if (c) yes else no)
   }
   
   val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
+  
+  val check = "check" :: Bool
+  
+  val verify = lambda(check)(itedep(isTrueTyp(true))(Fail)(check)(tt)(failure))
 }

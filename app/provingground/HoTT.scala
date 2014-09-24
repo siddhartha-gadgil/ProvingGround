@@ -260,6 +260,45 @@ object HoTT{
       def subs(x : Term, y : Term) = this
     }
     
+    
+    case class FineVerse[U <: Term with Subs[U]](level: Int = 0, subsymbobj: AnySym => U) extends Typ[Typ[U]]{
+      type Obj = Typ[U]
+      
+      lazy val typ = FineVerse[U](level +1, subsymbobj)
+      
+      def subs(x: Term, y: Term) = this
+      
+      def symbObj(name: AnySym) = FineSymbTyp[U](name, subsymbobj)
+
+    }
+    
+
+    
+    case class FineSymbTyp[U<: Term with Subs[U]](name: AnySym, symbobj: AnySym => U) extends Typ[U] with Symbolic{
+      lazy val typ = FineVerse[U](0, symbObj)
+      
+      
+      
+      type Obj = U
+      
+      def symbObj(name: AnySym): U = symbobj(name)
+      
+      override def toString = name.toString
+      
+      def elem = this
+      
+      
+      val applptntypu = ApplnPattern[Term, Typ[Term]]()
+      
+      // Change this to remove first case after checking
+      def subs(x: Term, y: Term) = (x, y, name) match {
+        case (u: Typ[_], v: Typ[_], _) if (u == this) => v.asInstanceOf[Typ[U]]
+        case (_, _,applptntypu(func, arg)) => func.subs(x,y)(arg.subs(x, y)).asInstanceOf[Typ[U]]
+        case _ => this
+      }
+    }
+    
+    
     /** The first universe, consisting of logical types 
     class LogicalUniv extends Univ with Typ[LogicalTyp]{
       lazy val typ = NextUniv[Term](this)
