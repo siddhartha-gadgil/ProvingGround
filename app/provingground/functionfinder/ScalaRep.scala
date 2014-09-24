@@ -231,7 +231,7 @@ object ScalaRep {
    */
   implicit class FmlyReps[U <: Term: TypeTag, X <: Term : TypeTag](fibers: TypFamily[U, X]){
         
-    def ~>:[V](domrep : ScalaRep[U, V]) = {
+    def ~~>:[V](domrep : ScalaRep[U, V]) = {
       DepFuncRep(domrep, (v: V) => IdRep(fibers(domrep(v))), fibers)
     }
   }
@@ -241,7 +241,7 @@ object ScalaRep {
    */
   implicit class RepSection[U <: Term : TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y]){
     
-    def ~>:[V](domrep : ScalaRep[U, V]) = {
+    def ~~>:[V](domrep : ScalaRep[U, V]) = {
       val fmly = (u: U) => section(u).typ
       val fibers = typFamily(domrep.typ, fmly)
         

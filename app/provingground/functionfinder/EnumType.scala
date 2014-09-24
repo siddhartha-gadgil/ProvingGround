@@ -32,5 +32,5 @@ object EnumType {
     rep((en: EnumTerm[U]) => en.value)
   }
   
-  val enumlist = depFunc(__, enumList)
+  val enumlist = depFunc(__, enumList[Term])
 }

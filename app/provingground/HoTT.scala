@@ -316,7 +316,8 @@ object HoTT{
 //	}
     
 	/** Function type */
-    case class FuncTyp[W<: Term : TypeTag, U<: Term : TypeTag](dom: Typ[W], codom: Typ[U]) extends Typ[FuncObj[W, U]]{
+    case class FuncTyp[W<: Term : TypeTag, U<: Term : TypeTag](dom: Typ[W], codom: Typ[U]) extends Typ[FuncObj[W, U]] with 
+    Subs[FuncTyp[W, U]]{
       type Obj = FuncObj[W, U]
       
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))

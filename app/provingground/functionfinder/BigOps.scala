@@ -23,9 +23,10 @@ object BigOps {
     lambda(A)(  
       lambda(en)(
           lambda(f)({
-              val lst = lmap(A)(N)(f)(enumlist(A)(en))
-              fold(N)(N)(lst)(Nsum)}
-              )
+        	  val enlist = enumlist(A)(en)
+              val lst = lmap(A)(N)(f)(enlist)
+              fold(N)(N)(lst)(N.sum)
+              })
               )
       )
   }  

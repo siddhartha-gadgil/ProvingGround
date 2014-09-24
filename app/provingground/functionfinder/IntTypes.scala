@@ -6,7 +6,19 @@ import ScalaRep._
 
 object IntTypes {
 
-  case object N extends SmallTyp
+  trait IntTyp extends SmallTyp{
+    val rep  = dsl.i[Long](this)
+    
+    val oprep = rep -->: rep -->: rep
+    
+    val sum = oprep((a: Long) => (b: Long) => a + b)
+    
+    val prod = oprep((a: Long) => (b: Long) => a * b)
+  }
+  
+  case object N extends IntTyp
+  
+  case object Z extends IntTyp
   
     // TODO make this tail recursive
   private def inducFn[U<: Term](f0 : U, g: Long => U => U) : Long => U = {
@@ -24,23 +36,18 @@ object IntTypes {
   
   val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
   
-  case class Fin(n: Long) extends SmallTyp
+  case class Fin(n: Long) extends IntTyp
   
   val Nfmly = n -->: __
   
   val FinFn = Nfmly((n: Long) => Fin(n))
   
-  val Nop = n -->: n -->: n
   
-  val Nsum = Nop((a: Long) => (b: Long) => a + b)
-  
-  
-  
-  val SimpleFinRep = n ~>: FinFn
+  val SimpleFinRep = n ~~>: FinFn
   
   val finrep = (n: Term) => dsl.i[Long](FinFn(n))
   
-  val FinRep = n ~>: (finrep)
+  val FinRep = n ~~>: (finrep)
   
   val NFinRep = n -->: FinRep
   
@@ -52,14 +59,14 @@ object IntTypes {
   
   private val indCurry = inducCurry[Term]
   
-  val Nrep = dsl.i[Long](N)
+ // val Nrep = dsl.i[Long](N)
   
-  private val n = Nrep
+  private val n = N.rep
   
   
 
   
-  
+  /*
       //An example - should change to use SimpleRep and SimpleConst
   object IntRep extends ScalaRep[Term, Long]{
     val typ = Z
@@ -74,7 +81,7 @@ object IntTypes {
   }   
   
   
-  /*
+  
   
   private def recRep[U <: Term : TypeTag](u: Typ[U]) = {
     u -->: (n -->: u -->: u) -->: (n -->: u)
@@ -90,7 +97,7 @@ object IntTypes {
   
   val recAll = recAllRep((u: Typ[Term]) => indCurry)
   
-  */
+  
 
   
   
@@ -174,7 +181,7 @@ object IntTypes {
 	  	domb ->: codom, doma)
 	}
 	
-	/*
+	
 	def bigsum(n: Term)(f: FuncTerm[Term, Term])  =  {
 	  assert (f.typ == fin(n) ->: Z) 
 	}
