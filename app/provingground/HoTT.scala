@@ -770,7 +770,8 @@ object HoTT{
 	}
 	
 	/** For all/Product for a type family. This is the type of dependent functions */
-	case class PiTyp[W<: Term : TypeTag, U<: Term : TypeTag](fibers: TypFamily[W, U]) extends Typ[FuncTerm[W, U]]{
+	case class PiTyp[W<: Term : TypeTag, U<: Term : TypeTag](fibers: TypFamily[W, U]) extends 
+		Typ[FuncTerm[W, U]] with Subs[PiTyp[W, U]]{
 	  type Obj = DepFuncObj[W, U]
 	  
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
@@ -786,6 +787,29 @@ object HoTT{
 	  val codom = MiniVerse(f(dom.symbObj("")))
 	  FuncDefn[W, Typ[U]](f, dom, codom)
 	}
+	
+	case class PiTypUniv[W<: Term : TypeTag, U<: Term : TypeTag](
+        domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]) extends Typ[PiTyp[W, U]]{
+      
+      lazy val typ = HigherUniv(this)
+      
+      def symbObj(name: AnySym) = {
+        val dom = domuniv.symbObj(domsym(name))
+        val codom = codomuniv.symbObj(codomsym(name))
+        val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
+        PiTyp(typFmly)
+//        FuncTyp(dom, codom)
+      }
+      
+      def subs(x: Term, y: Term) = this
+    }
+	
+	def piUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
+        domsc: ScalaUniv[Typ[W]], codomsc: ScalaUniv[Typ[U]]) : ScalaUniv[PiTyp[W, U]] = {
+      ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ) : Typ[PiTyp[W, U]])
+    }
+	
+	
 	
 	/** Exists/Sum for a type family */
 	case class SigmaTyp[W<: Term, U<: Term](fibers: TypFamily[W, U]) extends Typ[Term]{
