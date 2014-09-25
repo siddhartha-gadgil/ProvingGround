@@ -250,6 +250,27 @@ object HoTT{
       case _ => 0
     }
     
+    
+    //Wrapper for Universe with scala type
+    case class ScalaUniv[U <: Typ[Term]](univ: Typ[U])
+    
+    implicit val baseUniv : ScalaUniv[Typ[Term]] = ScalaUniv(__)
+    
+    case class HigherUniv[U <: Typ[Term]](univ: Typ[U]) extends Typ[Typ[U]]{
+      type Obj = Typ[U]
+      
+      lazy val typ = HigherUniv[Typ[U]](this)
+      
+      def symbObj(name: AnySym)= univ
+      
+      def subs(x : Term, y : Term) = this
+    }
+    
+    implicit def higherUniv[U <: Typ[Term]](implicit sc : ScalaUniv[U]) : ScalaUniv[Typ[U]] = {
+      ScalaUniv(HigherUniv(sc.univ))
+    }
+    
+    
     case class MiniVerse[U <: Term](sample : Typ[U]) extends Typ[Typ[U]]{
       type Obj = Typ[U]
       
@@ -259,6 +280,11 @@ object HoTT{
       
       def subs(x : Term, y : Term) = this
     }
+    
+    
+    
+    
+    
     
     
     case class FineVerse[U <: Term with Subs[U]](level: Int = 0, subsymbobj: AnySym => U) extends Typ[Typ[U]]{
@@ -367,6 +393,33 @@ object HoTT{
 	  
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
+    
+    
+    case class domsym(func: AnySym) extends AnySym
+    
+    case class codomsym(func: AnySym) extends AnySym
+    
+    case class fnsym(func: AnySym) extends AnySym
+    
+    case class FuncTypUniv[W<: Term : TypeTag, U<: Term : TypeTag](
+        domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]) extends Typ[FuncTyp[W, U]]{
+      
+      lazy val typ = HigherUniv(this)
+      
+      def symbObj(name: AnySym) = {
+        val dom = domuniv.symbObj(domsym(name))
+        val codom = codomuniv.symbObj(codomsym(name))
+        FuncTyp(dom, codom)
+      }
+      
+      def subs(x: Term, y: Term) = this
+    }
+    
+    
+    def funcUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
+        domsc: ScalaUniv[Typ[W]], codomsc: ScalaUniv[Typ[U]]) : ScalaUniv[FuncTyp[W, U]] = {
+      ScalaUniv(FuncTypUniv(domsc.univ, codomsc.univ) : Typ[FuncTyp[W, U]])
+    }
     
     /**
      * (dependent) function, wraps around FuncTerm but without requiring type parameters.
