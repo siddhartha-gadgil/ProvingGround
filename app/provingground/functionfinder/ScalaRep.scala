@@ -239,7 +239,8 @@ object ScalaRep {
     /**
    * implicit class associated to a family of scalareps to create dependent functions scalareps.
    */
-  implicit class RepSection[U <: Term : TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y]){
+  implicit class RepSection[U <: Term : TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y])(
+      implicit sux : ScalaUniv[X], suu: ScalaUniv[U]){
     
     def ~~>:[V](domrep : ScalaRep[U, V]) = {
       val fmly = (u: U) => section(u).typ

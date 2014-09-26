@@ -186,7 +186,8 @@ object InductiveTypes{
 	/**
 	 * Extending a type pattern by a constant type to get (tail --> head).
 	 */
-	case class SimpleFuncPtn[V <: Term with Subs[V]: TypeTag](tail : Typ[Term], head : TypPtn[V]) extends TypPtn[FuncTerm[Term, V]]{
+	case class SimpleFuncPtn[V <: Term with Subs[V]: TypeTag](tail : Typ[Term], head : TypPtn[V])(
+	      implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term, V]]{
 	  def apply(W: Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
 	  val univLevel = max(head.univLevel, univlevel(tail.typ))
@@ -212,7 +213,7 @@ object InductiveTypes{
 	    (g : PtnType) => 
 	      val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
 	      val section = (t : Term) => head(Xs(t))
-	      val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)), section)
+	      val fiber = typFamily[Term, head.PtnType](tail, section)
 	      DepFuncDefn[Term, head.PtnType](func, tail, fiber)
 	  }
 	}
@@ -221,10 +222,11 @@ object InductiveTypes{
 	 * Dependent extension of a poly-pattern by a type pattern.
 	 * FIXME this may never be applicable
 	 */
-	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
+	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, 
+	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
 	    val head = headfibre(W.symbObj(""))
-	    val fiber = typFamilyDefn[Term, U](tail(W), MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
+	    val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
 	  
@@ -238,10 +240,10 @@ object InductiveTypes{
 	/**
 	 * Dependent extension by a constant type  of a poly-pattern depending on elements of that type. 
 	 */
-	case class CnstDepFuncPtn[U <: Term : TypeTag](tail: Typ[Term], headfibre : Term => PolyPtn[U], headlevel: Int = 0) extends PolyPtn[FuncTerm[Term, U]]{
+	case class CnstDepFuncPtn[U <: Term : TypeTag](tail: Typ[Term], headfibre : Term => PolyPtn[U], headlevel: Int = 0)(
+	    implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]] = {
-	    val head = headfibre(tail.symbObj(""))
-	    val fiber = typFamilyDefn[Term, U](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
+	    val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
 	  
@@ -254,9 +256,10 @@ object InductiveTypes{
 	 * Extending by a constant type A a family of type patterns depending on (a : A).
 	 * 
 	 */ 
-	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], headfibre : Term => TypPtn[V], headlevel: Int = 0) extends TypPtn[FuncTerm[Term,V]]{
+	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], 
+	    headfibre : Term => TypPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : Typ[Term]) = {
-	    val fiber = typFamilyDefn[Term, head.PtnType](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(W))
+	    val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, head.PtnType](fiber)
 	  }
 	  
@@ -267,14 +270,14 @@ object InductiveTypes{
 	   def induced(W : Typ[Term], X: Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
 	      val func =((t : Term) => headfibre(t).induced(W, X)(f) (g(t)))
-	      val fiber = typFamilyDefn[Term, V](tail, MiniVerse(head(X)),  (t : Term) => headfibre(t)(X))
+	      val fiber = typFamily[Term, V](tail,  (t : Term) => headfibre(t)(X))
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   
 	  def inducedDep(W : Typ[Term], Xs: Term => Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) => 
 	      val func =((t : Term) => headfibre(t).induced(W, Xs(t))(f) (g(t)))
-	      val fiber = typFamilyDefn[Term, V](tail, MiniVerse(head(W)),  (t : Term) => headfibre(t)(Xs(t)))
+	      val fiber = typFamily[Term, V](tail, (t : Term) => headfibre(t)(Xs(t)))
 	      DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 	   

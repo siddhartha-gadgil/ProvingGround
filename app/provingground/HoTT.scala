@@ -252,9 +252,9 @@ object HoTT{
     
     
     //Wrapper for Universe with scala type
-    case class ScalaUniv[U <: Typ[Term]](univ: Typ[U])
+    case class ScalaUniv[U <: Term](univ: Typ[Typ[U]])
     
-    implicit val baseUniv : ScalaUniv[Typ[Term]] = ScalaUniv(__)
+    implicit val baseUniv : ScalaUniv[Term] = ScalaUniv(__)
     
     case class HigherUniv[U <: Typ[Term]](univ: Typ[U]) extends Typ[Typ[U]]{
       type Obj = Typ[U]
@@ -266,7 +266,7 @@ object HoTT{
       def subs(x : Term, y : Term) = this
     }
     
-    implicit def higherUniv[U <: Typ[Term]](implicit sc : ScalaUniv[U]) : ScalaUniv[Typ[U]] = {
+    implicit def higherUniv[U <: Term](implicit sc : ScalaUniv[U]) : ScalaUniv[Typ[U]] = {
       ScalaUniv(HigherUniv(sc.univ))
     }
     
@@ -280,8 +280,6 @@ object HoTT{
       
       def subs(x : Term, y : Term) = this
     }
-    
-    
     
     
     
@@ -416,8 +414,8 @@ object HoTT{
     }
     
     
-    def funcUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
-        domsc: ScalaUniv[Typ[W]], codomsc: ScalaUniv[Typ[U]]) : ScalaUniv[FuncTyp[W, U]] = {
+    implicit def funcUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
+        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncObj[W, U]] = {
       ScalaUniv(FuncTypUniv(domsc.univ, codomsc.univ) : Typ[FuncTyp[W, U]])
     }
     
@@ -783,8 +781,10 @@ object HoTT{
 	  override def toString = Pi+"("+fibers.toString+")"
 	}
 	
-	def typFamily[W <: Term : TypeTag, U <: Term : TypeTag](dom: Typ[W], f: W => Typ[U]) = {
-	  val codom = MiniVerse(f(dom.symbObj("")))
+	def typFamily[W <: Term : TypeTag, U <: Term : TypeTag](dom: Typ[W], f: W => Typ[U])(
+	    implicit su: ScalaUniv[U]) = {
+	//  val codom = MiniVerse(f(dom.symbObj("")))
+	  val codom = su.univ
 	  FuncDefn[W, Typ[U]](f, dom, codom)
 	}
 	
@@ -804,8 +804,8 @@ object HoTT{
       def subs(x: Term, y: Term) = this
     }
 	
-	def piUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
-        domsc: ScalaUniv[Typ[W]], codomsc: ScalaUniv[Typ[U]]) : ScalaUniv[PiTyp[W, U]] = {
+	implicit def piUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
+        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncTerm[W, U]] = {
       ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ) : Typ[PiTyp[W, U]])
     }
 	
@@ -942,7 +942,8 @@ object HoTT{
 	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
 	}
 	
-	def depFunc[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](dom: Typ[W], func: W => U): FuncTerm[W, U] = {
+	def depFunc[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](dom: Typ[W], func: W => U)(
+	    implicit su: ScalaUniv[U]): FuncTerm[W, U] = {
 	  val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
 	  DepFuncDefn(func, dom, fibers)
 	}
