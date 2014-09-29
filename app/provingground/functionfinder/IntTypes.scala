@@ -14,27 +14,42 @@ object IntTypes {
     val sum = oprep((a: Long) => (b: Long) => a + b)
     
     val prod = oprep((a: Long) => (b: Long) => a * b)
+    
+    val zero = rep(0: Long)
   }
   
   case object N extends IntTyp
   
   case object Z extends IntTyp
   
-    // TODO make this tail recursive
-  private def inducFn[U<: Term](f0 : U, g: Long => U => U) : Long => U = {
-   case n if n > 0 => g(n)(inducFn(f0, g)(n -1))
-   case 0 => f0
+  @annotation.tailrec private def inducFn[U<: Term](f0 : U, g: Long => U => U, n : Long, 
+      thenApply: U => U = (u: U) => u) : U = {
+   if (n > 0) (inducFn(f0, g, n - 1, (u: U) => g(n)(thenApply(u))))
+   else thenApply(f0)
   }
-
+  
+  private def induccurry[U <: Term : TypeTag]: U => (Long => U => U) => (Long => U) = {
+    (f0: U) => g: (Long => U => U) => (n: Long) => inducFn(f0, g, n)
+    }
+  
   def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
     val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
-    def induccurry: U => (Long => U => U) => (Long => U) = {
-    (f0: U) => g: (Long => U => U) => inducFn(f0, g)
-    }
+    rep(induccurry)
+  }
+  
+  def induction[U <: Term : TypeTag](us: FuncObj[Term, Typ[U]])(implicit suu: ScalaUniv[U]) = {
+    val stepfmlyrep = (n -->: __)
+    val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k+1)))
+    val steprep = n ~~>: stepfmly
+    val stpfm = (k: Long) => us(n(k)) -->: us(n(k+1))
+    val steprp = n ~~>: stpfm
+    val rep = us(n(0)) -->: steprp -->: (n ~~>: us)
     rep(induccurry)
   }
   
   val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
+  
+  val inducN = depFunc(N ->: __, (us: FuncObj[Term, Typ[Term]]) => induction(us))
   
   case class Fin(n: Long) extends IntTyp
   
@@ -45,20 +60,21 @@ object IntTypes {
   
   val SimpleFinRep = n ~~>: FinFn
   
-  val finrep = (n: Term) => dsl.i[Long](FinFn(n))
+  val finrep = RepSection((n: Long) => (Fin(n)))
   
-  val FinRep = n ~~>: (finrep)
+  val FinRep = N.rep  ~~>: (finrep)
   
   val NFinRep = n -->: FinRep
   
-  val kmodn = NFinRep((k: Long) => (n : Long) => k % n)
+  val kmodn = NFinRep((k: Long) => (n : Long) => Fin(n).rep(k % n))
   
+  /*
   private def inducCurry[U <: Term: TypeTag]: U => (Long => U => U) => (Long => U) = {
     (f0: U) => g: (Long => U => U) => inducFn(f0, g)
   }
   
   private val indCurry = inducCurry[Term]
-  
+  */
  // val Nrep = dsl.i[Long](N)
   
   private val n = N.rep

@@ -215,7 +215,8 @@ object ScalaRep {
    * Formal extendsion of a dependent function given scalareps for the domain and codomains.
    */
   case class DepFuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
-      domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends ScalaRep[FuncTerm[U, X], V => Y]{
+      domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y],
+      fibers: TypFamily[U, X]) extends ScalaRep[FuncTerm[U, X], V => Y]{
     val typ = PiTyp(fibers)
     
     def apply(f: V => Y) : FuncTerm[U, X] = ExtendedDepFunction(f, domrep, codomreps, fibers)
@@ -238,15 +239,17 @@ object ScalaRep {
   
     /**
    * implicit class associated to a family of scalareps to create dependent functions scalareps.
+   * Not much use since U ends up having strange bounds such as Term with Long.
    */
-  implicit class RepSection[U <: Term : TypeTag, X <: Term : TypeTag, Y](section: U => ScalaRep[X, Y])(
-      implicit sux : ScalaUniv[X], suu: ScalaUniv[U]){
+  implicit class RepSection[V, X <: Term : TypeTag, Y](section: V => ScalaRep[X, Y]){
     
-    def ~~>:[V](domrep : ScalaRep[U, V]) = {
-      val fmly = (u: U) => section(u).typ
+    def ~~>:[U <: Term : TypeTag](domrep : ScalaRep[U, V])(implicit 
+        sux : ScalaUniv[X], suu: ScalaUniv[U]) = {
+      val univrep = domrep -->: __
+      val fmly = univrep((v: V) => section(v).typ)
       val fibers = typFamily(domrep.typ, fmly)
         
-      DepFuncRep(domrep, (v: V) => section(domrep(v)), fibers)
+      DepFuncRep(domrep, (v: V) => section(v), fibers)
     }
   }
   
