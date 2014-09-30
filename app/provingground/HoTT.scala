@@ -943,6 +943,23 @@ object HoTT{
 	  def symbObj(name: AnySym)= SymbObj(name, this)
 	}
 	
+	case class PlusTyp(first: Typ[Term], second: Typ[Term]) extends SmallTyp{
+	  def i(value: Term) = PlusTyp.FirstIncl(this, value)
+	  
+	  def j(value: Term) = PlusTyp.ScndIncl(this, value)
+	}
+	
+	case object PlusTyp{
+	  case class FirstIncl(typ: PlusTyp,  value: Term) extends Term{
+		def subs(x: Term, y: Term) = FirstIncl(typ, value.subs(x, y))  
+	  }
+	  
+	  case class ScndIncl(typ: PlusTyp,  value: Term) extends Term{
+		def subs(x: Term, y: Term) = ScndIncl(typ, value.subs(x, y))  
+	  }
+	}
+	
+	
 	/** A dependent function given by a scala funcion */
 	case class DepFuncDefn[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFuncObj[W, U]{
 	  val domobjtpe = typeOf[W]

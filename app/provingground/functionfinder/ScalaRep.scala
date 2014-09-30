@@ -183,10 +183,7 @@ object ScalaRep {
     
   }
   
-  
-  
-  
-  case class SigmaRep[U <: Term with Subs[U] : TypeTag, V, X <: Term with Subs[X]: TypeTag, Y](domrep: ScalaRep[U, V],
+    case class SigmaRep[U <: Term with Subs[U] : TypeTag, V, X <: Term with Subs[X]: TypeTag, Y](domrep: ScalaRep[U, V],
       codrepfmly: V => ScalaRep[X, Y]) extends ScalaRep[Term, (V, Y)]{
 
     
@@ -210,6 +207,7 @@ object ScalaRep {
       case _ => None
     }
   }
+  
   
   /**
    * Formal extendsion of a dependent function given scalareps for the domain and codomains.
