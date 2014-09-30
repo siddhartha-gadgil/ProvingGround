@@ -113,6 +113,14 @@ object HoTT{
         /** Make symbolic object */
         def ::(name:AnySym) = symbObj(name) 
         
+        def &&[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+            that : Typ[V]) = PairTyp[UU, V](this, that)
+            
+        def ++[UU >: Typ[U] <: Typ[Term] with Subs[UU] : TypeTag, 
+        VV <: Term with Subs[VV], V <: Typ[VV] with Subs[V] : TypeTag](
+            those : V) = SigmaTyp[UU, VV](LambdaFixed[UU, V](this,
+                those))
+        
 //        def subs(x: Term, y: Term) : Typ[U]
         
         // Template for a method allowing covariance. 
