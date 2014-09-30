@@ -347,10 +347,11 @@ object HoTT{
     val __ = Universe(0)
     
     /** Pair of types (A, B) */
-    case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](first: Typ[U], second: Typ[V]) extends 
-						Typ[AbsPair[U, V]] with AbsPair[Typ[U], Typ[V]]{
+    case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](
+        first: Typ[U] with Subs[Typ[U]], second: Typ[V] with Subs[Typ[V]]) extends 
+						Typ[PairObj[U, V]] with AbsPair[Typ[U], Typ[V]]{
 
-    	type Obj = AbsPair[U, V] with Subs[AbsPair[U, V]]
+    	type Obj = PairObj[U, V]
 
 		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 		
@@ -361,7 +362,7 @@ object HoTT{
 			}	
     
     /** Object (a, b) in (A, B) */
-    case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](val first: U, val second: V) extends AbsPair[U, V] with Subs[AbsPair[U, V]]{
+    case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](first: U, second: V) extends AbsPair[U, V] with Subs[PairObj[U, V]]{
     	lazy val typ = PairTyp(first.typ, second.typ)
     	
     	def subs(x: Term, y: Term) = PairObj[U, V](first.subs(x, y), second.subs(x, y))
@@ -373,6 +374,12 @@ object HoTT{
 	  val second: V
 	}
 	
+	def pair[U <: Term with Subs[U], V <: Term with Subs[V]](
+	    first: U, second: V) = PairObj(first, second)
+	
+	def pair[U<: Term  with Subs[U], V <: Term with Subs[V]](
+        first: Typ[U] with Subs[Typ[U]], second: Typ[V] with Subs[Typ[V]]) = PairTyp(first, second)     
+	    
 //	def mkPair(f: Term, s: Term) = (f, s) match{
 //	  case (fst: Typ[u], scnd: Typ[v]) => PairTyp[u with Subs[u], v with Subs[v]](fst, scnd)
 //	  case (fst, scnd) => PairObj(fst, scnd)
@@ -812,12 +819,19 @@ object HoTT{
 	
 	
 	/** Exists/Sum for a type family */
-	case class SigmaTyp[W<: Term, U<: Term](fibers: TypFamily[W, U]) extends Typ[Term]{
+	case class SigmaTyp[W<: Term with Subs[W], U<: Term with Subs[U]](
+	    fibers: TypFamily[W, U]) extends Typ[Term]{
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 	  
-	  type Obj = Term
+	  type Obj = DepPair[W, U]
 	  
-	  def symbObj(name : AnySym) = SymbObj(name, this)
+//	  def symbObj(name : AnySym) = SymbObj(name, this)
+	  
+	  def symbObj(name: AnySym) = {
+	    val a = fibers.dom.symbObj(name)
+	    val b = fibers(a).symbObj(name)
+	    DepPair(a, b, fibers)
+	  }
 	  
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
 	  
