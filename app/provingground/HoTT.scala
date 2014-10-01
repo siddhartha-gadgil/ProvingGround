@@ -103,6 +103,10 @@ object HoTT{
           symbObj(newname)
         }
         
+        def !:[UU >: U <: Term](term: UU) = {
+          assert(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
+          term}
+        
         val typ : Univ
         
         lazy val typlevel : Int = univlevel(typ) 
@@ -366,7 +370,7 @@ object HoTT{
 		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
 			
 			// The name is lost as `name', but can be recovered using pattern matching.
-		def symbObj(name: AnySym): Obj = PairObj(first.symbObj(name), second.symbObj(name))
+		def symbObj(name: AnySym): Obj = PairObj(first.symbObj(leftSym(name)), second.symbObj(rightSym(name)))
 			}	
     
     /** Object (a, b) in (A, B) */
@@ -740,6 +744,8 @@ object HoTT{
 	 */		
 	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncTerm[U, V] = Lambda(variable, value)
 	
+	def lmbda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncObj[U, V] = LambdaFixed(variable, value)
+	
 	def optlambda(variable: Term) : Term => Term = value =>
 	  {
 	  	    if (subObjs(value) contains variable)  lambda(variable)(value) else value
@@ -824,7 +830,13 @@ object HoTT{
       ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ) : Typ[PiTyp[W, U]])
     }
 	
+	case class leftSym(name: AnySym) extends AnySym{
+	  override def toString = name.toString + "_1"
+	}
 	
+	case class rightSym(name: AnySym) extends AnySym{
+	  override def toString = name.toString + "_1"
+	}
 	
 	/** Exists/Sum for a type family */
 	case class SigmaTyp[W<: Term with Subs[W], U<: Term with Subs[U]](
@@ -836,8 +848,8 @@ object HoTT{
 //	  def symbObj(name : AnySym) = SymbObj(name, this)
 	  
 	  def symbObj(name: AnySym) = {
-	    val a = fibers.dom.symbObj(name)
-	    val b = fibers(a).symbObj(name)
+	    val a = fibers.dom.symbObj(leftSym(name))
+	    val b = fibers(a).symbObj(rightSym(name))
 	    DepPair(a, b, fibers)
 	  }
 	  
@@ -981,10 +993,19 @@ object HoTT{
 	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
 	}
 	
+	
 	def depFunc[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](dom: Typ[W], func: W => U)(
 	    implicit su: ScalaUniv[U]): FuncTerm[W, U] = {
 	  val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
 	  DepFuncDefn(func, dom, fibers)
+	}
+	
+	implicit class RichTypFamily[W<: Term : TypeTag, U<: Term with Subs[U] : TypeTag](
+	    fibre: FuncObj[W, Typ[U]])(
+	    implicit su: ScalaUniv[U]){
+//	  val dom = func.dom
+	  
+	 def pi = PiTyp(fibre)
 	}
 	
 	/** Companion to dependent functions */

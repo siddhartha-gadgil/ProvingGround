@@ -16,13 +16,69 @@ object InducPairs {
   
   val f = "f" :: (A ->: B ->: C)
 
-  val ab = "(a, b)" :: pair(A, B)
   
-  val a = ab.first
+  val a = "a" :: A
   
-  val b = ab.second
+  val b = "b" :: B
   
-  val rec = lambda(f)(
-      lambda(ab)(f(a)(b))
-      )
+  val ab = pair(a, b)
+  
+  val recPair = 
+    lambda(A)(
+      lambda(B)(
+          lambda(C)(
+              lambda(f)(
+            		  lambda(ab)(f(a)(b))
+            		  ))))
+  
+  
+  val Bs = "B" :: A ->: __
+  
+  val Btype = PiTyp(Bs)
+  
+  val bs = "b" :: Btype
+  
+  val toC = a ~>: (Bs(a) ->: C)
+  
+  val g = "g" :: toC
+  
+  val abDep = DepPair(a, bs(a), Bs)
+  
+  val recSigma = 
+    lambda(A)(
+      lambda(B)(
+          lambda(C)(
+              lambda(g)(
+            		  lambda(abDep)(g(a)(bs(a)))
+            		  ))))
+
+  
+   
+  val Cs = "C" :: A ->: B ->: __
+  
+//  val toCs = PiTyp(lmbda(a)(PiTyp(lmbda(b)(Cs(a)(b)))))
+  
+  val toCs = (a !: A) ~>: ((b !: B) ~>: Cs(a)(b)) // the !: checks types and is mainly for documentation.
+  
+  val h = "h" :: toCs
+  
+  val inducPair =     
+    lambda(A)(
+      lambda(B)(
+          lambda(Cs)(
+              lambda(h)(
+            		  lambda(ab)(h(a)(b))
+            		  ))))
+   
+  val toCsDep = (a !: A) ~>: ((bs(a) !: Bs(a)) ~>: Cs(a)(bs(a)))
+  
+  val hDep = "h" :: toCsDep
+  
+  val InducSigma = 
+    lambda(A)(
+      lambda(Bs)(
+          lambda(Cs)(
+              lambda(hDep)(
+            		  lambda(abDep)(h(a)(bs(a)))
+            		  ))))
 }
