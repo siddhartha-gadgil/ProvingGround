@@ -11,7 +11,7 @@ import Math._
 // * A cleaner substitution, parametrised by type.
 // * Properly abstracted Formal Function Application - done to some extent
 // * Inductive type trait, with Sigma type etc. having this. - done to some extent
-// * Clean up universes, LogicalTyp etc.
+// 
 //
 
 // TODO: Sigma and equality types as inductive types

@@ -20,4 +20,7 @@ object generaltests {
 	
 	2 + 3                                     //> res0: Int(5) = 5
 	
+	import provingground.HoTT.UnicodeSyms._
+	
+	println(Arrow)                            //> ⟶
 }
