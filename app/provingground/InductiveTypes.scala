@@ -220,7 +220,7 @@ object InductiveTypes{
 	
 	/**
 	 * Dependent extension of a poly-pattern by a type pattern.
-	 * FIXME this may never be applicable
+	 * TODO this may never be applicable
 	 */
 	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, 
 	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
