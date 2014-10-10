@@ -50,8 +50,8 @@ object HoTT{
     trait Subs[+U <: Term]{
       def subs(x: Term, y: Term) : U
      
-      //TODO refine types so this is allowed
-  //     def typ: Typ[U]
+      //TODO refine types so this is allowed - maybe not, as universes may cause trouble.
+      // def typ: Typ[U]
     }
     
     
@@ -840,7 +840,7 @@ object HoTT{
 	
 	/** Exists/Sum for a type family */
 	case class SigmaTyp[W<: Term with Subs[W], U<: Term with Subs[U]](
-	    fibers: TypFamily[W, U]) extends Typ[Term]{
+	    fibers: TypFamily[W, U]) extends Typ[DepPair[W, U]]{
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 	  
 	  type Obj = DepPair[W, U]
@@ -860,7 +860,7 @@ object HoTT{
 	
 	/**
 	 * Dependent pair (a: A, b : B(a)) - element of a sigma type.
-	 * TODO have objects inside pair types that map to the components.
+	 * 
 	 */
 	case class DepPair[W<: Term with Subs[W], U<: Term with Subs[U]](a : W, b: U, fibers: TypFamily[W, U]) extends Term with
 		Subs[DepPair[W, U]]{
