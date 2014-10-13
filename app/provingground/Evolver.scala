@@ -439,7 +439,7 @@ object Evolver{
 
 	
 	def LogicalArrows[V <: Term : TypeTag]: Pairing = {
-		case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term, Term](dom, codom)
+		case (dom: Typ[Term], codom: Typ[_]) => FuncTyp[Term, Term](dom, codom)
 		}
 
 

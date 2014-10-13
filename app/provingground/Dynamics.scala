@@ -286,7 +286,7 @@ object Dynamics{
        
 	
        def logicalArrows[V <: Term : TypeTag]: Pairing = {
-           case (dom: LogicalTyp, codom: Typ[_]) => FuncTyp[Term,  Term](dom, codom)
+           case (dom: Typ[Term], codom: Typ[_]) => FuncTyp[Term,  Term](dom, codom)
 		    }
 
 	   def lambdaIsles(dyn:  => DynSys[Term])(state: Set[Term]) ={

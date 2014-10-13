@@ -8,7 +8,7 @@ object PlusTypInduc {
 	import PlusTyp.{FirstIncl, ScndIncl}
   
 	case class PlusExtendedFunction[V <: Term : TypeTag](
-	    first: Typ[Term], second: Typ[Term], codom: Typ[V] with Subs[Typ[V]], firstfn: FuncObj[Term, V], 
+	    first: Typ[Term], second: Typ[Term], codom: Typ[V], firstfn: FuncObj[Term, V], 
 	    scndfn: FuncObj[Term, V]) extends FuncObj[Term, V] with Subs[PlusExtendedFunction[V]]{
     
 	  val dom = pair(first, second)
@@ -31,7 +31,7 @@ object PlusTypInduc {
   }
 	
 	case class PlusExtendedDepFunction[V <: Term : TypeTag](
-	    first: Typ[Term], second: Typ[Term], depcodom: FuncObj[Term, (Typ[V] with Subs[Typ[V]])], firstfn: FuncTerm[Term, V], 
+	    first: Typ[Term], second: Typ[Term], depcodom: FuncObj[Term, Typ[V]], firstfn: FuncTerm[Term, V], 
 	    scndfn: FuncTerm[Term, V]) extends FuncTerm[Term, V] with Subs[PlusExtendedDepFunction[V]]{
     
 	  val dom = pair(first, second)

@@ -137,7 +137,7 @@ object Contexts{
     /**
      * export term, 
      * TODO check if this can be upgraded to Term => PtnTyp (or U)
-     * the issue seems to be the Susb bound for Lambda case class.
+     * the issue seems to be the subs bound for Lambda case class.
      */
     val elim : Term => Term
     

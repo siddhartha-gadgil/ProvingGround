@@ -5,6 +5,8 @@ import scala.language.implicitConversions
 
 object TheoryTypes{
   
+ // type Typ[HoTT.Term] = Typ[HoTT.Term]
+  
   trait Expression{
     def -->(that: Expression) = Arrow(this, that)
     
@@ -138,13 +140,13 @@ object TheoryTypes{
   case class TextTyp(text: String) extends TheoryTyp
   
   trait Claim extends TheoryTyp{
-    val claim: LogicalTyp
+    val claim: Typ[HoTT.Term]
   }
   
-  case class Using(using: LogicalTyp, claim: LogicalTyp) extends Claim
+  case class Using(using: Typ[HoTT.Term], claim: Typ[HoTT.Term]) extends Claim
   
   trait Method
   
-  case class Para(sentences: LogicalTyp) extends TheoryTyp
+  case class Para(sentences: Typ[HoTT.Term]) extends TheoryTyp
   
 }
