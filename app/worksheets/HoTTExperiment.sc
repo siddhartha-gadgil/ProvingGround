@@ -84,7 +84,6 @@ object HoTTExperiment {
                                                   //| round.HoTT.Term]],provingground.HoTT.Term]] = ((a : A)⟼((a->b : (A⟶B))�
                                                   //| �((a->b : (A⟶B))((a : A)) : B)))
 	MP.typ                                    //> res6: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶B)⟶B))
-                                                  //| 
 
 	val X = "X" :: __                         //> X  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = X
@@ -98,7 +97,7 @@ object HoTTExperiment {
                                                   //| d.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] with proving
                                                   //| ground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Term,provingg
                                                   //| round.HoTT.Term]],provingground.HoTT.Term]] = ((a : X)⟼((a->b : (X⟶B))�
-                                                  //| �((a->b : (A⟶B))((a : A)) : B)))
+                                                  //| �((a->b : (X⟶B))((a : X)) : B)))
  
  
  A.subs(A, X)                                     //> res8: provingground.HoTT.Typ[provingground.HoTT.Term] = X
@@ -125,13 +124,14 @@ object HoTTExperiment {
   val c = "c" :: C                                //> c  : provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoT
                                                   //| T.Term] = (c : C)
   
-  ac(a).subs(a, c)                                //> res13: provingground.HoTT.Term = ((a->c : (A⟶C))((a : A)) : C)
-  val split = applptnterm.unapply(ac(a))          //> split  : Option[(provingground.HoTT.FuncTermLike, provingground.HoTT.Term)]
-                                                  //|  = None
-  val argopt = split map (_._2)                   //> argopt  : Option[provingground.HoTT.Term] = None
+  ac(a).subs(a, c)                                //> res13: provingground.HoTT.Term = ((a->c : (A⟶C))((c : C)) : C)
+  val split = applptnterm.unapply(ac(a))          //> split  : Option[(provingground.HoTT.FuncTerm[provingground.HoTT.Term,provin
+                                                  //| gground.HoTT.Term], provingground.HoTT.Term)] = Some(((a->c : (A⟶C)),(a :
+                                                  //|  A)))
+  val argopt = split map (_._2)                   //> argopt  : Option[provingground.HoTT.Term] = Some((a : A))
   
   
-  argopt map (_.subs(a, c))                       //> res14: Option[provingground.HoTT.Term] = None
+  argopt map (_.subs(a, c))                       //> res14: Option[provingground.HoTT.Term] = Some((c : C))
   
   a.subs(a, c)                                    //> res15: provingground.HoTT.Term = (c : C)
   
@@ -191,7 +191,7 @@ object HoTTExperiment {
                                                   //| ngground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] with
                                                   //|  provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Term
                                                   //| ,provingground.HoTT.Term]],provingground.HoTT.Term]]] = (B⟼((a : X)⟼((a
-                                                  //| ->b : (X⟶B))⟼((a->b : (A⟶B))((a : A)) : B))))
+                                                  //| ->b : (X⟶B))⟼((a->b : (X⟶B))((a : X)) : B))))
 	
 	MPall(X).typ                              //> res26: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(X⟶((X�
                                                   //| �B)⟶B))))
@@ -201,7 +201,7 @@ object HoTTExperiment {
                                                   //| ound.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] with pro
                                                   //| vingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Term,pro
                                                   //| vingground.HoTT.Term]],provingground.HoTT.Term]] = ((a : X)⟼((a->b : (X�
-                                                  //| �Y))⟼((a->b : (A⟶B))((a : A)) : Y)))
+                                                  //| �Y))⟼((a->b : (X⟶Y))((a : X)) : Y)))
 	
 	MPall(X)(Y).typ                           //> res28: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶((X⟶Y)⟶Y)
                                                   //| )

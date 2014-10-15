@@ -45,9 +45,11 @@ object HoTT{
        */
         def typ: Typ[Term]
         
-        val newVar = typ.obj
         
-        def dependsOn(that: Term) = subs(that, newVar) == this        
+        def dependsOn(that: Term) = {
+          val newVar = typ.obj 
+          subs(that, newVar) == this        
+        }
 
     }
 
@@ -67,34 +69,7 @@ object HoTT{
     }
 
 
-    /**
-     *
-     * Sub-objects of the given one
-     */
-    /*
-    val subObjs: Term => List[Term] ={
-      case pair: AbsPair[_,_] => subObjs(pair.first) ::: subObjs(pair.second)
-      case applptnterm(func, arg) => subObjs(func) ::: subObjs(arg)
-//      case obj: FormalApplication[_,_,_] => subObjs(obj.arg) ::: subObjs(obj.func)
-      case eq: IdentityTyp[_] => subObjs(eq.lhs) ::: subObjs(eq.rhs)
-      case fnTyp : FuncTyp[_, _] => subObjs(fnTyp.dom) ::: subObjs(fnTyp.codom)
-      case Lambda(variable, value : Term) => subObjs(value) map (lambda(variable))
-      case PiTyp(fibers) => subObjs(fibers)
-      case SigmaTyp(fibers) => subObjs(fibers)
-//      case fx: FormalAppl[_,_] => subObjs(fx.func) ::: subObjs(fx.arg)
 
-      /* Above case should cover this
-      case sym: Symbolic =>
-        sym.name match {
-          case fnsym : FormalApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
-          case fnsym : FormalDepApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
-          case _ => List(sym)
-        }
-        * /
-        */
-      case obj: Term => List(obj)
-    }
-	*/
 
     /** HoTT Type;
      *  The compiler knows that objects have scala-type extending U.
@@ -162,7 +137,9 @@ object HoTT{
 
     }
 
-
+    /**
+     * simple symbols for maps etc.
+     */
     object SimpleSyms{
     	val Arrow = "->"
     	val MapsTo = "|->"
@@ -170,6 +147,9 @@ object HoTT{
     	val Sigma = "S"
     }
 
+    /**
+     * unicode symbols for maps etc.
+     */
     object UnicodeSyms{
     	val Arrow = '\u27F6'.toString
     	val MapsTo = "\u27FC"
@@ -227,7 +207,6 @@ object HoTT{
 
       val applptntypu = ApplnPattern[Term, Typ[Term]]()
 
-      // FIXME check and clean subs in symbolic types
       def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) if (u == this) => v
         case (_, _,applptntypu(func, arg)) => func.subs(x,y)(arg.subs(x, y))
@@ -253,6 +232,9 @@ object HoTT{
     		}
     }
 
+    /**
+     * Notation for universes.
+     */
     type Univ = Typ[Typ[Term]]
 
 
@@ -311,12 +293,15 @@ object HoTT{
     }
 
 
+    /**
+     * The first universe
+     */
     val __ = Universe(0)
 
     
     /** Pair of types (A, B) */
     case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](
-        first: Typ[U] with Subs[Typ[U]], second: Typ[V] with Subs[Typ[V]]) extends
+        first: Typ[U], second: Typ[V]) extends
 						Typ[PairObj[U, V]] with AbsPair[Typ[U], Typ[V]]{
 
     	type Obj = PairObj[U, V]
@@ -371,21 +356,29 @@ object HoTT{
 	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
 	}
 
+	/**
+	 * Symbol for domain of a symbolic function
+	 */
+    case class DomSym(func: AnySym) extends AnySym
 
-    case class domsym(func: AnySym) extends AnySym
+    /**
+	 * Symbol for co-domain of a symbolic function
+	 */
+    case class CodomSym(func: AnySym) extends AnySym
 
-    case class codomsym(func: AnySym) extends AnySym
+//    case class FnSym(func: AnySym) extends AnySym
 
-    case class fnsym(func: AnySym) extends AnySym
-
+    /**
+     * Universe whose elements are FuncTyps
+     */
     case class FuncTypUniv[W<: Term : TypeTag, U<: Term : TypeTag](
         domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]) extends Typ[FuncTyp[W, U]]{
 
       lazy val typ = HigherUniv(this)
 
       def symbObj(name: AnySym) = {
-        val dom = domuniv.symbObj(domsym(name))
-        val codom = codomuniv.symbObj(codomsym(name))
+        val dom = domuniv.symbObj(DomSym(name))
+        val codom = codomuniv.symbObj(CodomSym(name))
         FuncTyp(dom, codom)
       }
 
@@ -393,35 +386,13 @@ object HoTT{
     }
 
 
+    /**
+     * implicitly build universe with elements FuncTyps from universes for domain and codomain.
+     */
     implicit def funcUniv[W<: Term : TypeTag, U<: Term : TypeTag](implicit
         domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncObj[W, U]] = {
       ScalaUniv(FuncTypUniv(domsc.univ, codomsc.univ) : Typ[FuncTyp[W, U]])
     }
-
-    /**
-     * (dependent) function, wraps around FuncTerm but without requiring type parameters.
-     *
-     */
-/*    trait FuncTermLike extends Term with Subs[FuncTermLike]{
-      type D
-      type Cod
-
-      type Obj <: FuncTermLike
-
-      val domobjtpe : Type
-
-      val codomobjtpe: Type
-
-      val dom: Typ[Term]
-
-//      val depcodom : D => Typ[Cod]
-
-      def apply(arg: D): Cod
-
-//      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncTerm[WW, UU]
-
-      def subs(x: Term, y: Term) : FuncTermLike
-    }*/
 
 
     /**
@@ -468,17 +439,7 @@ object HoTT{
       }
     }
 
-    /*
-    @deprecated("use ApplnPattern", "October 13, 2014") class ApplnPatternAny{
-      def unapply(term : Term) : Option[(FuncTermLike, Term)] = term match {
-        case sym : Symbolic => sym.name match {
-          case sm @ ApplnSym(func : FuncTermLike, arg)  =>
-            Some((func, arg))
-          case _ => None
-        }
-        case _ => None
-      }
-    }*/
+
 
     val applptnterm = ApplnPattern[Term, Term]()
  //   val applptnterm = new ApplnPatternAny
@@ -508,10 +469,7 @@ object HoTT{
 
 	}
 
-    /** Formal function, i.e., with application purely symbolic. */
-//	trait FormalFunc[W<: Term, V<: Typ[W], U<: Term] extends FuncObj[W, V, U] with FormalFuncTerm[W, U]{
-//	  def action(arg: dom.Obj) = codom.symbObj(FormalApplication[W, V, U](this, arg))
-//	}
+
 
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term : TypeTag, U<: Term : TypeTag](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
@@ -525,42 +483,16 @@ object HoTT{
 
       def apply(arg: W) : U = codom.symbObj(ApplnSym(this, arg))
 
-      def subs(x: Term, y: Term) = (x, y, name) match {
-        case (u: Typ[_], v: Typ[_], _) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
-        case (u, v: FuncObj[W, U], _) if (u == this) => v
+      def subs(x: Term, y: Term) = (x, y) match {
+        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+        case (u, v: FuncObj[W, U]) if (u == this) => v
         case _ => this
       }
 
       override def toString = "("+name.toString+" : "+typ.toString+")"
     }
 
-    trait FormalAppl[W <: Term, U <: Term]{
-      val func: FuncTerm[W, U]
 
-      val arg: W
-    }
-
-    trait FormalTypAppl[W <: Term, U <: Term]{
-      val func: FuncTerm[W, Typ[U]]
-
-      val arg: W
-
-    }
-
-    case class FuncAppl[W <: Term, U <: Term](){
-      def unapply(obj: Term): Option[Term] = None
-    }
-
-
-
-    /** A formal structure representing func(arg) - especially used for pattern matching */
-    case class FormalApplication[W<: Term with Subs[W], U<: Term](func: FuncObj[W, U], arg: W) extends Term with FormalAppl[W, U]{
-      lazy val typ = func.codom
-
-      override def toString = func.toString + "("+ arg.toString +")"
-
-      def subs(x: Term, y: Term) = func.subs(x, y)(arg.subs(x, y))
-    }
 
 
     /** A function given by a scala function */
@@ -577,27 +509,16 @@ object HoTT{
 
 	  def apply(arg: W) = func(arg)
 
-	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom, codom.subs(x, y))
+	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom.subs(x, y), codom.subs(x, y))
 	}
 
-	// We need a hybrid of the FuncDefm and FuncSymb, with a function determined by a partial function with formal application outside
-	// As formal application acts on substitution by a fresh application, this can be used.
-	// This can still extend FormalFuncTerm
 
-//	trait PartiallyFormalFunc[W<: Term, V<: Typ[W], U<: Term] extends FuncObj[W, V, U] with FormalFuncTerm[W, U]{
-//	  val predef: PartialFunction[dom.Obj, codom.Obj]
-//
-	  // extends FuncObj[W, V, U] with FormalFuncTerm[W, U]
 
-//	  def action(arg: dom.Obj) = predef.applyOrElse(arg, (obj: dom.Obj) => codom.symbObj(FormalApplication[W, V, U](this, arg)))
-//	}
-
-	/** A lambda-expression.
+	/** 
+	 *  A lambda-expression.
 	 *  variable is mapped to value.
 	 *  This may or may not be a dependent function.
 	 *  If it is important to note that it is not dependent, and hence has scala type FuncObj, then use LambdaFixed
-	 *
-	 *
 	 *
 	 */
 	abstract class LambdaLike[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y) extends FuncTerm[X, Y]{
@@ -615,13 +536,13 @@ object HoTT{
 
 	  val dep : Boolean
 
-	  lazy val typ : Typ[FuncTerm[Term, Term]] = if (dep) {
-	    val fibre = (t : Term) => value.typ subs (variable, t)
+	  lazy val typ : Typ[FuncTerm[X, Y]] = if (dep) {
+	    val fibre = (t : X) => value.typ subs (variable, t)
 
-	    val family : FuncObj[Term, Typ[Term]] = LambdaFixed(variable, value.typ)
+	    val family : FuncObj[X, Typ[Y]] = LambdaFixed(variable, value.typ.asInstanceOf[Typ[Y]])
 	    PiTyp(family)
 	  }
-		  else FuncTyp[Term,  Term](variable.typ , value.typ)
+		  else FuncTyp(variable.typ , value.typ.asInstanceOf[Typ[Y]])
 
 	  def apply(arg: X) = value.subs(variable, arg)
 
@@ -655,13 +576,12 @@ object HoTT{
 
 	  val depcodom : X => Typ[Y] = (t : X) => value.typ.subs(variable, t).asInstanceOf[Typ[Y]]
 
-	  object mysym extends AnySym
-	  
-	  val myvar = variable.typ.symbObj(mysym)
+	  object mysym extends AnySym	  	
 
-	  val dep = value.typ.subs(variable, myvar) != value.typ
+	  val dep = value dependsOn variable
 	}
 
+	// TODO replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
 	case class LambdaFixed[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y)
 		extends LambdaLike(variable, value) with FuncObj[X, Y]{
 	  override val dom = variable.typ.asInstanceOf[Typ[X]]
@@ -697,18 +617,6 @@ object HoTT{
 	  case _ => None
 	}
 
-	/*
-	val idFunc : Lambda[Term, Term] = {
-	  object myvar extends Term{
-	    lazy val typ = variable.typ
-
-	    def subs(x: Term, y: Term) = if (x==this) y else this
-	  }
-
-	  Lambda[Term, Term](myvar, myvar)
-	}
-	*/
-
 	/** Lambda constructor
 	 *
 	 */
@@ -724,34 +632,10 @@ object HoTT{
 	  def :->[V <: Term with Subs[V] : TypeTag](that : V) = lambda(this.value)(that)
 	}
 
-	/** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]
-	 *  Unable to specify that the codomain is a universe, which is needed for extracting the level.
-	 *
-	trait TypFamily[W<: Term, +U <: Term] extends FuncObj[W, Typ[U]]{
-	  val codom : Typ[Typ[U]]
-
-	  val codlevel = univlevel(codom)
-
-	  def subs(x: Term, y: Term) : TypFamily[W, U]
-	}
-*/
+	
 	type TypFamily[W<: Term, +U <: Term] = FuncObj[W, Typ[U]]
 
-	/*
-	case class TypFamilyDefn[W <: Term : TypeTag, U <: Term](dom: Typ[W], codom: Typ[Typ[U]], f: W => Typ[U]) extends TypFamily[W, U]{
-	  val domobjtpe = typeOf[Term]
-
-	  val codomobjtpe = typeOf[Typ[Term]]
-
-//	  val codom = Universe(0)
-
-	  val typ = FuncTyp[W, Term](dom, __ )
-
-	  def action(arg: dom.Obj) = f(arg).asInstanceOf[codom.Obj]
-
-	  def subs(x: Term, y: Term) : TypFamily[W, U] = this
-	}
-	*/
+	
 
 	def typFamilyDefn[W <: Term : TypeTag, U <: Term : TypeTag](dom: Typ[W], codom: Typ[Typ[U]], f: W => Typ[U]) = {
 	  FuncDefn[W, Typ[U]](f, dom, codom)
@@ -784,8 +668,8 @@ object HoTT{
       lazy val typ = HigherUniv(this)
 
       def symbObj(name: AnySym) = {
-        val dom = domuniv.symbObj(domsym(name))
-        val codom = codomuniv.symbObj(codomsym(name))
+        val dom = domuniv.symbObj(DomSym(name))
+        val codom = codomuniv.symbObj(CodomSym(name))
         val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
         PiTyp(typFmly)
 //        FuncTyp(dom, codom)
@@ -857,22 +741,6 @@ object HoTT{
 
 	}
 
-	/**
-	 *  A formal dependent function, with application symbolic
-	 *
-	 *
-
-	trait FormalDepFunc[W<: Term with Subs[W],  U<: Term with Subs[U]] extends DepFuncObj[W, U] with FormalFuncTerm[W, U]{
-//	  def act(arg: W) = if (arg.typ == fibers.dom) {
-//	    val typ =fibers(arg)
-//	    Some(typ.symbObj(FormalDepApplication[W, V, U](this, arg)).asInstanceOf[U])
-//	  }
-//	  else None
-
-
-	  def action(arg: fibers.dom.Obj) = fibers(arg).symbObj(FormalDepApplication[W, U](this, arg)).asInstanceOf[U]
-	}
-	*/
 
 	case class DepFuncSymb[W<: Term : TypeTag,  U<: Term : TypeTag](name: AnySym, fibers: TypFamily[W, U]) extends
 	DepFuncObj[W, U] with Symbolic with AnySym{
@@ -899,17 +767,7 @@ object HoTT{
       }
 	}
 
-	/** A symbol capturing formal application
-	 *  of a dependent function.
-	 */
-	case class FormalDepApplication[W<: Term with Subs[W],  U<: Term](func: DepFuncObj[W, U], arg: W) extends Term  with FormalAppl[W, U]{
-	  val typFamily = func.fibers
-      lazy val typ : Typ[U] = (typFamily(arg))
-
-      override def toString = func.toString + "("+ arg.toString +")"
-
-      def subs(x: Term, y: Term) = func.subs(x, y)(arg.subs(x, y))
-    }
+	
 
 	/** The identity type.
 	 *  This is the type lhs = rhs
@@ -1044,6 +902,78 @@ object HoTT{
 	// Deprecated code
 	
 	
+	    /**
+     *
+     * Sub-objects of the given one
+     */
+    /*
+    val subObjs: Term => List[Term] ={
+      case pair: AbsPair[_,_] => subObjs(pair.first) ::: subObjs(pair.second)
+      case applptnterm(func, arg) => subObjs(func) ::: subObjs(arg)
+//      case obj: FormalApplication[_,_,_] => subObjs(obj.arg) ::: subObjs(obj.func)
+      case eq: IdentityTyp[_] => subObjs(eq.lhs) ::: subObjs(eq.rhs)
+      case fnTyp : FuncTyp[_, _] => subObjs(fnTyp.dom) ::: subObjs(fnTyp.codom)
+      case Lambda(variable, value : Term) => subObjs(value) map (lambda(variable))
+      case PiTyp(fibers) => subObjs(fibers)
+      case SigmaTyp(fibers) => subObjs(fibers)
+//      case fx: FormalAppl[_,_] => subObjs(fx.func) ::: subObjs(fx.arg)
+
+      /* Above case should cover this
+      case sym: Symbolic =>
+        sym.name match {
+          case fnsym : FormalApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
+          case fnsym : FormalDepApplication[_, _,_] => subObjs(fnsym.arg) ::: subObjs(fnsym.func)
+          case _ => List(sym)
+        }
+        * /
+        */
+      case obj: Term => List(obj)
+    }
+	*/
+	
+	/*
+	trait FormalAppl[W <: Term, U <: Term]{
+      val func: FuncTerm[W, U]
+
+      val arg: W
+    }
+
+    trait FormalTypAppl[W <: Term, U <: Term]{
+      val func: FuncTerm[W, Typ[U]]
+
+      val arg: W
+
+    }
+
+    case class FuncAppl[W <: Term, U <: Term](){
+      def unapply(obj: Term): Option[Term] = None
+    }
+
+
+
+    /** A formal structure representing func(arg) - especially used for pattern matching */
+    case class FormalApplication[W<: Term with Subs[W], U<: Term](func: FuncObj[W, U], arg: W) extends Term with FormalAppl[W, U]{
+      lazy val typ = func.codom
+
+      override def toString = func.toString + "("+ arg.toString +")"
+
+      def subs(x: Term, y: Term) = func.subs(x, y)(arg.subs(x, y))
+    }
+
+
+/** A symbol capturing formal application
+	 *  of a dependent function.
+	 */
+	case class FormalDepApplication[W<: Term with Subs[W],  U<: Term](func: DepFuncObj[W, U], arg: W) extends Term  with FormalAppl[W, U]{
+	  val typFamily = func.fibers
+      lazy val typ : Typ[U] = (typFamily(arg))
+
+      override def toString = func.toString + "("+ arg.toString +")"
+
+      def subs(x: Term, y: Term) = func.subs(x, y)(arg.subs(x, y))
+    }
+	
+	*/
 
     @deprecated("use Scala Universe", "October 1, 2014") case class MiniVerse[U <: Term](sample : Typ[U]) extends Typ[Typ[U]]{
       type Obj = Typ[U]
@@ -1054,4 +984,119 @@ object HoTT{
 
       def subs(x : Term, y : Term) = this
     }
+    
+        /**
+     * (dependent) function, wraps around FuncTerm but without requiring type parameters.
+     *
+     */
+/*    trait FuncTermLike extends Term with Subs[FuncTermLike]{
+      type D
+      type Cod
+
+      type Obj <: FuncTermLike
+
+      val domobjtpe : Type
+
+      val codomobjtpe: Type
+
+      val dom: Typ[Term]
+
+//      val depcodom : D => Typ[Cod]
+
+      def apply(arg: D): Cod
+
+//      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncTerm[WW, UU]
+
+      def subs(x: Term, y: Term) : FuncTermLike
+    }*/
+    
+    
+        /*
+    @deprecated("use ApplnPattern", "October 13, 2014") class ApplnPatternAny{
+      def unapply(term : Term) : Option[(FuncTermLike, Term)] = term match {
+        case sym : Symbolic => sym.name match {
+          case sm @ ApplnSym(func : FuncTermLike, arg)  =>
+            Some((func, arg))
+          case _ => None
+        }
+        case _ => None
+      }
+    }*/
+    
+        /** Formal function, i.e., with application purely symbolic. */
+//	trait FormalFunc[W<: Term, V<: Typ[W], U<: Term] extends FuncObj[W, V, U] with FormalFuncTerm[W, U]{
+//	  def action(arg: dom.Obj) = codom.symbObj(FormalApplication[W, V, U](this, arg))
+//	}
+    
+    
+    	// We need a hybrid of the FuncDefm and FuncSymb, with a function determined by a partial function with formal application outside
+	// As formal application acts on substitution by a fresh application, this can be used.
+	// This can still extend FormalFuncTerm
+
+//	trait PartiallyFormalFunc[W<: Term, V<: Typ[W], U<: Term] extends FuncObj[W, V, U] with FormalFuncTerm[W, U]{
+//	  val predef: PartialFunction[dom.Obj, codom.Obj]
+//
+	  // extends FuncObj[W, V, U] with FormalFuncTerm[W, U]
+
+//	  def action(arg: dom.Obj) = predef.applyOrElse(arg, (obj: dom.Obj) => codom.symbObj(FormalApplication[W, V, U](this, arg)))
+//	}
+    
+    /*
+	val idFunc : Lambda[Term, Term] = {
+	  object myvar extends Term{
+	    lazy val typ = variable.typ
+
+	    def subs(x: Term, y: Term) = if (x==this) y else this
+	  }
+
+	  Lambda[Term, Term](myvar, myvar)
+	}
+	*/
+    
+    /*
+	case class TypFamilyDefn[W <: Term : TypeTag, U <: Term](dom: Typ[W], codom: Typ[Typ[U]], f: W => Typ[U]) extends TypFamily[W, U]{
+	  val domobjtpe = typeOf[Term]
+
+	  val codomobjtpe = typeOf[Typ[Term]]
+
+//	  val codom = Universe(0)
+
+	  val typ = FuncTyp[W, Term](dom, __ )
+
+	  def action(arg: dom.Obj) = f(arg).asInstanceOf[codom.Obj]
+
+	  def subs(x: Term, y: Term) : TypFamily[W, U] = this
+	}
+	*/
+    
+    /** Type family, with domain in a subclass of Typ[W] and codomain in Typ[U]
+	 *  Unable to specify that the codomain is a universe, which is needed for extracting the level.
+	 *
+	trait TypFamily[W<: Term, +U <: Term] extends FuncObj[W, Typ[U]]{
+	  val codom : Typ[Typ[U]]
+
+	  val codlevel = univlevel(codom)
+
+	  def subs(x: Term, y: Term) : TypFamily[W, U]
+	}
+*/
+    
+    
+	/**
+	 *  A formal dependent function, with application symbolic
+	 *
+	 *
+
+	trait FormalDepFunc[W<: Term with Subs[W],  U<: Term with Subs[U]] extends DepFuncObj[W, U] with FormalFuncTerm[W, U]{
+//	  def act(arg: W) = if (arg.typ == fibers.dom) {
+//	    val typ =fibers(arg)
+//	    Some(typ.symbObj(FormalDepApplication[W, V, U](this, arg)).asInstanceOf[U])
+//	  }
+//	  else None
+
+
+	  def action(arg: fibers.dom.Obj) = fibers(arg).symbObj(FormalDepApplication[W, U](this, arg)).asInstanceOf[U]
+	}
+	*/
+    
 }

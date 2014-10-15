@@ -136,7 +136,7 @@ object Contexts{
     
     /**
      * export term, 
-     * TODO check if this can be upgraded to Term => PtnTyp (or U)
+     * XXX check if this can be upgraded to Term => PtnTyp (or U)
      * the issue seems to be the subs bound for Lambda case class.
      */
     val elim : Term => Term
@@ -229,7 +229,7 @@ object Contexts{
       if (isVar(variable)) Lambda(variable, tail.eliminate(isVar)(y))
       else tail.eliminate(isVar)(y)
     
-    //TODO refine the type of this so that it is recursively a pattern type.  
+    //XXX refine the type of this so that it is recursively a pattern type.  
     val elim = (y: Term) => Lambda(variable, tail.elim(y))
     
     type ArgType = (Term, tail.ArgType)
