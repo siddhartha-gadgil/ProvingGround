@@ -325,7 +325,7 @@ object Evolver{
    class Gen(dyn: => (Set[Term] => Set[Term]),
 		   		state:  => Set[Term],
 		   		mapping:  Term => Term = {(x : Term) => x},
-		   		outbox: Outbox[Term] = VanishBox[Term]) extends AtomicObj{
+		   		outbox: Outbox[Term] = VanishBox[Term]) extends AtomicTerm{
 
      object typ extends SmallTyp
 
