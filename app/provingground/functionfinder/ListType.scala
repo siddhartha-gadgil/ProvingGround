@@ -35,8 +35,8 @@ object ListType {
     rep((f: U => V) => (l: List[U]) => l map (f))
   }
   
-  val lmap = depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
+  lazy val lmap = depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
   
-  val fold = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
+  lazy val foldLeft = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
 }

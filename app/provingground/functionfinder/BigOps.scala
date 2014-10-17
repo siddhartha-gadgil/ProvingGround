@@ -25,7 +25,7 @@ object BigOps {
           lambda(f)({
         	  val enlist = enumlist(A)(en)
               val lst = lmap(A)(N)(f)(enlist)
-              fold(N)(N)(lst)(N.sum)
+              foldLeft(N)(N)(lst)(N.sum)
               })
               )
       )

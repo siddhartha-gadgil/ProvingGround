@@ -54,7 +54,10 @@ object MatrixTypes {
               ) ) )))))           
   }
   
-  
-  
+  val ZmatEql = lambda(X)(lambda(Y)(
+      lambda(A)(lambda(C)(
+          lambda(x)(lambda(y)(
+              Z.eql(A(x)(y))(C(x)(y))) 
+              ) ) )))
   
 }

@@ -6,20 +6,20 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 object BoolType {
   case object Bool extends SmallTyp
   
-  val boolrep = dsl.i[Boolean](Bool)
+  lazy val boolrep = dsl.i[Boolean](Bool)
   
   private val b = boolrep
   
-  val not = {
+  lazy val not = {
     val rep = b -->: b
     rep((x: Boolean) => !x)
   }
   
   private val binrep = b -->: b -->: b
   
-  val and = binrep((x: Boolean) => (y: Boolean) => x && y)
+  lazy val and = binrep((x: Boolean) => (y: Boolean) => x && y)
   
-  val or = binrep((x: Boolean) => (y: Boolean) => x || y)
+  lazy val or = binrep((x: Boolean) => (y: Boolean) => x || y)
   
   case class isTrueTyp(value: Boolean) extends SmallTyp
   
@@ -31,9 +31,9 @@ object BoolType {
     override def toString = "true"
   }
   
-  val boolFmly = b -->: __
+  lazy val boolFmly = b -->: __
   
-  val isTrue = boolFmly((x: Boolean) => isTrueTyp(x))
+  lazy val isTrue = boolFmly((x: Boolean) => isTrueTyp(x))
   
   case object Fail extends SmallTyp
   
@@ -48,7 +48,7 @@ object BoolType {
     rep((cond: Boolean) => (yes: U) => (no : U) => if (cond) yes else no)
   }
   
-  val ite = depFunc(__, iteFunc[Term])
+  lazy val ite = depFunc(__, iteFunc[Term])
   
   private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
   
@@ -79,9 +79,9 @@ object BoolType {
     rep((c: Boolean) => if (c) yes else no)
   }
   
-  val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
+  lazy val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
   
-  val check = "check" :: Bool
+  lazy val check = "check" :: Bool
   
-  val verify = lambda(check)(itedep(isTrueTyp(true))(Fail)(check)(tt)(failure))
+  lazy val verify = lambda(check)(itedep(isTrueTyp(true))(Fail)(check)(tt)(failure))
 }
