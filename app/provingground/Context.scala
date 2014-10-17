@@ -1,6 +1,7 @@
 package provingground
 
 import provingground.HoTT._
+import provingground.HoTT.Deprec._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
 import provingground.InductiveTypes._
@@ -419,15 +420,6 @@ object Contexts{
       (tail.instantiate(rest)(t)).subs(eqlty.lhs, eqlty.rhs)
     }
     
-    /*
-    val typ = if (dep) {
-      val fibre = (t : Term) => tail.typ subs (x, t)
-	    
-	    val family = typFamilyDefn[Term, tail.PtnType](eqlty.lhs.typ, MiniVerse(tail.typ), fibre)
-	    PiTyp(family)
-    }
-    else FuncTyp(eqlty.lhs.typ, tail.typ)
-    */
     
     def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (eqlty.lhs, t)
