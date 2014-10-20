@@ -8,12 +8,8 @@ import ListType._
 object EnumType {
   case class EnumTyp[U <: Term](elemTyp: Typ[U]) extends SmallTyp
   
-  trait EnumTerm[U <: Term] extends ConstTerm[List[U]]{
-    val elemTyp : Typ[U]
-    
+  case class EnumTerm[U <: Term](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
     val typ = EnumTyp(elemTyp)    
-    
- //   val tpe: TypeTag[U]
   }
   
   case class EnumRep[U <: Term](elemTyp: Typ[U]) extends ScalaRep[Term, EnumTerm[U]]{

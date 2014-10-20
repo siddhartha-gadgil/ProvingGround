@@ -136,15 +136,22 @@ object HoTT{
         VV <: Term with Subs[VV], V <: Typ[VV] with Subs[V] : TypeTag](
             those : V) = SigmaTyp[UU, VV](LambdaFixed[UU, V](this,
                 those))
-
-
-
     }
 
     /**
+     * symbols for printing
+     */
+    trait TermSyms{
+      val Arrow : String
+      val MapsTo : String
+      val Pi : String
+      val Sigma : String
+    }
+    
+    /**
      * simple symbols for maps etc.
      */
-    object SimpleSyms{
+    object SimpleSyms extends TermSyms{
     	val Arrow = "->"
     	val MapsTo = "|->"
     	val Pi ="Pi"
@@ -154,7 +161,7 @@ object HoTT{
     /**
      * unicode symbols for maps etc.
      */
-    object UnicodeSyms{
+    object UnicodeSyms extends TermSyms{
     	val Arrow = '\u27F6'.toString
     	val MapsTo = "\u27FC"
     	val Pi ="Pi"
