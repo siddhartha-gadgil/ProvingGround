@@ -66,7 +66,7 @@ object HoTTExperiment {
                                                   //| rovingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A⟼(B⟼((a : A)⟼
                                                   //| ((a->b : (A⟶B))⟼((a->b : (A⟶B))((a : A)) : B)))))
   MPall.typ                                       //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼Pi((B⟼(A�
-                                                  //| �((A⟶B)⟶B))))))
+                                                  //| �Pi(((a->b : (A⟶B))⟼B)))))))
 	val MP = {
 		val A = "A" :: __
 		val B = "B" :: __
@@ -83,7 +83,7 @@ object HoTTExperiment {
                                                   //| ground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Term,provingg
                                                   //| round.HoTT.Term]],provingground.HoTT.Term]] = ((a : A)⟼((a->b : (A⟶B))�
                                                   //| �((a->b : (A⟶B))((a : A)) : B)))
-	MP.typ                                    //> res6: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶B)⟶B))
+	MP.typ                                    //> res6: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶Pi(((a->b : (A�817 ��B))⟼B)))
 
 	val X = "X" :: __                         //> X  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = X
@@ -156,7 +156,7 @@ object HoTTExperiment {
                                                   //| : A)⟼((a->b : (A⟶B))⟼((a->b : (A⟶B))((a : A)) : B)))))
 	
 	MPall.typ                                 //> res20: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼Pi((B⟼(A
-                                                  //| ⟶((A⟶B)⟶B))))))
+                                                  //| ⟶Pi(((a->b : (A⟶B))⟼B)))))))
 	
 	__.subs(A, X)                             //> res21: provingground.HoTT.Universe = _
 	
@@ -193,8 +193,8 @@ object HoTTExperiment {
                                                   //| ,provingground.HoTT.Term]],provingground.HoTT.Term]]] = (B⟼((a : X)⟼((a
                                                   //| ->b : (X⟶B))⟼((a->b : (X⟶B))((a : X)) : B))))
 	
-	MPall(X).typ                              //> res26: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(X⟶((X�
-                                                  //| �B)⟶B))))
+	MPall(X).typ                              //> res26: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(X⟶Pi(((
+                                                  //| a->b : (X⟶B))⟼B)))))
 	
 	MPall(X)(Y)                               //> res27: provingground.HoTT.FuncTerm[provingground.HoTT.Term with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.FuncTerm[provinggr
@@ -203,18 +203,18 @@ object HoTTExperiment {
                                                   //| vingground.HoTT.Term]],provingground.HoTT.Term]] = ((a : X)⟼((a->b : (X�
                                                   //| �Y))⟼((a->b : (X⟶Y))((a : X)) : Y)))
 	
-	MPall(X)(Y).typ                           //> res28: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶((X⟶Y)⟶Y)
-                                                  //| )
+	MPall(X)(Y).typ                           //> res28: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶Pi(((a->b : (
+                                                  //| X⟶Y))⟼Y)))
 	 
 	
 	MPall.typ                                 //> res29: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼Pi((B⟼(A
-                                                  //| ⟶((A⟶B)⟶B))))))
+                                                  //| ⟶Pi(((a->b : (A⟶B))⟼B)))))))
 	
 	A ~>: (A ->: A)                           //> res30: provingground.HoTT.PiTyp[provingground.HoTT.Term,provingground.HoTT.
                                                   //| FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]] = Pi((A⟼(A⟶A)
                                                   //| ))
   (A ~>: (A ->: A)).subs(A, C)                    //> res31: provingground.HoTT.PiTyp[provingground.HoTT.Term,provingground.HoTT.
-                                                  //| FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]] = Pi((C⟼(C⟶C)
+                                                  //| FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]] = Pi((A⟼(A⟶A)
                                                   //| ))
 
  
