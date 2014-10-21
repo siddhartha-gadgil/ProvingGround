@@ -21,9 +21,21 @@ object BoolType {
   
   lazy val or = binrep((x: Boolean) => (y: Boolean) => x || y)
   
+  lazy val boolFmly = b -->: __
+  
+  lazy val isTrue = boolFmly((x: Boolean) => if (x) One else Zero)
+  
+  
+
+  
+  
+ 
+  // Most of the cod below is deprecated.
   case class isTrueTyp(value: Boolean) extends SmallTyp
   
-  case object tt extends ConstTerm[Boolean]{
+  //  lazy val isTrue = boolFmly((x: Boolean) => isTrueTyp(x))
+  
+  case object yes extends ConstTerm[Boolean]{
     val value = true
     
     val typ = isTrueTyp(true)
@@ -31,17 +43,17 @@ object BoolType {
     override def toString = "true"
   }
   
-  lazy val boolFmly = b -->: __
-  
-  lazy val isTrue = boolFmly((x: Boolean) => isTrueTyp(x))
-  
-  case object Fail extends SmallTyp
-  
-  case object failure extends ConstTerm[Unit]{
-    val value = ()
+    case object notnot extends ConstTerm[Boolean]{
+    val value = true
     
-    val typ = Fail
+    val typ = isTrueTyp(false) ->: Zero
+    
+    override def toString = "true"
   }
+ 
+  
+  
+  
   
   def iteFunc[U <: Term : TypeTag](u: Typ[U]) = {
     val rep = b -->: u -->: u -->: u
@@ -52,15 +64,13 @@ object BoolType {
   
   private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
   
-  
+  // TODO write this in a simpler way, using lambdas or ~~>: reps
   def iteDepFunc(u: Typ[Term], v : Typ[Term])(implicit fnfn : ScalaUniv[FnFn]) = {
     val t = u ->: v ->: u
     def restyp = (c: Boolean) => if (c) (u ->: v ->: u) else (u ->: v ->: v)
-//    val uni = MiniVerse(u ->: v ->: u)
+
     val uni = fnfn.univ
     val typrep = b -->: uni
-    
-  //  type FnFn = FuncObj[Term, FuncObj[Term, Term]]
     
     val typfmly = typrep(restyp)
 
@@ -80,8 +90,5 @@ object BoolType {
   }
   
   lazy val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
-  
-  lazy val check = "check" :: Bool
-  
-  lazy val verify = lambda(check)(itedep(isTrueTyp(true))(Fail)(check)(tt)(failure))
+
 }

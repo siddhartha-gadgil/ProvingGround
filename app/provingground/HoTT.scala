@@ -244,6 +244,27 @@ object HoTT{
     }
 
     /**
+     * Empty type
+     */
+    case object Zero extends SmallTyp
+    
+    /**
+	 * Unit type.
+	 */
+	case object Unit extends SmallTyp
+
+	case object Star extends AtomicTerm{
+      val typ = Unit
+    }
+	
+    val One = Unit
+    
+	case class fromZero[U<: Term : TypeTag](codom: Typ[U]) extends AtomicTerm{
+      lazy val typ = Zero ->: codom
+    }
+    
+    
+    /**
      * Notation for universes.
      */
     type Univ = Typ[Typ[Term]]
@@ -856,6 +877,10 @@ object HoTT{
 	  def symbObj(name: AnySym)= SymbObj(name, this)
 	}
 
+	case class Refl[U <: Term](dom: Typ[U], value: U) extends AtomicTerm{
+	  lazy val typ = IdentityTyp(dom, value, value)
+	}
+	
 	/**
 	 * type A + B
 	 */
@@ -906,11 +931,7 @@ object HoTT{
 	  }
 	}
 
-	/**
-	 * Unit type.
-	 */
-	case object Unit extends SmallTyp
-
+	
 	/*
 	 * A common trait for contexts and typpatterns
 	 */
