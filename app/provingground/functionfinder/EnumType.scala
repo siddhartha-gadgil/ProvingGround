@@ -10,6 +10,8 @@ object EnumType {
   
   case class EnumTerm[U <: Term](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
     val typ = EnumTyp(elemTyp)    
+    
+    lazy val rep = EnumRep(elemTyp)
   }
   
   case class EnumRep[U <: Term](elemTyp: Typ[U]) extends ScalaRep[Term, EnumTerm[U]]{
