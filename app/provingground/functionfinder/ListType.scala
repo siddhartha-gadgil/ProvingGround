@@ -22,7 +22,7 @@ object ListType {
   }
   
   def foldFunction[U <: Term : TypeTag, V <: Term : TypeTag](u: Typ[U], v: Typ[V]) = {
-    val rep = ListRep(u) -->: v -->: (u -->: v -->: v) -->: v
+    val rep = ListRep(u) -->: v -->: (u -->: v -->: v) -->: v 
     val fld = (l: List[U]) => (init : V) => (op : U => V => V) => {
       def cop(u: U, v: V) = op(u)(v)
       (l :\ init)(cop)
@@ -39,4 +39,19 @@ object ListType {
   
   lazy val foldLeft = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
+  def headOptFn[U <: Term : TypeTag](typ: Typ[U]) = {
+    val rep = ListRep(typ) -->: MaybeTyp.MaybeRep(typ)
+    rep ((l: List[U]) => l.headOption)
+  }
+  
+  
+  
+  def tailFn[U <: Term : TypeTag](typ: Typ[U]) = {
+    val rep = ListRep(typ) -->: ListRep(typ)
+    rep((l: List[U]) => l drop 1)
+  }
+  
+  lazy val headOpt = depFunc(__, (u: Typ[Term]) => headOptFn(u))
+
+  lazy val tail = depFunc(__, (u: Typ[Term]) => tailFn(u))
 }
