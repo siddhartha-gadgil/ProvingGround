@@ -64,27 +64,19 @@ object BoolType {
   
   private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
   
-  // TODO write this in a simpler way, using lambdas or ~~>: reps
   def iteDepFunc(u: Typ[Term], v : Typ[Term])(implicit fnfn : ScalaUniv[FnFn]) = {
-    val t = u ->: v ->: u
-    def restyp = (c: Boolean) => if (c) (u ->: v ->: u) else (u ->: v ->: v)
 
-    val uni = fnfn.univ
-    val typrep = b -->: uni
+    val x = "x" :: u
     
-    val typfmly = typrep(restyp)
-
-    val yesrep : ScalaRep[FnFn, FnFn] = IdRep(u ->: v ->: u)
-    val norep : ScalaRep[FnFn, FnFn] = IdRep(u ->: v ->: v)
-    val ifrep = (c: Boolean) => if (c) yesrep else norep
+    val y = "y" :: v
     
-    val yestermrep = (u -->: v -->: u)
-    val yes = yestermrep((u: Term) => (v: Term) => u)
+    val yes = lmbda(x)(lmbda(y)(x))
+   
+    val no = lmbda(x)(lmbda(y)(y))
     
-    val notermrep = (u -->: v -->: u)
-    val no = yestermrep((u: Term) => (v: Term) => u)
+    val restyp = (c: Boolean) => if (c) (u ->: v ->: u) else (u ->: v ->: v)
     
-    val rep = DepFuncRep(b, ifrep, typfmly)
+    val rep = b ~~>: ((c: Boolean) => IdRep(restyp(c)))
     
     rep((c: Boolean) => if (c) yes else no)
   }
