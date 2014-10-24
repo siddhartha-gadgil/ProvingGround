@@ -28,15 +28,6 @@ object FiniteDistbributionLearner {
 	 */
 	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
 	
-	/*
-	def IdMV[M, V] = DiffbleFunction((mv : (FD[M], FD[V])) => mv)( 
-	      (mv : (FD[M], FD[V])) => {(mw : (FD[M], FD[V])) => mw}
-	    )
-	    
-	def IdV[V] = DiffbleFunction((d : FD[V]) => d)( 
-	      (d : FD[V]) => {(w : FD[V]) => w}
-	    )
-	*/
 	
 	/**
 	 * Iterate a differentiable function.
