@@ -17,7 +17,7 @@ object LearningSystem{
     	 */
     	def *:[C](that: DiffbleFunction[B, C]) = andThen(that)
     	
-    	def andThen[C](that: DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
+    	def andThen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
     													(a: A) => 
     	  													(c: C) =>
     	  													  grad(a)(that.grad(this(a))(c)))

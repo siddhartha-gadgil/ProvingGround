@@ -28,12 +28,28 @@ object FiniteDistbributionLearner {
 	 */
 	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
 	
-	
+	  
 	/**
 	 * Iterate a differentiable function.
 	 */
 	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = Id[X]): DF[X, X] = {
 		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
+	}
+	
+	/** 
+	 *  Iterate a diffble function given depth
+	 */
+	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = Id[X]): DF[X, X] = {
+		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
+	}
+	
+	class IterDynSys[X](iterdyn: => Int => DF[X, X]){
+	  def shift = new IterDynSys((d: Int) => iterdyn(d+1))
+	}
+	
+	object IterDynSys{
+	  def iter[X](dyn: => DF[X, X ], steps: Int) = new IterDynSys(
+	      (d: Int) => iterateDiffbleDepth(dyn, steps, d))
 	}
 	    
 	/**
