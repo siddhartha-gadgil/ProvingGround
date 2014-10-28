@@ -43,13 +43,37 @@ object FiniteDistbributionLearner {
 		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
 	}
 	
-	class IterDynSys[X](iterdyn: => Int => DF[X, X]){
-	  def shift = new IterDynSys((d: Int) => iterdyn(d+1))
-	}
-	
-	object IterDynSys{
-	  def iter[X](dyn: => DF[X, X ], steps: Int) = new IterDynSys(
-	      (d: Int) => iterateDiffbleDepth(dyn, steps, d))
+	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
+	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
+	  
+	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
+	  
+	  /**
+	   * add a simple island one step deeper and create a system adding depth.
+	   * TODO check if we need d+1 in both places.
+	   * @param v new variable created in import.
+	   * @param t coefficient of the new variable created.
+	   * @param m weight for island formation.
+	   * @param export exporting from the island.
+	   */
+	  def addSimpleIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]]) = {
+	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iterV(depth+1)) andThen export
+	    new IterDynSys(sumFn(dyn, isle), steps, depth+1)
+	  }
+	  
+	  /**
+	   * dynamics for a new system with an isle added.
+	   */
+	  def withIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth) : DynFn[M, V] = {
+	    def iternext = iterateDiffbleDepth(extendM(withIsle(v, t, m, export, d+1)), steps, d + 1)
+	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
+	    sumFn(dyn, isle)
+	  }
+	  
+	  def addIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]]) = new IterDynSys(
+	      withIsle(v: V, t: M, m : M, export), steps, depth)
+	  
+	  def next = extendM(dyn)
 	}
 	    
 	/**
@@ -76,7 +100,7 @@ object FiniteDistbributionLearner {
 	 * smooth function corresponding to adding the V distributions for two given smooth functions.
 	 *  
 	 */
-	def sumFn[M, V](fst: DynFn[M, V], scnd : DynFn[M, V]) = {
+	def sumFn[M, V](fst: => DynFn[M, V], scnd : => DynFn[M, V]) = {
 	  def func(st : (FD[M], FD[V])) = fst(st) ++ scnd(st)
 	  
 	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
@@ -213,6 +237,14 @@ object FiniteDistbributionLearner {
 	  def func(mv: (FD[M], FD[V])) = (mv._1, fn(mv))
 	  
 	  def grad(mv: (FD[M], FD[V]))(mw: (FD[M], FD[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def projectV[M, V] = {
+	  def func(mv: (FD[M], FD[V])) = mv._2
+	  
+	  def grad(mv: (FD[M], FD[V]))(v : FD[V]) = (FiniteDistribution.empty[M], v)
 	  
 	  DiffbleFunction(func)(grad)
 	}

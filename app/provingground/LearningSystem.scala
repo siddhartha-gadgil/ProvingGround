@@ -26,7 +26,7 @@ object LearningSystem{
     
     
     object DiffbleFunction{
-      def apply[A, B](f: A => B)(grd: A => (B => A)) = new DiffbleFunction[A, B]{
+      def apply[A, B](f: => A => B)(grd: => A => (B => A)) = new DiffbleFunction[A, B]{
         def apply(a: A) = f(a)
         
         def grad(a: A) = grd(a)
