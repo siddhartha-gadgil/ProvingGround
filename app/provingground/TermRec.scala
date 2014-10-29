@@ -3,6 +3,8 @@ import HoTT._
 
 
   trait TermRec[U] {
+	val specialTerms: PartialFunction[Term, U]
+  
     def fromString(str: String): U
 
     def appln(func: U, arg: U): U

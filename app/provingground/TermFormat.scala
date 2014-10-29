@@ -4,6 +4,8 @@ import HoTT._
 
 object TermFormat {
   implicit class StringFormat(syms: TermSyms) extends TermRec[String] {
+    val specialTerms: PartialFunction[Term, String] = Map()
+    
     def fromString(str: String): String = str
 
     def appln(func: String, arg: String): String = func+ "(" + arg +")" 
