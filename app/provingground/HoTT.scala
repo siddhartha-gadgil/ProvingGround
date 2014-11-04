@@ -355,7 +355,7 @@ object HoTT{
 
     
     /** Abstract pair, parametrized by scala types of components, generally a pair object or a pair type. */
-	trait AbsPair[U<: Term, V <: Term] extends Term{
+	trait AbsPair[+U<: Term, +V <: Term] extends Term{
 	  val first: U
 	  val second: V
 	}
@@ -855,11 +855,11 @@ object HoTT{
 	 * Dependent pair (a: A, b : B(a)) - element of a Sigma type.
 	 *
 	 */
-	case class DepPair[W<: Term with Subs[W], U<: Term with Subs[U]](a : W, b: U, fibers: TypFamily[W, U]) extends Term with
-		Subs[DepPair[W, U]]{
+	case class DepPair[W<: Term with Subs[W], U<: Term with Subs[U]](first : W, second: U, fibers: TypFamily[W, U]) extends Term with
+		Subs[DepPair[W, U]] with AbsPair[W, U]{
 	  val typ = SigmaTyp(fibers)
 
-	  def subs(x: Term, y: Term) = DepPair(a.subs(x,y), b.subs(x,y), fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = DepPair(first.subs(x,y), second.subs(x,y), fibers.subs(x, y))
 	}
 
 	
