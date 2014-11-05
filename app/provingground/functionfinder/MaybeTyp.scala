@@ -19,7 +19,7 @@ object MaybeTyp {
     def apply (term: Option[U]) = Maybe(term, typ)
     
     def unapply(term: Term) = term match {
-      case Maybe(Some(x : U), `typ`) => Some(Some(x))
+      case Maybe(Some(x), `typ`) => Some(Some(x.asInstanceOf[U]))
       case _ => None
     }
   }

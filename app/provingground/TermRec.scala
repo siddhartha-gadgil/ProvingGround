@@ -17,7 +17,9 @@ import HoTT._
 
     def sigma(fibre: U): U
 
-    def plus(first: U, scnd: U): U
+    def plus(first: U, second: U): U
+    
+    def pair(first: U, second: U): U
 
     def symbobj(term: SymbObj[Term]): U
 
@@ -29,7 +31,8 @@ import HoTT._
       case Lambda(x, y: Term) => lambda(apply(x), apply(y))
       case PiTyp(fibre) => pi(apply(fibre))
       case SigmaTyp(fibre) => sigma(apply(fibre))
-      case PlusTyp(fisrt, scnd) => plus(apply(fisrt), apply(scnd))
+      case PlusTyp(first, scnd) => plus(apply(first), apply(scnd))
+      case p: AbsPair[_, _] => pair(this(p.first), this(p.second)) 
       case fn: FuncTyp[_, _] => arrow(apply(fn.dom), apply(fn.codom))
       case sym: SymbObj[_] => symbobj(sym)
       case sym: SymbTyp => symbtyp(sym)

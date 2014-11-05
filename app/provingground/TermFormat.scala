@@ -19,6 +19,8 @@ object TermFormat {
     def sigma(fibre: String): String = syms.Sigma + fibre
 
     def plus(first: String, scnd: String): String = first+"+" + scnd
+    
+    def pair(first: String, second: String) = "(" + first + " , "+ second + ")"
 
     def symbobj(term: SymbObj[Term]): String = term.name.toString +" : "+ this(term.typ)
 
