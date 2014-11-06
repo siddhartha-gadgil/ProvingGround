@@ -1,12 +1,59 @@
 import provingground.HoTT._
 import provingground.Contexts._
+import scala.util._
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object Unify{
+  def multisub[U <: Term with Subs[U]](x: U, m : Map[Term, Term]): U = m.toList  match {
+    case List() => x
+    case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
+  }
+  
+  def dependsOn(term: Term): List[Term] => Boolean = {
+    case List() => false
+    case x :: ys => term.dependsOn(x) || dependsOn(term)(ys)
+  } 
+  
+  def mergeMaps[U, V](x: Map[U, V], y: Map[U, V]): Option[Map[U, V]] =  
+    x.keys match {
+      case List() => Some(y)
+      case a :: bs => if (y.getOrElse(a, x(a)) == x(a)) Some(y + ((a, x(a)))) else None
+    } 
+        
+  def mergeOptMaps[U, V](x: Option[Map[U, V]], y: Option[Map[U, V]]): Option[Map[U, V]] = 
+    x flatMap ((a) => 
+      y flatMap ((b) =>
+        mergeMaps(a, b)
+  ))
+  
+  def unify[U<: Term with Subs[U]](lhs: U, rhs: U, freevars: List[Term]): Option[Map[Term, Term]] = {
+    if (!dependsOn(lhs)(freevars)) 
+      {if (lhs == rhs) Some(Map()) else None} 
+    else
+      (lhs, rhs) match {
+      case (PiTyp(f), PiTyp(g)) => unify(f,g, freevars)
+      
+      case _ => None
+    }
+  }
+  
+  def mkLambda[U <: Term with Subs[U] : TypeTag, V<: Term with Subs[V] : TypeTag](f : FuncTerm[U, V]) = {
+    val newvar = f.dom.obj.asInstanceOf[U]
+    lambda(newvar)(f(newvar))
+  }
+  
+  def mkLmbda[U <: Term with Subs[U] : TypeTag, V<: Term with Subs[V] : TypeTag](f : FuncObj[U, V]) = {
+    val newvar = f.dom.obj.asInstanceOf[U]
+    lmbda(newvar)(f(newvar))
+  }
+  
+  
+object Old{
   def multisub(x: Term, m : Map[Term, Term]): Term = m.toList  match {
     case List() => x
     case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
   }
-
+  
   def unify(source: Term, target: Term, freevars: Set[Term]) : Option[Map[Term,Term]] = (source, target) match {
     case (x, y) if freevars contains x => Some(Map(x -> y))
     case (x: Symbolic, y: Symbolic) if x.typ != y.typ =>
@@ -30,4 +77,5 @@ object Unify{
     case LambdaMixin(x, tail, _) => unifyctx(source, target, freevars + x, tail)
     case _ => unifyctx(source, target, freevars, ctx.tail)
   }
+}
 }
