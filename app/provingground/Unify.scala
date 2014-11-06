@@ -32,7 +32,15 @@ object Unify{
     else
       (lhs, rhs) match {
       case (PiTyp(f), PiTyp(g)) => unify(f,g, freevars)
-      
+      case (SigmaTyp(f), SigmaTyp(g)) => unify(f,g, freevars)
+      case (FuncTyp(a, b), FuncTyp(c, d)) => 
+        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+      case (PlusTyp(a, b), PlusTyp(c, d)) => 
+        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+      case (x: AbsPair[_, _], y: AbsPair[_, _])=>
+        mergeOptMaps(unify(x.first, y.first, freevars), unify(x.second, y.second,freevars))
+      case (applptnterm(a, b), applptnterm(c, d)) =>
+        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
       case _ => None
     }
   }
