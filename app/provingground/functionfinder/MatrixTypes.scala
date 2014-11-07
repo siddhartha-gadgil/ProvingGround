@@ -11,6 +11,7 @@ object MatrixTypes {
   val Y = "Y" :: __
   val W = "W" :: __
   
+  // TODO replace this by recursive records.
   val Zmat = {
     lambda(X)(
     		lambda(Y)(

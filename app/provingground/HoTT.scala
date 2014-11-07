@@ -674,6 +674,14 @@ object HoTT{
 	def optlambda(variable: Term) : Term => Term = value =>	  
 	  	    if (value dependsOn variable)  lambda(variable)(value) else value
 	  
+	/**
+	 * Sigma type based on lambda
+	 * 
+	 */
+	 def sigma[U<: Term with Subs[U]: TypeTag, V <: Term with Subs[V]: TypeTag](variable: U)(value : Typ[V]) = {
+	  	      val fibre = lmbda(variable)(value)
+	  	      SigmaTyp(fibre)
+	  	    }
 
 	/**
 	 * convenience method for lambdas
@@ -851,6 +859,8 @@ object HoTT{
 	  override def toString = Sigma+"("+fibers.toString+")"
 	}
 
+	
+	
 	/**
 	 * Dependent pair (a: A, b : B(a)) - element of a Sigma type.
 	 *
