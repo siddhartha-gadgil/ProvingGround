@@ -1,55 +1,86 @@
 package provingground
 import HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.language.implicitConversions
 
 object Tuples {
 	
-	trait TermTuple[Head <: Term with Subs[Head], TermType <: Term with Subs[TermType]]{
-
-	  val head: Head
+	trait TermTuple[ 
+	  TermType <: Term with Subs[TermType], 
+	  F <: Term with Subs[F], 
+	  T <: Term with Subs[T]] extends MapsTo[F, T]{
 	  
 	  val term : TermType with Subs[TermType]
 	  
-	  def subs(x: Term, y: Term): TermTuple[Head, TermType]
+	  def subs(x: Term, y: Term): TermTuple[TermType, F,  T]
+	  
+	  def prepend[U <: Term with Subs[U]: TypeTag](
+	      head: U)(implicit 
+	          tagTerm: TypeTag[TermType], tagf: TypeTag[F], tagT: TypeTag[T]) = DepPairCons(head, this)
 
-	  def newhead(that: Head): TermTuple[Head, TermType]
-	  
-	  type LambdaType <: Term with Subs[LambdaType]
-	  
-	  def lm(target: Term) : LambdaType
+	  def +:[U <: Term with Subs[U]: TypeTag](
+	      head: U)(implicit 
+	          tagTerm: TypeTag[TermType], tagf: TypeTag[F], tagT: TypeTag[T]) = prepend(head)
 	}
 	
-	case class Singleton[U <: Term with Subs[U] : TypeTag](head : U) extends TermTuple[U, U]{
+	implicit def getTerm[U <: Term with Subs[U], 
+	  F <: Term with Subs[F], T <: Term with Subs[T]](tuple: TermTuple[U, F, T]): U = tuple.term
+	
+	trait MapsTo[F, T]{
+	  type Func = F
 	  
-	  lazy val term = head
+	  type Target = T
 	  
-	  type TailCons = U
-	  
-	  def apply(value: U) = value
-	  
-	  def subs(x: Term, y: Term) = Singleton(head.subs(x, y))
-	  
-	  def newhead(that: U) = Singleton(that)
-	  
-	  type LambdaType = FuncTerm[U, Term]
-	  
-	  def lm(target: Term) = lambda(term)(target)
+	  def mapsTo(target: T): F
 	}
 	
+	case class Singleton[U <: Term with Subs[U] : TypeTag](
+	    head : U) extends SingleEnv[U, Term](head){
+	  def at[T <: Term with Subs[T]: TypeTag] = new SingleEnv[U, T](term)
+	}
 	
-	case class PairCons[U <: Term with Subs[U] : TypeTag, V <: Term with Subs[V], W <: Term with Subs[W]](
-	    head: U, tail: TermTuple[V, W]) extends TermTuple[U, PairObj[U, W]]{
+	class SingleEnv[U <: Term with Subs[U] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	    head:  => U) extends TermTuple[U, FuncTerm[U, T], T]{
+	  
+	  lazy val term = head	  
+	  
+	  
+	  def subs(x: Term, y: Term) = new SingleEnv(term.subs(x, y))
+	  
+	  def mapsTo(target: T) = lambda(term)(target)
+	}
+	
+	implicit def singleton[U <: Term with Subs[U]: TypeTag](term: U) = Singleton(term)
+	
+	
+	case class PairCons[U <: Term with Subs[U] : TypeTag, 
+	  W <: Term with Subs[W],
+	  F <: Term with Subs[F] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	    head: U, tail: TermTuple[W, F, T]
+	    ) extends TermTuple[PairObj[U, W], FuncTerm[U, F], T]{
+	  
 	
 	  lazy val term = PairObj(head, tail.term)
 	  
-	  def subs(x: Term, y: Term) = PairCons(head.subs(x, y), tail.subs(x, y))
+	  def subs(x: Term, y: Term) = PairCons(head.subs(x, y), tail.subs(x, y)) 
 	  
-	  def newhead(that: U) = PairCons(that, tail)
-	  
-	  type LambdaType = FuncTerm[U, tail.LambdaType]
-	  
-	  def lm(target: Term) = lambda(head)(tail.lm(target))
+	  def mapsTo(target: T) = lambda(head)(tail.mapsTo(target))
 	}
+
+	case class DepPairCons[U <: Term with Subs[U] : TypeTag, 
+	  W <: Term with Subs[W] : TypeTag,
+	  F <: Term with Subs[F] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	    head: U, tail: TermTuple[W, F, T]
+	    ) extends TermTuple[DepPair[U, W], FuncTerm[U, F], T]{
+	  
+	
+	  lazy val term = lambdaPair(head)(tail.term)
+	  
+	  def subs(x: Term, y: Term) = DepPairCons(head.subs(x, y), tail.subs(x, y)) 
+	  
+	  def mapsTo(target: T) = lambda(head)(tail.mapsTo(target))
+	}
+
 
 	
 }

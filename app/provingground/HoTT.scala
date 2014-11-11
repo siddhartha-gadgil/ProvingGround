@@ -673,12 +673,20 @@ object HoTT{
 	 */
 	def optlambda(variable: Term) : Term => Term = value =>	  
 	  	    if (value dependsOn variable)  lambda(variable)(value) else value
-	  
+	
+	  	    
+	def lambdaPair[U<: Term with Subs[U]: TypeTag, V <: Term with Subs[V] : TypeTag](
+	    variable: U)(value : V) = {
+	  	      val fibre = lmbda(variable)(value.typ.asInstanceOf[Typ[V]])
+	  	      DepPair(variable, value, fibre)
+	  	    }
+	  	    
 	/**
 	 * Sigma type based on lambda
 	 * 
 	 */
-	 def sigma[U<: Term with Subs[U]: TypeTag, V <: Term with Subs[V]: TypeTag](variable: U)(value : Typ[V]) = {
+	 def sigma[U<: Term with Subs[U]: TypeTag, V <: Term with Subs[V]: TypeTag](
+	     variable: U)(value : Typ[V]) = {
 	  	      val fibre = lmbda(variable)(value)
 	  	      SigmaTyp(fibre)
 	  	    }
