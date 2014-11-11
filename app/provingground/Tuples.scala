@@ -36,7 +36,7 @@ object Tuples {
 	
 	case class Singleton[U <: Term with Subs[U] : TypeTag](
 	    head : U) extends SingleEnv[U, Term](head){
-	  def at[T <: Term with Subs[T]: TypeTag] = new SingleEnv[U, T](term)
+	  def on[T <: Term with Subs[T]: TypeTag] = new SingleEnv[U, T](term)
 	}
 	
 	class SingleEnv[U <: Term with Subs[U] : TypeTag, T <: Term with Subs[T]: TypeTag](

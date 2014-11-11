@@ -122,6 +122,7 @@ object HoTT{
           val fiber = LambdaFixed[Term, Typ[UU]](variable, this)
           PiTyp(fiber)
         }
+        
 
         /**
          * returns pair type, mainly to use for "and" for structures
@@ -885,7 +886,7 @@ object HoTT{
 	/** The identity type.
 	 *  This is the type lhs = rhs
 	 */
-	case class IdentityTyp[U <: Term](dom: Typ[U], lhs: U, rhs: U) extends Typ[Term]{
+	case class IdentityTyp[+U <: Term with Subs[U]](dom: Typ[U], lhs: U, rhs: U) extends Typ[Term]{
 	  type Obj = Term
 
 	  lazy val typ = Universe(max(univlevel(lhs.typ.typ), univlevel(rhs.typ.typ)))
@@ -895,9 +896,23 @@ object HoTT{
 	  def symbObj(name: AnySym)= SymbObj(name, this)
 	}
 
-	case class Refl[U <: Term](dom: Typ[U], value: U) extends AtomicTerm{
+	case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U) extends AtomicTerm{
 	  lazy val typ = IdentityTyp(dom, value, value)
 	}
+	
+	implicit class RichTerm[U <: Term with Subs[U] : TypeTag](term: U){
+	 
+	  def =:=(rhs: U) =  {
+	    assert(term.typ == rhs.typ, "mismatched types for equality "+ term.typ+" and "+rhs.typ) 
+	    IdentityTyp(term.typ.asInstanceOf[Typ[U]], term, rhs)	  
+	  }
+	  
+	  def :->[V <: Term with Subs[V] : TypeTag](that: V) = lambda(term)(that)
+	}
+	
+	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
+	
+	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
 	
 	/**
 	 * type A + B
