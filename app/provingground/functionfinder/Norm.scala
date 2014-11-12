@@ -43,4 +43,8 @@ object Norm {
 	  
 	  case _ => None
 	}
+	
+	def supWeight(fn: FuncTerm[Term, Term])(x: Term) = {
+	  if (x.typ == fn.dom) supnorm(fn(x)) else None
+	}
 }

@@ -4,10 +4,15 @@ import EnumType._
 import EnumFuncs._
 import EnumFin._
 import IntTypes._
+import BoolType._
 
 object RecEnum {
 	lazy val recEnumList : Typ[Term]  => Option[List[Term]] = {
 	  case Fin(n) => Some(enumFinList(n))
+	  case One => Some(List(Star))
+	  case Zero => Some(List())
+	  case Bool => Some(List(boolrep(true), boolrep(false)))
+	  case IdentityTyp(dom : Typ[Term], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
 	  case PairTyp(first : Typ[Term], second : Typ[Term]) => 
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
 	  case FuncTyp(dom, codom) =>
