@@ -1,6 +1,6 @@
 package controllers
 
-import provingground.AndrewsCurtisModel
+import models.AndrewsCurtisModel
 
 
 import play.api._
