@@ -1,10 +1,10 @@
-package provingground
+package provingground.fol
 
 import provingground.NlpProse._
-import provingground.Logic._
+import provingground.fol.Logic._
 import provingground.TextToInt._
-import provingground.Theory._
-import provingground.Theory.Document._
+import provingground.fol.Theory._
+import provingground.fol.Theory.Document._
 // import provingground.Arithmetic._
 // import provingground.Collections._
 

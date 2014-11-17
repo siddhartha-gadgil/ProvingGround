@@ -1,12 +1,9 @@
-package provingground
+package provingground.andrewscurtis
 
 // Play Json imports
 import play.api.libs.json._
-
-import play.api.Play.current
-
 import play.api.libs.iteratee._
-import play.api.libs.EventSource
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 /* 
  * Free group in n generators

@@ -1,6 +1,5 @@
 package provingground
 
-// import provingground.Logic._
 import provingground.NlpProse._
 
 object XmlParse{

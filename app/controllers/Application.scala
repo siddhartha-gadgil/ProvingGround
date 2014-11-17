@@ -16,10 +16,10 @@ import play.api.Play.current
 //import play.api.libs.iteratee._
 //import play.api.libs.EventSource
 
-import provingground.AndrewsCurtis._
-import provingground.AndrewsCurtisInterface._
+import provingground.andrewscurtis.AndrewsCurtis._
+import provingground.andrewscurtis.AndrewsCurtisInterface._
 
-import provingground.AndrewsCurtisModel._
+import models.AndrewsCurtisModel._
 import provingground.MoveLearner._
 
 object Application extends Controller {

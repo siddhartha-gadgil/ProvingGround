@@ -1,6 +1,6 @@
-package provingground 
- 
-import scala.language.implicitConversions 
+package provingground.fol 
+
+import scala.language.implicitConversions
 
 /** Defines predicate calculus and several associated methods, including:
   *
@@ -8,7 +8,7 @@ import scala.language.implicitConversions
   *
   * $ - substitutions to be used by an evolver
   */
-   
+
 object Logic {
 
 private def stringFn(name:String, params: List[String])={
@@ -17,9 +17,9 @@ private def stringFn(name:String, params: List[String])={
   (head/:terms)(_+_)  + ")"
   }
 
-/** Logical expressions */ 
-trait Expression{ 
-  /** Free variables in an expression */ 
+/** Logical expressions */
+trait Expression{
+  /** Free variables in an expression */
   def freeVars: Set[Var]
   }
 
@@ -32,7 +32,7 @@ class Func(val degree: Int) extends LanguageParam{
     def apply(params: List[Term]): Term = RecTerm(this, params)
     /** Substitute parameters in the function */
     def apply(params: Term*): Term = RecTerm(this, params.toList)
-    
+
     /** Make function into term with free variables replacing parameters */
     def fill = RecTerm(this, (varstream take degree).toList)
 }
@@ -61,12 +61,12 @@ case class PredSym(name: String, d :Int) extends Pred(d){
     def eqls(s: Term, t:Term)= AtomFormula(Eql, List(s, t))
 
     val Gt = BinRel(">")
-    def gt(s: Term, t:Term)= AtomFormula(Gt, List(s, t))    
+    def gt(s: Term, t:Term)= AtomFormula(Gt, List(s, t))
     val Lt = BinRel("<")
-    def lt(s: Term, t:Term)= AtomFormula(Lt, List(s, t))    
+    def lt(s: Term, t:Term)= AtomFormula(Lt, List(s, t))
   }
-  
-/** Binary Operation */  
+
+/** Binary Operation */
 case class BinOp(name: String) extends Func(2)
 
 /** Unary Operation */
@@ -98,14 +98,14 @@ trait Term extends Expression{
 
   /** Substitutes variables by terms*/
   def subs(xt: Var=> Term): Term
-  
+
   /** Single variable substituted by a term */
   def subs(x: Var, t: Term): Term = {
     val xt: (Var => Term) = (y: Var) => if (y==x) t else y
     subs(xt)
-  }  
-   
-  /** Formal + operation */  
+  }
+
+  /** Formal + operation */
   def +(that: Term) = BinOp("+")(this, that)
   /** Formal -(binary) operation */
   def -(that: Term) = BinOp("-")(this, that)
@@ -119,7 +119,7 @@ trait Term extends Expression{
   def |(that: Term) = BinOp("|")(this, that)
   /** Formal unary - operation */
   def unary_- = UnOp("-")(this)
-  
+
   /** Formal < relation */
   def <(that: Term): Formula = BinRel("<")(this, that)
   /** Formal > relation */
@@ -136,9 +136,9 @@ trait Term extends Expression{
   def >=(that: Term): Formula = BinRel(">=")(this, that)
   /** Formal ~ relation */
   def ~(that: Term): Formula = BinRel("~")(this, that)
-  
+
   def apply(b: BinRel) = (that: Term) => b(this, that)
-  
+
   def is (u: UnRel) = u(this)
   }
 
@@ -147,17 +147,17 @@ class Var extends Term{
   val freeVars = Set(this)
   def subs(xt: Var => Term): Term = xt(this)
   }
- 
+
 /** Logical Variable determined by Name */
 case class VarSym(name: String) extends Var{
-	  override def toString = name 
+	  override def toString = name
 		}
 
 /** stream of Variables starting with Var("a") */
 val varstream: Stream[Var] = (Stream.from (0)) map ((x: Int) => VarSym((x + 'a').toChar.toString))
 
 /** Logical constants */
-trait Const extends Term with LanguageParam{ 
+trait Const extends Term with LanguageParam{
   override val freeVars: Set[Var] = Set()
   override def subs(xt: Var=> Term)  = this
   }
@@ -169,18 +169,18 @@ case class ConstSym(name: String) extends Const
 case class IntConst(value: Long) extends Const{
 	override def toString = value.toString
 }
-  
+
 /** Unparsed term formally wrapped */
 case class TermFmla(name:String) extends Term{
   override def toString = name
   val freeVars: Set[Var] = Set()
-  def subs(xt: Var=> Term): Term = this  
+  def subs(xt: Var=> Term): Term = this
   }
 
 /** Recursive term */
 case class RecTerm(f: Func, params: List[Term]) extends Term{
   def this(f:Func, t: Term)= this(f, List(t))
-    
+
   override def toString = f match {
      case FuncSym(name, _) => stringFn(name, params map (_.toString))
      case BinOp(name) => params.head.toString+name+params.last.toString
@@ -208,21 +208,21 @@ trait Formula extends Expression{
   /** Logical not */
   def unary_! : Formula = NegFormula(this)
 
-  
+
   /** Substitute terms for variables, should be abstract*/
-  def subs(xt: Var=> Term): Formula 
-  
+  def subs(xt: Var=> Term): Formula
+
   /** Substituting a sigle variable */
   def subs(x: Var, t: Term): Formula = {
     val xt: (Var => Term) = (y: Var) => if (y==x) t else y
     subs(xt)
   }
-  
+
   /** ForAll added for free variables */
- lazy val sentence = if (freeVars == Set.empty) this else (freeVars :\ this) (UnivQuantFormula(_,_)) 
-  
-  
-  val freeVars: Set[Var] 
+ lazy val sentence = if (freeVars == Set.empty) this else (freeVars :\ this) (UnivQuantFormula(_,_))
+
+
+  val freeVars: Set[Var]
 }
 
 object Formula{
@@ -275,7 +275,7 @@ def forAll(xs: Var*)(p: Formula): Formula = (xs :\ p) (UnivQuantFormula(_,_))
 def exists(xs: Var*)(p: Formula): Formula = (xs :\ p) (ExQuantFormula(_,_))
 
 
-/** Atomic Formulas */  
+/** Atomic Formulas */
 trait AtomicFormula extends Formula{
   val pred: Pred
   val params: List[Term]
@@ -290,7 +290,7 @@ case class AtomFormula(pred: Pred, params: List[Term]) extends AtomicFormula{
 	override def toString = stringFn(pred.toString, params map (_.toString))
   }
 
-/** Equality formula; equality may also be given by conjunction formula */  
+/** Equality formula; equality may also be given by conjunction formula */
 case class Eq(p: Term, q: Term) extends AtomicFormula{
   def subs(xt: Var => Term): Formula = Eq(p subs xt, q subs xt)
   val freeVars: Set[Var] = p.freeVars union q.freeVars
@@ -298,9 +298,9 @@ case class Eq(p: Term, q: Term) extends AtomicFormula{
   val params = List(p,q)
 	override def toString = p.toString + "=" + q.toString
   }
-  
+
 implicit def eqFmla(pq: Eq) : AtomFormula = AtomFormula(BinRel("="), List(pq.p, pq.q))
-  
+
 /** Boolean True as Formula */
 case object True extends Formula{
 	def subs(xt: Var => Term): Formula = this
@@ -317,14 +317,14 @@ case object False extends Formula{
 implicit def trueFalse(b: Boolean): Formula = b match{
   case true => True
   case false => False
-  }  
-  
-  
+  }
+
+
 /** Formula valued variable */
 class FormulaVar(val freeVars: Set[Var]) extends Formula{
 	def subs(xt: Var => Term): Formula = this
 	def this() = this(Set())
-	} 
+	}
 
 
 private def dual(x: Var): (Var=> Formula) => Formula = {
@@ -341,10 +341,10 @@ private def evalF(c: Formula=> Formula, p: Formula) = c(p)
 
 def subs(baseFmla : Formula, vars : List[Var], props : List[Propt]): Formula ={
   val pairs= vars zip props
-  val fmlaList = for ((x, p) <- pairs) yield p(x) 
+  val fmlaList = for ((x, p) <- pairs) yield p(x)
   (baseFmla /: fmlaList)(_ & _)
 }
- 
+
 def subs(baseFmla : Formula, x : Var, props : List[Propt]):Formula ={
   def evalx(p: Var=> Formula): Formula = p(x)
   val fmlaList : List[Formula] = props map(evalx)
@@ -384,9 +384,9 @@ def bigOr(bs: Stream[Boolean]): Boolean = {
 val exprProdSet: PartialFunction[(Expression, Expression), Set[Expression]] ={
   case (p: Formula, y: Var) if (p.freeVars contains y) =>
     (for (x<-p.freeVars) yield p.subs(x, y)).toSet union Set(ExQuantFormula(y, p), UnivQuantFormula(y,p))
-  case (p: Formula, t: Term) => 
+  case (p: Formula, t: Term) =>
     (for (x<-p.freeVars) yield p.subs(x, t)).toSet
-  case (p: Term, t: Term) => 
+  case (p: Term, t: Term) =>
     (for (x<-p.freeVars) yield p.subs(x, t)).toSet
   case (p: Formula, q: Formula) =>
     Set(p & q, p | q, p implies q, p equiv q, !p)
@@ -395,12 +395,12 @@ val exprProdSet: PartialFunction[(Expression, Expression), Set[Expression]] ={
 
 /** Builds terms by substituting other terms for free variables */
 val termProdSet: PartialFunction[(Term, Term), Set[Term]] ={
-  case (p: Term, t: Term) if (!p.freeVars.isEmpty) => 
+  case (p: Term, t: Term) if (!p.freeVars.isEmpty) =>
     (for (x<-p.freeVars) yield p.subs(x, t)).toSet
 }
 
 /** Given Boolean values for base formulas, recursively deduces for Conjunctions and Negations.
-  * Typically base cases are: 
+  * Typically base cases are:
   * 1. Atomic Formulas in interpretations,
   * 2. Formula Variables for verifying tautologies.
   */
@@ -434,7 +434,7 @@ trait Schema extends Formula{
   val formula : Formula
   /** The formula variables */
   val params: List[FormulaVar]
-  /** Substitute some formulas - typically free variables */ 
+  /** Substitute some formulas - typically free variables */
   def apply(f: PartialFunction[Formula, Formula]) = recFormula(formula, f)
   /** Substitute free variables (in sequence)*/
   def apply(ps: List[Formula])={
@@ -458,9 +458,9 @@ def offspring(f: Formula): Set[Formula]=f match{
 }
 
 /* Descendants of (recursive) formulas */
-def desc(f: Formula): Set[Formula] = offspring(f) flatMap (desc(_)) 
+def desc(f: Formula): Set[Formula] = offspring(f) flatMap (desc(_))
 
-    
+
 type OnParams[A, B] = PartialFunction[List[A], B]
 
 /** Primary maps for an interpretation */
@@ -471,11 +471,11 @@ trait PrimMap[A]{
 }
 // This is fixed for a given interpretation as the stream varies
 
-/** Logical Interpretation (data for Model, but no axioms) */  
+/** Logical Interpretation (data for Model, but no axioms) */
 trait Model[A] extends PrimMap[A]{
   /** The universe */
   val M: Stream[A]
-  
+
   /** Parameter space for free variables */
   type Mbar = Var => A
   /** Secondary map on terms */
@@ -484,16 +484,16 @@ trait Model[A] extends PrimMap[A]{
     case c: Const => primConst(c)
     case RecTerm(f, params) => primFunc(f)(params map (sec(_, z)))
     }
-  
-  
+
+
   private def changeVar(x: Var, a: A, z: Mbar): Mbar = (y: Var) => if (x==y) a else z(y)
-    
-  /** Variation of z along x */  
+
+  /** Variation of z along x */
   def variation(x: Var, z: Mbar): Stream[Mbar] = M map (changeVar(x, _ , z))
-  
-  
-  private def varFormula(x: Var, z: Mbar, phi: Formula): Stream[Boolean] = variation(x, z) map (sec(phi,_)) 
-  
+
+
+  private def varFormula(x: Var, z: Mbar, phi: Formula): Stream[Boolean] = variation(x, z) map (sec(phi,_))
+
   /** Secondary map for formulas, depending of parameters for variables */
   def sec(phi: Formula, z: Mbar): Boolean = phi match {
     case AtomFormula(f, params) => primPred(f)(params map (sec(_, z)))
@@ -506,12 +506,12 @@ trait Model[A] extends PrimMap[A]{
     case ExQuantFormula(x, p) => bigOr(varFormula(x, z, p))
     case UnivQuantFormula(x, p) => bigAnd(varFormula(x, z, p))
   }
-  
-  
-  
+
+
+
   private val zhead: Mbar = (x: Var) => M.head
-  
-  /** Check formula in interpretation after Universal quantification of free variables */  
+
+  /** Check formula in interpretation after Universal quantification of free variables */
   def check(f: Formula): Boolean = sec(f.sentence, zhead)
 }
 }

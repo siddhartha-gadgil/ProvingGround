@@ -1,15 +1,15 @@
-package provingground
+package provingground.codeexperiments
 
 import annotation.tailrec
 import scala.swing._
 import akka.actor._
-import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
-import scala.language.postfixOps
-import scala.language.implicitConversions
- 
 import scala.util._
+import akka.util.Timeout.durationToTimeout
+import scala.math.BigInt.int2bigInt
+import akka.pattern.ask
+import scala.language.postfixOps
 
 /** This is to experiment with using actors for background computations
 		We use a Naive algorithm as this suits our purposes

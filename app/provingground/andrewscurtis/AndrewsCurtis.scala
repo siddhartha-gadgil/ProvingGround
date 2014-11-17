@@ -1,24 +1,15 @@
-package provingground
+package provingground.andrewscurtis
 
-import provingground.FreeGroups._
+import FreeGroups._
 import provingground.Collections._
 import annotation._
-import scala.language.reflectiveCalls
-
-// Play Json imports
 import play.api.libs.json._
-
-import play.api.Play.current
-
 import play.api.libs.iteratee._
-import play.api.libs.EventSource
 import play.api.libs.concurrent._
-
 import akka.actor._
 import play.api.libs.concurrent.Execution.Implicits._
-
-
 import scala.concurrent._
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 object AndrewsCurtis{
   

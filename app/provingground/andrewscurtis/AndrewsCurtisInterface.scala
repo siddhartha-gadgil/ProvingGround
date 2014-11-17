@@ -1,21 +1,12 @@
-package provingground
+package provingground.andrewscurtis
 
-import provingground.AndrewsCurtis._
+import AndrewsCurtis._
 import provingground.Collections._
-import provingground.FreeGroups._
-
+import FreeGroups._
 import play.api.libs.json._
-
-import play.api.Play.current
-
-//import play.api.libs.iteratee._
-//import play.api.libs.EventSource
 import play.api.libs.concurrent._
-
 import akka.actor._
 import play.api.libs.concurrent.Execution.Implicits._
-
-
 import scala.concurrent._
 
 

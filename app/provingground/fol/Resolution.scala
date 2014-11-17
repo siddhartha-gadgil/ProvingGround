@@ -1,10 +1,9 @@
-package provingground
+package provingground.fol
 
-import provingground.Logic._
-import scala.language.postfixOps
+import provingground.fol.Logic._
 import scala.util._
-
 import provingground.Structures._
+import scala.Option.option2Iterable
 
 /** A basic resolution theorem prover */
 object Resolution{

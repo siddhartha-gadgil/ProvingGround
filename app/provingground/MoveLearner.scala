@@ -1,6 +1,5 @@
 package provingground
 
-// import provingground.FreeGroups._
 import provingground.Collections._
 import annotation._
 
@@ -27,7 +26,7 @@ import annotation._
  *
  * This is used to determine feedback for learning.
  *
- * 
+ *
  *
  * @param movetypes Move types
  *
@@ -396,4 +395,4 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
 object MoveLearner{
     case class DynDstView(vrtdst: List[Weighted[String]],
         edgdst : List[Weighted[String]], cntn : Double)
-} 
+}

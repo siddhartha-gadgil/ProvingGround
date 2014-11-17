@@ -1,7 +1,7 @@
 package provingground
 
 import provingground.NlpProse._
-import provingground.ParseProse._
+//import provingground.ParseProse._
 
 import java.io._
 // import java.util.*;
@@ -122,6 +122,6 @@ object CoreNLP{
 //      document.get(CorefChainAnnotation.class);
 
 		val tree =proseTrees("if a prime number p divides mn, p divides one of m and n", pipeline).head
-		println(toFormula(tree, Global))
+//		println(toFormula(tree, Global))
 	
 }

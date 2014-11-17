@@ -4,15 +4,13 @@ import scala.swing._
 import java.awt.Dimension
 import akka.actor._
 
-import provingground.CoreNLP._
-import provingground.Logic._
-import provingground.NlpProse._
-import provingground.ParseProse._
+
 import provingground.TextToInt._
+
 
  object AckGUI extends SimpleSwingApplication{
     val s = new Dimension(1500, 1500)
-	
+
 	object Ack{
 		val posInts: Stream[Int] = Stream.from(0)
 		def ack(m: BigInt, n: BigInt): BigInt = {
@@ -25,7 +23,7 @@ import provingground.TextToInt._
 		def apply(m: Int, n:Int) = ackStream(m)(n)
 		}
 
-	def ack(n: Int) = n * n 
+	def ack(n: Int) = n * n
 
 	val toCompute = new TextArea(10, 10){
 			charWrap = true
@@ -34,16 +32,16 @@ import provingground.TextToInt._
 		text = "Compute"
 		verticalAlignment = Alignment.Top
 		}
-	val computeFrame = new FlowPanel{	     
+	val computeFrame = new FlowPanel{
 	    contents += computeButton
 	    contents += toCompute
 	    border = Swing.EmptyBorder(20, 20, 20, 20)
 	}
-	 
+
 	val computeResult = new TextArea(10, 40){
 			charWrap = true
 			}
-		
+
 	val leftPanel = new BoxPanel(Orientation.Vertical){
 			contents += new Label("Enter number to compute Ackerman function")
 			contents += computeFrame
@@ -51,9 +49,9 @@ import provingground.TextToInt._
 			contents += computeResult
 			border = Swing.EmptyBorder(20, 20, 20, 20)
 			}
-			
 
-	
+
+
 
 	def top = new MainFrame{
 		title = "Computing the Ackermann function A(m, n) for n=2"

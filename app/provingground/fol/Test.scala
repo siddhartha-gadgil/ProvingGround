@@ -1,7 +1,7 @@
-package provingground
+package provingground.fol
 
 import provingground.XmlParse._
-import provingground.ParseProse._
+import provingground.fol.ParseProse._
 
 /** Parses the sentence in a given xml file */
 object Test extends App{
