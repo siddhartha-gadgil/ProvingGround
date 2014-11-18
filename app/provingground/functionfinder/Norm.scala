@@ -44,7 +44,9 @@ object Norm {
 	  case _ => None
 	}
 	
-	def supWeight(fn: FuncTerm[Term, Term])(x: Term) = {
+	def supWeightExp(fn: FuncTerm[Term, Term])(x: Term) = {
 	  if (x.typ == fn.dom) supnorm(fn(x)) else None
 	}
+	
+	def supWeight(fn: FuncTerm[Term, Term])(x: Term) = supWeightExp(fn)(x) map ((t) => math.pow(2, -t)) getOrElse (0.0)
 }

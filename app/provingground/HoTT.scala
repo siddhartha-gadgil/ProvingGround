@@ -907,7 +907,9 @@ object HoTT{
 	    IdentityTyp(term.typ.asInstanceOf[Typ[U]], term, rhs)	  
 	  }
 	  
-	  def :->[V <: Term with Subs[V] : TypeTag](that: V) = lambda(term)(that)
+	  def :->[V <: Term with Subs[V] : TypeTag](that: V) = lmbda(term)(that)
+	  
+	  def :~>[V <: Term with Subs[V] : TypeTag](that: V) = lambda(term)(that)
 	}
 	
 	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
