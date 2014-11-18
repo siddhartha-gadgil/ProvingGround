@@ -75,7 +75,32 @@ object HoTTcore {
 	
 	f(a) !: B                                 //> res8: provingground.HoTT.Term = ((a:-> b : (A⟶B))((a : A)) : B)
 
-// Should fail - replace FuncObj apply with act method, and then have an apply
+//Modus Ponens
+	val MP = A :~> (
+		B :~>
+			(a :->
+			lmbda(f)(f(a))
+			)
+			)                         //> MP  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT
+                                                  //| .Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.Ho
+                                                  //| TT.Term]],provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.
+                                                  //| HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provinggroun
+                                                  //| d.HoTT.Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provi
+                                                  //| ngground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.FuncObj[prov
+                                                  //| ingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] wit
+                                                  //| h provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Ter
+                                                  //| m,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A⟼(B⟼((a : A
+                                                  //| )⟼((a:-> b : (A⟶B))⟼((a:-> b : (A⟶B))((a : A)) : B)))))
+  MP(A)(B).typ                                    //> res9: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶B)⟶B))
+                                                  //| 
 
-	f("b" :: B).typ                           //> res9: provingground.HoTT.Typ[provingground.HoTT.Term] = B
+// A substitution check
+ MP("X" :: __)("Y" :: __).typ                     //> res10: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶((X⟶Y)⟶Y)
+                                                  //| )
+
+//  A more subtle check - failed
+MP(B).typ                                         //> res11: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(B⟶((B�
+                                                  //| �B)⟶B))))
+MP(B)(A).typ                                      //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶A)⟶A)
+                                                  //| )
 }

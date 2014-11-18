@@ -443,8 +443,12 @@ object HoTT{
 
       val depcodom : W => Typ[U]
 
-      def apply(arg: W): U
+      def act(arg: W): U
 
+      def apply(arg: W): U = {
+        assert(arg.typ == dom, s"function with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
+        act(arg)
+      }
 //      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncTerm[WW, UU]
 
       def subs(x: Term, y: Term) : FuncTerm[W, U]
@@ -496,7 +500,7 @@ object HoTT{
 	  /** Function application */
 
 
-	  def apply(arg: W) : U
+	  def act(arg: W) : U
 
 	  def subs(x: Term, y : Term) : FuncObj[W, U]
 
@@ -514,7 +518,7 @@ object HoTT{
 
       lazy val typ = FuncTyp[W, U](dom, codom)
 
-      def apply(arg: W) : U = codom.symbObj(ApplnSym(this, arg))
+      def act(arg: W) : U = codom.symbObj(ApplnSym(this, arg))
 
       def subs(x: Term, y: Term) = (x, y) match {
         case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
@@ -540,7 +544,7 @@ object HoTT{
 
 	  lazy val typ = FuncTyp[W, U](dom, codom)
 
-	  def apply(arg: W) = func(arg)
+	  def act(arg: W) = func(arg)
 
 	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom.subs(x, y), codom.subs(x, y))
 	}
@@ -577,7 +581,7 @@ object HoTT{
 	  }
 		  else FuncTyp(variable.typ , value.typ.asInstanceOf[Typ[Y]])
 
-	  def apply(arg: X) = value.subs(variable, arg)
+	  def act(arg: X) = value.subs(variable, arg)
 
 	  def subs(x: Term, y: Term) = (x, y) match {
 		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) =>
@@ -770,7 +774,7 @@ object HoTT{
 	  type Cod = U
 	  
 
-	  def apply(arg: W) : U 
+	  def act(arg: W) : U 
 
 	}
 
@@ -794,7 +798,7 @@ object HoTT{
 
 	  lazy val typ = PiTyp(fibers)
 
-	  def apply(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
+	  def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 	  
 	  def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.subs(u, v))
@@ -814,9 +818,9 @@ object HoTT{
 
 	  lazy val typ = PiTyp[W, U](fibers)
 
-	  def act(arg: W) = if (arg.typ == dom) Some(func(arg)) else None
+//	  def act(arg: W) = if (arg.typ == dom) Some(func(arg)) else None
 	  
-	  def apply(arg: W) = func(arg)
+	  def act(arg: W) = func(arg)
 
 	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
 	}
