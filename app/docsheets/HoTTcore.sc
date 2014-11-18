@@ -4,7 +4,7 @@ import provingground.HoTT._
 
 object HoTTcore {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
-  
+   
   //Identity on the universe
   
   val iduniv = lambda("A" :: __)("A" :: __)       //> iduniv  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.H
@@ -32,20 +32,21 @@ object HoTTcore {
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
                                                   //| .Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
-                                                  //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A⟼((a : A)⟼(a : A)))
+                                                  //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A⟼(((a : A) : A)⟼((a : A) : 
+                                                  //| A)))
  	
  	//identity on B and its type
  	
  	id(B)                                     //> res1: provingground.HoTT.FuncObj[provingground.HoTT.Term with provingground.
                                                   //| HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggroun
-                                                  //| d.HoTT.Subs[provingground.HoTT.Term]] = ((a : B)⟼(a : B))
+                                                  //| d.HoTT.Subs[provingground.HoTT.Term]] = (((a : A) : B)⟼((a : A) : B))
  	
  	id(B).typ                                 //> res2: provingground.HoTT.Typ[provingground.HoTT.Term] = (B⟶B)
 
 
 // document and check types of generated objects
 	id(B) !: B ->: B                          //> res3: provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.
-                                                  //| Term] = ((a : B)⟼(a : B))
+                                                  //| Term] = (((a : A) : B)⟼((a : A) : B))
 
 // Using the dsl to make identity
 
@@ -53,19 +54,22 @@ object HoTTcore {
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
                                                   //| .Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
-                                                  //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A⟼((a : A)⟼(a : A)))
+                                                  //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A⟼(((a : A) : A)⟼((a : A) : 
+                                                  //| A)))
 	
 	Id(B) !: B ->: B                          //> res4: provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.
-                                                  //| Term] = ((a : B)⟼(a : B))
+                                                  //| Term] = (((a : A) : B)⟼((a : A) : B))
 
 // The identity should be a Pi-Type. Note that the type of a term is suppressed if the term is itself a type.
   id.typ                                          //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼(A⟶A)))
   
-// Checking the DSL
-  Id == id                                        //> res6: Boolean = true
+// Checking the DSL - note that lambdas are now essentailly never definitionally equal
+  Id == id                                        //> res6: Boolean = false
+ 
+  Id(A)(a) == id(A)(a)                            //> res7: Boolean = true
  
  // Types should have type the universe
-  (A ->: B).typ                                   //> res7: provingground.HoTT.Universe = _
+  (A ->: B).typ                                   //> res8: provingground.HoTT.Universe = _
 
 // Function application
 
@@ -73,7 +77,7 @@ object HoTTcore {
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground
                                                   //| .HoTT.Term,provingground.HoTT.Term]] = (a:-> b : (A⟶B))
 	
-	f(a) !: B                                 //> res8: provingground.HoTT.Term = ((a:-> b : (A⟶B))((a : A)) : B)
+	f(a) !: B                                 //> res9: provingground.HoTT.Term = ((a:-> b : (A⟶B))((a : A)) : B)
 
 //Modus Ponens
 	val MP = A :~> (
@@ -89,18 +93,19 @@ object HoTTcore {
                                                   //| ngground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.FuncObj[prov
                                                   //| ingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] wit
                                                   //| h provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Ter
-                                                  //| m,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A⟼(B⟼((a : A
-                                                  //| )⟼((a:-> b : (A⟶B))⟼((a:-> b : (A⟶B))((a : A)) : B)))))
-  MP(A)(B).typ                                    //> res9: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶B)⟶B))
-                                                  //| 
-
-// A substitution check
- MP("X" :: __)("Y" :: __).typ                     //> res10: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶((X⟶Y)⟶Y)
+                                                  //| m,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A⟼(B⟼(((a : 
+                                                  //| A) : A)⟼(((a:-> b : (A⟶B)) : (A⟶B))⟼(((a:-> b : (A⟶B)) : (A⟶B))
+                                                  //| (((a : A) : A)) : B)))))
+  MP(A)(B).typ                                    //> res10: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶B)⟶B)
                                                   //| )
 
-//  A more subtle check - failed
-MP(B).typ                                         //> res11: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(B⟶((B�
+// A substitution check
+ MP("X" :: __)("Y" :: __).typ                     //> res11: provingground.HoTT.Typ[provingground.HoTT.Term] = (X⟶((X⟶Y)⟶Y)
+                                                  //| )
+
+//  A more subtle check - works now :)
+MP(B).typ                                         //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(B⟶((B�
                                                   //| �B)⟶B))))
-MP(B)(A).typ                                      //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = (A⟶((A⟶A)⟶A)
+MP(B)(A).typ                                      //> res13: provingground.HoTT.Typ[provingground.HoTT.Term] = (B⟶((B⟶A)⟶A)
                                                   //| )
 }
