@@ -108,4 +108,11 @@ MP(B).typ                                         //> res12: provingground.HoTT.
                                                   //| �B)⟶B))))
 MP(B)(A).typ                                      //> res13: provingground.HoTT.Typ[provingground.HoTT.Term] = (B⟶((B⟶A)⟶A)
                                                   //| )
+
+import provingground.Equality._
+
+	eqls(Id, id)                              //> res14: Boolean = true
+	eqls(Id(A), id(A))                        //> res15: Boolean = true
+	Id(A) == id(A)                            //> res16: Boolean = false
+	eqls(id(A)(a), Id(A)(a))                  //> res17: Boolean = true
 }
