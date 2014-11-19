@@ -43,30 +43,6 @@ object FiniteDistbributionLearner {
 		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
 	}
 	
-	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
-	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
-	  
-	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
-	  
-	  /**
-	   * add a simple island one step deeper and create a system adding depth.
-	   * TODO check if we need d+1 in both places.
-	   * @param v new variable created in import.
-	   * @param t coefficient of the new variable created.
-	   * @param m weight for island formation.
-	   * @param export exporting from the island.
-	   */
-	  def withIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
-	    def iternext = iterateDiffbleDepth(extendM(withIsle(v, t, m, export, d+1, isleDepth)), steps, isleDepth(d))
-	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
-	    sumFn(dyn, isle)
-	  }
-	  
-	  def addIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
-	      withIsle(v: V, t: M, m : M, export, depth, isleDepth), steps, depth)
-	  
-	  def next = extendM(dyn)
-	}
 	    
 	/**
 	 * differentiable function from a given one by composing with scalar multiplication.
@@ -258,5 +234,31 @@ object FiniteDistbributionLearner {
 	  (init : (FD[M], FD[V])) => 
 	    val fb = feedback(f(init)._1, f(init)._2)
 	    (init._1 ++ (fb._1 * epsilon), init._2 ++ (fb._2 * epsilon))
+	}
+	
+	
+	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
+	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
+	  
+	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
+	  
+	  /**
+	   * add a simple island one step deeper and create a system adding depth.
+	   * 
+	   * @param v new variable created in import.
+	   * @param t coefficient of the new variable created.
+	   * @param m weight for island formation.
+	   * @param export exporting from the island.
+	   */
+	  def withIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
+	    def iternext = iterateDiffbleDepth(extendM(withIsle(v, t, m, export, d+1, isleDepth)), steps, isleDepth(d))
+	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
+	    sumFn(dyn, isle)
+	  }
+	  
+	  def addIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
+	      withIsle(v: V, t: M, m : M, export, depth, isleDepth), steps, depth)
+	  
+	  def next = extendM(dyn)
 	}
 }
