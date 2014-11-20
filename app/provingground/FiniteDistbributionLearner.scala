@@ -28,20 +28,7 @@ object FiniteDistbributionLearner {
 	 */
 	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
 	
-	  
-	/**
-	 * Iterate a differentiable function.
-	 */
-	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = Id[X]): DF[X, X] = {
-		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
-	}
-	
-	/** 
-	 *  Iterate a diffble function given depth
-	 */
-	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = Id[X]): DF[X, X] = {
-		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
-	}
+
 	
 	    
 	/**
@@ -63,6 +50,9 @@ object FiniteDistbributionLearner {
 	
 	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
 	
+	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
+	
+	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
 	
 	/**
 	 * smooth function corresponding to adding the V distributions for two given smooth functions.
@@ -73,6 +63,34 @@ object FiniteDistbributionLearner {
 	  
 	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
 	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def sumDF[M, V](fst: => DF[(FD[M], FD[V]),(FD[M], FD[V])], scnd : =>DF[(FD[M], FD[V]),(FD[M], FD[V])]) = {
+	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
+	  
+	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
+	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def foldDF[M, V](base: DF[(FD[M], FD[V]),(FD[M], FD[V])], comps: Map[V, DF[(FD[M], FD[V]),(FD[M], FD[V])]]) = {
+	  def func(arg: (FD[M], FD[V])) = {
+	    val l = for ((v, f) <- comps) yield dstmult(f(arg), arg._2(v)) 
+	    (base(arg) /: l)(dstsum)
+	  }
+	  
+	  def grad(arg: (FD[M], FD[V]))(vect: (FD[M], FD[V])) = {
+	    val l = for ((v, f) <- comps) yield {
+	      val prob = dstdot(f.grad(arg)(vect), arg)
+	      val term = dstmult(f.grad(arg)(vect), arg._2(v))
+	      (term._1, term._2 + (v, prob))
+	    }
+	    (base.grad(arg)(vect) /: l)(dstsum)
 	  }
 	  
 	  DiffbleFunction(func)(grad)
@@ -237,8 +255,26 @@ object FiniteDistbributionLearner {
 	}
 	
 	
+		  
+	/**
+	 * Iterate a differentiable function.
+	 */
+	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = Id[X]): DF[X, X] = {
+		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
+	}
+	
+	/** 
+	 *  Iterate a diffble function given depth
+	 */
+	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = Id[X]): DF[X, X] = {
+		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
+	}
+	
+	
 	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
 	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
+	  
+	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) Id[(FD[M], FD[V])] else iterateDiffbleDepth(next, steps, depth+1)
 	  
 	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
 	  
@@ -256,9 +292,40 @@ object FiniteDistbributionLearner {
 	    sumFn(dyn, isle)
 	  }
 	  
+	  /**
+	   * make a simple island one step deeper.
+	   * 
+	   * @param v new variable created in import.
+	   * @param t coefficient of the new variable created.
+	   * @param m weight for island formation.
+	   * @param export exporting from the island.
+	   */
+	  def mkIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
+	    def iternext = iterateDiffbleDepth(iter(isleDepth(d)), steps, isleDepth(d))
+	    spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
+	  }
+	  
 	  def addIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
 	      withIsle(v: V, t: M, m : M, export, depth, isleDepth), steps, depth)
 	  
 	  def next = extendM(dyn)
+	}
+	
+	type DynF[M, V] = DF[(FD[M], FD[V]), (FD[M], FD[V])]
+	
+	// Isle independent of state, does not include lambda's
+	def mixinIsle[M, V](base : => Int => DynFn[M, V], isle: DynFn[M, V] => DynFn[M, V]): Int => DynFn[M, V] = {
+	  def rec(g : => Int => DynFn[M, V])(n: Int) = sumFn(g(n), isle(g(n+1)))
+	  def f: Int => DynFn[M, V] = rec(f)
+	  f
+	}
+	
+	def mixinIsles[M, V](base : => Int => DynFn[M, V], isles: Map[V, DynF[M, V] => DynF[M, V]]): Int => DynF[M, V] = {
+	  def rec(g : => Int => DynF[M, V])(n: Int) = {
+	    val isllst = for ((v, f) <- isles) yield (v, isles(v)(g(n+1)))
+	    foldDF[M, V](g(n), isllst)
+	  }
+	  def f: Int => DynF[M, V] = rec(f)
+	  f
 	}
 }
