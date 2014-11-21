@@ -584,9 +584,9 @@ object HoTT{
 	  def act(arg: X) = value.subs(variable, arg)
 
 	  override def hashCode = {
-	    val newvar = variable.typ.symbObj(Name(variable.toString))
-	    val valhash = value.subs(variable, newvar).hashCode
-	    41 * (toString.hashCode + 41) + valhash
+	    val newvar = variable.typ.symbObj(Name("hash"))
+	    val newval = value.subs(variable, newvar)
+	    41 * (variable.typ.hashCode + 41) + newval.hashCode
 	  }
 	  
 	  def subs(x: Term, y: Term) = (x, y) match {
@@ -634,6 +634,10 @@ object HoTT{
 
 	  val dep = false
 	  
+	  override def equals(that: Any) = that match {
+	    case LambdaFixed(x: Term, y : Term) => y.subs(x, variable) == value
+	    case _ => false
+	  }
 
 
 	  override	def subs(x: Term, y: Term) : FuncObj[X, Y] = (x, y) match {

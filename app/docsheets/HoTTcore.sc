@@ -64,7 +64,7 @@ object HoTTcore {
   id.typ                                          //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼(A⟶A)))
   
 // Checking the DSL - note that lambdas are now essentailly never definitionally equal
-  Id == id                                        //> res6: Boolean = false
+  Id == id                                        //> res6: Boolean = true
  
   Id(A)(a) == id(A)(a)                            //> res7: Boolean = true
  
@@ -113,6 +113,6 @@ import provingground.Equality._
 
 	eqls(Id, id)                              //> res14: Boolean = true
 	eqls(Id(A), id(A))                        //> res15: Boolean = true
-	Id(A) == id(A)                            //> res16: Boolean = false
+	Id(A) == id(A)                            //> res16: Boolean = true
 	eqls(id(A)(a), Id(A)(a))                  //> res17: Boolean = true
 }
