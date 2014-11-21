@@ -1,6 +1,6 @@
 package provingground.functionfinder
 
-import provingground.Collections._
+//import provingground.Collections._
 import provingground.HoTT._
 import IntTypes._
 

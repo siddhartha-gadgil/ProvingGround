@@ -583,6 +583,12 @@ object HoTT{
 
 	  def act(arg: X) = value.subs(variable, arg)
 
+	  override def hashCode = {
+	    val newvar = variable.typ.symbObj(Name(variable.toString))
+	    val valhash = value.subs(variable, newvar).hashCode
+	    41 * (toString.hashCode + 41) + valhash
+	  }
+	  
 	  def subs(x: Term, y: Term) = (x, y) match {
 		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) =>
 		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
@@ -609,6 +615,11 @@ object HoTT{
 	  val depcodom : X => Typ[Y] = (t : X) => value.typ.subs(variable, t).asInstanceOf[Typ[Y]]
 
 	  val dep = value dependsOn variable
+	  
+	  override def equals(that: Any) = that match {
+	    case Lambda(x: Term, y : Term) => y.subs(x, variable) == value
+	    case _ => false
+	  }
 	}
 
 	// TODO replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
@@ -622,6 +633,7 @@ object HoTT{
 	  val codom = value.typ.asInstanceOf[Typ[Y]]
 
 	  val dep = false
+	  
 
 
 	  override	def subs(x: Term, y: Term) : FuncObj[X, Y] = (x, y) match {
@@ -678,7 +690,7 @@ object HoTT{
 	 */
 	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncTerm[U, V] = {
 	  val newvar = innervar(variable)
-	  Lambda(newvar, value.subs(variable, newvar))
+	  if (variable dependsOn value) Lambda(newvar, value.subs(variable, newvar)) else LambdaFixed(newvar, value.subs(variable, newvar))
 	}
 
 	/**
