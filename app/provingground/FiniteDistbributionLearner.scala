@@ -313,6 +313,17 @@ object FiniteDistbributionLearner {
 	
 	type DynF[M, V] = DF[(FD[M], FD[V]), (FD[M], FD[V])]
 	
+	
+	def sumF[M, V](fst: => DynF[M, V], scnd : => DynF[M, V]) = {
+	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
+	  
+	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
+	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
 	// Isle independent of state, does not include lambda's
 	def mixinIsle[M, V](base : => Int => DynFn[M, V], isle: DynFn[M, V] => DynFn[M, V]): Int => DynFn[M, V] = {
 	  def rec(g : => Int => DynFn[M, V])(n: Int) = sumFn(g(n), isle(g(n+1)))
@@ -320,10 +331,10 @@ object FiniteDistbributionLearner {
 	  f
 	}
 	
-	def mixinIsles[M, V](base : => Int => DynFn[M, V], isles: Map[V, DynF[M, V] => DynF[M, V]]): Int => DynF[M, V] = {
+	def mixinIsles[M, V](base : => Int => DynF[M, V], isles: Map[V, DynF[M, V] => DynF[M, V]]): Int => DynF[M, V] = {
 	  def rec(g : => Int => DynF[M, V])(n: Int) = {
 	    val isllst = for ((v, f) <- isles) yield (v, isles(v)(g(n+1)))
-	    foldDF[M, V](g(n), isllst)
+	    foldDF[M, V](sumF(base(n), g(n)), isllst)
 	  }
 	  def f: Int => DynF[M, V] = rec(f)
 	  f
