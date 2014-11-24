@@ -61,7 +61,7 @@ object HoTTcore {
                                                   //| Term] = (((a : A) : B)⟼((a : A) : B))
 
 // The identity should be a Pi-Type. Note that the type of a term is suppressed if the term is itself a type.
-  id.typ                                          //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((A⟼(A⟶A)))
+  id.typ                                          //> res5: provingground.HoTT.Typ[provingground.HoTT.Term] = (_⟶(A⟶A))
   
 // Checking the DSL - note that lambdas are now essentailly never definitionally equal
   Id == id                                        //> res6: Boolean = true
@@ -104,15 +104,9 @@ object HoTTcore {
                                                   //| )
 
 //  A more subtle check - works now :)
-MP(B).typ                                         //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = Pi((B⟼(B⟶((B�
-                                                  //| �B)⟶B))))
+MP(B).typ                                         //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = (_⟶(B⟶((B⟶B)
+                                                  //| ⟶B)))
 MP(B)(A).typ                                      //> res13: provingground.HoTT.Typ[provingground.HoTT.Term] = (B⟶((B⟶A)⟶A)
                                                   //| )
-
-import provingground.Equality._
-
-	eqls(Id, id)                              //> res14: Boolean = true
-	eqls(Id(A), id(A))                        //> res15: Boolean = true
-	Id(A) == id(A)                            //> res16: Boolean = true
-	eqls(id(A)(a), Id(A)(a))                  //> res17: Boolean = true
+	Id(A) == id(A)                            //> res14: Boolean = true
 }

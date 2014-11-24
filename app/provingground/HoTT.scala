@@ -47,8 +47,8 @@ object HoTT{
 
 
         def dependsOn(that: Term) = {
-          val newVar = typ.obj
-          subs(that, newVar) == this
+          val newVar = innervar(that)
+          subs(that, newVar) != this
         }
 
     }
@@ -62,6 +62,11 @@ object HoTT{
 	 */
     trait Subs[+U <: Term]{
       def subs(x: Term, y: Term) : U
+      
+      def replace(x: Term, y: Term) : U = {
+        assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
+        subs(x, y)
+      }
     }
 
 
@@ -332,6 +337,8 @@ object HoTT{
     val __ = Universe(0)
 
 
+    
+    //FIXME pair substitutions wrong - not checked if x = (a, b).
     /** Pair of types (A, B) */
     case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](
         first: Typ[U], second: Typ[V]) extends
@@ -341,7 +348,9 @@ object HoTT{
 
 		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 
-		def subs(x: Term, y: Term) = PairTyp(first.subs(x, y), second.subs(x, y))
+		def subs(x: Term, y: Term) = if (x == this) Try(
+		    y.asInstanceOf[PairTyp[U, V]]).getOrElse(
+		        {println(y); println(x); println(y.typ);PairTyp(first.subs(x, y), second.subs(x, y))}) else PairTyp(first.subs(x, y), second.subs(x, y))
 
 			// The name is lost as `name', but can be recovered using pattern matching.
 		def symbObj(name: AnySym): Obj = PairObj(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
@@ -351,7 +360,7 @@ object HoTT{
     case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](first: U, second: V) extends AbsPair[U, V] with Subs[PairObj[U, V]]{
     	lazy val typ = PairTyp(first.typ, second.typ)
 
-    	def subs(x: Term, y: Term) = PairObj[U, V](first.subs(x, y), second.subs(x, y))
+    	def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[PairObj[U, V]] else  PairObj[U, V](first.subs(x, y), second.subs(x, y))
 					}
 
 
@@ -684,9 +693,18 @@ object HoTT{
 	  override def toString = variable.toString
 	}
 
-	def innervar[U <: Term : TypeTag](variable : U) = {
+	def innervar[U <: Term : TypeTag](variable : U) : U = {
 		val typ = variable.typ.asInstanceOf[Typ[U]]
-		typ.symbObj(new InnerSym(variable))
+		variable match {
+		  case PairObj(a : Term, b : Term) => PairObj(
+		      a.typ.symbObj(new InnerSym(variable)), 
+		      b.typ.symbObj(new InnerSym(variable))).asInstanceOf[U]
+		  case PairTyp(a : Term, b : Term) => PairTyp(
+		      a.typ.symbObj(new InnerSym(variable)), 
+		      b.typ.symbObj(new InnerSym(variable))).asInstanceOf[U]
+		  case _ => typ.symbObj(new InnerSym(variable))
+		}
+		
 	}
 
 	/** Lambda constructor
@@ -694,7 +712,7 @@ object HoTT{
 	 */
 	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncTerm[U, V] = {
 	  val newvar = innervar(variable)
-	  if (variable dependsOn value) Lambda(newvar, value.subs(variable, newvar)) else LambdaFixed(newvar, value.subs(variable, newvar))
+	  if (variable.typ dependsOn value) Lambda(newvar, value.subs(variable, newvar)) else LambdaFixed(newvar, value.subs(variable, newvar))
 	}
 
 	/**
@@ -728,12 +746,6 @@ object HoTT{
 	  	      SigmaTyp(fibre)
 	  	    }
 
-	/**
-	 * convenience method for lambdas
-	 */
-	implicit class TermOps[U <: Term : TypeTag](value: Term){
-	  def :->[V <: Term with Subs[V] : TypeTag](that : V) = lambda(this.value)(that)
-	}
 
 	/**
 	 * type family
@@ -881,7 +893,7 @@ object HoTT{
 	 *  symbol for right component in pair from a given symbol
 	 */
 	case class RightSym(name: AnySym) extends AnySym{
-	  override def toString = name.toString + "_1"
+	  override def toString = name.toString + "_2"
 	}
 
 	/**
@@ -914,7 +926,7 @@ object HoTT{
 		Subs[DepPair[W, U]] with AbsPair[W, U]{
 	  val typ = SigmaTyp(fibers)
 
-	  def subs(x: Term, y: Term) = DepPair(first.subs(x,y), second.subs(x,y), fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[DepPair[W, U]] else DepPair(first.subs(x,y), second.subs(x,y), fibers.subs(x, y))
 	}
 
 
@@ -922,7 +934,7 @@ object HoTT{
 	/** The identity type.
 	 *  This is the type lhs = rhs
 	 */
-	case class IdentityTyp[+U <: Term with Subs[U]](dom: Typ[U], lhs: U, rhs: U) extends Typ[Term]{
+	case class IdentityTyp[+U <: Term with Subs[U]](dom: Typ[U], lhs: U, rhs: U) extends Typ[Term] with Subs[IdentityTyp[U]]{
 	  type Obj = Term
 
 	  lazy val typ = Universe(max(univlevel(lhs.typ.typ), univlevel(rhs.typ.typ)))
@@ -947,10 +959,11 @@ object HoTT{
 
 	  def :~>[V <: Term with Subs[V] : TypeTag](that: V) = lambda(term)(that)
 	}
+	
 
-	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
+//	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
 
-	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
+//	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
 
 	/**
 	 * type A + B
