@@ -48,8 +48,10 @@ object HoTT{
 
         def dependsOn(that: Term) = {
           val newVar = innervar(that)
-          subs(that, newVar) != this
+          replace(that, newVar) != this
         }
+        
+        def indepOf(that: Term) = !dependsOn(that)
 
     }
 
@@ -61,11 +63,15 @@ object HoTT{
 	 * specify result of substitution, typically so a class is closed under substitution.
 	 */
     trait Subs[+U <: Term]{
-      def subs(x: Term, y: Term) : U
+      def subs(x: Term, y: Term) : U with Subs[U]
       
-      def replace(x: Term, y: Term) : U = {
+      def replace(x: Term, y: Term) : U with Subs[U] = {
         assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
-        subs(x, y)
+        (x, y) match {
+          case (ab: AbsPair[u, v], cd: AbsPair[w, x]) if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) => 
+            replace(ab.first, cd.first) replace(ab.second, cd.second)
+          case _ => subs(x, y)
+        }
       }
     }
 
@@ -590,7 +596,7 @@ object HoTT{
 	  }
 		  else FuncTyp(variable.typ , value.typ.asInstanceOf[Typ[Y]])
 
-	  def act(arg: X) = value.subs(variable, arg)
+	  def act(arg: X) = value.replace(variable, arg)
 
 	  override def hashCode = {
 	    val newvar = variable.typ.symbObj(Name("hash"))
