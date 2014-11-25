@@ -94,9 +94,8 @@ object HoTTmore {
                                                   //| d.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]],provinggr
                                                   //| ound.HoTT.PairObj[provingground.HoTT.Term with provingground.HoTT.Subs[provi
                                                   //| ngground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[pro
-                                                  //| vingground.HoTT.Term]]] = (PairObj((PairObj((a : A),(b : B)) : A),(PairObj((
-                                                  //| a : A),(b : B)) : B))⟼PairObj((PairObj((a : A),(b : B)) : A),(PairObj((a :
-                                                  //|  A),(b : B)) : B)))
+                                                  //| vingground.HoTT.Term]]] = (PairObj(((a : A) : A),((b : B) : B))⟼PairObj(((
+                                                  //| a : A) : A),((b : B) : B)))
 	idp(ab)                                   //> res16: provingground.HoTT.PairObj[provingground.HoTT.Term with provingground
                                                   //| .HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Term]] = PairObj((a : A),(b : B))
@@ -109,10 +108,9 @@ object HoTTmore {
                                                   //| TT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.
                                                   //| HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]],provinggrou
                                                   //| nd.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = (PairO
-                                                  //| bj((PairObj((a : A),(b : B)) : A),(PairObj((a : A),(b : B)) : B))⟼(a : A))
-                                                  //| 
+                                                  //| bj(((a : A) : A),((b : B) : B))⟼((a : A) : A))
 	p("x" :: pair(A, B))                      //> res18: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.Ho
-                                                  //| TT.Term] = (a : A)
+                                                  //| TT.Term] = (x_1 : A)
 	p.dom                                     //> res19: provingground.HoTT.Typ[provingground.HoTT.Term] = PairTyp(A,B)
 
 
@@ -144,8 +142,8 @@ object HoTTmore {
 	A dependsOn AB                            //> res26: Boolean = true
 	
 	AB.obj                                    //> res27: provingground.HoTT.PairObj[provingground.HoTT.Term,provingground.HoT
-                                                  //| T.Term] = PairObj((provingground.HoTT$Typ$newname$2$@447f1499_1 : A),(provi
-                                                  //| ngground.HoTT$Typ$newname$2$@447f1499_2 : B))
+                                                  //| T.Term] = PairObj((provingground.HoTT$Typ$newname$2$@73d56e70_1 : A),(provi
+                                                  //| ngground.HoTT$Typ$newname$2$@73d56e70_2 : B))
 	
 	a dependsOn a                             //> res28: Boolean = true
 	
@@ -168,10 +166,11 @@ object HoTTmore {
 	val fstl = lambda(x)(x.first)             //> fstl  : provingground.HoTT.FuncTerm[provingground.HoTT.PairObj[provinggroun
                                                   //| d.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provinggr
                                                   //| ound.HoTT.PairObj[provingground.HoTT.Term,provingground.HoTT.Term]],proving
-                                                  //| ground.HoTT.Term] = (PairObj((PairObj((x_1 : A),(x_2 : B)) : A),(PairObj((x
-                                                  //| _1 : A),(x_2 : B)) : B))⟼(x_1 : A))
+                                                  //| ground.HoTT.Term] = (PairObj(((x_1 : A) : A),((x_2 : B) : B))⟼((x_1 : A) 
+                                                  //| : A))
 	
-	fstl(pair(a, b))                          //> res31: provingground.HoTT.Term = (x_1 : A)
+	
+	fstl(pair(a, b))                          //> res31: provingground.HoTT.Term = (a : A)
 	
 	fst.variable == x                         //> res32: Boolean = true
 	

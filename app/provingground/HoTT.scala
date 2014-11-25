@@ -206,10 +206,10 @@ object HoTT{
     }
 
     /** Constructing symbolic objects that are Terms but no more refined*/
-    case class SymbObj[+U<: Term](name: AnySym, typ: Typ[U]) extends Term with Symbolic{
+    case class SymbObj[+U<: Term : TypeTag](name: AnySym, typ: Typ[U]) extends Term with Symbolic{
       override def toString = "("+name.toString+" : "+typ.toString+")"
 
-      def newobj = typ.obj
+      def newobj = SymbObj(new InnerSym(this), typ)
 
       def subs(x: Term, y: Term) = this match {
         case `x` => y
@@ -225,7 +225,7 @@ object HoTT{
     case class SymbTyp(name: AnySym) extends Typ[Term] with Symbolic{
       lazy val typ = Universe(0)
 
-      def newobj = typ.obj
+      def newobj = SymbTyp(new InnerSym(this))
 
       type Obj = Term
 
@@ -738,6 +738,9 @@ object HoTT{
 		  case PairTyp(a : Term, b : Term) => PairTyp(
 		      a.typ.symbObj(new InnerSym(variable)),
 		      b.typ.symbObj(new InnerSym(variable))).asInstanceOf[U]
+		  case DepPair(a : Term, b : Term, fibre) => DepPair[Term, Term](
+		      a.typ.symbObj(new InnerSym(variable)),
+		      b.typ.symbObj(new InnerSym(variable)), fibre.asInstanceOf[TypFamily[Term, Term]]).asInstanceOf[U]
 		  case _ => typ.symbObj(new InnerSym(variable))
 		}
 
@@ -747,16 +750,16 @@ object HoTT{
 	 *
 	 */
 	def lambda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncTerm[U, V] = {
-	  val newvar = innervar(variable)
-	  if (variable.typ dependsOn value) Lambda(newvar, value.subs(variable, newvar)) else LambdaFixed(newvar, value.subs(variable, newvar))
+	  val newvar = variable.newobj
+	  if (variable.typ dependsOn value) Lambda(newvar, value.replace(variable, newvar)) else LambdaFixed(newvar, value.replace(variable, newvar))
 	}
 
 	/**
 	 * lambda constructor for fixed codomain
 	 */
-	def lmbda[U<: Term : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncObj[U, V] = {
-		val newvar = innervar(variable)
-	    LambdaFixed(newvar, value.subs(variable, newvar))
+	def lmbda[U<: Term with Subs[U] : TypeTag, V <: Term with Subs[V] : TypeTag](variable: U)(value : V) : FuncObj[U, V] = {
+		val newvar = variable.newobj
+	    LambdaFixed(newvar, value.replace(variable, newvar))
 	}
 
 	/**
