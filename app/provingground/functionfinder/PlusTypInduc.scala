@@ -15,6 +15,8 @@ object PlusTypInduc {
 
 	  val typ = dom ->: codom
 
+		def newobj = this
+
 	  def act(u : Term) = u match {
 	    case FirstIncl(`first`, a) => firstfn(a)
 	    case ScndIncl(`second`, b) => scndfn(b)
@@ -38,6 +40,8 @@ object PlusTypInduc {
 
 	  val typ = PiTyp(depcodom)
 
+		def newobj = this
+
 	  def act(u : Term) = u match {
 	    case FirstIncl(`first`, a) => firstfn(a)
 	    case ScndIncl(`second`, b) => scndfn(b)
@@ -51,7 +55,7 @@ object PlusTypInduc {
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = PlusExtendedDepFunction(
 	      first.subs(x,y), second.subs(x,y),
-	      depcodom.subs(x, y), firstfn.subs(x,y), scndfn.subs(x,y))	  
+	      depcodom.subs(x, y), firstfn.subs(x,y), scndfn.subs(x,y))
   }
 
 	val A ="A" :: __

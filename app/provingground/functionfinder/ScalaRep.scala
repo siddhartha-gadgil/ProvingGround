@@ -51,6 +51,8 @@ object ScalaRep {
 
 	  type scalaType = T
 
+    def newobj = typ.obj
+
       def subs(x : Term, y: Term) = if (x==this) y else this
     }
 
@@ -122,6 +124,8 @@ object ScalaRep {
 
 	  val typ = dom ->: codom
 
+    def newobj = typ.obj
+
 	  def act(u : U) = u match {
 	    case domrep(v) => codomrep(dfn(v))
 	    case _ => codom.symbObj(ApplnSym(this, u))
@@ -147,6 +151,8 @@ object ScalaRep {
       domrep: ScalaRep[U, V], codom: Typ[X]) extends ScalaRep[FuncTerm[U, X], V => X]{
     val typ = domrep.typ ->: codom
 
+    def newobj = typ.obj
+
     def apply(f: V => X) = SimpleExtendedFunction(f, domrep, codom)
 
     def unapply(u: Term) : Option[V => X] = u match {
@@ -165,6 +171,8 @@ object ScalaRep {
 
 
 	  val typ = dom ->: codom
+
+    def newobj = typ.obj
 
 	  def act(u : U) = u match {
 	    case domrep(v) => dfn(v)
@@ -262,6 +270,8 @@ object ScalaRep {
 	  val depcodom : U => Typ[X] = (arg : U) => fibers(arg)
 
 	  val typ = PiTyp(fibers)
+
+    def newobj = typ.obj
 
 	  def act(u : U) = u match {
 	    case domrep(v) => codomreps(v)(dfn(v))
