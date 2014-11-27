@@ -101,7 +101,7 @@ object ScalaRep {
    */
   case class FuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncObj[U, X], V => Y]{
-    val typ = domrep.typ ->: codomrep.typ
+    lazy val typ = domrep.typ ->: codomrep.typ
 
     def apply(f: V => Y) : FuncObj[U, X] = ExtendedFunction(f, domrep, codomrep)
 
@@ -118,13 +118,13 @@ object ScalaRep {
   case class ExtendedFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y,
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends FuncObj[U, X]{
 
-	  val dom = domrep.typ
+	  lazy val dom = domrep.typ
 
-	  val codom = codomrep.typ
+	  lazy val codom = codomrep.typ
 
-	  val typ = dom ->: codom
+	  lazy val typ = dom ->: codom
 
-    def newobj = typ.obj
+	  def newobj = typ.obj
 
 	  def act(u : U) = u match {
 	    case domrep(v) => codomrep(dfn(v))

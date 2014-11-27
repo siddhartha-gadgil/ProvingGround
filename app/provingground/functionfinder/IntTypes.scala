@@ -31,13 +31,13 @@ object IntTypes {
   
   case object Z extends IntTyp
   
-  @annotation.tailrec private def inducFn[U<: Term](f0 : U, g: Long => U => U, n : Long, 
+  @annotation.tailrec def inducFn[U<: Term](f0 : U, g: Long => U => U, n : Long, 
       thenApply: U => U = (u: U) => u) : U = {
    if (n > 0) (inducFn(f0, g, n - 1, (u: U) => g(n)(thenApply(u))))
    else thenApply(f0)
   }
   
-  private def induccurry[U <: Term : TypeTag]: U => (Long => U => U) => (Long => U) = {
+  def induccurry[U <: Term : TypeTag]: U => (Long => U => U) => (Long => U) = {
     (f0: U) => g: (Long => U => U) => (n: Long) => inducFn(f0, g, n)
     }
   

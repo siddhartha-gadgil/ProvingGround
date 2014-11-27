@@ -185,7 +185,7 @@ object HoTT{
     }
 
   //  import SimpleSyms._
-    import UnicodeSyms._
+    import SimpleSyms._
 
     /** traits that are given by name;
      *  does not include, for instance, pairs each of whose instance is given by a name;
