@@ -2,6 +2,8 @@ package provingground.functionfinder
 import provingground.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
+import scala.language.implicitConversions
+
 object ScalaRep {
 	/**
 	 * Representation by a scala object of a HoTT term
@@ -86,7 +88,7 @@ object ScalaRep {
   /**
    * A term representing itself.
    */
-  implicit class IdRep[U <: Term : TypeTag](val typ: Typ[U]) extends ScalaRep[U, U]{
+  case class IdRep[U <: Term : TypeTag](typ: Typ[U]) extends ScalaRep[U, U]{
     def apply(v : U) = v
 
     def unapply(u: Term): Option[U] = u match{
@@ -95,6 +97,7 @@ object ScalaRep {
     }
   }
 
+  implicit def idRep[U <: Term : TypeTag](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
 
   /**
    * Representations for functions given ones for the domain and codomain.

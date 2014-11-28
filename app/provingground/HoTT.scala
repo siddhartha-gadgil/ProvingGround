@@ -700,8 +700,10 @@ object HoTT{
 	/**
 	 * term as a symbol
 	 */
-	implicit class TermSymbol(term: Term) extends AnySym
+	case class TermSymbol(term: Term) extends AnySym
 
+	implicit def termSymbol(term: Term) : AnySym = TermSymbol(term)
+	
 	/**
 	 * returns symbolic object with new type.
 	 */
