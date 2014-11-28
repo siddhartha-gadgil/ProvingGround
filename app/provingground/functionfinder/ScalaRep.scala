@@ -2,6 +2,10 @@ package provingground.functionfinder
 import provingground.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
+import scala.util._
+
+import scala.language.implicitConversions
+
 object ScalaRep {
 	/**
 	 * Representation by a scala object of a HoTT term
@@ -43,6 +47,23 @@ object ScalaRep {
         codrepfmly: V => ScalaRep[X, Y]) = SigmaRep[UU, V, X, Y](this, codrepfmly)
   }
 
+  object ScalaRep{
+    def incl[U <: Term, V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
+      case (x, y) if x ==y => Some((v: V) => v.asInstanceOf[W])
+      case (rep: ScalaRep[U, V], IdRep(typ)) if rep.typ == typ => Some((v: V) => rep(v).asInstanceOf[W])
+      case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) => 
+        {
+          val dmap = incl(scnd.domrep, fst.domrep)
+          val cmap = incl(fst.codomrep, scnd.codomrep)
+          val m = for (dm <- dmap; cm <- cmap) yield ((f: a=> b) => (x: c) => cm(f(dm(x))))
+          m flatMap ((x: (a => b) => (c => d)) => Try(x.asInstanceOf[V => W]).toOption)
+        }
+            
+      case _ => None
+    }
+  }
+  
+  
   /**
    * constant  term.
    */
@@ -86,7 +107,7 @@ object ScalaRep {
   /**
    * A term representing itself.
    */
-  implicit class IdRep[U <: Term : TypeTag](val typ: Typ[U]) extends ScalaRep[U, U]{
+  case class IdRep[U <: Term : TypeTag](typ: Typ[U]) extends ScalaRep[U, U]{
     def apply(v : U) = v
 
     def unapply(u: Term): Option[U] = u match{
@@ -95,6 +116,7 @@ object ScalaRep {
     }
   }
 
+  implicit def idRep[U <: Term : TypeTag](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
 
   /**
    * Representations for functions given ones for the domain and codomain.
