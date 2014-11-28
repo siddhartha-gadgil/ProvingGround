@@ -2,6 +2,8 @@ package provingground.functionfinder
 import provingground.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
+import scala.util._
+
 import scala.language.implicitConversions
 
 object ScalaRep {
@@ -45,6 +47,23 @@ object ScalaRep {
         codrepfmly: V => ScalaRep[X, Y]) = SigmaRep[UU, V, X, Y](this, codrepfmly)
   }
 
+  object ScalaRep{
+    def incl[U <: Term, V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
+      case (x, y) if x ==y => Some((v: V) => v.asInstanceOf[W])
+      case (rep: ScalaRep[U, V], IdRep(typ)) if rep.typ == typ => Some((v: V) => rep(v).asInstanceOf[W])
+      case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) => 
+        {
+          val dmap = incl(scnd.domrep, fst.domrep)
+          val cmap = incl(fst.codomrep, scnd.codomrep)
+          val m = for (dm <- dmap; cm <- cmap) yield ((f: a=> b) => (x: c) => cm(f(dm(x))))
+          m flatMap ((x: (a => b) => (c => d)) => Try(x.asInstanceOf[V => W]).toOption)
+        }
+            
+      case _ => None
+    }
+  }
+  
+  
   /**
    * constant  term.
    */
