@@ -37,6 +37,21 @@ object IntTypes {
    else thenApply(f0)
   }
   
+  private val A = "A" ::__
+  
+  private val init = "a" :: A
+  
+  private val f = "f" :: (N ->: A ->: A) 
+  
+  val recN = {
+    lambda(A)(
+      lmbda(init)(lmbda(f)({
+        val dfn = (n: Long) => inducFn(init, (k: Long) => f(N.rep(k)), n)
+        val codrep = N.rep -->: A
+        codrep(dfn)
+        })))
+      }
+  
   def induccurry[U <: Term : TypeTag]: U => (Long => U => U) => (Long => U) = {
     (f0: U) => g: (Long => U => U) => (n: Long) => inducFn(f0, g, n)
     }
@@ -56,7 +71,7 @@ object IntTypes {
     rep(induccurry)
   }
   
-  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
+//  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
   
   val inducN = depFunc(N ->: __, (us: FuncObj[Term, Typ[Term]]) => induction(us))
   
