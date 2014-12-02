@@ -670,7 +670,7 @@ object HoTT{
 	 * lambda which is known to have fixed codomain.
 	 */
 	case class LambdaFixed[X<: Term : TypeTag, +Y <: Term with Subs[Y]: TypeTag](variable: X, value : Y)
-		extends LambdaLike(variable, value) with FuncObj[X, Y]{
+		extends LambdaLike(variable, value) with FuncObj[X, Y] with Subs[LambdaFixed[X, Y]]{
 	  override val dom = variable.typ.asInstanceOf[Typ[X]]
 
 	  val codom = value.typ.asInstanceOf[Typ[Y]]
@@ -685,7 +685,7 @@ object HoTT{
 
 		def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 
-	  override	def subs(x: Term, y: Term) : FuncObj[X, Y] = (x, y) match {
+	  override	def subs(x: Term, y: Term) : LambdaFixed[X, Y] = (x, y) match {
 		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) =>
 		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
 		      LambdaFixed(newvar.asInstanceOf[X] , value.subs(x,y))

@@ -34,7 +34,7 @@ object IntTypes {
   @annotation.tailrec def inducFn[U<: Term](f0 : U, g: Long => U => U, n : Long, 
       thenApply: U => U = (u: U) => u) : U = {
    if (n > 0) (inducFn(f0, g, n - 1, (u: U) => g(n)(thenApply(u))))
-   else thenApply(f0)
+   else {assert(n ==0 ,"induction at" + n); thenApply(f0)}
   }
   
   private val A = "A" ::__
@@ -44,10 +44,10 @@ object IntTypes {
   private val f = "f" :: (N ->: A ->: A) 
   
   val recN = {
-    lambda(A)(
-      lmbda(init)(lmbda(f)({
+    Lambda(A, 
+      LambdaFixed(init, LambdaFixed(f,  {
         val dfn = (n: Long) => inducFn(init, (k: Long) => f(N.rep(k)), n)
-        val codrep = N.rep -->: A
+        val codrep = N.rep :--> A
         codrep(dfn)
         })))
       }

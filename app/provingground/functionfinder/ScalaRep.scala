@@ -42,6 +42,9 @@ object ScalaRep {
     def -->:[W <: Term with Subs[W]: TypeTag, X, UU >: U <: Term : TypeTag](that : ScalaRep[W, X]) =
       FuncRep[W, X, UU, V](that, this)
 
+    def :-->[W <: Term with Subs[W]: TypeTag, UU >: U <: Term : TypeTag](that: Typ[W]) = 
+      	SimpleFuncRep[UU, V, W](this, that)
+      
     /**
      *   scalarep for sum type.
      */
@@ -197,14 +200,14 @@ object ScalaRep {
    * Extended function with codomain a type. Perhaps use IdRep.
    */
   case class SimpleExtendedFunction[U <: Term: TypeTag, V, X <: Term with Subs[X]: TypeTag](dfn: V => X,
-      domrep: ScalaRep[U, V], codom: Typ[X]) extends FuncObj[U, X]{
+      domrep: ScalaRep[U, V], codom: Typ[X]) extends FuncObj[U, X] with Subs[SimpleExtendedFunction[U, V, X]]{
 
 	  val dom = domrep.typ
 
 
 	  val typ = dom ->: codom
 
-    def newobj = typ.obj
+	  def newobj = this
 
 	  def act(u : U) = u match {
 	    case domrep(v) => dfn(v)
@@ -216,8 +219,8 @@ object ScalaRep {
 	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
 
 
-	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
-	    case (u, v: FuncObj[U ,X]) if u == this => v
+	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) : SimpleExtendedFunction[U, V, X] = (x, y) match {
+	    case (u, v: SimpleExtendedFunction[U , V, X]) if u == this => v
 	    case _ => SimpleExtendedFunction((v: V) => dfn(v).subs(x, y), domrep.subs(x, y), codom.subs(x, y))
 	  }
 
