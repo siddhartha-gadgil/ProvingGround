@@ -22,5 +22,7 @@ object MaybeTyp {
       case Maybe(Some(x), `typ`) => Some(Some(x.asInstanceOf[U]))
       case _ => None
     }
+    
+    def subs(x: Term, y: Term) = MaybeRep(typ.subs(x, y))
   }
 }

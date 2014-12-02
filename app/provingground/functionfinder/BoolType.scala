@@ -55,7 +55,7 @@ object BoolType {
   
   
   
-  def iteFunc[U <: Term : TypeTag](u: Typ[U]) = {
+  def iteFunc[U <: Term with Subs[U] : TypeTag](u: Typ[U]) = {
     val rep = b -->: u -->: u -->: u
     rep((cond: Boolean) => (yes: U) => (no : U) => if (cond) yes else no)
   }

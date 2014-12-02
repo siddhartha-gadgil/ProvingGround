@@ -23,6 +23,8 @@ object EnumType {
       case en: EnumTerm[_] if en.elemTyp == elemTyp => Some(en.asInstanceOf[EnumTerm[U]])
       case _ => None
     }
+    
+    def subs(x: Term, y: Term) = EnumRep(elemTyp.subs(x, y))
   }
   
   def enumList[U <: Term](elemTyp: Typ[U]) = {

@@ -56,12 +56,12 @@ object IntTypes {
     (f0: U) => g: (Long => U => U) => (n: Long) => inducFn(f0, g, n)
     }
   
-  def recursion[U <: Term : TypeTag](u: Typ[U]) = {    
+  def recursion[U <: Term with Subs[U]: TypeTag](u: Typ[U]) = {    
     val rep = u -->: (n -->: u -->: u) -->: (n -->: u)
     rep(induccurry)
   }
   
-  def induction[U <: Term : TypeTag](us: FuncObj[Term, Typ[U]])(implicit suu: ScalaUniv[U]) = {
+  def induction[U <: Term with Subs[U] : TypeTag](us: FuncObj[Term, Typ[U]])(implicit suu: ScalaUniv[U]) = {
     val stepfmlyrep = (n -->: __)
     val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k+1)))
     val steprep = n ~~>: stepfmly
