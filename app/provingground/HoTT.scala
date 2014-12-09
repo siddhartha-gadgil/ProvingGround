@@ -218,6 +218,12 @@ object HoTT{
         case _ => SymbObj(name, typ.subs(x, y))
       }
     }
+    
+    def symsubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = {
+      case fx: ApplnSym[w, u] => 
+        Try((fx.func.subs(x, y))(fx.arg.subs(x, y).asInstanceOf[w]).asInstanceOf[U]) getOrElse symbobj(fx)
+      case sym => symbobj(sym)
+    }
 
     /** Symbolic types, which the compiler knows are types.
      *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
