@@ -211,11 +211,19 @@ object HoTT{
 
       def newobj = SymbObj(new InnerSym(this), typ)
 
+      /*
       def subs(x: Term, y: Term) = this match {
         case `x` => y
         case applptnterm(func : FuncTerm[u, Term], arg) =>
           Try(func.subs(x,y)(arg.subs(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.subs(x, y)))
         case _ => SymbObj(name, typ.subs(x, y))
+      }
+      * 
+      */
+      
+      def subs(x: Term, y: Term) = if (x==this) y else {
+        def symbobj(sym: AnySym) = SymbObj(sym, typ.subs(x, y))
+        symsubs(symbobj)(x, y)(name)
       }
     }
     
@@ -244,11 +252,16 @@ object HoTT{
 
       val applptntypu = ApplnPattern[Term, Typ[Term]]()
 
-      def subs(x: Term, y: Term) = (x, y, name) match {
-        case (u: Typ[_], v: Typ[_], _) if (u == this) => v
-        case (_, _,applptntypu(func, arg)) => func.subs(x,y)(arg.subs(x, y))
-        case _ => this
+      
+      def subs(x: Term, y: Term) = (x, y) match {
+        case (u: Typ[_], v: Typ[_]) if (u == this) => v        
+        case _ => {
+          def symbobj(name: AnySym) = SymbTyp(name)
+          symsubs(symbobj)(x, y)(name)
+        }
       }
+       
+      
     }
 
 
@@ -564,11 +577,16 @@ object HoTT{
 
       def newobj = typ.obj
 
+      
       def subs(x: Term, y: Term) = (x, y) match {
-        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
-        case (u, v: FuncObj[W, U]) if (u == this) => v
-        case _ => this
+//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+        case (u, v: FuncObj[W, U]) if (u == this) => v        
+        case _ => {
+          def symbobj(sym: AnySym) = FuncSymb(sym, dom.subs(x, y), codom.subs(x,y))
+          symsubs(symbobj)(x, y)(name)
+        }
       }
+      
 
       override def toString = "("+name.toString+" : "+typ.toString+")"
     }
@@ -897,10 +915,22 @@ object HoTT{
 
 	  def newobj = DepFuncSymb(name, fibers.newobj)
 
+	  /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.subs(u, v))
         case (u, v: FuncTerm[W, U], _) if (u == this) => v
         case _ => this
+      }
+      * 
+      */
+	  
+	  def subs(x: Term, y: Term) = (x, y) match {
+//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+        case (u, v: FuncTerm[W, U]) if (u == this) => v        
+        case _ => {
+          def symbobj(sym: AnySym) = DepFuncSymb(sym, fibers.subs(x, y))
+          symsubs(symbobj)(x, y)(name)
+        }
       }
 	}
 

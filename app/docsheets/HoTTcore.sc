@@ -94,8 +94,8 @@ object HoTTcore {
                                                   //| ingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] wit
                                                   //| h provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Ter
                                                   //| m,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A|->(B|->(((a : 
-                                                  //| A) : A)|->((provingground.HoTT$Typ$newname$2$@7fc65051 : (A->B))|->((provin
-                                                  //| gground.HoTT$Typ$newname$2$@7fc65051 : (A->B))(((a : A) : A)) : B)))))
+                                                  //| A) : A)|->((provingground.HoTT$Typ$newname$2$@57a8551 : (A->B))|->((proving
+                                                  //| ground.HoTT$Typ$newname$2$@57a8551 : (A->B))(((a : A) : A)) : B)))))
   MP(A)(B).typ                                    //> res10: provingground.HoTT.Typ[provingground.HoTT.Term] = (A->((A->B)->B))
 
 // A substitution check
