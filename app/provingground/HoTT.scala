@@ -376,7 +376,7 @@ object HoTT{
 
 
 
-    //FIXME pair substitutions wrong - not checked if x = (a, b).
+    
     /** Pair of types (A, B) */
     case class PairTyp[U<: Term  with Subs[U], V <: Term with Subs[V]](
         first: Typ[U], second: Typ[V]) extends
@@ -689,7 +689,7 @@ object HoTT{
 	  }
 	}
 
-	// TODO replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
+	// XXX replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
 	/**
 	 * lambda which is known to have fixed codomain.
 	 */
