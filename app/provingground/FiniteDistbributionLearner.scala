@@ -23,129 +23,15 @@ object FiniteDistbributionLearner {
 	 */
 	type DF[X, Y] = DiffbleFunction[X, Y]
 	
+	
+	// Generic helpers
+	
 	/**
 	 * identity smooth function.
 	 */
 	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
 	
-
-	
-	    
-	/**
-	 * differentiable function from a given one by composing with scalar multiplication.
-	 * Namely, (s, x) -> f(s,x), with gradient having weights on both s and x. 
-	 */
-	def scProdFn[V](fn : DF[FD[V], FD[V]]) = {
-	  def func(cv: (Double, FD[V])) = fn(cv._2) * cv._1
-	  
-	  def grad(cv: (Double, FD[V]))(w: FD[V]) = {
-	    val x = fn.grad(cv._2)(w)
-	    (x dot cv._2, x * cv._1)
-	  } 
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	private type DynFn[M, V] = DF[(FD[M], FD[V]), FD[V]]
-	
-	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
-	
-	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
-	
-	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
-	
-	/**
-	 * smooth function corresponding to adding the V distributions for two given smooth functions.
-	 *  
-	 */
-	def sumFn[M, V](fst: => DynFn[M, V], scnd : => DynFn[M, V]) = {
-	  def func(st : (FD[M], FD[V])) = fst(st) ++ scnd(st)
-	  
-	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
-	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	def sumDF[M, V](fst: => DF[(FD[M], FD[V]),(FD[M], FD[V])], scnd : =>DF[(FD[M], FD[V]),(FD[M], FD[V])]) = {
-	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
-	  
-	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
-	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	def foldDF[M, V](base: DF[(FD[M], FD[V]),(FD[M], FD[V])], comps: Map[V, DF[(FD[M], FD[V]),(FD[M], FD[V])]]) = {
-	  def func(arg: (FD[M], FD[V])) = {
-	    val l = for ((v, f) <- comps) yield dstmult(f(arg), arg._2(v)) 
-	    (base(arg) /: l)(dstsum)
-	  }
-	  
-	  def grad(arg: (FD[M], FD[V]))(vect: (FD[M], FD[V])) = {
-	    val l = for ((v, f) <- comps) yield {
-	      val prob = dstdot(f.grad(arg)(vect), arg)
-	      val term = dstmult(f.grad(arg)(vect), arg._2(v))
-	      (term._1, term._2 + (v, prob))
-	    }
-	    (base.grad(arg)(vect) /: l)(dstsum)
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	/**
-	 * Creates an atom at a parameter with given weight.
-	 */
-	private def atM[M, V](cv: (Double, FD[V]), m: M) = {
-	  val dstM = FiniteDistribution.empty[M] + (m, cv._1)  
-	  (dstM, cv._2)
-	}
-	
-	/**
-	 * binds a scalar (multiplication) constant to a particular parameter.
-	 */
-	def bindFn[M, V](m: M, fn: DF[(Double, FD[V]), FD[V]]) ={
-	  def func(csv: (FD[M], FD[V])) = {
-	    val c = csv._1(m)
-	    val v = csv._2
-	    fn((c, v))
-	  }
-	  
-	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
-	    val c = csv._1(m)
-	    val v = csv._2
-	    val cterm = fn.grad((c, v))(w)
-	    atM(cterm, m)
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	/**
-	 * function and gradient after scalar multiplication by the parameter of the isle,
-	 * (p_M, p_V) -> (p_M(m) * f(p_M, p_V))
-	 */
-	def isleMultFn[M, V](fn: DynFn[M, V], m: M) = {
-	  def func(csv: (FD[M], FD[V])) = {
-	    val c = csv._1(m)
-	    val v = csv._2
-	    fn((csv._1, v)) * c
-	  }
-	  
-	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
-	    val c = csv._1(m)
-	    val v = csv._2
-	    val mv = fn.grad((csv._1, v))(w)
-	    val shift = mv._2 dot v
-	    (mv._1 + (m, shift), mv._2)
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
+		
 	/**
 	 * differentiable function x -> (x, x)
 	 */
@@ -167,6 +53,21 @@ object FiniteDistbributionLearner {
 	 * declare the gradient to be the identity - to be used for approximations, pruning, sampling.
 	 */
 	def formalSmooth[A](f: A => A) = DiffbleFunction(f)((a : A) => {(b : A) => b})
+	
+	
+	
+	// Helpers for operations on pairs of distributions.
+	
+
+	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
+	
+	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
+	
+	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
+	
+
+	
+	// Building dynamics on FD[V]
 	
 	/**
 	 * smooth function applying move wherever applicable 
@@ -201,34 +102,128 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	// Building dynamics (FD[M], FD[V]) => FD[V] 
+	
+	private type DynFn[M, V] = DF[(FD[M], FD[V]), FD[V]]
+	    
+	
 	/**
-	 * smooth function creating initial distribution for isle creating an object v with weight given by parameter t.
-	 * To actually create an isle, we compose this with the corresponding mixin.
+	 * smooth function corresponding to adding the V distributions for two given smooth functions.
+	 *  
 	 */
-	def simpleIsleInitFn[M, V](v: V, t: M) = {
-	  def func(ds: (FD[M], FD[V])) ={
-	    val p = ds._1(t)
-	    (ds._1, ds._2 * (1.0 - p) + (v, p))
-	  }
+	def sumFn[M, V](fst: => DynFn[M, V], scnd : => DynFn[M, V]) : DynFn[M, V] = {
+	  def func(st : (FD[M], FD[V])) = fst(st) ++ scnd(st)
 	  
-	  def grad(ds: (FD[M], FD[V]))(ws: (FD[M], FD[V])) ={
-	    val p = ds._1(t)
-	    val c = ws._1(t)
-	    val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
-	    (ws._1 + (t, c), shift)
+	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
+	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
 	  }
 	  
 	  DiffbleFunction(func)(grad)
 	}
 	
 	/**
-	 * Spawns an island, that can be mixed in with other dynamics
-	 * One should call this with f modified by updating depth, which should affect number of steps.
-	 *
+	 * differentiable function from a given one by composing with scalar multiplication.
+	 * Namely, (s, x) -> s * f(x), with gradient having weights on both s and x. 
 	 */
-	def spawnSimpleIsle[M, V](v: V, t: M, m : M, f : => DynFn[M, V]) = {
-	  val g = simpleIsleInitFn(v, t) andThen f
-	  isleMultFn(g, m)
+	def scProdFn[V](fn : DF[FD[V], FD[V]]) = {
+	  def func(cv: (Double, FD[V])) = fn(cv._2) * cv._1
+	  
+	  def grad(cv: (Double, FD[V]))(w: FD[V]) = {
+	    val x = fn.grad(cv._2)(w)
+	    (x dot cv._2, x * cv._1)
+	  } 
+	  
+	  DiffbleFunction(func)(grad)
+	}
+
+	
+	
+	/**
+	 * Creates an atom at a parameter with given weight.
+	 */
+	private def atM[M, V](cv: (Double, FD[V]), m: M) = {
+	  val dstM = FiniteDistribution.empty[M] + (m, cv._1)  
+	  (dstM, cv._2)
+	}
+	
+		/**
+	 * binds a scalar (multiplication) constant to a particular parameter.
+	 */
+	def bindFn[M, V](m: M, fn: DF[(Double, FD[V]), FD[V]]) ={
+	  def func(csv: (FD[M], FD[V])) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    fn((c, v))
+	  }
+	  
+	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    val cterm = fn.grad((c, v))(w)
+	    atM(cterm, m)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	/**
+	 * The weighted term typically corresponding to a move or a combination
+	 */
+	def wtdDyn[M, V](m: M,fn : DF[FD[V], FD[V]]) : DynFn[M, V] = bindFn(m, scProdFn(fn))
+	
+	/**
+	 * the zero differentiable function
+	 */	
+	private def zeroMVV[M, V] : DynFn[M, V] = {
+	  def func(a: (FD[M], FD[V])) = FiniteDistribution.empty[V]
+	  
+	  def grad(a: (FD[M], FD[V]))(b: FD[V]) = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	/**
+	 * Linear combination of dynamical systems
+	 */
+	def linComb[M, V](dyns: Map[M, DF[FD[V], FD[V]]]) = {
+	  val syslst = for ((m, f) <- dyns) yield wtdDyn(m, f)
+	  (zeroMVV[M, V] /: syslst)((a, b) => sumFn(a, b))
+	}
+	
+	
+	
+	
+	
+	// Building dynamics on (FD[M], FD[V])
+	
+	private type DS[M, V] = DF[(FD[M], FD[V]), (FD[M], FD[V])]
+	
+	def sumDF[M, V](fst: => DS[M, V], scnd : => DS[M, V]) = {
+	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
+	  
+	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
+	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def foldDF[M, V](base: DS[M, V], comps: Map[V, DS[M, V]]) = {
+	  def func(arg: (FD[M], FD[V])) = {
+	    val l = for ((v, f) <- comps) yield dstmult(f(arg), arg._2(v)) 
+	    (base(arg) /: l)(dstsum)
+	  }
+	  
+	  def grad(arg: (FD[M], FD[V]))(vect: (FD[M], FD[V])) = {
+	    val l = for ((v, f) <- comps) yield {
+	      val prob = dstdot(f.grad(arg)(vect), arg)
+	      val term = dstmult(f.grad(arg)(vect), arg._2(v))
+	      (term._1, term._2 + (v, prob))
+	    }
+	    (base.grad(arg)(vect) /: l)(dstsum)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
 	}
 	
 	
@@ -259,7 +254,65 @@ object FiniteDistbributionLearner {
 	/**
 	 * prune a distribution
 	 */
-	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))
+	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))	
+
+	
+	/**
+	 * function and gradient after scalar multiplication by the parameter of the isle,
+	 * (p_M, p_V) -> (p_M(m) * f(p_M, p_V))
+	 */
+	def isleMultFn[M, V](fn: DynFn[M, V], m: M) = {
+	  def func(csv: (FD[M], FD[V])) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    fn((csv._1, v)) * c
+	  }
+	  
+	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	    val c = csv._1(m)
+	    val v = csv._2
+	    val mv = fn.grad((csv._1, v))(w)
+	    val shift = mv._2 dot v
+	    (mv._1 + (m, shift), mv._2)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+
+	
+
+	
+	/**
+	 * smooth function creating initial distribution for isle creating an object v with weight given by parameter t.
+	 * To actually create an isle, we compose this with the corresponding mixin.
+	 */
+	def simpleIsleInitFn[M, V](v: V, t: M) = {
+	  def func(ds: (FD[M], FD[V])) ={
+	    val p = ds._1(t)
+	    (ds._1, ds._2 * (1.0 - p) + (v, p))
+	  }
+	  
+	  def grad(ds: (FD[M], FD[V]))(ws: (FD[M], FD[V])) ={
+	    val p = ds._1(t)
+	    val c = ws._1(t)
+	    val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
+	    (ws._1 + (t, c), shift)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	/**
+	 * Spawns an island, that can be mixed in with other dynamics
+	 * One should call this with f modified by updating depth, which should affect number of steps.
+	 *
+	 */
+	def spawnSimpleIsle[M, V](v: V, t: M, m : M, f : => DynFn[M, V]) = {
+	  val g = simpleIsleInitFn(v, t) andThen f
+	  isleMultFn(g, m)
+	}
+	
+
 	
 	/**
 	 * step for learning based on feedback.

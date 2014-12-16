@@ -1152,13 +1152,17 @@ object HoTT{
 	/** Helper for symbol factory */
 	def usedChars(s: Set[Term]): Set[Char] = {
 	    def charOpt (obj:Term) : Option[Char] = obj match {
-	      case sym: Symbolic => Some(Try(sym.name.asInstanceOf[Char]).toOption).flatten
+	      case sym: Symbolic => Try(sym.name.asInstanceOf[Char]).toOption
 	      case _ => None
 	    }
 
 
 	    s collect (Function.unlift(charOpt _))
 	}
+	
+	def nextVar(s: Set[Term])(typ: Typ[Term]) = {
+	  typ.symbObj(Name(nextChar(usedChars(s)).toString))
+	} 
 
 	// -----------------------------------------------
 	// Deprecated code - old style type families.
