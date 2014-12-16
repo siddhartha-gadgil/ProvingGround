@@ -178,7 +178,23 @@ object FiniteDistbributionLearner {
 	  }
 	  
 	  def grad(d: FD[V])(w: FD[V]) = {
-	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, w(y))
+	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(x, w(y))
+	    FiniteDistribution(rawpmf).flatten
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def combinationFn[V](f: (V, V) => Option[V]) = {
+	  def func(d: FD[V]) = {
+	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
+	    		Weighted(y, d(a) * d(b))
+	    FiniteDistribution(rawpmf).flatten
+	  }
+	  
+	  def grad(d: FD[V])(w: FD[V]) = {
+	    val rawpmf = (for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
+	    		Seq(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
 	    FiniteDistribution(rawpmf).flatten
 	  }
 	  
@@ -324,16 +340,29 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
-	// Isle independent of state, does not include lambda's
-	def mixinIsle[M, V](base : => Int => DynFn[M, V], isle: DynFn[M, V] => DynFn[M, V]): Int => DynFn[M, V] = {
-	  def rec(g : => Int => DynFn[M, V])(n: Int) = sumFn(g(n), isle(g(n+1)))
+	/*
+	 * Isle independent of state, does not include lambda's
+	 * We are given a dynamical system base at each depth n, 
+	 * and an isle function depending on a given dynamical system and dpeth. 
+	 * We get another one f at each depth n by the recurence
+	 * f(n) = base(n) + isle(n+1)(f(n+1))
+	 * 
+	 * 
+	 */ 
+	def mixinIsle[M, V](base : => Int => DynFn[M, V], isle: Int => DynFn[M, V] => DynFn[M, V]): Int => DynFn[M, V] = {
+	  def rec(g : => Int => DynFn[M, V])(n: Int) = sumFn(base(n), isle(n+1)(g(n+1)))
 	  def f: Int => DynFn[M, V] = rec(f)
 	  f
 	}
 	
-	def mixinIsles[M, V](base : => Int => DynF[M, V], isles: Map[V, DynF[M, V] => DynF[M, V]]): Int => DynF[M, V] = {
+	
+	/*
+	 * Mix in isles corresponding to elements of V, for instance lambdas
+	 * Should really have optional isles.
+	  */
+	def mixinAllIsles[M, V](base : => Int => DynF[M, V], isles: Map[V, Int => DynF[M, V] => DynF[M, V]]): Int => DynF[M, V] = {
 	  def rec(g : => Int => DynF[M, V])(n: Int) = {
-	    val isllst = for ((v, f) <- isles) yield (v, isles(v)(g(n+1)))
+	    val isllst = for ((v, f) <- isles) yield (v, isles(v)(n)(g(n+1)))
 	    foldDF[M, V](sumF(base(n), g(n)), isllst)
 	  }
 	  def f: Int => DynF[M, V] = rec(f)
