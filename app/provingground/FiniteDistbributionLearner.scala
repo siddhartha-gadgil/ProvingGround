@@ -65,7 +65,7 @@ object FiniteDistbributionLearner {
 	
 	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
 	
-
+	private def dstzero[M, V] = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
 	
 	// Building dynamics on FD[V]
 	
@@ -256,6 +256,36 @@ object FiniteDistbributionLearner {
 	 */
 	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))	
 
+
+	/**
+	 * Linear combination of dynamical systems with coefficients in V
+	 */
+	def linComb[M, V](dyns: V => Option[DS[M, V]]) = {
+	  def func(arg: (FD[M], FD[V])) = {
+	    val vdst = arg._2
+	    val vs = vdst.support
+	    val terms = for (v <- vs; f <- dyns(v)) yield dstmult(f(arg), vdst(v)) 
+	    (dstzero[M, V] /: terms)(dstsum)
+	  }
+	  
+	  def grad(arg: (FD[M], FD[V]))(w : (FD[M], FD[V])) = {
+	    val vdst = arg._2
+	    val vs = vdst.support
+	    val vectterms = for (v <- vs; f <- dyns(v)) yield dstmult(f.grad(arg)(w), vdst(v))
+	    val scatoms = for (v <- vs; f <- dyns(v)) yield Weighted(v, dstdot(f.grad(arg)(w), arg))
+	    val scdst = (FiniteDistribution.empty[M], FiniteDistribution(scatoms.toSeq))
+	    dstsum(scdst, (dstzero[M, V] /: vectterms)(dstsum))
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	
+	
+	
+	
+	// Various attempts at islands
+
 	
 	/**
 	 * function and gradient after scalar multiplication by the parameter of the isle,
@@ -278,9 +308,8 @@ object FiniteDistbributionLearner {
 	  
 	  DiffbleFunction(func)(grad)
 	}
-
 	
-
+	
 	
 	/**
 	 * smooth function creating initial distribution for isle creating an object v with weight given by parameter t.
