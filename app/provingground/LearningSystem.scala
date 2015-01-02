@@ -31,10 +31,61 @@ object LearningSystem{
         
         def grad(a: A) = grd(a)
       }
-  
-       
+      
+      def incl1[A, B](implicit lsB: LinearStructure[B]) = apply((a: A) => (a, lsB.zero))((a: A) => (x: (A, B)) => x._1)
+      
+      def proj1[A, B](implicit lsB: LinearStructure[B]) = apply((x: (A, B)) => x._1)((x) => (a) => (a, lsB.zero))
+      
+      def incl2[A, B](implicit lsA: LinearStructure[A]) = apply((b: B) => (lsA.zero, b))((b: B) => (x: (A, B)) => x._2)
+      
+      def proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
+      
+      def scprod[V](implicit ls: LinearStructure[V], ip: InnerProduct[V]) = {
+        def fn(av: (Double, V)) = ls.mult(av._1, av._2)
+        
+        def grad(av: (Double, V))(w: V) = (ip.dot(av._2, w), ls.mult(av._1, w))
+        
+        DiffbleFunction[(Double, V), V](fn)(grad)
+      }
+      
       
       val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
+    }
+    
+    implicit def DiffFnLS[A, B](implicit lsA : LinearStructure[A], lsB: LinearStructure[B]) = {
+      def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
+        val addB = vsum[B]
+        
+        val addA = vsum[A]
+        
+        def fn(a: A) = addB(fst(a), scnd(a))
+        
+        def grad(a: A)(b: B) = addA(fst.grad(a)(b), scnd.grad(a)(b))
+        
+        DiffbleFunction(fn)(grad)
+      }
+      
+      def scprod(sc: Double, vect: DiffbleFunction[A, B]) = {
+        val prodB = vprod[B]
+        
+        val prodA = vprod[A]
+        
+        def fn(a: A) = prodB(sc, vect(a))
+        
+        def grad(a: A)(b: B) = prodA(sc, vect.grad(a)(b))
+        
+        DiffbleFunction(fn)(grad)
+      }
+      
+      def zero = {
+        val zeroA = vzero[A]
+        
+        val zeroB = vzero[B]
+        
+        DiffbleFunction((a: A) => zeroB)((a: A) => (b: B) => zeroA)
+      }
+      
+      LinearStructure(zero, sum, scprod)
     }
     
     

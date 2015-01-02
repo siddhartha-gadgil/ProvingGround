@@ -304,23 +304,43 @@ object Collections{
     }
 
 
-    case class LinearStructure[A](sum: (A, A) => A, mult : (Double, A) => A){
+    case class LinearStructure[A](zero: A, sum: (A, A) => A, mult : (Double, A) => A){
       def diff(frm: A, remove: A) = sum(frm, mult(-1.0, remove))
     }
 
-    implicit val RealsAsLinearStructure = LinearStructure[Double]((_+_), (_*_))
+    def vzero[T](implicit ls: LinearStructure[T]) = ls.zero
+    
+    def vsum[T](implicit ls: LinearStructure[T]) = ls.sum
+    
+    def vprod[T](implicit ls: LinearStructure[T]) = ls.mult
+    
+    def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
+    
+    implicit val RealsAsLinearStructure = LinearStructure[Double](0, (_+_), (_*_))
 
     implicit def VectorPairs[A, B](implicit lsa: LinearStructure[A], lsb: LinearStructure[B]): LinearStructure[(A, B)] = {
        def sumpair(fst: (A, B), scnd: (A, B)) =(lsa.sum(fst._1, scnd._1), lsb.sum(fst._2, scnd._2))
 
        def multpair(sc: Double, vect: (A, B)) = (lsa.mult(sc, vect._1), lsb.mult(sc, vect._2))
 
-       LinearStructure(sumpair, multpair)
+       LinearStructure((lsa.zero, lsb.zero), sumpair, multpair)
     }
 
-    implicit def FiniteDistVec[T] = LinearStructure[FiniteDistribution[T]](_++_, (w, d) => d * w)
+    implicit def FiniteDistVec[T] = LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty, _++_, (w, d) => d * w)
 
+    
+    case class InnerProduct[V](dot: (V, V) => Double)
 
+    def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
+    
+    implicit val realInnerProd = InnerProduct[Double](_*_)
+
+    implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A], ipB: InnerProduct[B]) = {
+      InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
+    }
+    
+    implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
+    
     trait LabelledArray[L,T] extends Traversable[T]{
       val support: Traversable[L]
 
@@ -375,7 +395,7 @@ object Collections{
     implicit def VectorArray[L, T](implicit zero: T, ls: LinearStructure[T]): LinearStructure[ArrayMap[L, T]] = {
       def mult(sc: Double, arr: ArrayMap[L, T]) = arr map ((t: T) => ls.mult(sc,t))
 
-      LinearStructure[ArrayMap[L, T]](_++_, mult)
+      LinearStructure[ArrayMap[L, T]](ArrayMap(Map(), Some(List())), _++_, mult)
     }
 
 
