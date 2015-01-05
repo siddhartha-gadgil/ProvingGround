@@ -7,6 +7,8 @@ import scala.language.implicitConversions
 
 
 object Collections{
+
+  
     val runTime = java.lang.Runtime.getRuntime()
 
     def  freeMem = runTime.freeMemory()
@@ -315,6 +317,16 @@ object Collections{
     def vprod[T](implicit ls: LinearStructure[T]) = ls.mult
     
     def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
+    
+    def vbigsum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
+      (xs :\ ls.zero)(ls.sum)
+    }
+    
+    def nrec[X](base: X, ind: Int => X => X)(implicit ls: LinearStructure[X]): Int => X = {
+	  case 0 => base
+	  case n if n <0 => ls.zero
+	  case n => nrec(base, ind)(ls)(n-1)
+	}
     
     implicit val RealsAsLinearStructure = LinearStructure[Double](0, (_+_), (_*_))
 

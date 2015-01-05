@@ -32,6 +32,8 @@ object LearningSystem{
         def grad(a: A) = grd(a)
       }
       
+      def id[A] = apply((a: A) => a)((a: A) => (b: A) => b)
+      
       def incl1[A, B](implicit lsB: LinearStructure[B]) = apply((a: A) => (a, lsB.zero))((a: A) => (x: (A, B)) => x._1)
       
       def proj1[A, B](implicit lsB: LinearStructure[B]) = apply((x: (A, B)) => x._1)((x) => (a) => (a, lsB.zero))
@@ -48,11 +50,38 @@ object LearningSystem{
         DiffbleFunction[(Double, V), V](fn)(grad)
       }
       
+      def repsquare[A](f: DiffbleFunction[A, A])(implicit ls: LinearStructure[A]): Int => DiffbleFunction[A, A] = {
+        case 0 => id[A]
+        case n if n<0 => 
+          vzero[DiffbleFunction[A, A]]
+        case n => 
+          repsquare(f)(ls)(n-1)
+            
+      }
+      
+      def bigsum[A, B](fns: A => Traversable[DiffbleFunction[A, B]])(implicit lsA: LinearStructure[A], lsB: LinearStructure[B]) = {
+        def func(a: A) = {
+          val terms = for (f <- fns(a)) yield f(a) 
+          val zero = vzero[B]
+          val sum = vsum[B]
+          (terms :\ zero)(sum)
+        }
+        
+        def grad(a: A)(b: B) = {
+          val terms = for (f <- fns(a)) yield f.grad(a)(b) 
+          val zero = vzero[A]
+          val sum = vsum[A]
+          (terms :\ zero)(sum)
+        }
+        
+        DiffbleFunction(func)(grad)
+      }
       
       val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
     }
     
-    implicit def DiffFnLS[A, B](implicit lsA : LinearStructure[A], lsB: LinearStructure[B]) = {
+    implicit def diffFnLS[A, B](
+        implicit lsA : LinearStructure[A], lsB: LinearStructure[B]) : LinearStructure[DiffbleFunction[A, B]] = {
       def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
         val addB = vsum[B]
         
