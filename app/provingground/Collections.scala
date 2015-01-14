@@ -268,7 +268,7 @@ object Collections{
 
       /**
        * entropy feedback for the finite distribution to move in the direction of the base distribution,
-       * however values ouside tsupport are ignored.
+       * however values outside support are ignored.
        *
        * @param baseweights
        */
@@ -340,6 +340,15 @@ object Collections{
 
     implicit def FiniteDistVec[T] = LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty, _++_, (w, d) => d * w)
 
+    implicit def FuncLinearStructure[A, B](implicit lsB : LinearStructure[B]) : LinearStructure[A => B] = {
+      def sumfn(fst: A => B, scnd: A => B) = (a : A) => lsB.sum(fst(a), scnd(a))
+      
+      def multfn(sc: Double, vect : A => B) = (a: A) => lsB.mult(sc, vect(a))
+      
+      def zerofn = (a: A) => lsB.zero
+      
+      LinearStructure(zerofn, sumfn, multfn)
+    }
     
     case class InnerProduct[V](dot: (V, V) => Double)
 
