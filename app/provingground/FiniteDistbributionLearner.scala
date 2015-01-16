@@ -13,6 +13,46 @@ import annotation._
  *  
  */
 object FiniteDistbributionLearner {
+	/**
+	 * An atom for a finite distribution
+	 */
+	def atom[V](x: V) = {
+	  def func(w: Double) = FiniteDistribution[V](List(Weighted(x, w)))
+	  
+	  def grad(w: Double)(p: FiniteDistribution[V]) = p(x)
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	/**
+	 * Evaluation at a point for a finite distribution
+	 */
+	def eval[V](x: V) = {
+	  def func(p: FiniteDistribution[V]) = p(x)
+	  
+	  def grad(p: FiniteDistribution[V])(w: Double) = FiniteDistribution[V](List(Weighted(x, w)))
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	def ptwiseProd[V](sc: V => Double) = {
+	  def func(p: FiniteDistribution[V]) = {
+	    val pmf = for (Weighted(x, w) <- p.pmf) yield Weighted(x, w * sc(x))
+	    FiniteDistribution(pmf)
+	  }
+	  
+	  def grad(q: FiniteDistribution[V])(p: FiniteDistribution[V]) = {
+		val pmf = for (Weighted(x, w) <- p.pmf) yield Weighted(x, w * sc(x))
+	    FiniteDistribution(pmf)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	
+  
+	// Most of the below is to be deprecated.
+  
 	/** 
 	 *  Finite Distributions
 	 */
@@ -29,13 +69,13 @@ object FiniteDistbributionLearner {
 	/**
 	 * identity smooth function.
 	 */
-	def Id[X] = DiffbleFunction((x: X) => x)((x : X) => {(y: X) => y})
+	import DiffbleFunction.id
 	
 		
 	/**
 	 * differentiable function x -> (x, x)
 	 */
-	def pair[V] = {
+	def diagonal[V] = {
 	  def func(d: FD[V]) = {
 	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
 	    FiniteDistribution(pmf)
@@ -357,14 +397,14 @@ object FiniteDistbributionLearner {
 	/**
 	 * Iterate a differentiable function.
 	 */
-	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = Id[X]): DF[X, X] = {
+	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = id[X]): DF[X, X] = {
 		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
 	}
 	
 	/** 
 	 *  Iterate a diffble function given depth
 	 */
-	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = Id[X]): DF[X, X] = {
+	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = id[X]): DF[X, X] = {
 		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
 	}
 	
@@ -372,7 +412,7 @@ object FiniteDistbributionLearner {
 	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
 	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
 	  
-	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) Id[(FD[M], FD[V])] else iterateDiffbleDepth(next, steps, depth+1)
+	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) id[(FD[M], FD[V])] else iterateDiffbleDepth(next, steps, depth+1)
 	  
 	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
 	  

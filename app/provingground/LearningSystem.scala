@@ -86,6 +86,15 @@ object LearningSystem{
         DiffbleFunction(func)(grad)
       }
       
+      def diagonal[A](implicit lsA : LinearStructure[A]) ={
+        def func(a: A) = (a, a)
+        
+        def grad(a: A)(v : (A, A)) = lsA.sum(v._1, v._2)
+        
+        DiffbleFunction(func)(grad)
+      }
+      
+      
       val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
     }
     
