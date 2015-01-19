@@ -49,10 +49,8 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	import DiffbleFunction._
 	
-  
-	// Most of the below is to be deprecated.
-  
 	/** 
 	 *  Finite Distributions
 	 */
@@ -63,53 +61,7 @@ object FiniteDistbributionLearner {
 	 */
 	type DF[X, Y] = DiffbleFunction[X, Y]
 	
-	
-	// Generic helpers
-	
-	/**
-	 * identity smooth function.
-	 */
-	import DiffbleFunction.id
-	
-		
-	/**
-	 * differentiable function x -> (x, x)
-	 */
-	def diagonal[V] = {
-	  def func(d: FD[V]) = {
-	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
-	    FiniteDistribution(pmf)
-	  }
-	  
-	  def grad(d: FD[V])(pd: FD[(V, V)]) = {
-	    val rawpmf = pd.pmf.flatMap(ab => Seq(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
-	    FiniteDistribution(rawpmf).flatten
-	  }
-	  
-	  DiffbleFunction(func)(grad)
-	}
-	
-	/**
-	 * declare the gradient to be the identity - to be used for approximations, pruning, sampling.
-	 */
-	def formalSmooth[A](f: A => A) = DiffbleFunction(f)((a : A) => {(b : A) => b})
-	
-	
-	
-	// Helpers for operations on pairs of distributions.
-	
-
-	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
-	
-	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
-	
-	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
-	
-	private def dstzero[M, V] = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
-	
-	// Building dynamics on FD[V]
-	
-	/**
+		/**
 	 * smooth function applying move wherever applicable 
 	 */
 	def moveFn[V](f: V => Option[V]) = {
@@ -141,6 +93,76 @@ object FiniteDistbributionLearner {
 	  
 	  DiffbleFunction(func)(grad)
 	}
+	
+	def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = vsum[DF[(FD[M], FD[V]), FD[V]]]
+	
+	/**
+	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
+	 * set up with implicits inside, so one can use this to map on a list.
+	 */
+	def weightedDyn[M, V](implicit lsM : LinearStructure[M], 
+	    lsV : LinearStructure[V], ip: InnerProduct[V]) : (M, DF[FD[V], FD[V]]) => DF[(FD[M], FD[V]), FD[V]] = (m, fn) => {
+	  val pm = proj1[FD[M], FD[V]]
+	  val scm = eval(m)
+	  val atM = pm andThen scm andThen incl1[Double, FD[V]]
+	  val pv = proj2[FD[M], FD[V]]
+	  val fv = pv andThen fn andThen incl2[Double, FD[V]]
+	  val fnsum = vsum[DF[(FD[M], FD[V]), (Double, FD[V])]]
+	  fnsum(atM, fv) andThen scprod[FD[V]]
+	}
+  
+	// Most of the below is to be deprecated.
+  
+	
+	
+	// Generic helpers
+	
+	/**
+	 * identity smooth function.
+	 */
+	
+	
+		
+	/**
+	 * differentiable function x -> (x, x)
+	 
+	def diagonal[V] = {
+	  def func(d: FD[V]) = {
+	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
+	    FiniteDistribution(pmf)
+	  }
+	  
+	  def grad(d: FD[V])(pd: FD[(V, V)]) = {
+	    val rawpmf = pd.pmf.flatMap(ab => Seq(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
+	    FiniteDistribution(rawpmf).flatten
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	* 
+	*/
+	
+	/**
+	 * declare the gradient to be the identity - to be used for approximations, pruning, sampling.
+	 */
+	def formalSmooth[A](f: A => A) = DiffbleFunction(f)((a : A) => {(b : A) => b})
+	
+	
+	
+	// Helpers for operations on pairs of distributions.
+	
+
+	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
+	
+	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
+	
+	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
+	
+	private def dstzero[M, V] = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
+	
+	// Building dynamics on FD[V]
+	
+
 	
 	// Building dynamics (FD[M], FD[V]) => FD[V] 
 	
@@ -371,6 +393,8 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	
+	
 	/**
 	 * Spawns an island, that can be mixed in with other dynamics
 	 * One should call this with f modified by updating depth, which should affect number of steps.
@@ -398,7 +422,7 @@ object FiniteDistbributionLearner {
 	 * Iterate a differentiable function.
 	 */
 	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = id[X]): DF[X, X] = {
-		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen fn)
+		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen (fn : DF[X, X]) )
 	}
 	
 	/** 
@@ -490,4 +514,7 @@ object FiniteDistbributionLearner {
 	  def f: Int => DynF[M, V] = rec(f)
 	  f
 	}
+	 
+	
+	
 }

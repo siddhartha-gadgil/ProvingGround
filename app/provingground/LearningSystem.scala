@@ -29,7 +29,7 @@ object LearningSystem{
     	/**
     	 * post-compose by the gradient of this, for instance for a feedback.
     	 */
-    	def *:(that: A => B) = (a : A) => grad(a)(that(a))
+    	def **:(that: A => B) = (a : A) => grad(a)(that(a))
 	}
 
     
