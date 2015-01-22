@@ -68,6 +68,9 @@ object LearningSystem{
             
       }
       
+      /**
+       * Big sum, with terms (via support) in general depending on the argument.
+       */
       def bigsum[A, B](fns: A => Traversable[DiffbleFunction[A, B]])(implicit lsA: LinearStructure[A], lsB: LinearStructure[B]) = {
         def func(a: A) = {
           val terms = for (f <- fns(a)) yield f(a) 

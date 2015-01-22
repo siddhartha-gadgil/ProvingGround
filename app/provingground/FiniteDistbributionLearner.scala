@@ -94,6 +94,21 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
 	
+	/**
+	 * Add a new vertex, mainly for lambdas
+	 */
+	def newVertex[V](v: V) = {
+	  def func(wp : (Double,  FiniteDistribution[V])) = wp._2 * (1 - wp._1) + (v, wp._1)
+	  
+	  def grad(wp: (Double, FiniteDistribution[V]))(q: FiniteDistribution[V]) = {
+	    val nov = q filter ((x: V) => x != v)
+	    (q(v), nov * wp._1)
+	  }
+	  
+	  DiffbleFunction(func)(grad)
+	}
+	
+	
 	def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = vsum[DF[(FD[M], FD[V]), FD[V]]]
 	
 	/**
