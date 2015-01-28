@@ -29,7 +29,7 @@ object Norm {
 	    }
 	  case p: AbsPair[Term, Term] =>
 	    for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
-	  case (fn: FuncTerm[Term, _], _) if fn.domobjtpe =:= typeOf[Term] =>{
+	  case (fn: FuncTerm[Term, _], _)  =>{
 	    val domopt = recEnumList(fn.dom.asInstanceOf[Typ[Term]])
 	    domopt flatMap ((dom) =>
 	      maxopt(dom map ((t) => supnorm(fn(t)))))

@@ -171,7 +171,7 @@ object Contexts{
     /**
      * empty context.
      */
-    case class empty[U <: Term : TypeTag]() extends Context[U, U]{
+    case class empty[U <: Term ]() extends Context[U, U]{
     	def tail: Nothing = 
     			throw new NoSuchElementException("tail of empty context") 
       
@@ -201,7 +201,7 @@ object Contexts{
       
     }
     
-    def apply[U <: Term : TypeTag] = empty[U]
+    def apply[U <: Term ] = empty[U]
     
     
   }

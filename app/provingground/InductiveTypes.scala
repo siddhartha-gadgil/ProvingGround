@@ -86,9 +86,9 @@ object InductiveTypes{
 	 * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W as a function of W
 	 */
 	sealed trait PolyPtn[+U <: Term]{
-	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)
+	  def -->:[V <: Term ,  UU >: U <: Term ](that : TypPtn[V]) = FuncPtn[UU](that, this)
 	  
-	  def -->:[UU >: U <: Term : TypeTag](that : Typ[Term])(implicit self : Typ[Term]) : PolyPtn[FuncTerm[Term, UU]] = {
+	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : PolyPtn[FuncTerm[Term, UU]] = {
 	    if (that == self) FuncPtn[UU](IdW, this) else CnstFncPtn[UU](that, this) 
 	  }
 	  
@@ -164,7 +164,7 @@ object InductiveTypes{
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term : TypeTag](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+	case class FuncPtn[U<:Term ](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
@@ -175,7 +175,7 @@ object InductiveTypes{
 	/**
 	 * Extending a poly-pattern by a constant type, i.e., not depending on W.
 	 */
-	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(W))
@@ -186,7 +186,7 @@ object InductiveTypes{
 	/**
 	 * Extending a type pattern by a constant type to get (tail --> head).
 	 */
-	case class SimpleFuncPtn[V <: Term with Subs[V]: TypeTag](tail : Typ[Term], head : TypPtn[V])(
+	case class SimpleFuncPtn[V <: Term with Subs[V]](tail : Typ[Term], head : TypPtn[V])(
 	      implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term, V]]{
 	  def apply(W: Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
@@ -222,7 +222,7 @@ object InductiveTypes{
 	 * Dependent extension of a poly-pattern by a type pattern.
 	 * XXX this may never be applicable
 	 */
-	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, 
+	case class DepFuncPtn[U <: Term ](tail: TypPtnLike, 
 	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
 	    val head = headfibre(W.symbObj(""))
@@ -240,7 +240,7 @@ object InductiveTypes{
 	/**
 	 * Dependent extension by a constant type  of a poly-pattern depending on elements of that type. 
 	 */
-	case class CnstDepFuncPtn[U <: Term : TypeTag](tail: Typ[Term], headfibre : Term => PolyPtn[U], headlevel: Int = 0)(
+	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term], headfibre : Term => PolyPtn[U], headlevel: Int = 0)(
 	    implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : Typ[Term]) : Typ[FuncTerm[Term, U]] = {
 	    val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
@@ -256,7 +256,7 @@ object InductiveTypes{
 	 * Extending by a constant type A a family of type patterns depending on (a : A).
 	 * 
 	 */ 
-	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], 
+	case class SimpleDepFuncPtn[V <: Term with Subs[V] ](tail: Typ[Term], 
 	    headfibre : Term => TypPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : Typ[Term]) = {
 	    val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))

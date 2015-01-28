@@ -14,13 +14,11 @@ object Tuples {
 	  
 	  def subs(x: Term, y: Term): TermTuple[TermType, F,  T]
 	  
-	  def prepend[U <: Term with Subs[U]: TypeTag](
-	      head: U)(implicit 
-	          tagTerm: TypeTag[TermType], tagf: TypeTag[F], tagT: TypeTag[T]) = DepPairCons(head, this)
+	  def prepend[U <: Term with Subs[U]](
+	      head: U) = DepPairCons(head, this)
 
-	  def +:[U <: Term with Subs[U]: TypeTag](
-	      head: U)(implicit 
-	          tagTerm: TypeTag[TermType], tagf: TypeTag[F], tagT: TypeTag[T]) = prepend(head)
+	  def +:[U <: Term with Subs[U]](
+	      head: U) = prepend(head)
 	}
 	
 	implicit def getTerm[U <: Term with Subs[U], 
@@ -34,12 +32,12 @@ object Tuples {
 	  def mapsTo(target: T): F
 	}
 	
-	case class Singleton[U <: Term with Subs[U] : TypeTag](
+	case class Singleton[U <: Term with Subs[U] ](
 	    head : U) extends SingleEnv[U, Term](head){
-	  def on[T <: Term with Subs[T]: TypeTag] = new SingleEnv[U, T](term)
+	  def on[T <: Term with Subs[T]] = new SingleEnv[U, T](term)
 	}
 	
-	class SingleEnv[U <: Term with Subs[U] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	class SingleEnv[U <: Term with Subs[U] , T <: Term with Subs[T]](
 	    head:  => U) extends TermTuple[U, FuncTerm[U, T], T]{
 	  
 	  lazy val term = head	  
@@ -50,12 +48,12 @@ object Tuples {
 	  def mapsTo(target: T) = lambda(term)(target)
 	}
 	
-	implicit def singleton[U <: Term with Subs[U]: TypeTag](term: U) = Singleton(term)
+	implicit def singleton[U <: Term with Subs[U]](term: U) = Singleton(term)
 	
 	
-	case class PairCons[U <: Term with Subs[U] : TypeTag, 
+	case class PairCons[U <: Term with Subs[U] , 
 	  W <: Term with Subs[W],
-	  F <: Term with Subs[F] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	  F <: Term with Subs[F] , T <: Term with Subs[T]](
 	    head: U, tail: TermTuple[W, F, T]
 	    ) extends TermTuple[PairObj[U, W], FuncTerm[U, F], T]{
 	  
@@ -67,9 +65,9 @@ object Tuples {
 	  def mapsTo(target: T) = lambda(head)(tail.mapsTo(target))
 	}
 
-	case class DepPairCons[U <: Term with Subs[U] : TypeTag, 
-	  W <: Term with Subs[W] : TypeTag,
-	  F <: Term with Subs[F] : TypeTag, T <: Term with Subs[T]: TypeTag](
+	case class DepPairCons[U <: Term with Subs[U] , 
+	  W <: Term with Subs[W] ,
+	  F <: Term with Subs[F] , T <: Term with Subs[T]](
 	    head: U, tail: TermTuple[W, F, T]
 	    ) extends TermTuple[DepPair[U, W], FuncTerm[U, F], T]{
 	  

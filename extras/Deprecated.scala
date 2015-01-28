@@ -510,9 +510,9 @@ object HoTTinner{
 	  type ObjTyp = typ.Obj
 
 
-	  def /\:[U <: Term : TypeTag](obj: U) = ContextSeq(LambdaContext(obj), this)
+	  def /\:[U <: Term ](obj: U) = ContextSeq(LambdaContext(obj), this)
 
-	  def |:[U <: Term : TypeTag](obj: U) = ContextSeq(KappaContext(obj), this)
+	  def |:[U <: Term ](obj: U) = ContextSeq(KappaContext(obj), this)
 
 	  def subs(x: Term, y: Term): Context[X]
 
@@ -535,7 +535,7 @@ object HoTTinner{
 
 
 	object Context{
-	  def instantiate[X <: Term : TypeTag](x: X, y: X): Context[X] => Context[X] = {
+	  def instantiate[X <: Term ](x: X, y: X): Context[X] => Context[X] = {
 	    case ContextSeq(LambdaContext(`x`), tail)  => ContextSeq(KappaContext(y), tail.subs(x, y))
 	    case ContextSeq(head, tail) =>
 	      val inst = instantiate(x,y)
@@ -543,7 +543,7 @@ object HoTTinner{
 	    case ctx => ctx
 	  }
 
-	  def instantiateHead[X <: Term : TypeTag](y: Term) : Context[X] => Context[X] = {
+	  def instantiateHead[X <: Term ](y: Term) : Context[X] => Context[X] = {
 	    case ContextSeq(LambdaContext(x), tail) => tail subs (x,y)
 	    case ContextSeq(head, tail) =>
 	      val inst = instantiateHead(y)
@@ -553,7 +553,7 @@ object HoTTinner{
 
 	  def apply(dom: Typ[Term]) = simple(dom)
 
-	  def fold[X <: Term : TypeTag](ctx: Context[X], seq: Seq[Term])(obj : Term) : Term = {
+	  def fold[X <: Term ](ctx: Context[X], seq: Seq[Term])(obj : Term) : Term = {
 			  if  (seq.isEmpty) ctx.get(obj)
 			  else {val inst = instantiateHead[X](seq.head)
 			    fold(inst(ctx), seq.tail)(obj)
@@ -613,7 +613,7 @@ object HoTTinner{
 	  def subs(x: Term, y: Term): AtomicContext[X]
 	}
 
-	case class ContextSeq[+X <: Term : TypeTag](head: AtomicContext[X], tail: Context[X]) extends Context[X]{
+	case class ContextSeq[+X <: Term ](head: AtomicContext[X], tail: Context[X]) extends Context[X]{
 	  val target = tail.target
 
 	  val typ = head.exptyp(tail.typ)
@@ -651,7 +651,7 @@ object HoTTinner{
 	  }
 	}
 
-	case class LambdaContext[U <: Term  : TypeTag](cnst: U) extends AtomicContext[U]{
+	case class LambdaContext[U <: Term  ](cnst: U) extends AtomicContext[U]{
 	  def export(value: Term) : Term => Term =  (obj) => value.subs(cnst, obj)
 
 	  def get(value: Term) = Lambda(cnst, value)
@@ -663,7 +663,7 @@ object HoTTinner{
 	  def subs(x: Term, y: Term) = LambdaContext(cnst.subs(x, y).asInstanceOf[U])
 	}
 
-	case class KappaContext[U <: Term : TypeTag](cnst: U) extends AtomicContext[U]{
+	case class KappaContext[U <: Term ](cnst: U) extends AtomicContext[U]{
 	  def export(value: Term) : Term => Term = _ => value
 
 	  def get(value: Term) = value

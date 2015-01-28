@@ -23,7 +23,7 @@ object ListType {
     def subs(x: Term, y: Term) = ListRep(elemTyp.subs(x, y))
   }
   
-  def foldFunction[U <: Term with Subs[U]: TypeTag, V <: Term with Subs[V] : TypeTag](u: Typ[U], v: Typ[V]) = {
+  def foldFunction[U <: Term with Subs[U], V <: Term with Subs[V] ](u: Typ[U], v: Typ[V]) = {
     val rep = ListRep(u) -->: v -->: (u -->: v -->: v) -->: v 
     val fld = (l: List[U]) => (init : V) => (op : U => V => V) => {
       def cop(u: U, v: V) = op(u)(v)
@@ -32,7 +32,7 @@ object ListType {
     rep(fld)
   }
   
-  def lmapFunc[U <: Term with Subs[U] : TypeTag, V <: Term : TypeTag](u: Typ[U], v: Typ[V]) = {
+  def lmapFunc[U <: Term with Subs[U] , V <: Term ](u: Typ[U], v: Typ[V]) = {
     val rep = (u -->: v) -->: ListRep(u) -->: ListRep(v)
     rep((f: U => V) => (l: List[U]) => l map (f))
   }
@@ -41,14 +41,14 @@ object ListType {
   
   lazy val foldLeft = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
-  def headOptFn[U <: Term : TypeTag](typ: Typ[U]) = {
+  def headOptFn[U <: Term ](typ: Typ[U]) = {
     val rep = ListRep(typ) -->: MaybeTyp.MaybeRep(typ)
     rep ((l: List[U]) => l.headOption)
   }
   
   
   
-  def tailFn[U <: Term : TypeTag](typ: Typ[U]) = {
+  def tailFn[U <: Term ](typ: Typ[U]) = {
     val rep = ListRep(typ) -->: ListRep(typ)
     rep((l: List[U]) => l drop 1)
   }

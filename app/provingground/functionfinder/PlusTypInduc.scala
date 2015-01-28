@@ -7,7 +7,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 object PlusTypInduc {
 	import PlusTyp.{FirstIncl, ScndIncl}
 
-	case class PlusExtendedFunction[V <: Term : TypeTag](
+	case class PlusExtendedFunction[V <: Term ](
 	    first: Typ[Term], second: Typ[Term], codom: Typ[V], firstfn: FuncObj[Term, V],
 	    scndfn: FuncObj[Term, V]) extends FuncObj[Term, V] with Subs[PlusExtendedFunction[V]]{
 
@@ -23,16 +23,16 @@ object PlusTypInduc {
 	    case _ => codom.symbObj(ApplnSym(this, u))
 	  }
 
-	  val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
+//	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
 
-	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[V]
+//	  // val codomobjtpe: reflect.runtime.universe.Type = typeOf[V]
 
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = PlusExtendedFunction(
 	      first.subs(x,y), second.subs(x,y), codom.subs(x, y), firstfn.subs(x,y), scndfn.subs(x,y))
   }
 
-	case class PlusExtendedDepFunction[V <: Term : TypeTag](
+	case class PlusExtendedDepFunction[V <: Term ](
 	    first: Typ[Term], second: Typ[Term], depcodom: FuncObj[Term, Typ[V]], firstfn: FuncTerm[Term, V],
 	    scndfn: FuncTerm[Term, V]) extends FuncTerm[Term, V] with Subs[PlusExtendedDepFunction[V]]{
 
@@ -48,9 +48,9 @@ object PlusTypInduc {
 	    case _ => depcodom(u).symbObj(ApplnSym(this, u))
 	  }
 
-	  val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
+//	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
 
-	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[V]
+//	  // val codomobjtpe: reflect.runtime.universe.Type = typeOf[V]
 
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = PlusExtendedDepFunction(

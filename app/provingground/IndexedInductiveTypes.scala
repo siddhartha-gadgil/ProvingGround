@@ -43,9 +43,9 @@ import Math._
 	 * A composite pattern for inductive types.
 	 */
 	trait PolyPtn[+U <: Term]{
-	  def -->:[V <: Term : TypeTag,  UU >: U <: Term : TypeTag](that : TypPtn[V]) = FuncPtn[UU](that, this)
+	  def -->:[V <: Term ,  UU >: U <: Term ](that : TypPtn[V]) = FuncPtn[UU](that, this)
 	  
-	  def -->:[UU >: U <: Term : TypeTag](that : Typ[Term])(implicit self : Typ[Term]) : I => PolyPtn[FuncTerm[Term, UU]] = (indx) => {
+	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : I => PolyPtn[FuncTerm[Term, UU]] = (indx) => {
 	    if (that == self) FuncPtn[UU](IndxW(indx), this) else CnstFncPtn[UU](that, this) 
 	  }
 	  
@@ -89,7 +89,7 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term : TypeTag](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+	case class FuncPtn[U<:Term ](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : I=> Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
@@ -100,7 +100,7 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a constant type, i.e., not depending on W.
 	 */
-	case class CnstFncPtn[U <: Term : TypeTag](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
+	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
 //	  type PtnType = FuncTerm[Term, head.PtnType]
 	  
 	  def apply(W : I => Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(W))
@@ -108,7 +108,7 @@ import Math._
 	  val univLevel = head.univLevel
 	}
 	
-	case class SimpleFuncPtn[V <: Term with Subs[V]: TypeTag](tail : Typ[Term], 
+	case class SimpleFuncPtn[V <: Term with Subs[V]](tail : Typ[Term], 
 	    head : TypPtn[V])(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term, V]]{
 	  def apply(W: I => Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 	  
@@ -133,7 +133,7 @@ import Math._
 	}
 	
 	
-	case class DepFuncPtn[U <: Term : TypeTag](tail: TypPtnLike, 
+	case class DepFuncPtn[U <: Term ](tail: TypPtnLike, 
 	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
 	    val head = headfibre(__.symbObj(""))
@@ -148,7 +148,7 @@ import Math._
 	  val univLevel = max(tail.univLevel, headlevel)
 	}
 	
-	case class CnstDepFuncPtn[U <: Term : TypeTag](tail: Typ[Term], 
+	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term], 
 	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncTerm[Term, U]] = {
 	    val head = headfibre(tail.symbObj(""))
@@ -165,7 +165,7 @@ import Math._
 	 * Issues: Replace codomain Universe(0) by something reasonable - done.
 	 * Correct the induced function
 	 */ 
-	case class SimpleDepFuncPtn[V <: Term with Subs[V] : TypeTag](tail: Typ[Term], 
+	case class SimpleDepFuncPtn[V <: Term with Subs[V] ](tail: Typ[Term], 
 	    headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term,V]]{
 	  def apply(W : I => Typ[Term]) = {
 	    val fiber = typFamily[Term, head.PtnType](tail, (t : Term) => headfibre(t)(W))

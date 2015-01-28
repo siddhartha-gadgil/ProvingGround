@@ -33,22 +33,22 @@ object ScalaRep {
      * pattern for matching application of the scala object.
      */
     def unapply(u: Term) : Option[V]
-    
+
     def subs(x: Term, y: Term): ScalaRep[U, V]
 
     /**
      * scalarep for function
      */
-    def -->:[W <: Term with Subs[W]: TypeTag, X, UU >: U <: Term : TypeTag](that : ScalaRep[W, X]) =
+    def -->:[W <: Term with Subs[W], X, UU >: U <: Term ](that : ScalaRep[W, X]) =
       FuncRep[W, X, UU, V](that, this)
 
-    def :-->[W <: Term with Subs[W]: TypeTag, UU >: U <: Term : TypeTag](that: Typ[W]) = 
+    def :-->[W <: Term with Subs[W], UU >: U <: Term ](that: Typ[W]) =
       	SimpleFuncRep[UU, V, W](this, that)
-      
+
     /**
      *   scalarep for sum type.
      */
-    def ++[UU >: U <: Term with Subs[UU]: TypeTag, X <: Term with Subs[X]: TypeTag, Y](
+    def ++[UU >: U <: Term with Subs[UU], X <: Term with Subs[X], Y](
         codrepfmly: V => ScalaRep[X, Y]) = SigmaRep[UU, V, X, Y](this, codrepfmly)
   }
 
@@ -56,19 +56,19 @@ object ScalaRep {
     def incl[U <: Term, V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
       case (x, y) if x ==y => Some((v: V) => v.asInstanceOf[W])
       case (rep: ScalaRep[U, V], IdRep(typ)) if rep.typ == typ => Some((v: V) => rep(v).asInstanceOf[W])
-      case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) => 
+      case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) =>
         {
           val dmap = incl(scnd.domrep, fst.domrep)
           val cmap = incl(fst.codomrep, scnd.codomrep)
           val m = for (dm <- dmap; cm <- cmap) yield ((f: a=> b) => (x: c) => cm(f(dm(x))))
           m flatMap ((x: (a => b) => (c => d)) => Try(x.asInstanceOf[V => W]).toOption)
         }
-            
+
       case _ => None
     }
   }
-  
-  
+
+
   /**
    * constant  term.
    */
@@ -85,7 +85,7 @@ object ScalaRep {
   /**
    * formal extension of a function.
    */
-  def extend[T, U <: Term : TypeTag](fn: T => U, functerm: FuncTerm[Term, U], codom: Typ[U]): Term => U = {
+  def extend[T, U <: Term ](fn: T => U, functerm: FuncTerm[Term, U], codom: Typ[U]): Term => U = {
 	  case c: ConstTerm[T] => fn(c.value)
 	  case arg: Term => codom.symbObj(ApplnSym(functerm, arg))
 	}
@@ -107,30 +107,30 @@ object ScalaRep {
       case smp: SimpleConst[V] if smp.typ == typ => Some(smp.value)
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = SimpleRep(typ.subs(x, y))
   }
 
   /**
    * A term representing itself.
    */
-  case class IdRep[U <: Term : TypeTag](typ: Typ[U]) extends ScalaRep[U, U]{
+  case class IdRep[U <: Term ](typ: Typ[U]) extends ScalaRep[U, U]{
     def apply(v : U) = v
 
     def unapply(u: Term): Option[U] = u match{
       case t: Term => Some(t.asInstanceOf[U])
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = IdRep(typ.subs(x, y))
   }
 
-  implicit def idRep[U <: Term : TypeTag](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
+  implicit def idRep[U <: Term ](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
 
   /**
    * Representations for functions given ones for the domain and codomain.
    */
-  case class FuncRep[U <: Term with Subs[U]: TypeTag, V, X <: Term : TypeTag, Y](
+  case class FuncRep[U <: Term with Subs[U], V, X <: Term , Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncObj[U, X], V => Y]{
     lazy val typ = domrep.typ ->: codomrep.typ
 
@@ -140,7 +140,7 @@ object ScalaRep {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
   }
 
@@ -148,7 +148,7 @@ object ScalaRep {
    * Formal extension of a function given by a definition and representations for
    * domain and codomain.
    */
-  case class ExtendedFunction[U <: Term with Subs[U]: TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y,
+  case class ExtendedFunction[U <: Term with Subs[U], V, X <: Term , Y](dfn: V => Y,
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends FuncObj[U, X]{
 
 	  lazy val dom = domrep.typ
@@ -164,9 +164,9 @@ object ScalaRep {
 	    case _ => codom.symbObj(ApplnSym(this, u))
 	  }
 
-	  val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
+	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
 
-	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
+	  // val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
 
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
@@ -180,7 +180,7 @@ object ScalaRep {
   /**
    * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
    */
-  case class SimpleFuncRep[U <: Term : TypeTag, V, X <: Term with Subs[X]: TypeTag](
+  case class SimpleFuncRep[U <: Term , V, X <: Term with Subs[X]](
       domrep: ScalaRep[U, V], codom: Typ[X]) extends ScalaRep[FuncTerm[U, X], V => X]{
     val typ = domrep.typ ->: codom
 
@@ -192,14 +192,14 @@ object ScalaRep {
       case ext: SimpleExtendedFunction[_, V, X] if ext.domrep == domrep && ext.codom == codom => Some(ext.dfn)
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = SimpleFuncRep(domrep.subs(x, y), codom.subs(x, y))
   }
 
   /**
    * Extended function with codomain a type. Perhaps use IdRep.
    */
-  case class SimpleExtendedFunction[U <: Term: TypeTag, V, X <: Term with Subs[X]: TypeTag](dfn: V => X,
+  case class SimpleExtendedFunction[U <: Term, V, X <: Term with Subs[X]](dfn: V => X,
       domrep: ScalaRep[U, V], codom: Typ[X]) extends FuncObj[U, X] with Subs[SimpleExtendedFunction[U, V, X]]{
 
 	  val dom = domrep.typ
@@ -214,9 +214,9 @@ object ScalaRep {
 	    case _ => codom.symbObj(ApplnSym(this, u))
 	  }
 
-	  val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
+	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
 
-	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
+	  // val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
 
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) : SimpleExtendedFunction[U, V, X] = (x, y) match {
@@ -226,7 +226,7 @@ object ScalaRep {
 
   }
 
-    case class SigmaRep[U <: Term with Subs[U] : TypeTag, V, X <: Term with Subs[X]: TypeTag, Y](domrep: ScalaRep[U, V],
+    case class SigmaRep[U <: Term with Subs[U] , V, X <: Term with Subs[X], Y](domrep: ScalaRep[U, V],
       codrepfmly: V => ScalaRep[X, Y]) extends ScalaRep[Term, (V, Y)]{
 
 
@@ -249,7 +249,7 @@ object ScalaRep {
         }
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = SigmaRep(domrep.subs(x, y), (v: V) => codrepfmly(v).subs(x, y))
   }
 
@@ -257,7 +257,7 @@ object ScalaRep {
   /**
    * Formal extendsion of a dependent function given scalareps for the domain and codomains.
    */
-  case class DepFuncRep[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](
+  case class DepFuncRep[U <: Term , V, X <: Term , Y](
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y],
       fibers: TypFamily[U, X]) extends ScalaRep[FuncTerm[U, X], V => Y]{
     val typ = PiTyp(fibers)
@@ -268,14 +268,14 @@ object ScalaRep {
       case ext: ExtendedDepFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomreps == codomreps => Some(ext.dfn)
       case _ => None
     }
-    
+
     def subs(x: Term, y: Term) = DepFuncRep(domrep.subs(x, y), (v: V) => codomreps(v).subs(x, y), fibers.subs(x, y))
   }
 
   /**
    * implicit class associated to a type family to create dependent functions scalareps.
    */
-  implicit class FmlyReps[U <: Term: TypeTag, X <: Term : TypeTag](fibers: TypFamily[U, X]){
+  implicit class FmlyReps[U <: Term, X <: Term ](fibers: TypFamily[U, X]){
 
     def ~~>:[V](domrep : ScalaRep[U, V]) = {
       DepFuncRep(domrep, (v: V) => IdRep(fibers(domrep(v))), fibers)
@@ -286,9 +286,9 @@ object ScalaRep {
    * implicit class associated to a family of scalareps to create dependent functions scalareps.
    * Not much use since U ends up having strange bounds such as Term with Long.
    */
-  implicit class RepSection[V, X <: Term with Subs[X]: TypeTag, Y](section: V => ScalaRep[X, Y]){
+  implicit class RepSection[V, X <: Term with Subs[X], Y](section: V => ScalaRep[X, Y]){
 
-    def ~~>:[U <: Term with Subs[U]: TypeTag](domrep : ScalaRep[U, V])(implicit
+    def ~~>:[U <: Term with Subs[U]](domrep : ScalaRep[U, V])(implicit
         sux : ScalaUniv[X], suu: ScalaUniv[U]) = {
       val univrep = domrep -->: __
       val fmly = univrep((v: V) => section(v).typ)
@@ -301,7 +301,7 @@ object ScalaRep {
   /**
    * formal extension of a dependent function.
    */
-    case class ExtendedDepFunction[U <: Term : TypeTag, V, X <: Term : TypeTag, Y](dfn: V => Y,
+    case class ExtendedDepFunction[U <: Term , V, X <: Term , Y](dfn: V => Y,
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends FuncTerm[U, X]{
 
 	  val dom = domrep.typ
@@ -317,9 +317,9 @@ object ScalaRep {
 	    case arg => fibers(arg).symbObj(ApplnSym(this, arg))
 	  }
 
-	  val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
+	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
 
-	  val codomobjtpe: reflect.runtime.universe.Type = typeOf[U]
+	  // val codomobjtpe: reflect.runtime.universe.Type = typeOf[U]
 
 
 
@@ -331,7 +331,7 @@ object ScalaRep {
   }
 
     /*
-    case class InclRep[U <: Term : TypeTag, V <: U : TypeTag](typ: Typ[U]) extends ScalaRep[U, V]{
+    case class InclRep[U <: Term , V <: U ](typ: Typ[U]) extends ScalaRep[U, V]{
       def apply(v: V) = v
 
       def unapply(u: Term) = u match {
@@ -344,7 +344,7 @@ object ScalaRep {
     object dsl{
       def i[V](typ: Typ[Term]) = SimpleRep[V](typ)
 
-      def s[U <: Term with Subs[U] : TypeTag, V, X <: Term with Subs[X]: TypeTag, Y](domrep: ScalaRep[U, V])(
+      def s[U <: Term with Subs[U] , V, X <: Term with Subs[X], Y](domrep: ScalaRep[U, V])(
       codrepfmly: V => ScalaRep[X, Y]) = SigmaRep(domrep, codrepfmly)
     }
 

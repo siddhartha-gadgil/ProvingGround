@@ -8,7 +8,7 @@ import scala.language.implicitConversions
 
 object Collections{
 
-  
+
     val runTime = java.lang.Runtime.getRuntime()
 
     def  freeMem = runTime.freeMemory()
@@ -311,23 +311,23 @@ object Collections{
     }
 
     def vzero[T](implicit ls: LinearStructure[T]) = ls.zero
-    
+
     def vsum[T](implicit ls: LinearStructure[T]) = ls.sum
-    
+
     def vprod[T](implicit ls: LinearStructure[T]) = ls.mult
-    
+
     def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
-    
+
     def vbigsum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
       (xs :\ ls.zero)(ls.sum)
     }
-    
+
     def nrec[X](base: X, ind: Int => X => X)(implicit ls: LinearStructure[X]): Int => X = {
 	  case 0 => base
 	  case n if n <0 => ls.zero
 	  case n => nrec(base, ind)(ls)(n-1)
 	}
-    
+
     implicit val RealsAsLinearStructure = LinearStructure[Double](0, (_+_), (_*_))
 
     implicit def VectorPairs[A, B](implicit lsa: LinearStructure[A], lsb: LinearStructure[B]): LinearStructure[(A, B)] = {
@@ -342,26 +342,26 @@ object Collections{
 
     implicit def FuncLinearStructure[A, B](implicit lsB : LinearStructure[B]) : LinearStructure[A => B] = {
       def sumfn(fst: A => B, scnd: A => B) = (a : A) => lsB.sum(fst(a), scnd(a))
-      
+
       def multfn(sc: Double, vect : A => B) = (a: A) => lsB.mult(sc, vect(a))
-      
+
       def zerofn = (a: A) => lsB.zero
-      
+
       LinearStructure(zerofn, sumfn, multfn)
     }
-    
+
     case class InnerProduct[V](dot: (V, V) => Double)
 
     def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
-    
+
     implicit val realInnerProd = InnerProduct[Double](_*_)
 
     implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A], ipB: InnerProduct[B]) = {
       InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
     }
-    
+
     implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
-    
+
     trait LabelledArray[L,T] extends Traversable[T]{
       val support: Traversable[L]
 

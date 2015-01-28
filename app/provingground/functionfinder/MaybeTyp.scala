@@ -15,7 +15,7 @@ object MaybeTyp {
     case Maybe(Some(x), _) => x
   }
   
-  case class MaybeRep[U <: Term : TypeTag](typ: Typ[U]) extends ScalaRep[Term, Option[U]]{
+  case class MaybeRep[U <: Term ](typ: Typ[U]) extends ScalaRep[Term, Option[U]]{
     def apply (term: Option[U]) = Maybe(term, typ)
     
     def unapply(term: Term) = term match {

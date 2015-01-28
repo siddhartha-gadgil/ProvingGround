@@ -43,12 +43,12 @@ object EnumFuncs {
 	        
 	    }
 	
-	def allFunc[U <: Term with Subs[U] : TypeTag, V <: Term with Subs[V]: TypeTag](domenum: EnumTerm[U])(codomenum: EnumTerm[V]) = {
+	def allFunc[U <: Term with Subs[U] , V <: Term with Subs[V]](domenum: EnumTerm[U])(codomenum: EnumTerm[V]) = {
 	  val maps = for (f <- allMaps(domenum.value, codomenum.value)) yield FuncDefn(f, domenum.elemTyp, codomenum.elemTyp)
 	  EnumTerm(maps, domenum.elemTyp ->: codomenum.elemTyp)
 	}
 	
-	def EnumFunc[U <: Term with Subs[U] : TypeTag, V <: Term with Subs[V]: TypeTag](dom: Typ[U], codom: Typ[V]) = {
+	def EnumFunc[U <: Term with Subs[U] , V <: Term with Subs[V]](dom: Typ[U], codom: Typ[V]) = {
 	  val rep = EnumRep(dom) -->: EnumRep(codom) -->: EnumRep(dom ->: codom)
 	  rep(allFunc)
 	}
@@ -58,14 +58,14 @@ object EnumFuncs {
 	
 
 	
-	def allSec[U <: Term with Subs[U] : TypeTag, V <: Term with Subs[V]: TypeTag](
+	def allSec[U <: Term with Subs[U] , V <: Term with Subs[V]](
 	    domenum: EnumTerm[U])(codomenums: U =>EnumTerm[V])(implicit sv: ScalaUniv[V]) = {
 	  val maps = for (f <- allSecMaps(domenum.value, (u: U) => codomenums(u).value)) yield depFunc(domenum.elemTyp, f)
 	  val fibre =typFamily(domenum.elemTyp, (u: U) => codomenums(u).elemTyp)
 	  EnumTerm(maps, PiTyp(fibre))
 	}
 	
-	def EnumSec[U <: Term with Subs[U] : TypeTag, V <: Term with Subs[V]: TypeTag](
+	def EnumSec[U <: Term with Subs[U] , V <: Term with Subs[V]](
 	    dom: Typ[U], codoms: U => Typ[V])(implicit su: ScalaUniv[U], sv: ScalaUniv[V]) = {
 	  val fibre =typFamily(dom, codoms)
 	  val rep = EnumRep(dom) -->: (dom ~~>: ((u: U) =>  EnumRep(codoms(u)))) -->: EnumRep(PiTyp(fibre))
