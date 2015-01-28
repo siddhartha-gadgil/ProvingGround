@@ -12,8 +12,8 @@ object RecEnum {
 	  case One => Some(List(Star))
 	  case Zero => Some(List())
 	  case Bool => Some(List(boolrep(true), boolrep(false)))
-	  case IdentityTyp(dom : Typ[Term], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
-	  case PairTyp(first : Typ[Term], second : Typ[Term]) => 
+	  case IdentityTyp(dom : Typ[_], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
+	  case PairTyp(first : Typ[_], second : Typ[_]) => 
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
 	  case FuncTyp(dom, codom) =>
 	    for (x <- recEnumList(dom); y <- recEnumList(codom)) yield (

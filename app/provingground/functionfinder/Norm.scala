@@ -5,6 +5,7 @@ import RecEnum._
 import IntTypes._
 import Math._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.util._
 
 object Norm {
 //	def pairmaxopt(a: Option[Double], b: Option[Double]) = for (x <-a ; y <- b) yield max(x, y)
@@ -29,10 +30,12 @@ object Norm {
 	    }
 	  case p: AbsPair[Term, Term] =>
 	    for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
-	  case (fn: FuncTerm[Term, _], _)  =>{
-	    val domopt = recEnumList(fn.dom.asInstanceOf[Typ[Term]])
-	    domopt flatMap ((dom) =>
-	      maxopt(dom map ((t) => supnorm(fn(t)))))
+	  case (fn: FuncTerm[u, _], _)  =>{
+	    val domopt = Try (fn.dom.asInstanceOf[Typ[Term]]).toOption flatMap (recEnumList(_))
+	    domopt flatMap ((dom) => {
+	      val normoptlist = dom map ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm) )
+//	      val normlist = Try(normoptlist map (_.get)).toOption
+	      maxopt(normoptlist)})
 	  }
 	  case (PiTyp(section), _) => supnorm(section)
 	  case (SigmaTyp(fn), _) => {
