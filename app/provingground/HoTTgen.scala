@@ -17,9 +17,41 @@ object HoTTgen {
 	
 	val pityp : Term => Option[Term] = {
 	  case fmly : FuncObj[u, _] => fmly.codom.typ match {
-	    case univ: Typ[w] => Try(PiTyp(fmly.asInstanceOf[FuncObj[Term, Typ[Term]]])).toOption
+	    case _ : Typ[w] => Try(PiTyp(fmly.asInstanceOf[FuncObj[u, Typ[w]]])).toOption
 	    case _ => None
 	  }
+	  case _ => None
+	}
+	
+	val sigmatyp : Term => Option[Term] = {
+	  case fmly : FuncObj[w, _] => fmly.codom.typ match {
+	    case _ : Typ[u] => Try(
+	        SigmaTyp(fmly.asInstanceOf[FuncObj[Term, Typ[Term]]])).toOption
+	    case _ => None
+	  }
+	  case _ => None
+	}
+	
+	val pairtyp : (Term, Term) => Option[Term] = {
+	  case (a : Typ[_], b: Typ[_]) => Some(PairTyp[Term, Term](a, b))
+	  case _ => None
+	}
+	
+	val pairobj : (Term, Term) => Option[Term] = (a, b) => Some(pair(a, b))
+	
+	val paircons : Term => Option[Term] = {
+	  case p : PairTyp[_, _] => Some(p.paircons)
+	  case p : SigmaTyp[_, _] => Some(p.paircons)
+	  case _ => None
+	}
+	
+	val icons : Term => Option[Term] = {
+	  case p : PlusTyp => Some(p.ifn)
+	  case _ => None
+	}
+	
+	val jcons : Term => Option[Term] = {
+	  case p : PlusTyp => Some(p.jfn)
 	  case _ => None
 	}
 }

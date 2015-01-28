@@ -387,6 +387,12 @@ object HoTT{
 		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 
 		def newobj = PairTyp(first.newobj, second.newobj)
+		
+		val paircons = {
+    	  val a = "a" :: first
+    	  val b ="b" :: second
+    	  lmbda(a)(lmbda(b)(PairObj(a, b)))
+    	}
 
 		def subs(x: Term, y: Term) = if (x == this) Try(
 		    y.asInstanceOf[PairTyp[U, V]]).getOrElse(
@@ -996,6 +1002,12 @@ object HoTT{
 	    DepPair(a, b, fibers)
 	  }
 
+	  	val paircons = {
+    	  val a = "a" :: (fibers.dom)
+    	  val b ="b" :: (fibers(a))
+    	  lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
+    	}
+	  
 	  def newobj = SigmaTyp(fibers.newobj)
 
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
@@ -1063,6 +1075,16 @@ object HoTT{
 	  def i(value: Term) = PlusTyp.FirstIncl(this, value)
 
 	  def j(value: Term) = PlusTyp.ScndIncl(this, value)
+	  
+	  val ifn = {
+	    val a = "a" :: first
+	    lmbda[Term, Term](a)(i(a))
+	  }
+	  
+	  val jfn = {
+	    val a = "a" :: first
+	    lmbda[Term, Term](a)(j(a))
+	  }
 	}
 
 	object PlusTyp{
