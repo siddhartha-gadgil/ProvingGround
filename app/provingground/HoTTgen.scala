@@ -1,7 +1,10 @@
 package provingground
 
 import HoTT._
+import FiniteDistbributionLearner._
+import LearningSystem._
 import scala.util._
+import Collections._
 
 object HoTTgen {
 	val funcappl: (Term, Term) => Option[Term] = {
@@ -53,5 +56,17 @@ object HoTTgen {
 	val jcons : Term => Option[Term] = {
 	  case p : PlusTyp => Some(p.jfn)
 	  case _ => None
+	}
+	
+	def lambdaFn[M](l: M)(terms: Set[Term])(typ: Typ[Term])(
+	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]) = {
+	  import DiffbleFunction._
+	  val x = nextVar(terms)(typ)
+	  val incl = (eval(l) oplus id[FiniteDistribution[Term]])
+	  val init = newVertex(x)	  	  
+	  val export = moveFn((t: Term) => 
+	    if (t != __) Some(lambda(x)(t) : Term) else None)
+	  val head = incl andthen init
+	  head andthen export
 	}
 }

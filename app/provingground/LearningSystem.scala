@@ -17,7 +17,7 @@ object LearningSystem{
     	 */
     	def *:[C](that: DiffbleFunction[B, C]) = andThen(that)
     	
-    	def andThen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
+    	def andthen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
     													(a: A) => 
     	  													(c: C) =>
     	  													  grad(a)(that.grad(this(a))(c)))
@@ -30,6 +30,14 @@ object LearningSystem{
     	 * post-compose by the gradient of this, for instance for a feedback.
     	 */
     	def **:(that: A => B) = (a : A) => grad(a)(that(a))
+    	
+    	def oplus[C, D](that : DiffbleFunction[C, D]) = {
+    		def func(ac: (A, C)) = (this(ac._1), that(ac._2))
+    	
+    		def grad(ac: (A, C))(bd : (B, D)) = (self.grad(ac._1)(bd._1), that.grad(ac._2)(bd._2))
+    	
+    	DiffbleFunction(func)(grad)
+      }
 	}
 
     
@@ -96,7 +104,6 @@ object LearningSystem{
         
         DiffbleFunction(func)(grad)
       }
-      
       
       val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
     }

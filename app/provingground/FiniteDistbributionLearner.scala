@@ -54,23 +54,23 @@ object FiniteDistbributionLearner {
 	/** 
 	 *  Finite Distributions
 	 */
-	type FD[V] = FiniteDistribution[V] 
+//	type FiniteDistribution[V] = FiniteDistribution[V] 
 	
 	/**
 	 * Differentiable functions - functions with given gradient.
 	 */
-	type DF[X, Y] = DiffbleFunction[X, Y]
+//	type  DiffbleFunction[X, Y] = DiffbleFunction[X, Y]
 	
 		/**
 	 * smooth function applying move wherever applicable 
 	 */
 	def moveFn[V](f: V => Option[V]) = {
-	  def func(d: FD[V]) = {
+	  def func(d: FiniteDistribution[V]) = {
 	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 	  
-	  def grad(d: FD[V])(w: FD[V]) = {
+	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = {
 	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(x, w(y))
 	    FiniteDistribution(rawpmf).flatten
 	  }
@@ -79,13 +79,13 @@ object FiniteDistbributionLearner {
 	}
 	
 	def combinationFn[V](f: (V, V) => Option[V]) = {
-	  def func(d: FD[V]) = {
+	  def func(d: FiniteDistribution[V]) = {
 	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
 	    		Weighted(y, d(a) * d(b))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 	  
-	  def grad(d: FD[V])(w: FD[V]) = {
+	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = {
 	    val rawpmf = (for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
 	    		Seq(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
 	    FiniteDistribution(rawpmf).flatten
@@ -109,21 +109,33 @@ object FiniteDistbributionLearner {
 	}
 	
 	
-	def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = vsum[DF[(FD[M], FD[V]), FD[V]]]
+	def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]]
 	
 	/**
 	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
 	 * set up with implicits inside, so one can use this to map on a list.
 	 */
 	def weightedDyn[M, V](implicit lsM : LinearStructure[M], 
-	    lsV : LinearStructure[V], ip: InnerProduct[V]) : (M, DF[FD[V], FD[V]]) => DF[(FD[M], FD[V]), FD[V]] = (m, fn) => {
-	  val pm = proj1[FD[M], FD[V]]
+	    lsV : LinearStructure[V], ip: InnerProduct[V]) : (M,  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) =>  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = (m, fn) => {
+	  val pm = proj1[FiniteDistribution[M], FiniteDistribution[V]]
 	  val scm = eval(m)
-	  val atM = pm andThen scm andThen incl1[Double, FD[V]]
-	  val pv = proj2[FD[M], FD[V]]
-	  val fv = pv andThen fn andThen incl2[Double, FD[V]]
-	  val fnsum = vsum[DF[(FD[M], FD[V]), (Double, FD[V])]]
-	  fnsum(atM, fv) andThen scprod[FD[V]]
+	  val atM = pm andthen scm andthen incl1[Double, FiniteDistribution[V]]
+	  val pv = proj2[FiniteDistribution[M], FiniteDistribution[V]]
+	  val fv = pv andthen fn andthen incl2[Double, FiniteDistribution[V]]
+	  val fnsum = vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), (Double, FiniteDistribution[V])]]
+	  fnsum(atM, fv) andthen scprod[FiniteDistribution[V]]
+	}
+	    
+	    
+	/**
+	 * Extend differentiable function by identity on M.
+	 */
+	def extendM[M, V](fn:  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]) = {
+	  def func(mv: (FiniteDistribution[M], FiniteDistribution[V])) = (mv._1, fn(mv))
+	  
+	  def grad(mv: (FiniteDistribution[M], FiniteDistribution[V]))(mw: (FiniteDistribution[M], FiniteDistribution[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+	  
+	  DiffbleFunction(func)(grad)
 	}
   
 	// Most of the below is to be deprecated.
@@ -142,12 +154,12 @@ object FiniteDistbributionLearner {
 	 * differentiable function x -> (x, x)
 	 
 	def diagonal[V] = {
-	  def func(d: FD[V]) = {
+	  def func(d: FiniteDistribution[V]) = {
 	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
 	    FiniteDistribution(pmf)
 	  }
 	  
-	  def grad(d: FD[V])(pd: FD[(V, V)]) = {
+	  def grad(d: FiniteDistribution[V])(pd: FiniteDistribution[(V, V)]) = {
 	    val rawpmf = pd.pmf.flatMap(ab => Seq(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
 	    FiniteDistribution(rawpmf).flatten
 	  }
@@ -167,21 +179,21 @@ object FiniteDistbributionLearner {
 	// Helpers for operations on pairs of distributions.
 	
 
-	private def dstsum[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
+	private def dstsum[M, V](fst: (FiniteDistribution[M], FiniteDistribution[V]), scnd: (FiniteDistribution[M], FiniteDistribution[V])) = (fst._1 ++ scnd._1, fst._2++ scnd._2)
 	
-	private def dstmult[M, V](fst: (FD[M], FD[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
+	private def dstmult[M, V](fst: (FiniteDistribution[M], FiniteDistribution[V]), scnd: Double) = (fst._1 * scnd, fst._2 * scnd)
 	
-	private def dstdot[M, V](fst: (FD[M], FD[V]), scnd: (FD[M], FD[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
+	private def dstdot[M, V](fst: (FiniteDistribution[M], FiniteDistribution[V]), scnd: (FiniteDistribution[M], FiniteDistribution[V])) = (fst._1 dot scnd._1) + (fst._2 dot scnd._2)
 	
 	private def dstzero[M, V] = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
 	
-	// Building dynamics on FD[V]
+	// Building dynamics on FiniteDistribution[V]
 	
 
 	
-	// Building dynamics (FD[M], FD[V]) => FD[V] 
+	// Building dynamics (FiniteDistribution[M], FiniteDistribution[V]) => FiniteDistribution[V] 
 	
-	private type DynFn[M, V] = DF[(FD[M], FD[V]), FD[V]]
+	private type DynFn[M, V] =  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]
 	    
 	
 	/**
@@ -189,9 +201,9 @@ object FiniteDistbributionLearner {
 	 *  
 	 */
 	def sumFn[M, V](fst: => DynFn[M, V], scnd : => DynFn[M, V]) : DynFn[M, V] = {
-	  def func(st : (FD[M], FD[V])) = fst(st) ++ scnd(st)
+	  def func(st : (FiniteDistribution[M], FiniteDistribution[V])) = fst(st) ++ scnd(st)
 	  
-	  def grad(st: (FD[M], FD[V]))(w: FD[V]) ={
+	  def grad(st: (FiniteDistribution[M], FiniteDistribution[V]))(w: FiniteDistribution[V]) ={
 	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
 	  }
 	  
@@ -202,10 +214,10 @@ object FiniteDistbributionLearner {
 	 * differentiable function from a given one by composing with scalar multiplication.
 	 * Namely, (s, x) -> s * f(x), with gradient having weights on both s and x. 
 	 */
-	def scProdFn[V](fn : DF[FD[V], FD[V]]) = {
-	  def func(cv: (Double, FD[V])) = fn(cv._2) * cv._1
+	def scProdFn[V](fn :  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) = {
+	  def func(cv: (Double, FiniteDistribution[V])) = fn(cv._2) * cv._1
 	  
-	  def grad(cv: (Double, FD[V]))(w: FD[V]) = {
+	  def grad(cv: (Double, FiniteDistribution[V]))(w: FiniteDistribution[V]) = {
 	    val x = fn.grad(cv._2)(w)
 	    (x dot cv._2, x * cv._1)
 	  } 
@@ -218,7 +230,7 @@ object FiniteDistbributionLearner {
 	/**
 	 * Creates an atom at a parameter with given weight.
 	 */
-	private def atM[M, V](cv: (Double, FD[V]), m: M) = {
+	private def atM[M, V](cv: (Double, FiniteDistribution[V]), m: M) = {
 	  val dstM = FiniteDistribution.empty[M] + (m, cv._1)  
 	  (dstM, cv._2)
 	}
@@ -226,14 +238,14 @@ object FiniteDistbributionLearner {
 		/**
 	 * binds a scalar (multiplication) constant to a particular parameter.
 	 */
-	def bindFn[M, V](m: M, fn: DF[(Double, FD[V]), FD[V]]) ={
-	  def func(csv: (FD[M], FD[V])) = {
+	def bindFn[M, V](m: M, fn:  DiffbleFunction[(Double, FiniteDistribution[V]), FiniteDistribution[V]]) ={
+	  def func(csv: (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val c = csv._1(m)
 	    val v = csv._2
 	    fn((c, v))
 	  }
 	  
-	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	  def grad(csv: (FiniteDistribution[M], FiniteDistribution[V]))(w: FiniteDistribution[V]) = {
 	    val c = csv._1(m)
 	    val v = csv._2
 	    val cterm = fn.grad((c, v))(w)
@@ -246,15 +258,15 @@ object FiniteDistbributionLearner {
 	/**
 	 * The weighted term typically corresponding to a move or a combination
 	 */
-	def wtdDyn[M, V](m: M,fn : DF[FD[V], FD[V]]) : DynFn[M, V] = bindFn(m, scProdFn(fn))
+	def wtdDyn[M, V](m: M,fn :  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) : DynFn[M, V] = bindFn(m, scProdFn(fn))
 	
 	/**
 	 * the zero differentiable function
 	 */	
 	private def zeroMVV[M, V] : DynFn[M, V] = {
-	  def func(a: (FD[M], FD[V])) = FiniteDistribution.empty[V]
+	  def func(a: (FiniteDistribution[M], FiniteDistribution[V])) = FiniteDistribution.empty[V]
 	  
-	  def grad(a: (FD[M], FD[V]))(b: FD[V]) = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
+	  def grad(a: (FiniteDistribution[M], FiniteDistribution[V]))(b: FiniteDistribution[V]) = (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
 	  
 	  DiffbleFunction(func)(grad)
 	}
@@ -262,7 +274,7 @@ object FiniteDistbributionLearner {
 	/**
 	 * Linear combination of dynamical systems
 	 */
-	def linComb[M, V](dyns: Map[M, DF[FD[V], FD[V]]]) = {
+	def linComb[M, V](dyns: Map[M,  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]]) = {
 	  val syslst = for ((m, f) <- dyns) yield wtdDyn(m, f)
 	  (zeroMVV[M, V] /: syslst)((a, b) => sumFn(a, b))
 	}
@@ -271,14 +283,14 @@ object FiniteDistbributionLearner {
 	
 	
 	
-	// Building dynamics on (FD[M], FD[V])
+	// Building dynamics on (FiniteDistribution[M], FiniteDistribution[V])
 	
-	private type DS[M, V] = DF[(FD[M], FD[V]), (FD[M], FD[V])]
+	private type DS[M, V] =  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), (FiniteDistribution[M], FiniteDistribution[V])]
 	
 	def sumDF[M, V](fst: => DS[M, V], scnd : => DS[M, V]) = {
-	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
+	  def func(st : (FiniteDistribution[M], FiniteDistribution[V])) = dstsum(fst(st), scnd(st))
 	  
-	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
+	  def grad(st: (FiniteDistribution[M], FiniteDistribution[V]))(w: (FiniteDistribution[M], FiniteDistribution[V])) ={
 	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
 	  }
 	  
@@ -286,12 +298,12 @@ object FiniteDistbributionLearner {
 	}
 	
 	def foldDF[M, V](base: DS[M, V], comps: Map[V, DS[M, V]]) = {
-	  def func(arg: (FD[M], FD[V])) = {
+	  def func(arg: (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val l = for ((v, f) <- comps) yield dstmult(f(arg), arg._2(v)) 
 	    (base(arg) /: l)(dstsum)
 	  }
 	  
-	  def grad(arg: (FD[M], FD[V]))(vect: (FD[M], FD[V])) = {
+	  def grad(arg: (FiniteDistribution[M], FiniteDistribution[V]))(vect: (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val l = for ((v, f) <- comps) yield {
 	      val prob = dstdot(f.grad(arg)(vect), arg)
 	      val term = dstmult(f.grad(arg)(vect), arg._2(v))
@@ -304,21 +316,12 @@ object FiniteDistbributionLearner {
 	}
 	
 	
-	/**
-	 * Extend differentiable function by identity on M.
-	 */
-	def extendM[M, V](fn: DF[(FD[M], FD[V]), FD[V]]) = {
-	  def func(mv: (FD[M], FD[V])) = (mv._1, fn(mv))
-	  
-	  def grad(mv: (FD[M], FD[V]))(mw: (FD[M], FD[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
-	  
-	  DiffbleFunction(func)(grad)
-	}
+
 	
 	def projectV[M, V] = {
-	  def func(mv: (FD[M], FD[V])) = mv._2
+	  def func(mv: (FiniteDistribution[M], FiniteDistribution[V])) = mv._2
 	  
-	  def grad(mv: (FD[M], FD[V]))(v : FD[V]) = (FiniteDistribution.empty[M], v)
+	  def grad(mv: (FiniteDistribution[M], FiniteDistribution[V]))(v : FiniteDistribution[V]) = (FiniteDistribution.empty[M], v)
 	  
 	  DiffbleFunction(func)(grad)
 	}
@@ -326,26 +329,26 @@ object FiniteDistbributionLearner {
 	/**
 	 * prune the distribution on vertices without changing the one on M.
 	 */
-	def pruneV[M, V](t: Double) = formalSmooth((mv: (FD[M], FD[V])) => (mv._1, mv._2 normalized(t)))
+	def pruneV[M, V](t: Double) = formalSmooth((mv: (FiniteDistribution[M], FiniteDistribution[V])) => (mv._1, mv._2 normalized(t)))
 	
 	/**
 	 * prune a distribution
 	 */
-	def prune[V](t: Double) = formalSmooth((d: FD[V]) => d normalized(t))	
+	def prune[V](t: Double) = formalSmooth((d: FiniteDistribution[V]) => d normalized(t))	
 
 
 	/**
 	 * Linear combination of dynamical systems with coefficients in V
 	 */
 	def linComb[M, V](dyns: V => Option[DS[M, V]]) = {
-	  def func(arg: (FD[M], FD[V])) = {
+	  def func(arg: (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val vdst = arg._2
 	    val vs = vdst.support
 	    val terms = for (v <- vs; f <- dyns(v)) yield dstmult(f(arg), vdst(v)) 
 	    (dstzero[M, V] /: terms)(dstsum)
 	  }
 	  
-	  def grad(arg: (FD[M], FD[V]))(w : (FD[M], FD[V])) = {
+	  def grad(arg: (FiniteDistribution[M], FiniteDistribution[V]))(w : (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val vdst = arg._2
 	    val vs = vdst.support
 	    val vectterms = for (v <- vs; f <- dyns(v)) yield dstmult(f.grad(arg)(w), vdst(v))
@@ -369,13 +372,13 @@ object FiniteDistbributionLearner {
 	 * (p_M, p_V) -> (p_M(m) * f(p_M, p_V))
 	 */
 	def isleMultFn[M, V](fn: DynFn[M, V], m: M) = {
-	  def func(csv: (FD[M], FD[V])) = {
+	  def func(csv: (FiniteDistribution[M], FiniteDistribution[V])) = {
 	    val c = csv._1(m)
 	    val v = csv._2
 	    fn((csv._1, v)) * c
 	  }
 	  
-	  def grad(csv: (FD[M], FD[V]))(w: FD[V]) = {
+	  def grad(csv: (FiniteDistribution[M], FiniteDistribution[V]))(w: FiniteDistribution[V]) = {
 	    val c = csv._1(m)
 	    val v = csv._2
 	    val mv = fn.grad((csv._1, v))(w)
@@ -393,12 +396,12 @@ object FiniteDistbributionLearner {
 	 * To actually create an isle, we compose this with the corresponding mixin.
 	 */
 	def simpleIsleInitFn[M, V](v: V, t: M) = {
-	  def func(ds: (FD[M], FD[V])) ={
+	  def func(ds: (FiniteDistribution[M], FiniteDistribution[V])) ={
 	    val p = ds._1(t)
 	    (ds._1, ds._2 * (1.0 - p) + (v, p))
 	  }
 	  
-	  def grad(ds: (FD[M], FD[V]))(ws: (FD[M], FD[V])) ={
+	  def grad(ds: (FiniteDistribution[M], FiniteDistribution[V]))(ws: (FiniteDistribution[M], FiniteDistribution[V])) ={
 	    val p = ds._1(t)
 	    val c = ws._1(t)
 	    val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
@@ -416,7 +419,7 @@ object FiniteDistbributionLearner {
 	 *
 	 */
 	def spawnSimpleIsle[M, V](v: V, t: M, m : M, f : => DynFn[M, V]) = {
-	  val g = simpleIsleInitFn(v, t) andThen f
+	  val g = simpleIsleInitFn(v, t) andthen f
 	  isleMultFn(g, m)
 	}
 	
@@ -425,8 +428,8 @@ object FiniteDistbributionLearner {
 	/**
 	 * step for learning based on feedback.
 	 */
-	def learnstep[M, V](f: DF[(FD[M], FD[V]), (FD[M], FD[V])], epsilon: Double, feedback: (FD[M], FD[V]) => (FD[M], FD[V])) = {
-	  (init : (FD[M], FD[V])) => 
+	def learnstep[M, V](f:  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), (FiniteDistribution[M], FiniteDistribution[V])], epsilon: Double, feedback: (FiniteDistribution[M], FiniteDistribution[V]) => (FiniteDistribution[M], FiniteDistribution[V])) = {
+	  (init : (FiniteDistribution[M], FiniteDistribution[V])) => 
 	    val fb = feedback(f(init)._1, f(init)._2)
 	    (init._1 ++ (fb._1 * epsilon), init._2 ++ (fb._2 * epsilon))
 	}
@@ -436,22 +439,22 @@ object FiniteDistbributionLearner {
 	/**
 	 * Iterate a differentiable function.
 	 */
-	@tailrec def iterateDiffble[X](fn: DF[X, X], n: Int, accum: DF[X, X] = id[X]): DF[X, X] = {
-		if (n<1) accum else iterateDiffble(fn, n-1, accum andThen (fn : DF[X, X]) )
+	@tailrec def iterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int, accum:  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
+		if (n<1) accum else iterateDiffble(fn, n-1, accum andthen (fn :  DiffbleFunction[X, X]) )
 	}
 	
 	/** 
 	 *  Iterate a diffble function given depth
 	 */
-	@tailrec def iterateDiffbleDepth[X](fn: => DF[X, X], steps: Int, depth: Int, accum: => DF[X, X] = id[X]): DF[X, X] = {
-		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andThen fn)
+	@tailrec def iterateDiffbleDepth[X](fn: =>  DiffbleFunction[X, X], steps: Int, depth: Int, accum: =>  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
+		if (steps<math.pow(2, depth)) accum else iterateDiffbleDepth(fn, steps - math.pow(2, depth).toInt, depth, accum andthen fn)
 	}
 	
 	
 	class IterDynSys[M, V](dyn : => DynFn[M, V], steps: Int, depth: Int){
 	  def iter(d: Int) = iterateDiffbleDepth(next, steps, d)
 	  
-	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) id[(FD[M], FD[V])] else iterateDiffbleDepth(next, steps, depth+1)
+	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) id[(FiniteDistribution[M], FiniteDistribution[V])] else iterateDiffbleDepth(next, steps, depth+1)
 	  
 	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
 	  
@@ -463,9 +466,9 @@ object FiniteDistbributionLearner {
 	   * @param m weight for island formation.
 	   * @param export exporting from the island.
 	   */
-	  def withIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
+	  def withIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
 	    def iternext = iterateDiffbleDepth(extendM(withIsle(v, t, m, export, d+1, isleDepth)), steps, isleDepth(d))
-	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
+	    def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, V]) andthen export
 	    sumFn(dyn, isle)
 	  }
 	  
@@ -477,24 +480,24 @@ object FiniteDistbributionLearner {
 	   * @param m weight for island formation.
 	   * @param export exporting from the island.
 	   */
-	  def mkIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
+	  def mkIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
 	    def iternext = iterateDiffbleDepth(iter(isleDepth(d)), steps, isleDepth(d))
-	    spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andThen projectV[M, V]) andThen export
+	    spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, V]) andthen export
 	  }
 	  
-	  def addIsle(v: V, t: M, m : M, export : => DF[FD[V], FD[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
+	  def addIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
 	      withIsle(v: V, t: M, m : M, export, depth, isleDepth), steps, depth)
 	  
 	  def next = extendM(dyn)
 	}
 	
-	type DynF[M, V] = DF[(FD[M], FD[V]), (FD[M], FD[V])]
+	type DynF[M, V] =  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), (FiniteDistribution[M], FiniteDistribution[V])]
 	
 	
 	def sumF[M, V](fst: => DynF[M, V], scnd : => DynF[M, V]) = {
-	  def func(st : (FD[M], FD[V])) = dstsum(fst(st), scnd(st))
+	  def func(st : (FiniteDistribution[M], FiniteDistribution[V])) = dstsum(fst(st), scnd(st))
 	  
-	  def grad(st: (FD[M], FD[V]))(w: (FD[M], FD[V])) ={
+	  def grad(st: (FiniteDistribution[M], FiniteDistribution[V]))(w: (FiniteDistribution[M], FiniteDistribution[V])) ={
 	    dstsum(fst.grad(st)(w), scnd.grad(st)(w))
 	  }
 	  
