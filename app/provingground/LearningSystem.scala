@@ -76,6 +76,20 @@ object LearningSystem{
             
       }
       
+      def mixinIsle[A](f: DiffbleFunction[A, A], 
+          isle : DiffbleFunction[A, A] => DiffbleFunction[A, A])(implicit ls: LinearStructure[A]) = {
+        val g = repsquare(f)  
+        def h(m : Int) : DiffbleFunction[A, A] = m match {
+        	case 0 => id[A]
+        	case n if n<0 => 
+        		vzero[DiffbleFunction[A, A]]
+        	case n if n >0 => 
+        		val dsum  = vsum[DiffbleFunction[A, A]]
+        		dsum(g(n), h(n -1))
+        }
+        h _
+      }
+      
       /**
        * Big sum, with terms (via support) in general depending on the argument.
        */
