@@ -115,8 +115,9 @@ object FiniteDistbributionLearner {
 	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
 	 * set up with implicits inside, so one can use this to map on a list.
 	 */
-	def weightedDyn[M, V](implicit lsM : LinearStructure[M], 
-	    lsV : LinearStructure[V], ip: InnerProduct[V]) : (M,  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) =>  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = (m, fn) => {
+	def weightedDyn[M, V] : (
+	        M,  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]
+	        ) =>  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = (m, fn) => {
 	  val pm = proj1[FiniteDistribution[M], FiniteDistribution[V]]
 	  val scm = eval(m)
 	  val atM = pm andthen scm andthen incl1[Double, FiniteDistribution[V]]

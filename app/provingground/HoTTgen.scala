@@ -58,6 +58,28 @@ object HoTTgen {
 	  case _ => None
 	}
 	
+	object Move extends Enumeration{
+	  val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons  = Move
+	}
+	
+	
+	val moves = List((Move.appl, combinationFn(funcappl)),
+	    (Move.arrow, combinationFn(functyp)),
+	    (Move.pi, moveFn(pityp)),
+	    (Move.sigma, moveFn(sigmatyp)),
+	    (Move.pairt, combinationFn(pairtyp)),
+	    (Move.pair, combinationFn(pairobj)),
+	    (Move.paircons, moveFn(paircons)),
+	    (Move.icons, moveFn(icons)),
+	    (Move.jcons, moveFn(icons))
+	    )
+	
+	val wtdDyn = weightedDyn[Move.type, Term]
+	 
+	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
+	
+	val wtdMoveSum = vbigsum(wtdMoveList)
+	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
 	    )(terms: Set[Term])(typ: Typ[Term]) = {
@@ -71,7 +93,7 @@ object HoTTgen {
 	  head andthen export
 	}
 	
-	def lambdaSum[M](l: M, 
+	def lambdaSum[M](l: M)( 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
 	    ) = {
 			val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
@@ -82,4 +104,16 @@ object HoTTgen {
 				}
 			DiffbleFunction.bigsum(lambdas)
 			}
+	
+	def lambdaSumM[M](l : M)( 
+	    g: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
+	    ) = {
+	  val p = DiffbleFunction.proj2[FiniteDistribution[M], FiniteDistribution[Term]]
+	  val f = g andthen p
+	  val withIsle = lambdaSum(l)(f)
+	  extendM(withIsle)
+	}
+	
+	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda))
+	
 }
