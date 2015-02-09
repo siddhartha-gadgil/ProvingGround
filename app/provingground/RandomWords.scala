@@ -72,7 +72,7 @@ object RandomWords{
     case (UnOpWord(op, elem), _) => m(op) * partial(m)(elem, x) 
     case (BinOpWord(`x`, first, second),_) => m(x) * partial(m)(first, x) * m(second) + m(x) * partial(m)(second, x) * m(first)+ m(first) * m(second)
     case (BinOpWord(op, first, second), _) => m(op) * partial(m)(first, x) * m(second) + m(op) * partial(m)(second, x) * m(first) 
-    case agg: AggregateWord[E] => (agg.terms map (partial(m)(_, x))).sum
+    case agg: AggregateWord[_] => (agg.asInstanceOf[AggregateWord[E]].terms map (partial(m)(_, x))).sum
     case _ => 0.0
   }
     
