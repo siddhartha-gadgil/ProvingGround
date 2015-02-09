@@ -6,8 +6,11 @@ import ScalaRep._
 import BoolType._
 
 object IntTypes {
-
+  
+  
   trait IntTyp extends SmallTyp {
+    
+    
     lazy val rep = dsl.i[Long](this)
 
     lazy val oprep = rep -->: rep -->: rep
@@ -33,6 +36,8 @@ object IntTypes {
     lazy val succ = sum(one)
   }
 
+  private val n = N.rep
+  
   case object Z extends IntTyp
 
   @annotation.tailrec def inducFn[U <: Term](f0: U, g: Long => U => U, n: Long,
@@ -114,7 +119,5 @@ object IntTypes {
   val NFinRep = n -->: FinRep
 
   val kmodn = NFinRep((k: Long) => (n: Long) => Fin(n).rep(k % n))
-
-  private val n = N.rep
 
 }

@@ -1,6 +1,6 @@
 package provingground
 
-import scala.swing._
+// import scala.swing._
 import java.awt.Dimension
 import akka.actor._
 
@@ -8,7 +8,7 @@ import akka.actor._
 import provingground.TextToInt._
 
 
- object AckGUI extends SimpleSwingApplication{
+ object AckGUI /*extends SimpleSwingApplication*/{ /*
     val s = new Dimension(1500, 1500)
 
 	object Ack{
@@ -68,5 +68,5 @@ import provingground.TextToInt._
 				case Int(m) if m>=0 => Ack.ack(m, 2).toString
 				case _ => "Ackerman function is defined only for integers"
 				}
-		}
+		}*/
 	}

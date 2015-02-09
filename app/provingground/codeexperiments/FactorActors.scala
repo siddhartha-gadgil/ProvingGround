@@ -1,7 +1,7 @@
 package provingground.codeexperiments
 
 import annotation.tailrec
-import scala.swing._
+//import scala.swing._
 import akka.actor._
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -13,37 +13,37 @@ import scala.language.postfixOps
 
 /** This is to experiment with using actors for background computations
 		We use a Naive algorithm as this suits our purposes
- */	
+ */
 object FactorActors{
-  
+
 	trait ActorMessage
-  
+
 	trait ActorTask extends ActorMessage
-	
+
 	trait ActorResponse extends ActorMessage
-	
+
 	case class Query(task: ActorTask, asker: ActorRef)
- 
-	case class TimedOut(task: ActorTask) extends ActorMessage 
-	
+
+	case class TimedOut(task: ActorTask) extends ActorMessage
+
 	case class Factorise(target: BigInt) extends ActorTask
-	
+
 	case class PartialFactorisation(target: BigInt, factors: List[BigInt], unfactored: BigInt)
 
 	case class Factorisation(target: BigInt, factors: List[BigInt]) extends ActorMessage{
 	  def show: String = target.toString + " = " + ((factors map (_.toString)) reduce (_ +" * "+ _))
 	}
-	
+
 	case class FindPrimeFactor(target: BigInt, lower: BigInt = BigInt(2), upper: Option[BigInt] = None) extends ActorTask
-	
+
 	case class PrimeFactor(target: BigInt, prime: BigInt) extends ActorMessage
-	
+
 	case class NoPrimeFactor(target: BigInt, lower: BigInt, upper: BigInt)
-	
+
 	case class IsPrime(prime: BigInt) extends ActorMessage
-	
+
 	case object Updates extends ActorMessage
-	
+
 	def bigIntOpt(s: String): Option[BigInt] = {
 	  try {
 	    Some(BigInt(s))
@@ -52,9 +52,9 @@ object FactorActors{
 	    case _ : Throwable => None
 	  }
 	}
-	
+
 	def bigInt(s: String) = Try(BigInt(s))
-	
+
 	def tooBig(n: BigInt)(implicit bound: Option[BigInt]) = bound match{
 	  case None => false
 	  case Some(b: BigInt) if (n>b) => true
@@ -64,29 +64,29 @@ object FactorActors{
 	@tailrec private def findPrimeFactor(n: BigInt, m: BigInt = 2, bound: Option[BigInt] = None): BigInt = {
 		if (m * m > n || tooBig(m)(bound)) n
 		else if (n % m == 0) m
-		else findPrimeFactor(n, m+1) 
+		else findPrimeFactor(n, m+1)
 		}
-	
+
 	@tailrec private def findPrimeFactorOpt(n: BigInt, m: BigInt = 2, bound: Option[BigInt] = None): Option[BigInt] = {
 		if (m * m > n) Some(n)
-		else if (tooBig(m)(bound)) None 
+		else if (tooBig(m)(bound)) None
 		else if (n % m == 0) Some(m)
-		else findPrimeFactorOpt(n, m+1) 
+		else findPrimeFactorOpt(n, m+1)
 		}
-	
+
 	implicit val noBound : Option[BigInt] = None
-	
+
 	class Factoriser(implicit val system:ActorSystem){
-	
+
 	class FactorActor extends Actor{
 		var tasks : Set[Query] = Set.empty
 		var timedout: Set[ActorTask] = Set.empty
 		var messages: Set[ActorMessage] = Set.empty
-		
+
 		var partialFactors : Set[PartialFactorisation] = Set.empty
 		var factorisations: Set[Factorisation] = Set.empty
 		def receive = {
-		  case Factorise(n: BigInt) => 
+		  case Factorise(n: BigInt) =>
 		    tasks += Query(Factorise(n), sender)
 		    primeFinder ! FindPrimeFactor(n)
 		  case PrimeFactor(p: BigInt, n: BigInt) =>
@@ -119,7 +119,7 @@ object FactorActors{
 	  val primeInInterval = context.actorOf(Props[PrimeInInterval])
 	  val knownPrime = context.actorOf(Props[KnownPrime])
 	  def receive = {
-	    case FindPrimeFactor(n: BigInt, _, _) => 
+	    case FindPrimeFactor(n: BigInt, _, _) =>
 	      tasks += Query(FindPrimeFactor(n), sender)
 	      primeInInterval ! FindPrimeFactor(n, 2, Some(increment))
 	      knownPrime ! FindPrimeFactor(n)
@@ -131,7 +131,7 @@ object FactorActors{
 	      for (Query(FindPrimeFactor(m, _,_), asker) <- tasks if m==n) (asker ! IsPrime(n))
 	  }
 	}
-	
+
 	class PrimeInInterval extends Actor{
 	  def receive ={
 	    case FindPrimeFactor(n: BigInt, lower: BigInt, Some(upper: BigInt)) =>
@@ -142,7 +142,7 @@ object FactorActors{
 	      }
 	  }
 	}
-	
+
 	class KnownPrime extends Actor{
 	  var primes: Set[BigInt] = Set.empty
 	  def receive = {
@@ -155,11 +155,11 @@ object FactorActors{
 	import system.dispatcher
 
 	val factorActor = system.actorOf(Props[FactorActor], "FactorActor")
-	
+
 	val primeFinder = system.actorOf(Props[PrimeFactorFinder], "PrimeFinder")
 
 	def askFactors(n: BigInt): Future[Factorisation] = {
-		
+
 		factorActor.ask(Factorise(n))(5 seconds).mapTo[Factorisation]
 		}
 

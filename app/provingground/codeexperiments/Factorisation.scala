@@ -1,7 +1,7 @@
 package provingground.codeexperiments
 
 import annotation.tailrec
-import scala.swing._
+//import scala.swing._
 import java.awt.Dimension
 import akka.actor._
 import scala.concurrent._
@@ -15,7 +15,7 @@ import scala.language.postfixOps
 /** This is to experiment with using actors for background computations
 		We use a Naive algorithm as this suits our purposes
  */
-object Factorisation extends SimpleSwingApplication{
+object Factorisation /*extends SimpleSwingApplication*/{/*
     val s = new Dimension(1500, 1500)
 
 	case class FactoriseTask(n: Int)
@@ -102,5 +102,5 @@ object Factorisation extends SimpleSwingApplication{
 							}
 				case _ => factorResult.text = "I can only factorize non-negative integers"
 				}
-		}
+		}*/
 	}

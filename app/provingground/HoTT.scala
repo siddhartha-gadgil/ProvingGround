@@ -334,6 +334,8 @@ object HoTT{
       case _ => 0
     }
 
+    val __ = Universe(0)
+    
 
     /**
      * Wrapper for universe with refined scala type for objects (i.e., types) in it.
@@ -372,7 +374,7 @@ object HoTT{
     /**
      * The first universe
      */
-    val __ = Universe(0)
+    
 
 
 
@@ -387,7 +389,7 @@ object HoTT{
 		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 
 		def newobj = PairTyp(first.newobj, second.newobj)
-		
+
 		val paircons = {
     	  val a = "a" :: first
     	  val b ="b" :: second
@@ -628,7 +630,7 @@ object HoTT{
 	 *  If it is important to note that it is not dependent, and hence has scala type FuncObj, then use LambdaFixed
 	 *
 	 */
-	abstract class LambdaLike[X<: Term, +Y <: Term with Subs[Y]](variable: X, value : Y) extends FuncTerm[X, Y]{
+	abstract class LambdaLike[X<: Term, Y <: Term with Subs[Y]](variable: X, value : Y) extends FuncTerm[X, Y]{
 //	  // val domobjtpe = typeOf[X]
 
 //	  // val codomobjtpe = typeOf[Y]
@@ -699,7 +701,7 @@ object HoTT{
 	/**
 	 * lambda which is known to have fixed codomain.
 	 */
-	case class LambdaFixed[X<: Term, +Y <: Term with Subs[Y]](variable: X, value : Y)
+	case class LambdaFixed[X<: Term, Y <: Term with Subs[Y]](variable: X, value : Y)
 		extends LambdaLike(variable, value) with FuncObj[X, Y] with Subs[LambdaFixed[X, Y]]{
 	  override val dom = variable.typ.asInstanceOf[Typ[X]]
 
@@ -1007,7 +1009,7 @@ object HoTT{
     	  val b ="b" :: (fibers(a))
     	  lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
     	}
-	  
+
 	  def newobj = SigmaTyp(fibers.newobj)
 
 	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
@@ -1075,12 +1077,12 @@ object HoTT{
 	  def i(value: Term) = PlusTyp.FirstIncl(this, value)
 
 	  def j(value: Term) = PlusTyp.ScndIncl(this, value)
-	  
+
 	  val ifn = {
 	    val a = "a" :: first
 	    lmbda[Term, Term](a)(i(a))
 	  }
-	  
+
 	  val jfn = {
 	    val a = "a" :: first
 	    lmbda[Term, Term](a)(j(a))

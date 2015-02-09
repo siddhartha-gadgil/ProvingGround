@@ -1,6 +1,6 @@
 package provingground.fol
 
-import scala.swing._
+//import scala.swing._
 import java.awt.Dimension
 
 import provingground.CoreNLP._
@@ -9,7 +9,7 @@ import provingground.NlpProse._
 import provingground.fol.ParseProse._
 
 
- object ParserGUI extends SimpleSwingApplication{
+ object ParserGUI /*extends SimpleSwingApplication*/{/*
     val s = new Dimension(1500, 1500)
     val pipe = newPipe
 	val toParse = new TextArea(10, 40){
@@ -19,16 +19,16 @@ import provingground.fol.ParseProse._
 		text = "Parse"
 		verticalAlignment = Alignment.Top
 		}
-	val parseFrame = new FlowPanel{	     
+	val parseFrame = new FlowPanel{
 	    contents += parseButton
 	    contents += toParse
 	    border = Swing.EmptyBorder(20, 20, 20, 20)
 	}
-	 
+
 	val parseResult = new TextArea(10, 40){
 			charWrap = true
 			}
-		
+
 	val leftPanel = new BoxPanel(Orientation.Vertical){
 			contents += new Label("Enter text to parse to a Formula")
 			contents += parseFrame
@@ -36,11 +36,11 @@ import provingground.fol.ParseProse._
 			contents += parseResult
 			border = Swing.EmptyBorder(20, 20, 20, 20)
 			}
-			
-	var depListView = new ListView(List():List[DepRel])	
-	
+
+	var depListView = new ListView(List():List[DepRel])
+
 	var depHeader = new Label("        ")
-	
+
 	val rightPanel = new BoxPanel(Orientation.Vertical){
 					contents += new Label("Root Token")
 	        contents += depHeader
@@ -64,5 +64,5 @@ import provingground.fol.ParseProse._
 			parseResult.text = toFormula(parsedTree, Global).toString
 			depListView.listData = parsedTree.tree
 			depHeader.text = parsedTree.root.toString
-		}
+		}*/
 	}

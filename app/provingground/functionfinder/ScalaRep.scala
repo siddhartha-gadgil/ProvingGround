@@ -84,9 +84,10 @@ object ScalaRep {
 
   /**
    * formal extension of a function.
+   * XXX must check type.
    */
   def extend[T, U <: Term ](fn: T => U, functerm: FuncTerm[Term, U], codom: Typ[U]): Term => U = {
-	  case c: ConstTerm[T] => fn(c.value)
+	  case c: ConstTerm[_]  => fn(c.value.asInstanceOf[T])
 	  case arg: Term => codom.symbObj(ApplnSym(functerm, arg))
 	}
 
