@@ -66,7 +66,7 @@ object BoolType {
 
   private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
 
-  def iteDepFunc(u: Typ[Term], v : Typ[Term])(implicit fnfn : ScalaUniv[FnFn]) = {
+  def iteDepFunc(u: Typ[Term], v : Typ[Term])/*(implicit fnfn : ScalaUniv[FnFn])*/ = {
 
     val x = "x" :: u
 
@@ -83,6 +83,14 @@ object BoolType {
     rep((c: Boolean) => if (c) yes else no)
   }
 
+  /*
   lazy val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
-
+*/
+  
+  
+  lazy val itedep = {
+    val u = "u" :: __
+    val v = "v" :: __
+    lambda(u)(lambda(v)(iteDepFunc(u, v)))
+  }
 }
