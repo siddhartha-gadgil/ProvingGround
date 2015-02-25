@@ -45,26 +45,35 @@ object HoTT{
        */
         def typ: Typ[Term]
 
-
+        /**
+         * returns whether this depends on that
+         */
         def dependsOn(that: Term) = {
           val newVar = innervar(that)
           replace(that, newVar) != this
         }
 
+        /**
+         * returns whether this is independent of that.
+         */
         def indepOf(that: Term) = !dependsOn(that)
 
     }
-
-	trait WithTyp[+U <: Typ[Term]] extends Term with Subs[WithTyp[U]]{
-	  def typ : U
-	}
 
 	/**
 	 * specify result of substitution, typically so a class is closed under substitution.
 	 */
     trait Subs[+U <: Term]{
+      /** 
+       *  substitute x by y.
+       */
       def subs(x: Term, y: Term) : U with Subs[U]
 
+      /**
+       * refine substitution so if x and y are both abstract pairs with independent components (for x),
+       * both components are substituted.
+       * testing for types also done. 
+       */
       def replace(x: Term, y: Term) : U with Subs[U] = {
         assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
         (x, y) match {
@@ -101,6 +110,7 @@ object HoTT{
 
         /**
          * factor for producing objects of the given type.
+         * can use innervar if one wants name unchanged.
          */
         def obj: U = {
           object newname extends AnySym
@@ -114,6 +124,9 @@ object HoTT{
           assert(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
           term}
 
+        /**
+         * type of a type is a universe.
+         */
         val typ : Univ
 
         lazy val typlevel : Int = univlevel(typ)
@@ -131,7 +144,8 @@ object HoTT{
         def ->:[W <: Term, UU >: U <: Term](that : Typ[W]) = FuncTyp[W, UU](that, this)
 
         /**
-         * dependent function type (Pi-Type): this depends on a variable, which hence gives a type family.
+         * dependent function type (Pi-Type) define by a lambda:
+         *  `this` depends on a variable, which hence gives a type family.
          */
         def ~>:[UU >: U <: Term](variable: Term) = {
           val fiber = LambdaFixed[Term, Typ[UU]](variable, this)
@@ -169,7 +183,7 @@ object HoTT{
      */
     object SimpleSyms extends TermSyms{
     	val Arrow = "->"
-    	val MapsTo = "|->"
+    	val MapsTo = ":->"
     	val Pi ="Pi"
     	val Sigma = "S"
     }
@@ -187,7 +201,7 @@ object HoTT{
   //  import SimpleSyms._
     import SimpleSyms._
 
-    /** traits that are given by name;W
+    /** terms that are given (and determined) by name;
      *  does not include, for instance, pairs each of whose instance is given by a name;
      *  most useful for pattern matching, where the name contains information about formal function applications etc.
      */
@@ -205,7 +219,10 @@ object HoTT{
       case _ => false
     }
 
-    /** Constructing symbolic objects that are Terms but no more refined*/
+    /** 
+     *  symbolic objects that are Terms but no more refined
+     *  ie, not pairs, formal functions etc.
+     *  */
     case class SymbObj[+U<: Term](name: AnySym, typ: Typ[U]) extends Term with Symbolic{
       override def toString = "("+name.toString+" : "+typ.toString+")"
 
@@ -215,26 +232,29 @@ object HoTT{
       def subs(x: Term, y: Term) = this match {
         case `x` => y
         case applptnterm(func : FuncTerm[u, Term], arg) =>
-          Try(func.subs(x,y)(arg.subs(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.subs(x, y)))
-        case _ => SymbObj(name, typ.subs(x, y))
+          Try(func.replace(x,y)(arg.replace(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.replace(x, y)))
+        case _ => SymbObj(name, typ.replace(x, y))
       }
       *
       */
 
       def subs(x: Term, y: Term) = if (x==this) y else {
-        def symbobj(sym: AnySym) = SymbObj(sym, typ.subs(x, y))
-        symsubs(symbobj)(x, y)(name)
+        def symbobj(sym: AnySym) = SymbObj(sym, typ.replace(x, y))
+        symSubs(symbobj)(x, y)(name)
       }
     }
 
-    def symsubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = {
+    /**
+     * substitute symbols, with the only non-trivial substitution for formal applications.
+     */
+    def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = {
       case fx: ApplnSym[w, u] =>
-        Try((fx.func.subs(x, y))(fx.arg.subs(x, y).asInstanceOf[w]).asInstanceOf[U]) getOrElse symbobj(fx)
+        Try((fx.func.replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w]).asInstanceOf[U]) getOrElse symbobj(fx)
       case sym => symbobj(sym)
     }
 
     /** Symbolic types, which the compiler knows are types.
-     *  The base tells the scala type of objects and gives a factory for symbolic objects of this scala type.
+     *  
      */
     case class SymbTyp(name: AnySym) extends Typ[Term] with Symbolic{
       lazy val typ = Universe(0)
@@ -257,7 +277,7 @@ object HoTT{
         case (u: Typ[_], v: Typ[_]) if (u == this) => v
         case _ => {
           def symbobj(name: AnySym) = SymbTyp(name)
-          symsubs(symbobj)(x, y)(name)
+          symSubs(symbobj)(x, y)(name)
         }
       }
 
@@ -398,7 +418,7 @@ object HoTT{
 
 		def subs(x: Term, y: Term) = if (x == this) Try(
 		    y.asInstanceOf[PairTyp[U, V]]).getOrElse(
-		        {println(y); println(x); println(y.typ);PairTyp(first.subs(x, y), second.subs(x, y))}) else PairTyp(first.subs(x, y), second.subs(x, y))
+		        {println(y); println(x); println(y.typ);PairTyp(first.replace(x, y), second.replace(x, y))}) else PairTyp(first.replace(x, y), second.replace(x, y))
 
 			// The name is lost as `name', but can be recovered using pattern matching.
 		def symbObj(name: AnySym): Obj = PairObj(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
@@ -410,7 +430,7 @@ object HoTT{
 
     	def newobj = PairObj(first.newobj, second.newobj)
 
-    	def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[PairObj[U, V]] else  PairObj[U, V](first.subs(x, y), second.subs(x, y))
+    	def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[PairObj[U, V]] else  PairObj[U, V](first.replace(x, y), second.replace(x, y))
 					}
 
 
@@ -447,7 +467,7 @@ object HoTT{
 
 	  def newobj = FuncTyp(dom.newobj, codom.newobj)
 
-	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.subs(x, y), codom.subs(x,y))
+	  def subs(x : Term, y: Term) = FuncTyp[W, U](dom.replace(x, y), codom.replace(x,y))
 	}
 
 	/**
@@ -587,11 +607,11 @@ object HoTT{
 
 
       def subs(x: Term, y: Term) = (x, y) match {
-//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.replace(u, v), codom.replace(u, v))
         case (u, v: FuncObj[W, U]) if (u == this) => v
         case _ => {
-          def symbobj(sym: AnySym) = FuncSymb(sym, dom.subs(x, y), codom.subs(x,y))
-          symsubs(symbobj)(x, y)(name)
+          def symbobj(sym: AnySym) = FuncSymb(sym, dom.replace(x, y), codom.replace(x,y))
+          symSubs(symbobj)(x, y)(name)
         }
       }
 
@@ -618,7 +638,7 @@ object HoTT{
 
 	  def newobj = typ.obj
 
-	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).subs(x, y), dom.subs(x, y), codom.subs(x, y))
+	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).replace(x, y), dom.replace(x, y), codom.replace(x, y))
 	}
 
 
@@ -657,18 +677,18 @@ object HoTT{
 
 	  override def hashCode = {
 	    val newvar = variable.typ.symbObj(Name("hash"))
-	    val newval = value.subs(variable, newvar)
+	    val newval = value.replace(variable, newvar)
 	    41 * (variable.typ.hashCode + 41) + newval.hashCode
 	  }
 
 
 	  def subs(x: Term, y: Term) = (x, y) match {
-		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) =>
-		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
-		      Lambda(newvar , value.subs(x,y))
+		    case (u : Typ[_], v : Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
+		      val newvar = changeTyp(variable, variable.typ.replace(u, v))
+		      Lambda(newvar , value.replace(x,y))
 		    case _ =>
 		      val newvar = variable.newobj
-		      val newval = value.subs(variable, newvar).subs(x, y).subs(newvar, variable) // change variable to avoid name clashes.
+		      val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
 		      Lambda(variable, newval)
 		  }
 
@@ -685,14 +705,14 @@ object HoTT{
 		LambdaLike(variable, value){
 
 
-	  val depcodom : X => Typ[Y] = (t : X) => value.typ.subs(variable, t).asInstanceOf[Typ[Y]]
+	  val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
 	  val dep = value dependsOn variable
 
 		def newobj = Lambda(variable.newobj, value.newobj)
 
 	  override def equals(that: Any) = that match {
-	    case Lambda(x: Term, y : Term) => y.subs(x, variable) == value
+	    case Lambda(x: Term, y : Term) => y.replace(x, variable) == value
 	    case _ => false
 	  }
 	}
@@ -710,7 +730,7 @@ object HoTT{
 	  val dep = false
 
 	  override def equals(that: Any) = that match {
-	    case LambdaFixed(x: Term, y : Term) => y.subs(x, variable) == value
+	    case LambdaFixed(x: Term, y : Term) => y.replace(x, variable) == value
 	    case _ => false
 	  }
 
@@ -718,12 +738,12 @@ object HoTT{
 		def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 
 	  override	def subs(x: Term, y: Term) : LambdaFixed[X, Y] = (x, y) match {
-		    case (u : Typ[_], v : Typ[_]) if (variable.typ.subs(u, v) != variable.typ) =>
-		      val newvar = changeTyp(variable, variable.typ.subs(u, v))
-		      LambdaFixed(newvar.asInstanceOf[X] , value.subs(x,y))
+		    case (u : Typ[_], v : Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
+		      val newvar = changeTyp(variable, variable.typ.replace(u, v))
+		      LambdaFixed(newvar.asInstanceOf[X] , value.replace(x,y))
 		    case _ =>
 		      val newvar = variable.newobj
-		      val newval = value.subs(variable, newvar).subs(x, y).subs(newvar, variable) // change variable to avoid name clashes.
+		      val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
 		      LambdaFixed(variable, newval)
 		  }
 
@@ -753,17 +773,23 @@ object HoTT{
 	  case t: Term if t.typ ==target => Some(t)
 	  case Lambda(variable, value : Term) =>
 	    substitutions(variable) flatMap ((cnst) => {
-	      val reduced = (value.subs(variable, cnst))
+	      val reduced = (value.replace(variable, cnst))
 	       instantiate(substitutions, target)(reduced)})
 	  case _ => None
 	}
 
 
-	class InnerSym[U <: Term](variable: U) extends AnySym{
+  /**
+   * A symbol to be used to generate new variables of a type, with string matching given variable.
+   */
+	private class InnerSym[U <: Term](variable: U) extends AnySym{
 	  override def toString = variable.toString
 	}
 
-	def innervar[U <: Term](variable : U) : U = {
+  /**
+   * variable of given type with string as in given variable.
+   */
+	private def innervar[U <: Term](variable : U) : U = {
 		val typ = variable.typ.asInstanceOf[Typ[U]]
 		variable match {
 		  case PairObj(a : Term, b : Term) => PairObj(
@@ -838,7 +864,7 @@ object HoTT{
 
 	  def newobj = PiTyp(fibers.newobj)
 
-	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = PiTyp[W, U](fibers.replace(x, y))
 
 	  override def toString = Pi+"("+fibers.toString+")"
 	}
@@ -925,7 +951,7 @@ object HoTT{
 
 	  /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
-        case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.subs(u, v))
+        case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.replace(u, v))
         case (u, v: FuncTerm[W, U], _) if (u == this) => v
         case _ => this
       }
@@ -933,11 +959,11 @@ object HoTT{
       */
 
 	  def subs(x: Term, y: Term) = (x, y) match {
-//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.subs(u, v), codom.subs(u, v))
+//        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.replace(u, v), codom.replace(u, v))
         case (u, v: FuncTerm[W, U]) if (u == this) => v
         case _ => {
-          def symbobj(sym: AnySym) = DepFuncSymb(sym, fibers.subs(x, y))
-          symsubs(symbobj)(x, y)(name)
+          def symbobj(sym: AnySym) = DepFuncSymb(sym, fibers.replace(x, y))
+          symSubs(symbobj)(x, y)(name)
         }
       }
 	}
@@ -959,7 +985,7 @@ object HoTT{
 
 	  def newobj = typ.obj
 
-	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).subs(x, y), dom, fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).replace(x, y), dom, fibers.replace(x, y))
 	}
 
 
@@ -1012,7 +1038,7 @@ object HoTT{
 
 	  def newobj = SigmaTyp(fibers.newobj)
 
-	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.replace(x, y))
 
 	  override def toString = Sigma+"("+fibers.toString+")"
 	}
@@ -1029,7 +1055,7 @@ object HoTT{
 
 	  def newobj = DepPair(first.newobj, second.newobj, fibers)
 
-	  def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[DepPair[W, U]] else DepPair(first.subs(x,y), second.subs(x,y), fibers.subs(x, y))
+	  def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[DepPair[W, U]] else DepPair(first.replace(x,y), second.replace(x,y), fibers.replace(x, y))
 	}
 
 
@@ -1044,7 +1070,7 @@ object HoTT{
 
 	  def newobj = IdentityTyp(dom, lhs.newobj, rhs.newobj)
 
-	  def subs(x: Term, y: Term) = IdentityTyp(dom.subs(x, y), lhs.subs(x,y), rhs.subs(x,y))
+	  def subs(x: Term, y: Term) = IdentityTyp(dom.replace(x, y), lhs.replace(x,y), rhs.replace(x,y))
 
 	  def symbObj(name: AnySym)= SymbObj(name, this)
 	}
@@ -1097,7 +1123,7 @@ object HoTT{
 
 	    def newobj = this
 
-		def subs(x: Term, y: Term) = FirstIncl(typ, value.subs(x, y))
+		def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
 	  }
 
 	  /**
@@ -1106,7 +1132,7 @@ object HoTT{
 	  case class ScndIncl(typ: PlusTyp,  value: Term) extends Term{
 	    def newobj = this
 
-		def subs(x: Term, y: Term) = ScndIncl(typ, value.subs(x, y))
+		def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
 	  }
 	}
 
