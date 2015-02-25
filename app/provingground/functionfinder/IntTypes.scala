@@ -4,6 +4,7 @@ import provingground.HoTT._
 import scala.reflect.runtime.universe.{ Try => UnivTry, Function => FunctionUniv, _ }
 import ScalaRep._
 import BoolType._
+import provingground.ScalaUniverses._
 
 object IntTypes {
   

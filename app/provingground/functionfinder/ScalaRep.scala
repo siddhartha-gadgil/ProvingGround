@@ -5,6 +5,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 import scala.util._
 
 import scala.language.implicitConversions
+import provingground.ScalaUniverses._
 
 object ScalaRep {
 	/**

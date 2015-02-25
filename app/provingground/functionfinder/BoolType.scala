@@ -2,6 +2,8 @@ package provingground.functionfinder
 import provingground.HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import provingground.ScalaUniverses._
+import provingground.ScalaUniverses._
 
 object BoolType {
   case object Bool extends SmallTyp

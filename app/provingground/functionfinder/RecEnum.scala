@@ -5,6 +5,7 @@ import EnumFuncs._
 import EnumFin._
 import IntTypes._
 import BoolType._
+import provingground.ScalaUniverses._
 
 object RecEnum {
 	lazy val recEnumList : Typ[Term]  => Option[List[Term]] = {

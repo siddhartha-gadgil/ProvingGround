@@ -3,6 +3,7 @@ import provingground.HoTT._
 import EnumType._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import provingground.ScalaUniverses._
 
 object EnumFuncs {
 	def allMaps[U, V](dom: List[U], codom: List[V]) : List[Map[U, V]] = dom match {

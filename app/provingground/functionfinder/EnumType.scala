@@ -4,6 +4,7 @@ import provingground.HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import ListType._
+import provingground.ScalaUniverses._
 
 object EnumType {
   case class EnumTyp[U <: Term](elemTyp: Typ[U]) extends SmallTyp
