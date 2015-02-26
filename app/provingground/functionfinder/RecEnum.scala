@@ -5,7 +5,7 @@ import EnumFuncs._
 import EnumFin._
 import IntTypes._
 import BoolType._
-import provingground.ScalaUniverses._
+//import provingground.ScalaUniverses._
 
 object RecEnum {
 	lazy val recEnumList : Typ[Term]  => Option[List[Term]] = {
@@ -27,7 +27,7 @@ object RecEnum {
 	          val codoms = (x: Term)  => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
 	          val maps = allSecMapsOpt(domlist, codoms)
 	          for (l <- maps) yield (
-	              for (m <- l) yield depFunc(dom, m))
+	              for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
 	          })
 	  case SigmaTyp(fiber) =>
 	    val dom = fiber.dom.asInstanceOf[Typ[Term]]
@@ -37,7 +37,7 @@ object RecEnum {
 	          val codoms = (x: Term)  => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
 	          val maps = allSecMapsOpt(domlist, codoms)
 	          for (l <- maps) yield (
-	              for (m <- l) yield depFunc(dom, m))
+	              for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
 	          })
 	  case _ => None
 	}

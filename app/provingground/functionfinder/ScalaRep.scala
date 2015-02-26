@@ -5,7 +5,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 import scala.util._
 
 import scala.language.implicitConversions
-import provingground.ScalaUniverses._
+//import provingground.ScalaUniverses._
 
 object ScalaRep {
 	/**
@@ -290,11 +290,15 @@ object ScalaRep {
    */
   implicit class RepSection[V, X <: Term with Subs[X], Y](section: V => ScalaRep[X, Y]){
 
-    def ~~>:[U <: Term with Subs[U]](domrep : ScalaRep[U, V])(implicit
-        sux : ScalaUniv[X], suu: ScalaUniv[U]) = {
+    def ~~>:[U <: Term with Subs[U]](domrep : ScalaRep[U, V])
+    /*(implicit
+        sux : ScalaUniv[X], suu: ScalaUniv[U])*/ = {
       val univrep = domrep -->: __
       val fmly = univrep((v: V) => section(v).typ)
-      val fibers = typFamily(domrep.typ, fmly)
+      val x = "x" :: domrep.typ
+      
+      val fibers = lmbda(x)(fmly(x))
+        //typFamily(domrep.typ, fmly)
 
       DepFuncRep(domrep, (v: V) => section(v), fibers)
     }

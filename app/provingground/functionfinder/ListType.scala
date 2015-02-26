@@ -2,7 +2,7 @@ package provingground.functionfinder
 import provingground.HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-import provingground.ScalaUniverses._
+//import provingground.ScalaUniverses._
 
 object ListType {
   case class ListTyp[U<: Term](elemTyp: Typ[U]) extends SmallTyp
@@ -38,9 +38,14 @@ object ListType {
     rep((f: U => V) => (l: List[U]) => l map (f))
   }
   
-  lazy val lmap = depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
+  private val u = "u" :: __
+  private val v = "v" :: __
   
-  lazy val foldLeft = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
+  lazy val lmap = lambda(u)(lambda(v)(lmapFunc(u, v)))
+    //depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
+  
+  lazy val foldLeft = lambda(u)(lambda(v)(foldFunction(u, v)))
+    //depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
   def headOptFn[U <: Term ](typ: Typ[U]) = {
     val rep = ListRep(typ) -->: MaybeTyp.MaybeRep(typ)
@@ -54,7 +59,7 @@ object ListType {
     rep((l: List[U]) => l drop 1)
   }
   
-  lazy val headOpt = depFunc(__, (u: Typ[Term]) => headOptFn(u))
+  lazy val headOpt = lambda(u)(headOptFn(u))
 
-  lazy val tail = depFunc(__, (u: Typ[Term]) => tailFn(u))
+  lazy val tail = lambda(u)(tailFn(u))
 }

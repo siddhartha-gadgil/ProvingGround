@@ -4,7 +4,7 @@ import provingground.HoTT._
 import scala.reflect.runtime.universe.{ Try => UnivTry, Function => FunctionUniv, _ }
 import ScalaRep._
 import BoolType._
-import provingground.ScalaUniverses._
+//import provingground.ScalaUniverses._
 
 object IntTypes {
   
@@ -90,7 +90,7 @@ object IntTypes {
     rep(induccurry)
   }
 
-  def induction[U <: Term with Subs[U]](us: FuncObj[Term, Typ[U]])(implicit suu: ScalaUniv[U]) = {
+  def induction[U <: Term with Subs[U]](us: FuncObj[Term, Typ[U]])/*(implicit suu: ScalaUniv[U])*/ = {
     val stepfmlyrep = (n -->: __)
     val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k + 1)))
     val steprep = n ~~>: stepfmly
