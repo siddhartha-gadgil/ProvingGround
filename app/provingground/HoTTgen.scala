@@ -8,7 +8,7 @@ import Collections._
 
 object HoTTgen {
 	val funcappl: (Term, Term) => Option[Term] = {
-	  case (f: FuncTerm[u, _], a : Term) =>
+	  case (f: FuncLike[u, _], a : Term) =>
 	    Try(f(a.asInstanceOf[u])).toOption
 	  case _ => None
 	}

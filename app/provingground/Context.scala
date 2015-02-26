@@ -71,7 +71,7 @@ object Contexts{
    *  scala type of an object in context when viewed outside, typically a function because of lambdas
    * 
    */
-  trait Context[+U <: Term , V <: Term] extends TypSeq[U, V]{
+  trait Context[+U <: Term , V <: Term]{
     
     /**
      * scala type of an object in context when viewed outside, typically a function because of lambdas
@@ -209,8 +209,8 @@ object Contexts{
 
   
   
-  case class LambdaMixin[+U<: Term, V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
-    type PtnType = FuncTerm[Term, tail.PtnType]
+  case class LambdaMixin[+U<: Term, V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
+    type PtnType = FuncLike[Term, tail.PtnType]
     
     def withNewTail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
     
@@ -292,8 +292,8 @@ object Contexts{
     def apply(tp : Typ[V]) : Typ[PtnType] =tail(tp)
   }
   
-  case class DefnMixin[+U<: Term, V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncTerm[Term,U], V]{
-    type PtnType = FuncTerm[Term, tail.PtnType]
+  case class DefnMixin[+U<: Term, V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
+    type PtnType = FuncLike[Term, tail.PtnType]
     
     def withNewTail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
     
@@ -393,8 +393,8 @@ object Contexts{
 //    val typ = tail.typ								
   }
   
-  case class SimpEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncTerm[Term,U], V]{
-    type PtnType = FuncTerm[Term, tail.PtnType]
+  case class SimpEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncLike[Term,U], V]{
+    type PtnType = FuncLike[Term, tail.PtnType]
     
     def withNewTail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
     

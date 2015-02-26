@@ -725,7 +725,7 @@ object HoTTinner{
 
 	  val fold  = head.fold match {
 	    case f : FuncObj[d,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
-	    case f : FuncTerm[d, _] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
+	    case f : FuncLike[d, _] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
 	  }
 
 

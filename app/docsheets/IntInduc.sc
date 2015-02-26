@@ -102,7 +102,7 @@ object IntInduc {
 	
 	recN(N).value.variable  == f.subs(A, N)   //> res10: Boolean = true
 	
-	recN(N).typ                               //> res11: provingground.HoTT.Typ[provingground.HoTT.FuncTerm[provingground.HoTT
+	recN(N).typ                               //> res11: provingground.HoTT.Typ[provingground.HoTT.FuncLike[provingground.HoTT
                                                   //| .Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.Ho
                                                   //| TT.LambdaFixed[provingground.HoTT.FuncObj[provingground.HoTT.Term,provinggro
                                                   //| und.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]] with prov
@@ -160,7 +160,7 @@ object IntInduc {
 	
 	val ans = res.dfn(3)                      //> ans  : provingground.HoTT.Term = 6
 	
-	applptnterm.unapply(ans)                  //> res20: Option[(provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingg
+	applptnterm.unapply(ans)                  //> res20: Option[(provingground.HoTT.FuncLike[provingground.HoTT.Term,provingg
                                                   //| round.HoTT.Term], provingground.HoTT.Term)] = None
 /*
 	val arg = applptnterm.unapply(ans).get._1

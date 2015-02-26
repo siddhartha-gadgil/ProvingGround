@@ -92,7 +92,7 @@ object ScalaUniverses {
    * builds scala universe for pi-types given ones for domain and codomain types.
    */
   implicit def piUniv[W<: Term, U<: Term](implicit
-        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncTerm[W, U]] = {
+        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncLike[W, U]] = {
       ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ) : Typ[PiTyp[W, U]])
     }
 
@@ -101,7 +101,7 @@ object ScalaUniverses {
    * returns dependent function inferring type fiber.
    */
   def depFunc[W<: Term, U<: Term with Subs[U]](dom: Typ[W], func: W => U)(
-      implicit su: ScalaUniv[U]): FuncTerm[W, U] = {
+      implicit su: ScalaUniv[U]): FuncLike[W, U] = {
     val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
     DepFuncDefn(func, dom, fibers)
   }

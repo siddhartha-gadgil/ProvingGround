@@ -38,7 +38,7 @@ object Tuples {
 	}
 	
 	class SingleEnv[U <: Term with Subs[U] , T <: Term with Subs[T]](
-	    head:  => U) extends TermTuple[U, FuncTerm[U, T], T]{
+	    head:  => U) extends TermTuple[U, FuncLike[U, T], T]{
 	  
 	  lazy val term = head	  
 	  
@@ -55,7 +55,7 @@ object Tuples {
 	  W <: Term with Subs[W],
 	  F <: Term with Subs[F] , T <: Term with Subs[T]](
 	    head: U, tail: TermTuple[W, F, T]
-	    ) extends TermTuple[PairObj[U, W], FuncTerm[U, F], T]{
+	    ) extends TermTuple[PairObj[U, W], FuncLike[U, F], T]{
 	  
 	
 	  lazy val term = PairObj(head, tail.term)
@@ -69,7 +69,7 @@ object Tuples {
 	  W <: Term with Subs[W] ,
 	  F <: Term with Subs[F] , T <: Term with Subs[T]](
 	    head: U, tail: TermTuple[W, F, T]
-	    ) extends TermTuple[DepPair[U, W], FuncTerm[U, F], T]{
+	    ) extends TermTuple[DepPair[U, W], FuncLike[U, F], T]{
 	  
 	
 	  lazy val term = lambdaPair(head)(tail.term)
