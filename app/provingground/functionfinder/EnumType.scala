@@ -4,7 +4,7 @@ import provingground.HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import ListType._
-import provingground.ScalaUniverses._
+//import provingground.ScalaUniverses._
 
 object EnumType {
   case class EnumTyp[U <: Term](elemTyp: Typ[U]) extends SmallTyp
@@ -33,5 +33,5 @@ object EnumType {
     rep((en: EnumTerm[U]) => en.value)
   }
   
-  val enumlist = depFunc(__, enumList[Term])
+  val enumlist = lambda("u" :: __)(enumList("u":: __))
 }

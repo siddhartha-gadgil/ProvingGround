@@ -2,8 +2,8 @@ package provingground.functionfinder
 import provingground.HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-import provingground.ScalaUniverses._
-import provingground.ScalaUniverses._
+// import provingground.ScalaUniverses._
+
 
 object BoolType {
   case object Bool extends SmallTyp
@@ -62,7 +62,8 @@ object BoolType {
     rep((cond: Boolean) => (yes: U) => (no : U) => if (cond) yes else no)
   }
 
-  lazy val ite = depFunc(__, iteFunc[Term])
+  lazy val ite = lambda("u" :: __)(iteFunc("u" :: __))
+    //depFunc(__, iteFunc[Term])
 
   private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
 
