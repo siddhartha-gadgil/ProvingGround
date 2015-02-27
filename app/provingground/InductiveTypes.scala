@@ -20,10 +20,11 @@ object InductiveTypes{
 	 * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W as a function of W
 	 */
 	sealed trait PolyPtn[+U <: Term]{
-	  def -->:[V <: Term ,  UU >: U <: Term ](that : FmlyPtn[V]) = FuncPtn[UU](that, this)
+	  def -->:[V <: Term , T <: Term with Subs[T], D <: Term with Subs[D], UU >: U <: Term](
+        that : FmlyPtn[V, T, D, Term]) = FuncPtn[UU](that, this)
 
 	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : PolyPtn[FuncLike[Term, UU]] = {
-	    if (that == self) FuncPtn[UU](IdFmlyPtn, this) else CnstFncPtn[UU](that, this)
+	    if (that == self) FuncPtn[UU](IdFmlyPtn[Term], this) else CnstFncPtn[UU](that, this)
 	  }
 
 //	  def :::[A](name : A)(implicit mytyp: Typ[Term]) : Constructor = constructor(mytyp, name)
@@ -98,7 +99,7 @@ object InductiveTypes{
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term ](tail: FmlyPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncLike[Term, U]]{
+	case class FuncPtn[U<:Term ](tail: FmlyPtnLike[Term], head : PolyPtn[U]) extends PolyPtn[FuncLike[Term, U]]{
 	  type PolyPtnType = FuncLike[Term, U]
 
 	  def apply(W : Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
@@ -124,7 +125,7 @@ object InductiveTypes{
    * Dependent extension of a poly-pattern by a type pattern.
    * XXX this may never be applicable
    */
-  case class DepFuncPtn[U <: Term ](tail: FmlyPtnLike,
+  case class DepFuncPtn[U <: Term ](tail: FmlyPtnLike[Term],
       headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncLike[Term, U]]{
     type PolyPtnType = FuncLike[Term, U]
 
