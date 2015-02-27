@@ -434,7 +434,7 @@ object Evolver{
      type Pairing = PartialFunction[(Term, Term),Term]
 
 //	def Applications[W<: Term, V<: Typ[U], U<: Term]: Pairing = {
-//	  case (f: FuncObj[_, _, _], x: Term) if f.dom == x.typ => f(x).get
+//	  case (f: Func[_, _, _], x: Term) if f.dom == x.typ => f(x).get
 //	}
 
 

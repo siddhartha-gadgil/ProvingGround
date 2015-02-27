@@ -65,7 +65,7 @@ object BoolType {
   lazy val ite = lambda("u" :: __)(iteFunc("u" :: __))
     //depFunc(__, iteFunc[Term])
 
-  private type FnFn = FuncObj[Term, FuncObj[Term, Term]]
+  private type FnFn = Func[Term, Func[Term, Term]]
 
   def iteDepFunc(u: Typ[Term], v : Typ[Term])/*(implicit fnfn : ScalaUniv[FnFn])*/ = {
 

@@ -272,15 +272,15 @@ object Dynamics{
        type CHPairing = PartialFunction[Term, PartialFunction[Term, Term]]
     
 //       def Applications[W<: Term, V<: Typ[U], U<: Term]: Pairing = {
-//           case (f: FuncObj[_, _, _], x: Term) if f.dom == x.typ => f(x).get 
+//           case (f: Func[_, _, _], x: Term) if f.dom == x.typ => f(x).get 
 //       }
        
-       def applyFn[W<: Term, U<: Term](f: FuncObj[W, U]): PartialFunction[Term, Term] = {
+       def applyFn[W<: Term, U<: Term](f: Func[W, U]): PartialFunction[Term, Term] = {
          case arg if arg.typ == f.dom => f(arg.asInstanceOf[W])
        }
 
        val applications: PartialFunction[Term, PartialFunction[Term, Term]] = {
-         case f: FuncObj[_,_] => applyFn(f)
+         case f: Func[_,_] => applyFn(f)
        }
        
        

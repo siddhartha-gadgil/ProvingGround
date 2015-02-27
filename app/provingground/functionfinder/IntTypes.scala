@@ -90,7 +90,7 @@ object IntTypes {
     rep(induccurry)
   }
 
-  def induction[U <: Term with Subs[U]](us: FuncObj[Term, Typ[U]])/*(implicit suu: ScalaUniv[U])*/ = {
+  def induction[U <: Term with Subs[U]](us: Func[Term, Typ[U]])/*(implicit suu: ScalaUniv[U])*/ = {
     val stepfmlyrep = (n -->: __)
     val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k + 1)))
     val steprep = n ~~>: stepfmly
@@ -103,7 +103,7 @@ object IntTypes {
   //  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
 
   
-//  val inducN = depFunc(N ->: __, (us: FuncObj[Term, Typ[Term]]) => induction(us))
+//  val inducN = depFunc(N ->: __, (us: Func[Term, Typ[Term]]) => induction(us))
 
   case class Fin(n: Long) extends IntTyp
 

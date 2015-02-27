@@ -418,7 +418,7 @@ object HoTTinner{
 
 	  val typ = FuncTyp[Term, Term](base.asInstanceOf[Typ[Term]], cod.typ)
 
-	  type ObjTyp = FuncObj[Term, Term]
+	  type ObjTyp = Func[Term, Term]
 
 	  def push(func: ObjTyp)(arg: base.Obj): cod.ObjTyp = func(arg).asInstanceOf[cod.ObjTyp]
 
@@ -444,7 +444,7 @@ object HoTTinner{
 	case class DepParamConstTmpl(base: Typ[Term], fibre: Term => ConstFmlyTmpl) extends ConstFmlyTmpl{
 	  val typ = PiTyp(typFamilyDefn(base, __,  ((obj : Term) => fibre(obj).typ)))
 
-	  type ObjTyp = DepFuncObj[Term,  Term]
+	  type ObjTyp = DepFunc[Term,  Term]
 
 	  def push(func: ObjTyp)(arg: base.Obj) = {
 	    val cod = fibre(arg)
@@ -724,7 +724,7 @@ object HoTTinner{
 	  val typ = fold.typ.asInstanceOf[Typ[Term]]
 
 	  val fold  = head.fold match {
-	    case f : FuncObj[d,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
+	    case f : Func[d,_] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
 	    case f : FuncTerm[d, _] if f.dom == tail.typ => f(tail.fold.asInstanceOf[d])
 	  }
 

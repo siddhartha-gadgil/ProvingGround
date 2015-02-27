@@ -31,11 +31,11 @@ object MatrixTypes {
   
   val y = "y" :: Y
   
-  implicit class Matrix(entries: FuncObj[Term, FuncObj[Term, Term]]){
+  implicit class Matrix(entries: Func[Term, Func[Term, Term]]){
     val dom = entries.dom
     val codom = entries.codom
     val typ = Zmat(dom)(codom)
-    def +(that: FuncObj[Term, FuncObj[Term, Term]]) = {}
+    def +(that: Func[Term, Func[Term, Term]]) = {}
   }
 
   val ZmatSum = lambda(X)(lambda(Y)(

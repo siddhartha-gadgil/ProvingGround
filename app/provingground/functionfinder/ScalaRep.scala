@@ -133,10 +133,10 @@ object ScalaRep {
    * Representations for functions given ones for the domain and codomain.
    */
   case class FuncRep[U <: Term with Subs[U], V, X <: Term , Y](
-      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[FuncObj[U, X], V => Y]{
+      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[Func[U, X], V => Y]{
     lazy val typ = domrep.typ ->: codomrep.typ
 
-    def apply(f: V => Y) : FuncObj[U, X] = ExtendedFunction(f, domrep, codomrep)
+    def apply(f: V => Y) : Func[U, X] = ExtendedFunction(f, domrep, codomrep)
 
     def unapply(u: Term) : Option[V => Y] = u match {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
@@ -151,7 +151,7 @@ object ScalaRep {
    * domain and codomain.
    */
   case class ExtendedFunction[U <: Term with Subs[U], V, X <: Term , Y](dfn: V => Y,
-      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends FuncObj[U, X]{
+      domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends Func[U, X]{
 
 	  lazy val dom = domrep.typ
 
@@ -172,7 +172,7 @@ object ScalaRep {
 
 
 	  def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = (x, y) match {
-	    case (u, v: FuncObj[U ,X]) if u == this => v
+	    case (u, v: Func[U ,X]) if u == this => v
 	    case _ => ExtendedFunction((v: V) => dfn(v), domrep.subs(x, y), codomrep.subs(x,y))
 	  }
 
@@ -202,7 +202,7 @@ object ScalaRep {
    * Extended function with codomain a type. Perhaps use IdRep.
    */
   case class SimpleExtendedFunction[U <: Term, V, X <: Term with Subs[X]](dfn: V => X,
-      domrep: ScalaRep[U, V], codom: Typ[X]) extends FuncObj[U, X] with Subs[SimpleExtendedFunction[U, V, X]]{
+      domrep: ScalaRep[U, V], codom: Typ[X]) extends Func[U, X] with Subs[SimpleExtendedFunction[U, V, X]]{
 
 	  val dom = domrep.typ
 

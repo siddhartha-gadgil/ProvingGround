@@ -64,7 +64,7 @@ object ScalaUniverses {
      * implicitly build universe with elements FuncTyps from universes for domain and codomain.
      */
     implicit def funcUniv[W<: Term, U<: Term](implicit
-        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncObj[W, U]] = {
+        domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[Func[W, U]] = {
       ScalaUniv(FuncTypUniv(domsc.univ, codomsc.univ) : Typ[FuncTyp[W, U]])
     }
     
@@ -111,7 +111,7 @@ object ScalaUniverses {
    * convenience for Pi-type
    */
   implicit class RichTypFamily[W<: Term, U<: Term with Subs[U]](
-      fibre: FuncObj[W, Typ[U]])(
+      fibre: Func[W, Typ[U]])(
       implicit su: ScalaUniv[U]){
 //    val dom = func.dom
 
@@ -121,7 +121,7 @@ object ScalaUniverses {
   /** Companion to dependent functions
    *
    *  */
-  object DepFuncObj{
+  object DepFunc{
 
     def apply[W<: Term,  U<: Term with Subs[U]](func: Term => U, dom: Typ[W])(implicit su: ScalaUniv[U]) = {
       def section(arg: Term) = func(arg).typ.asInstanceOf[Typ[U]]

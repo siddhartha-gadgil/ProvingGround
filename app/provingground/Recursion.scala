@@ -39,25 +39,25 @@ object Recursion{
      * Context for recursion
      * The type of this is also used for recursion 
      */
-    def recCtx[U <: Term](f: => FuncObj[Term, U]) : Context[Term, Term] = {
+    def recCtx[U <: Term](f: => Func[Term, U]) : Context[Term, Term] = {
       cnstrRecContext[Term](f, cnstr.pattern, vars,f.dom, f.codom)(Context.empty[Term])
     }
     
     /**
      * A formal object representing the type of the recursion function.
      */
-    def recCtxVar(f: => FuncObj[Term, Term]) : Term  = {
+    def recCtxVar(f: => Func[Term, Term]) : Term  = {
       recCtxTyp(f).symbObj(RecInduced(cnstr.cons, f))
     }
     
     /**
      * HoTT type of the recursion function
      */
-    def recCtxTyp(f: => FuncObj[Term, Term]) : Typ[Term]  = {
+    def recCtxTyp(f: => Func[Term, Term]) : Typ[Term]  = {
       recCtx(f)(f.codom)
     }
     
-    def recCtxIdRHS(f: => FuncObj[Term, Term]) = recCtx(f).foldinSym(f.codom)(recCtxVar(f))
+    def recCtxIdRHS(f: => Func[Term, Term]) = recCtx(f).foldinSym(f.codom)(recCtxVar(f))
     
     /**
      * context for inductive definitions.
@@ -82,7 +82,7 @@ object Recursion{
     /**
      * change for building a kappa-context for recursion
      */
-    private def kappaChange(f: => FuncObj[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
+    private def kappaChange(f: => Func[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
     val fx = (ptn.induced(f.dom, f.codom)(f))(x)
     x /: (fx |: ctx)
@@ -91,7 +91,7 @@ object Recursion{
     /**
      * kappa-context for recursion, with f(n) etc. additional constants for parsing, but not variables.
      */
-    def recKappaCtx(f: => FuncObj[Term, Term]) : Context[Term, Term] = {
+    def recKappaCtx(f: => Func[Term, Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars,f.dom, kappaChange(f))(Context.empty[Term])
     }
     
@@ -114,7 +114,7 @@ object Recursion{
     /**
      * identity corresponding to the given constructor for a recursive definition.
      */
-    def recIdentity(f: => FuncObj[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, varterms(f.dom))
+    def recIdentity(f: => Func[Term, Term])(rhs: Term) = DefnEqual(f(arg), rhs, varterms(f.dom))
     
     /**
      * identity corresponding to the given constructor for an inductive definition.
@@ -240,7 +240,7 @@ object Recursion{
   /**
    * Identities satisfied by the recursion function from f.dom to f.codom.
    */
-  case class RecDefinition(f: FuncObj[Term, Term], cs: List[CnstrLHS]){
+  case class RecDefinition(f: Func[Term, Term], cs: List[CnstrLHS]){
     val types = for (c <- cs) yield c.recCtxTyp(f)
     val typ = (types :\ f.typ)(_ ->: _)
     val recfn = typ.symbObj(RecSymbol(f.dom, f.codom))

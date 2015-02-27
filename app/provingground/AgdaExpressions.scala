@@ -308,7 +308,7 @@ object AgdaExpressions{
   def pityp(x: Term, y: Term) = y match {
     case tp : Typ[Term] =>
       	val fibre = (t : Term) => tp subs (x, t)
-	    val family : FuncObj[Term, Typ[Term]] = LambdaFixed(x, tp)
+	    val family : Func[Term, Typ[Term]] = LambdaFixed(x, tp)
 	    Some(PiTyp(family))
     case _ => None
   }

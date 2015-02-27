@@ -69,12 +69,12 @@ object HoTTmore {
   IdentityTyp(A, a, a)                            //> res13: provingground.HoTT.IdentityTyp[provingground.HoTT.Term with provinggr
                                                   //| ound.HoTT.Subs[provingground.HoTT.Term]] = IdentityTyp(A,(a : A),(a : A))
   
-  val ids = a :-> (IdentityTyp(A, a, a))          //> ids  : provingground.HoTT.FuncObj[provingground.HoTT.Term with provingground
+  val ids = a :-> (IdentityTyp(A, a, a))          //> ids  : provingground.HoTT.Func[provingground.HoTT.Term with provingground
                                                   //| .HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.IdentityTyp[provinggr
                                                   //| ound.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]] = (((
                                                   //| a : A) : A)|->IdentityTyp(A,(a : A),(a : A)))
  
-	val idA = a :-> (a =:= a)                 //> idA  : provingground.HoTT.FuncObj[provingground.HoTT.Term with provingground
+	val idA = a :-> (a =:= a)                 //> idA  : provingground.HoTT.Func[provingground.HoTT.Term with provingground
                                                   //| .HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.IdentityTyp[provinggr
                                                   //| ound.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]] = (((
                                                   //| a : A) : A)|->IdentityTyp(A,(a : A),(a : A)))

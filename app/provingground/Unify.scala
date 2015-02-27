@@ -53,9 +53,9 @@ object Unify{
     }
   }
 
-  def mkLmbda[U <: Term with Subs[U] , V<: Term with Subs[V] ] :FuncObj[U, V] => FuncObj[U, V] = {
+  def mkLmbda[U <: Term with Subs[U] , V<: Term with Subs[V] ] :Func[U, V] => Func[U, V] = {
     case lm: LambdaFixed[U, V] => lm
-    case f: FuncObj[U,V] => {
+    case f: Func[U,V] => {
     	val newvar = f.dom.obj.asInstanceOf[U]
     	lmbda(newvar)(f(newvar))
     }

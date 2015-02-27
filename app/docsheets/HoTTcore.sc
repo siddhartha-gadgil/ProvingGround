@@ -30,14 +30,14 @@ object HoTTcore {
  	
  	val id = lambda(A)(lmbda(a)(a))           //> id  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT.
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
-                                                  //| .Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provinggroun
+                                                  //| .Term]],provingground.HoTT.Func[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
                                                   //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A|->(((a : A) : A)|->((a : A) : 
                                                   //| A)))
  	
  	//identity on B and its type
  	
- 	id(B)                                     //> res1: provingground.HoTT.FuncObj[provingground.HoTT.Term with provingground.
+ 	id(B)                                     //> res1: provingground.HoTT.Func[provingground.HoTT.Term with provingground.
                                                   //| HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term]] = (((a : A) : B)|->((a : A) : B))
  	
@@ -45,19 +45,19 @@ object HoTTcore {
 
 
 // document and check types of generated objects
-	id(B) !: B ->: B                          //> res3: provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.
+	id(B) !: B ->: B                          //> res3: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.
                                                   //| Term] = (((a : A) : B)|->((a : A) : B))
 
 // Using the dsl to make identity
 
 	val Id = A :~> (a :-> a)                  //> Id  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT.
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
-                                                  //| .Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provinggroun
+                                                  //| .Term]],provingground.HoTT.Func[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
                                                   //| und.HoTT.Subs[provingground.HoTT.Term]]] = (A|->(((a : A) : A)|->((a : A) : 
                                                   //| A)))
 	
-	Id(B) !: B ->: B                          //> res4: provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.
+	Id(B) !: B ->: B                          //> res4: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.
                                                   //| Term] = (((a : A) : B)|->((a : A) : B))
 
 // The identity should be a Pi-Type. Note that the type of a term is suppressed if the term is itself a type.
@@ -73,8 +73,8 @@ object HoTTcore {
 
 // Function application
 
-	val f = "a:-> b" :: A ->: B               //> f  : provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.
-                                                  //| Term] with provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground
+	val f = "a:-> b" :: A ->: B               //> f  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.
+                                                  //| Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground
                                                   //| .HoTT.Term,provingground.HoTT.Term]] = (a:-> b : (A->B))
 	
 	f(a) !: B                                 //> res9: provingground.HoTT.Term = ((a:-> b : (A->B))((a : A)) : B)
@@ -89,10 +89,10 @@ object HoTTcore {
                                                   //| .Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.Ho
                                                   //| TT.Term]],provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.
                                                   //| HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provinggroun
-                                                  //| d.HoTT.Term]],provingground.HoTT.FuncObj[provingground.HoTT.Term with provi
-                                                  //| ngground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.FuncObj[prov
-                                                  //| ingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term] wit
-                                                  //| h provingground.HoTT.Subs[provingground.HoTT.FuncObj[provingground.HoTT.Ter
+                                                  //| d.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provi
+                                                  //| ngground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[prov
+                                                  //| ingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] wit
+                                                  //| h provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Ter
                                                   //| m,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A|->(B|->(((a : 
                                                   //| A) : A)|->((provingground.HoTT$Typ$newname$2$@57a8551 : (A->B))|->((proving
                                                   //| ground.HoTT$Typ$newname$2$@57a8551 : (A->B))(((a : A) : A)) : B)))))

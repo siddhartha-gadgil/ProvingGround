@@ -19,17 +19,17 @@ object HoTTgen {
 	}
 	
 	val pityp : Term => Option[Term] = {
-	  case fmly : FuncObj[u, _] => fmly.codom.typ match {
-	    case _ : Typ[w] => Try(PiTyp(fmly.asInstanceOf[FuncObj[u, Typ[w]]])).toOption
+	  case fmly : Func[u, _] => fmly.codom.typ match {
+	    case _ : Typ[w] => Try(PiTyp(fmly.asInstanceOf[Func[u, Typ[w]]])).toOption
 	    case _ => None
 	  }
 	  case _ => None
 	}
 	
 	val sigmatyp : Term => Option[Term] = {
-	  case fmly : FuncObj[w, _] => fmly.codom.typ match {
+	  case fmly : Func[w, _] => fmly.codom.typ match {
 	    case _ : Typ[u] => Try(
-	        SigmaTyp(fmly.asInstanceOf[FuncObj[Term, Typ[Term]]])).toOption
+	        SigmaTyp(fmly.asInstanceOf[Func[Term, Typ[Term]]])).toOption
 	    case _ => None
 	  }
 	  case _ => None
