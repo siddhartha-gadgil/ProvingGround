@@ -12,7 +12,7 @@ import Math._
 	 * Indexed version of induction
 	 */
 	class IndexedInductiveTypes[I <: Term]{/*
-	  	trait TypPtn[U <: Term] extends TypPtnLike{
+	  	trait FmlyPtn[U <: Term] extends FmlyPtnLike{
 	  	 type PtnType = U
 
 //	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : PtnType => PtnType
@@ -23,7 +23,7 @@ import Math._
 	/**
 	 * a single trait to hold all type patterns, independent of U.
 	 */
-	trait TypPtnLike{
+	trait FmlyPtnLike{
 		val univLevel : Int
 
 	  	type PtnType <:  Term
@@ -43,9 +43,9 @@ import Math._
 	 * A composite pattern for inductive types.
 	 */
 	trait PolyPtn[+U <: Term]{
-	  def -->:[V <: Term ,  UU >: U <: Term ](that : TypPtn[V]) = FuncPtn[UU](that, this)
+	  def -->:[V <: Term ,  UU >: U <: Term ](that : FmlyPtn[V]) = FuncPtn[UU](that, this)
 
-	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : I => PolyPtn[FuncTerm[Term, UU]] = (indx) => {
+	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : I => PolyPtn[FuncLike[Term, UU]] = (indx) => {
 	    if (that == self) FuncPtn[UU](IndxW(indx), this) else CnstFncPtn[UU](that, this)
 	  }
 
@@ -70,7 +70,7 @@ import Math._
 	}
 
 
-	case class IndxW(index: I) extends  TypPtn[Term] with PolyPtn[Term]{
+	case class IndxW(index: I) extends  FmlyPtn[Term] with PolyPtn[Term]{
 	  def apply(W : I => Typ[Term]) = W(index)
 
 	  def at(X: Typ[Term]) = X
@@ -89,8 +89,8 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term ](tail: TypPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
-//	  type PtnType = FuncTerm[Term, head.PtnType]
+	case class FuncPtn[U<:Term ](tail: FmlyPtnLike, head : PolyPtn[U]) extends PolyPtn[FuncLike[Term, U]]{
+//	  type PtnType = FuncLike[Term, head.PtnType]
 
 	  def apply(W : I=> Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail(W), head(W))
 
@@ -100,8 +100,8 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a constant type, i.e., not depending on W.
 	 */
-	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncTerm[Term, U]]{
-//	  type PtnType = FuncTerm[Term, head.PtnType]
+	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : PolyPtn[U]) extends PolyPtn[FuncLike[Term, U]]{
+//	  type PtnType = FuncLike[Term, head.PtnType]
 
 	  def apply(W : I => Typ[Term]) = FuncTyp[Term, head.PolyPtnType](tail, head(W))
 
@@ -109,7 +109,7 @@ import Math._
 	}
 
 	case class SimpleFuncPtn[V <: Term with Subs[V]](tail : Typ[Term],
-	    head : TypPtn[V])(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term, V]]{
+	    head : FmlyPtn[V])(implicit su: ScalaUniv[V]) extends FmlyPtn[FuncLike[Term, V]]{
 	  def apply(W: I => Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head(W))
 
 	  def at(X: Typ[Term]) = FuncTyp[Term, head.PtnType](tail, head.at(X))
@@ -133,9 +133,9 @@ import Math._
 	}
 
 
-	case class DepFuncPtn[U <: Term ](tail: TypPtnLike,
-	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
-	  def apply(W : I => Typ[Term]) : Typ[FuncTerm[Term, U]]   = {
+	case class DepFuncPtn[U <: Term ](tail: FmlyPtnLike,
+	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncLike[Term, U]]{
+	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
 	    val head = headfibre(__.symbObj(""))
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
@@ -149,8 +149,8 @@ import Math._
 	}
 
 	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term],
-	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncTerm[Term, U]]{
-	  def apply(W : I => Typ[Term]) : Typ[FuncTerm[Term, U]] = {
+	    headfibre : Term => PolyPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends PolyPtn[FuncLike[Term, U]]{
+	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]] = {
 	    val head = headfibre(tail.symbObj(""))
 	    val fiber = typFamily[Term, U](tail, (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
@@ -166,7 +166,7 @@ import Math._
 	 * Correct the induced function
 	 */
 	case class SimpleDepFuncPtn[V <: Term with Subs[V] ](tail: Typ[Term],
-	    headfibre : Term => TypPtn[V] with TypPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends TypPtn[FuncTerm[Term,V]]{
+	    headfibre : Term => FmlyPtn[V] with FmlyPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends FmlyPtn[FuncLike[Term,V]]{
 	  def apply(W : I => Typ[Term]) = {
 	    val fiber = typFamily[Term, head.PtnType](tail, (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, head.PtnType](fiber)
@@ -179,7 +179,7 @@ import Math._
 
 	  val head = headfibre(tail.symbObj(""))
 
-//	  type PtnType = FuncTerm[Term, head.PtnType]
+//	  type PtnType = FuncLike[Term, head.PtnType]
 
 	   def induced(W : I => Typ[Term], X: Typ[Term])(f : Term => Term) : PtnType => PtnType = {
 	    (g : PtnType) =>

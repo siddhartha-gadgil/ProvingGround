@@ -89,7 +89,7 @@ object HoTTmore {
                                                   //| HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term]] = PairObj((a : A),(b : B))
 	
-	val idp = lambda(ab)(ab)                  //> idp  : provingground.HoTT.FuncTerm[provingground.HoTT.PairObj[provingground.
+	val idp = lambda(ab)(ab)                  //> idp  : provingground.HoTT.FuncLike[provingground.HoTT.PairObj[provingground.
                                                   //| HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provinggroun
                                                   //| d.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]],provinggr
                                                   //| ound.HoTT.PairObj[provingground.HoTT.Term with provingground.HoTT.Subs[provi
@@ -104,7 +104,7 @@ object HoTTmore {
                                                   //| .HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Term]] = PairObj((a : A),(b : B))
 	
-	val p = lambda(pair(a, b))(a)             //> p  : provingground.HoTT.FuncTerm[provingground.HoTT.PairObj[provingground.Ho
+	val p = lambda(pair(a, b))(a)             //> p  : provingground.HoTT.FuncLike[provingground.HoTT.PairObj[provingground.Ho
                                                   //| TT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.
                                                   //| HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]],provinggrou
                                                   //| nd.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = (PairO
@@ -163,7 +163,7 @@ object HoTTmore {
                                                   //| T.Term] with provingground.HoTT.Subs[provingground.HoTT.PairObj[provinggrou
                                                   //| nd.HoTT.Term,provingground.HoTT.Term]] = PairObj((x_1 : A),(x_2 : B))
 	
-	val fstl = lambda(x)(x.first)             //> fstl  : provingground.HoTT.FuncTerm[provingground.HoTT.PairObj[provinggroun
+	val fstl = lambda(x)(x.first)             //> fstl  : provingground.HoTT.FuncLike[provingground.HoTT.PairObj[provinggroun
                                                   //| d.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provinggr
                                                   //| ound.HoTT.PairObj[provingground.HoTT.Term,provingground.HoTT.Term]],proving
                                                   //| ground.HoTT.Term] = (PairObj(((x_1 : A) : A),((x_2 : B) : B))|->(x_1 : A))

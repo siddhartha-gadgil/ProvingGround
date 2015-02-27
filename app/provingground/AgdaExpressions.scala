@@ -266,7 +266,7 @@ object AgdaExpressions{
    * apply function to term if legal
    */
   def applyterm(f : Term, arg: Term) : Option[Term] = f match {
-    case f : FuncTerm[u, v] => Try(f(arg.asInstanceOf[u])).toOption
+    case f : FuncLike[u, v] => Try(f(arg.asInstanceOf[u])).toOption
     case _ => None
   }
   

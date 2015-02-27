@@ -4,7 +4,7 @@ import scala.util._
 
 object Equality {
 	lazy val eqls: (Term, Term) => Boolean = {
-	  case (f: FuncTerm[u, _], g : FuncTerm[v, _]) => {
+	  case (f: FuncLike[u, _], g : FuncLike[v, _]) => {
 	    val newvar = f.dom.obj
 	    Try(eqls(f(newvar.asInstanceOf[u]), g(newvar.asInstanceOf[v]))).getOrElse(false) 
 	  }

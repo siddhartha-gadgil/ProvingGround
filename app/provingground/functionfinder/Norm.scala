@@ -30,7 +30,7 @@ object Norm {
 	    }
 	  case p: AbsPair[Term, Term] =>
 	    for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
-	  case (fn: FuncTerm[u, _], _)  =>{
+	  case (fn: FuncLike[u, _], _)  =>{
 	    val domopt = Try (fn.dom.asInstanceOf[Typ[Term]]).toOption flatMap (recEnumList(_))
 	    domopt flatMap ((dom) => {
 	      val normoptlist = dom map ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm) )
@@ -47,9 +47,9 @@ object Norm {
 	  case _ => None
 	}
 	
-	def supWeightExp(fn: FuncTerm[Term, Term])(x: Term) = {
+	def supWeightExp(fn: FuncLike[Term, Term])(x: Term) = {
 	  if (x.typ == fn.dom) supnorm(fn(x)) else None
 	}
 	
-	def supWeight(fn: FuncTerm[Term, Term])(x: Term) = supWeightExp(fn)(x) map ((t) => math.pow(2, -t)) getOrElse (0.0)
+	def supWeight(fn: FuncLike[Term, Term])(x: Term) = supWeightExp(fn)(x) map ((t) => math.pow(2, -t)) getOrElse (0.0)
 }

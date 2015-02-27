@@ -45,9 +45,9 @@ object Unify{
     }
   }
 
-  def mkLambda[U <: Term with Subs[U] , V<: Term with Subs[V] ]: FuncTerm[U, V] => FuncTerm[U, V] = {
+  def mkLambda[U <: Term with Subs[U] , V<: Term with Subs[V] ]: FuncLike[U, V] => FuncLike[U, V] = {
     case lm: Lambda[U, V] => lm
-    case f: FuncTerm[U,V] => {
+    case f: FuncLike[U,V] => {
     	val newvar = f.dom.obj.asInstanceOf[U]
     	lambda(newvar)(f(newvar))
     }

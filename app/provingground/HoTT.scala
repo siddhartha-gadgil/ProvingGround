@@ -64,7 +64,7 @@ object HoTT{
 	 * specify result of substitution, typically so a class is closed under substitution.
 	 */
     trait Subs[+U <: Term]{
-      /**
+      /** 
        *  substitute x by y.
        */
       def subs(x: Term, y: Term) : U with Subs[U]
@@ -72,7 +72,7 @@ object HoTT{
       /**
        * refine substitution so if x and y are both abstract pairs with independent components (for x),
        * both components are substituted.
-       * testing for types also done.
+       * testing for types also done. 
        */
       def replace(x: Term, y: Term) : U with Subs[U] = {
         assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
@@ -219,7 +219,7 @@ object HoTT{
       case _ => false
     }
 
-    /**
+    /** 
      *  symbolic objects that are Terms but no more refined
      *  ie, not pairs, formal functions etc.
      *  */
@@ -231,7 +231,7 @@ object HoTT{
       /*
       def subs(x: Term, y: Term) = this match {
         case `x` => y
-        case applptnterm(func : FuncTerm[u, Term], arg) =>
+        case applptnterm(func : FuncLike[u, Term], arg) =>
           Try(func.replace(x,y)(arg.replace(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.replace(x, y)))
         case _ => SymbObj(name, typ.replace(x, y))
       }
@@ -254,7 +254,7 @@ object HoTT{
     }
 
     /** Symbolic types, which the compiler knows are types.
-     *
+     *  
      */
     case class SymbTyp(name: AnySym) extends Typ[Term] with Symbolic{
       lazy val typ = Universe(0)
@@ -314,7 +314,7 @@ object HoTT{
 	 */
 	case object Unit extends SmallTyp
 
-  /**
+  /** 
    *  the object in the Unit type
    */
 	case object Star extends AtomicTerm{
@@ -323,17 +323,17 @@ object HoTT{
 
     val One = Unit
 
-    /**
+    /** 
      *  Symbol for map 0 -> A
      */
   case object vacuous extends AnySym
-
+  
   /**
    * Map from 0 to A.
    */
   def fromZero[U <: Term](codom: Typ[U]) = (Zero ->: codom).symbObj(vacuous)
-
-  /*
+    
+  /*  
 	case class fromZero[U<: Term](codom: Typ[U]) extends AtomicTerm{
       lazy val typ = Zero ->: codom
     }
@@ -368,15 +368,15 @@ object HoTT{
       case _ => 0
     }
 
-
+    
     /**
      * The first universe
      */
     val __ = Universe(0)
+    
 
 
-
-
+    
 
 
 
@@ -392,9 +392,6 @@ object HoTT{
 
 		def newobj = PairTyp(first.newobj, second.newobj)
 
-    /**
-     * Constructor for pairs
-     */
 		val paircons = {
     	  val a = "a" :: first
     	  val b ="b" :: second
@@ -442,7 +439,7 @@ object HoTT{
 	/** Function type (not dependent functions)*/
     case class FuncTyp[W<: Term, U<: Term](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
     Subs[FuncTyp[W, U]]{
-      type Obj = Func[W, U]
+      type Obj = FuncObj[W, U]
 
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
@@ -528,7 +525,7 @@ object HoTT{
 	 *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.
 	 *
 	 */
-    trait Func[W<: Term, +U <: Term] extends FuncTerm[W, U] with Subs[Func[W, U]]{
+    trait Func[W<: Term, +U <: Term] extends FuncLike[W, U] with Subs[Func[W, U]]{
       /** domain*/
 	  val dom: Typ[W]
 	  /** codomain */
@@ -609,7 +606,7 @@ object HoTT{
 	 *  If it is important to note that it is not dependent, and hence has scala type Func, then use LambdaFixed
 	 *
 	 */
-	abstract class LambdaLike[X<: Term, Y <: Term with Subs[Y]](variable: X, value : Y) extends FuncTerm[X, Y]{
+	abstract class LambdaLike[X<: Term, Y <: Term with Subs[Y]](variable: X, value : Y) extends FuncLike[X, Y]{
 //	  // val domobjtpe = typeOf[X]
 
 //	  // val codomobjtpe = typeOf[Y]
@@ -624,7 +621,7 @@ object HoTT{
 
 	  val dep : Boolean
 
-	  lazy val typ : Typ[FuncTerm[X, Y]] = if (dep) {
+	  lazy val typ : Typ[FuncLike[X, Y]] = if (dep) {
 	    val fibre = (t : X) => value.typ subs (variable, t)
 
 	    val family : Func[X, Typ[Y]] = LambdaFixed(variable, value.typ.asInstanceOf[Typ[Y]])
@@ -768,7 +765,7 @@ object HoTT{
 	/** Lambda constructor
 	 *
 	 */
-	def lambda[U<: Term, V <: Term with Subs[V]](variable: U)(value : V) : FuncTerm[U, V] = {
+	def lambda[U<: Term, V <: Term with Subs[V]](variable: U)(value : V) : FuncLike[U, V] = {
 	  val newvar = variable.newobj
 	  if (variable.typ dependsOn value) Lambda(newvar, value.replace(variable, newvar)) else LambdaFixed(newvar, value.replace(variable, newvar))
 	}
@@ -814,7 +811,7 @@ object HoTT{
 	 *  For all/Product for a type family. This is the type of dependent functions
 	 *  */
 	case class PiTyp[W<: Term, U<: Term](fibers: TypFamily[W, U]) extends
-		Typ[FuncTerm[W, U]] with Subs[PiTyp[W, U]]{
+		Typ[FuncLike[W, U]] with Subs[PiTyp[W, U]]{
 	  type Obj = DepFunc[W, U]
 
 	  lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
@@ -873,7 +870,7 @@ object HoTT{
 	  /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
         case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.replace(u, v))
-        case (u, v: FuncTerm[W, U], _) if (u == this) => v
+        case (u, v: FuncLike[W, U], _) if (u == this) => v
         case _ => this
       }
       *
@@ -881,7 +878,7 @@ object HoTT{
 
 	  def subs(x: Term, y: Term) = (x, y) match {
 //        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.replace(u, v), codom.replace(u, v))
-        case (u, v: FuncTerm[W, U]) if (u == this) => v
+        case (u, v: FuncLike[W, U]) if (u == this) => v
         case _ => {
           def symbobj(sym: AnySym) = DepFuncSymb(sym, fibers.replace(x, y))
           symSubs(symbobj)(x, y)(name)
@@ -1053,16 +1050,6 @@ object HoTT{
 
 
 
-	/*
-	 * A common trait for contexts and typpatterns
-	 */
-	trait TypSeq[+U <: Term, V<: Term]{
-	  type PtnType <: U
-
-	  def apply(tp : Typ[V]) : Typ[PtnType]
-	}
-
-
 
 
 	/**
@@ -1070,7 +1057,7 @@ object HoTT{
 	 * applying terms as long as the result is a function and the list is non-empty.
 	 */
 	def foldterms: (Term, List[Term]) => Term = {
-	  case (f: FuncTerm[u, _], x :: ys) if f.dom == x.typ =>
+	  case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
 	    foldterms(f(x.asInstanceOf[u]), ys)
 	  case (t, _) => t
 	}
@@ -1080,7 +1067,7 @@ object HoTT{
 	 * applying terms as long as the result is a function and the list is non-empty.
 	 */
 	def foldnames : (Term, List[AnySym]) => Term = {
-	  case (f: FuncTerm[u, _], x :: ys)  =>
+	  case (f: FuncLike[u, _], x :: ys)  =>
 	    val newvar = f.dom.symbObj(x)
 	    foldnames(f(newvar.asInstanceOf[u]), ys)
 	  case (t, _) => t

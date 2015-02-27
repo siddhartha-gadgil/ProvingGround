@@ -7,7 +7,7 @@ object HoTTcore {
    
   //Identity on the universe
   
-  val iduniv = lambda("A" :: __)("A" :: __)       //> iduniv  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.H
+  val iduniv = lambda("A" :: __)("A" :: __)       //> iduniv  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.H
                                                   //| oTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.
                                                   //| HoTT.Term]],provingground.HoTT.Typ[provingground.HoTT.Term] with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]]] = (A|->A)
@@ -28,7 +28,7 @@ object HoTTcore {
  	val a ="a" :: A                           //> a  : provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT
                                                   //| .Term] = (a : A)
  	
- 	val id = lambda(A)(lmbda(a)(a))           //> id  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT.
+ 	val id = lambda(A)(lmbda(a)(a))           //> id  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
                                                   //| .Term]],provingground.HoTT.Func[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
@@ -50,7 +50,7 @@ object HoTTcore {
 
 // Using the dsl to make identity
 
-	val Id = A :~> (a :-> a)                  //> Id  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT.
+	val Id = A :~> (a :-> a)                  //> Id  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.
                                                   //| Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT
                                                   //| .Term]],provingground.HoTT.Func[provingground.HoTT.Term with provinggroun
                                                   //| d.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provinggro
@@ -85,9 +85,9 @@ object HoTTcore {
 			(a :->
 			lmbda(f)(f(a))
 			)
-			)                         //> MP  : provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.HoTT
+			)                         //> MP  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT
                                                   //| .Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.Ho
-                                                  //| TT.Term]],provingground.HoTT.FuncTerm[provingground.HoTT.Typ[provingground.
+                                                  //| TT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.
                                                   //| HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provinggroun
                                                   //| d.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provi
                                                   //| ngground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[prov
