@@ -80,7 +80,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
      /**
      * change for building a kappa-context for recursion
      */
-    private def kappaChange(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Change[Term] = (varname, ptn, ctx) => {
+    private def kappaChange(f: => Term => Func[Term, Term], X: Typ[Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn((t: Term) =>f(t).dom).symbObj(varname)
     ctx  kappa(ptn.induced((t: Term) => f(t).dom, X)(f)(x)) lmbda(x)
     	}
@@ -88,7 +88,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
     /**
      * kappa-context for recursion, with f(n) etc. additional constants for parsing, but not variables.
      */
-    def recKappaCtx(f: => Term => FuncObj[Term, Term], X: Typ[Term]) : Context[Term, Term] = {
+    def recKappaCtx(f: => Term => Func[Term, Term], X: Typ[Term]) : Context[Term, Term] = {
       cnstrContext[Term](cnstr.pattern, vars, (t: Term) => f(t).dom, kappaChange(f, X))(Context.empty[Term])
     }
 

@@ -241,7 +241,7 @@ object Recursion{
   /**
    * Identities satisfied by the recursion function from f.dom to f.codom.
    */
-  case class RecDefinition(f: FuncObj[Term, Term], cs: List[CnstrLHS]){
+  case class RecDefinition(f: Func[Term, Term], cs: List[CnstrLHS]){
     val types = for (c <- cs) yield c.recCtxTyp(f)
     val typ = (types :\ f.typ)(_ ->: _)
     val recfn = typ.symbObj(RecSymbol(f.dom, f.codom))

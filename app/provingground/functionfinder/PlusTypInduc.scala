@@ -33,7 +33,7 @@ object PlusTypInduc {
   }
 
 	case class PlusExtendedDepFunction[V <: Term ](
-	    first: Typ[Term], second: Typ[Term], depcodom: Func[Term, Typ[V]], firstfn: FuncTerm[Term, V],
+	    first: Typ[Term], second: Typ[Term], depcodom: Func[Term, Typ[V]], firstfn: FuncLike[Term, V],
 	    scndfn: FuncLike[Term, V]) extends FuncLike[Term, V] with Subs[PlusExtendedDepFunction[V]]{
 
 	  val dom = pair(first, second)

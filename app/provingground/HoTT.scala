@@ -439,7 +439,7 @@ object HoTT{
 	/** Function type (not dependent functions)*/
     case class FuncTyp[W<: Term, U<: Term](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
     Subs[FuncTyp[W, U]]{
-      type Obj = FuncObj[W, U]
+      type Obj = Func[W, U]
 
       lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
@@ -471,8 +471,8 @@ object HoTT{
      * Includes both functions and dependent functions
      *
      */
-    trait FuncTerm[-W <: Term, +U <: Term] extends Term with (W => U) with Subs[FuncTerm[W, U]]{
-      type Obj <: FuncTerm[W, U]
+    trait FuncLike[-W <: Term, +U <: Term] extends Term with (W => U) with Subs[FuncLike[W, U]]{
+      type Obj <: FuncLike[W, U]
 
   //    // val domobjtpe : Type
 
@@ -488,15 +488,15 @@ object HoTT{
         assert(arg.typ == dom, s"function with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
         act(arg)
       }
-//      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncTerm[WW, UU]
+//      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncLike[WW, UU]
 
-      def subs(x: Term, y: Term) : FuncTerm[W, U]
+      def subs(x: Term, y: Term) : FuncLike[W, U]
     }
 
     /*
      * A symbol representing a formal application
      */
-    case class ApplnSym[W <: Term, U <: Term](func : FuncTerm[W, U], arg : W) extends AnySym{
+    case class ApplnSym[W <: Term, U <: Term](func : FuncLike[W, U], arg : W) extends AnySym{
       override def toString = func.toString + "("+ arg.toString +")"
     }
 
@@ -505,9 +505,9 @@ object HoTT{
      * Pattern matching for a formal application.
      */
      case class ApplnPattern[W <: Term, U <: Term](){
-      def unapply(term : Term) : Option[(FuncTerm[W, U], W)] = term match {
+      def unapply(term : Term) : Option[(FuncLike[W, U], W)] = term match {
         case sym : Symbolic => sym.name match {
-          case sm @ ApplnSym(func : FuncTerm[W, U], arg)  =>
+          case sm @ ApplnSym(func : FuncLike[W, U], arg)  =>
             Try((func, arg.asInstanceOf[W])).toOption
           case _ => None
         }
@@ -831,7 +831,7 @@ object HoTT{
 	 *  Object in a dependent function type, i.e.,
 	 *  a dependent function. Has a family of codomains
 	 */
-	trait DepFunc[W<: Term, U<: Term] extends FuncTerm[W, U]{
+	trait DepFunc[W<: Term, U<: Term] extends FuncLike[W, U]{
 	  val fibers: TypFamily[W, U]
 
 	  type D = W
