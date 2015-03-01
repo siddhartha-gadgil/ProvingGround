@@ -214,39 +214,39 @@ object Families {
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
   
-  /*
-  trait FmlyMember[U <: Term, O <: Term]{
-    val value: Term
+  trait Member[U <: Term, T <: Term, D <: Term with Subs[D], O <: Term]{
+    val fmlyPtn : FmlyPtn[U , T, D, O]
     
-    val W : Typ[Term]
+    val typ: Typ[O]
     
-    val fmlyPtn : FmlyPtn[U, O]
+    val value:  O
+   
   }
   
-  case class SelfMember[O <: Term](value: Term, W: Typ[Term]) extends FmlyMember[Term, O]{
-    val fmlyPtn = IdFmlyPtn
+  case class JustMember[O <: Term](value: O, typ: Typ[O]) extends Member[O, Term, Term, O]{
+    lazy val fmlyPtn = IdFmlyPtn[O]
   }
   
-  case class FuncFmlyMember[U <: Term with Subs[U], O <: Term](tail: Typ[Term],
-      arg: Term, headfibre: Term => FmlyMember[U, O]) extends FmlyMember[FuncLike[Term, U], O]{
+  case class FuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term](
+      tail : Typ[Term], arg: Term, headfibre : Term => Member[V, T, D, O]){
+    lazy val fmlyPtn = FuncFmlyPtn(tail, headfibre(arg).fmlyPtn)
+   
+    lazy val typ = FuncTyp(tail, headfibre(arg).typ) 
+   
     val value = headfibre(arg).value
-    
-    val W = headfibre(arg).W
-    
-    val fmlyPtn = FuncFmlyPtn(tail, headfibre(arg).fmlyPtn)
   }
   
-  case class DepFuncFmlyMember[U <: Term with Subs[U], O <: Term](tail: Typ[Term],
-      arg: Term, headfibre: Term => FmlyMember[U, O]) extends FmlyMember[FuncLike[Term, U], O]{
+  case class DepFuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term](
+      tail : Typ[Term], arg: Term, headfibre : Term => Member[V, T, D, O]){
+    val x = "x" :: tail
+    
+    lazy val fmlyPtn = DepFuncFmlyPtn(tail, (x: Term) => headfibre(x).fmlyPtn)
+   
+    
+    lazy val fibre = lmbda(x)(headfibre(x).typ)
+    
+    lazy val typ = PiTyp(fibre) 
+   
     val value = headfibre(arg).value
-    
-    val W = headfibre(arg).W
-    
-    val fmlyPtn = DepFuncFmlyPtn(tail, (x: Term) => headfibre(x).fmlyPtn)
   }
-  */
-/*  case class RecMember(
-      arg: Term, : RecFmlyPtn[V], W: Typ[Term]) extends FmlyMember{
-  //  val value = 
-  }*/ 
 }
