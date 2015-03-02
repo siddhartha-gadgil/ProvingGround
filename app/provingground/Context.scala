@@ -76,12 +76,12 @@ object Contexts{
     /**
      * scala type of an object in context when viewed outside, typically a function because of lambdas
      */
-    type PtnType <: U 
+    type ConstructorType <: U 
     
     /**
      * the type as seen from outside of an object within the context of HoTT-type Typ[V].
      */
-    def apply(tp : Typ[V]) : Typ[PtnType]
+    def apply(tp : Typ[V]) : Typ[ConstructorType]
     
     /**
      * the tail of a context, which is viewed as lying inside the head for consistency with right associativity.
@@ -100,7 +100,7 @@ object Contexts{
      * for examply for lambda-context (x : A) -> and fixed type B, we fold in x to a function y to get y(x) : B
      * 
      */
-    def foldin : Typ[V] => PtnType => V
+    def foldin : Typ[V] => ConstructorType => V
     
     /**
      * given the name of an object and a HoTT-type in context, we fold in a symbolic object of the exported type.
@@ -177,11 +177,11 @@ object Contexts{
       
     	def withNewTail(newtail: Context[Term, U]) = this
     	
-    	type PtnType = U
+    	type ConstructorType = U
 
-    	def apply(tp : Typ[U]) : Typ[PtnType] = tp
+    	def apply(tp : Typ[U]) : Typ[ConstructorType] = tp
     	
-    	def foldin : Typ[U] => PtnType => U = _ => (t) => t
+    	def foldin : Typ[U] => ConstructorType => U = _ => (t) => t
     	
     	def symblist(tp: Typ[U])(varnames: List[AnySym]) = List()
     	
@@ -210,11 +210,11 @@ object Contexts{
   
   
   case class LambdaMixin[+U<: Term, V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
-    type PtnType = FuncLike[Term, tail.PtnType]
+    type ConstructorType = FuncLike[Term, tail.ConstructorType]
     
     def withNewTail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
     
-    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
+    def foldin : Typ[V] => ConstructorType => V = (tp) => (f) => tail.foldin(tp)(f(variable))
     
     def symblist(tp: Typ[V])(varnames: List[AnySym]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
@@ -247,16 +247,16 @@ object Contexts{
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, tail.PtnType](variable.typ, MiniVerse(tail.typ), fibre)
+	    val family = typFamilyDefn[Term, tail.ConstructorType](variable.typ, MiniVerse(tail.typ), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(variable.typ, tail.typ)
     */
     
-    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[ConstructorType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (variable, t)
 	    
-	    val family = typFamilyDefn[Term, tail.PtnType](variable.typ, MiniVerse(tail(tp)), fibre)
+	    val family = typFamilyDefn[Term, tail.ConstructorType](variable.typ, MiniVerse(tail(tp)), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(variable.typ, tail(tp))
@@ -265,11 +265,11 @@ object Contexts{
   }
   
   case class KappaMixin[+U<: Term, V <: Term](const : Term, tail: Context[U, V]) extends Context[U, V]{
-    type PtnType = tail.PtnType
+    type ConstructorType = tail.ConstructorType
     
     def withNewTail(newtail: Context[Term, V]) = KappaMixin(const, newtail)
     
-    def foldin : Typ[V] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => ConstructorType => V = tail.foldin
     
     def symblist(tp: Typ[V])(varnames: List[AnySym]) = tail.symblist(tp)(varnames)
     
@@ -289,15 +289,15 @@ object Contexts{
     
 //    val typ = tail.typ
     
-    def apply(tp : Typ[V]) : Typ[PtnType] =tail(tp)
+    def apply(tp : Typ[V]) : Typ[ConstructorType] =tail(tp)
   }
   
   case class DefnMixin[+U<: Term, V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
-    type PtnType = FuncLike[Term, tail.PtnType]
+    type ConstructorType = FuncLike[Term, tail.ConstructorType]
     
     def withNewTail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
     
-    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
+    def foldin : Typ[V] => ConstructorType => V = (tp) => (f) => tail.foldin(tp)(f(dfn.lhs))
     
     def symblist(tp : Typ[V])(varnames: List[AnySym]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
@@ -323,27 +323,27 @@ object Contexts{
     val typ = if (dep) {
       val fibre = (t : Term) => tail.typ subs (x, t)
 	    
-	    val family = typFamilyDefn[Term, tail.PtnType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
-	    PiTyp[Term, tail.PtnType](family)
+	    val family = typFamilyDefn[Term, tail.ConstructorType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
+	    PiTyp[Term, tail.ConstructorType](family)
     }
     else FuncTyp(dfn.lhs.typ, tail.typ)
     */
     
-    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[ConstructorType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (dfn.lhs, t)
 	    
-	    val family = typFamilyDefn[Term, tail.PtnType](dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
-	    PiTyp[Term, tail.PtnType](family)
+	    val family = typFamilyDefn[Term, tail.ConstructorType](dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
+	    PiTyp[Term, tail.ConstructorType](family)
     }
     else FuncTyp(dfn.lhs.typ, tail(tp))
   } 
   
   case class GlobalDefnMixin[+U <: Term, V <: Term](dfn : Defn, tail: Context[U, V]) extends Context[U, V]{
-    type PtnType = tail.PtnType
+    type ConstructorType = tail.ConstructorType
     
     def withNewTail(newtail: Context[Term, V]) = GlobalDefnMixin(dfn, newtail)
     
-    def foldin : Typ[V] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => ConstructorType => V = tail.foldin
     
     def symblist(tp : Typ[V])(varnames: List[AnySym]) = tail.symblist(tp)(varnames)
     
@@ -363,17 +363,17 @@ object Contexts{
     
 //    val typ = tail.typ		
     
-    def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
+    def apply(tp : Typ[V]) : Typ[ConstructorType] = tail(tp)
   }
   
   case class DefnEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V]) extends Context[U, V]{
-    type PtnType = tail.PtnType
+    type ConstructorType = tail.ConstructorType
     
     def withNewTail(newtail: Context[Term, V]) = DefnEqualityMixin(eqlty, newtail)
     
-    def apply(tp : Typ[V]) : Typ[PtnType] = tail(tp)
+    def apply(tp : Typ[V]) : Typ[ConstructorType] = tail(tp)
     
-    def foldin : Typ[V] => PtnType => V = tail.foldin
+    def foldin : Typ[V] => ConstructorType => V = tail.foldin
     
     def symblist(tp: Typ[V])(varnames: List[AnySym]) = tail.symblist(tp)(varnames)
     
@@ -394,11 +394,11 @@ object Contexts{
   }
   
   case class SimpEqualityMixin[+U <: Term, V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncLike[Term,U], V]{
-    type PtnType = FuncLike[Term, tail.PtnType]
+    type ConstructorType = FuncLike[Term, tail.ConstructorType]
     
     def withNewTail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
     
-    def foldin : Typ[V] => PtnType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
+    def foldin : Typ[V] => ConstructorType => V = (tp) => (f) => tail.foldin(tp)(f(eqlty.lhs))
     
     def symblist(tp : Typ[V])(varnames: List[AnySym]) = apply(tp).symbObj(varnames.head) :: tail.symblist(tp)(varnames.tail)
     
@@ -421,10 +421,10 @@ object Contexts{
     }
     
     
-    def apply(tp : Typ[V]) : Typ[PtnType] = if (dep) {
+    def apply(tp : Typ[V]) : Typ[ConstructorType] = if (dep) {
       val fibre = (t : Term) => tail(tp) subs (eqlty.lhs, t)
 	    
-	    val family = typFamilyDefn[Term, tail.PtnType](eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
+	    val family = typFamilyDefn[Term, tail.ConstructorType](eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
 	    PiTyp(family)
     }
     else FuncTyp(eqlty.lhs.typ, tail(tp))

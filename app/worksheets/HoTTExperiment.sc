@@ -140,7 +140,7 @@ object HoTTExperiment {
 
  
 
- val W : PolyPtn[Term] = IdW
+ val W : ConstructorPtn[Term] = IdW
  
   object TestTyp extends SmallTyp{
     override def toString ="implicitType"}

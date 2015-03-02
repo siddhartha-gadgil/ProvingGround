@@ -8,6 +8,7 @@ import provingground.InductiveTypes._
 
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
+import ConstructorPatterns._
 
 /**
  * Recursion and induction for inductive types.
@@ -160,7 +161,7 @@ object Recursion{
    * 
    */
   def cnstrContext[V<: Term](
-      ptn : PolyPtn[Term], varnames : List[AnySym], 
+      ptn : ConstructorPtn[Term], varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
@@ -186,7 +187,7 @@ object Recursion{
   /**
    * returns symbolic terms of type according to a poly-pattern
    */
-  private def symbTerms(ptn : PolyPtn[Term], varnames : List[AnySym],
+  private def symbTerms(ptn : ConstructorPtn[Term], varnames : List[AnySym],
       W : Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
     case IdW => accum
     case FuncPtn(tail, head) =>
@@ -207,7 +208,7 @@ object Recursion{
    *  context for recursive definition for a constructor.
    */
   def cnstrRecContext[V<: Term](f : => (FuncLike[Term, Term]),
-      ptn : PolyPtn[Term], varnames : List[AnySym],
+      ptn : ConstructorPtn[Term], varnames : List[AnySym],
       W : Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     val change = recContextChange[V](f, W, X)
@@ -218,7 +219,7 @@ object Recursion{
    *  context for inductive definition for a constructor.
    */
   def cnstrIndContext[V<: Term, U <: Term](f : => (FuncLike[Term, Term]),
-      ptn : PolyPtn[U], varnames : List[AnySym],
+      ptn : ConstructorPtn[U], varnames : List[AnySym],
       W : Typ[V],
       Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
     val change = indContextChange[V](f, W, Xs)
