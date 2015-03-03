@@ -8,6 +8,12 @@ import ScalaUniverses._
  * @author gadgil
  */
 object ConstructorPatterns {
+    def getArg[U <: Term](func : FuncLike[Term, U], dom: Typ[U])(t: Term): Term => Option[Term] = {
+      case fx: ApplnSym[u, w] =>
+        if (fx.func == func && fx.arg.typ == dom) Some(fx.arg) else getArg(func, dom)(t)(fx.func)      
+      case _ => None
+    }
+  
     /**
    * A composite pattern for inductive types.
    * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W as a function of W
@@ -35,7 +41,7 @@ object ConstructorPatterns {
     /**
      * (scala) type of data for recursion
      */
-  //  type RecDataType <: Term
+    type RecDataType <: Term
     
     /**
      * constructor for this pattern given inductive type and name.
@@ -64,19 +70,20 @@ object ConstructorPatterns {
     val W = IdW
   }
   
-  trait RecDom[R <: Term]{
-      type RecDataType = R
-    }
+  
+
 
   /**
    * The constructor pattern W - the only valid head for constructor-patterns.
    */
-  case object IdW extends ConstructorPtn[Term] with RecDom[Term]{
+  case object IdW extends ConstructorPtn[Term]{
     def apply(W : Typ[Term]) = W
 
     val univLevel = 0
 
     type ConstructorType = Term
+    
+    type RecDataType = Term
     
     /**
      * induced function is the given one.
@@ -126,10 +133,12 @@ object ConstructorPatterns {
   /**
    * Extending a poly-pattern by a type pattern.
    */
-  case class FuncPtn[U<:Term ](tail: FmlyPtnLike[Term], head : ConstructorPtn[U]) extends RecursiveConstructorPtn[U]{
+  case class FuncPtn[U<:Term](tail: FmlyPtnLike[Term], head : ConstructorPtn[U]) extends RecursiveConstructorPtn[U]{
     val headfibre = (t: Term) => head
     
     type ConstructorType = FuncLike[Term, U]
+    
+    type RecDataType = FuncLike[tail.ConstructorType, FuncLike[tail.TargetType, head.RecDataType]]
     
     def apply(W : Typ[Term]) = FuncTyp[Term, head.ConstructorType](tail(W), head(W))
 
@@ -141,8 +150,8 @@ object ConstructorPatterns {
    */
   case class CnstFncPtn[U <: Term, R <: Term](
       tail: Typ[Term], 
-      head : ConstructorPtn[U] with RecDom[R]
-      ) extends RecursiveConstructorPtn[U] with RecDom[FuncLike[Term, R]]{
+      head : ConstructorPtn[U]
+      ) extends RecursiveConstructorPtn[U]{
     val headfibre = (t: Term) => head
     
 //    type RecDataType = FuncLike[Term, head.RecDataType]
@@ -165,6 +174,9 @@ object ConstructorPatterns {
       headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends RecursiveConstructorPtn[U]{
     type ConstructorType = FuncLike[Term, U]
 
+//    type RecDataType = FuncLike[tail.ConstructorType, FuncLike[tail.TargetType, head.RecDataType]]
+   
+    
     def apply(W : Typ[Term]) : Typ[FuncLike[Term, U]]   = {
       val head = headfibre(W.symbObj(""))
       val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
@@ -248,16 +260,7 @@ object ConstructorPatterns {
       pattern: RecursiveConstructorPtn[U], cons: FuncLike[Term, U]) extends RecursiveConstructor{
     type BaseType = U
   }
-  
-  
-  case class DerivedConstructor[U <: Term](
-      funcCons: RecursiveConstructor, arg: Term) extends Constructor{
-    type ConstructorType = funcCons.BaseType
-    
-    val cons = funcCons.cons(arg)
-    
-    val pattern = funcCons.pattern.headfibre(arg)
-  }
+
   
   /*
   object Constructor{
