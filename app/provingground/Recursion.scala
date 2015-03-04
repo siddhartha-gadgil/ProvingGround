@@ -64,8 +64,11 @@ object Recursion{
     /**
      * context for inductive definitions.
      */
+    
     def indCtx[U <: Term](f: => FuncLike[Term, U]) : Context[Term, Term] = {
-      cnstrIndContext[Term, Term](f, cnstr.pattern, vars,f.dom, f.depcodom)(Context.empty[Term])
+      cnstrIndContext(f, cnstr.pattern, vars,f.dom, f.depcodom)(Context.empty[Term])
+       
+      
     }
     
     /**
@@ -161,7 +164,7 @@ object Recursion{
    * 
    */
   def cnstrContext[V<: Term](
-      ptn : ConstructorPtn[Term], varnames : List[AnySym], 
+      ptn : ConstructorPtn, varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
@@ -187,7 +190,7 @@ object Recursion{
   /**
    * returns symbolic terms of type according to a poly-pattern
    */
-  private def symbTerms(ptn : ConstructorPtn[Term], varnames : List[AnySym],
+  private def symbTerms(ptn : ConstructorPtn, varnames : List[AnySym],
       W : Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
     case IdW => accum
     case FuncPtn(tail, head) =>
@@ -208,7 +211,7 @@ object Recursion{
    *  context for recursive definition for a constructor.
    */
   def cnstrRecContext[V<: Term](f : => (FuncLike[Term, Term]),
-      ptn : ConstructorPtn[Term], varnames : List[AnySym],
+      ptn : ConstructorPtn, varnames : List[AnySym],
       W : Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     val change = recContextChange[V](f, W, X)
@@ -219,7 +222,7 @@ object Recursion{
    *  context for inductive definition for a constructor.
    */
   def cnstrIndContext[V<: Term, U <: Term](f : => (FuncLike[Term, Term]),
-      ptn : ConstructorPtn[U], varnames : List[AnySym],
+      ptn : ConstructorPtn{type ConstructorType = U}, varnames : List[AnySym],
       W : Typ[V],
       Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
     val change = indContextChange[V](f, W, Xs)

@@ -25,7 +25,7 @@ object Families {
     /**
      * scala type (upper bound)
      */
-    type ConstructorType <:  Term
+    type FamilyType <:  Term
 
     /**
      * scala type of target for induced functions, i.e., with O = Term
@@ -37,7 +37,7 @@ object Families {
     /**
      * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W
      */
-    def apply(tp : Typ[O]) : Typ[ConstructorType]
+    def apply(tp : Typ[O]) : Typ[FamilyType]
 
     /**
     * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -48,7 +48,7 @@ object Families {
     *
     * @param X codomain of the given function
     */
-    def induced(W : Typ[O], X : Typ[Term])(f : O => Term) : ConstructorType => TargetType
+    def induced(W : Typ[O], X : Typ[Term])(f : O => Term) : FamilyType => TargetType
 
     /**
     * dependent function induced by dependent f: W -> X(s) of type (A -> W) -> ((a : A) ~> Xs(a)) etc
@@ -59,7 +59,7 @@ object Families {
     *
     * @param Xs family of codomains of the given dependent function
     */
-    def inducedDep(W : Typ[O], Xs : O => Typ[Term])(f : O => Term) : ConstructorType => DepTargetType
+    def inducedDep(W : Typ[O], Xs : O => Typ[Term])(f : O => Term) : FamilyType => DepTargetType
   }
   
       /**
@@ -75,7 +75,7 @@ object Families {
     /**
      * scala type (upper bound)
      */
-       type ConstructorType = U
+       type FamilyType = U
 
        type TargetType= T
        
@@ -84,12 +84,12 @@ object Families {
        /**
         * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
         */
-        def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : ConstructorType => TargetType
+        def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : FamilyType => TargetType
 
         /**
         * dependent function induced by dependent f: W -> X(s) of type (A -> W) -> (A ~> X(s)) etc
         */
-        def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : ConstructorType => TargetType
+        def inducedDep(W : Typ[Term], Xs : Term => Typ[Term])(f : Term => Term) : FamilyType => TargetType
         */
   }
 
@@ -133,7 +133,7 @@ object Families {
      * maps (g : tail --> head(W)) to func : tail --> head(X) given (head(W) --> head(X))
      *
      */
-    def induced(W : Typ[O], X: Typ[Term])(f : O => Term) : ConstructorType => TargetType = {
+    def induced(W : Typ[O], X: Typ[Term])(f : O => Term) : FamilyType => TargetType = {
         val x = "x" :: tail
         val g = "g" :: apply(W)
         lambda(g)(
@@ -141,7 +141,7 @@ object Families {
         /*
         val func =((t : Term) => head.induced(W, X)(f) (g(t)))
         val codomain = head(X)
-        FuncDefn[Term, head.ConstructorType](func, tail, codomain)*/
+        FuncDefn[Term, head.FamilyType](func, tail, codomain)*/
     }
 
     /**
@@ -149,19 +149,19 @@ object Families {
      * maps (g : tail --> head(W)) to func : (t : tail) ~> head(Xs(t)) given (head(W) --> (t: tail) ~> head(Xs(t)))
      *
      */
-    def inducedDep(W : Typ[O], Xs: O => Typ[Term])(f : O => Term) : ConstructorType => DepTargetType = {
+    def inducedDep(W : Typ[O], Xs: O => Typ[Term])(f : O => Term) : FamilyType => DepTargetType = {
         val x = "x" :: tail
         val g = "g" :: apply(W)
         lambda(g)(
             lambda(x)(head.inducedDep(W, Xs)(f)(g(x))))
       /*
-      (g : ConstructorType) =>
+      (g : FamilyType) =>
         val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
         val section = (t : Term) => head(Xs(t))
         val x = "x" :: tail
         val fiber = lmbda(x)(section(x))
-     //   val fiber = typFamily[Term, head.ConstructorType](tail, section)
-        DepFuncDefn[Term, head.ConstructorType](func, tail, fiber)*/
+     //   val fiber = typFamily[Term, head.FamilyType](tail, section)
+        DepFuncDefn[Term, head.FamilyType](func, tail, fiber)*/
     }
   }
 
@@ -181,15 +181,15 @@ object Families {
 
     val head = headfibre(tail.symbObj(""))
 
-//    type ConstructorType = FuncLike[Term, head.ConstructorType]
+//    type FamilyType = FuncLike[Term, head.FamilyType]
 
-     def induced(W : Typ[O], X: Typ[Term])(f : O => Term) : ConstructorType => TargetType = {
+     def induced(W : Typ[O], X: Typ[Term])(f : O => Term) : FamilyType => TargetType = {
         val x = "x" :: tail
         val g = "g" :: apply(W)
         lambda(g)(
             lambda(x)(head.induced(W, X)(f)(g(x))))
        /*
-      (g : ConstructorType) =>
+      (g : FamilyType) =>
         val func =((t : Term) => headfibre(t).induced(W, X)(f) (g(t)))
         val x = "x" :: tail
         val fiber = lmbda(x)(headfibre(x)(X))
@@ -197,13 +197,13 @@ object Families {
         DepFuncDefn[Term, V](func, tail, fiber)*/
     }
 
-    def inducedDep(W : Typ[O], Xs: O => Typ[Term])(f : O => Term) : ConstructorType => DepTargetType = {
+    def inducedDep(W : Typ[O], Xs: O => Typ[Term])(f : O => Term) : FamilyType => DepTargetType = {
         val x = "x" :: tail
         val g = "g" :: apply(W)
         lambda(g)(
             lambda(x)(head.inducedDep(W, Xs)(f)(g(x))))
       /*
-      (g : ConstructorType) =>
+      (g : FamilyType) =>
         val func =((t : Term) => headfibre(t).induced(W, Xs(t))(f) (g(t)))
         val x = "x" :: tail
         val fiber = lmbda(x)(headfibre(x)(Xs(x)))
