@@ -21,10 +21,10 @@ object ConstructorPatterns {
    * Typically (A -> B -> W)-> C -> W -> (D -> W) -> W as a function of W
    */
   sealed trait ConstructorPtn{
-    type Cod = Term
+    type Cod <:  Term
     
     def -->:[V <: Term , T <: Term with Subs[T], D <: Term with Subs[D]](
-        that : FmlyPtn[V, T, D, Term]{type Cod = Term}) = FuncPtn(that, this)
+        that : FmlyPtn[V, T, D, Term, Term]) = FuncPtn(that, this)
 
   //  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : ConstructorPtn[FuncLike[Term, UU]] = {
   //    if (that == self) FuncPtn[UU](IdFmlyPtn[Term], this) else CnstFncPtn[UU](that, this)
@@ -153,7 +153,7 @@ object ConstructorPatterns {
   /**
    * Extending a poly-pattern by a type pattern.
    */
-  case class FuncPtn(tail: FmlyPtnLike[Term]{type Cod = Term}, head : ConstructorPtn) extends RecursiveConstructorPtn{
+  case class FuncPtn[C <: Term](tail: FmlyPtnLike[Term, Term], head : ConstructorPtn) extends RecursiveConstructorPtn{
     type ArgType = tail.FamilyType
     
     type HeadType = head.ConstructorType
@@ -216,7 +216,7 @@ object ConstructorPatterns {
    * Dependent extension of a poly-pattern by a type pattern.
    * XXX this may never be applicable
    */
-  case class DepFuncPtn[U <: Term, V <: Term, W <: Term](tail: FmlyPtnLike[Term]{type Cod = Term},
+  case class DepFuncPtn[U <: Term, V <: Term, W <: Term](tail: FmlyPtnLike[Term, Term],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V}),
       headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends RecursiveConstructorPtn{
     type ArgType = tail.FamilyType
@@ -294,7 +294,7 @@ object ConstructorPatterns {
     /**
      * poly-pattern for the constructor
      */
-    val pattern : ConstructorPtn{type Cod = Term}
+    val pattern : ConstructorPtn
 
 //    val typ: Typ[Term]
 
@@ -326,7 +326,7 @@ object ConstructorPatterns {
    * @typparam U scala type of polypattern.
    */
   case class ConstructorDefn[U <: Term](
-      pattern: ConstructorPtn{type ConstructorType = U; type Cod = Term}, 
+      pattern: ConstructorPtn{type ConstructorType = U}, 
       cons: U) extends Constructor{
     type ConstructorType = U
   }
