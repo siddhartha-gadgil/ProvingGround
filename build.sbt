@@ -4,6 +4,10 @@ version := "0.8"
 
 organization := "in.ernet.iisc.math"
 
+libraryDependencies += "com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test"
+
+initialCommands in console := "ammonite.repl.Repl.main(null)"
+
 scalaVersion := "2.11.5"
 
 
