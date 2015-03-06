@@ -40,6 +40,8 @@ object Families {
      */
     def apply(tp : Typ[O]) : Typ[FamilyType]
 
+    def target(x : Typ[Cod]) : Typ[TargetType]
+    
     type Cod = C
     
     def withCod[CC <: Term with Subs[CC]] : FmlyPtnLike[O, CC]
@@ -111,6 +113,8 @@ object Families {
     
     type DepTargetType = C
  
+    def target(x: Typ[Cod]) = x
+    
     def withCod[CC <: Term with Subs[CC]] = IdFmlyPtn[O, CC]
     
 //    type Cod = C
@@ -155,6 +159,8 @@ object Families {
     type TargetType = Func[Term, T]
     
     type DepTargetType = FuncLike[Term, D]
+    
+    def target(x: Typ[Cod]) = tail ->: head.target(x)
     
 //    type Cod = head.Cod
     
@@ -229,6 +235,12 @@ object Families {
     
   //  type Cod = C
 
+    def target(x: Typ[Cod]) = {
+      val a = "a" :: tail
+      val targfibre = lmbda(a)(headfibre(a).target(x))
+      PiTyp(targfibre)
+    }
+    
     def withCod[CC <: Term with Subs[CC]] ={
       val newHead = headfibre(tail.symbObj(""))
       type VV = newHead.FamilyType

@@ -50,6 +50,8 @@ object ConstructorPatterns {
      */
     type RecDataType <: Term
     
+    def recDom(w: Typ[Term], x: Typ[Cod]) : Typ[RecDataType]
+    
     def recDef(cons: ConstructorType, data: RecDataType, f :  => Func[Term, Cod]): Term => Option[Cod]
     
     def rec[CC <: Term with Subs[CC]] = {
@@ -101,6 +103,8 @@ object ConstructorPatterns {
     type ConstructorType = Term
     
     type RecDataType = Term
+    
+    def recDom(w: Typ[Term], x: Typ[Cod]) = x
 
     type Cod = Term
 
@@ -121,6 +125,8 @@ object ConstructorPatterns {
     type RecDataType = C
 
     type Cod = C
+    
+    def recDom(w: Typ[Term], x: Typ[Cod]) = x
     
     def withCod[CC <: Term with Subs[CC]] = IdTarg[CC]
     
@@ -202,6 +208,8 @@ object ConstructorPatterns {
     
     type RecDataType = FuncLike[tail.FamilyType, FuncLike[tail.TargetType, head.RecDataType]]
 
+    def recDom(w: Typ[Term], x: Typ[Cod]) = tail(w) ->: tail.target(x) ->: head.recDom(w, x)
+    
     def recData(data: RecDataType, arg: ArgType, f :  => Func[Term, C]): RecHeadType = {
      val W = f.dom
      val X = f.codom
@@ -240,6 +248,8 @@ object ConstructorPatterns {
        
     type RecDataType = FuncLike[Term, head.RecDataType]
     
+    def recDom(w: Typ[Term], x: Typ[Cod]) = tail ->: head.recDom(w, x)
+    
     type RecHeadType = head.RecDataType
     
     type ConstructorType = FuncLike[Term, head.ConstructorType]
@@ -277,6 +287,12 @@ object ConstructorPatterns {
     }
     
     type RecDataType = FuncLike[tail.FamilyType, FuncLike[tail.TargetType, V]]
+    
+    def recDom(w: Typ[Term], x: Typ[Cod]) = {
+      val a = "a" :: tail(w)
+      val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDom(w, x))
+      PiTyp(fibre)
+    }
    
     type RecHeadType = V
     
@@ -323,6 +339,12 @@ object ConstructorPatterns {
     type ConstructorType = FuncLike[Term, U]
     
     type RecDataType = FuncLike[Term, V]
+    
+    def recDom(w: Typ[Term], x: Typ[Cod]) = {
+      val a = "a" :: tail
+      val fibre = lmbda(a)(headfibre(a).recDom(w, x))
+      PiTyp(fibre)
+    }
     
     type RecHeadType = V
     
@@ -390,7 +412,53 @@ object ConstructorPatterns {
       cons: U) extends Constructor{
     type ConstructorType = U
   }
+ 
+  
+  trait RecFunction[C<: Term, F <: Term with Subs[F]]{self =>
+    val W: Typ[Term]
+    
+    val X : Typ[C] 
+    
+    type FullType = F
+    
+    def extendOption(caseFn: Term => Option[C]): FullType => FullType
+    
+    def recursion(f: => FullType): FullType
+    
+    lazy val value : FullType = recursion(self.value)
+  }
+  
+ 
+  case object Rec extends AnySym
+  
+  case class RecTail[C <: Term with Subs[C]](W: Typ[Term], X : Typ[C]) extends RecFunction[C, Func[Term, C]]{
+    def recursion(f: => FullType) = (W ->: X).symbObj(Rec)
+    
+    def extendOption(caseFn: Term => Option[C]) = (g : Func[Term, C]) => {
+      FuncDefn((w: Term) => caseFn(w).getOrElse(g(w)), W, X)
+    }
+  }
 
+  case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C], F <: Term with Subs[F]](
+      dom: Typ[D], 
+      caseFn : Func[D, F] => D => Term => Option[C], 
+      tail: RecFunction[C, F]) extends RecFunction[C, Func[D, F]]{
+    val W = tail.W
+    
+    val X = tail.X
+    
+    
+    def extendOption(f: Term => Option[C]) = (g) => {
+      val a = "a" :: dom
+      lmbda(a)(tail.extendOption(f)(g(a)))
+    }
+    
+    def recursion(f: => FullType) ={
+      def fn(a: D) = tail.extendOption(caseFn(value)(a))(f(a))
+      lmbda("a" :: dom)(fn("a" :: dom))
+    }
+  }
+  
   /*
   case class RecConstructorDefn[U <: Term, H <: Term](
       pattern: RecursiveConstructorPtn{type HeadType = H; type ArgType = U}, 

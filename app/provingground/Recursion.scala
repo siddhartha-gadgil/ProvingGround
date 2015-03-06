@@ -169,6 +169,7 @@ object Recursion{
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
       case IdW => ctx // the final co-domain. We have just this for constant constructors.
+//      case _ : ConstructorPatterns.Id => ctx
       case FuncPtn(tail, head) => 
         val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
         change(varnames.head, tail, headctx)
@@ -184,6 +185,7 @@ object Recursion{
         val x = tail.symbObj(varnames.head)
         val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
         x /: headctx
+      case _ => ctx
     }
   }
 
@@ -205,6 +207,7 @@ object Recursion{
     case CnstDepFuncPtn(tail, headfibre , _) =>
       val x : Term = tail.symbObj(varnames.head)
       symbTerms(headfibre(x), varnames.tail, W, x :: accum)
+    case _ => accum
   }
 
   /**
