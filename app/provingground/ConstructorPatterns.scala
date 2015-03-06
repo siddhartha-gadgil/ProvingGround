@@ -2,7 +2,7 @@ package provingground
 import HoTT._
 import Families._
 import math._
-import ScalaUniverses._
+//import ScalaUniverses._
 import scala.util._
 import scala.language.existentials
 
@@ -270,7 +270,7 @@ object ConstructorPatterns {
    */
   case class DepFuncPtn[U <: Term, V <: Term, W <: Term, C <: Term](tail: FmlyPtnLike[Term, C],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C}),
-      headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends RecursiveConstructorPtn{self =>
+      headlevel: Int = 0)/*(implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
     type ArgType = tail.FamilyType
     
     type HeadType = U
@@ -281,7 +281,7 @@ object ConstructorPatterns {
     
     def withCod[CC <: Term with Subs[CC]] = {
       
-      val _res = DepFuncPtn(tail.withCod[CC], (t: Term) => headfibre(t).withCod[CC])(su)
+      val _res = DepFuncPtn(tail.withCod[CC], (t: Term) => headfibre(t).withCod[CC])
       val res  = _res.asInstanceOf[ConstructorPtn{type ConstructorType = self.ConstructorType; type Cod = CC}]
       res
     }
@@ -305,7 +305,9 @@ object ConstructorPatterns {
     
     def apply(W : Typ[Term]) : Typ[FuncLike[Term, U]]   = {
       val head = headfibre(W.symbObj(""))
-      val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
+//      val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
+      val a = "a" :: W
+      val fiber = lmbda(a)(headfibre(a)(W))
       PiTyp[Term, U](fiber)
     }
 
@@ -320,8 +322,9 @@ object ConstructorPatterns {
    * Dependent extension by a constant type  of a poly-pattern depending on elements of that type.
    */
   case class CnstDepFuncPtn[U <: Term, V <: Term, C <: Term](tail: Typ[Term], 
-      headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C}), headlevel: Int = 0)(
-      implicit su: ScalaUniv[U]) extends RecursiveConstructorPtn{self =>
+      headfibre : Term => (ConstructorPtn{type ConstructorType = U; 
+      type RecDataType = V; type Cod = C}), headlevel: Int = 0)/*(
+      implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
 
     type ArgType = Term
     
@@ -331,7 +334,7 @@ object ConstructorPatterns {
     
         def withCod[CC <: Term with Subs[CC]] = {
       
-      val _res = CnstDepFuncPtn(tail, (t: Term) => headfibre(t).withCod[CC])(su)
+      val _res = CnstDepFuncPtn(tail, (t: Term) => headfibre(t).withCod[CC])
       val res  = _res.asInstanceOf[ConstructorPtn{type ConstructorType = self.ConstructorType; type Cod = CC}]
       res
     }
@@ -353,7 +356,9 @@ object ConstructorPatterns {
     }
     
     def apply(W : Typ[Term]) : Typ[FuncLike[Term, U]] = {
-      val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
+ //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
+      val a = "a" :: W
+      val fiber = lmbda(a)(headfibre(a)(W))
       PiTyp[Term, U](fiber)
     }
 
@@ -419,6 +424,8 @@ object ConstructorPatterns {
     
     val X : Typ[C] 
     
+    private lazy val a = "a" :: W
+    
     type FullType = F
     
     def extendOption(caseFn: Term => Option[C]): FullType => FullType
@@ -432,7 +439,9 @@ object ConstructorPatterns {
   case object Rec extends AnySym
   
   case class RecTail[C <: Term with Subs[C]](W: Typ[Term], X : Typ[C]) extends RecFunction[C, Func[Term, C]]{
-    def recursion(f: => FullType) = (W ->: X).symbObj(Rec)
+    private lazy val a = "a" :: W
+    
+    def recursion(f: => FullType) = lmbda(a)(X.symbObj(ApplnSym(f, a)))
     
     def extendOption(caseFn: Term => Option[C]) = (g : Func[Term, C]) => {
       FuncDefn((w: Term) => caseFn(w).getOrElse(g(w)), W, X)
