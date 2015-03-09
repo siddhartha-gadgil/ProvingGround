@@ -557,7 +557,7 @@ object HoTT{
 
       lazy val typ = FuncTyp[W, U](dom, codom)
 
-      def act(arg: W) : U = codom.symbObj(ApplnSym(this, arg))
+    		  def act(arg: W) : U = codom.symbObj(ApplnSym(this, arg))
 
       def newobj = typ.obj
 
@@ -774,6 +774,8 @@ object HoTT{
 	 * lambda constructor for fixed codomain
 	 */
 	def lmbda[U<: Term with Subs[U], V <: Term with Subs[V]](variable: U)(value : V) : Func[U, V] = {
+    assert(value.typ.indepOf(variable), 
+        s"lambda returns function type but value $value has type ${value.typ} depending on variable $variable")
 		val newvar = variable.newobj
 	    LambdaFixed(newvar, value.replace(variable, newvar))
 	}

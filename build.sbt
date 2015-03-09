@@ -4,28 +4,25 @@ version := "0.8"
 
 organization := "in.ernet.iisc.math"
 
-libraryDependencies += "com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test"
-
-initialCommands in console := "ammonite.repl.Repl.main(null)"
-
 scalaVersion := "2.11.5"
 
 
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.1.0"
+libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.1.0",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
+  "com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test",
+  ws,
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
+  "edu.stanford.nlp" % "stanford-parser" % "3.4"
+  )
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3"
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
+initialCommands in console := "ammonite.repl.Repl.main(null)"
 
-libraryDependencies ++= Seq(
-  ws
-)
-
-libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23"
-)
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 

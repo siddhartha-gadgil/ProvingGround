@@ -124,7 +124,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
    * Should allow for dependent types when making a lambda.
    */
   private def recContextChange[V<: Term](f : => Term => (FuncLike[Term, Term]),
-        W : Term => Typ[Term], X : Typ[V]) : (AnySym, FmlyPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
+        W : Term => Typ[Term], X : Typ[V]) : (AnySym, FmlyPtn, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
     val fx = ptn.induced(W, X)(f)(x)
     x /: fx /: ctx
@@ -136,7 +136,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
    */
   private def indContextChange[V<: Term](f : => Term => (FuncLike[Term, Term]),
       W : Term => Typ[V],
-      Xs : Term => Term => Typ[V]) : (AnySym, FmlyPtnLike, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
+      Xs : Term => Term => Typ[V]) : (AnySym, FmlyPtn, Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
     val x = ptn(W).symbObj(varname)
 	val fx = ptn.inducedDep(W, Xs)(f)(x)
     x /: fx /: ctx
@@ -145,7 +145,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
   /**
    * change in contexts given a type-pattern and a variable name.
    */
-  private type Change[V <: Term] = (AnySym, FmlyPtnLike, Context[Term, V]) => Context[Term, V]
+  private type Change[V <: Term] = (AnySym, FmlyPtn, Context[Term, V]) => Context[Term, V]
 
   /**
    * Returns the context for a polypattern given change in context for a typepattern.

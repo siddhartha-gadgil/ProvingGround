@@ -12,7 +12,7 @@ object Families {
   /**
    * a single trait to hold all type patterns, independent of U, with members having type O.
    */
-  sealed trait FmlyPtnLike[O <: Term, C <: Term]{
+  sealed trait FmlyPtn[O <: Term, C <: Term]{
     /**
      * the universe containing the type
      */
@@ -44,7 +44,7 @@ object Families {
     
     type Cod = C
     
-    def withCod[CC <: Term with Subs[CC]] : FmlyPtnLike[O, CC]
+    def withCod[CC <: Term with Subs[CC]] : FmlyPtn[O, CC]
     
     /**
     * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -78,7 +78,7 @@ object Families {
    * @param U (upper bound on) scala type of an object with the pattern - especially functions.
    * this is needed to ensure that families have a common scala type that can be used inductively.
    */
- /* sealed trait FmlyPtn[U <: Term, T <: Term, D <: Term with Subs[D], O <: Term, C <: Term] extends FmlyPtnLike[O, C]{
+ /* sealed trait FmlyPtn[U <: Term, T <: Term, D <: Term with Subs[D], O <: Term, C <: Term] extends FmlyPtn[O, C]{
     /**
      * scala type (upper bound)
      */
@@ -104,7 +104,7 @@ object Families {
     /**
    * The identity family
    */
-  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends FmlyPtnLike[O, C]{
+  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends FmlyPtn[O, C]{
     def apply(W : Typ[O]) = W
 
     type FamilyType =  O
@@ -135,7 +135,7 @@ object Families {
   }
   
   trait RecFmlyPtn[V <: Term with Subs[V], T <: Term, D<: Term with Subs[D], O <: Term, C <: Term] extends 
-        FmlyPtnLike[O, C]{
+        FmlyPtn[O, C]{
     
     type FamilyType <:  FuncLike[Term, V] with Subs[FamilyType]
     
@@ -145,20 +145,20 @@ object Families {
     
     val tail : Typ[Term]
     
-    val headfibre: Term => FmlyPtnLike[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}
+    val headfibre: Term => FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}
   }
   
   case class FuncFmlyPtn[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
       tail : Typ[Term], 
-      head : FmlyPtnLike[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D})/*(
-        implicit su: ScalaUniv[V])*/ extends FmlyPtnLike[O, C]{
+      head : FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D})/*(
+        implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, T, D, O, C]{
     def apply(W: Typ[O]) = FuncTyp[Term, V](tail, head(W))
 
     type FamilyType =  Func[Term, V]
     
     type TargetType = Func[Term, T]
     
-    type DepTargetType = FuncLike[Term, D]
+  //  type DepTargetType = FuncLike[Term, D]
     
     def target(x: Typ[Cod]) = tail ->: head.target(x)
     
@@ -169,7 +169,7 @@ object Families {
       FuncFmlyPtn[newHead.FamilyType, newHead.TargetType, newHead.DepTargetType, O, CC](tail, newHead)
     }
     
-    val headfibre = (arg: O) => head
+    val headfibre = (arg: Term) => head 
     
     val univLevel = max(head.univLevel, univlevel(tail.typ))
 
@@ -216,7 +216,7 @@ object Families {
    */
   case class DepFuncFmlyPtn[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O<: Term, C<: Term](
       tail: Typ[Term],
-      headfibre : Term => FmlyPtnLike[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}, 
+      headfibre : Term => FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}, 
       headlevel: Int = 0)
       /*(implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, T, D, O, C]{
     
@@ -248,7 +248,7 @@ object Families {
       type DD = newHead.DepTargetType
       val newHeadFibre = (t: Term) => 
         (
-            headfibre(t).withCod[CC].asInstanceOf[FmlyPtnLike[O, CC]{
+            headfibre(t).withCod[CC].asInstanceOf[FmlyPtn[O, CC]{
               type FamilyType = VV; 
               type TargetType = TT; type DepTargetType = DD}]
             )
@@ -294,7 +294,7 @@ object Families {
   trait Member[O <: Term, C <: Term]{self =>
 //    type Cod <: Term
     
-    val fmlyPtn : FmlyPtnLike[O, C]
+    val fmlyPtn : FmlyPtn[O, C]
     
     val typ: Typ[O]
     

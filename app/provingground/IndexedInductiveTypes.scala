@@ -12,7 +12,7 @@ import Math._
 	 * Indexed version of induction
 	 */
 	class IndexedInductiveTypes[I <: Term]{/*
-	  	trait FmlyPtn[U <: Term] extends FmlyPtnLike{
+	  	trait FmlyPtn[U <: Term] extends FmlyPtn{
 	  	 type ConstructorType = U
 
 //	  	  def induced(W : Typ[Term], X : Typ[Term])(f : Term => Term) : ConstructorType => ConstructorType
@@ -23,7 +23,7 @@ import Math._
 	/**
 	 * a single trait to hold all type patterns, independent of U.
 	 */
-	trait FmlyPtnLike{
+	trait FmlyPtn{
 		val univLevel : Int
 
 	  	type ConstructorType <:  Term
@@ -89,7 +89,7 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term ](tail: FmlyPtnLike, head : ConstructorPtn[U]) extends ConstructorPtn[FuncLike[Term, U]]{
+	case class FuncPtn[U<:Term ](tail: FmlyPtn, head : ConstructorPtn[U]) extends ConstructorPtn[FuncLike[Term, U]]{
 //	  type ConstructorType = FuncLike[Term, head.ConstructorType]
 
 	  def apply(W : I=> Typ[Term]) = FuncTyp[Term, head.ConstructorType](tail(W), head(W))
@@ -133,7 +133,7 @@ import Math._
 	}
 
 
-	case class DepFuncPtn[U <: Term ](tail: FmlyPtnLike,
+	case class DepFuncPtn[U <: Term ](tail: FmlyPtn,
 	    headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPtn[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
 	    val head = headfibre(__.symbObj(""))

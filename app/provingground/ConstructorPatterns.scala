@@ -27,7 +27,7 @@ object ConstructorPatterns {
     def withCod[CC <: Term with Subs[CC]] : ConstructorPtn{type ConstructorType = self.ConstructorType; type Cod = CC}
     
     def -->:[V <: Term , T <: Term with Subs[T], D <: Term with Subs[D]](
-        that : FmlyPtnLike[Term, Cod]) = FuncPtn[Cod](that, this)
+        that : FmlyPtn[Term, Cod]) = FuncPtn[Cod](that, this)
 
   //  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : ConstructorPtn[FuncLike[Term, UU]] = {
   //    if (that == self) FuncPtn[UU](IdFmlyPtn[Term], this) else CnstFncPtn[UU](that, this)
@@ -185,7 +185,7 @@ object ConstructorPatterns {
   /**
    * Extending a poly-pattern by a type pattern.
    */
-  case class FuncPtn[C <: Term](tail: FmlyPtnLike[Term, C], head : ConstructorPtn{type Cod = C}) extends RecursiveConstructorPtn{self =>
+  case class FuncPtn[C <: Term](tail: FmlyPtn[Term, C], head : ConstructorPtn{type Cod = C}) extends RecursiveConstructorPtn{self =>
     type ArgType = tail.FamilyType
     
     type HeadType = head.ConstructorType
@@ -268,7 +268,7 @@ object ConstructorPatterns {
    * Dependent extension of a poly-pattern by a type pattern.
    * XXX this may never be applicable
    */
-  case class DepFuncPtn[U <: Term, V <: Term, W <: Term, C <: Term](tail: FmlyPtnLike[Term, C],
+  case class DepFuncPtn[U <: Term, V <: Term, W <: Term, C <: Term](tail: FmlyPtn[Term, C],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C}),
       headlevel: Int = 0)/*(implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
     type ArgType = tail.FamilyType
