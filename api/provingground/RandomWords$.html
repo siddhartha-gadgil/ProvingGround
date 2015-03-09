@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>RandomWords - provingground.RandomWords</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/object_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
-        <h1>RandomWords</h1>
+        <h1>RandomWords</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -92,7 +102,11 @@
       <span class="symbol">
         <a href="RandomWords$$AggregateWord.html"><span class="name">AggregateWord</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.AggregateWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.AggregateWord.E">E</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@AggregateWord[E]extendsRandomWords.Symbol[E]withRandomWords.Word[E]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.AssocWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AssocWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.AggregateWord[E]withProductwithSerializable"></a>
@@ -105,7 +119,11 @@
       <span class="symbol">
         <a href="RandomWords$$AssocWord.html"><span class="name">AssocWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$BinOpSym.html" class="extype" name="provingground.RandomWords.BinOpSym">BinOpSym</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>, <span class="extype" name="provingground.RandomWords.AssocWord.N">N</span>]</span>, <span name="elems">elems: <span class="extype" name="scala.List">List</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>]]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>] with <a href="RandomWords$$AggregateWord.html" class="extype" name="provingground.RandomWords.AggregateWord">AggregateWord</a>[<span class="extype" name="provingground.RandomWords.AssocWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@AssocWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.AggregateWord[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.BinOpSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="BinOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable"></a>
@@ -118,7 +136,11 @@
       <span class="symbol">
         <a href="RandomWords$$BinOpSym.html"><span class="name">BinOpSym</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="provingground.RandomWords.BinOpSym.N">N</span></span>, <span name="op">op: (<span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>, <span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>) ⇒ <span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.BinOpSym.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@BinOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.BinOpWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="BinOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
@@ -131,7 +153,11 @@
       <span class="symbol">
         <a href="RandomWords$$BinOpWord.html"><span class="name">BinOpWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$BinOpSym.html" class="extype" name="provingground.RandomWords.BinOpSym">BinOpSym</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>, <span class="extype" name="provingground.RandomWords.BinOpWord.N">N</span>]</span>, <span name="first">first: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>]</span>, <span name="second">second: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.BinOpWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@BinOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.Letter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Letter[E]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
@@ -144,7 +170,11 @@
       <span class="symbol">
         <a href="RandomWords$$Letter.html"><span class="name">Letter</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.RandomWords.Letter.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.Letter.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.Letter.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@Letter[E]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.Symbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Symbol[E]extendsAnyRef"></a>
@@ -157,7 +187,11 @@
       <span class="symbol">
         <a href="RandomWords$$Symbol.html"><span class="name">Symbol</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@Symbol[E]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.UnOpSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="UnOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable"></a>
@@ -170,7 +204,11 @@
       <span class="symbol">
         <a href="RandomWords$$UnOpSym.html"><span class="name">UnOpSym</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="provingground.RandomWords.UnOpSym.N">N</span></span>, <span name="op">op: (<span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span>) ⇒ <span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span></span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.UnOpSym.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@UnOpSym[E,N]extendsRandomWords.Symbol[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.UnOpWord" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="UnOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable"></a>
@@ -183,7 +221,11 @@
       <span class="symbol">
         <a href="RandomWords$$UnOpWord.html"><span class="name">UnOpWord</span></a><span class="tparams">[<span name="E">E</span>, <span name="N">N</span>]</span><span class="params">(<span name="op">op: <a href="RandomWords$$UnOpSym.html" class="extype" name="provingground.RandomWords.UnOpSym">UnOpSym</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>, <span class="extype" name="provingground.RandomWords.UnOpWord.N">N</span>]</span>, <span name="elem">elem: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>]</span>)</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>] with <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.UnOpWord.E">E</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@UnOpWord[E,N]extendsRandomWords.Symbol[E]withRandomWords.Word[E]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords.Word" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="Word[E]extendsRandomWords.Symbol[E]"></a>
@@ -196,7 +238,11 @@
       <span class="symbol">
         <a href="RandomWords$$Word.html"><span class="name">Word</span></a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.Word.E">E</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@Word[E]extendsRandomWords.Symbol[E]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -206,19 +252,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -229,8 +262,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -242,22 +279,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -268,8 +296,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -281,7 +313,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -294,7 +330,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -313,7 +353,11 @@
       <span class="symbol">
         <span class="name">entropyFeedback</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="bg">bg: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>, <span name="d">d: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.entropyFeedback.E">E</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@entropyFeedback[E](bg:provingground.Collections.FiniteDistribution[E],d:provingground.Collections.FiniteDistribution[E]):provingground.Collections.FiniteDistribution[E]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
@@ -326,7 +370,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -339,7 +387,11 @@
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.RandomWords#evolution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolution[E](supp:Set[provingground.RandomWords.Word[E]]):provingground.LearningSystem.DiffbleFunction[provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]],provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]]]"></a>
@@ -352,7 +404,11 @@
       <span class="symbol">
         <span class="name">evolution</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="supp">supp: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]]</span>)</span><span class="result">: <a href="LearningSystem$$DiffbleFunction.html" class="extype" name="provingground.LearningSystem.DiffbleFunction">DiffbleFunction</a>[<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]], <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.evolution.E">E</span>]]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@evolution[E](supp:Set[provingground.RandomWords.Word[E]]):provingground.LearningSystem.DiffbleFunction[provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]],provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -365,7 +421,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -384,7 +444,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -397,7 +461,11 @@
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -410,7 +478,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -423,7 +495,11 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -436,7 +512,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -449,7 +529,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.RandomWords#partial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="partial[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E],x:provingground.RandomWords.Symbol[E]):Double"></a>
@@ -462,7 +546,11 @@
       <span class="symbol">
         <span class="name">partial</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="m">m: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]]</span>)</span><span class="params">(<span name="w">w: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]</span>, <span name="x">x: <a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.partial.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@partial[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E],x:provingground.RandomWords.Symbol[E]):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords#recprob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="recprob[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E]):Double"></a>
@@ -475,7 +563,11 @@
       <span class="symbol">
         <span class="name">recprob</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="m">m: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.recprob.E">E</span>]]</span>)</span><span class="params">(<span name="w">w: <a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.recprob.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@recprob[E](m:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]])(w:provingground.RandomWords.Word[E]):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords#relEntropy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="relEntropy[E](bg:provingground.Collections.FiniteDistribution[E],d:provingground.Collections.FiniteDistribution[E]):Double"></a>
@@ -488,7 +580,11 @@
       <span class="symbol">
         <span class="name">relEntropy</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="bg">bg: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.relEntropy.E">E</span>]</span>, <span name="d">d: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.RandomWords.relEntropy.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@relEntropy[E](bg:provingground.Collections.FiniteDistribution[E],d:provingground.Collections.FiniteDistribution[E]):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.RandomWords#simpleLearn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="simpleLearn[E](supp:Set[provingground.RandomWords.Word[E]],target:provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]],epsilon:Double)(init:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]):provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]"></a>
@@ -501,7 +597,11 @@
       <span class="symbol">
         <span class="name">simpleLearn</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="supp">supp: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>, <span name="target">target: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Word.html" class="extype" name="provingground.RandomWords.Word">Word</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="init">init: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<a href="RandomWords$$Symbol.html" class="extype" name="provingground.RandomWords.Symbol">Symbol</a>[<span class="extype" name="provingground.RandomWords.simpleLearn.E">E</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@simpleLearn[E](supp:Set[provingground.RandomWords.Word[E]],target:provingground.Collections.FiniteDistribution[provingground.RandomWords.Word[E]],epsilon:Double)(init:provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]):provingground.Collections.FiniteDistribution[provingground.RandomWords.Symbol[E]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -514,7 +614,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -527,7 +631,11 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -540,7 +648,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -559,7 +671,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -578,7 +694,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.RandomWords$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -615,6 +735,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>CnstrLHS - provingground.Recursion.CnstrLHS</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/class_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="Recursion$.html" class="extype" name="provingground.Recursion">Recursion</a></p>
-        <h1>CnstrLHS</h1>
+        <h1>CnstrLHS</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="Recursion$.html" class="extype" name="provingground.Recursion">package Recursion</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,11 +45,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">CnstrLHS</span><span class="params">(<span name="cnstr">cnstr: <a href="InductiveTypes$$Constructor.html" class="extype" name="provingground.InductiveTypes.Constructor">Constructor</a></span>, <span name="vars">vars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">CnstrLHS</span><span class="params">(<span name="cnstr">cnstr: <a href="ConstructorPatterns$$Constructor.html" class="extype" name="provingground.ConstructorPatterns.Constructor">Constructor</a></span>, <span name="vars">vars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>argument of the lhs of an equation corresponding to a specific constructor.
+</p></div><dl class="paramcmts block"><dt class="param">cnstr</dt><dd class="cmt"><p>constructor
+</p></dd><dt class="param">vars</dt><dd class="cmt"><p>variable names to be applied to the constructor.
+</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,8 +92,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.Recursion.CnstrLHS#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(cnstr:provingground.InductiveTypes.Constructor,vars:List[provingground.HoTT.AnySym]):provingground.Recursion.CnstrLHS"></a>
+              <ol><li name="provingground.Recursion.CnstrLHS#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(cnstr:provingground.ConstructorPatterns.Constructor,vars:List[provingground.HoTT.AnySym]):provingground.Recursion.CnstrLHS"></a>
       <a id="&lt;init&gt;:CnstrLHS"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +101,16 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">CnstrLHS</span><span class="params">(<span name="cnstr">cnstr: <a href="InductiveTypes$$Constructor.html" class="extype" name="provingground.InductiveTypes.Constructor">Constructor</a></span>, <span name="vars">vars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>)</span>
+        <span class="name">CnstrLHS</span><span class="params">(<span name="cnstr">cnstr: <a href="ConstructorPatterns$$Constructor.html" class="extype" name="provingground.ConstructorPatterns.Constructor">Constructor</a></span>, <span name="vars">vars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>)</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@&lt;init&gt;(cnstr:provingground.ConstructorPatterns.Constructor,vars:List[provingground.HoTT.AnySym]):provingground.Recursion.CnstrLHS" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">cnstr</dt><dd class="cmt"><p>constructor
+</p></dd><dt class="param">vars</dt><dd class="cmt"><p>variable names to be applied to the constructor.
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -102,19 +121,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -125,8 +131,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -138,22 +148,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -164,8 +165,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Recursion.CnstrLHS#arg" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="arg:provingground.HoTT.Term"></a>
       <a id="arg:Term"></a>
@@ -177,8 +182,13 @@
       <span class="symbol">
         <span class="name">arg</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@arg:provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the argument of the lhs of identities for this constructor, which is a
+term of type W obtained by applying the constructor to terms with given names.</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -190,7 +200,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -203,7 +217,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -212,7 +230,7 @@
               
         </dd></dl></div>
     </li><li name="provingground.Recursion.CnstrLHS#cnstr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cnstr:provingground.InductiveTypes.Constructor"></a>
+      <a id="cnstr:provingground.ConstructorPatterns.Constructor"></a>
       <a id="cnstr:Constructor"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -220,10 +238,15 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">cnstr</span><span class="result">: <a href="InductiveTypes$$Constructor.html" class="extype" name="provingground.InductiveTypes.Constructor">Constructor</a></span>
+        <span class="name">cnstr</span><span class="result">: <a href="ConstructorPatterns$$Constructor.html" class="extype" name="provingground.ConstructorPatterns.Constructor">Constructor</a></span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@cnstr:provingground.ConstructorPatterns.Constructor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">constructor
+</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -235,7 +258,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -248,7 +275,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -267,86 +298,116 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Recursion.CnstrLHS#indCtx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="indCtx[U&lt;:Term](⇒FuncTerm[Term,U]):Context[Term,Term]"></a>
+      <a id="indCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="indCtx[U&lt;:Term](⇒FuncLike[Term,U]):Context[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indCtx</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Recursion.CnstrLHS.indCtx.U">U</span>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">indCtx</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Recursion.CnstrLHS.indCtx.U">U</span>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
-    </li><li name="provingground.Recursion.CnstrLHS#indCtxRHS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indCtxRHS(f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
-      <a id="indCtxRHS(⇒FuncTerm[Term,Term]):Term"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">context for inductive definitions.</p>
+    </li><li name="provingground.Recursion.CnstrLHS#indCtxIdRHS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="indCtxIdRHS(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
+      <a id="indCtxIdRHS(⇒FuncLike[Term,Term]):Term"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indCtxRHS</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+        <span class="name">indCtxIdRHS</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indCtxIdRHS(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.Recursion.CnstrLHS#indCtxTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indCtxTyp(f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="indCtxTyp(⇒FuncTerm[Term,Term]):Typ[Term]"></a>
+      <a id="indCtxTyp(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
+      <a id="indCtxTyp(⇒FuncLike[Term,Term]):Typ[Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indCtxTyp</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">indCtxTyp</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indCtxTyp(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">HoTT type of the induction function
+</p>
     </li><li name="provingground.Recursion.CnstrLHS#indCtxVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indCtxVar(f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
-      <a id="indCtxVar(⇒FuncTerm[Term,Term]):Term"></a>
+      <a id="indCtxVar(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
+      <a id="indCtxVar(⇒FuncLike[Term,Term]):Term"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indCtxVar</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+        <span class="name">indCtxVar</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indCtxVar(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.Recursion.CnstrLHS#indIdentity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indIdentity(f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual"></a>
-      <a id="indIdentity(⇒FuncTerm[Term,Term])(Term):DefnEqual"></a>
+      <a id="indIdentity(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual"></a>
+      <a id="indIdentity(⇒FuncLike[Term,Term])(Term):DefnEqual"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indIdentity</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$DefnEqual.html" class="extype" name="provingground.Contexts.DefnEqual">DefnEqual</a></span>
+        <span class="name">indIdentity</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$DefnEqual.html" class="extype" name="provingground.Contexts.DefnEqual">DefnEqual</a></span>
       </span>
-      </h4>
-      
-    </li><li name="provingground.Recursion.CnstrLHS#indKappaCtx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indKappaCtx(f:=&gt;provingground.HoTT.FuncTerm[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="indKappaCtx(⇒FuncTerm[Term,Term]):Context[Term,Term]"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indIdentity(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">identity corresponding to the given constructor for an inductive definition.</p>
+    </li><li name="provingground.Recursion.CnstrLHS#indKappaCtx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="indKappaCtx(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="indKappaCtx(⇒FuncLike[Term,Term]):Context[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indKappaCtx</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">indKappaCtx</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@indKappaCtx(f:=&gt;provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">kappa-context for induction, with f(n) etc.</p><div class="fullcomment"><div class="comment cmt"><p>kappa-context for induction, with f(n) etc. additional constants for parsing, but not variables.
+</p></div></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -358,7 +419,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -371,7 +436,11 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -384,7 +453,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -397,86 +470,118 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.Recursion.CnstrLHS#recCtx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="recCtx[U&lt;:Term](⇒FuncObj[Term,U]):Context[Term,Term]"></a>
+      <a id="recCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="recCtx[U&lt;:Term](⇒Func[Term,U]):Context[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recCtx</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Recursion.CnstrLHS.recCtx.U">U</span>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">recCtx</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Recursion.CnstrLHS.recCtx.U">U</span>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
-    </li><li name="provingground.Recursion.CnstrLHS#recCtxRHS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recCtxRHS(f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
-      <a id="recCtxRHS(⇒FuncObj[Term,Term]):Term"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recCtx[U&lt;:provingground.HoTT.Term](f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,U]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Context for recursion
+The type of this is also used for recursion
+</p>
+    </li><li name="provingground.Recursion.CnstrLHS#recCtxIdRHS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recCtxIdRHS(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
+      <a id="recCtxIdRHS(⇒Func[Term,Term]):Term"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recCtxRHS</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+        <span class="name">recCtxIdRHS</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recCtxIdRHS(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.Recursion.CnstrLHS#recCtxTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recCtxTyp(f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="recCtxTyp(⇒FuncObj[Term,Term]):Typ[Term]"></a>
+      <a id="recCtxTyp(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
+      <a id="recCtxTyp(⇒Func[Term,Term]):Typ[Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recCtxTyp</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">recCtxTyp</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recCtxTyp(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">HoTT type of the recursion function
+</p>
     </li><li name="provingground.Recursion.CnstrLHS#recCtxVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recCtxVar(f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
-      <a id="recCtxVar(⇒FuncObj[Term,Term]):Term"></a>
+      <a id="recCtxVar(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term"></a>
+      <a id="recCtxVar(⇒Func[Term,Term]):Term"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recCtxVar</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+        <span class="name">recCtxVar</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recCtxVar(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A formal object representing the type of the recursion function.</p>
     </li><li name="provingground.Recursion.CnstrLHS#recIdentity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recIdentity(f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual"></a>
-      <a id="recIdentity(⇒FuncObj[Term,Term])(Term):DefnEqual"></a>
+      <a id="recIdentity(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual"></a>
+      <a id="recIdentity(⇒Func[Term,Term])(Term):DefnEqual"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recIdentity</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$DefnEqual.html" class="extype" name="provingground.Contexts.DefnEqual">DefnEqual</a></span>
+        <span class="name">recIdentity</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$DefnEqual.html" class="extype" name="provingground.Contexts.DefnEqual">DefnEqual</a></span>
       </span>
-      </h4>
-      
-    </li><li name="provingground.Recursion.CnstrLHS#recKappaCtx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recKappaCtx(f:=&gt;provingground.HoTT.FuncObj[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="recKappaCtx(⇒FuncObj[Term,Term]):Context[Term,Term]"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recIdentity(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term])(rhs:provingground.HoTT.Term):provingground.Contexts.DefnEqual" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">identity corresponding to the given constructor for a recursive definition.</p>
+    </li><li name="provingground.Recursion.CnstrLHS#recKappaCtx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="recKappaCtx(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="recKappaCtx(⇒Func[Term,Term]):Context[Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recKappaCtx</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncObj.html" class="extype" name="provingground.HoTT.FuncObj">FuncObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">recKappaCtx</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@recKappaCtx(f:=&gt;provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]):provingground.Contexts.Context[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">kappa-context for recursion, with f(n) etc.</p><div class="fullcomment"><div class="comment cmt"><p>kappa-context for recursion, with f(n) etc. additional constants for parsing, but not variables.
+</p></div></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -488,7 +593,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.Recursion.CnstrLHS#vars" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="vars:List[provingground.HoTT.AnySym]"></a>
@@ -501,7 +610,28 @@
       <span class="symbol">
         <span class="name">vars</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@vars:List[provingground.HoTT.AnySym]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">variable names to be applied to the constructor.</p>
+    </li><li name="provingground.Recursion.CnstrLHS#varterms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="varterms(W:provingground.HoTT.Typ[provingground.HoTT.Term]):List[provingground.HoTT.Term]"></a>
+      <a id="varterms(Typ[Term]):List[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">varterms</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@varterms(W:provingground.HoTT.Typ[provingground.HoTT.Term]):List[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -514,7 +644,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -533,7 +667,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -552,7 +690,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Recursion$$CnstrLHS@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -597,6 +739,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

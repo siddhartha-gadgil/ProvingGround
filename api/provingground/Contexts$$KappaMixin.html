@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>KappaMixin - provingground.Contexts.KappaMixin</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/class_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="Contexts$.html" class="extype" name="provingground.Contexts">Contexts</a></p>
-        <h1>KappaMixin</h1>
+        <h1>KappaMixin</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="Contexts$.html" class="extype" name="provingground.Contexts">package Contexts</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -41,7 +51,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>], <a href="HoTT$$TypSeq.html" class="extype" name="provingground.HoTT.TypSeq">TypSeq</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.Contexts.KappaMixin"><span>KappaMixin</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.Contexts.Context"><span>Context</span></li><li class="in" name="provingground.HoTT.TypSeq"><span>TypSeq</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.Contexts.KappaMixin"><span>KappaMixin</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.Contexts.Context"><span>Context</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -90,7 +100,11 @@
       <span class="symbol">
         <span class="name">KappaMixin</span><span class="params">(<span name="const">const: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="tail">tail: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@&lt;init&gt;(const:provingground.HoTT.Term,tail:provingground.Contexts.Context[U,V]):provingground.Contexts.KappaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -108,21 +122,31 @@
       <span class="symbol">
         <span class="name">ArgType</span><span class="result"> = <a href="Contexts$$Context.html#ArgType" class="extmbr" name="provingground.Contexts.Context.ArgType">Context.ArgType</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@ArgType=KappaMixin.this.tail.ArgType" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
-    </li><li name="provingground.Contexts.KappaMixin.PtnType" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="PtnType=KappaMixin.this.tail.PtnType"></a>
-      <a id="PtnType:PtnType"></a>
+    </li><li name="provingground.Contexts.KappaMixin.ConstructorType" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ConstructorType=KappaMixin.this.tail.ConstructorType"></a>
+      <a id="ConstructorType:ConstructorType"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">PtnType</span><span class="result"> = <a href="Contexts$$Context.html#PtnType&lt;:U" class="extmbr" name="provingground.Contexts.Context.PtnType">Context.PtnType</a></span>
+        <span class="name">ConstructorType</span><span class="result"> = <a href="Contexts$$Context.html#ConstructorType&lt;:U" class="extmbr" name="provingground.Contexts.Context.ConstructorType">Context.ConstructorType</a></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a> → <a href="HoTT$$TypSeq.html" class="extype" name="provingground.HoTT.TypSeq">TypSeq</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@ConstructorType=KappaMixin.this.tail.ConstructorType" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">scala type of an object in context when viewed outside, typically a function because of lambdas
+</p><div class="fullcomment"><div class="comment cmt"><p>scala type of an object in context when viewed outside, typically a function because of lambdas
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -131,19 +155,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -154,8 +165,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -167,22 +182,30 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
+    </li><li name="provingground.Contexts.Context#/:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="/:(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]"></a>
+      <a id="/:(Term):LambdaMixin[U,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
+        <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $div$colon" class="name">/:</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$LambdaMixin.html" class="extype" name="provingground.Contexts.LambdaMixin">LambdaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@/:(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -193,21 +216,30 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(tp:provingground.HoTT.Typ[V]):provingground.HoTT.Typ[KappaMixin.this.PtnType]"></a>
-      <a id="apply(Typ[V]):Typ[PtnType]"></a>
+      <a id="apply(tp:provingground.HoTT.Typ[V]):provingground.HoTT.Typ[KappaMixin.this.ConstructorType]"></a>
+      <a id="apply(Typ[V]):Typ[ConstructorType]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#PtnType=KappaMixin.this.tail.PtnType" class="extmbr" name="provingground.Contexts.KappaMixin.PtnType">PtnType</a>]</span>
+        <span class="name">apply</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#ConstructorType=KappaMixin.this.tail.ConstructorType" class="extmbr" name="provingground.Contexts.KappaMixin.ConstructorType">ConstructorType</a>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="HoTT$$TypSeq.html" class="extype" name="provingground.HoTT.TypSeq">TypSeq</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@apply(tp:provingground.HoTT.Typ[V]):provingground.HoTT.Typ[KappaMixin.this.ConstructorType]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the type as seen from outside of an object within the context of HoTT-type Typ[V].</p><div class="fullcomment"><div class="comment cmt"><p>the type as seen from outside of an object within the context of HoTT-type Typ[V].
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -219,7 +251,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -232,7 +268,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -251,7 +291,11 @@
       <span class="symbol">
         <span class="name">cnst</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@cnst(x:provingground.HoTT.Term):provingground.Contexts.KappaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#const" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="const:provingground.HoTT.Term"></a>
@@ -264,7 +308,11 @@
       <span class="symbol">
         <span class="name">const</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@const:provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.Contexts.KappaMixin#constants" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="constants:Seq[provingground.HoTT.Term]"></a>
@@ -277,8 +325,14 @@
       <span class="symbol">
         <span class="name">constants</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@constants:Seq[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">constants defined in the context
+</p><div class="fullcomment"><div class="comment cmt"><p>constants defined in the context
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#defnEqualities" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="defnEqualities:Seq[provingground.Contexts.DefnEquality]"></a>
       <a id="defnEqualities:Seq[DefnEquality]"></a>
@@ -290,8 +344,13 @@
       <span class="symbol">
         <span class="name">defnEqualities</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Contexts$$DefnEquality.html" class="extype" name="provingground.Contexts.DefnEquality">DefnEquality</a>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@defnEqualities:Seq[provingground.Contexts.DefnEquality]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">definitional equalities, including defintions.</p><div class="fullcomment"><div class="comment cmt"><p>definitional equalities, including defintions.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#defns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="defns:Seq[provingground.Contexts.Defn]"></a>
       <a id="defns:Seq[Defn]"></a>
@@ -303,8 +362,14 @@
       <span class="symbol">
         <span class="name">defns</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Contexts$$Defn.html" class="extype" name="provingground.Contexts.Defn">Defn</a>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@defns:Seq[provingground.Contexts.Defn]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">definitions
+</p><div class="fullcomment"><div class="comment cmt"><p>definitions
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.Context#deplmbda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="deplmbda(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]"></a>
       <a id="deplmbda(Term):LambdaMixin[U,V]"></a>
@@ -316,7 +381,11 @@
       <span class="symbol">
         <span class="name">deplmbda</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$LambdaMixin.html" class="extype" name="provingground.Contexts.LambdaMixin">LambdaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@deplmbda(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.Context#dfn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dfn(x:provingground.HoTT.Term,y:provingground.HoTT.Term,local:Boolean):provingground.Contexts.DefnMixin[U,V]"></a>
@@ -329,7 +398,11 @@
       <span class="symbol">
         <span class="name">dfn</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="local">local: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a href="Contexts$$DefnMixin.html" class="extype" name="provingground.Contexts.DefnMixin">DefnMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@dfn(x:provingground.HoTT.Term,y:provingground.HoTT.Term,local:Boolean):provingground.Contexts.DefnMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.Context#dfneql" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dfneql(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,simp:Boolean):provingground.Contexts.DefnEqualityMixin[U,V]"></a>
@@ -342,7 +415,11 @@
       <span class="symbol">
         <span class="name">dfneql</span><span class="params">(<span name="lhs">lhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="simp">simp: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <a href="Contexts$$DefnEqualityMixin.html" class="extype" name="provingground.Contexts.DefnEqualityMixin">DefnEqualityMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@dfneql(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,simp:Boolean):provingground.Contexts.DefnEqualityMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#elim" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="elim:provingground.HoTT.Term=&gt;provingground.HoTT.Term"></a>
@@ -355,8 +432,17 @@
       <span class="symbol">
         <span class="name">elim</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@elim:provingground.HoTT.Term=&gt;provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">export term,
+XXX check if this can be upgraded to Term =&gt; PtnTyp (or U)
+the issue seems to be the subs bound for Lambda case class.</p><div class="fullcomment"><div class="comment cmt"><p>export term,
+XXX check if this can be upgraded to Term =&gt; PtnTyp (or U)
+the issue seems to be the subs bound for Lambda case class.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#eliminate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eliminate(isVar:provingground.HoTT.Term=&gt;Boolean):provingground.HoTT.Term=&gt;provingground.HoTT.Term"></a>
       <a id="eliminate((Term)⇒Boolean):(Term)⇒Term"></a>
@@ -368,8 +454,14 @@
       <span class="symbol">
         <span class="name">eliminate</span><span class="params">(<span name="isVar">isVar: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@eliminate(isVar:provingground.HoTT.Term=&gt;Boolean):provingground.HoTT.Term=&gt;provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">export an object
+</p><div class="fullcomment"><div class="comment cmt"><p>export an object
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -381,7 +473,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -394,7 +490,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -403,18 +503,23 @@
               
         </dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#foldin" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="foldin:provingground.HoTT.Typ[V]=&gt;(KappaMixin.this.PtnType=&gt;V)"></a>
-      <a id="foldin:(Typ[V])⇒(PtnType)⇒V"></a>
+      <a id="foldin:provingground.HoTT.Typ[V]=&gt;(KappaMixin.this.ConstructorType=&gt;V)"></a>
+      <a id="foldin:(Typ[V])⇒(ConstructorType)⇒V"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foldin</span><span class="result">: (<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]) ⇒ (<a href="#PtnType=KappaMixin.this.tail.PtnType" class="extmbr" name="provingground.Contexts.KappaMixin.PtnType">PtnType</a>) ⇒ <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span></span>
+        <span class="name">foldin</span><span class="result">: (<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]) ⇒ (<a href="#ConstructorType=KappaMixin.this.tail.ConstructorType" class="extmbr" name="provingground.Contexts.KappaMixin.ConstructorType">ConstructorType</a>) ⇒ <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@foldin:provingground.HoTT.Typ[V]=&gt;(KappaMixin.this.ConstructorType=&gt;V)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an object of the export type with all the variables of the context folded in.</p><div class="fullcomment"><div class="comment cmt"><p>an object of the export type with all the variables of the context folded in.
+for examply for lambda-context (x : A) -&gt; and fixed type B, we fold in x to a function y to get y(x) : B</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.Context#foldinSym" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foldinSym(tp:provingground.HoTT.Typ[V])(name:provingground.HoTT.AnySym):V"></a>
       <a id="foldinSym(Typ[V])(AnySym):V"></a>
@@ -426,8 +531,13 @@
       <span class="symbol">
         <span class="name">foldinSym</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@foldinSym(tp:provingground.HoTT.Typ[V])(name:provingground.HoTT.AnySym):V" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">given the name of an object and a HoTT-type in context, we fold in a symbolic object of the exported type.</p><div class="fullcomment"><div class="comment cmt"><p>given the name of an object and a HoTT-type in context, we fold in a symbolic object of the exported type.
+Example, given lambda-context (x: A) -&gt; , type B and symbol y, we get y(x) : B</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -439,7 +549,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Contexts.Context#globaldfn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="globaldfn(x:provingground.HoTT.Term,y:provingground.HoTT.Term,local:Boolean):provingground.Contexts.GlobalDefnMixin[U,V]"></a>
@@ -452,7 +566,11 @@
       <span class="symbol">
         <span class="name">globaldfn</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="local">local: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a href="Contexts$$GlobalDefnMixin.html" class="extype" name="provingground.Contexts.GlobalDefnMixin">GlobalDefnMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@globaldfn(x:provingground.HoTT.Term,y:provingground.HoTT.Term,local:Boolean):provingground.Contexts.GlobalDefnMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#instantiate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="instantiate:KappaMixin.this.ArgType=&gt;(provingground.HoTT.Term=&gt;provingground.HoTT.Term)"></a>
@@ -465,7 +583,11 @@
       <span class="symbol">
         <span class="name">instantiate</span><span class="result">: (<a href="#ArgType=KappaMixin.this.tail.ArgType" class="extmbr" name="provingground.Contexts.KappaMixin.ArgType">ArgType</a>) ⇒ (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@instantiate:KappaMixin.this.ArgType=&gt;(provingground.HoTT.Term=&gt;provingground.HoTT.Term)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -478,7 +600,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.Contexts.Context#kappa" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="kappa(x:provingground.HoTT.Term):provingground.Contexts.KappaMixin[U,V]"></a>
@@ -491,7 +617,11 @@
       <span class="symbol">
         <span class="name">kappa</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@kappa(x:provingground.HoTT.Term):provingground.Contexts.KappaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.Context#lmbda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lmbda(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]"></a>
@@ -504,7 +634,11 @@
       <span class="symbol">
         <span class="name">lmbda</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Contexts$$LambdaMixin.html" class="extype" name="provingground.Contexts.LambdaMixin">LambdaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@lmbda(x:provingground.HoTT.Term):provingground.Contexts.LambdaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -517,21 +651,12 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.Contexts.KappaMixin#newtail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="newtail(newtail:provingground.Contexts.Context[provingground.HoTT.Term,V]):provingground.Contexts.KappaMixin[provingground.HoTT.Term,V]"></a>
-      <a id="newtail(Context[Term,V]):KappaMixin[Term,V]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">newtail</span><span class="params">(<span name="newtail">newtail: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -543,7 +668,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -556,7 +685,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.Contexts.Context#simpeql" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="simpeql(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,simp:Boolean):provingground.Contexts.SimpEqualityMixin[U,V]"></a>
@@ -569,7 +702,11 @@
       <span class="symbol">
         <span class="name">simpeql</span><span class="params">(<span name="lhs">lhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="simp">simp: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <a href="Contexts$$SimpEqualityMixin.html" class="extype" name="provingground.Contexts.SimpEqualityMixin">SimpEqualityMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@simpeql(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,simp:Boolean):provingground.Contexts.SimpEqualityMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#symblist" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="symblist(tp:provingground.HoTT.Typ[V])(varnames:List[provingground.HoTT.AnySym]):List[provingground.HoTT.Term]"></a>
@@ -582,8 +719,13 @@
       <span class="symbol">
         <span class="name">symblist</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="params">(<span name="varnames">varnames: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]</span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@symblist(tp:provingground.HoTT.Typ[V])(varnames:List[provingground.HoTT.AnySym]):List[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">symbols, i.e., variable names, associated to a context.</p><div class="fullcomment"><div class="comment cmt"><p>symbols, i.e., variable names, associated to a context.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -595,7 +737,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.Contexts.KappaMixin#tail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="tail:provingground.Contexts.Context[U,V]"></a>
@@ -608,8 +754,12 @@
       <span class="symbol">
         <span class="name">tail</span><span class="result">: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@tail:provingground.Contexts.Context[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the tail of a context, which is viewed as lying inside the head for consistency with right associativity.</p><div class="fullcomment"><div class="comment cmt"><p>the tail of a context, which is viewed as lying inside the head for consistency with right associativity.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -621,7 +771,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -640,7 +794,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -659,7 +817,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -667,6 +829,41 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.Contexts.KappaMixin#withNewTail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="withNewTail(newtail:provingground.Contexts.Context[provingground.HoTT.Term,V]):provingground.Contexts.KappaMixin[provingground.HoTT.Term,V]"></a>
+      <a id="withNewTail(Context[Term,V]):KappaMixin[Term,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withNewTail</span><span class="params">(<span name="newtail">newtail: <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@withNewTail(newtail:provingground.Contexts.Context[provingground.HoTT.Term,V]):provingground.Contexts.KappaMixin[provingground.HoTT.Term,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the context with tail changed but the same head, to be used recursively to put contexts inside given ones.</p><div class="fullcomment"><div class="comment cmt"><p>the context with tail changed but the same head, to be used recursively to put contexts inside given ones.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a> → <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Contexts.Context#|:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="|:(x:provingground.HoTT.Term):provingground.Contexts.KappaMixin[U,V]"></a>
+      <a id="|:(Term):KappaMixin[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$colon" class="name">|:</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Contexts.KappaMixin">KappaMixin</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Contexts$$KappaMixin@|:(x:provingground.HoTT.Term):provingground.Contexts.KappaMixin[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -686,8 +883,6 @@
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.Contexts.Context">
               <h3>Inherited from <a href="Contexts$$Context.html" class="extype" name="provingground.Contexts.Context">Context</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</h3>
-            </div><div class="parent" name="provingground.HoTT.TypSeq">
-              <h3>Inherited from <a href="HoTT$$TypSeq.html" class="extype" name="provingground.HoTT.TypSeq">TypSeq</a>[<span class="extype" name="provingground.Contexts.KappaMixin.U">U</span>, <span class="extype" name="provingground.Contexts.KappaMixin.V">V</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -708,6 +903,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

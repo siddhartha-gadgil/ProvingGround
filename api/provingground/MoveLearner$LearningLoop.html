@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>LearningLoop - provingground.MoveLearner.LearningLoop</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/class_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="MoveLearner.html" class="extype" name="provingground.MoveLearner">MoveLearner</a></p>
-        <h1>LearningLoop</h1>
+        <h1>LearningLoop</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="MoveLearner.html" class="extype" name="provingground.MoveLearner">package MoveLearner</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,14 +45,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">LearningLoop</span><span class="params">(<span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevel">stableLevel: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="feedback">feedback: (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">LearningLoop</span><span class="params">(<span name="cutoffExp">cutoffExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevelExp">stableLevelExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilonExp">epsilonExp: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="feedback">feedback: <a href="MoveLearner.html#Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]" class="extmbr" name="provingground.MoveLearner.Feedback">Feedback</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>loop for learning, with an inner loop changing only the distribution and
 an outer one where chains are recomputed with the new purge.
-</p></div><dl class="paramcmts block"><dt class="param">cutoff</dt><dd class="cmt"><p>cutoff for learning step
-</p></dd></dl><div class="toggleContainer block">
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -82,8 +91,8 @@ an outer one where chains are recomputed with the new purge.
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.MoveLearner.LearningLoop#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(cutoff:Double,stableLevel:Double,innerSteps:Int,outerSteps:Int,epsilon:Double)(implicitfeedback:provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]):MoveLearner.this.LearningLoop"></a>
+              <ol><li name="provingground.MoveLearner.LearningLoop#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(cutoffExp:Double,stableLevelExp:Double,innerSteps:Int,outerSteps:Int,epsilonExp:Double)(feedback:MoveLearner.this.Feedback):MoveLearner.this.LearningLoop"></a>
       <a id="&lt;init&gt;:LearningLoop"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -91,11 +100,14 @@ an outer one where chains are recomputed with the new purge.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">LearningLoop</span><span class="params">(<span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevel">stableLevel: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="feedback">feedback: (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>)</span>
+        <span class="name">LearningLoop</span><span class="params">(<span name="cutoffExp">cutoffExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevelExp">stableLevelExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilonExp">epsilonExp: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="feedback">feedback: <a href="MoveLearner.html#Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]" class="extmbr" name="provingground.MoveLearner.Feedback">Feedback</a></span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">cutoff</dt><dd class="cmt"><p>cutoff for learning step
-</p></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@&lt;init&gt;(cutoffExp:Double,stableLevelExp:Double,innerSteps:Int,outerSteps:Int,epsilonExp:Double)(feedback:MoveLearner.this.Feedback):MoveLearner.this.LearningLoop" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
     </li></ol>
             </div>
 
@@ -106,19 +118,6 @@ an outer one where chains are recomputed with the new purge.
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -129,8 +128,12 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -142,22 +145,13 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -168,8 +162,12 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -181,7 +179,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -194,7 +196,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -213,9 +219,29 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">cutoff</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">cutoff for learning step
-</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@cutoff:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">chains generated by support of d under propagation with pruning up to stabilization.</p>
+    </li><li name="provingground.MoveLearner.LearningLoop#cutoffExp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="cutoffExp:Double"></a>
+      <a id="cutoffExp:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cutoffExp</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@cutoffExp:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="provingground.MoveLearner.LearningLoop#epsilon" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="epsilon:Double"></a>
       <a id="epsilon:Double"></a>
@@ -227,7 +253,28 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">epsilon</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@epsilon:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.MoveLearner.LearningLoop#epsilonExp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="epsilonExp:Double"></a>
+      <a id="epsilonExp:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">epsilonExp</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@epsilonExp:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
@@ -240,7 +287,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -253,7 +304,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -272,7 +327,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.MoveLearner.LearningLoop#innerSteps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="innerSteps:Int"></a>
@@ -285,7 +344,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">innerSteps</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@innerSteps:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.MoveLearner.LearningLoop#innerlearn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="innerlearn(d:MoveLearner.this.DynDst,steps:Int,isStable:Boolean,chains:Set[MoveLearner.this.Chain]):MoveLearner.this.DynDst"></a>
@@ -298,7 +361,11 @@ an outer one where chains are recomputed with the new purge.
       <span class="symbol">
         <span class="name">innerlearn</span><span class="params">(<span name="d">d: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span> = <span class="symbol"><span class="name"><a href="#innerSteps:Int">innerSteps</a></span></span></span>, <span name="isStable">isStable: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@innerlearn(d:MoveLearner.this.DynDst,steps:Int,isStable:Boolean,chains:Set[MoveLearner.this.Chain]):MoveLearner.this.DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">learning without changing the collection of chains used (the support).</p><div class="fullcomment"><div class="comment cmt"><p>learning without changing the collection of chains used (the support).
 terminates when the isStable condition occurs or when the given number of steps are run.
 Recursively, the isStable condition is that the new distribution is close to the old one.
@@ -318,7 +385,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -331,7 +402,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -344,7 +419,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -357,7 +436,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.MoveLearner.LearningLoop#outerSteps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="outerSteps:Int"></a>
@@ -370,7 +453,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">outerSteps</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@outerSteps:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.MoveLearner.LearningLoop#outerlearn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="outerlearn(d:MoveLearner.this.DynDst,steps:Int,isStable:Boolean):MoveLearner.this.DynDst"></a>
@@ -383,7 +470,11 @@ This is the inner loop.
       <span class="symbol">
         <span class="name">outerlearn</span><span class="params">(<span name="d">d: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span> = <span class="symbol"><span class="name"><a href="#outerSteps:Int">outerSteps</a></span></span></span>, <span name="isStable">isStable: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@outerlearn(d:MoveLearner.this.DynDst,steps:Int,isStable:Boolean):MoveLearner.this.DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">learning with changing the collection of chains used, using innerlearn.</p><div class="fullcomment"><div class="comment cmt"><p>learning with changing the collection of chains used, using innerlearn.
 terminates when the isStable condition occurs or when the given number of steps are run.
 Recursively, the isStable condition is that the new distribution is close to the old one.
@@ -403,8 +494,12 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">spannedchains</span><span class="params">(<span name="d">d: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">chains generated by support of d under propagation with pruning up to stabilization.</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@spannedchains(d:MoveLearner.this.DynDst):scala.collection.immutable.Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="provingground.MoveLearner.LearningLoop#stableLevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="stableLevel:Double"></a>
       <a id="stableLevel:Double"></a>
@@ -416,7 +511,28 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">stableLevel</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@stableLevel:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.MoveLearner.LearningLoop#stableLevelExp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stableLevelExp:Double"></a>
+      <a id="stableLevelExp:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stableLevelExp</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@stableLevelExp:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -429,7 +545,11 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -442,7 +562,11 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -461,7 +585,11 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -480,7 +608,11 @@ This is the outer loop.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner$LearningLoop@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -525,6 +657,7 @@ This is the outer loop.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

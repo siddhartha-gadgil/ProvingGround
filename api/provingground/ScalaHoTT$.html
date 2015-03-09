@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>ScalaHoTT - provingground.ScalaHoTT</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/object_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
-        <h1>ScalaHoTT</h1>
+        <h1>ScalaHoTT</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -92,7 +102,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Application.html"><span class="name">Application</span></a><span class="params">(<span name="f">f: <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>, <span name="t">t: <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ApplicationextendsScalaHoTT.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Apply[A,B]extendsScalaHoTT.Obj[B]withProductwithSerializable"></a>
@@ -105,7 +119,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Apply.html"><span class="name">Apply</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="func">func: <a href="ScalaHoTT$$Func.html" class="extype" name="provingground.ScalaHoTT.Func">Func</a>[<span class="extype" name="provingground.ScalaHoTT.Apply.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.Apply.B">B</span>]</span>, <span name="a">a: <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.Apply.A">A</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.Apply.B">B</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Apply[A,B]extendsScalaHoTT.Obj[B]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.DepFunc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DepFunc[A,V]extendsScalaHoTT.ValueObj[A=&gt;V]withProductwithSerializable"></a>
@@ -118,8 +136,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$DepFunc.html"><span class="name">DepFunc</span></a><span class="tparams">[<span name="A">A</span>, <span name="V">V</span>]</span><span class="params">(<span name="section">section: (<span class="extype" name="provingground.ScalaHoTT.DepFunc.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.DepFunc.V">V</span></span>, <span name="family">family: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.ScalaHoTT.DepFunc.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.DepFunc.V">V</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$ValueObj.html" class="extype" name="provingground.ScalaHoTT.ValueObj">ValueObj</a>[(<span class="extype" name="provingground.ScalaHoTT.DepFunc.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.DepFunc.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">A dependent function</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@DepFunc[A,V]extendsScalaHoTT.ValueObj[A=&gt;V]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A dependent function</p>
     </li><li name="provingground.ScalaHoTT.Expression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExpressionextendsAnyRef"></a>
       <a id="Expression:Expression"></a>
@@ -131,7 +153,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Expression.html"><span class="name">Expression</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ExpressionextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.FromZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FromZero[A]extendsScalaHoTT.VerifiedValueObj[Nothing=&gt;A]withProductwithSerializable"></a>
@@ -144,7 +170,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$FromZero.html"><span class="name">FromZero</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="a">a: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.FromZero.A">A</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$VerifiedValueObj.html" class="extype" name="provingground.ScalaHoTT.VerifiedValueObj">VerifiedValueObj</a>[(<span class="extype" name="scala.Nothing">Nothing</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.FromZero.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@FromZero[A]extendsScalaHoTT.VerifiedValueObj[Nothing=&gt;A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Func" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Func[A,B]extendsScalaHoTT.ValueObj[A=&gt;B]withProductwithSerializable"></a>
@@ -157,7 +187,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Func.html"><span class="name">Func</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="value">value: (<span class="extype" name="provingground.ScalaHoTT.Func.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.Func.B">B</span></span>, <span name="dom">dom: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.Func.A">A</span>]</span>, <span name="codom">codom: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.Func.B">B</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$ValueObj.html" class="extype" name="provingground.ScalaHoTT.ValueObj">ValueObj</a>[(<span class="extype" name="provingground.ScalaHoTT.Func.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.Func.B">B</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Func[A,B]extendsScalaHoTT.ValueObj[A=&gt;B]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.FuncTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FuncTyp[A,B]extendsScalaHoTT.Typ[A=&gt;B]withProductwithSerializable"></a>
@@ -170,8 +204,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$FuncTyp.html"><span class="name">FuncTyp</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="dom">dom: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.FuncTyp.A">A</span>]</span>, <span name="codom">codom: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.FuncTyp.B">B</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[(<span class="extype" name="provingground.ScalaHoTT.FuncTyp.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.FuncTyp.B">B</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">The type of functions dom =&gt; codom</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@FuncTyp[A,B]extendsScalaHoTT.Typ[A=&gt;B]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The type of functions dom =&gt; codom</p>
     </li><li name="provingground.ScalaHoTT.IdentityTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="IdentityTyp[A]extendsScalaHoTT.Typ[Boolean]withProductwithSerializable"></a>
       <a id="IdentityTyp[A]:IdentityTyp[A]"></a>
@@ -183,7 +221,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$IdentityTyp.html"><span class="name">IdentityTyp</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="typ">typ: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.IdentityTyp.A">A</span>]</span>, <span name="a">a: <span class="extype" name="provingground.ScalaHoTT.IdentityTyp.A">A</span></span>, <span name="b">b: <span class="extype" name="provingground.ScalaHoTT.IdentityTyp.A">A</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="scala.Boolean">Boolean</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@IdentityTyp[A]extendsScalaHoTT.Typ[Boolean]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.InSum" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="InSum[A,V]extendsScalaHoTT.ValueObj[(V,A)]withProductwithSerializable"></a>
@@ -196,7 +238,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$InSum.html"><span class="name">InSum</span></a><span class="tparams">[<span name="A">A</span>, <span name="V">V</span>]</span><span class="params">(<span name="obj">obj: <span class="extype" name="provingground.ScalaHoTT.InSum.V">V</span></span>, <span name="index">index: <span class="extype" name="provingground.ScalaHoTT.InSum.A">A</span></span>, <span name="family">family: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.ScalaHoTT.InSum.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.InSum.V">V</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$ValueObj.html" class="extype" name="provingground.ScalaHoTT.ValueObj">ValueObj</a>[(<span class="extype" name="provingground.ScalaHoTT.InSum.V">V</span>, <span class="extype" name="provingground.ScalaHoTT.InSum.A">A</span>)] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@InSum[A,V]extendsScalaHoTT.ValueObj[(V,A)]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.IntExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="IntExprextendsScalaHoTT.ExpressionwithProductwithSerializable"></a>
@@ -209,7 +255,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$IntExpr.html"><span class="name">IntExpr</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@IntExprextendsScalaHoTT.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Mapping" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MappingextendsScalaHoTT.ExpressionwithProductwithSerializable"></a>
@@ -222,7 +272,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Mapping.html"><span class="name">Mapping</span></a><span class="params">(<span name="s">s: <a href="ScalaHoTT$$VarExpression.html" class="extype" name="provingground.ScalaHoTT.VarExpression">VarExpression</a></span>, <span name="result">result: <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@MappingextendsScalaHoTT.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Obj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Obj[A]extendsScalaHoTT.Expression"></a>
@@ -235,8 +289,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Obj.html"><span class="name">Obj</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">An object with a specified HoTT type</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Obj[A]extendsScalaHoTT.Expression" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An object with a specified HoTT type</p>
     </li><li name="provingground.ScalaHoTT.PiTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="PiTyp[A,V]extendsScalaHoTT.Typ[A=&gt;V]withProductwithSerializable"></a>
       <a id="PiTyp[A,V]:PiTyp[A,V]"></a>
@@ -248,8 +306,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$PiTyp.html"><span class="name">PiTyp</span></a><span class="tparams">[<span name="A">A</span>, <span name="V">V</span>]</span><span class="params">(<span name="family">family: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.ScalaHoTT.PiTyp.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.PiTyp.V">V</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[(<span class="extype" name="provingground.ScalaHoTT.PiTyp.A">A</span>) ⇒ <span class="extype" name="provingground.ScalaHoTT.PiTyp.V">V</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">The product type for a type family</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@PiTyp[A,V]extendsScalaHoTT.Typ[A=&gt;V]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The product type for a type family</p>
     </li><li name="provingground.ScalaHoTT.ProdTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ProdTyp[A,B]extendsScalaHoTT.Typ[(A,B)]withProductwithSerializable"></a>
       <a id="ProdTyp[A,B]:ProdTyp[A,B]"></a>
@@ -261,7 +323,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$ProdTyp.html"><span class="name">ProdTyp</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="a">a: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.ProdTyp.A">A</span>]</span>, <span name="b">b: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.ProdTyp.B">B</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[(<span class="extype" name="provingground.ScalaHoTT.ProdTyp.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.ProdTyp.B">B</span>)] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ProdTyp[A,B]extendsScalaHoTT.Typ[(A,B)]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.RealExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="RealExprextendsScalaHoTT.ExpressionwithProductwithSerializable"></a>
@@ -274,7 +340,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$RealExpr.html"><span class="name">RealExpr</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@RealExprextendsScalaHoTT.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Refl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Refl[A]extendsScalaHoTT.VerifiedValueObj[Boolean]withProductwithSerializable"></a>
@@ -287,7 +357,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Refl.html"><span class="name">Refl</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.Refl.A">A</span>]</span>, <span name="a">a: <span class="extype" name="provingground.ScalaHoTT.Refl.A">A</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$VerifiedValueObj.html" class="extype" name="provingground.ScalaHoTT.VerifiedValueObj">VerifiedValueObj</a>[<span class="extype" name="scala.Boolean">Boolean</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Refl[A]extendsScalaHoTT.VerifiedValueObj[Boolean]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.SigmaTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SigmaTyp[A,V]extendsScalaHoTT.Typ[(V,A)]withProductwithSerializable"></a>
@@ -300,8 +374,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$SigmaTyp.html"><span class="name">SigmaTyp</span></a><span class="tparams">[<span name="A">A</span>, <span name="V">V</span>]</span><span class="params">(<span name="family">family: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.ScalaHoTT.SigmaTyp.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.SigmaTyp.V">V</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[(<span class="extype" name="provingground.ScalaHoTT.SigmaTyp.V">V</span>, <span class="extype" name="provingground.ScalaHoTT.SigmaTyp.A">A</span>)] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Sum type</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@SigmaTyp[A,V]extendsScalaHoTT.Typ[(V,A)]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Sum type</p>
     </li><li name="provingground.ScalaHoTT.SubTypOf" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="SubTypOf[+A]extendsAnyRef"></a>
       <a id="SubTypOf[+A]:SubTypOf[A]"></a>
@@ -313,8 +391,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$SubTypOf.html"><span class="name">SubTypOf</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">A universe of types, with underlying scala types subtypes of A</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@SubTypOf[+A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A universe of types, with underlying scala types subtypes of A</p>
     </li><li name="provingground.ScalaHoTT.SumTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SumTyp[A,B]extendsScalaHoTT.Typ[scala.util.Either[A,B]]withProductwithSerializable"></a>
       <a id="SumTyp[A,B]:SumTyp[A,B]"></a>
@@ -326,7 +408,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$SumTyp.html"><span class="name">SumTyp</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="a">a: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.SumTyp.A">A</span>]</span>, <span name="b">b: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.SumTyp.B">B</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="scala.util.Either">Either</span>[<span class="extype" name="provingground.ScalaHoTT.SumTyp.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.SumTyp.B">B</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@SumTyp[A,B]extendsScalaHoTT.Typ[scala.util.Either[A,B]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.SymVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SymVarextendsScalaHoTT.VarExpressionwithProductwithSerializable"></a>
@@ -339,7 +425,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$SymVar.html"><span class="name">SymVar</span></a><span class="params">(<span name="sym">sym: <span class="extype" name="scala.Symbol">Symbol</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$VarExpression.html" class="extype" name="provingground.ScalaHoTT.VarExpression">VarExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@SymVarextendsScalaHoTT.VarExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Typ" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="Typ[A]extendsScalaHoTT.SubTypOf[A]withScalaHoTT.Expression"></a>
@@ -352,8 +442,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Typ.html"><span class="name">Typ</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ScalaHoTT$$SubTypOf.html" class="extype" name="provingground.ScalaHoTT.SubTypOf">SubTypOf</a>[<span class="extype" name="provingground.ScalaHoTT.Typ.A">A</span>] with <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">A HoTT type with objects of this type having scala type A</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Typ[A]extendsScalaHoTT.SubTypOf[A]withScalaHoTT.Expression" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A HoTT type with objects of this type having scala type A</p>
     </li><li name="provingground.ScalaHoTT.TypFamily" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TypFamily[A,+V]extendsProductwithSerializable"></a>
       <a id="TypFamily[A,+V]:TypFamily[A,V]"></a>
@@ -365,8 +459,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$TypFamily.html"><span class="name">TypFamily</span></a><span class="tparams">[<span name="A">A</span>, <span name="V">+V</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.TypFamily.A">A</span>]</span>, <span name="fibers">fibers: (<span class="extype" name="provingground.ScalaHoTT.TypFamily.A">A</span>) ⇒ <a href="ScalaHoTT$$SubTypOf.html" class="extype" name="provingground.ScalaHoTT.SubTypOf">SubTypOf</a>[<span class="extype" name="provingground.ScalaHoTT.TypFamily.V">V</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">A type family, taking a base (underlying type A) to a family of types (all subtypes of V)</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@TypFamily[A,+V]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A type family, taking a base (underlying type A) to a family of types (all subtypes of V)</p>
     </li><li name="provingground.ScalaHoTT.TypeOf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TypeOf[A]extendsScalaHoTT.Typ[A]withProductwithSerializable"></a>
       <a id="TypeOf[A]:TypeOf[A]"></a>
@@ -378,8 +476,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$TypeOf.html"><span class="name">TypeOf</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="a">a: <span class="extype" name="provingground.ScalaHoTT.TypeOf.A">A</span></span>)</span><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.TypeOf.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">A scala type from a HoTT type</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@TypeOf[A]extendsScalaHoTT.Typ[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A scala type from a HoTT type</p>
     </li><li name="provingground.ScalaHoTT.TypedVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TypedVar[A]extendsScalaHoTT.Obj[A]withScalaHoTT.VarExpressionwithProductwithSerializable"></a>
       <a id="TypedVar[A]:TypedVar[A]"></a>
@@ -391,7 +493,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$TypedVar.html"><span class="name">TypedVar</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="sym">sym: <a href="ScalaHoTT$$SymVar.html" class="extype" name="provingground.ScalaHoTT.SymVar">SymVar</a></span>, <span name="ty">ty: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.TypedVar.A">A</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.TypedVar.A">A</span>] with <a href="ScalaHoTT$$VarExpression.html" class="extype" name="provingground.ScalaHoTT.VarExpression">VarExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@TypedVar[A]extendsScalaHoTT.Obj[A]withScalaHoTT.VarExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.ValObj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ValObj[A]extendsScalaHoTT.ValueObj[A]withProductwithSerializable"></a>
@@ -404,7 +510,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$ValObj.html"><span class="name">ValObj</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.ScalaHoTT.ValObj.A">A</span></span>, <span name="ty">ty: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.ValObj.A">A</span>]</span>)</span><span class="result"> extends <a href="ScalaHoTT$$ValueObj.html" class="extype" name="provingground.ScalaHoTT.ValueObj">ValueObj</a>[<span class="extype" name="provingground.ScalaHoTT.ValObj.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ValObj[A]extendsScalaHoTT.ValueObj[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Value" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="Value[A]extendsAnyRef"></a>
@@ -417,7 +527,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Value.html"><span class="name">Value</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Value[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.ValueObj" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ValueObj[A]extendsScalaHoTT.Obj[A]withScalaHoTT.Value[A]"></a>
@@ -430,7 +544,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$ValueObj.html"><span class="name">ValueObj</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.ValueObj.A">A</span>] with <a href="ScalaHoTT$$Value.html" class="extype" name="provingground.ScalaHoTT.Value">Value</a>[<span class="extype" name="provingground.ScalaHoTT.ValueObj.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ValueObj[A]extendsScalaHoTT.Obj[A]withScalaHoTT.Value[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.VarExpression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="VarExpressionextendsScalaHoTT.Expression"></a>
@@ -443,7 +561,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$VarExpression.html"><span class="name">VarExpression</span></a><span class="result"> extends <a href="ScalaHoTT$$Expression.html" class="extype" name="provingground.ScalaHoTT.Expression">Expression</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@VarExpressionextendsScalaHoTT.Expression" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.VerifiedObj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="VerifiedObj[A]extendsScalaHoTT.Obj[A]"></a>
@@ -456,8 +578,12 @@
       <span class="symbol">
         <a href="ScalaHoTT$$VerifiedObj.html"><span class="name">VerifiedObj</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.VerifiedObj.A">A</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">These are those with verified types</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@VerifiedObj[A]extendsScalaHoTT.Obj[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">These are those with verified types</p>
     </li><li name="provingground.ScalaHoTT.VerifiedValueObj" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="VerifiedValueObj[A]extendsScalaHoTT.Obj[A]withScalaHoTT.Value[A]"></a>
       <a id="VerifiedValueObj[A]:VerifiedValueObj[A]"></a>
@@ -469,7 +595,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$VerifiedValueObj.html"><span class="name">VerifiedValueObj</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ScalaHoTT$$Obj.html" class="extype" name="provingground.ScalaHoTT.Obj">Obj</a>[<span class="extype" name="provingground.ScalaHoTT.VerifiedValueObj.A">A</span>] with <a href="ScalaHoTT$$Value.html" class="extype" name="provingground.ScalaHoTT.Value">Value</a>[<span class="extype" name="provingground.ScalaHoTT.VerifiedValueObj.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@VerifiedValueObj[A]extendsScalaHoTT.Obj[A]withScalaHoTT.Value[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -479,19 +609,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -502,8 +619,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -515,22 +636,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -541,8 +653,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.ScalaHoTT#IdFamily" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="IdFamily[A](base:provingground.ScalaHoTT.Typ[A])(ab:(A,A)):provingground.ScalaHoTT.IdentityTyp[A]"></a>
       <a id="IdFamily[A](Typ[A])((A,A)):IdentityTyp[A]"></a>
@@ -554,7 +670,11 @@
       <span class="symbol">
         <span class="name">IdFamily</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.IdFamily.A">A</span>]</span>)</span><span class="params">(<span name="ab">ab: (<span class="extype" name="provingground.ScalaHoTT.IdFamily.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.IdFamily.A">A</span>)</span>)</span><span class="result">: <a href="ScalaHoTT$$IdentityTyp.html" class="extype" name="provingground.ScalaHoTT.IdentityTyp">IdentityTyp</a>[<span class="extype" name="provingground.ScalaHoTT.IdFamily.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@IdFamily[A](base:provingground.ScalaHoTT.Typ[A])(ab:(A,A)):provingground.ScalaHoTT.IdentityTyp[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT#Identity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Identity[A](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.TypFamily[(A,A),Boolean]"></a>
@@ -567,7 +687,11 @@
       <span class="symbol">
         <span class="name">Identity</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.Identity.A">A</span>]</span>)</span><span class="result">: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[(<span class="extype" name="provingground.ScalaHoTT.Identity.A">A</span>, <span class="extype" name="provingground.ScalaHoTT.Identity.A">A</span>), <span class="extype" name="scala.Boolean">Boolean</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Identity[A](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.TypFamily[(A,A),Boolean]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Nat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Nat"></a>
@@ -580,7 +704,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Nat$.html"><span class="name">Nat</span></a><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="scala.Long">Long</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Nat" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.Obj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Obj"></a>
@@ -593,7 +721,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$Obj$.html"><span class="name">Obj</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@Obj" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.OneTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="OneTyp"></a>
@@ -606,7 +738,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$OneTyp$.html"><span class="name">OneTyp</span></a><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="scala.Unit">Unit</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@OneTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.ZeroTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ZeroTyp"></a>
@@ -619,7 +755,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$ZeroTyp$.html"><span class="name">ZeroTyp</span></a><span class="result"> extends <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ZeroTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -632,7 +772,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -645,7 +789,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -664,7 +812,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -677,7 +829,11 @@
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -690,7 +846,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -709,7 +869,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -722,7 +886,11 @@
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.ScalaHoTT#intExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="intExpr(value:Long):provingground.ScalaHoTT.IntExpr"></a>
@@ -735,7 +903,11 @@
       <span class="symbol">
         <span class="name">intExpr</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <a href="ScalaHoTT$$IntExpr.html" class="extype" name="provingground.ScalaHoTT.IntExpr">IntExpr</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@intExpr(value:Long):provingground.ScalaHoTT.IntExpr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -748,7 +920,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -761,7 +937,11 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -774,7 +954,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -787,7 +971,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.ScalaHoTT#realExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="realExpr(value:Double):provingground.ScalaHoTT.RealExpr"></a>
@@ -800,7 +988,11 @@
       <span class="symbol">
         <span class="name">realExpr</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="ScalaHoTT$$RealExpr.html" class="extype" name="provingground.ScalaHoTT.RealExpr">RealExpr</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@realExpr(value:Double):provingground.ScalaHoTT.RealExpr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT#refl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="refl[A,Boolean](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.DepFunc[A,Any]"></a>
@@ -813,7 +1005,11 @@
       <span class="symbol">
         <span class="name">refl</span><span class="tparams">[<span name="A">A</span>, <span name="Boolean">Boolean</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.refl.A">A</span>]</span>)</span><span class="result">: <a href="ScalaHoTT$$DepFunc.html" class="extype" name="provingground.ScalaHoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.ScalaHoTT.refl.A">A</span>, <span class="extype" name="scala.Any">Any</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@refl[A,Boolean](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.DepFunc[A,Any]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT#reflFamily" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="reflFamily[A](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.TypFamily[A,Boolean]"></a>
@@ -826,7 +1022,11 @@
       <span class="symbol">
         <span class="name">reflFamily</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="base">base: <a href="ScalaHoTT$$Typ.html" class="extype" name="provingground.ScalaHoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaHoTT.reflFamily.A">A</span>]</span>)</span><span class="result">: <a href="ScalaHoTT$$TypFamily.html" class="extype" name="provingground.ScalaHoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.ScalaHoTT.reflFamily.A">A</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@reflFamily[A](base:provingground.ScalaHoTT.Typ[A]):provingground.ScalaHoTT.TypFamily[A,Boolean]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT.succ" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="succ"></a>
@@ -839,7 +1039,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$succ$.html"><span class="name">succ</span></a><span class="result"> extends <a href="ScalaHoTT$$VerifiedValueObj.html" class="extype" name="provingground.ScalaHoTT.VerifiedValueObj">VerifiedValueObj</a>[(<span class="extype" name="scala.Long">Long</span>) ⇒ <span class="extype" name="scala.Long">Long</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@succ" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.ScalaHoTT#symVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="symVar(sym:Symbol):provingground.ScalaHoTT.SymVar"></a>
@@ -852,7 +1056,11 @@
       <span class="symbol">
         <span class="name">symVar</span><span class="params">(<span name="sym">sym: <span class="extype" name="scala.Symbol">Symbol</span></span>)</span><span class="result">: <a href="ScalaHoTT$$SymVar.html" class="extype" name="provingground.ScalaHoTT.SymVar">SymVar</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@symVar(sym:Symbol):provingground.ScalaHoTT.SymVar" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -865,7 +1073,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -878,7 +1090,11 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.ScalaHoTT.unit" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="unit"></a>
@@ -891,7 +1107,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$unit$.html"><span class="name">unit</span></a><span class="result"> extends <a href="ScalaHoTT$$VerifiedValueObj.html" class="extype" name="provingground.ScalaHoTT.VerifiedValueObj">VerifiedValueObj</a>[<span class="extype" name="scala.Unit">Unit</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -904,7 +1124,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -923,7 +1147,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -942,7 +1170,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -961,7 +1193,11 @@
       <span class="symbol">
         <a href="ScalaHoTT$$zero$.html"><span class="name">zero</span></a><span class="result"> extends <a href="ScalaHoTT$$VerifiedValueObj.html" class="extype" name="provingground.ScalaHoTT.VerifiedValueObj">VerifiedValueObj</a>[<span class="extype" name="scala.Long">Long</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ScalaHoTT$@zero" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -992,6 +1228,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

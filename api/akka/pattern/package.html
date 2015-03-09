@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>pattern - akka.pattern</title>
@@ -9,6 +8,11 @@
           
       <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../lib/package_big.png" />
         <p id="owner"><a href="../package.html" class="extype" name="akka">akka</a></p>
-        <h1>pattern</h1>
+        <h1>pattern</h1><span class="permalink">
+      <a href="../../index.html#akka.pattern.package" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -92,7 +100,11 @@
       <span class="symbol">
         <span class="name">PipeableFuture</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@PipeableFuture[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PipeToSupport</dd></dl></div>
     </li></ol>
             </div>
@@ -112,7 +124,11 @@
       <span class="symbol">
         <span class="name">after</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="duration">duration: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="using">using: <span class="extype" name="akka.actor.Scheduler">Scheduler</span></span>)</span><span class="params">(<span name="value">value: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.pattern.FutureTimeoutSupport.after.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.pattern.FutureTimeoutSupport.after.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@after[T](duration:scala.concurrent.duration.FiniteDuration,using:akka.actor.Scheduler)(value:=&gt;scala.concurrent.Future[T])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>FutureTimeoutSupport</dd></dl></div>
     </li><li name="akka.pattern.AskSupport#ask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ask(actorSelection:akka.actor.ActorSelection,message:Any)(implicittimeout:akka.util.Timeout):scala.concurrent.Future[Any]"></a>
@@ -125,7 +141,11 @@
       <span class="symbol">
         <span class="name">ask</span><span class="params">(<span name="actorSelection">actorSelection: <span class="extype" name="akka.actor.ActorSelection">ActorSelection</span></span>, <span name="message">message: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="timeout">timeout: <span class="extype" name="akka.util.Timeout">Timeout</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Any">Any</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@ask(actorSelection:akka.actor.ActorSelection,message:Any)(implicittimeout:akka.util.Timeout):scala.concurrent.Future[Any]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AskSupport</dd></dl></div>
     </li><li name="akka.pattern.AskSupport#ask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ask(actorSelection:akka.actor.ActorSelection):akka.pattern.AskableActorSelection"></a>
@@ -138,7 +158,11 @@
       <span class="symbol">
         <span class="name">ask</span><span class="params">(<span name="actorSelection">actorSelection: <span class="extype" name="akka.actor.ActorSelection">ActorSelection</span></span>)</span><span class="result">: <span class="extype" name="akka.pattern.AskableActorSelection">AskableActorSelection</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@ask(actorSelection:akka.actor.ActorSelection):akka.pattern.AskableActorSelection" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AskSupport</dd></dl></div>
     </li><li name="akka.pattern.AskSupport#ask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ask(actorRef:akka.actor.ActorRef,message:Any)(implicittimeout:akka.util.Timeout):scala.concurrent.Future[Any]"></a>
@@ -151,7 +175,11 @@
       <span class="symbol">
         <span class="name">ask</span><span class="params">(<span name="actorRef">actorRef: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="message">message: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="timeout">timeout: <span class="extype" name="akka.util.Timeout">Timeout</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Any">Any</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@ask(actorRef:akka.actor.ActorRef,message:Any)(implicittimeout:akka.util.Timeout):scala.concurrent.Future[Any]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AskSupport</dd></dl></div>
     </li><li name="akka.pattern.AskSupport#ask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ask(actorRef:akka.actor.ActorRef):akka.pattern.AskableActorRef"></a>
@@ -164,7 +192,11 @@
       <span class="symbol">
         <span class="name">ask</span><span class="params">(<span name="actorRef">actorRef: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>)</span><span class="result">: <span class="extype" name="akka.pattern.AskableActorRef">AskableActorRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@ask(actorRef:akka.actor.ActorRef):akka.pattern.AskableActorRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AskSupport</dd></dl></div>
     </li><li name="akka.pattern.GracefulStopSupport#gracefulStop" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="gracefulStop(target:&lt;?&gt;,timeout:&lt;?&gt;,stopMessage:&lt;?&gt;):scala.concurrent.Future[Boolean]"></a>
@@ -177,7 +209,11 @@
       <span class="symbol">
         <span class="name">gracefulStop</span><span class="params">(<span name="target">target: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="timeout">timeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="stopMessage">stopMessage: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@gracefulStop(target:akka.actor.ActorRef,timeout:scala.concurrent.duration.FiniteDuration,stopMessage:Any):scala.concurrent.Future[Boolean]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GracefulStopSupport</dd></dl></div>
     </li><li name="akka.pattern.PipeToSupport#pipe" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="pipe[T&lt;:&lt;?&gt;](future:&lt;?&gt;)(implicitexecutionContext:&lt;?&gt;):PipeToSupport.this.PipeableFuture[T]"></a>
@@ -190,7 +226,11 @@
       <span class="symbol">
         <span class="name">pipe</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="future">future: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.pattern.PipeToSupport.pipe.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="akka.pattern.PipeToSupport.PipeableFuture">PipeableFuture</span>[<span class="extype" name="akka.pattern.PipeToSupport.pipe.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../index.html#akka.pattern.package@pipe[T](future:scala.concurrent.Future[T])(implicitexecutionContext:scala.concurrent.ExecutionContext):PipeToSupport.this.PipeableFuture[T]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PipeToSupport</dd></dl></div>
     </li></ol>
             </div>
@@ -229,6 +269,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../lib/template.js"></script>
+
+
     </body>
       </html>

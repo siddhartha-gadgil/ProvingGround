@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>SmallTyp - provingground.HoTT.SmallTyp</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/trait_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a></p>
-        <h1>SmallTyp</h1>
+        <h1>SmallTyp</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="HoTT$.html" class="extype" name="provingground.HoTT">package HoTT</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -39,13 +49,14 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Types with symbolic objects not refined.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
-          <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a href="TheoryTypes$$Claim.html" class="extype" name="provingground.TheoryTypes.Claim">Claim</a>, <a href="Evolver$$EvolverTyp$.html" class="extype" name="provingground.Evolver.EvolverTyp">EvolverTyp</a>, <a href="ContextOldCode$$Old$$InductiveTyp.html" class="extype" name="provingground.ContextOldCode.Old.InductiveTyp">InductiveTyp</a>, <a href="ContextOldCode$$InductiveTyp.html" class="extype" name="provingground.ContextOldCode.InductiveTyp">InductiveTyp</a>, <a href="InductiveTypes$$InductiveTypDefn.html" class="extype" name="provingground.InductiveTypes.InductiveTypDefn">InductiveTypDefn</a>, <a href="TheoryTypes$$Para.html" class="extype" name="provingground.TheoryTypes.Para">Para</a>, <a href="TheoryTypes$$TextTyp.html" class="extype" name="provingground.TheoryTypes.TextTyp">TextTyp</a>, <a href="TheoryTypes$$TheoryTyp.html" class="extype" name="provingground.TheoryTypes.TheoryTyp">TheoryTyp</a>, <a href="IndexedInductiveTypes$InductiveTypDefn$Tps.html" class="extype" name="provingground.IndexedInductiveTypes.InductiveTypDefn.Tps">Tps</a>, <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a>, <a href="TheoryTypes$$Using.html" class="extype" name="provingground.TheoryTypes.Using">Using</a>, <a href="Evolver$$Gen$typ$.html" class="extype" name="provingground.Evolver.Gen.typ">typ</a></div>
-        </div></div>
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="functionfinder/BoolType$$Bool$.html" class="extype" name="provingground.functionfinder.BoolType.Bool">Bool</a>, <a href="TheoryTypes$$Claim.html" class="extype" name="provingground.TheoryTypes.Claim">Claim</a>, <a href="functionfinder/EnumType$$EnumTyp.html" class="extype" name="provingground.functionfinder.EnumType.EnumTyp">EnumTyp</a>, <a href="Evolver$$EvolverTyp$.html" class="extype" name="provingground.Evolver.EvolverTyp">EvolverTyp</a>, <a href="functionfinder/IntTypes$$Fin.html" class="extype" name="provingground.functionfinder.IntTypes.Fin">Fin</a>, <a href="InductiveTypes$$InductiveTypDefn.html" class="extype" name="provingground.InductiveTypes.InductiveTypDefn">InductiveTypDefn</a>, <a href="functionfinder/IntTypes$$IntTyp.html" class="extype" name="provingground.functionfinder.IntTypes.IntTyp">IntTyp</a>, <a href="functionfinder/ListType$$ListTyp.html" class="extype" name="provingground.functionfinder.ListType.ListTyp">ListTyp</a>, <a href="functionfinder/MaybeTyp$$MaybeTyp.html" class="extype" name="provingground.functionfinder.MaybeTyp.MaybeTyp">MaybeTyp</a>, <a href="functionfinder/IntTypes$$N$.html" class="extype" name="provingground.functionfinder.IntTypes.N">N</a>, <a href="TheoryTypes$$Para.html" class="extype" name="provingground.TheoryTypes.Para">Para</a>, <a href="HoTT$$PlusTyp.html" class="extype" name="provingground.HoTT.PlusTyp">PlusTyp</a>, <a href="TheoryTypes$$TextTyp.html" class="extype" name="provingground.TheoryTypes.TextTyp">TextTyp</a>, <a href="TheoryTypes$$TheoryTyp.html" class="extype" name="provingground.TheoryTypes.TheoryTyp">TheoryTyp</a>, <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a>, <a href="TheoryTypes$$Using.html" class="extype" name="provingground.TheoryTypes.Using">Using</a>, <a href="functionfinder/IntTypes$$Z$.html" class="extype" name="provingground.functionfinder.IntTypes.Z">Z</a>, <a href="HoTT$$Zero$.html" class="extype" name="provingground.HoTT.Zero">Zero</a>, <a href="functionfinder/BoolType$$isTrueTyp.html" class="extype" name="provingground.functionfinder.BoolType.isTrueTyp">isTrueTyp</a>, <a href="Evolver$$Gen$typ$.html" class="extype" name="provingground.Evolver.Gen.typ">typ</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -95,7 +106,11 @@
       <span class="symbol">
         <span class="name">Obj</span><span class="result"> = <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@Obj=provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">scala type of objects with this HoTT-type</p><div class="fullcomment"><div class="comment cmt"><p>scala type of objects with this HoTT-type</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li></ol>
             </div>
@@ -104,20 +119,25 @@
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
+              <ol><li name="provingground.HoTT.Typ#!:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!:[UU&gt;:U&lt;:provingground.HoTT.Term](term:UU):UU"></a>
+      <a id="!:[UU&lt;:Term&gt;:Term](UU):UU"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
+        <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$colon" class="name">!:</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="term">term: <span class="extype" name="provingground.HoTT.Typ.!:.UU">UU</span></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.Typ.!:.UU">UU</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@!:[UU&gt;:U&lt;:provingground.HoTT.Term](term:UU):UU" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">checks term is of this type and returns it; useful for documentation.</p><div class="fullcomment"><div class="comment cmt"><p>checks term is of this type and returns it; useful for documentation.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -128,8 +148,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -141,21 +165,68 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.HoTT.Typ#-&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="-&gt;:[W&lt;:provingground.HoTT.Term,UU&gt;:U&lt;:provingground.HoTT.Term](that:provingground.HoTT.Typ[W])(implicitevidence$1:reflect.runtime.universe.TypeTag[W],implicitevidence$2:reflect.runtime.universe.TypeTag[UU]):provingground.HoTT.FuncTyp[W,UU]"></a>
-      <a id="-&gt;:[W&lt;:Term,UU&lt;:Term&gt;:Term](Typ[W])(scala.reflect.api.JavaUniverse.TypeTag[W],scala.reflect.api.JavaUniverse.TypeTag[UU]):FuncTyp[W,UU]"></a>
+    </li><li name="provingground.HoTT.Typ#&amp;&amp;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&amp;&amp;[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:provingground.HoTT.Typ[V]):provingground.HoTT.PairTyp[UU,V]"></a>
+      <a id="&amp;&amp;[UU&lt;:TermwithSubs[UU]&gt;:Term,V&lt;:TermwithSubs[V]](Typ[V]):PairTyp[UU,V]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $minus$greater$colon" class="name">-&gt;:</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.W">W</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.W">W</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.UU">UU</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.W">W</span>, <span class="extype" name="provingground.HoTT.Typ.-&gt;:.UU">UU</span>]</span>
+        <span title="gt4s: $amp$amp" class="name">&amp;&amp;</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;&amp;.UU">UU</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;&amp;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;&amp;.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$PairTyp.html" class="extype" name="provingground.HoTT.PairTyp">PairTyp</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;&amp;.UU">UU</span>, <span class="extype" name="provingground.HoTT.Typ.&amp;&amp;.V">V</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@&amp;&amp;[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:provingground.HoTT.Typ[V]):provingground.HoTT.PairTyp[UU,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns pair type, mainly to use for &quot;and&quot; for structures
+</p><div class="fullcomment"><div class="comment cmt"><p>returns pair type, mainly to use for &quot;and&quot; for structures
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Typ#++" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="++[UU&gt;:provingground.HoTT.Typ[U]&lt;:provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[UU],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],V&lt;:provingground.HoTT.Typ[VV]withprovingground.HoTT.Subs[V]](those:V):provingground.HoTT.SigmaTyp[UU,VV]"></a>
+      <a id="++[UU&lt;:Typ[Term]withSubs[UU]&gt;:Typ[Term],VV&lt;:TermwithSubs[VV],V&lt;:Typ[VV]withSubs[V]](V):SigmaTyp[UU,VV]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus$plus" class="name">++</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] &lt;: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.++.UU">UU</span>]</span>, <span name="VV">VV &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.++.VV">VV</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Typ.++.VV">VV</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.++.V">V</span>]</span>]</span><span class="params">(<span name="those">those: <span class="extype" name="provingground.HoTT.Typ.++.V">V</span></span>)</span><span class="result">: <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<span class="extype" name="provingground.HoTT.Typ.++.UU">UU</span>, <span class="extype" name="provingground.HoTT.Typ.++.VV">VV</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@++[UU&gt;:provingground.HoTT.Typ[U]&lt;:provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[UU],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],V&lt;:provingground.HoTT.Typ[VV]withprovingground.HoTT.Subs[V]](those:V):provingground.HoTT.SigmaTyp[UU,VV]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns Sigma-Type, mainly to use as &quot;such that&quot;, for example a group type is this with product etc.</p><div class="fullcomment"><div class="comment cmt"><p>returns Sigma-Type, mainly to use as &quot;such that&quot;, for example a group type is this with product etc. dependent on this.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Typ#-&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;:[W&lt;:provingground.HoTT.Term,UU&gt;:U&lt;:provingground.HoTT.Term](that:provingground.HoTT.Typ[W]):provingground.HoTT.FuncTyp[W,UU]"></a>
+      <a id="-&gt;:[W&lt;:Term,UU&lt;:Term&gt;:Term](Typ[W]):FuncTyp[W,UU]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater$colon" class="name">-&gt;:</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.W">W</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<span class="extype" name="provingground.HoTT.Typ.-&gt;:.W">W</span>, <span class="extype" name="provingground.HoTT.Typ.-&gt;:.UU">UU</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@-&gt;:[W&lt;:provingground.HoTT.Term,UU&gt;:U&lt;:provingground.HoTT.Term](that:provingground.HoTT.Typ[W]):provingground.HoTT.FuncTyp[W,UU]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">function type:  this -&gt; that
+</p><div class="fullcomment"><div class="comment cmt"><p>function type:  this -&gt; that
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li><li name="provingground.HoTT.Typ#::" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="::(name:provingground.HoTT.AnySym):Uwithprovingground.HoTT.Subs[U]"></a>
       <a id="::(AnySym):TermwithSubs[Term]"></a>
@@ -167,22 +238,13 @@
       <span class="symbol">
         <span title="gt4s: $colon$colon" class="name">::</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@::(name:provingground.HoTT.AnySym):Uwithprovingground.HoTT.Subs[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Make symbolic object</p><div class="fullcomment"><div class="comment cmt"><p>Make symbolic object</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -193,8 +255,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -206,7 +272,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -219,7 +289,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -227,6 +301,25 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.HoTT.Term#dependsOn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dependsOn(that:provingground.HoTT.Term):Boolean"></a>
+      <a id="dependsOn(Term):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dependsOn</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@dependsOn(that:provingground.HoTT.Term):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns whether this depends on that
+</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this depends on that
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -238,7 +331,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -251,7 +348,11 @@
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -264,7 +365,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -283,7 +388,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -296,8 +405,30 @@
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a>
+      <a id="indepOf(Term):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">indepOf</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@indepOf(that:provingground.HoTT.Term):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns whether this is independent of that.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this is independent of that.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -309,7 +440,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -322,8 +457,29 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT.SmallTyp#newobj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newobj:provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
+      <a id="newobj:Typ[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newobj</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@newobj:provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -335,7 +491,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -348,7 +508,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.HoTT.Typ#obj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="obj:U"></a>
@@ -361,21 +525,53 @@
       <span class="symbol">
         <span class="name">obj</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
-    </li><li name="provingground.HoTT.SmallTyp#subs" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="subs(Term,Term):Typ[Term]"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@obj:U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">factor for producing objects of the given type.</p><div class="fullcomment"><div class="comment cmt"><p>factor for producing objects of the given type.
+can use innervar if one wants name unchanged.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Subs#replace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a>
+      <a id="replace(Term,Term):Typ[Term]withSubs[Typ[Term]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">replace</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">refine substitution so if x and y are both abstract pairs with independent components (for x),
+both components are substituted.</p><div class="fullcomment"><div class="comment cmt"><p>refine substitution so if x and y are both abstract pairs with independent components (for x),
+both components are substituted.
+testing for types also done.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
+    </li><li name="provingground.HoTT.SmallTyp#subs" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a>
+      <a id="subs(Term,Term):Typ[Term]withSubs[Typ[Term]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> substitute x by y.</p><div class="fullcomment"><div class="comment cmt"><p> substitute x by y.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="provingground.HoTT.SmallTyp#symbObj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.Term"></a>
       <a id="symbObj(AnySym):Term"></a>
@@ -387,8 +583,12 @@
       <span class="symbol">
         <span class="name">symbObj</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj</p><div class="fullcomment"><div class="comment cmt"><p>A symbolic object with specified HoTT type, by default 'this', and with scala-type Obj</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A symbolic object with this HoTT type, and with scala-type Obj</p><div class="fullcomment"><div class="comment cmt"><p>A symbolic object with this HoTT type, and with scala-type Obj</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -400,7 +600,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -413,7 +617,11 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.SmallTyp#typ" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typ:provingground.HoTT.Universe"></a>
@@ -426,11 +634,13 @@
       <span class="symbol">
         <span class="name">typ</span><span class="result">: <a href="HoTT$$Universe.html" class="extype" name="provingground.HoTT.Universe">Universe</a></span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Gives limited information on types when the types are universes, so should not be used in this case.</p><div class="fullcomment"><div class="comment cmt"><p>Gives limited information on types when the types are universes, so should not be used in this case.
-The type <code>LogicalUniverse' should only be read as some universe.
-So avoid making this judgement.
-</code></p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@typ:provingground.HoTT.Universe" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">type of a type is a universe.</p><div class="fullcomment"><div class="comment cmt"><p>type of a type is a universe.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.Typ#typlevel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typlevel:Int"></a>
       <a id="typlevel:Int"></a>
@@ -442,7 +652,11 @@ So avoid making this judgement.
       <span class="symbol">
         <span class="name">typlevel</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@typlevel:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -455,7 +669,11 @@ So avoid making this judgement.
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -474,7 +692,11 @@ So avoid making this judgement.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -493,7 +715,11 @@ So avoid making this judgement.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -502,18 +728,25 @@ So avoid making this judgement.
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.Typ#~&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Term](variable:provingground.HoTT.Term)(implicitevidence$3:reflect.runtime.universe.TypeTag[UU]):provingground.HoTT.PiTyp[provingground.HoTT.Term,UU]"></a>
-      <a id="~&gt;:[UU&lt;:Term&gt;:Term](Term)(scala.reflect.api.JavaUniverse.TypeTag[UU]):PiTyp[Term,UU]"></a>
+      <a id="~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Term](variable:provingground.HoTT.Term):provingground.HoTT.PiTyp[provingground.HoTT.Term,UU]"></a>
+      <a id="~&gt;:[UU&lt;:Term&gt;:Term](Term):PiTyp[Term,UU]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="variable">variable: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>)</span><span class="result">: <a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>
+        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="variable">variable: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SmallTyp@~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Term](variable:provingground.HoTT.Term):provingground.HoTT.PiTyp[provingground.HoTT.Term,UU]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">dependent function type (Pi-Type) define by a lambda:
+ <code>this</code> depends on a variable, which hence gives a type family.</p><div class="fullcomment"><div class="comment cmt"><p>dependent function type (Pi-Type) define by a lambda:
+ <code>this</code> depends on a variable, which hence gives a type family.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -549,6 +782,7 @@ So avoid making this judgement.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

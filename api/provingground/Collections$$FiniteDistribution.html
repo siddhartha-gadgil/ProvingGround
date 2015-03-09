@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>FiniteDistribution - provingground.Collections.FiniteDistribution</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,15 @@
       <div id="definition">
         <a href="Collections$$FiniteDistribution$.html" title="Go to companion"><img src="../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="Collections$.html" class="extype" name="provingground.Collections">Collections</a></p>
-        <h1><a href="Collections$$FiniteDistribution$.html" title="Go to companion">FiniteDistribution</a></h1>
+        <h1><a href="Collections$$FiniteDistribution$.html" title="Go to companion">FiniteDistribution</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="Collections$$FiniteDistribution$.html" title="See companion">object FiniteDistribution</a>
+            | <a href="Collections$.html" class="extype" name="provingground.Collections">package Collections</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,7 +47,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">FiniteDistribution</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result"> extends <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>] with <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">FiniteDistribution</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result"> extends <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>] with <a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -44,7 +56,7 @@
 </p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversable">GenTraversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.GenericTraversableTemplate">GenericTraversableTemplate</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>], <span class="extype" name="scala.collection.TraversableLike">TraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.GenTraversableLike">GenTraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.Parallelizable">Parallelizable</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.parallel.ParIterable">ParIterable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.TraversableOnce">TraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.FilterMonadic">FilterMonadic</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.generic.HasNewBuilder">HasNewBuilder</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>], <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversable">GenTraversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.GenericTraversableTemplate">GenericTraversableTemplate</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>], <span class="extype" name="scala.collection.TraversableLike">TraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.GenTraversableLike">GenTraversableLike</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.Parallelizable">Parallelizable</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.parallel.ParIterable">ParIterable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.TraversableOnce">TraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.generic.FilterMonadic">FilterMonadic</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <span class="extype" name="scala.collection.generic.HasNewBuilder">HasNewBuilder</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]], <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -62,7 +74,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.Collections.FiniteDistribution"><span>FiniteDistribution</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.Collections.LabelledArray"><span>LabelledArray</span></li><li class="in" name="scala.collection.Traversable"><span>Traversable</span></li><li class="in" name="scala.collection.GenTraversable"><span>GenTraversable</span></li><li class="in" name="scala.collection.generic.GenericTraversableTemplate"><span>GenericTraversableTemplate</span></li><li class="in" name="scala.collection.TraversableLike"><span>TraversableLike</span></li><li class="in" name="scala.collection.GenTraversableLike"><span>GenTraversableLike</span></li><li class="in" name="scala.collection.Parallelizable"><span>Parallelizable</span></li><li class="in" name="scala.collection.TraversableOnce"><span>TraversableOnce</span></li><li class="in" name="scala.collection.GenTraversableOnce"><span>GenTraversableOnce</span></li><li class="in" name="scala.collection.generic.FilterMonadic"><span>FilterMonadic</span></li><li class="in" name="scala.collection.generic.HasNewBuilder"><span>HasNewBuilder</span></li><li class="in" name="provingground.Collections.ProbabilityDistribution"><span>ProbabilityDistribution</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.Collections.FiniteDistribution"><span>FiniteDistribution</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.Collections.LabelledVector"><span>LabelledVector</span></li><li class="in" name="provingground.Collections.LabelledArray"><span>LabelledArray</span></li><li class="in" name="scala.collection.Traversable"><span>Traversable</span></li><li class="in" name="scala.collection.GenTraversable"><span>GenTraversable</span></li><li class="in" name="scala.collection.generic.GenericTraversableTemplate"><span>GenericTraversableTemplate</span></li><li class="in" name="scala.collection.TraversableLike"><span>TraversableLike</span></li><li class="in" name="scala.collection.GenTraversableLike"><span>GenTraversableLike</span></li><li class="in" name="scala.collection.Parallelizable"><span>Parallelizable</span></li><li class="in" name="scala.collection.TraversableOnce"><span>TraversableOnce</span></li><li class="in" name="scala.collection.GenTraversableOnce"><span>GenTraversableOnce</span></li><li class="in" name="scala.collection.generic.FilterMonadic"><span>FilterMonadic</span></li><li class="in" name="scala.collection.generic.HasNewBuilder"><span>HasNewBuilder</span></li><li class="in" name="provingground.Collections.ProbabilityDistribution"><span>ProbabilityDistribution</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -93,7 +105,11 @@
       <span class="symbol">
         <span class="name">FiniteDistribution</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@&lt;init&gt;(pmf:Seq[provingground.Collections.Weighted[T]],epsilon:Double):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">pmf</dt><dd class="cmt"><p>probability mass function, may have same object split.
 </p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
 </p></dd></dl></div>
@@ -113,7 +129,11 @@
       <span class="symbol">
         <span class="name">Self</span><span class="result"> = <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@Self=Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike.WithFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="WithFilterextendsFilterMonadic[A,Repr]"></a>
@@ -126,7 +146,11 @@
       <span class="symbol">
         <span class="name">WithFilter</span><span class="result"> extends <span class="extype" name="scala.collection.generic.FilterMonadic">FilterMonadic</span>[<span class="extype" name="scala.collection.TraversableLike.A">A</span>, <span class="extype" name="scala.collection.TraversableLike.Repr">Repr</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@WithFilterextendsFilterMonadic[A,Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li></ol>
             </div>
@@ -136,19 +160,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -159,8 +170,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -172,7 +187,11 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#*" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="*(sc:Double):provingground.Collections.FiniteDistribution[T]"></a>
@@ -185,7 +204,11 @@
       <span class="symbol">
         <span title="gt4s: $times" class="name">*</span><span class="params">(<span name="sc">sc: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@*(sc:Double):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">scale the distribution
 </p>
     </li><li name="provingground.Collections.FiniteDistribution#+" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -199,7 +222,11 @@
       <span class="symbol">
         <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>, <span name="prob">prob: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@+(elem:T,prob:Double):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">add weighted element without normailizing
 </p>
     </li><li name="provingground.Collections.FiniteDistribution#++" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -213,7 +240,11 @@
       <span class="symbol">
         <span title="gt4s: $plus$plus" class="name">++</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@++(that:provingground.Collections.FiniteDistribution[T]):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">add another distribution without normalizing
 </p>
     </li><li name="scala.collection.TraversableLike#++" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -227,7 +258,11 @@
       <span class="symbol">
         <span title="gt4s: $plus$plus" class="name">++</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>, <span name="That">That</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.collection.TraversableLike.++.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.++.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.++.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.++.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@++[B&gt;:A,That](that:scala.collection.GenTraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#++:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++:[B&gt;:A,That](that:Traversable[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -240,7 +275,11 @@
       <span class="symbol">
         <span title="gt4s: $plus$plus$colon" class="name">++:</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>, <span name="That">That</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.TraversableLike.++:.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.++:.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.++:.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.++:.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@++:[B&gt;:A,That](that:Traversable[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#++:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++:[B&gt;:A,That](that:scala.collection.TraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -253,7 +292,11 @@
       <span class="symbol">
         <span title="gt4s: $plus$plus$colon" class="name">++:</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>, <span name="That">That</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.collection.TraversableOnce">TraversableOnce</span>[<span class="extype" name="scala.collection.TraversableLike.++:.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.++:.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.++:.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.++:.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@++:[B&gt;:A,That](that:scala.collection.TraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#--" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="--(that:provingground.Collections.FiniteDistribution[T]):provingground.Collections.FiniteDistribution[T]"></a>
@@ -266,7 +309,11 @@
       <span class="symbol">
         <span title="gt4s: $minus$minus" class="name">--</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@--(that:provingground.Collections.FiniteDistribution[T]):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">subtract distribution
 </p>
     </li><li name="scala.collection.TraversableOnce#/:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -280,7 +327,11 @@
       <span class="symbol">
         <span title="gt4s: $div$colon" class="name">/:</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce./:.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce./:.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce./:.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce./:.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@/:[B](z:B)(op:(B,A)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#:\" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id=":\[B](z:B)(op:(A,B)=&gt;B):B"></a>
@@ -293,22 +344,13 @@
       <span class="symbol">
         <span title="gt4s: $colon$bslash" class="name">:\</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce.:\.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableOnce.:\.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.:\.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.:\.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@:\[B](z:B)(op:(A,B)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -319,8 +361,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#addString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addString(b:StringBuilder):StringBuilder"></a>
       <a id="addString(StringBuilder):StringBuilder"></a>
@@ -332,7 +378,11 @@
       <span class="symbol">
         <span class="name">addString</span><span class="params">(<span name="b">b: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@addString(b:StringBuilder):StringBuilder" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#addString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addString(b:StringBuilder,sep:String):StringBuilder"></a>
@@ -345,7 +395,11 @@
       <span class="symbol">
         <span class="name">addString</span><span class="params">(<span name="b">b: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>, <span name="sep">sep: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@addString(b:StringBuilder,sep:String):StringBuilder" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#addString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addString(b:StringBuilder,start:String,sep:String,end:String):StringBuilder"></a>
@@ -358,20 +412,28 @@
       <span class="symbol">
         <span class="name">addString</span><span class="params">(<span name="b">b: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>, <span name="start">start: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="sep">sep: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="end">end: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.StringBuilder">StringBuilder</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@addString(b:StringBuilder,start:String,sep:String,end:String):StringBuilder" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#aggregate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="aggregate[B](z:B)(seqop:(B,A)=&gt;B,combop:(B,B)=&gt;B):B"></a>
-      <a id="aggregate[B](B)((B,Double)⇒B,(B,B)⇒B):B"></a>
+      <a id="aggregate[B](z:=&gt;B)(seqop:(B,A)=&gt;B,combop:(B,B)=&gt;B):B"></a>
+      <a id="aggregate[B](⇒B)((B,Double)⇒B,(B,B)⇒B):B"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">aggregate</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>)</span><span class="params">(<span name="seqop">seqop: (<span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>, <span name="combop">combop: (<span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>, <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>
+        <span class="name">aggregate</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: ⇒ <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>)</span><span class="params">(<span name="seqop">seqop: (<span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>, <span name="combop">combop: (<span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>, <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.aggregate.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@aggregate[B](z:=&gt;B)(seqop:(B,A)=&gt;B,combop:(B,B)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="apply(label:T):Double"></a>
@@ -384,7 +446,11 @@
       <span class="symbol">
         <span class="name">apply</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@apply(label:T):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">weight of the label.</p>
     </li><li name="provingground.Collections.LabelledArray#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(label:L)(implicitzero:T):T"></a>
@@ -397,7 +463,11 @@
       <span class="symbol">
         <span class="name">apply</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="zero">zero: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@apply(label:L)(implicitzero:T):T" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -410,7 +480,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -423,7 +497,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -442,7 +520,11 @@
       <span class="symbol">
         <span class="name">collect</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableLike.collect.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.collect.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.collect.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.collect.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@collect[B,That](pf:PartialFunction[A,B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#collectFirst" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="collectFirst[B](pf:PartialFunction[A,B]):Option[B]"></a>
@@ -455,7 +537,11 @@
       <span class="symbol">
         <span class="name">collectFirst</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableOnce.collectFirst.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.collection.TraversableOnce.collectFirst.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@collectFirst[B](pf:PartialFunction[A,B]):Option[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.Traversable#companion" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="companion:scala.collection.generic.GenericCompanion[Traversable]"></a>
@@ -468,7 +554,11 @@
       <span class="symbol">
         <span class="name">companion</span><span class="result">: <span class="extype" name="scala.collection.generic.GenericCompanion">GenericCompanion</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@companion:scala.collection.generic.GenericCompanion[Traversable]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Traversable → GenTraversable → GenericTraversableTemplate</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#copyToArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="copyToArray[B&gt;:A](xs:Array[B],start:Int,len:Int):Unit"></a>
@@ -481,7 +571,11 @@
       <span class="symbol">
         <span class="name">copyToArray</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="xs">xs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.collection.TraversableLike.copyToArray.B">B</span>]</span>, <span name="start">start: <span class="extype" name="scala.Int">Int</span></span>, <span name="len">len: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@copyToArray[B&gt;:A](xs:Array[B],start:Int,len:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#copyToArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="copyToArray[B&gt;:A](xs:Array[B]):Unit"></a>
@@ -494,7 +588,11 @@
       <span class="symbol">
         <span class="name">copyToArray</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="xs">xs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.collection.TraversableOnce.copyToArray.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@copyToArray[B&gt;:A](xs:Array[B]):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#copyToArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="copyToArray[B&gt;:A](xs:Array[B],start:Int):Unit"></a>
@@ -507,7 +605,11 @@
       <span class="symbol">
         <span class="name">copyToArray</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="xs">xs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.collection.TraversableOnce.copyToArray.B">B</span>]</span>, <span name="start">start: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@copyToArray[B&gt;:A](xs:Array[B],start:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#copyToBuffer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="copyToBuffer[B&gt;:A](dest:scala.collection.mutable.Buffer[B]):Unit"></a>
@@ -520,7 +622,11 @@
       <span class="symbol">
         <span class="name">copyToBuffer</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="dest">dest: <span class="extype" name="scala.collection.mutable.Buffer">Buffer</span>[<span class="extype" name="scala.collection.TraversableOnce.copyToBuffer.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@copyToBuffer[B&gt;:A](dest:scala.collection.mutable.Buffer[B]):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#count" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="count(p:A=&gt;Boolean):Int"></a>
@@ -533,8 +639,29 @@
       <span class="symbol">
         <span class="name">count</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@count(p:A=&gt;Boolean):Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
+    </li><li name="provingground.Collections.LabelledVector#dot" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dot(that:provingground.Collections.LabelledVector[L]):Double"></a>
+      <a id="dot(LabelledVector[T]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dot</span><span class="params">(<span name="that">that: <a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@dot(that:provingground.Collections.LabelledVector[L]):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#drop" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="drop(n:Int):Repr"></a>
       <a id="drop(Int):Traversable[Double]"></a>
@@ -546,7 +673,11 @@
       <span class="symbol">
         <span class="name">drop</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@drop(n:Int):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#dropWhile" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dropWhile(p:A=&gt;Boolean):Repr"></a>
@@ -559,8 +690,46 @@
       <span class="symbol">
         <span class="name">dropWhile</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@dropWhile(p:A=&gt;Boolean):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#entropy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="entropy(elem:T):Double"></a>
+      <a id="entropy(T):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">entropy</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@entropy(elem:T):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Collections.FiniteDistribution#entropyView" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="entropyView(lines:Int):List[provingground.Collections.Weighted[String]]"></a>
+      <a id="entropyView(Int):List[Weighted[String]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">entropyView</span><span class="params">(<span name="lines">lines: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">20</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="java.lang.String">String</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@entropyView(lines:Int):List[provingground.Collections.Weighted[String]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="provingground.Collections.FiniteDistribution#epsilon" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="epsilon:Double"></a>
       <a id="epsilon:Double"></a>
@@ -572,7 +741,11 @@
       <span class="symbol">
         <span class="name">epsilon</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@epsilon:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">cutoff below which some methods ignore objects.</p><div class="fullcomment"><div class="comment cmt"><p>cutoff below which some methods ignore objects. should be very small to allow for split objects.
 </p></div></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -586,7 +759,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#exists" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="exists(p:A=&gt;Boolean):Boolean"></a>
@@ -599,7 +776,11 @@
       <span class="symbol">
         <span class="name">exists</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@exists(p:A=&gt;Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#feedback" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="feedback(baseweights:T=&gt;Double,damp:Double):provingground.Collections.FiniteDistribution[T]"></a>
@@ -612,12 +793,33 @@
       <span class="symbol">
         <span class="name">feedback</span><span class="params">(<span name="baseweights">baseweights: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="damp">damp: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@feedback(baseweights:T=&gt;Double,damp:Double):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">entropy feedback for the finite distribution to move in the direction of the base distribution,
-however values ouside tsupport are ignored.</p><div class="fullcomment"><div class="comment cmt"><p>entropy feedback for the finite distribution to move in the direction of the base distribution,
-however values ouside tsupport are ignored.
+however values outside support are ignored.</p><div class="fullcomment"><div class="comment cmt"><p>entropy feedback for the finite distribution to move in the direction of the base distribution,
+however values outside support are ignored.
 </p></div><dl class="paramcmts block"><dt class="param">baseweights</dt><dd class="cmt"><p>
 </p></dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#filter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="filter(p:T=&gt;Boolean):provingground.Collections.FiniteDistribution[T]"></a>
+      <a id="filter((T)⇒Boolean):FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="p">p: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@filter(p:T=&gt;Boolean):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.collection.TraversableLike#filter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="filter(p:A=&gt;Boolean):Repr"></a>
       <a id="filter((Double)⇒Boolean):Traversable[Double]"></a>
@@ -629,7 +831,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">filter</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@filter(p:A=&gt;Boolean):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#filterNot" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="filterNot(p:A=&gt;Boolean):Repr"></a>
@@ -642,7 +848,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">filterNot</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@filterNot(p:A=&gt;Boolean):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -655,7 +865,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -674,7 +888,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">find</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@find(p:A=&gt;Boolean):Option[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#flatMap" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatMap[B,That](f:A=&gt;scala.collection.GenTraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -687,7 +905,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">flatMap</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.collection.TraversableLike.flatMap.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.flatMap.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.flatMap.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.flatMap.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@flatMap[B,That](f:A=&gt;scala.collection.GenTraversableOnce[B])(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike → FilterMonadic</dd></dl></div>
     </li><li name="provingground.Collections.ProbabilityDistribution#flatMap" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatMap[S](f:T=&gt;provingground.Collections.ProbabilityDistribution[S]):provingground.Collections.ProbabilityDistribution[S]"></a>
@@ -700,7 +922,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">flatMap</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.ProbabilityDistribution.flatMap.S">S</span>]</span>)</span><span class="result">: <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.Collections.ProbabilityDistribution.flatMap.S">S</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@flatMap[S](f:T=&gt;provingground.Collections.ProbabilityDistribution[S]):provingground.Collections.ProbabilityDistribution[S]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#flatdist" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="flatdist:scala.collection.immutable.Set[provingground.Collections.Weighted[T]]"></a>
@@ -713,7 +939,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">flatdist</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@flatdist:scala.collection.immutable.Set[provingground.Collections.Weighted[T]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">distribution as set with collation
 </p>
     </li><li name="provingground.Collections.FiniteDistribution#flatten" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -727,7 +957,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">flatten</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@flatten:provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">flatten distribution collating elements.</p>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#flatten" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatten[B](implicitasTraversable:A=&gt;scala.collection.GenTraversableOnce[B]):CC[B]"></a>
@@ -740,7 +974,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">flatten</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="asTraversable">asTraversable: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.flatten.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.flatten.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@flatten[B](implicitasTraversable:A=&gt;scala.collection.GenTraversableOnce[B]):CC[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fold[A1&gt;:A](z:A1)(op:(A1,A1)=&gt;A1):A1"></a>
@@ -753,7 +991,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">fold</span><span class="tparams">[<span name="A1">A1 &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce.fold.A1">A1</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.fold.A1">A1</span>, <span class="extype" name="scala.collection.TraversableOnce.fold.A1">A1</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.fold.A1">A1</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.fold.A1">A1</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@fold[A1&gt;:A](z:A1)(op:(A1,A1)=&gt;A1):A1" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#foldLeft" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foldLeft[B](z:B)(op:(B,A)=&gt;B):B"></a>
@@ -766,7 +1008,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">foldLeft</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce.foldLeft.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.foldLeft.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.foldLeft.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.foldLeft.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@foldLeft[B](z:B)(op:(B,A)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#foldRight" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foldRight[B](z:B)(op:(A,B)=&gt;B):B"></a>
@@ -779,7 +1025,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">foldRight</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableOnce.foldRight.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableOnce.foldRight.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.foldRight.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.foldRight.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@foldRight[B](z:B)(op:(A,B)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#forall" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="forall(p:A=&gt;Boolean):Boolean"></a>
@@ -792,7 +1042,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">forall</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@forall(p:A=&gt;Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.LabelledArray#foreach" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foreach[U](f:T=&gt;U):Unit"></a>
@@ -805,7 +1059,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">foreach</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="provingground.Collections.LabelledArray.foreach.U">U</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@foreach[U](f:T=&gt;U):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a> → GenericTraversableTemplate → TraversableLike → GenTraversableLike → TraversableOnce → GenTraversableOnce → FilterMonadic</dd></dl></div>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#genericBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="genericBuilder[B]:scala.collection.mutable.Builder[B,CC[B]]"></a>
@@ -818,7 +1076,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">genericBuilder</span><span class="tparams">[<span name="B">B</span>]</span><span class="result">: <span class="extype" name="scala.collection.mutable.Builder">Builder</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.genericBuilder.B">B</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.genericBuilder.B">B</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@genericBuilder[B]:scala.collection.mutable.Builder[B,CC[B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
@@ -831,7 +1093,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#getsum" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="getsum(label:T):Double"></a>
@@ -844,7 +1110,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">getsum</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@getsum(label:T):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">add together all probabilities for
 </p>
     </li><li name="scala.collection.TraversableLike#groupBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -858,7 +1128,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">groupBy</span><span class="tparams">[<span name="K">K</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableLike.groupBy.K">K</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="scala.collection.TraversableLike.groupBy.K">K</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@groupBy[K](f:A=&gt;K):scala.collection.immutable.Map[K,Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#hasDefiniteSize" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hasDefiniteSize:Boolean"></a>
@@ -871,7 +1145,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">hasDefiniteSize</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@hasDefiniteSize:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#head" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="head:A"></a>
@@ -884,7 +1162,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">head</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@head:A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#headOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="headOption:Option[A]"></a>
@@ -897,7 +1179,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">headOption</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@headOption:Option[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="provingground.Collections.ProbabilityDistribution#iid" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="iid:provingground.Collections.InfSeq[T]"></a>
@@ -910,7 +1196,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">iid</span><span class="result">: <a href="Collections$$InfSeq.html" class="extype" name="provingground.Collections.InfSeq">InfSeq</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@iid:provingground.Collections.InfSeq[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
     </li><li name="provingground.Collections.LabelledArray#incl" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="incl(label:L)(arg:T):provingground.Collections.ArrayMap[L,T]"></a>
@@ -923,7 +1213,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">incl</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="params">(<span name="arg">arg: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Collections$$ArrayMap.html" class="extype" name="provingground.Collections.ArrayMap">ArrayMap</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@incl(label:L)(arg:T):provingground.Collections.ArrayMap[L,T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="provingground.Collections.LabelledArray#inclusion" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="inclusion(label:L)(implicitzero:T):provingground.LearningSystem.DiffbleFunction[T,provingground.Collections.ArrayMap[L,T]]"></a>
@@ -936,7 +1230,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">inclusion</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="zero">zero: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="LearningSystem$$DiffbleFunction.html" class="extype" name="provingground.LearningSystem.DiffbleFunction">DiffbleFunction</a>[<span class="extype" name="scala.Double">Double</span>, <a href="Collections$$ArrayMap.html" class="extype" name="provingground.Collections.ArrayMap">ArrayMap</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@inclusion(label:L)(implicitzero:T):provingground.LearningSystem.DiffbleFunction[T,provingground.Collections.ArrayMap[L,T]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#init" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="init:Repr"></a>
@@ -949,7 +1247,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">init</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@init:Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#inits" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="inits:Iterator[Repr]"></a>
@@ -962,8 +1264,29 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">inits</span><span class="result">: <span class="extype" name="scala.collection.Iterator">Iterator</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@inits:Iterator[Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
+    </li><li name="provingground.Collections.LabelledVector#innerProduct" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="innerProduct(that:provingground.Collections.LabelledVector[L]):Double"></a>
+      <a id="innerProduct(LabelledVector[T]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">innerProduct</span><span class="params">(<span name="that">that: <a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@innerProduct(that:provingground.Collections.LabelledVector[L]):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#isEmpty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isEmpty:Boolean"></a>
       <a id="isEmpty:Boolean"></a>
@@ -975,7 +1298,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">isEmpty</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@isEmpty:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -988,7 +1315,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#isTraversableAgain" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isTraversableAgain:Boolean"></a>
@@ -1001,7 +1332,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">isTraversableAgain</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@isTraversableAgain:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#last" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="last:A"></a>
@@ -1014,7 +1349,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">last</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@last:A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#lastOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lastOption:Option[A]"></a>
@@ -1027,7 +1366,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">lastOption</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@lastOption:Option[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="map[S](f:T=&gt;S):provingground.Collections.FiniteDistribution[S]"></a>
@@ -1040,7 +1383,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">map</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="provingground.Collections.FiniteDistribution.map.S">S</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.map.S">S</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@map[S](f:T=&gt;S):provingground.Collections.FiniteDistribution[S]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">map distribution without normalizing.</p><div class="fullcomment"><div class="comment cmt"><p>map distribution without normalizing.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
     </li><li name="scala.collection.TraversableLike#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1054,7 +1401,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">map</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableLike.map.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.map.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.map.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.map.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@map[B,That](f:A=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike → FilterMonadic</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#max" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="max[B&gt;:A](implicitcmp:Ordering[B]):A"></a>
@@ -1067,7 +1418,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">max</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="scala.collection.TraversableOnce.max.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@max[B&gt;:A](implicitcmp:Ordering[B]):A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#maxBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="maxBy[B](f:A=&gt;B)(implicitcmp:Ordering[B]):A"></a>
@@ -1080,7 +1435,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">maxBy</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.maxBy.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="scala.collection.TraversableOnce.maxBy.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@maxBy[B](f:A=&gt;B)(implicitcmp:Ordering[B]):A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#min" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="min[B&gt;:A](implicitcmp:Ordering[B]):A"></a>
@@ -1093,7 +1452,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">min</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="scala.collection.TraversableOnce.min.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@min[B&gt;:A](implicitcmp:Ordering[B]):A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#minBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="minBy[B](f:A=&gt;B)(implicitcmp:Ordering[B]):A"></a>
@@ -1106,7 +1469,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">minBy</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.minBy.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="scala.collection.TraversableOnce.minBy.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@minBy[B](f:A=&gt;B)(implicitcmp:Ordering[B]):A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#mkString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="mkString:String"></a>
@@ -1119,7 +1486,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">mkString</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@mkString:String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#mkString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="mkString(sep:String):String"></a>
@@ -1132,7 +1503,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">mkString</span><span class="params">(<span name="sep">sep: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@mkString(sep:String):String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#mkString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="mkString(start:String,sep:String,end:String):String"></a>
@@ -1145,7 +1520,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">mkString</span><span class="params">(<span name="start">start: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="sep">sep: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="end">end: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@mkString(start:String,sep:String,end:String):String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -1158,7 +1537,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#newBuilder" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="newBuilder:scala.collection.mutable.Builder[A,CC[A]]"></a>
@@ -1171,7 +1554,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">newBuilder</span><span class="result">: <span class="extype" name="scala.collection.mutable.Builder">Builder</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@newBuilder:scala.collection.mutable.Builder[A,CC[A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>GenericTraversableTemplate → HasNewBuilder</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#next" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="next:T"></a>
@@ -1184,7 +1571,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">next</span><span class="result">: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@next:T" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">next instance of a random variable with the given distribution
 </p><div class="fullcomment"><div class="comment cmt"><p>next instance of a random variable with the given distribution
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$ProbabilityDistribution.html" class="extype" name="provingground.Collections.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
@@ -1199,7 +1590,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">nonEmpty</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@nonEmpty:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#norm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="norm:Double"></a>
@@ -1212,7 +1607,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">norm</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@norm:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">l^1-norm
 </p>
     </li><li name="provingground.Collections.FiniteDistribution#normalized" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -1226,7 +1625,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">normalized</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@normalized(t:Double):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">normalized so all probabilities are positive and the total is 1.</p>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -1239,7 +1642,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -1252,7 +1659,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.collection.Parallelizable#par" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="par:ParRepr"></a>
@@ -1265,7 +1676,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">par</span><span class="result">: <span class="extype" name="scala.collection.parallel.ParIterable">ParIterable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@par:ParRepr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parallelizable</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#parCombiner" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="parCombiner:scala.collection.parallel.Combiner[A,scala.collection.parallel.ParIterable[A]]"></a>
@@ -1278,7 +1693,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">parCombiner</span><span class="result">: <span class="extype" name="scala.collection.parallel.Combiner">Combiner</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.parallel.ParIterable">ParIterable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@parCombiner:scala.collection.parallel.Combiner[A,scala.collection.parallel.ParIterable[A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>TraversableLike → Parallelizable</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#partition" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="partition(p:A=&gt;Boolean):(Repr,Repr)"></a>
@@ -1291,7 +1710,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">partition</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: (<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@partition(p:A=&gt;Boolean):(Repr,Repr)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#pmf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="pmf:Seq[provingground.Collections.Weighted[T]]"></a>
@@ -1304,7 +1727,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">pmf</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@pmf:Seq[provingground.Collections.Weighted[T]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">probability mass function, may have same object split.</p>
     </li><li name="provingground.Collections.FiniteDistribution#posmf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="posmf(t:Double):scala.collection.immutable.Set[provingground.Collections.Weighted[T]]"></a>
@@ -1317,7 +1744,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">posmf</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@posmf(t:Double):scala.collection.immutable.Set[provingground.Collections.Weighted[T]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">objects with positive probability (or bounded below by a threshhold)
 </p>
     </li><li name="provingground.Collections.FiniteDistribution#postotal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -1331,8 +1762,30 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">postotal</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@postotal(t:Double):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">total of the positive weights
+</p>
+    </li><li name="provingground.Collections.FiniteDistribution#prob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="prob(p:T=&gt;Boolean):Double"></a>
+      <a id="prob((T)⇒Boolean):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">prob</span><span class="params">(<span name="p">p: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@prob(p:T=&gt;Boolean):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">probability of elements satisfying a predicate
 </p>
     </li><li name="scala.collection.TraversableOnce#product" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="product[B&gt;:A](implicitnum:Numeric[B]):B"></a>
@@ -1345,7 +1798,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">product</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="num">num: <span class="extype" name="scala.Numeric">Numeric</span>[<span class="extype" name="scala.collection.TraversableOnce.product.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.product.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@product[B&gt;:A](implicitnum:Numeric[B]):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.LabelledArray#proj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="proj(label:L)(arr:provingground.Collections.ArrayMap[L,T])(implicitzero:T):T"></a>
@@ -1358,8 +1815,29 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">proj</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="params">(<span name="arr">arr: <a href="Collections$$ArrayMap.html" class="extype" name="provingground.Collections.ArrayMap">ArrayMap</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="zero">zero: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@proj(label:L)(arr:provingground.Collections.ArrayMap[L,T])(implicitzero:T):T" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#quotient" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="quotient(equiv:(T,T)=&gt;Boolean):provingground.Collections.FiniteDistribution[T]"></a>
+      <a id="quotient((T,T)⇒Boolean):FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">quotient</span><span class="params">(<span name="equiv">equiv: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@quotient(equiv:(T,T)=&gt;Boolean):provingground.Collections.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">quotient by an equivalence relation</p>
     </li><li name="provingground.Collections.FiniteDistribution#rand" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="rand:scala.util.Random"></a>
       <a id="rand:Random"></a>
@@ -1371,7 +1849,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">rand</span><span class="result">: <span class="extype" name="scala.util.Random">Random</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@rand:scala.util.Random" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">random number generator
 </p>
     </li><li name="scala.collection.TraversableOnce#reduce" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1385,7 +1867,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduce</span><span class="tparams">[<span name="A1">A1 &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.reduce.A1">A1</span>, <span class="extype" name="scala.collection.TraversableOnce.reduce.A1">A1</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduce.A1">A1</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.reduce.A1">A1</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduce[A1&gt;:A](op:(A1,A1)=&gt;A1):A1" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reduceLeft" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceLeft[B&gt;:A](op:(B,A)=&gt;B):B"></a>
@@ -1398,7 +1884,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduceLeft</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.reduceLeft.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduceLeft.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.reduceLeft.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduceLeft[B&gt;:A](op:(B,A)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reduceLeftOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceLeftOption[B&gt;:A](op:(B,A)=&gt;B):Option[B]"></a>
@@ -1411,7 +1901,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduceLeftOption</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.reduceLeftOption.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduceLeftOption.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.collection.TraversableOnce.reduceLeftOption.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduceLeftOption[B&gt;:A](op:(B,A)=&gt;B):Option[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reduceOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceOption[A1&gt;:A](op:(A1,A1)=&gt;A1):Option[A1]"></a>
@@ -1424,7 +1918,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduceOption</span><span class="tparams">[<span name="A1">A1 &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableOnce.reduceOption.A1">A1</span>, <span class="extype" name="scala.collection.TraversableOnce.reduceOption.A1">A1</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduceOption.A1">A1</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.collection.TraversableOnce.reduceOption.A1">A1</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduceOption[A1&gt;:A](op:(A1,A1)=&gt;A1):Option[A1]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reduceRight" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceRight[B&gt;:A](op:(A,B)=&gt;B):B"></a>
@@ -1437,7 +1935,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduceRight</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableOnce.reduceRight.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduceRight.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.reduceRight.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduceRight[B&gt;:A](op:(A,B)=&gt;B):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reduceRightOption" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceRightOption[B&gt;:A](op:(A,B)=&gt;B):Option[B]"></a>
@@ -1450,7 +1952,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reduceRightOption</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableOnce.reduceRightOption.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableOnce.reduceRightOption.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.collection.TraversableOnce.reduceRightOption.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reduceRightOption[B&gt;:A](op:(A,B)=&gt;B):Option[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#repr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="repr:Repr"></a>
@@ -1463,7 +1969,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">repr</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@repr:Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#reversed" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reversed:List[A]"></a>
@@ -1476,7 +1986,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">reversed</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@reversed:List[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>TraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#scan" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="scan[B&gt;:A,That](z:B)(op:(B,B)=&gt;B)(implicitcbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -1489,7 +2003,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">scan</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>, <span name="That">That</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableLike.scan.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableLike.scan.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.scan.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableLike.scan.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="cbf">cbf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.scan.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.scan.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.scan.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@scan[B&gt;:A,That](z:B)(op:(B,B)=&gt;B)(implicitcbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#scanLeft" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="scanLeft[B,That](z:B)(op:(B,A)=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -1502,7 +2020,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">scanLeft</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableLike.scanLeft.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.TraversableLike.scanLeft.B">B</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.TraversableLike.scanLeft.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.scanLeft.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.scanLeft.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.scanLeft.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@scanLeft[B,That](z:B)(op:(B,A)=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#scanRight" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="scanRight[B,That](z:B)(op:(A,B)=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That"></a>
@@ -1515,7 +2037,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">scanRight</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.TraversableLike.scanRight.B">B</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableLike.scanRight.B">B</span>) ⇒ <span class="extype" name="scala.collection.TraversableLike.scanRight.B">B</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="bf">bf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.TraversableLike.scanRight.B">B</span>, <span class="extype" name="scala.collection.TraversableLike.scanRight.That">That</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.scanRight.That">That</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@scanRight[B,That](z:B)(op:(A,B)=&gt;B)(implicitbf:scala.collection.generic.CanBuildFrom[Repr,B,That]):That" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd><dt>Annotations</dt><dd>
                 <span class="name">@migration</span>
               
@@ -1531,7 +2057,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">seq</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@seq:Traversable[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Traversable → GenTraversable → Parallelizable → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#size" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="size:Int"></a>
@@ -1544,7 +2074,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">size</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@size:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#slice" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="slice(from:Int,until:Int):Repr"></a>
@@ -1557,7 +2091,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">slice</span><span class="params">(<span name="from">from: <span class="extype" name="scala.Int">Int</span></span>, <span name="until">until: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@slice(from:Int,until:Int):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#span" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="span(p:A=&gt;Boolean):(Repr,Repr)"></a>
@@ -1570,7 +2108,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">span</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: (<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@span(p:A=&gt;Boolean):(Repr,Repr)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#splitAt" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="splitAt(n:Int):(Repr,Repr)"></a>
@@ -1583,7 +2125,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">splitAt</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: (<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@splitAt(n:Int):(Repr,Repr)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#stringPrefix" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="stringPrefix:String"></a>
@@ -1596,8 +2142,29 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">stringPrefix</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@stringPrefix:String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
+    </li><li name="provingground.Collections.LabelledVector#sum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sum:Double"></a>
+      <a id="sum:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sum</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@sum:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a></dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#sum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="sum[B&gt;:A](implicitnum:Numeric[B]):B"></a>
       <a id="sum[B&gt;:Double](Numeric[B]):B"></a>
@@ -1609,7 +2176,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">sum</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="num">num: <span class="extype" name="scala.Numeric">Numeric</span>[<span class="extype" name="scala.collection.TraversableOnce.sum.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableOnce.sum.B">B</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@sum[B&gt;:A](implicitnum:Numeric[B]):B" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#support" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="support:scala.collection.immutable.Set[T]"></a>
@@ -1622,7 +2193,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">support</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@support:scala.collection.immutable.Set[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">support of the distribution.</p><div class="fullcomment"><div class="comment cmt"><p>support of the distribution.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1636,7 +2211,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#tail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="tail:Repr"></a>
@@ -1649,7 +2228,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">tail</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@tail:Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#tails" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="tails:Iterator[Repr]"></a>
@@ -1662,7 +2245,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">tails</span><span class="result">: <span class="extype" name="scala.collection.Iterator">Iterator</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@tails:Iterator[Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#take" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="take(n:Int):Repr"></a>
@@ -1675,7 +2262,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">take</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@take(n:Int):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#takeWhile" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="takeWhile(p:A=&gt;Boolean):Repr"></a>
@@ -1688,7 +2279,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">takeWhile</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@takeWhile(p:A=&gt;Boolean):Repr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#thisCollection" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="thisCollection:Traversable[A]"></a>
@@ -1701,7 +2296,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">thisCollection</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@thisCollection:Traversable[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#to" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="to[Col[_]](implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,A,Col[A@scala.annotation.unchecked.uncheckedVariance]]):Col[A@scala.annotation.unchecked.uncheckedVariance]"></a>
@@ -1714,7 +2313,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">to</span><span class="tparams">[<span name="Col">Col<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cbf">cbf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.TraversableLike.to.Col">Col</span>[<span class="extype" name="scala.Double">Double</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableLike.to.Col">Col</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@to[Col[_]](implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,A,Col[A@scala.annotation.unchecked.uncheckedVariance]]):Col[A@scala.annotation.unchecked.uncheckedVariance]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toArray" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toArray[B&gt;:A](implicitevidence$1:scala.reflect.ClassTag[B]):Array[B]"></a>
@@ -1727,7 +2330,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toArray</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="scala.collection.TraversableOnce.toArray.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.collection.TraversableOnce.toArray.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toArray[B&gt;:A](implicitevidence$1:scala.reflect.ClassTag[B]):Array[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toBuffer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toBuffer[B&gt;:A]:scala.collection.mutable.Buffer[B]"></a>
@@ -1740,7 +2347,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toBuffer</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="result">: <span class="extype" name="scala.collection.mutable.Buffer">Buffer</span>[<span class="extype" name="scala.collection.TraversableOnce.toBuffer.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toBuffer[B&gt;:A]:scala.collection.mutable.Buffer[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#toCollection" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toCollection(repr:Repr):Traversable[A]"></a>
@@ -1753,7 +2364,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toCollection</span><span class="params">(<span name="repr">repr: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toCollection(repr:Repr):Traversable[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toIndexedSeq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toIndexedSeq:scala.collection.immutable.IndexedSeq[A]"></a>
@@ -1766,7 +2381,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toIndexedSeq</span><span class="result">: <span class="extype" name="scala.collection.immutable.IndexedSeq">IndexedSeq</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toIndexedSeq:scala.collection.immutable.IndexedSeq[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toIterable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toIterable:Iterable[A]"></a>
@@ -1779,7 +2398,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toIterable</span><span class="result">: <span class="extype" name="scala.collection.Iterable">Iterable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toIterable:Iterable[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#toIterator" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toIterator:Iterator[A]"></a>
@@ -1792,7 +2415,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toIterator</span><span class="result">: <span class="extype" name="scala.collection.Iterator">Iterator</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toIterator:Iterator[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toList:List[A]"></a>
@@ -1805,7 +2432,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toList</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toList:List[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toMap" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toMap[T,U](implicitev:&lt;:&lt;[A,(T,U)]):scala.collection.immutable.Map[T,U]"></a>
@@ -1818,7 +2449,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toMap</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: <span class="extype" name="scala.Predef.&lt;:&lt;">&lt;:&lt;</span>[<span class="extype" name="scala.Double">Double</span>, (<span class="extype" name="scala.collection.TraversableOnce.toMap.T">T</span>, <span class="extype" name="scala.collection.TraversableOnce.toMap.U">U</span>)]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="scala.collection.TraversableOnce.toMap.T">T</span>, <span class="extype" name="scala.collection.TraversableOnce.toMap.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toMap[T,U](implicitev:&lt;:&lt;[A,(T,U)]):scala.collection.immutable.Map[T,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toSeq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toSeq:Seq[A]"></a>
@@ -1831,7 +2466,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toSeq</span><span class="result">: <span class="extype" name="scala.collection.Seq">Seq</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toSeq:Seq[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toSet[B&gt;:A]:scala.collection.immutable.Set[B]"></a>
@@ -1844,7 +2483,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toSet</span><span class="tparams">[<span name="B">B &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="scala.collection.TraversableOnce.toSet.B">B</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toSet[B&gt;:A]:scala.collection.immutable.Set[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#toStream" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toStream:Stream[A]"></a>
@@ -1857,7 +2500,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toStream</span><span class="result">: <span class="extype" name="scala.Stream">Stream</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toStream:Stream[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → GenTraversableOnce</dd></dl></div>
     </li><li name="provingground.Collections.FiniteDistribution#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -1870,7 +2517,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → TraversableLike → AnyRef → Any</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#toTraversable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toTraversable:Traversable[A]"></a>
@@ -1883,8 +2534,21 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toTraversable</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toTraversable:Traversable[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → TraversableOnce → GenTraversableOnce</dd><dt>Annotations</dt><dd>
+                <span class="name">@deprecatedOverriding</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Enforce contract of toTraversable that if it is Traversable it returns itself.&quot;">...</span>
+    </span>, <span>
+      
+      <span class="symbol">&quot;2.11.0&quot;</span>
+    </span>)</span>
+              
+        </dd></dl></div>
     </li><li name="scala.collection.TraversableOnce#toVector" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toVector:Vector[A]"></a>
       <a id="toVector:Vector[Double]"></a>
@@ -1896,7 +2560,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">toVector</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@toVector:Vector[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableOnce → GenTraversableOnce</dd></dl></div>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#transpose" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="transpose[B](implicitasTraversable:A=&gt;scala.collection.GenTraversableOnce[B]):CC[CC[B]@scala.annotation.unchecked.uncheckedVariance]"></a>
@@ -1909,7 +2577,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">transpose</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="asTraversable">asTraversable: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.collection.GenTraversableOnce">GenTraversableOnce</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.transpose.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.transpose.B">B</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@transpose[B](implicitasTraversable:A=&gt;scala.collection.GenTraversableOnce[B]):CC[CC[B]@scala.annotation.unchecked.uncheckedVariance]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd><dt>Annotations</dt><dd>
                 <span class="name">@migration</span>
               
@@ -1925,7 +2597,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">unzip</span><span class="tparams">[<span name="A1">A1</span>, <span name="A2">A2</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="asPair">asPair: (<span class="extype" name="scala.Double">Double</span>) ⇒ (<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip.A1">A1</span>, <span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip.A2">A2</span>)</span>)</span><span class="result">: (<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip.A1">A1</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip.A2">A2</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@unzip[A1,A2](implicitasPair:A=&gt;(A1,A2)):(CC[A1],CC[A2])" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
     </li><li name="scala.collection.generic.GenericTraversableTemplate#unzip3" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="unzip3[A1,A2,A3](implicitasTriple:A=&gt;(A1,A2,A3)):(CC[A1],CC[A2],CC[A3])"></a>
@@ -1938,7 +2614,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">unzip3</span><span class="tparams">[<span name="A1">A1</span>, <span name="A2">A2</span>, <span name="A3">A3</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="asTriple">asTriple: (<span class="extype" name="scala.Double">Double</span>) ⇒ (<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A1">A1</span>, <span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A2">A2</span>, <span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A3">A3</span>)</span>)</span><span class="result">: (<span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A1">A1</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A2">A2</span>], <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.collection.generic.GenericTraversableTemplate.unzip3.A3">A3</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@unzip3[A1,A2,A3](implicitasTriple:A=&gt;(A1,A2,A3)):(CC[A1],CC[A2],CC[A3])" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenericTraversableTemplate</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#view" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="view(from:Int,until:Int):scala.collection.TraversableView[A,Repr]"></a>
@@ -1951,7 +2631,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">view</span><span class="params">(<span name="from">from: <span class="extype" name="scala.Int">Int</span></span>, <span name="until">until: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.TraversableView">TraversableView</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@view(from:Int,until:Int):scala.collection.TraversableView[A,Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.collection.TraversableLike#view" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="view:scala.collection.TraversableView[A,Repr]"></a>
@@ -1964,7 +2648,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">view</span><span class="result">: <span class="extype" name="scala.collection.TraversableView">TraversableView</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@view:scala.collection.TraversableView[A,Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -1977,7 +2665,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -1996,7 +2688,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -2015,7 +2711,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -2023,6 +2723,25 @@ however values ouside tsupport are ignored.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.Collections.FiniteDistribution#weight" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="weight(equiv:(T,T)=&gt;Boolean)(t:T):Double"></a>
+      <a id="weight((T,T)⇒Boolean)(T):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">weight</span><span class="params">(<span name="equiv">equiv: (<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span name="t">t: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@weight(equiv:(T,T)=&gt;Boolean)(t:T):Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">weights of the quotient distribution, for feedback.</p><div class="fullcomment"><div class="comment cmt"><p>weights of the quotient distribution, for feedback.
+Note that we cannot use equality in the <code>quotient' distribution as quotienting actually involves picking a set.
+</code></p></div></div>
     </li><li name="scala.collection.TraversableLike#withFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="withFilter(p:A=&gt;Boolean):scala.collection.generic.FilterMonadic[A,Repr]"></a>
       <a id="withFilter((Double)⇒Boolean):FilterMonadic[Double,Traversable[Double]]"></a>
@@ -2034,7 +2753,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name">withFilter</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.generic.FilterMonadic">FilterMonadic</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@withFilter(p:A=&gt;Boolean):scala.collection.generic.FilterMonadic[A,Repr]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>TraversableLike → FilterMonadic</dd></dl></div>
     </li></ol>
             </div>
@@ -2043,23 +2766,7 @@ however values ouside tsupport are ignored.
 
         <div id="values" class="values members">
               <h3>Deprecated Value Members</h3>
-              <ol><li name="scala.collection.GenTraversableOnce#/:\" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="/:\[A1&gt;:A](z:A1)(op:(A1,A1)=&gt;A1):A1"></a>
-      <a id="/:\[A1&gt;:Double](A1)((A1,A1)⇒A1):A1"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $div$colon$bslash. Deprecated: (Since version 2.10.0) use fold instead" class="name deprecated">/:\</span><span class="tparams">[<span name="A1">A1 &gt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="params">(<span name="z">z: <span class="extype" name="scala.collection.GenTraversableOnce./:\.A1">A1</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="scala.collection.GenTraversableOnce./:\.A1">A1</span>, <span class="extype" name="scala.collection.GenTraversableOnce./:\.A1">A1</span>) ⇒ <span class="extype" name="scala.collection.GenTraversableOnce./:\.A1">A1</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.GenTraversableOnce./:\.A1">A1</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>GenTraversableOnce</dd><dt>Annotations</dt><dd>
-                <span class="name">@deprecated</span>
-              
-        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 2.10.0)</i> use fold instead</p></dd></dl></div>
-    </li><li name="provingground.Collections.FiniteDistribution#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+              <ol><li name="provingground.Collections.FiniteDistribution#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="get(label:T):Option[Double]"></a>
       <a id="get(T):Option[Double]"></a>
       <h4 class="signature">
@@ -2070,7 +2777,11 @@ however values ouside tsupport are ignored.
       <span class="symbol">
         <span class="name deprecated" title="Deprecated: (Since version 1/8/2014) use getsum or apply">get</span><span class="params">(<span name="label">label: <span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Collections$$FiniteDistribution@get(label:T):Option[Double]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">get weight, not collapsing, unsafe.</p><div class="fullcomment"><div class="comment cmt"><p>get weight, not collapsing, unsafe.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a> → <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a></dd><dt>Annotations</dt><dd>
                 <span class="name">@deprecated</span>
@@ -2089,6 +2800,8 @@ however values ouside tsupport are ignored.
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.Collections.LabelledVector">
+              <h3>Inherited from <a href="Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>]</h3>
             </div><div class="parent" name="provingground.Collections.LabelledArray">
               <h3>Inherited from <a href="Collections$$LabelledArray.html" class="extype" name="provingground.Collections.LabelledArray">LabelledArray</a>[<span class="extype" name="provingground.Collections.FiniteDistribution.T">T</span>, <span class="extype" name="scala.Double">Double</span>]</h3>
             </div><div class="parent" name="scala.collection.Traversable">
@@ -2133,6 +2846,7 @@ however values ouside tsupport are ignored.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

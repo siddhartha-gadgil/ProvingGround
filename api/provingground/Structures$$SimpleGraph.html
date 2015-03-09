@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>SimpleGraph - provingground.Structures.SimpleGraph</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/class_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="Structures$.html" class="extype" name="provingground.Structures">Structures</a></p>
-        <h1>SimpleGraph</h1>
+        <h1>SimpleGraph</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="Structures$.html" class="extype" name="provingground.Structures">package Structures</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -90,7 +100,11 @@
       <span class="symbol">
         <span class="name">SimpleGraph</span><span class="params">(<span name="vertices">vertices: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>, <span name="edgeSet">edgeSet: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@&lt;init&gt;(vertices:Set[V],edgeSet:Set[(V,V)]):provingground.Structures.SimpleGraph[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -102,19 +116,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -125,8 +126,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -138,22 +143,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -164,8 +160,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Structures.Graph#adj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="adj:provingground.Structures.EquivRelation[V]"></a>
       <a id="adj:EquivRelation[V]"></a>
@@ -177,7 +177,11 @@
       <span class="symbol">
         <span class="name">adj</span><span class="result">: <a href="Structures$$EquivRelation.html" class="extype" name="provingground.Structures.EquivRelation">EquivRelation</a>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@adj:provingground.Structures.EquivRelation[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Adjacency as an equivalence relation</p><div class="fullcomment"><div class="comment cmt"><p>Adjacency as an equivalence relation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Structures$$Graph.html" class="extype" name="provingground.Structures.Graph">Graph</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -190,7 +194,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#bar" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="bar(e:(V,V)):(V,V)"></a>
@@ -203,7 +211,11 @@
       <span class="symbol">
         <span class="name">bar</span><span class="params">(<span name="e">e: (<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)</span>)</span><span class="result">: (<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@bar(e:(V,V)):(V,V)" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Orientation reversing on an edge</p><div class="fullcomment"><div class="comment cmt"><p>Orientation reversing on an edge</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$Graph.html" class="extype" name="provingground.Structures.Graph">Graph</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -216,7 +228,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -235,7 +251,11 @@
       <span class="symbol">
         <span class="name">closure</span><span class="params">(<span name="S">S: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@closure(S:Set[V]):scala.collection.immutable.Set[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">The closure of S under directed adjacency</p><div class="fullcomment"><div class="comment cmt"><p>The closure of S under directed adjacency</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#edgeSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="edgeSet:Set[(V,V)]"></a>
@@ -248,7 +268,11 @@
       <span class="symbol">
         <span class="name">edgeSet</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@edgeSet:Set[(V,V)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.Structures.SimpleGraph#edges" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="edges:scala.collection.immutable.Set[(V,V)]"></a>
@@ -261,7 +285,11 @@
       <span class="symbol">
         <span class="name">edges</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[(<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@edges:scala.collection.immutable.Set[(V,V)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Edge set</p><div class="fullcomment"><div class="comment cmt"><p>Edge set</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="provingground.Structures.DiGraph#edgesFrom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="edgesFrom(S:Set[V]):scala.collection.immutable.Set[E]"></a>
@@ -274,7 +302,11 @@
       <span class="symbol">
         <span class="name">edgesFrom</span><span class="params">(<span name="S">S: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[(<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@edgesFrom(S:Set[V]):scala.collection.immutable.Set[E]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Edges beginning with a vertex in S</p><div class="fullcomment"><div class="comment cmt"><p>Edges beginning with a vertex in S</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#edgesSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="edgesSet:Set[(V,V)]"></a>
@@ -287,8 +319,12 @@
       <span class="symbol">
         <span class="name">edgesSet</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$Graph.html" class="extype" name="provingground.Structures.Graph">Graph</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@edgesSet:Set[(V,V)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Pairs of vertices bounding an ege</p><div class="fullcomment"><div class="comment cmt"><p>Pairs of vertices bounding an ege</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$Graph.html" class="extype" name="provingground.Structures.Graph">Graph</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -300,7 +336,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -313,7 +353,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -332,7 +376,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#i" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="i(e:(V,V)):V"></a>
@@ -345,7 +393,11 @@
       <span class="symbol">
         <span class="name">i</span><span class="params">(<span name="e">e: (<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)</span>)</span><span class="result">: <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@i(e:(V,V)):V" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Initial Vertex</p><div class="fullcomment"><div class="comment cmt"><p>Initial Vertex</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -358,7 +410,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -371,7 +427,11 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -384,7 +444,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -397,7 +461,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -410,7 +478,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#t" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="t(e:(V,V)):V"></a>
@@ -423,7 +495,11 @@
       <span class="symbol">
         <span class="name">t</span><span class="params">(<span name="e">e: (<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>, <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>)</span>)</span><span class="result">: <span class="extype" name="provingground.Structures.SimpleGraph.V">V</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@t(e:(V,V)):V" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Terminal vertex</p><div class="fullcomment"><div class="comment cmt"><p>Terminal vertex</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="provingground.Structures.SimpleGraph#vertices" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="vertices:Set[V]"></a>
@@ -436,7 +512,11 @@
       <span class="symbol">
         <span class="name">vertices</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@vertices:Set[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Vertex set</p><div class="fullcomment"><div class="comment cmt"><p>Vertex set</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Structures.SimpleGraph">SimpleGraph</a> → <a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="provingground.Structures.DiGraph#verticesFrom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="verticesFrom(S:Set[V]):scala.collection.immutable.Set[V]"></a>
@@ -449,7 +529,11 @@
       <span class="symbol">
         <span class="name">verticesFrom</span><span class="params">(<span name="S">S: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="provingground.Structures.SimpleGraph.V">V</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@verticesFrom(S:Set[V]):scala.collection.immutable.Set[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Terminal vertices of edges beginning with a vertex in S</p><div class="fullcomment"><div class="comment cmt"><p>Terminal vertices of edges beginning with a vertex in S</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Structures$$DiGraph.html" class="extype" name="provingground.Structures.DiGraph">DiGraph</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -462,7 +546,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -481,7 +569,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -500,7 +592,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Structures$$SimpleGraph@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -549,6 +645,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

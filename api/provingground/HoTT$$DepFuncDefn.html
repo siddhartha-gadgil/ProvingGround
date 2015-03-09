@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>DepFuncDefn - provingground.HoTT.DepFuncDefn</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/class_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a></p>
-        <h1>DepFuncDefn</h1>
+        <h1>DepFuncDefn</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="HoTT$.html" class="extype" name="provingground.HoTT">package HoTT</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,13 +45,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">DepFuncDefn</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>]</span><span class="params">(<span name="func">func: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="fibers">fibers: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.FuncObj[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$31">evidence$31: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="evidence$32">evidence$32: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">DepFuncDefn</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>]</span><span class="params">(<span name="func">func: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="fibers">fibers: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A dependent function given by a scala funcion</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>], <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>], (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>], <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>], (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.HoTT.DepFuncDefn"><span>DepFuncDefn</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.DepFuncObj"><span>DepFuncObj</span></li><li class="in" name="provingground.HoTT.FuncTerm"><span>FuncTerm</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.HoTT.DepFuncDefn"><span>DepFuncDefn</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.DepFunc"><span>DepFunc</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -80,7 +90,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.HoTT.DepFuncDefn#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(func:W=&gt;U,dom:provingground.HoTT.Typ[W],fibers:provingground.HoTT.TypFamily[W,U])(implicitevidence$31:reflect.runtime.universe.TypeTag[W],implicitevidence$32:reflect.runtime.universe.TypeTag[U]):provingground.HoTT.DepFuncDefn[W,U]"></a>
+      <a id="&lt;init&gt;(func:W=&gt;U,dom:provingground.HoTT.Typ[W],fibers:provingground.HoTT.TypFamily[W,U]):provingground.HoTT.DepFuncDefn[W,U]"></a>
       <a id="&lt;init&gt;:DepFuncDefn[W,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,16 +98,20 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DepFuncDefn</span><span class="params">(<span name="func">func: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="fibers">fibers: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.FuncObj[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span>
+        <span class="name">DepFuncDefn</span><span class="params">(<span name="func">func: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="fibers">fibers: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@&lt;init&gt;(func:W=&gt;U,dom:provingground.HoTT.Typ[W],fibers:provingground.HoTT.TypFamily[W,U]):provingground.HoTT.DepFuncDefn[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.HoTT.DepFuncObj.Cod" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+              <ol><li name="provingground.HoTT.DepFunc.Cod" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Cod=U"></a>
       <a id="Cod:Cod"></a>
       <h4 class="signature">
@@ -108,9 +122,13 @@
       <span class="symbol">
         <span class="name">Cod</span><span class="result"> = <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a></dd></dl></div>
-    </li><li name="provingground.HoTT.DepFuncObj.D" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@Cod=U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a></dd></dl></div>
+    </li><li name="provingground.HoTT.DepFunc.D" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="D=W"></a>
       <a id="D:D"></a>
       <h4 class="signature">
@@ -121,10 +139,14 @@
       <span class="symbol">
         <span class="name">D</span><span class="result"> = <span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a></dd></dl></div>
-    </li><li name="provingground.HoTT.FuncTerm.Obj" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Obj&lt;:provingground.HoTT.FuncTerm[W,U]"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@D=W" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a></dd></dl></div>
+    </li><li name="provingground.HoTT.FuncLike.Obj" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="Obj&lt;:provingground.HoTT.FuncLike[W,U]"></a>
       <a id="Obj:Obj"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -132,10 +154,14 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Obj</span><span class="result"> &lt;: <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
+        <span class="name">Obj</span><span class="result"> &lt;: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@Obj&lt;:provingground.HoTT.FuncLike[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -144,19 +170,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -167,8 +180,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -180,22 +197,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -206,34 +214,29 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.HoTT.DepFuncDefn#act" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="act(arg:W):Option[U]"></a>
-      <a id="act(W):Option[U]"></a>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT.DepFuncDefn#act" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="act(arg:W):U"></a>
+      <a id="act(W):U"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">act</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
+        <span class="name">act</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
       </span>
-      </h4>
-      
-    </li><li name="provingground.HoTT.DepFuncDefn#action" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="action(arg:DepFuncDefn.this.fibers.dom.Obj):U"></a>
-      <a id="action(Typ.Obj):U"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">action</span><span class="params">(<span name="arg">arg: <a href="HoTT$$Typ.html#Obj&lt;:Uwithprovingground.HoTT.Subs[U]" class="extmbr" name="provingground.HoTT.Typ.Obj">Typ.Obj</a></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@act(arg:W):U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.Function1#andThen" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a>
       <a id="andThen[A]((U)⇒A):(W)⇒A"></a>
@@ -245,12 +248,16 @@
       <span class="symbol">
         <span class="name">andThen</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>)</span><span class="result">: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@andThen[A](g:R=&gt;A):T1=&gt;A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.HoTT.DepFuncObj#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.FuncLike#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(arg:W):U"></a>
       <a id="apply(W):U"></a>
       <h4 class="signature">
@@ -261,8 +268,12 @@
       <span class="symbol">
         <span class="name">apply</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a> → Function1</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@apply(arg:W):U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → Function1</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -274,7 +285,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -287,7 +302,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -295,19 +314,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.HoTT.DepFuncDefn#codomobjtpe" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="codomobjtpe:reflect.runtime.universe.Type"></a>
-      <a id="codomobjtpe:scala.reflect.api.JavaUniverse.Type"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">codomobjtpe</span><span class="result">: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
     </li><li name="scala.Function1#compose" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a>
       <a id="compose[A]((A)⇒W):(A)⇒U"></a>
@@ -319,7 +325,11 @@
       <span class="symbol">
         <span class="name">compose</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span></span>)</span><span class="result">: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@compose[A](g:A=&gt;T1):A=&gt;R" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
@@ -335,8 +345,31 @@
       <span class="symbol">
         <span class="name">depcodom</span><span class="result">: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@depcodom:W=&gt;provingground.HoTT.Typ[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Term#dependsOn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dependsOn(that:provingground.HoTT.Term):Boolean"></a>
+      <a id="dependsOn(Term):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dependsOn</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@dependsOn(that:provingground.HoTT.Term):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns whether this depends on that
+</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this depends on that
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.DepFuncDefn#dom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dom:provingground.HoTT.Typ[W]"></a>
       <a id="dom:Typ[W]"></a>
@@ -348,21 +381,12 @@
       <span class="symbol">
         <span class="name">dom</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
-    </li><li name="provingground.HoTT.DepFuncDefn#domobjtpe" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="domobjtpe:reflect.runtime.universe.Type"></a>
-      <a id="domobjtpe:scala.reflect.api.JavaUniverse.Type"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">domobjtpe</span><span class="result">: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@dom:provingground.HoTT.Typ[W]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -374,7 +398,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.HoTT.DepFuncDefn#fibers" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fibers:provingground.HoTT.TypFamily[W,U]"></a>
@@ -385,10 +413,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">fibers</span><span class="result">: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.FuncObj[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
+        <span class="name">fibers</span><span class="result">: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Term,+U&lt;:provingground.HoTT.Term]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@fibers:provingground.HoTT.TypFamily[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -400,7 +432,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -419,7 +455,11 @@
       <span class="symbol">
         <span class="name">func</span><span class="result">: (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@func:W=&gt;U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
@@ -432,8 +472,30 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a>
+      <a id="indepOf(Term):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">indepOf</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@indepOf(that:provingground.HoTT.Term):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns whether this is independent of that.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this is independent of that.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -445,7 +507,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -458,8 +524,29 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT.DepFuncDefn#newobj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newobj:provingground.HoTT.FuncLike[W,U]"></a>
+      <a id="newobj:FuncLike[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newobj</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@newobj:provingground.HoTT.FuncLike[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -471,7 +558,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -484,8 +575,33 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT.Subs#replace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a>
+      <a id="replace(Term,Term):FuncLike[W,U]withSubs[FuncLike[W,U]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">replace</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">refine substitution so if x and y are both abstract pairs with independent components (for x),
+both components are substituted.</p><div class="fullcomment"><div class="comment cmt"><p>refine substitution so if x and y are both abstract pairs with independent components (for x),
+both components are substituted.
+testing for types also done.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="provingground.HoTT.DepFuncDefn#subs" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.DepFuncDefn[W,U]"></a>
       <a id="subs(Term,Term):DepFuncDefn[W,U]"></a>
@@ -497,8 +613,13 @@
       <span class="symbol">
         <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.DepFuncDefn[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> substitute x by y.</p><div class="fullcomment"><div class="comment cmt"><p> substitute x by y.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -510,7 +631,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.Function1#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -523,7 +648,11 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.DepFuncDefn#typ" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typ:provingground.HoTT.PiTyp[W,U]"></a>
@@ -536,8 +665,14 @@
       <span class="symbol">
         <span class="name">typ</span><span class="result">: <a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@typ:provingground.HoTT.PiTyp[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Gives limited information on types when the types are universes, so should not be used in this case.</p><div class="fullcomment"><div class="comment cmt"><p>Gives limited information on types when the types are universes, so should not be used in this case.
+So avoid making this judgement.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -549,7 +684,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -568,7 +707,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -587,7 +730,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$DepFuncDefn@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -612,16 +759,16 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="provingground.HoTT.DepFuncObj">
-              <h3>Inherited from <a href="HoTT$$DepFuncObj.html" class="extype" name="provingground.HoTT.DepFuncObj">DepFuncObj</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</h3>
-            </div><div class="parent" name="provingground.HoTT.FuncTerm">
-              <h3>Inherited from <a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</h3>
+            </div><div class="parent" name="provingground.HoTT.DepFunc">
+              <h3>Inherited from <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</h3>
+            </div><div class="parent" name="provingground.HoTT.FuncLike">
+              <h3>Inherited from <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</h3>
             </div><div class="parent" name="scala.Function1">
               <h3>Inherited from (<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span></h3>
             </div><div class="parent" name="provingground.HoTT.Term">
               <h3>Inherited from <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></h3>
             </div><div class="parent" name="provingground.HoTT.Subs">
-              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTerm.html" class="extype" name="provingground.HoTT.FuncTerm">FuncTerm</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]]</h3>
+              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -642,6 +789,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>

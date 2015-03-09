@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>AgdaExpressions - provingground.AgdaExpressions</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,13 @@
       <div id="definition">
         <img src="../lib/object_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
-        <h1>AgdaExpressions</h1>
+        <h1>AgdaExpressions</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -84,7 +94,7 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.AgdaExpressions.AgdaParse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.AgdaExpressions.AgdaParse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AgdaParseextendsJavaTokenParsers"></a>
       <a id="AgdaParse:AgdaParse"></a>
       <h4 class="signature">
@@ -95,8 +105,14 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$AgdaParse.html"><span class="name">AgdaParse</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Parses an agda expression.</p>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@AgdaParseextendsJavaTokenParsers" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Parses an agda expression.</p><div class="fullcomment"><div class="comment cmt"><p>Parses an agda expression.
+following scala, we first look for a valid expression without including line breaks, then include line breaks.</p><p>tokens cannot contain whitespaces or parenthesis, and also cannot be reserved words/symbols.</p><p>parses expressions, defns, data statements.</p><p>have helpers for space, whitespace, end of paragraph, to mapsto etc.
+</p></div></div>
     </li><li name="provingground.AgdaExpressions.AgdaPatternParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AgdaPatternParserextendsJavaTokenParsers"></a>
       <a id="AgdaPatternParser:AgdaPatternParser"></a>
@@ -108,7 +124,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$AgdaPatternParser.html"><span class="name">AgdaPatternParser</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@AgdaPatternParserextendsJavaTokenParsers" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.AgdaExpressions.Apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ApplyextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
@@ -121,8 +141,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Apply.html"><span class="name">Apply</span></a><span class="params">(<span name="func">func: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="arg">arg: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">expression func(arg)
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@ApplyextendsAgdaExpressions.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression func(arg)
 </p>
     </li><li name="provingground.AgdaExpressions.Arrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable"></a>
@@ -135,8 +159,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Arrow.html"><span class="name">Arrow</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">expression for A -&gt; B
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@ArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression for A -&gt; B
 </p>
     </li><li name="provingground.AgdaExpressions.DepArrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DepArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable"></a>
@@ -149,8 +177,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$DepArrow.html"><span class="name">DepArrow</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$TypedVar.html" class="extype" name="provingground.AgdaExpressions.TypedVar">TypedVar</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">expression for pi-type
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@DepArrowextendsAgdaExpressions.TypExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression for pi-type
 </p>
     </li><li name="provingground.AgdaExpressions.Equality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="EqualityextendsAgdaExpressions.StatementwithProductwithSerializable"></a>
@@ -163,8 +195,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Equality.html"><span class="name">Equality</span></a><span class="params">(<span name="lhs">lhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>, <span name="rhs">rhs: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Statement.html" class="extype" name="provingground.AgdaExpressions.Statement">Statement</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Expression a = b
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@EqualityextendsAgdaExpressions.StatementwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Expression a = b
 </p>
     </li><li name="provingground.AgdaExpressions.Expression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExpressionextendsAnyRef"></a>
@@ -177,8 +213,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Expression.html"><span class="name">Expression</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">All Expressions, but not statements or blocks
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@ExpressionextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">All Expressions, but not statements or blocks
 </p>
     </li><li name="provingground.AgdaExpressions.LambdaExp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LambdaExpextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
@@ -191,8 +231,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$LambdaExp.html"><span class="name">LambdaExp</span></a><span class="params">(<span name="x">x: <a href="AgdaExpressions$$TypedVar.html" class="extype" name="provingground.AgdaExpressions.TypedVar">TypedVar</a></span>, <span name="y">y: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">LambdaExpression maps to a lambda
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@LambdaExpextendsAgdaExpressions.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">LambdaExpression maps to a lambda
 </p>
     </li><li name="provingground.AgdaExpressions.Statement" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="StatementextendsAnyRef"></a>
@@ -205,7 +249,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Statement.html"><span class="name">Statement</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@StatementextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.AgdaExpressions.Token" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TokenextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
@@ -218,8 +266,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$Token.html"><span class="name">Token</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">token
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@TokenextendsAgdaExpressions.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">token
 </p>
     </li><li name="provingground.AgdaExpressions.TypExpression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="TypExpressionextendsAgdaExpressions.Expression"></a>
@@ -232,7 +284,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$TypExpression.html"><span class="name">TypExpression</span></a><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@TypExpressionextendsAgdaExpressions.Expression" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.AgdaExpressions.TypedVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TypedVarextendsAgdaExpressions.ExpressionwithProductwithSerializable"></a>
@@ -245,8 +301,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$TypedVar.html"><span class="name">TypedVar</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a></span>)</span><span class="result"> extends <a href="AgdaExpressions$$Expression.html" class="extype" name="provingground.AgdaExpressions.Expression">Expression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Symbolic variable with given type
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@TypedVarextendsAgdaExpressions.ExpressionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbolic variable with given type
 </p>
     </li></ol>
             </div>
@@ -256,19 +316,6 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -279,8 +326,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -292,22 +343,13 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -318,8 +360,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.AgdaExpressions.U" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="U"></a>
       <a id="U:U"></a>
@@ -331,8 +377,12 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <a href="AgdaExpressions$$U$.html"><span class="name">U</span></a><span class="result"> extends <a href="AgdaExpressions$$TypExpression.html" class="extype" name="provingground.AgdaExpressions.TypExpression">TypExpression</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">the first universe
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the first universe
 </p>
     </li><li name="provingground.AgdaExpressions#applyterm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="applyterm(f:provingground.HoTT.Term,arg:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a>
@@ -345,7 +395,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">applyterm</span><span class="params">(<span name="f">f: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@applyterm(f:provingground.HoTT.Term,arg:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">apply function to term if legal
 </p>
     </li><li name="provingground.AgdaExpressions#arrowtyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -359,7 +413,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">arrowtyp</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@arrowtyp(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Option[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">try to interpret as A -&gt; B
 </p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -373,7 +431,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.AgdaExpressions#blnkline" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="blnkline:String"></a>
@@ -386,7 +448,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">blnkline</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@blnkline:String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -399,7 +465,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -418,7 +488,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -431,7 +505,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -444,7 +522,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -463,7 +545,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -476,7 +562,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -489,7 +579,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -502,7 +596,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -515,7 +613,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -528,7 +630,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.AgdaExpressions#pityp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="pityp(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Option[provingground.HoTT.PiTyp[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
@@ -541,7 +647,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">pityp</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@pityp(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Option[provingground.HoTT.PiTyp[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">try to interpret as pi-type
 </p>
     </li><li name="provingground.AgdaExpressions#splitblocks" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -555,7 +665,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">splitblocks</span><span class="params">(<span name="code">code: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.String">String</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@splitblocks(code:String):Array[String]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="provingground.AgdaExpressions#symbterm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="symbterm(name:String,tp:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a>
@@ -568,7 +682,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">symbterm</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="tp">tp: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@symbterm(name:String,tp:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Symbolic term of given type if tp is a type.</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -581,7 +699,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -594,7 +716,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -607,7 +733,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -626,7 +756,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -645,7 +779,11 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.AgdaExpressions$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -682,6 +820,7 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>
