@@ -1,3 +1,5 @@
+package provingground
+
 import provingground.HoTT._
 import provingground.Contexts._
 import scala.util._

@@ -64,7 +64,7 @@ object HoTT{
 	 * specify result of substitution, typically so a class is closed under substitution.
 	 */
     trait Subs[+U <: Term]{
-      /** 
+      /**
        *  substitute x by y.
        */
       def subs(x: Term, y: Term) : U with Subs[U]
@@ -72,7 +72,7 @@ object HoTT{
       /**
        * refine substitution so if x and y are both abstract pairs with independent components (for x),
        * both components are substituted.
-       * testing for types also done. 
+       * testing for types also done.
        */
       def replace(x: Term, y: Term) : U with Subs[U] = {
         assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
@@ -102,7 +102,7 @@ object HoTT{
     /** HoTT Type;
      *  The compiler knows that objects have scala-type extending U.
      *  In particular, we can specify that the objects are types, functions, dependent functions etc.
-     *  @typparam U bound on onjects with this as type.
+     *  @tparam U bound on onjects with this as type.
      */
     trait Typ[+U <: Term] extends Term with Subs[Typ[U]]{
     	/** scala type of objects with this HoTT-type */
@@ -219,7 +219,7 @@ object HoTT{
       case _ => false
     }
 
-    /** 
+    /**
      *  symbolic objects that are Terms but no more refined
      *  ie, not pairs, formal functions etc.
      *  */
@@ -254,7 +254,7 @@ object HoTT{
     }
 
     /** Symbolic types, which the compiler knows are types.
-     *  
+     *
      */
     case class SymbTyp(name: AnySym) extends Typ[Term] with Symbolic{
       lazy val typ = Universe(0)
@@ -314,7 +314,7 @@ object HoTT{
 	 */
 	case object Unit extends SmallTyp
 
-  /** 
+  /**
    *  the object in the Unit type
    */
 	case object Star extends AtomicTerm{
@@ -323,17 +323,17 @@ object HoTT{
 
     val One = Unit
 
-    /** 
+    /**
      *  Symbol for map 0 -> A
      */
   case object vacuous extends AnySym
-  
+
   /**
    * Map from 0 to A.
    */
   def fromZero[U <: Term](codom: Typ[U]) = (Zero ->: codom).symbObj(vacuous)
-    
-  /*  
+
+  /*
 	case class fromZero[U<: Term](codom: Typ[U]) extends AtomicTerm{
       lazy val typ = Zero ->: codom
     }
@@ -368,15 +368,15 @@ object HoTT{
       case _ => 0
     }
 
-    
+
     /**
      * The first universe
      */
     val __ = Universe(0)
-    
 
 
-    
+
+
 
 
 
@@ -498,6 +498,19 @@ object HoTT{
      */
     case class ApplnSym[W <: Term, U <: Term](func : FuncLike[W, U], arg : W) extends AnySym{
       override def toString = func.toString + "("+ arg.toString +")"
+    }
+    
+    class LazyApplnSym[W <: Term, U <: Term](_func: => FuncLike[W, U], val proxyFunc:AnySym, val arg: W) extends AnySym{
+      override def toString = proxyFunc.toString + "("+ arg.toString +")"
+      
+      lazy val func = _func
+      
+      override def hashCode : Int = 41 * (41 + proxyFunc.hashCode) + arg.hashCode()
+      
+      override def equals(that: Any) = that match{
+        case fx : LazyApplnSym[_, _] => proxyFunc == fx.proxyFunc && arg == fx.arg
+        case _ => false
+      }
     }
 
 
@@ -774,7 +787,7 @@ object HoTT{
 	 * lambda constructor for fixed codomain
 	 */
 	def lmbda[U<: Term with Subs[U], V <: Term with Subs[V]](variable: U)(value : V) : Func[U, V] = {
-    assert(value.typ.indepOf(variable), 
+    assert(value.typ.indepOf(variable),
         s"lambda returns function type but value $value has type ${value.typ} depending on variable $variable")
 		val newvar = variable.newobj
 	    LambdaFixed(newvar, value.replace(variable, newvar))

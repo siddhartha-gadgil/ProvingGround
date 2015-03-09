@@ -11,8 +11,8 @@ object ScalaRep {
 	/**
 	 * Representation by a scala object of a HoTT term
 	 *
-	 * @typeparam U the HoTT type represented
-	 * @typeparam V scala type representing the given object.
+	 * @tparam U the HoTT type represented
+	 * @tparam V scala type representing the given object.
 	 */
   trait ScalaRep[+U <: Term, V]{
     /**
