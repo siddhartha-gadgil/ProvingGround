@@ -152,7 +152,7 @@ object Recursion{
   /**
    * change in contexts given a type-pattern and a variable name.
    */
-  private type Change[V <: Term] = (AnySym, FmlyPtn[Term, Term]{type Cod = Term}, Context[Term, V]) => Context[Term, V]
+  private type Change[V <: Term with Subs[V]] = (AnySym, FmlyPtn[Term, Term]{type Cod = Term}, Context[Term, V]) => Context[Term, V]
 
   /**
    * Returns the context for a poly-pattern given change in context for a type-pattern.
@@ -163,24 +163,24 @@ object Recursion{
    * 
    * 
    */
-  def cnstrContext[V<: Term](
+  def cnstrContext[V<: Term with Subs[V]](
       ptn : ConstructorPtn, varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
       case IdW => ctx // the final co-domain. We have just this for constant constructors.
 //      case _ : ConstructorPatterns.Id => ctx
-      case FuncPtn(tail, head) => 
-        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
-        change(varnames.head, tail, headctx)
+//      case FuncPtn(tail, head) => 
+//        val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
+//        change(varnames.head, tail, headctx)
       case CnstFncPtn(tail , head) =>
         val x = tail.symbObj(varnames.head)
         val headctx = cnstrContext(head, varnames.tail, W, change)(ctx)
         x /: headctx
-      case DepFuncPtn(tail, headfibre , _) =>
-        val x : Term = tail(W).symbObj(varnames.head)
-        val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
-        change(varnames.head, tail, headctx)
+ //     case DepFuncPtn(tail, headfibre , _) =>
+ //       val x : Term = tail(W).symbObj(varnames.head)
+ //       val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
+ //       change(varnames.head, tail, headctx)
       case CnstDepFuncPtn(tail, headfibre , _) =>
         val x = tail.symbObj(varnames.head)
         val headctx = cnstrContext(headfibre(x), varnames.tail, W, change)(ctx)
@@ -213,7 +213,7 @@ object Recursion{
   /**
    *  context for recursive definition for a constructor.
    */
-  def cnstrRecContext[V<: Term](f : => (FuncLike[Term, Term]),
+  def cnstrRecContext[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
       ptn : ConstructorPtn, varnames : List[AnySym],
       W : Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
@@ -224,7 +224,7 @@ object Recursion{
   /**
    *  context for inductive definition for a constructor.
    */
-  def cnstrIndContext[V<: Term, U <: Term](f : => (FuncLike[Term, Term]),
+  def cnstrIndContext[V<: Term with Subs[V], U <: Term](f : => (FuncLike[Term, Term]),
       ptn : ConstructorPtn{type ConstructorType = U}, varnames : List[AnySym],
       W : Typ[V],
       Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {

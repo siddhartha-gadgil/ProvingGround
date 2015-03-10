@@ -32,7 +32,7 @@ object ConstructorPatterns {
     /**
      * Type of codomain X
      */
-    type Cod <:  Term
+    type Cod <:  Term with Subs[Cod]
 
     /**
      * changes codomain and propagates changes to other types.
@@ -80,6 +80,10 @@ object ConstructorPatterns {
      */
     def recDef(cons: ConstructorType, data: RecDataType, f :  => Func[Term, Cod]): Term => Option[Cod]
 
+ //   def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) = {
+ //     val a = "a" :: f.dom
+//      lmbda(a)((recDef(cons, data, f)(a)).getOrElse(f(a)))
+//    }
     /**
      * invokes [[recDom]] after changing codomain type.
      */
@@ -214,7 +218,7 @@ object ConstructorPatterns {
   /**
    * Extending a constructor-pattern by a type pattern.
    */
-  case class FuncPtn[C <: Term](tail: FmlyPtn[Term, C], head : ConstructorPtn{type Cod = C}) extends RecursiveConstructorPtn{self =>
+  case class FuncPtn[C <: Term with Subs[C]](tail: FmlyPtn[Term, C], head : ConstructorPtn{type Cod = C}) extends RecursiveConstructorPtn{self =>
     type ArgType = tail.FamilyType
 
     type HeadType = head.ConstructorType
@@ -297,7 +301,7 @@ object ConstructorPatterns {
    * Dependent extension of a poly-pattern by a type pattern.
    * XXX this may never be applicable
    */
-  case class DepFuncPtn[U <: Term, V <: Term, W <: Term, C <: Term](tail: FmlyPtn[Term, C],
+  case class DepFuncPtn[U <: Term, V <: Term, W <: Term, C <: Term with Subs[C]](tail: FmlyPtn[Term, C],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C}),
       headlevel: Int = 0)/*(implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
     type ArgType = tail.FamilyType
@@ -350,7 +354,7 @@ object ConstructorPatterns {
   /**
    * Dependent extension by a constant type  of a constructor-pattern depending on elements of that type.
    */
-  case class CnstDepFuncPtn[U <: Term, V <: Term, C <: Term](tail: Typ[Term],
+  case class CnstDepFuncPtn[U <: Term, V <: Term, C <: Term with Subs[C]](tail: Typ[Term],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U;
       type RecDataType = V; type Cod = C}), headlevel: Int = 0)/*(
       implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
