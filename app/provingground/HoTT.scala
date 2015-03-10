@@ -500,10 +500,14 @@ object HoTT{
       override def toString = func.toString + "("+ arg.toString +")"
     }
     
+    /*
+    
     class LazyApplnSym[W <: Term, U <: Term](_func: => FuncLike[W, U], val proxyFunc:AnySym, val arg: W) extends AnySym{
       override def toString = proxyFunc.toString + "("+ arg.toString +")"
       
       lazy val func = _func
+      
+      def reapply(w: W) = func(w)
       
       override def hashCode : Int = 41 * (41 + proxyFunc.hashCode) + arg.hashCode()
       
@@ -512,7 +516,7 @@ object HoTT{
         case _ => false
       }
     }
-
+*/
 
     /*
      * Pattern matching for a formal application.
@@ -685,6 +689,50 @@ object HoTT{
 	    case _ => false
 	  }
 	}
+  
+  class LazyLambda[X<: Term, Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
+    LambdaLike(variable, value){
+
+    lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
+
+    lazy val dep = value dependsOn variable
+
+    def newobj = new LazyLambda(variable.newobj, value.newobj)
+
+    override def subs(x: Term, y: Term) = (x, y) match {
+        case (u : Typ[_], v : Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
+          val newvar = changeTyp(variable, variable.typ.replace(u, v))
+          new LazyLambda(newvar , value.replace(x,y))
+        case _ =>
+          val newvar = variable.newobj
+          val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
+          new LazyLambda(variable, newval)
+      }
+  }
+  
+    class LazyLambdaFixed[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
+    LambdaLike(variable, value) with Func[X, Y] with Subs[LazyLambdaFixed[X, Y]]{
+
+//    lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
+
+    override val dom = variable.typ.asInstanceOf[Typ[X]]
+    
+    lazy val codom = value.typ.asInstanceOf[Typ[Y]]
+      
+    lazy val dep = value dependsOn variable
+
+    def newobj = new LazyLambdaFixed(variable.newobj, value.newobj)
+
+    override def subs(x: Term, y: Term) :LazyLambdaFixed[X, Y] = (x, y) match {
+        case (u : Typ[_], v : Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
+          val newvar = changeTyp(variable, variable.typ.replace(u, v))
+          new LazyLambdaFixed[X, Y](newvar.asInstanceOf[X], value.replace(x,y))
+        case _ =>
+          val newvar = variable.newobj
+          val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
+          new LazyLambdaFixed[X, Y](variable, newval)
+      }
+  }
 
 	// XXX replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
 	/**
@@ -703,6 +751,7 @@ object HoTT{
 	    case _ => false
 	  }
 
+  
 
 		def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 

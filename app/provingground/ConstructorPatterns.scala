@@ -450,6 +450,8 @@ object ConstructorPatterns {
 
   /**
    * rec(W)(X) is the value, defined recursively. 
+   * @tparam C codomain (scala) type
+   * @tparam F full type of rec
    */
   trait RecFunction[C<: Term, F <: Term with Subs[F]]{self =>
     /**
@@ -487,27 +489,33 @@ object ConstructorPatterns {
     lazy val value : FullType = recursion(value)
   }
 
-
+/*
   case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
     override def toString = s"rec($W)($X)"
   }
+ */
   
   /**
    * container for rec(W)(X) in the case of no constructors.
    * rec(W)(X) is defined to be formal application of itself.
-   * warning: may cause infinite loops as ApplnSym is called by value.
+   * Lazy lambda used to avoid infinite loops.
    */
   case class RecTail[C <: Term with Subs[C]](W: Typ[Term], X : Typ[C]) extends RecFunction[C, Func[Term, C]]{
     private lazy val a = "a" :: W
 
-    def recursion(f: => FullType) = lmbda(a)(X.symbObj(new LazyApplnSym(f, RecProxy[C](W, X), a)))
+    def recursion(f: => FullType) = new LazyLambdaFixed(a, X.symbObj(ApplnSym(f, a)))
 
     def extendOption(caseFn: Term => Option[C]) = (g : Func[Term, C]) => {
       lmbda(a)(caseFn(a).getOrElse(g(a)))
-//      FuncDefn((w: Term) => caseFn(w).getOrElse(g(w)), W, X)
     }
   }
 
+  /**
+   * cons for recursion function, i.e., adding a new constructor
+   * @param dom domain
+   * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern 
+   * @param tail previously added constructors
+   */
   case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C], F <: Term with Subs[F]](
       dom: Typ[D],
       caseFn : Func[D, F] => D => Term => Option[C],
