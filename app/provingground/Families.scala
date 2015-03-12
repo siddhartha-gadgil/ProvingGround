@@ -294,7 +294,15 @@ object Families {
   trait Member[O <: Term, C <: Term]{self =>
 //    type Cod <: Term
     
-    val fmlyPtn : FmlyPtn[O, C]
+    val fmlyPtn : FmlyPtn[O, C]{type FamilyType = self.FamilyType; 
+      type TargetType = self.TargetType; 
+      type DepTargetType = self.DepTargetType}
+    
+    type FamilyType <: Term with Subs[FamilyType]
+    
+    type TargetType <: Term with Subs[TargetType]
+    
+    type DepTargetType <: Term with Subs[DepTargetType]
     
     val typ: Typ[O]
     
@@ -306,35 +314,45 @@ object Families {
   case class JustMember[O <: Term with Subs[O], C <: Term with Subs[C]](value: O, typ: Typ[O]) extends Member[O, C]{
     lazy val fmlyPtn = IdFmlyPtn[O, C]
     type Cod = Term
+    
+    type FamilyType =  O
+    
+    type TargetType = C
+    
+    type DepTargetType = C
   }
   
   
-  /*
+  
   case class FuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
-      tail : Typ[Term], arg: Term, headfibre : Term => Member[O, C]){
+      tail : Typ[Term], arg: Term, 
+      headfibre : Term => Member[O, C]{type FamilyType = V; 
+        type TargetType = T; 
+        type DepTargetType = D}
+      ){
     lazy val fmlyPtn = FuncFmlyPtn(tail, headfibre(arg).fmlyPtn)
    
     lazy val typ = FuncTyp(tail, headfibre(arg).typ) 
    
-    val value = headfibre(arg).value
+    lazy val value = headfibre(arg).value
   }
-  
-  
   
   case class DepFuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
       tail : Typ[Term], arg: Term, 
-      headfibre : Term => (Member[V, T, D, O, C])){
-    val x = "x" :: tail
+      headfibre : Term => Member[O, C]{type FamilyType = V; 
+        type TargetType = T; 
+        type DepTargetType = D}
+      ){
+    private val x = "x" :: tail
     
-    type Cod = C
-    
-    lazy val fmlyPtn = DepFuncFmlyPtn(tail, (x: Term) => headfibre(x).fmlyPtn)
+    lazy val fmlyPtn = DepFuncFmlyPtn[V, T, D, O, C](tail, (a: Term) => headfibre(a).fmlyPtn)
    
-    
     lazy val fibre = lmbda(x)(headfibre(x).typ)
     
-    lazy val typ = PiTyp(fibre) 
+    lazy val typ = PiTyp(fibre)  
    
-    val value = headfibre(arg).value
-  }*/
+    lazy val value = headfibre(arg).value
+  }
+  
+
 }

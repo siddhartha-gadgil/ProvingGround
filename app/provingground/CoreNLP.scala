@@ -32,6 +32,8 @@ object CoreNLP{
 			new StanfordCoreNLP(props)
 			}
 
+    implicit lazy val pipe = newPipe
+    
 		def annotatedDoc(text: String, pipe: StanfordCoreNLP) ={
 			val document = new Annotation(text)
 			pipe.annotate(document)
@@ -49,7 +51,7 @@ object CoreNLP{
 			dependencyIterable map ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
 			}
 
-		def proseTrees(text: String, pipe: StanfordCoreNLP) = {
+		def proseTrees(text: String)(implicit pipe: StanfordCoreNLP) = {
 			for (sentence<-sentences(annotatedDoc(text, pipe))) yield {
 				 new ProseTree(depRelIterable(sentence).toList)
 				}
@@ -121,7 +123,7 @@ object CoreNLP{
 //    Map<Integer, CorefChain> graph = 
 //      document.get(CorefChainAnnotation.class);
 
-		val tree =proseTrees("if a prime number p divides mn, p divides one of m and n", pipeline).head
+		val tree =proseTrees("if a prime number p divides mn, p divides one of m and n").head
 //		println(toFormula(tree, Global))
 	
 }
