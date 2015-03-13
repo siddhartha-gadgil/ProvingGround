@@ -90,10 +90,10 @@ object HoTT{
     /**
      * Objects with simple substitution.
      */
-    trait AtomicTerm extends Term{
-      def subs(x: Term, y: Term) = if (x==this) y else this
+    trait AtomicTerm extends Term with Subs[AtomicTerm]{
+      def subs(x: Term, y: Term) = if (x==this) Try(y.asInstanceOf[AtomicTerm]).getOrElse(this) else this
 
-      def newobj = typ.obj
+      def newobj = typ.obj.asInstanceOf[AtomicTerm]
     }
 
 
@@ -407,7 +407,8 @@ object HoTT{
 			}
 
     /** Object (a, b) in (A, B) */
-    case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](first: U, second: V) extends AbsPair[U, V] with Subs[PairObj[U, V]]{
+    case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](
+        first: U, second: V) extends AbsPair[U, V] with Subs[PairObj[U, V]]{
     	lazy val typ = PairTyp(first.typ, second.typ)
 
     	def newobj = PairObj(first.newobj, second.newobj)

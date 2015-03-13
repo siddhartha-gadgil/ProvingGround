@@ -27,7 +27,13 @@ object Families {
      * scala type (upper bound)
      */
     type FamilyType <:  Term with Subs[FamilyType]
+    
+    def contract(f: FamilyType)(arg: ArgType): O
+    
+    def collapse(mem: PairObj[FamilyType, ArgType]) = contract(mem.first)(mem.second)
 
+    type ArgType <: Term with Subs[ArgType]
+    
     /**
      * scala type of target for induced functions, i.e., with O = Term
      */
@@ -69,6 +75,8 @@ object Families {
     def inducedDep(W : Typ[O], Xs : O => Typ[Cod])(f : O => Cod) : FamilyType => DepTargetType
   }
   
+ // type MemberPtn[F <: Term, A <: Term] = PairObj[F, A]
+  
       /**
    * A pattern for families, e.g. of inductive types to be defined
    * for instance A -> B -> W, where W is the type to be defined;
@@ -109,6 +117,10 @@ object Families {
 
     type FamilyType =  O
     
+    type ArgType = AtomicTerm
+    
+    def contract(f: FamilyType)(arg: ArgType): O = f
+    
     type TargetType = C
     
     type DepTargetType = C
@@ -134,10 +146,14 @@ object Families {
     def inducedDep(W : Typ[O], Xs : O => Typ[C])(f : O => C) = f
   }
   
-  trait RecFmlyPtn[V <: Term with Subs[V], T <: Term, D<: Term with Subs[D], O <: Term, C <: Term] extends 
+  trait RecFmlyPtn[V <: Term with Subs[V], S <: Term with Subs[S], T <: Term, D<: Term with Subs[D], O <: Term, C <: Term] extends 
         FmlyPtn[O, C]{
     
     type FamilyType <:  FuncLike[Term, V] with Subs[FamilyType]
+    
+ //   type ArgType <: AbsPair[Typ[Term], S] with Subs[AbsPair[Typ[Term], S]]
+    
+ //   def contract(f: FamilyType)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
     
     type TargetType <: FuncLike[Term, T] with Subs[TargetType]
     
@@ -145,16 +161,21 @@ object Families {
     
     val tail : Typ[Term]
     
-    val headfibre: Term => FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}
+    val headfibre: Term => FmlyPtn[O, C]{type FamilyType = V; type ArgType = S; type TargetType = T; type DepTargetType = D}
   }
   
-  case class FuncFmlyPtn[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
+  case class FuncFmlyPtn[V <: Term with Subs[V], S<: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
       tail : Typ[Term], 
-      head : FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D})/*(
-        implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, T, D, O, C]{
+      head : FmlyPtn[O, C]{type FamilyType = V; type ArgType = S; 
+      type TargetType = T; type DepTargetType = D})/*(
+        implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, S, T, D, O, C]{
     def apply(W: Typ[O]) = FuncTyp[Term, V](tail, head(W))
 
     type FamilyType =  Func[Term, V]
+    
+    type ArgType = PairObj[Term, S]
+    
+    def contract(f: FamilyType)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
     
     type TargetType = Func[Term, T]
     
@@ -166,7 +187,7 @@ object Families {
     
     def withCod[CC <: Term with Subs[CC]] ={
       val newHead = head.withCod[CC]
-      FuncFmlyPtn[newHead.FamilyType, newHead.TargetType, newHead.DepTargetType, O, CC](tail, newHead)
+      FuncFmlyPtn[newHead.FamilyType, newHead.ArgType, newHead.TargetType, newHead.DepTargetType, O, CC](tail, newHead)
     }
     
     val headfibre = (arg: Term) => head 
@@ -214,13 +235,20 @@ object Families {
    * Extending by a constant type A a family of type patterns depending on (a : A).
    *
    */
-  case class DepFuncFmlyPtn[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O<: Term, C<: Term](
+  case class DepFuncFmlyPtn[V <: Term with Subs[V], 
+    S<: Term with Subs[S],
+    T <: Term with Subs[T], D <: Term with Subs[D], O<: Term, C<: Term](
       tail: Typ[Term],
-      headfibre : Term => FmlyPtn[O, C]{type FamilyType = V; type TargetType = T; type DepTargetType = D}, 
+      headfibre : Term => FmlyPtn[O, C]{type FamilyType = V; type ArgType = S;
+      type TargetType = T; type DepTargetType = D}, 
       headlevel: Int = 0)
-      /*(implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, T, D, O, C]{
+      /*(implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, S, T, D, O, C]{
     
     type FamilyType =  FuncLike[Term, V]
+    
+    type ArgType = DepPair[Term, S]
+    
+    def contract(f: FamilyType)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
     
     type TargetType = FuncLike[Term, T]
     
@@ -244,15 +272,16 @@ object Families {
     def withCod[CC <: Term with Subs[CC]] ={
       val newHead = headfibre(tail.symbObj(""))
       type VV = newHead.FamilyType
+      type SS = newHead.ArgType
       type TT = newHead.TargetType
       type DD = newHead.DepTargetType
       val newHeadFibre = (t: Term) => 
         (
             headfibre(t).withCod[CC].asInstanceOf[FmlyPtn[O, CC]{
-              type FamilyType = VV; 
+              type FamilyType = VV; type ArgType = SS;
               type TargetType = TT; type DepTargetType = DD}]
             )
-      DepFuncFmlyPtn[VV, TT, DD, O, CC](tail, newHeadFibre)
+      DepFuncFmlyPtn[VV, SS, TT, DD, O, CC](tail, newHeadFibre)
     }
     
     val head = headfibre(tail.symbObj(""))
@@ -290,7 +319,7 @@ object Families {
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
   
-  
+  /*
   trait Member[V <: Term with Subs[V], O <: Term, C <: Term]{self =>
 //    type Cod <: Term
     
@@ -374,6 +403,6 @@ object Families {
     
  //   lazy val value = headfibre(arg).value
   }
-  
+  */
 
 }
