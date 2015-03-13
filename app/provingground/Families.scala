@@ -304,10 +304,11 @@ object Families {
     
     type DepTargetType <: Term with Subs[DepTargetType]
     
-    val typ: Typ[O]
+ //   val typ: Typ[O]
     
     val value:  O
    
+  //  def apply(f: FamilyType) : O
   }
   
   
@@ -320,6 +321,8 @@ object Families {
     type TargetType = C
     
     type DepTargetType = C
+    
+  //  def apply(f: FamilyType) = f
   }
   
   
@@ -329,12 +332,22 @@ object Families {
       headfibre : Term => Member[O, C]{type FamilyType = V; 
         type TargetType = T; 
         type DepTargetType = D}
-      ){
+      ) extends Member[O, C]{self =>
+    type FamilyType = Func[Term, V]; 
+    
+    type TargetType = Func[Term, T]; 
+    
+    type DepTargetType = FuncLike[Term, D]
+    
+    
     lazy val fmlyPtn = FuncFmlyPtn(tail, headfibre(arg).fmlyPtn)
+      //FuncFmlyPtn(tail, headfibre(arg).fmlyPtn)
    
-    lazy val typ = FuncTyp(tail, headfibre(arg).typ) 
+//    lazy val typ = FuncTyp(tail, headfibre(arg).typ) 
    
     lazy val value = headfibre(arg).value
+    
+  //  def apply(f: FamilyType)
   }
   
   case class DepFuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
@@ -342,14 +355,20 @@ object Families {
       headfibre : Term => Member[O, C]{type FamilyType = V; 
         type TargetType = T; 
         type DepTargetType = D}
-      ){
+      ) extends Member[O, C]{
+    type FamilyType = FuncLike[Term, V]; 
+    
+    type TargetType = FuncLike[Term, T]; 
+    
+    type DepTargetType = FuncLike[Term, D]
+    
     private val x = "x" :: tail
     
     lazy val fmlyPtn = DepFuncFmlyPtn[V, T, D, O, C](tail, (a: Term) => headfibre(a).fmlyPtn)
    
-    lazy val fibre = lmbda(x)(headfibre(x).typ)
+ //   lazy val fibre = lmbda(x)(headfibre(x).typ)
     
-    lazy val typ = PiTyp(fibre)  
+ //   lazy val typ = PiTyp(fibre)  
    
     lazy val value = headfibre(arg).value
   }
