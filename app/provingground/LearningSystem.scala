@@ -69,13 +69,16 @@ object LearningSystem{
         DiffbleFunction[(Double, V), V](fn)(grad)
       }
       
+      /**
+       * raise a function to 2^(n -1) wrt composition, so for n = 0 we get identity and n = 1 gives f.
+       */
       def repsquare[A](f: DiffbleFunction[A, A])(implicit ls: LinearStructure[A]): Int => DiffbleFunction[A, A] = {
         case 0 => id[A]
+        case 1 => f
         case n if n<0 => 
           vzero[DiffbleFunction[A, A]]
-        case 1 => f
         case n => 
-          repsquare(f)(ls)(n-1)
+          repsquare(f)(ls)(n-1) andthen (repsquare(f)(ls)(n-1))
             
       }
       
