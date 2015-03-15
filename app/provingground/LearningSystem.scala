@@ -9,13 +9,15 @@ import provingground.Collections._
 
 object LearningSystem{
    
-	trait DiffbleFunction[A, B] extends (A => B){self =>
+	trait DiffbleFunction[A, B]{self =>
+      def apply(a: A): B
+    
     	def grad(a: A) : B => A   
     	 
     	/**
     	 * Composition f *: g is f(g(_))
     	 */
-    	def *:[C](that: DiffbleFunction[B, C]) = andThen(that)
+    	def *:[C](that: => DiffbleFunction[B, C]) = andthen(that)
     	
     	def andthen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
     													(a: A) => 
@@ -36,7 +38,7 @@ object LearningSystem{
     	
     		def grad(ac: (A, C))(bd : (B, D)) = (self.grad(ac._1)(bd._1), that.grad(ac._2)(bd._2))
     	
-    	DiffbleFunction(func)(grad)
+      	DiffbleFunction(func)(grad)
       }
 	}
 
@@ -71,6 +73,7 @@ object LearningSystem{
         case 0 => id[A]
         case n if n<0 => 
           vzero[DiffbleFunction[A, A]]
+        case 1 => f
         case n => 
           repsquare(f)(ls)(n-1)
             

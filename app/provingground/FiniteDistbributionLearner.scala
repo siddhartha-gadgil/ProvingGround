@@ -457,7 +457,7 @@ object FiniteDistbributionLearner {
 	  
 	  def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) id[(FiniteDistribution[M], FiniteDistribution[V])] else iterateDiffbleDepth(next, steps, depth+1)
 	  
-	  def iterV(d: Int) = iter(d) andThen projectV[M, V]
+	  def iterV(d: Int) = iter(d) andthen projectV[M, V]
 	  
 	  /**
 	   * add a simple island one step deeper and create a system adding depth.
