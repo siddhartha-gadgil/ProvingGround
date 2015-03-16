@@ -378,7 +378,7 @@ object Collections{
       def inclusion(label: L)(implicit zero: T) = {
         require (!((support find (_ == label)).isEmpty))
 
-        LearningSystem.DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
+        DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
       }
     }
 

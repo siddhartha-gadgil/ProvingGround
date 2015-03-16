@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import FiniteDistbributionLearner._
-import LearningSystem._
+import DiffbleFunction._
 import scala.util._
 import Collections._
 

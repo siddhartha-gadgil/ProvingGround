@@ -1,6 +1,6 @@
 package provingground
 
-import LearningSystem._
+import DiffbleFunction._
 import Collections._
 import annotation._
 
