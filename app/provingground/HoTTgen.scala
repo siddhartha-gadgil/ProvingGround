@@ -74,7 +74,7 @@ object HoTTgen {
 	    (Move.jcons, moveFn(icons))
 	    )
 	
-	val wtdDyn = weightedDyn[Move.type, Term]
+	val wtdDyn = weightedDyn[Move.type, FiniteDistribution[Term]]
 	 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 	

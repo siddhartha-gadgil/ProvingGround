@@ -51,16 +51,6 @@ object FiniteDistbributionLearner {
 	
 	import DiffbleFunction._
 	
-	/** 
-	 *  Finite Distributions
-	 */
-//	type FiniteDistribution[V] = FiniteDistribution[V] 
-	
-	/**
-	 * Differentiable functions - functions with given gradient.
-	 */
-//	type  DiffbleFunction[X, Y] = DiffbleFunction[X, Y]
-	
 		/**
 	 * smooth function applying move wherever applicable 
 	 */
@@ -109,32 +99,32 @@ object FiniteDistbributionLearner {
 	}
 	
 	
-	def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]]
-	
 	/**
 	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
 	 * set up with implicits inside, so one can use this to map on a list.
 	 */
-	def weightedDyn[M, V] : (
-	        M,  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]
-	        ) =>  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = (m, fn) => {
-	  val pm = proj1[FiniteDistribution[M], FiniteDistribution[V]]
+	def weightedDyn[M, X](implicit lx: LinearStructure[X], ip: InnerProduct[X]) : (
+	        M,  DiffbleFunction[X, X]
+	        ) =>  DiffbleFunction[(FiniteDistribution[M], X), X] = (m, fn) => {
+	  val pm = proj1[FiniteDistribution[M], X]
 	  val scm = eval(m)
-	  val atM = pm andthen scm andthen incl1[Double, FiniteDistribution[V]]
-	  val pv = proj2[FiniteDistribution[M], FiniteDistribution[V]]
-	  val fv = pv andthen fn andthen incl2[Double, FiniteDistribution[V]]
-	  val fnsum = vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), (Double, FiniteDistribution[V])]]
-	  fnsum(atM, fv) andthen scprod[FiniteDistribution[V]]
+	  val atM = pm andthen scm andthen incl1[Double, X]
+	  val pv = proj2[FiniteDistribution[M], X]
+	  val fv = pv andthen fn andthen incl2[Double, X]
+	  val fnsum = vsum[ DiffbleFunction[(FiniteDistribution[M], X), (Double, X)]]
+	  fnsum(atM, fv) andthen scprod[X]
 	}
 	    
 	    
 	/**
 	 * Extend differentiable function by identity on M.
 	 */
-	def extendM[M, V](fn:  DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]) = {
-	  def func(mv: (FiniteDistribution[M], FiniteDistribution[V])) = (mv._1, fn(mv))
+	def extendM[M, X](fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) = {
+	  def func(mv: (FiniteDistribution[M], X)) = (mv._1, fn(mv))
 	  
-	  def grad(mv: (FiniteDistribution[M], FiniteDistribution[V]))(mw: (FiniteDistribution[M], FiniteDistribution[V])) = (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+	  def grad(mv: (FiniteDistribution[M], X))(
+        mw: (FiniteDistribution[M], X)) = 
+          (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
 	  
 	  DiffbleFunction(func)(grad)
 	}
@@ -142,7 +132,10 @@ object FiniteDistbributionLearner {
 	// Most of the below is to be deprecated.
   
 	
-	
+	 def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = 
+     vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]]
+  
+  
 	// Generic helpers
 	
 	/**

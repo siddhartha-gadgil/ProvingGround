@@ -91,7 +91,7 @@ import provingground.Collections._
         		vzero[DiffbleFunction[A, A]]
         	case n if n >0 => 
         		val dsum  = vsum[DiffbleFunction[A, A]]
-        		dsum(g(n), h(n -1))
+        		dsum(g(n), isle(h(n -1)))
         }
         h _
       }
