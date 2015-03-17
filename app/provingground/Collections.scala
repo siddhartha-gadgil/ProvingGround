@@ -296,6 +296,8 @@ object Collections{
         val pmf = (s map (Weighted(_, prob))).toSeq
         FiniteDistribution(pmf)
       }
+      
+      def unif[A](as: A*) = uniform(as.toSeq)
 
       def empty[T] = FiniteDistribution[T](Seq())
 
