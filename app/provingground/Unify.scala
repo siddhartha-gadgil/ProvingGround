@@ -41,8 +41,10 @@ object Unify{
         mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
       case (x: AbsPair[_, _], y: AbsPair[_, _])=>
         mergeOptMaps(unify(x.first, y.first, freevars), unify(x.second, y.second,freevars))
-//      case (applptnterm(a, b), applptnterm(c, d)) =>
-//        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+      case (fst: Symbolic, scnd: Symbolic) => (fst.name, scnd.name) match{
+      case (ApplnSym(a, b: Term), ApplnSym(c, d: Term)) =>
+        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+      }
       case _ => None
     }
   }

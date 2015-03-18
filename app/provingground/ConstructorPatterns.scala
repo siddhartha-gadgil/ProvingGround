@@ -16,9 +16,12 @@ object ConstructorPatterns {
    * @param func function f to match for f(x)
    */
     def getArg[D <: Term with Subs[D], U <: Term with Subs[U]](func : FuncLike[D, U]): Term => Option[D] = {
-      case fx: ApplnSym[u, w] =>
-        if (fx.func == func && fx.arg.typ == func.dom) Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
+      case sym: Symbolic => sym.name match { 
+        case fx: ApplnSym[u, w] =>
+          if (fx.func == func && fx.arg.typ == func.dom) Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
             else getArg(func)(fx.func)
+        case _ => None
+      }
       case _ => None
     }
 
