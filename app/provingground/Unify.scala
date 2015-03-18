@@ -28,7 +28,7 @@ object Unify{
         mergeMaps(a, b)
   ))
 
-  def unify[U<: Term with Subs[U]](lhs: U, rhs: U, freevars: List[Term]): Option[Map[Term, Term]] = {
+  def unify(lhs: Term, rhs: Term, freevars: List[Term]): Option[Map[Term, Term]] = {
     if (!dependsOn(lhs)(freevars))
       {if (lhs == rhs) Some(Map()) else None}
     else
@@ -63,7 +63,7 @@ object Unify{
     }
   }
 
-
+/*
 object Old{
   def multisub(x: Term, m : Map[Term, Term]): Term = m.toList  match {
     case List() => x
@@ -93,5 +93,5 @@ object Old{
     case LambdaMixin(x, tail, _) => unifyctx(source, target, freevars + x, tail)
     case _ => unifyctx(source, target, freevars, ctx.tail)
   }
-}
+}*/
 }
