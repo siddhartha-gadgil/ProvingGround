@@ -33,7 +33,7 @@ object ListType {
     rep(fld)
   }
   
-  def lmapFunc[U <: Term with Subs[U] , V <: Term ](u: Typ[U], v: Typ[V]) = {
+  def lmapFunc[U <: Term with Subs[U] , V <: Term with Subs[V]](u: Typ[U], v: Typ[V]) = {
     val rep = (u -->: v) -->: ListRep(u) -->: ListRep(v)
     rep((f: U => V) => (l: List[U]) => l map (f))
   }

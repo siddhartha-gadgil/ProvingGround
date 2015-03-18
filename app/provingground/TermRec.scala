@@ -26,9 +26,9 @@ import HoTT._
     def symbtyp(term: SymbTyp): U
 
     def apply(term: Term): U = term match {
-      case applptnterm(func, arg) => appln(apply(func), apply(arg))
-      case LambdaFixed(x, y: Term) => lambda(apply(x), apply(y))
-      case Lambda(x, y: Term) => lambda(apply(x), apply(y))
+ //     case applptnterm(func, arg) => appln(apply(func), apply(arg))
+      case LambdaFixed(x : Term, y: Term) => lambda(apply(x), apply(y))
+      case Lambda(x: Term, y: Term) => lambda(apply(x), apply(y))
       case PiTyp(fibre) => pi(apply(fibre))
       case SigmaTyp(fibre) => sigma(apply(fibre))
       case PlusTyp(first, scnd) => plus(apply(first), apply(scnd))

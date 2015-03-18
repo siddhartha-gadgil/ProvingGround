@@ -41,8 +41,8 @@ object Unify{
         mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
       case (x: AbsPair[_, _], y: AbsPair[_, _])=>
         mergeOptMaps(unify(x.first, y.first, freevars), unify(x.second, y.second,freevars))
-      case (applptnterm(a, b), applptnterm(c, d)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+//      case (applptnterm(a, b), applptnterm(c, d)) =>
+//        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
       case _ => None
     }
   }
@@ -75,11 +75,11 @@ object Old{
     case (x: Symbolic, y: Symbolic) if x.typ != y.typ =>
       unify(x.typ, y.typ, freevars) flatMap((m) =>
       unify(multisub(x, m), y, freevars -- m.keySet))
-    case (applptnterm(f, x), applptnterm(g, y)) =>
-      for (mx <- unify(f, g, freevars); my <- unify(multisub(x, mx), y, freevars -- mx.keySet)) yield (mx ++ my)
+//    case (applptnterm(f, x), applptnterm(g, y)) =>
+//      for (mx <- unify(f, g, freevars); my <- unify(multisub(x, mx), y, freevars -- mx.keySet)) yield (mx ++ my)
     case (FuncTyp(a, b), FuncTyp(c, d)) =>
       for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
-    case (Lambda(a, b : Term), Lambda(c, d : Term)) =>
+    case (Lambda(a: Term, b : Term), Lambda(c: Term, d : Term)) =>
       for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
     case (PiTyp(a), PiTyp(c)) =>
       unify(a, c, freevars)

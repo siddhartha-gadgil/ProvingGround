@@ -43,7 +43,7 @@ object ScalaRep {
     def -->:[W <: Term with Subs[W], X, UU >: U <: Term ](that : ScalaRep[W, X]) =
       FuncRep[W, X, UU, V](that, this)
 
-    def :-->[W <: Term with Subs[W], UU >: U <: Term ](that: Typ[W]) =
+    def :-->[W <: Term with Subs[W], UU >: U <: Term with Subs[UU]](that: Typ[W]) =
       	SimpleFuncRep[UU, V, W](this, that)
 
     /**
@@ -116,7 +116,7 @@ object ScalaRep {
   /**
    * A term representing itself.
    */
-  case class IdRep[U <: Term ](typ: Typ[U]) extends ScalaRep[U, U]{
+  case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U]{
     def apply(v : U) = v
 
     def unapply(u: Term): Option[U] = u match{
@@ -127,7 +127,7 @@ object ScalaRep {
     def subs(x: Term, y: Term) = IdRep(typ.subs(x, y))
   }
 
-  implicit def idRep[U <: Term ](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
+  implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]) : ScalaRep[U, U] = IdRep(typ)
 
   /**
    * Representations for functions given ones for the domain and codomain.
@@ -182,7 +182,7 @@ object ScalaRep {
   /**
    * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
    */
-  case class SimpleFuncRep[U <: Term , V, X <: Term with Subs[X]](
+  case class SimpleFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X]](
       domrep: ScalaRep[U, V], codom: Typ[X]) extends ScalaRep[FuncLike[U, X], V => X]{
     val typ = domrep.typ ->: codom
 
@@ -201,7 +201,7 @@ object ScalaRep {
   /**
    * Extended function with codomain a type. Perhaps use IdRep.
    */
-  case class SimpleExtendedFunction[U <: Term, V, X <: Term with Subs[X]](dfn: V => X,
+  case class SimpleExtendedFunction[U <: Term with Subs[U], V, X <: Term with Subs[X]](dfn: V => X,
       domrep: ScalaRep[U, V], codom: Typ[X]) extends Func[U, X] with Subs[SimpleExtendedFunction[U, V, X]]{
 
 	  val dom = domrep.typ
@@ -259,7 +259,7 @@ object ScalaRep {
   /**
    * Formal extendsion of a dependent function given scalareps for the domain and codomains.
    */
-  case class DepFuncRep[U <: Term , V, X <: Term , Y](
+  case class DepFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y],
       fibers: TypFamily[U, X]) extends ScalaRep[FuncLike[U, X], V => Y]{
     val typ = PiTyp(fibers)
@@ -277,7 +277,7 @@ object ScalaRep {
   /**
    * implicit class associated to a type family to create dependent functions scalareps.
    */
-  implicit class FmlyReps[U <: Term, X <: Term ](fibers: TypFamily[U, X]){
+  implicit class FmlyReps[U <: Term with Subs[U], X <: Term with Subs[X]](fibers: TypFamily[U, X]){
 
     def ~~>:[V](domrep : ScalaRep[U, V]) = {
       DepFuncRep(domrep, (v: V) => IdRep(fibers(domrep(v))), fibers)
@@ -307,7 +307,7 @@ object ScalaRep {
   /**
    * formal extension of a dependent function.
    */
-    case class ExtendedDepFunction[U <: Term , V, X <: Term , Y](dfn: V => Y,
+    case class ExtendedDepFunction[U <: Term with Subs[U], V, X <: Term , Y](dfn: V => Y,
       domrep: ScalaRep[U, V], codomreps: V => ScalaRep[X, Y], fibers: TypFamily[U, X]) extends FuncLike[U, X]{
 
 	  val dom = domrep.typ

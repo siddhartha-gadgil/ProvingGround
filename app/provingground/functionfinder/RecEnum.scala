@@ -16,7 +16,7 @@ object RecEnum {
 	  case IdentityTyp(dom : Typ[_], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
 	  case PairTyp(first : Typ[_], second : Typ[_]) => 
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
-	  case FuncTyp(dom, codom) =>
+	  case FuncTyp(dom: Typ[Term], codom) =>
 	    for (x <- recEnumList(dom); y <- recEnumList(codom)) yield (
 	       for (m <- allMaps(x, y)) yield FuncDefn(m, dom, codom) )
 	  case PiTyp(fiber) =>

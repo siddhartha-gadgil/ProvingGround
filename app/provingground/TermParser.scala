@@ -1,0 +1,45 @@
+package provingground
+
+import scala.util.parsing.combinator._
+
+import scala.util._
+
+import provingground.HoTT._
+
+/**
+ * @author gadgil
+ * Simple parser to reverse the toString operation.
+
+ */
+class TermParser extends JavaTokenParsers{
+  def arrow : Parser[Any] = UnicodeSyms.Arrow | SimpleSyms.Arrow
+  def mapsto: Parser[Any] = UnicodeSyms.MapsTo | SimpleSyms.MapsTo
+  def univ: Parser[Any] = UnicodeSyms.UnivSym | SimpleSyms.UnivSym
+  def prod: Parser[Any] = UnicodeSyms.Pi | SimpleSyms.Pi
+  def sigma: Parser[Any] = UnicodeSyms.Sigma | SimpleSyms.Sigma
+  def colon: Parser[String] = ":"
+  
+  def name: Parser[AnySym] = "[a-zA-Z]".r ^^ {Name(_)}
+  
+  def symbTyp: Parser[Typ[Term]] = name <~ colon ~univ ^^ (SymbTyp(_)) 
+  
+  def arrowTyp : Parser[Typ[Term]] = "("~>typ~")"~arrow~"("~typ <~")" ^^ {case dom ~ _ ~ _~ _~ codom => dom ->: codom} 
+  
+  def piTyp : Parser[Typ[Term]] = prod~"("~>term<~")" ^^ {case fmly: Func[u, _] => PiTyp(fmly.asInstanceOf[Func[u, Typ[Term]]])}
+  
+  def sigmaTyp : Parser[Typ[Term]] = sigma~"("~>term<~")" ^^ {case fmly: Func[w, _] => 
+    SigmaTyp(fmly.asInstanceOf[Func[w with Term with Subs[w], Typ[Term]]])}
+  
+  def typ: Parser[Typ[Term]] = symbTyp | arrowTyp | uni
+  
+  def uni : Parser[Typ[Typ[Term]]] = univ ^^ {_ => __}
+  
+  def symbTerm : Parser[Term] = name~colon~"("~typ<~")" ^^ {case nm~_~_~typ => typ.symbObj(nm)}
+  
+  def term: Parser[Term] =  lambdaTerm | appln | symbTerm | typ
+  
+  def lambdaTerm : Parser[Term] = 
+    "("~>term~")"~mapsto~"("~term <~")"<~colon~typ ^^ {case variable ~ _ ~ _~ _~ value => lambda(variable)(value)}
+  
+  def appln : Parser[Term] = "("~>term~")"~"("~term <~")" ^^ {case (fn: FuncLike[u, v]) ~ _ ~ _~ arg => fn(arg.asInstanceOf[u])}
+}
