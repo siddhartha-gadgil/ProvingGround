@@ -16,9 +16,10 @@ object RecEnum {
 	  case IdentityTyp(dom : Typ[_], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
 	  case PairTyp(first : Typ[_], second : Typ[_]) => 
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
-	  case FuncTyp(dom: Typ[Term], codom) =>
-	    for (x <- recEnumList(dom); y <- recEnumList(codom)) yield (
-	       for (m <- allMaps(x, y)) yield FuncDefn(m, dom, codom) )
+	  case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+	    for (x <- recEnumList(dom); y <- recEnumList(codom.asInstanceOf[Typ[Term]])) yield (
+	       for (m <- allMaps(x, y)) yield FuncDefn(
+             m, dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]]) )
 	  case PiTyp(fiber) =>
 	    val dom = fiber.dom.asInstanceOf[Typ[Term]]
 	    val domlistopt = recEnumList(dom) 

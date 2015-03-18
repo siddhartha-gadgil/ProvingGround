@@ -43,7 +43,7 @@ object ScalaUniverses {
         /**
      * Universe whose elements are FuncTyps
      */
-    case class FuncTypUniv[W<: Term with Subs[W], U<: Term](
+    case class FuncTypUniv[W<: Term with Subs[W], U<: Term with Subs[U]](
         domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]) extends Typ[FuncTyp[W, U]]{
 
       lazy val typ = HigherUniv(this)
@@ -63,7 +63,7 @@ object ScalaUniverses {
     /**
      * implicitly build universe with elements FuncTyps from universes for domain and codomain.
      */
-    implicit def funcUniv[W<: Term with Subs[W], U<: Term](implicit
+    implicit def funcUniv[W<: Term with Subs[W], U<: Term with Subs[U]](implicit
         domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[Func[W, U]] = {
       ScalaUniv(FuncTypUniv(domsc.univ, codomsc.univ) : Typ[FuncTyp[W, U]])
     }
@@ -71,7 +71,7 @@ object ScalaUniverses {
       /**
    * Universe with objects Pi-Types
    */
-  case class PiTypUniv[W<: Term with Subs[W], U<: Term](
+  case class PiTypUniv[W<: Term with Subs[W], U<: Term with Subs[U]](
         domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]) extends Typ[PiTyp[W, U]]{
 
       lazy val typ = HigherUniv(this)
@@ -91,7 +91,7 @@ object ScalaUniverses {
   /**
    * builds scala universe for pi-types given ones for domain and codomain types.
    */
-  implicit def piUniv[W<: Term with Subs[W], U<: Term](implicit
+  implicit def piUniv[W<: Term with Subs[W], U<: Term with Subs[U]](implicit
         domsc: ScalaUniv[W], codomsc: ScalaUniv[U]) : ScalaUniv[FuncLike[W, U]] = {
       ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ) : Typ[PiTyp[W, U]])
     }

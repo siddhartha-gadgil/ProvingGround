@@ -40,7 +40,7 @@ object ScalaRep {
     /**
      * scalarep for function
      */
-    def -->:[W <: Term with Subs[W], X, UU >: U <: Term ](that : ScalaRep[W, X]) =
+    def -->:[W <: Term with Subs[W], X, UU >: U <: Term with Subs[UU]](that : ScalaRep[W, X]) =
       FuncRep[W, X, UU, V](that, this)
 
     def :-->[W <: Term with Subs[W], UU >: U <: Term with Subs[UU]](that: Typ[W]) =
@@ -132,7 +132,7 @@ object ScalaRep {
   /**
    * Representations for functions given ones for the domain and codomain.
    */
-  case class FuncRep[U <: Term with Subs[U], V, X <: Term , Y](
+  case class FuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends ScalaRep[Func[U, X], V => Y]{
     lazy val typ = domrep.typ ->: codomrep.typ
 
@@ -150,7 +150,7 @@ object ScalaRep {
    * Formal extension of a function given by a definition and representations for
    * domain and codomain.
    */
-  case class ExtendedFunction[U <: Term with Subs[U], V, X <: Term , Y](dfn: V => Y,
+  case class ExtendedFunction[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](dfn: V => Y,
       domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) extends Func[U, X]{
 
 	  lazy val dom = domrep.typ

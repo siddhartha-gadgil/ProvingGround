@@ -131,7 +131,7 @@ object Recursion{
    * Change in context for a TypPattern (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
-  private def recContextChange[V<: Term](f : => (FuncLike[Term, Term]),
+  private def recContextChange[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
         W : Typ[Term], X : Typ[V]) : (AnySym, FmlyPtn[Term, Term], Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
     val fx = ptn.induced(W, X)(f)(x)
@@ -142,7 +142,7 @@ object Recursion{
     /**
    * Change in context  for Induction for a TypPattern
    */
-  private def indContextChange[V<: Term](f : => (FuncLike[Term, Term]),
+  private def indContextChange[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
       W : Typ[V], Xs : Term => Typ[V]) : (AnySym, FmlyPtn[Term, Term], Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
     val x =  ptn(W).symbObj(varname)
     val fx = ptn.inducedDep(W, Xs)(f)(x)

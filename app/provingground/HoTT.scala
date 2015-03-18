@@ -141,7 +141,7 @@ object HoTT{
         /**
          * function type:  this -> that
          */
-        def ->:[W <: Term with Subs[W], UU >: U <: Term](that : Typ[W]) = FuncTyp[W, UU](that, this)
+        def ->:[W <: Term with Subs[W], UU >: U <: Term with Subs[UU]](that : Typ[W]) = FuncTyp[W, UU](that, this)
 
         /**
          * dependent function type (Pi-Type) define by a lambda:
@@ -334,7 +334,7 @@ object HoTT{
   /**
    * Map from 0 to A.
    */
-  def fromZero[U <: Term](codom: Typ[U]) = (Zero ->: codom).symbObj(vacuous)
+  def fromZero[U <: Term with Subs[U]](codom: Typ[U]) = (Zero ->: codom).symbObj(vacuous)
 
   /*
 	case class fromZero[U<: Term](codom: Typ[U]) extends AtomicTerm{
@@ -441,7 +441,7 @@ object HoTT{
 
 
 	/** Function type (not dependent functions)*/
-    case class FuncTyp[W<: Term with Subs[W], U<: Term](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
+    case class FuncTyp[W<: Term with Subs[W], U<: Term with Subs[U]](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
     Subs[FuncTyp[W, U]]{
       type Obj = Func[W, U]
 
@@ -569,7 +569,7 @@ object HoTT{
 
 
 	/** Symbol containing function info */
-    case class FuncSymb[W<: Term with Subs[W], U<: Term](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
+    case class FuncSymb[W<: Term with Subs[W], U<: Term with Subs[U]](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
               Func[W, U] with Subs[Func[W, U]] with Symbolic with AnySym{
 
 //      // val domobjtpe = typeOf[W]

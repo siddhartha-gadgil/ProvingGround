@@ -71,12 +71,12 @@ object Contexts{
    *  scala type of an object in context when viewed outside, typically a function because of lambdas
    *
    */
-  trait Context[+U <: Term with Subs[U], V <: Term]{
+  trait Context[+U <: Term with Subs[U], V <: Term with Subs[V]]{
 
     /**
      * scala type of an object in context when viewed outside, typically a function because of lambdas
      */
-    type ConstructorType <: U
+    type ConstructorType <: U with Subs[ConstructorType]
 
     /**
      * the type as seen from outside of an object within the context of HoTT-type Typ[V].
@@ -209,7 +209,7 @@ object Contexts{
 
 
 
-  case class LambdaMixin[+U<: Term with Subs[U], V <: Term](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
+  case class LambdaMixin[+U<: Term with Subs[U], V <: Term with Subs[V]](variable: Term, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
     def withNewTail(newtail: Context[Term, V]) = LambdaMixin(variable, newtail, dep)
@@ -264,7 +264,7 @@ object Contexts{
 
   }
 
-  case class KappaMixin[+U<: Term with Subs[U], V <: Term](const : Term, tail: Context[U, V]) extends Context[U, V]{
+  case class KappaMixin[+U<: Term with Subs[U], V <: Term with Subs[V]](const : Term, tail: Context[U, V]) extends Context[U, V]{
     type ConstructorType = tail.ConstructorType
 
     def withNewTail(newtail: Context[Term, V]) = KappaMixin(const, newtail)
@@ -292,7 +292,7 @@ object Contexts{
     def apply(tp : Typ[V]) : Typ[ConstructorType] =tail(tp)
   }
 
-  case class DefnMixin[+U<: Term with Subs[U], V <: Term](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
+  case class DefnMixin[+U<: Term with Subs[U], V <: Term with Subs[V]](dfn : Defn, tail: Context[U, V], dep: Boolean = false) extends Context[FuncLike[Term,U], V]{
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
     def withNewTail(newtail: Context[Term, V]) = DefnMixin(dfn, newtail, dep)
@@ -338,7 +338,7 @@ object Contexts{
     else FuncTyp(dfn.lhs.typ, tail(tp))
   }
 
-  case class GlobalDefnMixin[+U <: Term with Subs[U], V <: Term](dfn : Defn, tail: Context[U, V]) extends Context[U, V]{
+  case class GlobalDefnMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](dfn : Defn, tail: Context[U, V]) extends Context[U, V]{
     type ConstructorType = tail.ConstructorType
 
     def withNewTail(newtail: Context[Term, V]) = GlobalDefnMixin(dfn, newtail)
@@ -366,7 +366,7 @@ object Contexts{
     def apply(tp : Typ[V]) : Typ[ConstructorType] = tail(tp)
   }
 
-  case class DefnEqualityMixin[+U <: Term with Subs[U], V <: Term](eqlty : DefnEquality, tail: Context[U, V]) extends Context[U, V]{
+  case class DefnEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](eqlty : DefnEquality, tail: Context[U, V]) extends Context[U, V]{
     type ConstructorType = tail.ConstructorType
 
     def withNewTail(newtail: Context[Term, V]) = DefnEqualityMixin(eqlty, newtail)
@@ -393,7 +393,7 @@ object Contexts{
 //    val typ = tail.typ
   }
 
-  case class SimpEqualityMixin[+U <: Term with Subs[U], V <: Term](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncLike[Term,U], V]{
+  case class SimpEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](eqlty : DefnEquality, tail: Context[U, V], dep : Boolean = false) extends Context[FuncLike[Term,U], V]{
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
     def withNewTail(newtail: Context[Term, V]) = SimpEqualityMixin(eqlty, newtail, dep)
@@ -438,7 +438,7 @@ object Contexts{
     case comp => extract(inner, comp.tail, maps)
   }*/
 
-  def immerse[V <: Term](inner: Context[Term, V]): Context[Term, V] => Context[Term, V] ={
+  def immerse[V <: Term with Subs[V]](inner: Context[Term, V]): Context[Term, V] => Context[Term, V] ={
     case _ : Context.empty[_] => inner
     case outer => inner.withNewTail(immerse(inner)(outer.tail))
   }

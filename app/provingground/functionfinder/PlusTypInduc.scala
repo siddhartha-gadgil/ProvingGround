@@ -7,7 +7,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 object PlusTypInduc {
 	import PlusTyp.{FirstIncl, ScndIncl}
 
-	case class PlusExtendedFunction[V <: Term ](
+	case class PlusExtendedFunction[V <: Term with Subs[V]](
 	    first: Typ[Term], second: Typ[Term], codom: Typ[V], firstfn: Func[Term, V],
 	    scndfn: Func[Term, V]) extends Func[Term, V] with Subs[PlusExtendedFunction[V]]{
 
