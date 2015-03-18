@@ -275,14 +275,14 @@ object Dynamics{
 //           case (f: Func[_, _, _], x: Term) if f.dom == x.typ => f(x).get
 //       }
 
-       def applyFn[W<: Term with Subs[U], U<: Term with Subs[U]](f: Func[W, U]): PartialFunction[Term, Term] = {
+       def applyFn[W<: Term with Subs[W], U<: Term with Subs[U]](f: Func[W, U]): PartialFunction[Term, Term] = {
          case arg if arg.typ == f.dom => f(arg.asInstanceOf[W])
        }
-
+/*
        val applications: PartialFunction[Term, PartialFunction[Term, Term]] = {
          case f: Func[_,_] => applyFn(f)
        }
-
+*/
 
 
        def logicalArrows[V <: Term ]: Pairing = {

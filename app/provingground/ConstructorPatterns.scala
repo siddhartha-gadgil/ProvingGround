@@ -336,12 +336,12 @@ object ConstructorPatterns {
       data(arg)(d)
     }
 
-    def apply(W : Typ[Term]) : Typ[FuncLike[Term, U]]   = {
+    def apply(W : Typ[Term]) : Typ[FuncLike[ArgType, U]]   = {
 //      val head = headfibre(W.symbObj(""))
 //      val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
-      val a = "a" :: W
+      val a = "a" :: tail(W)
       val fiber = lmbda(a)(headfibre(a)(W))
-      PiTyp[Term, U](fiber)
+      PiTyp[ArgType, U](fiber)
     }
 
 
