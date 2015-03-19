@@ -50,6 +50,17 @@ object FiniteDistbributionLearner {
 	}
 	
 	import DiffbleFunction._
+  
+  /**
+   * Normalizing a finite distribution.
+   */
+  def normalizeFD[V] = {
+   def func(d: FiniteDistribution[V]) = d.normalized()
+   
+   def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = w * (1 / d.norm)
+   
+   DiffbleFunction(func)(grad)
+  }
 	
 		/**
 	 * smooth function applying move wherever applicable 
@@ -430,12 +441,7 @@ object FiniteDistbributionLearner {
 	
 	
 		  
-	/**
-	 * Iterate a differentiable function.
-	 */
-	@tailrec def iterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int, accum:  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
-		if (n<1) accum else iterateDiffble(fn, n-1, accum andthen (fn :  DiffbleFunction[X, X]) )
-	}
+
 	
 	/** 
 	 *  Iterate a diffble function given depth

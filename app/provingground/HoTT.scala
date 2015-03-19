@@ -389,13 +389,13 @@ object HoTT{
         first: Typ[U], second: Typ[V]) extends
 						Typ[PairObj[U, V]] with AbsPair[Typ[U], Typ[V]]{
 
-    	type Obj = PairObj[U, V]
+    type Obj = PairObj[U, V]
 
 		lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 
 		def newobj = PairTyp(first.newobj, second.newobj)
 
-		val paircons = {
+		lazy val paircons = {
     	  val a = "a" :: first
     	  val b ="b" :: second
     	  lmbda(a)(lmbda(b)(PairObj(a, b)))
@@ -689,7 +689,7 @@ object HoTT{
 		def newobj = Lambda(variable.newobj, value.newobj)
 
 	  override def equals(that: Any) = that match {
-	    case Lambda(x: Term, y : Term) => y.replace(x, variable) == value
+	    case Lambda(x: Term, y : Term) => Try(y.replace(x, variable) == value).getOrElse(false)
 	    case _ => false
 	  }
 	}
@@ -751,7 +751,7 @@ object HoTT{
 	  val dep = false
 
 	  override def equals(that: Any) = that match {
-	    case LambdaFixed(x: Term, y : Term) => y.replace(x, variable) == value
+	    case LambdaFixed(x: Term, y : Term) => Try(y.replace(x, variable) == value).getOrElse(false)
 	    case _ => false
 	  }
 

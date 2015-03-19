@@ -59,11 +59,11 @@ object HoTTgen {
 	}
 	
 	object Move extends Enumeration{
-	  val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons  = Move
+	  lazy val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons  = Move
 	}
 	
 	
-	val moves = List((Move.appl, combinationFn(funcappl)),
+	lazy val moves = List((Move.appl, combinationFn(funcappl)),
 	    (Move.arrow, combinationFn(functyp)),
 	    (Move.pi, moveFn(pityp)),
 	    (Move.sigma, moveFn(sigmatyp)),
@@ -78,7 +78,7 @@ object HoTTgen {
 	 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 	
-	val wtdMoveSum = vbigsum(wtdMoveList)
+	val wtdMoveSum = vbigsum(wtdMoveList) andthen block(normalizeFD[Move.type], normalizeFD[Term])
 	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
@@ -114,6 +114,6 @@ object HoTTgen {
 	  extendM(withIsle)
 	}
 	
-	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda))
+	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(normalizeFD[Move.type], normalizeFD[Term]))
 	
 }

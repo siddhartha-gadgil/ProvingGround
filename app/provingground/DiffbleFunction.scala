@@ -61,6 +61,22 @@ import provingground.Collections._
       
       def proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
       
+      def block[A, B, C, D](f : DiffbleFunction[A, C], g: DiffbleFunction[B, D])(
+          implicit lsA : LinearStructure[A], 
+          lsB : LinearStructure[B],
+          lsC : LinearStructure[C],
+          lsD : LinearStructure[D]) = {
+            val add = vsum[DiffbleFunction[(A, B), (C, D)]]
+            
+            val p1 = proj1[A, B]
+            val p2 = proj2[A, B]
+            
+            val i1 = incl1[C, D]
+            val i2 = incl2[C, D]
+            
+            add(p1 andthen f andthen i1, p2 andthen g andthen i2)
+      }
+      
       def scprod[V](implicit ls: LinearStructure[V], ip: InnerProduct[V]) = {
         def fn(av: (Double, V)) = ls.mult(av._1, av._2)
         
@@ -82,16 +98,26 @@ import provingground.Collections._
             
       }
       
+        /**
+       * Iterate a differentiable function.
+      */
+      @tailrec def iterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int, accum:  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
+          if (n<1) accum else iterateDiffble(fn, n-1, accum andthen (fn :  DiffbleFunction[X, X]) )
+        }
+      
+      def iterate[A](f: DiffbleFunction[A, A]) : Int => DiffbleFunction[A, A] = (n) => iterateDiffble(f, n)
+      
       def mixinIsle[A](f: DiffbleFunction[A, A], 
-          isle : DiffbleFunction[A, A] => DiffbleFunction[A, A])(implicit ls: LinearStructure[A]) = {
-        val g = repsquare(f)  
+          isle : DiffbleFunction[A, A] => DiffbleFunction[A, A],
+          normalize: DiffbleFunction[A, A] = id[A])(implicit ls: LinearStructure[A]) = {
+        val g = iterate(f)  
         def h(m : Int) : DiffbleFunction[A, A] = m match {
         	case 0 => id[A]
         	case n if n<0 => 
         		vzero[DiffbleFunction[A, A]]
         	case n if n >0 => 
         		val dsum  = vsum[DiffbleFunction[A, A]]
-        		dsum(g(n), isle(h(n -1)))
+        		dsum(g(n), isle(h(n -1))) andthen normalize
         }
         h _
       }
@@ -125,7 +151,7 @@ import provingground.Collections._
         DiffbleFunction(func)(grad)
       }
       
-          implicit def diffFnLS[A, B](
+      implicit def diffFnLS[A, B](
         implicit lsA : LinearStructure[A], lsB: LinearStructure[B]) : LinearStructure[DiffbleFunction[A, B]] = {
       def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
         val addB = vsum[B]
