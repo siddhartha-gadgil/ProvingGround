@@ -249,7 +249,7 @@ object ConstructorPatterns {
     def headData(data: RecDataType, arg: ArgType, f :  => Func[Term, C]): HeadRecDataType = {
      val W = f.dom
      val X = f.codom
-     val d = tail.induced(W, X)(f)(arg)
+     val d = tail.induced(f)(arg)
     data(arg)(d)
     }
 
@@ -335,7 +335,7 @@ object ConstructorPatterns {
     def headData(data: RecDataType, arg: ArgType, f :  => Func[Term, C]): HeadRecDataType = {
       val W = f.dom
       val X = f.codom
-      val d = tail.induced(W, X)(f)(arg)
+      val d = tail.induced(f)(arg)
       data(arg)(d)
     }
 

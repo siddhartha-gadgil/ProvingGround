@@ -5,6 +5,8 @@ extras/
 
 tmpBin/
 
+.tmpBin/
+
 bin/
 
 doc/*.log

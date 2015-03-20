@@ -19,7 +19,11 @@ class TermParser extends JavaTokenParsers{
   def sigma: Parser[Any] = UnicodeSyms.Sigma | SimpleSyms.Sigma
   def colon: Parser[String] = ":"
 
-  def name: Parser[AnySym] = "[a-zA-Z]".r ^^ {Name(_)}
+  def makeSymbol(s: String): AnySym = if (s endsWith "_1") LeftSym(makeSymbol(s.dropRight(2))) 
+    else if (s endsWith "_2") RightSym(makeSymbol(s.dropRight(2))) 
+    else Name(s) 
+  
+  def name: Parser[AnySym] = "[a-zA-Z0-9!@#$%^&*()_+-]+".r ^^ {makeSymbol(_)}
 
   def symbTyp: Parser[Typ[Term]] = name <~ colon ~univ ^^ (SymbTyp(_))
 
@@ -36,7 +40,9 @@ class TermParser extends JavaTokenParsers{
 
   def symbTerm : Parser[Term] = name~colon~"("~typ<~")" ^^ {case nm~_~_~typ => typ.symbObj(nm)}
 
-  def term: Parser[Term] =  lambdaTerm | appln | symbTerm | typ
+  def pair: Parser[Term] = "("~>term~")"~","~"("~term <~")" ^^ {case a ~ _ ~ _ ~ _~ b => mkPair(a, b)}
+  
+  def term: Parser[Term] =  typ | lambdaTerm | appln | symbTerm
 
   def lambdaTerm : Parser[Term] =
     "("~>term~")"~mapsto~"("~term <~")"<~colon~typ ^^ {case variable ~ _ ~ _~ _~ value => lambda(variable)(value)}

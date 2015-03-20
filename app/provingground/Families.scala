@@ -12,7 +12,7 @@ object Families {
   /**
    * a single trait to hold all type patterns, independent of U, with members having type O.
    */
-  sealed trait FmlyPtn[O <: Term, C <: Term]{
+  sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]{
     /**
      * the universe containing the type
      */
@@ -61,7 +61,7 @@ object Families {
     *
     * @param X codomain of the given function
     */
-    def induced(W : Typ[O], X : Typ[Cod])(f : O => Cod) : FamilyType => TargetType
+    def induced(f : Func[O, Cod]) : FamilyType => TargetType
 
     /**
     * dependent function induced by dependent f: W -> X(s) of type (A -> W) -> ((a : A) ~> Xs(a)) etc
@@ -72,7 +72,7 @@ object Families {
     *
     * @param Xs family of codomains of the given dependent function
     */
-    def inducedDep(W : Typ[O], Xs : O => Typ[Cod])(f : O => Cod) : FamilyType => DepTargetType
+    def inducedDep(f : FuncLike[O, Cod]) : FamilyType => DepTargetType
   }
   
  // type MemberPtn[F <: Term, A <: Term] = PairObj[F, A]
@@ -86,7 +86,7 @@ object Families {
    * @param U (upper bound on) scala type of an object with the pattern - especially functions.
    * this is needed to ensure that families have a common scala type that can be used inductively.
    */
- /* sealed trait FmlyPtn[U <: Term, T <: Term, D <: Term with Subs[D], O <: Term, C <: Term] extends FmlyPtn[O, C]{
+ /* sealed trait FmlyPtn[U <: Term, T <: Term, D <: Term with Subs[D], O <: Term with Subs[O] C <: Term] extends FmlyPtn[O, C]{
     /**
      * scala type (upper bound)
      */
@@ -138,15 +138,16 @@ object Families {
     /**
      * induced function is the given one.
      */
-    def induced(W : Typ[O], X : Typ[C])(f : O => C) = f
+    def induced(f : Func[O, C]) = f
 
     /**
      * induced function is the given one.
      */
-    def inducedDep(W : Typ[O], Xs : O => Typ[C])(f : O => C) = f
+    def inducedDep(f : FuncLike[O, C]) = f
   }
   
-  trait RecFmlyPtn[V <: Term with Subs[V], S <: Term with Subs[S], T <: Term, D<: Term with Subs[D], O <: Term, C <: Term] extends 
+  trait RecFmlyPtn[V <: Term with Subs[V], S <: Term with Subs[S], 
+    T <: Term, D<: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]] extends 
         FmlyPtn[O, C]{
     
     type FamilyType <:  FuncLike[Term, V] with Subs[FamilyType]
@@ -164,7 +165,8 @@ object Families {
     val headfibre: Term => FmlyPtn[O, C]{type FamilyType = V; type ArgType = S; type TargetType = T; type DepTargetType = D}
   }
   
-  case class FuncFmlyPtn[V <: Term with Subs[V], S<: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
+  case class FuncFmlyPtn[V <: Term with Subs[V], S<: Term with Subs[S], 
+    T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]](
       tail : Typ[Term], 
       head : FmlyPtn[O, C]{type FamilyType = V; type ArgType = S; 
       type TargetType = T; type DepTargetType = D})/*(
@@ -199,11 +201,11 @@ object Families {
      * maps (g : tail --> head(W)) to func : tail --> head(X) given (head(W) --> head(X))
      *
      */
-    def induced(W : Typ[O], X: Typ[Cod])(f : O => Cod) : FamilyType => TargetType = {
+    def induced(f : Func[O, Cod]) : FamilyType => TargetType = {
         val x = "x" :: tail
-        val g = "g" :: apply(W)
+        val g = "g" :: apply(f.dom)
         lmbda(g)(
-            lmbda(x)(head.induced(W, X)(f)(g(x))))
+            lmbda(x)(head.induced(f)(g(x))))
         /*
         val func =((t : Term) => head.induced(W, X)(f) (g(t)))
         val codomain = head(X)
@@ -215,11 +217,11 @@ object Families {
      * maps (g : tail --> head(W)) to func : (t : tail) ~> head(Xs(t)) given (head(W) --> (t: tail) ~> head(Xs(t)))
      *
      */
-    def inducedDep(W : Typ[O], Xs: O => Typ[Cod])(f : O => Cod) : FamilyType => DepTargetType = {
+    def inducedDep(f : FuncLike[O, Cod]) : FamilyType => DepTargetType = {
         val x = "x" :: tail
-        val g = "g" :: apply(W)
+        val g = "g" :: apply(f.dom)
         lambda(g)(
-            lambda(x)(head.inducedDep(W, Xs)(f)(g(x))))
+            lambda(x)(head.inducedDep(f)(g(x))))
       /*
       (g : FamilyType) =>
         val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
@@ -237,7 +239,7 @@ object Families {
    */
   case class DepFuncFmlyPtn[V <: Term with Subs[V], 
     S<: Term with Subs[S],
-    T <: Term with Subs[T], D <: Term with Subs[D], O<: Term, C<: Term](
+    T <: Term with Subs[T], D <: Term with Subs[D], O<: Term with Subs[O], C<: Term with Subs[C]](
       tail: Typ[Term],
       headfibre : Term => FmlyPtn[O, C]{type FamilyType = V; type ArgType = S;
       type TargetType = T; type DepTargetType = D}, 
@@ -288,11 +290,11 @@ object Families {
 
 //    type FamilyType = FuncLike[Term, head.FamilyType]
 
-     def induced(W : Typ[O], X: Typ[Cod])(f : O => Cod) : FamilyType => TargetType = {
+     def induced(f : Func[O, Cod]) : FamilyType => TargetType = {
         val x = "x" :: tail
-        val g = "g" :: apply(W)
+        val g = "g" :: apply(f.dom)
         lambda(g)(
-            lambda(x)(head.induced(W, X)(f)(g(x))))
+            lambda(x)(head.induced(f)(g(x))))
        /*
       (g : FamilyType) =>
         val func =((t : Term) => headfibre(t).induced(W, X)(f) (g(t)))
@@ -302,11 +304,11 @@ object Families {
         DepFuncDefn[Term, V](func, tail, fiber)*/
     }
 
-    def inducedDep(W : Typ[O], Xs: O => Typ[Cod])(f : O => Cod) : FamilyType => DepTargetType = {
+    def inducedDep(f : FuncLike[O, Cod]) : FamilyType => DepTargetType = {
         val x = "x" :: tail
-        val g = "g" :: apply(W)
+        val g = "g" :: apply(f.dom)
         lambda(g)(
-            lambda(x)(head.inducedDep(W, Xs)(f)(g(x))))
+            lambda(x)(head.inducedDep(f)(g(x))))
       /*
       (g : FamilyType) =>
         val func =((t : Term) => headfibre(t).induced(W, Xs(t))(f) (g(t)))
@@ -320,7 +322,7 @@ object Families {
   }
   
   /*
-  trait Member[V <: Term with Subs[V], O <: Term, C <: Term]{self =>
+  trait Member[V <: Term with Subs[V], O <: Term with Subs[O] C <: Term]{self =>
 //    type Cod <: Term
     
     val fmlyPtn : FmlyPtn[O, C]{type FamilyType = self.FamilyType; 
@@ -356,7 +358,7 @@ object Families {
   
   
   
-  case class FuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
+  case class FuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O] C <: Term](
       tail : Typ[Term], arg: Term, 
       headfibre : Term => Member[V, O, C]{//type FamilyType = V; 
         type TargetType = T; 
@@ -379,7 +381,7 @@ object Families {
     def apply(f: FamilyType) = headfibre(arg)(f(arg))
   }
   
-  case class DepFuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term, C <: Term](
+  case class DepFuncMember[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O] C <: Term](
       tail : Typ[Term], arg: Term, 
       headfibre : Term => Member[V, O, C]{type FamilyType = V; 
         type TargetType = T; 

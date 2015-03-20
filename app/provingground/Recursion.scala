@@ -89,7 +89,7 @@ object Recursion{
      */
     private def kappaChange(f: => Func[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
-    val fx = (ptn.induced(f.dom, f.codom)(f))(x)
+    val fx = (ptn.induced(f))(x)
     x /: (fx |: ctx)
     	}
     
@@ -105,7 +105,7 @@ object Recursion{
      */
     private def kappaIndChange(f: => FuncLike[Term, Term]) : Change[Term] = (varname, ptn, ctx) => {
     val x = ptn(f.dom).symbObj(varname)
-    val fx = ptn.inducedDep(f.dom, f.depcodom)(f)(x)
+    val fx = ptn.inducedDep(f)(x)
      x /: (fx |: ctx)
     	}
     
@@ -131,10 +131,10 @@ object Recursion{
    * Change in context for a TypPattern (i.e., simple pattern ending in W).
    * Should allow for dependent types when making a lambda.
    */
-  private def recContextChange[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
+  private def recContextChange[V<: Term with Subs[V]](f : => (Func[Term, Term]),
         W : Typ[Term], X : Typ[V]) : (AnySym, FmlyPtn[Term, Term], Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) => {
     val x = ptn(W).symbObj(varname)
-    val fx = ptn.induced(W, X)(f)(x)
+    val fx = ptn.induced(f)(x)
     x /: fx /: ctx
   }
   
@@ -145,7 +145,7 @@ object Recursion{
   private def indContextChange[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
       W : Typ[V], Xs : Term => Typ[V]) : (AnySym, FmlyPtn[Term, Term], Context[Term, V]) => Context[Term, V] = (varname, ptn, ctx) =>   {
     val x =  ptn(W).symbObj(varname)
-    val fx = ptn.inducedDep(W, Xs)(f)(x)
+    val fx = ptn.inducedDep(f)(x)
     x /: fx /: ctx
   }
   
@@ -213,7 +213,7 @@ object Recursion{
   /**
    *  context for recursive definition for a constructor.
    */
-  def cnstrRecContext[V<: Term with Subs[V]](f : => (FuncLike[Term, Term]),
+  def cnstrRecContext[V<: Term with Subs[V]](f : => (Func[Term, Term]),
       ptn : ConstructorPtn, varnames : List[AnySym],
       W : Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {

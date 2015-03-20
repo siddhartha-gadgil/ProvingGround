@@ -424,6 +424,8 @@ object HoTT{
 	trait AbsPair[+U<: Term, +V <: Term] extends Term{
 	  val first: U
 	  val second: V
+    
+    override def toString = s"""(($first) , ($second))"""
 	}
 
 	/**
@@ -439,6 +441,17 @@ object HoTT{
         first: Typ[U] with Subs[Typ[U]], second: Typ[V] with Subs[Typ[V]]) = PairTyp(first, second)
 
 
+  /**
+   * makes a pair with the appropriate runtime type
+   */
+  lazy val  mkPair : (Term, Term) => AbsPair[Term, Term] = {
+      case (a : Typ[u], b: Typ[v]) => PairTyp[Term, Term](a, b)
+      case (a, b) if b.typ.dependsOn(a) => {
+        val fiber = lmbda(a)(b.typ)
+        DepPair(a, b, fiber)
+      }
+      case(a , b) => PairObj(a, b)
+  } 
 
 	/** Function type (not dependent functions)*/
     case class FuncTyp[W<: Term with Subs[W], U<: Term with Subs[U]](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
@@ -482,7 +495,7 @@ object HoTT{
 
   //    // val codomobjtpe: Type
 
-      val dom: Typ[Term]
+      val dom: Typ[W]
 
       val depcodom : W => Typ[U]
 
@@ -636,7 +649,7 @@ object HoTT{
 
 	  type Cod = Y
 
-	  val dom = variable.typ
+	  val dom = variable.typ.asInstanceOf[Typ[X]]
 
 	  override def toString = s"""(${variable.toString}) $MapsTo (${value.toString})"""
 
