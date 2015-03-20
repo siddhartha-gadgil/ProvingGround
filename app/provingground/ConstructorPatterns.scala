@@ -247,10 +247,7 @@ object ConstructorPatterns {
     def recDom(w: Typ[Term], x: Typ[Cod]) = tail(w) ->: tail.target(x) ->: head.recDom(w, x)
 
     def headData(data: RecDataType, arg: ArgType, f :  => Func[Term, C]): HeadRecDataType = {
-     val W = f.dom
-     val X = f.codom
-     val d = tail.induced(f)(arg)
-    data(arg)(d)
+      data(arg)(tail.induced(f)(arg))
     }
 
     def apply(W : Typ[Term]) = FuncTyp[ArgType, head.ConstructorType](tail(W), head(W))

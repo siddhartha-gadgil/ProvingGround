@@ -1,7 +1,7 @@
 package provingground.fol
 
 import provingground.fol.Logic._
-import provingground.Structures._
+import provingground.dynamics.Structures._
 import provingground.fol.Theory._
 
 /** Extends the class of terms and formulas to include various generic and specific classes of words, lists etc.

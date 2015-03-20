@@ -1,20 +1,14 @@
-package provingground
+package provingground.dynamics
 
-import Stream._
+import scala.language.postfixOps
+
 import Structures._
 import annotation.tailrec
 import scala.util._
-import scala.language.postfixOps
-
 import akka.actor._
-import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
-
 import provingground.HoTT._
-
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-
 import ExecutionContext.Implicits.global
 
 /** Generic Memoised Evolver built from base by adding spans and weights */
@@ -26,7 +20,7 @@ object StackedEvolver{
 
 	/** Stream from generators given dynamics */
   def evolve[A,B](gens:B, init:A, nxt:(B, A, Int)=> A): Stream[A]={
-    (from (0)) map (evolveFn( gens, init, nxt, _))
+    (Stream.from (0)) map (evolveFn( gens, init, nxt, _))
     }
 
   /** Base evolver, provides methods but has trivial dynamics */

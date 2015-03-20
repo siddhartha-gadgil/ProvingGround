@@ -1,7 +1,7 @@
 package provingground.fol
 
 import provingground.fol.Logic._
-import provingground.Structures._
+import provingground.dynamics.Structures._
 import provingground.Aware._
 
 import scala.language.implicitConversions

@@ -1,6 +1,6 @@
 package provingground
-import provingground.Structures._
-import provingground.StackedEvolver._
+import provingground.dynamics.Structures._
+import provingground.dynamics.StackedEvolver._
 import scala.language.implicitConversions
 import annotation._
 

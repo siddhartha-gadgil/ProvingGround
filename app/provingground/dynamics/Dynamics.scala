@@ -1,21 +1,13 @@
-package provingground
+package provingground.dynamics
 
-import Stream._
+import provingground._
 import Structures._
 import annotation.tailrec
 import scala.util._
-import scala.language.postfixOps
-
 import akka.actor._
-import akka.pattern.ask
 import scala.concurrent._
 import scala.concurrent.duration._
-
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-
 import provingground.HoTT._
-
-import ExecutionContext.Implicits.global
 
 object Goals{
   trait Goal[U]{

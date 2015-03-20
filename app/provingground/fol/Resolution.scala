@@ -2,7 +2,7 @@ package provingground.fol
 
 import provingground.fol.Logic._
 import scala.util._
-import provingground.Structures._
+import provingground.dynamics.Structures._
 import scala.Option.option2Iterable
 
 /** A basic resolution theorem prover */

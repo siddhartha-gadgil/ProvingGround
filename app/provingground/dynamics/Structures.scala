@@ -1,4 +1,6 @@
-package provingground 
+package provingground.dynamics 
+
+import scala.collection.immutable.Stream.consWrapper
 
 /** Effective structures, collections and Utility functions for these */
 object Structures{
