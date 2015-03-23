@@ -10,14 +10,19 @@ import ConstructorPatterns.getArg
 /**
  * @author gadgil
  */
-object IndexedConstructorPatterns {
-    sealed trait ConstructorPtn[F <: Term with Subs[F], A <: Term with Subs[A], I <: Term with Subs[I]]{self =>
+class IndexedConstructorPatterns[F <: Term with Subs[F], 
+  A <: Term with Subs[A], 
+  I <: Term with Subs[I], C <: Term with Subs[C]](
+      val typFmlyPtn: FmlyPtn[Term, C]{type FamilyType = F; type ArgType = A; type IterFunc = I}
+      ) {outer =>
+        type Cod = C
+    sealed trait ConstructorPtn{self =>
     /**
      * Type of codomain X
      */
-    type Cod <:  Term with Subs[Cod]
+ //   type Cod <:  Term with Subs[Cod]
     
-    val typFmlyPtn: FmlyPtn[Term, Cod]{type FamilyType = F; type ArgType = A; type IterFunc = I}
+  //  val typFmlyPtn: FmlyPtn[Term, Cod]{type FamilyType = F; type ArgType = A; type IterFunc = I}
     
  //   type IterFunc = typFmlyPtn.IterFunc
     
@@ -54,15 +59,12 @@ object IndexedConstructorPatterns {
     def recDef(cons: ConstructorType, data: RecDataType, f :  => I): Term => Option[Cod]
     }
     
-    case class iW[F <: Term with Subs[F], A <: Term with Subs[A], 
-      I <: Term with Subs[I],
-      C<: Term with Subs[C]](
-        typFmlyPtn: FmlyPtn[Term, C]{type FamilyType = F; type ArgType = A; type IterFunc = I}, arg: A) extends ConstructorPtn[F, A, I]{
+    case class iW(arg: A) extends ConstructorPtn{
       type ConstructorType = Term
       
-      type Cod = C
+  //    type Cod = C
       
-      type RecDataType = C
+      type RecDataType = Cod
       
       def apply(tps: F) = typFmlyPtn.contractType(tps)(arg)
       
@@ -101,8 +103,7 @@ object IndexedConstructorPatterns {
       /**
    * Functional extension of a type pattern
    */
-  sealed trait RecursiveConstructorPtn[F <: Term with Subs[F], A <: Term with Subs[A], 
-    I <: Term with Subs[I]] extends ConstructorPtn[F, A, I]{self =>
+  sealed trait RecursiveConstructorPtn extends ConstructorPtn{self =>
     /**
      * scala type of argument to constructor A -> ... (or A ~> ...)
      */
@@ -126,8 +127,8 @@ object IndexedConstructorPatterns {
     /**
      * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
      */
-    val headfibre: ArgType => ConstructorPtn[F, A, I]{type ConstructorType = HeadType;
-      type RecDataType = HeadRecDataType; type Cod = self.Cod}
+    val headfibre: ArgType => ConstructorPtn{type ConstructorType = HeadType;
+      type RecDataType = HeadRecDataType; type Cod = outer.Cod}
 
     /**
      * returns data for recursion to be passed on to the head given an argument (when matching with the construtor).
@@ -143,13 +144,10 @@ object IndexedConstructorPatterns {
     
     
     
-    case class FuncPtn[F <: Term with Subs[F], 
-      A <: Term with Subs[A], 
-      I <: Term with Subs[I],
-      C<: Term with Subs[C]](
+    case class FuncPtn(
         tail: FmlyPtn[Term, C], 
         tailArg: A, 
-        head : ConstructorPtn[F, A, I]{type Cod = C})extends RecursiveConstructorPtn[F, A, I]{
+        head : ConstructorPtn{type Cod = C})extends RecursiveConstructorPtn{
       type ArgType = tail.Family
 
       type HeadType = head.ConstructorType
@@ -160,11 +158,11 @@ object IndexedConstructorPatterns {
       
       type HeadRecDataType = head.RecDataType
       
-      val typFmlyPtn = head.typFmlyPtn
+  //    val typFmlyPtn = head.typFmlyPtn
       
       val arg = head.arg
       
-      val _head : ConstructorPtn[F, A, I]{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
+      val _head : ConstructorPtn{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
 
       val headfibre = (t: ArgType) => _head
       
