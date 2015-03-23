@@ -16,7 +16,7 @@ object ConstructorPatterns {
    * @param func function f to match for f(x)
    */
     def getArg[D <: Term with Subs[D], U <: Term with Subs[U]](func : FuncLike[D, U]): Term => Option[D] = {
-      case sym: Symbolic => sym.name match { 
+      case sym: Symbolic => sym.name match {
         case fx: ApplnSym[u, w] =>
           if (fx.func == func && fx.arg.typ == func.dom) Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
             else getArg(func)(fx.func)
@@ -222,7 +222,7 @@ object ConstructorPatterns {
    * Extending a constructor-pattern by a type pattern.
    */
   case class FuncPtn[C <: Term with Subs[C]](tail: FmlyPtn[Term, C], head : ConstructorPtn{type Cod = C}) extends RecursiveConstructorPtn{self =>
-    type ArgType = tail.FamilyType
+    type ArgType = tail.Family
 
     type HeadType = head.ConstructorType
 
@@ -242,7 +242,7 @@ object ConstructorPatterns {
 
     type HeadRecDataType = head.RecDataType
 
-    type RecDataType = Func[tail.FamilyType, Func[tail.TargetType, head.RecDataType]]
+    type RecDataType = Func[tail.Family, Func[tail.TargetType, head.RecDataType]]
 
     def recDom(w: Typ[Term], x: Typ[Cod]) = tail(w) ->: tail.target(x) ->: head.recDom(w, x)
 
@@ -304,7 +304,7 @@ object ConstructorPatterns {
   case class DepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], W <: Term with Subs[W], C <: Term with Subs[C]](tail: FmlyPtn[Term, C],
       headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C}),
       headlevel: Int = 0)/*(implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPtn{self =>
-    type ArgType = tail.FamilyType
+    type ArgType = tail.Family
 
     type HeadType = U
 
@@ -319,7 +319,7 @@ object ConstructorPatterns {
       res
     }
 
-    type RecDataType = FuncLike[tail.FamilyType, Func[tail.TargetType, V]]
+    type RecDataType = FuncLike[tail.Family, Func[tail.TargetType, V]]
 
     def recDom(w: Typ[Term], x: Typ[Cod]) = {
       val a = "a" :: tail(w)
