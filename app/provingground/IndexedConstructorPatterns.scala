@@ -57,6 +57,11 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
      * @param f the function being defined, to be applied recursively.
      */
     def recDef(cons: ConstructorType, data: RecDataType, f :  => I): Term => Option[Cod]
+    
+    
+    def withCod[CC <: Term with Subs[CC]](
+        implicit indexClass : IndexedConstructorPatterns[F, A, I, CC]
+        ) : indexClass.ConstructorPtn{type ConstructorType = self.ConstructorType}
     }
     
     case class iW(arg: A) extends ConstructorPtn{
@@ -74,6 +79,13 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
         case (t: Term) if t == cons => Some(data)
         case _ => None
     }
+      
+      def withCod[CC <: Term with Subs[CC]](
+        implicit indexClass : IndexedConstructorPatterns[F, A, I, CC]
+        ) = {
+        val _iw = indexClass.iW(arg) : indexClass.ConstructorPtn{type ConstructorType = iW.this.ConstructorType}
+        _iw 
+      }
     }
     
     /**
