@@ -187,4 +187,184 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       }
       
     }
+    
+    
+    case class CnstFncPtn(
+        tail: Typ[Term], 
+        tailArg: A, 
+        head : ConstructorPtn{type Cod = C})extends RecursiveConstructorPtn{
+      type ArgType = Term
+
+      type HeadType = head.ConstructorType
+      
+      type Cod = C
+      
+      type ConstructorType = Func[ArgType, head.ConstructorType]
+      
+      type HeadRecDataType = head.RecDataType
+      
+  //    val typFmlyPtn = head.typFmlyPtn
+      
+      val arg = head.arg
+      
+      val _head : ConstructorPtn{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
+
+      val headfibre = (t: ArgType) => _head
+      
+            
+      type RecDataType = Func[Term, head.RecDataType]
+      
+      def apply(tps: F) = {
+        FuncTyp[ArgType, head.ConstructorType](tail, head(tps))
+      }
+       
+     
+      
+      def recDom(tps: F, x: Typ[Cod]) : Typ[RecDataType] =  {
+        val w = typFmlyPtn.contractType(tps)(tailArg)
+        tail ->: head.recDom(tps, x)
+      }
+      
+     def headData(data: RecDataType, arg: ArgType, f :  => I): HeadRecDataType = {
+       val g = typFmlyPtn.fill(f)(tailArg)
+        data(arg)
+      }
+      
+    }
+    
+    
+    case class DepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], W <: Term with Subs[W]](
+        tail: FmlyPtn[Term, C], 
+        tailArg: A, 
+        arg: A,
+        headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPtn{
+      type ArgType = tail.Family
+
+      type HeadType = U
+      
+      type Cod = C
+      
+      type ConstructorType = FuncLike[ArgType, U]
+      
+      type HeadRecDataType = V
+      
+  //    val typFmlyPtn = head.typFmlyPtn
+      
+//      val arg = head.arg
+
+            
+      type RecDataType = FuncLike[tail.Family, Func[tail.TargetType, V]]
+      
+      def apply(tps: F) = {
+        val w = typFmlyPtn.contractType(tps)(tailArg)
+        val a = "a" :: tail(w)
+        val fiber = lmbda(a)(headfibre(a)(tps))
+        PiTyp[ArgType, U](fiber)
+      }
+       
+     
+      
+      def recDom(tps: F, x: Typ[Cod]) : Typ[RecDataType] =  {
+        val w = typFmlyPtn.contractType(tps)(tailArg)
+        val a = "a" :: tail(w)
+        val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDom(tps, x))
+        PiTyp(fibre)
+      }
+      
+     def headData(data: RecDataType, arg: ArgType, f :  => I): HeadRecDataType = {
+       val g = typFmlyPtn.fill(f)(tailArg)
+        data(arg)(tail.induced(g)(arg))
+      }
+      
+    }
+    
+    
+    case class CnstDepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], W <: Term with Subs[W]](
+        tail: Typ[Term], 
+        arg: A,
+        headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPtn{
+      type ArgType = Term
+
+      type HeadType = U
+      
+      type Cod = C
+      
+      type ConstructorType = FuncLike[ArgType, U]
+      
+      type HeadRecDataType = V
+      
+  //    val typFmlyPtn = head.typFmlyPtn
+      
+//      val arg = head.arg
+
+            
+      type RecDataType = FuncLike[Term, V]
+      
+      def apply(tps: F) = {
+        val a = "a" :: tail
+        val fiber = lmbda(a)(headfibre(a)(tps))
+        PiTyp[ArgType, U](fiber)
+      }
+       
+     
+      
+      def recDom(tps: F, x: Typ[Cod]) : Typ[RecDataType] =  {
+        val a = "a" :: tail
+        val fibre = lmbda(a)(headfibre(a).recDom(tps, x))
+        PiTyp(fibre)
+      }
+      
+     def headData(data: RecDataType, arg: ArgType, f :  => I): HeadRecDataType = {
+        data(arg)
+      }
+      
+    }
+    
+    
+        /**
+   * Constructor for an inductive type, with given scala type and poly-pattern of this type.
+   *
+   * abstraction of ConstructorDefn mainly to allow different type parameters.
+   */
+  trait Constructor{self =>
+    /**
+     * scala type, especially (nested) functions
+     */
+    type ConstructorType <: Term
+
+//    type Cod <: Term with Subs[Cod]
+    /**
+     * constructor-pattern for the constructor
+     */
+    val pattern : ConstructorPtn{type Cod = outer.Cod}
+
+//    val typ: Typ[Term]
+
+    /**
+     * the constructor (function or constant) itself.
+     */
+    val cons: pattern.ConstructorType
+
+    /**
+     * the type for which this is a constructor
+     */
+    val W : Typ[Term]
+  }
+
+    /**
+   * a constructor given by its parameters.
+   *
+   * @param pattern poly-pattern for the constructor.
+   *
+   * @param cons constructor function.
+   *
+   * @tparam U scala type of polypattern.
+   */
+  case class ConstructorDefn[U <: Term with Subs[U]](
+      pattern: ConstructorPtn{type ConstructorType = U; type Cod = outer.Cod},
+      cons: U, W: Typ[Term]) extends Constructor{
+    type ConstructorType = U
+
+  }
+  
 }
