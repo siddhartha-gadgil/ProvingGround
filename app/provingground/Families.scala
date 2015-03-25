@@ -42,6 +42,8 @@ object Families {
     
     def fill(g : IterFunc)(arg: ArgType) : Func[O, C]
     
+    def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc
+    
     def contractType(w: FamilyType)(arg: ArgType) : Typ[O]
 
     def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
@@ -110,6 +112,12 @@ object Families {
     def contract(f: Family)(arg: ArgType): O = f
     
     def fill(g : IterFunc)(arg: ArgType) : Func[O, C] = g
+    
+    def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
+      val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
+      val x ="x" :: fdom.second
+      lmbda(x)(f(PairObj(Star, x)))
+    }
 
     def contractType(w: FamilyType)(arg: ArgType) : Typ[O] = w
     
@@ -187,7 +195,18 @@ object Families {
     def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
     
     def fill(g : IterFunc)(arg: ArgType) : Func[O, C] = {
-      headfibre(arg).fill(g(arg.first))(arg.second)
+      headfibre(arg.first).fill(g(arg.first))(arg.second)
+    }
+    
+    def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
+      val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
+      val z = "z" :: fdom
+      val x = z.first.first
+      val y = z.first.second
+      val yw = PairObj(y, z.second)
+      lmbda(x)(
+          headfibre(x).curry(
+              lmbda(yw)(f(z))))   
     }
     
     
@@ -272,6 +291,17 @@ object Families {
     
     def fill(g : IterFunc)(arg: ArgType) : Func[O, C] = {
       headfibre(arg).fill(g(arg.first))(arg.second)
+    }    
+    
+    def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
+      val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
+      val z = "z" :: fdom
+      val x = z.first.first
+      val y = z.first.second
+      val yw = PairObj(y, z.second)
+      lambda(x)(
+          headfibre(x).curry(
+              lmbda(yw)(f(z))))   
     }
     
     def contractType(w: FamilyType)(arg: ArgType) : Typ[O] = headfibre(arg).contractType(w(arg.first))(arg.second)

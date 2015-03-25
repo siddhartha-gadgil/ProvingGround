@@ -48,7 +48,6 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
      */
     def recDom(w: F, x: Typ[Cod]) : Typ[RecDataType]
     
-    
     /**
      * given a term, matches to see if this is the image of a given (quasi)-constructor.
      * returns simplification (wrapped in Some) if the term matches.
@@ -57,6 +56,27 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
      * @param f the function being defined, to be applied recursively.
      */
     def recDef(cons: ConstructorType, data: RecDataType, f :  => I): Term => Option[Cod]
+    
+    def recModify(cons: ConstructorType)(data: RecDataType)(f : => I) : I = {
+      def g = typFmlyPtn.fill(f)(arg)
+      val fn = new Func[PairObj[A, Term], Cod]{
+        lazy val W = g.dom
+      
+        lazy val dom = PairTyp(arg.typ.asInstanceOf[Typ[A]], W)
+        
+        lazy val codom = g.codom
+      
+        lazy val typ = dom ->: codom
+      
+        def newobj = this
+      
+        def act(a: PairObj[A, Term]) = (recDef(cons, data, f)(a)).getOrElse(g(a.second))
+      
+        def subs(x: Term, y: Term) = this
+        }
+      typFmlyPtn.curry(fn)
+      }
+    
     }
     
     case class iW(arg: A) extends ConstructorPtn{
@@ -319,4 +339,176 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       }
       
     }
+    
+        /**
+   * Constructor for an inductive type, with given scala type and poly-pattern of this type.
+   *
+   * abstraction of ConstructorDefn mainly to allow different type parameters.
+   */
+  trait Constructor{self =>
+    /**
+     * scala type, especially (nested) functions
+     */
+    type ConstructorType <: Term
+
+  //  type Cod <: Term with Subs[Cod]
+    /**
+     * constructor-pattern for the constructor
+     */
+    val pattern : ConstructorPtn{type Cod = outer.Cod}
+
+//    val typ: Typ[Term]
+
+    /**
+     * the constructor (function or constant) itself.
+     */
+    val cons: pattern.ConstructorType
+
+    /**
+     * the type for which this is a constructor
+     */
+    val W : F
+  }
+
+
+
+  /**
+   * a constructor given by its parameters.
+   *
+   * @param pattern poly-pattern for the constructor.
+   *
+   * @param cons constructor function.
+   *
+   * @tparam U scala type of polypattern.
+   */
+  case class ConstructorDefn[U <: Term with Subs[U]](
+      pattern: ConstructorPtn{type ConstructorType = U; type Cod = C},
+      cons: U, W: F) extends Constructor{
+    type ConstructorType = U
+
+ //   type Cod = C
+  }
+  
+  
+   /**
+   * rec(W)(X) is the value, defined recursively.
+   * @tparam C codomain (scala) type
+   * @tparam F full type of rec
+   */
+  trait RecFunction{self =>
+    /**
+     * W in rec(W)(X)
+     */
+    val W: Typ[Term]
+
+    /**
+     * X in rec(W)(X)
+     */
+ //   val X : Typ[C]
+
+
+    /**
+     * (scala) type of rec(W)(X)
+     */
+    type FullType <: Term with Subs[FullType]
+
+    /**
+     * induced change to function of the type of rec(W)(X) given change on function W->X;
+     * @param transform function W -> X by which we change functions W -> X, trying the case first.
+     * @return induced changed function.
+     */
+    def pullback(X: Typ[C])(transform: I => I): FullType => FullType
+
+    /**
+     * given value for rec(W)(X) corresponding to earlier patterns, returns one including the new case.
+     */
+    def recursion(X: Typ[C])(f: => FullType): FullType
+
+    /**
+     * prepend a constructor
+     */
+    
+     def prepend(cons: Constructor{type Cod = C}) = {
+      val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
+      type D = cons.pattern.RecDataType
+      val caseFn : D => I => I = (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
+      RecFunctionCons[D](recdom, caseFn, this)
+    }
+  }
+
+  def recFunction(conss: List[Constructor{type Cod = C}], W: Typ[Term], arg: A) = {
+    val init : RecFunction = RecTail(W, arg)
+    (init /: conss)(_ prepend _)
+  }
+
+/*
+  case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
+    override def toString = s"rec($W)($X)"
+  }
+ */
+
+  /**
+   * container for rec(W)(X) in the case of no constructors.
+   * rec(W)(X) is defined to be formal application of itself.
+   * Lazy lambda used to avoid infinite loops.
+   */
+  case class RecTail(W: Typ[Term], arg: A) extends RecFunction{
+    type FullType = I
+
+    private lazy val a = "a" :: W
+
+    def recursion(X: Typ[C])(f: => FullType) = {
+      val g = typFmlyPtn.fill(f)(arg)
+      val fn = new Func[PairObj[A, Term], Cod]{
+        
+        lazy val dom = PairTyp(arg.typ.asInstanceOf[Typ[A]], W)
+        
+        lazy val codom = g.codom
+      
+        lazy val typ = dom ->: codom
+      
+        def newobj = this
+      
+        def act(argx: PairObj[A, Term]) = X.symbObj(ApplnSym(g, argx.second))
+      
+        def subs(x: Term, y: Term) = this                 
+        }
+      typFmlyPtn.curry(fn)
+    }
+
+    def pullback(X: Typ[C])(transform: I => I) = (g : I) => g
+  }
+
+  /**
+   * cons for recursion function, i.e., adding a new constructor
+   * @param dom domain
+   * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern
+   * @param tail previously added constructors
+   */
+  case class RecFunctionCons[D<: Term with Subs[D]](
+      recdom: Typ[C] => Typ[D],
+      caseFn : D => I => I,
+      tail: RecFunction) extends RecFunction{
+    val W = tail.W
+
+  //  val X = tail.X
+
+    type FullType = Func[D, tail.FullType]
+
+
+    def pullback(X: Typ[C])(transform: I => I) = (g) =>
+      {
+       val a = "a" :: recdom(X)
+      new LazyLambdaFixed(a, tail.pullback(X)(transform)(g(a)))
+      }
+
+    def recursion(X: Typ[C])(f: => FullType) ={
+      val a = "a" :: recdom(X)
+      def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
+      lmbda(a)(fn(a))
+    }
+  }
+  
+  
+  
 }

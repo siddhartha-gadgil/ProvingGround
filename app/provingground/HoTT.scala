@@ -412,7 +412,7 @@ object HoTT{
     /** Object (a, b) in (A, B) */
     case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](
         first: U, second: V) extends AbsPair[U, V] with Subs[PairObj[U, V]]{
-    	lazy val typ = PairTyp(first.typ, second.typ)
+    	lazy val typ : PairTyp[Term, Term] = PairTyp(first.typ, second.typ)
 
     	def newobj = PairObj(first.newobj, second.newobj)
 

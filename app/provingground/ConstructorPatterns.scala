@@ -83,10 +83,27 @@ object ConstructorPatterns {
      */
     def recDef(cons: ConstructorType, data: RecDataType, f :  => Func[Term, Cod]): Term => Option[Cod]
 
+    def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) : Func[Term, Cod] = new Func[Term, Cod]{
+      lazy val dom = f.dom
+      
+      lazy val codom = f.codom
+      
+      lazy val typ = dom ->: codom
+      
+      def newobj = this
+      
+      def act(a: Term) = (recDef(cons, data, f)(a)).getOrElse(f(a))
+      
+      def subs(x: Term, y: Term) = this
+    }
+    
+    /*
     def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) = {
       val a = "a" :: f.dom
       lmbda(a)((recDef(cons, data, f)(a)).getOrElse(f(a)))
     }
+    */
+    
     /**
      * invokes [[recDom]] after changing codomain type.
      */
