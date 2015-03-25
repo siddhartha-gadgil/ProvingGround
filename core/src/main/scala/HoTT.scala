@@ -3,7 +3,6 @@ package provingground
 import scala.language.implicitConversions
 import scala.util._
 import scala.language.existentials
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import Math._
 
 // To Do:
@@ -268,7 +267,7 @@ object HoTT{
 
       def symbObj(name: AnySym) = SymbObj(name, this)
 
-      override def toString = s"""${name.toString} : $UnivSym""" 
+      override def toString = s"""${name.toString} : $UnivSym"""
 
       def elem = this
 
@@ -424,7 +423,7 @@ object HoTT{
 	trait AbsPair[+U<: Term, +V <: Term] extends Term{
 	  val first: U
 	  val second: V
-    
+
     override def toString = s"""(($first) , ($second))"""
 	}
 
@@ -451,7 +450,7 @@ object HoTT{
         DepPair(a, b, fiber)
       }
       case(a , b) => PairObj(a, b)
-  } 
+  }
 
 	/** Function type (not dependent functions)*/
     case class FuncTyp[W<: Term with Subs[W], U<: Term with Subs[U]](dom: Typ[W], codom: Typ[U]) extends Typ[Func[W, U]] with
@@ -516,18 +515,18 @@ object HoTT{
     case class ApplnSym[W <: Term with Subs[W], U <: Term](func : FuncLike[W, U], arg : W) extends AnySym{
       override def toString = s"""(${func.toString}) (${arg.toString})"""
     }
-    
+
     /*
-    
+
     class LazyApplnSym[W <: Term, U <: Term](_func: => FuncLike[W, U], val proxyFunc:AnySym, val arg: W) extends AnySym{
       override def toString = proxyFunc.toString + "("+ arg.toString +")"
-      
+
       lazy val func = _func
-      
+
       def reapply(w: W) = func(w)
-      
+
       override def hashCode : Int = 41 * (41 + proxyFunc.hashCode) + arg.hashCode()
-      
+
       override def equals(that: Any) = that match{
         case fx : LazyApplnSym[_, _] => proxyFunc == fx.proxyFunc && arg == fx.arg
         case _ => false
@@ -706,7 +705,7 @@ object HoTT{
 	    case _ => false
 	  }
 	}
-  
+
   class LazyLambda[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
     LambdaLike(variable, value){
 
@@ -726,16 +725,16 @@ object HoTT{
           new LazyLambda(variable, newval)
       }
   }
-  
+
     class LazyLambdaFixed[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
     LambdaLike(variable, value) with Func[X, Y] with Subs[LazyLambdaFixed[X, Y]]{
 
 //    lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
     override val dom = variable.typ.asInstanceOf[Typ[X]]
-    
+
     lazy val codom = value.typ.asInstanceOf[Typ[Y]]
-      
+
     lazy val dep = value dependsOn variable
 
     def newobj = new LazyLambdaFixed(variable.newobj, value.newobj)
@@ -768,7 +767,7 @@ object HoTT{
 	    case _ => false
 	  }
 
-  
+
 
 		def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 

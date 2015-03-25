@@ -1,9 +1,9 @@
 package provingground
 
 import provingground.HoTT._
-import provingground.Contexts._
+//import provingground.Contexts._
 import scala.util._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+//import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object Unify{
   def multisub[U <: Term with Subs[U]](x: U, m : Map[Term, Term]): U = m.toList  match {
