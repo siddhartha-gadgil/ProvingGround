@@ -15,7 +15,7 @@ lazy val commonSettings = Seq(
 
 lazy val serverSettings = Seq(
   name := "ProvingGround-jvm",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.1.0",
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT",
   "com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test",
   ws,
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
@@ -49,6 +49,6 @@ lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
 lazy val digressions = (project in file("digressions")).
   settings(commonSettings : _*).
   settings(digressionSettings : _*).
-  dependsOn(core) //.dependsOn(jvm)
+  dependsOn(core).dependsOn(jvm)
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
