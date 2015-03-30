@@ -15,17 +15,17 @@ object RecEnum {
 	  case Zero => Some(List())
 	  case Bool => Some(List(boolrep(true), boolrep(false)))
 	  case IdentityTyp(dom : Typ[_], lhs : Term, rhs: Term) if lhs == rhs => Some(List(Refl(dom, lhs)))
-	  case PairTyp(first : Typ[_], second : Typ[_]) => 
+	  case PairTyp(first : Typ[_], second : Typ[_]) =>
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
 	  case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
 	    for (x <- recEnumList(dom); y <- recEnumList(codom.asInstanceOf[Typ[Term]])) yield (
 	       for (m <- allMaps(x, y); f <- Try(FuncDefn(
-             m, dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])).toOption) 
-           yield (f) 
+             m, dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])).toOption)
+           yield (f)
          )
 	  case PiTyp(fiber) =>
 	    val dom = fiber.dom.asInstanceOf[Typ[Term]]
-	    val domlistopt = recEnumList(dom) 
+	    val domlistopt = recEnumList(dom)
 	    domlistopt flatMap (
 	        (domlist) => {
 	          val codoms = (x: Term)  => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
@@ -35,7 +35,7 @@ object RecEnum {
 	          })
 	  case SigmaTyp(fiber) =>
 	    val dom = fiber.dom.asInstanceOf[Typ[Term]]
-	    val domlistopt = recEnumList(dom) 
+	    val domlistopt = recEnumList(dom)
 	    domlistopt flatMap (
 	        (domlist) => {
 	          val codoms = (x: Term)  => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
@@ -45,5 +45,5 @@ object RecEnum {
 	          })
 	  case _ => None
 	}
-  
+
 }

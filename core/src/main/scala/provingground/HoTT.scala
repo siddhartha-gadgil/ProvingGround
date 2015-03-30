@@ -588,15 +588,15 @@ object HoTT{
     case class NamedFunc[W<: Term with Subs[W], +U <: Term](
         name: AnySym, func: Func[W, U]) extends Func[W, U]{
       lazy val dom = func.dom
-      
+
       lazy val codom = func.codom
-      
+
       def typ = func.typ
-      
+
       def newobj = NamedFunc(name, func.newobj)
-      
+
       def act(arg: W) : U = func.act(arg)
-      
+
       def subs(x: Term, y: Term) = NamedFunc(name, func.subs(x, y))
     }
 
@@ -1213,25 +1213,25 @@ object HoTT{
 	  typ.symbObj(Name(nextChar(usedChars(s)).toString))
 	}
 
-  
+
   def nextName(name: String) : String = {
     if (name == "") "a"
     else if (name.takeRight(1) == "z") nextName(name.dropRight(1)) + "a"
     else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString
   }
-  
+
   object NameFactory{
     var name = ""
-    
+
     def get = {
       name = nextName(name)
       name
     }
   }
-  
+
   def getVar[U <: Term](typ : Typ[U]) = typ.symbObj(NameFactory.get)
-  
-  
+
+
 	// -----------------------------------------------
 	// Deprecated code - old style type families.
 
