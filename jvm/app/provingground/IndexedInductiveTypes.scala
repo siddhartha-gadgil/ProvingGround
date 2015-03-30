@@ -136,7 +136,7 @@ import Math._
 	case class DepFuncPtn[U <: Term ](tail: FmlyPtn,
 	    headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPtn[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
-	    val head = headfibre(__.symbObj(""))
+	    val head = headfibre(__.symbObj(Star))
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
@@ -151,7 +151,7 @@ import Math._
 	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term],
 	    headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPtn[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]] = {
-	    val head = headfibre(tail.symbObj(""))
+	    val head = headfibre(tail.symbObj(Star))
 	    val fiber = typFamily[Term, U](tail, (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
@@ -177,7 +177,7 @@ import Math._
 	    PiTyp[Term, head.ConstructorType](fiber)
 	  }
 
-	  val head = headfibre(tail.symbObj(""))
+	  val head = headfibre(tail.symbObj(Star))
 
 //	  type ConstructorType = FuncLike[Term, head.ConstructorType]
 

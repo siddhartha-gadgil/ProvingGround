@@ -277,7 +277,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       
       def apply(tps: F) = {
         val w = typFmlyPtn.contractType(tps)(tailArg)
-        val a = "a" :: tail(w)
+        val a = tail(w).Var
         val fiber = lmbda(a)(headfibre(a)(tps))
         PiTyp[ArgType, U](fiber)
       }
@@ -286,7 +286,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       
       def recDom(tps: F, x: Typ[Cod]) : Typ[RecDataType] =  {
         val w = typFmlyPtn.contractType(tps)(tailArg)
-        val a = "a" :: tail(w)
+        val a = tail(w).Var
         val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDom(tps, x))
         PiTyp(fibre)
       }
@@ -321,7 +321,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       type RecDataType = FuncLike[Term, V]
       
       def apply(tps: F) = {
-        val a = "a" :: tail
+        val a = tail.Var
         val fiber = lmbda(a)(headfibre(a)(tps))
         PiTyp[ArgType, U](fiber)
       }
@@ -329,7 +329,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
      
       
       def recDom(tps: F, x: Typ[Cod]) : Typ[RecDataType] =  {
-        val a = "a" :: tail
+        val a = tail.Var
         val fibre = lmbda(a)(headfibre(a).recDom(tps, x))
         PiTyp(fibre)
       }
@@ -455,7 +455,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
   case class RecTail(W: Typ[Term], arg: A) extends RecFunction{
     type FullType = I
 
-    private lazy val a = "a" :: W
+    private lazy val a = W.Var
 
     def recursion(X: Typ[C])(f: => FullType) = {
       val g = typFmlyPtn.fill(f)(arg)
@@ -498,12 +498,12 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
 
     def pullback(X: Typ[C])(transform: I => I) = (g) =>
       {
-       val a = "a" :: recdom(X)
+       val a = recdom(X).Var
       new LazyLambdaFixed(a, tail.pullback(X)(transform)(g(a)))
       }
 
     def recursion(X: Typ[C])(f: => FullType) ={
-      val a = "a" :: recdom(X)
+      val a = recdom(X).Var
       def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
       lmbda(a)(fn(a))
     }

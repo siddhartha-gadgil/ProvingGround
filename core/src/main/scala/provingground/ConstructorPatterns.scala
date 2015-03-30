@@ -99,7 +99,7 @@ object ConstructorPatterns {
     
     /*
     def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) = {
-      val a = "a" :: f.dom
+      val a = f.dom.Var
       lmbda(a)((recDef(cons, data, f)(a)).getOrElse(f(a)))
     }
     */
@@ -339,7 +339,7 @@ object ConstructorPatterns {
     type RecDataType = FuncLike[tail.Family, Func[tail.TargetType, V]]
 
     def recDom(w: Typ[Term], x: Typ[Cod]) = {
-      val a = "a" :: tail(w)
+      val a = tail(w).Var
       val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDom(w, x))
       PiTyp(fibre)
     }
@@ -354,9 +354,9 @@ object ConstructorPatterns {
     }
 
     def apply(W : Typ[Term]) : Typ[FuncLike[ArgType, U]]   = {
-//      val head = headfibre(W.symbObj(""))
+//      val head = headfibre(W.symbObj(Star))
 //      val fiber = typFamily[Term, U](tail(W),  (t : Term) => headfibre(t)(W))
-      val a = "a" :: tail(W)
+      val a = tail(W).Var
       val fiber = lmbda(a)(headfibre(a)(W))
       PiTyp[ArgType, U](fiber)
     }
@@ -394,7 +394,7 @@ object ConstructorPatterns {
     type RecDataType = FuncLike[Term, V]
 
     def recDom(w: Typ[Term], x: Typ[Cod]) = {
-      val a = "a" :: tail
+      val a = tail.Var
       val fibre = lmbda(a)(headfibre(a).recDom(w, x))
       PiTyp(fibre)
     }
@@ -407,7 +407,7 @@ object ConstructorPatterns {
 
     def apply(W : Typ[Term]) : Typ[FuncLike[Term, U]] = {
  //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
-      val a = "a" :: W
+      val a = W.Var
       val fiber = lmbda(a)(headfibre(a)(W))
       PiTyp[Term, U](fiber)
     }
@@ -531,7 +531,7 @@ object ConstructorPatterns {
   case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
     type FullType = Func[Term, C]
 
-    private lazy val a = "a" :: W
+    private lazy val a = W.Var
 
     def recursion(X: Typ[C])(f: => FullType) = new LazyLambdaFixed(a, X.symbObj(ApplnSym(f, a)))
 
@@ -557,12 +557,12 @@ object ConstructorPatterns {
 
     def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]) = (g) =>
       {
-       val a = "a" :: recdom(X)
+       val a = recdom(X).Var
       new LazyLambdaFixed(a, tail.pullback(X)(transform)(g(a)))
       }
 
     def recursion(X: Typ[C])(f: => FullType) ={
-      val a = "a" :: recdom(X)
+      val a = recdom(X).Var
       def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
       lmbda(a)(fn(a))
     }

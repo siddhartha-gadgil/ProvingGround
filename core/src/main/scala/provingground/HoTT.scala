@@ -119,9 +119,9 @@ object HoTT{
         /**
          * checks term is of this type and returns it; useful for documentation.
          */
-        def !:[UU >: U <: Term](term: UU) = {
+        def !:[U <: Term](term: Term) : U = {
           assert(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
-          term}
+          term.asInstanceOf[U]}
 
         /**
          * type of a type is a universe.
@@ -136,6 +136,10 @@ object HoTT{
         /** Make symbolic object */
         def ::(name:AnySym) = symbObj(name)
 
+        /**
+         * new variable
+         */
+        def Var = getVar(this)
 
         /**
          * function type:  this -> that
@@ -395,8 +399,8 @@ object HoTT{
 		def newobj = PairTyp(first.newobj, second.newobj)
 
 		lazy val paircons = {
-    	  val a = "a" :: first
-    	  val b ="b" :: second
+    	  val a = first.Var
+    	  val b =  second.Var
     	  lmbda(a)(lmbda(b)(PairObj(a, b)))
     	}
 
@@ -578,7 +582,23 @@ object HoTT{
 
 	}
 
-
+    /**
+     * wrap function adding name
+     */
+    case class NamedFunc[W<: Term with Subs[W], +U <: Term](
+        name: AnySym, func: Func[W, U]) extends Func[W, U]{
+      lazy val dom = func.dom
+      
+      lazy val codom = func.codom
+      
+      def typ = func.typ
+      
+      def newobj = NamedFunc(name, func.newobj)
+      
+      def act(arg: W) : U = func.act(arg)
+      
+      def subs(x: Term, y: Term) = NamedFunc(name, func.subs(x, y))
+    }
 
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term with Subs[W], U<: Term with Subs[U]](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
@@ -1024,8 +1044,8 @@ object HoTT{
 	  }
 
 	  	val paircons = {
-    	  val a = "a" :: (fibers.dom)
-    	  val b ="b" :: (fibers(a))
+    	  val a = fibers.dom.Var
+    	  val b = (fibers(a)).Var
     	  lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
     	}
 
@@ -1098,12 +1118,12 @@ object HoTT{
 	  def j(value: Term) = PlusTyp.ScndIncl(this, value)
 
 	  val ifn = {
-	    val a = "a" :: first
+	    val a = first.Var
 	    lmbda[Term, Term](a)(i(a))
 	  }
 
 	  val jfn = {
-	    val a = "a" :: first
+	    val a = first.Var
 	    lmbda[Term, Term](a)(j(a))
 	  }
 	}
@@ -1175,6 +1195,25 @@ object HoTT{
 	  typ.symbObj(Name(nextChar(usedChars(s)).toString))
 	}
 
+  
+  def nextName(name: String) : String = {
+    if (name == "") "a"
+    else if (name.takeRight(1) == "z") nextName(name.dropRight(1)) + "a"
+    else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString
+  }
+  
+  object NameFactory{
+    var name = ""
+    
+    def get = {
+      name = nextName(name)
+      name
+    }
+  }
+  
+  def getVar[U <: Term](typ : Typ[U]) = typ.symbObj(NameFactory.get)
+  
+  
 	// -----------------------------------------------
 	// Deprecated code - old style type families.
 

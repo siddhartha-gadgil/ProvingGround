@@ -115,7 +115,7 @@ object Families {
 
     def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
       val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
-      val x ="x" :: fdom.second
+      val x = fdom.second.Var
       lmbda(x)(f(PairObj(Star, x)))
     }
 
@@ -200,7 +200,7 @@ object Families {
 
     def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
       val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
-      val z = "z" :: fdom
+      val z = fdom.Var
       val x = z.first.first
       val y = z.first.second
       val yw = PairObj(y, z.second)
@@ -236,8 +236,8 @@ object Families {
      *
      */
     def induced(f : Func[O, Cod]) : Family => TargetType = {
-        val x = "x" :: tail
-        val g = "g" :: apply(f.dom)
+        val x = tail.Var
+        val g = apply(f.dom).Var
         lmbda(g)(
             lmbda(x)(head.induced(f)(g(x))))
 
@@ -249,8 +249,8 @@ object Families {
      *
      */
     def inducedDep(f : FuncLike[O, Cod]) : Family => DepTargetType = {
-        val x = "x" :: tail
-        val g = "g" :: apply(f.dom)
+        val x = tail.Var
+        val g = apply(f.dom).Var
         lambda(g)(
             lambda(x)(head.inducedDep(f)(g(x))))
 
@@ -280,7 +280,7 @@ object Families {
     type IterFunc = FuncLike[Term, I]
 
     def iterFuncTyp(w: Typ[O], x : Typ[Cod]) : Typ[IterFunc] = {
-      val a = "a" :: tail
+      val a = tail.Var
       val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w, x))
       PiTyp(fibre)
     }
@@ -295,7 +295,7 @@ object Families {
 
     def curry(f : Func[PairObj[ArgType, O], Cod]) : IterFunc = {
       val fdom = f.dom.asInstanceOf[PairTyp[ArgType, O]]
-      val z = "z" :: fdom
+      val z = fdom.Var
       val x = z.first.first
       val y = z.first.second
       val yw = PairObj(y, z.second)
@@ -311,7 +311,7 @@ object Families {
    // type DepTargetType = FuncLike[Term, D]
 
     def apply(W : Typ[O]) = {
-      val x = "x" :: tail
+      val x = tail.Var
       val fiber = lmbda(x)(headfibre(x)(W))
    //   val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))
       PiTyp[Term, V](fiber)
@@ -320,13 +320,13 @@ object Families {
   //  type Cod = C
 
     def target(x: Typ[Cod]) = {
-      val a = "a" :: tail
+      val a = tail.Var
       val targfibre = lmbda(a)(headfibre(a).target(x))
       PiTyp(targfibre)
     }
 
     def withCod[CC <: Term with Subs[CC]] ={
-      val newHead = headfibre(tail.symbObj(""))
+      val newHead = headfibre(tail.symbObj(Star))
       type VV = newHead.Family
       type FVV = newHead.FamilyType
       type SS = newHead.ArgType
@@ -343,21 +343,21 @@ object Families {
       DepFuncFmlyPtn[VV, FVV, I, SS, TT, DD, O, CC](tail, newHeadFibre)
     }
 
-//    val head = headfibre(tail.symbObj(""))
+//    val head = headfibre(tail.symbObj(Star))
 
 //    type Family = FuncLike[Term, head.Family]
 
      def induced(f : Func[O, Cod]) : Family => TargetType = {
-        val x = "x" :: tail
-        val g = "g" :: apply(f.dom)
+        val x = tail.Var
+        val g = apply(f.dom).Var
         lambda(g)(
             lambda(x)(headfibre(x).induced(f)(g(x))))
 
     }
 
     def inducedDep(f : FuncLike[O, Cod]) : Family => DepTargetType = {
-        val x = "x" :: tail
-        val g = "g" :: apply(f.dom)
+        val x = tail.Var
+        val g = apply(f.dom).Var
         lambda(g)(
             lambda(x)(headfibre(x).inducedDep(f)(g(x))))
 
