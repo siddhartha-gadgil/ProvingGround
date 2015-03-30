@@ -600,6 +600,24 @@ object HoTT{
       def subs(x: Term, y: Term) = NamedFunc(name, func.subs(x, y))
     }
 
+        /**
+     * wrap dependent function adding name
+     */
+    case class NamedDepFunc[W<: Term with Subs[W], +U <: Term](
+        name: AnySym, func: FuncLike[W, U]) extends FuncLike[W, U]{
+      lazy val dom = func.dom
+      
+      lazy val depcodom = func.depcodom
+      
+      def typ = func.typ
+      
+      def newobj = NamedDepFunc(name, func.newobj)
+      
+      def act(arg: W) : U = func.act(arg)
+      
+      def subs(x: Term, y: Term) = NamedDepFunc(name, func.subs(x, y))
+    }
+    
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term with Subs[W], U<: Term with Subs[U]](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
               Func[W, U] with Subs[Func[W, U]] with Symbolic with AnySym{

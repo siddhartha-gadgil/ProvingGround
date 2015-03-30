@@ -3,6 +3,7 @@ lazy val commonSettings = Seq(
   organization := "in.ernet.iisc.math",
   scalaVersion := "2.11.5",
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
@@ -26,6 +27,13 @@ lazy val serverSettings = Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
+  lazy val digressionSettings = Seq(
+    name := "ProvingGround-Digressions",
+    libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
+    ),
+    initialCommands in console := "ammonite.repl.Repl.main(null)",
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+    )
 
 
 lazy val core = (project in file("core")).
@@ -34,7 +42,13 @@ lazy val core = (project in file("core")).
 
 lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
         settings(commonSettings : _*).
-        settings(serverSettings : _*).dependsOn(core)
+        settings(serverSettings : _*).
+        dependsOn(core)
 
+
+lazy val digressions = (project in file("digressions")).
+  settings(commonSettings : _*).
+  settings(digressionSettings : _*).
+  dependsOn(core) //.dependsOn(jvm)
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
