@@ -116,4 +116,24 @@ object HoTTgen {
 	
 	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(normalizeFD[Move.type], normalizeFD[Term]))
 	
+  val mapTyp = moveFn[Term, Typ[Term]]((t: Term) =>
+    if (t.typ.typ == __) Some(t.typ) else None 
+        )
+  
+  private def ifTyp : Term => Option[Typ[Term]] = {
+    case typ: Typ[Term] if typ.typ == __ => Some(typ)
+    case _ => None
+  }      
+        
+  def getTyps(d : FiniteDistribution[Term]) = d.mapOpt(ifTyp)
+  
+  val typFlow = (d: FiniteDistribution[Term]) =>  {
+    val shift = 
+      mapTyp(d) feedback (getTyps(d).getsum(_))
+    mapTyp.grad(d)(shift)
+  }
+  
+  def dynTypFlow(dyn : DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]]) = {
+    typFlow ^: dyn
+  } 
 }
