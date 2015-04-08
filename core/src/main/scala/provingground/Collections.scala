@@ -7,9 +7,9 @@ import scala.language.implicitConversions
 
 
 object Collections{
+    lazy val random = new Random
 
-
-    val runTime = java.lang.Runtime.getRuntime()
+    lazy val runTime = java.lang.Runtime.getRuntime()
 
     def  freeMem = runTime.freeMemory()
 
@@ -119,9 +119,8 @@ object Collections{
     }
 
     class Uniform extends ProbabilityDistribution[Double]{
-      lazy val rand = new Random
 
-      def next = rand.nextDouble
+      def next = random.nextDouble
     }
 
     case class Weighted[T](elem: T, weight: Double){
@@ -153,10 +152,6 @@ object Collections{
        */
       lazy val support = (pmf filter (_.weight > epsilon) map (_.elem)).toSet
 
-      /**
-       * random number generator
-       */
-      lazy val rand = new Random
 
       /**
        * l^1-norm
@@ -166,7 +161,7 @@ object Collections{
       /**
        * next instance of a random variable with the given distribution
        */
-      def next = Weighted.pick(pmf, rand.nextDouble)
+      def next = Weighted.pick(pmf, random.nextDouble)
 
       /**
        * get weight, not collapsing, unsafe.

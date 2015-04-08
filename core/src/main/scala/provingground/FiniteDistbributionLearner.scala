@@ -61,6 +61,12 @@ object FiniteDistbributionLearner {
    
    DiffbleFunction(func)(grad)
   }
+  
+  /**
+   * purging (randomly) a finite distribution.
+   * @param size upper bound on the expected size of the support.
+   */
+  def purgeFD[V](size: Int)(fd : FiniteDistribution[V]) = fd filter ((x : V) => fd(x) * size > random.nextDouble())
 	
 		/**
 	 * smooth function applying move wherever applicable 
