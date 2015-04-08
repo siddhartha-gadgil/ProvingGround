@@ -258,6 +258,12 @@ object Collections{
         val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
         FiniteDistribution(newpmf, epsilon)
       }
+      
+      def mapOpt[S](f: T => Option[S]) = {
+        val newpmf = for (Weighted(elem, wt) <- pmf; 
+          felem <- f(elem)) yield Weighted(felem, wt)
+        FiniteDistribution(newpmf, epsilon)
+      }
 
       def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 

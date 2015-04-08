@@ -71,13 +71,13 @@ object FiniteDistbributionLearner {
 		/**
 	 * smooth function applying move wherever applicable 
 	 */
-	def moveFn[V](f: V => Option[V]) = {
+	def moveFn[V, W](f: V => Option[W]) = {
 	  def func(d: FiniteDistribution[V]) = {
 	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 	  
-	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = {
+	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[W]) = {
 	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(x, w(y))
 	    FiniteDistribution(rawpmf).flatten
 	  }
