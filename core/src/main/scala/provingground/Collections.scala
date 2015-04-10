@@ -320,9 +320,13 @@ object Collections{
     def vprod[T](implicit ls: LinearStructure[T]) = ls.mult
 
     def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
-
+    
     def vbigsum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
       (xs :\ ls.zero)(ls.sum)
+    }
+    
+    def vAverage[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) ={
+      ls.mult(1/xs.size, vbigsum(xs))
     }
 
     def nrec[X](base: X, ind: Int => X => X)(implicit ls: LinearStructure[X]): Int => X = {

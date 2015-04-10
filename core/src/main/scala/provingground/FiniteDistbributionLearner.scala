@@ -146,6 +146,22 @@ object FiniteDistbributionLearner {
 	  DiffbleFunction(func)(grad)
 	}
   
+  
+  def matchFlow[A, B](fn : A => Option[B], target :  B => Double) = (d: FiniteDistribution[A]) => {
+    val push = moveFn(fn)
+    
+    val shiftb = (bs : FiniteDistribution[B]) => bs.feedback(target)
+    
+    shiftb ^: push
+  }
+  
+  @tailrec def flow[A](init : A, shift: A => A, epsilon : Double, n: Int)(implicit ls: LinearStructure[A]): A = {
+    lazy val sum = vsum[A]
+    lazy val scprod = vprod[A]
+    if (n <1) init 
+    else flow(sum(init, scprod(epsilon, shift(init))), shift, epsilon, n-1)
+  }
+  
 	// Most of the below is to be deprecated.
   
 	
