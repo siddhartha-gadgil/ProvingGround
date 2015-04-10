@@ -22,4 +22,6 @@ class Blender[A](dyn: A => A)(implicit ls : LinearStructure[A]) {
     val termfut = Future.sequence(results)
     termfut map ((terms) => vAverage(terms))
   }
+  
+  def iter(init: A, copies: Int, loops: Int) = iterFut(Future.successful(init), copies, loops)
 }
