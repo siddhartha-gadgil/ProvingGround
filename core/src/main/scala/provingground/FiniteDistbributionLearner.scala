@@ -164,6 +164,32 @@ object FiniteDistbributionLearner {
   
 	// Most of the below is to be deprecated.
   
+  @tailrec def goalFlow[A, R](init : A, shift: A => A, epsilon : Double, n: Int, 
+      result: A => Option[R])(implicit ls: LinearStructure[A]): Either[A, R] = {
+    lazy val sum = vsum[A]
+    lazy val scprod = vprod[A]
+    result(init) match{
+      case Some(r) => Right(r)
+      case None => 
+        if (n <1) Left(init)
+        else goalFlow(sum(init, scprod(epsilon, shift(init))), shift, epsilon, n-1, result)
+    }
+  }
+  
+  case class ResultState[A, R](state: A, results: Set[R])
+  
+  @tailrec def resultsFlow[A, R](init : ResultState[A, R], shift: A => A, epsilon : Double, n: Int, 
+      results : A => Set[R])(implicit ls: LinearStructure[A]): ResultState[A, R] = {
+    lazy val sum = vsum[A]
+    lazy val scprod = vprod[A]
+    if (n <1) init 
+    else {
+      val nxt = sum(init.state, scprod(epsilon, shift(init.state)))
+      resultsFlow(
+        ResultState(nxt, init.results union results(nxt)), 
+            shift, epsilon, n-1, results)   
+    }
+  }
 	
 	 def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = 
      vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]]
