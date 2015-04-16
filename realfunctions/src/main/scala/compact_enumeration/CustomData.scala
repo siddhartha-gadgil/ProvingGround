@@ -44,6 +44,8 @@ object CustomData {
     
     lazy val width : Real = upper - lower
     
+    def half(s : Sign) = if (s == 1) Interval(midpoint, upper) else Interval(lower, midpoint)
+    
     lazy val firsthalf = Interval(lower, midpoint)
     
     lazy val secondhalf = Interval(midpoint, upper)
@@ -96,42 +98,55 @@ object CustomData {
   
   def corners(dim: Index) : Set[Map[Index, Sign]] = {
     if (dim == 1) Set(Map(1 -> 1), Map (1 -> -1))
-    else for (m <- corners(dim -1); sgn <- Set(-1, 1)) yield m
+    else for (m <- corners(dim -1); sgn <- Set(-1, 1)) yield (m + (dim -> sgn))
   }
+  
+
+  
+
     
-  def extrapolateBound(cube: Cube, face : Map[Index, Sign], value: Real, slopes: Map[Index, Real], corner : Map[Index, Sign]) = {
+  def extrapolateBound(cube: Cube, face : Map[Index, Sign], faceValue: Real, slopes: Map[Index, Real], corner : Map[Index, Sign]) = {
     assert(face.keySet == slopes.keySet)
     val diffs = for (i <- face.keySet) yield(
         if (face(i) == corner(i)) 0 
         else cube(i).width * slopes(i) * corner(i)                  
           )
-    (diffs :\ value) (_ + _)
+    (diffs :\ faceValue) (_ + _)
     
   }
   
   type RealMultiFunc = Vec => Real
     
-  case class PartialDerBound(func: RealMultiFunc, index: Index, domain: Cube, bound: Real, signs: Map[Index, Sign]) extends Typ
+  case class PartialDerBound(func: RealMultiFunc, index: Index, domain: Cube, bound: Real, sign: Sign) extends Typ
     
   case class FuncPositiveCube(func: RealMultiFunc, dim: Index, domain: Cube) extends Typ
   
-  case class FaceBound(func: RealMultiFunc, dim: Index, domain: Cube, bound: Real, face: Map[Index, Real], sign: Sign) extends Typ
+  case class FaceBound(func: RealMultiFunc, dim: Index, domain: Cube, bound: Real, face: Map[Index, Sign], sign: Sign) extends Typ
  
   case class BottomCorner(func: RealMultiFunc, dim: Index, domain: Cube) extends Term{
-    val face = (for (i <- 0 to dim) yield (i, domain(i).lower)).toMap
+    val face = (for (i <- 0 to dim) yield (i, -1)).toMap
     val vec = (0 to dim).toVector map (domain(_).lower)
     val typ = FaceBound(func, dim, domain, func(vec), face, -1)
   }
   
-  case class MVTfaceBound(func: RealMultiFunc, dim: Index, domain: Cube, bound: Real, 
-      face: Map[Index, Sign], sign: Sign,
-      derBounds: Map[Index, Real],
-      derBoundSigns: Index => Sign
+  case class MVTfaceBound(func: RealMultiFunc, dim: Index, domain: Cube, faceBound: Real, 
+      face: Map[Index, Sign], faceBoundSign: Sign,
+      partialDerivativeBounds: Traversable[PartialDerBound]      
       ) extends Term{
-    for (i <- face.keys) assert(face(i) == derBoundSigns(i))
+    val derBounds = (for (i <- face.keys; pdb <- partialDerivativeBounds 
+          if pdb.index == i && pdb.sign == faceBoundSign * face(i)) yield (i, pdb.bound)).toMap
     
-    for (corner <- corners(dim)) yield assert (0.0 <= extrapolateBound(domain, face, bound, derBounds, corner))
+    for (corner <- corners(dim)) yield assert (0.0 <= extrapolateBound(domain, face, faceBound, derBounds, corner))
     
     val typ = FuncPositiveCube(func, dim, domain)
+  }
+  
+  
+  object MVTfaceBound{
+    def verify(func: RealMultiFunc, dim: Index, domain: Cube, faceBound: Real, 
+      face: Map[Index, Sign], sign: Sign,
+      partialDerivativeBounds: Traversable[PartialDerBound]      
+      ) : Option[Term] = 
+        Try(MVTfaceBound(func, dim, domain, faceBound, face, sign, partialDerivativeBounds)).toOption
   }
 }
