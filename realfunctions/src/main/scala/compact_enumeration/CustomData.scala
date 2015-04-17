@@ -19,25 +19,36 @@ object CustomData {
     val typ : Typ
   }
   
+  /**
+   * combining two statements.
+   */
   def andTyp(first: Typ, second: Typ) = (first, second) match{
     case (FuncPositive(f, domleft) , FuncPositive(g, domright)) if f == g => 
       FuncPositive(f, Interval(domleft.lower, domright.upper))
     case _ => PairTyp(first, second)     
   }
   
+  /**
+   * pair type, ie, and.
+   */
   case class PairTyp(first: Typ, second: Typ) extends Typ
   
-  case class Union(first: Term, second: Term) extends Term{
-    lazy val typ = andTyp(first.typ, second.typ)
+  /**
+   * Local version of pair object.
+   */
+  case class PairObj(first: Term, second: Term) extends Term{
+    lazy val typ = PairTyp(first.typ, second.typ)
   }
   
-  def and = Union.apply _
+  def and = PairObj.apply _
   
   type RealFunc = Real => Real
   
   type Real = Double
   
   type Sign = Int
+  
+  val signs: Set[Sign] = Set(-1, 1)
   
   case class Interval(lower: Real, upper: Real) extends Typ{
     lazy val midpoint : Real = (lower + upper) / 2
@@ -55,11 +66,35 @@ object CustomData {
     assert(width >= 0)
   }
   
-  type IntervalTyp = Interval
+  def split(I: Interval) = signs map (I.half(_))
   
   case class FuncPositive(func : RealFunc, domain: Interval) extends Typ
   
-  case class MVTMidPositive(func: RealFunc, domain: Interval, derivativeLower: Real, derivativeUpper: Real) extends Term{
+  case class Glue(func: RealFunc, domain : Interval, pfs: Set[Term]) extends Term{
+    split(domain) map ((j) =>
+      {
+        val thispfs = pfs filter (_.typ == FuncPositive(func, j))
+        assert (!(thispfs.isEmpty))
+      })
+    
+    val typ = FuncPositive(func, domain)
+  }
+  
+  object Glue{
+    def verify(func: RealFunc, domain : Interval, pfs: Set[Term]) : Option[Term] = {
+      Try(Glue(func, domain, pfs)).toOption
+    }
+  }
+  
+  case class DerBound(func : RealFunc, domain: Interval, derBound: Real, sign: Sign) extends Typ
+  
+  case class MVTMidPositive(func: RealFunc, domain: Interval, derLower: DerBound, derUpper: DerBound) extends Term{
+    assert(derLower.func == func && derLower.domain == domain && derLower.sign == -1)
+    assert(derUpper.func == func && derUpper.domain == domain && derUpper.sign == 1)
+    
+    val derivativeLower = derLower.derBound
+    val derivativeUpper = derUpper.derBound
+    
     val mid = domain.midpoint
     val left = mid - ((domain.width / 2) * derivativeUpper)
     val right = mid + ((domain.width / 2) * derivativeLower)
@@ -71,30 +106,61 @@ object CustomData {
   }
   
   object MVTMidPositive{
-    def verify(func: RealFunc, domain: Interval, derivativeLower: Real, derivativeUpper: Real): Option[Term]= {
-      Try(MVTMidPositive(func: RealFunc, domain: Interval, derivativeLower: Real, derivativeUpper: Real)).toOption
+    def verify(func: RealFunc, domain: Interval, derLower: DerBound, derUpper: DerBound): Option[Term]= {
+      Try(MVTMidPositive(func: RealFunc, domain: Interval, derLower , derUpper)).toOption
     }
   }
   
-  case class DerBound(func : RealFunc, domain: Interval, derBound: Real, sign: Sign) extends Typ
   
-  case class MVTPositive(func: RealFunc, domain: Interval, derBound: Real, sign: Sign) extends Term{
-    assert(func(domain.bdy(sign)) >= 0)
-    assert(func(domain.bdy(sign) - (sign * domain.width * derBound)) >= 0)
+  case class MVTPositive(func: RealFunc, domain: Interval, derBound: DerBound) extends Term{
+    assert(func(domain.bdy(derBound.sign)) >= 0)
+    assert(func(domain.bdy(derBound.sign) - (derBound.sign * domain.width * derBound.derBound)) >= 0)
     lazy val typ = FuncPositive(func, domain)
   } 
   
   object MVTPositive{
-    def verify(func: RealFunc, domain: Interval, derivativeBound: Real, sign: Sign): Option[Term]= {
-      Try(MVTPositive(func, domain, derivativeBound, sign)).toOption
+    def verify(func: RealFunc, domain: Interval, derivativeBound: DerBound): Option[Term]= {
+      Try(MVTPositive(func, domain, derivativeBound)).toOption
     }
   }
+  
+  
+  // Data for cubes
+  
   
   type Index = Int
     
   type Vec = Vector[Real]
     
-  type Cube = Index => Interval
+  type Cube = Vector[Interval]
+  
+  def splitCube(cube: Cube) : Set[Cube] = {
+    if (cube == Vector()) Set(cube)
+    else {
+      for (init <- splitCube(cube.init); last <- split(cube.last)) yield (init :+ last)
+    
+    }
+    
+  }
+  
+  
+  case class FuncPositiveCube(func: RealMultiFunc, domain: Cube) extends Typ
+  
+  case class GlueCube(func: RealMultiFunc, domain : Cube, pfs: Set[Term]) extends Term{
+    splitCube(domain) map ((j) =>
+      {
+        val thispfs = pfs filter (_.typ == FuncPositiveCube(func, j))
+        assert (!(thispfs.isEmpty))
+      })
+    
+    val typ = FuncPositiveCube(func, domain)
+  }
+  
+  object GlueCube{
+    def verify(func: RealMultiFunc, domain : Cube, pfs: Set[Term]) : Option[Term] = {
+      Try(GlueCube(func, domain, pfs)).toOption
+    }
+  }
   
   def corners(dim: Index) : Set[Map[Index, Sign]] = {
     if (dim == 1) Set(Map(1 -> 1), Map (1 -> -1))
@@ -119,34 +185,45 @@ object CustomData {
     
   case class PartialDerBound(func: RealMultiFunc, index: Index, domain: Cube, bound: Real, sign: Sign) extends Typ
     
-  case class FuncPositiveCube(func: RealMultiFunc, dim: Index, domain: Cube) extends Typ
+
   
-  case class FaceBound(func: RealMultiFunc, dim: Index, domain: Cube, bound: Real, face: Map[Index, Sign], sign: Sign) extends Typ
+  case class FaceBound(func: RealMultiFunc,  domain: Cube, bound: Real, face: Map[Index, Sign], sign: Sign) extends Typ
  
-  case class BottomCorner(func: RealMultiFunc, dim: Index, domain: Cube) extends Term{
-    val face = (for (i <- 0 to dim) yield (i, -1)).toMap
-    val vec = (0 to dim).toVector map (domain(_).lower)
-    val typ = FaceBound(func, dim, domain, func(vec), face, -1)
+  case class BottomCorner(func: RealMultiFunc, domain: Cube) extends Term{
+    val face = (for (i <- 0 to domain.size) yield (i, -1)).toMap
+    val vec = (0 to domain.size).toVector map (domain(_).lower)
+    val typ = FaceBound(func, domain, func(vec), face, -1)
   }
   
-  case class MVTfaceBound(func: RealMultiFunc, dim: Index, domain: Cube, faceBound: Real, 
-      face: Map[Index, Sign], faceBoundSign: Sign,
+  case class MVTfaceBound(func: RealMultiFunc, domain: Cube, faceBoundPf : FaceBound, 
       partialDerivativeBounds: Traversable[PartialDerBound]      
       ) extends Term{
+    import faceBoundPf._
     val derBounds = (for (i <- face.keys; pdb <- partialDerivativeBounds 
-          if pdb.index == i && pdb.sign == faceBoundSign * face(i)) yield (i, pdb.bound)).toMap
+          if pdb.index == i && pdb.sign == sign * face(i)) yield (i, pdb.bound)).toMap
     
-    for (corner <- corners(dim)) yield assert (0.0 <= extrapolateBound(domain, face, faceBound, derBounds, corner))
+    for (corner <- corners(domain.size)) yield assert (0.0 <= extrapolateBound(domain, face, bound, derBounds, corner))
     
-    val typ = FuncPositiveCube(func, dim, domain)
+    val typ = FuncPositiveCube(func, domain)
   }
   
   
   object MVTfaceBound{
-    def verify(func: RealMultiFunc, dim: Index, domain: Cube, faceBound: Real, 
-      face: Map[Index, Sign], sign: Sign,
+    def verify(func: RealMultiFunc, domain: Cube, faceBoundPf : FaceBound, 
       partialDerivativeBounds: Traversable[PartialDerBound]      
       ) : Option[Term] = 
-        Try(MVTfaceBound(func, dim, domain, faceBound, face, sign, partialDerivativeBounds)).toOption
+        Try(MVTfaceBound(func, domain, faceBoundPf, partialDerivativeBounds)).toOption
+  }
+  
+  /**
+   *
+   * bound for function on hyper-plane with specified coordinates.
+   */
+  case class HyperplaneBound(func: RealMultiFunc, coords: Map[Index, Real], bound: Real, sign: Sign) extends Typ
+  
+  case class DeducedFaceBound(func: RealMultiFunc,  domain: Cube, face: Map[Index, Sign], hypPlnBound: HyperplaneBound) extends Term{
+    import hypPlnBound.{bound, sign}
+    for ((i, y) <- hypPlnBound.coords) yield assert(domain(i).bdy(face(i)) == y)
+    val typ = FaceBound(func, domain, bound, face, sign)
   }
 }

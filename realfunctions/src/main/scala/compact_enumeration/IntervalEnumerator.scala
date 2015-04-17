@@ -8,27 +8,27 @@ import CustomData._ // instead import the corresponding HoTT object
 class IntervalEnumerator(func: RealFunc,
     bounds: Interval => Set[Typ]) {
   
-  def derivativeBound(domain: Interval) = for (DerBound(g, j, b, sign) <- bounds(domain) if g == func && j == domain) yield (b, sign)
+  def derBound(domain: Interval) = for (db @ DerBound(g, j, b, sign) <- bounds(domain) if g == func && j == domain) yield db
   
-  def derivativeLower(domain: Interval) = for (DerBound(g, j, b, -1) <- bounds(domain) if g == func && j == domain) yield b 
+  def derLower(domain: Interval) = for (db @ DerBound(g, j, b, -1) <- bounds(domain) if g == func && j == domain) yield db 
   
-  def derivativeUpper(domain: Interval) = for (DerBound(g, j, b, 1) <- bounds(domain) if g == func && j == domain) yield b 
+  def derUpper(domain: Interval) = for (db @ DerBound(g, j, b, 1) <- bounds(domain) if g == func && j == domain) yield db 
   
-  def midProve(domain: Interval) = for (low <-derivativeLower(domain); 
-    high <-derivativeUpper(domain);
+  def midProve(domain: Interval) = for (low <-derLower(domain); 
+    high <-derUpper(domain);
     proof <- MVTMidPositive.verify(func, domain, low , high)) yield proof
       
-  def mvtProve(domain: Interval) = for ((bnd, sign) <-derivativeBound(domain); 
-      proof <- MVTPositive.verify(func, domain, bnd, sign)) yield proof
+  def mvtProve(domain: Interval) = for (db <-derBound(domain); 
+      proof <- MVTPositive.verify(func, domain, db)) yield proof
     
 
   
   def prove(domain: Interval, depth: Int) : Option[Term] = {
     if (depth <1) None
     else mvtProve(domain).headOption orElse midProve(domain).headOption  orElse 
-    {
-      for (fst <- prove(domain.firsthalf, depth -1); 
-      scnd <- prove(domain.secondhalf, depth -1)) yield and(fst, scnd)
+    { 
+      val pfs = (split(domain) map (prove(_, depth-1))).flatten
+      Glue.verify(func, domain, pfs)
     }
   }
   
