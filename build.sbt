@@ -8,7 +8,8 @@ lazy val commonSettings = Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
-  )
+  ),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
 
@@ -23,8 +24,7 @@ lazy val serverSettings = Seq(
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
   "edu.stanford.nlp" % "stanford-parser" % "3.4"
   ),
-  initialCommands in console := "ammonite.repl.Repl.main(null)",
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  initialCommands in console := "ammonite.repl.Repl.main(null)"
   )
 
   lazy val digressionSettings = Seq(

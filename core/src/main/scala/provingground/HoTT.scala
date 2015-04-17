@@ -430,6 +430,33 @@ object HoTT{
 
     override def toString = s"""(($first) , ($second))"""
 	}
+  
+  object AbsPair{
+    def apply(x: Term, y: Term) = mkPair(x, y)
+    
+    def unapply(x: Term) : Option[(Term, Term)] = x match {
+      case ab : AbsPair[_, _] => Some((ab.first, ab.second))
+      case _ => None
+    }
+  }
+  
+  object Tuple{
+    def apply(xs: Term*) : Term = xs.toList match {
+      case List() => Star
+      case List(x) => x
+      case x :: ys => AbsPair(x, apply(ys : _*))
+    }
+    
+    def asTuple(x: Term) : List[Term] = x match {
+      case Star => List()
+      case AbsPair(x, y) => x :: asTuple(y)
+      case _ => List(x)
+    }
+    
+    def unapplySeq(x: Term) : Option[Seq[Term]] = 
+      if (x == Star) None else Some(asTuple(x))
+    
+  }
 
 	/**
 	 * overloaded method returning a pair object or a pair type.
