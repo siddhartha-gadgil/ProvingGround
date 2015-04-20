@@ -1,7 +1,7 @@
 package provingground
 
 import provingground.HoTT._
-import provingground.HoTT.Deprec._
+// import provingground.HoTT.Deprec._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
 import provingground.InductiveTypes._

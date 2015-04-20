@@ -16,6 +16,8 @@ object SpecialFunctions {
     
     def circ(that : Fn) = Compose(this, that)
     
+    def apply(that: Fn) = Compose(this, that)
+    
     def /(that: Fn) = Ratio(this, that)
     
     def -(that : Fn) = this + (-1.0 * that)

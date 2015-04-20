@@ -19,6 +19,8 @@ class FunctionCombinator[F](add: (F, F) => F, sum: F => Option[(F, F)],
     
     def unary_- = const(0.0) - fn
     
+    def apply(that: F) = compose(fn, that)
+    
     def circ(that : F) = compose(fn, that)
   }
   

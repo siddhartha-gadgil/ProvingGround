@@ -1,5 +1,6 @@
 package compact_enumeration
 import CustomData._
+import Stub._
 
 /**
  * @author gadgil
@@ -36,7 +37,7 @@ class CubeEnumerator(func: RealMultiFunc,  bounds: Cube => Traversable[Typ]) {
    def prove(domain: Cube, depth: Int) : Option[Term] = {
      mvtProve(domain).headOption orElse { 
       val pfs = (splitCube(domain) map (prove(_, depth-1))).flatten
-      GlueCube.verify(func, domain, pfs)
+      GlueCubeFuncPositive.verify(func, domain, pfs)
     }
    }
    

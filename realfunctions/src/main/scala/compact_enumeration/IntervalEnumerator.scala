@@ -1,5 +1,6 @@
 package compact_enumeration
 
+import Stub._
 import CustomData._ // instead import the corresponding HoTT object
  
 /**
@@ -28,7 +29,7 @@ class IntervalEnumerator(func: RealFunc,
     else mvtProve(domain).headOption orElse midProve(domain).headOption  orElse 
     { 
       val pfs = (split(domain) map (prove(_, depth-1))).flatten
-      Glue.verify(func, domain, pfs)
+      GlueFuncPositive.verify(func, domain, pfs)
     }
   }
   

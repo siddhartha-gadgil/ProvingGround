@@ -12,12 +12,14 @@ lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
-
+lazy val jvmSettings = Seq(
+  libraryDependencies ++= Seq("com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test"),
+  initialCommands in console := "ammonite.repl.Repl.main(null)"
+  )
 
 lazy val serverSettings = Seq(
   name := "ProvingGround-jvm",
   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT",
-  "com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test",
   ws,
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
@@ -31,7 +33,6 @@ lazy val serverSettings = Seq(
     name := "ProvingGround-Digressions",
     libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
     ),
-    initialCommands in console := "ammonite.repl.Repl.main(null)",
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
     )
 
@@ -42,6 +43,7 @@ lazy val core = (project in file("core")).
 
 lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
         settings(commonSettings : _*).
+        settings(jvmSettings : _*).
         settings(serverSettings : _*).
         dependsOn(core)
 

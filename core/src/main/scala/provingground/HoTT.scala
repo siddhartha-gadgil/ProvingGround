@@ -103,7 +103,7 @@ object HoTT{
      *  In particular, we can specify that the objects are types, functions, dependent functions etc.
      *  @tparam U bound on onjects with this as type.
      */
-    trait Typ[+U <: Term] extends Term with Subs[Typ[U]]{
+    trait Typ[+U <: Term] extends Term with Subs[Typ[U]]{self =>
     	/** scala type of objects with this HoTT-type */
         type Obj <: U with Subs[U]
 
@@ -114,6 +114,13 @@ object HoTT{
         def obj: U = {
           object newname extends AnySym
           symbObj(newname)
+        }
+        
+        object Elem{
+          def apply(u: Term) : Term = u !: self
+          
+          def unapply(term: Term): Option[U] = 
+            if (term.typ == self) Try(Some(term.asInstanceOf[U])).getOrElse(None) else None
         }
 
         /**
@@ -134,7 +141,7 @@ object HoTT{
         def symbObj(name: AnySym): U with Subs[U]
 
         /** Make symbolic object */
-        def ::(name:AnySym) = symbObj(name)
+        def ::(name: String) = symbObj(name)
 
         /**
          * new variable
@@ -1100,6 +1107,13 @@ object HoTT{
 
 	  override def toString = Sigma+"("+fibers.toString+")"
 	}
+  
+  object Sgma{
+    def apply[W<: Term with Subs[W], U<: Term with Subs[U]](variable: W, typ : Typ[U]) = {
+      val fibers = lmbda(variable)(typ)
+      SigmaTyp(fibers)
+    }
+  }
 
 
 
