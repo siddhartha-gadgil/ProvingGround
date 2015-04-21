@@ -5,6 +5,7 @@ import provingground.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
 import provingground.InductiveTypes._
+import Deprec._
 
 /**
  * Contexts, from which objects can be exported.

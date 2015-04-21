@@ -25,8 +25,28 @@ object DSL {
   
   def checkImpl(c: Context)(term: c.Expr[Term], typ: c.Expr[Typ[Term]]) : c.Expr[Term] ={
     import c.universe._
-    val t = c.eval(term) !: c.eval(typ)
-    c.Expr[Term](reify(t).tree)
+    
+    val inp = term
+    
+    val tterm = c.Expr[Term](c.untypecheck(term.tree.duplicate))
+    
+    val ttyp = c.Expr[Typ[Term]](c.untypecheck(typ.tree.duplicate))
+    
+    val trm = c.eval(tterm) 
+    
+    val tp = c.eval(ttyp)
+    
+    println(trm, tp)
+    
+    println("check")
+    
+    println(trm !: tp)
+    
+    println(showRaw(c.Expr[Term](reify(trm !: tp).tree)))
+    
+    assert(trm.typ == tp, "type mismatch in HoTT")
+    
+    inp
   }
   /*
   def castImpl(c: Context)(trm: c.Expr[Term])(tp : c.Expr[Typ[Term]]) : c.Expr[Term] = {
