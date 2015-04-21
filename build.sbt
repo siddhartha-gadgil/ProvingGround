@@ -49,6 +49,7 @@ lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
+        settings(jvmSettings : _ *).
         settings(libraryDependencies  ++= Seq(
           // other dependencies here
           "org.scalanlp" %% "breeze" % "0.11.2",

@@ -20,7 +20,7 @@ object CustomData {
   }
   
   /**
-   * pair type, ie, and.
+   * pair type
    */
   case class PairTyp(first: Typ, second: Typ) extends Typ
   
@@ -33,25 +33,46 @@ object CustomData {
   
   private def and = PairObj.apply _
   
+  
+  /**
+   * functions R -> R
+   */
   type RealFunc = Real => Real
   
+  /**
+   * Real numbers
+   */
   type Real = Double
   
+  /**
+   * Sign, should be -1 or 1.
+   */
   type Sign = Int
   
+  /**
+   * the possible signs
+   */
   val signs: Set[Sign] = Set(-1, 1)
   
+  /**
+   * an interval
+   * @param lower lower endpoint
+   * @param upper upper endpoint
+   */
   case class Interval(lower: Real, upper: Real) extends ConstantTyp{
     lazy val midpoint : Real = (lower + upper) / 2
     
     lazy val width : Real = upper - lower
     
+    /**
+     * the two half-intervals
+     */
     def half(s : Sign) = if (s == 1) Interval(midpoint, upper) else Interval(lower, midpoint)
-    
-    lazy val firsthalf = Interval(lower, midpoint)
-    
-    lazy val secondhalf = Interval(midpoint, upper)
-    
+
+    /**
+     * boundary point
+     * @param s specifies which endpoint    
+     */
     def bdy(s: Sign) = if (s == 1) upper else lower
     
     assert(width >= 0)
@@ -64,6 +85,9 @@ object CustomData {
    */
   def split(I: Interval) = signs map (I.half(_))
   
+  /**
+   * Function with domain.
+   */
   trait Func{
     def func: RealFunc
     
@@ -74,25 +98,37 @@ object CustomData {
   
   def domain(fn: Func) = fn.domain
   
+  /**
+   * Proposition that given function is positive on domain
+   * 
+   * @param func the given function
+   * @param domain the domain for positivity
+   */
   case class FuncPositive(func : RealFunc, domain: Interval) extends ConstantTyp with Func
   
+  /**
+   * proof of positivity of a function on an interval, given positivity in halves.
+   * 
+   * @param func given function
+   * @param domain (full) interval
+   * 
+   * @param pfs given proofs, only those giving positivity on half intervals are considered.
+   */
   case class GlueFuncPositive(func: RealFunc, domain : Interval, pfs: Set[Term]) extends ConstantTerm with Func{
-    split(domain) map ((j) =>
+    split(domain) map ((j) =>   // j is a half interval 
       {
-        val thispfs = pfs filter (_.typ == FuncPositive(func, j))
-        assert (!(thispfs.isEmpty))
+        val thispfs = pfs filter (_.typ == FuncPositive(func, j)) // proofs that func is positive on j.
+        assert (!(thispfs.isEmpty)) // checks that there is such a proof
       })
     
     val typ = FuncPositive(func, domain)
   }
   
-  object GlueFuncPositive{
-    def verify(func: RealFunc, domain : Interval, pfs: Set[Term]) : Option[Term] = {
-      Try(GlueFuncPositive(func, domain, pfs)).toOption
-    }
-  }
+
   
-  
+  /**
+   * (upper or lower) bound
+   */
   trait Bound{
     def bound: Real
     
@@ -103,19 +139,27 @@ object CustomData {
   
   def sign(b: Bound) = b.sign
   
+  /**
+   * bound on the derivative in an interval
+   * 
+   * @param func function whose derivative is bounded.
+   * @param domain interval on which there is a bound
+   * @param sign -1 for lower bound, 1 for upper bound.
+   */
   case class DerBound(func : RealFunc, domain: Interval, bound: Real, sign: Sign) extends ConstantTyp with Func with Bound
   
+  /**
+   * proof using Mean Value theorem and value at midpoint of positivity of function.
+   */
   case class MVTMidPositive(func: RealFunc, domain: Interval, derLower: DerBound, derUpper: DerBound) extends 
     ConstantTerm with Func{
     assert(derLower.func == func && derLower.domain == domain && derLower.sign == -1)
     assert(derUpper.func == func && derUpper.domain == domain && derUpper.sign == 1)
+
     
-    val derivativeLower = derLower.bound
-    val derivativeUpper = derUpper.bound
-    
-    val mid = domain.midpoint
-    val left = mid - ((domain.width / 2) * derivativeUpper)
-    val right = mid + ((domain.width / 2) * derivativeLower)
+    val mid = func(domain.midpoint) // value of function at midpoint
+    val left = mid - ((domain.width / 2) * derUpper.bound) // lower bound for value at left endpoint
+    val right = mid + ((domain.width / 2) * derLower.bound) // lower bound for value at right endpoint.
     assert(mid >= 0)
     assert(left >= 0)
     assert(right >= 0)
@@ -123,35 +167,38 @@ object CustomData {
     val typ = FuncPositive(func, domain)
   }
   
-  object MVTMidPositive{
-    def verify(func: RealFunc, domain: Interval, derLower: DerBound, derUpper: DerBound): Option[Term]= {
-      Try(MVTMidPositive(func: RealFunc, domain: Interval, derLower , derUpper)).toOption
-    }
-  }
   
   
+  /**
+   * proof using Mean Value theorem and value at appropriate endpoint of positivity of function.
+   */
   case class MVTPositive(func: RealFunc, domain: Interval, derBound: DerBound) extends ConstantTerm with Func{
-    assert(func(domain.bdy(derBound.sign)) >= 0)
-    assert(func(domain.bdy(derBound.sign) - (derBound.sign * domain.width * derBound.bound)) >= 0)
+    assert(func(domain.bdy(derBound.sign)) >= 0) // check positivity at endpoint for sign
+    assert(func(domain.bdy(derBound.sign) - (derBound.sign * domain.width * derBound.bound)) >= 0) // positivity at other endpoint.
     lazy val typ = FuncPositive(func, domain)
   } 
-  
-  object MVTPositive{
-    def verify(func: RealFunc, domain: Interval, derivativeBound: DerBound): Option[Term]= {
-      Try(MVTPositive(func, domain, derivativeBound)).toOption
-    }
-  }
   
   
   // Data for cubes
   
-  
+  /**
+   * Index set for co-ordinates.
+   */
   type Index = Int
-    
+  
+  /**
+   * Vector in R^n
+   */
   type Vec = Vector[Real]
-    
+  
+  /**
+   * Cube.
+   */
   type Cube = Vector[Interval]
   
+  /**
+   * split a cube into sub-cubes, recursively by dimension. 
+   */
   def splitCube(cube: Cube) : Set[Cube] = {
     if (cube == Vector()) Set(cube)
     else {
@@ -162,6 +209,9 @@ object CustomData {
   }
   
   
+  /**
+   * Multivariate real functions
+   */
   trait MultiFunc{
     def func: RealMultiFunc
     
@@ -172,25 +222,32 @@ object CustomData {
   
   def domain(fn: MultiFunc) = fn.domain
   
+  /**
+   * proposition that function is positive on a cube.
+   */
   case class FuncPositiveCube(func: RealMultiFunc, domain: Cube) extends ConstantTyp with MultiFunc
   
+  /**
+   * proof of positivity by gluing proofs
+   * 
+   * @param pfs the given proofs
+   */
   case class GlueCubeFuncPositive(func: RealMultiFunc, domain : Cube, pfs: Set[Term]) extends ConstantTerm with MultiFunc{
-    splitCube(domain) map ((j) =>
+    splitCube(domain) map ((j) => // the cubelet
       {
-        val thispfs = pfs filter (_.typ == FuncPositiveCube(func, j))
-        assert (!(thispfs.isEmpty))
+        val thispfs = pfs filter (_.typ == FuncPositiveCube(func, j)) // proofs that the function is positive on the cubelet 
+        assert (!(thispfs.isEmpty)) // check there is at least one proof.
       })
     
     val typ = FuncPositiveCube(func, domain)
   }
   
-  object GlueCubeFuncPositive{
-    def verify(func: RealMultiFunc, domain : Cube, pfs: Set[Term]) : Option[Term] = {
-      Try(GlueCubeFuncPositive(func, domain, pfs)).toOption
-    }
-  }
-  
-  def corners(dim: Index) : Set[Map[Index, Sign]] = {
+
+  /**
+   * Corners of a cube, i.e., sets of corresponding signs.
+   * Given as a map so these can be viewed as 0-dimensional faces.
+   */
+  private def corners(dim: Index) : Set[Map[Index, Sign]] = {
     if (dim == 1) Set(Map(1 -> 1), Map (1 -> -1))
     else for (m <- corners(dim -1); sgn <- Set(-1, 1)) yield (m + (dim -> sgn))
   }
@@ -198,53 +255,71 @@ object CustomData {
 
   
 /**
+ * Given lower bound for value on a face, bounds for certain derivatives gives a lower bound at a corner.
+ * 
+ * @cube the domain
+ * @face signs giving the face, the size of the map is the codimension.
+ * @faceBound lower bound on the function on a face.
+ * @slopes bounds on partial derivative, lower/upper depending on coordinate for the face. 
+ * @corner the corner to which extrapolation is done, depends only on coordinates specified for the face.
+ * 
  * Should be private, but public for tests/debugging. 
  */    
-  def extrapolateBound(cube: Cube, face : Map[Index, Sign], faceValue: Real, slopes: Map[Index, Real], corner : Map[Index, Sign]) = {
+  def extrapolateLowerBound(cube: Cube, face : Map[Index, Sign], 
+      faceBound: Real, slopes: Map[Index, Real], corner : Map[Index, Sign]) = {
     assert(face.keySet == slopes.keySet)
     val diffs = for (i <- face.keySet) yield(
         if (face(i) == corner(i)) 0 
         else cube(i).width * slopes(i) * corner(i)                  
-          )
-    (diffs :\ faceValue) (_ + _)
+          ) // difference in the bound for the ith coordinate (which must be a face coordinate.
+    (diffs :\ faceBound) (_ + _)
     
   }
   
+  /**
+   * function of several real variables.
+   */
   type RealMultiFunc = Vec => Real
     
+  /**
+   * proposition for bound on partial derivative of function.
+   */
   case class PartialDerBound(func: RealMultiFunc, index: Index, domain: Cube, bound: Real, sign: Sign) extends ConstantTyp
     
 
-  
+  /**
+   * proposition for bound on value of function on face.
+   */
   case class FaceBound(func: RealMultiFunc,  domain: Cube, bound: Real, face: Map[Index, Sign], sign: Sign) extends 
     ConstantTyp with Bound
  
+  /**
+   * Computes and certifies bound on bottom corner (as a face)
+   */
   case class BottomCorner(func: RealMultiFunc, domain: Cube) extends ConstantTerm with MultiFunc{
     val face = (for (i <- 0 to domain.size) yield (i, -1)).toMap
-    val vec = (0 to domain.size).toVector map (domain(_).lower)
+    val vec = (0 to (domain.size -1)).toVector map (domain(_).lower)
     val typ = FaceBound(func, domain, func(vec), face, -1)
   }
   
-  case class MVTfaceBound(func: RealMultiFunc, domain: Cube, faceBound : FaceBound, 
+  /**
+   * show function positive using bound on face, partial derivative bounds using MVT
+   */
+  case class MVTfaceBoundFuncPositive(func: RealMultiFunc, domain: Cube, faceBound : FaceBound, 
       partialDerivativeBounds: Traversable[PartialDerBound]      
       ) extends ConstantTerm with MultiFunc{
     import faceBound.face
-    val derBounds = (for (i <- face.keys; pdb <- partialDerivativeBounds 
-          if pdb.index == i && pdb.sign == sign(faceBound) * face(i)) yield (i, pdb.bound)).toMap
+    val derBounds = (for (i <- face.keys; 
+      PartialDerBound(`func`, `i`, `domain`, bound, sgn ) <- partialDerivativeBounds 
+          if sgn == sign(faceBound) * face(i)) yield (i, bound)).toMap
     
     for (corner <- corners(domain.size)) yield assert (
-        0.0 <= extrapolateBound(domain, face, bound(faceBound), derBounds, corner))
+        0.0 <= extrapolateLowerBound(domain, face, bound(faceBound), derBounds, corner))
     
     val typ = FuncPositiveCube(func, domain)
   }
   
-  
-  object MVTfaceBound{
-    def verify(func: RealMultiFunc, domain: Cube, faceBoundPf : FaceBound, 
-      partialDerivativeBounds: Traversable[PartialDerBound]      
-      ) : Option[Term] = 
-        Try(MVTfaceBound(func, domain, faceBoundPf, partialDerivativeBounds)).toOption
-  }
+
   
   /**
    *
@@ -253,7 +328,10 @@ object CustomData {
   case class HyperplaneBound(func: RealMultiFunc, coords: Map[Index, Real], bound: Real, sign: Sign) extends 
     ConstantTyp with Bound
   
-  case class DeducedFaceBound(func: RealMultiFunc,  domain: Cube, face: Map[Index, Sign], hypPlnBound: HyperplaneBound) extends 
+    /**
+     * bound on face deduced from bound on hyperplane.
+     */
+  case class DeducedFaceBoundProof(func: RealMultiFunc,  domain: Cube, face: Map[Index, Sign], hypPlnBound: HyperplaneBound) extends 
     ConstantTerm with MultiFunc{
     for ((i, y) <- hypPlnBound.coords) yield assert(domain(i).bdy(face(i)) == y)
     val typ = FaceBound(func, domain, bound(hypPlnBound), face, sign(hypPlnBound))
