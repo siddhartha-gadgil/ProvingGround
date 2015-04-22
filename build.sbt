@@ -26,7 +26,7 @@ lazy val serverSettings = Seq(
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
   "edu.stanford.nlp" % "stanford-parser" % "3.4"
   ),
-  initialCommands in console := "ammonite.repl.Repl.main(null)"
+  initialCommands in console := """ammonite.repl.Repl.main(null); import provingground._ ; import HoTT._"""
   )
 
   lazy val digressionSettings = Seq(

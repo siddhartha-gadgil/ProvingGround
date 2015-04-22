@@ -52,4 +52,10 @@ object Verify {
   
   def optDeducedFaceBoundProof(func: RealMultiFunc,  domain: Cube, face: Map[Index, Sign], hypPlnBound: HyperplaneBound) = 
     Try(DeducedFaceBoundProof(func,  domain, face, hypPlnBound)).toOption
+    
+  def optInheritedFuncBound(domain: Interval, fb: FuncBound) = 
+    Try(InheritedFuncBound(domain, fb)).toOption
+    
+  def optInheritedMultiFuncBound(domain: Cube, fb: MultiFuncBound) = 
+    Try(InheritedMultiFuncBound(domain, fb)).toOption
 }

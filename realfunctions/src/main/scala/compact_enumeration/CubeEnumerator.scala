@@ -27,10 +27,10 @@ class CubeEnumerator(func: RealMultiFunc, bounds: Cube => Traversable[Typ]) {
   def deducedFaceBounds(domain: Cube) = for (
       face <- faces(domain.size);
       hypPlnBound @ HyperplaneBound(`func`, _, _, _) <- bounds(domain); 
-      pf <- optDeducedFaceBoundProof(func,  domain, face, hypPlnBound: HyperplaneBound)) yield pf.typ
+      pf <- optDeducedFaceBoundProof(func,  domain, face, hypPlnBound: HyperplaneBound)) yield pf
   
   def mvtProve(domain: Cube) = {
-    val cases = (facebounds(domain) ++ deducedFaceBounds(domain)) map ((faceBound) =>
+    val cases = (facebounds(domain) ++ (deducedFaceBounds(domain) map (_.typ))) map ((faceBound) =>
       {
         val pdbs = partialDerBound(domain, faceBound.face, -1)
         optMVTfaceBoundFuncPositive(func, domain, faceBound, pdbs)

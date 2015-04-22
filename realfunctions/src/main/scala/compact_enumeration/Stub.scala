@@ -28,4 +28,12 @@ object Stub {
    * Constant Terms
    */
   trait ConstantTerm extends Term
+  
+  class FormalFunction[A, B] extends (A => B){
+    def apply(a: A): B = ???
+  }
+  
+  case class Derivative[A](func: A => A) extends FormalFunction[A, A]
+  
+  case class PartialDerivative[A, I](func: Vector[A] => A, i: I) extends FormalFunction[A, A]
 }

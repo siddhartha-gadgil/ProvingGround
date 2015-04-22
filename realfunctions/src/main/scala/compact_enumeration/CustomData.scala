@@ -39,6 +39,7 @@ object CustomData {
    */
   type RealFunc = Real => Real
   
+  
   /**
    * Real numbers
    */
@@ -98,13 +99,29 @@ object CustomData {
   
   def domain(fn: Func) = fn.domain
   
-  /**
+  
+//  case class FuncPositive(func : RealFunc, domain: Interval) extends ConstantTyp with Func
+  
+    /**
    * Proposition that given function is positive on domain
    * 
    * @param func the given function
    * @param domain the domain for positivity
    */
-  case class FuncPositive(func : RealFunc, domain: Interval) extends ConstantTyp with Func
+  object FuncPositive{
+    def apply(func : RealFunc, domain: Interval) : ConstantTyp with Func = FuncBound(func, domain, 0 : Real, -1 : Sign)
+    
+    def unapply(typ: Typ): Option[(RealFunc, Interval)] = typ match {
+      case fb @ FuncBound(func, domain, 0, -1) => Some((func, domain))
+      case _ => None
+    }
+  }
+  
+  
+  /**
+   * Proposition that given function is bounded on the domain
+   */
+  case class FuncBound(func: RealFunc, domain: Interval, bound: Real, sign: Sign) extends ConstantTyp with Func with Bound
   
   /**
    * proof of positivity of a function on an interval, given positivity in halves.
@@ -124,7 +141,15 @@ object CustomData {
     val typ = FuncPositive(func, domain)
   }
   
-
+  case class InheritedFuncBound(domain: Interval, fb: FuncBound) extends ConstantTerm with Func{
+    assert(fb.domain.lower <= domain.lower && domain.upper <= fb.domain.upper)
+    
+    lazy val func = fb.func
+    
+    lazy val sign = fb.sign
+    
+    lazy val typ = FuncBound(func, domain, fb.bound, sign)
+  }
   
   /**
    * (upper or lower) bound
@@ -147,6 +172,13 @@ object CustomData {
    * @param sign -1 for lower bound, 1 for upper bound.
    */
   case class DerBound(func : RealFunc, domain: Interval, bound: Real, sign: Sign) extends ConstantTyp with Func with Bound
+  
+  case class IsDerivative(derivative: RealFunc, integral: RealFunc) extends ConstantTyp
+  
+  case class InferredDerivativeBound(der: IsDerivative, funcBound: FuncBound) extends ConstantTerm{
+    assert(der.derivative == funcBound.func)
+    val typ = DerBound(der.integral, funcBound.domain, funcBound.bound, funcBound.sign)
+  }
   
   /**
    * proof using Mean Value theorem and value at midpoint of positivity of function.
@@ -225,7 +257,43 @@ object CustomData {
   /**
    * proposition that function is positive on a cube.
    */
-  case class FuncPositiveCube(func: RealMultiFunc, domain: Cube) extends ConstantTyp with MultiFunc
+//  case class FuncPositiveCube(func: RealMultiFunc, domain: Cube) extends ConstantTyp with MultiFunc
+  
+      /**
+   * Proposition that given function is positive on domain
+   * 
+   * @param func the given function
+   * @param domain the domain for positivity
+   */
+  object FuncPositiveCube{
+    def apply(func : RealMultiFunc, domain: Cube) : ConstantTyp with MultiFunc = MultiFuncBound(func, domain, 0 : Real, -1 : Sign)
+    
+    def unapply(typ: Typ): Option[(RealMultiFunc, Cube)] = typ match {
+      case fb @ MultiFuncBound(func, domain, 0, -1) => Some((func, domain))
+      case _ => None
+    }
+  }
+
+  
+  
+  /**
+   * Proposition that given function is bounded on the domain
+   */
+  case class MultiFuncBound(func: RealMultiFunc, domain: Cube, bound: Real, sign: Sign) extends ConstantTyp with MultiFunc with Bound
+  
+
+    
+  case class InheritedMultiFuncBound(domain: Cube, fb: MultiFuncBound) extends ConstantTerm with MultiFunc{
+    for (i <- 0 to domain.size-1) yield 
+      assert(fb.domain(i).lower <= domain(i).lower && domain(i).upper <= fb.domain(i).upper)
+    
+    lazy val func = fb.func
+    
+    lazy val sign = fb.sign
+    
+    lazy val typ = MultiFuncBound(func, domain, fb.bound, sign)
+  }
+  
   
   /**
    * proof of positivity by gluing proofs
@@ -287,6 +355,13 @@ object CustomData {
   case class PartialDerBound(func: RealMultiFunc, index: Index, domain: Cube, bound: Real, sign: Sign) extends ConstantTyp
     
 
+  case class IsPartialDerivative(derivative: RealMultiFunc, integral: RealMultiFunc, index: Index) extends ConstantTyp
+  
+  case class InferredPartialDerivativeBound(der: IsPartialDerivative, funcBound: MultiFuncBound) extends ConstantTerm{
+    assert(der.derivative == funcBound.func)
+    val typ = PartialDerBound(der.integral, der.index, funcBound.domain, funcBound.bound, funcBound.sign)
+  }
+  
   /**
    * proposition for bound on value of function on face.
    */
