@@ -53,9 +53,15 @@ object Verify {
   def optDeducedFaceBoundProof(func: RealMultiFunc,  domain: Cube, face: Map[Index, Sign], hypPlnBound: HyperplaneBound) = 
     Try(DeducedFaceBoundProof(func,  domain, face, hypPlnBound)).toOption
     
-  def optInheritedFuncBound(domain: Interval, fb: FuncBound) = 
-    Try(InheritedFuncBound(domain, fb)).toOption
+  def optRestricedFuncBound(domain: Interval, fb: FuncBound) = 
+    Try(RestrictedFuncBound(domain, fb)).toOption
     
-  def optInheritedMultiFuncBound(domain: Cube, fb: MultiFuncBound) = 
-    Try(InheritedMultiFuncBound(domain, fb)).toOption
+  def optRestrictedMultiFuncBound(domain: Cube, fb: MultiFuncBound) = 
+    Try(RestrictedMultiFuncBound(domain, fb)).toOption
+    
+  def optInferredDerivativeBound(der: IsDerivative, funcBound: FuncBound) = 
+    Try(InferredDerivativeBound(der: IsDerivative, funcBound: FuncBound)).toOption
+    
+  def optInferredPartialDerivativeBound(der: IsPartialDerivative, funcBound: MultiFuncBound) = 
+    Try(InferredPartialDerivativeBound(der: IsPartialDerivative, funcBound: MultiFuncBound)).toOption
 }

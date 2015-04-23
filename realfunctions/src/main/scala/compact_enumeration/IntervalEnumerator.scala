@@ -14,13 +14,26 @@ import Verify._
  * 
  */
 class IntervalEnumerator(func: RealFunc,
-    bounds: Interval => Set[Typ]) {
+    givenBounds: Interval => Set[Typ]) {
   
+  def restrictedBounds(domain: Interval) = 
+    for (fb @FuncBound(`func`, _,_,_) <- givenBounds(domain);
+      rfb <- optRestricedFuncBound(domain, fb)) yield rfb
+  
+  def bounds(dom: Interval) = givenBounds(dom) union (restrictedBounds(dom) map (_.typ))
+      
   /**
    * proofs of derivative bound for domain
    */
-  def derBound(domain: Interval) = for (db @ DerBound(`func`, `domain`, b, sign) <- bounds(domain)) yield db
+  def givenDerBound(domain: Interval) = for (db @ DerBound(`func`, `domain`, b, sign) <- bounds(domain)) yield db
 
+  def inferredDerBounds(domain: Interval) = 
+    for (isDer @ IsDerivative(_, `func`) <- bounds(domain); 
+      fb @ FuncBound(_ , `domain`, _, _) <- bounds(domain);
+      inferred <- optInferredDerivativeBound(isDer, fb)) yield inferred
+  
+  def derBound(domain: Interval) = givenDerBound(domain) union (inferredDerBounds(domain) map (_.typ))   
+  
   /**
    * proofs of derivative lower bound for domain
    */

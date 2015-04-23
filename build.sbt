@@ -13,8 +13,7 @@ lazy val commonSettings = Seq(
   )
 
 lazy val jvmSettings = Seq(
-  libraryDependencies ++= Seq("com.lihaoyi" %% "ammonite-repl" % "0.2.4" % "test"),
-  initialCommands in console := "ammonite.repl.Repl.main(null)"
+  libraryDependencies ++= Seq("com.lihaoyi" %% "ammonite-repl" % "0.2.7" % "test")
   )
 
 lazy val serverSettings = Seq(
@@ -64,6 +63,7 @@ lazy val realfunctions = (project in file("realfunctions")).
             "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
             "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
             ),
+            initialCommands in console := """ammonite.repl.Repl.main(null)""",
             name := "RealFunctions")
 
 

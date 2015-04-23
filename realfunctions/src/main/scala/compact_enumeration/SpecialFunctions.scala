@@ -36,12 +36,23 @@ object SpecialFunctions {
     def apply(x: Double) = first(x) * second(x)
   }
   
-  case class Ratio(first: Fn, second: Fn) extends Fn{
-    def apply(x: Double) = first(x) / second(x)
+  object Ratio{
+    def apply(first: Fn, second: Fn) = first *  Reciprocal(second)
+    
+    def unapply(fn: Fn) : Option[(Fn, Fn)] = fn match {
+      case Mult(num, Reciprocal(den)) => Some((num, den))
+      case _ => None
+    }
+  }
+  
+  
+  case class Reciprocal(denominator : Fn) extends Fn{
+    def apply(x: Double) = 1.0 / x
   }
   
   case class Compose(first: Fn, second: Fn) extends Fn{
     def apply(x: Double) = first(second(x))
+    override def toString = s"${first} \u2218 ${second}"
   }
   
   case class Func(defn: Double => Double) extends SpecialFunction{

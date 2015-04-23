@@ -141,7 +141,7 @@ object CustomData {
     val typ = FuncPositive(func, domain)
   }
   
-  case class InheritedFuncBound(domain: Interval, fb: FuncBound) extends ConstantTerm with Func{
+  case class RestrictedFuncBound(domain: Interval, fb: FuncBound) extends ConstantTerm with Func{
     assert(fb.domain.lower <= domain.lower && domain.upper <= fb.domain.upper)
     
     lazy val func = fb.func
@@ -283,7 +283,7 @@ object CustomData {
   
 
     
-  case class InheritedMultiFuncBound(domain: Cube, fb: MultiFuncBound) extends ConstantTerm with MultiFunc{
+  case class RestrictedMultiFuncBound(domain: Cube, fb: MultiFuncBound) extends ConstantTerm with MultiFunc{
     for (i <- 0 to domain.size-1) yield 
       assert(fb.domain(i).lower <= domain(i).lower && domain(i).upper <= fb.domain(i).upper)
     

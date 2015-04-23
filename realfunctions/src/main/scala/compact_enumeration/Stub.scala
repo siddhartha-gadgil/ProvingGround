@@ -29,7 +29,7 @@ object Stub {
    */
   trait ConstantTerm extends Term
   
-  class FormalFunction[A, B] extends (A => B){
+  sealed class FormalFunction[A, B] extends (A => B){
     def apply(a: A): B = ???
   }
   

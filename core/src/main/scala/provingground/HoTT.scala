@@ -94,8 +94,22 @@ object HoTT{
 
       def newobj = typ.obj.asInstanceOf[AtomicTerm]
     }
+    
+    trait ConstantTerm extends Term{
+      def subs(x: Term, y: Term) = this
+      
+      def newobj = this
+    }
 
-
+    trait ConstantTyp extends Typ[Term]{
+      def subs(x: Term, y: Term) = this
+      
+      def newobj = this
+      
+      def symbObj(name: AnySym) = SymbObj(name, this)
+      
+      val typ = __
+    }
 
 
     /** HoTT Type;
@@ -204,15 +218,15 @@ object HoTT{
      * unicode symbols for maps etc.
      */
     object UnicodeSyms extends TermSyms{
-    	val Arrow = '\u27F6'.toString
-    	val MapsTo = "\u27FC"
+    	val Arrow = '\u2192'.toString
+    	val MapsTo = "\u21A6"
     	val Pi ="\u220f"
     	val Sigma = "\u2211"
       val UnivSym = "\uD835\uDCB0"
     }
 
   //  import SimpleSyms._
-    import SimpleSyms._
+    import UnicodeSyms._
 
     /** terms that are given (and determined) by name;
      *  does not include, for instance, pairs each of whose instance is given by a name;
