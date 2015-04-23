@@ -142,6 +142,14 @@ object ScalaRep {
       case ext: ExtendedFunction[_, V, _, Y] if ext.domrep == domrep && ext.codomrep == codomrep => Some(ext.dfn)
       case _ => None
     }
+    
+    def opt(f: V => Option[Y]) = {
+      def optfn(u: U) = u match {
+        case domrep(v) => f(v) map (codomrep(_))
+        case _ => None
+      } 
+      OptDepFuncDefn(optfn, domrep.typ)
+    }
 
     def subs(x: Term, y: Term) = FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
   }

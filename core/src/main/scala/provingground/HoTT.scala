@@ -1057,7 +1057,8 @@ object HoTT{
 
 
 	/** A dependent function given by a scala funcion */
-	case class DepFuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFunc[W, U]{
+	case class DepFuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](
+      func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFunc[W, U]{
 //	  // val domobjtpe = typeOf[W]
 
 //	  // val codomobjtpe = typeOf[U]
@@ -1072,11 +1073,28 @@ object HoTT{
 
 	  def newobj = typ.obj
 
-	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).replace(x, y), dom, fibers.replace(x, y))
+	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).replace(x, y), dom.replace(x, y), fibers.replace(x, y))
 	}
 
-
-
+  case class OptDepFuncDefn[W<: Term with Subs[W]](
+      func: W => Option[Term], dom: Typ[W]) extends DepFunc[W, Term] with Subs[OptDepFuncDefn[W]]{
+    
+    lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
+    
+    lazy val fibers = {
+      val x= getVar(dom)
+      lmbda(x)(depcodom(x))
+    }
+    
+    lazy val typ = PiTyp(fibers)
+    
+    def act(arg: W) = func(arg).getOrElse(Star)
+    
+    def newobj = this
+    
+    def subs(x: Term, y: Term) = 
+      OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
+  }
 
 
 

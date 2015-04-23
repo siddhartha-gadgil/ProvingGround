@@ -47,11 +47,11 @@ object ListType {
   lazy val foldLeft = lambda(u)(lambda(v)(foldFunction(u, v)))
     //depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
   
-  def headOptFn[U <: Term ](typ: Typ[U]) = {
-    val rep = ListRep(typ) -->: MaybeTyp.MaybeRep(typ)
-    rep ((l: List[U]) => l.headOption)
+
+  def headOptFn[U <: Term with Subs[U]](typ: Typ[U])  = {
+    val rep = ListRep(typ) -->: IdRep(typ)
+    rep.opt ((l: List[U]) => l.headOption)
   }
-  
   
   
   def tailFn[U <: Term ](typ: Typ[U]) = {
