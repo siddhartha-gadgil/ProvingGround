@@ -1,3 +1,21 @@
+import sbt.Project.projectToRef
+
+lazy val jsProjects = Seq(client)
+
+lazy val client = project.
+  settings(name := "ProvingGround-JS",
+  scalaVersion := "2.11.5",
+  persistLauncher := true,
+  persistLauncher in Test := false,
+//  sourceMapsDirectories += exampleSharedJs.base / "..",
+  unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
+  libraryDependencies ++= Seq(
+    "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+    )
+    ).
+    enablePlugins(ScalaJSPlugin, ScalaJSPlay)
+
+
 lazy val commonSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
@@ -23,8 +41,12 @@ lazy val serverSettings = Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
-  "edu.stanford.nlp" % "stanford-parser" % "3.4"
+  "edu.stanford.nlp" % "stanford-parser" % "3.4",
+  "com.vmunier" %% "play-scalajs-scripts" % "0.2.0",
+  "org.webjars" % "jquery" % "1.11.1"
   ),
+  scalaJSProjects := jsProjects,
+  pipelineStages := Seq(scalaJSProd),
   initialCommands in console := """ammonite.repl.Repl.main(null); import provingground._ ; import HoTT._"""
   )
 
@@ -36,20 +58,26 @@ lazy val serverSettings = Seq(
     )
 
 
-lazy val core = (project in file("core")).
+lazy val core = (crossProject.crossType(CrossType.Pure) in  file("core")).
   settings(commonSettings : _*).
-  settings(name := "ProvingGround-Core")
+  settings(name := "ProvingGround-Core").
+  jsConfigure(_ enablePlugins ScalaJSPlay).
+  jsSettings(sourceMapsBase := baseDirectory.value / "..")
+
+lazy val coreJVM = core.jvm
+lazy val coreJS = core.js
 
 lazy val functionfinder = project.
   settings(commonSettings: _*).
   settings(name := "ProvingGround-FunctionFinder").
-  dependsOn(core)
+  dependsOn(coreJVM)
 
 lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        dependsOn(core).dependsOn(functionfinder)
+        aggregate(jsProjects.map(projectToRef): _*).
+        dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
@@ -76,6 +104,6 @@ lazy val realfunctions = (project in file("realfunctions")).
 lazy val digressions = (project in file("digressions")).
   settings(commonSettings : _*).
   settings(digressionSettings : _*).
-  dependsOn(core).dependsOn(jvm).dependsOn(functionfinder)
+  dependsOn(coreJVM).dependsOn(jvm).dependsOn(functionfinder)
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
