@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground
 import provingground.HoTT._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 

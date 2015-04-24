@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground
 
 //import provingground.Collections._
 import provingground.HoTT._

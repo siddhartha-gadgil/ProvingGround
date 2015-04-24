@@ -1,8 +1,8 @@
 package worksheets
 
-import provingground.functionfinder.IntTypes._
+import provingground.IntTypes._
 
-import provingground.functionfinder.ScalaRep._
+import provingground.ScalaRep._
 
 import provingground.HoTT._
 
@@ -11,9 +11,9 @@ object FuncFindWork {
   
   import dsl._
   
-  val z = i[Long](Z)                              //> z  : provingground.functionfinder.ScalaRep.SimpleRep[Long] = SimpleRep(Z)
+  val z = i[Long](Z)                              //> z  : provingground.ScalaRep.SimpleRep[Long] = SimpleRep(Z)
   
-  val zz = z -->: z                               //> zz  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.Term,
+  val zz = z -->: z                               //> zz  : provingground.ScalaRep.FuncRep[provingground.HoTT.Term,
                                                   //| Long,provingground.HoTT.Term,Long] = FuncRep(SimpleRep(Z),SimpleRep(Z))
   val double = (n: Long) => n *2                  //> double  : Long => Long = <function1>
   
@@ -23,29 +23,29 @@ object FuncFindWork {
    
    z.unapply(z(3))                                //> res1: Option[Long] = Some(3)
    
-   val n = i[Int](N)                              //> n  : provingground.functionfinder.ScalaRep.SimpleRep[Int] = SimpleRep(N)
+   val n = i[Int](N)                              //> n  : provingground.ScalaRep.SimpleRep[Int] = SimpleRep(N)
    
-   def f(k: Int) = i[Int](FinTyp(n(k))) -->: n    //> f: (k: Int)provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.
+   def f(k: Int) = i[Int](FinTyp(n(k))) -->: n    //> f: (k: Int)provingground.ScalaRep.FuncRep[provingground.HoTT.
                                                   //| Term,Int,provingground.HoTT.Term,Int]
   
    
-   n ++ f                                         //> res2: provingground.functionfinder.ScalaRep.SigmaRep[provingground.HoTT.Term
+   n ++ f                                         //> res2: provingground.ScalaRep.SigmaRep[provingground.HoTT.Term
                                                   //| ,Int,provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT.
                                                   //| Term],Int => Int] = SigmaRep(SimpleRep(N),<function1>)
    
-   def fin(k: Int) = i[Int](FinTyp(n(k)))         //> fin: (k: Int)provingground.functionfinder.ScalaRep.SimpleRep[Int]
+   def fin(k: Int) = i[Int](FinTyp(n(k)))         //> fin: (k: Int)provingground.ScalaRep.SimpleRep[Int]
    
-   val r= (s(n)((k: Int) => fin(k) -->: n)) -->: n//> r  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.Term,(
+   val r= (s(n)((k: Int) => fin(k) -->: n)) -->: n//> r  : provingground.ScalaRep.FuncRep[provingground.HoTT.Term,(
                                                   //| Int, Int => Int),provingground.HoTT.Term,Int] = FuncRep(SigmaRep(SimpleRep(N
                                                   //| ),<function1>),SimpleRep(N))
    r.apply _                                      //> res3: (((Int, Int => Int)) => Int) => provingground.HoTT.FuncLike[provinggro
                                                   //| und.HoTT.Term,provingground.HoTT.Term] = <function1>
    
-   val sty = s(n)((k: Int) => fin(k) -->: n)      //> sty  : provingground.functionfinder.ScalaRep.SigmaRep[provingground.HoTT.Ter
+   val sty = s(n)((k: Int) => fin(k) -->: n)      //> sty  : provingground.ScalaRep.SigmaRep[provingground.HoTT.Ter
                                                   //| m,Int,provingground.HoTT.FuncLike[provingground.HoTT.Term,provingground.HoTT
                                                   //| .Term],Int => Int] = SigmaRep(SimpleRep(N),<function1>)
    
-   sty.fibers                                     //> res4: provingground.functionfinder.ScalaRep.SimpleExtendedFunction[provinggr
+   sty.fibers                                     //> res4: provingground.ScalaRep.SimpleExtendedFunction[provinggr
                                                   //| ound.HoTT.Term,Int,provingground.HoTT.Typ[provingground.HoTT.Term]] = <funct
                                                   //| ion1>
    

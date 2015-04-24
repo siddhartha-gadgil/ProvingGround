@@ -40,11 +40,16 @@ lazy val core = (project in file("core")).
   settings(commonSettings : _*).
   settings(name := "ProvingGround-Core")
 
+lazy val functionfinder = project.
+  settings(commonSettings: _*).
+  settings(name := "ProvingGround-FunctionFinder").
+  dependsOn(core)
+
 lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        dependsOn(core)
+        dependsOn(core).dependsOn(functionfinder)
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
@@ -71,6 +76,6 @@ lazy val realfunctions = (project in file("realfunctions")).
 lazy val digressions = (project in file("digressions")).
   settings(commonSettings : _*).
   settings(digressionSettings : _*).
-  dependsOn(core).dependsOn(jvm)
+  dependsOn(core).dependsOn(jvm).dependsOn(functionfinder)
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")

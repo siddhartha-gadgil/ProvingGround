@@ -2,20 +2,20 @@ package docsheets
 
 import provingground.HoTT._
 
-import provingground.functionfinder.IntTypes._
+import provingground.IntTypes._
 
-import provingground.functionfinder.ScalaRep._
+import provingground.ScalaRep._
 
 
 
 object IntInduc {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
-  val n = N.rep                                   //> n  : provingground.functionfinder.ScalaRep.SimpleRep[Long] = SimpleRep(N)
+  val n = N.rep                                   //> n  : provingground.ScalaRep.SimpleRep[Long] = SimpleRep(N)
   
-  val three = N.rep(3)                            //> three  : provingground.functionfinder.ScalaRep.SimpleConst[Long] = 3
+  val three = N.rep(3)                            //> three  : provingground.ScalaRep.SimpleConst[Long] = 3
 
-	val oprep = N.rep -->: N.rep -->: N.rep   //> oprep  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.Te
+	val oprep = N.rep -->: N.rep -->: N.rep   //> oprep  : provingground.ScalaRep.FuncRep[provingground.HoTT.Te
                                                   //| rm,Long,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoT
                                                   //| T.Term],Long => Long] = FuncRep(SimpleRep(N),FuncRep(SimpleRep(N),SimpleRep(
                                                   //| N)))
@@ -124,7 +124,7 @@ object IntInduc {
                                                   //| nd.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provinggroun
                                                   //| d.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provin
                                                   //| gground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,proving
-                                                  //| ground.HoTT.Term]]],provingground.functionfinder.ScalaRep.SimpleExtendedFunc
+                                                  //| ground.HoTT.Term]]],provingground.ScalaRep.SimpleExtendedFunc
                                                   //| tion[provingground.HoTT.Term,Long,provingground.HoTT.Term]] = ((f : (N->(N->
                                                   //| N)))|-><function1>)
 	
@@ -133,7 +133,7 @@ object IntInduc {
 	
 	
 	
-	recN(N)(N.rep(0)).value                   //> res14: provingground.functionfinder.ScalaRep.SimpleExtendedFunction[provingg
+	recN(N)(N.rep(0)).value                   //> res14: provingground.ScalaRep.SimpleExtendedFunction[provingg
                                                   //| round.HoTT.Term,Long,provingground.HoTT.Term] = <function1>
 	
 	recN(N)(N.rep(0)).variable  == f.replace(A, N)
@@ -142,16 +142,16 @@ object IntInduc {
                                                   //> res16: Boolean = true
 	
 	val res = recN(N)(N.rep(0)).value.replace(f.subs(A, N), N.sum)
-                                                  //> res  : provingground.functionfinder.ScalaRep.SimpleExtendedFunction[proving
+                                                  //> res  : provingground.ScalaRep.SimpleExtendedFunction[proving
                                                   //| ground.HoTT.Term,Long,provingground.HoTT.Term] with provingground.HoTT.Subs
-                                                  //| [provingground.functionfinder.ScalaRep.SimpleExtendedFunction[provingground
+                                                  //| [provingground.ScalaRep.SimpleExtendedFunction[provingground
                                                   //| .HoTT.Term,Long,provingground.HoTT.Term]] = <function1>
 	
 	res.domrep.unapply(three)                 //> res17: Option[Long] = Some(3)
 	
 	res.dfn ==  recN(N)(N.rep(0)).value.dfn   //> res18: Boolean = false
 	
-	val notres = recN(N)(N.rep(0)).value      //> notres  : provingground.functionfinder.ScalaRep.SimpleExtendedFunction[prov
+	val notres = recN(N)(N.rep(0)).value      //> notres  : provingground.ScalaRep.SimpleExtendedFunction[prov
                                                   //| ingground.HoTT.Term,Long,provingground.HoTT.Term] = <function1>
 	
 	notres.dfn(3)                             //> res19: provingground.HoTT.Term = (((f : (N->(N->N)))(1) : (N->N))((((f : (N
@@ -343,24 +343,24 @@ object IntInduc {
 
 	// Other stuff that works fine.
 	
-	val idrep = n -->: n                      //> idrep  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.T
+	val idrep = n -->: n                      //> idrep  : provingground.ScalaRep.FuncRep[provingground.HoTT.T
                                                   //| erm,Long,provingground.HoTT.Term,Long] = FuncRep(SimpleRep(N),SimpleRep(N))
                                                   //| 
 	
 	idrep((k: Long) => 2 *k)(three)           //> res21: provingground.HoTT.Term = 6
 
-	val NN = IdRep(N)                         //> NN  : provingground.functionfinder.ScalaRep.IdRep[provingground.HoTT.Term] 
+	val NN = IdRep(N)                         //> NN  : provingground.ScalaRep.IdRep[provingground.HoTT.Term] 
                                                   //| = IdRep(N)
 	
 	NN(three)                                 //> res22: provingground.HoTT.Term = 3
 	
-	val r = n -->: N                          //> r  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.Term,
+	val r = n -->: N                          //> r  : provingground.ScalaRep.FuncRep[provingground.HoTT.Term,
                                                   //| Long,provingground.HoTT.Term,provingground.HoTT.Term] = FuncRep(SimpleRep(N
                                                   //| ),IdRep(N))
 	
 	r((k: Long) => N.rep(k))(three)           //> res23: provingground.HoTT.Term = 3
 
-	val rr = N -->: n -->: N                  //> rr  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT.Term
+	val rr = N -->: n -->: N                  //> rr  : provingground.ScalaRep.FuncRep[provingground.HoTT.Term
                                                   //| ,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term
                                                   //| ,provingground.HoTT.Term],Long => provingground.HoTT.Term] = FuncRep(IdRep(
                                                   //| N),FuncRep(SimpleRep(N),IdRep(N)))
@@ -376,7 +376,7 @@ object IntInduc {
 	// Test minimal example with domain function : evaluation. This now works.
 
 
-	val evalrep = (n -->: N) -->: N           //> evalrep  : provingground.functionfinder.ScalaRep.FuncRep[provingground.HoTT
+	val evalrep = (n -->: N) -->: N           //> evalrep  : provingground.ScalaRep.FuncRep[provingground.HoTT
                                                   //| .Func[provingground.HoTT.Term,provingground.HoTT.Term],Long => provinggr
                                                   //| ound.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Term] = FuncRep(F
                                                   //| uncRep(SimpleRep(N),IdRep(N)),IdRep(N))
@@ -396,7 +396,7 @@ object IntInduc {
                                                   //| T.Term] = <function1>
 	
 	rfn.asInstanceOf[ExtendedFunction[Term, Long, Term, Term]]
-                                                  //> res26: provingground.functionfinder.ScalaRep.ExtendedFunction[provingground
+                                                  //> res26: provingground.ScalaRep.ExtendedFunction[provingground
                                                   //| .HoTT.Term,Long,provingground.HoTT.Term,provingground.HoTT.Term] = <functio
                                                   //| n1>
 	
