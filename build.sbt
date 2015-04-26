@@ -13,7 +13,8 @@ lazy val client = project.
     "org.scala-js" %%% "scalajs-dom" % "0.8.0"
     )
     ).
-    enablePlugins(ScalaJSPlugin, ScalaJSPlay)
+    enablePlugins(ScalaJSPlugin, ScalaJSPlay).
+    dependsOn(coreJS)
 
 
 lazy val commonSettings = Seq(
@@ -105,5 +106,7 @@ lazy val digressions = (project in file("digressions")).
   settings(commonSettings : _*).
   settings(digressionSettings : _*).
   dependsOn(coreJVM).dependsOn(jvm).dependsOn(functionfinder)
+
+  EclipseKeys.skipParents in ThisBuild := false
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
