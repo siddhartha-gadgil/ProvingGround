@@ -7,7 +7,7 @@ lazy val client = project.
   scalaVersion := "2.11.5",
   persistLauncher := true,
   persistLauncher in Test := false,
-//  sourceMapsDirectories += exampleSharedJs.base / "..",
+  sourceMapsDirectories += coreJS.base / "..",
   unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.8.0"
