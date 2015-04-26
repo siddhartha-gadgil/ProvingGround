@@ -22,3 +22,5 @@ GET     /assets/*file      controllers.Assets.at(path="/public", file)
 GET    /andrewscurtis      controllers.Application.acLoopStart
 
 POST  /andrewscurtis        controllers.Application.acLoop
+
+GET   /jstest               controllers.Application.jstest

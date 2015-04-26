@@ -5,7 +5,7 @@ import org.scalajs.dom
 
 import HoTT._
 
-object ScalaJSExample extends js.JSApp {
+object HelloJS extends js.JSApp {
   def main(): Unit = {
     dom.document.getElementById("scalajs").textContent = "Hello from Scala-js" + __
   }

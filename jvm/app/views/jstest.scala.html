@@ -1,0 +1,10 @@
+@(message: String)
+
+@main("Welcome to Play 2.1") {
+
+    <div> Universe according to server: @(provingground.HoTT.__)</div>
+
+    <div> Universe according to client: <span id="scalajs"> update this </span>
+
+      @playscalajs.html.scripts("client")
+}

@@ -30,7 +30,9 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
-
+  def jstest = Action {
+    Ok(views.html.jstest("Test of Scala Js."))
+  }
 
   def redirect = Action {
     Redirect("build/web/provingground.html")
