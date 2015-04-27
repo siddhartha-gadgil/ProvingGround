@@ -7,6 +7,10 @@ import HoTT._
 
 object HelloJS extends js.JSApp {
   def main(): Unit = {
-    dom.document.getElementById("scalajs").textContent = "Hello from Scala-js" + __
+    dom.document.getElementById("scalajs").textContent = "Hello from Scala-js: " + __
+    
+    val sse= new dom.EventSource("/dummy")
+    
+    sse.onmessage = (event: dom.MessageEvent) => {}
   }
 }

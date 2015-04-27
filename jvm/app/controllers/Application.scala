@@ -13,8 +13,8 @@ import play.api.libs.json._
 
 import play.api.Play.current
 
-//import play.api.libs.iteratee._
-//import play.api.libs.EventSource
+import play.api.libs.iteratee._
+import play.api.libs.EventSource
 
 import provingground.andrewscurtis.AndrewsCurtis._
 import provingground.andrewscurtis.AndrewsCurtisInterface._
@@ -75,7 +75,7 @@ object Application extends Controller {
   }
   *
   */
-/*
+
   val (bounceOut, bounceChannel) = Concurrent.broadcast[String]
 
   def bouncestream = Action {
@@ -102,5 +102,5 @@ object Application extends Controller {
       p.send
       Ok("bounced")
   }
-*/
+
 }
