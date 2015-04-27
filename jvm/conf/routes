@@ -15,9 +15,9 @@ GET     /assets/*file      controllers.Assets.at(path="/public", file)
 
 # GET   /dstbnstream               controllers.Application.dstbnstream
 
-# GET		/bouncestream				controllers.Application.bouncestream
+GET		/bouncestream				controllers.Application.bouncestream
 
-# POST	/bounce						controllers.Application.bounce
+POST	/bounce						controllers.Application.bounce
 
 GET    /andrewscurtis      controllers.Application.acLoopStart
 
