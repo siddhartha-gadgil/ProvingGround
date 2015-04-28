@@ -97,9 +97,10 @@ object Application extends Controller {
 
   def bounce = Action {
     implicit request =>
-      val p = bounceForm.bindFromRequest.get
-      bounceChannel.push("tick")
-      p.send
+ //     val p = bounceForm.bindFromRequest.get
+      bounceChannel.push("tick:")
+      println(request.body)
+  //    p.send
       Ok("bounced")
   }
 

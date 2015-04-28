@@ -14,8 +14,28 @@ object HelloJS extends js.JSApp {
     dom.document.getElementById("scalajs").textContent = "Hello from Scala-js: " + __
 
     val bouncers = div.render
+  
+     val echo = span.render
     
-    val sse= new dom.EventSource("../bouncestream")
+    import dom.ext._
+    import scala.scalajs
+                .concurrent
+                .JSExecutionContext
+                .Implicits
+                .runNow
+    
+    val box = input(
+        `type`:="text",
+        placeholder:="Type here!"
+        ).render
+          
+   box.onchange = (e: dom.Event) => {
+     echo.textContent = box.value
+     Ajax.post("/bounce", box.value)
+   }
+        
+        
+    val sse= new dom.EventSource("/bouncestream")
     
     
     sse.onmessage = (event: dom.MessageEvent) => {
@@ -37,6 +57,9 @@ object HelloJS extends js.JSApp {
           " jumps over the lazy ",
           i(animalB), "."
         ),
+        box,
+        echo,
+        p("bouncers below"),
         bouncers
       ).render
     )
