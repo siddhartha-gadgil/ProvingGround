@@ -2,21 +2,6 @@ import sbt.Project.projectToRef
 
 lazy val jsProjects = Seq(client)
 
-lazy val client = project.
-  settings(name := "ProvingGround-JS",
-  scalaVersion := "2.11.5",
-  persistLauncher := true,
-  persistLauncher in Test := false,
-  sourceMapsDirectories += coreJS.base / "..",
-  unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
-  libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-    "com.lihaoyi" %%% "scalatags" % "0.4.6"
-    )
-    ).
-    enablePlugins(ScalaJSPlugin, ScalaJSPlay).
-    dependsOn(coreJS)
-
 
 lazy val commonSettings = Seq(
   version := "0.8",
@@ -27,7 +12,8 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
+  "org.spire-math" %% "spire" % "0.9.1"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
@@ -58,6 +44,23 @@ lazy val serverSettings = Seq(
     ),
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
     )
+
+
+    lazy val client = project.
+      settings(name := "ProvingGround-JS",
+      scalaVersion := "2.11.5",
+      persistLauncher := true,
+      persistLauncher in Test := false,
+      sourceMapsDirectories += coreJS.base / "..",
+      unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
+      libraryDependencies ++= Seq(
+        "org.scala-js" %%% "scalajs-dom" % "0.8.0",
+        "com.lihaoyi" %%% "scalatags" % "0.4.6"
+        )
+        ).
+        enablePlugins(ScalaJSPlugin, ScalaJSPlay).
+        dependsOn(coreJS)
+
 
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in  file("core")).
