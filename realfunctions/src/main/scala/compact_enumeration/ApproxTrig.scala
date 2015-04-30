@@ -20,20 +20,24 @@ class ApproxTrig(N: SafeLong) {
   
   val width = r"1" / N
   
-  val J = Interval.closed(r"0", width)
+  lazy val J = Interval.closed(r"0", width)
 
   
   import Interval._
   
   /**
    * stream of bounds on the exponential.
-   * At k, this is an interval containing the image of [k/N, (k+1)/N]
+   * At n, this is an interval containing e^(n/ N)
    */
-  val expstream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) => {
-    val b = if (n ==0) Interval.closed(r"1", r"1") else get(expstream, n-1)
-    val a = b * Interval.closed(r"1/2" , (1 + width) / (2 - (width * width)))
-    (a * width * width) + (b * (width + 1))
-  })
+  lazy val expstream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) => 
+    if (n ==0) Interval.point(Rational(1))
+    else
+      {
+      val b = get(expstream, n-1)
+      val a = b * Interval.closed(r"1/2" , (1 + width) / (2 - (width * width)))
+      (a * width * width) + (b * (width + 1))
+    })
+  
   
   
 }
