@@ -25,5 +25,7 @@ import spire.syntax.literals._
 	
 	exp(1)                                    //> res4: Double = 2.718281828459045
 	
+//	apr.exp(1)
+	
 	exp(0.5)                                  //> res5: Double = 1.6487212707001282
 }
