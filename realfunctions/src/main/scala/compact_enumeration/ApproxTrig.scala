@@ -23,6 +23,7 @@ class ApproxTrig(N: SafeLong) {
   lazy val J = Interval.closed(Rational(0), width)
 
 
+  lazy val up = J.upperBound
 //  import Interval._
 
   /**
@@ -38,12 +39,35 @@ class ApproxTrig(N: SafeLong) {
       (a * width * width) + (b * (width + 1))
     })
 
-/*
-  def exp(x: Double) : Interval[Double] =
+
+  def exp(x: Rational) : Interval[Rational] =
     if (x >= 0)
-      expstream((Rational(x) * N).round.toInt) mapBounds (_.toDouble)
+      expstream((x*N).toInt)
       else
-        1.0 / exp(-x) */
+        Interval.point(r"1")  / exp(-x) 
+
+   def expDouble(x: Double) = exp(x.toRational) mapBounds(_.toDouble)
+   
+   def expInterval(x: Rational) : Interval[Rational] = {
+        if (x>= 0)
+           expstream((x * N).floor.toInt) union expstream((x * N).ceil.toInt)
+        else
+          Interval.point(r"1")  / expInterval(-x)
+      }
+
+  def spreadOpt(stream: Int => Interval[Rational])(xs: Interval[Rational]) = {
+    import ApproxTrig._
+    val startOpt = getClosed((xs * N).lowerBound map (_.floor.toInt))
+    
+    val endOpt = getClosed((xs * N).upperBound map (_.ceil.toInt))
+    
+    val imagesOpt = for (start <- startOpt; end <- endOpt) yield 
+      for (j <- start to end) yield stream(j)
+    
+    imagesOpt map (_.reduce (_ union _))
+  }
+  
+  val expBounds= ApproxTrig.FunctionBounder(spreadOpt(expstream))
 
 }
 
@@ -53,12 +77,25 @@ object ApproxTrig{
   @tailrec def get[A](as: Stream[A], n: SafeLong) : A = {
     if (n ==0) as.head else get(as.tail, n-1)
   }
-/*
+  
+  case class FunctionBounder(bounds : Interval[Rational] => Option[Interval[Rational]]) extends 
+    (Interval[Rational] => Option[Interval[Rational]]){
+    def apply(j: Interval[Rational]) = bounds(j)
+    
+    def andThen(that: FunctionBounder) = {
+      def composeBound(j: Interval[Rational]) = this(j) flatMap (that(_))
+      FunctionBounder(composeBound)
+    }
+  }
+
   import spire.math.Interval._
 
-  def getClosed[A](J: spire.math.interval.Bound[A]) = J match{
-    case interval.Closed(a) => Some(a)
+  
+  
+  
+  def getClosed[A](J: Interval.Bound[A]) = J match{
+    case Interval.Closed(a) => Some(a)
     case _ => None
   }
-*/
+
 }

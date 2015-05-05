@@ -35,7 +35,7 @@ lazy val serverSettings = Seq(
   ),
   scalaJSProjects := jsProjects,
   pipelineStages := Seq(scalaJSProd),
-  initialCommands in console := """ammonite.repl.Repl.main(null); import provingground._ ; import HoTT._"""
+  initialCommands in console := """import provingground._ ; import HoTT._"""
   )
 
   lazy val digressionSettings = Seq(
@@ -92,16 +92,13 @@ lazy val realfunctions = (project in file("realfunctions")).
           "org.scalanlp" %% "breeze" % "0.11.2",
           // native libraries are not included by default. add this if you want them (as of 0.7)
           // native libraries greatly improve performance, but increase jar sizes.
-          "org.scalanlp" %% "breeze-natives" % "0.11.2",
-          "com.lihaoyi" %% "ammonite-repl" % "0.2.7" % "test"
-          ),
+          "org.scalanlp" %% "breeze-natives" % "0.11.2"),
           resolvers ++= Seq(
             // other resolvers here
             // if you want to use snapshot builds (currently 0.12-SNAPSHOT), use this.
             "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
             "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
             ),
-//            initialCommands in console := """ammonite.repl.Repl.main(null)""",
             name := "RealFunctions")
 
 
