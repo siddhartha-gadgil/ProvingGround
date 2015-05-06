@@ -57,9 +57,10 @@ class ApproxTrig(N: SafeLong) {
 
   def spreadOpt(stream: Int => Interval[Rational])(xs: Interval[Rational]) = {
     import ApproxTrig._
-    val startOpt = getClosed((xs * N).lowerBound map (_.floor.toInt))
+    val startOpt = ((xs * N) mapBounds (_.floor.toInt)).bottom(0, 0)
+      //getClosed((xs * N).lowerBound map (_.floor.toInt))
     
-    val endOpt = getClosed((xs * N).upperBound map (_.ceil.toInt))
+    val endOpt = ((xs * N) mapBounds (_.ceil.toInt)).top(0)
     
     val imagesOpt = for (start <- startOpt; end <- endOpt) yield 
       for (j <- start to end) yield stream(j)
@@ -86,7 +87,7 @@ class ApproxTrig(N: SafeLong) {
     
     implicit val appr = new ApproximationContext(width)
     
-    lazy val b2c2 = (((b * b) + (c * c)) mapBounds(_.sqrt)) union Interval.closed(-width, width)
+    lazy val b2c2 = (b.pow(2) + c.pow(2)).sqrt + Interval.closed(-width, width)
     
     lazy val discriminantNonZero = ((-c - b2c2) union (-c + b2c2))/(Rational(2))
     
@@ -95,11 +96,11 @@ class ApproxTrig(N: SafeLong) {
     
     lazy val atRightEnd = (a * width * width) + (b * width) + c
     
-    lazy val intervalImage = (a * J * J) + (b * J) + c
+    lazy val intervalImage = (a * J.pow(2)) + (b * J) + c
   }
  
   lazy val sinStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
-    if (n ==0) Interval.point(Rational(1))
+    if (n ==0) Interval.point(Rational(0))
     else
       {
       val c = get(sinStream, n-1)
