@@ -55,7 +55,8 @@ class ApproxTrig(N: SafeLong) {
           Interval.point(r"1")  / expInterval(-x)
       }
 
-  def spreadOpt(stream: Int => Interval[Rational])(xs: Interval[Rational]) = {
+  def spreadOpt(stream: Int => Interval[Rational])(
+      xs: Interval[Rational]) : Option[Interval[Rational]] = {
     import ApproxTrig._
     val startOpt = getClosed((xs * N).lowerBound map (_.floor.toInt))
     
@@ -65,6 +66,7 @@ class ApproxTrig(N: SafeLong) {
       for (j <- start to end) yield stream(j)
     
     imagesOpt map (_.reduce (_ union _))
+    
   }
   
   val expBounds= ApproxTrig.FunctionBounder(spreadOpt(expstream))
@@ -72,6 +74,8 @@ class ApproxTrig(N: SafeLong) {
 }
 
 object ApproxTrig{
+    import spire.math.interval.{Bound, Closed}
+  
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
   @tailrec def get[A](as: Stream[A], n: SafeLong) : A = {
@@ -90,11 +94,11 @@ object ApproxTrig{
 
   import spire.math.Interval._
 
+
+
   
-  
-  
-  def getClosed[A](J: Interval.Bound[A]) = J match{
-    case Interval.Closed(a) => Some(a)
+  def getClosed[A](J: Bound[A]): Option[A] =  J match{
+    case Closed(a) => Some(a)
     case _ => None
   }
 
