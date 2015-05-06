@@ -3,14 +3,14 @@ package compact_enumeration
 object exptest {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
-  import spire.math._
+import spire.math._
 import spire.algebra._
 import spire.implicits._
 import spire.syntax.literals._
 
   
-  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@62f49
-                                                  //| ef9
+  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@5c21b
+                                                  //| ae0
                                                   
   apr.width                                       //> res0: spire.math.Rational = 1/200
   
@@ -29,8 +29,10 @@ import spire.syntax.literals._
 	
 	apr.expDouble(1)                          //> res6: spire.math.Interval[Double] = [2.718270544696388, 2.718304438767226]
 	
-	ApproxTrig.getClosed(apr.expDouble(1).upperBound)
-                                                  //> res7: Option[Double] = Some(2.718304438767226)
+	apr.expDouble(1).upperBound               //> res7: spire.math.interval.Bound[Double] = Closed(2.718304438767226)
 	
-	exp(0.5)                                  //> res8: Double = 1.6487212707001282
+	ApproxTrig.getClosed(apr.expDouble(1).upperBound)
+                                                  //> res8: Option[Double] = Some(2.718304438767226)
+	
+	exp(0.5)                                  //> res9: Double = 1.6487212707001282
 }

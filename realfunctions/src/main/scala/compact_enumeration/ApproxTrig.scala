@@ -69,9 +69,59 @@ class ApproxTrig(N: SafeLong) {
   
   val expBounds= ApproxTrig.FunctionBounder(spreadOpt(expstream))
 
+    /**
+   * Bounds for solutions to f" + f = 0 (i.e., sin and cos)
+   */
+  case class TrigBound(width: Rational, b: Interval[Rational], c: Interval[Rational]){
+    
+    lazy val lftBound = - c // bound based on f" + f at left endpoint.
+    
+    lazy val rghtBound = - (c + b * width) / (1 + width*width) // bound based on f" + f at right endpoint.
+
+    lazy val endsBound = lftBound union rghtBound // bound based on f" + f at both endpoints.
+    
+    lazy val derImage = b union (b + (endsBound * width))
+    
+    lazy val derSignChange = derImage.crossesZero
+    
+    implicit val appr = new ApproximationContext(width)
+    
+    lazy val b2c2 = (((b * b) + (c * c)) mapBounds(_.sqrt)) union Interval.closed(-width, width)
+    
+    lazy val discriminantNonZero = ((-c - b2c2) union (-c + b2c2))/(Rational(2))
+    
+    lazy val a = if (derSignChange && (endsBound intersects discriminantNonZero)) 
+      endsBound union discriminantNonZero else endsBound
+    
+    lazy val atRightEnd = (a * width * width) + (b * width) + c
+    
+    lazy val intervalImage = (a * J * J) + (b * J) + c
+  }
+ 
+  lazy val sinStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
+    if (n ==0) Interval.point(Rational(1))
+    else
+      {
+      val c = get(sinStream, n-1)
+      val b = get(cosStream, n -1)
+      val trigAppr = TrigBound(width, b, c)
+      trigAppr.atRightEnd
+    })
+  
+  lazy val cosStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
+    if (n ==0) Interval.point(Rational(1))
+    else
+      {
+      val c = get(cosStream, n-1)
+      val b = -get(sinStream, n -1)
+      val trigAppr = TrigBound(width, b, c)
+      trigAppr.atRightEnd
+    })
 }
 
 object ApproxTrig{
+  import spire.math.interval.{Bound, Closed}
+  
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
   @tailrec def get[A](as: Stream[A], n: SafeLong) : A = {
@@ -93,9 +143,11 @@ object ApproxTrig{
   
   
   
-  def getClosed[A](J: Interval.Bound[A]) = J match{
-    case Interval.Closed(a) => Some(a)
+  def getClosed[A](J: Bound[A]) = J match{
+    case Closed(a) => Some(a)
     case _ => None
   }
+  
+
 
 }
