@@ -61,11 +61,10 @@ import provingground.Collections._
       
       def proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
       
-      def block[A, B, C, D](f : DiffbleFunction[A, C], g: DiffbleFunction[B, D])(
-          implicit lsA : LinearStructure[A], 
-          lsB : LinearStructure[B],
-          lsC : LinearStructure[C],
-          lsD : LinearStructure[D]) = {
+      def block[A : LinearStructure, 
+        B : LinearStructure, 
+        C : LinearStructure, 
+        D : LinearStructure](f : DiffbleFunction[A, C], g: DiffbleFunction[B, D]) = {
             val add = vsum[DiffbleFunction[(A, B), (C, D)]]
             
             val p1 = proj1[A, B]
@@ -88,14 +87,15 @@ import provingground.Collections._
       /**
        * raise a function to 2^(n -1) wrt composition, so for n = 0 we get identity and n = 1 gives f.
        */
-      def repsquare[A](f: DiffbleFunction[A, A])(implicit ls: LinearStructure[A]): Int => DiffbleFunction[A, A] = {
+      def repsquare[A : LinearStructure](f: DiffbleFunction[A, A]): Int => DiffbleFunction[A, A] = {
         case 0 => id[A]
         case 1 => f
         case n if n<0 => 
           vzero[DiffbleFunction[A, A]]
-        case n => 
-          repsquare(f)(ls)(n-1) andthen (repsquare(f)(ls)(n-1))
-            
+        case n =>
+          {val rs = repsquare(f)
+          rs(n-1) andthen (rs(n-1))
+          } 
       }
       
         /**
@@ -107,9 +107,9 @@ import provingground.Collections._
       
       def iterate[A](f: DiffbleFunction[A, A]) : Int => DiffbleFunction[A, A] = (n) => iterateDiffble(f, n)
       
-      def mixinIsle[A](f: DiffbleFunction[A, A], 
+      def mixinIsle[A : LinearStructure](f: DiffbleFunction[A, A], 
           isle : DiffbleFunction[A, A] => DiffbleFunction[A, A],
-          normalize: DiffbleFunction[A, A] = id[A])(implicit ls: LinearStructure[A]) = {
+          normalize: DiffbleFunction[A, A] = id[A]) = {
         val g = iterate(f)  
         def h(m : Int) : DiffbleFunction[A, A] = m match {
         	case 0 => id[A]
@@ -151,18 +151,18 @@ import provingground.Collections._
         DiffbleFunction(func)(grad)
       }
       
-      implicit def diffFnLS[A, B](
-        implicit lsA : LinearStructure[A], lsB: LinearStructure[B]) : LinearStructure[DiffbleFunction[A, B]] = {
-      def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
-        val addB = vsum[B]
+      implicit def diffFnLS[A : LinearStructure, B : LinearStructure]
+      : LinearStructure[DiffbleFunction[A, B]] = {
+        def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
+          val addB = vsum[B]
         
-        val addA = vsum[A]
+          val addA = vsum[A]
         
-        def fn(a: A) = addB(fst(a), scnd(a))
+          def fn(a: A) = addB(fst(a), scnd(a))
         
-        def grad(a: A)(b: B) = addA(fst.grad(a)(b), scnd.grad(a)(b))
+          def grad(a: A)(b: B) = addA(fst.grad(a)(b), scnd.grad(a)(b))
         
-        DiffbleFunction(fn)(grad)
+          DiffbleFunction(fn)(grad)
       }
       
       def scprod(sc: Double, vect: DiffbleFunction[A, B]) = {

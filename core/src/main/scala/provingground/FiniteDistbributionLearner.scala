@@ -120,7 +120,7 @@ object FiniteDistbributionLearner {
 	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
 	 * set up with implicits inside, so one can use this to map on a list.
 	 */
-	def weightedDyn[M, X](implicit lx: LinearStructure[X], ip: InnerProduct[X]) : (
+	def weightedDyn[M, X :  LinearStructure : InnerProduct]: (
 	        M,  DiffbleFunction[X, X]
 	        ) =>  DiffbleFunction[(FiniteDistribution[M], X), X] = (m, fn) => {
 	  val pm = proj1[FiniteDistribution[M], X]
@@ -155,7 +155,7 @@ object FiniteDistbributionLearner {
     shiftb ^: push
   }
   
-  @tailrec def flow[A](init : A, shift: A => A, epsilon : Double, n: Int)(implicit ls: LinearStructure[A]): A = {
+  @tailrec def flow[A : LinearStructure](init : A, shift: A => A, epsilon : Double, n: Int): A = {
     lazy val sum = vsum[A]
     lazy val scprod = vprod[A]
     if (n <1) init 
@@ -164,8 +164,8 @@ object FiniteDistbributionLearner {
   
 	// Most of the below is to be deprecated.
   
-  @tailrec def goalFlow[A, R](init : A, shift: A => A, epsilon : Double, n: Int, 
-      result: A => Option[R])(implicit ls: LinearStructure[A]): Either[A, R] = {
+  @tailrec def goalFlow[A : LinearStructure, R](init : A, shift: A => A, epsilon : Double, n: Int, 
+      result: A => Option[R]): Either[A, R] = {
     lazy val sum = vsum[A]
     lazy val scprod = vprod[A]
     result(init) match{
@@ -178,8 +178,8 @@ object FiniteDistbributionLearner {
   
   case class ResultState[A, R](state: A, results: Set[R])
   
-  @tailrec def resultsFlow[A, R](init : ResultState[A, R], shift: A => A, epsilon : Double, n: Int, 
-      results : A => Set[R])(implicit ls: LinearStructure[A]): ResultState[A, R] = {
+  @tailrec def resultsFlow[A : LinearStructure, R](init : ResultState[A, R], shift: A => A, epsilon : Double, n: Int, 
+      results : A => Set[R]): ResultState[A, R] = {
     lazy val sum = vsum[A]
     lazy val scprod = vprod[A]
     if (n <1) init 
@@ -191,7 +191,7 @@ object FiniteDistbributionLearner {
     }
   }
 	
-	 def dynsum[M, V](implicit lsM : LinearStructure[M], lsV : LinearStructure[V]) = 
+	 def dynsum[M : LinearStructure, V : LinearStructure] = 
      vsum[ DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]]
   
   
