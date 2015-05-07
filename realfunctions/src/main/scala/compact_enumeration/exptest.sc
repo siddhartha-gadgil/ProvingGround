@@ -3,7 +3,7 @@ package compact_enumeration
 object exptest {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
-  import spire.math._
+import spire.math._
 import spire.algebra._
 import spire.implicits._
 import spire.syntax.literals._

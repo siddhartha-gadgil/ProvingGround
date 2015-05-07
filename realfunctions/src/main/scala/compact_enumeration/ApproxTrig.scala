@@ -94,8 +94,6 @@ object ApproxTrig{
 
   import spire.math.Interval._
 
-
-
   
   def getClosed[A](J: Bound[A]): Option[A] =  J match{
     case Closed(a) => Some(a)
