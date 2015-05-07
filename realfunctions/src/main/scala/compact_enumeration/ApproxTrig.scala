@@ -75,24 +75,24 @@ class ApproxTrig(N: SafeLong) {
    */
   case class TrigBound(width: Rational, b: Interval[Rational], c: Interval[Rational]){
     
-    lazy val lftBound = - c // bound based on f" + f at left endpoint.
+    lazy val lftBound = - c / r"2"// bound based on f" + f at left endpoint.
     
-    lazy val rghtBound = - (c + b * width) / (1 + width*width) // bound based on f" + f at right endpoint.
+    lazy val rghtBound = - (c + b * width) / (2 + width*width) // bound based on f" + f at right endpoint.
 
     lazy val endsBound = lftBound union rghtBound // bound based on f" + f at both endpoints.
     
-    lazy val derImage = b union (b + (endsBound * width))
+    lazy val derImage = b union (b + (endsBound * width * 2))
     
     lazy val derSignChange = derImage.crossesZero
     
     implicit val appr = new ApproximationContext(width)
     
-    lazy val b2c2 = (b.pow(2) + c.pow(2)).sqrt + Interval.closed(-width, width)
+    lazy val b2c2 = (b.pow(2) * 2 + c.pow(2)).sqrt + Interval.closed(-width, width)
     
-    lazy val discriminantNonZero = ((-c - b2c2) union (-c + b2c2))/(Rational(2))
+    lazy val discriminantNonNegative = ((-c - b2c2) union (-c + b2c2))/(Rational(4))
     
-    lazy val a = if (derSignChange && (endsBound intersects discriminantNonZero)) 
-      endsBound union discriminantNonZero else endsBound
+    lazy val a = if (derSignChange && (endsBound intersects discriminantNonNegative)) 
+      endsBound union discriminantNonNegative else endsBound
     
     lazy val atRightEnd = (a * width * width) + (b * width) + c
     
