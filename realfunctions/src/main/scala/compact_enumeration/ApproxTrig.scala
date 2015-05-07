@@ -101,24 +101,26 @@ class ApproxTrig(N: SafeLong) {
     lazy val intervalImage = (a * J.pow(2)) + (b * J) + c
   }
  
-  lazy val sinStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
-    if (n ==0) Interval.point(Rational(0))
+  lazy val sinStream : Stream[(Interval[Rational], Interval[Rational])] = 
+    Nat map ((n: SafeLong) =>
+    if (n ==0) (Interval.point(Rational(0)), Interval.point(Rational(0)))
     else
       {
-      val c = get(sinStream, n-1)
-      val b = get(cosStream, n -1)
+      val c = get(sinStream, n-1)._1
+      val b = get(cosStream, n -1)._1
       val trigAppr = TrigBound(width, b, c)
-      trigAppr.atRightEnd
+      (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
   
-  lazy val cosStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
-    if (n ==0) Interval.point(Rational(1))
+  lazy val cosStream : Stream[(Interval[Rational], Interval[Rational])] = 
+    Nat map ((n: SafeLong) =>
+    if (n ==0) (Interval.point(Rational(1)), Interval.point(Rational(1)))
     else
       {
-      val c = get(cosStream, n-1)
-      val b = -get(sinStream, n -1)
+      val c = get(cosStream, n-1)._1
+      val b = -get(sinStream, n -1)._1
       val trigAppr = TrigBound(width, b, c)
-      trigAppr.atRightEnd
+      (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
 }
 
