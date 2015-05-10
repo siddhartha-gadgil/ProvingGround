@@ -39,7 +39,10 @@ class ApproxTrig(N: SafeLong) {
       (a * width * width) + (b * (width + 1))
     })
 
-
+  
+/**
+ * exponential approximated on positive and negative sides.
+ */
   def exp(x: Rational) : Interval[Rational] =
     if (x >= 0)
       expstream((x*N).toInt)
@@ -55,6 +58,11 @@ class ApproxTrig(N: SafeLong) {
           Interval.point(r"1")  / expInterval(-x)
       }
 
+  /**
+   * returns bound on a positive interval,
+   * given a bound at k for the 
+   * function in [k/N, (k+1)/N] 
+   */
   def spanPositive(stream: Int => Interval[Rational])(
       xs: Interval[Rational]) : Option[Interval[Rational]] = {
     import ApproxTrig._
@@ -62,16 +70,24 @@ class ApproxTrig(N: SafeLong) {
     
     val endOpt = getBound((xs * N).upperBound map (_.ceil.toInt))
     
+    def chop(end: Int, start: Int) = if (start < end) end -1 else end
+    
     val imagesOpt = for (start <- startOpt; end <- endOpt) yield 
-      for (j <- start to end) yield stream(j)
+      for (j <- start to chop(end, start)) yield stream(j)
     
     imagesOpt map (_.reduce (_ union _))
     
   }
   
- // def span(stream: Int => Interval[Rational], inv: Rational => Rational)
-  
-  val expBounds= ApproxTrig.FunctionBounder(spanPositive(expstream))
+  def span(stream: Int => Interval[Rational], 
+      inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) =
+      { 
+    val split = xs.splitAtZero
+    for (a <- spanPositive(stream)(split._2); b <- spanPositive(stream)(split._1)) yield
+      a union inv(b)
+      }
+    
+  val expBounds= ApproxTrig.FunctionBounder(span(expstream, (I) => Interval.point(r"1") /I))
 
 
     /**
@@ -124,6 +140,18 @@ class ApproxTrig(N: SafeLong) {
       val trigAppr = TrigBound(width, b, c)
       (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
+  
+  val sinBounds= ApproxTrig.FunctionBounder(
+      span((j: Int) =>
+        if (j ==0) sinStream(j)._1 else sinStream(j)._2, 
+        (I) => -I)
+        )
+        
+  val cosBounds = ApproxTrig.FunctionBounder(
+      span((j: Int) =>
+        if (j ==0) cosStream(j)._1 else cosStream(j)._2, 
+        (I) => -I)
+        )
 }
 
 object ApproxTrig{
