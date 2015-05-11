@@ -22,19 +22,46 @@ class ApproxTrig(N: SafeLong) {
 
   lazy val J = Interval.closed(Rational(0), width)
 
+    /**
+   * returns bound on a positive interval,
+   * given a bound at k for the 
+   * function in [k/N, (k+1)/N] 
+   */
+  def spanPositive(stream: Int => Interval[Rational])(
+      xs: Interval[Rational]) : Option[Interval[Rational]] = 
+      if (xs.isEmpty) Some(Interval.empty)
+      else {
+        import ApproxTrig._
+        val startOpt = getBound((xs * N).lowerBound map (_.floor.toInt))
+    
+        val endOpt = getBound((xs * N).upperBound map (_.ceil.toInt))
+    
+        def chop(end: Int, start: Int) = if (start < end) end -1 else end
+    
+        val imagesOpt = for (start <- startOpt; end <- endOpt) yield 
+          for (j <- start to chop(end, start)) yield stream(j)
+    
+        imagesOpt map (_.reduce (_ union _))
+    
+  }
 
-  lazy val up = J.upperBound
-//  import Interval._
-
+  def span(stream: Int => Interval[Rational], 
+      inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) =
+      { 
+    val split = xs.splitAtZero
+    for (a <- spanPositive(stream)(split._2); b <- spanPositive(stream)(split._1)) yield
+      a union inv(b)
+      }
+  
   /**
    * stream of bounds on the exponential.
    * At n, this is an interval containing e^(n/ N)
    */
-  lazy val expstream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
+  lazy val expStream : Stream[Interval[Rational]] = Nat map ((n: SafeLong) =>
     if (n ==0) Interval.point(Rational(1))
     else
       {
-      val b = get(expstream, n-1)
+      val b = get(expStream, n-1)
       val a = b * Interval.closed(r"1/2" , (1 + width) / (2 - (width * width)))
       (a * width * width) + (b * (width + 1))
     })
@@ -43,51 +70,41 @@ class ApproxTrig(N: SafeLong) {
 /**
  * exponential approximated on positive and negative sides.
  */
-  def exp(x: Rational) : Interval[Rational] =
+  def expFn(x: Rational) : Interval[Rational] =
     if (x >= 0)
-      expstream((x*N).toInt)
+      expStream((x*N).toInt)
       else
-        Interval.point(r"1")  / exp(-x) 
+        Interval.point(r"1")  / expFn(-x) 
 
-   def expDouble(x: Double) = exp(x.toRational) mapBounds(_.toDouble)
+   def expDouble(x: Double) = expFn(x.toRational) mapBounds(_.toDouble)
    
    def expInterval(x: Rational) : Interval[Rational] = {
         if (x>= 0)
-           expstream((x * N).floor.toInt) union expstream((x * N).ceil.toInt)
+           expStream((x * N).floor.toInt) union expStream((x * N).ceil.toInt)
         else
           Interval.point(r"1")  / expInterval(-x)
       }
 
-  /**
-   * returns bound on a positive interval,
-   * given a bound at k for the 
-   * function in [k/N, (k+1)/N] 
-   */
-  def spanPositive(stream: Int => Interval[Rational])(
-      xs: Interval[Rational]) : Option[Interval[Rational]] = {
-    import ApproxTrig._
-    val startOpt = getBound((xs * N).lowerBound map (_.floor.toInt))
-    
-    val endOpt = getBound((xs * N).upperBound map (_.ceil.toInt))
-    
-    def chop(end: Int, start: Int) = if (start < end) end -1 else end
-    
-    val imagesOpt = for (start <- startOpt; end <- endOpt) yield 
-      for (j <- start to chop(end, start)) yield stream(j)
-    
-    imagesOpt map (_.reduce (_ union _))
-    
-  }
+
+  def logStream : Stream[Interval[Rational]] =  Nat map ((n: SafeLong) =>
+    if (n ==0) Interval.point(r"0")
+    else
+    {
+      val prev= get(logStream, n-1)
+      prev + (Interval.closed(r"1"/ (r"1" + (width * n)), r"1" / (r"1" + (width * (n-1)))) * width)     
+    }
+  )
   
-  def span(stream: Int => Interval[Rational], 
-      inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) =
-      { 
-    val split = xs.splitAtZero
-    for (a <- spanPositive(stream)(split._2); b <- spanPositive(stream)(split._1)) yield
-      a union inv(b)
-      }
-    
-  val expBounds= ApproxTrig.FunctionBounder(span(expstream, (I) => Interval.point(r"1") /I))
+  def logOptBounds(xs: Interval[Rational]) =
+    if (xs.hasAtOrBelow(0)) None
+    else {
+      val spl = xs.split(1)
+      val aboveOneOpt = spanPositive(logStream)(spl._2 - 1)
+      val belowOneOpt = spanPositive(logStream)(Interval.point(r"1") / spl._1) map ((I) => -I)
+      
+      for (aboveOne <- aboveOneOpt; belowOne <- belowOneOpt) yield (aboveOne + belowOne)
+    }
+  
 
 
     /**
@@ -141,13 +158,19 @@ class ApproxTrig(N: SafeLong) {
       (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
   
-  val sinBounds= ApproxTrig.FunctionBounder(
+  import ApproxTrig._
+  
+  val exp = FunctionBounder(span(expStream, (I) => Interval.point(r"1") /I))
+  
+  val log = FunctionBounder(logOptBounds)
+  
+  val sin = FunctionBounder(
       span((j: Int) =>
         if (j ==0) sinStream(j)._1 else sinStream(j)._2, 
         (I) => -I)
         )
         
-  val cosBounds = ApproxTrig.FunctionBounder(
+  val cos = FunctionBounder(
       span((j: Int) =>
         if (j ==0) cosStream(j)._1 else cosStream(j)._2, 
         (I) => -I)
@@ -167,10 +190,68 @@ object ApproxTrig{
     (Interval[Rational] => Option[Interval[Rational]]){
     def apply(j: Interval[Rational]) = bounds(j)
     
-    def andThen(that: FunctionBounder) = {
+    def andThen(that: FunctionBounder) : FunctionBounder = {
       def composeBound(j: Interval[Rational]) = this(j) flatMap (that(_))
       FunctionBounder(composeBound)
     }
+    
+    def of(that: FunctionBounder) : FunctionBounder = that andThen this
+    
+    def +(that: FunctionBounder) = {
+      def newBounds(I : Interval[Rational]) = 
+        for (first <- bounds(I); second <- that.bounds(I)) yield first+ second 
+      FunctionBounder(newBounds)
+    }
+    
+    def *(that: FunctionBounder) = {
+      def newBounds(I : Interval[Rational]) = 
+        for (first <- bounds(I); second <- that.bounds(I)) yield first * second 
+      FunctionBounder(newBounds)
+    }
+    
+    def /(that: FunctionBounder) = {
+      def newBounds(I : Interval[Rational]) = 
+        for (first <- bounds(I); second <- that.bounds(I) if !(second.contains(0))) yield first/ second 
+      FunctionBounder(newBounds)
+    }
+    
+    def apply(that: FunctionBounder) = of(that)
+  }
+  
+  object FunctionBounder{
+    def ConstantBounder(r: Interval[Rational]) = 
+      FunctionBounder((I) => Some(r))
+
+  case class Cube(coords: Vector[Interval[Rational]]){
+
+     
+      def splitCube : Option[Set[Cube]] = {
+        if (coords == Vector()) Some(Set(this))
+        else {
+          val initCubesOpt = Cube(coords.init).splitCube
+          val finalCoordsOpt = split(coords.last)
+          for (initCubes <- initCubesOpt; finalCoords <- finalCoordsOpt)
+            yield for (cubelet <- initCubes; interval <- finalCoords)
+              yield Cube(cubelet.coords :+ interval)  
+        }
+    }
+      
+      def recSplit(k: Int) : Option[Set[Cube]] = if (k<1) Some(Set(this)) else this.recSplit(k -1)
+  }
+    
+  
+  /**
+   * Define functions inside a class extending this,
+   * given by a resolution and a cube, and use coordinate functions on it as well as trignometric functions 
+   * 
+   */  
+  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N){
+      def a = (i: Int) => ConstantBounder(cube.coords(i))
+        
+      val x = a(0)
+      val y = a(1)
+      val z = a(2)
+      }
   }
 
   import spire.math.Interval._
@@ -179,6 +260,11 @@ object ApproxTrig{
   def getBound[A](J: Bound[A]): Option[A] =  J match{
     case ValueBound(a) => Some(a)
     case _ => None
+  }
+  
+  def split[F: Field : Order](J: Interval[F]) = {
+    for (lower <- getBound(J.lowerBound); upper <- getBound(J.upperBound))
+      yield Set(Interval.closed(lower, (lower + upper)/ 2), Interval.closed((lower + upper)/ 2, upper))
   }
 
 }

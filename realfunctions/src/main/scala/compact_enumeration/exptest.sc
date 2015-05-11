@@ -9,14 +9,14 @@ import spire.implicits._
 import spire.syntax.literals._
 
   
-  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@7c3b7
-                                                  //| 61
+  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@1d44e
+                                                  //| ef3
                                                   
   apr.width                                       //> res0: spire.math.Rational = 1/200
   
   apr.J                                           //> res1: spire.math.Interval[spire.math.Rational] = [0, 1/200]
  
-	val e = apr.expstream                     //> e  : Stream[spire.math.Interval[spire.math.Rational]] = Stream([1], ?)
+	val e = apr.expStream                     //> e  : Stream[spire.math.Interval[spire.math.Rational]] = Stream([1], ?)
 
 	e(500).mapBounds (_.toDouble)             //> res2: spire.math.Interval[Double] = [12.18236753530764, 12.18274729321148]
 	
@@ -32,7 +32,7 @@ import spire.syntax.literals._
 	
 	sin(4.0)                                  //> res6: Double = -0.7568024953079282
 	
-	apr.exp(1) mapBounds(_.toDouble)          //> res7: spire.math.Interval[Double] = [2.718270544696388, 2.718304438767226]
+	apr.expFn(1) mapBounds(_.toDouble)        //> res7: spire.math.Interval[Double] = [2.718270544696388, 2.718304438767226]
 	
 	apr.expDouble(1)                          //> res8: spire.math.Interval[Double] = [2.718270544696388, 2.718304438767226]
 	
