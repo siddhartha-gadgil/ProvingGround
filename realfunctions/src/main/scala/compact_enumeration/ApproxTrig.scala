@@ -5,6 +5,7 @@ import spire.algebra._
 import spire.implicits._
 import spire.syntax.literals._
 import annotation.tailrec
+import scala.util._
 
 import Stream._
 
@@ -222,6 +223,10 @@ object ApproxTrig{
     def ConstantBounder(r: Interval[Rational]) = 
       FunctionBounder((I) => Some(r))
 
+  }
+  
+  import FunctionBounder.ConstantBounder
+  
   case class Cube(coords: Vector[Interval[Rational]]){
 
      
@@ -237,6 +242,14 @@ object ApproxTrig{
     }
       
       def recSplit(k: Int) : Option[Set[Cube]] = if (k<1) Some(Set(this)) else this.recSplit(k -1)
+      
+      def bound(func: Cube => Option[Interval[Rational]]) = func(this)
+      
+      def splitBound(func: Cube => Option[Interval[Rational]], depth: Int) = {
+        val boundsOpt = recSplit(depth) map ((cubelets) =>
+          for (cube <- cubelets; bnd <- func(cube)) yield bnd)
+        for (bounds <- boundsOpt; unionBound <- Try(bounds.reduce(_ union _)).toOption) yield unionBound
+      }
   }
     
   
@@ -252,6 +265,13 @@ object ApproxTrig{
       val y = a(1)
       val z = a(2)
       }
+  
+  def demoFunc(cube: Cube) ={
+    object inner extends RationalBounds(10, cube){
+      val fn = sin(y) * cos(sin(x))
+    }
+    
+    inner.fn
   }
 
   import spire.math.Interval._
