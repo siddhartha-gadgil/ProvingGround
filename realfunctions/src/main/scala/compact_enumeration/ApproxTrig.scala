@@ -179,7 +179,19 @@ class ApproxTrig(N: SafeLong) {
 }
 
 object ApproxTrig{
-    import spire.math.interval.{Bound, Closed, ValueBound}
+  import spire.math.interval.{Bound, Closed, ValueBound}
+  
+  type FuncBound = Interval[Rational] => Option[Interval[Rational]]
+  
+  import Interval._
+  
+  val sg = Semiring[Interval[Rational]]
+  
+  import algebra.PointWise._
+  
+  val ma = implicitly[MultiplicativeAbGroup[Interval[Rational]]] 
+  
+  val goal = Field[Interval[Rational] => Option[Interval[Rational]]]
   
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
