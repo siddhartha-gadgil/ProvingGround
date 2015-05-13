@@ -259,11 +259,14 @@ object ApproxTrig{
       
       def bound(func: Cube => Option[Interval[Rational]]) = func(this)
       
-      def splitBound(func: Cube => Option[Interval[Rational]], depth: Int) = {
+      def recSplitBound(func: Cube => Option[Interval[Rational]], depth: Int) = {
         val boundsOpt = recSplit(depth) map ((cubelets) =>
           for (cube <- cubelets; bnd <- func(cube)) yield bnd)
         for (bounds <- boundsOpt; unionBound <- Try(bounds.reduce(_ union _)).toOption) yield unionBound
       }
+      
+      def splitBound(fn: FormalElemFunction, N: SafeLong, depth: Int) = 
+        recSplitBound(rationalBound(fn, N, _), depth)
   }
     
   import algebra.ElementaryFunctions
@@ -290,7 +293,8 @@ object ApproxTrig{
   def rationalBound(fn: FormalElemFunction, N: SafeLong, cube: Cube) = {
     implicit val local : ElementaryFunctions[Interval[Rational] => Option[Interval[Rational]]] = 
       new RationalBounds(N, cube)
-      fn.as[Interval[Rational] => Option[Interval[Rational]]]
+    val bnd = fn.as[Interval[Rational] => Option[Interval[Rational]]]
+    bnd(Interval.point(0)) // bound is supposed to be independent of the chosen interval. 
   }
 
 
