@@ -28,7 +28,19 @@ object PointWise {
     def div(x: A, y: A) : A
   }
   
-  object FieldOptSyms{
+  trait Circ[A] extends Any{
+    def circ(x: A, y: A) : A
+  }
+  
+  object Circ{
+    implicit class applyCirc[A: Circ](x : A){
+      def apply(y: A) = implicitly[Circ[A]].circ(x, y)
+      
+      def andThen(y: A) = implicitly[Circ[A]].circ(y, x)
+    }
+  }
+  
+  object FieldOpsSyms{
   implicit class FieldOpElem[A: FieldOps](x: A){
     val fl = implicitly[FieldOps[A]]
     import fl._
@@ -92,7 +104,7 @@ object PointWise {
   
   implicit def fieldStruct[A, F: FieldOps] : FieldOps[A => F] = new FieldOps[A => F]{
     val fl = implicitly[FieldOps[F]]
-    import FieldOptSyms._
+    import FieldOpsSyms._
     // Members declared in spire.algebra.AdditiveGroup   
     def negate(x: A => F): A => F = (a) => -x(a)      
     // Members declared in spire.algebra.AdditiveMonoid   
@@ -110,7 +122,7 @@ object PointWise {
   
   implicit def OptFieldStruct[A, F: FieldOps] = new FieldOps[A => Option[F]]{
     val fl = implicitly[FieldOps[F]]
-    import FieldOptSyms._
+    import FieldOpsSyms._
     // Members declared in spire.algebra.AdditiveGroup   
     def negate(x: A => Option[F]): A => Option[F] = (a) => x(a) map ((b) => -b)
     // Members declared in spire.algebra.AdditiveMonoid   

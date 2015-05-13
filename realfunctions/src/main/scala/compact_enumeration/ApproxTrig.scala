@@ -6,8 +6,8 @@ import spire.implicits._
 import spire.syntax.literals._
 import annotation.tailrec
 import scala.util._
-
 import Stream._
+import algebra.FormalElemFunction
 
 /**
  * @author gadgil
@@ -161,17 +161,18 @@ class ApproxTrig(N: SafeLong) {
   
   import ApproxTrig._
   
-  val exp = FunctionBounder(span(expStream, (I) => Interval.point(r"1") /I))
+  val exp : Interval[Rational] => Option[Interval[Rational]] = 
+    span(expStream, (I) => Interval.point(r"1") /I)
   
-  val log = FunctionBounder(logOptBounds)
+  val log : Interval[Rational] => Option[Interval[Rational]] = logOptBounds
   
-  val sin = FunctionBounder(
+  val sin : Interval[Rational] => Option[Interval[Rational]] = (
       span((j: Int) =>
         if (j ==0) sinStream(j)._1 else sinStream(j)._2, 
         (I) => -I)
         )
         
-  val cos = FunctionBounder(
+  val cos : Interval[Rational] => Option[Interval[Rational]] = (
       span((j: Int) =>
         if (j ==0) cosStream(j)._1 else cosStream(j)._2, 
         (I) => -I)
@@ -191,7 +192,7 @@ object ApproxTrig{
   
 //  val ma = implicitly[MultiplicativeAbGroup[Interval[Rational]]] 
   
-//  val goal = Field[Interval[Rational] => Option[Interval[Rational]]]
+  val goal = implicitly[FieldOps[Interval[Rational] => Option[Interval[Rational]]]]
   
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
@@ -231,13 +232,14 @@ object ApproxTrig{
     def apply(that: FunctionBounder) = of(that)
   }
   
-  object FunctionBounder{
-    def ConstantBounder(r: Interval[Rational]) = 
-      FunctionBounder((I) => Some(r))
-
-  }
   
-  import FunctionBounder.ConstantBounder
+
+  def ConstantBounder(r: Interval[Rational]) = 
+      ((I: Interval[Rational]) => Some(r))
+
+  
+  
+//  import FunctionBounder.ConstantBounder
   
   case class Cube(coords: Vector[Interval[Rational]]){
 
@@ -264,27 +266,33 @@ object ApproxTrig{
       }
   }
     
+  import algebra.ElementaryFunctions
+  
+  import algebra.FormalElemFunction
   
   /**
    * Define functions inside a class extending this,
    * given by a resolution and a cube, and use coordinate functions on it as well as trignometric functions 
    * 
    */  
-  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N){
-      def a = (i: Int) => ConstantBounder(cube.coords(i))
+  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with 
+    ElementaryFunctions[Interval[Rational] => Option[Interval[Rational]]]{
+      def proj = (i: Int) => ConstantBounder(cube.coords(i))
         
-      val x = a(0)
-      val y = a(1)
-      val z = a(2)
       }
-  
-  def demoFunc(cube: Cube) ={
-    object inner extends RationalBounds(10, cube){
-      val fn = sin(y) * cos(sin(x))
-    }
-    
-    inner.fn
+
+  implicit val composeApprox = new Circ[Interval[Rational] => Option[Interval[Rational]]]{
+    def circ(x: Interval[Rational] => Option[Interval[Rational]], 
+        y: Interval[Rational] => Option[Interval[Rational]]) = 
+          (I : Interval[Rational]) => y(I) flatMap ((J) => x(J))
   }
+  
+  def rationalBound(fn: FormalElemFunction, N: SafeLong, cube: Cube) = {
+    implicit val local : ElementaryFunctions[Interval[Rational] => Option[Interval[Rational]]] = 
+      new RationalBounds(N, cube)
+      fn.as[Interval[Rational] => Option[Interval[Rational]]]
+  }
+
 
   import spire.math.Interval._
 
