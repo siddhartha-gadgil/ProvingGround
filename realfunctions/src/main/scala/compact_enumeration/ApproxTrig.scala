@@ -189,9 +189,9 @@ object ApproxTrig{
   
   import algebra.PointWise._
   
-  val ma = implicitly[MultiplicativeAbGroup[Interval[Rational]]] 
+//  val ma = implicitly[MultiplicativeAbGroup[Interval[Rational]]] 
   
-  val goal = Field[Interval[Rational] => Option[Interval[Rational]]]
+//  val goal = Field[Interval[Rational] => Option[Interval[Rational]]]
   
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
