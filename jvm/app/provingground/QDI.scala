@@ -20,14 +20,20 @@ object QDI {
   }
   
   def viewPage(body: Node, fileName: String = "qdi.html") ={
-    val page = <html><body>{body}</body></html>
+    val page = <html>{head}<body>{body}</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
     desktop.browse(file.toURI)  
   }
   
-  def view(ps : Node*) = 
-     viewPage(<div>{NodeSeq.fromSeq(ps.toSeq)}</div>)
+  def view(ps : Node*) = {
+    val fileName="qdi.html"
+    val page = <html>{head}<body>{NodeSeq.fromSeq(ps)}</body></html>
+    writeFile(page.toString, fileName)
+    val file = new File(fileName)
+    desktop.browse(file.toURI) 
+  }
+     
   
   def p(s: String) : Node = <p> {s} </p>
   
@@ -50,14 +56,20 @@ object QDI {
   
   implicit def fdDiv[A](fd: FiniteDistribution[A]) : Node = {
     val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
+    val title = <div class="atom">
+        <span class="index"> index </span>
+        <span class="element"> element </span>
+        <span class ="probability"> probability </span>
+        <span class ="entropy"> entropy </span>
+        </div>
     val nodeList = for ((Weighted(a, x), j) <- lst)
       yield (<div class="atom">
 				<span class="index"> {j} </span>
 				<span class="element"> {a} </span>
-				<span class ="probalility"> {x} </span>
+				<span class ="probability"> {x} </span>
 				<span class ="entropy"> {-math.log(x)/math.log(2)} </span>
 				</div>)
-   <div class="finite-distribution"> {NodeSeq.fromSeq(nodeList)} </div>
+   <div class="finite-distribution"> {NodeSeq.fromSeq(title +: nodeList)} </div>
   }
   
   implicit def fdListDiv[A](fds: List[FiniteDistribution[A]]) : Node = {
@@ -72,4 +84,36 @@ object QDI {
         </div>)
    <div class="finite-distribution"> {NodeSeq.fromSeq(nodeList)} </div>
   }
+  
+  val css = """
+    .index {
+        color: black;
+        display: inline-block;
+        width: 300px;
+    }
+
+    .element {
+        color: red;
+        display: inline-block;
+        width: 300px;
+    }
+    .probability{
+      color: green;
+      display: inline-block;
+      width: 300px;
+      }
+    .entropy{
+      color: red;
+        display: inline-block;
+        width: 300px;
+      }
+    """
+  
+  val head= 
+    <head>
+			<style type="text/css">
+      {css}
+    	</style>
+   </head>
+    
 }
