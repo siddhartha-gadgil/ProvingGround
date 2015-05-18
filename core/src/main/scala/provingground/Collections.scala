@@ -267,6 +267,8 @@ object Collections{
 
       def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
+      def purge(epsilon: Double) = filter((t: T) => (apply(t) > epsilon))
+      
       /**
        * entropy feedback for the finite distribution to move in the direction of the base distribution,
        * however values outside support are ignored.
@@ -286,9 +288,9 @@ object Collections{
         "[" + terms.dropRight(2) + "]"
       }
 
-      def entropy(elem: T) = math.log(apply(elem))/math.log(2)
+      def entropy(elem: T) = -math.log(apply(elem))/math.log(2)
 
-      def entropyView(lines: Int = 20) = support.toList.map((x)=>Weighted(x.toString, entropy(x))).sortBy(_.weight)
+      def entropyView = flatten.support.toList.map((x)=>Weighted(x.toString, entropy(x))).sortBy(_.weight)
     }
 
     object FiniteDistribution{
