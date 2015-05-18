@@ -58,16 +58,16 @@ object QDI {
     val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
     val title = <div class="atom">
         <span class="index"> index </span>
-        <span class="element"> element </span>
         <span class ="probability"> probability </span>
         <span class ="entropy"> entropy </span>
+				<span class="element"> element </span>
         </div>
     val nodeList = for ((Weighted(a, x), j) <- lst)
       yield (<div class="atom">
 				<span class="index"> {j} </span>
-				<span class="element"> {a} </span>
 				<span class ="probability"> {x} </span>
 				<span class ="entropy"> {-math.log(x)/math.log(2)} </span>
+				<span class="element"> {a} </span>
 				</div>)
    <div class="finite-distribution"> {NodeSeq.fromSeq(title +: nodeList)} </div>
   }
@@ -89,23 +89,23 @@ object QDI {
     .index {
         color: black;
         display: inline-block;
-        width: 300px;
+        width: 50px;
     }
 
     .element {
         color: red;
         display: inline-block;
-        width: 300px;
+        width: 400px;
     }
     .probability{
       color: green;
       display: inline-block;
-      width: 300px;
+      width: 250px;
       }
     .entropy{
       color: red;
         display: inline-block;
-        width: 300px;
+        width: 250px;
       }
     """
   
