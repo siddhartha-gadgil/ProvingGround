@@ -42,11 +42,12 @@ object Application extends Controller {
     Ok(views.html.acLoopStart())
   }
 
+  
   def acLoop = Action {implicit request =>
     val presGen = presentationGenForm.bindFromRequest.get
     val learnLoop = learnerForm(presGen.feedback).bindFromRequest.get
     val finalDst = learnLoop.outerlearn(defaultdstbn)
-    Ok(views.html.acLoop(finalDst.entropyView()))
+    Ok(views.html.acLoop(???))
     }
 /*
   def ACupdate = Action {

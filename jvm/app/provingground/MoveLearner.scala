@@ -125,8 +125,8 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
      */
     def flatten = DynDst(vrtdst.flatten, edgdst.flatten, cntn)
 
-    def entropyView(lines: Int = 20) = MoveLearner.DynDstView(vrtdst.entropyView(lines),
-        edgdst.entropyView(lines), cntn)
+//    def entropyView(lines: Int = 20) = MoveLearner.DynDstView(vrtdst.entropyView(lines),
+//        edgdst.entropyView(lines), cntn)
   }
 
   /**
