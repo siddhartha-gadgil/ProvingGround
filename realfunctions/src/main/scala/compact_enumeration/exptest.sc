@@ -9,8 +9,8 @@ import spire.implicits._
 import spire.syntax.literals._
 
   
-  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@1d44e
-                                                  //| ef3
+  val apr = new ApproxTrig(200)                   //> apr  : compact_enumeration.ApproxTrig = compact_enumeration.ApproxTrig@6855d
+                                                  //| edb
                                                   
   apr.width                                       //> res0: spire.math.Rational = 1/200
   
@@ -18,9 +18,9 @@ import spire.syntax.literals._
  
 	val e = apr.expStream                     //> e  : Stream[spire.math.Interval[spire.math.Rational]] = Stream([1], ?)
 
-	e(500).mapBounds (_.toDouble)             //> res2: spire.math.Interval[Double] = [12.18236753530764, 12.18274729321148]
+	e(200).mapBounds (_.toDouble)             //> res2: spire.math.Interval[Double] = [2.718270544696388, 2.718304438767226]
 	
-	e(250).mapBounds (_.toDouble)             //> res3: spire.math.Interval[Double] = [3.490324846673679, 3.490379247762552]
+	e(100).mapBounds (_.toDouble)             //> res3: spire.math.Interval[Double] = [1.6487178487225727, 1.648728127608438]
 	
 	exp(1)                                    //> res4: Double = 2.718281828459045
 	

@@ -7,7 +7,7 @@ import spire.syntax.literals._
 import annotation.tailrec
 import scala.util._
 import Stream._
-import algebra.FormalElemFunction
+import algebra._
 
 /**
  * @author gadgil
@@ -15,8 +15,12 @@ import algebra.FormalElemFunction
  * Interval bounds for exp, log, sin, cos
  */
 class ApproxTrig(N: SafeLong) {
-  import ApproxTrig.{get, Nat}
+  import ApproxTrig._
 
+  import algebra.PointWise._
+  
+  val fieldOps = implicitly[FieldOps[Interval[Rational] => Option[Interval[Rational]]]]
+  
   import spire.syntax.literals._
 
   val width = r"1" / N
@@ -110,7 +114,13 @@ class ApproxTrig(N: SafeLong) {
 
     /**
    * Bounds for solutions to f" + f = 0 (i.e., sin and cos)
+   * 
+   * @param c  the bound on f at the left end-point
+   * @param b the bound on f' at the left end-point
+   * @param width width of the interval
    */
+   
+   
   case class TrigBound(width: Rational, b: Interval[Rational], c: Interval[Rational]){
     
     lazy val lftBound = - c / r"2"// bound based on f" + f at left endpoint.
@@ -199,7 +209,7 @@ object ApproxTrig{
   @tailrec def get[A](as: Stream[A], n: SafeLong) : A = {
     if (n ==0) as.head else get(as.tail, n-1)
   }
-  
+  /*
   case class FunctionBounder(bounds : Interval[Rational] => Option[Interval[Rational]]) extends 
     (Interval[Rational] => Option[Interval[Rational]]){
     def apply(j: Interval[Rational]) = bounds(j)
@@ -232,7 +242,7 @@ object ApproxTrig{
     def apply(that: FunctionBounder) = of(that)
   }
   
-  
+  */
 
   def ConstantBounder(r: Interval[Rational]) = 
       ((I: Interval[Rational]) => Some(r))

@@ -16,6 +16,8 @@ sealed trait FormalElemFunction {
 
 import FormalElemFunction._
 
+import FormalElemFunction.FormalElemFunc.x
+
 import FieldOpsSyms._
 
 case object Sin extends FormalElemFunction{
@@ -140,6 +142,8 @@ object FormalElemFunction{
     val exp : FormalElemFunction = Exp
     val log : FormalElemFunction = Log
     
+    val fieldOps = formalFieldOps
+    
     val proj : Int =>  FormalElemFunction = (i: Int) => Proj(i)
   }
   
@@ -167,11 +171,11 @@ object FormalElemFunction{
   
   import Circ._
 
-  val tan = sin/cos
+//  val tan = sin/cos
+//   val x= proj(0)
   
-  val x= proj(0)
+//  val y = proj(1)
   
-  val y = proj(1)
-  
-  val z = proj(2)
+//  val z = proj(2) 
+
 }

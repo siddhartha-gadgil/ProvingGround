@@ -63,6 +63,7 @@ object PointWise {
       case _ => natField[A](n - 1) + fl.one
     }
   }
+  
   }
   
   implicit def fieldAsFiledOps[A: Field] = new FieldOps[A]{
