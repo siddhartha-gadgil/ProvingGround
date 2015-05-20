@@ -11,16 +11,21 @@ sealed trait FormalElemFunction {
 
   def derivative: FormalElemFunction
 
-  def partialDerivative(j: Int) : FormalElemFunction = derivative
+  def partialDerivative(j: Int) : FormalElemFunction
+}
+
+trait OneVar extends FormalElemFunction {
+  def partialDerivative(j: Int) : FormalElemFunction = if (j ==0) derivative else Zero
 }
 
 import FormalElemFunction._
 
-import FormalElemFunction.x
+import FormalElemFunction._
+
 
 import FieldOpsSyms._
 
-case object Sin extends FormalElemFunction{
+case object Sin extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].sin
   }
@@ -30,7 +35,7 @@ case object Sin extends FormalElemFunction{
   override  def toString="sin"
 }
 
-case object Cos extends FormalElemFunction{
+case object Cos extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions: Circ] = {
     implicitly[ElementaryFunctions[A]].cos
   }
@@ -40,12 +45,12 @@ case object Cos extends FormalElemFunction{
   override  def toString="cos"
 }
 
-case object Log extends FormalElemFunction{
+case object Log extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].log
   }
 
-  def derivative: FormalElemFunction = Reciprocal(x)
+  def derivative: FormalElemFunction = Reciprocal(Proj(0))
 
   override  def toString="log"
 }
@@ -58,7 +63,7 @@ case class Proj(i: Int) extends FormalElemFunction{
   def derivative: FormalElemFunction =
     if (i ==0) One else Zero // Just taken as derivative wrt first coordinate if there are several.
 
-  override def partialDerivative(j: Int) : FormalElemFunction =
+  def partialDerivative(j: Int) : FormalElemFunction =
     if (i ==j) One else Zero
 
   override  def toString= i match {
@@ -70,7 +75,7 @@ case class Proj(i: Int) extends FormalElemFunction{
 }
 
 
-case object Exp extends FormalElemFunction{
+case object Exp extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].exp
   }
@@ -80,7 +85,7 @@ case object Exp extends FormalElemFunction{
   override  def toString="sin"
 }
 
-case object One extends FormalElemFunction{
+case object One extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
@@ -90,7 +95,7 @@ case object One extends FormalElemFunction{
   override  def toString="1"
 }
 
-case object Zero extends FormalElemFunction{
+case object Zero extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
@@ -100,7 +105,7 @@ case object Zero extends FormalElemFunction{
   override  def toString="0"
 }
 
-case object Pi extends FormalElemFunction{
+case object Pi extends FormalElemFunction with OneVar{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].pi
   }
@@ -117,6 +122,8 @@ case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElem
 
   def derivative: FormalElemFunction = Plus(x.derivative, y.derivative)
 
+  def partialDerivative(j: Int) : FormalElemFunction = Plus(x.partialDerivative(j), y.partialDerivative(j))
+  
   override  def toString=s"($x + $y)"
 }
 
@@ -126,6 +133,8 @@ case class Times(x: FormalElemFunction, y: FormalElemFunction) extends FormalEle
   }
 
   def derivative: FormalElemFunction = Plus(Times(x.derivative,y), Times(y.derivative, x))
+  
+  def partialDerivative(j: Int): FormalElemFunction = Plus(Times(x.partialDerivative(j),y), Times(y.partialDerivative(j), x))
 
   override  def toString=s"($x \u00d7 $y)"
 }
@@ -139,6 +148,9 @@ case class Reciprocal(x: FormalElemFunction) extends FormalElemFunction{
     def derivative: FormalElemFunction =
       Times(Negate(x.derivative), Times(Reciprocal(x), Reciprocal(x)))
 
+   def partialDerivative(j: Int): FormalElemFunction =
+      Times(Negate(x.partialDerivative(j)), Times(Reciprocal(x), Reciprocal(x)))
+      
     override  def toString=s"1/($x)"
 }
 
@@ -159,7 +171,9 @@ case class Negate(x: FormalElemFunction) extends FormalElemFunction{
     implicitly[FieldOps[A]].negate(x.as[A])
   }
 
-  def derivative: FormalElemFunction = Negate(One)
+  def derivative: FormalElemFunction = Negate(x.derivative)
+  
+  def partialDerivative(j: Int): FormalElemFunction = Negate(x.partialDerivative(j))
 
   override  def toString=s"-($x)"
 }
@@ -170,6 +184,8 @@ case class Compose(x: FormalElemFunction, y: FormalElemFunction) extends FormalE
   }
 
   def derivative: FormalElemFunction = Times(Compose(x.derivative, y), y.derivative)
+  
+  def partialDerivative(j: Int): FormalElemFunction = Times(Compose(x.partialDerivative(j), y), y.partialDerivative(j))
 
   override  def toString=s"$x \u2218 ($y)"
 }
@@ -187,6 +203,20 @@ object FormalElemFunction{
     val fieldOps = formalFieldOps
 
     val proj : Int =>  FormalElemFunction = (i: Int) => Proj(i)
+    
+    lazy val tan = sin/cos
+
+    lazy val one: FormalElemFunction = One
+
+    lazy val sec = one / cos
+    
+    lazy val cosec = one / sin
+
+    lazy val x= proj(0)
+
+    lazy val y = proj(1)
+
+    lazy val z = proj(2)
   }
 
   implicit val formalFieldOps = new FieldOps[FormalElemFunction]{
@@ -201,6 +231,8 @@ object FormalElemFunction{
     def times(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction = Times(x, y)
 
     def div(x: FormalElemFunction, y: FormalElemFunction) : FormalElemFunction = Div(x, y)
+    
+    
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction]{
@@ -213,18 +245,6 @@ object FormalElemFunction{
 
   import Circ._
 
-  lazy val tan = sin/cos
-
-  lazy val one: FormalElemFunction = One
-
-  lazy val sec = one / cos
-
-  lazy val cosec = one / sin
-
-  lazy val x= proj(0)
-
-  lazy val y = proj(1)
-
-  lazy val z = proj(2)
+  
 
 }
