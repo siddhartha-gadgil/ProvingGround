@@ -24,7 +24,13 @@ class ApproxTrig(N: SafeLong) {
   import spire.syntax.literals._
 
   val width = r"1" / N
+  
+  val E = Interval.closed(-width, width)
+  
+  implicit val appr = new ApproximationContext(width)
 
+  val pi = ConstantBounder(Interval.point(Real.pi.toRational) + E)
+  
   lazy val J = Interval.closed(Rational(0), width)
 
     /**
@@ -121,7 +127,7 @@ class ApproxTrig(N: SafeLong) {
    */
    
    
-  case class TrigBound(width: Rational, b: Interval[Rational], c: Interval[Rational]){
+  case class TrigBound(b: Interval[Rational], c: Interval[Rational]){
     
     lazy val lftBound = - c / r"2"// bound based on f" + f at left endpoint.
     
@@ -154,7 +160,7 @@ class ApproxTrig(N: SafeLong) {
       {
       val c = get(sinStream, n-1)._1
       val b = get(cosStream, n -1)._1
-      val trigAppr = TrigBound(width, b, c)
+      val trigAppr = TrigBound(b, c)
       (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
   
@@ -165,7 +171,7 @@ class ApproxTrig(N: SafeLong) {
       {
       val c = get(cosStream, n-1)._1
       val b = -get(sinStream, n -1)._1
-      val trigAppr = TrigBound(width, b, c)
+      val trigAppr = TrigBound(b, c)
       (trigAppr.atRightEnd, trigAppr.intervalImage)
     })
   
@@ -290,7 +296,7 @@ object ApproxTrig{
    */  
   class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with 
     ElementaryFunctions[Interval[Rational] => Option[Interval[Rational]]]{
-      def proj = (i: Int) => ConstantBounder(cube.coords(i))
+      val proj = (i: Int) => ConstantBounder(cube.coords(i))
         
       }
 

@@ -89,6 +89,11 @@ object QDI {
    <div class="finite-distribution"> {NodeSeq.fromSeq(nodeList)} </div>
   }
   
+  implicit def fdString[A](fd: FiniteDistribution[A]) = {
+    val l = for (Weighted(x, p) <- fd.pmf) yield s"""("$x",$p)"""
+    l.mkString(";")
+  }
+  
   def row(xs: List[String]) = {
     def cls(i: Int) = if (i % 2 == 0) "even" else "odd" 
     val spans = {
@@ -97,9 +102,14 @@ object QDI {
     <div class="row">{NodeSeq.fromSeq(spans)}</div>
   }
   
-  implicit def table(xy: List[List[Any]]) = {
+  implicit def tableDiv(xy: List[List[Any]]) = {
     val rows = xy map ((r) => row(r map (_.toString)))
     <div class="table">{NodeSeq.fromSeq(rows)}</div>
+  }
+  
+  implicit def tableString(xy: List[List[Any]]) = {
+    val rows = xy map ((r) => (r map ((x) => s""""$x"""")).mkString(","))
+    rows.mkString(";")
   }
   
   trait Logger{

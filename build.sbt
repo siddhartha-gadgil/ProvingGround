@@ -111,3 +111,6 @@ lazy val digressions = (project in file("digressions")).
   EclipseKeys.skipParents in ThisBuild := false
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
+
+
+fork in run := true
