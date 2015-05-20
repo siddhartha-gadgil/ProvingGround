@@ -3,4 +3,11 @@ import PointWise._
 import FieldOpsSyms._
 import compact_enumeration._
 import FormalElemFunction._
-import FormalElemFunc._
+import FormalElemFunction.{FormalElemFunc => f}
+import Circ._
+
+import ApproxTrig._
+
+import spire.math._
+import spire.algebra._
+import spire.implicits._
