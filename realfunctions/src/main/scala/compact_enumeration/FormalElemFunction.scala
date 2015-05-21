@@ -1,4 +1,4 @@
-package algebra
+package compact_enumeration
 
 import PointWise._
 

@@ -1,4 +1,4 @@
-package algebra
+package compact_enumeration
 
 import spire.algebra._
 import spire.math._

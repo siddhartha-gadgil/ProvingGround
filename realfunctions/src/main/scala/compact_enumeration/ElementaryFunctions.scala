@@ -1,5 +1,5 @@
-package algebra
-import algebra.PointWise._
+package compact_enumeration
+import compact_enumeration.PointWise._
 
 /**
  * @author gadgil
