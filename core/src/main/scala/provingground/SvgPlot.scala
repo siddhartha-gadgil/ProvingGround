@@ -37,6 +37,13 @@ class SvgPlot(width: Int, height: Int, scale: Double =1.0) {
   def draw(l: Line) = line(l.start.x, l.start.y, l.end.x, l.end.y, l.colour)
   
   def draw(c: Circle) = circle(c.centre.x, c.centre.y, c.radius, c.colour)
+  
+  def graph(points: List[Point], radius: Double = 5): Seq[Node] = {
+    points map ((point) => 
+      <circle x1={xval(point.x).toString} 
+      y1={yval(point.y).toString} r={radius.toString} 
+      stroke={point.colour} stroke-width="2" fill={point.colour}/>)
+  }
 }
 
 object SvgPlot{

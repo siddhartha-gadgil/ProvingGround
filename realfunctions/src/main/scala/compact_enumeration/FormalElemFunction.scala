@@ -70,6 +70,7 @@ case class Proj(i: Int) extends FormalElemFunction{
       case 0 => "x"
       case 1 => "y"
       case 2 => "z"
+      case 3 => "w"
       case _ => s"x_$i"
     }
 }
@@ -208,6 +209,8 @@ object FormalElemFunction{
 
     lazy val one: FormalElemFunction = One
 
+    def N(n: Int) = natField[FormalElemFunction](n)
+    
     lazy val sec = one / cos
     
     lazy val cosec = one / sin
@@ -217,6 +220,8 @@ object FormalElemFunction{
     lazy val y = proj(1)
 
     lazy val z = proj(2)
+    
+    lazy val w = proj(3)
   }
 
   implicit val formalFieldOps = new FieldOps[FormalElemFunction]{
