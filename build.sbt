@@ -38,28 +38,34 @@ lazy val serverSettings = Seq(
   initialCommands in console := """import provingground._ ; import HoTT._"""
   )
 
-  lazy val digressionSettings = Seq(
-    name := "ProvingGround-Digressions",
-    libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
+lazy val digressionSettings = Seq(
+  name := "ProvingGround-Digressions",
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
+  ),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  )
+
+lazy val acSettings = Seq(
+  name := "AndrewsCurtis",
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
     ),
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  )
+
+lazy val client = project.
+  settings(name := "ProvingGround-JS",
+  scalaVersion := "2.11.5",
+  persistLauncher := true,
+  persistLauncher in Test := false,
+  sourceMapsDirectories += coreJS.base / "..",
+  unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
+  libraryDependencies ++= Seq(
+    "org.scala-js" %%% "scalajs-dom" % "0.8.0",
+    "com.lihaoyi" %%% "scalatags" % "0.4.6"
     )
-
-
-    lazy val client = project.
-      settings(name := "ProvingGround-JS",
-      scalaVersion := "2.11.5",
-      persistLauncher := true,
-      persistLauncher in Test := false,
-      sourceMapsDirectories += coreJS.base / "..",
-      unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
-      libraryDependencies ++= Seq(
-        "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-        "com.lihaoyi" %%% "scalatags" % "0.4.6"
-        )
-        ).
-        enablePlugins(ScalaJSPlugin, ScalaJSPlay).
-        dependsOn(coreJS)
+  ).
+  enablePlugins(ScalaJSPlugin, ScalaJSPlay).
+  dependsOn(coreJS)
 
 
 
@@ -112,5 +118,10 @@ lazy val digressions = (project in file("digressions")).
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
 
+lazy val andrewscurtis = (project in file("andrewscurtis")).
+  settings(commonSettings : _*).
+  settings(jvmSettings : _*).
+  settings(acSettings : _*).
+  dependsOn(coreJVM).dependsOn(jvm)
 
 fork in run := true
