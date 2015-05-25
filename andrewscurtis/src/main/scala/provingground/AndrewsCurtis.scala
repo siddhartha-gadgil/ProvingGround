@@ -3,13 +3,13 @@ package provingground.andrewscurtis
 import FreeGroups._
 import provingground.Collections._
 import annotation._
-import play.api.libs.json._
-import play.api.libs.iteratee._
-import play.api.libs.concurrent._
+//import play.api.libs.json._
+//import play.api.libs.iteratee._
+//import play.api.libs.concurrent._
 import akka.actor._
-import play.api.libs.concurrent.Execution.Implicits._
+//import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent._
-import play.api.libs.json.Json.toJsFieldJsValueWrapper
+//import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 object AndrewsCurtis{
   
@@ -107,18 +107,22 @@ object AndrewsCurtis{
   
   val MoveTypeList : List[ACMoveType] = List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
   
-  
+/*  
   implicit object ACMoveFreqFormat extends Format[FiniteDistribution[ACMoveType]]{
     def reads(js : JsValue) : JsResult[FiniteDistribution[ACMoveType]] = {
       val pmf = for ((x, y) <- js.as[Map[String, Double]]) yield Weighted(ACMoveType.fromString(x), y)
       JsSuccess(FiniteDistribution(pmf.toSeq))
     }
-    
+
+/*
     def writes(fd : FiniteDistribution[ACMoveType]): JsValue = {
       Json.toJson((for (Weighted(x, y) <- fd.pmf) yield (x.toString, y)).toMap)
     } 
+    */ 
   }
-  
+
+*/
+
   /*
    * Multiplicity of moves of a given type given a presentation. In general this should be a function of the presentation.
    */
@@ -364,7 +368,8 @@ object AndrewsCurtis{
    * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
    */
   def bestChain(pres: Vert , chains: Set[Chain], d : DynDstbn) = chains filter (_.head == pres) maxBy (_.prob(d))
-  
+
+/*
   def wtdPresJson(pw : Weighted[Presentation]) = {
       val listlist = pw.elem.rels map (_.ls)
       Json.obj("rank" -> pw.elem.rank, "words" -> listlist, "prob" -> pw.weight)
@@ -376,7 +381,7 @@ object AndrewsCurtis{
 
 // Short Loop: Flow for a while, purge and report survivors
 // Long loop : Repeat short loop
-  
+*/  
   def initDstbn(pthCntn: Double) =  DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), FiniteDistribution[Presentation](Seq()), pthCntn)
   
   case class ACparameters(
