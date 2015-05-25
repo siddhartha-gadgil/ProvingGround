@@ -155,15 +155,15 @@ object QDI {
   
   
   implicit def tableWrite[A] : WriteString[List[List[A]]] = new WriteString[List[List[A]]]{
-    def write(ll: List[List[A]]) = tableString(ll)
+    def writer(ll: List[List[A]]) = tableString(ll)
   }
   
   implicit def fdWrite[A] : WriteString[FiniteDistribution[A]] = new WriteString[FiniteDistribution[A]]{
-    def write(fd: FiniteDistribution[A]) = fdString(fd)
+    def writer(fd: FiniteDistribution[A]) = fdString(fd)
   }
   
   implicit def tableRead: ReadString[List[List[String]]] = new ReadString[List[List[String]]]{
-    def read(str: String) = {
+    def reader(str: String) = {
       val tokens = str.split("\"").toList.tail
       def recread(ss: List[String], accum: List[List[String]] = Nil) : List[List[String]] = {
         if (ss.length == 0) accum
@@ -181,7 +181,7 @@ object QDI {
   }
   
   implicit def fdRead : ReadString[List[String]] = new ReadString[List[String]]{
-    def read(str: String) = {
+    def reader(str: String) = {
       val table = StringParse.read[List[List[String]]](str)
       def rec(t :List[List[String]]) : List[String] = {
         if (table == List()) List()
