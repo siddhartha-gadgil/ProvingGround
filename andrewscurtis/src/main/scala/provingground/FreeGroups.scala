@@ -57,6 +57,15 @@ object FreeGroups{
     def rmvtop(rank : Int) = Word (ls filter (_.abs < rank))
   }
 
+  object Word{
+    def fromString(s: String) : Word = s.toList match {
+      case Nil => Word(Nil)
+      case x :: '\u0305' :: tail => Word((-(x - 'a' + 1)) :: fromString(tail.toString).ls)
+      case x :: tail => Word((x - 'a' + 1) :: fromString(tail.toString).ls)
+    }
+
+  }
+
   def wordWeight(w : Word, wrdCntn: Double, rank : Double) = (1 - wrdCntn) * math.pow(wrdCntn / (2 * rank), w.ls.length)
 
   /*
