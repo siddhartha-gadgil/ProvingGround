@@ -88,7 +88,7 @@ lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         aggregate(jsProjects.map(projectToRef): _*).
-        dependsOn(coreJVM).dependsOn(functionfinder)
+        dependsOn(coreJVM).dependsOn(functionfinder) // .dependsOn(andrewscurtis)
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).

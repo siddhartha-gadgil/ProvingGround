@@ -11,6 +11,8 @@ import ExecutionContext.Implicits.global
 
 import scala.annotation._
 
+import StringParse._
+
 /**
  * @author gadgil
  */
@@ -89,9 +91,11 @@ object QDI {
    <div class="finite-distribution"> {NodeSeq.fromSeq(nodeList)} </div>
   }
 
-  implicit def fdString[A](fd: FiniteDistribution[A]) = {
-    val l = for (Weighted(x, p) <- fd.pmf) yield s"""("$x",$p)"""
-    l.mkString(";")
+
+  implicit def fdString[A](fd: FiniteDistribution[A]) = tableString(fdListList(fd))
+
+  implicit def fdListList[A](fd: FiniteDistribution[A]) = {
+    for (Weighted(x, p) <- fd.pmf.toList) yield List(x, p)
   }
 
   def row(xs: List[String]) = {
@@ -113,7 +117,9 @@ object QDI {
   }
 
   trait Logger{
-    def log(x: String): Unit
+    def put(x: String): Unit
+    
+    def log[A: WriteString](a: A) = put(write(a)) 
 
     var closed: Boolean = false
 
@@ -125,7 +131,7 @@ object QDI {
   class MemLog extends Logger{
     var mem : Vector[String] = Vector()
 
-    def log(x: String) = (mem = mem :+ x)
+    def put(x: String) = (mem = mem :+ x)
 
     def get = if (closed) Some(mem.toIterator) else None
 
@@ -137,7 +143,7 @@ object QDI {
 
     val writer = new BufferedWriter(fl)
 
-    def log(x: String) = {writer.write(x); writer.newLine}
+    def put(x: String) = {writer.write(x); writer.newLine}
 
     def close = {closed = true; writer.close}
 
@@ -146,10 +152,49 @@ object QDI {
 
   def readFile(filename: String) = scala.io.Source.fromFile(filename).getLines
 
+  
+  
+  implicit def tableWrite[A] : WriteString[List[List[A]]] = new WriteString[List[List[A]]]{
+    def write(ll: List[List[A]]) = tableString(ll)
+  }
+  
+  implicit def fdWrite[A] : WriteString[FiniteDistribution[A]] = new WriteString[FiniteDistribution[A]]{
+    def write(fd: FiniteDistribution[A]) = fdString(fd)
+  }
+  
+  implicit def tableRead: ReadString[List[List[String]]] = new ReadString[List[List[String]]]{
+    def read(str: String) = {
+      val tokens = str.split("\"").toList.tail
+      def recread(ss: List[String], accum: List[List[String]] = Nil) : List[List[String]] = {
+        if (ss.length == 0) accum
+        else
+        {
+          val token :: sep :: tail = ss 
+          sep match {
+            case "," => (token :: accum.head) :: accum.tail
+            case ";" => List(token) :: accum
+          }
+        }
+      }
+     recread(tokens)
+    }
+  }
+  
+  implicit def fdRead : ReadString[List[String]] = new ReadString[List[String]]{
+    def read(str: String) = {
+      val table = StringParse.read[List[List[String]]](str)
+      def rec(t :List[List[String]]) : List[String] = {
+        if (table == List()) List()
+        else t.head(0) :: t.head(1) ::rec(t.tail)
+      }
+      rec(table)
+    }
+  }
+  
   @tailrec def iterLog[A](init: A, dyn: A => A, steps: Int, logger: Logger) : A ={
     logger.log(init.toString)
     if (steps <1) init
-    else iterLog(dyn(init), dyn, steps, logger)
+    else iterLog(dyn(init), dyn, steps - 1, logger)
   }
 
   def asyncIterLog[A](init: A, dyn: A => A, steps: Int, logger: Logger) = Future(iterLog[A](init: A, dyn: A => A, steps: Int, logger: Logger))
@@ -172,7 +217,7 @@ object QDI {
       width: 250px;
       }
     .entropy{
-      color: red;
+      color: blue;
         display: inline-block;
         width: 250px;
       }
