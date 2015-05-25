@@ -3,10 +3,10 @@ package provingground.andrewscurtis
 import AndrewsCurtis._
 import provingground.Collections._
 import FreeGroups._
-import play.api.libs.json._
-import play.api.libs.concurrent._
+//import play.api.libs.json._
+//import play.api.libs.concurrent._
 import akka.actor._
-import play.api.libs.concurrent.Execution.Implicits._
+//import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent._
 
 

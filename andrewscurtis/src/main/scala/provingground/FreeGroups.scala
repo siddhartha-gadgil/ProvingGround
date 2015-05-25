@@ -1,9 +1,9 @@
 package provingground.andrewscurtis
 
 // Play Json imports
-import play.api.libs.json._
-import play.api.libs.iteratee._
-import play.api.libs.json.Json.toJsFieldJsValueWrapper
+//import play.api.libs.json._
+//import play.api.libs.iteratee._
+//import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 /* 
  * Free group in n generators
@@ -113,11 +113,11 @@ object FreeGroups{
       val newrels = rels filter ((w : Word) => w != Word(List(rank+1))) map (_.rmvtop(rank))
       Presentation(newrels, rank -1)
     }
-    
+   /* 
     def toJson = {
       val listlist = rels map (_.ls)
       Json.obj("rank" -> rank, "words" -> listlist)
-    }
+    }*/
   }
   
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
