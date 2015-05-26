@@ -1,5 +1,7 @@
 package provingground.andrewscurtis
 
+import provingground.StringParse._
+
 // Play Json imports
 //import play.api.libs.json._
 //import play.api.libs.iteratee._
@@ -58,12 +60,16 @@ object FreeGroups{
   }
 
   object Word{
-    def fromString(s: String) : Word = s.toList match {
+    def fromString(s: String) : Word = {
+      val ss = s.replace("!", "\u0305").replace(" ", "")
+      ss.toList match {
       case Nil => Word(Nil)
       case x :: '\u0305' :: tail => Word((-(x - 'a' + 1)) :: fromString(tail.toString).ls)
       case x :: tail => Word((x - 'a' + 1) :: fromString(tail.toString).ls)
     }
-
+    }
+    
+    def apply(w: String) = fromString(w)
   }
 
   def wordWeight(w : Word, wrdCntn: Double, rank : Double) = (1 - wrdCntn) * math.pow(wrdCntn / (2 * rank), w.ls.length)
@@ -130,6 +136,25 @@ object FreeGroups{
       Json.obj("rank" -> rank, "words" -> listlist)
     }*/
   }
+  
+  object Presentation{
+    def fromString(s: String) = {
+      val ss = s.replaceAll("[ <>]", "")
+      val genWord :: relWord :: _ = ss.split(";").toList
+      val rank = genWord.split(",").length
+      val rels = relWord.split(",") map (Word.fromString(_))
+      Presentation(rels.toList, rank)
+    }
+    
+    def apply(rank: Int, ws: String*) : Presentation = 
+      Presentation(ws.toList map (Word.fromString), rank)
+      
+    val empty = Presentation(List(), 0)
+    
+    def trivial(n: Int) = 
+      Presentation((1 to n).toList map ((i) => Word(List(i))), n)
+  }
+  
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
     val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
     (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
@@ -140,4 +165,11 @@ object FreeGroups{
    */
   val nullpres = Presentation(List(), 0)
 
+  implicit def writeWord = WriteString.simple[Word]
+  
+  implicit def writePres = WriteString.simple[Presentation]
+  
+  implicit def readWord = ReadString(Word.fromString)
+  
+  implicit def readPres = ReadString(Presentation.fromString)
 }
