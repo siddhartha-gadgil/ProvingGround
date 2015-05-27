@@ -52,6 +52,12 @@ lazy val acSettings = Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
+lazy val nfSettings = Seq(
+  name := "NormalForm",
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+  initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.TopLevel._"""
+  )
+
 lazy val client = project.
   settings(name := "ProvingGround-JS",
   scalaVersion := "2.11.5",
@@ -123,5 +129,9 @@ lazy val andrewscurtis = (project in file("andrewscurtis")).
   settings(jvmSettings : _*).
   settings(acSettings : _*).
   dependsOn(coreJVM)
+
+lazy val normalform = (project in file("normalform")).
+  settings(commonSettings : _*).
+  settings(nfSettings : _*)
 
 fork in run := true
