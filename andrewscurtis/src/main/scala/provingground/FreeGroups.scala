@@ -10,62 +10,137 @@ import provingground.StringParse._
 /*
  * Free group in n generators
  * An element is represented as a word in integers, together with rank of the corresponding group
- * The negative of a number represents the inverse generator
+ * The negative of a number represents the inverse generator.
  */
 object FreeGroups{
+  /**
+   * String for a letter, e.g. a, a! (for a inverse)
+   */
   def letterString(n : Int) = if (n > 0) ('a' + n -1).toChar.toString +"." else ('a' - n -1).toChar.toString+"!."
-
+  /**
+   * unicode string for a letter, e.g. "a" or "\bar{a}"
+   */
   def letterUnic(n : Int) = if (n > 0) ('a' + n -1).toChar.toString else ('a' - n -1).toChar.toString+ '\u0305'.toString
 
+  /**
+   * A word in a free group.
+   * @param ls letters of the words represented as integers; 1 represents a, -1 represents a^{-1}
+   */
   case class Word(ls: List[Int]) extends AnyVal{
+    /**
+     * returns reduced form of a word
+     */
     def reduce : Word = ls match {
       case x :: y :: zs if x == -y => Word(zs).reduce
       case x :: ys => x :: Word(ys).reduce
       case _ => this
     }
 
+    /**
+     * string representation
+     */
     def toPlainString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
 
     override def toString = toUnicode
 
+    /**
+     * unicode representation.
+     */
     def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_+_))
 
+    /**
+     * letter prepended to word
+     */
     def ::(let : Int) = Word(let :: ls)
-
+    
+    /**
+     * inverse
+     */
     def inv = Word(ls.reverse map ((n) => -n))
 
+    /**
+     * inverse
+     */
     def ! = inv
 
+    /**
+     * returns this to kth power.
+     */
     def pow : Int => Word = {
       case 0 => Word(List())
       case k if k >0 => Word(List.fill(k)(ls).flatten)
       case k if k <0 => this.inv.pow(-k)
     }
 
+    /**
+     * raise to nth power.
+     */
     def ^(n: Int) = pow(n)
 
+    /**
+     * multiply and reduce
+     */
     def *(that: Word) = Word(ls ++ that.ls).reduce
 
+    /**
+     * conjugate
+     */
     def conj(that: Word) = that.inv * this * that
 
+    /**
+     * conjugate
+     */
     def ^(that: Word) = conj(that)
 
+    /**
+     * conjugate by a generator (or its inverse)
+     */
     def conjGen(k: Int) = Word((-k) :: (ls :+ k)).reduce
 
+    /**
+     * conjugate by a generator (or its inverse).
+     */
     def ^^(k: Int)  = conjGen(k)
 
+    /**
+     * largest generator in the free group.
+     */
     def maxgen = (ls map (_.abs)).max
 
+    /**
+     * remove generators of rank and above.
+     */
     def rmvtop(rank : Int) = Word (ls filter (_.abs < rank))
   }
 
   object Word{
     def fromString(s: String) : Word = {
-      val ss = s.replace("!", "\u0305").replace(" ", "")
+      val ss = s.replace("!", "\u0305").replace(" ", "").replace(".", "")
       ss.toList match {
       case Nil => Word(Nil)
-      case x :: '\u0305' :: tail => Word((-(x - 'a' + 1)) :: fromString(tail.toString).ls)
-      case x :: tail => Word((x - 'a' + 1) :: fromString(tail.toString).ls)
+      case x :: '\u0305' :: tail =>
+        {// println(ss)
+         // println("here  ")
+        //  println(tail)
+         // println(tail.length)
+          println(tail.headOption)
+          println("inverse")
+          println(tail.length)
+  //        println(tail)
+          Word((-(x - 'a' + 1)) :: fromString(tail.toString).ls)
+          
+        }
+      case x :: tail => {
+       // println(ss)
+       // println("here")
+       // println(tail)
+       // println(tail.length)
+        println(tail.headOption)
+        println("no inverse")
+        println(tail.length)
+  //      println(tail)
+        Word((x - 'a' + 1) :: fromString(tail.toString).ls)
+      }
     }
     }
     
