@@ -114,35 +114,18 @@ object FreeGroups{
   }
 
   object Word{
-    def fromString(s: String) : Word = {
-      val ss = s.replace("!", "\u0305").replace(" ", "").replace(".", "")
-      ss.toList match {
-      case Nil => Word(Nil)
+    def listFromChars(s: List[Char]) : List[Int] = {
+      s match {
+      case Nil => List()
       case x :: '\u0305' :: tail =>
-        {// println(ss)
-         // println("here  ")
-        //  println(tail)
-         // println(tail.length)
-          println(tail.headOption)
-          println("inverse")
-          println(tail.length)
-  //        println(tail)
-          Word((-(x - 'a' + 1)) :: fromString(tail.toString).ls)
-          
-        }
-      case x :: tail => {
-       // println(ss)
-       // println("here")
-       // println(tail)
-       // println(tail.length)
-        println(tail.headOption)
-        println("no inverse")
-        println(tail.length)
-  //      println(tail)
-        Word((x - 'a' + 1) :: fromString(tail.toString).ls)
-      }
+         (-(x - 'a' + 1)) :: listFromChars(tail)                  
+      case x :: tail =>
+        (x - 'a' + 1) :: listFromChars(tail)      
     }
     }
+    
+    def fromString(s: String): Word = 
+      Word(listFromChars(s.replace("!", "\u0305").replace(" ", "").replace(".", "").toList))
     
     def apply(w: String) = fromString(w)
   }
