@@ -54,6 +54,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
+  libraryDependencies ++= Seq("org.spire-math" %% "spire" % "0.9.1"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.TopLevel._"""
   )
