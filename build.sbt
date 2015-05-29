@@ -13,7 +13,8 @@ lazy val commonSettings = Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
-  "org.spire-math" %% "spire" % "0.9.1"
+  "org.spire-math" %% "spire" % "0.9.1",
+  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
@@ -49,7 +50,8 @@ lazy val acSettings = Seq(
   name := "AndrewsCurtis",
   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
     ),
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+  initialCommands in console := """import provingground.andrewscurtis._"""
   )
 
 lazy val nfSettings = Seq(

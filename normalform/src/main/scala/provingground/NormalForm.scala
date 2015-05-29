@@ -195,7 +195,7 @@ case class CommRep[A](representation: Map[A, Int]) extends Representation[A] {
 
   override def isEmpty(): Boolean = representation.isEmpty
 
-  override def length(): Int = representation.length
+  override def length(): Int = listRep.length
 
   override def head(): A = listRep.head
 
@@ -309,7 +309,7 @@ case class Sigma(representation: Representation[Term]) extends BigOp {
       case Sigma(thatRep) => Sigma(representation combine thatRep)
       case x: Term => this + toSigma(x)
     }
-    semiReduce(out)
+    out
   }
 
   def *(that: Term): Term = {
