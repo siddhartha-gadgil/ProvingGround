@@ -41,7 +41,7 @@ object FreeGroups{
      */
     def toPlainString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
 
-    override def toString = toUnicode
+    override def toString = if (ls.isEmpty) "1" else toUnicode
 
     /**
      * unicode representation.
@@ -99,6 +99,7 @@ object FreeGroups{
 
     /**
      * conjugate by a generator (or its inverse).
+     * @param k index of generator, starting at 1.
      */
     def ^^(k: Int)  = conjGen(k)
 
@@ -114,6 +115,9 @@ object FreeGroups{
   }
 
   object Word{
+    /**
+     * helper for fromString
+     */
     def listFromChars(s: List[Char]) : List[Int] = {
       s match {
       case Nil => List()
@@ -124,12 +128,26 @@ object FreeGroups{
     }
     }
     
-    def fromString(s: String): Word = 
-      Word(listFromChars(s.replace("!", "\u0305").replace(" ", "").replace(".", "").toList))
+    /**
+     * word from a string.
+     */
+    def fromString(s: String): Word = if (s=="1") Word(List()) 
+      else Word(listFromChars(s.replace("!", "\u0305").replace(" ", "").replace(".", "").toList))
     
+    /**
+     * word from a string.
+     */
     def apply(w: String) = fromString(w)
+    
+    /**
+     * the identity
+     */
+    val e = Word(List())
   }
 
+  /**
+   * weight of a word, for a generation process where we extend with some probability, picking letters at random.
+   */
   def wordWeight(w : Word, wrdCntn: Double, rank : Double) = (1 - wrdCntn) * math.pow(wrdCntn / (2 * rank), w.ls.length)
 
   /*
@@ -137,53 +155,101 @@ object FreeGroups{
    */
 //  trait ACobject
 
+  /**
+   * Finite presentation of a group
+   * 
+   * @param rels relations
+   * @param rank number of generators.
+   */
   case class Presentation(rels : List[Word], rank : Int){
+    /**
+     * number of relations
+     */
     val sz = rels.length
 
+    /**
+     * string without  unicode.
+     */
     def toPlainString = {
-      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + ","+ y)
-      val relstring = (for (rel <- rels) yield rel.toString).foldLeft("")((x ,y) => x + ", "+ y)
-      "<"+gens.drop(1)+"; "+relstring.drop(2)+">"
+      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).toList.mkString(",")
+      val relstring = (for (rel <- rels) yield rel.toPlainString).toList.mkString(",")
+      s"<$gens; $relstring>"
     }
 
+    /**
+     * unicode string
+     */
     def toUnicode = {
-      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).foldLeft("")((x ,y) => x + ","+ y)
-      val relstring = (for (rel <- rels) yield rel.toUnicode).foldLeft("")((x ,y) => x + ", "+ y)
-      "<"+gens.drop(1)+"; "+relstring.drop(2)+">"
+      val gens = (for (j <- 0 to rank-1) yield ('a'+j).toChar.toString).toList.mkString(",")
+      val relstring = (for (rel <- rels) yield rel.toUnicode).toList.mkString(",")
+      s"<$gens; $relstring>"
     }
 
+    /**
+     * unicode string
+     */
     override def toString = toUnicode
 
+    /**
+     * defect of the presentation.
+     */
     val defect = rank - sz
 
+    /**
+     * largest generator appearing in relation.
+     */
     def maxgen = (rels map (_.maxgen)).max
 
+    /**
+     * returns presentation with ith element inverted.
+     */
     def inv (k : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(i).inv else rels(i)}
       Presentation(result.toList, rank)
     }
 
+    /**
+     * presentation with kth relation multiplied on the right by the ith relation.
+     */
     def rtmult (k : Int, l : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(k) * rels(l) else rels(i)}
       Presentation(result.toList, rank)
     }
 
+    /**
+     * presentation with kth relation multiplied on the right by the ith relation.
+     */
     def lftmult (k : Int, l : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(l) * rels(k) else rels(i)}
       Presentation(result.toList, rank)
     }
 
+    /**
+     * presentation with kth relation conjugated by generator with index l.
+     */
     def conj (k : Int, l : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(k)^^l else rels(i)}
       Presentation(result.toList, rank)
     }
 
+    /**
+     * Andrews-Curtis stabilization
+     */
     def ACstab = Presentation(Word(List(rank+1)) :: rels, rank +1)
 
+    /**
+     * Tietze stabilization.
+     */
     def ttzStab = Presentation(Word(List()) :: rels, rank)
 
-    def ACstabilized = rels contains ((w : Word) => w == Word(List(rank+1)))
+    /**
+     * returns whether Andrews-Curtis stabilized.
+     */
+    def ACstabilized = rels contains (Word(List(rank+1)))
 
+    /**
+     * (unsafe) Andrews-Curtis destabilization.
+     */
     def ACdestab = {
       val newrels = rels filter ((w : Word) => w != Word(List(rank+1))) map (_.rmvtop(rank))
       Presentation(newrels, rank -1)
@@ -196,6 +262,9 @@ object FreeGroups{
   }
   
   object Presentation{
+    /** 
+     *  parses string to a presentation.
+     */
     def fromString(s: String) = {
       val ss = s.replaceAll("[ <>]", "")
       val genWord :: relWord :: _ = ss.split(";").toList
@@ -204,6 +273,9 @@ object FreeGroups{
       Presentation(rels.toList, rank)
     }
     
+    /**
+     * gives presentation from rank and strings for words.
+     */
     def apply(rank: Int, ws: String*) : Presentation = 
       Presentation(ws.toList map (Word.fromString), rank)
       
