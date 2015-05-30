@@ -18,10 +18,6 @@ object TopLevel {
     CommRep(Map((obj, 1)))
   }
 
-  //implicit def toNumTerm[A: Numeric](num: A): NumTerm[A] = {
-  //  NumTerm(num)
-  //}
-
   implicit def toSigma(term: Term): Sigma = {
     term match {
       case Sigma(_) => term
@@ -130,8 +126,8 @@ object TopLevel {
         case x: CommRep[Term] => Pi(commReduce(mulOp, x map semiReduce)).fullReduce
         case x: AssocRep[Term] => Pi(assocReduce(mulOp, x map semiReduce)).fullReduce
       }
-      case _ => term 
-    }    
+      case _ => term
+    }
   }
 
 }
@@ -309,12 +305,12 @@ case class Sigma(representation: Representation[Term]) extends BigOp {
       case Sigma(thatRep) => Sigma(representation combine thatRep)
       case x: Term => this + toSigma(x)
     }
-    out
+    semiReduce(out)
   }
 
   def *(that: Term): Term = {
     val out = that match {
-      case Sigma(thatRep) => Sigma(thatRep map ((x: Term) => this * x))
+      case Sigma(thatRep) => Sigma((thatRep map ((x: Term) => this * x)) reduce ((x: Term, y: Term) => x+y))
       case x: Term  => Sigma(representation map ((y: Term) => toPi(y) * x))
     }
     semiReduce(out)
