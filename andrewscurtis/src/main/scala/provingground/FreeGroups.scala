@@ -32,10 +32,14 @@ object FreeGroups{
      */
     def reduce : Word = ls match {
       case x :: y :: zs if x == -y => Word(zs).reduce
-      case x :: ys => x :: Word(ys).reduce
+      case x :: ys => 
+        if (Word(ys).isReduced) 
+          x :: Word(ys).reduce
+        else (x :: Word(ys).reduce).reduce
       case _ => this
     }
 
+    def isReduced = (this == reduce)
     /**
      * string representation
      */
