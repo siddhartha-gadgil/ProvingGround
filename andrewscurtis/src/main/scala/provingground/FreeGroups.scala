@@ -16,19 +16,17 @@ object FreeGroups{
   case class Word(ls: List[Int]) extends AnyVal {
 
     def reduce : Word = {
-      @annotation.tailrec
-      def intermediate(current: List[Int], acc: List[Int]): List[Int] = {
-        if(current.isEmpty)
-          acc
-        else if(acc.isEmpty) 
-          intermediate(current.tail, current.head::acc)
-        else if(current.head == -acc.head)
-          intermediate(current.tail, acc.tail)
-        else
-          intermediate(current.tail, current.head::acc)
+      ls match {
+        case x :: y :: zs if x == -y => Word(zs).reduce
+        case x :: ys => 
+          if (Word(ys).isReduced) 
+            x :: Word(ys).reduce
+          else (x :: Word(ys).reduce).reduce
+        case _ => this
       }
-      Word(intermediate(ls.reverse, Nil))
     }
+
+    def isReduced = (this == reduce)
 
     override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
 
@@ -42,8 +40,8 @@ object FreeGroups{
 
     def pow : Int => Word = {
       case 0 => Word(List())
-      case k if k >0 => Word(List.fill(k)(ls).flatten)
-      case k if k <0 => this.inv.pow(-k)
+      case k if k > 0 => Word(List.fill(k)(ls).flatten)
+      case k if k < 0 => this.inv.pow(-k)
     }
 
     def ^(n: Int) = pow(n)
