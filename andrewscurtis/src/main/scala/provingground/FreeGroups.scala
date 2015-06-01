@@ -28,7 +28,9 @@ object FreeGroups{
 
     def isReduced = (this == reduce)
 
-    override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
+    //override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
+
+    override def toString = toUnicode
 
     def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_+_))
 
@@ -69,6 +71,7 @@ object FreeGroups{
 //  trait ACobject
 
   case class Presentation(rels : List[Word], rank : Int){
+    //assert(this.maxgen<=rank)
     val sz = rels.length
 
     def toPlainString = {
@@ -109,6 +112,11 @@ object FreeGroups{
       Presentation(result.toList, rank)
     }
 
+    def conjRelators (k : Int, l : Int) = {
+      val result = (0 to sz -1) map {(i) => if (i == k) rels(k)^rels(l) else rels(i)}
+      Presentation(result.toList, rank)
+    }
+
     def ACstab = Presentation(Word(List(rank+1)) :: rels, rank +1)
 
     def ttzStab = Presentation(Word(List()) :: rels, rank)
@@ -119,11 +127,6 @@ object FreeGroups{
       val newrels = rels filter ((w : Word) => w != Word(List(rank+1))) map (_.rmvtop(rank))
       Presentation(newrels, rank -1)
     }
-   /*
-    def toJson = {
-      val listlist = rels map (_.ls)
-      Json.obj("rank" -> rank, "words" -> listlist)
-    }*/
   }
 
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
