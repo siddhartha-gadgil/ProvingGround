@@ -28,8 +28,6 @@ object FreeGroups{
 
     def isReduced = (this == reduce)
 
-    //override def toString = ((ls map (letterString(_))).foldLeft("")(_+_)).dropRight(1)
-
     override def toString = toUnicode
 
     def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_+_))
@@ -58,7 +56,12 @@ object FreeGroups{
 
     def ^^(k: Int)  = conjGen(k)
 
-    def maxgen = (ls map (_.abs)).max
+    def maxgen: Int = {
+      if(ls.isEmpty)
+        0
+      else
+        (ls map ((x:Int) => x.abs)).max
+    }
 
     def rmvtop(rank : Int) = Word (ls filter (_.abs < rank))
   }
@@ -71,7 +74,8 @@ object FreeGroups{
 //  trait ACobject
 
   case class Presentation(rels : List[Word], rank : Int){
-    //assert(this.maxgen<=rank)
+    require(maxgen<=rank, "There are more generators than the rank allows")
+
     val sz = rels.length
 
     def toPlainString = {
@@ -90,7 +94,13 @@ object FreeGroups{
 
     val defect = rank - sz
 
-    def maxgen = (rels map (_.maxgen)).max
+    //def maxgen = (rels map (_.maxgen)).max
+    def maxgen:Int = {
+      if(rels.isEmpty)
+        0
+      else
+        (rels map ((x:Word) => x.maxgen)).max
+    }
 
     def inv (k : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(i).inv else rels(i)}

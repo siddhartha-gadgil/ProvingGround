@@ -86,8 +86,8 @@ class PresentationSpec extends FlatSpec {
 
   it should "have a well defined defect" in {
     val a = Word(List(1,2,-1))
-    val p1 = Presentation(List(a), 1)
-    val p2 = Presentation(List(a,a), 1)
+    val p1 = Presentation(List(a,a), 2)
+    val p2 = Presentation(List(a,a,a), 2)
     val p3 = Presentation(List(a), 2)
     val p4 = Presentation(List(a,a), 2)
     assert(p1.defect === 0)
@@ -171,4 +171,6 @@ class PresentationSpec extends FlatSpec {
     val result = Presentation(List(Word(Nil), a,b,c),3)
     assert(p.ttzStab === result)
   }
+
+
 }
