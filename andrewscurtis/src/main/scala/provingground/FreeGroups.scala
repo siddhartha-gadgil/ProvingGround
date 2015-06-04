@@ -71,7 +71,6 @@ object FreeGroups{
   /*
    * Objects involved in Andrews-Curtis evolution : Presentations and Moves
    */
-//  trait ACobject
 
   case class Presentation(rels : List[Word], rank : Int){
     require(maxgen<=rank, "There are more generators than the rank allows")
@@ -94,7 +93,6 @@ object FreeGroups{
 
     val defect = rank - sz
 
-    //def maxgen = (rels map (_.maxgen)).max
     def maxgen:Int = {
       if(rels.isEmpty)
         0
@@ -131,7 +129,7 @@ object FreeGroups{
 
     def ttzStab = Presentation(Word(List()) :: rels, rank)
 
-    def ACstabilized = rels contains ((w : Word) => w == Word(List(rank+1)))
+    def ACstabilized = rels contains Word(List(rank))
 
     def ACdestab = {
       val newrels = rels filter ((w : Word) => w != Word(List(rank+1))) map (_.rmvtop(rank))

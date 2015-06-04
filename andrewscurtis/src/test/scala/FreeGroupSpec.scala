@@ -172,5 +172,15 @@ class PresentationSpec extends FlatSpec {
     assert(p.ttzStab === result)
   }
 
+  it should "tell whether it's Andrews Curtis stabilized or not" in {
+    val a = Word(List(1,2))
+    val b = Word(List(2,3))
+    val c = Word(List(3))
+    val d = Word(List(4))
+    val p1 = Presentation(List(a,b,c),4)
+    val p2 = Presentation(List(a,b,d),4)
+    assert(p1.ACstabilized === false)
+    assert(p2.ACstabilized === true)
+  }
 
 }
