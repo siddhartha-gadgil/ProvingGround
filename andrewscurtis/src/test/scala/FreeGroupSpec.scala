@@ -75,6 +75,25 @@ class WordSpec extends FlatSpec {
   }
 }
 
+class WordObjectSpec extends FlatSpec {
+  "Object Word" should "convert a list of Chars to an appropriate list of Ints" in {
+    val a = List(1,2,-3,4,-2,-1)
+    assert(a === Word.listFromChars(Word(a).toString.toList))
+  }
+
+  it should "convert a string to a word" in {
+    val a = Word(List(1,2,-3,-3,-1,3,-1))
+    assert(a === Word.fromString(a.toString))
+  }
+
+
+  it should "convert apply to a string and return a Word" in {
+    val a = Word(List(1,2,-3,-3,-1,3,-1))
+    assert(a === Word(a.toString))
+  }
+
+}
+
 class PresentationSpec extends FlatSpec {
   "A Presentation" should "have a size" in {
     val a = Word(List(1,2,-1))
@@ -182,5 +201,25 @@ class PresentationSpec extends FlatSpec {
     assert(p1.ACstabilized === false)
     assert(p2.ACstabilized === true)
   }
+}
 
+class PresentationObject extends FlatSpec {
+  "Object Presentation" should "interpret a string as a presentation" in {
+  val a = Word(List(1,2))
+  val b = Word(List(2,3))
+  val c = Word(List(3))
+  val p1 = Presentation(List(a,b,c),4)
+  assert(p1 === Presentation.fromString(p1.toString))
+  }
+
+  it should "apply on a string and return a presentation" in {
+  val a = Word(List(1,2,-3))
+  val p1 = Presentation(List(a),3)
+  assert(p1 === Presentation(3, a.toString))
+  }
+
+  it should "have a trivial Presentation" in {
+    val p = Presentation((1 to 4).toList map ((x:Int) => Word(List(x))), 4)
+    assert(Presentation.trivial(4) === p)
+  }
 }

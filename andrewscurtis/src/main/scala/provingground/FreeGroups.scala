@@ -127,14 +127,31 @@ object FreeGroups{
   }
 
   object Word{
+
+    /**
+     * sanity checker for listFromChars. 
+     * to add further checks later.
+     */
+    def isParsable(s: List[Char]): Boolean = {
+      if(s.isEmpty)
+        true
+      else if((s.head == '\u0305') || (s.head == '!'))
+        false
+      else
+        true
+    }
+
     /**
      * helper for fromString
      */
     def listFromChars(s: List[Char]) : List[Int] = {
+      require(isParsable(s), "The list of characters is not well formed and should not be parsed.")
       s match {
       case Nil => List()
       case x :: '\u0305' :: tail =>
-         (-(x - 'a' + 1)) :: listFromChars(tail)
+        (-(x - 'a' + 1)) :: listFromChars(tail)
+      case x :: '!' :: tail =>
+        (-(x - 'a' + 1)) :: listFromChars(tail)
       case x :: tail =>
         (x - 'a' + 1) :: listFromChars(tail)
       }
