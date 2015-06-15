@@ -136,7 +136,7 @@ object FiniteDistbributionLearner {
 	/**
 	 * Extend differentiable function by identity on M.
 	 */
-	def extendM[M, X](fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) = {
+	def extendM[M, X](fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) :DiffbleFunction[(FiniteDistribution[M], X), (FiniteDistribution[M], X)] = {
 	  def func(mv: (FiniteDistribution[M], X)) = (mv._1, fn(mv))
 	  
 	  def grad(mv: (FiniteDistribution[M], X))(

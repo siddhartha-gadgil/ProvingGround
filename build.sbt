@@ -30,7 +30,6 @@ lazy val serverSettings = Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
   "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
-  "edu.stanford.nlp" % "stanford-parser" % "3.4",
   "com.vmunier" %% "play-scalajs-scripts" % "0.2.0",
   "org.webjars" % "jquery" % "1.11.1"
   ),
