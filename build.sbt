@@ -24,7 +24,6 @@ lazy val jvmSettings = Seq(
   )
 
 lazy val serverSettings = Seq(
-  name := "ProvingGround-jvm",
   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT",
   ws,
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
@@ -91,12 +90,23 @@ lazy val functionfinder = project.
   settings(name := "ProvingGround-FunctionFinder").
   dependsOn(coreJVM)
 
+lazy val mantle = (project in file("mantle")).
+        settings(name := "ProvingGround-mantle").
+        settings(commonSettings : _*).
+        settings(jvmSettings : _*).
+        settings(serverSettings : _*).
+        dependsOn(coreJVM).dependsOn(functionfinder)
+
 lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
+        settings(name := "ProvingGround-jvm").
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         aggregate(jsProjects.map(projectToRef): _*).
-        dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(andrewscurtis)
+        dependsOn(coreJVM).
+        dependsOn(functionfinder).
+        dependsOn(andrewscurtis).
+        dependsOn(mantle)
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
