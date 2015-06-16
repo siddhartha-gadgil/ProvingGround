@@ -263,8 +263,7 @@ object ApproxTrig{
    * given by a resolution and a cube, and use coordinate functions on it as well as trignometric functions
    *
    */
-  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with
-    ElementaryFunctions[Approx]{
+  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with ElementaryFunctions[Approx]{
       val proj = (i: Int) => ConstantBounder(cube.coords(i))
 
       }
