@@ -14,6 +14,8 @@ import spire.math.{Interval, Rational, SafeLong}
 
 import spire.math.Interval._
 
+import spire.implicits._
+
 /**
  * @author gadgil
  * Finds interval bounds, for the function given as func. 
@@ -33,12 +35,15 @@ object BidyutFunction {
   /*
    * the function to check is positive.
    */
-  val func: FormalElemFunction = ??? 
+  lazy val func: FormalElemFunction = ??? 
   
-  def eval(N: Int, depth: Int) = cube.splitBound(func, N, depth)  
+  def evalRat(N: Int, depth: Int) = cube.splitBound(func, N, depth) 
+  
+  def eval(N: Int, depth: Int) =
+    for (bnd <- evalRat(N, depth)) yield bnd.mapBounds(_.toDouble)
   
   /*
    * returns Some(true) if it is verified that the function is non-negative
    */
-  def verify(N: Int, depth: Int) = eval(N, depth) map ((bnd) => !bnd.hasBelow(0))
+  def verify(N: Int, depth: Int) = evalRat(N, depth) map ((bnd) => !bnd.hasBelow(0))
 }

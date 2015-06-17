@@ -2,6 +2,7 @@ package compact_enumeration
 
 import FieldOps._
 
+import scala.language.implicitConversions
 
 /**
  * @author gadgil
@@ -241,7 +242,7 @@ object FormalElemFunction{
 
     lazy val one: FormalElemFunction = One
 
-    def N(n: Int) = natField[FormalElemFunction](n)
+    implicit def N(n: Int) = natField[FormalElemFunction](n)
     
     lazy val sec = one / cos
     

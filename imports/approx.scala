@@ -12,4 +12,4 @@ import spire.math._
 import spire.algebra._
 import spire.implicits._
 
-import BidyutFunction.{func, eval, verify}
+import BidyutFunction._
