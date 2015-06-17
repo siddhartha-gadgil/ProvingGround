@@ -1,11 +1,11 @@
 package provingground.normalform
 
 import scala.language.implicitConversions
-import TopLevel._
+import NormalForm._
 import spire.math._
 import spire.implicits._
 
-object TopLevel {
+object NormalForm {
 
   def listToMap[B](list: List[B]): Map[B, Int] = {
     def countInstances(x: B): Int = {
