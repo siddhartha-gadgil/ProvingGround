@@ -1,5 +1,5 @@
 import compact_enumeration._
-import PointWise._
+import FieldOps._
 import FieldOpsSyms._
 
 import FormalElemFunction._

@@ -17,7 +17,7 @@ import compact_enumeration._
 class ApproxTrig(N: SafeLong) {
   import ApproxTrig._
 
-  import compact_enumeration.PointWise._
+  import compact_enumeration.FieldOps._
 
   val fieldOps = implicitly[FieldOps[Approx]]
 
@@ -204,18 +204,15 @@ object ApproxTrig{
 
   import spire.math.interval.{Bound, Closed, ValueBound}
 
-  type FuncBound = Approx
 
   import Interval._
 
-  val sg = Semiring[Interval[Rational]]
-
-  import compact_enumeration.PointWise._
+  import compact_enumeration.FieldOps._
 
   val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
-  @tailrec def get[A](as: Stream[A], n: SafeLong) : A = {
-    if (n ==0) as.head else get(as.tail, n-1)
+  @tailrec def get[A](xs: Stream[A], n: SafeLong) : A = {
+    if (n ==0) xs.head else get(xs.tail, n-1)
   }
 
 
@@ -223,12 +220,8 @@ object ApproxTrig{
       ((I: Interval[Rational]) => Some(r))
 
 
-
-//  import FunctionBounder.ConstantBounder
-
   case class Cube(coords: Vector[Interval[Rational]]){
-
-
+    
       def splitCube : Option[Set[Cube]] = {
         if (coords == Vector()) Some(Set(this))
         else {
@@ -240,13 +233,24 @@ object ApproxTrig{
         }
     }
 
-      def recSplit(k: Int) : Option[Set[Cube]] = if (k<1) Some(Set(this)) else this.recSplit(k -1)
+      def recSplit(k: Int) : Option[Set[Cube]] = if (k<1) Some(Set(this)) else
+        {
+        val prevSplit = recSplit(k - 1)
+        prevSplit flatMap ((cs) => { 
+          val setopts = cs map (_.splitCube)
+          if (setopts contains None) None else Some(setopts.flatten.flatten)
+        }
+        )        
+        }
 
       def bound(func: Cube => Option[Interval[Rational]]) = func(this)
 
       def recSplitBound(func: Cube => Option[Interval[Rational]], depth: Int) = {
-        val boundsOpt = recSplit(depth) map ((cubelets) =>
-          for (cube <- cubelets; bnd <- func(cube)) yield bnd)
+        val boundsOpt = recSplit(depth) flatMap ((cubelets) =>{
+          val bds = cubelets map (func)
+          if (bds contains None) None else Some(bds.flatten)
+     //     for (cube <- cubelets; bnd <- func(cube)) yield bnd
+          })
         for (bounds <- boundsOpt; unionBound <- Try(bounds.reduce(_ union _)).toOption) yield unionBound
       }
 
