@@ -7,7 +7,7 @@ import scala.language.implicitConversions
 
 import provingground.Collections._
 
-    trait DiffbleFunction[A, B]{self =>
+	trait DiffbleFunction[A, B] extends Any{self =>
       def apply(a: A): B
     
     	def grad(a: A) : B => A   

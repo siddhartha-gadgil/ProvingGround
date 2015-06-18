@@ -1,5 +1,5 @@
 import compact_enumeration._
-import PointWise._
+import FieldOps._
 import FieldOpsSyms._
 
 import FormalElemFunction._
@@ -12,4 +12,4 @@ import spire.math._
 import spire.algebra._
 import spire.implicits._
 
-import BidyutFunction.{func, eval, verify}
+import BidyutFunction._

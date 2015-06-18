@@ -1,27 +1,40 @@
 package compact_enumeration
 
-import PointWise._
+import FieldOps._
 
+import scala.language.implicitConversions
 
 /**
  * @author gadgil
+ * Formal Elementary functions
  */
 sealed trait FormalElemFunction {
+  /**
+   * concrete elementary functions of type A,
+   * A must have field operations, composition and Elementary Functions of type A in view.
+   */
   def as[A : FieldOps : ElementaryFunctions : Circ]: A
 
+  /**
+   * formal derivative
+   */
   def derivative: FormalElemFunction
 
+  /**
+   * partial derivative.
+   * @param j index, starting at 0.
+   */
   def partialDerivative(j: Int) : FormalElemFunction
 }
 
+/**
+ * Formal functions of one variable
+ */
 trait OneVar extends FormalElemFunction {
   def partialDerivative(j: Int) : FormalElemFunction = if (j ==0) derivative else Zero
 }
 
 import FormalElemFunction._
-
-import FormalElemFunction._
-
 
 import FieldOpsSyms._
 
@@ -116,6 +129,9 @@ case object Pi extends FormalElemFunction with OneVar{
   override  def toString="\u220f"
 }
 
+/**
+ * Formal sum
+ */
 case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction {
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].plus(x.as[A], y.as[A])
@@ -128,6 +144,9 @@ case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElem
   override  def toString=s"($x + $y)"
 }
 
+/**
+ * Formal product
+ */
 case class Times(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].times(x.as[A], y.as[A])
@@ -140,6 +159,9 @@ case class Times(x: FormalElemFunction, y: FormalElemFunction) extends FormalEle
   override  def toString=s"($x \u00d7 $y)"
 }
 
+/**
+ * Formal negation
+ */
 case class Reciprocal(x: FormalElemFunction) extends FormalElemFunction{
     def as[A : FieldOps : ElementaryFunctions : Circ] = {
     val f = implicitly[FieldOps[A]]
@@ -155,6 +177,9 @@ case class Reciprocal(x: FormalElemFunction) extends FormalElemFunction{
     override  def toString=s"1/($x)"
 }
 
+/**
+ * Quotient: elimination and pattern matching
+ */
 object Div{
   def apply(x: FormalElemFunction, y: FormalElemFunction) : FormalElemFunction =
     Times(x, Reciprocal(y))
@@ -166,7 +191,9 @@ object Div{
   }
 }
 
-
+/**
+ * Formal Negation
+ */
 case class Negate(x: FormalElemFunction) extends FormalElemFunction{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].negate(x.as[A])
@@ -179,6 +206,9 @@ case class Negate(x: FormalElemFunction) extends FormalElemFunction{
   override  def toString=s"-($x)"
 }
 
+/**
+ * Formal composition x \circ y
+ */
 case class Compose(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[Circ[A]].circ(x.as[A], y.as[A])
@@ -193,6 +223,9 @@ case class Compose(x: FormalElemFunction, y: FormalElemFunction) extends FormalE
 
 
 object FormalElemFunction{
+  /**
+   * implicit functions with values formal elementary functions.
+   */
   implicit val FormalElemFunc = new ElementaryFunctions[FormalElemFunction]{
     val sin : FormalElemFunction = Sin
     val cos : FormalElemFunction = Cos
@@ -209,7 +242,7 @@ object FormalElemFunction{
 
     lazy val one: FormalElemFunction = One
 
-    def N(n: Int) = natField[FormalElemFunction](n)
+    implicit def N(n: Int) = natField[FormalElemFunction](n)
     
     lazy val sec = one / cos
     

@@ -8,7 +8,6 @@ lazy val commonSettings = Seq(
   organization := "in.ernet.iisc.math",
   scalaVersion := "2.11.5",
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
-  resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
@@ -24,13 +23,9 @@ lazy val jvmSettings = Seq(
   )
 
 lazy val serverSettings = Seq(
-  name := "ProvingGround-jvm",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT",
+  libraryDependencies ++= Seq(
   ws,
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
-  "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
-  "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models",
-  "edu.stanford.nlp" % "stanford-parser" % "3.4",
   "com.vmunier" %% "play-scalajs-scripts" % "0.2.0",
   "org.webjars" % "jquery" % "1.11.1"
   ),
@@ -39,16 +34,23 @@ lazy val serverSettings = Seq(
   initialCommands in console := """import provingground._ ; import HoTT._"""
   )
 
+lazy val nlpSettings = Seq(
+  libraryDependencies ++= Seq(
+    "edu.stanford.nlp" % "stanford-corenlp" % "3.4",
+    "edu.stanford.nlp" % "stanford-corenlp" % "3.4" classifier "models"
+    )
+  )
+
 lazy val digressionSettings = Seq(
   name := "ProvingGround-Digressions",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.4-SNAPSHOT"
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.andrewscurtis._"""
@@ -92,12 +94,32 @@ lazy val functionfinder = project.
   settings(name := "ProvingGround-FunctionFinder").
   dependsOn(coreJVM)
 
-lazy val jvm = (project in file("jvm")).enablePlugins(PlayScala).
+lazy val mantle = (project in file("mantle")).
+        settings(name := "ProvingGround-mantle").
+        settings(commonSettings : _*).
+        settings(jvmSettings : _*).
+        settings(serverSettings : _*).
+        dependsOn(coreJVM).dependsOn(functionfinder)
+
+lazy val nlp = (project in file("nlp")).
+        settings(name := "ProvingGround-NLP").
+        settings(commonSettings : _*).
+        settings(nlpSettings : _*).
+        settings(jvmSettings : _*).
+        settings(serverSettings : _*).
+        dependsOn(coreJVM).dependsOn(functionfinder)
+
+lazy val playServer = (project in file("play-server")).enablePlugins(PlayScala).
+        settings(name := "ProvingGround-Play-Server").
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         aggregate(jsProjects.map(projectToRef): _*).
-        dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(andrewscurtis)
+        dependsOn(coreJVM).
+        dependsOn(functionfinder).
+        dependsOn(andrewscurtis).
+        dependsOn(mantle).
+        dependsOn(nlp)
 
 lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
@@ -121,7 +143,7 @@ lazy val realfunctions = (project in file("realfunctions")).
 lazy val digressions = (project in file("digressions")).
   settings(commonSettings : _*).
   settings(digressionSettings : _*).
-  dependsOn(coreJVM).dependsOn(jvm).dependsOn(functionfinder)
+  dependsOn(coreJVM).dependsOn(playServer).dependsOn(functionfinder)
 
   EclipseKeys.skipParents in ThisBuild := false
 

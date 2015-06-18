@@ -1,8 +1,10 @@
 package compact_enumeration
-import compact_enumeration.PointWise._
+import compact_enumeration.FieldOps._
 
 /**
  * @author gadgil
+ * 
+ * Elementary functions with values in A.
  */
 trait ElementaryFunctions[A]{
   val sin : A
