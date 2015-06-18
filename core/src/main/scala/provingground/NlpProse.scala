@@ -130,24 +130,24 @@ def mweFold(t: ProseTree) = {
 
 
 /** Generic Extractor from ProseTree*/
-case class ProseExtractor[A](fn: ProseTree => Option[A]){
+class ProseExtractor[A](fn: ProseTree => Option[A]){
   def unapply(t: ProseTree): Option[A] = fn(t)
   
   def this(fn:PartialFunction[ProseTree, A]) = this(fn.lift)
   } 
 
 /** Extractor matching Dependency type */
-case class TypeMatch(depType: String){
+class TypeMatch(depType: String){
   def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType)
 }
 
 /** Extractor matching Dependency type and Word of Dependent Token*/
-case class TypeWordMatch(depType: String, w: String){
+class TypeWordMatch(depType: String, w: String){
   def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findSplit(depType, w)
 }
   
   
-case class TypeListMatch(typList: List[String]){
+class TypeListMatch(typList: List[String]){
   def unapply(t: ProseTree): Option[(DepRel, ProseTree, ProseTree)] = t.findAll(typList).headOption map (t.split)
 }
 
@@ -164,51 +164,51 @@ object Prep{
 }
 
 /** Fallback for all modifiers */
-val Modifier = TypeListMatch(List("abbrev", "amod", "appos", "advcl", "purpcl", "det", "predet",
+object Modifier extends TypeListMatch(List("abbrev", "amod", "appos", "advcl", "purpcl", "det", "predet",
 							"preconj", "infmod", "partmod", "advmod", "mwe", "neg", "rcmod", "quantmod",
 							"nn", "npadvmod", "tmod", "num", "number", "prep", "possesive", "prt",
 							"aux", "auxpass")) // These are not technically modifiers but behave the same way
 
 /** Fallback for all arguments */
-val Argument = TypeListMatch(List("agent", "comp", "acomp", "attr", "ccomp", "xcomp", "complm", "obj", 
+object Argument extends TypeListMatch(List("agent", "comp", "acomp", "attr", "ccomp", "xcomp", "complm", "obj", 
 					"dobj", "iobj", "pobj", "mark", "rel", "subj", "nsubj", "nsubjpass", "csubj", "csubjpass"))					
 					
-val Advcl = TypeMatch("advcl")
+object Advcl extends TypeMatch("advcl")
 
-val IfMark = TypeWordMatch("mark", "if")
+object IfMark extends TypeWordMatch("mark", "if")
 
 /** Extractor for quantmod */
-val QuantMod = TypeMatch("quantmod")
+object QuantMod extends TypeMatch("quantmod")
 // use stringNumber()
 /** Extractor for > */
-val Gt = TypeWordMatch("quantmod", "greater than")
+object Gt extends TypeWordMatch("quantmod", "greater than")
 
 /** Extractor for < */
-val Lt = TypeWordMatch("quantmod", "less than")
+object Lt extends TypeWordMatch("quantmod", "less than")
 
 /** Extractor for "cop" relation */
-val CopRel = TypeMatch("cop")
+object CopRel extends TypeMatch("cop")
 
 /** Extractor for nsubj */
-val Nsubj = TypeMatch("nsubj")
+object Nsubj extends TypeMatch("nsubj")
 
 /** Extractor for relative clause modifier */
-val Rcmod = TypeMatch("rcmod")
+object Rcmod extends TypeMatch("rcmod")
 
 /** Extractor for Clausal complement */
-val Ccomp = TypeMatch("ccomp")
+object Ccomp extends TypeMatch("ccomp")
 
 private val copFn: PartialFunction[ProseTree, (ProseTree, ProseTree)] = {
   case CopRel(_,_,Nsubj(_,s,t)) => (s,t)
 }
 
 /** Extractor for "cop" identifying the subject */
-val Cop = ProseExtractor(copFn.lift)
+object Cop extends ProseExtractor(copFn.lift)
 
 /** Extractor for "which" */
-val Which=TypeWordMatch("nsubj", "which")
+object Which extends TypeWordMatch("nsubj", "which")
 
-val Parataxis = TypeMatch("parataxis")
+object Parataxis extends TypeMatch("parataxis")
 
 
 }
