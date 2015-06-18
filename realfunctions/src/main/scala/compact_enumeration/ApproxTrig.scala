@@ -197,6 +197,10 @@ class ApproxTrig(N: SafeLong) {
       span((j: Int) => cosStream(j)._2,
         (I) => I)
         )
+        
+  val sqrt : Approx = 
+    (J) =>
+      Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
 }
 
 object ApproxTrig{

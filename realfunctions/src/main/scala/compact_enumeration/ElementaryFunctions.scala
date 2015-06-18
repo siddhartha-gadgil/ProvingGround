@@ -12,6 +12,8 @@ trait ElementaryFunctions[A]{
   val log: A
   val exp: A
   
+  val sqrt: A
+  
   val pi: A
   
   val proj: Int => A
