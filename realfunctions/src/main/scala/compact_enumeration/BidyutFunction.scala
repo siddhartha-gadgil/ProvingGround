@@ -61,13 +61,13 @@ The functions a, b, m, n in x,y,z,w.
 
 */
 
-val n1 = pi * (3-z) * x
+val n1 = pi * (N(3)-z) * x
 
 val t1 = (one/z)-1
 
 val t2 = ( N(6) * w * t1 ) + N(6)
 
-val a = ( pi/2 ) + ( n1/3 )
+val a = ( pi/N(2) ) + ( n1/ N(3) )
 
 val b = y * t2 * pi
 
@@ -112,7 +112,7 @@ the second term: Perim(P_1)
 
 val t6 = (b+ (N(2) *pi))/(N(8)* m)
 
-val t7 = pi/(2 * m)
+val t7 = pi/(N(2) * m)
 
 val t8 = sin(t6) * sin(t6)
 
@@ -164,7 +164,7 @@ val term3 = (n+ one -m) * t18
   /*
    * the function to check is positive.
    */
-  lazy val func: FormalElemFunction = ???
+  lazy val func: FormalElemFunction = term2 + term3- term1
 
   def evalRat(N: Int, depth: Int) = cube.splitBound(func, N, depth)
 
