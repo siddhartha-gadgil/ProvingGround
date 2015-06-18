@@ -130,6 +130,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(a, Word(List(-2,-3)), c), 3)
     assert(p.inv(1) === result)
+    assert(Presentation.inv(p, 1) === result)
   }
 
   it should "allow right multiplication by a relation" in {
@@ -140,6 +141,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(a,b,ca), 3)
     assert(p.rtmult(2,0) === result)
+    assert(Presentation.rtmult(p,2,0) === result)
   }
 
   it should "allow left multiplication by a relation" in {
@@ -150,6 +152,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(ca,b,c), 3)
     assert(p.lftmult(0,2) === result)
+    assert(Presentation.lftmult(p,0,2) === result)
   }
 
   it should "allow conjugation by a generator" in {
@@ -160,6 +163,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(a,d,c),3)
     assert(p.conj(1,1) === result)
+    assert(Presentation.conj(p,1,1) === result)
   }
 
   it should "allow conjugation by relators" in {
@@ -170,6 +174,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(a,d,c),3)
     assert(p.conjRelators(1,0) === result)
+    assert(Presentation.conjRelators(p,1,0) === result)
   }
 
   it should "allow Andrews Curtis stablization, i.e, adding another generator" in {
@@ -180,6 +185,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(d,a,b,c), 4)
     assert(p.ACstab === result)
+    assert(Presentation.ACstab(p) === result)
   }
 
   it should "allow Tietze stablization, i.e, adding the identity word" in {
@@ -188,7 +194,7 @@ class PresentationSpec extends FlatSpec {
     val c = Word(List(1,3,-1))
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(Word(Nil), a,b,c),3)
-    assert(p.ttzStab === result)
+    assert(Presentation.ttzStab(p) === result)
   }
 
   it should "tell whether it's Andrews Curtis stabilized or not" in {

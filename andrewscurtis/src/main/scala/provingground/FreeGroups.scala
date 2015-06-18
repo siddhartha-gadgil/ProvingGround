@@ -321,6 +321,19 @@ object FreeGroups{
 
     def trivial(n: Int) =
       Presentation((1 to n).toList map ((i) => Word(List(i))), n)
+
+    /**
+     * moves implemented as functions
+     */
+
+    def inv(pres: Presentation, k: Int) = pres.inv(k)
+    def rtmult(pres: Presentation, k: Int, l: Int) = pres.rtmult(k,l)
+    def lftmult(pres: Presentation, k: Int, l: Int) = pres.lftmult(k,l)
+    def conj(pres: Presentation, k: Int, l: Int) = pres.conj(k,l)
+    def conjRelators(pres: Presentation, k: Int, l: Int) = pres.conjRelators(k,l)
+    def ACstab(pres: Presentation) = pres.ACstab
+    def ttzStab(pres: Presentation) = pres.ttzStab
+    def ACdestab(pres: Presentation) = pres.ACdestab
   }
 
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
