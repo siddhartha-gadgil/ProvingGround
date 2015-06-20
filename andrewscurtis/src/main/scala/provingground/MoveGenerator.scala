@@ -24,7 +24,9 @@ object MoveGenerator {
   }
 
   def genAllMoves(rank: Int, sz: Int): List[Presentation => Presentation] = {
+    val takenone = List(Presentation.id(_))
     val takesz = List(genAllInv(_), genLftMult(_), genRtMult(_), genConjRelators(_))
-    takesz flatMap ((f: Int => List[Presentation => Presentation]) => f(sz))
+    val sz_functions = takesz flatMap ((f: Int => List[Presentation => Presentation]) => f(sz))
+    takenone ++ sz_functions
   }
 }

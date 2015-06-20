@@ -326,6 +326,7 @@ object FreeGroups{
      * moves implemented as functions
      */
 
+    def id(pres: Presentation) = pres
     def inv(pres: Presentation, k: Int) = pres.inv(k)
     def rtmult(pres: Presentation, k: Int, l: Int) = pres.rtmult(k,l)
     def lftmult(pres: Presentation, k: Int, l: Int) = pres.lftmult(k,l)
