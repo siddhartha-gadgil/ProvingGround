@@ -15,6 +15,8 @@ case class Moves(moves: List[Presentation => Presentation]) {
   }
 
   def apply(pres: Presentation) = this.reduce(pres)
+  def apply(that: Moves) = this compose that
+  def apply(that: Presentation => Presentation) = this compose toMoves(that)
 
   def length = moves.length
 
