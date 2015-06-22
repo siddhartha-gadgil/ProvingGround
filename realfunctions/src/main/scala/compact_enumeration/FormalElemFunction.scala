@@ -68,6 +68,16 @@ case object Log extends FormalElemFunction with OneVar{
   override  def toString="log"
 }
 
+case object Sqrt extends FormalElemFunction with OneVar{
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
+    implicitly[ElementaryFunctions[A]].sqrt
+  }
+
+  def derivative: FormalElemFunction = Reciprocal(Negate(Sqrt))
+
+  override  def toString="sqrt"
+}
+
 case class Proj(i: Int) extends FormalElemFunction{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].proj(i)
@@ -232,7 +242,9 @@ object FormalElemFunction{
     val exp : FormalElemFunction = Exp
     val log : FormalElemFunction = Log
 
-    val pi = Pi
+    val sqrt: FormalElemFunction = Sqrt
+    
+    val pi : FormalElemFunction = Pi
 
     val fieldOps = formalFieldOps
 
