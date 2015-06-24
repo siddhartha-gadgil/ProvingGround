@@ -29,7 +29,7 @@ class ApproxTrig(N: SafeLong) {
 
   implicit val appr = new ApproximationContext(width)
 
-  val pi = ConstantBounder(Interval.point(Real.pi.toRational) + E)
+  val pi = ConstantBound(Interval.point(Real.pi.toRational) + E)
 
   lazy val J = Interval.closed(Rational(0), width)
 
@@ -218,9 +218,24 @@ object ApproxTrig{
   @tailrec def get[A](xs: Stream[A], n: SafeLong) : A = {
     if (n ==0) xs.head else get(xs.tail, n-1)
   }
+  
+  
+  
+  import spire.math.Interval._
 
 
-  def ConstantBounder(r: Interval[Rational]) =
+  def getBound[A](J: Bound[A]): Option[A] =  J match{
+    case ValueBound(a) => Some(a)
+    case _ => None
+  }
+  
+  def split[F: Field : Order](J: Interval[F]) = {
+    for (lower <- getBound(J.lowerBound); upper <- getBound(J.upperBound))
+      yield Set(Interval.closed(lower, (lower + upper)/ 2), Interval.closed((lower + upper)/ 2, upper))
+  }
+
+
+  def ConstantBound(r: Interval[Rational]) : Approx =
       ((I: Interval[Rational]) => Some(r))
 
 
@@ -253,7 +268,6 @@ object ApproxTrig{
         val boundsOpt = recSplit(depth) flatMap ((cubelets) =>{
           val bds = cubelets map (func)
           if (bds contains None) None else Some(bds.flatten)
-     //     for (cube <- cubelets; bnd <- func(cube)) yield bnd
           })
         for (bounds <- boundsOpt; unionBound <- Try(bounds.reduce(_ union _)).toOption) yield unionBound
       }
@@ -267,12 +281,12 @@ object ApproxTrig{
   import compact_enumeration.FormalElemFunction
 
   /**
-   * Define functions inside a class extending this,
+   * can define functions inside a class extending this,
    * given by a resolution and a cube, and use coordinate functions on it as well as trignometric functions
    *
    */
   class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with ElementaryFunctions[Approx]{
-      val proj = (i: Int) => ConstantBounder(cube.coords(i))
+      val proj = (i: Int) => ConstantBound(cube.coords(i))
 
       }
 
@@ -290,17 +304,7 @@ object ApproxTrig{
   }
 
 
-  import spire.math.Interval._
 
 
-  def getBound[A](J: Bound[A]): Option[A] =  J match{
-    case ValueBound(a) => Some(a)
-    case _ => None
-  }
-
-  def split[F: Field : Order](J: Interval[F]) = {
-    for (lower <- getBound(J.lowerBound); upper <- getBound(J.upperBound))
-      yield Set(Interval.closed(lower, (lower + upper)/ 2), Interval.closed((lower + upper)/ 2, upper))
-  }
 
 }
