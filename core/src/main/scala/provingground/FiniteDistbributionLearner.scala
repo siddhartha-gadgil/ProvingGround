@@ -117,7 +117,8 @@ object FiniteDistbributionLearner {
 	
 	
 	/**
-	 * Returns a smooth function (M, V) => V, given a parameter index m : M and a dynamical system V => V.
+	 * Returns a smooth function (FD[M], X) => X, given a parameter index m : M and a dynamical system X => X;
+   * the function is the weighted average of the given smooth functions, with weights elements of M.
 	 * set up with implicits inside, so one can use this to map on a list.
 	 */
 	def weightedDyn[M, X :  LinearStructure : InnerProduct]: (
@@ -161,6 +162,26 @@ object FiniteDistbributionLearner {
     if (n <1) init 
     else flow(sum(init, scprod(epsilon, shift(init))), shift, epsilon, n-1)
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 	// Most of the below is to be deprecated.
   
