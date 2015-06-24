@@ -1,32 +1,35 @@
 package provingground.andrewscurtis
 
 import provingground.andrewscurtis.FreeGroups._
+import provingground.andrewscurtis.Moves._
 
 object MoveGenerator {
   
-  def genAllInv(sz: Int): List[Presentation => Presentation] = {
-    (0 until sz).toList map ((x:Int) => ((pres: Presentation) => Presentation.inv(pres, x)))
+  def genAllInv(sz: Int): List[MoveFunction] = {
+    (0 until sz).toList map ((x:Int) => Inv(x))
   }
 
-  def genLftMult(sz: Int): List[Presentation => Presentation] = {
-    val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => ((pres: Presentation) => Presentation.lftmult(pres, k, l)))))
+  def genLftMult(sz: Int): List[MoveFunction] = {
+    val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => LftMult(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genRtMult(sz: Int): List[Presentation => Presentation] = {
-    val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => ((pres: Presentation) => Presentation.rtmult(pres, k, l)))))
+  def genRtMult(sz: Int): List[MoveFunction] = {
+    val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => RtMult(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genConjRelators(sz: Int): List[Presentation => Presentation] = {
-    val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => ((pres: Presentation) => Presentation.conjRelators(pres, k, l)))))
+  def genConj(rank: Int, sz: Int): List[MoveFunction] = {
+    val f = ((k: Int) => ((1 to rank).toList map ((l: Int) => Conj(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genAllMoves(rank: Int, sz: Int): List[Presentation => Presentation] = {
-    val takenone = List(Presentation.id(_))
-    val takesz = List(genAllInv(_), genLftMult(_), genRtMult(_), genConjRelators(_))
-    val sz_functions = takesz flatMap ((f: Int => List[Presentation => Presentation]) => f(sz))
-    takenone ++ sz_functions
+  def genAllMoves(rank: Int, sz: Int): List[MoveFunction] = {
+    val id = List(Id())
+    val inv = genAllInv(sz)
+    val lftmult = genLftMult(sz)
+    val rtmult = genRtMult(sz)
+    val conj = genConj(rank, sz)
+    id ++ inv ++ lftmult ++ rtmult ++ conj
   }
 }
