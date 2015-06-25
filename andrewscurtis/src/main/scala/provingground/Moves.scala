@@ -1,58 +1,94 @@
 package provingground.andrewscurtis
 
 import provingground.andrewscurtis.FreeGroups._
+import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
 
+object MoveFunction {
+  def actOnFDVertices(mf: MoveFunction, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
+}
+
 sealed trait MoveFunction {
-  def apply(pres: Presentation): Presentation
+  def apply(pres: Presentation): Option[Presentation]
+  
+  def apply(opPres: Option[Presentation]): Option[Presentation] = {
+    opPres match {
+      case Some(pres) => this.apply(pres)
+      case None => None
+    }
+  }
+  
   def apply(moves: Moves): Moves = toMoves(this) compose moves
-  def toFunc: Presentation => Presentation = ((x: Presentation) => this(x))
+  
+  def apply(fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = {
+    (fdVertices map ((mv: Moves) => this(mv))).flatten
+  }
+
+  def actOnPres(fdPres: FiniteDistribution[Presentation]): FiniteDistribution[Presentation] = {
+    (fdPres mapOpt ((pres: Presentation) => this(pres))).flatten
+  }
+
   def compose(mf: MoveFunction): Moves = {
     toMoves(this) compose toMoves(mf)
   }
-  def compose(func: Presentation => Presentation): Presentation => Presentation = {
-    ((x: Presentation) => this(func(x)))
-  }
+
+  def toFunc: Presentation => Option[Presentation] = (pres: Presentation) => this(pres)
 }
 
 case class Id() extends MoveFunction {
-  override def apply(pres: Presentation) = pres
+  override def apply(pres: Presentation) = Some(pres)
 }
 
 case class Inv(k: Int) extends MoveFunction {
-  override def apply(pres: Presentation) = pres.inv(k)
+  override def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && k<pres.sz)
+      Some(pres.inv(k))
+    else
+      None
+  }
 }
 
 case class RtMult(k: Int, l: Int) extends MoveFunction {
-  override def apply(pres: Presentation) = pres.rtmult(k,l)
+  override def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
+      Some(pres.rtmult(k,l))
+    else
+      None
+  }
 }
 
 case class LftMult(k: Int, l: Int) extends MoveFunction {
-  override def apply(pres: Presentation) = pres.lftmult(k,l)
+  override def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
+      Some(pres.lftmult(k,l))
+    else
+      None
+  }
 }
 
 case class Conj(k: Int, l: Int) extends MoveFunction {
-  override def apply(pres: Presentation) = pres.conj(k,l)
-}
-
-object MoveFunction {
-  def toFunction(mf: MoveFunction) = mf.toFunc
+  override def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && l>0 && k<pres.sz && l<=pres.rank)
+      Some(pres.conj(k,l))
+    else
+      None
+  }
 }
 
 case class Moves(moves: List[MoveFunction]) {
-  def reduce: Presentation => Presentation = {
+  def reduce: Presentation => Option[Presentation] = {
     if(moves.isEmpty)
-      Presentation.id(_)
+      (pres: Presentation) => Some(pres)
     else {
-      val f = ((x: Presentation => Presentation, y: Presentation => Presentation) => x compose y)
-      (moves map ((m: MoveFunction) => m.toFunc)) reduce f
+      val f = (x: Presentation => Option[Presentation], y: Presentation => Option[Presentation]) => liftOption(x) compose y
+      (moves map ((mf: MoveFunction) => mf.toFunc)) reduce f
     }
   }
 
   def apply(pres: Presentation) = this.reduce(pres)
   def apply(that: Moves) = this compose that
-  def apply(that: Presentation => Presentation) = this.reduce compose that
+  def apply(that: Presentation => Option[Presentation]) = liftOption(this.reduce) compose that
   def apply(that: MoveFunction) = this compose that
 
   def length = moves.length
@@ -66,4 +102,18 @@ case class Moves(moves: List[MoveFunction]) {
 
 object Moves {
   implicit def toMoves(move: MoveFunction): Moves = Moves(List(move))
+
+  def liftOption[A](f: A => Option[A]): Option[A] => Option[A] = {
+    def lifted_f(a: Option[A]): Option[A] = {
+      if(a.isDefined)
+        f(a.get)
+      else
+        None
+    }
+    lifted_f
+  }
+
+  def liftResult[A](f: A => A): A => Option[A] = {
+    (a: A) => Some(f(a))
+  }
 }
