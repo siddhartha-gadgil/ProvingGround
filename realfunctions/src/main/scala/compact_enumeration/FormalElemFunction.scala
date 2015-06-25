@@ -34,6 +34,10 @@ trait OneVar extends FormalElemFunction {
   def partialDerivative(j: Int) : FormalElemFunction = if (j ==0) derivative else Zero
 }
 
+trait ConstFunc extends OneVar{
+  def derivative = Zero
+}
+
 import FormalElemFunction._
 
 import FieldOpsSyms._
@@ -109,32 +113,32 @@ case object Exp extends FormalElemFunction with OneVar{
   override  def toString="sin"
 }
 
-case object One extends FormalElemFunction with OneVar{
+case object One extends FormalElemFunction with ConstFunc{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
 
-  def derivative: FormalElemFunction = Zero
+//  def derivative: FormalElemFunction = Zero
 
   override  def toString="1"
 }
 
-case object Zero extends FormalElemFunction with OneVar{
+case object Zero extends FormalElemFunction with ConstFunc{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
 
-  def derivative: FormalElemFunction = Zero
+//  def derivative: FormalElemFunction = Zero
 
   override  def toString="0"
 }
 
-case object Pi extends FormalElemFunction with OneVar{
+case object Pi extends FormalElemFunction with ConstFunc{
   def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].pi
   }
 
-  def derivative: FormalElemFunction = Zero
+//  def derivative: FormalElemFunction = Zero
 
   override  def toString="\u220f"
 }
@@ -295,6 +299,17 @@ object FormalElemFunction{
 
   import Circ._
 
-  
+  def multiVar: FormalElemFunction => Boolean = {
+    case Proj(_) => true
+    case Negate(f) => multiVar(f)
+    case Reciprocal(f) => multiVar(f)
+    case Plus(x, y) => multiVar(x) && multiVar(y)
+    case Times(x, y) => multiVar(x) && multiVar(y)
+    case Compose(x, y) => multiVar(y)
+    case Pi => true
+    case One => true
+    case _ : ConstFunc => true
+    case _ : OneVar => false
+  } 
 
 }
