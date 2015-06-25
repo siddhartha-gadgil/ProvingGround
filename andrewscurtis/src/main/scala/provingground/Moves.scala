@@ -5,6 +5,10 @@ import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
 
+object MoveFunction {
+  def actOnFDVertices(mf: MoveFunction, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
+}
+
 sealed trait MoveFunction {
   def apply(pres: Presentation): Option[Presentation]
   
@@ -17,6 +21,14 @@ sealed trait MoveFunction {
   
   def apply(moves: Moves): Moves = toMoves(this) compose moves
   
+  def apply(fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = {
+    (fdVertices map ((mv: Moves) => this(mv))).flatten
+  }
+
+  def actOnPres(fdPres: FiniteDistribution[Presentation]): FiniteDistribution[Presentation] = {
+    (fdPres mapOpt ((pres: Presentation) => this(pres))).flatten
+  }
+
   def compose(mf: MoveFunction): Moves = {
     toMoves(this) compose toMoves(mf)
   }
