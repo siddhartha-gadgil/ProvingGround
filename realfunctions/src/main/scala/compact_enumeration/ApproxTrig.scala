@@ -42,7 +42,7 @@ class ApproxTrig(N: SafeLong) {
     /**
    * returns bound on a positive interval,
    * given a bound, with index k, for the
-   * function in [k/N, (k+1)/N]
+   * function in in [(k -1)/N, k/N] (or [0, 0] if k = 0
    * 
    * @param stream bound for function on [k/N, (k+1)/N] is stream(n)
    * @param xs interval whose image is bounded.
@@ -58,19 +58,20 @@ class ApproxTrig(N: SafeLong) {
 
         val endOpt = getBound((xs * N).upperBound map (_.ceil.toInt))
 
-        def stop(start: Int, end: Int) = if (start < end) end - 1 else end
+        def begin(start: Int, end: Int) = if (start < end) start + 1 else start
 
         val imagesOpt = for (start <- startOpt; end <- endOpt) yield
-          for (j <- start to stop(start, end)) yield stream(j)
+          for (j <- begin(start, end) to end) yield stream(j)
 
         imagesOpt map (_.reduce (_ union _))
 
   }
+  
+  def monotoneBound(endBound: Int => Interval[Rational]) : Int => Interval[Rational] = 
+    (k) => if (k ==0) endBound(k) else endBound(k-1) + endBound(k)
 
   /**
    * returns bound on an interval
-   * given a bound, with index k, for the
-   * function in [k/N, (k+1)/N]
    * 
    * @param stream bound for function on [k/N, (k+1)/N] is stream(n)
    * @param xs interval whose image is bounded.
@@ -81,7 +82,7 @@ class ApproxTrig(N: SafeLong) {
       inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) =
       {
     val split = xs.splitAtZero
-    for (a <- spanPositive(stream)(split._2); b <- spanPositive(stream)(split._1)) yield
+    for (a <- spanPositive(stream)(split._2); b <- spanPositive(stream)(-split._1)) yield
       a union inv(b)
       }
 
@@ -99,9 +100,9 @@ class ApproxTrig(N: SafeLong) {
     })
 
   /**
-   * bound on exponential on the interval [k/N, (k+1)/N]
+   * bound on exponential on the interval [(k-1)/N, k/N]
    */
-  def expBound(n: Int) = expStream(n) + expStream(n + 1)
+  val expBound = monotoneBound(expStream)
 
     /**
  * exponential approximated on positive and negative sides.
@@ -137,18 +138,19 @@ class ApproxTrig(N: SafeLong) {
 
   
   /**
-   * bound on log(1 + x) for x in [k/N, (k+1)/N] at index k.
+   * bound on log(1 + x) for x in [(k-1)/N, k/N] at index k.
    */
-  def logBound(n: Int) = logStream(n) + logStream(n + 1)
+  val logBound = monotoneBound(logStream)
   
   def logOptBounds(xs: Interval[Rational]) =
-    if (xs.hasAtOrBelow(0)) None
+    if (xs.hasAtOrBelow(0)) None // log(-x) not defined
     else {
       val spl = xs.split(1)
-      val aboveOneOpt = spanPositive(logBound)(spl._2 - 1)
-      val belowOneOpt = spanPositive(logBound)((Interval.point(r"1") / spl._1) - 1) map ((I) => -I)
+      val aboveOneOpt = spanPositive(logBound)(spl._2 - 1) // bound log(1+x), x>1
+      val belowOneOpt = 
+        spanPositive(logBound)((Interval.point(r"1") / spl._1) - 1) map ((I) => -I) //for x in (0, 1), use log(x) = -log(1/x) = -log(1 + (1/x-1))
 
-      for (aboveOne <- aboveOneOpt; belowOne <- belowOneOpt) yield (aboveOne + belowOne)
+      for (aboveOne <- aboveOneOpt; belowOne <- belowOneOpt) yield (aboveOne + belowOne) // union bound
     }
 
 
