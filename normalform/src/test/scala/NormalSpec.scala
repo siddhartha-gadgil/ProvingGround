@@ -1,5 +1,5 @@
 import provingground.normalform._
-import provingground.normalform.TopLevel._
+import provingground.normalform.NormalForm._
 import org.scalatest._
 
 class MainStuctureSpec extends FlatSpec {

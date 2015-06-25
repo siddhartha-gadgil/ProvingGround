@@ -75,6 +75,25 @@ class WordSpec extends FlatSpec {
   }
 }
 
+class WordObjectSpec extends FlatSpec {
+  "Object Word" should "convert a list of Chars to an appropriate list of Ints" in {
+    val a = List(1,2,-3,4,-2,-1)
+    assert(a === Word.listFromChars(Word(a).toString.toList))
+  }
+
+  it should "convert a string to a word" in {
+    val a = Word(List(1,2,-3,-3,-1,3,-1))
+    assert(a === Word.fromString(a.toString))
+  }
+
+
+  it should "convert apply to a string and return a Word" in {
+    val a = Word(List(1,2,-3,-3,-1,3,-1))
+    assert(a === Word(a.toString))
+  }
+
+}
+
 class PresentationSpec extends FlatSpec {
   "A Presentation" should "have a size" in {
     val a = Word(List(1,2,-1))
@@ -86,8 +105,8 @@ class PresentationSpec extends FlatSpec {
 
   it should "have a well defined defect" in {
     val a = Word(List(1,2,-1))
-    val p1 = Presentation(List(a), 1)
-    val p2 = Presentation(List(a,a), 1)
+    val p1 = Presentation(List(a,a), 2)
+    val p2 = Presentation(List(a,a,a), 2)
     val p3 = Presentation(List(a), 2)
     val p4 = Presentation(List(a,a), 2)
     assert(p1.defect === 0)
@@ -111,6 +130,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(a, Word(List(-2,-3)), c), 3)
     assert(p.inv(1) === result)
+    assert(Presentation.inv(p, 1) === result)
   }
 
   it should "allow right multiplication by a relation" in {
@@ -121,6 +141,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(a,b,ca), 3)
     assert(p.rtmult(2,0) === result)
+    assert(Presentation.rtmult(p,2,0) === result)
   }
 
   it should "allow left multiplication by a relation" in {
@@ -131,6 +152,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c), 3)
     val result = Presentation(List(ca,b,c), 3)
     assert(p.lftmult(0,2) === result)
+    assert(Presentation.lftmult(p,0,2) === result)
   }
 
   it should "allow conjugation by a generator" in {
@@ -141,6 +163,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(a,d,c),3)
     assert(p.conj(1,1) === result)
+    assert(Presentation.conj(p,1,1) === result)
   }
 
   it should "allow conjugation by relators" in {
@@ -151,6 +174,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(a,d,c),3)
     assert(p.conjRelators(1,0) === result)
+    assert(Presentation.conjRelators(p,1,0) === result)
   }
 
   it should "allow Andrews Curtis stablization, i.e, adding another generator" in {
@@ -161,6 +185,7 @@ class PresentationSpec extends FlatSpec {
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(d,a,b,c), 4)
     assert(p.ACstab === result)
+    assert(Presentation.ACstab(p) === result)
   }
 
   it should "allow Tietze stablization, i.e, adding the identity word" in {
@@ -169,6 +194,38 @@ class PresentationSpec extends FlatSpec {
     val c = Word(List(1,3,-1))
     val p = Presentation(List(a,b,c),3)
     val result = Presentation(List(Word(Nil), a,b,c),3)
-    assert(p.ttzStab === result)
+    assert(Presentation.ttzStab(p) === result)
+  }
+
+  it should "tell whether it's Andrews Curtis stabilized or not" in {
+    val a = Word(List(1,2))
+    val b = Word(List(2,3))
+    val c = Word(List(3))
+    val d = Word(List(4))
+    val p1 = Presentation(List(a,b,c),4)
+    val p2 = Presentation(List(a,b,d),4)
+    assert(p1.ACstabilized === false)
+    assert(p2.ACstabilized === true)
+  }
+}
+
+class PresentationObject extends FlatSpec {
+  "Object Presentation" should "interpret a string as a presentation" in {
+  val a = Word(List(1,2))
+  val b = Word(List(2,3))
+  val c = Word(List(3))
+  val p1 = Presentation(List(a,b,c),4)
+  assert(p1 === Presentation.fromString(p1.toString))
+  }
+
+  it should "apply on a string and return a presentation" in {
+  val a = Word(List(1,2,-3))
+  val p1 = Presentation(List(a),3)
+  assert(p1 === Presentation(3, a.toString))
+  }
+
+  it should "have a trivial Presentation" in {
+    val p = Presentation((1 to 4).toList map ((x:Int) => Word(List(x))), 4)
+    assert(Presentation.trivial(4) === p)
   }
 }
