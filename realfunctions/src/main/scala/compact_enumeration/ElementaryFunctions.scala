@@ -4,7 +4,8 @@ import compact_enumeration.FieldOps._
 /**
  * @author gadgil
  * 
- * Elementary functions with values in A.
+ * Elementary functions of type  A (e.g. A = Real => Real).
+ * this is not quite correct for multi-variable functions.
  */
 trait ElementaryFunctions[A]{
   val sin : A
