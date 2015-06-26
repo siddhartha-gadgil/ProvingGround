@@ -4,27 +4,27 @@ import provingground.andrewscurtis.FreeGroups._
 import provingground.andrewscurtis.Moves._
 
 object MoveGenerator {
-  
-  def genAllInv(sz: Int): List[MoveFunction] = {
+
+  def genAllInv(sz: Int): List[AtomicMove] = {
     (0 until sz).toList map ((x:Int) => Inv(x))
   }
 
-  def genLftMult(sz: Int): List[MoveFunction] = {
+  def genLftMult(sz: Int): List[AtomicMove] = {
     val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => LftMult(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genRtMult(sz: Int): List[MoveFunction] = {
+  def genRtMult(sz: Int): List[AtomicMove] = {
     val f = ((k: Int) => ((0 until sz).toList map ((l: Int) => RtMult(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genConj(rank: Int, sz: Int): List[MoveFunction] = {
+  def genConj(rank: Int, sz: Int): List[AtomicMove] = {
     val f = ((k: Int) => ((1 to rank).toList map ((l: Int) => Conj(k,l))))
     (0 until sz).toList flatMap f
   }
 
-  def genAllMoves(rank: Int, sz: Int): List[MoveFunction] = {
+  def genAllMoves(rank: Int, sz: Int): List[AtomicMove] = {
     val id = List(Id())
     val inv = genAllInv(sz)
     val lftmult = genLftMult(sz)
