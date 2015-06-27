@@ -15,4 +15,10 @@ object DiffStructure {
   }
 
   def genCollection(lst: List[AtomicMove]) = lst map genWtDyn
+
+  def addCollection(lst: List[AtomicMove]) = vbigsum(genCollection(lst))
+
+  def genExtendM(lst: List[AtomicMove]) = extendM(addCollection(lst))
+
+  def iterateDiff(lst: List[AtomicMove], n: Int = 5) = iterate(genExtendM(lst))(n)
 }
