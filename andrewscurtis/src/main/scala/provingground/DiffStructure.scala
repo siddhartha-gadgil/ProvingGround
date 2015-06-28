@@ -1,5 +1,6 @@
 package provingground.andrewscurtis
 
+import provingground.andrewscurtis.FreeGroups._
 import provingground.Collections._
 import provingground.FiniteDistributionLearner._
 import provingground.DiffbleFunction._
@@ -26,5 +27,14 @@ object DiffStructure {
 
   def genProjectionMap(rank: Int, iterations: Int = 5)(lst: List[AtomicMove]) = {
     iterateDiff(lst, iterations) andthen projectV andthen genPresentationMoveFn(rank)
+  }
+
+  def getFeedback(presCntn: Double, wrdCntn: Double)(dist: FiniteDistribution[Presentation]) = {
+    val baseweight = presentationWeight(_: Presentation, presCntn, wrdCntn)
+    dist.feedback(baseweight)
+  }
+
+  def addFeedback(presCntn: Double, wrdCntn: Double)(dist: FiniteDistribution[Presentation]) = {
+    vbigsum(List(dist, getFeedback(presCntn, wrdCntn)(dist)))
   }
 }

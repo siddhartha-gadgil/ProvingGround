@@ -42,6 +42,7 @@ sealed trait AtomicMove {
 
 case class Id() extends AtomicMove {
   override def apply(pres: Presentation) = Some(pres)
+  override def actOnMoves(moves: Moves) = Some(moves)
 }
 
 case class Inv(k: Int) extends AtomicMove {
