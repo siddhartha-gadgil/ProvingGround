@@ -20,5 +20,11 @@ object DiffStructure {
 
   def genExtendM(lst: List[AtomicMove]) = extendM(addCollection(lst))
 
-  def iterateDiff(lst: List[AtomicMove], n: Int = 5) = iterate(genExtendM(lst))(n)
+  def iterateDiff(lst: List[AtomicMove], iterations: Int = 5) = iterate(genExtendM(lst))(iterations)
+
+  def genPresentationMoveFn(rank: Int) = moveFn(Moves.actOnTriv(rank)(_: Moves))
+
+  def genProjectionMap(rank: Int, iterations: Int = 5)(lst: List[AtomicMove]) = {
+    iterateDiff(lst, iterations) andthen projectV andthen genPresentationMoveFn(rank)
+  }
 }

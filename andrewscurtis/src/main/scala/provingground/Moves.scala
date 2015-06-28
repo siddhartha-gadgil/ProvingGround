@@ -120,4 +120,6 @@ object Moves {
   def liftResult[A](f: A => A): A => Option[A] = {
     (a: A) => Some(f(a))
   }
+
+  def actOnTriv(rank: Int)(mvs: Moves) = mvs.actOnTriv(rank)
 }
