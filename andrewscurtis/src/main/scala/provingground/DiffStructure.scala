@@ -34,7 +34,13 @@ object DiffStructure {
     dist.feedback(baseweight)
   }
 
-  def addFeedback(presCntn: Double, wrdCntn: Double)(dist: FiniteDistribution[Presentation]) = {
-    vbigsum(List(dist, getFeedback(presCntn, wrdCntn)(dist)))
+  def conjugateByFeedback(presCntn: Double, wrdCntn: Double)(rank: Int, iterations: Int = 5)(lst: List[AtomicMove]) = {
+    val projectionMap = genProjectionMap(rank, iterations)(lst)
+    projectionMap.^:(getFeedback(presCntn, wrdCntn)(_: FiniteDistribution[Presentation]))
+  }
+
+  def genDynamics(conjFunc: ((FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) => (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]))(orig: (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]), scale: Double = 1) = {
+    val sumRes = conjFunc(orig)
+    (orig._1 ++ sumRes._1*scale, orig._2 ++ sumRes._2*scale)
   }
 }
