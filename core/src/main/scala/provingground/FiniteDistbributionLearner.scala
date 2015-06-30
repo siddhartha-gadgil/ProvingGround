@@ -12,7 +12,7 @@ import annotation._
  * The components are built from: moves (partial functions), partial combinations and islands.
  *
  */
-object FiniteDistbributionLearner {
+object FiniteDistributionLearner {
 	/**
 	 * An atom for a finite distribution
 	 */

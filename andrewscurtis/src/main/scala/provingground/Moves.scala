@@ -4,43 +4,48 @@ import provingground.andrewscurtis.FreeGroups._
 import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
+import AtomicMove._
 
-object MoveFunction {
-  def actOnFDVertices(mf: MoveFunction, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
+object AtomicMove {
+  def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
+  implicit def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
 }
 
-sealed trait MoveFunction {
+sealed trait AtomicMove {
   def apply(pres: Presentation): Option[Presentation]
-  
+
   def apply(opPres: Option[Presentation]): Option[Presentation] = {
     opPres match {
       case Some(pres) => this.apply(pres)
       case None => None
     }
   }
-  
-  def apply(moves: Moves): Moves = toMoves(this) compose moves
-  
+
+  def apply(moves: Moves): Option[Moves] = this.actOnMoves(moves)
+
   def apply(fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = {
-    (fdVertices map ((mv: Moves) => this(mv))).flatten
+    (fdVertices mapOpt ((mv: Moves) => this(mv))).flatten
   }
+
+  def actOnMoves(moves: Moves): Option[Moves] = Some(toMoves(this) compose moves)
 
   def actOnPres(fdPres: FiniteDistribution[Presentation]): FiniteDistribution[Presentation] = {
     (fdPres mapOpt ((pres: Presentation) => this(pres))).flatten
   }
 
-  def compose(mf: MoveFunction): Moves = {
+  def compose(mf: AtomicMove): Moves = {
     toMoves(this) compose toMoves(mf)
   }
 
   def toFunc: Presentation => Option[Presentation] = (pres: Presentation) => this(pres)
 }
 
-case class Id() extends MoveFunction {
+case class Id() extends AtomicMove {
   override def apply(pres: Presentation) = Some(pres)
+  override def actOnMoves(moves: Moves) = Some(moves)
 }
 
-case class Inv(k: Int) extends MoveFunction {
+case class Inv(k: Int) extends AtomicMove {
   override def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && k<pres.sz)
       Some(pres.inv(k))
@@ -49,7 +54,7 @@ case class Inv(k: Int) extends MoveFunction {
   }
 }
 
-case class RtMult(k: Int, l: Int) extends MoveFunction {
+case class RtMult(k: Int, l: Int) extends AtomicMove {
   override def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
       Some(pres.rtmult(k,l))
@@ -58,7 +63,7 @@ case class RtMult(k: Int, l: Int) extends MoveFunction {
   }
 }
 
-case class LftMult(k: Int, l: Int) extends MoveFunction {
+case class LftMult(k: Int, l: Int) extends AtomicMove {
   override def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
       Some(pres.lftmult(k,l))
@@ -67,29 +72,29 @@ case class LftMult(k: Int, l: Int) extends MoveFunction {
   }
 }
 
-case class Conj(k: Int, l: Int) extends MoveFunction {
+case class Conj(k: Int, l: Int) extends AtomicMove {
   override def apply(pres: Presentation): Option[Presentation] = {
-    if(k>=0 && l>0 && k<pres.sz && l<=pres.rank)
+    if(k>=0 && math.abs(l)>0 && k<pres.sz && math.abs(l)<=pres.rank)
       Some(pres.conj(k,l))
     else
       None
   }
 }
 
-case class Moves(moves: List[MoveFunction]) {
+case class Moves(moves: List[AtomicMove]) {
   def reduce: Presentation => Option[Presentation] = {
     if(moves.isEmpty)
       (pres: Presentation) => Some(pres)
     else {
       val f = (x: Presentation => Option[Presentation], y: Presentation => Option[Presentation]) => liftOption(x) compose y
-      (moves map ((mf: MoveFunction) => mf.toFunc)) reduce f
+      (moves map ((mf: AtomicMove) => mf.toFunc)) reduce f
     }
   }
 
   def apply(pres: Presentation) = this.reduce(pres)
   def apply(that: Moves) = this compose that
   def apply(that: Presentation => Option[Presentation]) = liftOption(this.reduce) compose that
-  def apply(that: MoveFunction) = this compose that
+  def apply(that: AtomicMove) = this compose that
 
   def length = moves.length
 
@@ -101,7 +106,7 @@ case class Moves(moves: List[MoveFunction]) {
 }
 
 object Moves {
-  implicit def toMoves(move: MoveFunction): Moves = Moves(List(move))
+  implicit def toMoves(move: AtomicMove): Moves = Moves(List(move))
 
   def liftOption[A](f: A => Option[A]): Option[A] => Option[A] = {
     def lifted_f(a: Option[A]): Option[A] = {
@@ -116,4 +121,6 @@ object Moves {
   def liftResult[A](f: A => A): A => Option[A] = {
     (a: A) => Some(f(a))
   }
+
+  def actOnTriv(rank: Int)(mvs: Moves) = mvs.actOnTriv(rank)
 }
