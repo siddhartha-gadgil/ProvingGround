@@ -29,18 +29,18 @@ object DiffStructure {
     iterateDiff(lst, iterations) andthen projectV andthen genPresentationMoveFn(rank)
   }
 
-  def getFeedback(presCntn: Double, wrdCntn: Double)(dist: FiniteDistribution[Presentation]) = {
+  def getFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(dist: FiniteDistribution[Presentation]) = {
     val baseweight = presentationWeight(_: Presentation, presCntn, wrdCntn)
-    dist.feedback(baseweight)
+    dist.feedback(baseweight) * scale
   }
 
-  def conjugateByFeedback(presCntn: Double, wrdCntn: Double)(rank: Int, iterations: Int = 5)(lst: List[AtomicMove]) = {
+  def conjugateByFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[AtomicMove]) = {
     val projectionMap = genProjectionMap(rank, iterations)(lst)
-    projectionMap.^:(getFeedback(presCntn, wrdCntn)(_: FiniteDistribution[Presentation]))
+    projectionMap.^:(getFeedback(presCntn, wrdCntn, scale)(_: FiniteDistribution[Presentation]))
   }
 
-  def genDynamics(conjFunc: ((FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) => (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]))(orig: (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]), scale: Double = 1) = {
+  def genDynamics(conjFunc: ((FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) => (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]))(orig: (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) = {
     val sumRes = conjFunc(orig)
-    (orig._1 ++ sumRes._1*scale, orig._2 ++ sumRes._2*scale)
+    (orig._1 ++ sumRes._1, orig._2 ++ sumRes._2)
   }
 }
