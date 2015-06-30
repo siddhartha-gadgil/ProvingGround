@@ -117,9 +117,9 @@ object FiniteDistributionLearner {
 
 
 	/**
-	 * Returns a smooth function (FD[M], X) => X, given a parameter index m : M and a dynamical system X => X;
-   * the function is the weighted average of the given smooth functions, with weights elements of M.
-	 * set up with implicits inside, so one can use this to map on a list.
+	 * Returns a smooth function (FD[M], X) => X, given a parameter index m : M and a dynamical system f: X => X;
+   * the system f should correspond to m. For a distribution p in FD[M], if p(m) denotes the value at m,
+		* the smooth function being defined is p(m)f.
 	 */
 	def weightedDyn[M, X :  LinearStructure : InnerProduct]: (
 	        M,  DiffbleFunction[X, X]

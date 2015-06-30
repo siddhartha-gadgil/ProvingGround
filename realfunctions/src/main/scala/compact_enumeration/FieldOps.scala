@@ -91,14 +91,14 @@ object FieldOps {
    */
   implicit def intervalFieldOps[F : Field : Order] = new FieldOps[Interval[F]]{
     def negate(x: spire.math.Interval[F]): spire.math.Interval[F] = -x
-    
+
     def zero: spire.math.Interval[F] = Interval.point(Field[F].zero)
-    
+
     def plus(x: spire.math.Interval[F],y: spire.math.Interval[F]): spire.math.Interval[F] = x + y
-    
+
     def div(x: spire.math.Interval[F],y: spire.math.Interval[F]): spire.math.Interval[F] = x/y
-    
-    def one: spire.math.Interval[F] = ???
+
+    def one: spire.math.Interval[F] = Interval.point(Field[F].one)
     
     def times(x: spire.math.Interval[F],y: spire.math.Interval[F]): spire.math.Interval[F] = x * y
   }
@@ -111,18 +111,18 @@ object FieldOps {
   implicit def funcFieldOps[A, F: FieldOps] : FieldOps[A => F] = new FieldOps[A => F]{
     val fl = implicitly[FieldOps[F]]
     import FieldOpsSyms._
-    
+
     def negate(x: A => F): A => F = (a) => -x(a)
-    
+
     def zero: A => F = (a) => fl.zero
-    
+
     def plus(x: A => F,y: A => F): A => F = (a) => x(a) + y(a)
 
-   
+
     def div(x: A => F,y: A => F): A => F = (a) => x(a) / y(a)
-    
+
     def one: A => F = (a) => fl.one
-    
+
     def times(x: A => F,y: A => F): A => F = (a) => x(a) * y(a)
   }
 
@@ -132,19 +132,19 @@ object FieldOps {
   implicit def OptFieldStruct[A, F: FieldOps] = new FieldOps[A => Option[F]]{
     val fl = implicitly[FieldOps[F]]
     import FieldOpsSyms._
-    
+
     def negate(x: A => Option[F]): A => Option[F] = (a) => x(a) map ((b) => -b)
-    
+
     def zero: A => Option[F] = (a) => Some(fl.zero)
-    
+
     def plus(x: A => Option[F],y: A => Option[F]): A => Option[F] =
       (a) => for (p <- x(a); q <- y(a)) yield p + q
-    
+
     def div(x: A => Option[F],y: A => Option[F]): A => Option[F] =
       (a) => for (p <- x(a); q <- y(a); r <- Try(p/q).toOption) yield r
-    
+
     def one: A => Option[F] = (a) => Some(fl.one)
-    
+
     def times(x: A => Option[F],y: A => Option[F]): A => Option[F] =
       (a) => for (p <- x(a); q <- y(a)) yield p * q
 

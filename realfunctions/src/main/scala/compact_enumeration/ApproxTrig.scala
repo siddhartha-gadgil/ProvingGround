@@ -53,6 +53,9 @@ class ApproxTrig(N: SafeLong) {
       xs: Interval[Rational]) : Option[Interval[Rational]] =
       if (xs.isEmpty) Some(Interval.empty)
       else {
+        assert(!xs.hasBelow(0), 
+            s"""spanPositive should have input a positive interval,
+              tried to bound on $xs""")
         import ApproxTrig.getBound
         val startOpt = getBound((xs * N).lowerBound map (_.floor.toInt))
 
@@ -67,6 +70,9 @@ class ApproxTrig(N: SafeLong) {
 
   }
   
+  /**
+   * for a monotonic function, gives bound on [(k-1)/N, k/N] given bound at the point k/N.
+   */
   def monotoneBound(endBound: Int => Interval[Rational]) : Int => Interval[Rational] = 
     (k) => if (k ==0) endBound(k) else endBound(k-1) + endBound(k)
 
@@ -170,15 +176,16 @@ class ApproxTrig(N: SafeLong) {
 
     lazy val endsBound = lftBound union rghtBound // bound based on f" + f at both endpoints.
 
-    lazy val derImage = b union (b + (endsBound * width * 2))
+    lazy val derImage = b union (b + (endsBound * width * 2)) // bound on image of derivative
 
-    lazy val derSignChange = derImage.crossesZero
+    lazy val derSignChange = derImage.crossesZero // check if derivative can a priori cross 0
 
     implicit val appr = new ApproximationContext(width)
 
     lazy val b2c2 = (b.pow(2) * 2 + c.pow(2)).sqrt + Interval.closed(-width, width)
 
-    lazy val discriminantNonNegative = ((-c - b2c2) union (-c + b2c2))/(Rational(4))
+    lazy val discriminantNonNegative = 
+      ((-c - b2c2) union (-c + b2c2))/(Rational(4)) // interval outside which discriminant is non-negative
 
     lazy val a = if (derSignChange && (endsBound intersects discriminantNonNegative))
       endsBound union discriminantNonNegative else endsBound
