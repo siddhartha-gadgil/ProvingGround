@@ -74,7 +74,7 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
 
 case class Conj(k: Int, l: Int) extends AtomicMove {
   override def apply(pres: Presentation): Option[Presentation] = {
-    if(k>=0 && l>0 && k<pres.sz && l<=pres.rank)
+    if(k>=0 && math.abs(l)>0 && k<pres.sz && math.abs(l)<=pres.rank)
       Some(pres.conj(k,l))
     else
       None

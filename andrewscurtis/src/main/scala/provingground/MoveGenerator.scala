@@ -20,7 +20,8 @@ object MoveGenerator {
   }
 
   def genConj(rank: Int, sz: Int): List[AtomicMove] = {
-    val f = ((k: Int) => ((1 to rank).toList map ((l: Int) => Conj(k,l))))
+    val all_gens = (1 to rank).toList flatMap ((x: Int) => List(x, -1*x))
+    val f = ((k: Int) => (all_gens map ((l: Int) => Conj(k,l))))
     (0 until sz).toList flatMap f
   }
 
