@@ -240,8 +240,8 @@ object Collections{
        * add another distribution without normalizing
        */
       def ++(that: FiniteDistribution[T]) = {
-        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k))).toSet
-        FiniteDistribution(combined.toSet, epsilon)
+        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k)))
+        FiniteDistribution(combined, epsilon)
       }
 
       /**
@@ -312,7 +312,10 @@ object Collections{
       
       def apply[T](tws : (T, Double)*) : FiniteDistribution[T] = {
         FiniteDistribution(
-            tws.toSet map ((tw : (T, Double)) => Weighted(tw._1, tw._2))) 
+            Weighted.flatten(
+                tws.toSeq map ((tw : (T, Double)) => Weighted(tw._1, tw._2))
+                ).toSet
+                ) 
       }
     }
 
