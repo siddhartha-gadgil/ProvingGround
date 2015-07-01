@@ -82,6 +82,7 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
 }
 
 case class Moves(moves: List[AtomicMove]) {
+  /*
   def reduce: Presentation => Option[Presentation] = {
     if(moves.isEmpty)
       (pres: Presentation) => Some(pres)
@@ -90,7 +91,14 @@ case class Moves(moves: List[AtomicMove]) {
       (moves map ((mf: AtomicMove) => mf.toFunc)) reduce f
     }
   }
-
+*/      
+  def reduce : Presentation => Option[Presentation] = (pres) => {
+    def act(mv: AtomicMove, op: Option[Presentation]) = {
+      op flatMap ((p) => mv(p))
+      }
+    (moves :\ (Some(pres) : Option[Presentation]))(act)
+    }
+  
   def apply(pres: Presentation) = this.reduce(pres)
   def apply(that: Moves) = this compose that
   def apply(that: Presentation => Option[Presentation]) = liftOption(this.reduce) compose that
@@ -106,6 +114,8 @@ case class Moves(moves: List[AtomicMove]) {
 }
 
 object Moves {
+  def empty = Moves(List.empty)
+  
   implicit def toMoves(move: AtomicMove): Moves = Moves(List(move))
 
   def liftOption[A](f: A => Option[A]): Option[A] => Option[A] = {
