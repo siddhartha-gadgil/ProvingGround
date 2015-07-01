@@ -13,7 +13,7 @@ object ACrun {
   
   val np = nullpres                               //> np  : provingground.FreeGroups.Presentation = <; >
   
-  val presdest = FiniteDistribution(Seq(Weighted(np, 1.0)))
+  val presdest = FiniteDistribution(Set(Weighted(np, 1.0)))
                                                   //> presdest  : provingground.Collections.FiniteDistribution[provingground.FreeG
                                                   //| roups.Presentation] = [<; > : 1.0]
   
@@ -34,7 +34,7 @@ object ACrun {
                                                   //| gground.AndrewsCurtisModel.ACMoveType] = provingground.MoveLearner@76956344
   
   
-  val dst = l.DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), unifmoves, 0.7).norm
+  val dst = l.DynDst(FiniteDistribution(Set(Weighted(nullpres, 1.0))), unifmoves, 0.7).norm
                                                   //> dst  : Double = 2.7
 
  

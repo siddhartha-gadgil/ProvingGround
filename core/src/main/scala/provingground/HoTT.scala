@@ -94,20 +94,20 @@ object HoTT{
 
       def newobj = typ.obj.asInstanceOf[AtomicTerm]
     }
-    
+
     trait ConstantTerm extends Term{
       def subs(x: Term, y: Term) = this
-      
+
       def newobj = this
     }
 
     trait ConstantTyp extends Typ[Term]{
       def subs(x: Term, y: Term) = this
-      
+
       def newobj = this
-      
+
       def symbObj(name: AnySym) = SymbObj(name, this)
-      
+
       val typ = __
     }
 
@@ -129,11 +129,11 @@ object HoTT{
           object newname extends AnySym
           symbObj(newname)
         }
-        
+
         object Elem{
           def apply(u: Term) : Term = u !: self
-          
-          def unapply(term: Term): Option[U] = 
+
+          def unapply(term: Term): Option[U] =
             if (term.typ == self) Try(Some(term.asInstanceOf[U])).getOrElse(None) else None
         }
 
@@ -451,32 +451,32 @@ object HoTT{
 
     override def toString = s"""(($first) , ($second))"""
 	}
-  
+
   object AbsPair{
     def apply(x: Term, y: Term) = mkPair(x, y)
-    
+
     def unapply(x: Term) : Option[(Term, Term)] = x match {
       case ab : AbsPair[_, _] => Some((ab.first, ab.second))
       case _ => None
     }
   }
-  
+
   object Tuple{
     def apply(xs: Term*) : Term = xs.toList match {
       case List() => Star
       case List(x) => x
       case x :: ys => AbsPair(x, apply(ys : _*))
     }
-    
+
     def asTuple(x: Term) : List[Term] = x match {
       case Star => List()
       case AbsPair(x, y) => x :: asTuple(y)
       case _ => List(x)
     }
-    
-    def unapplySeq(x: Term) : Option[Seq[Term]] = 
+
+    def unapplySeq(x: Term) : Option[Seq[Term]] =
       if (x == Star) None else Some(asTuple(x))
-    
+
   }
 
 	/**
@@ -654,18 +654,18 @@ object HoTT{
     case class NamedDepFunc[W<: Term with Subs[W], +U <: Term](
         name: AnySym, func: FuncLike[W, U]) extends FuncLike[W, U]{
       lazy val dom = func.dom
-      
+
       lazy val depcodom = func.depcodom
-      
+
       def typ = func.typ
-      
+
       def newobj = NamedDepFunc(name, func.newobj)
-      
+
       def act(arg: W) : U = func.act(arg)
-      
+
       def subs(x: Term, y: Term) = NamedDepFunc(name, func.subs(x, y))
     }
-    
+
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term with Subs[W], U<: Term with Subs[U]](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
               Func[W, U] with Subs[Func[W, U]] with Symbolic with AnySym{
@@ -1078,21 +1078,21 @@ object HoTT{
 
   case class OptDepFuncDefn[W<: Term with Subs[W]](
       func: W => Option[Term], dom: Typ[W]) extends DepFunc[W, Term] with Subs[OptDepFuncDefn[W]]{
-    
+
     lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
-    
+
     lazy val fibers = {
       val x= getVar(dom)
       lmbda(x)(depcodom(x))
     }
-    
+
     lazy val typ = PiTyp(fibers)
-    
+
     def act(arg: W) = func(arg).getOrElse(Star)
-    
+
     def newobj = this
-    
-    def subs(x: Term, y: Term) = 
+
+    def subs(x: Term, y: Term) =
       OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
   }
 
@@ -1139,7 +1139,7 @@ object HoTT{
 
 	  override def toString = Sigma+"("+fibers.toString+")"
 	}
-  
+
   object Sgma{
     def apply[W<: Term with Subs[W], U<: Term with Subs[U]](variable: W, typ : Typ[U]) = {
       val fibers = lmbda(variable)(typ)

@@ -14,7 +14,7 @@ object AndrewsCurtisExplore {
   
   /*
   val baseDstbn : DynDstbn = {
-    val vrtdst = FiniteDistribution(Seq(Weighted(nullpres, 1.0)))
+    val vrtdst = FiniteDistribution(Set(Weighted(nullpres, 1.0)))
     val edgseq = for (mvtyp <- MoveTypeList) yield Weighted(mvtyp, 1.0/ MoveTypeList.length)
     val edgdst  = FiniteDistribution(edgseq)
     DynDst(vrtdst, edgdst, 0.3)

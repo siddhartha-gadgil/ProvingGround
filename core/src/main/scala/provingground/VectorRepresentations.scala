@@ -35,7 +35,7 @@ object VectorRepresentations{
     	  raw map (_ * (1/total))
     	} 
   
-  case class Representation[T](rep: Seq[WeightVect[T]]) extends  LabelledArray[T, Vector[Double]]{    
+  case class Representation[T](rep: Set[WeightVect[T]]) extends  LabelledArray[T, Vector[Double]]{    
 	  lazy val pmf = rep map (_.weighted)
         
 	  lazy val support = (pmf filter (_.weight > 0) map (_.elem)).toSet 
@@ -44,30 +44,30 @@ object VectorRepresentations{
       
       lazy val norm = (pmf map (_.weight.abs)).sum
       
-      def next = Weighted.pick(pmf, rand.nextDouble)
+      def next = Weighted.pick(pmf.toSeq, rand.nextDouble)
       
       def get(label: T) = rep find (_.elem == label) map (_.vect)
       
-      def getsum(label : T) = WeightVect.sum((rep filter (_.elem == label) map (_.vect)))
+      def getsum(label : T) = WeightVect.sum((rep.toSeq filter (_.elem == label) map (_.vect)))
       
       def apply(label: T) = getsum(label)
       
       lazy val flatdist = support map ((l) => WeightVect(l, getsum(l)))
       
-      lazy val flatten = Representation(flatdist.toSeq)
+      lazy val flatten = Representation(flatdist)
          
       private def posrep(t : Double = 0.0) = flatdist map (_.pos) filter (_.norm > t)
       
       private def postotal(t : Double = 0.0) = ((posrep(t) map (_.norm))).sum ensuring (_ > 0)
       
-      def normalized(t : Double = 0.0) = Representation(posrep(t).toSeq map (_.scale(1.0/postotal(t))))
+      def normalized(t : Double = 0.0) = Representation(posrep(t) map (_.scale(1.0/postotal(t))))
       
       def *(sc: Double) = Representation(rep map (_.scale(sc)))
       
-      def +(elem: T , vect : Vector[Double]) = Representation(WeightVect(elem, vect) +: rep).flatten
+      def +(elem: T , vect : Vector[Double]) = Representation(rep + WeightVect(elem, vect)).flatten
       
       def ++(that: Representation[T]) = {
-        val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k)))).toSeq
+        val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k))))
         new Representation(combined)   
       }
       
@@ -84,7 +84,7 @@ object VectorRepresentations{
       }
       
       override def toString = {
-        val sortedpmf = pmf.sortBy(1 - _.weight)
+        val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
         val terms = (for (Weighted(elem, wt) <- sortedpmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
         "[" + terms.dropRight(2) + "]"
       }

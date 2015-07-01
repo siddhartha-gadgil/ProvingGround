@@ -53,7 +53,7 @@ object AndrewsCurtisModel{
   implicit object ACMoveFreqFormat extends Format[FiniteDistribution[ACMoveType]]{
     def reads(js : JsValue) : JsResult[FiniteDistribution[ACMoveType]] = {
       val pmf = for ((x, y) <- js.as[Map[String, Double]]) yield Weighted(ACMoveType.fromString(x), y)
-      JsSuccess(FiniteDistribution(pmf.toSeq))
+      JsSuccess(FiniteDistribution(pmf.toSet))
     }
 
     def writes(fd : FiniteDistribution[ACMoveType]): JsValue = {
@@ -167,7 +167,7 @@ object AndrewsCurtisModel{
 
     val unifmoves = FiniteDistribution.uniform(MoveTypeList)
 
-    val defaultdstbn =  DynDst(FiniteDistribution(Seq(Weighted(nullpres, 1.0))), unifmoves, 0.7)
+    val defaultdstbn =  DynDst(FiniteDistribution(Set(Weighted(nullpres, 1.0))), unifmoves, 0.7)
     /*
     val basegen = ACparams().learnLoop.gen(defaultdstbn)
 

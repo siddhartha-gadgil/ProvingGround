@@ -136,7 +136,7 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
     /**
      * Just for no change, should not use as state.
      */
-    def empty = DynDst(FiniteDistribution(Seq()), FiniteDistribution(Seq()), 0)
+    def empty = DynDst(FiniteDistribution.empty[V], FiniteDistribution.empty[M], 0)
   }
 
   /**
@@ -268,7 +268,7 @@ class MoveLearner[V, M](movetypes: List[M], moves : (V, M) => Set[V]){
      */
   def finaldist(dstbn: DynDst, chains: Set[Chain]) = {
       val dist = chains map (_.weightedHead(dstbn))
-      FiniteDistribution(dist.toSeq).normalized()
+      FiniteDistribution(dist).normalized()
     }
 
   /**

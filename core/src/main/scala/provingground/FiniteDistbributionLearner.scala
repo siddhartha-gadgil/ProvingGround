@@ -17,7 +17,7 @@ object FiniteDistributionLearner {
 	 * An atom for a finite distribution
 	 */
 	def atom[V](x: V) = {
-	  def func(w: Double) = FiniteDistribution[V](List(Weighted(x, w)))
+	  def func(w: Double) = FiniteDistribution[V](Set(Weighted(x, w)))
 
 	  def grad(w: Double)(p: FiniteDistribution[V]) = p(x)
 
@@ -30,7 +30,7 @@ object FiniteDistributionLearner {
 	def eval[V](x: V) = {
 	  def func(p: FiniteDistribution[V]) = p(x)
 
-	  def grad(p: FiniteDistribution[V])(w: Double) = FiniteDistribution[V](List(Weighted(x, w)))
+	  def grad(p: FiniteDistribution[V])(w: Double) = FiniteDistribution[V](Set(Weighted(x, w)))
 
 	  DiffbleFunction(func)(grad)
 	}
@@ -73,12 +73,12 @@ object FiniteDistributionLearner {
 	 */
 	def moveFn[V, W](f: V => Option[W]) = {
 	  def func(d: FiniteDistribution[V]) = {
-	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
+	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(y, d(x))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 
 	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[W]) = {
-	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(x, w(y))
+	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 
@@ -87,14 +87,14 @@ object FiniteDistributionLearner {
 
 	def combinationFn[V](f: (V, V) => Option[V]) = {
 	  def func(d: FiniteDistribution[V]) = {
-	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
+	    val rawpmf = for (a <- d.support; b <- d.support; y <- f(a, b)) yield
 	    		Weighted(y, d(a) * d(b))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 
 	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = {
-	    val rawpmf = (for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
-	    		Seq(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
+	    val rawpmf = (for (a <- d.support; b <- d.support; y <- f(a, b)) yield
+	    		Set(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
 	    FiniteDistribution(rawpmf).flatten
 	  }
 
@@ -229,12 +229,12 @@ object FiniteDistributionLearner {
 
 	def diagonal[V] = {
 	  def func(d: FiniteDistribution[V]) = {
-	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y))).toSeq
+	    val pmf= (for (x <- d.support; y <- d.support) yield Weighted((x, y), d(x) * d(y)))
 	    FiniteDistribution(pmf)
 	  }
 
 	  def grad(d: FiniteDistribution[V])(pd: FiniteDistribution[(V, V)]) = {
-	    val rawpmf = pd.pmf.flatMap(ab => Seq(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
+	    val rawpmf = pd.pmf.flatMap(ab => Set(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
 	    FiniteDistribution(rawpmf).flatten
 	  }
 
@@ -427,7 +427,7 @@ object FiniteDistributionLearner {
 	    val vs = vdst.support
 	    val vectterms = for (v <- vs; f <- dyns(v)) yield dstmult(f.grad(arg)(w), vdst(v))
 	    val scatoms = for (v <- vs; f <- dyns(v)) yield Weighted(v, dstdot(f.grad(arg)(w), arg))
-	    val scdst = (FiniteDistribution.empty[M], FiniteDistribution(scatoms.toSeq))
+	    val scdst = (FiniteDistribution.empty[M], FiniteDistribution(scatoms))
 	    dstsum(scdst, (dstzero[M, V] /: vectterms)(dstsum))
 	  }
 

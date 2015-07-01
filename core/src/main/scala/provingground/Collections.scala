@@ -146,7 +146,7 @@ object Collections{
      *
      * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
      */
-    case class FiniteDistribution[T](pmf: Seq[Weighted[T]], epsilon: Double = 0.0) extends ProbabilityDistribution[T] with LabelledVector[T]{
+    case class FiniteDistribution[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0) extends ProbabilityDistribution[T] with LabelledVector[T]{
       /**
        * support of the distribution.
        */
@@ -161,7 +161,7 @@ object Collections{
       /**
        * next instance of a random variable with the given distribution
        */
-      def next = Weighted.pick(pmf, random.nextDouble)
+      def next = Weighted.pick(pmf.toSeq, random.nextDouble)
 
       /**
        * get weight, not collapsing, unsafe.
@@ -186,7 +186,7 @@ object Collections{
       /**
        * flatten distribution collating elements.
        */
-      def flatten  = FiniteDistribution(flatdist.toSeq)
+      def flatten  = FiniteDistribution(flatdist)
 
       /** quotient by an equivalence relation
        *
@@ -194,7 +194,7 @@ object Collections{
       def quotient(equiv: (T, T) => Boolean) = {
         val supp = transversal(support.toList, equiv)
         val quotpmf = for (x <- supp) yield Weighted(x, prob(equiv(x, _)))
-        FiniteDistribution(quotpmf, epsilon)
+        FiniteDistribution(quotpmf.toSet, epsilon)
       }
 
       /**
@@ -223,7 +223,7 @@ object Collections{
       /**
        * normalized so all probabilities are positive and the total is 1.
        */
-      def normalized(t : Double = 0.0) = FiniteDistribution(posmf(t).toSeq map (_.scale(1.0/postotal(t))))
+      def normalized(t : Double = 0.0) = FiniteDistribution(posmf(t) map (_.scale(1.0/postotal(t))))
 
       /**
        * scale the distribution
@@ -231,23 +231,24 @@ object Collections{
       def *(sc: Double) = new FiniteDistribution(pmf map (_.scale(sc)))
 
       /**
-       * add weighted element without normailizing
+       * add weighted element without normalizing
        */
-      def +(elem: T , prob : Double) = FiniteDistribution(Weighted(elem, prob) +: pmf)
+      def +(elem: T , prob : Double) =
+        this ++ FiniteDistribution(elem -> prob)
 
       /**
        * add another distribution without normalizing
        */
       def ++(that: FiniteDistribution[T]) = {
-        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k))).toSeq
-        FiniteDistribution(combined, epsilon)
+        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) + that(k))).toSet
+        FiniteDistribution(combined.toSet, epsilon)
       }
 
       /**
        * subtract distribution
        */
       def --(that: FiniteDistribution[T]) = {
-        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) - that(k))).toSeq
+        val combined = (for (k <- support union that.support) yield Weighted(k, apply(k) - that(k)))
         FiniteDistribution(combined)
       }
 
@@ -258,9 +259,9 @@ object Collections{
         val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
         FiniteDistribution(newpmf, epsilon)
       }
-      
+
       def mapOpt[S](f: T => Option[S]) = {
-        val newpmf = for (Weighted(elem, wt) <- pmf; 
+        val newpmf = for (Weighted(elem, wt) <- pmf;
           felem <- f(elem)) yield Weighted(felem, wt)
         FiniteDistribution(newpmf, epsilon)
       }
@@ -268,7 +269,7 @@ object Collections{
       def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
       def purge(epsilon: Double) = filter((t: T) => (apply(t) > epsilon))
-      
+
       /**
        * entropy feedback for the finite distribution to move in the direction of the base distribution,
        * however values outside support are ignored.
@@ -279,11 +280,11 @@ object Collections{
         val rawdiff = for (elem <- support) yield (Weighted(elem, baseweights(elem)/(baseweights(elem)* damp + apply(elem))))
         val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
         val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
-        FiniteDistribution(normaldiff.toSeq, epsilon)
+        FiniteDistribution(normaldiff, epsilon)
       }
 
       override def toString = {
-        val sortedpmf = pmf.sortBy(1 - _.weight)
+        val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
         val terms = (for (Weighted(elem, wt) <- sortedpmf) yield (elem.toString + " : "+ wt.toString+ ", ")).foldLeft("")(_+_)
         "[" + terms.dropRight(2) + "]"
       }
@@ -296,17 +297,22 @@ object Collections{
     object FiniteDistribution{
       def uniform[A](s: Traversable[A]) = {
         val prob = 1.0/s.size
-        val pmf = (s map (Weighted(_, prob))).toSeq
+        val pmf = (s map (Weighted(_, prob))).toSet
         FiniteDistribution(pmf)
       }
-      
-      def unif[A](as: A*) = uniform(as.toSeq)
 
-      def empty[T] = FiniteDistribution[T](Seq())
+      def unif[A](as: A*) = uniform(as.toSet)
+
+      def empty[T] = FiniteDistribution[T]((Set.empty : Set[Weighted[T]]))
 
       def linearCombination[T](terms: Seq[(Double, FiniteDistribution[T])]) = {
         val scaled = for ((a, d) <- terms) yield d * a
         (empty[T] /: scaled)(_ ++ _)
+      }
+      
+      def apply[T](tws : (T, Double)*) : FiniteDistribution[T] = {
+        FiniteDistribution(
+            tws.toSet map ((tw : (T, Double)) => Weighted(tw._1, tw._2))) 
       }
     }
 
@@ -322,11 +328,11 @@ object Collections{
     def vprod[T](implicit ls: LinearStructure[T]) = ls.mult
 
     def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
-    
+
     def vbigsum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
       (xs :\ ls.zero)(ls.sum)
     }
-    
+
     def vAverage[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) ={
       ls.mult(1/xs.size, vbigsum(xs))
     }
