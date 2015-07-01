@@ -3,6 +3,7 @@ import sbt.Project.projectToRef
 lazy val jsProjects = Seq(client)
 
 
+
 lazy val commonSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
@@ -19,7 +20,7 @@ lazy val commonSettings = Seq(
   )
 
 lazy val jvmSettings = Seq(
-  libraryDependencies ++= Seq("com.lihaoyi" %% "ammonite-repl" % "0.2.7" % "test")
+  libraryDependencies ++= Seq("com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full)
   )
 
 lazy val serverSettings = Seq(
@@ -50,10 +51,12 @@ lazy val digressionSettings = Seq(
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11",
+    "com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
-  initialCommands in console := """import provingground.andrewscurtis._"""
+  initialCommands in console := """import provingground.andrewscurtis._""",
+  initialCommands in (Test, console) := """ammonite.repl.Repl.run("import provingground.andrewscurtis._")"""
   )
 
 lazy val nfSettings = Seq(
