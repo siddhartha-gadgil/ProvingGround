@@ -11,7 +11,7 @@ object DiffStructure {
   def genMoveFn(mf: AtomicMove) = moveFn(mf)
 
   def genWtDyn(mf: AtomicMove) = {
-    val wtdyn = weightedDyn[Moves => Option[Moves], FiniteDistribution[Moves]]
+    val wtdyn = weightedDyn[AtomicMove, FiniteDistribution[Moves]]
     wtdyn(mf, genMoveFn(mf))
   }
 
@@ -39,7 +39,7 @@ object DiffStructure {
     projectionMap.^:(getFeedback(presCntn, wrdCntn, scale)(_: FiniteDistribution[Presentation]))
   }
 
-  def genDynamics(conjFunc: ((FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) => (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves]))(orig: (FiniteDistribution[Moves => Option[Moves]], FiniteDistribution[Moves])) = {
+  def genDynamics(conjFunc: ((FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) => (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]))(orig: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
     val sumRes = conjFunc(orig)
     (orig._1 ++ sumRes._1, orig._2 ++ sumRes._2)
   }

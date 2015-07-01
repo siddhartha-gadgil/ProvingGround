@@ -21,7 +21,7 @@ import DiffbleFunction._
 object ACevolution {
   type FD[X] = FiniteDistribution[X]
   
-  type M = Moves => Option[Moves]
+  type M = AtomicMove
   
   type V = Moves
   
@@ -33,7 +33,7 @@ object ACevolution {
   
   def allMoves(rank: Int) = genAllMoves(rank, rank)
   
-  def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank) map (_.actOnMoves _))
+  def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
   
   def evolve(rank: Int, steps: Int = 5) = {
     val fn = iterateDiff(allMoves(rank), steps)
