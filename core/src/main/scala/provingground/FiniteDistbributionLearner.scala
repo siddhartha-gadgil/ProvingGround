@@ -73,8 +73,8 @@ object FiniteDistributionLearner {
 	 */
 	def moveFn[V, W](f: V => Option[W]) = {
 	  def func(d: FiniteDistribution[V]) = {
-	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(y, d(x))
-	    FiniteDistribution(rawpmf).flatten
+	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
+	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
 	  }
 
 	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[W]) = {
@@ -87,9 +87,9 @@ object FiniteDistributionLearner {
 
 	def combinationFn[V](f: (V, V) => Option[V]) = {
 	  def func(d: FiniteDistribution[V]) = {
-	    val rawpmf = for (a <- d.support; b <- d.support; y <- f(a, b)) yield
+	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
 	    		Weighted(y, d(a) * d(b))
-	    FiniteDistribution(rawpmf).flatten
+	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
 	  }
 
 	  def grad(d: FiniteDistribution[V])(w: FiniteDistribution[V]) = {

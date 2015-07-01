@@ -41,6 +41,16 @@ class DiffFnFromMoveSpec extends FlatSpec{
     
     val fn = moveFn(f)
     
-    assert(fn(unif(1.0, 4.0, -1.0, -3.0)) == FiniteDistribution(Set(Weighted(1.0, 0.25), Weighted(2.0, 0.25))))
+    assert(fn(unif(1.0, 4.0, -1.0, -3.0)) == FiniteDistribution(1.0 -> 0.25, 2.0 -> 0.25))
+  }
+  
+  it should "have expected gradient" in {
+    val fn = moveFn ((x: Int) => Some(2 * x))
+    
+    val p = FiniteDistribution.unif(1, 3, 4)
+    
+    val w = FiniteDistribution(2 -> 0.5, 6 -> 0.25, 10 -> 0.25)
+    
+    assert(fn.grad(p)(w) == FiniteDistribution(1 -> 0.5, 3 -> 0.25))
   }
 }

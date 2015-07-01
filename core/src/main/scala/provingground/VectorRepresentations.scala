@@ -64,7 +64,7 @@ object VectorRepresentations{
       
       def *(sc: Double) = Representation(rep map (_.scale(sc)))
       
-      def +(elem: T , vect : Vector[Double]) = Representation(rep + WeightVect(elem, vect)).flatten
+      def +(elem: T , vect : Vector[Double]) = this ++ Representation(Set(WeightVect(elem, vect)))
       
       def ++(that: Representation[T]) = {
         val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k))))
