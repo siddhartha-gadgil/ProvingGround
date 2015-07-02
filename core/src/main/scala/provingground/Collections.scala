@@ -156,7 +156,7 @@ object Collections{
       /**
        * l^1-norm
        */
-      lazy val norm = (pmf map (_.weight.abs)).sum
+      lazy val norm = (pmf.toSeq map (_.weight.abs)).sum
 
       /**
        * next instance of a random variable with the given distribution
@@ -171,7 +171,7 @@ object Collections{
       /**
        * add together all probabilities for
        */
-      def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
+      def getsum(label : T) = (pmf.toSeq filter (_.elem == label) map (_.weight)).sum
 
       /**
        * weight of the label.
@@ -218,12 +218,12 @@ object Collections{
       /**
        * total of the positive weights
        */
-      def postotal(t : Double = 0.0) = ((posmf(t) map (_.weight))).sum ensuring (_ > 0)
+      def postotal(t : Double = 0.0) = ((posmf(t).toSeq map (_.weight))).sum ensuring (_ > 0)
 
       /**
        * normalized so all probabilities are positive and the total is 1.
        */
-      def normalized(t : Double = 0.0) = FiniteDistribution(posmf(t) map (_.scale(1.0/postotal(t))))
+      def normalized(t : Double = 0.0) = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toSet)
 
       /**
        * scale the distribution
@@ -256,14 +256,14 @@ object Collections{
        * map distribution without normalizing.
        */
       override def map[S](f: T => S) = {
-        val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
-        FiniteDistribution(newpmf, epsilon)
+        val newpmf = for (Weighted(elem, wt) <- pmf.toSeq) yield Weighted(f(elem), wt)
+        FiniteDistribution(Weighted.flatten(newpmf).toSet, epsilon)
       }
 
       def mapOpt[S](f: T => Option[S]) = {
-        val newpmf = for (Weighted(elem, wt) <- pmf;
+        val newpmf = for (Weighted(elem, wt) <- pmf.toSeq;
           felem <- f(elem)) yield Weighted(felem, wt)
-        FiniteDistribution(newpmf, epsilon)
+        FiniteDistribution(Weighted.flatten(newpmf).toSet, epsilon)
       }
 
       def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
@@ -309,13 +309,13 @@ object Collections{
         val scaled = for ((a, d) <- terms) yield d * a
         (empty[T] /: scaled)(_ ++ _)
       }
-      
+
       def apply[T](tws : (T, Double)*) : FiniteDistribution[T] = {
         FiniteDistribution(
             Weighted.flatten(
                 tws.toSeq map ((tw : (T, Double)) => Weighted(tw._1, tw._2))
                 ).toSet
-                ) 
+                )
       }
     }
 
@@ -344,7 +344,15 @@ object Collections{
 	  case 0 => base
 	  case n if n <0 => ls.zero
 	  case n => nrec(base, ind)(ls)(n-1)
-	}
+    }
+
+    implicit class VectorOps[A : LinearStructure](a: A){
+      val vs = implicitly[LinearStructure[A]]
+
+      def |+|(b: A) = vs.sum(a, b)
+
+      def |*|:(c: Double) = vs.mult(c, a)
+    }
 
     implicit val RealsAsLinearStructure = LinearStructure[Double](0, (_+_), (_*_))
 
@@ -370,6 +378,10 @@ object Collections{
 
     case class InnerProduct[V](dot: (V, V) => Double)
 
+    implicit class DotOp[V : InnerProduct](a : V){
+      def |*|(b: V) = implicitly[InnerProduct[V]].dot(a, b)
+    }
+
     def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
 
     implicit val realInnerProd = InnerProduct[Double](_*_)
@@ -377,6 +389,7 @@ object Collections{
     implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A], ipB: InnerProduct[B]) = {
       InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
     }
+
 
     implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
 
