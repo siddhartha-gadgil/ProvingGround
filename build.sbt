@@ -7,7 +7,7 @@ lazy val jsProjects = Seq(client)
 lazy val commonSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
-  scalaVersion := "2.11.5",
+  scalaVersion := "2.11.6",
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
@@ -68,7 +68,7 @@ lazy val nfSettings = Seq(
 
 lazy val client = project.
   settings(name := "ProvingGround-JS",
-  scalaVersion := "2.11.5",
+  scalaVersion := "2.11.6",
   persistLauncher := true,
   persistLauncher in Test := false,
   sourceMapsDirectories += coreJS.base / "..",
@@ -102,6 +102,7 @@ lazy val mantle = (project in file("mantle")).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
+        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run("import provingground._; import HoTT._")""").
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
