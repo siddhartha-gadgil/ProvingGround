@@ -23,7 +23,7 @@ RUNNING_PID
 
 *.jar
 
-.cache
+.cache*
 
 .classpath
 
