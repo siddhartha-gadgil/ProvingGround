@@ -110,7 +110,7 @@ object RandomWords{
   }
 
   def simpleLearn[E](supp : Set[Word[E]], target: FiniteDistribution[Word[E]], epsilon: Double)(init: FiniteDistribution[Symbol[E]]) = {
-    val estimate = evolution(supp)(init)
+    val estimate = evolution(supp).func(init)
     (init ++ evolution(supp).grad(init)(entropyFeedback(target, estimate) * epsilon)).normalized()
   }
 

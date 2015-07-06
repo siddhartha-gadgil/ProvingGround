@@ -17,7 +17,7 @@ class DiffFnFromMoveSpec extends FlatSpec{
       
     val at12 = unif(1.0, 2.0)
     
-    assert(fn(at12) == unif(2.0, 4.0))
+    assert(fn.func(at12) == unif(2.0, 4.0))
   }
   
   it should "map non-uniform distributions correctly" in {
@@ -27,13 +27,13 @@ class DiffFnFromMoveSpec extends FlatSpec{
     
     val dd = FiniteDistribution((1 to 10).toSet map ((i : Int) => Weighted(i.toDouble * 2.0, i.toDouble))).flatten
     
-    assert(fn(d) == dd)
+    assert(fn.func(d) == dd)
   }
   
   it should "fold together elements and flatten" in {
     val fn = moveFn ((x: Double) => Some(x * x))
     
-    assert(fn(unif(1.0, 2.0, -1.0, -2.0)) == unif(1.0, 4.0))
+    assert(fn.func(unif(1.0, 2.0, -1.0, -2.0)) == unif(1.0, 4.0))
   }
   
   it should "ignore elements that are not acted on" in {
@@ -41,7 +41,7 @@ class DiffFnFromMoveSpec extends FlatSpec{
     
     val fn = moveFn(f)
     
-    assert(fn(unif(1.0, 4.0, -1.0, -3.0)) == FiniteDistribution(1.0 -> 0.25, 2.0 -> 0.25))
+    assert(fn.func(unif(1.0, 4.0, -1.0, -3.0)) == FiniteDistribution(1.0 -> 0.25, 2.0 -> 0.25))
   }
   
   it should "have expected gradient" in {

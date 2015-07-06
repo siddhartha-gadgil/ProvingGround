@@ -14,7 +14,7 @@ object BigOps {
   
   val en = "enumeration" :: EnumTyp(A)
   
-  val bigsum = {
+  val BigSum = {
     lambda(A)(  
       lambda(en)(
           lambda(f)({

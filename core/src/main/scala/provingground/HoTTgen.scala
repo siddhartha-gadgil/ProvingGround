@@ -78,7 +78,7 @@ object HoTTgen {
 	 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 	
-	val wtdMoveSum = vbigsum(wtdMoveList) andthen block(normalizeFD[Move.type], normalizeFD[Term])
+	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(normalizeFD[Move.type], normalizeFD[Term])
 	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
@@ -102,13 +102,13 @@ object HoTTgen {
 				val typs = terms collect gettyps
 				typs map ((typ) => lambdaFn(l, f)(terms)(typ))
 				}
-			DiffbleFunction.bigsum(lambdas)
+			DiffbleFunction.BigSum(lambdas)
 			}
 	
 	def lambdaSumM[M](l : M)( 
 	    g: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
 	    ) = {
-	  val p = DiffbleFunction.proj2[FiniteDistribution[M], FiniteDistribution[Term]]
+	  val p = DiffbleFunction.Proj2[FiniteDistribution[M], FiniteDistribution[Term]]
 	  val f = g andthen p
 	  val withIsle = lambdaSum(l)(f)
 	  extendM(withIsle)
@@ -129,7 +129,7 @@ object HoTTgen {
   
   val typFlow = (d: FiniteDistribution[Term]) =>  {
     val shift = 
-      mapTyp(d) feedback (getTyps(d).getsum(_))
+      mapTyp.func(d) feedback (getTyps(d).getsum(_))
     mapTyp.grad(d)(shift)
   }
   
