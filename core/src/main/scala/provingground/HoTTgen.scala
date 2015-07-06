@@ -63,15 +63,15 @@ object HoTTgen {
 	}
 	
 	
-	lazy val moves = List((Move.appl, combinationFn(funcappl)),
-	    (Move.arrow, combinationFn(functyp)),
-	    (Move.pi, moveFn(pityp)),
-	    (Move.sigma, moveFn(sigmatyp)),
-	    (Move.pairt, combinationFn(pairtyp)),
-	    (Move.pair, combinationFn(pairobj)),
-	    (Move.paircons, moveFn(paircons)),
-	    (Move.icons, moveFn(icons)),
-	    (Move.jcons, moveFn(icons))
+	lazy val moves = List((Move.appl, CombinationFn(funcappl)),
+	    (Move.arrow, CombinationFn(functyp)),
+	    (Move.pi, MoveFn(pityp)),
+	    (Move.sigma, MoveFn(sigmatyp)),
+	    (Move.pairt, CombinationFn(pairtyp)),
+	    (Move.pair, CombinationFn(pairobj)),
+	    (Move.paircons, MoveFn(paircons)),
+	    (Move.icons, MoveFn(icons)),
+	    (Move.jcons, MoveFn(icons))
 	    )
 	
 	val wtdDyn = weightedDyn[Move.type, FiniteDistribution[Term]]
@@ -86,8 +86,8 @@ object HoTTgen {
 	  import DiffbleFunction._
 	  val x = nextVar(terms)(typ)
 	  val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
-	  val init = newVertex(x)	  	  
-	  val export = moveFn((t: Term) => 
+	  val init = NewVertex(x)	  	  
+	  val export = MoveFn((t: Term) => 
 	    if (t != __) Some(lambda(x)(t) : Term) else None)
 	  val head = incl andthen init
 	  head andthen export
@@ -116,7 +116,7 @@ object HoTTgen {
 	
 	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.type], NormalizeFD[Term]))
 	
-  val mapTyp = moveFn[Term, Typ[Term]]((t: Term) =>
+  val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None 
         )
   

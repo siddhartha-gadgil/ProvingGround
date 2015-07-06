@@ -10,11 +10,11 @@ object MoveGenerator {
   }
 
   def genLftMult(sz: Int): List[AtomicMove] = {
-    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield LftMult(j, k)).toList    
+    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield LftMult(j, k)).toList
   }
 
   def genRtMult(sz: Int): List[AtomicMove] = {
-    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield RtMult(j, k)).toList 
+    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield RtMult(j, k)).toList
   }
 
   def genConj(rank: Int, sz: Int): List[AtomicMove] = {
