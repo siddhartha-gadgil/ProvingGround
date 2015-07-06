@@ -57,7 +57,7 @@ object MatrixTypes {
             		    		  lambda(x)(
             		    		      lambda(w)({
             		    		        val f = LambdaFixed(y, Z.prod(A(x)(y))(B(y)(w)))
-            		    		        		bigsum(Y)(basis)(f)
+            		    		        		BigSum(Y)(basis)(f)
             		    		      }) 
               ) ) )))))           
   }

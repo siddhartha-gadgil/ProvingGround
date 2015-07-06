@@ -7,59 +7,105 @@ import scala.language.implicitConversions
 
 import provingground.Collections._
 
-	trait DiffbleFunction[A, B] extends Any{self =>
-      def apply(a: A): B
+	trait DiffbleFunction[A, B]{self =>
+    val func : A => B
 
-    	def grad(a: A) : B => A
+    val grad: A => B => A
 
+    @deprecated("directl call func to avoid repeated object creation", "7/6/2015")
+    def apply(a: A): B = func(a)
     	/**
     	 * Composition f *: g is f(g(_))
     	 */
     	def *:[C](that: => DiffbleFunction[B, C]) = andthen(that)
 
-    	def andthen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] = DiffbleFunction((a: A) => that(this(a)))(
-    													(a: A) =>
-    	  													(c: C) =>
-    	  													  grad(a)(that.grad(this(a))(c)))
+    	def andthen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] =
+        DiffbleFunction.Composition(this, that)
     	/**
     	 * Conjugate that by this.
     	 */
-    	def ^:(that: B => B) = (a : A) => grad(a)(that(apply(a)))
+    	def ^:(that: B => B) = (a : A) => grad(a)(that(func(a)))
 
     	/**
     	 * post-compose by the gradient of this, for instance for a feedback.
     	 */
     	def **:(that: A => B) = (a : A) => grad(a)(that(a))
 
-    	def oplus[C, D](that : DiffbleFunction[C, D]) = {
-    		def func(ac: (A, C)) = (this(ac._1), that(ac._2))
+    	def oplus[C, D](that : DiffbleFunction[C, D]) =
+      	DiffbleFunction.Oplus(this, that)
 
-    		def grad(ac: (A, C))(bd : (B, D)) = (self.grad(ac._1)(bd._1), that.grad(ac._2)(bd._2))
-
-      	DiffbleFunction(func)(grad)
-      }
 	}
 
 
 
     object DiffbleFunction{
+      @deprecated("Use inheritance directly", "7/6/2015")
       def apply[A, B](f: => A => B)(grd: => A => (B => A)) = new DiffbleFunction[A, B]{
-        def apply(a: A) = f(a)
+        lazy val func = (a: A) => f(a)
 
-        def grad(a: A) = grd(a)
+        lazy val grad = grd
       }
 
-      def selfadj[A](f: => A => A) = apply(f)((x: A) => (v: A) => f(v))
+      case class Composition[A, B, C](
+          f: DiffbleFunction[A, B], g: DiffbleFunction[B, C]
+          ) extends DiffbleFunction[A, C]{
+        val func = (a: A) => g.func(f.func(a))
 
-      def id[A] = apply((a: A) => a)((a: A) => (b: A) => b)
+        val grad =
+          (a: A) =>
+            (c: C) =>
+              f.grad(a)(g.grad(f.func(a))(c))
+      }
 
-      def incl1[A, B](implicit lsB: LinearStructure[B]) = apply((a: A) => (a, lsB.zero))((a: A) => (x: (A, B)) => x._1)
+      case class  Oplus[A, B, C, D](
+          first: DiffbleFunction[A, B], second : DiffbleFunction[C, D]
+          ) extends DiffbleFunction[(A, C), (B, D)] {
+        val func = (ac: (A, C)) => (first.func(ac._1), second.func(ac._2))
 
-      def proj1[A, B](implicit lsB: LinearStructure[B]) = apply((x: (A, B)) => x._1)((x) => (a) => (a, lsB.zero))
+        val grad = (ac: (A, C)) => (bd : (B, D)) => (first.grad(ac._1)(bd._1), second.grad(ac._2)(bd._2))
+      }
 
-      def incl2[A, B](implicit lsA: LinearStructure[A]) = apply((b: B) => (lsA.zero, b))((b: B) => (x: (A, B)) => x._2)
+      case class SelfAdj[A](func: A => A) extends DiffbleFunction[A, A]{
+        val grad = (x: A) => (v: A) => func(v)
+      }
 
-      def proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
+//      def selfadj[A](f: => A => A) = SelfAdj(f)
+
+      case class id[A]() extends DiffbleFunction[A, A]{
+        val func = (a: A) => a
+        val grad = (a: A) => (b: A) => b
+      }
+
+      case class Incl1[A, B: LinearStructure]() extends DiffbleFunction[A, (A, B)]{
+        val lsB = implicitly[LinearStructure[B]]
+
+        val func = (a: A) => (a, lsB.zero)
+        val grad = (a: A) => (x: (A, B)) => x._1
+      }
+
+      case class Incl2[A :LinearStructure, B]() extends DiffbleFunction[B, (A, B)]{
+        val lsA = implicitly[LinearStructure[A]]
+
+        val func = (b: B) => (lsA.zero, b)
+        val grad = (b: B) => (x: (A, B)) => x._2
+      }
+
+      case class Proj1[A, B: LinearStructure]() extends DiffbleFunction[(A, B), A]{
+        val lsB = implicitly[LinearStructure[B]]
+
+        val func = (x: (A, B)) => x._1
+        val grad = (x : (A, B)) => (a: A) => (a, lsB.zero)
+      }
+
+      case class Proj2[A: LinearStructure, B]() extends DiffbleFunction[(A, B), B]{
+        val lsA = implicitly[LinearStructure[A]]
+
+        val func = (x: (A, B)) => x._2
+        val grad = (x : (A, B)) => (b: B) => (lsA.zero, b)
+      }
+
+
+//      def Proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
 
       def block[A : LinearStructure,
         B : LinearStructure,
@@ -67,21 +113,23 @@ import provingground.Collections._
         D : LinearStructure](f : DiffbleFunction[A, C], g: DiffbleFunction[B, D]) = {
             val add = vsum[DiffbleFunction[(A, B), (C, D)]]
 
-            val p1 = proj1[A, B]
-            val p2 = proj2[A, B]
+            val p1 = Proj1[A, B]
+            val p2 = Proj2[A, B]
 
-            val i1 = incl1[C, D]
-            val i2 = incl2[C, D]
+            val i1 = Incl1[C, D]
+            val i2 = Incl2[C, D]
 
             add(p1 andthen f andthen i1, p2 andthen g andthen i2)
       }
 
-      def scprod[V](implicit ls: LinearStructure[V], ip: InnerProduct[V]) = {
-        def fn(av: (Double, V)) = ls.mult(av._1, av._2)
+      case class ScProd[V : LinearStructure : InnerProduct]() extends DiffbleFunction[(Double, V), V]{
+        val ls = implicitly[LinearStructure[V]]
+        val ip = implicitly[InnerProduct[V]]
 
-        def grad(av: (Double, V))(w: V) = (ip.dot(av._2, w), ls.mult(av._1, w))
+        val func = (av: (Double, V)) => ls.mult(av._1, av._2)
 
-        DiffbleFunction[(Double, V), V](fn)(grad)
+        val grad = (av: (Double, V)) => (w: V) => (ip.dot(av._2, w), ls.mult(av._1, w))
+
       }
 
       /**
@@ -125,70 +173,83 @@ import provingground.Collections._
       /**
        * Big sum, with terms (via support) in general depending on the argument.
        */
-      def bigsum[A, B](fns: A => Traversable[DiffbleFunction[A, B]])(implicit lsA: LinearStructure[A], lsB: LinearStructure[B]) = {
-        def func(a: A) = {
-          val terms = for (f <- fns(a)) yield f(a)
-          val zero = vzero[B]
-          val sum = vsum[B]
-          (terms :\ zero)(sum)
+      case class BigSum[A: LinearStructure, B: LinearStructure](
+          fns: A => Traversable[DiffbleFunction[A, B]]
+          ) extends DiffbleFunction[A, B] {
+        val func = (a: A) => {
+          val terms = for (f <- fns(a)) yield f.func(a)
+
+          (terms :\ zeroB)(sumB)
         }
 
-        def grad(a: A)(b: B) = {
+        private val zeroB = vzero[B]
+        private val sumB = vsum[B]
+
+        private val zeroA = vzero[A]
+        private val sumA = vsum[A]
+
+        val grad = (a: A) => (b: B) => {
           val terms = for (f <- fns(a)) yield f.grad(a)(b)
-          val zero = vzero[A]
-          val sum = vsum[A]
-          (terms :\ zero)(sum)
+          (terms :\ zeroA)(sumA)
         }
 
-        DiffbleFunction(func)(grad)
       }
 
-      def diagonal[A](implicit lsA : LinearStructure[A]) ={
-        def func(a: A) = (a, a)
+      case  class Diagonal[A : LinearStructure]() extends DiffbleFunction[A, (A, A)]{
+        val  lsA = implicitly[LinearStructure[A]]
 
-        def grad(a: A)(v : (A, A)) = lsA.sum(v._1, v._2)
+        val func = (a: A) => (a, a)
 
-        DiffbleFunction(func)(grad)
+        val  grad = (a: A) => (v : (A, A)) => lsA.sum(v._1, v._2)
       }
 
-      implicit def diffFnLS[A : LinearStructure, B : LinearStructure]
-      : LinearStructure[DiffbleFunction[A, B]] = {
-        def sum(fst: DiffbleFunction[A, B], scnd: DiffbleFunction[A, B]) = {
-          val addB = vsum[B]
-
-          val addA = vsum[A]
-
-          def fn(a: A) = addB(fst(a), scnd(a))
-
-          def grad(a: A)(b: B) = addA(fst.grad(a)(b), scnd.grad(a)(b))
-
-          DiffbleFunction(fn)(grad)
-      }
-
-      def scprod(sc: Double, vect: DiffbleFunction[A, B]) = {
+     case class DotProd[A : LinearStructure, B : LinearStructure](sc: Double, vect: DiffbleFunction[A, B]) extends DiffbleFunction[A, B] {
         val prodB = vprod[B]
 
         val prodA = vprod[A]
 
-        def fn(a: A) = prodB(sc, vect(a))
+        val func = (a: A) => prodB(sc, vect.func(a))
 
-        def grad(a: A)(b: B) = prodA(sc, vect.grad(a)(b))
+        val grad = (a: A) =>(b: B) => prodA(sc, vect.grad(a)(b))
 
-        DiffbleFunction(fn)(grad)
       }
 
-      def zero = {
+     case class Sum[A : LinearStructure, B : LinearStructure](
+         first: DiffbleFunction[A, B], second: DiffbleFunction[A, B]) extends DiffbleFunction[A, B] {
+        val sumB = vsum[B]
+
+        val sumA = vsum[A]
+
+        val func = (a: A) => sumB(first.func(a), second.func(a))
+
+        val grad = (a: A) =>(b: B) => sumA(first.grad(a)(b), second.grad(a)(b))
+
+      }
+
+     case class Zero[A: LinearStructure, B: LinearStructure]() extends DiffbleFunction[A, B]{
         val zeroA = vzero[A]
 
         val zeroB = vzero[B]
 
-        DiffbleFunction((a: A) => zeroB)((a: A) => (b: B) => zeroA)
-      }
+        val func = (a: A) => zeroB
 
-      LinearStructure(zero, sum, scprod)
+        val grad = (a: A) => (b: B) => zeroA
+     }
+
+      implicit def diffFnLS[A : LinearStructure, B : LinearStructure]
+      : LinearStructure[DiffbleFunction[A, B]] = {
+
+
+      val sum = (f : DiffbleFunction[A, B], g : DiffbleFunction[A, B]) => Sum[A, B](f, g)
+
+      val zero = Zero[A, B]
+
+      val mult = (c : Double, f : DiffbleFunction[A, B]) => DotProd(c, f)
+
+      LinearStructure(zero, sum, mult)
     }
 
 
 
-      val hyptan = apply[Double, Double]((arg: Double) => math.tanh(arg))((arg : Double) => (y: Double) => y/(math.cosh(y) * math.cosh(y)))
+
     }

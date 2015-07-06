@@ -11,7 +11,7 @@ import DiffbleFunction._
 object LearningSystem{
     
     trait LearningSystem[I, P, O] extends DiffbleFunction[(I, P), O]{
-        def apply(inp: I, param: P): O = this.apply((inp,param))
+        def apply(inp: I, param: P): O = this.func((inp,param))
         
         def update(feedback: O, inp: I, param: P, epsilon: Double)(implicit s: Shift[P]) = s(param, grad(inp, param)(feedback)._2, epsilon)
 
@@ -61,7 +61,7 @@ object LearningSystem{
       } 
       
       def edge[I](f: DiffbleFunction[I, Double]) ={
-        def fwd(inp: I, wt: Double) = wt * f(inp)
+        def fwd(inp: I, wt: Double) = wt * f.func(inp)
         
         def bck(inp: I, wt: Double)(o: Double) = (f.grad(inp)(wt * o), fwd(inp, wt))
         
@@ -95,7 +95,7 @@ object LearningSystem{
       }
       
       def tuner[P, O](evol: DiffbleFunction[P, O]) ={
-        def fwd: (Unit, P) => O = {(_, p) => evol(p)}
+        def fwd: (Unit, P) => O = {(_, p) => evol.func(p)}
         def back(u: Unit, param: P)(err: O) = ({}, evol.grad(param)(err))
         LearningSystem(fwd, back)
       }
@@ -104,9 +104,9 @@ object LearningSystem{
     
     
     implicit def asLearner[I, P, O](f: DiffbleFunction[(I, P), O]): LearningSystem[I, P, O] = new LearningSystem[I, P, O]{
-    	def apply(a: (I, P)) = f(a)
+    	lazy val func = (a: (I, P)) => f.func(a)
     	
-    	def grad(a: (I, P)) = f.grad(a)
+    	lazy val grad = (a: (I, P)) => f.grad(a)
     }
     
     def learn[I, P, O](learner: LearningSystem[I, P, O], feedback: (O, O) => O, epsilon: Double)(implicit s: Shift[P]): (I, P, O) => P ={(inp, param, target) =>

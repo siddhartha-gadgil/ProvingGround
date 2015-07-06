@@ -63,31 +63,31 @@ object HoTTgen {
 	}
 	
 	
-	lazy val moves = List((Move.appl, combinationFn(funcappl)),
-	    (Move.arrow, combinationFn(functyp)),
-	    (Move.pi, moveFn(pityp)),
-	    (Move.sigma, moveFn(sigmatyp)),
-	    (Move.pairt, combinationFn(pairtyp)),
-	    (Move.pair, combinationFn(pairobj)),
-	    (Move.paircons, moveFn(paircons)),
-	    (Move.icons, moveFn(icons)),
-	    (Move.jcons, moveFn(icons))
+	lazy val moves = List((Move.appl, CombinationFn(funcappl)),
+	    (Move.arrow, CombinationFn(functyp)),
+	    (Move.pi, MoveFn(pityp)),
+	    (Move.sigma, MoveFn(sigmatyp)),
+	    (Move.pairt, CombinationFn(pairtyp)),
+	    (Move.pair, CombinationFn(pairobj)),
+	    (Move.paircons, MoveFn(paircons)),
+	    (Move.icons, MoveFn(icons)),
+	    (Move.jcons, MoveFn(icons))
 	    )
 	
 	val wtdDyn = weightedDyn[Move.type, FiniteDistribution[Term]]
 	 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 	
-	val wtdMoveSum = vbigsum(wtdMoveList) andthen block(normalizeFD[Move.type], normalizeFD[Term])
+	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move.type], NormalizeFD[Term])
 	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
 	    )(terms: Set[Term])(typ: Typ[Term]) = {
 	  import DiffbleFunction._
 	  val x = nextVar(terms)(typ)
-	  val incl = (eval(l) oplus id[FiniteDistribution[Term]])
-	  val init = newVertex(x)	  	  
-	  val export = moveFn((t: Term) => 
+	  val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
+	  val init = NewVertex(x)	  	  
+	  val export = MoveFn((t: Term) => 
 	    if (t != __) Some(lambda(x)(t) : Term) else None)
 	  val head = incl andthen init
 	  head andthen export
@@ -102,21 +102,21 @@ object HoTTgen {
 				val typs = terms collect gettyps
 				typs map ((typ) => lambdaFn(l, f)(terms)(typ))
 				}
-			DiffbleFunction.bigsum(lambdas)
+			DiffbleFunction.BigSum(lambdas)
 			}
 	
 	def lambdaSumM[M](l : M)( 
 	    g: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
 	    ) = {
-	  val p = DiffbleFunction.proj2[FiniteDistribution[M], FiniteDistribution[Term]]
+	  val p = DiffbleFunction.Proj2[FiniteDistribution[M], FiniteDistribution[Term]]
 	  val f = g andthen p
 	  val withIsle = lambdaSum(l)(f)
 	  extendM(withIsle)
 	}
 	
-	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(normalizeFD[Move.type], normalizeFD[Term]))
+	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.type], NormalizeFD[Term]))
 	
-  val mapTyp = moveFn[Term, Typ[Term]]((t: Term) =>
+  val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None 
         )
   
@@ -129,7 +129,7 @@ object HoTTgen {
   
   val typFlow = (d: FiniteDistribution[Term]) =>  {
     val shift = 
-      mapTyp(d) feedback (getTyps(d).getsum(_))
+      mapTyp.func(d) feedback (getTyps(d).getsum(_))
     mapTyp.grad(d)(shift)
   }
   

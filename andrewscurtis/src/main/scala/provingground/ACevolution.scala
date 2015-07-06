@@ -37,6 +37,6 @@ object ACevolution {
 
   def evolve(rank: Int, steps: Int = 5, initV: FD[V] = trivMoveSeq) = {
     val fn = iterateDiff(allMoves(rank), steps)
-    fn((unifMoves(rank), trivMoveSeq))
+    fn.func((unifMoves(rank), trivMoveSeq))
   }
 }

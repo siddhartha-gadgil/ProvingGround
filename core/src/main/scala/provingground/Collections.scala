@@ -332,12 +332,12 @@ object Collections{
 
     def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
 
-    def vbigsum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
+    def vBigSum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
       (xs :\ ls.zero)(ls.sum)
     }
 
     def vAverage[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) ={
-      ls.mult(1/xs.size, vbigsum(xs))
+      ls.mult(1/xs.size, vBigSum(xs))
     }
 
     def nrec[X](base: X, ind: Int => X => X)(implicit ls: LinearStructure[X]): Int => X = {
@@ -405,12 +405,12 @@ object Collections{
       def incl(label: L)(arg: T) = ArrayMap(Map(label -> arg))
 
       def proj(label : L)(arr: ArrayMap[L, T])(implicit zero: T) = arr(label)(zero)
-
+/*
       def inclusion(label: L)(implicit zero: T) = {
         require (!((support find (_ == label)).isEmpty))
 
         DiffbleFunction[T, ArrayMap[L, T]](incl(label))((_ : T) => proj(label))
-      }
+      }*/
     }
 
     trait LabelledVector[L] extends LabelledArray[L, Double]{
