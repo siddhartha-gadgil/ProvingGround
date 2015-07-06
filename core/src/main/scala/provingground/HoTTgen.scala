@@ -78,14 +78,14 @@ object HoTTgen {
 	 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 	
-	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(normalizeFD[Move.type], normalizeFD[Term])
+	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move.type], NormalizeFD[Term])
 	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
 	    )(terms: Set[Term])(typ: Typ[Term]) = {
 	  import DiffbleFunction._
 	  val x = nextVar(terms)(typ)
-	  val incl = (eval(l) oplus id[FiniteDistribution[Term]])
+	  val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
 	  val init = newVertex(x)	  	  
 	  val export = moveFn((t: Term) => 
 	    if (t != __) Some(lambda(x)(t) : Term) else None)
@@ -114,7 +114,7 @@ object HoTTgen {
 	  extendM(withIsle)
 	}
 	
-	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(normalizeFD[Move.type], normalizeFD[Term]))
+	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.type], NormalizeFD[Term]))
 	
   val mapTyp = moveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None 

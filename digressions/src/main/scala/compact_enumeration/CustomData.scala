@@ -95,7 +95,7 @@ object CustomData {
     def domain: Interval
   }
   
-  def func(fn : Func) = fn.func
+  val func =  (fn : Func) => fn.func
   
   def domain(fn: Func) = fn.domain
   
