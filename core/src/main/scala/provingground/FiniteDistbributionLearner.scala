@@ -130,15 +130,29 @@ object FiniteDistributionLearner {
 	 * Extend differentiable function by identity on M.
 	 */
 	def extendM[M, X](
-      fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) : DiffbleFunction[(FiniteDistribution[M], X), (FiniteDistribution[M], X)] = {
+      fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) : 
+      DiffbleFunction[(FiniteDistribution[M], X), (FiniteDistribution[M], X)] = {
+    /*
 	  val func =  (mv: (FiniteDistribution[M], X)) => (mv._1, fn.func(mv))
 
 	  val grad = (mv: (FiniteDistribution[M], X)) => (
         mw: (FiniteDistribution[M], X)) =>
           (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
 
-	  DiffbleFunction(func)(grad)
+	  DiffbleFunction(func)(grad)*/
+    ExtendM(fn)
 	}
+  
+  case class ExtendM[M, X](
+      fn:  DiffbleFunction[(FiniteDistribution[M], X), X]) extends 
+      DiffbleFunction[(FiniteDistribution[M], X), (FiniteDistribution[M], X)]{
+    val func =  (mv: (FiniteDistribution[M], X)) => (mv._1, fn.func(mv))
+
+    val grad = (mv: (FiniteDistribution[M], X)) => (
+        mw: (FiniteDistribution[M], X)) =>
+          (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+
+  }
 
 
   def matchFlow[A, B](fn : A => Option[B], target :  B => Double) = (d: FiniteDistribution[A]) => {
