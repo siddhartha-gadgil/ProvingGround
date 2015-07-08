@@ -3,6 +3,8 @@ import provingground.andrewscurtis._
 import provingground.andrewscurtis.Moves._
 import provingground.andrewscurtis.FreeGroups._
 import org.scalatest._
+import provingground._
+import FiniteDistribution._
 
 class AtomicMoveSpec extends FlatSpec {
   "AtomicMove" should "act on Moves" in {

@@ -1,6 +1,8 @@
 package models
 //import provingground.AndrewsCurtis.{ACMoveType, allMoves, MoveTypeList, Move}
 import provingground.Collections._
+import provingground._
+import FiniteDistribution._
 import provingground.andrewscurtis.FreeGroups._
 import scala.language.reflectiveCalls
 import provingground.MoveLearner

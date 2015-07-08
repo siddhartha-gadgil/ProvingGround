@@ -7,7 +7,7 @@ import MoveGenerator._
 import DiffStructure._
 
 import provingground._
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 
 import FreeGroups._
 

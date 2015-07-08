@@ -4,7 +4,7 @@ import HoTT._
 import FiniteDistributionLearner._
 import DiffbleFunction._
 import scala.util._
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 
 object HoTTgen {
 	val funcappl: (Term, Term) => Option[Term] = {

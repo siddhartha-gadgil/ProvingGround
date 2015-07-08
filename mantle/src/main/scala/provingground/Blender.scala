@@ -2,7 +2,7 @@ package provingground
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 //import provingground.FiniteDistributionLearner.IterDynSys
 
 /**
