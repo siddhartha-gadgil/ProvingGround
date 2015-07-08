@@ -178,16 +178,16 @@ import provingground.Collections._
           ) extends DiffbleFunction[A, B] {
         val func = (a: A) => {
           val terms = for (f <- fns(a)) yield f.func(a)
-          
+
           (terms :\ zeroB)(sumB)
         }
 
         private val zeroB = vzero[B]
         private val sumB = vsum[B]
-        
+
         private val zeroA = vzero[A]
         private val sumA = vsum[A]
-        
+
         val grad = (a: A) => (b: B) => {
           val terms = for (f <- fns(a)) yield f.grad(a)(b)
           (terms :\ zeroA)(sumA)
