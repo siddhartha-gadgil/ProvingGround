@@ -5,6 +5,7 @@ import Collections._
 
 import annotation._
 
+import FiniteDistribution._
 
 /**
  * A combinator for learning systems with state finite distributions on vertices.
@@ -68,13 +69,15 @@ object FiniteDistributionLearner {
 	 */
   case class MoveFn[V, W](f: V => Option[W]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[W]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
-	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+//	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
+//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+      d mapOpt (f)
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[W]) => {
-	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
-	    FiniteDistribution(rawpmf).flatten
+//	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
+//	    FiniteDistribution(rawpmf).flatten
+      w.invmapOpt(f, d.support)
 	  }
 
 
@@ -82,9 +85,11 @@ object FiniteDistributionLearner {
 
   case class CombinationFn[V](f: (V, V) => Option[V]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
-	    		Weighted(y, d(a) * d(b))
-	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+//	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
+//	    		Weighted(y, d(a) * d(b))
+//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+      d flatMap ((v: V) =>
+        d mapOpt((w: V) => f(v, w)))
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => {
