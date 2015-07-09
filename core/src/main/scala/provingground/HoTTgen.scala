@@ -82,7 +82,7 @@ object HoTTgen {
 	
 	def lambdaFn[M](l: M, 
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
-	    )(terms: Set[Term])(typ: Typ[Term]) = {
+	    )(terms: Traversable[Term])(typ: Typ[Term]) = {
 	  import DiffbleFunction._
 	  val x = nextVar(terms)(typ)
 	  val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
@@ -97,7 +97,7 @@ object HoTTgen {
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
 	    ) = {
 			val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
-				val terms = fd._2.support
+				val terms = fd._2.supp
 				val gettyps : PartialFunction[Term, Typ[Term]] =  {case typ : Typ[_] => typ}
 				val typs = terms collect gettyps
 				typs map ((typ) => lambdaFn(l, f)(terms)(typ))

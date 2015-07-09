@@ -77,7 +77,7 @@ object FiniteDistributionLearner {
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[W]) => {
 //	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
 //	    FiniteDistribution(rawpmf).flatten
-      w.invmapOpt(f, d.support)
+      w.invmapOpt(f, d.supp)
 	  }
 
 
@@ -93,9 +93,19 @@ object FiniteDistributionLearner {
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => {
+      val fstDists = d.supp map(
+          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
+      val fstsum = (fstDists :\ FiniteDistribution.empty[V])(_++_)
+      
+      val scndDists = d.supp map(
+          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
+      val scndsum = (scndDists :\ FiniteDistribution.empty[V])(_++_)
+      
+      fstsum ++ scndsum
+      /*
 	    val rawpmf = (for (a <- d.support; b <- d.support; y <- f(a, b)) yield
 	    		Set(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
-	    FiniteDistribution(rawpmf).flatten
+	    FiniteDistribution(rawpmf).flatten*/
 	  }
 
 	}

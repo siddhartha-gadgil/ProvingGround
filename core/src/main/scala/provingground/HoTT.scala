@@ -1269,10 +1269,10 @@ object HoTT{
 
 
 	/** Symbol factory */
-	def nextChar(s: Set[Char]) = if (s.isEmpty) 'a' else (s.max + 1).toChar
+	def nextChar(s: Traversable[Char]) = if (s.isEmpty) 'a' else (s.max + 1).toChar
 
 	/** Helper for symbol factory */
-	def usedChars(s: Set[Term]): Set[Char] = {
+	def usedChars(s: Traversable[Term]): Traversable[Char] = {
 	    def charOpt (obj:Term) : Option[Char] = obj match {
 	      case sym: Symbolic => Try(sym.name.asInstanceOf[Char]).toOption
 	      case _ => None
@@ -1282,7 +1282,7 @@ object HoTT{
 	    s collect (Function.unlift(charOpt _))
 	}
 
-	def nextVar(s: Set[Term])(typ: Typ[Term]) = {
+	def nextVar(s: Traversable[Term])(typ: Typ[Term]) = {
 	  typ.symbObj(Name(nextChar(usedChars(s)).toString))
 	}
 

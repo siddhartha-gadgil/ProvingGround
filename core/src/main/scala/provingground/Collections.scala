@@ -133,7 +133,7 @@ object Collections{
     }
 
     object Weighted{
-      @tailrec final def pick[T](dist: Seq[Weighted[T]], t: Double): T = if (t - dist.head.weight <0) dist.head.elem
+      @tailrec final def pick[T](dist: Traversable[Weighted[T]], t: Double): T = if (t - dist.head.weight <0) dist.head.elem
     		  	else pick(dist.tail, t- dist.head.weight)
       def sumWeigths[T](seq: Seq[Weighted[T]]) = seq.map(_.weight).sum
 
