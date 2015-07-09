@@ -39,4 +39,8 @@ object ACevolution {
     val fn = iterateDiff(allMoves(rank), steps)
     fn.func((unifMoves(rank), trivMoveSeq))
   }
+
+  def step(rank: Int) = {
+    genExtendM(allMoves(rank))
+  }
 }
