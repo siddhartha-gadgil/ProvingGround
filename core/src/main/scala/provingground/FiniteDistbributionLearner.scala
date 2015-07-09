@@ -2,8 +2,10 @@ package provingground
 
 import DiffbleFunction._
 import Collections._
+
 import annotation._
 
+import FiniteDistribution._
 
 /**
  * A combinator for learning systems with state finite distributions on vertices.
@@ -67,13 +69,15 @@ object FiniteDistributionLearner {
 	 */
   case class MoveFn[V, W](f: V => Option[W]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[W]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
-	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+//	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
+//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+      d mapOpt (f)
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[W]) => {
-	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
-	    FiniteDistribution(rawpmf).flatten
+//	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
+//	    FiniteDistribution(rawpmf).flatten
+      w.invmapOpt(f, d.support)
 	  }
 
 
@@ -81,9 +85,11 @@ object FiniteDistributionLearner {
 
   case class CombinationFn[V](f: (V, V) => Option[V]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
-	    		Weighted(y, d(a) * d(b))
-	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+//	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
+//	    		Weighted(y, d(a) * d(b))
+//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
+      d flatMap ((v: V) =>
+        d mapOpt((w: V) => f(v, w)))
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => {
@@ -134,8 +140,8 @@ object FiniteDistributionLearner {
 	  val grad = (mv: (FiniteDistribution[M], X)) => (
         mw: (FiniteDistribution[M], X)) =>
           (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
-	}
 
+        }
 	/**
 	 * Extend differentiable function by identity on M.
 	 */
@@ -147,25 +153,7 @@ object FiniteDistributionLearner {
 	}
 
 
-  def matchFlow[A, B](fn : A => Option[B], target :  B => Double) = (d: FiniteDistribution[A]) => {
-    val push = MoveFn(fn)
-
-    val shiftb = (bs : FiniteDistribution[B]) => bs.feedback(target)
-
-    shiftb ^: push
-  }
-
-  @tailrec def flow[A : LinearStructure](init : A, shift: A => A, epsilon : Double, n: Int): A = {
-    lazy val sum = vsum[A]
-    lazy val ScProd = vprod[A]
-    if (n <1) init
-    else flow(sum(init, ScProd(epsilon, shift(init))), shift, epsilon, n-1)
-  }
-
-
-
-
-  	case class ProjectV[M, V]() extends DiffbleFunction[
+  case class ProjectV[M, V]() extends DiffbleFunction[
     (FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] {
   	  val func =  (mv: (FiniteDistribution[M], FiniteDistribution[V])) => mv._2
 
@@ -176,7 +164,6 @@ object FiniteDistributionLearner {
 
     def projectV[M, V] : DiffbleFunction[
     (FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = ProjectV[M, V]
-
 
 
 

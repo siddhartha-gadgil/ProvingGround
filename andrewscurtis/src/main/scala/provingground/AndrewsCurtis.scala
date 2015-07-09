@@ -2,6 +2,10 @@ package provingground.andrewscurtis
 
 import FreeGroups._
 import provingground.Collections._
+
+import provingground._
+
+import FiniteDistribution._
 import annotation._
 //import play.api.libs.json._
 //import play.api.libs.iteratee._

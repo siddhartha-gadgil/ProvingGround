@@ -5,6 +5,8 @@ import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
 import AtomicMove._
+import provingground._
+import FiniteDistribution._
 
 object AtomicMove {
   def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)

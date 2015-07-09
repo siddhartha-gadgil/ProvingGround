@@ -58,7 +58,7 @@ object QDI {
       }
   }
 
-  import Collections._
+  import Collections._ ; import FiniteDistribution._; import provingground._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]) : Node = {
     val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
