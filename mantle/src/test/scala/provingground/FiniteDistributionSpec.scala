@@ -1,3 +1,5 @@
+package provingground
+
 import provingground._
 import Collections._ ; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
@@ -5,7 +7,7 @@ import FiniteDistribution._
 
 class FiniteDistributionSpec extends FlatSpec{
   "Finite Distributions" should "return mass on apply" in {
-    val fd = FiniteDistribution.fromWts(1 -> 0.5, 2 -> 0.3, 1 -> 0.2)
+    val fd = FiniteDistribution(weights(1 -> 0.5, 2 -> 0.3, 1 -> 0.2))
 
     assert(fd(1) == 0.7)
   }
@@ -13,16 +15,16 @@ class FiniteDistributionSpec extends FlatSpec{
   it should "have correct vector operations" in {
     val first = FiniteDistribution.unif(1, 2)
 
-    val second = FiniteDistribution.fromWts(1 -> 0.5, 3 -> 0.25, 4 -> 0.25)
-    
+    val second = FiniteDistribution(weights(1 -> 0.5, 3 -> 0.25, 4 -> 0.25))
+
     val mean = (first * 0.5) ++ (second * 0.5)
 
     assert(mean(1) == 0.5)
-    
+
     assert(mean(2) == 0.25)
-    
+
     assert(mean(4) == 0.125)
-    
+
   }
 
   it should "map correctly under (not necessarily injective) functions" in {
@@ -31,13 +33,13 @@ class FiniteDistributionSpec extends FlatSpec{
     val image = fd map ((x: Int) => x * x)
 
     assert(image(1) == 0.5)
-    
+
     assert(image(2) == 0)
 
     assert(image(4) == 0.25)
-    
+
     assert(image(9) == 0.25)
-    
+
   }
 
   it should "map correctly under optional functions" in {
@@ -67,7 +69,7 @@ class FiniteDistributionSpec extends FlatSpec{
   }
 
   it should "correctly normalize with pruning" in {
-    val fd = FiniteDistribution.fromWts(1 -> 0.4, 2 -> 0.2, 3 -> 0.2, 7 -> 0.001).normalized(0.1)
+    val fd = FiniteDistribution(weights(1 -> 0.4, 2 -> 0.2, 3 -> 0.2, 7 -> 0.001)).normalized(0.1)
 
     assert(fd(1) == 0.5)
 
