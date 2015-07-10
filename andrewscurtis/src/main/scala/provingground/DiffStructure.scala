@@ -6,6 +6,9 @@ import provingground.FiniteDistributionLearner._
 import provingground.DiffbleFunction._
 import provingground.andrewscurtis.Moves._
 
+import provingground._
+import provingground.FiniteDistribution._
+
 object DiffStructure {
 
   /*

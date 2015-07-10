@@ -12,7 +12,6 @@ import provingground.Collections._
 
     val grad: A => B => A
 
-    @deprecated("directl call func to avoid repeated object creation", "7/6/2015")
     def apply(a: A): B = func(a)
     	/**
     	 * Composition f *: g is f(g(_))
@@ -39,7 +38,6 @@ import provingground.Collections._
 
 
     object DiffbleFunction{
-      @deprecated("Use inheritance directly", "7/6/2015")
       def apply[A, B](f: => A => B)(grd: => A => (B => A)) = new DiffbleFunction[A, B]{
         lazy val func = (a: A) => f(a)
 

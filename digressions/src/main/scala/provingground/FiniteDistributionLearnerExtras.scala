@@ -1,7 +1,7 @@
 package provingground
 
 import DiffbleFunction._
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 import annotation._
 
 import FiniteDistributionLearner._

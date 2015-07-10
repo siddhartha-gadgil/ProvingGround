@@ -5,13 +5,15 @@ import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
 import AtomicMove._
+import provingground._
+import FiniteDistribution._
 
 object AtomicMove {
   def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
-  implicit def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
+  def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
 }
 
-sealed trait AtomicMove {
+sealed trait AtomicMove extends (Moves => Option[Moves]){
   def apply(pres: Presentation): Option[Presentation]
 
   def apply(opPres: Option[Presentation]): Option[Presentation] = {
@@ -19,6 +21,7 @@ sealed trait AtomicMove {
       case Some(pres) => this.apply(pres)
       case None => None
     }
+
   }
 
   def apply(moves: Moves): Option[Moves] = this.actOnMoves(moves)
@@ -91,14 +94,14 @@ case class Moves(moves: List[AtomicMove]) {
       (moves map ((mf: AtomicMove) => mf.toFunc)) reduce f
     }
   }
-*/      
+*/
   def reduce : Presentation => Option[Presentation] = (pres) => {
     def act(mv: AtomicMove, op: Option[Presentation]) = {
       op flatMap ((p) => mv(p))
       }
     (moves :\ (Some(pres) : Option[Presentation]))(act)
     }
-  
+
   def apply(pres: Presentation) = this.reduce(pres)
   def apply(that: Moves) = this compose that
   def apply(that: Presentation => Option[Presentation]) = liftOption(this.reduce) compose that
@@ -115,7 +118,7 @@ case class Moves(moves: List[AtomicMove]) {
 
 object Moves {
   def empty = Moves(List.empty)
-  
+
   implicit def toMoves(move: AtomicMove): Moves = Moves(List(move))
 
   def liftOption[A](f: A => Option[A]): Option[A] => Option[A] = {

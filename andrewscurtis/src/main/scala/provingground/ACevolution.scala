@@ -7,7 +7,7 @@ import MoveGenerator._
 import DiffStructure._
 
 import provingground._
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 
 import FreeGroups._
 
@@ -38,5 +38,9 @@ object ACevolution {
   def evolve(rank: Int, steps: Int = 5, initV: FD[V] = trivMoveSeq) = {
     val fn = iterateDiff(allMoves(rank), steps)
     fn.func((unifMoves(rank), trivMoveSeq))
+  }
+
+  def step(rank: Int) = {
+    genExtendM(allMoves(rank))
   }
 }

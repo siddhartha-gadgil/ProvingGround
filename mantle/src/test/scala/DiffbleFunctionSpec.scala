@@ -1,5 +1,5 @@
 import provingground._
-import Collections._
+import Collections._ ; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import DiffbleFunction._
