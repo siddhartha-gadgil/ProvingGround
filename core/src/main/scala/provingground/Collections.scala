@@ -144,6 +144,7 @@ object Collections{
       def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)
     }
 
+    implicit def weights[T](tws: (T, Double)*) = for (tw <- tws) yield Weighted(tw._1, tw._2)
 
 
     case class LinearStructure[A](zero: A, sum: (A, A) => A, mult : (Double, A) => A){

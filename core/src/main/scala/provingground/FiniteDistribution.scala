@@ -17,8 +17,6 @@ import Collections._
 sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with LabelledVector[T]{
   val pmf: Traversable[Weighted[T]]
 
-  lazy val elems = pmf map (_.elem)
-
   val injective: Boolean
 
   val epsilon: Double
@@ -42,12 +40,20 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   def normalized(t : Double = 0.0) : FiniteDistribution[T]
 
   /**
+   * add another distribution without normalizing
+   */
+  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T]
+  
+  /**
    * scale the distribution
    */
   def *(sc: Double) : FiniteDistribution[T]
 
 
 
+  
+  lazy val elems = pmf map (_.elem)
+  
   /**
    * support of the distribution.
    */
@@ -118,12 +124,8 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
    * add weighted element without normalizing
    */
   def +(elem: T , prob : Double) =
-    this ++ FiniteDistribution.fromWts(elem -> prob)
+    this ++ FiniteDistribution(Set(Weighted(elem, prob)))
 
-  /**
-   * add another distribution without normalizing
-   */
-  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T]
 
   /**
    * subtract distribution
@@ -242,20 +244,67 @@ object FiniteDistribution{
 
   def unif[A](as: A*) = uniform(as.toSet)
 
-  def empty[T] = FiniteDistribution[T]((Set.empty : Set[Weighted[T]]))
+  def empty[T] : FiniteDistribution[T] = Empty[T]
 
+  case class Empty[T]() extends FiniteDistribution[T]{
+    val pmf: Traversable[Weighted[T]] = Traversable.empty
+
+  val injective: Boolean = true
+
+  val epsilon: Double = 0
+
+  /**
+   * flatten distribution collating elements.
+   */
+  def flatten : FiniteDistribution[T] = this
+
+  /**
+   * add together all probabilities for
+   */
+  def getsum(label : T): Double = 0
+
+  def filter(p : T => Boolean): FiniteDistribution[T] = this
+
+
+  /**
+   * normalized so all probabilities are positive and the total is 1.
+   */
+  def normalized(t : Double = 0.0) : FiniteDistribution[T] = 
+    {assert(false, "can only normailze non-empty distributions")
+      ???
+    }
+
+  /**
+   * add another distribution without normalizing
+   */
+  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T] = this
+  
+  /**
+   * scale the distribution
+   */
+  def *(sc: Double) : FiniteDistribution[T] = this
+  
+  /** As seen from class Empty, the missing signatures are as follows.  
+   *  *  For convenience, these are usable as stub implementations.  */   
+  def invmap[S](f: S => T,support: Traversable[S]): provingground.FiniteDistribution[S] = empty 
+  
+  def invmapOpt[S](f: S => Option[T],support: Traversable[S]): provingground.FiniteDistribution[S] = empty   
+  
+  def map[S](f: T => S): provingground.FiniteDistribution[S] = empty   
+  
+  def mapOpt[S](f: T => Option[S]): provingground.FiniteDistribution[S] = empty
+
+  
+  }
+  
   def linearCombination[T](terms: Seq[(Double, FiniteDistribution[T])]) = {
     val scaled = for ((a, d) <- terms) yield d * a
-    (empty[T] /: scaled)(_ ++ _)
+    (scaled :\ (empty[T]))(_ ++ _)
   }
 
-
-  def fromWts[T](tws : (T, Double)*) : FiniteDistribution[T] = {
-    FiniteDistribution(
-        Weighted.flatten(
-            tws.toSeq map ((tw : (T, Double)) => Weighted(tw._1, tw._2))
-            ).toSet
-            )
+  def invFlatMap[S, T](f: S => FiniteDistribution[T], support: Traversable[S]) = {
+    val dists = support map ((s: S) => f(s))
+    (dists :\ FiniteDistribution.empty[T])(_ ++ _)
   }
 
   implicit def FiniteDistVec[T] = LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty, _++_, (w, d) => d * w)

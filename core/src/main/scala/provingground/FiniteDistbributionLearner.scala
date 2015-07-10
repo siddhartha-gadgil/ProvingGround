@@ -93,13 +93,18 @@ object FiniteDistributionLearner {
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => {
-      val fstDists = d.supp map(
-          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
-      val fstsum = (fstDists :\ FiniteDistribution.empty[V])(_++_)
-      
+   //   val fstDists = 
+   //     d.supp map(
+    //      (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
+      val fstsum = 
+        invFlatMap((a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a), d.supp)
+        //(fstDists :\ FiniteDistribution.empty[V])(_++_)
+        
       val scndDists = d.supp map(
           (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
-      val scndsum = (scndDists :\ FiniteDistribution.empty[V])(_++_)
+      val scndsum = 
+        invFlatMap((a: V) => (w.invmapOpt((b: V) => f(b, a), d.supp)) * d(a), d.supp)
+    //    (scndDists :\ FiniteDistribution.empty[V])(_++_)
       
       fstsum ++ scndsum
       /*
