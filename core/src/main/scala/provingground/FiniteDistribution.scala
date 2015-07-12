@@ -43,7 +43,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
    * add another distribution without normalizing
    */
   def ++(that: FiniteDistribution[T]) : FiniteDistribution[T]
-  
+
   /**
    * scale the distribution
    */
@@ -51,9 +51,9 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
 
 
 
-  
+
   lazy val elems = pmf map (_.elem)
-  
+
   /**
    * support of the distribution.
    */
@@ -269,7 +269,7 @@ object FiniteDistribution{
   /**
    * normalized so all probabilities are positive and the total is 1.
    */
-  def normalized(t : Double = 0.0) : FiniteDistribution[T] = 
+  def normalized(t : Double = 0.0) : FiniteDistribution[T] =
     {assert(false, "can only normailze non-empty distributions")
       ???
     }
@@ -277,26 +277,26 @@ object FiniteDistribution{
   /**
    * add another distribution without normalizing
    */
-  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T] = this
-  
+  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T] = that
+
   /**
    * scale the distribution
    */
   def *(sc: Double) : FiniteDistribution[T] = this
-  
-  /** As seen from class Empty, the missing signatures are as follows.  
-   *  *  For convenience, these are usable as stub implementations.  */   
-  def invmap[S](f: S => T,support: Traversable[S]): provingground.FiniteDistribution[S] = empty 
-  
-  def invmapOpt[S](f: S => Option[T],support: Traversable[S]): provingground.FiniteDistribution[S] = empty   
-  
-  def map[S](f: T => S): provingground.FiniteDistribution[S] = empty   
-  
+
+  /** As seen from class Empty, the missing signatures are as follows.
+   *  *  For convenience, these are usable as stub implementations.  */
+  def invmap[S](f: S => T,support: Traversable[S]): provingground.FiniteDistribution[S] = empty
+
+  def invmapOpt[S](f: S => Option[T],support: Traversable[S]): provingground.FiniteDistribution[S] = empty
+
+  def map[S](f: T => S): provingground.FiniteDistribution[S] = empty
+
   def mapOpt[S](f: T => Option[S]): provingground.FiniteDistribution[S] = empty
 
-  
+
   }
-  
+
   def linearCombination[T](terms: Seq[(Double, FiniteDistribution[T])]) = {
     val scaled = for ((a, d) <- terms) yield d * a
     (scaled :\ (empty[T]))(_ ++ _)
