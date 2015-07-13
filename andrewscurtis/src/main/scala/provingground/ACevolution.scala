@@ -36,6 +36,14 @@ object ACevolution {
 
   def trivMoveSeq = FiniteDistribution.uniform(Some(Moves.empty))
 
+  val E = Weighted(Moves.empty, 1)
+
+  lazy val eSet = FiniteDistributionSet(Set(E))
+
+  lazy val eVec = FiniteDistributionVec(Vector(E))
+
+  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
+
   def allMoves(rank: Int) = genAllMoves(rank, rank)
 
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))

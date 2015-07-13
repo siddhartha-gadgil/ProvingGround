@@ -9,6 +9,8 @@ import Collections._
 
 import LinearStructure._
 
+import scala.collection.parallel.immutable.ParVector
+
 /**
  * Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.
  *
@@ -360,5 +362,48 @@ case class FiniteDistributionVec[T](pmf: Vector[Weighted[T]], injective: Boolean
     FiniteDistributionVec(pmf)
   }
 
+}
+  case class FiniteDistributionParVec[T](parpmf: ParVector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends FiniteDistribution[T]{
+
+    val pmf = parpmf.seq
+
+    def flatten  = FiniteDistributionParVec(Weighted.flatten(pmf).toVector.par, true, epsilon)
+
+    lazy val decryFlat = FiniteDistributionParVec(parpmf, true, epsilon)
+
+    def getsum(label : T) = (parpmf filter (_.elem == label) map (_.weight)).sum
+
+    def normalized(t : Double = 0.0) =
+      FiniteDistributionParVec((posmf(t) map (_.scale(1.0/postotal(t)))).toVector.par)
+
+    def filter(p : T => Boolean) = FiniteDistributionParVec(parpmf filter (wt => p(wt.elem)))
+
+    def *(sc: Double) = FiniteDistributionParVec(parpmf map (_.scale(sc)))
+
+    def ++(that: FiniteDistribution[T]) = {
+      FiniteDistributionParVec(parpmf ++ (that.pmf.toVector.par), false, epsilon)
+    }
+
+
+    override def map[S](f: T => S) = {
+      val newpmf = for (Weighted(elem, wt) <- parpmf) yield Weighted(f(elem), wt)
+      FiniteDistributionParVec(newpmf, false, epsilon)
+    }
+
+    def mapOpt[S](f: T => Option[S]) = {
+      val newpmf = for (Weighted(elem, wt) <- parpmf;
+        felem <- f(elem)) yield Weighted(felem, wt)
+      FiniteDistributionParVec(newpmf, false, epsilon)
+    }
+
+    def invmap[S](f: S => T, support: Traversable[S]) = {
+      val pmf = support.toVector.par map ((s: S) => Weighted(s, apply(f(s))))
+      FiniteDistributionParVec(pmf)
+    }
+
+    def invmapOpt[S](f: S => Option[T], support: Traversable[S]) = {
+      val pmf = support.toVector.par map ((s: S) => Weighted(s, f(s).map(apply).getOrElse(0)))
+      FiniteDistributionParVec(pmf)
+    }
 
 }
