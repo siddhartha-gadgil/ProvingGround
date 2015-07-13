@@ -5,6 +5,7 @@ import Collections._ ; import FiniteDistribution._; import provingground._
 import annotation._
 
 import FiniteDistributionLearner._
+import LinearStructure._
 
 object FiniteDistributionLearnerExtras{
   @tailrec def goalFlow[A : LinearStructure, R](init : A, shift: A => A, epsilon : Double, n: Int,

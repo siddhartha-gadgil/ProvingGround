@@ -5,6 +5,7 @@ import Collections._ ; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import DiffbleFunction._
+import LinearStructure._
 
 class DiffbleFunctionSpec extends FlatSpec{
     val double = DiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 *y)
