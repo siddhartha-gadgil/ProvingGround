@@ -7,6 +7,8 @@ import scala.language.implicitConversions
 
 import provingground.Collections._
 
+import LinearStructure._
+
 	trait DiffbleFunction[A, B]{self =>
     val func : A => B
 

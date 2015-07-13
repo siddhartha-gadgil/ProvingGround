@@ -8,6 +8,7 @@ import provingground.andrewscurtis.Moves._
 
 import provingground._
 import provingground.FiniteDistribution._
+import LinearStructure._
 
 object DiffStructure {
 

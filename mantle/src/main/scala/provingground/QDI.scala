@@ -58,7 +58,7 @@ object QDI {
       }
   }
 
-  import Collections._ ; import FiniteDistribution._; import provingground._
+  import Collections._ ; import FiniteDistribution._; import LinearStructure._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]) : Node = {
     val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
@@ -118,8 +118,8 @@ object QDI {
 
   trait Logger{
     def put(x: String): Unit
-    
-    def log[A: WriteString](a: A) = put(write(a)) 
+
+    def log[A: WriteString](a: A) = put(write(a))
 
     var closed: Boolean = false
 
@@ -152,16 +152,16 @@ object QDI {
 
   def readFile(filename: String) = scala.io.Source.fromFile(filename).getLines
 
-  
-  
+
+
   implicit def tableWrite[A] : WriteString[List[List[A]]] = new WriteString[List[List[A]]]{
     def writer(ll: List[List[A]]) = tableString(ll)
   }
-  
+
   implicit def fdWrite[A] : WriteString[FiniteDistribution[A]] = new WriteString[FiniteDistribution[A]]{
     def writer(fd: FiniteDistribution[A]) = fdString(fd)
   }
-  
+
   implicit def tableRead: ReadString[List[List[String]]] = new ReadString[List[List[String]]]{
     def reader(str: String) = {
       val tokens = str.split("\"").toList.tail
@@ -169,7 +169,7 @@ object QDI {
         if (ss.length == 0) accum
         else
         {
-          val token :: sep :: tail = ss 
+          val token :: sep :: tail = ss
           sep match {
             case "," => (token :: accum.head) :: accum.tail
             case ";" => List(token) :: accum
@@ -179,7 +179,7 @@ object QDI {
      recread(tokens)
     }
   }
-  
+
   implicit def fdRead : ReadString[List[String]] = new ReadString[List[String]]{
     def reader(str: String) = {
       val table = StringParse.read[List[List[String]]](str)
@@ -190,7 +190,7 @@ object QDI {
       rec(table)
     }
   }
-  
+
   @tailrec def iterLog[A](init: A, dyn: A => A, steps: Int, logger: Logger) : A ={
     logger.log(init.toString)
     if (steps <1) init
