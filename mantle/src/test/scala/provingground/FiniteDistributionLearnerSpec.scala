@@ -10,7 +10,7 @@ import scala.util._
 /**
  * @author gadgil
  */
-class DiffFnFromMoveSpec extends FlatSpec{
+class FiniteDistributionLearnerSpec extends FlatSpec{
   val double =  MoveFn ((x: Double) => Some(2 * x))
 
   val square =  MoveFn ((x: Double) => Some(x * x))
@@ -22,7 +22,10 @@ class DiffFnFromMoveSpec extends FlatSpec{
   behavior of "the differentiable function induced by a move"
 
   it should "map uniform distributions forward correctly" in {
-    assert(double.func(at12) == unif(2.0, 4.0))
+    assert(double.func(at12)(2.0) == 0.5)
+    assert(double.func(at12)(4.0) == 0.5)
+    assert(double.func(at12)(1.0) == 0)
+
   }
 
   it should "map non-uniform distributions correctly" in {
@@ -31,12 +34,15 @@ class DiffFnFromMoveSpec extends FlatSpec{
 
     val dd = FiniteDistribution((1 to 10).toSet map ((i : Int) => Weighted(i.toDouble * 2.0, i.toDouble))).flatten
 
-    for (i <-1 to 20) yield assert(double.func(d) == dd)
+    for (i <-1 to 20) yield assert(double.func(d)(i) == dd(i))
   }
 
   it should "fold together elements and flatten" in {
 
-    assert(square.func(unif(1.0, 2.0, -1.0, -2.0)) == unif(1.0, 4.0))
+    assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(1.0) == 0.5)
+    assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(4.0) == 0.5)
+    assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(2.0) == 0)
+
   }
 
   it should "ignore elements that are not acted on" in {
@@ -44,7 +50,9 @@ class DiffFnFromMoveSpec extends FlatSpec{
 
     val fn = MoveFn(sqrt)
 
-    assert(fn.func(unif(1.0, 4.0, -1.0, -3.0)) == FiniteDistribution(weights(1.0 -> 0.25, 2.0 -> 0.25)))
+    assert(fn.func(unif(1.0, 4.0, -1.0, -3.0))(1.0) == 0.25)
+    assert(fn.func(unif(1.0, 4.0, -1.0, -3.0))(2.0) == 0.25)
+    assert(fn.func(unif(1.0, 4.0, -1.0, -3.0))(-1.0) == 0)
   }
 
   it should "have expected gradient" in {

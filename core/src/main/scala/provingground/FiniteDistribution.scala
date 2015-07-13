@@ -163,6 +163,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   /**
    * entropy feedback for the finite distribution to move in the direction of the base distribution,
    * however values outside support are ignored.
+   * warning: should come after ++ to ensure implementation choice.
    *
    * @param baseweights
    */
@@ -187,11 +188,14 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
 
 
 object FiniteDistribution{
-  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
+  // choose default implementation
+//  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
+  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] =
+    FiniteDistributionVec(pmf.toVector, false, epsilon)
 
   def uniform[A](s: Traversable[A]) = {
     val prob = 1.0/s.size
-    val pmf = (s map (Weighted(_, prob))).toSet
+    val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
   }
 
@@ -313,15 +317,15 @@ case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0
     val quotpmf = for (x <- supp) yield Weighted(x, prob(equiv(x, _)))
     FiniteDistributionSet(quotpmf.toSet, epsilon)
   }
-  
+
 }
- 
+
 case class FiniteDistributionVec[T](pmf: Vector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends FiniteDistribution[T]{
 
   def flatten  = FiniteDistributionVec(Weighted.flatten(pmf).toVector, true, epsilon)
 
   lazy val decryFlat = FiniteDistributionVec(pmf, true, epsilon)
-  
+
   def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
 
   def normalized(t : Double = 0.0) = FiniteDistributionVec((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
@@ -330,7 +334,7 @@ case class FiniteDistributionVec[T](pmf: Vector[Weighted[T]], injective: Boolean
 
   def *(sc: Double) = FiniteDistributionVec(pmf map (_.scale(sc)))
 
-  def ++(that: FiniteDistribution[T]) = {    
+  def ++(that: FiniteDistribution[T]) = {
     FiniteDistributionVec(pmf ++ that.pmf, false, epsilon)
   }
 
