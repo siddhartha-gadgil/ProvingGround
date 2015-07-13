@@ -20,7 +20,7 @@ class FiniteDistributionSpec extends FlatSpec{
 
   def eqls(a: Double, b: Double) = assert(abs(a - b) < epsilon)
 
-  "Finite Distributions" should "return mass on apply" in {
+  "Finite Distributions (with default implementation)" should "return mass on apply" in {
 
     assert(x(1) == 0.2)
 

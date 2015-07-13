@@ -114,7 +114,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   /**
    * objects with positive probability (or bounded below by a threshhold)
    */
-  def posmf(t : Double = 0.0) = flatdist filter (_.weight > t)
+  def posmf(t : Double = 0.0) = pmf filter (_.weight > t)
 
   /**
    * total of the positive weights
@@ -313,4 +313,48 @@ case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0
     val quotpmf = for (x <- supp) yield Weighted(x, prob(equiv(x, _)))
     FiniteDistributionSet(quotpmf.toSet, epsilon)
   }
+  
+}
+ 
+case class FiniteDistributionVec[T](pmf: Vector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends FiniteDistribution[T]{
+
+  def flatten  = FiniteDistributionVec(Weighted.flatten(pmf).toVector, true, epsilon)
+
+  lazy val decryFlat = FiniteDistributionVec(pmf, true, epsilon)
+  
+  def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
+
+  def normalized(t : Double = 0.0) = FiniteDistributionVec((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
+
+  def filter(p : T => Boolean) = FiniteDistributionVec(pmf filter (wt => p(wt.elem)))
+
+  def *(sc: Double) = FiniteDistributionVec(pmf map (_.scale(sc)))
+
+  def ++(that: FiniteDistribution[T]) = {    
+    FiniteDistributionVec(pmf ++ that.pmf, false, epsilon)
+  }
+
+
+  override def map[S](f: T => S) = {
+    val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
+    FiniteDistributionVec(newpmf, false, epsilon)
+  }
+
+  def mapOpt[S](f: T => Option[S]) = {
+    val newpmf = for (Weighted(elem, wt) <- pmf;
+      felem <- f(elem)) yield Weighted(felem, wt)
+    FiniteDistributionVec(newpmf, false, epsilon)
+  }
+
+  def invmap[S](f: S => T, support: Traversable[S]) = {
+    val pmf = support.toVector map ((s: S) => Weighted(s, apply(f(s))))
+    FiniteDistributionVec(pmf)
+  }
+
+  def invmapOpt[S](f: S => Option[T], support: Traversable[S]) = {
+    val pmf = support.toVector map ((s: S) => Weighted(s, f(s).map(apply).getOrElse(0)))
+    FiniteDistributionVec(pmf)
+  }
+
+
 }
