@@ -163,6 +163,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   /**
    * entropy feedback for the finite distribution to move in the direction of the base distribution,
    * however values outside support are ignored.
+   * warning: should come after ++ to ensure implementation choice.
    *
    * @param baseweights
    */
@@ -170,7 +171,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
     val rawdiff = for (elem <- supp) yield (Weighted(elem, baseweights(elem)/(baseweights(elem)* damp + apply(elem))))
     val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
     val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
-    FiniteDistribution(normaldiff, epsilon)
+    FiniteDistributionSet(normaldiff.toSet, epsilon)
   }
 
   override def toString = {
@@ -187,11 +188,14 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
 
 
 object FiniteDistribution{
+  // choose default implementation
   def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
-
+  def veCapply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = 
+    FiniteDistributionVec(pmf.toVector, false, epsilon)
+  
   def uniform[A](s: Traversable[A]) = {
     val prob = 1.0/s.size
-    val pmf = (s map (Weighted(_, prob))).toSet
+    val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
   }
 
