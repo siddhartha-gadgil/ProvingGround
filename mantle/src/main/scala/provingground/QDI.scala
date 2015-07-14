@@ -112,7 +112,7 @@ object QDI {
   }
 
   implicit def tableString(xy: List[List[Any]]) = {
-    val rows = xy map ((r) => (r map ((x) => s""""$x"""")).mkString(","))
+    val rows = xy map ((r) => (r map ((x) => s"""$x""")).mkString(","))
     rows.mkString(";")
   }
 

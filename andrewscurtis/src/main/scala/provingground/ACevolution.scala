@@ -56,4 +56,6 @@ object ACevolution {
   def step(rank: Int) = {
     genExtendM(allMoves(rank))
   }
+
+  def presDist(r: Int)(mv : (FD[M], FD[V])) = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get)
 }

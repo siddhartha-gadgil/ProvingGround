@@ -129,7 +129,7 @@ object FreeGroups{
   object Word{
 
     /**
-     * sanity checker for listFromChars. 
+     * sanity checker for listFromChars.
      * to add further checks later.
      */
     def isParsable(s: List[Char]): Boolean = {
@@ -317,6 +317,11 @@ object FreeGroups{
     def apply(rank: Int, ws: String*) : Presentation =
       Presentation(ws.toList map (Word.fromString), rank)
 
+    def balanced(ws: String*) = {
+      val rels = ws.toList map (Word.fromString(_))
+      Presentation(rels, rels.length)
+    }
+
     val empty = Presentation(List(), 0)
 
     def trivial(n: Int) =
@@ -340,6 +345,14 @@ object FreeGroups{
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
     val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
     (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
+  }
+
+  /**
+   * weight where number of relations is fixed.
+   */
+  def weight(wrdCntn: Double): Presentation => Double = (pres: Presentation) => {
+    val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
+    ((wordwts :\ 1.0)(_ * _))
   }
 
   /*

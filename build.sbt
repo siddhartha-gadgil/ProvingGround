@@ -56,7 +56,8 @@ lazy val acSettings = Seq(
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.andrewscurtis._""",
-  initialCommands in (Test, console) := """ammonite.repl.Repl.run("import provingground.andrewscurtis._")"""
+  initialCommands in (Test, console) :=
+    """ammonite.repl.Repl.run("import provingground.andrewscurtis._; import provingground._; import FreeGroups._; import Presentation._; import ACevolution._")"""
   )
 
 lazy val nfSettings = Seq(
@@ -102,7 +103,8 @@ lazy val mantle = (project in file("mantle")).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run("import provingground._; import HoTT._")""").
+        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
+          "import provingground._; import HoTT._")""").
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
@@ -157,7 +159,7 @@ lazy val andrewscurtis = (project in file("andrewscurtis")).
   settings(commonSettings : _*).
   settings(jvmSettings : _*).
   settings(acSettings : _*).
-  dependsOn(coreJVM)
+  dependsOn(coreJVM).dependsOn(mantle)
 
 lazy val normalform = (project in file("normalform")).
   settings(commonSettings : _*).
