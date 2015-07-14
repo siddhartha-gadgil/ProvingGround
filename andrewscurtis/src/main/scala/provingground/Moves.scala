@@ -56,7 +56,7 @@ case class Inv(k: Int) extends AtomicMove {
     else
       None
   }
-  override def toString = '\u0361'.toString + k.toString 
+  override def toString = k.toString + "'"
 }
 
 case class RtMult(k: Int, l: Int) extends AtomicMove {
@@ -86,7 +86,10 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
-  override def toString = '\u0361' + l.toString + '\u2192' + k.toString + '\u2190' + l.toString
+  override def toString = {
+    val f = ((x: String) => if(x(0)=='-') x.tail else "-"+x)
+    f(l.toString) + '\u2192' + k.toString + '\u2190' + l.toString
+  }
 }
 
 case class Moves(moves: List[AtomicMove]) {
