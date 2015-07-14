@@ -71,10 +71,12 @@ import LinearStructure._
 
 //      def selfadj[A](f: => A => A) = SelfAdj(f)
 
-      case class id[A]() extends DiffbleFunction[A, A]{
+      case class Id[A]() extends DiffbleFunction[A, A]{
         val func = (a: A) => a
         val grad = (a: A) => (b: A) => b
       }
+      
+      def id[A] : DiffbleFunction[A, A] = Id[A]
 
       case class Incl1[A, B: LinearStructure]() extends DiffbleFunction[A, (A, B)]{
         val lsB = implicitly[LinearStructure[B]]
@@ -249,7 +251,11 @@ import LinearStructure._
       LinearStructure(zero, sum, mult)
     }
 
+		trait FormalExtension[A] extends DiffbleFunction[A, A]{
+			val func: A => A
 
+			val grad = (a: A) => (b: A) => b
+		}
 
 
     }
