@@ -244,7 +244,7 @@ object FreeGroups{
     }
 
     /**
-     * presentation with kth relation multiplied on the right by the ith relation.
+     * presentation with kth relation multiplied on the right by the lth relation.
      */
     def rtmult (k : Int, l : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(k) * rels(l) else rels(i)}

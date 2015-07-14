@@ -46,6 +46,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 case class Id() extends AtomicMove {
   override def apply(pres: Presentation) = Some(pres)
   override def actOnMoves(moves: Moves) = Some(moves)
+  override def toString = "id"
 }
 
 case class Inv(k: Int) extends AtomicMove {
@@ -55,6 +56,7 @@ case class Inv(k: Int) extends AtomicMove {
     else
       None
   }
+  override def toString = '\u0361'.toString + k.toString 
 }
 
 case class RtMult(k: Int, l: Int) extends AtomicMove {
@@ -64,6 +66,7 @@ case class RtMult(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
+  override def toString = k.toString + '\u2190'.toString + l.toString
 }
 
 case class LftMult(k: Int, l: Int) extends AtomicMove {
@@ -73,6 +76,7 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
+  override def toString = l.toString + '\u2192'.toString + k.toString
 }
 
 case class Conj(k: Int, l: Int) extends AtomicMove {
@@ -82,6 +86,7 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
+  override def toString = '\u0361' + l.toString + '\u2192' + k.toString + '\u2190' + l.toString
 }
 
 case class Moves(moves: List[AtomicMove]) {
