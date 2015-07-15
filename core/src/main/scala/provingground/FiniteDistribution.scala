@@ -30,6 +30,9 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
    */
   def flatten : FiniteDistribution[T]
 
+  lazy val pickle = flatten.map((t: T) => t.toString).pmf.toList.
+    map((w) => (w.elem, w.weight))
+  
   /**
    * add together all probabilities for
    */

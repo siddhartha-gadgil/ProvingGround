@@ -23,8 +23,8 @@ object AndrewsCurtis{
 
   val sse= new dom.EventSource("/acstream")
 
-  def fdDiv[A](fd: FiniteDistribution[A]) = {
-    val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
+  def pmfDiv(fd: List[(String, Double)]) = {
+    val lst = fd.sortBy((x) => -x._2).zipWithIndex
     val title = div(`class`:="atom")(
         span(`class`:="index")("index"),
         span(`class`:="probability")("probability"),
@@ -32,7 +32,7 @@ object AndrewsCurtis{
         span(`class`:="element")("element")
         )
 
-    val nodeList = for ((Weighted(a, x), j) <- lst)
+    val nodeList = for (((a, x), j) <- lst)
       yield (
           div(`class`:="atom")(
         span(`class`:="index")(j),
@@ -46,9 +46,10 @@ object AndrewsCurtis{
 
   }
   
-  def getFD(pickled: String) = read[FiniteDistribution[String]](pickled)
+  def getPMF(pickled: String) = read[List[(String, Double)]](pickled)
 
   def getFDtriple(pickled: String) = 
-    read[(FiniteDistribution[String], FiniteDistribution[String], FiniteDistribution[String])](pickled)
+    read[(List[(String, Double)], List[(String, Double)], 
+        List[(String, Double)])](pickled)
 
 }

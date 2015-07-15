@@ -64,8 +64,8 @@ object ACevolution {
   def presDist(r: Int)(mv : (FD[M], FD[V])) = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get)
 
   def viewAll(mv : (FD[M], FD[V]), r: Int) = {
-    viewPage(fdDiv(mv._1), "movedist.html")
-    viewPage(fdDiv(mv._2), "vertexdist.html")
+    viewPage(fdDiv(mv._1), "tmp/movedist.html")
+    viewPage(fdDiv(mv._2), "tmp/vertexdist.html")
     val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
     viewPage(fdDiv(presdist),
       "presentationdist.html"
@@ -73,10 +73,10 @@ object ACevolution {
   }
 
   def pickleTriple(mv : (FD[M], FD[V]), r: Int) = {
-    val m = mv._1 map ((x: AtomicMove) => x.toString)
-    val v = mv._2 map ((x: Moves) => x.toString)
+    val m = mv._1.pickle
+    val v = mv._2.pickle
     val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
-    val triple = (m, v, presdist)
-//    write(triple)
+    val triple = (m, v, presdist.pickle)
+    write(triple)
   }
 }

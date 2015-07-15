@@ -25,7 +25,7 @@ object QDI {
     writer.close
   }
 
-  def viewPage(body: Node, fileName: String = "qdi.html") ={
+  def viewPage(body: Node, fileName: String = "tmp/qdi.html") ={
     val page = <html>{head}<body>{body}</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
@@ -33,7 +33,7 @@ object QDI {
   }
 
   def view(ps : Node*) = {
-    val fileName="qdi.html"
+    val fileName="tmp/qdi.html"
     val page = <html>{head}<body>{NodeSeq.fromSeq(ps)}</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
