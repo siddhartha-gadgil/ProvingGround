@@ -53,6 +53,23 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
     }
   }
 
+  def toLatex = {
+    this match {
+      case Id() => s"$$r \\mapsto r$$"
+      case Inv(k) => s"$$r_{$k} \\mapsto \\bar{r_$k}$$"
+      case RtMult(k, l) => if(k<l)
+                            s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$k}r_{$l}, r_{$l})$$"
+                          else
+                            s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$k}r_{$l})$$"
+
+      case LftMult(k, l) => if(k<l)
+                            s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$l}r_{$k}, r_{$l})$$"
+                          else
+                            s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$l}r_{$k})$$"
+      case Conj(k, l) => s"$$r_{$k} \\mapsto \\bar{\\alpha_{$l}}r_{$k}\\alpha_{$l}$$"
+      case _ => "function1"
+    }
+  }
 /*
   def toUnicode = {
     val create_subscript = ((x: Char) =>
