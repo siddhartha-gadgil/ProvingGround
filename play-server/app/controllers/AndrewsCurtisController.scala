@@ -21,6 +21,10 @@ import FiniteDistribution._
  * @author gadgil
  */
 object AndrewsCurtisController extends Controller{
+  def andrewscurtis = Action {
+    Ok(views.html.jsview("andrews-curtis"))
+  }
+  
   val (acOut, acChannel) = Concurrent.broadcast[String]
 
   def acstream = Action {
@@ -28,6 +32,8 @@ object AndrewsCurtisController extends Controller{
           Ok.feed(acOut &> EventSource()).as("text/event-stream")
       }
   }
+  
+  
 
   def acpost(pickled: String) = 
     acChannel.push(pickled)

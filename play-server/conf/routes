@@ -21,8 +21,10 @@ GET		/bouncestream				controllers.Application.bouncestream
 
 POST	/bounce						controllers.Application.bounce
 
-GET    /andrewscurtis      controllers.Application.acLoopStart
+# GET    /andrewscurtis      controllers.Application.acLoopStart
 
-POST  /andrewscurtis        controllers.Application.acLoop
+# POST  /andrewscurtis        controllers.Application.acLoop
 
 GET   /jstest               controllers.Application.jstest
+
+GET   /andrewscurtis      controllers.AndrewsCurtisController.andrewscurtis

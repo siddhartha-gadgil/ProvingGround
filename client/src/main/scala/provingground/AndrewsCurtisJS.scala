@@ -12,7 +12,7 @@ import HoTT._
 
 import upickle.default._
 
-object AndrewsCurtis{
+object AndrewsCurtisJS{
   import dom.ext._
 
   import scala.scalajs
@@ -45,11 +45,15 @@ object AndrewsCurtis{
        div(nodeList : _*)).render
 
   }
-  
+
   def getPMF(pickled: String) = read[List[(String, Double)]](pickled)
 
-  def getFDtriple(pickled: String) = 
-    read[(List[(String, Double)], List[(String, Double)], 
+  def getFDtriple(pickled: String) =
+    read[(List[(String, Double)], List[(String, Double)],
         List[(String, Double)])](pickled)
 
+  def andrewscurtisJS() = {
+    val jsdiv = dom.document.getElementById("jsdiv")
+    jsdiv.appendChild(h2("Andrews-Curtis interface coming here").render)
+  }
 }

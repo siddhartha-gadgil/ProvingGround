@@ -14,6 +14,7 @@ object ProvingGroundJS extends js.JSApp {
     val page = Try(dom.document.getElementById("page")).map (_.textContent).getOrElse("default")
 
     page match {
+      case "andrews-curtis" => AndrewsCurtisJS.andrewscurtisJS()
       case "default" => JsTest.jstest()
     }
 

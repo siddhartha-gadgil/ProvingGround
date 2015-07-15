@@ -54,7 +54,8 @@ object FiniteDistributionLearner {
 
   case class Sample[X](N: Double) extends
     FormalExtension[FiniteDistribution[X]]{
-    val func = (d : FiniteDistribution[X]) => d filter ((x : X) => random.nextDouble > 1.0/N)
+    val func = (d : FiniteDistribution[X]) =>
+      d.flatten filter ((x : X) => random.nextDouble < d(x) * N) normalized()
   }
 
   def sample[X](N: Double) : DiffbleFunction[FiniteDistribution[X], FiniteDistribution[X]] =
@@ -195,8 +196,8 @@ object FiniteDistributionLearner {
 
 
     def sampleV[M, V](N: Double) : DiffbleFunction[
-    (FiniteDistribution[M], FiniteDistribution[V]), 
-    (FiniteDistribution[M], FiniteDistribution[V])] = 
+    (FiniteDistribution[M], FiniteDistribution[V]),
+    (FiniteDistribution[M], FiniteDistribution[V])] =
       block(id[FiniteDistribution[M]], sample(N))
 
 
