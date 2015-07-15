@@ -61,7 +61,7 @@ object ACevolution {
 
   def presDist(r: Int)(mv : (FD[M], FD[V])) = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get)
 
-  def view(mv : (FD[M], FD[V]), r: Int) = {
+  def viewAll(mv : (FD[M], FD[V]), r: Int) = {
     viewPage(fdDiv(mv._1), "movedist.html")
     viewPage(fdDiv(mv._2), "vertexdist.html")
     val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
