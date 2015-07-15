@@ -41,12 +41,42 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
   }
 
   def toFunc: Presentation => Option[Presentation] = (pres: Presentation) => this(pres)
+
+  def toPlainString = {
+    this match {
+      case Id() => "Id()"
+      case Inv(k) => s"Inv($k)"
+      case RtMult(k, l) => s"RtMult($k, $l)"
+      case LftMult(k, l) => s"LftMult($k, $l)"
+      case Conj(k, l) => s"Conj($k, $l)"
+      case _ => "function1"
+    }
+  }
+
+/*
+  def toUnicode = {
+    val create_subscript = ((x: Char) =>
+                                        x match {
+                                        case '-' => 0x208b.toChar
+                                        case num => (num.toString.toInt + 0x2080).toChar
+                                        }
+                           )
+    val int_to_sub = ((x: Int) => x.toString map create_subscript)
+    this match {
+      case Id() => "r \u2192 r"
+      case Inv(k) => 
+        val sub = int_to_sub(k)
+        s"r$sub \u2192 \u203er$sub"
+      case _ => "function1"
+    }
+  }
+*/
+  override def toString = toPlainString
 }
 
 case class Id() extends AtomicMove {
   override def apply(pres: Presentation) = Some(pres)
   override def actOnMoves(moves: Moves) = Some(moves)
-  override def toString = "id"
 }
 
 case class Inv(k: Int) extends AtomicMove {
@@ -56,7 +86,6 @@ case class Inv(k: Int) extends AtomicMove {
     else
       None
   }
-  override def toString = k.toString + "'"
 }
 
 case class RtMult(k: Int, l: Int) extends AtomicMove {
@@ -66,7 +95,6 @@ case class RtMult(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
-  override def toString = k.toString + '\u2190'.toString + l.toString
 }
 
 case class LftMult(k: Int, l: Int) extends AtomicMove {
@@ -76,7 +104,6 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
     else
       None
   }
-  override def toString = l.toString + '\u2192'.toString + k.toString
 }
 
 case class Conj(k: Int, l: Int) extends AtomicMove {
@@ -85,10 +112,6 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
       Some(pres.conj(k,l))
     else
       None
-  }
-  override def toString = {
-    val f = ((x: String) => if(x(0)=='-') x.tail else "-"+x)
-    f(l.toString) + '\u2192' + k.toString + '\u2190' + l.toString
   }
 }
 
