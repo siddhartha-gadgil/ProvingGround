@@ -20,7 +20,8 @@ lazy val commonSettings = Seq(
   )
 
 lazy val jvmSettings = Seq(
-  libraryDependencies ++= Seq("com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full)
+  libraryDependencies ++= Seq("com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full,
+                    "com.lihaoyi" %% "upickle" % "0.3.4")
   )
 
 lazy val serverSettings = Seq(
@@ -76,7 +77,8 @@ lazy val client = project.
   unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-    "com.lihaoyi" %%% "scalatags" % "0.4.6"
+    "com.lihaoyi" %%% "scalatags" % "0.4.6",
+    "com.lihaoyi" %%% "upickle" % "0.3.4"
     )
   ).
   enablePlugins(ScalaJSPlugin, ScalaJSPlay).

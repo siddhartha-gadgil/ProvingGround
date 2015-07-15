@@ -10,6 +10,7 @@ import Collections._
 
 import HoTT._
 
+import upickle.default._
 
 object AndrewsCurtis{
   import dom.ext._
@@ -20,6 +21,7 @@ object AndrewsCurtis{
               .Implicits
               .runNow
 
+  val sse= new dom.EventSource("/acstream")
 
   def fdDiv[A](fd: FiniteDistribution[A]) = {
     val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
@@ -43,6 +45,10 @@ object AndrewsCurtis{
        div(nodeList : _*)).render
 
   }
-              
+  
+  def getFD(pickled: String) = read[FiniteDistribution[String]](pickled)
+
+  def getFDtriple(pickled: String) = 
+    read[(FiniteDistribution[String], FiniteDistribution[String], FiniteDistribution[String])](pickled)
 
 }

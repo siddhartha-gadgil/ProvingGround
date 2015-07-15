@@ -22,6 +22,8 @@ import DiffbleFunction._
 
 import QDI._
 
+import upickle.default._
+
 /**
  * @author gadgil
  */
@@ -68,5 +70,13 @@ object ACevolution {
     viewPage(fdDiv(presdist),
       "presentationdist.html"
     )
+  }
+
+  def pickleTriple(mv : (FD[M], FD[V]), r: Int) = {
+    val m = mv._1 map ((x: AtomicMove) => x.toString)
+    val v = mv._2 map ((x: Moves) => x.toString)
+    val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
+    val triple = (m, v, presdist)
+//    write(triple)
   }
 }
