@@ -19,11 +19,42 @@ input {
   list-style-type: none;
 }
 
-.entropy {
-  width: 100px;
-  color: green;
-}
 
 .element {
   color: blue;
+}
+
+.index {
+    color: black;
+    display: inline-block;
+    width: 50px;
+}
+
+.element {
+    color: red;
+    display: inline-block;
+    width: 400px;
+}
+
+.probability{
+  color: green;
+  display: inline-block;
+  width: 250px;
+  }
+
+.entropy{
+  color: blue;
+    display: inline-block;
+    width: 250px;
+  }
+
+
+.finite-distribution{
+  border: 1px solid black;
+  width:  800px;
+  height: 200px;
+}
+
+.private {
+    display: none;
 }

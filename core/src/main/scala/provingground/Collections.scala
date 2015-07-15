@@ -147,7 +147,7 @@ object Collections{
     implicit def weights[T](tws: (T, Double)*) = for (tw <- tws) yield Weighted(tw._1, tw._2)
 
 
-    
+
     case class InnerProduct[V](dot: (V, V) => Double)
 
     implicit class DotOp[V : InnerProduct](a : V){
