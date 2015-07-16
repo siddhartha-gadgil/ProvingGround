@@ -87,11 +87,11 @@ object Application extends Controller {
           (bouncePair.apply)(bouncePair.unapply)
           )
 
-  def bounce = Action {
+  def bounce = Action (parse.text){
     implicit request =>
  //     val p = bounceForm.bindFromRequest.get
-      bounceChannel.push("from sse: " + request.body.asText.getOrElse("not parsed as text"))
-      println(request.body.asText)
+      bounceChannel.push("from sse: " + request.body)
+      println(request.body)
   //    p.send
       Ok("bounced")
   }

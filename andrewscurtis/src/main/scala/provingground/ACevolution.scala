@@ -52,9 +52,9 @@ object ACevolution {
 
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
-  def evolve(rank: Int, steps: Int = 5, initV: FD[V] = trivMoveSeq) = {
+  def evolve(rank: Int, steps: Int = 5, initV: FD[V] = eVec) = {
     val fn = iterateDiff(allMoves(rank), steps)
-    fn.func((unifMoves(rank), trivMoveSeq))
+    fn.func((unifMoves(rank), eVec))
   }
 
   def step(rank: Int) = {
@@ -77,6 +77,8 @@ object ACevolution {
     val v = mv._2.pickle
     val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
     val triple = (m, v, presdist.pickle)
-    write(triple)
+    write((Header.fdMVP, triple))
   }
+  
+  def pickleInit(rank: Int) = pickleTriple((unifMoves(rank), eVec), rank)
 }

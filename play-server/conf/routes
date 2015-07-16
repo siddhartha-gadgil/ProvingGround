@@ -28,3 +28,5 @@ POST	/bounce						controllers.Application.bounce
 GET   /jstest               controllers.Application.jstest
 
 GET   /andrewscurtis      controllers.AndrewsCurtisController.andrewscurtis
+
+POST  /acquery            controllers.AndrewsCurtisController.acQuery

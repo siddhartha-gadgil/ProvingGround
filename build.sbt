@@ -2,8 +2,6 @@ import sbt.Project.projectToRef
 
 lazy val jsProjects = Seq(client)
 
-
-
 lazy val commonSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
