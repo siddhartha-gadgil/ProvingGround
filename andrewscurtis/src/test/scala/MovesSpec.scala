@@ -128,8 +128,8 @@ class AtomicMoveObjectSpec extends FlatSpec {
     val inp5 = "12->3"
     val inp6 = "12->3a"
     val inp7 = "12<-3"
-    val inp8 = "a^6"
-    val inp9 = "a!^6"
+    val inp8 = "6^a"
+    val inp9 = "6^a!"
     val result1 = Some(Id())
     val result2 = Some(Inv(2))
     val result3 = Some(Inv(12))
@@ -217,7 +217,7 @@ class MovesSpec extends FlatSpec {
 
 class MovesObjectSpec extends FlatSpec {
   "fromString" should "parse a list of strings into Moves" in {
-    val seqMoves = Seq("id", "4!", "2->3", "4<-3", "b!^6")
+    val seqMoves = Seq("id", "4!", "2->3", "4<-3", "6^b!")
     val result = Some(Moves(List(Id(), Inv(4), LftMult(3,2), RtMult(4,3), Conj(6,-2))))
     assert(Moves.fromString(seqMoves)===result)
   }

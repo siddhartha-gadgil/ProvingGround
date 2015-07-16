@@ -19,8 +19,9 @@ object AtomicMove {
     val inv = """^[0-9]+!$""".r
     val lftmult = """^[0-9]+->[0-9]+$""".r
     val rtmult = """^[0-9]+<-[0-9]+$""".r
-    val conj = """^[a-z]!?\^[0-9]+$""".r
+    val conj = """^[0-9]+\^[a-z]!?$""".r
     val numbers = """[0-9]+""".r
+    val letters = """[a-z]!?$""".r
 
     if(id.findFirstIn(w).isDefined) {
       Some(Id())
@@ -42,7 +43,7 @@ object AtomicMove {
       Some(RtMult(k, l))
     }
     else if(conj.findFirstIn(w).isDefined) {
-      val letter = w(0)
+      val letter = letters.findFirstIn(w).toList(0).toString.apply(0)
       val multiplier = if(w.contains('!'))
                                 -1
                                else
