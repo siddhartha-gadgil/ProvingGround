@@ -7,7 +7,11 @@ label{
 }
 input {
   display: inline-block;
-  float: left;
+
+}
+
+input[type="number"] {
+   width:30px;
 }
 
 .entropies {
@@ -51,8 +55,9 @@ input {
 
 .finite-distribution{
   border: 1px solid black;
-  width:  800px;
+  width:  1200px;
   height: 200px;
+  overflow-y: auto;
 }
 
 .private {

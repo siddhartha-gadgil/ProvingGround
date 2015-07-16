@@ -39,7 +39,7 @@ object Application extends Controller {
   }
 
 
-  
+
 /*
   def ACupdate = Action {
     implicit request => {
@@ -90,14 +90,15 @@ object Application extends Controller {
   def bounce = Action (parse.text){
     implicit request =>
  //     val p = bounceForm.bindFromRequest.get
-      bounceChannel.push("from sse: " + request.body)
+ import upickle.default._
+      bounceChannel.push(write((request.body, request.body)))
       println(request.body)
   //    p.send
       Ok("bounced")
   }
-  
-  
-  
+
+
+
     def acLoopStart = Action {
     Ok(views.html.acLoopStart())
   }

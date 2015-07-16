@@ -91,14 +91,14 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
       case Inv(k) => s"$k!"
       case RtMult(k, l) => s"$k<-$l"
       case LftMult(k, l) => s"$l->$k"
-      case Conj(k, l) => 
+      case Conj(k, l) =>
         if(l>0) {
           val letter = (l + 'a'.toInt - 1).toChar
-          s"$letter^$k"
+          s"$k^$letter"
         }
         else {
           val letter = ((-1)*l + 'a'.toInt - 1).toChar.toString + "!"
-          s"$letter^$k"
+          s"$k^$letter"
         }
       case _ => "function1"
     }
@@ -132,7 +132,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
     val int_to_sub = ((x: Int) => x.toString map create_subscript)
     this match {
       case Id() => "r \u2192 r"
-      case Inv(k) => 
+      case Inv(k) =>
         val sub = int_to_sub(k)
         s"r$sub \u2192 \u203er$sub"
       case _ => "function1"

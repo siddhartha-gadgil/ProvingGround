@@ -38,11 +38,14 @@ object JsTest{
 
     val sse= new dom.EventSource("/bouncestream")
 
+import upickle.default._
 
     sse.onmessage = (event: dom.MessageEvent) => {
       bouncers.appendChild(
           p(event.data.toString).render
           )
+      val (a, b) = read[(String, String)](event.data.toString)
+      bouncers.appendChild(i(a).render)
     }
 
 

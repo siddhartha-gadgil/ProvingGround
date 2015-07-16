@@ -24,8 +24,16 @@ object AndrewsCurtisJS{
 
   val sse= new dom.EventSource("/acstream")
 
+  val debugDiv = div.render
+
+  def debug(mess: String) = debugDiv.appendChild(h4(mess).render)
+
   sse.onmessage = (event: dom.MessageEvent) => {
+//    debug(event.data.toString)
       val (header, message) = read[(String, String)](event.data.toString)
+//      debug(header)
+//    val header = fdMVP
+//    val message = event.data.toString
       header match {
         case fdMVP => {
           val (pmfM, pmfV, pmfP) = read[
@@ -83,11 +91,13 @@ object AndrewsCurtisJS{
 
   lazy val dashboard = div(`class`:= "dashboard")(
       h3("Dashboard"),
-      div(b("rank:"), rankBox),
-      div(b("steps:"), stepsBox),
+      div(b("rank: "), rankBox),
+      p(""),
+      div(b("steps: "), stepsBox),
+      p(""),
       div(evolveButton)).render
 
-  lazy val output = div(`class` := "output")(h3("Ouput"), fdOutDiv).render
+  lazy val output = div(`class` := "output")(h3("Ouput"), debugDiv, fdOutDiv).render
 
   lazy val fdOutDiv = div.render
 
@@ -101,31 +111,33 @@ object AndrewsCurtisJS{
     jsdiv.appendChild(h2("Andrews-Curtis interface coming here").render)
     jsdiv.appendChild(div(dashboard, output).render)
   }
-  
+
   def postEvolve(rank: Int, steps: Int) = {
     val message = write((rank, steps))
     val post = write((Header.evolve, message))
     Ajax.post("/acquery", post)
   }
-  
+
   val rankBox = input(
         `type`:="number",
+        size := 4,
         value := "2"
         ).render
-        
+
   val stepsBox = input(
         `type`:="number",
+        size := 4,
         value := "2"
         ).render
-  
+
   def getRank = rankBox.value.toInt
-  
+
   def getSteps = stepsBox.value.toInt
-  
+
   def runEvolve = postEvolve(getRank, getSteps)
-  
+
   val evolveButton = input(`type` := "submit", value := "Start evolution").render
-  
+
   evolveButton.onclick = (e: dom.Event) => {
     fdOut(div(p("output?")).render)
     runEvolve}

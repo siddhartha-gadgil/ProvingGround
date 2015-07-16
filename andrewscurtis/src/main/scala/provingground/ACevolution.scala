@@ -73,12 +73,13 @@ object ACevolution {
   }
 
   def pickleTriple(mv : (FD[M], FD[V]), r: Int) = {
-    val m = mv._1.pickle
+    val m = mv._1.map((m : M) => m.toPlainString).pickle
     val v = mv._2.pickle
     val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
     val triple = (m, v, presdist.pickle)
-    write((Header.fdMVP, triple))
+    val pickled = write(triple)
+    write((Header.fdMVP, pickled))
   }
-  
+
   def pickleInit(rank: Int) = pickleTriple((unifMoves(rank), eVec), rank)
 }

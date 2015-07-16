@@ -30,7 +30,7 @@ object AndrewsCurtisController extends Controller{
   def andrewscurtis = Action {
     Ok(views.html.jsview("andrews-curtis","ProvingGround: Andrews-Curtis"))
   }
-  
+
   val (acOut, acChannel) = Concurrent.broadcast[String]
 
   def acstream = Action {
@@ -38,7 +38,7 @@ object AndrewsCurtisController extends Controller{
           Ok.feed(acOut &> EventSource()).as("text/event-stream")
       }
   }
-  
+
   def acQuery = Action (parse.text) {implicit request =>
     val (header, message) = read[(String, String)](request.body)
     header match {
@@ -50,15 +50,15 @@ object AndrewsCurtisController extends Controller{
           Ok("evolution started")
         }
       case _ => Ok("TODO")
-    }    
-    
-    
-  }
-    
+    }
 
-  def acPost(pickled: String) = 
+
+  }
+
+
+  def acPost(pickled: String) =
     acChannel.push(pickled)
-  
+
   def evolvePost(rank: Int, steps: Int)  = {
     val resultFut = Future(evolve(rank, steps))
     resultFut onSuccess{
@@ -68,5 +68,5 @@ object AndrewsCurtisController extends Controller{
       acPost(pickled)
     }}
   }
-  
+
 }
