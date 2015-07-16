@@ -19,7 +19,6 @@ object AtomicMove {
     val inv = """^[0-9]+!$""".r
     val lftmult = """^[0-9]+->[0-9]+$""".r
     val rtmult = """^[0-9]+<-[0-9]+$""".r
-    //val conj = """^[a-z]!?\^[0-9]+$""".r
     val conj = """^[0-9]+\^[a-z]!?$""".r
     val numbers = """[0-9]+""".r
     val letters = """[a-z]!?$""".r
