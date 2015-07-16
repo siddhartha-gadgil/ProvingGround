@@ -11,6 +11,47 @@ import FiniteDistribution._
 object AtomicMove {
   def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
   def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
+  def fromString(w: String): Option[AtomicMove] = {
+    // Regular expressions to match to various case classes
+    val  id = """^$""".r
+    val inv = """^[0-9]+!$""".r
+    val lftmult = """^[0-9]+->[0-9]+$""".r
+    val rtmult = """^[0-9]+<-[0-9]+$""".r
+    val conj = """^[a-z]!-\^[0-9]+$""".r
+    val numbers = """[0-9]+""".r
+
+    if(id.findFirstIn(w).isDefined) {
+      Some(Id())
+    }
+    else if(inv.findFirstIn(w).isDefined) {
+      val rel = (w.takeWhile(_!='!')).toInt
+      Some(Inv(rel))
+    }
+    else if(lftmult.findFirstIn(w).isDefined) {
+      val nums = numbers.findAllMatchIn(w).toList
+      val l = nums(0)
+      val k = nums(1)
+      Some(LftMult(k, l))
+    }
+    else if(rtmult.findFirstIn(w).isDefined) {
+      val nums = numbers.findAllMatchIn(w).toList
+      val k = nums(0)
+      val l = nums(1)
+      Some(RtMult(k, l))
+    }
+    else if(conj.findFirstIn(w).isDefined) {
+      val letter = w(0)
+      val multiplier = if(w.contains('!'))
+                                -1
+                               else
+                                1
+      val generator = (letter.toInt - 'a'.toInt + 1) * multiplier
+      val relation = numbers.findAllMatchIn(w).toList(0)
+      Some(Conj(relation, generator))
+    }
+    else
+      None
+  }
 }
 
 sealed trait AtomicMove extends (Moves => Option[Moves]){
