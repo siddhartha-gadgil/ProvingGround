@@ -11,6 +11,49 @@ import FiniteDistribution._
 object AtomicMove {
   def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
   def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
+  def apply(w: String): AtomicMove = fromString(w).get
+  def fromString(w: String): Option[AtomicMove] = {
+    // Regular expressions to match to various case classes
+    // Won't work in conj if there are more than 26 generators
+    val  id = """^id$""".r
+    val inv = """^[0-9]+!$""".r
+    val lftmult = """^[0-9]+->[0-9]+$""".r
+    val rtmult = """^[0-9]+<-[0-9]+$""".r
+    val conj = """^[a-z]!?\^[0-9]+$""".r
+    val numbers = """[0-9]+""".r
+
+    if(id.findFirstIn(w).isDefined) {
+      Some(Id())
+    }
+    else if(inv.findFirstIn(w).isDefined) {
+      val rel = (w.takeWhile(_!='!')).toInt
+      Some(Inv(rel))
+    }
+    else if(lftmult.findFirstIn(w).isDefined) {
+      val nums = numbers.findAllMatchIn(w).toList
+      val l = nums(0).toString.toInt
+      val k = nums(1).toString.toInt
+      Some(LftMult(k, l))
+    }
+    else if(rtmult.findFirstIn(w).isDefined) {
+      val nums = numbers.findAllMatchIn(w).toList
+      val k = nums(0).toString.toInt
+      val l = nums(1).toString.toInt
+      Some(RtMult(k, l))
+    }
+    else if(conj.findFirstIn(w).isDefined) {
+      val letter = w(0)
+      val multiplier = if(w.contains('!'))
+                                -1
+                               else
+                                1
+      val generator = (letter.toInt - 'a'.toInt + 1) * multiplier
+      val relation = numbers.findAllMatchIn(w).toList(0).toString.toInt
+      Some(Conj(relation, generator))
+    }
+    else
+      None
+  }
 }
 
 sealed trait AtomicMove extends (Moves => Option[Moves]){
@@ -42,13 +85,21 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 
   def toFunc: Presentation => Option[Presentation] = (pres: Presentation) => this(pres)
 
-  def toPlainString = {
+  def toPlainString: String = {
     this match {
-      case Id() => "Id()"
-      case Inv(k) => s"Inv($k)"
-      case RtMult(k, l) => s"RtMult($k, $l)"
-      case LftMult(k, l) => s"LftMult($k, $l)"
-      case Conj(k, l) => s"Conj($k, $l)"
+      case Id() => "id"
+      case Inv(k) => s"$k!"
+      case RtMult(k, l) => s"$k<-$l"
+      case LftMult(k, l) => s"$l->$k"
+      case Conj(k, l) => 
+        if(l>0) {
+          val letter = (l + 'a'.toInt - 1).toChar
+          s"$letter^$k"
+        }
+        else {
+          val letter = ((-1)*l + 'a'.toInt - 1).toChar.toString + "!"
+          s"$letter^$k"
+        }
       case _ => "function1"
     }
   }
@@ -166,6 +217,16 @@ case class Moves(moves: List[AtomicMove]) {
 
 object Moves {
   def empty = Moves(List.empty)
+
+  def apply(ws: String*) = fromString(ws).get
+
+  def fromString(ws: Seq[String]): Option[Moves] = {
+    val atomic_moves = ws.toList map (AtomicMove.fromString(_))
+    if(atomic_moves.contains(None))
+      None
+    else
+      Some(Moves(for{Some(i) <- atomic_moves} yield i))
+  }
 
   implicit def toMoves(move: AtomicMove): Moves = Moves(List(move))
 
