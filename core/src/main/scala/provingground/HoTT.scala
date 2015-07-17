@@ -74,7 +74,7 @@ object HoTT{
        * testing for types also done.
        */
       def replace(x: Term, y: Term) : U with Subs[U] = {
-        assert(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
+        require(x.typ==y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
         (x, y) match {
           case (ab: AbsPair[u, v], cd: AbsPair[w, x]) if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
             replace(ab.first, cd.first) replace(ab.second, cd.second)
@@ -141,7 +141,7 @@ object HoTT{
          * checks term is of this type and returns it; useful for documentation.
          */
         def !:[U <: Term](term: Term) : U = {
-          assert(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
+          require(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
           term.asInstanceOf[U]}
 
         /**
@@ -553,7 +553,7 @@ object HoTT{
       def act(arg: W): U
 
       def apply(arg: W): U = {
-        assert(arg.typ == dom, s"function with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
+        require(arg.typ == dom, s"function with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
         act(arg)
       }
 //      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncLike[WW, UU]
@@ -941,7 +941,7 @@ object HoTT{
 	 * lambda constructor for fixed codomain
 	 */
 	def lmbda[U<: Term with Subs[U], V <: Term with Subs[V]](variable: U)(value : V) : Func[U, V] = {
-    assert(value.typ.indepOf(variable),
+    require(value.typ.indepOf(variable),
         s"lambda returns function type but value $value has type ${value.typ} depending on variable $variable")
 		val newvar = variable.newobj
 	    LambdaFixed(newvar, value.replace(variable, newvar))
@@ -1186,7 +1186,7 @@ object HoTT{
 	implicit class RichTerm[U <: Term with Subs[U]](term: U){
 
 	  def =:=(rhs: U) =  {
-	    assert(term.typ == rhs.typ, "mismatched types for equality "+ term.typ+" and "+rhs.typ)
+	    require(term.typ == rhs.typ, "mismatched types for equality "+ term.typ+" and "+rhs.typ)
 	    IdentityTyp(term.typ.asInstanceOf[Typ[U]], term, rhs)
 	  }
 

@@ -340,6 +340,15 @@ object FreeGroups{
     def ACstab(pres: Presentation) = pres.ACstab
     def ttzStab(pres: Presentation) = pres.ttzStab
     def ACdestab(pres: Presentation) = pres.ACdestab
+
+      /**
+   * weight where number of relations is fixed.
+   */
+  def weight(wrdCntn: Double): Presentation => Double = (pres: Presentation) => {
+    val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
+    ((wordwts :\ 1.0)(_ * _))
+  }
+  
   }
 
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
@@ -347,13 +356,7 @@ object FreeGroups{
     (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
   }
 
-  /**
-   * weight where number of relations is fixed.
-   */
-  def weight(wrdCntn: Double): Presentation => Double = (pres: Presentation) => {
-    val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
-    ((wordwts :\ 1.0)(_ * _))
-  }
+
 
   /*
    * Empty presentation

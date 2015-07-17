@@ -24,6 +24,8 @@ import QDI._
 
 import upickle.default._
 
+import SimpleAcEvolution._
+
 /**
  * @author gadgil
  */
@@ -40,21 +42,11 @@ object ACevolution {
 
   def trivMoveSeq = FiniteDistribution.uniform(Some(Moves.empty))
 
-  val E = Weighted(Moves.empty, 1)
 
-  lazy val eSet = FiniteDistributionSet(Set(E))
-
-  lazy val eVec = FiniteDistributionVec(Vector(E))
-
-  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
-
-  def allMoves(rank: Int) = genAllMoves(rank, rank)
-
-  def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
   def evolve(rank: Int, steps: Int = 5, initV: FD[V] = eVec) = {
     val fn = iterateDiff(allMoves(rank), steps)
-    fn.func((unifMoves(rank), eVec))
+    fn.func((unifMoves(rank), initV))
   }
 
   def step(rank: Int) = {
