@@ -101,7 +101,15 @@ object SimpleAcEvolution {
       evolvedStates :+ evolved: List[State])
       
     @annotation.tailrec 
-    final def run(n: Int) : Path = if (n < 1) this else next.run(n -1)
+    final def quickrun(n: Int) : Path = if (n < 1) this else {next.quickrun(n -1)}
+    
+    final def run(n: Int, 
+        callback: Path => Unit = (p) => {}) : Path = 
+      if (n < 1) this 
+      else {
+        val result = next.run(n -1, callback)
+        callback(result)
+        result}
   }
   
   object Path{
