@@ -17,6 +17,8 @@ import ACevolution._
 
 import FiniteDistribution._
 
+import SimpleAcEvolution._
+
 import scala.concurrent._
 
 import play.api.libs.concurrent.Execution.Implicits._
@@ -55,6 +57,7 @@ object AndrewsCurtisController extends Controller{
 
   }
 
+  def writePath(p: Path)  = write(p.pickle)
 
   def acPost(pickled: String) =
     acChannel.push(pickled)

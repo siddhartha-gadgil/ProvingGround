@@ -10,9 +10,15 @@ import Collections._
 
 import HoTT._
 
+import andrewscurtis._
+
+import SimpleAcEvolution._
+
 import upickle.default._
 
 object AndrewsCurtisJS{
+  def readPath(s: String) = read[PickledPath](s).unpickle
+
   import dom.ext._
 
   import Header._
