@@ -11,4 +11,6 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.4")
 
 addSbtPlugin("com.vmunier" % "sbt-play-scalajs" % "0.2.4")
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.7")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0")
+
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")

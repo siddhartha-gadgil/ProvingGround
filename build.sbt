@@ -5,7 +5,7 @@ lazy val jsProjects = Seq(client)
 lazy val commonSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
-  scalaVersion := "2.11.6",
+  scalaVersion := "2.11.7",
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
@@ -18,14 +18,15 @@ lazy val commonSettings = Seq(
   )
 
 lazy val jvmSettings = Seq(
-  libraryDependencies ++= Seq("com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full,
+  libraryDependencies ++= Seq(
+//    "com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full,
                     "com.lihaoyi" %% "upickle" % "0.3.4")
   )
 
 lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
   ws,
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
   "com.vmunier" %% "play-scalajs-scripts" % "0.2.0",
   "org.webjars" % "jquery" % "1.11.1"
   ),
@@ -50,13 +51,13 @@ lazy val digressionSettings = Seq(
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11",
-    "com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
+//    ,"com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
-  initialCommands in console := """import provingground.andrewscurtis._""",
-  initialCommands in (Test, console) :=
-    """ammonite.repl.Repl.run("import provingground.andrewscurtis._; import provingground._; import FreeGroups._; import Presentation._; import ACevolution._")"""
+  initialCommands in console := """import provingground.andrewscurtis._"""
+//  ,initialCommands in (Test, console) :=
+//    """ammonite.repl.Repl.run("import provingground.andrewscurtis._; import provingground._; import FreeGroups._; import Presentation._; import ACevolution._")"""
   )
 
 lazy val nfSettings = Seq(
@@ -103,8 +104,8 @@ lazy val mantle = (project in file("mantle")).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
-          "import provingground._; import HoTT._")""").
+//        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
+//          "import provingground._; import HoTT._")""").
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
