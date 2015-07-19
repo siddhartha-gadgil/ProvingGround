@@ -50,6 +50,20 @@ Controller with MongoController with ReactiveMongoComponents{
 
   case class Dummy(x: String, y: List[Double])
 
+  import provingground._
+
+  import Collections._
+
+  case class WS(elem: String, wt : Double)
+
+  implicit val wsF = Json.format[WS]
+
+//  implicit val wtdF = Json.format[Weighted[String]] // does not work
+
+  case class FDS(d: List[WS])
+
+  implicit val ff = Json.format[FDS]
+
   implicit val df = Json.format[Dummy]
 //  implicit val stateFormat = Json.format[PickledState]
 
