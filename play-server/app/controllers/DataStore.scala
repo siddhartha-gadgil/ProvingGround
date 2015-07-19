@@ -32,13 +32,26 @@ import reactivemongo.api.Cursor
 
 
 
+import javax.inject.Inject
 
+import play.modules.reactivemongo.{ // ReactiveMongo Play2 plugin
+  MongoController,
+  ReactiveMongoApi,
+  ReactiveMongoComponents
+}
 
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import play.api.libs.json.Json
 
-object DataStore extends Controller //with MongoController
-{
+class DataStore  @Inject() (val reactiveMongoApi: ReactiveMongoApi)  extends
+Controller with MongoController with ReactiveMongoComponents{
   import play.api.libs.json.Json
-//  implicit val stateFormat = new Json.format[State]
+
+  case class Dummy(x: String, y: List[Double])
+
+  implicit val df = Json.format[Dummy]
+//  implicit val stateFormat = Json.format[PickledState]
 
 //  implicit val pathFormat = Json.Format[PickledPath]
 
