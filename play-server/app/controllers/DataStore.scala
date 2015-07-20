@@ -48,26 +48,16 @@ class DataStore  @Inject() (val reactiveMongoApi: ReactiveMongoApi)  extends
 Controller with MongoController with ReactiveMongoComponents{
   import play.api.libs.json.Json
 
-  case class Dummy(x: String, y: List[Double])
-
   import provingground._
 
   import Collections._
 
-  case class WS(elem: String, wt : Double)
+  implicit val weightFormat = Json.format[PickledWeighted]
 
-  implicit val wsF = Json.format[WS]
+  implicit val stateFormat = Json.format[PickledState]
 
-//  implicit val wtdF = Json.format[Weighted[String]] // does not work
+  implicit val pathFormat = Json.format[PickledPath]
 
-  case class FDS(d: List[WS])
-
-  implicit val ff = Json.format[FDS]
-
-  implicit val df = Json.format[Dummy]
-//  implicit val stateFormat = Json.format[PickledState]
-
-//  implicit val pathFormat = Json.Format[PickledPath]
 
   object AndrewsCurtis{
   /*

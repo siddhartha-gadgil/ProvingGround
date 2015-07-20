@@ -12,11 +12,22 @@ import Collections._
 import FiniteDistributionLearner._
 import LinearStructure._
 
+import upickle.default._
+
 /**
  * @author gadgil
  */
 object SimpleAcEvolution {
   def toPresentation(rank: Int, fdV : FiniteDistribution[Moves]) = fdV map ((v: V) => Moves.actOnTriv(rank)(v).get)
+
+  case class PickledWeighted(elem: String, weight: Double){
+    def map[S](f: String => S) = Weighted(f(elem), weight)
+  }
+
+  object PickledWeighted{
+    def pickle[T](wtd: Weighted[T]) = PickledWeighted(wtd.elem.toString, wtd.weight)
+  }
+
 
   case class State(rank: Int, fdM: FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]){
     def fdP = toPresentation(rank, fdV)
@@ -24,21 +35,23 @@ object SimpleAcEvolution {
     def pair = (fdM, fdV)
 
     def pickle = {
-      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield (m.toPlainString, p)).toList
-      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (v.moves.map(_.toString), p)).toList
+      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(m.toPlainString, p)).toList
+      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield
+        (PickledWeighted(write(v.moves.map(_.toString)), p))).toList
       PickledState(rank, pmfM, pmfV)
     }
   }
 
-  case class PickledState(rank: Int, pmfM: List[(String, Double)], pmfV : List[(List[String], Double)]){
+  case class PickledState(rank: Int, pmfM: List[PickledWeighted], pmfV : List[PickledWeighted]){
     def unpickle = {
       val fdM = {
-        val pmf = for ((x, p) <- pmfM) yield Weighted(x, p)
+        val pmf = for (PickledWeighted(x, p) <- pmfM) yield Weighted(x, p)
         FiniteDistribution(pmf) map ((s: String) => AtomicMove.fromString(s).get)
       }
 
       val fdV = {
-        val pmf = for ((x, p) <- pmfV) yield Weighted(Moves.fromString(x).get, p)
+        val pmf = for (PickledWeighted(x, p) <- pmfV) yield
+          Weighted(Moves.fromString(read[List[String]](x)).get, p)
         FiniteDistribution(pmf)
       }
 

@@ -69,7 +69,7 @@ lazy val nfSettings = Seq(
 
 lazy val client = project.
   settings(name := "ProvingGround-JS",
-  scalaVersion := "2.11.6",
+  scalaVersion := "2.11.7",
   persistLauncher := true,
   persistLauncher in Test := false,
   sourceMapsDirectories += coreJS.base / "..",
@@ -88,6 +88,9 @@ lazy val client = project.
 lazy val core = (crossProject.crossType(CrossType.Pure) in  file("core")).
   settings(commonSettings : _*).
   settings(name := "ProvingGround-Core").
+  settings(libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "upickle" % "0.3.4"
+    )).
   jsConfigure(_ enablePlugins ScalaJSPlay).
   jsSettings(sourceMapsBase := baseDirectory.value / "..")
 
@@ -121,6 +124,8 @@ lazy val playServer = (project in file("play-server")).enablePlugins(PlayScala).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
+        settings(libraryDependencies += specs2 % Test,
+        resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases").
         aggregate(jsProjects.map(projectToRef): _*).
         dependsOn(coreJVM).
         dependsOn(functionfinder).

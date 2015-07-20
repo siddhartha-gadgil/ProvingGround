@@ -130,6 +130,8 @@ object Collections{
 
     case class Weighted[T](elem: T, weight: Double){
       def scale(s: Double) = Weighted(elem, weight * s)
+      
+      def map[S](f: T => S) = Weighted(f(elem), weight)
     }
 
     object Weighted{
