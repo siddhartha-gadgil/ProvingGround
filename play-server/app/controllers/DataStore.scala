@@ -46,17 +46,7 @@ import play.api.libs.json.Json
 
 class DataStore  @Inject() (val reactiveMongoApi: ReactiveMongoApi)  extends
 Controller with MongoController with ReactiveMongoComponents{
-  import play.api.libs.json.Json
 
-  import provingground._
-
-  import Collections._
-
-  implicit val weightFormat = Json.format[PickledWeighted]
-
-  implicit val stateFormat = Json.format[PickledState]
-
-  implicit val pathFormat = Json.format[PickledPath]
 
 
   object AndrewsCurtis{

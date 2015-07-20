@@ -154,7 +154,7 @@ case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElem
   def derivative: FormalElemFunction = Plus(x.derivative, y.derivative)
 
   def partialDerivative(j: Int) : FormalElemFunction = Plus(x.partialDerivative(j), y.partialDerivative(j))
-  
+
   override  def toString=s"($x + $y)"
 }
 
@@ -167,7 +167,7 @@ case class Times(x: FormalElemFunction, y: FormalElemFunction) extends FormalEle
   }
 
   def derivative: FormalElemFunction = Plus(Times(x.derivative,y), Times(y.derivative, x))
-  
+
   def partialDerivative(j: Int): FormalElemFunction = Plus(Times(x.partialDerivative(j),y), Times(y.partialDerivative(j), x))
 
   override  def toString=s"($x \u00d7 $y)"
@@ -187,7 +187,7 @@ case class Reciprocal(x: FormalElemFunction) extends FormalElemFunction{
 
    def partialDerivative(j: Int): FormalElemFunction =
       Times(Negate(x.partialDerivative(j)), Times(Reciprocal(x), Reciprocal(x)))
-      
+
     override  def toString=s"1/($x)"
 }
 
@@ -214,7 +214,7 @@ case class Negate(x: FormalElemFunction) extends FormalElemFunction{
   }
 
   def derivative: FormalElemFunction = Negate(x.derivative)
-  
+
   def partialDerivative(j: Int): FormalElemFunction = Negate(x.partialDerivative(j))
 
   override  def toString=s"-($x)"
@@ -229,7 +229,7 @@ case class Compose(x: FormalElemFunction, y: FormalElemFunction) extends FormalE
   }
 
   def derivative: FormalElemFunction = Times(Compose(x.derivative, y), y.derivative)
-  
+
   def partialDerivative(j: Int): FormalElemFunction = Times(Compose(x.partialDerivative(j), y), y.partialDerivative(j))
 
   override  def toString=s"$x \u2218 ($y)"
@@ -247,21 +247,21 @@ object FormalElemFunction{
     val log : FormalElemFunction = Log
 
     val sqrt: FormalElemFunction = Sqrt
-    
+
     val pi : FormalElemFunction = Pi
 
     val fieldOps = formalFieldOps
 
     val proj : Int =>  FormalElemFunction = (i: Int) => Proj(i)
-    
+
     lazy val tan = sin/cos
 
     lazy val one: FormalElemFunction = One
 
     implicit def N(n: Int) = natField[FormalElemFunction](n)
-    
+
     lazy val sec = one / cos
-    
+
     lazy val cosec = one / sin
 
     lazy val x= proj(0)
@@ -269,7 +269,7 @@ object FormalElemFunction{
     lazy val y = proj(1)
 
     lazy val z = proj(2)
-    
+
     lazy val w = proj(3)
   }
 
@@ -285,8 +285,8 @@ object FormalElemFunction{
     def times(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction = Times(x, y)
 
     def div(x: FormalElemFunction, y: FormalElemFunction) : FormalElemFunction = Div(x, y)
-    
-    
+
+
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction]{
@@ -310,6 +310,6 @@ object FormalElemFunction{
     case One => true
     case _ : ConstFunc => true
     case _ : OneVar => false
-  } 
+  }
 
 }

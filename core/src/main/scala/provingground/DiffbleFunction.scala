@@ -75,7 +75,7 @@ import LinearStructure._
         val func = (a: A) => a
         val grad = (a: A) => (b: A) => b
       }
-      
+
       def id[A] : DiffbleFunction[A, A] = Id[A]
 
       case class Incl1[A, B: LinearStructure]() extends DiffbleFunction[A, (A, B)]{

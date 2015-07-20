@@ -24,7 +24,6 @@ import scala.concurrent._
 import play.api.libs.concurrent.Execution.Implicits._
 
 import upickle.default._
-
 /**
  * @author gadgil
  */

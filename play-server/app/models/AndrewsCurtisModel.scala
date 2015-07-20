@@ -26,6 +26,24 @@ import math._
 import math.pow
 
 object AndrewsCurtisModel{
+  import play.api.libs.json.Json
+
+  import provingground._
+
+  import Collections._
+
+  import andrewscurtis._
+
+  import SimpleAcEvolution._
+
+  implicit val weightFormat = Json.format[PickledWeighted]
+
+  implicit val stateFormat = Json.format[PickledState]
+
+  implicit val pathFormat = Json.format[PickledPath]
+
+
+
     /*
    * The type of moves
    */
