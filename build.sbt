@@ -27,7 +27,7 @@ lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
   ws,
   "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
-  "com.vmunier" %% "play-scalajs-scripts" % "0.2.0",
+  "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
   "org.webjars" % "jquery" % "1.11.1"
   ),
   scalaJSProjects := jsProjects,
