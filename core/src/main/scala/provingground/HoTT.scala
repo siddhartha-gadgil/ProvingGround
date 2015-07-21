@@ -140,7 +140,7 @@ object HoTT{
         /**
          * checks term is of this type and returns it; useful for documentation.
          */
-        def !:[U <: Term](term: Term) : U = {
+        def !:(term: Term) : U = {
           require(term.typ == this," Expected "+toString+"but found "+term.typ.toString)
           term.asInstanceOf[U]}
 
@@ -1128,7 +1128,7 @@ object HoTT{
 	    DepPair(a, b, fibers)
 	  }
 
-	  	val paircons = {
+    lazy val paircons = {
     	  val a = fibers.dom.Var
     	  val b = (fibers(a)).Var
     	  lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
@@ -1156,7 +1156,7 @@ object HoTT{
 	 */
 	case class DepPair[W<: Term with Subs[W], U<: Term with Subs[U]](first : W, second: U, fibers: TypFamily[W, U]) extends Term with
 		Subs[DepPair[W, U]] with AbsPair[W, U]{
-	  val typ = SigmaTyp(fibers)
+	  lazy val typ = SigmaTyp(fibers)
 
 	  def newobj = DepPair(first.newobj, second.newobj, fibers)
 
