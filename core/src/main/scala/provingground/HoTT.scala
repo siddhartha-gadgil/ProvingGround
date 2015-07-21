@@ -266,7 +266,8 @@ object HoTT{
       */
 
       def subs(x: Term, y: Term) = if (x==this) y else {
-        def symbobj(sym: AnySym) = SymbObj(sym, typ.replace(x, y))
+        def symbobj(sym: AnySym) = typ.replace(x,y).symbObj(sym)
+          //SymbObj(sym, typ.replace(x, y))
         symSubs(symbobj)(x, y)(name)
       }
     }
