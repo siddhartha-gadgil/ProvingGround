@@ -125,7 +125,8 @@ lazy val playServer = (project in file("play-server")).enablePlugins(PlayScala).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         settings(libraryDependencies += specs2 % Test,
-        resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases").
+        resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
+        TwirlKeys.templateImports += "controllers._").
         aggregate(jsProjects.map(projectToRef): _*).
         dependsOn(coreJVM).
         dependsOn(functionfinder).
