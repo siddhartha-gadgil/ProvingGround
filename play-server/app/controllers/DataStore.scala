@@ -3,23 +3,14 @@ package controllers
 import models.AndrewsCurtisModel
 
 
-import play.api._
-import play.api.mvc._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.json._
-import scala.concurrent.Future
-
 import provingground._
 import andrewscurtis._
 
 import SimpleAcEvolution._
 
-// Reactive Mongo imports
-import reactivemongo.api._
+import javax.inject.Inject
 
-// Reactive Mongo plugin, including the JSON-specialized collection
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
+import scala.concurrent.Future
 
 import play.api.Logger
 import play.api.mvc.{ Action, Controller }
@@ -30,19 +21,15 @@ import play.api.libs.json._
 // Reactive Mongo imports
 import reactivemongo.api.Cursor
 
-
-
-import javax.inject.Inject
-
 import play.modules.reactivemongo.{ // ReactiveMongo Play2 plugin
   MongoController,
   ReactiveMongoApi,
   ReactiveMongoComponents
 }
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
-import play.api.libs.json.Json
+// BSON-JSON conversions/collection
+import play.modules.reactivemongo.json._
+import play.modules.reactivemongo.json.collection._
 
 class DataStore  @Inject() (val reactiveMongoApi: ReactiveMongoApi)  extends
 Controller with MongoController with ReactiveMongoComponents{

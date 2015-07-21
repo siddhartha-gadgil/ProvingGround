@@ -306,8 +306,6 @@ object FormalElemFunction{
     case Plus(x, y) => multiVar(x) && multiVar(y)
     case Times(x, y) => multiVar(x) && multiVar(y)
     case Compose(x, y) => multiVar(y)
-    case Pi => true
-    case One => true
     case _ : ConstFunc => true
     case _ : OneVar => false
   }
