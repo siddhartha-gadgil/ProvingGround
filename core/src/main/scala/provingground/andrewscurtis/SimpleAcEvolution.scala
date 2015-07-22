@@ -80,7 +80,10 @@ object SimpleAcEvolution {
       PickledPath(rank, steps, wordCntn, size, scale, states map (_.pickle), evolvedStates map (_.pickle))
 
     lazy val evolution = {
-      iterateDiff(allMoves(rank), steps)
+      import DiffbleFunction._
+      def iterateSampDiff(lst: List[M], iterations: Int = 5) = 
+        iterate(sampleV(size) andthen genExtendM(lst))(iterations)
+      iterateSampDiff(allMoves(rank), steps)
     }
 
     val current = states.last
@@ -106,7 +109,7 @@ object SimpleAcEvolution {
 
     lazy val (nextM, nextV) = (current.fdM ++ (feedbackM * scale), current.fdV ++ (feedbackV * scale))
 
-    lazy val nextState = State(rank, nextM, sample(size)(nextV))
+    lazy val nextState = State(rank, nextM, nextV)
 
     lazy val next = Path(rank: Int, steps: Int,
       wordCntn: Double, size: Double, scale: Double,
@@ -116,13 +119,14 @@ object SimpleAcEvolution {
     @annotation.tailrec
     final def quickrun(n: Int) : Path = if (n < 1) this else {next.quickrun(n -1)}
 
+    @annotation.tailrec
     final def run(n: Int,
         callback: Path => Unit = (p) => {}) : Path =
+        {
+      callback(this)
       if (n < 1) this
-      else {
-        val result = next.run(n -1, callback)
-        callback(result)
-        result}
+      else next.run(n -1, callback)
+        }
   }
 
   object Path{
