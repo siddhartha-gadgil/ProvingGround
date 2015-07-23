@@ -6,14 +6,14 @@ import scala.language.implicitConversions
 import scala.util._
 import scala.language.existentials
 import ConstructorPatterns.getArg
-
 /**
  * @author gadgil
  */
 class IndexedConstructorPatterns[F <: Term with Subs[F], 
   A <: Term with Subs[A], 
-  I <: Term with Subs[I], C <: Term with Subs[C]](
-      val typFmlyPtn: FmlyPtn[Term, C]{type FamilyType = F; type ArgType = A; type IterFunc = I}
+  I <: Term with Subs[I], C <: Term with Subs[C],
+  Fmly <: Term with Subs[Fmly]](
+      val typFmlyPtn: FmlyPtn[Term, C, Fmly]{type FamilyType = F; type ArgType = A; type IterFunc = I}
       ) {outer =>
         type Cod = C
     sealed trait ConstructorPtn{self =>
@@ -164,8 +164,8 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     
     
     
-    case class FuncPtn(
-        tail: FmlyPtn[Term, C], 
+    case class FuncPtn[TF <: Term with Subs[TF]](
+        tail: FmlyPtn[Term, C, TF], 
         tailArg: A, 
         head : ConstructorPtn{type Cod = C})extends RecursiveConstructorPtn{
       type ArgType = tail.Family
@@ -253,8 +253,11 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     }
     
     
-    case class DepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], W <: Term with Subs[W]](
-        tail: FmlyPtn[Term, C], 
+    case class DepFuncPtn[U <: Term with Subs[U], 
+      V <: Term with Subs[V], 
+      W <: Term with Subs[W],
+      TF <: Term with Subs[TF]](
+        tail: FmlyPtn[Term, C, TF], 
         tailArg: A, 
         arg: A,
         headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPtn{

@@ -16,7 +16,10 @@ object Families {
    * the pattern is a function of the type W.
    *
    */
-  sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]{
+  sealed trait FmlyPtn[
+    O <: Term with Subs[O], 
+    C <: Term with Subs[C],
+    F <:  Term with Subs[F]]{
     /**
      * the universe containing the type
      */
@@ -30,7 +33,7 @@ object Families {
     /**
      * scala type (upper bound) for a member of the family.
      */
-    type Family <:  Term with Subs[Family]
+    type Family = F
 
     type FamilyType <: Term with Subs[FamilyType]
 
@@ -66,7 +69,7 @@ object Families {
 
     type Cod = C
 
-    def withCod[CC <: Term with Subs[CC]] : FmlyPtn[O, CC]
+    def withCod[CC <: Term with Subs[CC]] : FmlyPtn[O, CC, Family]
 
     /**
     * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -96,10 +99,11 @@ object Families {
     /**
    * The identity family
    */
-  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends FmlyPtn[O, C]{
+  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends 
+    FmlyPtn[O, C, O]{
     def apply(W : Typ[O]) = W
 
-    type Family =  O
+//    type Family =  O
 
     type FamilyType = Typ[O]
 
@@ -109,7 +113,7 @@ object Families {
 
     type ArgType = AtomicTerm
 
-    def contract(f: Family)(arg: ArgType): O = f
+    def contract(f: O)(arg: ArgType): O = f
 
     def fill(g : IterFunc)(arg: ArgType) : Func[O, C] = g
 
@@ -148,9 +152,9 @@ object Families {
 
   trait RecFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], S <: Term with Subs[S],
     T <: Term, D<: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]] extends
-        FmlyPtn[O, C]{
+        FmlyPtn[O, C, FuncLike[Term, V]]{
 
-    type Family <:  FuncLike[Term, V] with Subs[Family]
+//    type Family <:  FuncLike[Term, V] with Subs[Family]
 
     type FamilyType <: FuncLike[Term, FV] with Subs[FamilyType]
 
@@ -164,7 +168,7 @@ object Families {
 
     val tail : Typ[Term]
 
-    val headfibre: Term => FmlyPtn[O, C]{type Family = V; type ArgType = S; type TargetType = T; type DepTargetType = D}
+    val headfibre: Term => FmlyPtn[O, C, V]{type ArgType = S; type TargetType = T; type DepTargetType = D}
   }
 
   case class FuncFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV],
@@ -172,18 +176,20 @@ object Families {
     S<: Term with Subs[S],
     T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]](
       tail : Typ[Term],
-      head : FmlyPtn[O, C]{type Family = V; type FamilyType = FV;
+      head : FmlyPtn[O, C, V]{type FamilyType = FV;
       type IterFunc = I;
       type ArgType = S;
       type TargetType = T; type DepTargetType = D})/*(
-        implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, FV, S, T, D, O, C]{
+        implicit su: ScalaUniv[V])*/ extends FmlyPtn[O, C, Func[Term, V]]{
     def apply(W: Typ[O]) = FuncTyp[Term, V](tail, head(W))
 
-    type Family =  Func[Term, V]
+ //  override type Family =  Func[Term, V]
 
     type FamilyType = Func[Term, FV]
 
     type IterFunc = Func[Term, head.IterFunc]
+    
+    type DepTargetType = FuncLike[Term, D]
 
     def iterFuncTyp(w: Typ[O], x : Typ[Cod]) : Typ[IterFunc] = {
       val headtyp = head.iterFuncTyp(w, x)
@@ -266,14 +272,14 @@ object Families {
     S<: Term with Subs[S],
     T <: Term with Subs[T], D <: Term with Subs[D], O<: Term with Subs[O], C<: Term with Subs[C]](
       tail: Typ[Term],
-      headfibre : Term => FmlyPtn[O, C]{type Family = V; type FamilyType = FV;
+      headfibre : Term => FmlyPtn[O, C, V]{type FamilyType = FV;
       type IterFunc = I;
       type ArgType = S;
       type TargetType = T; type DepTargetType = D},
       headlevel: Int = 0)
       /*(implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, FV, S, T, D, O, C]{
 
-    type Family =  FuncLike[Term, V]
+//    type Family =  FuncLike[Term, V]
 
     type FamilyType = FuncLike[Term, FV]
 
@@ -334,8 +340,8 @@ object Families {
       type DD = newHead.DepTargetType
       val newHeadFibre = (t: Term) =>
         (
-            headfibre(t).withCod[CC].asInstanceOf[FmlyPtn[O, CC]{
-              type Family = VV; type FamilyType = FVV;
+            headfibre(t).withCod[CC].asInstanceOf[FmlyPtn[O, CC, VV]{
+              type FamilyType = FVV;
               type IterFunc = I;
               type ArgType = SS;
               type TargetType = TT; type DepTargetType = DD}]

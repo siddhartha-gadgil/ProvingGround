@@ -33,7 +33,7 @@ object InductiveTypes{
 	  /**
 	   * just the constructor patterns.
 	   */
-	  val ptns : List[ConstructorPtn] = constructors map (_.pattern)
+	  val ptns : List[ConstructorPtn[Term]] = constructors map (_.pattern)
 
 	  /**
 	   * just the constructor functions
@@ -43,13 +43,13 @@ object InductiveTypes{
 	  /**
 	   * the constructors, including functions and patterns
 	   */
-	  val constructors : List[Constructor]
+	  val constructors : List[Constructor[Term]]
 
 //	  def cnstr[U <: Term](ptn: ConstructorPtn[U]) = ptn.newconstructor(this)
 
 //	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 
-	  implicit def thisAsPtn(me :this.type): ConstructorPtn = IdW
+	  implicit def thisAsPtn(me :this.type): ConstructorPtn[Term] = IdW
 
 
 	  implicit val self: Typ[Term] = this
@@ -58,7 +58,7 @@ object InductiveTypes{
 	/**
 	 * inductive type constructed from given patterns and names of corresponding functions.
 	 */
-	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPtn)]) extends SmallTyp with InductiveTyp{
+	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPtn[Term])]) extends SmallTyp with InductiveTyp{
 //	  type Obj = Term
 
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
