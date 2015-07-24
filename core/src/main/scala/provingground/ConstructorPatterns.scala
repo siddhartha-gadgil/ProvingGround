@@ -39,7 +39,7 @@ object ConstructorPatterns {
     /**
      * changes codomain and propagates changes to other types.
      */
-    def withCod[CC <: Term with Subs[CC]] : ConstructorPtn[CC, ConstructorType]{type ConstructorType = self.ConstructorType;}
+    def withCod[CC <: Term with Subs[CC]] : ConstructorPtn[CC, ConstructorType]
 
     /**
      * function pattern.
@@ -111,10 +111,11 @@ object ConstructorPatterns {
      */
     def rec[CC <: Term with Subs[CC]] = {
       val newPtn = withCod[CC]
-      val fn : (newPtn.ConstructorType, newPtn.RecDataType, Func[Term, CC]) => Term => Option[CC] = {
-        (cons, data, f) => (t) => newPtn.recDef(cons, data, f)(t)
-      }
-      fn
+ //     val fn : (newPtn.ConstructorType, newPtn.RecDataType, Func[Term, CC]) => Term => Option[CC] = {
+//        (cons, data, f) => (t) => newPtn.recDef(cons, data, f)(t)
+//      }
+//      fn
+      ???
     }
 
     /**
@@ -140,6 +141,13 @@ object ConstructorPatterns {
     val univLevel : Int
 
   }
+  
+  trait WithRecDataType[
+    Cod <: Term with Subs[Cod],
+    CnstrctrType <: Term with Subs[CnstrctrType],
+    RDT <: Term with Subs[RDT]]{
+    type RecDataType = RDT
+  }
 
 
   object ConstructorPtn{
@@ -152,14 +160,14 @@ object ConstructorPatterns {
   /**
    * The constructor pattern W - the only valid head for constructor-patterns.
    */
-  case object IdW extends ConstructorPtn[Term, Term]{
+  case object IdW extends ConstructorPtn[Term, Term] with WithRecDataType[Term, Term, Term]{
     def apply(W : Typ[Term]) = W
 
     val univLevel = 0
 
 //    type ConstructorType = Term
 
-    type RecDataType = Term
+ //   type RecDataType = Term
 
     def recDom(w: Typ[Term], x: Typ[Term]) = x
 
@@ -172,14 +180,15 @@ object ConstructorPatterns {
       case _ => None
     }
 
-    case class IdTarg[C<: Term with Subs[C]]() extends ConstructorPtn[C, Term]{
+    case class IdTarg[C<: Term with Subs[C]]() extends 
+      ConstructorPtn[C, Term] with WithRecDataType[C, Term, C]{
       def apply(W : Typ[Term]) = W
 
     val univLevel = 0
 
 //    type ConstructorType = Term
 
-    type RecDataType = C
+//    type RecDataType = C
 
 //    type Cod = C
 
@@ -259,10 +268,7 @@ object ConstructorPatterns {
 //    type Cod = C
 
     def withCod[CC <: Term with Subs[CC]] = {
-//      val _res = FuncPtn[CC](tail.withCod[CC], head.withCod[CC])
-//      val res  = _res.asInstanceOf[FuncPtn[CC]{type ConstructorType = self.ConstructorType}]
-//      res
-  ???
+      FuncPtn[CC, F, HC](tail.withCod[CC], head.withCod[CC])
     }
 
     val _head : ConstructorPtn[C, HeadType]{type RecDataType = HeadRecDataType} = head
@@ -302,10 +308,7 @@ object ConstructorPatterns {
   //  type Cod = head.Cod
 
     def withCod[CC <: Term with Subs[CC]] = {
-      val _res = CnstFncPtn[CC, HC](tail, head.withCod[CC])
-      val res  = _res.asInstanceOf[CnstFncPtn[CC, HC]]
-      res
-      ???
+      CnstFncPtn[CC, HC](tail, head.withCod[CC])
     }
 
     val _head : ConstructorPtn[Cod, HC]{
@@ -354,7 +357,8 @@ object ConstructorPatterns {
   //  type Cod = C
 
     def withCod[CC <: Term with Subs[CC]] = {
-//      val _res = DepFuncPtn[CC](tail.withCod[CC], (t: Term) => headfibre(t).withCod[CC])
+      val fibre = (t: Term) => headfibre(t).withCod[CC]
+  //    val _res = DepFuncPtn(tail.withCod[CC], fibre)
 //      val res  = _res.asInstanceOf[ConstructorPtn{type ConstructorType = self.ConstructorType}]
 //      res
       ???

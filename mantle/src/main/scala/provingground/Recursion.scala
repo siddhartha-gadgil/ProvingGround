@@ -20,7 +20,7 @@ import ConstructorPatterns._
  * 
  */
 object Recursion{
-  
+  /*
   /**
    * argument of the lhs of an equation corresponding to a specific constructor.
    * 
@@ -28,7 +28,7 @@ object Recursion{
    *  
    *  @param vars variable names to be applied to the constructor. 
    */
-  case class CnstrLHS(cnstr: Constructor[Term], vars: List[AnySym]){
+  case class CnstrLHS(cnstr: Constructor[Term, Term], vars: List[AnySym]){
     /**
      * the argument of the lhs of identities for this constructor, which is a
      * term of type W obtained by applying the constructor to terms with given names.
@@ -164,7 +164,7 @@ object Recursion{
    * 
    */
   def cnstrContext[V<: Term with Subs[V]](
-      ptn : ConstructorPtn[Term], varnames : List[AnySym], 
+      ptn : ConstructorPtn[Term, Term], varnames : List[AnySym], 
       W : Typ[V], 
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
@@ -192,7 +192,7 @@ object Recursion{
   /**
    * returns symbolic terms of type according to a poly-pattern
    */
-  private def symbTerms(ptn : ConstructorPtn[Term], varnames : List[AnySym],
+  private def symbTerms(ptn : ConstructorPtn[Term, Term], varnames : List[AnySym],
       W : Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
     case IdW => accum
     case FuncPtn(tail, head) =>
@@ -214,7 +214,7 @@ object Recursion{
    *  context for recursive definition for a constructor.
    */
   def cnstrRecContext[V<: Term with Subs[V]](f : => (Func[Term, Term]),
-      ptn : ConstructorPtn[Term], varnames : List[AnySym],
+      ptn : ConstructorPtn[Term, Term], varnames : List[AnySym],
       W : Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     val change = recContextChange[V](f, W, X)
@@ -225,7 +225,7 @@ object Recursion{
    *  context for inductive definition for a constructor.
    */
   def cnstrIndContext[V<: Term with Subs[V], U <: Term](f : => (FuncLike[Term, Term]),
-      ptn : ConstructorPtn[Term]{type ConstructorType = U}, varnames : List[AnySym],
+      ptn : ConstructorPtn[Term, Term]{type ConstructorType = U}, varnames : List[AnySym],
       W : Typ[V],
       Xs :  Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
     val change = indContextChange[V](f, W, Xs)
@@ -291,6 +291,6 @@ object Recursion{
    * symbolic object for defining an induction function for dependent functions from W to Xs(w: W).
    */
   case class IndSymbol(W : Typ[Term], Xs : Term => Typ[Term]) extends AnySym  
-  
+  */
   
 }
