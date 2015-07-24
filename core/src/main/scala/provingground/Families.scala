@@ -95,19 +95,11 @@ object Families {
   }
 
 
-  trait WithTargetType[
-    O <: Term with Subs[O], 
-    C <: Term with Subs[C],
-    F <:  Term with Subs[F],
-    T <: Term with Subs[T]] extends FmlyPtn[O, C, F]{
-    type TargetType = T
-  }
-
     /**
    * The identity family
    */
   case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends 
-    FmlyPtn[O, C, O] with WithTargetType[O, C, O, C]{
+    FmlyPtn[O, C, O]{
     def apply(W : Typ[O]) = W
 
 //    type Family =  O
@@ -132,7 +124,7 @@ object Families {
 
     def contractType(w: FamilyType)(arg: ArgType) : Typ[O] = w
 
- //   type TargetType = C
+    type TargetType = C
 
     type DepTargetType = C
 
