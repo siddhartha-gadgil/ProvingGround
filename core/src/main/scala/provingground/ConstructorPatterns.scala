@@ -540,7 +540,8 @@ object ConstructorPatterns {
       RecFunctionCons[D, C](recdom, caseFn, this)
     }
     
-    def fn(x: Typ[C]) = recursion(x)(fullTyp(x).symbObj(RecFn(W, x)))
+    def fn(x: Typ[C]) : FullType = recursion(x)(fn(x))      
+      
   }
 
   def recFunction[C <: Term with Subs[C], U <: Term with Subs[U]](conss: List[Constructor[C, U]], W: Typ[Term]) = {
@@ -560,7 +561,7 @@ object ConstructorPatterns {
   /**
    * container for rec(W)(X) in the case of no constructors.
    * rec(W)(X) is defined to be formal application of itself.
-   * Lazy lambda was used to avoid infinite loops, but probably identity is correct.
+   * Lazy lambda is used to avoid infinite loops
    */
   case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
     type FullType = Func[Term, C]
@@ -569,7 +570,7 @@ object ConstructorPatterns {
 
     private lazy val a = W.Var
 
-    def recursion(X: Typ[C])(f: => FullType) = f //new LazyLambdaFixed(a, X.symbObj(ApplnSym(f, a)))
+    def recursion(X: Typ[C])(f: => FullType) = new LazyLambdaFixed(a, X.symbObj(ApplnSym(f, a)))
 
     def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]) = (g : Func[Term, C]) => g
   }
