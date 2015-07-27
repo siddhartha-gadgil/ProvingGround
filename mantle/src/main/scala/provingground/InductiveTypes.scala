@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import Families._
-import ConstructorPatterns._
+import ConstructorPattern._
 import scala.language.implicitConversions
 import scala.util._
 import scala.language.existentials
@@ -20,7 +20,7 @@ object InductiveTypes{
 
 
 
-//	case class Constructor(cons: Term, pattern : ConstructorPtn, typ : Typ[Term]){
+//	case class Constructor(cons: Term, pattern : ConstructorPattern, typ : Typ[Term]){
 //	  require(cons.typ == pattern(typ))
 //	}
 
@@ -33,7 +33,7 @@ object InductiveTypes{
 	  /**
 	   * just the constructor patterns.
 	   */
-	  val ptns : List[ConstructorPtn[Term, Term]] = constructors map (_.pattern)
+	  val ptns : List[ConstructorPattern[Term, Term]] = constructors map (_.pattern)
 
 	  /**
 	   * just the constructor functions
@@ -45,11 +45,11 @@ object InductiveTypes{
 	   */
 	  val constructors : List[Constructor[Term, Term]]
 
-//	  def cnstr[U <: Term](ptn: ConstructorPtn[U]) = ptn.newconstructor(this)
+//	  def cnstr[U <: Term](ptn: ConstructorPattern[U]) = ptn.newconstructor(this)
 
 //	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 
-	  implicit def thisAsPtn(me :this.type): ConstructorPtn[Term, Term] = IdW
+	  implicit def thisAsPtn(me :this.type): ConstructorPattern[Term, Term] = IdW
 
 
 	  implicit val self: Typ[Term] = this
@@ -58,7 +58,7 @@ object InductiveTypes{
 	/**
 	 * inductive type constructed from given patterns and names of corresponding functions.
 	 */
-	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPtn[Term, Term])]) extends SmallTyp with InductiveTyp{
+	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPattern[Term, Term])]) extends SmallTyp with InductiveTyp{
 //	  type Obj = Term
 
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))

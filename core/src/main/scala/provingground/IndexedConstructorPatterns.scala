@@ -5,7 +5,8 @@ import Families._
 import scala.language.implicitConversions
 import scala.util._
 import scala.language.existentials
-import ConstructorPatterns.getArg
+import ConstructorPattern._
+
 /**
  * @author gadgil
  */
@@ -16,7 +17,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       val typFmlyPtn: FmlyPtn[Term, C, Fmly]{type FamilyType = F; type ArgType = A; type IterFunc = I}
       ) {outer =>
         type Cod = C
-    sealed trait ConstructorPtn{self =>
+    sealed trait ConstructorPattern{self =>
     /**
      * Type of codomain X
      */
@@ -79,7 +80,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     
     }
     
-    case class iW(arg: A) extends ConstructorPtn{
+    case class iW(arg: A) extends ConstructorPattern{
       type ConstructorType = Term
       
   //    type Cod = C
@@ -103,7 +104,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       A <: Term with Subs[A], 
       I <: Term with Subs[I],
       C<: Term with Subs[C]](
-        tailArg: A, head : ConstructorPtn[F, A, I]{type Cod = C}) extends RecursiveConstructorPtn[F, A, I]{
+        tailArg: A, head : ConstructorPattern[F, A, I]{type Cod = C}) extends RecursiveConstructorPattern[F, A, I]{
       type Cod = C
       
       type ConstructorType = Func[Term, head.ConstructorType]
@@ -123,7 +124,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       /**
    * Functional extension of a type pattern
    */
-  sealed trait RecursiveConstructorPtn extends ConstructorPtn{self =>
+  sealed trait RecursiveConstructorPattern extends ConstructorPattern{self =>
     /**
      * scala type of argument to constructor A -> ... (or A ~> ...)
      */
@@ -147,7 +148,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     /**
      * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
      */
-    val headfibre: ArgType => ConstructorPtn{type ConstructorType = HeadType;
+    val headfibre: ArgType => ConstructorPattern{type ConstructorType = HeadType;
       type RecDataType = HeadRecDataType; type Cod = outer.Cod}
 
     /**
@@ -167,7 +168,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     case class FuncPtn[TF <: Term with Subs[TF]](
         tail: FmlyPtn[Term, C, TF], 
         tailArg: A, 
-        head : ConstructorPtn{type Cod = C})extends RecursiveConstructorPtn{
+        head : ConstructorPattern{type Cod = C})extends RecursiveConstructorPattern{
       type ArgType = tail.Family
 
       type HeadType = head.ConstructorType
@@ -182,7 +183,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       
       val arg = head.arg
       
-      val _head : ConstructorPtn{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
+      val _head : ConstructorPattern{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
 
       val headfibre = (t: ArgType) => _head
       
@@ -212,7 +213,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     case class CnstFncPtn(
         tail: Typ[Term], 
         tailArg: A, 
-        head : ConstructorPtn{type Cod = C})extends RecursiveConstructorPtn{
+        head : ConstructorPattern{type Cod = C})extends RecursiveConstructorPattern{
       type ArgType = Term
 
       type HeadType = head.ConstructorType
@@ -227,7 +228,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
       
       val arg = head.arg
       
-      val _head : ConstructorPtn{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
+      val _head : ConstructorPattern{type ConstructorType = HeadType; type RecDataType = HeadRecDataType; type Cod = C} = head
 
       val headfibre = (t: ArgType) => _head
       
@@ -260,7 +261,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
         tail: FmlyPtn[Term, C, TF], 
         tailArg: A, 
         arg: A,
-        headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPtn{
+        headfibre : Term => (ConstructorPattern{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPattern{
       type ArgType = tail.Family
 
       type HeadType = U
@@ -305,7 +306,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     case class CnstDepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], W <: Term with Subs[W]](
         tail: Typ[Term], 
         arg: A,
-        headfibre : Term => (ConstructorPtn{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPtn{
+        headfibre : Term => (ConstructorPattern{type ConstructorType = U; type RecDataType = V; type Cod = C})) extends RecursiveConstructorPattern{
       type ArgType = Term
 
       type HeadType = U
@@ -358,7 +359,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     /**
      * constructor-pattern for the constructor
      */
-    val pattern : ConstructorPtn{type Cod = outer.Cod}
+    val pattern : ConstructorPattern{type Cod = outer.Cod}
 
 //    val typ: Typ[Term]
 
@@ -385,7 +386,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
    * @tparam U scala type of polypattern.
    */
   case class ConstructorDefn[U <: Term with Subs[U]](
-      pattern: ConstructorPtn{type ConstructorType = U; type Cod = C},
+      pattern: ConstructorPattern{type ConstructorType = U; type Cod = C},
       cons: U, W: F) extends Constructor{
     type ConstructorType = U
 
