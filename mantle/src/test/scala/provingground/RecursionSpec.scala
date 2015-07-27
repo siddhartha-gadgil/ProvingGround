@@ -32,4 +32,6 @@ class RecursionSpec extends FlatSpec{
     assert(W.recDom(Bool, Nat) == Nat)
   }
 
+  val recBoolBool = recFn(BoolCons, Bool, Bool)
+
 }

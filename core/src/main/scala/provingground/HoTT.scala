@@ -726,7 +726,7 @@ object HoTT{
 	 *  If it is important to note that it is not dependent, and hence has scala type Func, then use LambdaFixed
 	 *
 	 */
-	abstract class LambdaLike[X<: Term with Subs[X], Y <: Term with Subs[Y]](variable: X, value : Y) extends FuncLike[X, Y]{
+	abstract class LambdaLike[X<: Term with Subs[X], Y <: Term with Subs[Y]](variable: X, value : => Y) extends FuncLike[X, Y]{
 //	  // val domobjtpe = typeOf[X]
 
 //	  // val codomobjtpe = typeOf[Y]

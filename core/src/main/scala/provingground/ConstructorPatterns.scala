@@ -603,7 +603,7 @@ object ConstructorPatterns {
     def recursion(X: Typ[C])(f: => FullType) ={
       val a = recdom(X).Var
       def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
-      lmbda(a)(fn(a))
+      new LazyLambdaFixed(a, fn(a))
     }
   }
 
