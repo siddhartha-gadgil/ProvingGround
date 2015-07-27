@@ -3,9 +3,11 @@ package provingground
 import HoTT._
 import org.scalatest.FlatSpec
 
-import ConstructorPatterns._
+import ConstructorPattern._
 
-import ConstructorPtn._
+import ConstructorPattern._
+
+import RecFunction._
 
 class RecursionSpec extends FlatSpec{
   case object Bool extends SmallTyp
@@ -32,6 +34,29 @@ class RecursionSpec extends FlatSpec{
     assert(W.recDom(Bool, Nat) == Nat)
   }
 
-  val recBoolBool = recFn(BoolCons, Bool, Bool)
+  val recBool = recFunction(BoolCons, Bool)
+
+  it should "have recursion function to X with type X -> X -> Bool -> X" in {
+    assert(recBool.fullTyp(Bool) == Bool ->: Bool ->: Bool ->: Bool)
+
+    assert(recBool.fullTyp(Nat) == Nat ->: Nat ->: Bool ->: Nat)
+
+  }
+
+  val boolBoolFn = recBool.recursion(Bool)(recBool.fullTyp(Bool).symbObj("dummy-function")).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+
+  "Recursion defintion for a case" should "when applied to constructor give defining data, and other None" in {
+    val fn = W.recDef(tt, ff, (Bool ->: Bool).symbObj("dummy-function"))
+
+    assert(fn(tt) == Some(ff))
+
+    assert(fn(ff) == None)
+  }
+
+  "Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
+    val neg = boolBoolFn(ff)(tt)
+
+    assert(neg(tt) == ff)
+  }
 
 }

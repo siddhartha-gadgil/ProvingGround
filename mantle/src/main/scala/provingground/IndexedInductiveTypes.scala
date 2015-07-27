@@ -42,10 +42,10 @@ import Math._
 	/*
 	 * A composite pattern for inductive types.
 	 */
-	trait ConstructorPtn[+U <: Term]{
+	trait ConstructorPattern[+U <: Term]{
 	  def -->:[V <: Term ,  UU >: U <: Term ](that : FmlyPtn[V]) = FuncPtn[UU](that, this)
 
-	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : I => ConstructorPtn[FuncLike[Term, UU]] = (indx) => {
+	  def -->:[UU >: U <: Term ](that : Typ[Term])(implicit self : Typ[Term]) : I => ConstructorPattern[FuncLike[Term, UU]] = (indx) => {
 	    if (that == self) FuncPtn[UU](IndxW(indx), this) else CnstFncPtn[UU](that, this)
 	  }
 
@@ -70,7 +70,7 @@ import Math._
 	}
 
 
-	case class IndxW(index: I) extends  FmlyPtn[Term] with ConstructorPtn[Term]{
+	case class IndxW(index: I) extends  FmlyPtn[Term] with ConstructorPattern[Term]{
 	  def apply(W : I => Typ[Term]) = W(index)
 
 	  def at(X: Typ[Term]) = X
@@ -89,7 +89,7 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a type pattern.
 	 */
-	case class FuncPtn[U<:Term ](tail: FmlyPtn, head : ConstructorPtn[U]) extends ConstructorPtn[FuncLike[Term, U]]{
+	case class FuncPtn[U<:Term ](tail: FmlyPtn, head : ConstructorPattern[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 //	  type ConstructorType = FuncLike[Term, head.ConstructorType]
 
 	  def apply(W : I=> Typ[Term]) = FuncTyp[Term, head.ConstructorType](tail(W), head(W))
@@ -100,7 +100,7 @@ import Math._
 	/**
 	 * Extending a poly-pattern by a constant type, i.e., not depending on W.
 	 */
-	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : ConstructorPtn[U]) extends ConstructorPtn[FuncLike[Term, U]]{
+	case class CnstFncPtn[U <: Term ](tail: Typ[Term], head : ConstructorPattern[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 //	  type ConstructorType = FuncLike[Term, head.ConstructorType]
 
 	  def apply(W : I => Typ[Term]) = FuncTyp[Term, head.ConstructorType](tail, head(W))
@@ -134,7 +134,7 @@ import Math._
 
 
 	case class DepFuncPtn[U <: Term ](tail: FmlyPtn,
-	    headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPtn[FuncLike[Term, U]]{
+	    headfibre : Term => ConstructorPattern[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
 	    val head = headfibre(__.symbObj(Star))
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
@@ -149,7 +149,7 @@ import Math._
 	}
 
 	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term],
-	    headfibre : Term => ConstructorPtn[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPtn[FuncLike[Term, U]]{
+	    headfibre : Term => ConstructorPattern[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]] = {
 	    val head = headfibre(tail.symbObj(Star))
 	    val fiber = typFamily[Term, U](tail, (t : Term) => headfibre(t)(W))
@@ -203,37 +203,37 @@ import Math._
 	trait Constructor{
 	  type ConstructorType <: Term
 
-	  val pattern : ConstructorPtn[ConstructorType]
+	  val pattern : ConstructorPattern[ConstructorType]
 
 //	  val typ: Typ[Term]
 
 	  val cons: ConstructorType
 	}
 
-	case class ConstructorDefn[U <: Term](pattern: ConstructorPtn[U], cons: U) extends Constructor{
+	case class ConstructorDefn[U <: Term](pattern: ConstructorPattern[U], cons: U) extends Constructor{
 	  type ConstructorType = U
 	}
 
 
 	trait InductiveTypFmly extends (I => Typ[Term]){
-	  val ptns : List[ConstructorPtn[Term]] = constructors map (_.pattern)
+	  val ptns : List[ConstructorPattern[Term]] = constructors map (_.pattern)
 
 	  val constructorFns : List[Term] = constructors map (_.cons)
 
 	  val constructors : List[Constructor]
 
-	  def cnstr[U <: Term](ptn: ConstructorPtn[U]) = ptn.newconstructor(this)
+	  def cnstr[U <: Term](ptn: ConstructorPattern[U]) = ptn.newconstructor(this)
 
 //	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 
-	  implicit def thisAsPtnFmly(me :this.type): I=>  ConstructorPtn[Term] = IndxW
+	  implicit def thisAsPtnFmly(me :this.type): I=>  ConstructorPattern[Term] = IndxW
 
 
 	  implicit val self: I => Typ[Term] = this
 	}
 
 
-	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPtn[Term])]) extends (I => Typ[Term]) with InductiveTypFmly{
+	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPattern[Term])]) extends (I => Typ[Term]) with InductiveTypFmly{
 	  case class Tps(indx: I) extends SmallTyp
 
 	  def apply(indx: I) = Tps(indx)

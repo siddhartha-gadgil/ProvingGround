@@ -156,7 +156,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
    *
    */
   def cnstrContext[V<: Term](
-      ptn : ConstructorPtn[Term], varnames : List[AnySym],
+      ptn : ConstructorPattern[Term], varnames : List[AnySym],
       W : Term => Typ[V],
       change: Change[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     ptn match {
@@ -181,7 +181,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
   /**
    * returns symbolic terms of type according to a poly-pattern
    */
-  private def symbTerms(ptn : ConstructorPtn[Term], varnames : List[AnySym],
+  private def symbTerms(ptn : ConstructorPattern[Term], varnames : List[AnySym],
       W : Term => Typ[Term], accum: List[Term] = List()) : List[Term] = ptn match {
     case IndxW(_) => accum
     case FuncPtn(tail, head) =>
@@ -202,7 +202,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
    *  context for recursive definition for a constructor.
    */
   def cnstrRecContext[V<: Term](f : => Term  => (FuncLike[Term, Term]),
-      ptn : ConstructorPtn[Term], varnames : List[AnySym],
+      ptn : ConstructorPattern[Term], varnames : List[AnySym],
       W : Term => Typ[V],
       X : Typ[V])(ctx: Context[Term, V] = Context.empty[Term]) : Context[Term, V] = {
     val change = recContextChange[V](f, W, X)
@@ -213,7 +213,7 @@ class RecursionIndexed(indices : Typ[Term]){/*
    *  context for inductive definition for a constructor.
    */
   def cnstrIndContext[V<: Term, U <: Term](f : => Term => (FuncLike[Term, Term]),
-      ptn : ConstructorPtn[U], varnames : List[AnySym],
+      ptn : ConstructorPattern[U], varnames : List[AnySym],
       W : Term => Typ[V],
       Xs :  Term => Term => Typ[V])(ctx: Context[Term, V]) : Context[Term, V] = {
     val change = indContextChange[V](f, W, Xs)

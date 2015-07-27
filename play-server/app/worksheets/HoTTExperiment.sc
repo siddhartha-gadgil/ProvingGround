@@ -140,7 +140,7 @@ object HoTTExperiment {
 
  
 
- val W : ConstructorPtn[Term] = IdW
+ val W : ConstructorPattern[Term] = IdW
  
   object TestTyp extends SmallTyp{
     override def toString ="implicitType"}
