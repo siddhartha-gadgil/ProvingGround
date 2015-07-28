@@ -52,7 +52,8 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
    def prepend[U <: Term with Subs[U]](cons: Constructor[C, U]) = {
     val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
     type D = cons.pattern.RecDataType
-    val caseFn : D => Func[Term, C] => Func[Term, C] = (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
+    val caseFn : D => Func[Term, C] => Func[Term, C] =
+       (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
     RecFunctionCons[D, C](recdom, caseFn, this)
   }
 

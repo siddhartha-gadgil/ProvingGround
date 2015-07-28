@@ -146,4 +146,20 @@ class HoTTSpec extends FlatSpec{
     assert(pdep.typ == Sgma(a !: A, Bs(a)))
   }
 
+  val lMP  =
+    new LazyLambdaFixed(A,
+      new LazyLambdaFixed(B,
+        new LazyLambdaFixed(a !: A,
+          new LazyLambdaFixed(AimplB !: (A ->: B),
+            AimplB(a) !: B
+          )
+        )
+      )
+    )
+
+  "Lazy form of modus ponens" should "behave like Modus ponens" in {
+    assert(lMP(A)(B).typ == A ->: ((A ->: B) ->: B))
+    assert(lMP(B)(A).typ == B ->: ((B ->: A) ->: A))
+  }
+
 }

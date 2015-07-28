@@ -43,8 +43,6 @@ class RecursionSpec extends FlatSpec{
 
   }
 
-  val boolBoolFn = recBool.recursion(Bool)(recBool.fullTyp(Bool).symbObj("dummy-function")).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
-
   "Recursion defintion for a case" should "when applied to constructor give defining data, and other None" in {
     val fn = W.recDef(tt, ff, (Bool ->: Bool).symbObj("dummy-function"))
 
@@ -53,10 +51,35 @@ class RecursionSpec extends FlatSpec{
     assert(fn(ff) == None)
   }
 
-  "Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
+  it should "modify a function according to the case" in {
+    val dummy = (Bool ->: Bool).symbObj("dummy")
+
+    val negTrue = W.recModify(tt)(ff)(dummy)
+
+    assert(negTrue(tt) == ff)
+
+    val neg = W.recModify(ff)(tt)(negTrue)
+
+    assert(neg(tt) == ff)
+
+    assert(neg(ff) == tt)
+  }
+
+  val boolBoolFn =
+    recBool.recursion(Bool)(recBool.fullTyp(Bool).symbObj("dummy-function")).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+
+  "Dummy Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
     val neg = boolBoolFn(ff)(tt)
 
     assert(neg(tt) == ff)
   }
 
+  val recBoolBool =
+    recFn(BoolCons, Bool, Bool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+
+  "Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
+      val neg = recBoolBool(ff)(tt)
+
+      assert(neg(tt) == ff)
+    }
 }

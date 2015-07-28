@@ -316,7 +316,7 @@ object HoTT{
     /**
      * Types with symbolic objects not refined.
      */
-    trait SmallTyp extends Typ[Term]{
+    class SmallTyp extends Typ[Term]{
     	type Obj = Term
 
     	val typ = Universe(0)
