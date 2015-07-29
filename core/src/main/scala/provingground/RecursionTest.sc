@@ -60,34 +60,27 @@ object RecursionTest {
                                                   //| .Term,provingground.HoTT.Term]]] = <function1>
   
   val neg = boolBoolFn(ff)(tt)                    //> neg  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Te
-                                                  //| rm] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Boo
-                                                  //| l))))) (false : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (true : (Bool)) 
-                                                  //| : ((Bool) → (Bool))) : ((Bool) → (Bool))
+                                                  //| rm] = <function1>
   
   neg                                             //> res2: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Ter
-                                                  //| m] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Bool
-                                                  //| ))))) (false : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (true : (Bool)) :
-                                                  //|  ((Bool) → (Bool))) : ((Bool) → (Bool))
+                                                  //| m] = <function1>
   
   val id = boolBoolFn(tt)(ff)                     //> id  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Ter
-                                                  //| m] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Bool
-                                                  //| ))))) (true : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (false : (Bool)) :
-                                                  //|  ((Bool) → (Bool))) : ((Bool) → (Bool))
+                                                  //| m] = <function1>
   
-  id(tt)                                          //> res3: provingground.HoTT.Term = false : (Bool)
+  id(tt)                                          //> res3: provingground.HoTT.Term = true : (Bool)
   
-  id(ff)                                          //> res4: provingground.HoTT.Term = true : (Bool)
+  id(ff)                                          //> res4: provingground.HoTT.Term = false : (Bool)
   
   neg == id                                       //> res5: Boolean = false
   
-  neg(ff)                                         //> res6: provingground.HoTT.Term = false : (Bool)
+  neg(ff)                                         //> res6: provingground.HoTT.Term = true : (Bool)
   
-  neg(tt)                                         //> res7: provingground.HoTT.Term = true : (Bool)
+  neg(tt)                                         //> res7: provingground.HoTT.Term = false : (Bool)
   
-  neg("nothing" :: Bool)                          //> res8: provingground.HoTT.Term = (TermSymbol(((dummy-function : ((Bool) → (
-                                                  //| (Bool) → ((Bool) → (Bool))))) (false : (Bool)) : ((Bool) → ((Bool) →
-                                                  //|  (Bool)))) (true : (Bool)) : ((Bool) → (Bool))) : ((Bool) → (Bool))) (no
-                                                  //| thing : (Bool)) : (Bool)
+  neg("nothing" :: Bool)                          //> res8: provingground.HoTT.Term = (((dummy-function : ((Bool) → ((Bool) → 
+                                                  //| ((Bool) → (Bool))))) (false : (Bool)) : ((Bool) → ((Bool) → (Bool)))) 
+                                                  //| (true : (Bool)) : ((Bool) → (Bool))) (nothing : (Bool)) : (Bool)
   
   val recBoolNat = recBool.recursion(Nat)(recBool.fullTyp(Nat).symbObj("dummy-function"))
                                                   //> recBoolNat  : provingground.RecursionTest.recBool.FullType = <function1>
