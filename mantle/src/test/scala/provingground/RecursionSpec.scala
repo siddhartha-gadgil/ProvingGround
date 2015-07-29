@@ -77,7 +77,7 @@ class RecursionSpec extends FlatSpec{
   val recBoolBool =
     recFn(BoolCons, Bool, Bool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
-  "Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
+  "Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
       val neg = recBoolBool(ff)(tt)
 
       assert(neg(tt) == ff)

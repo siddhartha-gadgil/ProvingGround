@@ -57,41 +57,40 @@ object RecursionTest {
   val boolBoolFn = recBool.recursion(Bool)(dummy).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
                                                   //> boolBoolFn  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.
                                                   //| HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT
-                                                  //| .Term,provingground.HoTT.Term]]] = (a : (Bool)) ↦ ((c : (Bool)) ↦ ((d : 
-                                                  //| (Bool)) ↦ ((((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Bool))
-                                                  //| ))) (a : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (b : (Bool)) : ((Bool) 
-                                                  //| → (Bool))) (d : (Bool)) : (Bool))))
+                                                  //| .Term,provingground.HoTT.Term]]] = <function1>
   
   val neg = boolBoolFn(ff)(tt)                    //> neg  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Te
-                                                  //| rm] = (d : (Bool)) ↦ ((((dummy-function : ((Bool) → ((Bool) → ((Bool) 
-                                                  //| → (Bool))))) (a : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (e : (Bool))
-                                                  //|  : ((Bool) → (Bool))) (d : (Bool)) : (Bool))
+                                                  //| rm] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Boo
+                                                  //| l))))) (false : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (true : (Bool)) 
+                                                  //| : ((Bool) → (Bool))) : ((Bool) → (Bool))
   
   neg                                             //> res2: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Ter
-                                                  //| m] = (d : (Bool)) ↦ ((((dummy-function : ((Bool) → ((Bool) → ((Bool) �
-                                                  //| �� (Bool))))) (a : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (e : (Bool)) 
-                                                  //| : ((Bool) → (Bool))) (d : (Bool)) : (Bool))
+                                                  //| m] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Bool
+                                                  //| ))))) (false : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (true : (Bool)) :
+                                                  //|  ((Bool) → (Bool))) : ((Bool) → (Bool))
   
   val id = boolBoolFn(tt)(ff)                     //> id  : provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Ter
-                                                  //| m] = (d : (Bool)) ↦ ((((dummy-function : ((Bool) → ((Bool) → ((Bool) �
-                                                  //| �� (Bool))))) (a : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (g : (Bool)) 
-                                                  //| : ((Bool) → (Bool))) (d : (Bool)) : (Bool))
+                                                  //| m] = TermSymbol(((dummy-function : ((Bool) → ((Bool) → ((Bool) → (Bool
+                                                  //| ))))) (true : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (false : (Bool)) :
+                                                  //|  ((Bool) → (Bool))) : ((Bool) → (Bool))
   
-  neg == id                                       //> res3: Boolean = false
+  id(tt)                                          //> res3: provingground.HoTT.Term = false : (Bool)
   
-  neg(ff)                                         //> res4: provingground.HoTT.Term = a : (Bool)
+  id(ff)                                          //> res4: provingground.HoTT.Term = true : (Bool)
   
-  neg(tt)                                         //> res5: provingground.HoTT.Term = e : (Bool)
+  neg == id                                       //> res5: Boolean = false
   
-  neg("nothing" :: Bool)                          //> res6: provingground.HoTT.Term = (((dummy-function : ((Bool) → ((Bool) → 
-                                                  //| ((Bool) → (Bool))))) (a : (Bool)) : ((Bool) → ((Bool) → (Bool)))) (e :
-                                                  //|  (Bool)) : ((Bool) → (Bool))) (nothing : (Bool)) : (Bool)
+  neg(ff)                                         //> res6: provingground.HoTT.Term = false : (Bool)
+  
+  neg(tt)                                         //> res7: provingground.HoTT.Term = true : (Bool)
+  
+  neg("nothing" :: Bool)                          //> res8: provingground.HoTT.Term = (TermSymbol(((dummy-function : ((Bool) → (
+                                                  //| (Bool) → ((Bool) → (Bool))))) (false : (Bool)) : ((Bool) → ((Bool) →
+                                                  //|  (Bool)))) (true : (Bool)) : ((Bool) → (Bool))) : ((Bool) → (Bool))) (no
+                                                  //| thing : (Bool)) : (Bool)
   
   val recBoolNat = recBool.recursion(Nat)(recBool.fullTyp(Nat).symbObj("dummy-function"))
-                                                  //> recBoolNat  : provingground.RecursionTest.recBool.FullType = (i : (Nat)) �
-                                                  //| � ((k : (Nat)) ↦ ((d : (Bool)) ↦ ((((dummy-function : ((Nat) → ((Nat)
-                                                  //|  → ((Bool) → (Nat))))) (i : (Nat)) : ((Nat) → ((Bool) → (Nat)))) (j
-                                                  //|  : (Nat)) : ((Bool) → (Nat))) (d : (Bool)) : (Nat))))
-	recBoolNat.typ                            //> res7: provingground.HoTT.Typ[provingground.HoTT.Term] = ∏((i : (Nat)) ↦
-                                                  //|  ((Nat) → ((Bool) → (Nat))))
+                                                  //> recBoolNat  : provingground.RecursionTest.recBool.FullType = <function1>
+	recBoolNat.typ                            //> res9: provingground.HoTT.Typ[provingground.HoTT.Term] = (Nat) → ((Nat) �
+                                                  //| � ((Bool) → (Nat)))
 }

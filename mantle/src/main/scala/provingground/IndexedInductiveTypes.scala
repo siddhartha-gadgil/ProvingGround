@@ -120,7 +120,7 @@ import Math._
 	    (g : ConstructorType) =>
 	      val func =((t : Term) => head.induced(W, X)(f) (g(t)))
 	      val codomain = head.at(X)
-	      FuncDefn[Term, head.ConstructorType](func, tail, codomain)
+	      new FuncDefn[Term, head.ConstructorType](func, tail, codomain)
 	  }
 
 	  def inducedDep(W : I => Typ[Term], Xs: Term => Term => Typ[Term])(f : Term => Term) : ConstructorType => ConstructorType = {
@@ -128,7 +128,7 @@ import Math._
 	      val func =((t : Term) => head.inducedDep(W, Xs)(f) (g(t)))
 	      val section = (t : Term) => head(Xs(_)(t))
 	      val fiber = typFamily[Term, head.ConstructorType](tail, section)
-	      DepFuncDefn[Term, head.ConstructorType](func, tail, fiber)
+	      new DepFuncDefn[Term, head.ConstructorType](func, tail, fiber)
 	  }
 	}
 
@@ -185,14 +185,14 @@ import Math._
 	    (g : ConstructorType) =>
 	      val func =((t : Term) => headfibre(t).induced(W, X)(f) (g(t)))
 	      val fiber = typFamily[Term, V](tail,  (t : Term) => headfibre(t).at(X))
-	      DepFuncDefn[Term, V](func, tail, fiber)
+	      new DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 
 	  def inducedDep(W : I => Typ[Term], Xs: Term => Term => Typ[Term])(f : Term => Term) : ConstructorType => ConstructorType = {
 	    (g : ConstructorType) =>
 	      val func =((t : Term) => headfibre(t).inducedDep(W, Xs)(f) (g(t)))
 	      val fiber = typFamily[Term, V](tail, (t : Term) => headfibre(t)(Xs(_)(t)))
-	      DepFuncDefn[Term, V](func, tail, fiber)
+	      new DepFuncDefn[Term, V](func, tail, fiber)
 	  }
 
 	  val univLevel = max(univlevel(tail.typ), headlevel)

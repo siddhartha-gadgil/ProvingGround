@@ -222,7 +222,7 @@ object HoTT{
     	val MapsTo = "\u21A6"
     	val Pi ="\u220f"
     	val Sigma = "\u2211"
-      val UnivSym = "\uD835\uDCB0"
+      val UnivSym = "\uD835\uDCB0 "
     }
 
   //  import SimpleSyms._
@@ -699,7 +699,8 @@ object HoTT{
 
 
     /** A function given by a scala function */
-	case class FuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](func: W => U, dom: Typ[W], codom: Typ[U]) extends Func[W, U]{
+	class FuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](
+      func:  => (W => U), val dom: Typ[W], val codom: Typ[U]) extends Func[W, U]{
 //	  // val domobjtpe = typeOf[W]
 
 //	  // val codomobjtpe = typeOf[U]
@@ -714,7 +715,7 @@ object HoTT{
 
 	  def newobj = typ.obj
 
-	  def subs(x: Term, y: Term) = FuncDefn((w) => func(w).replace(x, y), dom.replace(x, y), codom.replace(x, y))
+	  def subs(x: Term, y: Term) = new FuncDefn((w) => func(w).replace(x, y), dom.replace(x, y), codom.replace(x, y))
 	}
 
 
@@ -726,10 +727,14 @@ object HoTT{
 	 *  If it is important to note that it is not dependent, and hence has scala type Func, then use LambdaFixed
 	 *
 	 */
-	abstract class LambdaLike[X<: Term with Subs[X], Y <: Term with Subs[Y]](variable: X, value : => Y) extends FuncLike[X, Y]{
+	sealed trait LambdaLike[X<: Term with Subs[X], Y <: Term with Subs[Y]]extends FuncLike[X, Y]{
 //	  // val domobjtpe = typeOf[X]
 
 //	  // val codomobjtpe = typeOf[Y]
+
+    val variable: X
+
+    val value : Y
 
 	  type D = X
 
@@ -778,7 +783,7 @@ object HoTT{
 	 * functions given by lambda, which may be dependent - this is checked by making a substitution.
 	 */
 	case class Lambda[X<: Term with Subs[X], Y <: Term with Subs[Y]](variable: X, value : Y) extends
-		LambdaLike(variable, value){
+		LambdaLike[X, Y]{
 
 
 	  val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
@@ -793,16 +798,19 @@ object HoTT{
 	  }
 	}
 
-  class LazyLambda[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
-    LambdaLike(variable, value){
+  @deprecated("Using function definition", "to be purged")
+  class LazyLambda[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, _value : => Y) extends
+    LambdaLike[X, Y] with Subs[LazyLambda[X, Y]]{
+
+    lazy val value = _value
 
     lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
-    lazy val dep = value dependsOn variable
+    lazy val dep = true
 
     def newobj = new LazyLambda(variable.newobj, value.newobj)
 
-    override def subs(x: Term, y: Term) = (x, y) match {
+    override def subs(x: Term, y: Term) : LazyLambda[X, Y] = (x, y) match {
         case (u : Typ[_], v : Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
           val newvar = changeTyp(variable, variable.typ.replace(u, v))
           new LazyLambda(newvar.asInstanceOf[X] , value.replace(x,y))
@@ -813,8 +821,11 @@ object HoTT{
       }
   }
 
-    class LazyLambdaFixed[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, value : => Y) extends
-    LambdaLike(variable, value) with Func[X, Y] with Subs[LazyLambdaFixed[X, Y]]{
+    @deprecated("Using function definition", "to be purged")
+    class LazyLambdaFixed[X<: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, _value : => Y) extends
+    LambdaLike[X, Y] with Func[X, Y] with Subs[LazyLambdaFixed[X, Y]]{
+
+      lazy val value = _value
 
 //    lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
@@ -822,7 +833,7 @@ object HoTT{
 
     lazy val codom = value.typ.asInstanceOf[Typ[Y]]
 
-    lazy val dep = value dependsOn variable
+    lazy val dep = false
 
     def newobj = new LazyLambdaFixed(variable.newobj, value.newobj)
 
@@ -837,12 +848,11 @@ object HoTT{
       }
   }
 
-	// XXX replace asInstanceOf with structural bounds  {val typ: Typ[Y]}
 	/**
 	 * lambda which is known to have fixed codomain.
 	 */
 	case class LambdaFixed[X<: Term with Subs[X], Y <: Term with Subs[Y]](variable: X, value : Y)
-		extends LambdaLike(variable, value) with Func[X, Y] with Subs[LambdaFixed[X, Y]]{
+		extends LambdaLike[X, Y] with Func[X, Y] with Subs[LambdaFixed[X, Y]]{
 	  override val dom = variable.typ.asInstanceOf[Typ[X]]
 
 	  val codom = value.typ.asInstanceOf[Typ[Y]]
@@ -1058,8 +1068,8 @@ object HoTT{
 
 
 	/** A dependent function given by a scala funcion */
-	case class DepFuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](
-      func: W => U, dom: Typ[W], fibers: TypFamily[W, U]) extends DepFunc[W, U]{
+	class DepFuncDefn[W<: Term with Subs[W], U<: Term with Subs[U]](
+      func: W => U, val dom: Typ[W], val fibers: TypFamily[W, U]) extends DepFunc[W, U]{
 //	  // val domobjtpe = typeOf[W]
 
 //	  // val codomobjtpe = typeOf[U]
@@ -1074,7 +1084,7 @@ object HoTT{
 
 	  def newobj = typ.obj
 
-	  def subs(x: Term, y: Term) = DepFuncDefn((w : W) => func(w).replace(x, y), dom.replace(x, y), fibers.replace(x, y))
+	  def subs(x: Term, y: Term) = new DepFuncDefn((w : W) => func(w).replace(x, y), dom.replace(x, y), fibers.replace(x, y))
 	}
 
   case class OptDepFuncDefn[W<: Term with Subs[W]](
@@ -1314,7 +1324,7 @@ object HoTT{
 	 * returns type family, but needs a universe specified as the codomain.
 	 */
 	def typFamilyDefn[W <: Term with Subs[W], U <: Term](dom: Typ[W], codom: Typ[Typ[U]], f: W => Typ[U]) = {
-	  FuncDefn[W, Typ[U]](f, dom, codom)
+	  new FuncDefn[W, Typ[U]](f, dom, codom)
 	}
 
 	case class MiniVerse[U <: Term](sample : Typ[U]) extends Typ[Typ[U]]{

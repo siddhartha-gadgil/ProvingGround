@@ -64,7 +64,7 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
 object RecFunction{
 def recFunction[C <: Term with Subs[C], U <: Term with Subs[U]](conss: List[Constructor[C, U]], W: Typ[Term]) = {
   val init : RecFunction[C] = RecTail[C](W)
-  (init /: conss)(_ prepend _)
+  (init /: (conss.reverse))(_ prepend _)
 }
 
 def recFn[C <: Term with Subs[C], U <: Term with Subs[U]](conss: List[Constructor[C, U]], W: Typ[Term], X: Typ[C]) =
@@ -89,7 +89,8 @@ case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
 
   private lazy val a = W.Var
 
-  def recursion(X: Typ[C])(f: => FullType) = new LazyLambdaFixed(a, X.symbObj(ApplnSym(f, a)))
+  def recursion(X: Typ[C])(f: => FullType) =
+        new FuncDefn(a => X.symbObj(ApplnSym(f, a)), W , X)
 
   def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]) = (g : Func[Term, C]) => transform(g)
 }
@@ -115,13 +116,12 @@ case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
 
   def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]) = (g) =>
     {
-     val a = recdom(X).Var
-    new LazyLambdaFixed(a, tail.pullback(X)(transform)(g(a)))
+    new FuncDefn((a : D) => tail.pullback(X)(transform)(g(a)), recdom(X), tail.fullTyp(X))
     }
 
   def recursion(X: Typ[C])(f: => FullType) ={
     val a = recdom(X).Var
-    def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
-    new LazyLambdaFixed(a, fn(a))
+  //  def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
+    new FuncDefn((x: D) => tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x))), recdom(X), tail.fullTyp(X))
   }
 }

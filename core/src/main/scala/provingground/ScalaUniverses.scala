@@ -103,7 +103,7 @@ object ScalaUniverses {
   def depFunc[W<: Term with Subs[W], U<: Term with Subs[U]](dom: Typ[W], func: W => U)(
       implicit su: ScalaUniv[U]): FuncLike[W, U] = {
     val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
-    DepFuncDefn(func, dom, fibers)
+    new DepFuncDefn(func, dom, fibers)
   }
   
   
@@ -126,7 +126,7 @@ object ScalaUniverses {
     def apply[W<: Term with Subs[W],  U<: Term with Subs[U]](func: Term => U, dom: Typ[W])(implicit su: ScalaUniv[U]) = {
       def section(arg: Term) = func(arg).typ.asInstanceOf[Typ[U]]
       val fibers: TypFamily[W, U] = typFamily[W, U](dom, section)
-      DepFuncDefn(func, dom, fibers)
+      new DepFuncDefn(func, dom, fibers)
     }
   }
 
@@ -137,6 +137,6 @@ object ScalaUniverses {
   def typFamily[W <: Term with Subs[W], U <: Term](dom: Typ[W], f: W => Typ[U])(
       implicit su: ScalaUniv[U]) = {
     val codom = su.univ
-    FuncDefn[W, Typ[U]](f, dom, codom)
+    new FuncDefn[W, Typ[U]](f, dom, codom)
   }
 }

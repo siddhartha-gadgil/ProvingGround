@@ -19,7 +19,7 @@ object RecEnum {
 	    for (x <- recEnumList(first); y <- recEnumList(second)) yield pairs(x, y)
 	  case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
 	    for (x <- recEnumList(dom); y <- recEnumList(codom.asInstanceOf[Typ[Term]])) yield (
-	       for (m <- allMaps(x, y); f <- Try(FuncDefn(
+	       for (m <- allMaps(x, y); f <- Try(new FuncDefn(
              m, dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])).toOption)
            yield (f)
          )

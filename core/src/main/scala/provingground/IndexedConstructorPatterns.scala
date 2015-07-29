@@ -393,6 +393,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
  //   type Cod = C
   }
   
+  /*
   
    /**
    * rec(W)(X) is the value, defined recursively.
@@ -513,6 +514,6 @@ class IndexedConstructorPatterns[F <: Term with Subs[F],
     }
   }
   
-  
+  */
   
 }
