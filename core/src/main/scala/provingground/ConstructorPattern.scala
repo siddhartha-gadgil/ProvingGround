@@ -110,7 +110,7 @@ import RecFunction._
     /**
      * constructor for this pattern given inductive type and name.
      */
-    def constructor(tp: => Typ[Term], name: AnySym) : Constructor[Cod, ConstructorType] = {
+    def constructor(tp: => Typ[Term], name: AnySym) : Constructor[Cod] = {
       val cons = apply(tp).symbObj(name)
       ConstructorDefn[ConstructorType, Cod](this, cons, tp)
     }
@@ -120,7 +120,7 @@ import RecFunction._
     /**
      * constructor for this pattern given inductive type, with a name symbol generated.
      */
-    		def newconstructor(tp: Typ[Term]): Constructor[Cod, ConstructorType] = {
+    		def newconstructor(tp: Typ[Term]): Constructor[Cod] = {
       val cons = apply(tp).obj
       ConstructorDefn[ConstructorType, Cod](this, cons, tp)
     }
@@ -241,7 +241,7 @@ import RecFunction._
       type RecDataType = HeadRecDataType}
 
     /**
-     * returns data for recursion to be passed on to the head given an argument (when matching with the construtor).
+     * returns data for recursion to be passed on to the head given an argument (when matching with the constructor).
      */
     def headData(data: RecDataType, arg: ArgType, f : => Func[Term, Cod]): HeadRecDataType
 
@@ -450,18 +450,17 @@ import RecFunction._
    *
    * abstraction of ConstructorDefn mainly to allow different type parameters.
    */
-  trait Constructor[Cod <: Term with Subs[Cod],
-    CnstrType<: Term with Subs[CnstrType]]{self =>
+  trait Constructor[Cod <: Term with Subs[Cod]]{self =>
     /**
      * scala type, especially (nested) functions
      */
-    type ConstructorType <: Term
+    type ConstructorType <: Term with Subs[ConstructorType]
 
 //    type Cod <: Term with Subs[Cod]
     /**
      * constructor-pattern for the constructor
      */
-    val pattern : ConstructorPattern[Cod, CnstrType]
+    val pattern : ConstructorPattern[Cod, ConstructorType]
 
 //    val typ: Typ[Term]
 
@@ -489,7 +488,7 @@ import RecFunction._
    */
   case class ConstructorDefn[U <: Term with Subs[U], C <: Term with Subs[C]](
       pattern: ConstructorPattern[C, U],
-      cons: U, W: Typ[Term]) extends Constructor[C, U]{
+      cons: U, W: Typ[Term]) extends Constructor[C]{
     type ConstructorType = U
 
 //    type Cod = C

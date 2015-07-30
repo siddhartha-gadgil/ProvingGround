@@ -6,6 +6,8 @@ import math._
 import scala.util._
 import scala.language.existentials
 
+import scala.language.implicitConversions
+
 import RecFunction._
 
 case class RecFn[C<: Term with Subs[C]](W: Typ[Term], X: Typ[C]) extends AnySym
@@ -49,12 +51,12 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
   /**
    * prepend a constructor
    */
-   def prepend[U <: Term with Subs[U]](cons: Constructor[C, U]) = {
+   def prepend[U <: Term with Subs[U]](cons: Constructor[C]) = {
     val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
     type D = cons.pattern.RecDataType
     val caseFn : D => Func[Term, C] => Func[Term, C] =
        (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
-    RecFunctionCons[D, C](recdom, caseFn, this)
+    RecFunctionCons[D, C](recdom, caseFn, self)
   }
 
   def fn(x: Typ[C]) : FullType = recursion(x)(fn(x))
@@ -62,15 +64,19 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
 }
 
 object RecFunction{
-def recFunction[C <: Term with Subs[C], U <: Term with Subs[U]](conss: List[Constructor[C, U]], W: Typ[Term]) = {
-  val init : RecFunction[C] = RecTail[C](W)
-  (init /: (conss.reverse))(_ prepend _)
-}
 
-def recFn[C <: Term with Subs[C], U <: Term with Subs[U]](conss: List[Constructor[C, U]], W: Typ[Term], X: Typ[C]) =
-  recFunction(conss, W).fn(X)
+  implicit def WAsPtn(w: IdW.type) = IdFmlyPtn[Term, Term]
 
-}
+  def recFunction[C <: Term with Subs[C], U <: Term with Subs[U]](
+      conss: List[Constructor[C]], W: Typ[Term]) = {
+    val init : RecFunction[C] = RecTail[C](W)
+    (init /: (conss.reverse))(_ prepend _)
+  }
+
+  def recFn[C <: Term with Subs[C], U <: Term with Subs[U]](
+    conss: List[Constructor[C]], W: Typ[Term], X: Typ[C]) =
+      recFunction(conss, W).fn(X)
+      }
 /*
 case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
   override def toString = s"rec($W)($X)"
@@ -120,8 +126,6 @@ case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
     }
 
   def recursion(X: Typ[C])(f: => FullType) ={
-    val a = recdom(X).Var
-  //  def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
     new FuncDefn((x: D) => tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x))), recdom(X), tail.fullTyp(X))
   }
 }

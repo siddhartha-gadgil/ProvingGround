@@ -9,7 +9,11 @@ import ConstructorPattern._
 
 import RecFunction._
 
+import BaseTypes._
+
 class RecursionSpec extends FlatSpec{
+
+/*
   case object Bool extends SmallTyp
 
   case object Nat extends SmallTyp
@@ -23,6 +27,17 @@ class RecursionSpec extends FlatSpec{
   val ff : Term = ffC.cons
 
   val BoolCons = List(ttC, ffC)
+
+  val zeroC = W.constructor(Nat, "0")
+
+  val succC = (W -->: W).constructor(Nat, "succ")
+
+  val zero : Term = zeroC.cons
+
+  val succ : Func[Term, Term] = succC.cons
+
+  val one = succ(zero)
+*/
 
   "Boolean type" should "have constructors of type Bool" in {
     assert(tt.typ == Bool)
@@ -68,7 +83,7 @@ class RecursionSpec extends FlatSpec{
   val boolBoolFn =
     recBool.recursion(Bool)(recBool.fullTyp(Bool).symbObj("dummy-function")).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
-  "Dummy Recursion function from Bool to Bool" should "when applied to constructors give defining data" ignore {
+  "Dummy Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
     val neg = boolBoolFn(ff)(tt)
 
     assert(neg(tt) == ff)
@@ -82,4 +97,15 @@ class RecursionSpec extends FlatSpec{
 
       assert(neg(tt) == ff)
     }
+
+  val recBoolNat =
+      recFn(BoolCons, Bool, Nat).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+
+  "Recursion function from Bool to Nat" should "when applied to constructors give defining data" in {
+        val neg = recBoolNat(zero)(one)
+
+        assert(neg(tt) == zero)
+
+        assert(neg(ff) == one)
+      }
 }

@@ -554,7 +554,7 @@ object HoTT{
       def act(arg: W): U
 
       def apply(arg: W): U = {
-        require(arg.typ == dom, s"function with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
+        require(arg.typ == dom, s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
         act(arg)
       }
 //      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncLike[WW, UU]
@@ -1266,6 +1266,16 @@ object HoTT{
 	    foldterms(f(x.asInstanceOf[u]), ys)
 	  case (t, _) => t
 	}
+
+
+  def fold(fn: Term)(args: Term*): Term = (fn, args.toList) match{
+    case (t, List()) => t
+    case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
+      fold(f(x.asInstanceOf[u]))(ys : _*)
+    case (t, _) =>
+      throw new IllegalArgumentException(
+          s"attempting to apply $t, which is not a function")
+  }
 
 	/**
 	 * folds in as many terms with names given by the list as possible,

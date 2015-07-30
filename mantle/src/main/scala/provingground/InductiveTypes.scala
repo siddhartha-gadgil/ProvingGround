@@ -33,7 +33,7 @@ object InductiveTypes{
 	  /**
 	   * just the constructor patterns.
 	   */
-	  val ptns : List[ConstructorPattern[Term, Term]] = constructors map (_.pattern)
+	  val ptns  = constructors map (_.pattern)
 
 	  /**
 	   * just the constructor functions
@@ -43,7 +43,7 @@ object InductiveTypes{
 	  /**
 	   * the constructors, including functions and patterns
 	   */
-	  val constructors : List[Constructor[Term, Term]]
+	  val constructors : List[Constructor[Term]]
 
 //	  def cnstr[U <: Term](ptn: ConstructorPattern[U]) = ptn.newconstructor(this)
 

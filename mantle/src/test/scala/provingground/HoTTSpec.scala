@@ -146,4 +146,11 @@ class HoTTSpec extends FlatSpec{
     assert(pdep.typ == Sgma(a !: A, Bs(a)))
   }
 
+  val mpt : Term = mp
+
+  "fold function" should "act using function terms" in {
+    assert(fold(mpt)(A, B).typ == A ->: ((A ->: B) ->: B))
+    assert(fold(mpt)(B, A).typ == B ->: ((B ->: A) ->: A))
+    assert(fold(fold(mpt)(A))(B) == fold(mpt)(A, B))
+  }
 }
