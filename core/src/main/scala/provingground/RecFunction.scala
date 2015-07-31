@@ -44,18 +44,18 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
   def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]): FullType => FullType
 
   /**
-   * given value for rec(W)(X) corresponding to earlier patterns, returns one including the new case.
+   * the recursion function for all cases so far, given the function to apply on offspring.
    */
   def recursion(X: Typ[C])(f: => FullType): FullType
 
   /**
-   * prepend a constructor
+   * prepend a constructor, passing on the function on offspring
    */
    def prepend[U <: Term with Subs[U]](cons: Constructor[C]) = {
     val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
     type D = cons.pattern.RecDataType
-    val caseFn : D => Func[Term, C] => Func[Term, C] =
-       (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
+    val caseFn : D => Func[Term, C] => Func[Term, C] => Func[Term, C] =
+       (d) => (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
     RecFunctionCons[D, C](recdom, caseFn, self)
   }
 
@@ -104,12 +104,12 @@ case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
 /**
  * cons for recursion function, i.e., adding a new constructor
  * @param dom domain
- * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern
+ * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern and gives new function
  * @param tail previously added constructors
  */
 case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
     recdom: Typ[C] => Typ[D],
-    caseFn : D => Func[Term, C] => Func[Term, C],
+    caseFn : D => Func[Term, C] => Func[Term, C] => Func[Term, C],
     tail: RecFunction[C]) extends RecFunction[C]{
   val W = tail.W
 
@@ -126,6 +126,11 @@ case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
     }
 
   def recursion(X: Typ[C])(f: => FullType) ={
-    new FuncDefn((x: D) => tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x))), recdom(X), tail.fullTyp(X))
+    def func(x: D) : tail.FullType = {
+      ???
+    }
+    
+    new FuncDefn((x: D) => 
+      func(x), recdom(X), tail.fullTyp(X))
   }
 }

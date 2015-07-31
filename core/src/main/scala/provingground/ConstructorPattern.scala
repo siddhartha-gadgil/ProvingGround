@@ -69,11 +69,13 @@ import RecFunction._
      * returns simplification (wrapped in Some) if the term matches.
      * @param cons constructor, actually quasi-constructor, with which to match.
      * @param data definition data for the image of the constructor.
-     * @param f the function being defined, to be applied recursively.
+     * @param f the function being defined, to be applied recursively - not the function being modified.
+     * @param g the function being modified.
      */
     def recDef(cons: ConstructorType, data: RecDataType, f :  => Func[Term, Cod]): Term => Option[Cod]
 
-    def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) : Func[Term, Cod] = new Func[Term, Cod]{
+    def recModify(cons: ConstructorType)(data: RecDataType)(
+        f : => Func[Term, Cod])(g : Func[Term, Cod]) : Func[Term, Cod] = new Func[Term, Cod]{
       lazy val dom = f.dom
 
       lazy val codom = f.codom
@@ -82,19 +84,13 @@ import RecFunction._
 
       def newobj = this
 
-      def act(a: Term) = (recDef(cons, data, f)(a)).getOrElse(f(a))
+      def act(a: Term) = (recDef(cons, data, f)(a)).getOrElse(g(a))
 
       def subs(x: Term, y: Term) = this
 
       override def toString = f.toString
     }
 
-    /*
-    def recModify(cons: ConstructorType)(data: RecDataType)(f : => Func[Term, Cod]) = {
-      val a = f.dom.Var
-      lmbda(a)((recDef(cons, data, f)(a)).getOrElse(f(a)))
-    }
-    */
 
     /**
      * invokes [[recDom]] after changing codomain type.

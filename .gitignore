@@ -93,3 +93,6 @@ project/sbt-ui.sbt
 
 # Vim swap files
 .*swp
+
+.ensime
+.ensime_cache/
