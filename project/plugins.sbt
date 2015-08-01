@@ -17,3 +17,5 @@ addSbtPlugin("com.vmunier" % "sbt-play-scalajs" % "0.2.6")
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
+
+addSbtPlugin("org.ensime" % "ensime-sbt" % "0.1.7")

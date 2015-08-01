@@ -45,10 +45,8 @@ trait RecursiveDefinition[C<: Term with Subs[C]] {self =>
   
   import RecursiveDefinition._
   
-  def prepend(cons: Constructor[C]) = {
-        type D = cons.pattern.RecDataType
-        val dom = cons.pattern.recDom(W, X)
-  }
+  def prepend(cons: Constructor[C], sym: AnySym) = 
+    prependPair(cons)(cons.pattern.recDom(W, X).symbObj(sym))
 }
 
 /**
@@ -76,22 +74,23 @@ case class RecDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
 }
 
 object RecursiveDefinition{
-  case class RecFunc[C <: Term with Subs[C]](defn: RecursiveDefinition[C]) extends FuncDefn(defn.func, defn.W, defn.X)
   
-  /*
-  def recFn[C <: Term with Subs[C]](W: Typ[Term], X: Typ[C]) : List[Constructor[C]] => Term = {
-    case List() => RecDefinitionTail(W, X).func
-    case x :: ys =>
-      {
-        type D = x.pattern.RecDataType
-        val dom = x.pattern.recDom(W, X)
-        val tail = recFn(W, X)(ys)
-        val caseFn : D => Func[Term, C] => Func[Term, C] => Func[Term, C] =
-         (d) => (f) => (g) => x.pattern.recModify(x.cons)(d)(f)(g)
-        new FuncDefn((arg: D) => RecDefinitionCons(arg, caseFn, tail).func, dom, X)
-        recFn(W, X)(ys)
-      }
+  
+  
+  def recFn[C <: Term with Subs[C]](W: Typ[Term], X: Typ[C], conss: List[Constructor[C]]) = {
+    val namedConss = for (c <- conss) yield (c, NameFactory.get)
+    
+    def addCons[C<: Term with Subs[C]]( cn :(Constructor[C], String), defn : RecursiveDefinition[C]) = 
+      defn.prepend(cn._1, cn._2)
+      
+    val init : RecursiveDefinition[C] = RecDefinitionTail(W, X)
+    val lambdaValue : Term = (namedConss :\ init)(addCons).func
+    
+    val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.recDom(W, X).symbObj(name)
+    
+    (variables :\ lambdaValue)(lmbda(_)(_))
+  }
        
       
-  }*/
+  
 }

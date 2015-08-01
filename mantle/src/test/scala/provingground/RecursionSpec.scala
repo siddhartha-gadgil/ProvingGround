@@ -69,11 +69,11 @@ class RecursionSpec extends FlatSpec{
   it should "modify a function according to the case" in {
     val dummy = (Bool ->: Bool).symbObj("dummy")
 
-    val negTrue = W.recModify(tt)(ff)(dummy)
+    val negTrue = W.recModify(tt)(ff)(dummy)(dummy)
 
     assert(negTrue(tt) == ff)
 
-    val neg = W.recModify(ff)(tt)(negTrue)
+    val neg = W.recModify(ff)(tt)(negTrue)(negTrue)
 
     assert(neg(tt) == ff)
 

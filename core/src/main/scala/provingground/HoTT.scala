@@ -22,7 +22,7 @@ object HoTT{
   /**
    * Symbol
    */
-	trait AnySym
+	class AnySym
 
 	/**
 	 * Strings as symbols
@@ -669,7 +669,7 @@ object HoTT{
 
 	/** Symbol containing function info */
     case class FuncSymb[W<: Term with Subs[W], U<: Term with Subs[U]](name: AnySym, dom: Typ[W], codom: Typ[U]) extends
-              Func[W, U] with Subs[Func[W, U]] with Symbolic with AnySym{
+              AnySym with Func[W, U] with Subs[Func[W, U]] with Symbolic{
 
 //      // val domobjtpe = typeOf[W]
 
@@ -1027,8 +1027,9 @@ object HoTT{
 	/**
 	 * Symbolic dependent function
 	 */
-	case class DepFuncSymb[W<: Term with Subs[W],  U<: Term](name: AnySym, fibers: TypFamily[W, U]) extends
-	DepFunc[W, U] with Symbolic with AnySym{
+	case class DepFuncSymb[W<: Term with Subs[W],  U<: Term](
+      name: AnySym, fibers: TypFamily[W, U]) extends AnySym with
+	DepFunc[W, U] with Symbolic{
 //	  // val domobjtpe = typeOf[W]
 
 //	  // val codomobjtpe = typeOf[U]
