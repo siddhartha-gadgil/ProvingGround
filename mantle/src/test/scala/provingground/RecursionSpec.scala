@@ -107,4 +107,28 @@ class RecursionSpec extends FlatSpec {
     assert(alsoPlusOne(succ(one)) == succ(succ(one)))
 
   }
+
+  def recNat[C <: Term with Subs[C]](X: Typ[C]) = recFn(NatCons, Nat, X)
+
+  def recBool[C <: Term with Subs[C]](X: Typ[C]) = recFn(BoolCons, Bool, X)
+
+  "And defined recursively" should "have correct values" in {
+    val a = "a" :: Bool
+    val and = recBool(Bool ->: Bool)(lambda(a)(a), lambda(a)(ff))
+    assert(and(tt, tt) == tt)
+  }
+
+  "Sum defined recursively" should "have correct values" in {
+    val n = "n" :: Nat
+    val k = "k" :: Nat
+    val f = "f" :: (Nat ->: Nat)
+    val add = recNat(Nat ->: Nat)(
+      lambda(n)(n),
+      lambda(n)(
+        lambda(f)(
+          lambda(k)(succ(f(k)))))
+    )
+
+    assert(add(one, one) == succ(one))
+  }
 }
