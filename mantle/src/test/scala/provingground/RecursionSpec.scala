@@ -126,7 +126,9 @@ class RecursionSpec extends FlatSpec {
       lambda(n)(n),
       lambda(n)(
         lambda(f)(
-          lambda(k)(succ(f(k)))))
+          lambda(k)(succ(f(k)))
+        )
+      )
     )
 
     assert(add(one, one) == succ(one))
