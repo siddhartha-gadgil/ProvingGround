@@ -77,7 +77,7 @@ object RecursiveDefinition{
   
   
   
-  def recFn[C <: Term with Subs[C]](W: Typ[Term], X: Typ[C], conss: List[Constructor[C]]) = {
+  def recFn[C <: Term with Subs[C]](conss: List[Constructor[C]], W: Typ[Term], X: Typ[C]) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
     
     def addCons[C<: Term with Subs[C]]( cn :(Constructor[C], String), defn : RecursiveDefinition[C]) = 

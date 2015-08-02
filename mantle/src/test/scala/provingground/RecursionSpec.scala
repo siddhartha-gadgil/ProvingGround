@@ -7,37 +7,13 @@ import ConstructorPattern._
 
 import ConstructorPattern._
 
-import RecFunction._
+import RecFunction.{ recFunction }
 
 import BaseTypes._
 
-class RecursionSpec extends FlatSpec{
+import RecursiveDefinition._
 
-/*
-  case object Bool extends SmallTyp
-
-  case object Nat extends SmallTyp
-
-  val ttC  = W.constructor(Bool, "true")
-
-  val ffC = W.constructor(Bool, "false")
-
-  val tt : Term = ttC.cons
-
-  val ff : Term = ffC.cons
-
-  val BoolCons = List(ttC, ffC)
-
-  val zeroC = W.constructor(Nat, "0")
-
-  val succC = (W -->: W).constructor(Nat, "succ")
-
-  val zero : Term = zeroC.cons
-
-  val succ : Func[Term, Term] = succC.cons
-
-  val one = succ(zero)
-*/
+class RecursionSpec extends FlatSpec {
 
   "Boolean type" should "have constructors of type Bool" in {
     assert(tt.typ == Bool)
@@ -80,32 +56,55 @@ class RecursionSpec extends FlatSpec{
     assert(neg(ff) == tt)
   }
 
-  val boolBoolFn =
-    recBool.recursion(Bool)(recBool.fullTyp(Bool).symbObj("dummy-function")).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
-
-  "Dummy Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
-    val neg = boolBoolFn(ff)(tt)
-
-    assert(neg(tt) == ff)
-  }
-
   val recBoolBool =
     recFn(BoolCons, Bool, Bool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
   "Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
-      val neg = recBoolBool(ff)(tt)
+    val neg = recBoolBool(ff)(tt)
 
-      assert(neg(tt) == ff)
-    }
+    assert(neg(tt) == ff)
+  }
 
   val recBoolNat =
-      recFn(BoolCons, Bool, Nat).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+    recFn(BoolCons, Bool, Nat).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
-  "Recursion function from Bool to Nat" should "when applied to constructors give defining data" in {
-        val neg = recBoolNat(zero)(one)
+  "Recursion function from Bool to Nat" should "when applied to constructors give defining data" in
+    {
+      val neg = recBoolNat(zero)(one)
 
-        assert(neg(tt) == zero)
+      assert(neg(tt) == zero)
 
-        assert(neg(ff) == one)
-      }
+      assert(neg(ff) == one)
+    }
+
+  import Fold._
+  val recNatNat = recFn(NatCons, Nat, Nat)
+
+  "Recursion functions from Nat to Nat" should "recursively apply the definition" in {
+
+    val x = "x" :: Nat
+
+    val y = "y" :: Nat
+
+    val next = lambda(x)(lambda(y)(succ(y)))
+
+    val nextArg = lambda(x)(lambda(y)(succ(succ(x)))) // this is n+1 as we map succ(n) to function of n
+
+    val plusOne = recNatNat(one)(next)
+
+    val alsoPlusOne = recNatNat(one)(nextArg)
+
+    assert(plusOne(zero) == one)
+
+    assert(plusOne(one) == succ(one))
+
+    assert(plusOne(succ(one)) == succ(succ(one)))
+
+    assert(alsoPlusOne(zero) == one)
+
+    assert(alsoPlusOne(one) == succ(one))
+
+    assert(alsoPlusOne(succ(one)) == succ(succ(one)))
+
+  }
 }
