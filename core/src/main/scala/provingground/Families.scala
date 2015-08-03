@@ -27,6 +27,8 @@ object Families {
      */
     type MemberType = O
 
+    type Cod = C
+
     /**
      * scala type (upper bound) for a member of the family.
      */
@@ -55,6 +57,10 @@ object Families {
      */
     type TargetType <: Term with Subs[TargetType]
 
+    /**
+      * Note that the target may be a type family, not a type,
+      *  so this is the actual type of objects.
+      */
     type DepTargetType <: Term with Subs[DepTargetType]
 
     /**
@@ -64,7 +70,8 @@ object Families {
 
     def target(x: Typ[Cod]): Typ[TargetType]
 
-    type Cod = C
+    def depTarget(xs: Func[Term, Typ[Cod]]): Family => Typ[DepTargetType]
+
 
     def withCod[CC <: Term with Subs[CC]]: FmlyPtn[O, CC, Family]
 
@@ -125,6 +132,8 @@ object Families {
 
     def target(x: Typ[Cod]) = x
 
+    def depTarget(xs: Func[Term, Typ[Cod]]) = xs
+
     def withCod[CC <: Term with Subs[CC]] = IdFmlyPtn[O, CC]
 
     //    type Cod = C
@@ -161,6 +170,15 @@ object Families {
     val tail: Typ[Term]
 
     val headfibre: Term => FmlyPtn[O, C, V] { type ArgType = S; type TargetType = T; type DepTargetType = D }
+
+    def depTarget(xs: Func[Term, Typ[Cod]]) = (fmly: Family) =>
+      {
+        val a = tail.Var
+        val b = fmly(a)
+        val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+        PiTyp(targfibre)
+    }
+
   }
 
   case class FuncFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], S <: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]](
@@ -171,8 +189,7 @@ object Families {
       type ArgType = S;
       type TargetType = T; type DepTargetType = D
     }
-  ) /*(
-        implicit su: ScalaUniv[V])*/ extends FmlyPtn[O, C, Func[Term, V]] {
+  )  extends FmlyPtn[O, C, Func[Term, V]] {
     def apply(W: Typ[O]) = FuncTyp[Term, V](tail, head(W))
 
     //  override type Family =  Func[Term, V]
@@ -213,9 +230,18 @@ object Families {
 
     type TargetType = Func[Term, T]
 
-    //  type DepTargetType = FuncLike[Term, D]
+//    type DepTargetType = FuncLike[Term, D]
 
     def target(x: Typ[Cod]) = tail ->: head.target(x)
+
+    def depTarget(xs: Func[Term, Typ[Cod]]) = (fmly: Family) =>
+      {
+        val a = tail.Var
+        val b = fmly(a)
+        val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+        PiTyp(targfibre)
+    }
+
 
     //    type Cod = head.Cod
 
@@ -270,8 +296,7 @@ object Families {
       type TargetType = T; type DepTargetType = D
     },
     headlevel: Int = 0
-  )
-    /*(implicit su: ScalaUniv[V])*/ extends RecFmlyPtn[V, FV, S, T, D, O, C] {
+  )  extends RecFmlyPtn[V, FV, S, T, D, O, C] {
 
     //    type Family =  FuncLike[Term, V]
 
