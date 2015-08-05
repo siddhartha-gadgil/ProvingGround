@@ -14,7 +14,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
   val typFmlyPtn: FmlyPtn[Term, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I }
 ) { outer =>
   type Cod = C
-  sealed trait ConstructorPattern[C <: Term with Subs[C]] { self =>
+  sealed trait ConstructorPattern[Cnstr <: Term with Subs[Cnstr]] { self =>
     /**
      * Type of codomain X
      */
@@ -32,7 +32,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
     /**
      * type of a constructor for this pattern.
      */
-    type ConstructorType = C
+    type ConstructorType = Cnstr
 
     def apply(tps: F): Typ[ConstructorType]
 
@@ -55,20 +55,21 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
      */
     def recDef(cons: ConstructorType, data: RecDataType, f: => I): Term => Option[Cod]
 
-    def recModify(cons: ConstructorType)(data: RecDataType)(f: => I): I = {
-      def g = typFmlyPtn.fill(f)(index)
+    def recModify(cons: ConstructorType)(data: RecDataType)(f: => I)(g: => I): I = {
+      lazy val ff = typFmlyPtn.fill(f)(index)
+      lazy val gg = typFmlyPtn.fill(g)(index)
       val fn = new Func[PairObj[Ind, Term], Cod] {
-        lazy val W = g.dom
+        lazy val W = ff.dom
 
         lazy val dom = PairTyp(index.typ.asInstanceOf[Typ[Ind]], W)
 
-        lazy val codom = g.codom
+        lazy val codom = ff.codom
 
         lazy val typ = dom ->: codom
 
         def newobj = this
 
-        def act(a: PairObj[Ind, Term]) = (recDef(cons, data, f)(a)).getOrElse(g(a.second))
+        def act(a: PairObj[Ind, Term]) = (recDef(cons, data, f)(a)).getOrElse(gg(a.second))
 
         def subs(x: Term, y: Term) = this
       }
@@ -94,29 +95,6 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
     }
   }
 
-  /**
-   * Eventually remove this, to avoid duplication of constructors
-   */
-  /*   case class SimpleFuncPtn[F <: Term with Subs[F], 
-      A <: Term with Subs[A], 
-      I <: Term with Subs[I],
-      C<: Term with Subs[C]](
-        tailArg: A, head : ConstructorPattern[F, A, I]{type Cod = C}) extends RecursiveConstructorPattern[F, A, I]{
-      type Cod = C
-      
-      type ConstructorType = Func[Term, head.ConstructorType]
-      
-      val typFmlyPtn = head.typFmlyPtn
-      
-      val arg = head.arg
-      
-      type RecDataType = Func[Term, Func[Cod, head.RecDataType]]
-      
-      def apply(tps: F) = typFmlyPtn.contractType(tps)(tailArg) ->: head(tps)
-      
-      def recDom(w: F, x: Typ[Cod]) : Typ[RecDataType] =  apply(w) ->: x ->: head.recDom(w, x)
-    }
-   */
 
   /**
    * Functional extension of a type pattern
@@ -331,17 +309,17 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
    *
    * abstraction of ConstructorDefn mainly to allow different type parameters.
    */
-  trait Constructor[C <: Term with Subs[C]] { self =>
+  trait Constructor[Cnstr<: Term with Subs[Cnstr]] { self =>
     /**
      * scala type, especially (nested) functions
      */
-    type ConstructorType = C 
+    type ConstructorType = Cnstr 
 
     //  type Cod <: Term with Subs[Cod]
     /**
      * constructor-pattern for the constructor
      */
-    val pattern: ConstructorPattern[C]
+    val pattern: ConstructorPattern[Cnstr]
 
     //    val typ: Typ[Term]
 
@@ -368,129 +346,93 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
   case class ConstructorDefn[U <: Term with Subs[U]](
     pattern: ConstructorPattern[U],
     cons: U, W: F
-  ) extends Constructor[U] 
+  ) extends Constructor[U]
 
-  /*
-  
-   /**
-   * rec(W)(X) is the value, defined recursively.
-   * @tparam C codomain (scala) type
-   * @tparam F full type of rec
+
+
+
+// Pasted from RecursiveDefinition
+
+trait IndexedRecursiveDefinition {self =>
+    /**
+   * W in rec(W)(X)
    */
-  trait RecFunction{self =>
-    /**
-     * W in rec(W)(X)
-     */
-    val W: Typ[Term]
+  val W: F
 
-    /**
-     * X in rec(W)(X)
-     */
- //   val X : Typ[C]
-
-
-    /**
-     * (scala) type of rec(W)(X)
-     */
-    type FullType <: Term with Subs[FullType]
-
-    /**
-     * induced change to function of the type of rec(W)(X) given change on function W->X;
-     * @param transform function W -> X by which we change functions W -> X, trying the case first.
-     * @return induced changed function.
-     */
-    def pullback(X: Typ[C])(transform: I => I): FullType => FullType
-
-    /**
-     * given value for rec(W)(X) corresponding to earlier patterns, returns one including the new case.
-     */
-    def recursion(X: Typ[C])(f: => FullType): FullType
-
-    /**
-     * prepend a constructor
-     */
+  /**
+   * X in rec(W)(X)
+   */
+   val X : Typ[C]
+  
+  /**
+   * recursive definition, with offspring applying f.
+   */
+  def recursion(f : => I) : I
+  
+  /**
+   * the function to use, applying itself to recursion
+   */ 
+  def func: I = recursion(func)
+  
+  def prependPair(cons: Constructor[C])(arg: cons.pattern.RecDataType) : IndexedRecursiveDefinition = {
+    type D = cons.pattern.RecDataType
     
-     def prepend(cons: Constructor{type Cod = C}) = {
-      val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
-      type D = cons.pattern.RecDataType
-      val caseFn : D => I => I = (d) => (f) => cons.pattern.recModify(cons.cons)(d)(f)
-      RecFunctionCons[D](recdom, caseFn, this)
-    }
-  }
-
-  def recFunction(conss: List[Constructor{type Cod = C}], W: Typ[Term], arg: A) = {
-    val init : RecFunction = RecTail(W, arg)
-    (init /: conss)(_ prepend _)
-  }
-
-/*
-  case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
-    override def toString = s"rec($W)($X)"
-  }
- */
-
-  /**
-   * container for rec(W)(X) in the case of no constructors.
-   * rec(W)(X) is defined to be formal application of itself.
-   * Lazy lambda used to avoid infinite loops.
-   */
-  case class RecTail(W: Typ[Term], arg: A) extends RecFunction{
-    type FullType = I
-
-    private lazy val a = W.Var
-
-    def recursion(X: Typ[C])(f: => FullType) = {
-      val g = typFmlyPtn.fill(f)(arg)
-      val fn = new Func[PairObj[A, Term], Cod]{
-        
-        lazy val dom = PairTyp(arg.typ.asInstanceOf[Typ[A]], W)
-        
-        lazy val codom = g.codom
-      
-        lazy val typ = dom ->: codom
-      
-        def newobj = this
-      
-        def act(argx: PairObj[A, Term]) = X.symbObj(ApplnSym(g, argx.second))
-      
-        def subs(x: Term, y: Term) = this                 
-        }
-      typFmlyPtn.curry(fn)
-    }
-
-    def pullback(X: Typ[C])(transform: I => I) = (g : I) => g
-  }
-
-  /**
-   * cons for recursion function, i.e., adding a new constructor
-   * @param dom domain
-   * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern
-   * @param tail previously added constructors
-   */
-  case class RecFunctionCons[D<: Term with Subs[D]](
-      recdom: Typ[C] => Typ[D],
-      caseFn : D => I => I,
-      tail: RecFunction) extends RecFunction{
-    val W = tail.W
-
-  //  val X = tail.X
-
-    type FullType = Func[D, tail.FullType]
-
-
-    def pullback(X: Typ[C])(transform: I => I) = (g) =>
-      {
-       val a = recdom(X).Var
-      new LazyLambdaFixed(a, tail.pullback(X)(transform)(g(a)))
-      }
-
-    def recursion(X: Typ[C])(f: => FullType) ={
-      val a = recdom(X).Var
-      def fn(x: D) = tail.pullback(X)(caseFn(x))(tail.recursion(X)(f(x)))
-      lmbda(a)(fn(a))
-    }
+    val caseFn : D => I => I => I =
+         (d) => (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
+    
+    IndexedRecDefinitionCons(arg, caseFn, self)
   }
   
-  */
+  import RecursiveDefinition._
+  
+  def prepend(cons: Constructor[C], sym: AnySym) = 
+    prependPair(cons)(cons.pattern.recDom(W, X).symbObj(sym))
+}
+
+/**
+ * recursive definition with empty constructor, hence empty data
+ */
+case class IndexedRecDefinitionTail(W: F, X: Typ[C], index: Ind) extends IndexedRecursiveDefinition{
+  def recursion(f : => I) = {
+    val wtyp = typFmlyPtn.contractType(W)(index)
+    typFmlyPtn.iterFuncTyp(wtyp, X).symbObj("rec")
+  }
+}
+
+case class IndexedRecDefinitionCons[D<: Term with Subs[D]](
+    arg: D,
+    caseFn : D => I => I => I,
+    tail: IndexedRecursiveDefinition) extends IndexedRecursiveDefinition{
+  
+  lazy val W = tail.W
+  
+  lazy val X = tail.X
+  
+  def recursion(f: => I) = {
+    def fn = caseFn(arg)(f)(tail.recursion(f))
+    fn
+  }
+  
+}
+
+object IndexedRecursiveDefinition{
+  
+  
+  
+  def recFn(conss: List[Constructor[C]], W: F, X: Typ[C], index: Ind) = {
+    val namedConss = for (c <- conss) yield (c, NameFactory.get)
+    
+    def addCons(cn :(Constructor[C], String), defn : IndexedRecursiveDefinition) = 
+      defn.prepend(cn._1, cn._2)
+      
+    val init : IndexedRecursiveDefinition = IndexedRecDefinitionTail(W, X, index)
+    val lambdaValue : Term = (namedConss :\ init)(addCons).func
+    
+    val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.recDom(W, X).symbObj(name)
+    
+    (variables :\ lambdaValue)(lmbda(_)(_))
+  }
+       
+}
 
 }
