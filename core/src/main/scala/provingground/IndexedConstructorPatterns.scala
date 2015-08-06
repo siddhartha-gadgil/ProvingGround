@@ -12,7 +12,7 @@ import ConstructorPattern._
  * @author gadgil
  */
 class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[Ind], I <: Term with Subs[I], IT <: Term with Subs[IT], DI <: Term with Subs[DI], C <: Term with Subs[C], Fmly <: Term with Subs[Fmly]](
-  val typFmlyPtn: FmlyPtn[Term, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I }
+  val typFmlyPtn: FmlyPtn[Term, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterDepFunc = DI }
 ) { outer =>
   type Cod = C
   sealed trait ConstructorPattern[Cnstr <: Term with Subs[Cnstr]] { self =>
@@ -59,6 +59,8 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
      */
     def recDef(cons: ConstructorType, data: RecDataType, f: => I): Term => Option[Cod]
 
+    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] 
+
     def recModify(cons: ConstructorType)(data: RecDataType)(f: => I)(g: => I): I = {
       lazy val ff = typFmlyPtn.fill(f)(index)
       lazy val gg = typFmlyPtn.fill(g)(index)
@@ -80,7 +82,43 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       typFmlyPtn.curry(fn)
     }
 
+  def inducModify(cons: ConstructorType)(data: InducDataType)(
+    f: => DI
+  )(g: => DI): DI = {
+      lazy val ff = typFmlyPtn.depFill(f)(index)
+      lazy val gg = typFmlyPtn.depFill(g)(index)
+
+    val fn = new FuncLike[PairObj[Ind, Term], Cod] {
+    lazy val W = ff.dom
+
+    lazy val dom = PairTyp(index.typ.asInstanceOf[Typ[Ind]], W)
+
+    lazy val a = "a" :: dom
+
+    lazy val depcodom = ff.depcodom
+
+    lazy val fibre = lmbda(a)(depcodom(a))
+
+    lazy val typ = PiTyp(fibre)
+
+    def newobj = this
+
+    def act(a: PairObj[Ind, Term]) = (inducDef(cons, data, f)(a)).getOrElse(gg(a.second))
+
+    def subs(x: Term, y: Term) = this
+
+    override def toString = f.toString
+    }
+    typFmlyPtn.depCurry(fn)
+
   }
+  }
+
+
+  
+
+
+
 
   case class iW(index: Ind) extends ConstructorPattern[Term] {
  //   type ConstructorType = Term
@@ -101,6 +139,8 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       case (t: Term) if t == cons => Some(data)
       case _ => None
     }
+
+    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] = ???
   }
 
 
@@ -144,6 +184,8 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       t =>
         for (arg <- getArg(cons)(t); term <- headfibre(arg).recDef(cons(arg), headData(data, arg, f), f)(t)) yield term
     }
+
+    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] = ???
 
   }
 
