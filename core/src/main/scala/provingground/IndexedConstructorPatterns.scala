@@ -140,7 +140,10 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       case _ => None
     }
 
-    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] = ???
+    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] =  {
+      case (t: Term) if t == cons => Some(data)
+      case _ => None
+    }
   }
 
 
