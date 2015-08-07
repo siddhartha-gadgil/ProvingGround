@@ -77,16 +77,16 @@ object InductiveDefinition{
   
   
   
-  def recFn[C <: Term with Subs[C]](conss: List[Constructor[C]], W: Typ[Term], X: Typ[C]) = {
+  def inducFn[C <: Term with Subs[C]](conss: List[Constructor[C]], W: Typ[Term], Xs: Func[Term, Typ[C]]) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
     
-    def addCons[C<: Term with Subs[C]]( cn :(Constructor[C], String), defn : RecursiveDefinition[C]) = 
+    def addCons[C<: Term with Subs[C]]( cn :(Constructor[C], String), defn : InductiveDefinition[C]) = 
       defn.prepend(cn._1, cn._2)
       
-    val init : RecursiveDefinition[C] = RecDefinitionTail(W, X)
+    val init : InductiveDefinition[C] = InducDefinitionTail(W, Xs)
     val lambdaValue : Term = (namedConss :\ init)(addCons).func
     
-    val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.recDom(W, X).symbObj(name)
+    val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.inducDom(W, Xs)(c.cons).symbObj(name)
     
     (variables :\ lambdaValue)(lmbda(_)(_))
   }
