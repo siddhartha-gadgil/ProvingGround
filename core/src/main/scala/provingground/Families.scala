@@ -22,31 +22,35 @@ object Families {
      */
     val univLevel: Int
 
-    /**
-     * type of members
-     */
-    type MemberType = O
-
     type Cod = C
 
     /**
-     * scala type (upper bound) for a member of the family.
+     * scala type (upper bound) for a member of the family, i.e., total type.
      */
     type Family = F
 
+    /**
+      *  type of the total space, i.e., of W.
+      **/
     type FamilyType <: Term with Subs[FamilyType]
 
+    /**
+      *  Type of Curried function to X.
+      **/
     type IterFunc <: Term with Subs[IterFunc]
 
+    /**
+      *  Type of curried function to typ[X]
+      **/
     type IterTypFunc <: Term with Subs[IterTypFunc]
 
     type IterDepFunc <: Term with Subs[IterDepFunc]
 
-    def iterFuncTyp(w: Typ[O], x: Typ[Cod]): Typ[IterFunc]
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc]
 
-    def iterDepFuncTyp(w: Typ[O], xs: IterTypFunc): Typ[IterDepFunc]
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc]
 
-    def contract(f: Family)(arg: ArgType): O
+//    def contract(f: Family)(arg: ArgType): O
 
     def fill(g: IterFunc)(arg: ArgType): Func[O, C]
 
@@ -58,8 +62,11 @@ object Families {
 
     def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
-    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
+//    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
 
+    /**
+      *  type of total index
+      **/
     type ArgType <: Term with Subs[ArgType]
 
     /**
@@ -74,7 +81,8 @@ object Families {
     type DepTargetType <: Term with Subs[DepTargetType]
 
     /**
-     * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W
+     * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
+      *  this is used mainly for constructor patterns, with the W being fixed, not for genuine families.
      */
     def apply(tp: Typ[O]): Typ[Family]
 
@@ -124,15 +132,15 @@ object Families {
 
     type IterDepFunc = FuncLike[O, C]
 
-    def iterFuncTyp(w: Typ[O], x: Typ[Cod]): Typ[IterFunc] = w ->: x
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = w ->: x
 
-    def iterDepFuncTyp(w: Typ[O], xs: IterTypFunc) = PiTyp(xs)
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
 
     type ArgType = AtomicTerm
 
-    def contract(f: O)(arg: ArgType): O = f
+//    def contract(f: O)(arg: ArgType): O = f
 
-    def contractDep(f: O)(arg: ArgType) = f
+//    def contractDep(f: O)(arg: ArgType) = f
 
     def fill(g: IterFunc)(arg: ArgType): Func[O, C] = g
 
@@ -234,21 +242,21 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     type DepTargetType = FuncLike[Term, D]
 
-    def iterFuncTyp(w: Typ[O], x: Typ[Cod]): Typ[IterFunc] = {
-      val headtyp = head.iterFuncTyp(w, x)
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
+      val headtyp = head.iterFuncTyp(w(Star), x)
       tail ->: headtyp
     }
 
-    def iterDepFuncTyp(w: Typ[O], xs: IterTypFunc): Typ[IterDepFunc] = {
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
       val a = tail.Var
-      val headtyp =lmbda(a)(head.iterDepFuncTyp(w, xs(a)))
+      val headtyp =lmbda(a)(head.iterDepFuncTyp(w(Star), xs(a)))
       PiTyp(headtyp)
     }
 
 
     type ArgType = PairObj[Term, S]
 
-    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
+//    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
     def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
       headfibre(arg.first).fill(g(arg.first))(arg.second)
@@ -370,22 +378,22 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     type IterDepFunc = FuncLike[Term, DI]
 
-    def iterFuncTyp(w: Typ[O], x: Typ[Cod]): Typ[IterFunc] = {
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
       val a = tail.Var
-      val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w, x))
+      val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w(a), x))
       PiTyp(fibre)
     }
 
-    def iterDepFuncTyp(w: Typ[O], xs: IterTypFunc): Typ[IterDepFunc] = {
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
       val a = tail.Var
-      val fibre = lmbda(a)(headfibre(a).iterDepFuncTyp(w, xs(a)))
+      val fibre = lmbda(a)(headfibre(a).iterDepFuncTyp(w(a), xs(a)))
       PiTyp(fibre)
     }
 
 
     type ArgType = DepPair[Term, S]
 
-    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
+//    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
     def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
       headfibre(arg).fill(g(arg.first))(arg.second)

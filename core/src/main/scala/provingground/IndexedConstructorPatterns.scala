@@ -596,7 +596,7 @@ case class IndexedRecDefinitionTail(W: F, X: Typ[C], index: Ind) extends Indexed
   def recursion(f : => I) = {
     lazy val ff = typFmlyPtn.fill(f)(index)
     val wtyp = typFmlyPtn.contractType(W)(index)
-    typFmlyPtn.iterFuncTyp(wtyp, X).symbObj(TermSymbol(f))
+    typFmlyPtn.iterFuncTyp(W, X).symbObj(TermSymbol(f))
   }
 }
 
