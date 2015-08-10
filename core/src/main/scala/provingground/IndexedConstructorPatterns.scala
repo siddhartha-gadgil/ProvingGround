@@ -98,7 +98,8 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
         def subs(x: Term, y: Term) = this
       }
-      typFmlyPtn.curry(fn)
+     // typFmlyPtn.curry(fn)
+      ???
     }
 
   def inducModify(cons: ConstructorType)(data: InducDataType)(
@@ -128,7 +129,8 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
     override def toString = f.toString
     }
-    typFmlyPtn.depCurry(fn)
+ //   typFmlyPtn.depCurry(fn)
+    ???
 
   }
   }
