@@ -52,6 +52,8 @@ object Families {
 
     def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc]
 
+    def domTotal(w: FamilyType) : Typ[Total]
+
 //    def contract(f: Family)(arg: ArgType): O
 
     def fill(g: IterFunc)(arg: ArgType): Func[O, C]
@@ -149,6 +151,8 @@ object Families {
     def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
 
     type ArgType = AtomicTerm
+
+    def domTotal(w: FamilyType) : Typ[Total] = w
 
 //    def contract(f: O)(arg: ArgType): O = f
 
@@ -293,6 +297,8 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
         )
       )
     }
+
+    def domTotal(w: FamilyType) : Typ[Total] = PairTyp(w.dom, head.domTotal(w(w.dom.obj)))
 
     def totalDomain(g: IterFunc) = PairTyp(g.dom, head.totalDomain(g(g.dom.obj)))
 
@@ -447,6 +453,12 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
           lmbda(y)(f(z))
         )
       )
+    }
+
+    def domTotal(w: FamilyType) : Typ[Total] = {
+      val a = w.dom.Var
+      val fibre = lmbda(a)(headfibre(a).domTotal(w(a)))
+      SigmaTyp(fibre)
     }
 
     def totalDomain(g: IterFunc) = {

@@ -594,7 +594,7 @@ trait IndexedRecursiveDefinition {self =>
 case class IndexedRecDefinitionTail(W: F, X: Typ[C], index: Ind) extends IndexedRecursiveDefinition{
   def recursion(f : => I) = {
     val ff = uncurry(f)
-    val dom = totalDomain(iterFuncTyp(W, X).obj)
+    val dom = domTotal(W)
     def fn = new FuncDefn((a : Total) => X.symbObj(ApplnSym(ff, a)), dom, X)
     curry(fn)
   }
@@ -680,7 +680,7 @@ trait IndexedInductiveDefinition{self =>
 case class IndexedInducDefinitionTail(W: F, Xs: Func[Term, Typ[C]]) extends IndexedInductiveDefinition{
   def induction(f : => DI): DI = {
     val ff = depUncurry(f)
-    val dom = depTotalDomain(f.newobj)
+    val dom = domTotal(W) //depTotalDomain(f.newobj)
     val a = dom.obj
     def resXs = lmbda(a)(Xs(a))
     def fn = new DepFuncDefn[Total, Cod]((a: Total) => Xs(a).symbObj(ApplnSym(ff, a)), dom, resXs)
