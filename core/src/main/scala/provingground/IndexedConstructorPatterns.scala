@@ -15,6 +15,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
   val typFmlyPtn: FmlyPtn[Term, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }
 ) { outer =>
   type Cod = C
+  import typFmlyPtn._
   sealed trait ConstructorPattern[Cnstr <: Term with Subs[Cnstr]] { self =>
     /**
      * Type of codomain X
@@ -81,12 +82,10 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     }
 
     def recModify(cons: ConstructorType)(data: RecDataType)(f: => I)(g: => I): I = {
-      lazy val ff = typFmlyPtn.fill(f)(index)
-      lazy val gg = typFmlyPtn.fill(g)(index)
-      val fn = new Func[PairObj[Ind, Term], Cod] {
-        lazy val W = ff.dom
-
-        lazy val dom = PairTyp(index.typ.asInstanceOf[Typ[Ind]], W)
+      lazy val ff = uncurry(f)
+      lazy val gg = uncurry(g)
+      def fn = new Func[Total, Cod] {
+        lazy val dom = ff.dom
 
         lazy val codom = ff.codom
 
@@ -94,44 +93,42 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
         def newobj = this
 
-        def act(a: PairObj[Ind, Term]) = (recDef(cons, data, f)(a)).getOrElse(gg(a.second))
+        def act(a: Total) = (recDef(cons, data, f)(a)).getOrElse(gg(a))
 
         def subs(x: Term, y: Term) = this
+
+        override def toString = f.toString
       }
-     // typFmlyPtn.curry(fn)
-      ???
+      curry(fn)
+
     }
 
   def inducModify(cons: ConstructorType)(data: InducDataType)(
     f: => DI
   )(g: => DI): DI = {
-      lazy val ff = typFmlyPtn.depFill(f)(index)
-      lazy val gg = typFmlyPtn.depFill(g)(index)
+      lazy val ff = depUncurry(f)
+      lazy val gg = depUncurry(g)
 
-    val fn = new FuncLike[PairObj[Ind, Term], Cod] {
-    lazy val W = ff.dom
+    def fn = new FuncLike[Total, Cod] {
+      lazy val dom = ff.dom
 
-    lazy val dom = PairTyp(index.typ.asInstanceOf[Typ[Ind]], W)
+      lazy val a = "a" :: dom
 
-    lazy val a = "a" :: dom
+      lazy val depcodom = ff.depcodom
 
-    lazy val depcodom = ff.depcodom
+      lazy val fibre = lmbda(a)(depcodom(a))
 
-    lazy val fibre = lmbda(a)(depcodom(a))
+      lazy val typ = PiTyp(fibre)
 
-    lazy val typ = PiTyp(fibre)
+      def newobj = this
 
-    def newobj = this
+      def act(a: Total) = (inducDef(cons, data, f)(a)).getOrElse(gg(a))
 
-    def act(a: PairObj[Ind, Term]) = (inducDef(cons, data, f)(a)).getOrElse(gg(a.second))
+      def subs(x: Term, y: Term) = this
 
-    def subs(x: Term, y: Term) = this
-
-    override def toString = f.toString
+      override def toString = f.toString
     }
- //   typFmlyPtn.depCurry(fn)
-    ???
-
+    depCurry(fn)
   }
   }
 
@@ -596,9 +593,9 @@ trait IndexedRecursiveDefinition {self =>
  */
 case class IndexedRecDefinitionTail(W: F, X: Typ[C], index: Ind) extends IndexedRecursiveDefinition{
   def recursion(f : => I) = {
-    lazy val ff = typFmlyPtn.fill(f)(index)
-    val wtyp = typFmlyPtn.contractType(W)(index)
-    typFmlyPtn.iterFuncTyp(W, X).symbObj(TermSymbol(f))
+    val ff = uncurry(f)
+    def fn = new FuncDefn((a : Total) => X.symbObj(ApplnSym(ff, a)), totalDomain(f.newobj), X)
+    curry(fn)
   }
 }
 
@@ -680,9 +677,14 @@ trait IndexedInductiveDefinition{self =>
  * recursive definition with empty constructor, hence empty data
  */
 case class IndexedInducDefinitionTail(W: F, Xs: Func[Term, Typ[C]]) extends IndexedInductiveDefinition{
-  def induction(f : => DI): DI = 
-//    new DepFuncDefn((a: Term) => Xs(a).symbObj(ApplnSym(f, a)), W, Xs)
-???
+  def induction(f : => DI): DI = {
+    val ff = depUncurry(f)
+    val dom = depTotalDomain(f.newobj)
+    val a = dom.obj
+    def resXs = lmbda(a)(Xs(a))
+    def fn = new DepFuncDefn[Total, Cod]((a: Total) => Xs(a).symbObj(ApplnSym(ff, a)), dom, resXs)
+    depCurry(fn)
+  }
 }
 
 case class IndexedInducDefinitionCons[D<: Term with Subs[D]](

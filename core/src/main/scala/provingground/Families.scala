@@ -66,6 +66,10 @@ object Families {
 
     def depCurry(f: FuncLike[Total, Cod]): IterDepFunc
 
+    def depTotalDomain(g: IterDepFunc) : Typ[Total]
+
+    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod] 
+
     def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
 //    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
@@ -161,6 +165,10 @@ object Families {
     def uncurry(g: IterFunc) : Func[Total, Cod] = g
 
     def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = f
+
+    def depTotalDomain(g: IterDepFunc) = g.dom
+
+    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod] = g
 
 
     def contractType(w: FamilyType)(arg: ArgType): Typ[O] = w
@@ -286,12 +294,20 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
       )
     }
 
-    def totalDomain(g: IterFunc) = PairTyp(g.dom, head.totalDomain(g(g.dom.Var)))
+    def totalDomain(g: IterFunc) = PairTyp(g.dom, head.totalDomain(g(g.dom.obj)))
 
     def uncurry(g: IterFunc) : Func[Total, Cod]= {
       val dom = totalDomain(g)
       val ab = dom.Var
       lmbda(ab)(head.uncurry(g(ab.first))(ab.second))
+    }
+
+    def depTotalDomain(g: IterDepFunc) =  PairTyp(g.dom, head.depTotalDomain(g(g.dom.obj)))
+
+    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod]= {
+      val dom = depTotalDomain(g)
+      val ab = dom.Var
+      lambda(ab)(head.depUncurry(g(ab.first))(ab.second))
     }
 
     def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
@@ -457,7 +473,24 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
           lambda(y)(f(z))
         )
       )
+
     }
+
+    def depTotalDomain(g: IterDepFunc) = {
+      val a = g.dom.obj
+        val fibre = lmbda(a)(headfibre(a).depTotalDomain(g(a)))
+      SigmaTyp(fibre)
+    }
+
+
+    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod]= {
+      val dom = depTotalDomain(g)
+      val ab = dom.Var
+      lambda(ab)(headfibre(ab.first).depUncurry(g(ab.first))(ab.second))
+    }
+
+
+
 
 
 
