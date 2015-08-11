@@ -258,13 +258,13 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
     type DepTargetType = FuncLike[Term, D]
 
     def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
-      val headtyp = head.iterFuncTyp(w(Star), x)
+      val headtyp = head.iterFuncTyp(w(w.dom.obj), x)
       tail ->: headtyp
     }
 
     def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
       val a = tail.Var
-      val headtyp =lmbda(a)(head.iterDepFuncTyp(w(Star), xs(a)))
+      val headtyp =lmbda(a)(head.iterDepFuncTyp(w(w.dom.obj), xs(a)))
       PiTyp(headtyp)
     }
 
