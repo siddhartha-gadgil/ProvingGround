@@ -79,6 +79,8 @@ object HoTT {
       (x, y) match {
         case (ab: AbsPair[u, v], cd: AbsPair[w, x]) if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
           replace(ab.first, cd.first) replace (ab.second, cd.second)
+        case (FormalAppln(f, x), FormalAppln(g, y)) =>
+          replace(f, g) replace(x, y)
         case _ => subs(x, y)
       }
     }
@@ -317,7 +319,7 @@ object HoTT {
   /**
    * Types with symbolic objects not refined.
    */
-  class SmallTyp extends Typ[Term] {
+  trait SmallTyp extends Typ[Term] {
     type Obj = Term
 
     val typ = Universe(0)
@@ -559,37 +561,20 @@ object HoTT {
     override def toString = s"""(${func.toString}) (${arg.toString})"""
   }
 
+
   /*
-
-    class LazyApplnSym[W <: Term, U <: Term](_func: => FuncLike[W, U], val proxyFunc:AnySym, val arg: W) extends AnySym{
-      override def toString = proxyFunc.toString + "("+ arg.toString +")"
-
-      lazy val func = _func
-
-      def reapply(w: W) = func(w)
-
-      override def hashCode : Int = 41 * (41 + proxyFunc.hashCode) + arg.hashCode()
-
-      override def equals(that: Any) = that match{
-        case fx : LazyApplnSym[_, _] => proxyFunc == fx.proxyFunc && arg == fx.arg
-        case _ => false
+   * Pattern matching for a formal application.
+  */
+  object FormalAppln{
+        def unapply(term : Term) : Option[(Term, Term)] = term match {
+          case sym : Symbolic => sym.name match {
+            case sm : ApplnSym[_,_]  =>
+              Some((sm.func, sm.arg))
+            case _ => None
+          }
+          case _ => None
+        }
       }
-    }
-*/
-
-  /*
-     * Pattern matching for a formal application.
-     */
-  //     case class ApplnPattern[W <: Term with Subs[W], U <: Term](){
-  //      def unapply(term : Term) : Option[(FuncLike[W, U], W)] = term match {
-  //        case sym : Symbolic => sym.name match {
-  //          case sm @ ApplnSym(func : FuncLike[w, _], arg)  =>
-  //            Try((func, arg.asInstanceOf[w])).toOption
-  //          case _ => None
-  //        }
-  //        case _ => None
-  //      }
-  //    }
 
   //
   //    val applptnterm = ApplnPattern[Term, Term]()

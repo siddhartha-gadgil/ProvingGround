@@ -69,13 +69,13 @@ case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](fir
 
 
 object ScalaPolyRep{
-  implicit def poly[U<: Term with Subs[U], W](rep : ScalaRep[U, W]) : ScalaPolyRep[U, W] = ScalaRepWrap(rep)
+  implicit def poly[U<: Term with Subs[U], W](implicit rep : ScalaRep[U, W]) : ScalaPolyRep[U, W] = ScalaRepWrap(rep)
 
-  implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaPolyRep[U, W]){
+  implicit class ScalaPolyTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaPolyRep[U, W]){
     def hott(typ: Typ[U]) = rep(typ)(elem)
   }
 
-  implicit class TermScala[U <: Term with Subs[U]](term : U){
+  implicit class PolyTermScala[U <: Term with Subs[U]](term : U){
     type Rep[W] = ScalaPolyRep[U, W]
     def scala[W : Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
   }

@@ -192,7 +192,20 @@ object ScalaRep {
   implicit def funcRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](implicit
     domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) : ScalaRep[Func[U, X], V => Y] = FuncRep(domrep, codomrep)
 
+
+  class ScalaTyp[A] extends SmallTyp{
+    implicit val rep : ScalaRep[Term, A] = SimpleRep(this)
+  }
+ 
+  case object Nat extends ScalaTyp[Int]
+
+  import Nat.rep
+
+  implicit val UnivRep = idRep(__)
+
+
   implicit val boolRep : ScalaRep[Term, Boolean] = SimpleRep(BaseTypes.Bool)
+
 
   def incl[U <: Term with Subs[U], V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
     case (x, y) if x == y => Some((v: V) => v.asInstanceOf[W])
