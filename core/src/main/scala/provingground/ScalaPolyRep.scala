@@ -32,22 +32,54 @@ case class OrScalaPolyRep[U<: Term with Subs[U], W](first: ScalaPolyRep[U, W], s
   def subs(x: Term, y: Term) : ScalaPolyRep[U, W] = OrScalaPolyRep(first.subs(x, y), second.subs(x, y))
 }
 
-case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[Func[U, X], W => Y]{
-  def apply(typ : Typ[Func[U, X]])(elem : W => Y) = typ match {
-    case FuncTyp(dom : Typ[U], codom: Typ[X]) => Some(ExtendedFunction(elem, domrep, codrep, dom, codom))
+case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[FuncLike[U, X], W => Y]{
+  def apply(typ : Typ[FuncLike[U, X]])(elem : W => Y) = typ match {
+    case typ @ FuncTyp(dom : Typ[U], codom: Typ[X]) => Some(ExtendedFunction(elem, domrep, codrep, typ))
+    case typ @ PiTyp(fibers) => Some(ExtendedDepFunction(elem, domrep, codrep, fibers))
     case _ => None
   }
 
-  def unapply(term: Func[U, X]) = term match {
-    case ExtendedFunction(dfn : (W => Y), domrep, codomrep, dom, codom)  => Some(dfn)
+  def unapply(term: FuncLike[U, X]) = term match {
+    case ExtendedFunction(dfn : (W => Y), d, c, _) if d ==domrep && c == codrep =>Some(dfn)
+    case ExtendedDepFunction(dfn: Function1[W, Y], d, c, _) if d == domrep && c ==codrep => Some(dfn)
     case _ => None
   }
 
   def subs(x: Term, y: Term) = FuncPolyRep(domrep.subs(x, y), codrep.subs(x, y))
 }
 
+case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](firstrep : ScalaPolyRep[U, W], secondrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[AbsPair[U, X], (W, Y)]{
+  def apply(typ : Typ[AbsPair[U, X]])(elem : (W, Y)) = typ match {
+    case typ @ PairTyp(first : Typ[U], second: Typ[X]) => for (a <- firstrep(first)(elem._1); b <- secondrep(second)(elem._2)) yield PairObj(a, b)
+    case typ @ SigmaTyp(fibers) => for (a <- firstrep(fibers.dom)(elem._1); b <- secondrep(fibers(a))(elem._2)) yield DepPair(a, b, fibers)
+    case _ => None
+  }
+
+  def unapply(term: AbsPair[U, X]) = term match {
+   case PairObj(first, second) => 
+      for (a <- firstrep.unapply(first); b <- secondrep.unapply(second)) yield (a, b)
+ //   case ExtendedDepFunction(dfn: Function1[W, Y], d, c, _) if d == domrep && c ==codrep => Some(dfn)
+    case _ => None
+  }
+
+  def subs(x: Term, y: Term) = PairPolyRep(firstrep.subs(x, y), secondrep.subs(x, y))
+}
+
+
+
+
 object ScalaPolyRep{
   implicit def poly[U<: Term with Subs[U], W](rep : ScalaRep[U, W]) : ScalaPolyRep[U, W] = ScalaRepWrap(rep)
+
+  implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaPolyRep[U, W]){
+    def hott(typ: Typ[U]) = rep(typ)(elem)
+  }
+
+  implicit class TermScala[U <: Term with Subs[U]](term : U){
+    type Rep[W] = ScalaPolyRep[U, W]
+    def scala[W : Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
+  }
+
 
     /**
    * Formal extension of a function given by a definition and representations for
@@ -55,10 +87,12 @@ object ScalaPolyRep{
    */
   case class ExtendedFunction[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
     dfn: V => Y,
-    domrep: ScalaPolyRep[U, V], codomrep: ScalaPolyRep[X, Y], dom: Typ[U], codom: Typ[X]
+    domrep: ScalaPolyRep[U, V], codomrep: ScalaPolyRep[X, Y], typ: FuncTyp[U, X]
   ) extends Func[U, X] {
 
-    lazy val typ = dom ->: codom
+    lazy val dom = typ.dom
+
+    lazy val codom = typ.codom
 
     def newobj = typ.obj
 
@@ -67,13 +101,39 @@ object ScalaPolyRep{
       case _ => codom.symbObj(ApplnSym(this, u))
     }
 
+    def subs(x: provingground.HoTT.Term, y: provingground.HoTT.Term) = (x, y) match {
+      case (u, v: Func[U, X]) if u == this => v
+      case _ => ExtendedFunction((v: V) => dfn(v), domrep.subs(x, y), codomrep.subs(x, y), typ.subs(x, y))
+    }
+    
+  }
+
+  case class ExtendedDepFunction[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
+    dfn: V => Y,
+    domrep: ScalaPolyRep[U, V], codomrep: ScalaPolyRep[X, Y], fibers: Func[U, Typ[X]]
+  ) extends FuncLike[U, X] {
+
+    lazy val dom = fibers.dom
+
+    lazy val depcodom = (a: U) => fibers(a)
+
+    lazy val typ = PiTyp(fibers)
+
+    def newobj = PiTyp(fibers).obj
+
+    def act(u: U) = u match {
+      case domrep(v) => codomrep(fibers(u))(dfn(v)).getOrElse(depcodom(u).symbObj(ApplnSym(this, u)))
+      case _ => fibers(u).symbObj(ApplnSym(this, u))
+    }
+
+
     // val domobjtpe: reflect.runtime.universe.Type = typeOf[U]
 
     // val codomobjtpe: reflect.runtime.universe.Type = typeOf[X]
 
     def subs(x: provingground.HoTT.Term, y: provingground.HoTT.Term) = (x, y) match {
       case (u, v: Func[U, X]) if u == this => v
-      case _ => ExtendedFunction((v: V) => dfn(v), domrep.subs(x, y), codomrep.subs(x, y), dom.subs(x, y), codom.subs(x, y))
+      case _ => ExtendedDepFunction((v: V) => dfn(v), domrep.subs(x, y), codomrep.subs(x, y), fibers.subs(x, y))
     }
 
   }

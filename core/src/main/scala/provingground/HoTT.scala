@@ -402,7 +402,7 @@ object HoTT {
   /** Pair of types (A, B) */
   case class PairTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
     first: Typ[U], second: Typ[V]
-  ) extends Typ[PairObj[U, V]] with AbsPair[Typ[U], Typ[V]] {
+  ) extends Typ[PairObj[U, V]] with AbsPair[Typ[U], Typ[V]] with Subs[PairTyp[U, V]]{
 
     type Obj = PairObj[U, V]
 
@@ -416,7 +416,7 @@ object HoTT {
       lmbda(a)(lmbda(b)(PairObj(a, b)))
     }
 
-    def subs(x: Term, y: Term) = if (x == this) Try(
+    def subs(x: Term, y: Term) : PairTyp[U, V] = if (x == this) Try(
       y.asInstanceOf[PairTyp[U, V]]
     ).getOrElse(
       { println(y); println(x); println(y.typ); PairTyp(first.replace(x, y), second.replace(x, y)) }
@@ -439,7 +439,7 @@ object HoTT {
   }
 
   /** Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type. */
-  trait AbsPair[+U <: Term, +V <: Term] extends Term {
+  trait AbsPair[+U <: Term, +V <: Term] extends Term with Subs[AbsPair[U, V]]{
     val first: U
     val second: V
 
