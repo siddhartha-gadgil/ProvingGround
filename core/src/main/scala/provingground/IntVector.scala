@@ -8,8 +8,12 @@ case class IntVector(dim: Int) extends ScalaTyp[Vector[Int]]
 
 object IntVector{
   import Nat.rep
-    
-  val Vec = ((n: Int) => IntVector(n) : Typ[Term]).term
+ 
+  import ScalaRep.UnivRep
+
+  val u = implicitly[ScalaRep[Typ[Term], Typ[Term]]]
+   
+  val Vec = ((n: Long) => IntVector(n.toInt) : Typ[Term]).term
 
   import ScalaPolyRep._
 
