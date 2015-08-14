@@ -80,6 +80,9 @@ object ScalaPolyRep{
     def scala[W : Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
   }
 
+  implicit def funcPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](implicit domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]
+  ) : ScalaPolyRep[FuncLike[U, X], W => Y] = FuncPolyRep(domrep, codrep)
+  
 
     /**
    * Formal extension of a function given by a definition and representations for

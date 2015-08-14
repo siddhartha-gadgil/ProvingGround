@@ -31,18 +31,28 @@ object VecTyp{
   }
   
   implicit def polyRep[U <: Term with Subs[U], X](implicit baserep: ScalaRep[U, X]) : ScalaPolyRep[Term, Vector[X]] = VecPolyRep[U, X]
-
-  val f = VecTyp(Nat, 1) ->: VecTyp(Nat, 1)
    
-  import Nat.rep
-    
-  implicit val r = polyRep[Term, Long]
+  import Nat._
+
+  val n = "n" :: Nat
   
-  val v = Vector(1.toLong)
+//  implicit val vecrep = polyRep[Term, Long]
   
-  ScalaPolyTerm(v)
+//  3.toLong.hott(Nat)
+
+  val Vec = (((n: Long) => (VecTyp[Term, Long](Nat, n.toInt) : Typ[Term])).hott(Nat ->: __)).get 
   
-  v.hott(VecTyp(Nat, 1))
+  val ltyp = n ~>: (Vec(n) ->: Nat)
   
-  
+  val vsize = (n : Long) => {
+    val t = VecTyp(Nat, n.toInt)
+    import t.rep
+    implicit val nrep =  Nat.rep
+    implicit val vecrep = polyRep[Term, Long]
+    ScalaPolyTerm[Term, Vector[Long]](Vector(1.toLong))
+
+    ScalaPolyTerm((V : Vector[Long]) => V.size.toLong)
+    ((V : Vector[Long]) => V.size.toLong).hott(t ->: Nat)
+  }
+
 }
