@@ -36,23 +36,31 @@ object VecTyp{
 
   val n = "n" :: Nat
   
-//  implicit val vecrep = polyRep[Term, Long]
+  implicit val vecrep = polyRep[Term, Long]
   
 //  3.toLong.hott(Nat)
 
   val Vec = (((n: Long) => (VecTyp[Term, Long](Nat, n.toInt) : Typ[Term])).hott(Nat ->: __)).get 
   
-  val ltyp = n ~>: (Vec(n) ->: Nat)
+  private val ltyp = n ~>: (Vec(n) ->: Nat)
   
-  val vsize = (n : Long) => {
-    val t = VecTyp(Nat, n.toInt)
-    import t.rep
-    implicit val nrep =  Nat.rep
-    implicit val vecrep = polyRep[Term, Long]
-    ScalaPolyTerm[Term, Vector[Long]](Vector(1.toLong))
-
-    ScalaPolyTerm((V : Vector[Long]) => V.size.toLong)
-    ((V : Vector[Long]) => V.size.toLong).hott(t ->: Nat)
+  private val vsize = (n : Long) => 
+    (v : Vector[Long]) => {
+      assert(v.size ==n ,"domain mismatch in Pi-type")
+      n    
   }
+    
+  val size = vsize.hott(ltyp)
 
+  private val vsucc = 
+    (n : Long) => 
+      (a : Long) =>
+        (v : Vector[Long]) => {
+          assert(v.size ==n ,"domain mismatch in Pi-type")
+          a +: v  
+          }
+        
+  private val succtyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
+  
+//  val succ = vsucc.hott(succtyp)
 }

@@ -32,7 +32,7 @@ case class OrScalaPolyRep[U<: Term with Subs[U], W](first: ScalaPolyRep[U, W], s
   def subs(x: Term, y: Term) : ScalaPolyRep[U, W] = OrScalaPolyRep(first.subs(x, y), second.subs(x, y))
 }
 
-case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[FuncLike[U, X], W => Y]{
+case class DepFuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[FuncLike[U, X], W => Y]{
   def apply(typ : Typ[FuncLike[U, X]])(elem : W => Y) = typ match {
     case typ @ FuncTyp(dom : Typ[U], codom: Typ[X]) => Some(ExtendedFunction(elem, domrep, codrep, typ))
     case typ @ PiTyp(fibers) => Some(ExtendedDepFunction(elem, domrep, codrep, fibers))
@@ -45,8 +45,26 @@ case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](dom
     case _ => None
   }
 
+  def subs(x: Term, y: Term) = DepFuncPolyRep(domrep.subs(x, y), codrep.subs(x, y))
+}
+
+
+case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[Func[U, X], W => Y]{
+  def apply(typ : Typ[Func[U, X]])(elem : W => Y) = typ match {
+    case typ @ FuncTyp(dom : Typ[U], codom: Typ[X]) => Some(ExtendedFunction(elem, domrep, codrep, typ))
+//    case typ @ PiTyp(fibers) => Some(ExtendedDepFunction(elem, domrep, codrep, fibers))
+    case _ => None
+  }
+
+  def unapply(term: Func[U, X]) = term match {
+    case ExtendedFunction(dfn : (W => Y), d, c, _) if d ==domrep && c == codrep =>Some(dfn)
+//    case ExtendedDepFunction(dfn: Function1[W, Y], d, c, _) if d == domrep && c ==codrep => Some(dfn)
+    case _ => None
+  }
+
   def subs(x: Term, y: Term) = FuncPolyRep(domrep.subs(x, y), codrep.subs(x, y))
 }
+
 
 case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](firstrep : ScalaPolyRep[U, W], secondrep: ScalaPolyRep[X, Y]) extends ScalaPolyRep[AbsPair[U, X], (W, Y)]{
   def apply(typ : Typ[AbsPair[U, X]])(elem : (W, Y)) = typ match {
@@ -80,10 +98,14 @@ object ScalaPolyRep{
     def scala[W : Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
   }
 
+  implicit def depFuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](implicit domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]
+  ) : ScalaPolyRep[FuncLike[U, X], W => Y] = DepFuncPolyRep(domrep, codrep)
+ 
+  /*
   implicit def funcPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](implicit domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]
-  ) : ScalaPolyRep[FuncLike[U, X], W => Y] = FuncPolyRep(domrep, codrep)
+  ) : ScalaPolyRep[Func[U, X], W => Y] = FuncPolyRep(domrep, codrep)
+  */
   
-
     /**
    * Formal extension of a function given by a definition and representations for
    * domain and codomain.
