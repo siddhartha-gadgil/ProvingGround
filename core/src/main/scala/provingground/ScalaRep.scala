@@ -98,6 +98,7 @@ case class FuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
 /**
  * Representation by  wrapping.
  */
+/*
 case class SimpleRep[V](typ: Typ[Term]) extends ScalaRep[Term, V] {
   def apply(v: V) = SimpleConst(v, typ)
 
@@ -108,6 +109,7 @@ case class SimpleRep[V](typ: Typ[Term]) extends ScalaRep[Term, V] {
 
   def subs(x: Term, y: Term) = SimpleRep(typ.subs(x, y))
 }
+ */
 
 /**
  * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
@@ -250,6 +252,25 @@ object ScalaRep {
     override def toString = value.toString
   }
 
+  case class ScalaSymbol[X](value: X) extends AnySym
+
+  case class SimpleRep[U <: Term with Subs[U], V](typ: Typ[U]) extends ScalaRep[U, V]{
+    def apply(v : V) = typ.symbObj(ScalaSymbol(v))
+
+    def unapply(u: Term) = u match {
+      case sym : Symbolic if u.typ == typ => sym.name match {
+        case ScalaSymbol(value) => Try(value.asInstanceOf[V]).toOption
+        case _ => None
+      }
+      case _ => None
+    }
+
+    def subs(x: Term, y: Term) = SimpleRep(typ.subs(x, y))
+
+  }
+ 
+
+
   /**
    * Formal extension of a function given by a definition and representations for
    * domain and codomain.
@@ -376,7 +397,7 @@ object ScalaRep {
 
 
   object dsl {
-    def i[V](typ: Typ[Term]) = SimpleRep[V](typ)
+    def i[V](typ: Typ[Term]) = SimpleRep[Term, V](typ)
 
     def s[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](domrep: ScalaRep[U, V])(
       codrepfmly: V => ScalaRep[X, Y]
