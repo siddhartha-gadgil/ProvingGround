@@ -58,7 +58,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X
   val size = vsize.hott(ltyp)
   
   
-  private val vsucc = 
+  private val vcons = 
     (n : Long) => 
       (a : X) =>
         (v : Vector[X]) => {
@@ -66,8 +66,13 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X
           a +: v  
           }
         
-  private val succtyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
+  private val constyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
   
+//  implicit val r = depFuncPolyRep(implicitly[ScalaPolyRep[Term, Long]], implicitly[ScalaPolyRep[FuncLike[Term, FuncLike[Term, Term]], X => Vector[X] => Vector[X]]])
   
-//  val succ = vsucc.hott(succtyp)
+  private val term = ScalaPolyTerm[FuncLike[Term, FuncLike[Term, FuncLike[Term, Term]]], Long => (X => (Vector[X] => Vector[X]))](vcons)
+  
+  val succ = term.hott(constyp).get
+  
+  val empty = Vector.empty[X].hott(VecTyp(0)).get
 }
