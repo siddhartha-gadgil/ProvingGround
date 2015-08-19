@@ -269,7 +269,17 @@ object ScalaRep {
 
   }
  
-
+  class ScalaSym[U <: Term with Subs[U], V](typ: Typ[U]){
+    def apply(v : V) = typ.symbObj(ScalaSymbol(v))
+    
+    def unapply(u: Term) : Option[V] = u match {
+      case sym : Symbolic if u.typ == typ => sym.name match {
+        case ScalaSymbol(value) => Try(value.asInstanceOf[V]).toOption
+        case _ => None
+      }
+      case _ => None
+    }
+  }
 
   /**
    * Formal extension of a function given by a definition and representations for

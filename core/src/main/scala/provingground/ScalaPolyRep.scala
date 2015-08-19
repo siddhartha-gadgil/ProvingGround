@@ -92,7 +92,7 @@ object ScalaPolyRep{
   implicit def poly[U<: Term with Subs[U], W](implicit rep : ScalaRep[U, W]) : ScalaPolyRep[U, W] = ScalaRepWrap(rep)
 
   implicit class ScalaPolyTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaPolyRep[U, W]){
-    def hott(typ: Typ[U]) = rep(typ)(elem)
+    def hott(typ: Typ[Term]) = rep(typ)(elem)
   }
 
   implicit class PolyTermScala[U <: Term with Subs[U]](term : U){

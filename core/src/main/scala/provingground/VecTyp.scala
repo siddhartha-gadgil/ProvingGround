@@ -9,36 +9,39 @@ import ScalaRep._
 /**
  * @author gadgil
  */
-case class VecTyp[U<: Term with Subs[U], X](basetyp: Typ[U], dim: Int) extends ScalaTyp[Vector[X]]{
-  
+case class VecTyp[+U<: Term with Subs[U], X](basetyp: Typ[U], dim: Int)(implicit _baserep: ScalaRep[U, X]) extends SmallTyp{
+    val baserep = _baserep
 }
 
 object VecTyp{
-  case class VecPolyRep[U <: Term with Subs[U], X]()(implicit baserep: ScalaRep[U, X]) extends ScalaPolyRep[Term, Vector[X]]{
+  case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[Term, Vector[X]]{
+    
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match{
       case tp @ VecTyp(basetyp, dim) if dim == elem.size => {
-        Some(tp.rep(elem))        
+        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        Some(pattern(elem))        
       }
       case _ => None
     }
     
     def unapply(term: Term) = term.typ match {
-      case tp : VecTyp[_, X] => tp.rep.unapply(term)
+      case tp : VecTyp[_, X] => {
+        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        pattern.unapply(term)
+      }
       case _ => None
     }
     
     def subs(x: Term, y: Term) = this
   }
   
-  implicit def polyRep[U <: Term with Subs[U], X](implicit baserep: ScalaRep[U, X]) : ScalaPolyRep[Term, Vector[X]] = VecPolyRep[U, X]
+  implicit def vecRep[U <: Term with Subs[U], X](implicit baserep: ScalaPolyRep[U, X]) : ScalaPolyRep[Term, Vector[X]] = VecPolyRep[U, X]
    
   import Nat._
 
   val n = "n" :: Nat
   
-  implicit val vecrep = polyRep[Term, Long]
-  
-//  3.toLong.hott(Nat)
+  implicit val NatVecRep = vecRep[Term, Long]
 
   val Vec = (((n: Long) => (VecTyp[Term, Long](Nat, n.toInt) : Typ[Term])).hott(Nat ->: __)).get 
   
@@ -50,9 +53,9 @@ object VecTyp{
       n    
   }
     
-  val size = vsize.hott(ltyp)
+  val nsize = vsize.hott(ltyp)
 
-  private val vsucc = 
+  private val nvsucc = 
     (n : Long) => 
       (a : Long) =>
         (v : Vector[Long]) => {
@@ -60,7 +63,7 @@ object VecTyp{
           a +: v  
           }
         
-  private val succtyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
+  private val nsucctyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
   
-//  val succ = vsucc.hott(succtyp)
+  val nsucc = nvsucc.hott(nsucctyp)
 }
