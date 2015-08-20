@@ -108,8 +108,8 @@ lazy val mantle = (project in file("mantle")).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-//        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
-//          "import provingground._; import HoTT._")""").
+        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
+          "import provingground._; import HoTT._")""").
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
