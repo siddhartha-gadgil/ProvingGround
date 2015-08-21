@@ -19,7 +19,7 @@ lazy val commonSettings = Seq(
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.4.5" % "test" cross CrossVersion.full,
+//    "com.lihaoyi" % "ammonite-repl" % "0.4.5" % "test" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
                     "com.lihaoyi" %% "upickle" % "0.3.4")
   )
@@ -108,8 +108,8 @@ lazy val mantle = (project in file("mantle")).
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
-          "import provingground._; import HoTT._")""").
+//        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
+//          "import provingground._; import HoTT._")""").
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
