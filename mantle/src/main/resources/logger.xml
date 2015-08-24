@@ -1,0 +1,16 @@
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{ISO8601} %highlight(%-5level) %yellow(%logger{50}) %cyan(%X{sourceThread}) - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="reactivemongo.api.Cursor" level="OFF" />
+  <logger name="reactivemongo.api.Failover" level="OFF" />
+  <logger name="reactivemongo.core.actors.MongoDBSystem" level="OFF" />
+  <logger name="reactivemongo.core.actors.MonitorActor" level="OFF" />
+
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
