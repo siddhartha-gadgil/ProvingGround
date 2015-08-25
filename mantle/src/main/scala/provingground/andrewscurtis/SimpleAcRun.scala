@@ -17,7 +17,7 @@ import reactivemongo.api._
 
 import reactivemongo.bson._
 
-//import Hub._ // should import this for a database, unless play plugin database is used.
+//import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
 
 object SimpleAcRun {
   def getId(thread: Int = 0) =
