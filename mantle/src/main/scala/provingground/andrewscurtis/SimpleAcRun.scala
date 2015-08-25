@@ -14,22 +14,22 @@ object SimpleAcRun {
   def getId(thread: Int = 0) =
     s"""SimpleAcEvolution#$thread@${DateTime.now}"""
 
-  def mongoUpdate(p: Path) = ???
+  implicit def mongoUpdate : Path => Unit = ???
 
-  def mongoRead: List[Path] = ???
+  implicit def mongoRead: Future[List[Path]] = ???
 
   @tailrec
-  def iterLog(ps: List[Path], loops: Int, initial: Boolean = false) : List[Path] = {
-    if (!initial) ps map (mongoUpdate)
+  def iterLog(ps: List[Path], loops: Int, initial: Boolean = false)(implicit update: Path => Unit) : List[Path] = {
+    if (!initial) ps map (update)
     if (loops < 1) ps else {
       val newPaths = ps map (_.next)
-      iterLog(newPaths, loops-1)
+      iterLog(newPaths, loops-1)(update)
     }
   }
 
-  def continue(ps: List[Path], loops: Int) = Future(iterLog(ps, loops, true))
+  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = Future(iterLog(ps, loops, true)(update))
 
-  def resume(loops: Int) = continue(mongoRead, loops)
+  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = dbread flatMap((ps: List[Path]) => continue(ps, loops)(update))
 
   def start(rank: Int, steps: Int, loops: Int, threads: Int = 6,
         wordCntn: Double = 0.5, size: Double = 1000,
