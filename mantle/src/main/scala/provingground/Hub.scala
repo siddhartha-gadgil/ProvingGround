@@ -26,7 +26,7 @@ object Hub{
   val connection = driver.connection(List("localhost"))
 
   // Gets a reference to the database "plugin"
-  val db = connection("proving-ground")
+  implicit val db : DefaultDB = connection("proving-ground")
 
   val system = ActorSystem("proving-ground")
 
