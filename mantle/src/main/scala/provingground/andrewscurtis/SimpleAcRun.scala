@@ -3,20 +3,37 @@ package provingground.andrewscurtis
 import provingground._
 
 import com.github.nscala_time.time.Imports._
-import provingground.andrewscurtis.SimpleAcEvolution.Path
+import provingground.andrewscurtis.SimpleAcEvolution._
 import scala.annotation.tailrec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import upickle.default._
 
+import reactivemongo.bson.BSONDocument
+import reactivemongo.api.collections.bson.BSONCollection
+
+import reactivemongo.api._
+
+import reactivemongo.bson._
+
+import Hub._
+
 object SimpleAcRun {
   def getId(thread: Int = 0) =
     s"""SimpleAcEvolution#$thread@${DateTime.now}"""
 
+  lazy val coll = db("simpleACpaths")
+
   implicit def mongoUpdate : Path => Unit = ???
 
-  implicit def mongoRead: Future[List[Path]] = ???
+  implicit def mongoRead: Future[List[Path]] = {
+    val futureList = coll.find(BSONDocument()).cursor[BSONDocument]().collect[List]()
+    val ps = futureList map ((doclist) =>
+      for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle 
+    )
+    ps
+  }
 
   @tailrec
   def iterLog(ps: List[Path], loops: Int, initial: Boolean = false)(implicit update: Path => Unit) : List[Path] = {
