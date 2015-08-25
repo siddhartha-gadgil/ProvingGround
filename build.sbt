@@ -25,6 +25,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
     "com.typesafe.akka" %% "akka-slf4j" % "2.3.11",
     "ch.qos.logback" % "logback-classic" % "1.0.9",
+    "com.typesafe" % "config" % "1.3.0",
     "com.lihaoyi" %% "upickle" % "0.3.4")
   )
 
