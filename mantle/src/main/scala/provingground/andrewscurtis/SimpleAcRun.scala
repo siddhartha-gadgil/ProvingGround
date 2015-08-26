@@ -1,5 +1,6 @@
 package provingground.andrewscurtis
 
+import provingground.Collections._
 import provingground._
 
 import com.github.nscala_time.time.Imports._
@@ -24,6 +25,8 @@ import FiniteDistribution._
 import LinearStructure._
 
 import FreeGroups._
+
+import Moves._
 
 import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
 
@@ -86,10 +89,10 @@ object SimpleAcRun {
     continue(ps.toList, loops: Int)
   }
 
-/**
-  *  methods for viewing generated paths
-  *  create an instance of this and import for easy use.
-  **/
+  /**
+   *  methods for viewing generated paths
+   *  create an instance of this and import for easy use.
+   */
   class PathView(implicit dbread: Future[List[Path]]) {
     lazy val paths = scala.concurrent.Await.result(dbread, scala.concurrent.duration.Duration.Inf)
 
@@ -103,7 +106,8 @@ object SimpleAcRun {
 
     lazy val thmsView = thms.entropyView
 
-    def proofsOf(thm: Presentation) = toPresentation(thm.rank, proofs)
+    def proofsOf(thm: Presentation) =
+      for (p <- proofs.support  if actOnTriv(thm.rank)(p) == thm) yield Weighted(p, proofs(p))
 
   }
 
