@@ -9,8 +9,8 @@ lazy val commonSettings = Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
   "org.spire-math" %% "spire" % "0.9.1",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   ),

@@ -69,16 +69,30 @@ object SimpleAcRun {
     }
   }
 
+  class InMem {
+    var dict: Map[String, String] = Map.empty
+
+    implicit def memUpdate: Path => Unit = (p) => {
+      dict = dict + (p.id -> write(p.pickle))
+      println(s"$p.id -> $p")
+    }
+
+    implicit def memRead: Future[List[Path]] =
+      Future(for ((_, p) <- dict.toList) yield read[PickledPath](p).unpickle)
+  }
+
+  object MemDB extends InMem
+
   @tailrec
-  def iterLog(ps: List[Path], loops: Int, initial: Boolean = false)(implicit update: Path => Unit): List[Path] = {
+  def iter(ps: List[Path], loops: Int, initial: Boolean = false)(implicit update: Path => Unit): List[Path] = {
     if (!initial) ps map (update)
     if (loops < 1) ps else {
       val newPaths = ps map (_.next)
-      iterLog(newPaths, loops - 1)(update)
+      iter(newPaths, loops - 1)(update)
     }
   }
 
-  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = Future(iterLog(ps, loops, true)(update))
+  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = Future(iter(ps, loops, true)(update))
 
   def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = dbread flatMap ((ps: List[Path]) => continue(ps, loops)(update))
 
@@ -100,14 +114,14 @@ object SimpleAcRun {
 
     lazy val finalthms = for (p <- paths) yield (p.current.fdP)
 
-    lazy val proofs = vBigSum(finalproofs)
+    lazy val proofs = vBigSum(finalproofs).flatten
 
-    lazy val thms = vBigSum(finalthms)
+    lazy val thms = vBigSum(finalthms).flatten
 
     lazy val thmsView = thms.entropyView
 
     def proofsOf(thm: Presentation) =
-      for (p <- proofs.support  if actOnTriv(thm.rank)(p) == thm) yield Weighted(p, proofs(p))
+      for (p <- proofs.support if actOnTriv(thm.rank)(p) == thm) yield Weighted(p, proofs(p))
 
   }
 
