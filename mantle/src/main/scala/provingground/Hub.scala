@@ -1,11 +1,13 @@
 package provingground
 
+import com.mongodb.casbah._
 import reactivemongo.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import akka.actor.ActorSystem
 
 import com.typesafe.config._
+import com.mongodb.casbah.Imports
 
 object Hub{
   // gets an instance of the driver
@@ -29,11 +31,18 @@ object Hub{
     println(cnf.getConfig("mongo-async-driver").getString("stdout-loglevel"))
   
 
-  lazy val driver = new MongoDriver(Some(cnf))
-  lazy val connection = driver.connection(List("localhost"))
+  object ReactiveMongo{
+    lazy val driver = new MongoDriver(Some(cnf))
+    lazy val connection = driver.connection(List("localhost"))
 
   // Gets a reference to the database "plugin"
-  implicit lazy val db : DefaultDB = connection("proving-ground")
+    implicit lazy val db : DefaultDB = connection("proving-ground")
+  }
+
+  object Casbah{
+    lazy val mongoClient = MongoClient()
+    lazy val db = mongoClient("proving-ground")
+  }
 
   lazy val system = ActorSystem("proving-ground")
 

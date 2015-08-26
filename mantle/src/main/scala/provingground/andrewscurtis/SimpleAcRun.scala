@@ -17,25 +17,47 @@ import reactivemongo.api._
 
 import reactivemongo.bson._
 
-//import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
+import com.mongodb.casbah.Imports._
+
+import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
 
 object SimpleAcRun {
   def getId(thread: Int = 0) =
     s"""SimpleAcEvolution#$thread@${DateTime.now}"""
 
-  def coll(implicit database: DefaultDB) = database("simpleACpaths")
+  object Casbah {
+    import Hub.Casbah._
+    val collection = db("simpleACpaths")
 
-  implicit def mongoUpdate(implicit database: DefaultDB): Path => Unit = (p) => {
-    val query = BSONDocument("id" -> p.id)
-    val entry = BSONDocument("id" -> p.id, "path" -> write(p.pickle))
-    coll(database).update(query, entry)
+    implicit def mongoRead : Future[List[Path]] = 
+      Future{
+        val doclist = collection.find().toList
+         for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle
+      }
+
+    implicit def mongoUpdate : Path => Unit = (p) => {
+      val query = MongoDBObject("id" -> p.id)
+      val entry = MongoDBObject("id" -> p.id, "path" -> write(p.pickle))
+      collection.update(query, entry)
+    }
   }
 
-  implicit def mongoRead(implicit database: DefaultDB): Future[List[Path]] = {
-    val futureList = coll(database).find(BSONDocument()).cursor[BSONDocument]().collect[List]()
-    val ps = futureList map ((doclist) =>
-      for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle)
-    ps
+  object Reactive {
+    import Hub.ReactiveMongo._
+    def coll(implicit database: DefaultDB) = database("simpleACpaths")
+
+    implicit def mongoUpdate(implicit database: DefaultDB): Path => Unit = (p) => {
+      val query = BSONDocument("id" -> p.id)
+      val entry = BSONDocument("id" -> p.id, "path" -> write(p.pickle))
+      coll(database).update(query, entry)
+    }
+
+    implicit def mongoRead(implicit database: DefaultDB): Future[List[Path]] = {
+      val futureList = coll(database).find(BSONDocument()).cursor[BSONDocument]().collect[List]()
+      val ps = futureList map ((doclist) =>
+        for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle)
+      ps
+    }
   }
 
   @tailrec
