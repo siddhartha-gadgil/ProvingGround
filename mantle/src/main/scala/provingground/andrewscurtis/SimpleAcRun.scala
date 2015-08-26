@@ -19,6 +19,12 @@ import reactivemongo.bson._
 
 import com.mongodb.casbah.Imports._
 
+import FiniteDistribution._
+
+import LinearStructure._
+
+import FreeGroups._
+
 import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
 
 object SimpleAcRun {
@@ -29,13 +35,13 @@ object SimpleAcRun {
     import Hub.Casbah._
     val collection = db("simpleACpaths")
 
-    implicit def mongoRead : Future[List[Path]] = 
-      Future{
+    implicit def mongoRead: Future[List[Path]] =
+      Future {
         val doclist = collection.find().toList
-         for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle
+        for (bd <- doclist; p <- bd.getAs[String]("path")) yield read[PickledPath](p).unpickle
       }
 
-    implicit def mongoUpdate : Path => Unit = (p) => {
+    implicit def mongoUpdate: Path => Unit = (p) => {
       val query = MongoDBObject("id" -> p.id)
       val entry = MongoDBObject("id" -> p.id, "path" -> write(p.pickle))
       collection.update(query, entry)
@@ -78,6 +84,27 @@ object SimpleAcRun {
     scale: Double = 0.1)(implicit update: Path => Unit) = {
     val ps = (1 to threads) map ((t: Int) => Path.init(rank, steps, wordCntn, size, scale, getId(t)))
     continue(ps.toList, loops: Int)
+  }
+
+/**
+  *  methods for viewing generated paths
+  *  create an instance of this and import for easy use.
+  **/
+  class PathView(implicit dbread: Future[List[Path]]) {
+    lazy val paths = scala.concurrent.Await.result(dbread, scala.concurrent.duration.Duration.Inf)
+
+    lazy val finalproofs = for (p <- paths) yield (p.current.fdV)
+
+    lazy val finalthms = for (p <- paths) yield (p.current.fdP)
+
+    lazy val proofs = vBigSum(finalproofs)
+
+    lazy val thms = vBigSum(finalthms)
+
+    lazy val thmsView = thms.entropyView
+
+    def proofsOf(thm: Presentation) = toPresentation(thm.rank, proofs)
+
   }
 
 }

@@ -27,7 +27,8 @@ lazy val jvmSettings = Seq(
     "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "2.8.2",
-    "com.lihaoyi" %% "upickle" % "0.3.4")
+    "com.lihaoyi" %% "upickle" % "0.3.4",
+"com.lihaoyi" %% "pprint" % "0.3.6")
   )
 
 lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
@@ -41,7 +42,7 @@ lazy val serverSettings = Seq(
   ),
   scalaJSProjects := jsProjects,
   pipelineStages := Seq(scalaJSProd),
-  initialCommands in console := """import provingground._ ; import HoTT._"""
+  initialCommands in console := """import provingground._ ; import HoTT._; import pprint.Config.Colors._; import pprint.pprintln"""
   )
 
 lazy val nlpSettings = Seq(
