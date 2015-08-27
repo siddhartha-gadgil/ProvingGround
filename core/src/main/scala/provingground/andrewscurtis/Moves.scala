@@ -7,6 +7,7 @@ import Moves._
 import AtomicMove._
 import provingground._
 import FiniteDistribution._
+import FiniteDistributionLearner._
 
 object AtomicMove {
   def actOnFDVertices(mf: AtomicMove, fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = mf(fdVertices)
@@ -24,7 +25,7 @@ object AtomicMove {
     val letters = """[a-z]!?$""".r
 
     if(id.findFirstIn(w).isDefined) {
-      Some(Id())
+      Some(Id)
     }
     else if(inv.findFirstIn(w).isDefined) {
       val rel = (w.takeWhile(_!='!')).toInt
@@ -76,6 +77,8 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 
   def actOnMoves(moves: Moves): Option[Moves] = Some(toMoves(this) compose moves)
 
+  def movesDF : DiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] = MoveFn(actOnMoves)
+  
   def actOnPres(fdPres: FiniteDistribution[Presentation]): FiniteDistribution[Presentation] = {
     (fdPres mapOpt ((pres: Presentation) => this(pres))).flatten
   }
@@ -88,7 +91,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 
   def toPlainString: String = {
     this match {
-      case Id() => "id"
+      case Id => "id"
       case Inv(k) => s"$k!"
       case RtMult(k, l) => s"$k<-$l"
       case LftMult(k, l) => s"$l->$k"
@@ -107,7 +110,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 
   def toLatex = {
     this match {
-      case Id() => s"$$r \\mapsto r$$"
+      case Id => s"$$r \\mapsto r$$"
       case Inv(k) => s"$$r_{$k} \\mapsto \\bar{r_$k}$$"
       case RtMult(k, l) => if(k<l)
                             s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$k}r_{$l}, r_{$l})$$"
@@ -143,9 +146,12 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
   override def toString = toPlainString
 }
 
-case class Id() extends AtomicMove {
+case object Id extends AtomicMove {
   override def apply(pres: Presentation) = Some(pres)
-  override def actOnMoves(moves: Moves) = Some(moves)
+//  override def actOnMoves(moves: Moves) = Some(moves)
+  
+  override def movesDF : DiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] = 
+    DiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 
 case class Inv(k: Int) extends AtomicMove {

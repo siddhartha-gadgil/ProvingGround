@@ -20,7 +20,7 @@ object DiffStructure {
   type V = Moves
   type P = Presentation
 
-  def genMoveFn(mf: M) = MoveFn(mf)
+  def genMoveFn(mf: M) = mf.movesDF
 
   def genWtDyn(mf: M) = {
     val wtdyn = weightedDyn[M, FD[V]]

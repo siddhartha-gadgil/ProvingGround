@@ -24,7 +24,7 @@ object MoveGenerator {
   }
 
   def genAllMoves(rank: Int, sz: Int): List[AtomicMove] = {
-    val id = List(Id())
+    val id = List(Id)
     val inv = genAllInv(sz)
     val lftmult = genLftMult(sz)
     val rtmult = genRtMult(sz)
