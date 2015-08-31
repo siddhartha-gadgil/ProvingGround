@@ -30,6 +30,10 @@ import Moves._
 
 import Hub._ // should import this for a database, unless play plugin database (or something else) is used.
 
+import java.io._
+
+import scala.io.Source
+
 object SimpleAcRun {
   def getId(thread: Int = 0) =
     s"""SimpleAcEvolution#$thread@${DateTime.now}"""
@@ -71,6 +75,22 @@ object SimpleAcRun {
 
   class InMem {
     var dict: Map[String, String] = Map.empty
+    
+    def save(filename: String) = {
+      val pr = new PrintWriter(filename)
+      
+      val d = dict
+      
+      for((x, y) <- d) pr.println(write((x,y)))
+      
+      pr.close
+    }
+    
+    def load(filename: String) = {
+      val list = Source.fromFile(filename).getLines.toList map ((x) => read[(String, String)](x))
+      
+      dict = list.toMap
+    }
 
     implicit def memUpdate: Path => Unit = (p) => {
       dict = dict + (p.id -> write(p.pickle))
