@@ -36,14 +36,14 @@ object Hub{
     lazy val connection = driver.connection(List("localhost"))
 
   // Gets a reference to the database "plugin"
-    implicit lazy val db : DefaultDB = connection("proving-ground")
+    implicit lazy val db : DefaultDB = connection("provingground")
   }
 
   object Casbah{
     lazy val mongoClient = MongoClient()
-    lazy val db = mongoClient("proving-ground")
+    lazy val db = mongoClient("provingground")
   }
 
-  lazy val system = ActorSystem("proving-ground")
+  lazy val system = ActorSystem("provingground")
 
 }
