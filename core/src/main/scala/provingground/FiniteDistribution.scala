@@ -80,7 +80,7 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   /**
    * next instance of a random variable with the given distribution
    */
-  def next = Weighted.pick(pmf, random.nextDouble)
+  def next = Weighted.pick(posmf(), random.nextDouble * postotal())
 
   /**
    * get weight.
@@ -125,7 +125,8 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
    * total of the positive weights
    */
   def postotal(t : Double = 0.0) = ((posmf(t).toSeq map (_.weight))).sum ensuring (_ > 0)
-
+  
+  
 
   /**
    * add weighted element without normalizing
@@ -188,6 +189,12 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
   def entropy(elem: T) = -math.log(apply(elem))/math.log(2)
 
   def entropyView = supp.toList.map((x)=>Weighted(x.toString, entropy(x))).sortBy(_.weight)
+  
+  def split(groups: Int) = {
+    val rand = new scala.util.Random
+    
+    pmf groupBy((_) => rand.nextInt(groups -1)) mapValues { x => FiniteDistribution(x) } 
+  }
 }
 
 
@@ -232,9 +239,9 @@ object FiniteDistribution{
    * normalized so all probabilities are positive and the total is 1.
    */
   def normalized(t : Double = 0.0) : FiniteDistribution[T] =
-    {assert(false, "can only normailze non-empty distributions")
-      ???
-    }
+    throw new IllegalArgumentException( "can only normailze non-empty distributions")
+      
+    
 
   /**
    * add another distribution without normalizing

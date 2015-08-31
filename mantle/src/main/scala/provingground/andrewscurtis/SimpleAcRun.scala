@@ -96,9 +96,21 @@ object SimpleAcRun {
 
   def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = dbread flatMap ((ps: List[Path]) => continue(ps, loops)(update))
 
+  def restart(rank: Int, steps: Int, loops: Int, threads: Int = 6,
+    wordCntn: Double = 0.5, size: Double = 1000,
+    scale: Double = 1.0)(implicit  dbread: Future[List[Path]],  update: Path => Unit) =
+    {
+      val p = new PathView()(dbread)
+      
+      val ps = for (j <- 0 to threads -1) yield Path(rank, steps, wordCntn, size, scale,
+          List(State(rank, p.Mdist, p.mkFDV(threads, rank)(j))), List(), getId(j))
+      
+      continue(ps.toList, loops: Int)
+    }
+  
   def start(rank: Int, steps: Int, loops: Int, threads: Int = 6,
     wordCntn: Double = 0.5, size: Double = 1000,
-    scale: Double = 0.1)(implicit update: Path => Unit) = {
+    scale: Double = 1.0)(implicit update: Path => Unit) = {
     val ps = (1 to threads) map ((t: Int) => Path.init(rank, steps, wordCntn, size, scale, getId(t)))
     continue(ps.toList, loops: Int)
   }
@@ -114,15 +126,24 @@ object SimpleAcRun {
 
     lazy val finalthms = for (p <- paths) yield (p.current.fdP)
 
-    lazy val proofs = vBigSum(finalproofs).flatten
+    lazy val finalMs = for (p <- paths) yield (p.current.fdM)
+    
+    lazy val Mdist = vBigSum(finalMs).flatten.normalized()
+    
+    lazy val proofs = vBigSum(finalproofs).flatten.normalized()
 
-    lazy val thms = vBigSum(finalthms).flatten
-
+    lazy val thms = vBigSum(finalthms).flatten.normalized()
+    
     lazy val thmsView = thms.entropyView
 
     def proofsOf(thm: Presentation) =
-      for (p <- proofs.support if actOnTriv(thm.rank)(p) == thm) yield Weighted(p, proofs(p))
-
+      proofs filter ((pf : Moves) => actOnTriv(thm.rank)(pf) == thm)      
+    
+    def pickProof(thm: Presentation) = proofsOf(thm).next
+    
+    def mkFDV(groups: Int, rank: Int) = 
+      thms filter((thm : Presentation) => thm.rank ==rank) normalized() split(groups) mapValues { _ map (pickProof(_)) }
+    
   }
 
 }
