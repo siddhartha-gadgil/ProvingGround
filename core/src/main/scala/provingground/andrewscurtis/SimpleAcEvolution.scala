@@ -135,7 +135,7 @@ object SimpleAcEvolution {
   object Path {
     def init(rank: Int, steps: Int,
       wordCntn: Double = 0.5, size: Double = 1000,
-      scale: Double = 0.1, id: String ="ephemeral") = {
+      scale: Double = 1.0, id: String ="ephemeral") = {
       val state = State(rank, unifMoves(rank), eVec)
       Path(rank, steps, wordCntn, size, scale, List(state), List(), id)
     }
