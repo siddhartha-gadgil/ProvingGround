@@ -74,7 +74,7 @@ object SimpleAcRun {
 
     implicit def memUpdate: Path => Unit = (p) => {
       dict = dict + (p.id -> write(p.pickle))
-      println(s"$p.id -> $p")
+//      println(s"$p.id -> $p")
     }
 
     implicit def memRead: Future[List[Path]] =
