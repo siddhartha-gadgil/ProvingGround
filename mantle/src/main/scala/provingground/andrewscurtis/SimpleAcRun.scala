@@ -47,7 +47,7 @@ object SimpleAcRun {
     implicit def mongoUpdate: Path => Unit = (p) => {
       val query = MongoDBObject("id" -> p.id)
       val entry = MongoDBObject("id" -> p.id, "path" -> write(p.pickle))
-      collection.update(query, entry)
+      collection.update(query, entry, upsert = true)
     }
   }
 
