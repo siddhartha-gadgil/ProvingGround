@@ -62,7 +62,7 @@ object SimpleAcRun {
     implicit def mongoUpdate(implicit database: DefaultDB): Path => Unit = (p) => {
       val query = BSONDocument("id" -> p.id)
       val entry = BSONDocument("id" -> p.id, "path" -> write(p.pickle))
-      coll(database).update(query, entry)
+      coll(database).update(query, entry, upsert = true)
     }
 
     implicit def mongoRead(implicit database: DefaultDB): Future[List[Path]] = {
@@ -108,6 +108,7 @@ object SimpleAcRun {
     if (!initial) ps map (update)
     if (loops < 1) ps else {
       val newPaths = ps map (_.next)
+      println(s"looped; remaining loops: ${loops -1}")
       iter(newPaths, loops - 1)(update)
     }
   }
