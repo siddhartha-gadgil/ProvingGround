@@ -104,18 +104,20 @@ object SimpleAcRun {
   object MemDB extends InMem
 
   @tailrec
-  def iter(ps: List[Path], loops: Int, initial: Boolean = false)(implicit update: Path => Unit): List[Path] = {
-    if (!initial) ps map (update)
-    if (loops < 1) ps else {
-      val newPaths = ps map (_.next)
+  def iter(p: Path, loops: Int, initial: Boolean = false)(implicit update: Path => Unit): Path = {
+    if (!initial) update(p)
+    if (loops < 1) p else {
+      val newPath = p.next
       println(s"looped; remaining loops: ${loops -1}")
-      iter(newPaths, loops - 1)(update)
+      iter(newPath, loops - 1)(update)
     }
   }
 
-  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = Future(iter(ps, loops, true)(update))
+  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = 
+    ps map ((p) => Future(iter(p, loops, true)(update)))
 
-  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = dbread flatMap ((ps: List[Path]) => continue(ps, loops)(update))
+  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = 
+    dbread flatMap ((ps: List[Path]) => Future.sequence(continue(ps, loops)(update)))
 
   def restart(rank: Int, steps: Int, loops: Int, threads: Int = 6,
     wordCntn: Double = 0.5, size: Double = 1000,
