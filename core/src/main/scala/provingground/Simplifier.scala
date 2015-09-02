@@ -20,3 +20,9 @@ case class OrElse[A](first: Simplifier[A], second: Simplifier[A]) extends Simpli
 case class Refine[A](base: Simplifier[A]) extends Simplifier[A]{
   def rule(subsimplify: =>(A => A)): A => Option[A] = (a) => base.rule(subsimplify)(a) map ((b) => rule(subsimplify)(b) getOrElse b)
 }
+
+trait AtomicSimplifier[A] extends Simplifier[A]{
+  def simplerule(a: A) : Option[A]
+  
+  def rule(subsimplify: =>(A => A)): A => Option[A] = (a) => simplerule(a)
+}
