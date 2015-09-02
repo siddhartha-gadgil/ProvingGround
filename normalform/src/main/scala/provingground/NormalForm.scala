@@ -178,7 +178,7 @@ case class CommRep[A](representation: Map[A, Int]) extends Representation[A] {
     CommRep(listToMap(listRep filter pred))
   }
 
-  override def reduce(op: (A, A)=>A): A = {
+  def reduce(op: (A, A)=>A): A = {
     listRep reduce op
   }
 
