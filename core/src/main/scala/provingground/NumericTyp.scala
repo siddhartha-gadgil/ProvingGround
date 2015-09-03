@@ -110,6 +110,10 @@ class NumericTyp[A : Rig] {
     def subs(x: Term, y: Term) = ???
     
     def newobj = Typ.obj
+    
+    val head = natpow(elems.head._2)(elems.head._1) 
+    
+    val tail = if (elems.tail.isEmpty) one else PiTerm(elems.tail)
   }
   
   import Typ.rep
@@ -161,6 +165,13 @@ class NumericTyp[A : Rig] {
     }
   }
   
+  def funcSum(f: Term => Term, g: Term => Term) = {
+    val x = Typ.obj
+    lmbda(x)(sum(f(x))(g(x)))
+  }
+  
+  def natpow(n: Int) = ((a: A) => pow(a, n)).term
+  
   object prod extends Func[Term, Func[Term, Term]]{
     val dom = Typ
     
@@ -183,8 +194,10 @@ class NumericTyp[A : Rig] {
           ((b: A) => a * b).term
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
+      case Comb(op, u, v) if op == sum =>
+        funcSum(prod(u), prod(v))
       case s @ SigmaTerm(terms) => 
-        composition(sum(s.head), sum(s.tail))
+        (terms map ((t) => prod(t))).reduce(funcSum)
       case y => ???
     }
   }
