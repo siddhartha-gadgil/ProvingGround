@@ -261,19 +261,8 @@ object HoTT {
 
     def newobj = SymbObj(new InnerSym(this), typ)
 
-    /*
-      def subs(x: Term, y: Term) = this match {
-        case `x` => y
-        case applptnterm(func : FuncLike[u, Term], arg) =>
-          Try(func.replace(x,y)(arg.replace(x, y).asInstanceOf[u])).getOrElse(SymbObj(name, typ.replace(x, y)))
-        case _ => SymbObj(name, typ.replace(x, y))
-      }
-      *
-      */
-
     def subs(x: Term, y: Term) = if (x == this) y else {
       def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
-      //SymbObj(sym, typ.replace(x, y))
       symSubs(symbobj)(x, y)(name)
     }
   }
@@ -874,7 +863,7 @@ object HoTT {
   /**
    * A symbol to be used to generate new variables of a type, with string matching given variable.
    */
-  private class InnerSym[U <: Term](variable: U) extends AnySym {
+  private[provingground] class InnerSym[U <: Term](variable: U) extends AnySym {
     override def toString = variable match {
       case sym: Symbolic => sym.name.toString
       case x => x.toString

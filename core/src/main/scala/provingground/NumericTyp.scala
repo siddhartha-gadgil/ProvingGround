@@ -18,7 +18,35 @@ class NumericTyp[A : Rig] {
   
   import rig._
   
-  object Typ extends ScalaTyp[A]
+  trait LocalTerm extends Term with Subs[LocalTerm]
+  
+  object LocalTyp extends Typ[LocalTerm]{
+    type Obj = LocalTerm
+
+    val typ = Universe(0)
+
+    def symbObj(name: AnySym): LocalTerm = LocalSymbObj(name, this)
+
+    def newobj = this
+
+    def subs(x: Term, y: Term) = (x, y) match {
+      case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[LocalTerm]]
+      case _ => this
+    }
+    
+    implicit val rep : ScalaRep[LocalTerm, A] = SimpleRep(this)
+  }
+  
+  case class LocalSymbObj[+U <: LocalTerm](name: AnySym, typ: Typ[U]) extends LocalTerm with Symbolic {
+    override def toString = name.toString + " : (" + typ.toString + ")"
+
+    def newobj = LocalSymbObj(new InnerSym(this), typ)
+
+    def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[LocalTerm] else {
+      def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
+      symSubs(symbobj)(x, y)(name)
+    }
+  }
   
   sealed trait Op{
     val unit : A
@@ -42,24 +70,24 @@ class NumericTyp[A : Rig] {
   }
 
   
-  object Literal extends ScalaSym[Term, A](Typ)
+  object Literal extends ScalaSym[LocalTerm, A](LocalTyp)
 
   object Comb{
-    def unapply(term: Term): Option[(Term, Term, Term)] = term match {
-      case FormalAppln(FormalAppln(op, x), y) => Some((op, x, y))
+    def unapply(term: LocalTerm): Option[(LocalTerm, LocalTerm, LocalTerm)] = term match {
+      case FormalAppln(FormalAppln(op : LocalTerm, x : LocalTerm), y : LocalTerm) => Some((op, x, y))
       case _ => None
     }
     
-    def apply(op: Func[Term, Func[Term, Term]], x: Term, y: Term) =
+    def apply(op: Func[LocalTerm, Func[LocalTerm, LocalTerm]], x: LocalTerm, y: LocalTerm) =
       FormalAppln(FormalAppln(op, x), y)
   }
   
-  case class SigmaTerm(elems: Set[Term]) extends Term{
-    val typ = Typ
+  case class SigmaTerm(elems: Set[LocalTerm]) extends LocalTerm{
+    val typ = LocalTyp
     
-    def subs(x: Term, y: Term) = ???
+    def subs(x: Term, y: Term) = (elems map (_.subs(x, y))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
     
-    def newobj = Typ.obj
+    def newobj = LocalTyp.obj
     
     val head = elems.head
     
@@ -69,7 +97,7 @@ class NumericTyp[A : Rig] {
     /**
      * add a term, simplifies only in cases that remain in definition of sum
      */
-    def +:(x: Term) : Term = {
+    def +:(x: LocalTerm) : LocalTerm = {
         val l = LitProd.fold(x)(elems.toList)
         l match {
           case List() => Literal(zero)
@@ -81,35 +109,36 @@ class NumericTyp[A : Rig] {
   }
   
   object LitProd{
-    def apply(a: A, x: Term) = prod(Literal(a))(x)
+    def apply(a: A, x: LocalTerm) = prod(Literal(a))(x)
     
-    def unapply(x: Term) : Option[(A, Term)] = x match {
+    def unapply(x: LocalTerm) : Option[(A, LocalTerm)] = x match {
       case Comb(mult, Literal(a), y) if mult == prod =>
         Some((a, y))
       case _ => None
     }
     
-    def add(x: Term, y: Term) = (x, y) match {
+    def add(x: LocalTerm, y: LocalTerm) = (x, y) match {
       case (LitProd(a, u), LitProd(b, v)) if u == v =>
         Some(LitProd(a + b, u))
       case _ => None
     }
     
-    def fold(x: Term)(l: List[Term]) : List[Term] = (x, l) match {
+    def fold(x: LocalTerm)(l: List[LocalTerm]) : List[LocalTerm] = (x, l) match {
       case (_, List()) => List(x)
       case (_, head:: tail) =>
-        (add(x, head) map ((u: Term) => fold(u)(tail))).
+        (add(x, head) map ((u: LocalTerm) => fold(u)(tail))).
         getOrElse(head :: fold(x)(tail))
     }
   }
   
   
-  case class PiTerm(elems: Map[Term, Int]) extends Term{
-    val typ = Typ
+  case class PiTerm(elems: Map[LocalTerm, Int]) extends LocalTerm{
+    val typ = LocalTyp
     
-    def subs(x: Term, y: Term) = ???
+    def subs(x: Term, y: Term) = 
+      (elems map ((an) => power(an._1, an._2))).reduce((a: LocalTerm, b: LocalTerm) => prod(a)(b))
     
-    def newobj = Typ.obj
+    def newobj = LocalTyp.obj
     
     val head = power(elems.head._1, elems.head._2) 
     
@@ -117,18 +146,18 @@ class NumericTyp[A : Rig] {
     
     val composite = (elems.size > 1)
     
-    def *:(y: Term) = {
+    def *:(y: LocalTerm) = {
       val ind = (elems.get(y) map (_+1)) getOrElse (1)
       PiTerm(elems + (y -> ind))
     }
   }
   
-  import Typ.rep
+  import LocalTyp.rep
   
-  object sum extends Func[Term, Func[Term, Term]]{
-    val dom = Typ
+  object sum extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
+    val dom = LocalTyp
     
-    val codom = Typ ->: Typ
+    val codom = LocalTyp ->: LocalTyp
     
     val typ = dom ->: codom
 
@@ -136,11 +165,11 @@ class NumericTyp[A : Rig] {
     
     def newobj = this
     
-    def act(x: Term) = x match {
+    def act(x: LocalTerm) = x match {
       case Literal(a) => 
         if (a == zero)
         {
-          val x = Typ.obj
+          val x = LocalTyp.obj
           lmbda(x)(x)
         }
         else
@@ -153,18 +182,18 @@ class NumericTyp[A : Rig] {
     }
   }
   
-  case class AddTerm(x: Term) extends Func[Term, Term]{
-    val dom = Typ
+  case class AddTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
+    val dom = LocalTyp
     
-    val codom = Typ
+    val codom = LocalTyp
     
-    val typ = Typ ->: Typ
+    val typ = LocalTyp ->: LocalTyp
     
     def subs(x: Term, y: Term) = this
     
     def newobj = this
     
-    def act(y: Term) = y match{
+    def act(y: LocalTerm) = y match{
       case Literal(a) => Comb(sum, Literal(a), x)
       case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
       case s : SigmaTerm => x +: s
@@ -172,23 +201,23 @@ class NumericTyp[A : Rig] {
     }
   }
   
-  def funcSum(f: Term => Term, g: Term => Term) = {
-    val x = Typ.obj
+  def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm) = {
+    val x = LocalTyp.obj
     lmbda(x)(sum(f(x))(g(x)))
   }
   
-  case class AdditiveMorphism[U<: Term with Subs[U]](base: Func[Term, U], op: (U, U) => U) extends Func[Term, Term]{
-    val dom = Typ
+  case class AdditiveMorphism[U<: LocalTerm with Subs[U]](base: Func[LocalTerm, U], op: (U, U) => U) extends Func[LocalTerm, LocalTerm]{
+    val dom = LocalTyp
     
     val codom = base.codom
     
-    val typ = Typ ->: codom
+    val typ = LocalTyp ->: codom
     
     def subs(x: Term, y: Term) = AdditiveMorphism(base.subs(x, y), op)
     
     def newobj = AdditiveMorphism(base.newobj, op)
     
-    def act(x: Term) = x match {
+    def act(x: LocalTerm) = x match {
       case Comb(f, u, v) if f == sum => op(base(u), base(v))
       case SigmaTerm(elems) => (elems map ((u) => base(u))).reduce(op)
       case _ => base(x)
@@ -196,17 +225,17 @@ class NumericTyp[A : Rig] {
   }
   
   @annotation.tailrec 
-  final def power(x: Term, n: Int, accum: Term = Literal(one)): Term = {
+  final def power(x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
     if (n ==0) Literal(one)
     else 
       if (n == 1) x
       else power(x, n-1, prod(accum)(x))
   }
   
-  object prod extends Func[Term, Func[Term, Term]]{
-    val dom = Typ
+  object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
+    val dom = LocalTyp
     
-    val codom = Typ ->: Typ
+    val codom = LocalTyp ->: LocalTyp
     
     val typ = dom ->: codom
 
@@ -214,15 +243,15 @@ class NumericTyp[A : Rig] {
     
     def newobj = this
     
-    def act(x: Term) = x match {
+    def act(x: LocalTerm) = x match {
       case Literal(a) => 
         if (a == one)
         {
-          val x = Typ.obj
+          val x = LocalTyp.obj
           lmbda(x)(x)
         }
         else
-          AdditiveMorphism(((b: A) => a * b).term, (x: Term, y: Term) => sum(x)(y))
+          AdditiveMorphism(((b: A) => a * b).term, (x: LocalTerm, y: LocalTerm) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
       case Comb(op, u, v) if op == sum =>
@@ -237,22 +266,22 @@ class NumericTyp[A : Rig] {
   }
   
   
-  case class multTerm(x: Term) extends Func[Term, Term]{
-    val dom = Typ
+  case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
+    val dom = LocalTyp
     
-    val codom = Typ
+    val codom = LocalTyp
     
-    val typ = Typ ->: Typ
+    val typ = LocalTyp ->: LocalTyp
     
     def subs(x: Term, y: Term) = this
     
     def newobj = this
     
-    def act(y: Term) = y match{
+    def act(y: LocalTerm) = y match{
       case Literal(a) => prod(Literal(a))(x)
       case Comb(f, Literal(a), v) if f == prod => prod(Literal(a))(prod(x)(v))
       case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
-      case SigmaTerm(elems) => (elems map ((u) => prod(x)(u))).reduce((a: Term, b: Term) => sum(a)(b))
+      case SigmaTerm(elems) => (elems map ((u) => prod(x)(u))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
       case p : PiTerm => x *: p
       case `x` => PiTerm(Map(x -> 2))
       case _ => PiTerm(Map(x -> 1, y -> 1))
