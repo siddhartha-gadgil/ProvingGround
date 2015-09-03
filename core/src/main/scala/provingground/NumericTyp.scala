@@ -111,9 +111,16 @@ class NumericTyp[A : Rig] {
     
     def newobj = Typ.obj
     
-    val head = natpow(elems.head._2)(elems.head._1) 
+    val head = power(elems.head._1, elems.head._2) 
     
-    val tail = if (elems.tail.isEmpty) one else PiTerm(elems.tail)
+    val tail = if (elems.tail.isEmpty) Literal(one) else PiTerm(elems.tail)
+    
+    val composite = (elems.size > 1)
+    
+    def *:(y: Term) = {
+      val ind = (elems.get(y) map (_+1)) getOrElse (1)
+      PiTerm(elems + (y -> ind))
+    }
   }
   
   import Typ.rep
@@ -142,11 +149,11 @@ class NumericTyp[A : Rig] {
         composition(sum(u), sum(v))
       case s @ SigmaTerm(terms) => 
         composition(sum(s.head), sum(s.tail))
-      case y => addTerm(y)
+      case y => AddTerm(y)
     }
   }
   
-  case class addTerm(x: Term) extends Func[Term, Term]{
+  case class AddTerm(x: Term) extends Func[Term, Term]{
     val dom = Typ
     
     val codom = Typ
@@ -170,7 +177,31 @@ class NumericTyp[A : Rig] {
     lmbda(x)(sum(f(x))(g(x)))
   }
   
-  def natpow(n: Int) = ((a: A) => pow(a, n)).term
+  case class AdditiveMorphism[U<: Term with Subs[U]](base: Func[Term, U], op: (U, U) => U) extends Func[Term, Term]{
+    val dom = Typ
+    
+    val codom = base.codom
+    
+    val typ = Typ ->: codom
+    
+    def subs(x: Term, y: Term) = AdditiveMorphism(base.subs(x, y), op)
+    
+    def newobj = AdditiveMorphism(base.newobj, op)
+    
+    def act(x: Term) = x match {
+      case Comb(f, u, v) if f == sum => op(base(u), base(v))
+      case SigmaTerm(elems) => (elems map ((u) => base(u))).reduce(op)
+      case _ => base(x)
+    }
+  }
+  
+  @annotation.tailrec 
+  final def power(x: Term, n: Int, accum: Term = Literal(one)): Term = {
+    if (n ==0) Literal(one)
+    else 
+      if (n == 1) x
+      else power(x, n-1, prod(accum)(x))
+  }
   
   object prod extends Func[Term, Func[Term, Term]]{
     val dom = Typ
@@ -191,14 +222,40 @@ class NumericTyp[A : Rig] {
           lmbda(x)(x)
         }
         else
-          ((b: A) => a * b).term
+          AdditiveMorphism(((b: A) => a * b).term, (x: Term, y: Term) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
       case Comb(op, u, v) if op == sum =>
         funcSum(prod(u), prod(v))
       case s @ SigmaTerm(terms) => 
         (terms map ((t) => prod(t))).reduce(funcSum)
-      case y => ???
+      case p: PiTerm =>  
+        if (p.composite) composition(prod(p.head), prod(p.tail))
+        else prod(p.head)
+      case y => multTerm(y)
+    }
+  }
+  
+  
+  case class multTerm(x: Term) extends Func[Term, Term]{
+    val dom = Typ
+    
+    val codom = Typ
+    
+    val typ = Typ ->: Typ
+    
+    def subs(x: Term, y: Term) = this
+    
+    def newobj = this
+    
+    def act(y: Term) = y match{
+      case Literal(a) => prod(Literal(a))(x)
+      case Comb(f, Literal(a), v) if f == prod => prod(Literal(a))(prod(x)(v))
+      case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
+      case SigmaTerm(elems) => (elems map ((u) => prod(x)(u))).reduce((a: Term, b: Term) => sum(a)(b))
+      case p : PiTerm => x *: p
+      case `x` => PiTerm(Map(x -> 2))
+      case _ => PiTerm(Map(x -> 1, y -> 1))
     }
   }
   
