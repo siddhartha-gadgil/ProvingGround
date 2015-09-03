@@ -13,8 +13,8 @@ import scala.language.implicitConversions
 /**
  * @author gadgil
  */
-class NumericTyp[A : Rig] {
-  val rig = implicitly[Rig[A]]
+class NumericTyp[A : CRig] {
+  val rig = implicitly[CRig[A]]
   
   import rig._
   
