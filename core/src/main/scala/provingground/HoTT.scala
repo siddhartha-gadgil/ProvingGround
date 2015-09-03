@@ -574,6 +574,9 @@ object HoTT {
           }
           case _ => None
         }
+        
+        def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: Func[U, V], x: U) =
+          fn.codom.symbObj(ApplnSym(fn, x))
       }
 
   //
@@ -934,6 +937,11 @@ object HoTT {
     val fibre = lmbda(variable)(value.typ.asInstanceOf[Typ[V]])
     DepPair(variable, value, fibre)
   }
+    
+    def composition[U<: Term with Subs[U], V<: Term with Subs[V], W<: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
+      val x = g.dom.obj
+      lmbda(x)(f(g(x)))
+    }
 
   /**
    * Sigma type based on lambda
