@@ -178,6 +178,11 @@ case class DepFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   def subs(x: Term, y: Term) = DepFuncRep(domrep.subs(x, y), (v: V) => codomreps(v).subs(x, y), fibers.subs(x, y))
 }
 
+
+trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
+    val typ: Typ[RepTerm[A]]
+  }
+
 object ScalaRep {
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] = IdRep(typ)
@@ -195,9 +200,7 @@ object ScalaRep {
     domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) : ScalaRep[Func[U, X], V => Y] = FuncRep(domrep, codomrep)
 
 
-  trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
-    val typ: Typ[RepTerm[A]]
-  }
+
   
  case class RepSymbObj[A, +U <: RepTerm[A]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
@@ -222,7 +225,7 @@ object ScalaRep {
       case _ => this
     }
     
-    implicit val rep : ScalaRep[Term, A] = SimpleRep(this)
+    implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
   }
  
   case object Nat extends ScalaTyp[Int]

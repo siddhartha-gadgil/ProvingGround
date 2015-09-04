@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 
-import ScalaRep.ScalaSym
+import ScalaRep._
 
 //import ScalaRep._
 
@@ -12,7 +12,7 @@ import ScalaPolyRep._
  * @author gadgil
  */
 class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X]) {
-  case class VecTyp(dim: Int) extends SmallTyp
+  case class VecTyp(dim: Int) extends ScalaTyp[Vector[Long]]
   
   implicit object Rep extends ScalaPolyRep[Term, Vector[X]]{
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match{
@@ -68,11 +68,16 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X
         
   private val constyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
   
-//  implicit val r = depFuncPolyRep(implicitly[ScalaPolyRep[Term, Long]], implicitly[ScalaPolyRep[FuncLike[Term, FuncLike[Term, Term]], X => Vector[X] => Vector[X]]])
+  import Nat.rep
   
-  private val term = ScalaPolyTerm[FuncLike[Term, FuncLike[Term, FuncLike[Term, Term]]], Long => (X => (Vector[X] => Vector[X]))](vcons)
   
-  val succ = term.hott(constyp).get
   
-  val empty = Vector.empty[X].hott(VecTyp(0)).get
+//  implicit val r = depFuncPolyRep(implicitly[ScalaPolyRep[RepTerm[Long], Long]], 
+//      implicitly[ScalaPolyRep[FuncLike[RepTerm[Long], FuncLike[RepTerm[Vector[Long]], RepTerm[Vector[Long]]]], X => Vector[X] => Vector[X]]])
+  
+//  private val term = ScalaPolyTerm[FuncLike[Term, FuncLike[Term, FuncLike[Term, Term]]], Long => (X => (Vector[X] => Vector[X]))](vcons)
+  
+//  val succ = term.hott(constyp).get
+  
+//  val empty = Vector.empty[X].hott(VecTyp(0)).get
 }
