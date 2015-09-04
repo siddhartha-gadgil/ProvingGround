@@ -13,12 +13,12 @@ case class VecTyp[+U<: Term with Subs[U], X](basetyp: Typ[U], dim: Int)(implicit
     val baserep = _baserep
 }
 
-object VecTyp{
-  case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[Term, Vector[X]]{
+object VecTyp{/*
+  case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]{
     
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match{
       case tp @ VecTyp(basetyp, dim) if dim == elem.size => {
-        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](tp)
         Some(pattern(elem))        
       }
       case _ => None
@@ -41,7 +41,7 @@ object VecTyp{
 
   val n = "n" :: Nat
   
-  implicit val NatVecRep = vecRep[Term, Long]
+  implicit val NatVecRep = vecRep[RepTerm[Vector[Long]], Long]
 
   val Vec = (((n: Long) => (VecTyp[Term, Long](Nat, n.toInt) : Typ[Term])).hott(Nat ->: __)).get 
   
@@ -65,5 +65,5 @@ object VecTyp{
         
   private val nsucctyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
   
-  val nsucc = nvsucc.hott(nsucctyp)
+  val nsucc = nvsucc.hott(nsucctyp)*/
 }

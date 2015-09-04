@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 
-import ScalaRep._
+import ScalaRep.{ScalaSym}
 
 //import ScalaRep._
 
@@ -11,19 +11,19 @@ import ScalaPolyRep._
 /**
  * @author gadgil
  */
-class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X]) {
-  case class VecTyp(dim: Int) extends ScalaTyp[Vector[Long]]
+class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[RepTerm[X], X]) {
+  case class VecTyp(dim: Int) extends ScalaTyp[Vector[X]]
   
-  implicit object Rep extends ScalaPolyRep[Term, Vector[X]]{
+  implicit object Rep extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]{
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match{
       case tp @ VecTyp(dim) if dim == elem.size => {
-        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](tp)
         Some(pattern(elem))        
       }
       case _ => None
     }
     
-    def unapply(term: Term) = term.typ match {
+    def unapply(term: RepTerm[Vector[X]]) = term.typ match {
       case tp : VecTyp => {
         val pattern = new ScalaSym[Term, Vector[X]](tp)
         pattern.unapply(term)
@@ -35,19 +35,20 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X
   }
   
   
-  implicit val nrep = poly(Nat.rep)
+  
+  implicit val nrep = poly(NatTyp.rep)
   
   implicit val urep = poly(ScalaRep.UnivRep)
   
   private val a = basetyp.Var
 
   
-  private val n = "n" :: Nat
+  private val n = "n" :: NatTyp
   
   
-  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(Nat ->: __).get
+  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(NatTyp ->: __).get
   
-  private val ltyp = n ~>: (Vec(n) ->: Nat)
+  private val ltyp = n ~>: (Vec(n) ->: NatTyp)
   
   private val vsize = (n : Long) => 
     (v : Vector[X]) => {
@@ -66,18 +67,22 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[Term, X
           a +: v  
           }
         
-  private val constyp  = n  ~>: Nat ->: (Vec(n) ->: Vec(Nat.succ(n)))
+  val m : RepTerm[Long] = NatTyp.succ(n)      
+        
+  private val constyp  = n  ~>: NatTyp ->: (Vec(n) ->: Vec(m))
   
-  import Nat.rep
+  import NatTyp.rep
   
+  implicitly[ScalaPolyRep[RepTerm[Long], Long]]
   
+  implicitly[ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]]
+
   
-//  implicit val r = depFuncPolyRep(implicitly[ScalaPolyRep[RepTerm[Long], Long]], 
-//      implicitly[ScalaPolyRep[FuncLike[RepTerm[Long], FuncLike[RepTerm[Vector[Long]], RepTerm[Vector[Long]]]], X => Vector[X] => Vector[X]]])
+  implicit val r = depFuncPolyRep(implicitly[ScalaPolyRep[RepTerm[Long], Long]], 
+      implicitly[ScalaPolyRep[FuncLike[RepTerm[X], FuncLike[RepTerm[Vector[X]], RepTerm[Vector[X]]]], X => Vector[X] => Vector[X]]])    
+      
+  val succ = ScalaPolyTerm(vcons)(r).hott(constyp).get        
+
   
-//  private val term = ScalaPolyTerm[FuncLike[Term, FuncLike[Term, FuncLike[Term, Term]]], Long => (X => (Vector[X] => Vector[X]))](vcons)
-  
-//  val succ = term.hott(constyp).get
-  
-//  val empty = Vector.empty[X].hott(VecTyp(0)).get
+  val empty = Vector.empty[X].hott(VecTyp(0)).get
 }

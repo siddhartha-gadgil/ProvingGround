@@ -183,6 +183,22 @@ trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
     val typ: Typ[RepTerm[A]]
   }
 
+class ScalaTyp[A] extends Typ[RepTerm[A]]{
+    val typ = Universe(0)
+
+    def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
+
+    def newobj = this
+
+    def subs(x: Term, y: Term) = (x, y) match {
+      case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
+      case _ => this
+    }
+    
+    implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
+  }
+
+
 object ScalaRep {
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] = IdRep(typ)
@@ -213,20 +229,7 @@ object ScalaRep {
     }
   }
   
-  class ScalaTyp[A] extends Typ[RepTerm[A]]{
-    val typ = Universe(0)
-
-    def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
-
-    def newobj = this
-
-    def subs(x: Term, y: Term) = (x, y) match {
-      case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
-      case _ => this
-    }
-    
-    implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
-  }
+  
  
   case object Nat extends ScalaTyp[Int]
 
