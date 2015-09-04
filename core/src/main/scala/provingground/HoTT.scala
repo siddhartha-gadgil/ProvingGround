@@ -17,7 +17,7 @@ import Math._
 
 /**
  * The Homotopy type theory objects, types and utility functions
- *
+ *S
  */
 object HoTT {
   /**

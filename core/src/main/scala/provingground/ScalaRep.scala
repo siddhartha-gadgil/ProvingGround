@@ -195,7 +195,33 @@ object ScalaRep {
     domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) : ScalaRep[Func[U, X], V => Y] = FuncRep(domrep, codomrep)
 
 
-  class ScalaTyp[A] extends SmallTyp{
+  trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
+    val typ: Typ[RepTerm[A]]
+  }
+  
+ case class RepSymbObj[A, +U <: RepTerm[A]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
+    override def toString = name.toString + " : (" + typ.toString + ")"
+
+    def newobj = RepSymbObj(new InnerSym(this), typ)
+
+    def subs(x: Term, y: Term) = if (x == this) y.asInstanceOf[RepTerm[A]] else {
+      def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
+      symSubs(symbobj)(x, y)(name)
+    }
+  }
+  
+  class ScalaTyp[A] extends Typ[RepTerm[A]]{
+    val typ = Universe(0)
+
+    def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
+
+    def newobj = this
+
+    def subs(x: Term, y: Term) = (x, y) match {
+      case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
+      case _ => this
+    }
+    
     implicit val rep : ScalaRep[Term, A] = SimpleRep(this)
   }
  
