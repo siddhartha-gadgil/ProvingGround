@@ -20,6 +20,8 @@ class NumericTyp[A : CRig] {
   
   trait LocalTerm extends Term with Subs[LocalTerm]
   
+  type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
+  
   object LocalTyp extends Typ[LocalTerm]{
     type Obj = LocalTerm
 
@@ -48,33 +50,15 @@ class NumericTyp[A : CRig] {
     }
   }
   
-  sealed trait Op{
-    val unit : A
-    
-    def op(x: A, y: A): A
-    
-  }
-  
-  case object Plus extends Op{
-    val unit = zero
-    
-    def op(x: A, y: A) = x + y
-    
-  }
-  
-  case object Times extends Op{
-    val unit = one
-    
-    def op(x: A, y: A) = x * y
-    
-  }
+
 
   
   object Literal extends ScalaSym[LocalTerm, A](LocalTyp)
 
   object Comb{
-    def unapply(term: LocalTerm): Option[(LocalTerm, LocalTerm, LocalTerm)] = term match {
-      case FormalAppln(FormalAppln(op : LocalTerm, x : LocalTerm), y : LocalTerm) => Some((op, x, y))
+    def unapply(term: Term): Option[(Op, LocalTerm, LocalTerm)] = term match {
+      case FormalAppln(FormalAppln(op, x), y) => 
+        Try((op.asInstanceOf[Op], x. asInstanceOf[LocalTerm], y.asInstanceOf[LocalTerm])).toOption
       case _ => None
     }
     
