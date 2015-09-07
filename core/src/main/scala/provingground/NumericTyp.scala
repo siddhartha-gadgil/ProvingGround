@@ -15,19 +15,23 @@ import scala.language.implicitConversions
  * 
  * Symbolic algebra for numeric types, with Sigma's and Pi's
  * Requivers a commutative rig, but Pi's and Sigma's are written to allow rings and fields
+ * 
+ * Using type Rig, not CRig as CRing does not extend CRig
  */
-class NumericTyp[A : CRig] {
-  val rig = implicitly[CRig[A]]
+class NumericTyp[A : Rig] {self =>
+  val rig = implicitly[Rig[A]]
   
   import rig._
   
-  trait LocalTerm extends Term with Subs[LocalTerm]
+//  trait LocalTerm extends Term with Subs[LocalTerm]
+  
+  type LocalTerm = RepTerm[A]
   
   type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
   
-  object LocalTyp extends Typ[LocalTerm]{
+  object LocalTyp extends ScalaTyp[A]{
     type Obj = LocalTerm
-
+/*
     val typ = Universe(0)
 
     def symbObj(name: AnySym): LocalTerm = LocalSymbObj(name, this)
@@ -39,7 +43,7 @@ class NumericTyp[A : CRig] {
       case _ => this
     }
     
-    implicit val rep : ScalaRep[LocalTerm, A] = SimpleRep(this)
+    implicit val rep : ScalaRep[LocalTerm, A] = SimpleRep(this)*/
   }
   
   case class LocalSymbObj[+U <: LocalTerm](name: AnySym, typ: Typ[U]) extends LocalTerm with Symbolic {
@@ -250,6 +254,7 @@ class NumericTyp[A : CRig] {
   
   @annotation.tailrec 
   final def posPower(x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
+    require(n >=0, s"attempted to compute negative power $n of $x recursively")
     if (n ==0) Literal(one)
     else 
       if (n == 1) x
@@ -316,6 +321,16 @@ class NumericTyp[A : CRig] {
       case `x` => PiTerm(Map(base(x) -> 2 * expo(x)))
       case _ => PiTerm(Map(base(x) -> expo(x), base(y) -> expo(y)))
     }
+  }
+  
+  implicit val crigStructure : CRig[LocalTerm] = new CRig[LocalTerm]{
+    val zero = Literal(rig.zero)
+    
+    val one = Literal(rig.one)
+    
+    def plus(x: LocalTerm, y: LocalTerm) = self.sum(x)(y)
+    
+    def times(x: LocalTerm, y: LocalTerm) = self.prod(x)(y)
   }
   
 }
