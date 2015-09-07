@@ -12,6 +12,9 @@ import scala.language.implicitConversions
 
 /**
  * @author gadgil
+ * 
+ * Symbolic algebra for numeric types, with Sigma's and Pi's
+ * Requivers a commutative rig, but Pi's and Sigma's are written to allow rings and fields
  */
 class NumericTyp[A : CRig] {
   val rig = implicitly[CRig[A]]
@@ -128,13 +131,49 @@ class NumericTyp[A : CRig] {
     
     val tail = if (elems.tail.isEmpty) Literal(one) else PiTerm(elems.tail)
     
-    val composite = (elems.size > 1)
+    val isComposite = (elems.size > 1)
     
     def *:(y: LocalTerm) = {
-      val ind = (elems.get(y) map (_+1)) getOrElse (1)
-      PiTerm(elems + (y -> ind))
+      import Reciprocal.{base, expo}
+      
+      val ind = (elems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
+      PiTerm.purge(elems + (base(y) -> ind))
     }
   }
+  
+  object PiTerm{
+    def purge(elems: Map[LocalTerm, Int]) = {
+      val nontriv = elems filter ({case (x, p) => p > 0 })
+      if (!nontriv.isEmpty) PiTerm(nontriv) else Literal(one)
+    }
+  }
+  
+  object Reciprocal{
+    def apply(a: LocalTerm) = PiTerm(Map(a -> -1))
+    
+    def unapply(a : Term) = a match {
+      case PiTerm(elems) => {
+        elems.toList match {
+          case xp :: List() if xp._2 == -1 => Some(xp._1)
+          case _ => None
+        } 
+      }
+      case _ => None
+    }
+    
+  def base(y: LocalTerm) = y match {
+        case Reciprocal(a) => a
+        case a => a
+      }
+  
+  def expo(y: LocalTerm) = y match {
+        case Reciprocal(a) => -1
+        case _ => 1
+      }
+    
+  }
+  
+
   
   import LocalTyp.rep
   
@@ -200,7 +239,8 @@ class NumericTyp[A : CRig] {
     def subs(x: Term, y: Term) = AdditiveMorphism(base.subs(x, y), op)
     
     def newobj = AdditiveMorphism(base.newobj, op)
-    
+ 
+  
     def act(x: LocalTerm) = x match {
       case Comb(f, u, v) if f == sum => op(base(u), base(v))
       case SigmaTerm(elems) => (elems map ((u) => base(u))).reduce(op)
@@ -209,12 +249,15 @@ class NumericTyp[A : CRig] {
   }
   
   @annotation.tailrec 
-  final def power(x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
+  final def posPower(x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
     if (n ==0) Literal(one)
     else 
       if (n == 1) x
-      else power(x, n-1, prod(accum)(x))
+      else posPower(x, n-1, prod(accum)(x))
   }
+  
+  // override this in fields
+  def power(x: LocalTerm, n: Int) = posPower(x, n)
   
   object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
     val dom = LocalTyp
@@ -242,8 +285,9 @@ class NumericTyp[A : CRig] {
         funcSum(prod(u), prod(v))
       case s @ SigmaTerm(terms) => 
         (terms map ((t) => prod(t))).reduce(funcSum)
+      case Reciprocal(x) => multTerm(Reciprocal(x))
       case p: PiTerm =>  
-        if (p.composite) composition(prod(p.head), prod(p.tail))
+        if (p.isComposite) composition(prod(p.head), prod(p.tail))
         else prod(p.head)
       case y => multTerm(y)
     }
@@ -252,6 +296,8 @@ class NumericTyp[A : CRig] {
   
   case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp
+    
+    import Reciprocal.{base, expo}
     
     val codom = LocalTyp
     
@@ -267,8 +313,8 @@ class NumericTyp[A : CRig] {
       case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
       case SigmaTerm(elems) => (elems map ((u) => prod(x)(u))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
       case p : PiTerm => x *: p
-      case `x` => PiTerm(Map(x -> 2))
-      case _ => PiTerm(Map(x -> 1, y -> 1))
+      case `x` => PiTerm(Map(base(x) -> 2 * expo(x)))
+      case _ => PiTerm(Map(base(x) -> expo(x), base(y) -> expo(y)))
     }
   }
   

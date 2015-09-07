@@ -42,7 +42,7 @@ lazy val serverSettings = Seq(
   ),
   scalaJSProjects := jsProjects,
   pipelineStages := Seq(scalaJSProd),
-  initialCommands in console := """import provingground._ ; import HoTT._; import pprint.Config.Colors._; import pprint.pprintln"""
+  initialCommands in console := """import provingground._ ; import HoTT._; /*import pprint.Config.Colors._; import pprint.pprintln*/"""
   )
 
 lazy val nlpSettings = Seq(
