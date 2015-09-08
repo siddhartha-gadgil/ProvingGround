@@ -41,7 +41,9 @@ sealed trait TermExpr{
     def asTerm(implicit lp: LiteralParser) = lp(typ.asTyp)(lit)
   }
   
-  
+  case class VarTyp(name: String) extends TermExpr{
+    def asTerm(implicit lp: LiteralParser): Term = SymbTyp(name)
+  }
   
   /**
    * LambdaTermExpr maps to a lambda

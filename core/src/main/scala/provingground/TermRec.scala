@@ -3,9 +3,9 @@ import HoTT._
 
 
   trait TermRec[U] {
-	val specialTerms: PartialFunction[Term, U]
+	  val specialTerms: PartialFunction[Term, U]
   
-    def fromString(str: String): U
+    def fromString(str: String)(implicit typ: Typ[Term]): U
 
     def appln(func: U, arg: U): U
 
@@ -19,14 +19,16 @@ import HoTT._
 
     def plus(first: U, second: U): U
     
+    def equality(dom: U, lhs: U, rhs: U) : U
+    
     def pair(first: U, second: U): U
 
-    def symbobj(term: SymbObj[Term]): U
+    def symbobj(term: SymbObj[Term])(implicit typ: Typ[Term]): U
 
     def symbtyp(term: SymbTyp): U
 
-    def apply(term: Term): U = term match {
- //     case applptnterm(func, arg) => appln(apply(func), apply(arg))
+    def apply(term: Term)(implicit typ: Typ[Term]): U = term match {
+      case FormalAppln(func, arg) => appln(apply(func), apply(arg))
       case LambdaFixed(x : Term, y: Term) => lambda(apply(x), apply(y))
       case Lambda(x: Term, y: Term) => lambda(apply(x), apply(y))
       case PiTyp(fibre) => pi(apply(fibre))
@@ -36,6 +38,7 @@ import HoTT._
       case fn: FuncTyp[_, _] => arrow(apply(fn.dom), apply(fn.codom))
       case sym: SymbObj[_] => symbobj(sym)
       case sym: SymbTyp => symbtyp(sym)
+      case IdentityTyp(dom, lhs: Term, rhs : Term) => equality(apply(dom), apply(lhs), apply(rhs))
       case _ => fromString(term.toString)
     }
   }
