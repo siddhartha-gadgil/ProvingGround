@@ -576,7 +576,7 @@ object HoTT {
    *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.
    *
    */
-  trait Func[W <: Term with Subs[W], +U <: Term] extends FuncLike[W, U] with Subs[Func[W, U]] {
+  trait Func[W <: Term with Subs[W], +U <: Term] extends FuncLike[W, U] with Subs[Func[W, U]]{
     /** domain*/
     val dom: Typ[W]
     /** codomain */

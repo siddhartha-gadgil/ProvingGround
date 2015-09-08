@@ -159,11 +159,11 @@ object Contexts{
 
     def cnst(x: Term) = KappaMixin(x, this)
 
-    def dfn(x: Term, y: Term, local: Boolean = true) = DefnMixin(Defn(x, y), this)
+    def dfn(x: Term, y: Term, local: Boolean = true) = DefnMixin(Defn(termSymbol(x), y), this)
 
     def dfneql(lhs: Term, rhs: Term, simp: Boolean = false) = DefnEqualityMixin(DefnEqual(lhs, rhs), this)
 
-    def globaldfn(x: Term, y: Term, local: Boolean = true) = GlobalDefnMixin(Defn(x, y), this)
+    def globaldfn(x: Term, y: Term, local: Boolean = true) = GlobalDefnMixin(Defn(termSymbol(x), y), this)
 
     def simpeql(lhs: Term, rhs: Term, simp: Boolean = false) = SimpEqualityMixin(DefnEqual(lhs, rhs), this)
   }
