@@ -4,10 +4,14 @@ import HoTT._
 
 import upickle.default._
 
+import UnicodeSyms.{Arrow => Arr, _}
+
 /**
  * @author gadgil
  */
 sealed trait TermExpr{
+    
+  
     def asTerm(implicit lp: LiteralParser): Term
     
     def asTyp(implicit lp: LiteralParser) : Typ[Term] = asTerm match {
@@ -25,6 +29,8 @@ sealed trait TermExpr{
    */
   case class Equality(dom: TermExpr, lhs: TermExpr, rhs: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser) = IdentityTyp(dom.asTyp, lhs.asTerm, rhs.asTerm)
+    
+    override def toString = s"$lhs = $rhs"
   }
   
  
@@ -35,28 +41,39 @@ sealed trait TermExpr{
    */
   case class TypedVar(name: String, typ: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser): Term = typ.asTyp.symbObj(name)
+    
+    override def toString = s"($name : $typ)"
   }
   
   case class TypedLiteral(lit: String, typ: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser) = lp(typ.asTyp)(lit)
+    
+    override def toString = s"($lit : $typ)"
   }
   
   case class VarTyp(name: String) extends TermExpr{
     def asTerm(implicit lp: LiteralParser): Term = SymbTyp(name)
+    
+    override def toString = s"$name"
   }
   
   /**
    * LambdaTermExpr maps to a lambda
    */
-  case class LambdaExp(x : TermExpr, y: TermExpr) extends TermExpr{
+  case class LambdaExpr(x : TermExpr, y: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser) =
-      lambda(x.asTerm)(y.asTerm)    
+      lambda(x.asTerm)(y.asTerm) 
+      
+    override def toString = s"$x $MapsTo $y"
     }
 
 
-  case class PairExp(first: TermExpr, second: TermExpr) extends TermExpr{
+  case class PairExpr(first: TermExpr, second: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser) = mkPair(first.asTerm, second.asTerm)
+  
+    override def toString = s"($first, $second)"
   }
+  
   
 
   
@@ -65,6 +82,8 @@ sealed trait TermExpr{
    */
   case class Apply(func: TermExpr, arg: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser): Term = fold(func.asTerm)(arg.asTerm)
+
+    override def toString = s"($func $arg)"
   }
   
 
@@ -73,6 +92,8 @@ sealed trait TermExpr{
    */
   case object U extends TermExpr{
     def asTerm(implicit lp: LiteralParser) = __
+
+    override def toString = s"${UnivSym}"
   }
 
   
@@ -81,6 +102,8 @@ sealed trait TermExpr{
    */
   case class Arrow(lhs: TermExpr, rhs: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser): Typ[Term] = lhs.asTyp ->: rhs.asTyp
+    
+    override def toString = s"($lhs $Arr $rhs)"
   }
   
   
@@ -96,6 +119,7 @@ sealed trait TermExpr{
         throw(new IllegalArgumentException("cannot construct Sigma Type with fibre $fiber.asTerm"))   
     }   
     
+    override def toString = s"${Sigma}_($fiber)"
   }
   
   case class PiExpr(fiber: TermExpr) extends TermExpr{
@@ -109,17 +133,21 @@ sealed trait TermExpr{
       case  _ => 
         throw(new IllegalArgumentException("cannot construct Pi Type with fibre $fiber.asTerm"))   
     }   
-    
+   override def toString = s"${Pi}_$fiber" 
   }
   
   case class PlusTypExpr(first: TermExpr, second: TermExpr) extends TermExpr{
     def asTerm(implicit lp: LiteralParser) = PlusTyp(first.asTyp, second.asTyp)
+    
+    override def toString = s"$first + $second"
   }
   
 trait LiteralParser{
   def parse(typ: Typ[Term])(lit: String) : Option[Term]
   
   def apply(typ: Typ[Term])(lit: String) = parse(typ)(lit).get
+  
+  def literal(typ: Typ[Term])(lit: String): String
 }
 
 
@@ -129,4 +157,31 @@ object TermExpr{
   def pickle(expr: TermExpr) = write(expr)
   
   def unpickle(str: String) = read[TermExpr](str)
+  
+  case class expr(lp: LiteralParser, specialTerms: PartialFunction[Term,TermExpr] = Map.empty) extends TermRec[TermExpr]{
+    def appln(func: TermExpr,arg: TermExpr): TermExpr = Apply(func, arg) 
+    
+    def arrow(dom: TermExpr,codom: TermExpr): TermExpr = Arrow(dom, codom)
+    
+    def equality(dom: TermExpr,lhs: TermExpr,rhs: TermExpr): TermExpr = Equality(dom, lhs, rhs) 
+    
+    def fromString(str: String)(implicit typ: Typ[Term]): TermExpr = TypedLiteral(lp.literal(typ)(str), apply(typ)) 
+    
+    def lambda(variable: TermExpr,value: TermExpr): TermExpr = LambdaExpr(variable, value) 
+    
+    def pair(first: TermExpr,second: TermExpr): TermExpr = PairExpr(first, second) 
+    
+    def pi(fibre: TermExpr): TermExpr = PiExpr(fibre) 
+    
+    def plus(first: TermExpr,second: TermExpr): TermExpr = PlusTypExpr(first, second)
+     
+    def sigma(fibre: TermExpr): TermExpr = SigmaExpr(fibre) 
+      
+    
+    def symbobj(term: provingground.HoTT.SymbObj[Term])(implicit typ: provingground.HoTT.Typ[Term]): TermExpr = 
+      TypedVar(term.name.toString, apply(typ)) 
+     
+    def symbtyp(typ: provingground.HoTT.SymbTyp): TermExpr = VarTyp(typ.name.toString)
+    
+  }
 }
