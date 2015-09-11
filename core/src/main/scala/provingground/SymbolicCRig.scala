@@ -218,7 +218,7 @@ class SymbolicCRig[A : Rig] {self =>
           lmbda(x)(x)
         }
         else
-          ((b: A) => a + b).term // FIXME incorrect?, e.g, y may be a sum c + z
+          AddLiteral(a) 
       case Comb(op, u, v) if op == sum =>
         composition(sum(u), sum(v))
       case s @ SigmaTerm(terms) =>
