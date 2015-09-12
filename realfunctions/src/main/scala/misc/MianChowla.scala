@@ -3,6 +3,7 @@ package misc
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+import ammonite.ops._
 
 object MianChowla{
 @annotation.tailrec
@@ -23,8 +24,15 @@ object MianChowla{
 
   def view(n: Int) = seq.take(n).toList
 
-  def print(n: Int) = {
+  def run(n: Int) = {
     val iter = seq.zipWithIndex.take(n).toIterator
     for ((x, y) <- iter) println((x, y+1, log(x.toDouble)/log(y.toDouble + 1)))
+  }
+  
+  def run(n: Int, file: String) = {
+    val wd = cwd/ "data"
+    val iter = seq.zipWithIndex.take(n).toIterator
+    for ((x, y) <- iter) 
+      write.append(wd/file, s"$x, ${y+1}, ${log(x.toDouble)/log(y.toDouble + 1)}\n")
   }
 }

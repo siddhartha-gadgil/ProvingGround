@@ -28,6 +28,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "2.8.2",
     "com.lihaoyi" %% "upickle" % "0.3.4",
+    "com.lihaoyi" %% "ammonite-ops" % "0.4.7",
 "com.lihaoyi" %% "pprint" % "0.3.6")
   )
 
