@@ -1276,16 +1276,19 @@ object HoTT {
 
   
   def asLambdas[U <: Term with Subs[U]](term: U) : Option[U] = term match {
-    case Lambda(x, y) => None
+    case LambdaFixed(x: Term, y : Term) => 
+      for (z <- asLambdas(y); w <- Try(lmbda(x)(z).asInstanceOf[U]).toOption) yield w
+    case Lambda(x: Term, y : Term) => 
+      for (z <- asLambdas(y); w <- Try(lambda(x)(z).asInstanceOf[U]).toOption) yield w
     case fn : Func[u, v] => {
       val x = fn.dom.Var
       val y = fn(x)
-      Try(lmbda(x)(y).asInstanceOf[U]).toOption
+      Try(lmbda(x)(y).asInstanceOf[U]).toOption flatMap (asLambdas)
     }
     case fn : FuncLike[u, v] => {
       val x = fn.dom.Var
       val y = fn(x)
-      Try(lambda(x)(y).asInstanceOf[U]).toOption
+      Try(lambda(x)(y).asInstanceOf[U]).toOption flatMap (asLambdas)
     }
     case _ => None
   }
