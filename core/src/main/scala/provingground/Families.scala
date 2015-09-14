@@ -204,7 +204,7 @@ object Families {
     def inducedDep(f: FuncLike[O, C]) = f
   }
 
-  trait RecFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], S <: Term with Subs[S], T <: Term, D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]] extends FmlyPtn[O, C, FuncLike[Term, V]] {
+  trait RecFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], S <: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]] extends FmlyPtn[O, C, FuncLike[Term, V]] {
 
     //    type Family <:  FuncLike[Term, V] with Subs[Family]
 

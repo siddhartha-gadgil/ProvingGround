@@ -11,7 +11,7 @@ object ScalaUniverses {
      * Wrapper for universe with refined scala type for objects (i.e., types) in it.
      * Refined scala types typically recursively built from (dependent) function types and types of already refined types.
      */
-    case class ScalaUniv[U <: Term](univ: Typ[Typ[U]])
+    case class ScalaUniv[U <: Term with Subs[U]](univ: Typ[Typ[U]])
 
     /**
      * scala universe with no refinement.
@@ -21,7 +21,7 @@ object ScalaUniverses {
     /**
      * given a universe with objects of scala type Typ[U], gives one with scala type Typ[Typ[U]]
      */
-    case class HigherUniv[U <: Typ[Term]](univ: Typ[U]) extends Typ[Typ[U]]{
+    case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U]) extends Typ[Typ[U]]{
       type Obj = Typ[U]
 
       lazy val typ = HigherUniv[Typ[U]](this)
@@ -36,7 +36,7 @@ object ScalaUniverses {
     /**
      * implicitly returns from a scala universe of Typ[U] one of Typ[Typ[U]]
      */
-    implicit def higherUniv[U <: Term](implicit sc : ScalaUniv[U]) : ScalaUniv[Typ[U]] = {
+    implicit def higherUniv[U <: Term with Subs[U]](implicit sc : ScalaUniv[U]) : ScalaUniv[Typ[U]] = {
       ScalaUniv(HigherUniv(sc.univ))
     }
 
@@ -134,7 +134,7 @@ object ScalaUniverses {
     /**
    * create type family, implicitly using a scala-universe object to build the codomain.
    */
-  def typFamily[W <: Term with Subs[W], U <: Term](dom: Typ[W], f: W => Typ[U])(
+  def typFamily[W <: Term with Subs[W], U <: Term with Subs[U]](dom: Typ[W], f: W => Typ[U])(
       implicit su: ScalaUniv[U]) = {
     val codom = su.univ
     new FuncDefn[W, Typ[U]](f, dom, codom)

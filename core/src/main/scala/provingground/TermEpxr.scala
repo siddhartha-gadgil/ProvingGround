@@ -183,5 +183,6 @@ object TermExpr{
      
     def symbtyp(typ: provingground.HoTT.SymbTyp): TermExpr = VarTyp(typ.name.toString)
     
+    def symbolic(name: AnySym) (implicit typ: provingground.HoTT.Typ[Term]): TermExpr = TypedVar(name.toString, apply(typ))
   }
 }

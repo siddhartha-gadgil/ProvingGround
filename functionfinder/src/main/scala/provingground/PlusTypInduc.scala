@@ -32,7 +32,7 @@ object PlusTypInduc {
 	      first.subs(x,y), second.subs(x,y), codom.subs(x, y), firstfn.subs(x,y), scndfn.subs(x,y))
   }
 
-	case class PlusExtendedDepFunction[V <: Term ](
+	case class PlusExtendedDepFunction[V <: Term with Subs[V]](
 	    first: Typ[Term], second: Typ[Term], depcodom: Func[Term, Typ[V]], firstfn: FuncLike[Term, V],
 	    scndfn: FuncLike[Term, V]) extends FuncLike[Term, V] with Subs[PlusExtendedDepFunction[V]]{
 

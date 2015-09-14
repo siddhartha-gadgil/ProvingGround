@@ -5,13 +5,13 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 //import provingground.ScalaUniverses._
 
 object ListType {
-  case class ListTyp[U<: Term](elemTyp: Typ[U]) extends SmallTyp
+  case class ListTyp[U<: Term with Subs[U]](elemTyp: Typ[U]) extends SmallTyp
   
-  case class ListTerm[U <: Term](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
+  case class ListTerm[U <: Term with Subs[U]](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
     val typ = ListTyp(elemTyp)
   }
   
-  case class ListRep[U<: Term](elemTyp: Typ[U]) extends ScalaRep[Term, List[U]]{
+  case class ListRep[U<: Term with Subs[U]](elemTyp: Typ[U]) extends ScalaRep[Term, List[U]]{
     val typ = ListTyp(elemTyp)
     
     def apply(l: List[U]) = ListTerm(l, elemTyp)
@@ -54,7 +54,7 @@ object ListType {
   }
   
   
-  def tailFn[U <: Term ](typ: Typ[U]) = {
+  def tailFn[U <: Term  with Subs[U]](typ: Typ[U]) = {
     val rep = ListRep(typ) -->: ListRep(typ)
     rep((l: List[U]) => l drop 1)
   }

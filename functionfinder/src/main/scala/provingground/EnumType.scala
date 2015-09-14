@@ -7,15 +7,15 @@ import ListType._
 //import provingground.ScalaUniverses._
 
 object EnumType {
-  case class EnumTyp[U <: Term](elemTyp: Typ[U]) extends SmallTyp
+  case class EnumTyp[U <: Term with Subs[U]](elemTyp: Typ[U]) extends SmallTyp
   
-  case class EnumTerm[U <: Term](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
+  case class EnumTerm[U <: Term with Subs[U]](value: List[U], elemTyp: Typ[U]) extends ConstTerm[List[U]]{
     val typ = EnumTyp(elemTyp)    
     
     lazy val rep = EnumRep(elemTyp)
   }
   
-  case class EnumRep[U <: Term](elemTyp: Typ[U]) extends ScalaRep[Term, EnumTerm[U]]{
+  case class EnumRep[U <: Term with Subs[U]](elemTyp: Typ[U]) extends ScalaRep[Term, EnumTerm[U]]{
     val typ = EnumTyp(elemTyp)
     
     def apply(v: EnumTerm[U]) = v
@@ -28,7 +28,7 @@ object EnumType {
     def subs(x: Term, y: Term) = EnumRep(elemTyp.subs(x, y))
   }
   
-  def enumList[U <: Term](elemTyp: Typ[U]) = {
+  def enumList[U <: Term with Subs[U]](elemTyp: Typ[U]) = {
     val rep = EnumRep(elemTyp) -->: ListRep(elemTyp)
     rep((en: EnumTerm[U]) => en.value)
   }

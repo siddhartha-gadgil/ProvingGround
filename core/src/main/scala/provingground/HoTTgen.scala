@@ -22,16 +22,25 @@ object HoTTgen {
 
 	val pityp : Term => Option[Term] = {
 	  case fmly : Func[u, _] => fmly.codom.typ match {
-	    case _ : Typ[w] => Try(PiTyp(fmly.asInstanceOf[Func[u, Typ[w]]])).toOption
-	    case _ => None
+	    case _ : Typ[w] => Try {
+        val x = fmly.dom.obj
+        val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+        val fibre = lmbda(x)(y)
+        PiTyp[u, w](fibre)
+      }.toOption
+      case _ => None
 	  }
 	  case _ => None
 	}
 
 	val sigmatyp : Term => Option[Term] = {
-	  case fmly : Func[w, _] => fmly.codom.typ match {
-	    case _ : Typ[u] => Try(
-	        SigmaTyp(fmly.asInstanceOf[Func[Term, Typ[Term]]])).toOption
+	  case fmly : Func[u, _] => fmly.codom.typ match {
+      case _ : Typ[w] => Try {
+        val x = fmly.dom.obj
+        val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+        val fibre = lmbda(x)(y)
+        SigmaTyp[u, w](fibre)
+      }.toOption
 	    case _ => None
 	  }
 	  case _ => None

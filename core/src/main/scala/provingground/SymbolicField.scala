@@ -13,7 +13,7 @@ import scala.language.implicitConversions
 /**
  * @author gadgil
  */
-class NumericField[A : Field]  extends NumericRing[A]{self =>
+class SymbolicField[A : Field]  extends SymbolicCRing[A]{self =>
   val field = implicitly[Field[A]]
   
   import field._
@@ -59,14 +59,14 @@ class NumericField[A : Field]  extends NumericRing[A]{self =>
     
     
     // Members declared in spire.algebra.EuclideanRing 
-    def gcd(a: NumericField.this.LocalTerm,b: NumericField.this.LocalTerm): NumericField.this.LocalTerm = Literal(field.one)
+    def gcd(a: SymbolicField.this.LocalTerm,b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm = Literal(field.one)
     
-    def mod(a: NumericField.this.LocalTerm,b: NumericField.this.LocalTerm): NumericField.this.LocalTerm = Literal(field.zero) 
+    def mod(a: SymbolicField.this.LocalTerm,b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm = Literal(field.zero) 
     
-    def quot(a: NumericField.this.LocalTerm,b: NumericField.this.LocalTerm): NumericField.this.LocalTerm = div(a, b)
+    def quot(a: SymbolicField.this.LocalTerm,b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm = div(a, b)
     
     // Members declared in spire.algebra.MultiplicativeGroup 
-    def div(x: NumericField.this.LocalTerm,y: NumericField.this.LocalTerm): NumericField.this.LocalTerm = 
+    def div(x: SymbolicField.this.LocalTerm,y: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm = 
       self.prod(x)(reciprocal(y))
   }
     
