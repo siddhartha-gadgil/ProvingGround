@@ -27,6 +27,8 @@ import HoTT._
 
     def symbtyp(term: SymbTyp): U
 
+    def symbolic(name: AnySym)(implicit typ: Typ[Term]) : U
+    
     def apply(term: Term)(implicit typ: Typ[Term]): U = term match {
       case FormalAppln(func, arg) => appln(apply(func), apply(arg))
       case LambdaFixed(x : Term, y: Term) => lambda(apply(x), apply(y))
@@ -38,6 +40,7 @@ import HoTT._
       case fn: FuncTyp[_, _] => arrow(apply(fn.dom), apply(fn.codom))
       case sym: SymbObj[_] => symbobj(sym)
       case sym: SymbTyp => symbtyp(sym)
+      case sym: Symbolic => symbolic(sym.name)
       case IdentityTyp(dom, lhs: Term, rhs : Term) => equality(apply(dom), apply(lhs), apply(rhs))
       case _ => fromString(term.toString)
     }

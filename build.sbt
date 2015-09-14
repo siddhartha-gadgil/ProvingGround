@@ -19,7 +19,7 @@ lazy val commonSettings = Seq(
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-//    "com.lihaoyi" % "ammonite-repl" % "0.4.5" % "test" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.4.7" % "test" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",

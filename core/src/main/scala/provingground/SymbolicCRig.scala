@@ -130,7 +130,12 @@ class SymbolicCRig[A : Rig] {self =>
     }
   }
 
-
+  /**
+   * A product of terms in normal form, i.e.,
+   * * none of the terms is a sum
+   * * we have either at least two terms or a single term with exponent not 1,
+   * * no exponent is 0.
+   */
   case class PiTerm(elems: Map[LocalTerm, Int]) extends LocalTerm{
     val typ = LocalTyp 
     
@@ -155,7 +160,7 @@ class SymbolicCRig[A : Rig] {self =>
 
   object PiTerm{
     def purge(elems: Map[LocalTerm, Int]) = {
-      val nontriv = elems filter ({case (x, p) => p > 0 })
+      val nontriv = elems filter ({case (x, p) => p != 0 })
       PiTerm.reduce(nontriv)
     }
     
@@ -173,10 +178,11 @@ class SymbolicCRig[A : Rig] {self =>
       case Reciprocal(b) => b
       case _ => PiTerm(Map(a -> -1))
     }
+    
     def unapply(a : Term) = a match {
       case PiTerm(elems) => {
         elems.toList match {
-          case xp :: List() if xp._2 == -1 => Some(xp._1)
+          case List(xp) if xp._2 == -1 => Some(xp._1)
           case _ => None
         }
       }
@@ -214,7 +220,7 @@ class SymbolicCRig[A : Rig] {self =>
       case Literal(a) =>
         if (a == zero)
         {
-          val x = LocalTyp.obj
+          val x = LocalTyp.Var
           lmbda(x)(x)
         }
         else
@@ -327,14 +333,14 @@ class SymbolicCRig[A : Rig] {self =>
           lmbda(x)(x)
         }
         else
-          AdditiveMorphism(((b: A) => a * b).term, (x: LocalTerm, y: LocalTerm) => sum(x)(y))
+          AdditiveMorphism(multLiteral(a), (x: LocalTerm, y: LocalTerm) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
       case Comb(op, u, v) if op == sum =>
         funcSum(prod(u), prod(v))
       case s @ SigmaTerm(terms) =>
         (terms map ((t) => prod(t))).reduce(funcSum)
-      case Reciprocal(x) => multTerm(Reciprocal(x))
+      case Reciprocal(x) => multTerm(Reciprocal(x)) // do not regard reciprocals as Pi's, or we get an infinite loop.
       case p: PiTerm =>
         if (p.isComposite) composition(prod(p.head), prod(p.tail))
         else prod(p.head)
@@ -342,6 +348,30 @@ class SymbolicCRig[A : Rig] {self =>
     }
   }
 
+  case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm]{
+    val x = Literal(b)
+    
+    val dom = LocalTyp
+
+    import Reciprocal.{base, expo}
+
+    val codom = LocalTyp
+
+    val typ = LocalTyp ->: LocalTyp
+
+    def subs(x: Term, y: Term) = this
+
+    def newobj = this
+
+    def act(y: LocalTerm) = y match{
+      case Literal(a) => Literal(b * a)
+      case Comb(f, Literal(a), v) if f == prod => prod(Literal(b* a))(v)
+      case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
+      case SigmaTerm(elems) => (elems map ((u) => prod(x)(u))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
+      case p  => Comb(prod, x, p)
+    }
+  }
+  
 
   case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp

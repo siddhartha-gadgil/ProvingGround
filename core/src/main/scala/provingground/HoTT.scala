@@ -576,7 +576,7 @@ object HoTT {
    *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.
    *
    */
-  trait Func[W <: Term with Subs[W], +U <: Term] extends FuncLike[W, U] with Subs[Func[W, U]]{
+  trait Func[W <: Term with Subs[W], +U <: Term with Subs[U]] extends FuncLike[W, U] with Subs[Func[W, U]]{
     /** domain*/
     val dom: Typ[W]
     /** codomain */
@@ -598,7 +598,7 @@ object HoTT {
   /**
    * wrap function adding name
    */
-  case class NamedFunc[W <: Term with Subs[W], +U <: Term](
+  case class NamedFunc[W <: Term with Subs[W], +U <: Term with Subs[U]](
     name: AnySym, func: Func[W, U]
   ) extends Func[W, U] {
     lazy val dom = func.dom
@@ -1274,6 +1274,19 @@ object HoTT {
 
   def getVar[U <: Term](typ: Typ[U]) = typ.symbObj(NameFactory.get)
 
+  
+  def asLambdas[U <: Term with Subs[U]](term: U) : Option[U] = term match {
+    case Lambda(x, y) => None
+  /*  case fn : Func[u, v] => {
+      val x = fn.dom.Var
+      val y = fn(x)
+      lmbda(x)(y)
+    }
+   */ 
+    case _ => None
+  }
+  
+  
   // -----------------------------------------------
   // Deprecated code - old style type families.
 

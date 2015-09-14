@@ -27,5 +27,7 @@ object TermFormat {
     def symbobj(term: SymbObj[Term])(implicit typ: Typ[Term]): String = term.name.toString +" : "+ this(term.typ)
 
     def symbtyp(typ: SymbTyp): String = typ.toString + " : _"
+    
+    def symbolic(name: AnySym)(implicit typ: Typ[Term]): String = s"$name : ${this(typ)}"
   }
 }
