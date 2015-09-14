@@ -218,7 +218,7 @@ object ScalaRep {
 
 
   
- case class RepSymbObj[A, +U <: RepTerm[A]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
+ case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj = RepSymbObj(new InnerSym(this), typ)
@@ -272,7 +272,7 @@ object ScalaRep {
    * formal extension of a function.
    * XXX must check type.
    */
-  def extend[T, U <: Term](fn: T => U, FuncLike: FuncLike[Term, U], codom: Typ[U]): Term => U = {
+  def extend[T, U <: Term with Subs[U]](fn: T => U, FuncLike: FuncLike[Term, U], codom: Typ[U]): Term => U = {
     case c: ConstTerm[_] => Try(fn(c.value.asInstanceOf[T])).getOrElse(codom.symbObj(ApplnSym(FuncLike, c)))
     case arg: Term => codom.symbObj(ApplnSym(FuncLike, arg))
   }
