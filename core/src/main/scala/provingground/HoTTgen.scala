@@ -7,8 +7,23 @@ import scala.util._
 import Collections._
 import FiniteDistribution._
 import LinearStructure._
+import scala.language.existentials
 
 object HoTTgen {
+  
+  def isFunc(t: Term) = t.isInstanceOf[FuncLike[_, _]]
+  
+  def isTyp(t: Term) = t.isInstanceOf[Typ[_]]
+  
+  def inDomain: Term => Term => Boolean = {
+    case (func: FuncLike[u, v]) => 
+      {
+        (arg: Term)  => arg.typ == func.dom
+      }
+    case _ => 
+      (_) => false
+  }
+  
 	val funcappl: (Term, Term) => Option[Term] = {
 	  case (f: FuncLike[u, _], a : Term) =>
 	    Try(f(a.asInstanceOf[u])).toOption
@@ -47,7 +62,7 @@ object HoTTgen {
 	}
 
 	val pairtyp : (Term, Term) => Option[Term] = {
-	  case (a : Typ[_], b: Typ[_]) => Some(PairTyp[Term, Term](a, b))
+	  case (a : Typ[u], b: Typ[v]) => Some(PairTyp(a, b))
 	  case _ => None
 	}
 
@@ -74,11 +89,11 @@ object HoTTgen {
 	}
 
 
-	lazy val moves = List((Move.appl, CombinationFn(funcappl)),
-	    (Move.arrow, CombinationFn(functyp)),
+	lazy val moves = List((Move.appl, CombinationFn(funcappl, isFunc, inDomain)),
+	    (Move.arrow, CombinationFn(functyp, isTyp, (_ : Term) => isTyp)),
 	    (Move.pi, MoveFn(pityp)),
 	    (Move.sigma, MoveFn(sigmatyp)),
-	    (Move.pairt, CombinationFn(pairtyp)),
+	    (Move.pairt, CombinationFn(pairtyp, isTyp, (_ : Term) => isTyp)),
 	    (Move.pair, CombinationFn(pairobj)),
 	    (Move.paircons, MoveFn(paircons)),
 	    (Move.icons, MoveFn(icons)),

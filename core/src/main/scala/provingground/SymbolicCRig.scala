@@ -8,7 +8,7 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 import scala.util._
-import scala.language.implicitConversions
+import scala.language.{implicitConversions, existentials}
 
 /**
  * @author gadgil
@@ -49,7 +49,9 @@ class SymbolicCRig[A : Rig] {self =>
   }
 
 
-  object Literal extends ScalaSym[LocalTerm, A](LocalTyp)
+  object Literal extends ScalaSym[LocalTerm, A](LocalTyp){
+    def fromInt(n: Int) = Literal(sumn(one, n))
+  }
 
   object Comb{
     def unapply(term: Term): Option[(Op, LocalTerm, LocalTerm)] = term match {
@@ -205,7 +207,7 @@ class SymbolicCRig[A : Rig] {self =>
 
   import LocalTyp.rep
 
-  object sum extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
+  case object sum extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
     val dom = LocalTyp
 
     val codom = LocalTyp ->: LocalTyp
@@ -231,7 +233,10 @@ class SymbolicCRig[A : Rig] {self =>
         composition(sum(s.head), sum(s.tail))
       case y => AddTerm(y)
     }
+    
+    override def toString="sum"
   }
+  
 
   case class AddLiteral(a : A) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp
@@ -314,7 +319,7 @@ class SymbolicCRig[A : Rig] {self =>
   def power(x: LocalTerm, n: Int) : LocalTerm = 
     posPower(x, n)
     
-  object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
+  case object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
     val dom = LocalTyp
 
     val codom = LocalTyp ->: LocalTyp
@@ -346,6 +351,8 @@ class SymbolicCRig[A : Rig] {self =>
         else prod(p.head)
       case y => multTerm(y)
     }
+    
+    override def toString = "prod"
   }
 
   case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm]{
@@ -406,5 +413,30 @@ class SymbolicCRig[A : Rig] {self =>
 
     def times(x: LocalTerm, y: LocalTerm) = self.prod(x)(y)
   }
-
 }
+
+
+import spire.syntax._
+
+  object SymbolicCRig extends LiteralParser{
+
+    
+    def parse(typ: Typ[Term])(str: String) : Option[Term] = typ match {
+      case FuncTyp(a : SymbolicCRig[u], FuncTyp(b, c)) if a ==b && b ==c => 
+        str match {
+          case x if x == a.sum.toString() => Some(a.sum)
+          case x if x == a.prod.toString() => Some(a.prod)
+          case _ => None
+        }
+      case tp : SymbolicCRig[a] => Try(tp.Literal.fromInt(str.toInt)).toOption
+      case _ => None
+    }
+    
+    def literal(term: Term) = term.typ match {
+      case tp : SymbolicCRig[a] => term match {
+        case tp.Literal(a) => Some(a.toString)
+        case _ => None
+      }
+      case _ => None
+    }
+  }

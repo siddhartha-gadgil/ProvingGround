@@ -46,7 +46,7 @@ sealed trait TermExpr{
   }
   
   case class TypedLiteral(lit: String, typ: TermExpr) extends TermExpr{
-    def asTerm(implicit lp: LiteralParser) = lp(typ.asTyp)(lit)
+    def asTerm(implicit lp: LiteralParser) = lp.parse(typ.asTyp)(lit).get
     
     override def toString = s"($lit : $typ)"
   }
@@ -145,13 +145,20 @@ sealed trait TermExpr{
 trait LiteralParser{
   def parse(typ: Typ[Term])(lit: String) : Option[Term]
   
-  def apply(typ: Typ[Term])(lit: String) = parse(typ)(lit).get
+  def literal(term: Term): Option[String]
   
-  def literal(typ: Typ[Term])(lit: String): String
+  def unapply(lit: String, typ: Typ[Term]) = parse(typ)(lit).get
+  
+  def apply(term: Term) = literal(term).getOrElse(term.toString)
 }
 
-
-
+object LiteralParser{
+  case object Empty extends LiteralParser{
+    def parse(typ: Typ[Term])(lit: String) : Option[Term] = None
+    
+    def literal(term: Term): Option[String] = None
+  }
+}
 
 object TermExpr{
   def pickle(expr: TermExpr) = write(expr)
@@ -165,7 +172,7 @@ object TermExpr{
     
     def equality(dom: TermExpr,lhs: TermExpr,rhs: TermExpr): TermExpr = Equality(dom, lhs, rhs) 
     
-    def fromString(str: String)(implicit typ: Typ[Term]): TermExpr = TypedLiteral(lp.literal(typ)(str), apply(typ)) 
+    def fromString(str: String)(implicit typ: Typ[Term]): TermExpr = TypedLiteral(str, apply(typ)) 
     
     def lambda(variable: TermExpr,value: TermExpr): TermExpr = LambdaExpr(variable, value) 
     

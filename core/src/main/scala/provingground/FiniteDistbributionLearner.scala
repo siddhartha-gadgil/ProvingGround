@@ -97,38 +97,28 @@ object FiniteDistributionLearner {
 
 	}
 
-  case class CombinationFn[V](f: (V, V) => Option[V]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
+  case class CombinationFn[V](f: (V, V) => Option[V],
+      firstFilter: V => Boolean = (a: V) => true,
+      secondFilter: V => V => Boolean = (a : V) => (b: V) => true) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-//	    val rawpmf = for (a <- d.support.toSeq; b <- d.support.toSeq; y <- f(a, b)) yield
-//	    		Weighted(y, d(a) * d(b))
-//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
-      d flatMap ((v: V) =>
-        d mapOpt((w: V) => f(v, w)))
+      d filter (firstFilter) flatMap ((v: V) =>
+        d filter (secondFilter(v)) mapOpt((w: V) => f(v, w)))
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => {
-   //   val fstDists =
-   //     d.supp map(
-    //      (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
       val fstsum =
-        invFlatMap((a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a), d.supp)
-        //(fstDists :\ FiniteDistribution.empty[V])(_++_)
+        invFlatMap((a: V) => (w.invmapOpt((b: V) => f(a, b), d.filter(secondFilter(a)).supp)) * d(a), d.filter(firstFilter).supp)
 
-      val scndDists = d.supp map(
-          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
+      val scndDists = d.filter(firstFilter).supp map(
+          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.filter(secondFilter(a)).supp)) * d(a))
       val scndsum =
         invFlatMap((a: V) => (w.invmapOpt((b: V) => f(b, a), d.supp)) * d(a), d.supp)
-    //    (scndDists :\ FiniteDistribution.empty[V])(_++_)
 
       fstsum ++ scndsum
-      /*
-	    val rawpmf = (for (a <- d.support; b <- d.support; y <- f(a, b)) yield
-	    		Set(Weighted(a, w(y) * d(b)), Weighted(b, w(y) * d(b)))).flatten
-	    FiniteDistribution(rawpmf).flatten*/
 	  }
 
 	}
-
+  
 	/**
 	 * Add a new vertex, mainly for lambdas
 	 */
