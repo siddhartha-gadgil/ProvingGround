@@ -182,10 +182,15 @@ class SymbolicCRig[A : Rig] {self =>
     
     def powList(x: LocalTerm, k: Int) = 
     {
-      val base = if (k< 0) power(x, -1) else x
+      val base = if (k< 0) Reciprocal.Formal(x) else x
       List.fill(math.abs(k))(base)
     }
   }
+  
+  /**
+   * override this in fields
+   */
+  val div: Op = ???
 
   object Reciprocal{
     def apply(a: LocalTerm) =  a match {
@@ -213,6 +218,16 @@ class SymbolicCRig[A : Rig] {self =>
         case _ => 1
       }
 
+  case class Formal(x: LocalTerm) extends LocalTerm with FoldedTerm[LocalTerm]{
+   
+    def newobj  = this
+    def subs(u: provingground.HoTT.Term,y: provingground.HoTT.Term)  = Formal(x.subs(u, y))
+
+    val typ = LocalTyp
+    
+    val op = div
+    val elems : List[LocalTerm] = List(Literal(one), x)
+  }
   }
 
 
