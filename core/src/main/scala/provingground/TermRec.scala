@@ -1,6 +1,12 @@
 package provingground
 import HoTT._
 
+trait FoldedTerm[U <: Term with Subs[U]] extends Term{
+  val op : Func[U, Func[U, U]]
+  
+  val elems: Traversable[U]
+}
+
 
   trait TermRec[U] {
 	  val specialTerms: PartialFunction[Term, U]
@@ -42,6 +48,12 @@ import HoTT._
       case sym: SymbTyp => symbtyp(sym)
       case sym: Symbolic => symbolic(sym.name)
       case IdentityTyp(dom, lhs: Term, rhs : Term) => equality(apply(dom), apply(lhs), apply(rhs))
+      case fld: FoldedTerm[v] => {
+        val terms = fld.elems map (apply)
+        val op = apply(fld.op)
+        def collapse(x: U, y: U) = appln(appln(op, x), y)
+        terms.reduce(collapse)
+      }
       case _ => fromString(term.toString)
     }
     }

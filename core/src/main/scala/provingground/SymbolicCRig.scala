@@ -64,9 +64,11 @@ class SymbolicCRig[A : Rig] {self =>
       FormalAppln(FormalAppln(op, x), y)
   }
 
-  case class SigmaTerm(elems: Set[LocalTerm]) extends LocalTerm{
+  case class SigmaTerm(elems: Set[LocalTerm]) extends LocalTerm with FoldedTerm[LocalTerm]{
     require(elems.size >1, s"Cannot create Sigma term of set $elems with less than 2 elements")
 
+    val op = sum 
+    
     val typ = LocalTyp
 
     def subs(x: Term, y: Term) = (elems map (_.replace(x, y))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
@@ -138,26 +140,30 @@ class SymbolicCRig[A : Rig] {self =>
    * * we have either at least two terms or a single term with exponent not 1,
    * * no exponent is 0.
    */
-  case class PiTerm(elems: Map[LocalTerm, Int]) extends LocalTerm{
+  case class PiTerm(multElems: Map[LocalTerm, Int]) extends LocalTerm with FoldedTerm[LocalTerm]{
     val typ = LocalTyp 
     
     def subs(x: Term, y: Term) =
-      (elems map ((an) => power(an._1.replace(x, y), an._2))).reduce((a: LocalTerm, b: LocalTerm) => prod(a)(b))
+      (multElems map ((an) => power(an._1.replace(x, y), an._2))).reduce((a: LocalTerm, b: LocalTerm) => prod(a)(b))
 
     def newobj = LocalTyp.obj
 
-    val head = power(elems.head._1, elems.head._2)
+    val head = power(multElems.head._1, multElems.head._2)
 
-    val tail = PiTerm.reduce(elems.tail)
+    val tail = PiTerm.reduce(multElems.tail)
 
-    val isComposite = (elems.size > 1)
+    val isComposite = (multElems.size > 1)
 
     def *:(y: LocalTerm) = {
       import Reciprocal.{base, expo}
 
-      val ind = (elems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
-      PiTerm.purge(elems + (base(y) -> ind))
+      val ind = (multElems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
+      PiTerm.purge(multElems + (base(y) -> ind))
     }
+    
+    val elems = multElems.keys.toList flatMap ((x) => PiTerm.powList(x, multElems(x)))
+    
+    val op = prod
   }
 
   object PiTerm{
@@ -172,6 +178,12 @@ class SymbolicCRig[A : Rig] {self =>
       else
         if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems) 
         else keys.head
+    }
+    
+    def powList(x: LocalTerm, k: Int) = 
+    {
+      val base = if (k< 0) power(x, -1) else x
+      List.fill(math.abs(k))(base)
     }
   }
 
