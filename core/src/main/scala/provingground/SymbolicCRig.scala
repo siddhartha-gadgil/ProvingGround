@@ -190,7 +190,8 @@ class SymbolicCRig[A : Rig] {self =>
   /**
    * override this in fields
    */
-  val div: Op = ???
+   val reciprocal : Func[LocalTerm, LocalTerm] = ???
+  //  val div: Op = ???
 
   object Reciprocal{
     def apply(a: LocalTerm) =  a match {
@@ -205,6 +206,7 @@ class SymbolicCRig[A : Rig] {self =>
           case _ => None
         }
       }
+      case FormalAppln(`reciprocal`, b : LocalTerm) => Some(b)      
       case _ => None
     }
 
@@ -218,6 +220,7 @@ class SymbolicCRig[A : Rig] {self =>
         case _ => 1
       }
 
+  /*
   case class Formal(x: LocalTerm) extends LocalTerm with FoldedTerm[LocalTerm]{
    
     def newobj  = this
@@ -227,6 +230,10 @@ class SymbolicCRig[A : Rig] {self =>
     
     val op = div
     val elems : List[LocalTerm] = List(Literal(one), x)
+  }*/
+  
+  object Formal{
+    def apply(x: LocalTerm) = FormalAppln(reciprocal, x)
   }
   }
 

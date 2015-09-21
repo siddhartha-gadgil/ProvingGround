@@ -18,7 +18,7 @@ class SymbolicField[A : Field]  extends SymbolicCRing[A]{self =>
   
   import field._
   
-  object reciprocal extends Func[LocalTerm, LocalTerm]{
+  override case object reciprocal extends Func[LocalTerm, LocalTerm]{
     val dom =  LocalTyp
     
     val codom = LocalTyp 
@@ -41,6 +41,7 @@ class SymbolicField[A : Field]  extends SymbolicCRing[A]{self =>
   
   val newobj = this
   
+  override def toString = "reciprocal"
   }
 
   override def power(x: LocalTerm, n: Int) = 

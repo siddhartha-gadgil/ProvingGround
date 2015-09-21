@@ -173,8 +173,9 @@ sealed trait FiniteDistribution[T] extends ProbabilityDistribution[T] with Label
    *
    * @param baseweights
    */
-  def feedback(baseweights: T => Double, damp : Double = 0.1) ={
-    val rawdiff = for (elem <- supp) yield (Weighted(elem, baseweights(elem)/(baseweights(elem)* damp + apply(elem))))
+  def feedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
+    val weights = (t: T) => math.pow(baseweights(t), strictness)
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem)/(weights(elem)* damp + apply(elem))))
     val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
     val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff, epsilon)
