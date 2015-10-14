@@ -35,6 +35,10 @@ RUNNING_PID
 
 *.log
 
+*.class
+
+.jvm/
+
 target/
 
 .target/

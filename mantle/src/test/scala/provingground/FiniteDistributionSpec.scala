@@ -6,7 +6,7 @@ import FiniteDistribution._
 import LinearStructure._
 
 class FiniteDistributionSpec extends FlatSpec{
-  def finDist[T] = (pmf: Traversable[Weighted[T]]) => FiniteDistribution(pmf)
+  def finDist[T] = (pmf: Traversable[Weighted[T]]) => FiniteDistribution(pmf.toVector)
 
   val x = finDist(weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
 

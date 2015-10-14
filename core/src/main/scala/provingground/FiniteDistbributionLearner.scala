@@ -118,7 +118,7 @@ object FiniteDistributionLearner {
 	  }
 
 	}
-  
+
 	/**
 	 * Add a new vertex, mainly for lambdas
 	 */

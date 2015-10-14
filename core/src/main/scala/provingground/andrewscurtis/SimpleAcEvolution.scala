@@ -62,7 +62,7 @@ object SimpleAcEvolution {
 
   lazy val eSet = FiniteDistributionSet(Set(E))
 
-  lazy val eVec = FiniteDistributionVec(Vector(E))
+  lazy val eVec = FiniteDistribution(Vector(E))
 
   lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
 
