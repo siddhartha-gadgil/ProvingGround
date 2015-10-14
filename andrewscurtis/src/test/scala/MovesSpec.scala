@@ -7,11 +7,15 @@ import provingground._
 import FiniteDistribution._
 
 class AtomicMoveSpec extends FlatSpec {
+  val id : AtomicMove = Id
+  
   "AtomicMove" should "act on Moves" in {
     val moves = Moves(List(Inv(1), LftMult(1,0)))
     val result = Some(Moves(List(Inv(0), Inv(1), LftMult(1,0))))
     assert(Inv(0)(moves) === result)
   }
+  
+  
 
   /*
   it should "act on FiniteDistribution[Moves]" in {
@@ -46,17 +50,18 @@ class AtomicMoveSpec extends FlatSpec {
   }
 
   "Id" should "act on a Presentation to give back the same" in {
+    
     val pres = Presentation(3, "a", "aabaa!", "caba!a!b!")
     val OpPres = Some(pres)
     val result = Some(pres)
-    assert(Id()(pres) === result)
-    assert(Id()(OpPres) === result)
+    assert(id(pres) === result)
+    assert(id(OpPres) === result)
   }
 
   it should "act on Moves to return the same Moves" in {
     val moves = Moves(List(Inv(0), RtMult(0,1), LftMult(1,0)))
     val result = Some(moves)
-    assert(Id()(moves) === result)
+    assert(id(moves) === result)
   }
 
   "Inv" should "act on a Presentation and invert a relator" in {
@@ -120,6 +125,7 @@ class AtomicMoveSpec extends FlatSpec {
 }
 
 class AtomicMoveObjectSpec extends FlatSpec {
+  val id : AtomicMove = Id
   "AtomicMove companion object" should "read a string and convert it to an AtomicMove" in {
     val inp1 = "id"
     val inp2 = "2!"
@@ -130,7 +136,7 @@ class AtomicMoveObjectSpec extends FlatSpec {
     val inp7 = "12<-3"
     val inp8 = "6^a"
     val inp9 = "6^a!"
-    val result1 = Some(Id())
+    val result1 = Some(id)
     val result2 = Some(Inv(2))
     val result3 = Some(Inv(12))
     val result5 = Some(LftMult(3, 12))
@@ -149,7 +155,7 @@ class AtomicMoveObjectSpec extends FlatSpec {
   } 
 
   it should "be able to invert fromString with toString" in {
-    val inp1 = Id()
+    val inp1 = id
     val inp2 = Inv(12)
     val inp3 = LftMult(3,6)
     val inp4 = RtMult(3,6)
@@ -218,7 +224,7 @@ class MovesSpec extends FlatSpec {
 class MovesObjectSpec extends FlatSpec {
   "fromString" should "parse a list of strings into Moves" in {
     val seqMoves = Seq("id", "4!", "2->3", "4<-3", "6^b!")
-    val result = Some(Moves(List(Id(), Inv(4), LftMult(3,2), RtMult(4,3), Conj(6,-2))))
+    val result = Some(Moves(List(Id, Inv(4), LftMult(3,2), RtMult(4,3), Conj(6,-2))))
     assert(Moves.fromString(seqMoves)===result)
   }
 
