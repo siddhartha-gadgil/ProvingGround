@@ -102,7 +102,7 @@ object Collections{
     }
 
 
-    trait ProbabilityDistribution[T]{self =>
+    trait ProbabilityDistribution[T] extends Any{self =>
       def next: T
 
       def iid : InfSeq[T] = InfSeq((_ : Int) => next)
@@ -166,10 +166,9 @@ object Collections{
     }
 
 
-    implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
 
-    trait LabelledArray[L,T] extends Traversable[T]{
-      val support: Traversable[L]
+    trait LabelledArray[L,T] extends Any{
+      def support: Traversable[L]
 
       def foreach[U](f: T => U): Unit = support.map(get(_).get).foreach(f)
 
@@ -188,7 +187,7 @@ object Collections{
       }*/
     }
 
-    trait LabelledVector[L] extends LabelledArray[L, Double]{
+    trait LabelledVector[L] extends Any with LabelledArray[L, Double]{
       def sum  = (for (l <- support; value <-get(l)) yield value).sum
 
       def innerProduct(that: LabelledVector[L]) = (for (l <- support; fst <-get(l); scnd <- that.get(l)) yield fst * scnd).sum

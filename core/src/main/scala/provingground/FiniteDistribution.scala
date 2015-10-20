@@ -18,19 +18,19 @@ import scala.collection.parallel.immutable.ParVector
  *
  * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
  */
-sealed trait GenFiniteDistribution[T] extends ProbabilityDistribution[T] with LabelledVector[T]{
-  val pmf: Traversable[Weighted[T]]
+sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] with LabelledVector[T]*/{
+  def pmf: Traversable[Weighted[T]]
 
-  val injective: Boolean
+//  val injective: Boolean
 
-  val epsilon: Double
+//  val epsilon: Double
 
   /**
    * flatten distribution collating elements.
    */
   def flatten : GenFiniteDistribution[T]
 
-  lazy val pickle = flatten.map((t: T) => t.toString).pmf.toList.
+  def pickle = flatten.map((t: T) => t.toString).pmf.toList.
     map((w) => (w.elem, w.weight))
 
   /** 
@@ -59,23 +59,24 @@ sealed trait GenFiniteDistribution[T] extends ProbabilityDistribution[T] with La
 
 
 
-  lazy val elems = pmf map (_.elem)
+  def elems = pmf map (_.elem)
 
   /**
    * support of the distribution.
    */
-  lazy val support = (pmf filter (_.weight > epsilon) map (_.elem)).toSet
+  def support = (pmf filter (_.weight > 0) map (_.elem)).toSet
 
 
   /**
    * A more efficient support
    */
-  lazy val supp = if (injective) elems else flatten.elems
+  def supp = //if (injective) elems else 
+    flatten.elems
 
   /**
    * l^1-norm
    */
-  lazy val norm = (pmf.toSeq map (_.weight.abs)).sum
+  def norm = (pmf.toSeq map (_.weight.abs)).sum
 
   /**
    * next instance of a random variable with the given distribution
@@ -204,8 +205,12 @@ object FiniteDistribution{
   // choose default implementation
 //  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
   def apply[T](pmf: Traversable[Weighted[T]]) : FiniteDistribution[T] =
-    FiniteDistribution(pmf.toVector, false, 0.0)
+    FiniteDistribution(pmf.toVector)
 
+  implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
+  
+    
+    
   def uniform[A](s: Traversable[A]) = {
     val prob = 1.0/s.size
     val pmf = (s map (Weighted(_, prob)))
@@ -214,7 +219,7 @@ object FiniteDistribution{
 
   def unif[A](as: A*) = uniform(as.toSet)
 
-  def empty[T] : FiniteDistribution[T] =  FiniteDistribution[T](Vector() : Vector[Weighted[T]], true, 0.0)//Empty[T]
+  def empty[T] : FiniteDistribution[T] =  FiniteDistribution[T](Vector() : Vector[Weighted[T]])//Empty[T]
 
   case class Empty[T]() extends GenFiniteDistribution[T]{
     val pmf: Traversable[Weighted[T]] = Traversable.empty
@@ -333,22 +338,26 @@ case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0
 
 }
 
-case class FiniteDistribution[T](pmf: Vector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
+case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with GenFiniteDistribution[T]{
 
-  def flatten  = FiniteDistribution(Weighted.flatten(pmf).toVector, true, epsilon)
+  def flatten  = FiniteDistribution(Weighted.flatten(pmf).toVector)
 
-  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
+//  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
 
   def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
 
-  def normalized(t : Double = 0.0) = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toVector, false, 0.0)
+  def normalized(t : Double = 0.0) = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
 
-  def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)), injective, epsilon)
+  def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
-  def *(sc: Double) : FiniteDistribution[T] = FiniteDistribution(pmf map (_.scale(sc)) , injective, epsilon)
+  def *(sc: Double) : FiniteDistribution[T] = FiniteDistribution(pmf map (_.scale(sc)))
 
   def ++(that: GenFiniteDistribution[T]) : FiniteDistribution[T] = {
-    FiniteDistribution(pmf ++ that.pmf, false, epsilon)
+    FiniteDistribution(pmf ++ that.pmf)
+  }
+  
+  def ++(that: FiniteDistribution[T]) : FiniteDistribution[T] = {
+    FiniteDistribution(pmf ++ that.pmf)
   }
 
   override def +(elem: T , prob : Double) : FiniteDistribution[T] =
@@ -356,25 +365,30 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]], injective: Boolean = 
 
   override def map[S](f: T => S) = {
     val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
-    FiniteDistribution(newpmf, false, epsilon)
+    FiniteDistribution(newpmf)
   }
 
   def mapOpt[S](f: T => Option[S]) = {
     val newpmf = for (Weighted(elem, wt) <- pmf;
       felem <- f(elem)) yield Weighted(felem, wt)
-    FiniteDistribution(newpmf, false, epsilon)
+    FiniteDistribution(newpmf)
   }
 
   def invmap[S](f: S => T, support: Traversable[S]) = {
     val pmf = support.toVector map ((s: S) => Weighted(s, apply(f(s))))
-    FiniteDistribution(pmf, false, epsilon)
+    FiniteDistribution(pmf)
   }
 
   def invmapOpt[S](f: S => Option[T], support: Traversable[S]) = {
     val pmf = support.toVector map ((s: S) => Weighted(s, f(s).map(apply).getOrElse(0)))
-    FiniteDistribution(pmf, false, epsilon)
+    FiniteDistribution(pmf)
   }
 
+  def innerProduct(that: FiniteDistribution[T]) = (for (l <- support; fst <-get(l); scnd <- that.get(l)) yield fst * scnd).sum
+
+      def dot(that: FiniteDistribution[T]) = innerProduct(that)
+
+  
 }
   case class FiniteDistributionParVec[T](parpmf: ParVector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
 
