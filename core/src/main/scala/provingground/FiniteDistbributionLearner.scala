@@ -22,7 +22,7 @@ object FiniteDistributionLearner {
 	 * An atom for a finite distribution
 	 */
   case class Atom[V](x: V) extends DiffbleFunction[Double, FiniteDistribution[V]] {
-	  val func = (w: Double) => FiniteDistribution[V](Set(Weighted(x, w)))
+	  val func = (w: Double) => FiniteDistribution[V](Vector(Weighted(x, w)))
 
 	  val grad = (w: Double) => (p: FiniteDistribution[V]) => p(x)
 	}

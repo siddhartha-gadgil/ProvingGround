@@ -135,7 +135,6 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
   def +(elem: T , prob : Double) =
     this ++ FiniteDistribution(Vector(Weighted(elem, prob)))
 
-
   /**
    * subtract distribution
    */
@@ -305,6 +304,7 @@ case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0
     FiniteDistributionSet(combined, epsilon)
   }
 
+  def --(that: FiniteDistribution[T]) = this ++ (that * (-1))
 
   override def map[S](f: T => S) = {
     val newpmf = for (Weighted(elem, wt) <- pmf.toSeq) yield Weighted(f(elem), wt)
@@ -340,13 +340,13 @@ case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0
 
 case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with GenFiniteDistribution[T]{
 
-  def flatten  = FiniteDistribution(Weighted.flatten(pmf).toVector)
+  def flatten : FiniteDistribution[T]  = FiniteDistribution(Weighted.flatten(pmf).toVector)
 
 //  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
 
   def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
 
-  def normalized(t : Double = 0.0) = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
+  def normalized(t : Double = 0.0) : FiniteDistribution[T] = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
 
   def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
@@ -363,32 +363,40 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   override def +(elem: T , prob : Double) : FiniteDistribution[T] =
     this ++ FiniteDistribution(Vector(Weighted(elem, prob)))
 
-  override def map[S](f: T => S) = {
+  override def map[S](f: T => S) : FiniteDistribution[S] = {
     val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
     FiniteDistribution(newpmf)
   }
 
-  def mapOpt[S](f: T => Option[S]) = {
+  def mapOpt[S](f: T => Option[S]) :  FiniteDistribution[S] = {
     val newpmf = for (Weighted(elem, wt) <- pmf;
       felem <- f(elem)) yield Weighted(felem, wt)
     FiniteDistribution(newpmf)
   }
 
-  def invmap[S](f: S => T, support: Traversable[S]) = {
-    val pmf = support.toVector map ((s: S) => Weighted(s, apply(f(s))))
+  def invmap[S](f: S => T, support: Traversable[S]) : FiniteDistribution[S] = {
+    val mem = memo
+    def memFn = (x: T) => mem.get(x).getOrElse(0.0)
+    val pmf = support.toVector map ((s: S) => Weighted(s, memFn(f(s))))
     FiniteDistribution(pmf)
   }
 
-  def invmapOpt[S](f: S => Option[T], support: Traversable[S]) = {
-    val pmf = support.toVector map ((s: S) => Weighted(s, f(s).map(apply).getOrElse(0)))
+  def invmapOpt[S](f: S => Option[T], support: Traversable[S]) : FiniteDistribution[S] = {
+    val mem = memo
+    def memFn = (x: T) => mem.get(x).getOrElse(0.0)
+    val pmf = support.toVector map ((s: S) => Weighted(s, f(s).map(memFn).getOrElse(0)))
     FiniteDistribution(pmf)
   }
 
   def innerProduct(that: FiniteDistribution[T]) = (for (l <- support; fst <-get(l); scnd <- that.get(l)) yield fst * scnd).sum
 
-      def dot(that: FiniteDistribution[T]) = innerProduct(that)
+  def dot(that: FiniteDistribution[T]) = innerProduct(that)
 
+  private def preMemo : Map[T, Double] = {
+    (for (Weighted(x, p) <- pmf) yield (x -> p)).toMap
+  }
   
+  def memo : Map[T, Double] = flatten.preMemo
 }
   case class FiniteDistributionParVec[T](parpmf: ParVector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
 
