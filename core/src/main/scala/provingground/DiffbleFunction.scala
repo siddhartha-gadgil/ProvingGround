@@ -151,9 +151,29 @@ import LinearStructure._
         /**
        * Iterate a differentiable function.
       */
-      @tailrec def iterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int, accum:  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
-          if (n<1) accum else iterateDiffble(fn, n-1, accum andthen (fn :  DiffbleFunction[X, X]) )
+      @tailrec def recIterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int, accum:  DiffbleFunction[X, X] = id[X]):  DiffbleFunction[X, X] = {
+          if (n<1) accum else recIterateDiffble(fn, n-1, accum andthen (fn :  DiffbleFunction[X, X]) )
         }
+      
+      case class IteratedDiffble[X](fn:  DiffbleFunction[X, X], n: Int) extends DiffbleFunction[X, X]{
+        require(n >1, s"should not use case class for $n iterations")
+        lazy val g = consIterateDiffble(fn, n-1)
+        
+        val func : X => X = (a: X) => g.func(fn.func(a))
+
+        val grad : X => X => X =
+          (a: X) =>
+            (c: X) =>
+              fn.grad(a)(g.grad(fn.func(a))(c))
+      }
+      
+      def consIterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int) = n match{
+        case 0 => Id[X]
+        case 1 => fn
+        case k if k > 1 => IteratedDiffble(fn, k)
+      }
+      
+      def iterateDiffble[X](fn:  DiffbleFunction[X, X], n: Int) = consIterateDiffble(fn, n)
 
       def iterate[A](f: DiffbleFunction[A, A]) : Int => DiffbleFunction[A, A] = (n) => iterateDiffble(f, n)
 

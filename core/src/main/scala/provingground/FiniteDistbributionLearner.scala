@@ -83,14 +83,10 @@ object FiniteDistributionLearner {
 	 */
   case class MoveFn[V, W](f: V => Option[W]) extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[W]] {
 	  val func =  (d: FiniteDistribution[V]) => {
-//	    val rawpmf = for (x<- d.support.toSeq; y<- f(x)) yield Weighted(y, d(x))
-//	    FiniteDistribution(Weighted.flatten(rawpmf).toSet).flatten
       d mapOpt (f)
 	  }
 
 	  val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[W]) => {
-//	    val rawpmf = for (x<- d.support; y<- f(x)) yield Weighted(x, w(y))
-//	    FiniteDistribution(rawpmf).flatten
       w.invmapOpt(f, d.supp)
 	  }
 
