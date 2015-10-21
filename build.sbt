@@ -113,6 +113,12 @@ lazy val functionfinder = project.
   settings(name := "ProvingGround-FunctionFinder").
   dependsOn(coreJVM)
 
+lazy val mizar = project.
+  settings(commonSettings: _*).
+  settings(jvmSettings : _ *).
+  settings(name := "Mizar-Parser",
+  libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.2.1")
+
 lazy val mantle = (project in file("mantle")).
         settings(name := "ProvingGround-mantle").
         settings(commonSettings : _*).
