@@ -33,7 +33,7 @@ object LinearStructure{
 
     def |+|(b: A) = vs.sum(a, b)
 
-    def |*|:(c: Double) = vs.mult(c, a)
+    def |*|(c: Double) : A = vs.mult(c, a)
   }
 
   implicit val RealsAsLinearStructure = LinearStructure[Double](0, (_+_), (_*_))

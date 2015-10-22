@@ -36,13 +36,13 @@ object SimpleAcEvolution {
     def pair = (fdM, fdV)
 
     def pickle = {
-      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(m.toPlainString, p)).toList
-      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(write(v.moves.map(_.toString)), p))).toList
+      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(m.toPlainString, p)).toVector
+      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(write(v.moves.map(_.toString)), p))).toVector
       PickledState(rank, pmfM, pmfV)
     }
   }
 
-  case class PickledState(rank: Int, pmfM: List[PickledWeighted], pmfV: List[PickledWeighted]) {
+  case class PickledState(rank: Int, pmfM: Vector[PickledWeighted], pmfV: Vector[PickledWeighted]) {
     def unpickle = {
       val fdM = {
         val pmf = for (PickledWeighted(x, p) <- pmfM) yield Weighted(x, p)
@@ -50,7 +50,7 @@ object SimpleAcEvolution {
       }
 
       val fdV = {
-        val pmf = for (PickledWeighted(x, p) <- pmfV) yield Weighted(Moves.fromString(read[List[String]](x)).get, p)
+        val pmf = for (PickledWeighted(x, p) <- pmfV) yield Weighted(Moves.fromString(read[Vector[String]](x)).get, p)
         FiniteDistribution(pmf)
       }
 
@@ -70,6 +70,16 @@ object SimpleAcEvolution {
 
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
+  // Here temporarily
+  def dyn(rank: Int, size: Int) = {
+    sampleV(size) andthen genExtendM(allMoves(rank))
+  }
+  
+  //Here temporarily
+  def feedback(pair : (FiniteDistribution[M], FiniteDistribution[V])) ={
+    
+  }
+  
   case class Path(rank: Int, steps: Int,
     wordCntn: Double, size: Double, scale: Double,
     states: List[State],
