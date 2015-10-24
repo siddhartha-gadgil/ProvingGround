@@ -70,15 +70,7 @@ object SimpleAcEvolution {
 
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
-  // Here temporarily
-  def dyn(rank: Int, size: Int) = {
-    sampleV(size) andthen genExtendM(allMoves(rank))
-  }
-  
-  //Here temporarily
-  def feedback(pair : (FiniteDistribution[M], FiniteDistribution[V])) ={
-    
-  }
+
   
   case class Path(rank: Int, steps: Int,
     wordCntn: Double, size: Double, scale: Double,
