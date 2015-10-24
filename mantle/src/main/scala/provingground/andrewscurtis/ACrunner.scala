@@ -27,14 +27,14 @@ object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
   }
-  
+
   def feedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
     val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => d.feedback(FreeGroups.Presentation.weight(wrdCntn))
     fb ^: projPresFn
   }
-  
-  def padFeedback(rank: Int, wrdCntn: Double) = 
+
+  def padFeedback(rank: Int, wrdCntn: Double) =
     (strictness: Double) =>
       (x: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
         (y : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
@@ -49,17 +49,34 @@ object ACrunner {
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) )
-    
-  def spawn(name: String, rank: Int, size: Int, wrdCntn: Double,
+
+  def rawSpawn(name: String, rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) = {
-            val runner = 
+            val runner =
               Hub.system.actorOf(
                   props(rank: Int, size: Int, wrdCntn: Double,
                     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
                     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
                  ), name)
           }
+
+  import SimpleAcEvolution._
+
+  def spawn(name: String, p: Param = Param()) = {
+    import p._
+    import ACData.save
+    rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), save(name, dir))
 }
 
+  def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawn(name + j.toString, p)
+  }
+
+   case class Param(
+       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.3,
+       dir : String = "0.5"
+       )
+
+}

@@ -13,6 +13,14 @@ class FDhub extends Actor {
         runners + (runner -> State(true, steps, strictness, epsilon))
         runner ! Continue(steps, strictness, epsilon)
       }
+    case StartAll(steps: Int, strictness : Double, epsilon: Double) =>
+      {
+        val runnerRefs = runners.keys
+        val newRunners = 
+          for (runner <- runnerRefs) yield (runner -> State(true, steps, strictness, epsilon))
+        runners = newRunners.toMap
+        runnerRefs map ((runner) => runner ! Continue(steps, strictness, epsilon))
+      }
     case Done(_, _, _) => {
       val state = runners(sender)
       import state._
@@ -64,11 +72,17 @@ object FDhub{
   def startHub = system.actorOf(props)
   
   def start(
-      runner: ActorRef, steps: Int, strictness : Double, epsilon: Double
+      runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 1
       )(implicit hub: ActorRef) = 
         hub ! Start(
           runner: ActorRef, steps: Int, strictness : Double, epsilon: Double)
-  
+          
+  def startAll(steps: Int = 3, strictness : Double = 1, epsilon: Double = 1
+      )(implicit hub: ActorRef) = 
+        hub ! StartAll(
+          steps: Int, strictness : Double, epsilon: Double)
+          
+          
   def pause(runner: ActorRef)(implicit hub: ActorRef) = hub ! Pause(runner)
   
   def resume(runner: ActorRef)(implicit hub: ActorRef) = hub ! Resume(runner)

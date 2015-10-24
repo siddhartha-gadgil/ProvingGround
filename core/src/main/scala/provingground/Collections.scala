@@ -146,6 +146,16 @@ object Collections{
 
       def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)
     }
+    
+  case class PickledWeighted(elem: String, weight: Double) {
+    def map[S](f: String => S) = Weighted(f(elem), weight)
+  }
+
+  object PickledWeighted {
+    def pickle[T](wtd: Weighted[T]) = PickledWeighted(wtd.elem.toString, wtd.weight)
+    }
+    
+    
 
     implicit def weights[T](tws: (T, Double)*) = for (tw <- tws) yield Weighted(tw._1, tw._2)
 

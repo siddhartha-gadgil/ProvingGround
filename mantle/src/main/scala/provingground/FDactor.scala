@@ -43,6 +43,8 @@ object FDactor{
   
   case class Start(runner: ActorRef, steps: Int, strictness : Double = 1.0, epsilon: Double = 1.0)
   
+  case class StartAll(steps: Int, strictness : Double = 1.0, epsilon: Double = 1.0)
+  
   case class State(running: Boolean, steps: Int, strictness : Double = 1.0, epsilon: Double = 1.0)
   
   case class SetParam(runner: ActorRef, steps: Int, strictness : Double = 1.0, epsilon: Double = 1.0)

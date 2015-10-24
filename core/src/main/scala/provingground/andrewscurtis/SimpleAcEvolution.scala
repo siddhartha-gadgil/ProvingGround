@@ -14,6 +14,7 @@ import LinearStructure._
 
 import upickle.default._
 
+
 //import com.github.nscala_time.time.Imports._
 
 /**
@@ -22,13 +23,7 @@ import upickle.default._
 object SimpleAcEvolution {
   def toPresentation(rank: Int, fdV: FiniteDistribution[Moves]) = fdV map ((v: V) => Moves.actOnTriv(rank)(v).get)
 
-  case class PickledWeighted(elem: String, weight: Double) {
-    def map[S](f: String => S) = Weighted(f(elem), weight)
-  }
 
-  object PickledWeighted {
-    def pickle[T](wtd: Weighted[T]) = PickledWeighted(wtd.elem.toString, wtd.weight)
-  }
 
   case class State(rank: Int, fdM: FiniteDistribution[AtomicMove], fdV: FiniteDistribution[Moves]) {
     def fdP = toPresentation(rank, fdV)
@@ -58,6 +53,8 @@ object SimpleAcEvolution {
     }
   }
 
+  implicit val lsState : LinearStructure[State] = ???
+
   val E = Weighted(Moves.empty, 1)
 
   lazy val eSet = FiniteDistributionSet(Set(E))
@@ -71,7 +68,7 @@ object SimpleAcEvolution {
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
 
-  
+
   case class Path(rank: Int, steps: Int,
     wordCntn: Double, size: Double, scale: Double,
     states: List[State],
