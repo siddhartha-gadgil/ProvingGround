@@ -64,14 +64,14 @@ object ACrunner {
 
   import SimpleAcEvolution._
 
-  def spawn(name: String, p: Param = Param()) = {
+  def spawnInit(name: String, p: Param = Param()) = {
     import p._
     import ACData.save
     rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), save(name, dir))
 }
 
-  def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
-    for (j <- 1 to mult) yield spawn(name + j.toString, p)
+  def spawnsInit(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawnInit(name+"."+j.toString, p)
   }
 
    case class Param(

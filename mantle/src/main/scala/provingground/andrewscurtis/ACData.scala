@@ -14,6 +14,8 @@ import FiniteDistribution._
 
 import SimpleAcEvolution._
 
+import ACrunner._
+
 case class ACData(
     paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]){
 
@@ -26,6 +28,27 @@ case class ACData(
   def combined = vBigSum(states.values.toList)
 
   def blended = combined |*| (1.0/ paths.size)
+  
+  def revive(name : String, p : ACrunner.Param = Param()) = {
+    import p._
+    import SimpleAcEvolution._
+    val state = states(name)
+    rawSpawn(name, rank, size, wrdCntn, state, ACData.save(name, dir))
+  }
+  
+  def reviveAll(p : ACrunner.Param = Param()) = {
+    for (name <- names) revive(name, p)
+  }
+  
+  def spawn(name : String, p : ACrunner.Param = Param()) = {
+    import p._
+    import SimpleAcEvolution._
+    rawSpawn(name, rank, size, wrdCntn, blended, ACData.save(name, dir))
+  }
+  
+  def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
+  }
 }
 
 object ACData {
