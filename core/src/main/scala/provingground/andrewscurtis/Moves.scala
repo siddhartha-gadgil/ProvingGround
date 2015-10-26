@@ -78,7 +78,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
   def actOnMoves(moves: Moves): Option[Moves] = Some(toMoves(this) compose moves)
 
   def movesDF : DiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] = MoveFn(actOnMoves)
-  
+
   def actOnPres(fdPres: FiniteDistribution[Presentation]): FiniteDistribution[Presentation] = {
     (fdPres mapOpt ((pres: Presentation) => this(pres))).flatten
   }
@@ -147,15 +147,15 @@ sealed trait AtomicMove extends (Moves => Option[Moves]){
 }
 
 case object Id extends AtomicMove {
-  override def apply(pres: Presentation) = Some(pres)
+  def apply(pres: Presentation) = Some(pres)
 //  override def actOnMoves(moves: Moves) = Some(moves)
-  
-  override def movesDF : DiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] = 
+
+  override def movesDF : DiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     DiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 
 case class Inv(k: Int) extends AtomicMove {
-  override def apply(pres: Presentation): Option[Presentation] = {
+  def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && k<pres.sz)
       Some(pres.inv(k))
     else
@@ -164,7 +164,7 @@ case class Inv(k: Int) extends AtomicMove {
 }
 
 case class RtMult(k: Int, l: Int) extends AtomicMove {
-  override def apply(pres: Presentation): Option[Presentation] = {
+  def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
       Some(pres.rtmult(k,l))
     else
@@ -172,8 +172,27 @@ case class RtMult(k: Int, l: Int) extends AtomicMove {
   }
 }
 
+case class RtMultInv(k: Int, l: Int) extends AtomicMove {
+  def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
+      Some(pres.rtmultinv(k,l))
+    else
+      None
+  }
+}
+
 case class LftMult(k: Int, l: Int) extends AtomicMove {
-  override def apply(pres: Presentation): Option[Presentation] = {
+  def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
+      Some(pres.lftmult(k,l))
+    else
+      None
+  }
+
+}
+
+case class LftMultInv(k: Int, l: Int) extends AtomicMove {
+  def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && l>=0 && k<pres.sz && l<pres.sz)
       Some(pres.lftmult(k,l))
     else
@@ -182,9 +201,18 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
 }
 
 case class Conj(k: Int, l: Int) extends AtomicMove {
-  override def apply(pres: Presentation): Option[Presentation] = {
+  def apply(pres: Presentation): Option[Presentation] = {
     if(k>=0 && math.abs(l)>0 && k<pres.sz && math.abs(l)<=pres.rank)
       Some(pres.conj(k,l))
+    else
+      None
+  }
+}
+
+case class Transpose(k: Int, l: Int) extends AtomicMove {
+  def apply(pres: Presentation): Option[Presentation] = {
+    if(k>=0 && math.abs(l)>0 && k<pres.sz && math.abs(l)<=pres.rank)
+      Some(pres.transpose(k,l))
     else
       None
   }

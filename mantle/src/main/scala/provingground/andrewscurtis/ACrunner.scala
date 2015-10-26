@@ -66,8 +66,8 @@ object ACrunner {
 
   def spawnInit(name: String, p: Param = Param()) = {
     import p._
-    import ACData.save
-    rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), save(name, dir))
+    import ACData.fileSave
+    rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), fileSave(name, dir, alert))
 }
 
   def spawnsInit(name: String, mult : Int = 4, p: Param = Param()) = {
@@ -76,7 +76,8 @@ object ACrunner {
 
    case class Param(
        rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.3,
-       dir : String = "0.5"
+       dir : String = "0.5",
+       alert: Unit => Unit = (_) => ()
        )
 
 }

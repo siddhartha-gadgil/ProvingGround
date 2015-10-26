@@ -75,20 +75,20 @@ object SimpleAcRun {
 
   class InMem {
     var dict: Map[String, String] = Map.empty
-    
+
     def save(filename: String) = {
       val pr = new PrintWriter(filename)
-      
+
       val d = dict
-      
+
       for((x, y) <- d) pr.println(write((x,y)))
-      
+
       pr.close
     }
-    
+
     def load(filename: String) = {
       val list = Source.fromFile(filename).getLines.toList map ((x) => read[(String, String)](x))
-      
+
       dict = list.toMap
     }
 
@@ -113,10 +113,10 @@ object SimpleAcRun {
     }
   }
 
-  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) = 
+  def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) =
     ps map ((p) => Future(iter(p, loops, true)(update)))
 
-  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) = 
+  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) =
     dbread flatMap ((ps: List[Path]) => Future.sequence(continue(ps, loops)(update)))
 
   def restart(rank: Int, steps: Int, loops: Int, threads: Int = 6,
@@ -124,13 +124,13 @@ object SimpleAcRun {
     scale: Double = 1.0)(implicit  dbread: Future[List[Path]],  update: Path => Unit) =
     {
       val p = new PathView()(dbread)
-      
+
       val ps = for (j <- 0 to threads -1) yield Path(rank, steps, wordCntn, size, scale,
           List(State(rank, p.Mdist, p.mkFDV(threads, rank)(j))), List(), getId(j))
-      
+
       continue(ps.toList, loops: Int)
     }
-  
+
   def start(rank: Int, steps: Int, loops: Int, threads: Int = 6,
     wordCntn: Double = 0.5, size: Double = 1000,
     scale: Double = 1.0)(implicit update: Path => Unit) = {
@@ -150,23 +150,23 @@ object SimpleAcRun {
     lazy val finalthms = for (p <- paths) yield (p.current.fdP)
 
     lazy val finalMs = for (p <- paths) yield (p.current.fdM)
-    
+
     lazy val Mdist = vBigSum(finalMs).flatten.normalized()
-    
+
     lazy val proofs = vBigSum(finalproofs).flatten.normalized()
 
     lazy val thms = vBigSum(finalthms).flatten.normalized()
-    
+
     lazy val thmsView = thms.entropyView
 
     def proofsOf(thm: Presentation) =
-      proofs filter ((pf : Moves) => actOnTriv(thm.rank)(pf) == thm)      
-    
+      proofs filter ((pf : Moves) => actOnTriv(thm.rank)(pf) == thm)
+
     def pickProof(thm: Presentation) = proofsOf(thm).next
-    
-    def mkFDV(groups: Int, rank: Int) = 
+
+    def mkFDV(groups: Int, rank: Int) =
       thms filter((thm : Presentation) => thm.rank ==rank) normalized() split(groups) mapValues { _ map (pickProof(_)) }
-    
+
   }
 
 }

@@ -87,7 +87,7 @@ object HoTT {
 
     def newobj: U with Subs[U]
   }
-  
+
   /**
    * Objects with simple substitution.
    */
@@ -563,7 +563,7 @@ object HoTT {
           }
           case _ => None
         }
-        
+
         def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: Func[U, V], x: U) =
           fn.codom.symbObj(ApplnSym(fn, x))
       }
@@ -926,7 +926,7 @@ object HoTT {
     val fibre = lmbda(variable)(value.typ.asInstanceOf[Typ[V]])
     DepPair(variable, value, fibre)
   }
-    
+
     def composition[U<: Term with Subs[U], V<: Term with Subs[V], W<: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
       val x = g.dom.obj
       lmbda(x)(f(g(x)))
@@ -1274,11 +1274,11 @@ object HoTT {
 
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) = typ.symbObj(NameFactory.get)
 
-  
+
   def asLambdas[U <: Term with Subs[U]](term: U) : Option[U] = term match {
-    case LambdaFixed(x: Term, y : Term) => 
+    case LambdaFixed(x: Term, y : Term) =>
       for (z <- asLambdas(y); w <- Try(lmbda(x)(z).asInstanceOf[U]).toOption) yield w
-    case Lambda(x: Term, y : Term) => 
+    case Lambda(x: Term, y : Term) =>
       for (z <- asLambdas(y); w <- Try(lambda(x)(z).asInstanceOf[U]).toOption) yield w
     case fn : Func[u, v] => {
       val x = fn.dom.Var
@@ -1292,8 +1292,8 @@ object HoTT {
     }
     case _ => None
   }
-  
-  
+
+
   // -----------------------------------------------
   // Deprecated code - old style type families.
 

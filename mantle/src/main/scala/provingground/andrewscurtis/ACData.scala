@@ -39,7 +39,7 @@ case class ACData(
     import p._
     import SimpleAcEvolution._
     val state = states(name)
-    rawSpawn(name, rank, size, wrdCntn, state, ACData.save(name, dir))
+    rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
   }
 
   def reviveAll(p : ACrunner.Param = Param()) = {
@@ -49,7 +49,7 @@ case class ACData(
   def spawn(name : String, p : ACrunner.Param = Param()) = {
     import p._
     import SimpleAcEvolution._
-    rawSpawn(name, rank, size, wrdCntn, blended, ACData.save(name, dir))
+    rawSpawn(name, rank, size, wrdCntn, blended, ACData.fileSave(name, dir, alert))
   }
 
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
@@ -78,11 +78,12 @@ object ACData {
   }
 
   val wd = cwd / "data"
-  def save(name: String, dir : String ="0.5")
+  def fileSave(name: String, dir : String ="0.5", alert : Unit => Unit = (x) => ())
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
       write.append(file, pickle(fdM, fdV))
       write.append(file, "/n")
+      alert(())
   }
 
   def load(name: String, dir : String ="0.5") = {

@@ -1,8 +1,15 @@
 package provingground
 
 import akka.actor._
+import akka.pattern.ask
+import scala.concurrent.duration._
+import akka.util.Timeout
 
 import FDactor._
+
+import FDhub._
+
+
 
 class FDhub extends Actor {
   var runners: Map[ActorRef, State] =Map.empty
@@ -68,10 +75,15 @@ class FDhub extends Actor {
       import state._
       runners + (runner -> State(running, steps, strictness, newEpsilon))
     }
+    
+    case Runners =>
+      sender ! runners
   }
 }
 
 object FDhub{
+  case object Runners
+  
   def props : Props = Props[FDhub]
 
   import Hub.system
@@ -84,6 +96,13 @@ object FDhub{
     stopRunners
     hub ! PoisonPill
   }
+  
+  implicit val timeout = Timeout(5.seconds)
+  
+  import system.dispatcher
+  
+  def runners(implicit hub: ActorRef) =
+    (hub ? Runners) map (_.asInstanceOf[Map[ActorRef, State]])
 
   def start(
       runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 1

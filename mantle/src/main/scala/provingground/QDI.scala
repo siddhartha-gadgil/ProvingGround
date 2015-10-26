@@ -25,7 +25,7 @@ object QDI {
 
   def datafile =  DateTime.now.toString.replace(":", "_")+".dat"
 
-  
+
 
 
   def writeFile(text: String, fileName: String, append: Boolean = false) ={

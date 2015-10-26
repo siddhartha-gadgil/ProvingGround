@@ -251,11 +251,32 @@ object FreeGroups{
       Presentation(result.toList, rank)
     }
 
+    def rtmultinv (k : Int, l : Int) = {
+      val result = (0 to sz -1) map {(i) => if (i == k) rels(k) * (rels(l).inv) else rels(i)}
+      Presentation(result.toList, rank)
+    }
+
     /**
      * presentation with kth relation multiplied on the right by the ith relation.
      */
     def lftmult (k : Int, l : Int) = {
       val result = (0 to sz -1) map {(i) => if (i == k) rels(l) * rels(k) else rels(i)}
+      Presentation(result.toList, rank)
+    }
+
+    def lftmultinv (k : Int, l : Int) = {
+      val result = (0 to sz -1) map {(i) => if (i == k) (rels(l).inv) * rels(k) else rels(i)}
+      Presentation(result.toList, rank)
+    }
+
+    def transpose (k : Int, l : Int) = {
+      def flipped : Int => Word = {
+        case `k` => rels(l)
+        case `l` => rels (k)
+        case j => rels(j)
+      }
+
+      val result = (0 to sz -1) map (flipped)
       Presentation(result.toList, rank)
     }
 
@@ -348,7 +369,7 @@ object FreeGroups{
     val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
     ((wordwts :\ 1.0)(_ * _))
   }
-  
+
   }
 
   def presentationWeight(pres : Presentation, presCntn : Double, wrdCntn : Double) = {
