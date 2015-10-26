@@ -31,8 +31,8 @@ object SimpleAcEvolution {
     def pair = (fdM, fdV)
 
     def pickle = {
-      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(m.toPlainString, p)).toVector
-      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(write(v.moves.map(_.toString)), p))).toVector
+      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(write(m), p)).toVector
+      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(write(v), p))).toVector
       PickledState(rank, pmfM, pmfV)
     }
   }
@@ -41,19 +41,17 @@ object SimpleAcEvolution {
     def unpickle = {
       val fdM = {
         val pmf = for (PickledWeighted(x, p) <- pmfM) yield Weighted(x, p)
-        FiniteDistribution(pmf) map ((s: String) => AtomicMove.fromString(s).get)
+        FiniteDistribution(pmf) map ((s: String) => read[AtomicMove](s))
       }
 
       val fdV = {
-        val pmf = for (PickledWeighted(x, p) <- pmfV) yield Weighted(Moves.fromString(read[Vector[String]](x)).get, p)
+        val pmf = for (PickledWeighted(x, p) <- pmfV) yield Weighted(read[Moves](x), p)
         FiniteDistribution(pmf)
       }
 
       State(rank, fdM, fdV)
     }
   }
-
-  implicit val lsState : LinearStructure[State] = ???
 
   val E = Weighted(Moves.empty, 1)
 
