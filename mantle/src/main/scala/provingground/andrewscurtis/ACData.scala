@@ -28,24 +28,30 @@ case class ACData(
   def combined = vBigSum(states.values.toList)
 
   def blended = combined |*| (1.0/ paths.size)
-  
+
+  def proofs = blended._2
+
+  def moveWeights = blended._1
+
+  def thms(rank: Int = 2) = toPresentation(rank, proofs)
+
   def revive(name : String, p : ACrunner.Param = Param()) = {
     import p._
     import SimpleAcEvolution._
     val state = states(name)
     rawSpawn(name, rank, size, wrdCntn, state, ACData.save(name, dir))
   }
-  
+
   def reviveAll(p : ACrunner.Param = Param()) = {
     for (name <- names) revive(name, p)
   }
-  
+
   def spawn(name : String, p : ACrunner.Param = Param()) = {
     import p._
     import SimpleAcEvolution._
     rawSpawn(name, rank, size, wrdCntn, blended, ACData.save(name, dir))
   }
-  
+
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
   }
@@ -53,21 +59,21 @@ case class ACData(
 
 object ACData {
 
-  
+
   def pickle(state: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
     val fdM = state._1
     val fdV = state._2
-    val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield PickledWeighted(m.toPlainString, p))
-    val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(uwrite(v.moves.map(_.toString)), p)))
+    val pmfM = for (Weighted(m, p) <- fdM.pmf) yield (PickledWeighted(uwrite(m), p))
+    val pmfV = for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(uwrite(v), p))
     uwrite((pmfM, pmfV))
   }
 
   def unpickle(str: String) = {
     val fdStrings = uread[(Vector[PickledWeighted], Vector[PickledWeighted])](str)
     val pmfM = fdStrings._1 map (
-        (w : PickledWeighted) => w map ((x) => AtomicMove.fromString(x).get))
+        (w : PickledWeighted) => w map ((x) => uread[AtomicMove](x)))
     val pmfV = fdStrings._2 map (
-        (w : PickledWeighted) => w map ((x) => Moves.fromString(uread[Vector[String]](x)).get))
+        (w : PickledWeighted) => w map ((x) => uread[Moves](x)))
     (FiniteDistribution(pmfM), FiniteDistribution(pmfV))
   }
 
@@ -75,7 +81,7 @@ object ACData {
   def save(name: String, dir : String ="0.5")
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
-      write.append(file, uwrite(pickle(fdM, fdV)))
+      write.append(file, pickle(fdM, fdV))
       write.append(file, "/n")
   }
 
@@ -91,4 +97,8 @@ object ACData {
   }
 
   def loadData(dir : String ="0.5") = ACData(loadAll(dir))
+
+  def save[T](file: String, fd: FiniteDistribution[T])={
+    for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
+  }
 }

@@ -6,7 +6,7 @@ import FDactor._
 
 class FDhub extends Actor {
   var runners: Map[ActorRef, State] =Map.empty
-  
+
   def receive = {
     case Start(runner: ActorRef, steps: Int, strictness : Double, epsilon: Double) =>
       {
@@ -16,11 +16,18 @@ class FDhub extends Actor {
     case StartAll(steps: Int, strictness : Double, epsilon: Double) =>
       {
         val runnerRefs = runners.keys
-        val newRunners = 
+        val newRunners =
           for (runner <- runnerRefs) yield (runner -> State(true, steps, strictness, epsilon))
         runners = newRunners.toMap
         runnerRefs map ((runner) => runner ! Continue(steps, strictness, epsilon))
       }
+
+    case StopAll =>{
+      for (runner <- runners.keys) runner ! PoisonPill
+      runners = Map.empty
+    }
+
+
     case Done(_, _, _) => {
       val state = runners(sender)
       import state._
@@ -43,19 +50,19 @@ class FDhub extends Actor {
       val running = runners(runner).running
       runners + (runner -> State(running, steps, strictness, epsilon))
     }
-    
+
     case SetSteps(runner, newSteps) =>{
       val state = runners(runner)
       import state._
       runners + (runner -> State(running, newSteps, strictness, epsilon))
     }
-    
+
     case SetStrictness(runner, newStrictness) =>{
       val state = runners(runner)
       import state._
       runners + (runner -> State(running, steps, newStrictness, epsilon))
     }
-    
+
     case SetEpsilon(runner, newEpsilon) =>{
       val state = runners(runner)
       import state._
@@ -66,48 +73,55 @@ class FDhub extends Actor {
 
 object FDhub{
   def props : Props = Props[FDhub]
-  
+
   import Hub.system
-  
+
   def startHub = system.actorOf(props)
-  
+
+  def stopRunners(implicit hub: ActorRef) = hub ! StopAll
+
+  def stop(implicit hub: ActorRef) = {
+    stopRunners
+    hub ! PoisonPill
+  }
+
   def start(
       runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 1
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! Start(
           runner: ActorRef, steps: Int, strictness : Double, epsilon: Double)
-          
+
   def startAll(steps: Int = 3, strictness : Double = 1, epsilon: Double = 1
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! StartAll(
           steps: Int, strictness : Double, epsilon: Double)
-          
-          
+
+
   def pause(runner: ActorRef)(implicit hub: ActorRef) = hub ! Pause(runner)
-  
+
   def resume(runner: ActorRef)(implicit hub: ActorRef) = hub ! Resume(runner)
-  
+
   def setParam(
       runner: ActorRef, steps: Int, strictness : Double, epsilon: Double
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! SetParam(
           runner: ActorRef, steps: Int, strictness : Double, epsilon: Double)
-          
+
   def setSteps(
       runner: ActorRef, steps: Int
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! SetSteps(
           runner: ActorRef, steps: Int)
-          
+
   def setStrictness(
       runner: ActorRef, strictness: Double
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! SetStrictness(
           runner: ActorRef, strictness)
-  
+
   def setEpsilon(
       runner: ActorRef, epsilon: Double
-      )(implicit hub: ActorRef) = 
+      )(implicit hub: ActorRef) =
         hub ! SetEpsilon(
-          runner: ActorRef, epsilon)       
+          runner: ActorRef, epsilon)
 }
