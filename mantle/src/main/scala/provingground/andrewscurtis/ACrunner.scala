@@ -60,6 +60,7 @@ object ACrunner {
                     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
                     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
                  ), name)
+            runner
           }
 
   import SimpleAcEvolution._

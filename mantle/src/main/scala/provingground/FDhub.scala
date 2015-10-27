@@ -17,7 +17,9 @@ class FDhub extends Actor {
   def receive = {
     case Start(runner: ActorRef, steps: Int, strictness : Double, epsilon: Double) =>
       {
-        runners + (runner -> State(true, steps, strictness, epsilon))
+        runners = runners + (runner -> State(true, steps, strictness, epsilon))
+        println(runner)
+        println(runners)
         runner ! Continue(steps, strictness, epsilon)
       }
     case StartAll(steps: Int, strictness : Double, epsilon: Double) =>
@@ -36,6 +38,8 @@ class FDhub extends Actor {
 
 
     case Done(_, _, _) => {
+      println(runners)
+      println(sender)
       val state = runners(sender)
       import state._
       if (running) sender ! Continue(steps, strictness, epsilon)

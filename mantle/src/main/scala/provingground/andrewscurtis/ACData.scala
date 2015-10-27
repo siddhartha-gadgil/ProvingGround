@@ -82,7 +82,7 @@ object ACData {
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
       write.append(file, pickle(fdM, fdV))
-      write.append(file, "/n")
+      write.append(file, "\n")
       alert(())
   }
 

@@ -205,7 +205,7 @@ case class CommRep[A](representation: Map[A, Int]) extends Representation[A] {
 }
 
 case class AssocRep[A](representation: List[A]) extends Representation[A] {
-toString(): String = {
+  override def toString(): String = {
     "Assoc" + representation.toString.drop(4)
   }
 
