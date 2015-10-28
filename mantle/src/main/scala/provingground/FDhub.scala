@@ -14,6 +14,8 @@ import FDhub._
 class FDhub extends Actor {
   var runners: Map[ActorRef, State] =Map.empty
 
+  def names = (for ((r, x) <- runners) yield r.path.name).toList
+  
   def receive = {
     case Start(runner: ActorRef, steps: Int, strictness : Double, epsilon: Double) =>
       {
@@ -81,7 +83,7 @@ class FDhub extends Actor {
     }
 
     case Runners =>
-      sender ! runners
+      sender ! names
   }
 }
 
@@ -106,7 +108,7 @@ object FDhub{
   import system.dispatcher
 
   def runners(implicit hub: ActorRef) =
-    (hub ? Runners) map (_.asInstanceOf[Map[ActorRef, State]])
+    (hub ? Runners) map (_.asInstanceOf[List[String]])
 
   def start(
       runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 1
