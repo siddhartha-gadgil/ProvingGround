@@ -16,6 +16,8 @@ import SimpleAcEvolution._
 
 import ACrunner._
 
+import akka.actor._
+
 case class ACData(
     paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]){
 
@@ -35,15 +37,18 @@ case class ACData(
 
   def thms(rank: Int = 2) = toPresentation(rank, proofs)
 
-  def revive(name : String, p : ACrunner.Param = Param()) = {
+  def revive(name : String, p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
     import p._
     import SimpleAcEvolution._
     val state = states(name)
-    rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
+    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
+//    FDhub.start(ref)
+    ref
   }
 
-  def reviveAll(p : ACrunner.Param = Param()) = {
-    for (name <- names) revive(name, p)
+  def reviveAll(p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
+    val refs = for (name <- names) yield revive(name, p)
+    refs
   }
 
   def spawn(name : String, p : ACrunner.Param = Param()) = {
