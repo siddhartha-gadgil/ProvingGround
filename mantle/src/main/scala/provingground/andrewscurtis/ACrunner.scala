@@ -21,16 +21,26 @@ class ACrunner(rank: Int, size: Int, wrdCntn: Double,
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) extends FDactor[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
-      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), init, (mv) =>save(mv._1, mv._2))
+      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
 
 object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
   }
 
+  val normalize = (fd: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
+    (fd._1.normalized(), fd._2.normalized())
+
   def feedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
     val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
-    val fb = (d : FiniteDistribution[Presentation]) => d.feedback(FreeGroups.Presentation.weight(wrdCntn))
+    val fb = (d : FiniteDistribution[Presentation]) => {
+      println(s"Distribution(${d.support.size}, total = ${d.norm})")
+      println(d.entropyView.take(20))
+      val res = d.feedback(FreeGroups.Presentation.weight(wrdCntn))
+      println("Feedback")
+      println(res.entropyView.take(20))
+      res
+    }
     fb ^: projPresFn
   }
 
@@ -39,7 +49,6 @@ object ACrunner {
       (x: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
         (y : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
           feedback(rank, wrdCntn, strictness)(y)
-
 
   def props(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
@@ -76,7 +85,7 @@ object ACrunner {
   }
 
    case class Param(
-       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.3,
+       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5,
        dir : String = "0.5",
        alert: Unit => Unit = (_) => ()
        )

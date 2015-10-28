@@ -79,7 +79,7 @@ class FDhub extends Actor {
       import state._
       runners + (runner -> State(running, steps, strictness, newEpsilon))
     }
-    
+
     case Runners =>
       sender ! runners
   }
@@ -87,7 +87,7 @@ class FDhub extends Actor {
 
 object FDhub{
   case object Runners
-  
+
   def props : Props = Props[FDhub]
 
   import Hub.system
@@ -100,11 +100,11 @@ object FDhub{
     stopRunners
     hub ! PoisonPill
   }
-  
+
   implicit val timeout = Timeout(5.seconds)
-  
+
   import system.dispatcher
-  
+
   def runners(implicit hub: ActorRef) =
     (hub ? Runners) map (_.asInstanceOf[Map[ActorRef, State]])
 

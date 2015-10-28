@@ -7,6 +7,7 @@ import Hub.system
 class FDactor[X : LinearStructure](
     dyn: DiffbleFunction[X, X], //includes purging
     feedback: Double => X => X => X,
+    normalize : X => X,
     init: X,
     save : X => Unit
     ) extends Actor{
@@ -28,7 +29,7 @@ class FDactor[X : LinearStructure](
   def receive = {
     case Continue(steps, strictness, epsilon) =>
       {
-        val newState = state |+| (shift(state, strictness, steps, epsilon))
+        val newState = normalize(state |+| (shift(state, strictness, steps, epsilon)))
         state = newState
         save(state)
         sender ! Done(steps, strictness, epsilon)

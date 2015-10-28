@@ -71,7 +71,7 @@ object ACData {
     val pmfM = for (Weighted(m, p) <- fdM.pmf) yield (PickledWeighted(uwrite(m), p))
     val pmfV = for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(uwrite(v), p))
     val s = uwrite((pmfM, pmfV))
-    println(unpickle(s)) // a test
+//    println(unpickle(s)) // a test
     s
   }
 
