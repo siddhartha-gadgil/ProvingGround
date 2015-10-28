@@ -100,7 +100,11 @@ object ACData {
 
   def loadData(dir : String ="0.5") = ACData(loadAll(dir))
 
-  def save[T](file: String, fd: FiniteDistribution[T])={
+  def saveFD[T](file: String, dir: String = "0.5-output", fd: FiniteDistribution[T])={
     for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
+  }
+
+  def saveEntropy(file: String, dir: String = "0.5-output", ent: List[Weighted[String]]) = {
+    for (Weighted(x, p) <- ent) write.append(wd / file, s"$x, $p\n")
   }
 }
