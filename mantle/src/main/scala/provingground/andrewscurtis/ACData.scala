@@ -94,7 +94,7 @@ object ACData {
   }
 
   def loadAll(dir : String ="0.5") = {
-    val fileNames = ls(wd / dir) filter (_.ext == ".acrun") map (_.name.dropRight(6))
+    val fileNames = ls(wd / dir) filter (_.ext == "acrun") map (_.name.dropRight(6))
     (for (name <- fileNames) yield (name, load(name, dir))).toMap
   }
 
