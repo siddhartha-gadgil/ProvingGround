@@ -65,7 +65,9 @@ object ACData {
     val fdV = state._2
     val pmfM = for (Weighted(m, p) <- fdM.pmf) yield (PickledWeighted(uwrite(m), p))
     val pmfV = for (Weighted(v, p) <- fdV.pmf) yield (PickledWeighted(uwrite(v), p))
-    uwrite((pmfM, pmfV))
+    val s = uwrite((pmfM, pmfV))
+    println(unpickle(s)) // a test
+    s
   }
 
   def unpickle(str: String) = {
@@ -81,8 +83,7 @@ object ACData {
   def fileSave(name: String, dir : String ="0.5", alert : Unit => Unit = (x) => ())
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
-      write.append(file, pickle(fdM, fdV))
-      write.append(file, "\n")
+      write.append(file, s"${pickle(fdM, fdV)}\n")
       alert(())
   }
 
