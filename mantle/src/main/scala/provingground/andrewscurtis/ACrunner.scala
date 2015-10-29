@@ -34,14 +34,16 @@ object ACrunner {
   def feedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
     val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
-      println(s"Distribution(${d.support.size}, total = ${d.norm})")
+      println(s"Distribution(${d.support.size}, total = ${d.norm}, ${d.total})")
       println(d.entropyView.take(20))
       val res = d.feedback(FreeGroups.Presentation.weight(wrdCntn))
-      println("Feedback")
-      println(res.entropyView.take(20))
+      println(s"Feedback total = ${d.total}")
+//      println(res.entropyView.take(20))
       res
     }
-    fb ^: projPresFn
+    val pullback = fb ^: projPresFn
+//    println(s"Pullback feedback total: ${pullback._2.total}")
+    pullback
   }
 
   def padFeedback(rank: Int, wrdCntn: Double) =

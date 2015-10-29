@@ -397,6 +397,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   }
   
   def memo : Map[T, Double] = flatten.preMemo
+  
+  def total = (supp map (getsum)).sum
 }
   case class FiniteDistributionParVec[T](parpmf: ParVector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
 
