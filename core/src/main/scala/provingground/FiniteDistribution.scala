@@ -403,12 +403,16 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   
   def total = (supp map (getsum)).sum
 
-  def feedback(baseweights: T => Double, strictness: Double = 1.0) ={
+  /**
+   * gradient w.r.t. inner product scaled by presentation weights,
+   * perpendicular to the gradient (w.r.t. same inner product) of the "total weight" function.
+   */
+  def KLfeedback(baseweights: T => Double, strictness: Double = 1.0) ={
     val weights = (t: T) => math.pow(baseweights(t), strictness)
-    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem) * weights(elem)/apply(elem)))
-    val innerprod = rawdiff.map((x) => x.weight * weights(x.elem)).sum
-    val normsq = rawdiff.map((x) => weights(x.elem) * weights(x.elem)).sum
-    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - (weights(pres) * innerprod/ normsq))
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, 1.0/apply(elem)))
+    val innerprod = rawdiff.map((x) => 1.0 / x.weight).sum // Sum(1/q))
+    val normsq = rawdiff.map((x) => 1.0 / weights(x.elem)).sum // Sum (1/p)
+    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - ((1 / weights(pres)) * innerprod/ normsq))
     FiniteDistribution(normaldiff)
   }
 
