@@ -2,6 +2,7 @@ package mizar
 
 import fastparse.all._
 
+
 object MizarLang {
 
   case class Identifier(name: String)
@@ -51,7 +52,7 @@ object MizarLang {
   
   sealed trait TextItem
 
-  case class Reservation(segements: List[ReservationSegment]) extends TextItem
+  case class Reservation(segments: List[ReservationSegment]) extends TextItem
   
   case class ReservationSegment(
       reservedIdentifiers: List[Identifier], 
