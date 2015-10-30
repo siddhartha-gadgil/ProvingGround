@@ -95,7 +95,7 @@ object SimpleAcEvolution {
 
     lazy val imagePres = toPresentation(rank, evolved.fdV)
 
-    lazy val presentationFeedback = imagePres.feedback(FreeGroups.Presentation.weight(wordCntn))
+    lazy val presentationFeedback = imagePres.rawfeedback(FreeGroups.Presentation.weight(wordCntn))
 
     lazy val presFn = genPresentationMoveFn(rank)
 

@@ -36,7 +36,7 @@ object ACrunner {
     val fb = (d : FiniteDistribution[Presentation]) => {
       println(s"Distribution(${d.support.size}, total = ${d.norm}, ${d.total})")
       println(d.entropyView.take(20))
-      val res = d.feedback(FreeGroups.Presentation.weight(wrdCntn))
+      val res = d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn))
       println(s"Feedback total = ${d.total}")
 //      println(res.entropyView.take(20))
       res

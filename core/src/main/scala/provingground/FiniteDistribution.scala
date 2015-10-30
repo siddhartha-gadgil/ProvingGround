@@ -173,13 +173,14 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
    *
    * @param baseweights
    */
-  def feedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
+  def rawfeedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
     val weights = (t: T) => math.pow(baseweights(t), strictness)
     val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem)/(weights(elem)* damp + apply(elem))))
     val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
     val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff)
   }
+  
 
   override def toString = {
     val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
@@ -342,6 +343,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
 
   def flatten : FiniteDistribution[T]  = FiniteDistribution(Weighted.flatten(pmf).toVector)
 
+  override def supp : Vector[T] = (Weighted.flatten(pmf) map (_.elem)).toVector 
+  
 //  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
 
   def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
@@ -399,6 +402,16 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   def memo : Map[T, Double] = flatten.preMemo
   
   def total = (supp map (getsum)).sum
+
+  def feedback(baseweights: T => Double, strictness: Double = 1.0) ={
+    val weights = (t: T) => math.pow(baseweights(t), strictness)
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem) * weights(elem)/apply(elem)))
+    val innerprod = rawdiff.map((x) => x.weight * weights(x.elem)).sum
+    val normsq = rawdiff.map((x) => weights(x.elem) * weights(x.elem)).sum
+    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - (weights(pres) * innerprod/ normsq))
+    FiniteDistribution(normaldiff)
+  }
+
 }
   case class FiniteDistributionParVec[T](parpmf: ParVector[Weighted[T]], injective: Boolean = false, epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
 

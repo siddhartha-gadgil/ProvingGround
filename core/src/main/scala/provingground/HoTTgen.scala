@@ -155,7 +155,7 @@ object HoTTgen {
 
   val typFlow = (d: FiniteDistribution[Term]) =>  {
     val shift =
-      mapTyp.func(d) feedback (getTyps(d).getsum(_))
+      mapTyp.func(d) rawfeedback (getTyps(d).getsum(_))
     mapTyp.grad(d)(shift)
   }
 

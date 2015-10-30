@@ -173,7 +173,7 @@ object AndrewsCurtisModel{
 
       def baseweights = presentationWeight(_ : Presentation, presCntn : Double, wrdCntn : Double)
 
-      implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.feedback(baseweights)
+      implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.rawfeedback(baseweights)
 
       lazy val learnLoop = LearningLoop(cutoff: Double, stableLevel : Double,
           stablSteps, outerSteps: Int, epsilon: Double)(feedback)
@@ -229,7 +229,7 @@ object AndrewsCurtisModel{
 
       def baseweights = presentationWeight(_ : Presentation, presCntn : Double, wrdCntn : Double)
 
-      implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.feedback(baseweights)
+      implicit def feedback(fd: FiniteDistribution[Presentation]) = fd.rawfeedback(baseweights)
     }
 
     val presentationGenForm = Form(

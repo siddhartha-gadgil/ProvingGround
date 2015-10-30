@@ -15,7 +15,7 @@ class FDhub extends Actor {
   var runners: Map[ActorRef, State] =Map.empty
 
   def names = (for ((r, x) <- runners) yield r.path.name).toList
-  
+
   def receive = {
     case Start(runner: ActorRef, steps: Int, strictness : Double, epsilon: Double) =>
       {

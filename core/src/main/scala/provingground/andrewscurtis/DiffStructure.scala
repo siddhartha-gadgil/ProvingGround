@@ -43,7 +43,7 @@ object DiffStructure {
 
   def getFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(dist: FD[P]) = {
     val baseweight = presentationWeight(_: P, presCntn, wrdCntn)
-    dist.feedback(baseweight) * scale
+    dist.rawfeedback(baseweight) * scale
   }
 
   def conjugateByFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[M]) = {
