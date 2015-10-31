@@ -165,21 +165,6 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
 
 
   def purge(epsilon: Double) = filter((t: T) => (apply(t) > epsilon))
-
-  /**
-   * entropy feedback for the finite distribution to move in the direction of the base distribution,
-   * however values outside support are ignored.
-   * warning: should come after ++ to ensure implementation choice.
-   *
-   * @param baseweights
-   */
-  def rawfeedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
-    val weights = (t: T) => math.pow(baseweights(t), strictness)
-    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem)/(weights(elem)* damp + apply(elem))))
-    val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
-    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
-    FiniteDistribution(normaldiff)
-  }
   
 
   override def toString = {
@@ -402,7 +387,38 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   def memo : Map[T, Double] = flatten.preMemo
   
   def total = (supp map (getsum)).sum
+  
+    /**
+   * entropy feedback for the finite distribution to move in the direction of the base distribution,
+   * however values outside support are ignored.
+   * warning: should come after ++ to ensure implementation choice.
+   *
+   * @param baseweights
+   */
+  def rawfeedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
+    val weights = (t: T) => math.pow(baseweights(t), strictness)
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem)/(weights(elem)* damp + apply(elem))))
+    val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
+    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
+    FiniteDistribution(normaldiff)
+  }
 
+  /**
+   * entropy feedback for the finite distribution to move in the direction of the base distribution,
+   * however values outside support are ignored.
+   * smoothed to ensure at most proportional to the target probability
+   * warning: should come after ++ to ensure implementation choice.
+   *
+   * @param baseweights
+   */
+  def smoothedFeedback(baseweights: T => Double, damp : Double = 0.1, strictness: Double = 1.0) ={
+    val weights = (t: T) => math.pow(baseweights(t), strictness)
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, weights(elem) * weights(elem)/(weights(elem)* damp + apply(elem))))
+    val shift = rawdiff.map(_.weight).sum/(rawdiff.size)
+    val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
+    FiniteDistribution(normaldiff)
+  }
+  
   /**
    * gradient w.r.t. inner product scaled by presentation weights,
    * perpendicular to the gradient (w.r.t. same inner product) of the "total weight" function.

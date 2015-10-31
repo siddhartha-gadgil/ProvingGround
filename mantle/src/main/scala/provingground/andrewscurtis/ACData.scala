@@ -18,27 +18,14 @@ import ACrunner._
 
 import akka.actor._
 
+import ACData._
+
 case class ACData(
-    paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]){
-
-  def names = (paths map (_._1)).toList
-
-  def sizes = for ((name, data) <- paths) yield (name -> data.size)
-
-  def states = for ((name, data) <- paths) yield (name -> data.last)
-
-  def combined = vBigSum(states.values.toList)
-
-  def blended = combined |*| (1.0/ paths.size)
-
-  def proofs = blended._2
-
-  def moveWeights = blended._1
-
-  def thms(rank: Int = 2) = toPresentation(rank, proofs)
+    paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
+    dir : String) extends ACresults(paths){
 
   def revive(name : String, p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
-    import p._
+    import p.{dir => d, _}
     import SimpleAcEvolution._
     val state = states(name)
     val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
@@ -52,13 +39,19 @@ case class ACData(
   }
 
   def spawn(name : String, p : ACrunner.Param = Param()) = {
-    import p._
+    import p.{dir => d, _}
     import SimpleAcEvolution._
     rawSpawn(name, rank, size, wrdCntn, blended, ACData.fileSave(name, dir, alert))
   }
 
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
+  }
+  
+  def resetFiles() = {
+    for ((name, data) <- paths) yield {
+      write.over(wd /dir / name, pickle(data.last))
+    }
   }
 }
 
@@ -103,8 +96,8 @@ object ACData {
     (for (name <- fileNames) yield (name, load(name, dir))).toMap
   }
 
-  def loadData(dir : String ="0.5") = ACData(loadAll(dir))
-
+  def loadData(dir : String ="0.5") = ACData(loadAll(dir), dir)
+  
   def saveFD[T](file: String, dir: String = "0.5-output", fd: FiniteDistribution[T])={
     for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
   }
