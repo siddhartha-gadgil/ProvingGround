@@ -168,17 +168,21 @@ object FiniteDistributionLearner {
 	}
 
 
-  case class ProjectV[M, V]() extends DiffbleFunction[
-    (FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] {
-  	  val func =  (mv: (FiniteDistribution[M], FiniteDistribution[V])) => mv._2
+  case class ProjectV[M, X]() extends DiffbleFunction[
+    (FiniteDistribution[M], X), X] {
+  	  val func =  (mv: (FiniteDistribution[M], X)) => mv._2
 
-  	  val grad = (mv: (FiniteDistribution[M], FiniteDistribution[V])) =>
-        (v : FiniteDistribution[V]) => (FiniteDistribution.empty[M], v)
+//      type X = FiniteDistribution[V]
+      
+ //     val zero = implicitly[LinearStructure[FiniteDistribution[M]]].zero
+      
+  	  val grad = (mv: (FiniteDistribution[M], X)) =>
+        (v : X) => (FiniteDistribution.empty[M], v)
 
   	}
 
-    def projectV[M, V] : DiffbleFunction[
-    (FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]] = ProjectV[M, V]
+    def projectV[M, X] : DiffbleFunction[
+      (FiniteDistribution[M], X), X] = ProjectV[M, X]
 
 
     def sampleV[M, V](N: Double) : DiffbleFunction[

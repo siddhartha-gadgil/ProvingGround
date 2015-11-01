@@ -39,7 +39,7 @@ object ACrunner {
     (fd._1.normalized(), fd._2.normalized())
 
   def feedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
-    val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
+    val projPresFn = projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
       println(s"Distribution(${d.support.size}, total = ${d.norm}, ${d.total})")
       println(d.entropyView.take(20))
@@ -54,7 +54,7 @@ object ACrunner {
   }
 
   def smoothFeedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
-    val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
+    val projPresFn = projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
       d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn))
     }

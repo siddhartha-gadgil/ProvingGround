@@ -35,14 +35,14 @@ object VectorRepresentations{
     	  raw map (_ * (1/total))
     	} 
   
-  case class Representation[T](rep: Set[WeightVect[T]]) extends  LabelledArray[T, Vector[Double]]{    
-	  lazy val pmf = rep map (_.weighted)
+  lazy val rand = new Random
+  
+  case class Representation[T](rep: Vector[WeightVect[T]]) extends AnyVal{    
+	    def pmf = rep map (_.weighted)
         
-	  lazy val support = (pmf filter (_.weight > 0) map (_.elem)).toSet 
-        
-      lazy val rand = new Random
-      
-      lazy val norm = (pmf map (_.weight.abs)).sum
+	    def support = (Weighted.flatten(pmf) map (_.elem)).toVector
+                   
+      def norm = (pmf map (_.weight.abs)).sum
       
       def next = Weighted.pick(pmf.toSeq, rand.nextDouble)
       
@@ -52,9 +52,9 @@ object VectorRepresentations{
       
       def apply(label: T) = getsum(label)
       
-      lazy val flatdist = support map ((l) => WeightVect(l, getsum(l)))
+      def flatdist = support map ((l) => WeightVect(l, getsum(l)))
       
-      lazy val flatten = Representation(flatdist)
+      def flatten = Representation(flatdist)
          
       private def posrep(t : Double = 0.0) = flatdist map (_.pos) filter (_.norm > t)
       
@@ -64,7 +64,7 @@ object VectorRepresentations{
       
       def *(sc: Double) = Representation(rep map (_.scale(sc)))
       
-      def +(elem: T , vect : Vector[Double]) = this ++ Representation(Set(WeightVect(elem, vect)))
+      def +(elem: T , vect : Vector[Double]) = this ++ Representation(Vector(WeightVect(elem, vect)))
       
       def ++(that: Representation[T]) = {
         val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k))))
@@ -89,4 +89,12 @@ object VectorRepresentations{
         "[" + terms.dropRight(2) + "]"
       }
     }
+  
+  object Representation{
+    def empty[T] = Representation[T](Vector())
+  }
+  
+  implicit def VecRepVec[T] = 
+    LinearStructure[Representation[T]](
+      Representation.empty[T], _++_, (w, d) => d * w)
 }
