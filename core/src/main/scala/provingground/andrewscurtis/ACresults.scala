@@ -31,11 +31,11 @@ class ACresults(
 
   def thms(rank: Int = 2) = toPresentation(rank, proofs)
 
-  def upickle = uwrite(ACPortableResults(paths))
+//  def upickle = uwrite(ACPortableResults(paths))
 }
 
 object ACresults{
-  def unpickle(str: String) : ACresults = uread[ACPortableResults](str)
+//  def unpickle(str: String) : ACresults = uread[ACPortableResults](str)
 }
 
 case class ACPortableResults(

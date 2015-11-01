@@ -47,7 +47,7 @@ case class ACData(
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
   }
-  
+
   def resetFiles() = {
     for ((name, data) <- paths) yield {
       write.over(wd /dir / name, pickle(data.last))
@@ -78,26 +78,26 @@ object ACData {
   }
 
   val wd = cwd / "data"
-  def fileSave(name: String, dir : String ="0.5", alert : Unit => Unit = (x) => ())
+  def fileSave(name: String, dir : String ="acDev", alert : Unit => Unit = (x) => ())
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
       write.append(file, s"${pickle(fdM, fdV)}\n")
       alert(())
   }
 
-  def load(name: String, dir : String ="0.5") = {
+  def load(name: String, dir : String ="acDev") = {
     val file = wd / dir / (name+".acrun")
     val lines = read.lines(file)
     lines map (unpickle)
   }
 
-  def loadAll(dir : String ="0.5") = {
+  def loadAll(dir : String ="acDev") = {
     val fileNames = ls(wd / dir) filter (_.ext == "acrun") map (_.name.dropRight(6))
     (for (name <- fileNames) yield (name, load(name, dir))).toMap
   }
 
-  def loadData(dir : String ="0.5") = ACData(loadAll(dir), dir)
-  
+  def loadData(dir : String ="acDev") = ACData(loadAll(dir), dir)
+
   def saveFD[T](file: String, dir: String = "0.5-output", fd: FiniteDistribution[T])={
     for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
   }

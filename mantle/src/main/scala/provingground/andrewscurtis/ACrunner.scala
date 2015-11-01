@@ -23,6 +23,13 @@ class ACrunner(rank: Int, size: Int, wrdCntn: Double,
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
       ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
 
+class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
+    init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    ) extends FDactor[
+      (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
+      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
+      
 object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
@@ -46,17 +53,40 @@ object ACrunner {
     pullback
   }
 
+  def smoothFeedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
+    val projPresFn = projectV[AtomicMove, Moves] andthen genPresentationMoveFn(rank)
+    val fb = (d : FiniteDistribution[Presentation]) => {
+      d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn))
+    }
+    fb ^: projPresFn
+  }
+
   def padFeedback(rank: Int, wrdCntn: Double) =
     (strictness: Double) =>
       (x: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
         (y : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
           feedback(rank, wrdCntn, strictness)(y)
 
+  def padSmoothback(rank: Int, wrdCntn: Double) =
+    (strictness: Double) =>
+      (x: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
+        (y : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
+          smoothFeedback(rank, wrdCntn, strictness)(y)
+
   def props(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) : Props = Props(
         new ACrunner(rank: Int, size: Int, wrdCntn: Double,
+    init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    ) )
+
+  def smoothProps(rank: Int, size: Int, wrdCntn: Double,
+    init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    ) : Props = Props(
+        new ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) )
@@ -74,6 +104,19 @@ object ACrunner {
             runner
           }
 
+  def smoothSpawn(name: String, rank: Int, size: Int, wrdCntn: Double,
+    init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    ) = {
+            val runner =
+              Hub.system.actorOf(
+                  smoothProps(rank: Int, size: Int, wrdCntn: Double,
+                    init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+                 ), name)
+            runner
+          }
+
   import SimpleAcEvolution._
 
   def spawnInit(name: String, p: Param = Param()) = {
@@ -81,14 +124,45 @@ object ACrunner {
     import ACData.fileSave
     rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), fileSave(name, dir, alert))
 }
+  
+  def spawnExtInit(name: String, p: Param = Param()) = {
+    import p._
+    import ACData.fileSave
+    rawSpawn(name, rank, size, wrdCntn, (extendedMoves(rank), eVec), fileSave(name, dir, alert))
+}
 
+  def spawnSmooth(name: String, p: Param = Param()) = {
+    import p._
+    import ACData.fileSave
+    smoothSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), fileSave(name, dir, alert))
+}
+
+  def spawnExtSmooth(name: String, p: Param = Param()) = {
+    import p._
+    import ACData.fileSave
+    smoothSpawn(name, rank, size, wrdCntn, (extendedMoves(rank), eVec), fileSave(name, dir, alert))
+} 
+  
   def spawnsInit(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawnInit(name+"."+j.toString, p)
   }
 
+  def spawnsSmooth(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawnSmooth(name+"."+j.toString, p)
+  }
+
+  def spawnsExtInit(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawnExtInit(name+"."+j.toString, p)
+  }
+
+  def spawnsExtSmooth(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawnExtSmooth(name+"."+j.toString, p)
+  }
+  
+  
    case class Param(
        rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5,
-       dir : String = "0.5",
+       dir : String = "acDev",
        alert: Unit => Unit = (_) => ()
        )
 

@@ -8,7 +8,7 @@ import HoTT._
  */
 object DSL {
   def self(n : Int) : Int = macro selfImpl
-  
+
   def selfImpl(c : Context)(n : c.Expr[Int]) : c.Expr[Int] = {
     import c.universe._
     val q"${m : Int}" = n.tree
@@ -19,33 +19,34 @@ object DSL {
     def ::(term : Term): Term = macro checkImpl
   }
   */
-  
-  
+
+
   def checkTyp(term: Term, typ: Typ[Term]): Term = macro checkImpl
-  
+
   def checkImpl(c: Context)(term: c.Expr[Term], typ: c.Expr[Typ[Term]]) : c.Expr[Term] ={
     import c.universe._
-    
+
     val inp = term
-    
-    val tterm = c.Expr[Term](c.untypecheck(term.tree.duplicate))
-    
-    val ttyp = c.Expr[Typ[Term]](c.untypecheck(typ.tree.duplicate))
-    
-    val trm = c.eval(tterm) 
-    
-    val tp = c.eval(ttyp)
-    
-    println(trm, tp)
-    
+
+    val tterm = c.Expr[Term](c.untypecheck(term.tree))
+
+//    val ttyp = c.Expr[Typ[Term]](c.untypecheck(typ.tree.duplicate))
+
+    val trm = c.eval(tterm)
+
+
+//    val tp = c.eval(ttyp)
+
+//    println(trm, tp)
+
     println("check")
-    
-    println(trm !: tp)
-    
-    println(showRaw(c.Expr[Term](reify(trm !: tp).tree)))
-    
-    assert(trm.typ == tp, "type mismatch in HoTT")
-    
+
+//    println(trm !: tp)
+
+//    println(showRaw(c.Expr[Term](reify(trm !: tp).tree)))
+
+//    assert(trm.typ == tp, "type mismatch in HoTT")*/
+
     inp
   }
   /*
