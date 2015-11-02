@@ -65,6 +65,15 @@ case class ACData(
       write.over(wd /dir / name, pickle(data.last))
     }
   }
+  
+  def thmCSV(name: String, rank: Int = 2) = {
+    val supp = thmSupp(name, rank)
+    val file = wd / dir / s"$name.css"
+    rm(file)
+    supp.foreach((p) => {      
+      write.append(file, s"$p,${entropyVec(name, rank)(p)}\n")
+    })
+  }
 }
 
 object ACData {
@@ -128,7 +137,7 @@ object ACData {
     rm(wd / dir /file)
     st.foreach {ns => {
       val pickled = uwrite(ns)
-      write.over(wd /dir /file, pickled)
+      write.append(wd /dir /file, pickled)
       }
        }
   }
