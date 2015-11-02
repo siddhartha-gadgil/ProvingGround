@@ -67,13 +67,15 @@ object VectorRepresentations{
       def +(elem: T , vect : Vector[Double]) = this ++ Representation(Vector(WeightVect(elem, vect)))
       
       def ++(that: Representation[T]) = {
-        val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k))))
-        new Representation(combined)   
+//        val combined = (for (k <- support union that.support) yield WeightVect(k, WeightVect.add(apply(k), that(k))))
+        Representation(rep ++ that.rep)   
       }
       
       def map[S](f: T => S) = {
-        val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt) 
-        FiniteDistribution(newpmf).flatten
+        val newrep = for (WeightVect(elem, vec) <- rep) yield WeightVect(f(elem), vec) 
+//        val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt) 
+//        FiniteDistribution(newpmf).flatten
+        Representation(newrep)
       }
       
       def feedback(baseweights: T => Double, damp : Double = 0.1) ={

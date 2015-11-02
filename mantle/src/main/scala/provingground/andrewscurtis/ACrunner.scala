@@ -23,13 +23,13 @@ class ACrunner(rank: Int, size: Int, wrdCntn: Double,
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
       ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
 
-class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
+class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double, 
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
     ) extends FDactor[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
       ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
-      
+
 object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
@@ -38,12 +38,12 @@ object ACrunner {
   val normalize = (fd: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
     (fd._1.normalized(), fd._2.normalized())
 
-  def feedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
+  def feedback(rank : Int, wrdCntn: Double, strictness: Double) ={
     val projPresFn = projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
       println(s"Distribution(${d.support.size}, total = ${d.norm}, ${d.total})")
       println(d.entropyView.take(20))
-      val res = d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn))
+      val res = d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
       println(s"Feedback total = ${d.total}")
 //      println(res.entropyView.take(20))
       res
@@ -53,10 +53,10 @@ object ACrunner {
     pullback
   }
 
-  def smoothFeedback(rank : Int, wrdCntn: Double, strinctness: Double) ={
+  def smoothFeedback(rank : Int, wrdCntn: Double, strictness: Double) ={
     val projPresFn = projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
-      d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn))
+      d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
     }
     fb ^: projPresFn
   }
@@ -124,7 +124,7 @@ object ACrunner {
     import ACData.fileSave
     rawSpawn(name, rank, size, wrdCntn, (unifMoves(rank), eVec), fileSave(name, dir, alert))
 }
-  
+
   def spawnExtInit(name: String, p: Param = Param()) = {
     import p._
     import ACData.fileSave
@@ -141,8 +141,8 @@ object ACrunner {
     import p._
     import ACData.fileSave
     smoothSpawn(name, rank, size, wrdCntn, (extendedMoves(rank), eVec), fileSave(name, dir, alert))
-} 
-  
+}
+
   def spawnsInit(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawnInit(name+"."+j.toString, p)
   }
@@ -158,8 +158,8 @@ object ACrunner {
   def spawnsExtSmooth(name: String, mult : Int = 4, p: Param = Param()) = {
     for (j <- 1 to mult) yield spawnExtSmooth(name+"."+j.toString, p)
   }
-  
-  
+
+
    case class Param(
        rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5,
        dir : String = "acDev",

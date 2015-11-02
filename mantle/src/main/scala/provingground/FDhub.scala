@@ -9,12 +9,12 @@ import FDactor._
 
 import FDhub._
 
-
-
 class FDhub extends Actor {
   var runners: Map[ActorRef, State] =Map.empty
 
   def names = (for ((r, x) <- runners) yield r.path.name).toList
+  
+  def states = (for ((r, x) <- runners) yield (r.path.name -> x))
 
   def receive = {
     case Start(runner: ActorRef, steps: Int, strictness : Double, epsilon: Double) =>
@@ -76,12 +76,17 @@ class FDhub extends Actor {
 
     case Runners =>
       sender ! names
+      
+    case States =>
+      sender ! states
   }
 }
 
 object FDhub{
   case object Runners
 
+  case object States
+  
   def props : Props = Props[FDhub]
 
   import Hub.system
@@ -102,6 +107,9 @@ object FDhub{
   def runners(implicit hub: ActorRef) =
     (hub ? Runners) map (_.asInstanceOf[List[String]])
 
+  def states(implicit hub: ActorRef) =
+    (hub ? Runners) map (_.asInstanceOf[Map[String, State]])
+    
   def start(
       runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1
       )(implicit hub: ActorRef) =

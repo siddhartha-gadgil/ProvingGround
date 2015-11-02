@@ -356,7 +356,7 @@ object FiniteDistributionLearnerExtras{
 
     def iterdeeper(d: Int) = if (steps < math.pow(2, depth + 1)) id[(FiniteDistribution[M], FiniteDistribution[V])] else iterateDiffbleDepth(next, steps, depth+1)
 
-    def iterV(d: Int) = iter(d) andthen projectV[M, V]
+    def iterV(d: Int) = iter(d) andthen projectV[M, FiniteDistribution[V]]
 
     /**
      * add a simple island one step deeper and create a system adding depth.
@@ -368,7 +368,7 @@ object FiniteDistributionLearnerExtras{
      */
     def withIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
       def iternext = iterateDiffbleDepth(extendM(withIsle(v, t, m, export, d+1, isleDepth)), steps, isleDepth(d))
-      def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, V]) andthen export
+      def isle = spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
       sumFn(dyn, isle)
     }
 
@@ -382,7 +382,7 @@ object FiniteDistributionLearnerExtras{
      */
     def mkIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], d: Int = depth, isleDepth: Int => Int) : DynFn[M, V] = {
       def iternext = iterateDiffbleDepth(iter(isleDepth(d)), steps, isleDepth(d))
-      spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, V]) andthen export
+      spawnSimpleIsle[M, V](v: V, t: M, m : M, iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
     }
 
     def addIsle(v: V, t: M, m : M, export : =>  DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]], isleDepth: Int => Int = (n) => n + 1) = new IterDynSys(
