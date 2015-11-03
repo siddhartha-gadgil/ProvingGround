@@ -37,7 +37,7 @@ case class ACData(
     val refs = for (name <- names) yield revive(name, p)
     refs
   }
-  
+
   def restartAll(file: String = "acstates.dat", p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
     val states = loadStates(dir, file)
     val refs = for (name <- names) yield {
@@ -46,7 +46,7 @@ case class ACData(
       optstate map ((state) => FDhub.start(runner, state.steps, state.strictness, state.epsilon))
       runner
     }
-    
+
     refs
   }
 
@@ -65,13 +65,16 @@ case class ACData(
       write.over(wd /dir / name, pickle(data.last))
     }
   }
-  
+
   def thmCSV(name: String, rank: Int = 2) = {
     val supp = thmSupp(name, rank)
-    val file = wd / dir / s"$name.css"
+    val file = wd / dir / s"$name.csv"
     rm(file)
-    supp.foreach((p) => {      
-      write.append(file, s"$p,${entropyVec(name, rank)(p)}\n")
+    val tVec = thmVec(name, rank)
+    def pVec(p : FreeGroups.Presentation) =
+      tVec map ((fd) => fd(p))
+    supp.foreach((p) => {
+      write.append(file, s""""$p",${pVec(p).mkString(",")}\n""")
     })
   }
 }
@@ -126,13 +129,13 @@ object ACData {
   def saveEntropy(file: String, dir: String = "0.5-output", ent: List[Weighted[String]]) = {
     for (Weighted(x, p) <- ent) write.append(wd / file, s"$x, $p\n")
   }
-  
+
   import FDhub._
-  
+
   import Hub.system
-  
+
   import scala.concurrent.ExecutionContext.Implicits.global
-  
+
   def saveStates(st : Map[String, FDactor.State], dir: String = "acDev", file: String = "acstates.dat") = {
     rm(wd / dir /file)
     st.foreach {ns => {
@@ -141,32 +144,32 @@ object ACData {
       }
        }
   }
-  
-  def saveHubStates(dir: String = "acDev", file: String = "acstates.dat")(implicit hub : ActorRef) = {    
+
+  def saveHubStates(dir: String = "acDev", file: String = "acstates.dat")(implicit hub : ActorRef) = {
     val s = states
-    s.foreach(saveStates(_, dir, file))            
+    s.foreach(saveStates(_, dir, file))
   }
-  
-  def loadStates(dir: String = "acDev", file: String = "acstates.dat") = 
+
+  def loadStates(dir: String = "acDev", file: String = "acstates.dat") =
     (read.lines(wd /dir /file) map (uread[(String, FDactor.State)])).toMap
- 
+
   def restart(states: Map[String, State])(implicit hub: ActorRef) = {
     states.foreach {
       case (name, st) =>
     //    start(name)
     }
   }
-    
+
   def restartAll(dir: String = "acDev", file: String = "acstates.dat")(implicit hub: ActorRef) = {
-    
+
   }
-  
+
   def run(dir: String = "acDev", file: String = "acstates.dat", rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5) = {
     implicit val hub = FDhub.startHub
-    
+
     val data = loadData()
-    
+
     data.restartAll(file, ACrunner.Param(rank, size, wrdCntn, dir))
   }
-    
+
 }

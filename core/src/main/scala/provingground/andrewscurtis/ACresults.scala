@@ -16,17 +16,17 @@ class ACresults(
     paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]) {
 
   def names = (paths map (_._1)).toList
-  
+
   def thmVec(name: String, rank: Int = 2) = paths(name) map (_._2) map (toPresentation(rank, _))
 
-  def thmSupp(name: String, rank: Int = 2) = 
+  def thmSupp(name: String, rank: Int = 2) =
     ((thmVec(name, rank) map (_.supp.toSet)) reduce (_ union _)).toVector
-  
+
   import FreeGroups._
-  
-  def entropyVec(name: String, rank: Int = 2)(p : Presentation) =
-    thmVec(name, rank) map ((fd) => fd.entropy(p))    
-  
+
+  def probVec(name: String, rank: Int = 2)(p : Presentation) =
+    thmVec(name, rank) map ((fd) => fd(p))
+
   def sizes = for ((name, data) <- paths) yield (name -> data.size)
 
   def states = for ((name, data) <- paths) yield (name -> data.last)
