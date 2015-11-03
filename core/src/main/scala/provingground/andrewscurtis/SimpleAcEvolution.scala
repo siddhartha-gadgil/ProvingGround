@@ -77,6 +77,20 @@ object SimpleAcEvolution {
     id ++ inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
   }
   
+  def learnerMoves(rank: Int)  = {
+    val inv = genAllInv(rank)
+    val lftmult = genLftMult(rank)
+    val rtmult = genRtMult(rank)
+    val conj = genConj(rank, rank)
+    val lftmultinv = genLftInvMult(rank)
+    val rtmultinv = genRtInvMult(rank)
+    val transp = genTranspose(rank)
+    val moves = inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
+    val moveWeight = 0.5 / (moves.size)
+    val pmf =  Weighted(Id : AtomicMove, 0.5) :: (moves map (Weighted(_, moveWeight)))
+    FiniteDistribution(pmf)
+  }
+  
   def extendedMoves(rank: Int) = FiniteDistribution.uniform(extendedMovesList(rank))
   
   def genLftInvMult(rank: Int): List[AtomicMove] = {
