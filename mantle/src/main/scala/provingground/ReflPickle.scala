@@ -4,6 +4,8 @@ import HoTT._
 
 import scala.reflect.runtime.universe
 
+import scala.util._
+
 /**
  * Reflection based picking for case objects which are terms.
  */
@@ -17,4 +19,16 @@ object ReflPickle {
     val obj = mirror.reflectModule(module)
     obj.instance.asInstanceOf[Term]
   }
+}
+
+object TermObj{
+  import ReflPickle._
+  
+  def apply(t: Term) = {
+    val p = pickle(t)
+    require(Try(unpickle(p)) == Success(t), s"could not pickle $t as term object, may not be a singleton")
+    p
+  }
+  
+  def unapply(str: String) = Try(unpickle(str)).toOption
 }

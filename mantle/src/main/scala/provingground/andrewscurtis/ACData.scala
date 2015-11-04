@@ -172,4 +172,18 @@ object ACData {
     data.restartAll(file, ACrunner.Param(rank, size, wrdCntn, dir))
   }
 
+  def resetFile(file : ammonite.ops.Path) = {
+    val lastline = read.lines(file).last
+    write.over(file, s"$lastline\n")
+  }
+  
+  def lastLine(source: ammonite.ops.Path, target: ammonite.ops.Path) = {
+    val lastline = read.lines(source).last
+    write.over(target, s"$lastline\n")
+  }
+  
+  def succFile(source: ammonite.ops.Path) = {
+    val target = source / up / s"succ-${source.name}"
+    lastLine(source, target)
+  }
 }
