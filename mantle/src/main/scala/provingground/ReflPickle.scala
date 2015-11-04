@@ -31,4 +31,8 @@ object TermObj{
   }
   
   def unapply(str: String) = Try(unpickle(str)).toOption
+  
+  val objCase : PartialFunction[String, Term] = {
+    case TermObj(str) => str
+  }
 }
