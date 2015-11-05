@@ -32,8 +32,8 @@ class FDhub extends Actor {
 
 
     case Done(_, _, _) => {
-      println(runners)
-      println(sender)
+//      println(runners)
+//      println(sender)
       val state = runners(sender)
       import state._
       if (running) sender ! Continue(steps, strictness, epsilon)
