@@ -165,7 +165,7 @@ object ACrunner {
 
 
    case class Param(
-       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5,
+       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1,
        dir : String = "acDev",
        alert: Unit => Unit = (_) => ()
        )
