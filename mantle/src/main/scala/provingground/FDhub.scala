@@ -91,7 +91,7 @@ object FDhub{
 
   import Hub.system
 
-  def startHub = system.actorOf(props)
+  def startHub(name : String = "FiniteDistribution-Hub") = system.actorOf(props, name)
 
   def stopRunners(implicit hub: ActorRef) = hub ! StopAll
 

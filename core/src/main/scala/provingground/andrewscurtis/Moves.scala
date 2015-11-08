@@ -218,7 +218,7 @@ case class Transpose(k: Int, l: Int) extends AtomicMove {
   }
 }
 
-case class Moves(moves: List[AtomicMove]) {
+case class Moves(moves: List[AtomicMove]) extends AnyVal{
   /*
   def reduce: Presentation => Option[Presentation] = {
     if(moves.isEmpty)

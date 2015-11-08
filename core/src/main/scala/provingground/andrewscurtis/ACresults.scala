@@ -13,9 +13,10 @@ import FiniteDistribution._
 import SimpleAcEvolution._
 
 class ACresults(
-    paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]) {
+    paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]
+    )  extends ACStates{
 
-  def names = (paths map (_._1)).toList
+  override def names = (paths map (_._1)).toList
 
   def thmVec(name: String, rank: Int = 2) = paths(name) map (_._2) map (toPresentation(rank, _))
 
@@ -29,19 +30,27 @@ class ACresults(
 
   def sizes = for ((name, data) <- paths) yield (name -> data.size)
 
-  def states = for ((name, data) <- paths) yield (name -> data.last)
+  lazy val states = for ((name, data) <- paths) yield (name -> data.toVector.last)
 
+
+
+//  def upickle = uwrite(ACPortableResults(paths))
+}
+
+trait ACStates{
+  val states : Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]  
+  
+  def names = (states map (_._1)).toList
+  
   def combined = vBigSum(states.values.toList)
 
-  def blended = combined |*| (1.0/ paths.size)
+  def blended = combined |*| (1.0/ states.size)
 
   def proofs = blended._2
 
   def moveWeights = blended._1
 
   def thms(rank: Int = 2) = toPresentation(rank, proofs)
-
-//  def upickle = uwrite(ACPortableResults(paths))
 }
 
 object ACresults{
@@ -49,5 +58,5 @@ object ACresults{
 }
 
 case class ACPortableResults(
-    paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]
+    paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]
     ) extends ACresults(paths)

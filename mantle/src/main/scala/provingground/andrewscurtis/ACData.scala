@@ -16,53 +16,25 @@ import SimpleAcEvolution._
 
 import ACrunner._
 
+import scala.io.Source
+
 import akka.actor._
 
 import ACData._
 
 case class ACData(
-    paths: Map[String, Vector[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
+    paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
     dir : String) extends ACresults(paths){
 
-  def revive(name : String, p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
-    import p.{dir => d, _}
-    import SimpleAcEvolution._
-    val state = states(name)
-    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
-//    FDhub.start(ref)
-    ref
-  }
+  def last = ACStateData(states, dir)
+  
+  def take(n: Int) = ACData(paths mapValues(_ take (n)), dir)
+  
 
-  def reviveAll(p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
-    val refs = for (name <- names) yield revive(name, p)
-    refs
-  }
-
-  def restartAll(file: String = "acstates.dat", p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
-    val states = loadStates(dir, file)
-    val refs = for (name <- names) yield {
-      val runner = revive(name, p)
-      val optstate = states.get(name)
-      optstate map ((state) => FDhub.start(runner, state.steps, state.strictness, state.epsilon))
-      runner
-    }
-
-    refs
-  }
-
-  def spawn(name : String, p : ACrunner.Param = Param()) = {
-    import p.{dir => d, _}
-    import SimpleAcEvolution._
-    rawSpawn(name, rank, size, wrdCntn, blended, ACData.fileSave(name, dir, alert))
-  }
-
-  def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
-    for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
-  }
 
   def resetFiles() = {
     for ((name, data) <- paths) yield {
-      write.over(wd /dir / name, pickle(data.last))
+      write.over(wd /dir / name, pickle(data.toVector.last))
     }
   }
 
@@ -79,8 +51,61 @@ case class ACData(
   }
 }
 
+case class ACStateData(
+    states: Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
+    dir : String) extends ACStates{
+    def revive(name : String, p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
+    import p.{dir => d, _}
+    import SimpleAcEvolution._
+    val state = states(name)
+    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
+//    FDhub.start(ref)
+    ref
+  }
+
+  def reviveAll(p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
+    val refs = for (name <- names) yield revive(name, p)
+    refs
+  }
+
+
+  def spawn(name : String, p : ACrunner.Param = Param()) = {
+    import p.{dir => d, _}
+    import SimpleAcEvolution._
+    rawSpawn(name, rank, size, wrdCntn, blended, ACData.fileSave(name, dir, alert))
+  }
+
+  def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
+    for (j <- 1 to mult) yield spawn(name+"."+j.toString, p)
+  }
+}
+
+
 object ACData {
 
+  def thmFileCSV(dir : String = "acDev", file: String,
+       rank: Int = 2, lines: Option[Int] = None) = {
+    val source = wd / dir / s"${file}.acthms"
+    val target = wd / dir / s"${file}.acthms.csv"
+    val l = 
+      (lines map ((n) =>
+        ((read.lines!!(source)).take(n)).toVector
+        )).
+        getOrElse(read.lines(source))
+    val pmfs = l map (uread[Vector[(String, Double)]])   
+    val tVec = 
+      pmfs map ((pmf => FiniteDistribution(pmf map ((xp) => Weighted(xp._1, xp._2)))))
+    val supp = (tVec map (_.supp.toSet) reduce (_ union _)).toVector
+    def pVec(p : String) =
+      tVec map ((fd) => fd(p))
+    supp.foreach((p) => {
+      write.append(target, s""""$p",${pVec(p).mkString(",")}\n""")
+    })
+  }
+  
+  def thmFiles(dir : String = "acDev", s : String => Boolean = (x) => true) = {
+    ls( wd / dir) filter ((file) => file.ext == "acthms" && s(file.name.dropRight(7)))
+  }
 
   def pickle(state: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
     val fdM = state._1
@@ -102,18 +127,47 @@ object ACData {
   }
 
   val wd = cwd / "data"
-  def fileSave(name: String, dir : String ="acDev", alert : Unit => Unit = (x) => ())
+  def fileSave(name: String, dir : String ="acDev", 
+      alert : Unit => Unit = (x) => (), rank : Int = 2)
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
+      val statefile = wd / dir / (name+".acstate")
+      val thmfile = wd / dir / (name+".acthms")
       write.append(file, s"${pickle(fdM, fdV)}\n")
+      write.over(statefile, s"${pickle(fdM, fdV)}\n")
+      def writethms = {
+        val thms = (toPresentation(2, fdV) map (_.toString)).
+          flatten.pmf map {case Weighted(a, p) => (a, p)}
+        write.append(thmfile, s"${uwrite(thms)}\n")
+      }
+      import scala.concurrent._
+      import scala.concurrent.ExecutionContext.Implicits.global
+      Future(writethms)
       alert(())
   }
 
   def load(name: String, dir : String ="acDev") = {
     val file = wd / dir / (name+".acrun")
-    val lines = read.lines(file)
+    val lines = (read.lines!!(file)).toStream
     lines map (unpickle)
   }
+  
+  def loadFinal(name: String, dir : String ="acDev") = {
+    val file = wd / dir / (name+".acrun")
+    val line = (read.lines(file)).last
+    unpickle(line)
+  }
+  
+  def loadAllFinal(name: String, dir : String ="acDev") = {
+    val fileNames = ls(wd / dir) filter (_.ext == "acstate") map (_.name.dropRight(8))
+    val states = (for (name <- fileNames) yield (name, loadFinal(name, dir))).toMap
+    ACStateData(states, dir)
+  }
+  
+  def loadState(file : ammonite.ops.Path) = {
+    unpickle(read(file))
+  }
+  
 
   def loadAll(dir : String ="acDev") = {
     val fileNames = ls(wd / dir) filter (_.ext == "acrun") map (_.name.dropRight(6))
@@ -136,41 +190,7 @@ object ACData {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
-  def saveStates(st : Map[String, FDactor.State], dir: String = "acDev", file: String = "acstates.dat") = {
-    rm(wd / dir /file)
-    st.foreach {ns => {
-      val pickled = uwrite(ns)
-      write.append(wd /dir /file, pickled)
-      }
-       }
-  }
 
-  def saveHubStates(dir: String = "acDev", file: String = "acstates.dat")(implicit hub : ActorRef) = {
-    val s = states
-    s.foreach(saveStates(_, dir, file))
-  }
-
-  def loadStates(dir: String = "acDev", file: String = "acstates.dat") =
-    (read.lines(wd /dir /file) map (uread[(String, FDactor.State)])).toMap
-
-  def restart(states: Map[String, State])(implicit hub: ActorRef) = {
-    states.foreach {
-      case (name, st) =>
-    //    start(name)
-    }
-  }
-
-  def restartAll(dir: String = "acDev", file: String = "acstates.dat")(implicit hub: ActorRef) = {
-
-  }
-
-  def run(dir: String = "acDev", file: String = "acstates.dat", rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.5) = {
-    implicit val hub = FDhub.startHub
-
-    val data = loadData()
-
-    data.restartAll(file, ACrunner.Param(rank, size, wrdCntn, dir))
-  }
 
   def resetFile(file : ammonite.ops.Path) = {
     val lastline = read.lines(file).last
