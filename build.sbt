@@ -17,6 +17,8 @@ lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
+val akkaStreamV = "1.0"
+
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi" % "ammonite-repl" % "0.4.8" % "test" cross CrossVersion.full,
@@ -27,6 +29,10 @@ lazy val jvmSettings = Seq(
     "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "2.8.2",
+    "com.typesafe.akka" %% "akka-stream-experimental"             % akkaStreamV,
+    "com.typesafe.akka" %% "akka-http-core-experimental"          % akkaStreamV,
+    "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
+    "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
     "com.lihaoyi" %% "ammonite-ops" % "0.4.8",
 "com.lihaoyi" %% "pprint" % "0.3.6")

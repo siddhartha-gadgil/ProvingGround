@@ -119,18 +119,15 @@ object ACrunner {
 
   import SimpleAcEvolution._
 
+  def initState(rank: Int) = (learnerMoves(rank), eVec)
+  
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
     rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), fileSave(name, dir, alert))
 }
 
-  @deprecated("use spwan with init parameter", "temp")
-  def spawnExtInit(name: String, p: Param = Param()) = {
-    import p._
-    import ACData.fileSave
-    rawSpawn(name, rank, size, wrdCntn, (extendedMoves(rank), eVec), fileSave(name, dir, alert))
-}
+
 
   def spawnSmooth(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
@@ -138,12 +135,6 @@ object ACrunner {
     smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), fileSave(name, dir, alert))
 }
 
-  @deprecated("use spawn with init parameter", "temp")
-  def spawnExtSmooth(name: String, p: Param = Param()) = {
-    import p._
-    import ACData.fileSave
-    smoothSpawn(name, rank, size, wrdCntn, (extendedMoves(rank), eVec), fileSave(name, dir, alert))
-}
 
   def spawnsRaw(name: String, mult : Int = 4, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     for (j <- 1 to mult) yield spawnRaw(name+"."+j.toString, p, init)
@@ -153,15 +144,6 @@ object ACrunner {
     for (j <- 1 to mult) yield spawnSmooth(name+"."+j.toString, p, init)
   }
 
-  @deprecated("use spawn with init parameter", "temp")
-  def spawnsExtInit(name: String, mult : Int = 4, p: Param = Param()) = {
-    for (j <- 1 to mult) yield spawnExtInit(name+"."+j.toString, p)
-  }
-
-  @deprecated("use spawn with init parameter", "temp")
-  def spawnsExtSmooth(name: String, mult : Int = 4, p: Param = Param()) = {
-    for (j <- 1 to mult) yield spawnExtSmooth(name+"."+j.toString, p)
-  }
 
 
    case class Param(
