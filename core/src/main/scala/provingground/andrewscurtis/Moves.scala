@@ -248,6 +248,9 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal{
   }
 
   def actOnTriv(rank: Int) = this(Presentation.trivial(rank))
+  
+  def idLast = 
+    Moves(moves.filter(_ != Id) ++ moves.filter(_ == Id))
 }
 
 object Moves {

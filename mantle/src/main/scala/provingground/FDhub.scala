@@ -105,10 +105,10 @@ object FDhub{
   import system.dispatcher
 
   def runners(implicit hub: ActorRef) =
-    (hub ? Runners) map (_.asInstanceOf[List[String]])
+    (hub ? Runners).mapTo[List[String]]
 
   def states(implicit hub: ActorRef) =
-    (hub ? States) map (_.asInstanceOf[Map[String, State]])
+    (hub ? States).mapTo[Map[String, State]]
 
   def start(
       runner: ActorRef, steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1
