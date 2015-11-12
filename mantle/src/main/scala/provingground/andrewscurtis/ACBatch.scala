@@ -32,10 +32,10 @@ object ACBatch {
     val runner = 
       if (!smooth) 
         rawSpawn(name, rank, size, wrdCntn, init, 
-        fileSave(name, dir, (_ : Unit) => (), rank))
+        ACData.srcRef(dir, rank))
       else
         smoothSpawn(name, rank, size, wrdCntn, init, 
-        fileSave(name, dir, (_ : Unit) => (), rank))
+        ACData.srcRef(dir, rank))
     def run(implicit hub: ActorRef) = {
       start(runner, steps, strictness, epsilon)
       runner

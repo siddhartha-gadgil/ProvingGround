@@ -18,18 +18,20 @@ import ACrunner._
 
 class ACrunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef : ActorRef
     ) extends FDactor[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
-      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
+      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, srcRef)
 
 class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef: ActorRef
     ) extends FDactor[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])
-      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, (mv) =>save(mv._1, mv._2))
+      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, srcRef)
 
+
+      
 object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
@@ -75,44 +77,44 @@ object ACrunner {
 
   def props(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef: ActorRef
     ) : Props = Props(
         new ACrunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef
     ) )
 
   def smoothProps(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef: ActorRef
     ) : Props = Props(
         new ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef
     ) )
 
   def rawSpawn(name: String, rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef: ActorRef
     ) = {
             val runner =
               Hub.system.actorOf(
                   props(rank: Int, size: Int, wrdCntn: Double,
                     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-                    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+                    srcRef
                  ), name)
             runner
           }
 
   def smoothSpawn(name: String, rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+    srcRef: ActorRef
     ) = {
             val runner =
               Hub.system.actorOf(
                   smoothProps(rank: Int, size: Int, wrdCntn: Double,
                     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-                    save : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]) => Unit
+                    srcRef
                  ), name)
             runner
           }
@@ -124,7 +126,7 @@ object ACrunner {
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
-    rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), fileSave(name, dir, alert))
+    rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(dir, rank))
 }
 
 
@@ -132,7 +134,7 @@ object ACrunner {
   def spawnSmooth(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
-    smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), fileSave(name, dir, alert))
+    smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(dir, rank))
 }
 
 
@@ -148,8 +150,7 @@ object ACrunner {
 
    case class Param(
        rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1,
-       dir : String = "acDev",
-       alert: Unit => Unit = (_) => ()
+       dir : String = "acDev"
        )
 
 }

@@ -58,7 +58,7 @@ case class ACStateData(
     import p.{dir => d, _}
     import SimpleAcEvolution._
     val state = states(name)
-    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.fileSave(name, dir, alert))
+    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank))
 //    FDhub.start(ref)
     ref
   }
@@ -72,7 +72,7 @@ case class ACStateData(
   def spawn(name : String, p : ACrunner.Param = Param()) = {
     import p.{dir => d, _}
     import SimpleAcEvolution._
-    rawSpawn(name, rank, size, wrdCntn, blended, ACData.fileSave(name, dir, alert))
+    rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank))
   }
 
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
@@ -80,8 +80,25 @@ case class ACStateData(
   }
 }
 
+import FDactor._
+
+class ACFileSaver(dir: String = "acDev", rank: Int) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])] {
+  def save = 
+    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
+      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
+}
+
+
+object ACFileSaver{
+  def props(dir: String = "acDev", rank: Int) = Props(new ACFileSaver(dir, rank))
+  
+  
+  def actorRef(dir: String = "acDev", rank: Int) = Hub.system.actorOf(props(dir, rank))
+}
 
 object ACData {
+  def srcRef(batch: String = "acDev", rank: Int) = ACFileSaver.actorRef(batch, rank)
+  
 
   def thmFileCSV(dir : String = "acDev", file: String,
        rank: Int = 2, lines: Option[Int] = None) = {
@@ -128,7 +145,7 @@ object ACData {
 
   val wd = cwd / "data"
   def fileSave(name: String, dir : String ="acDev", 
-      alert : Unit => Unit = (x) => (), rank : Int = 2)
+      rank : Int = 2)
     (fdM : FiniteDistribution[AtomicMove], fdV : FiniteDistribution[Moves]) = {
       val file = wd / dir / (name+".acrun")
       val statefile = wd / dir / (name+".acstate")
@@ -143,7 +160,6 @@ object ACData {
       import scala.concurrent._
       import scala.concurrent.ExecutionContext.Implicits.global
       Future(writethms)
-      alert(())
   }
 
   def load(name: String, dir : String ="acDev") = {

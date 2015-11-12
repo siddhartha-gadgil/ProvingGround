@@ -2,6 +2,8 @@ package provingground
 
 import akka.actor._
 
+import akka.pattern.ask
+
 import Hub.system
 
 import FDactor._
@@ -11,7 +13,7 @@ class FDactor[X : LinearStructure](
     feedback: Double => X => X => X,
     normalize : X => X,
     init: X,
-    save : X => Unit
+    srcRef: ActorRef
     ) extends Actor{
   import LinearStructure._
 
@@ -39,9 +41,17 @@ class FDactor[X : LinearStructure](
         val newState = normalize(state |+| (shift(state, strictness, steps, epsilon)))
         state = newState
         loops += 1
-        save(state)
+        srcRef ! snapShot(newState)
         sender ! Done(steps, strictness, epsilon)
       }
+  }
+}
+
+trait FDsrc[X] extends Actor{ 
+  def save: SnapShot[X] => Unit
+  
+  def receive = {
+    case SnapShot(x, name, loops) => save(SnapShot(x.asInstanceOf[X], name, loops))
   }
 }
 
