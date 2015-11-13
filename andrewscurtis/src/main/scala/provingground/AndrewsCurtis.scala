@@ -1,5 +1,7 @@
 package provingground.andrewscurtis
 
+import provingground._
+
 import FreeGroups._
 import provingground.Collections._
 

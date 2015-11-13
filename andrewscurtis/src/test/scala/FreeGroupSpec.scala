@@ -1,5 +1,5 @@
 import provingground.andrewscurtis._
-import provingground.andrewscurtis.FreeGroups._
+import provingground.FreeGroups._
 import org.scalatest._
 
 class WordSpec extends FlatSpec {

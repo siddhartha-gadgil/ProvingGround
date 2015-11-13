@@ -1,6 +1,6 @@
 package provingground.andrewscurtis
 
-import provingground.andrewscurtis.FreeGroups._
+import provingground.FreeGroups._
 import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
@@ -248,8 +248,8 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal{
   }
 
   def actOnTriv(rank: Int) = this(Presentation.trivial(rank))
-  
-  def idLast = 
+
+  def idLast =
     Moves(moves.filter(_ != Id) ++ moves.filter(_ == Id))
 }
 

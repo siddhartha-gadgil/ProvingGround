@@ -3,7 +3,7 @@ package models
 import provingground.Collections._
 import provingground._
 import FiniteDistribution._
-import provingground.andrewscurtis.FreeGroups._
+import provingground.FreeGroups._
 import scala.language.reflectiveCalls
 import provingground.MoveLearner
 

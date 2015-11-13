@@ -1,4 +1,5 @@
-package provingground.andrewscurtis
+package provingground
+
 
 import provingground.StringParse._
 

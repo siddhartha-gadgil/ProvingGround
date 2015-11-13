@@ -1,6 +1,6 @@
 package provingground.andrewscurtis
 
-import provingground.andrewscurtis.FreeGroups._
+import provingground.FreeGroups._
 import provingground.Collections._
 import provingground.FiniteDistributionLearner._
 import provingground.DiffbleFunction._

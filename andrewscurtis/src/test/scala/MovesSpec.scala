@@ -1,7 +1,7 @@
 import provingground.Collections._
 import provingground.andrewscurtis._
 import provingground.andrewscurtis.Moves._
-import provingground.andrewscurtis.FreeGroups._
+import provingground.FreeGroups._
 import org.scalatest._
 import provingground._
 import FiniteDistribution._
