@@ -1,15 +1,16 @@
 package provingground
 
-import z3.scala._
 
 import spire.math._
 import spire.algebra._
 
 import spire.implicits._
 
-import Z3RealsAST._
+import Z3RealExpr._
 
 import FreeGroups._
+
+import com.microsoft.z3._
 
 object SU2Representations {
   import ctx._
@@ -27,7 +28,7 @@ object SU2Representations {
     
     val quatVar = Quaternion(r, i, j, k)
     
-//    val  f= implicitly[Field[Z3AST]]
+//    val  f= implicitly[Field[ArithExpr]]
     
     val normsq = (r * r) + (i * i) + (j * j) + (k * k)
     
@@ -41,13 +42,13 @@ object SU2Representations {
   val unity = Quaternion(one, zero, zero, zero)
  
   
-  def wordImage(gens: Seq[Quaternion[Z3AST]])(w: Word) : Quaternion[Z3AST] = w.ls match {
+  def wordImage(gens: Seq[Quaternion[ArithExpr]])(w: Word) : Quaternion[ArithExpr] = w.ls match {
       case List() => unity
       case k :: ys => 
         if (k> 0) gens(k) * wordImage(gens)(Word(ys)) else gens(-k).conjugate * wordImage(gens)(Word(ys))
   }
   
-  def equality(x: Quaternion[Z3AST], y: Quaternion[Z3AST]) = {
+  def equality(x: Quaternion[ArithExpr], y: Quaternion[ArithExpr]) = {
     List(mkEq(x.r, y.r), mkEq(x.i, y.i), mkEq(x.j, y.j), mkEq(x.k, y.k))
   }
   
@@ -75,9 +76,9 @@ object SU2Representations {
     
     val pe = PresentationEquations(p)
     
-    (pe.repEqns) foreach (solver.assertCnstr(_))
+    (pe.repEqns) foreach (solver.add(_))
     
-    solver.assertCnstr(pe.isNonTrivPresentation)
+    solver.add(pe.isNonTrivPresentation)
     
     solver.check()
   }
