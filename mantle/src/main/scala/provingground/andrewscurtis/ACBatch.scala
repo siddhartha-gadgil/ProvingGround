@@ -17,6 +17,10 @@ import upickle.default.{read => uread, write => uwrite, _}
 
 import SimpleAcEvolution._
 
+import spray.json._
+
+import DefaultJsonProtocol._
+
 object ACBatch {
   val wd = cwd / 'data
   
@@ -41,13 +45,40 @@ object ACBatch {
       runner
     }
   }
-    
-  def loadStartData(dir: String = "acDev", file: String = "acbatch.json") = {
-    val jsFile = if (file.endsWith(".json")) file else file+".json"
-    val js = ammonite.ops.read(wd / dir/ jsFile)
-    println(js)
-    uread[List[StartData]](js)
+  
+  object StartData{
+    def fromJson(st: String) = {
+      val map = st.parseJson.asJsObject.fields
+      val name = map("name").convertTo[String]
+      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
+      val rank = (map.get("rank") map (_.convertTo[Int])) getOrElse(2)
+      val size = (map.get("size") map (_.convertTo[Int])) getOrElse(1000)
+      val steps = (map.get("steps") map (_.convertTo[Int])) getOrElse(3)
+      val wrdCntn = (map.get("wrdCntn") map (_.convertTo[Double])) getOrElse(0.1)
+      val epsilon = (map.get("epsilon") map (_.convertTo[Double])) getOrElse(0.1)
+      val smooth = (map.get("smooth") map (_.convertTo[Boolean])) getOrElse(false)
+      val strictness = (map.get("strictness") map (_.convertTo[Double])) getOrElse(1.0)
+      StartData(name, dir, rank, size, wrdCntn, steps, strictness, epsilon, smooth)
+    }
   }
+  
+  
+  val parseStJson = uread[StartData] _
+  
+  
+  
+  def loadRawStartData(dir: String = "acDev", file: String = "acbatch.json") = {
+    val jsFile = if (file.endsWith(".json")) file else file+".json"
+    val js = ammonite.ops.read.lines(wd / dir/ jsFile)
+    println(js)
+    js
+  }
+  
+  def loadStartData(dir: String = "acDev", file: String = "acbatch.json") =
+    {
+    val d = loadRawStartData(dir, file) 
+    d map (StartData.fromJson)
+    }
   
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)

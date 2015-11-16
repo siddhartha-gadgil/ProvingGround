@@ -1,1 +1,2 @@
-[{"name":"withFlowBatch"},{"name": "blah", "steps":4}]
+{"name":"withFlowBatch"}
+{"name": "blah", "steps":4}
