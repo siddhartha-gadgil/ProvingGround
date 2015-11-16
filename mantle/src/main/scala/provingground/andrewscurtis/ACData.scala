@@ -20,11 +20,15 @@ import scala.io.Source
 
 import akka.actor._
 
+import FreeGroups._
+
 import ACData._
 
 import akka.stream._
 
 import akka.stream.scaladsl.{Source => Src, _}
+
+import com.mongodb.casbah.Imports._
 
 case class ACData(
     paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
@@ -100,6 +104,20 @@ object ACFileSaver{
   def actorRef(dir: String = "acDev", rank: Int) = Hub.system.actorOf(props(dir, rank))
 }
 
+case class ACElem(name: String, moves: Moves, pres: Presentation, weight: Double)
+
+object ACElem{
+  def fromSnap(ranks: Map[String, Int] = Map()) = 
+    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
+  {
+    val d = snap.state._2
+    d.supp map ((x) => {
+      val rank = ranks.get(snap.name).getOrElse(2)
+      ACElem(snap.name, x, Moves.actOnTriv(2)(x).get, d(x))
+      } )
+  }
+}
+
 object ACFlowSaver{
   implicit val system = Hub.system
   
@@ -107,12 +125,21 @@ object ACFlowSaver{
   
   val src = 
     Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]](100, OverflowStrategy.dropHead)
-  
+    
   def fileSaver(dir: String = "acDev", rank: Int = 2) = 
     Sink.foreach { 
     (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) => 
-      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2) }
+      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2) 
+  }
 
+  val loopsFlow = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]] map {
+    (snap) => (snap.name, snap.loops)  
+  }
+  
+  def elemsFlow(ranks: Map[String, Int] = Map()) = 
+    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]] mapConcat(ACElem.fromSnap(ranks))  
+  
+  
   def actorRef(dir: String = "acDev", rank: Int = 2) = 
   {
     val sink = fileSaver(dir, rank)
