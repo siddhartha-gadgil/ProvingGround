@@ -29,7 +29,7 @@ object ACBatch {
       (ls(wd / dir) find (_.name == name+".acstate") map (loadState)).
       getOrElse((learnerMoves(rank), eVec))
     val p = Param(rank, size, wrdCntn, dir)
-    val runner = 
+    def runner = 
       if (!smooth) 
         rawSpawn(name, rank, size, wrdCntn, init, 
         ACData.srcRef(dir, rank))
@@ -44,7 +44,8 @@ object ACBatch {
     
   def loadStartData(dir: String = "acDev", file: String = "acbatch.json") = {
     val jsFile = if (file.endsWith(".json")) file else file+".json"
-    val js = read(wd / jsFile)
+    val js = ammonite.ops.read(wd / dir/ jsFile)
+    println(js)
     uread[List[StartData]](js)
   }
   

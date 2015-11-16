@@ -22,6 +22,10 @@ import akka.actor._
 
 import ACData._
 
+import akka.stream._
+
+import akka.stream.scaladsl.{Source => Src, _}
+
 case class ACData(
     paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
     dir : String) extends ACresults(paths){
@@ -82,7 +86,7 @@ case class ACStateData(
 
 import FDactor._
 
-class ACFileSaver(dir: String = "acDev", rank: Int) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])] {
+class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])] {
   def save = 
     (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
@@ -96,8 +100,29 @@ object ACFileSaver{
   def actorRef(dir: String = "acDev", rank: Int) = Hub.system.actorOf(props(dir, rank))
 }
 
+object ACFlowSaver{
+  implicit val system = Hub.system
+  
+  implicit val mat  = ActorMaterializer()
+  
+  val src = 
+    Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]](100, OverflowStrategy.dropHead)
+  
+  def fileSaver(dir: String = "acDev", rank: Int = 2) = 
+    Sink.foreach { 
+    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) => 
+      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2) }
+
+  def actorRef(dir: String = "acDev", rank: Int = 2) = 
+  {
+    val sink = fileSaver(dir, rank)
+    sink.runWith(src)
+  }
+}
+
+
 object ACData {
-  def srcRef(batch: String = "acDev", rank: Int) = ACFileSaver.actorRef(batch, rank)
+  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.actorRef(batch, rank)
   
 
   def thmFileCSV(dir : String = "acDev", file: String,
