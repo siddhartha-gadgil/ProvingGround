@@ -102,3 +102,5 @@ project/sbt-ui.sbt
 .ensime_cache/
 
 *.acrun
+*.acstate
+*.acthms
