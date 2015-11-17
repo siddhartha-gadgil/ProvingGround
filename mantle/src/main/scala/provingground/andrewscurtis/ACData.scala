@@ -66,7 +66,7 @@ case class ACStateData(
     import p.{dir => d, _}
     import SimpleAcEvolution._
     val state = states(name)
-    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank))
+    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
 //    FDhub.start(ref)
     ref
   }
@@ -80,7 +80,7 @@ case class ACStateData(
   def spawn(name : String, p : ACrunner.Param = Param()) = {
     import p.{dir => d, _}
     import SimpleAcEvolution._
-    rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank))
+    rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
   }
 
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {
@@ -90,9 +90,9 @@ case class ACStateData(
 
 import FDactor._
 
-class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])] {
+class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
   def save =
-    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
+    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
 }
 
@@ -104,16 +104,29 @@ object ACFileSaver{
   def actorRef(dir: String = "acDev", rank: Int) = Hub.system.actorOf(props(dir, rank))
 }
 
-case class ACElem(name: String, moves: Moves, pres: Presentation, weight: Double, loops: Int)
+case class ACElem(name: String, moves: Moves, rank: Int, pres: Presentation, weight: Double, loops: Int)
 
 object ACElem{
-  def fromSnap(ranks: Map[String, Int] = Map()) =
-    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
+  def fromSnap =
+    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
   {
     val d = snap.state._2
     d.supp map ((x) => {
-      val rank = ranks.get(snap.name).getOrElse(2)
-      ACElem(snap.name, x, Moves.actOnTriv(2)(x).get, d(x), snap.loops)
+      val rank = snap.param.rank
+      ACElem(snap.name, x, rank, Moves.actOnTriv(rank)(x).get, d(x), snap.loops)
+      } )
+  }
+}
+
+case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
+
+object ACThm{
+  def fromSnap =
+    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
+  { val rank = snap.param.rank
+    val d = toPresentation(rank, snap.state._2)
+    d.supp map ((x) => {      
+      ACThm(snap.name, x, d(x), snap.loops)
       } )
   }
 }
@@ -124,23 +137,26 @@ object ACFlowSaver{
   implicit val mat  = ActorMaterializer()
 
   val src =
-    Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]](100, OverflowStrategy.dropHead)
+    Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]](100, OverflowStrategy.dropHead)
 
   def fileSaver(dir: String = "acDev", rank: Int = 2) =
     Sink.foreach {
-    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]) =>
+    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
   }
 
-  val loopsFlow = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]] map {
+  val loopsFlow = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] map {
     (snap) => (snap.name, snap.loops)
   }
+  
+  val thmsFlow = 
+    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] mapConcat(ACThm.fromSnap)
 
-  def elemsFlow(ranks: Map[String, Int] = Map()) =
-    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]] mapConcat(ACElem.fromSnap(ranks))
+  def elemsFlow =
+    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] mapConcat(ACElem.fromSnap)
 
   def fdMFlow =     
-    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]] map {
+    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] map {
     (snap) => (snap.name, snap.state._1)
   }
 
@@ -157,6 +173,8 @@ object ACFlowSaver{
   val actorData = db("ACActorData")
   
   val fdMdb = db("AC-FDM")
+  
+  val thmsdb = db("AC-THMS")
 
   def saveElem(elem: ACElem) = {
     import elem._
@@ -169,9 +187,22 @@ object ACFlowSaver{
     elems.insert(obj)
   }
 
-  def elemsCashbahSave(ranks: Map[String, Int] = Map()) =
-    elemsFlow(ranks) to Sink.foreach(saveElem)
+  def saveThm(thm: ACThm) = {
+    import thm._
+    val obj =
+      MongoDBObject(
+        "name" -> name,
+        "presentation" -> uwrite(pres),
+        "loops" -> loops)
+    elems.insert(obj)
+  }
+  
+  def elemsCashbahSave =
+    elemsFlow to Sink.foreach(saveElem)
 
+  def thmsCashbahSave =
+    thmsFlow to Sink.foreach(saveThm)  
+    
   def saveLoops(name: String, loops: Int) = {
     val query = MongoDBObject("name" -> name)
     val update = $set("loops" -> loops)
@@ -193,8 +224,8 @@ object ACFlowSaver{
     fdMFlow to Sink.foreach {case (name, fdm) => saveFDM(name, fdm)}
     
   def mongoSaveRef(ranks: Map[String, Int] = Map()) = {
-    val fl = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]
-    val sink = fl alsoTo loopsCasbahSave alsoTo fdmCasbahSave to (elemsCashbahSave(ranks))
+    val fl = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]]
+    val sink = fl alsoTo loopsCasbahSave alsoTo fdmCasbahSave alsoTo thmsCashbahSave  to elemsCashbahSave
     sink.runWith(src)
   }
   

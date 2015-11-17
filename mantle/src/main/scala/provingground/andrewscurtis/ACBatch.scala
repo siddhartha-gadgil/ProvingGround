@@ -36,10 +36,10 @@ object ACBatch {
     def runner = 
       if (!smooth) 
         rawSpawn(name, rank, size, wrdCntn, init, 
-        ACData.srcRef(dir, rank))
+        ACData.srcRef(dir, rank), p)
       else
         smoothSpawn(name, rank, size, wrdCntn, init, 
-        ACData.srcRef(dir, rank))
+        ACData.srcRef(dir, rank), p)
     def run(implicit hub: ActorRef) = {
       start(runner, steps, strictness, epsilon)
       runner
