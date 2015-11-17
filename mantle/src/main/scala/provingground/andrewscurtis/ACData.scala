@@ -154,7 +154,7 @@ object ACFlowSaver{
 
   val elems = db("ACElems")
 
-  val actorLoops=db("ACactorloops")
+  val actorData = db("ACActorData")
   
   val fdMdb = db("AC-FDM")
 
@@ -175,9 +175,9 @@ object ACFlowSaver{
   def saveLoops(name: String, loops: Int) = {
     val query = MongoDBObject("name" -> name)
     val update = $set("loops" -> loops)
-    val exists = !(actorLoops.find(query).isEmpty)
-    if (exists) actorLoops.update(query, update)
-    else actorLoops.insert(MongoDBObject("name" -> name, "loops" -> loops))
+    val exists = !(actorData.findOne(query).isEmpty)
+    if (exists) actorData.update(query, update)
+    else actorData.insert(MongoDBObject("name" -> name, "loops" -> loops))
   }
   
   def saveFDM(name: String, fdM : FiniteDistribution[AtomicMove]) = {
