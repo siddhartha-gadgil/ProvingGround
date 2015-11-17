@@ -233,8 +233,8 @@ object ACFlowSaver{
   {
     val query = MongoDBObject("presentation" -> uwrite(pres), "name" -> name)
     val sorter = MongoDBObject("loops" -> 1)
-    val cursor = elems.find(query)
-    for (e <- cursor) yield e.getAs[Double]("weight")
+    val cursor = thmsdb.find(query)
+    for (e <- cursor) yield e.as[Double]("weight")
   }
   
   def FDV(name: String, loops: Int) = {
@@ -248,6 +248,20 @@ object ACFlowSaver{
       }).toVector.flatten
     FiniteDistribution(pmf)
   }
+  
+  def actorNames = {
+    val cursor = actorData.find()
+    (for (c <- cursor) yield c.getAs[String]("name")).toVector.flatten
+  }
+  
+  def actorLoops(name: String) = {
+    val query = MongoDBObject("name" -> name)
+    val cursor = actorData.findOne(query)
+    (for (c <- cursor) yield c.getAs[Int]("name")).flatten
+  }
+  
+  def fdV(name: String) = 
+    actorLoops(name) map (FDV(name, _))
   
   def FDM(name: String) = {
     val query = MongoDBObject("name" -> name)
