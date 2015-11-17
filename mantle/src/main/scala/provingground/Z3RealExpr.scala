@@ -5,13 +5,14 @@ import spire.algebra._
 
 import com.microsoft.z3._
 
-
+/**
+ * Field structure (a la spire) on Z3 arithmetic expressions, regarded as reals.
+ * Variables and the constants one and zero are reals.
+ */
 object Z3RealExpr {
   val ctx =  new Context()
   
   import ctx._
-  
-  val r = mkRealSort
   
   def realVar(name: String) : ArithExpr = mkRealConst(mkSymbol(name))
   
