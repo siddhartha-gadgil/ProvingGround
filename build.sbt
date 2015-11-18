@@ -36,6 +36,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
     "com.lihaoyi" %% "ammonite-ops" % "0.4.8",
+    "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
 "com.lihaoyi" %% "pprint" % "0.3.6")
   )
 

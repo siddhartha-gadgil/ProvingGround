@@ -30,6 +30,8 @@ import akka.stream.scaladsl.{Source => Src, _}
 
 import com.mongodb.casbah.Imports._
 
+import com.github.nscala_time.time.Imports._
+
 case class ACData(
     paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
     dir : String) extends ACresults(paths){
@@ -179,6 +181,8 @@ object ACFlowSaver{
     sink.runWith(src)
   }
 
+  def snapFile(batch: Int) = wd / (LocalDate.now.toString()) / s"ACSnaps-$batch"
+  
   /**
    * Flow extracting actor names and number of loops from snapshot.
    */

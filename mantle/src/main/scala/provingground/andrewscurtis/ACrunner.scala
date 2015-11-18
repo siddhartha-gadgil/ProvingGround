@@ -38,20 +38,15 @@ object ACrunner {
   }
 
   val normalize = (fd: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
-    (fd._1.normalized(), fd._2.normalized())
+    (fd._1.normalized(), (fd._2 map (_.idLast)).flatten.normalized())
 
   def feedback(rank : Int, wrdCntn: Double, strictness: Double) ={
     val projPresFn = projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d : FiniteDistribution[Presentation]) => {
-//      println(s"Distribution(${d.support.size}, total = ${d.norm}, ${d.total})")
-//      println(d.entropyView.take(20))
       val res = d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
-//      println(s"Feedback total = ${d.total}")
-//      println(res.entropyView.take(20))
       res
     }
     val pullback = fb ^: projPresFn
-//    println(s"Pullback feedback total: ${pullback._2.total}")
     pullback
   }
 
