@@ -126,4 +126,19 @@ object SU2Representations {
 
   def hasNonTrivRep(p: Presentation) = hasNonTrivRepSolver(p).check
 
+  def checkRep(p: Presentation) = {
+    import scala.concurrent._
+    import scala.concurrent.ExecutionContext.Implicits.global
+    import com.github.nscala_time.time.Imports._
+    val start = DateTime.now
+    val fut = Future(hasNonTrivRep(p))
+    fut.foreach((x) => {
+      val stop =DateTime.now
+      val timeTaken = ((start to stop).millis : Double) / 1000
+      println(s"$x: $p in $timeTaken")
+    }
+  )
+    fut
+  }
+
 }

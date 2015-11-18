@@ -22,7 +22,7 @@ val akkaStreamV = "2.0-M1"
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi" % "ammonite-repl" % "0.4.8" % "test" cross CrossVersion.full,
-    "com.github.nscala-time" %% "nscala-time" % "2.0.0",
+    "com.github.nscala-time" %% "nscala-time" % "2.4.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
     "com.typesafe.akka" %% "akka-slf4j" % "2.3.11",
