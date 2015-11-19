@@ -33,7 +33,7 @@ object ACBatch {
       (ls(wd / dir) find (_.name == name+".acstate") map (loadState)).
       getOrElse((learnerMoves(rank), eVec))
     val p = Param(rank, size, wrdCntn, dir)
-    def runner = 
+    val runner = 
       if (!smooth) 
         rawSpawn(name, rank, size, wrdCntn, init, 
         ACData.srcRef(dir, rank), p)
@@ -41,7 +41,7 @@ object ACBatch {
         smoothSpawn(name, rank, size, wrdCntn, init, 
         ACData.srcRef(dir, rank), p)
     def run(implicit hub: ActorRef) = {
-      start(runner, steps, strictness, epsilon)
+      start(runner, steps, strictness, epsilon)(hub)
       runner
     }
   }
@@ -63,7 +63,7 @@ object ACBatch {
   }
   
   
-  val parseStJson = uread[StartData] _
+//  val parseStJson = uread[StartData] _
   
   
   
@@ -80,10 +80,12 @@ object ACBatch {
     d map (StartData.fromJson)
     }
   
+  implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
+  
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
-    implicit val hub = FDhub.startHub(s"FD-QuickStart-Hub:$dir:$file")
-    val runners = ds map (_.run(hub))
-    (runners, hub)
+    
+    val runners = ds map (_.run(quickhub))
+    runners
   }
 }

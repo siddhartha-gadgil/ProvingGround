@@ -180,9 +180,28 @@ object ACFlowSaver{
     val sink = fileSaver(dir, rank)
     sink.runWith(src)
   }
-
-  def snapFile(batch: Int) = wd / (LocalDate.now.toString()) / s"ACSnaps-$batch"
   
+  val snapd = wd / "ACSnaps"
+
+  def snapFile(batch: Int) = snapd / (LocalDate.now.toString()) / batch.toString
+  
+  def snapSave = 
+    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>      
+        write.append(snapFile(snap.loops / 100), uwrite(snap))
+      
+  val snapSink = Sink.foreach(snapSave)
+  
+  def snapSource(date: String, batch: String) = 
+    Src(read.lines!!(snapd / date / batch.toString) toStream)
+  
+  def snapStream(date: String) = 
+    (ls(wd / date).toStream map (_.name)).
+    sortBy(_.toInt).
+    flatMap ((filename : String) => (read.lines!!(snapd / date / filename)).toStream).
+    map (uread[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]])
+  
+  def snapSource(date: String) = Src(snapStream(date)) 
+    
   /**
    * Flow extracting actor names and number of loops from snapshot.
    */
