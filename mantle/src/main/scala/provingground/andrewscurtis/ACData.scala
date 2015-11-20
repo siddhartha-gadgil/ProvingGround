@@ -262,7 +262,8 @@ object ACFlowSaver{
         "name" -> name,
         "moves" -> uwrite(moves),
         "presentation" -> uwrite(pres),
-        "loops" -> loops)
+        "loops" -> loops,
+        "weight" -> weight)
     elems.insert(obj)
   }
 
@@ -275,8 +276,9 @@ object ACFlowSaver{
       MongoDBObject(
         "name" -> name,
         "presentation" -> uwrite(pres),
-        "loops" -> loops)
-    elems.insert(obj)
+        "loops" -> loops,
+        "weight" -> weight)
+    thmsdb.insert(obj)
   }
   
   /**
@@ -326,7 +328,7 @@ object ACFlowSaver{
   /** 
    *  ActorRef from materialized flow saving various things in Casbah mongo database
    */
-  def mongoSaveRef(ranks: Map[String, Int] = Map()) = {
+  def mongoSaveRef = {
     val fl = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]]
     // Note: loops saved last so they should reflect the correct number.
     val sink = fl alsoTo fdmCasbahUpdate alsoTo thmsCashbahAdd  alsoTo elemsCashbahAdd to loopsCasbahUpdate
@@ -374,7 +376,7 @@ object ACFlowSaver{
   def actorLoops(name: String) = {
     val query = MongoDBObject("name" -> name)
     val cursor = actorData.findOne(query)
-    (for (c <- cursor) yield c.getAs[Int]("name")).flatten
+    (for (c <- cursor) yield c.getAs[Int]("loops")).flatten
   }
   
   /**
@@ -399,7 +401,8 @@ object ACFlowSaver{
 
 
 object ACData {
-  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.actorRef(batch, rank)
+  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef 
+    //ACFlowSaver.actorRef(batch, rank)
 
 
   def thmFileCSV(dir : String = "acDev", file: String,
