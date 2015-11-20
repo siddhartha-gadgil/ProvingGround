@@ -21,6 +21,8 @@ import spray.json._
 
 import DefaultJsonProtocol._
 
+import ACFlowSaver._
+
 object ACBatch {
   val wd = cwd / 'data
   
@@ -29,8 +31,8 @@ object ACBatch {
       steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1, //start parameters
       smooth: Boolean = false
        ){
-    def init = 
-      (ls(wd / dir) find (_.name == name+".acstate") map (loadState)).
+    def init = (getState(name) orElse
+      (ls(wd / dir) find (_.name == name+".acstate") map (loadState))).
       getOrElse((learnerMoves(rank), eVec))
     val p = Param(rank, size, wrdCntn, dir)
     val runner = 
@@ -63,13 +65,10 @@ object ACBatch {
   }
   
   
-//  val parseStJson = uread[StartData] _
-  
-  
   
   def loadRawStartData(dir: String = "acDev", file: String = "acbatch.json") = {
     val jsFile = if (file.endsWith(".json")) file else file+".json"
-    val js = ammonite.ops.read.lines(wd / dir/ jsFile)
+    val js  = ammonite.ops.read.lines(wd / dir/ jsFile) filter((l) => !(l.startsWith("#")))
     println(js)
     js
   }

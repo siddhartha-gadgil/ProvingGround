@@ -391,6 +391,10 @@ object ACFlowSaver{
     (fdMdb.findOne(query).
           flatMap (_.getAs[String]("fdM"))) map (uread[FiniteDistribution[AtomicMove]])
   }
+  
+  def getState(name: String) = {
+    for (fdV <- currentFDV(name); fdM <- FDM(name)) yield (fdM, fdV)
+  }
 }
 
 
