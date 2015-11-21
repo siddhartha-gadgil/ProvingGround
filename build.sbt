@@ -37,7 +37,9 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi" %% "upickle" % "0.3.4",
     "com.lihaoyi" %% "ammonite-ops" % "0.4.8",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-"com.lihaoyi" %% "pprint" % "0.3.6")
+    "org.slf4j" % "slf4j-api" %"1.7.13",
+    "org.slf4j" % "slf4j-nop" %"1.7.13",
+    "com.lihaoyi" %% "pprint" % "0.3.6")
   )
 
 lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
