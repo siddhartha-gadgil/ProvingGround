@@ -325,13 +325,20 @@ object ACFlowSaver{
   val fdmCasbahUpdate = 
     fdMFlow to Sink.foreach {case (name, fdm) => updateFDM(name, fdm)}
     
+  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
+  
   /** 
    *  ActorRef from materialized flow saving various things in Casbah mongo database
    */
-  def mongoSaveRef = {
-    val fl = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]]
+  def mongoSaveRef[M](
+      interface: Sink[Snap
+        , M]
+        = Sink.foreach(
+            (x : Snap) =>{})) = {
+    val fl = Flow[Snap]
     // Note: loops saved last so they should reflect the correct number.
-    val sink = fl alsoTo fdmCasbahUpdate alsoTo thmsCashbahAdd  alsoTo elemsCashbahAdd to loopsCasbahUpdate
+    val sink = 
+      fl alsoTo fdmCasbahUpdate alsoTo thmsCashbahAdd alsoTo elemsCashbahAdd alsoTo loopsCasbahUpdate to interface
     sink.runWith(src)
   }
   
@@ -361,6 +368,24 @@ object ACFlowSaver{
       }).toVector.flatten // vector, flattened as options are returned.
     FiniteDistribution(pmf)
   }
+  
+  def getElems(name: String, loops: Int) = {
+    val query = MongoDBObject("loops" -> loops, "name" -> name) // query by given name, stage
+    val cursor = elems.find(query)
+    val list = 
+      (for (c <- cursor) yield {
+        for (mvs <- c.getAs[String]("moves"); // pickled Moves
+        wt <- c.getAs[Double]("weight"); // associate weight
+        pres <- c.getAs[String]("presentation");
+        rank <- c.getAs[Int]("rank")
+        ) 
+          yield ACElem(name, uread[Moves](mvs), rank, uread[Presentation](pres), wt, loops) // Weighted Moves
+      }).toVector.flatten // vector, flattened as options are returned.
+    list
+  }
+  
+  def getCurrentElems(name: String) = getElems(name, actorLoops(name).get)
+  
   
   /**
    * Names of actors in database.
@@ -397,11 +422,46 @@ object ACFlowSaver{
   def getState(name: String) = {
     for (fdV <- currentFDV(name); fdM <- FDM(name)) yield (fdM, fdV)
   }
+  
 }
 
 
+class StateView(elems: Vector[ACElem], fdM : FiniteDistribution[AtomicMove]){
+  def fdV = FiniteDistribution(elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
+  
+  def fdP = FiniteDistribution(elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
+  
+  def proofs(thm: Presentation) = elems filter(_.pres == thm)
+  
+  def proofWeight(mvs: Moves) = {
+    val ps = mvs.moves map (fdM(_))
+    (1.0 /: ps)(_ * _)
+  }
+  
+  def totalProofWeight(thm: Presentation) = 
+    (proofs(thm) map ((x: ACElem) => proofWeight(x.moves))).sum
+    
+  def hardness(thm: Presentation) = 
+    scala.util.Try(math.log(fdP(thm))/math.log(totalProofWeight(thm))).getOrElse(0.0)
+    
+  def hardThms = fdP.supp.sortBy(hardness).reverse
+}
+
+object StateView{
+  import ACFlowSaver._
+  
+  def apply(name: String, loops: Int) = fromCasbah(name, loops)
+  
+  def apply(name: String) = new StateView(getCurrentElems(name), FDM(name).get)
+    
+  def fromCasbah(name: String, loops: Int) = {
+    new StateView(getElems(name, loops), FDM(name).get)
+  }
+    
+}
+
 object ACData {
-  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef 
+  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef() 
     //ACFlowSaver.actorRef(batch, rank)
 
 

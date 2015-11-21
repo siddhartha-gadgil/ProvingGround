@@ -28,7 +28,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-slf4j" % "2.3.11",
     "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
-    "org.mongodb" %% "casbah" % "2.8.2",
+    "org.mongodb" %% "casbah" % "3.0.0",
     "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream-experimental"             % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-core-experimental"          % akkaStreamV,
