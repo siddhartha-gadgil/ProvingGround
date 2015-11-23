@@ -13,6 +13,10 @@ import Moves._
 
 import FreeGroups._
 
+import scala.concurrent._
+
+import Collections._
+
 object ACMongo {
   lazy val driver = new MongoDriver()
   
@@ -136,6 +140,85 @@ object ACMongo {
       if (check) actorsDB.insert(init) else actorsDB.update(selector, modifier)
       )
   }
+  
+  def getFutElemsStep(name: String, loops: Int) = 
+  {
+    val selector = BSONDocument("name" -> name, "loops" -> loops)
+    elemsDB.find(selector).cursor[ACElem]().collect[Vector]()
+  }
+  
+  def getFutThmElemsStep(name: String, loops: Int) = 
+  {
+    val selector = BSONDocument("name" -> name, "loops" -> loops)
+    thmsDB.find(selector).cursor[ACThm]().collect[Vector]()
+  }
+  
+  def getFutOptFDMStep(name: String, loops: Int) = 
+  {
+    val selector = BSONDocument("name" -> name, "loops" -> loops)
+    moveWeightsDB.find(selector).cursor[ACMoveWeights]().headOption map ((opt) => opt map (_.fdM))
+  }
+  
+  def getFutOptLoops(name: String) = {
+    val selector = BSONDocument("name" -> name)
+    val futOpt = actorsDB.find(selector).cursor[BSONDocument]().headOption
+    futOpt map ((opt) =>
+      (opt) flatMap (
+          (doc) => doc.getAs[Int]("loops"))
+      )
+  }
+  
+  def getFutOptElems(name: String) = 
+    getFutOptLoops(name) flatMap (
+          {
+            case Some(loops) => getFutElemsStep(name, loops) map ((vec) => Some(vec))
+            case None => Future.successful(None)
+          }
+        )
+        
+  def getFutOptThmElems(name: String) = 
+    getFutOptLoops(name) flatMap (
+          {
+            case Some(loops) => getFutThmElemsStep(name, loops) map ((vec) => Some(vec))
+            case None => Future.successful(None)
+          }
+        )
+
+  def getFutOptFDM(name: String) = 
+    getFutOptLoops(name) flatMap (
+          {
+            case Some(loops) => getFutOptFDMStep(name, loops) 
+            case None => Future.successful(None)
+          }
+        )
+
+  def  mapFutOpt[S, T](futOpt : Future[Option[S]])(fn: S => T) = {
+    futOpt map ((opt) => opt map (fn))
+  }
+  
+  def getFutOptFDV(name: String) =
+    mapFutOpt(getFutOptElems(name))(
+        (vec: Vector[ACElem]) => 
+          FiniteDistribution(
+            vec map ((elem) => Weighted(elem.moves, elem.weight))
+          )
+  )
+  
+  def getFutOptThms(name: String) =
+    mapFutOpt(getFutOptThmElems(name))(
+        (vec: Vector[ACThm]) => 
+          FiniteDistribution(
+            vec map ((elem) => Weighted(elem.pres, elem.weight))
+          )
+  )
+        
+  def getFutOptState(name: String) = 
+    for (optFDM <- getFutOptFDM(name); optFDV <- getFutOptFDV(name)) 
+      yield {(optFDM, optFDV) match {
+        case (Some(fdM), Some(fdV)) => Some((fdM, fdV))
+        case _ => None
+    }
+    }
 }
 
 
