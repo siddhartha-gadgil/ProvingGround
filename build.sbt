@@ -21,7 +21,7 @@ val akkaStreamV = "2.0-M1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.4.8" % "test" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.0" % "test" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
@@ -35,7 +35,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.4.8",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.0",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
@@ -74,12 +74,9 @@ lazy val digressionSettings = Seq(
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
-//    ,"com.lihaoyi" % "ammonite-repl" % "0.3.2" % "test" cross CrossVersion.full
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.andrewscurtis._"""
-//  ,initialCommands in (Test, console) :=
-//    """ammonite.repl.Repl.run("import provingground.andrewscurtis._; import provingground._; import FreeGroups._; import Presentation._; import ACevolution._")"""
   )
 
 lazy val nfSettings = Seq(
@@ -130,13 +127,15 @@ lazy val mizar = project.
   settings(name := "Mizar-Parser",
   libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.2.1")
 
+val initCommands = """import provingground._; import HoTT._; import ammonite.ops._"""
+
 lazy val mantle = (project in file("mantle")).
         settings(name := "ProvingGround-mantle").
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
-        settings(initialCommands in (Test, console) := """ammonite.repl.Repl.run(
-          "import provingground._; import HoTT._; import ammonite.ops._")""").
+        settings(initialCommands in (Test, console) :=
+          s"""ammonite.repl.Repl.run("$initCommands") """).
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val nlp = (project in file("nlp")).
