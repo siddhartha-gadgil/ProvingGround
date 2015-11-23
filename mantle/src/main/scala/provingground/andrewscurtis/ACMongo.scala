@@ -32,7 +32,7 @@ object ACMongo extends ACWriter{
   
   lazy val actorsDB = db("actors")
   
-  lazy val moveWeightsDB = db("move-weights")
+  lazy val moveWeightsDB = db("moveweights")
   
   implicit object ElemsWriter extends BSONDocumentWriter[ACElem]{
     def write(elem: ACElem) =
