@@ -141,11 +141,11 @@ object ACrunner {
     for (j <- 1 to mult) yield spawnSmooth(name+"."+j.toString, p, init)
   }
 
-
-
-   case class Param(
+  case class Param(
        rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1,
        dir : String = "acDev"
        )
 
 }
+
+

@@ -32,6 +32,8 @@ import com.mongodb.casbah.Imports._
 
 import com.github.nscala_time.time.Imports._
 
+import ACFlow._
+
 case class ACData(
     paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]],
     dir : String) extends ACresults(paths){
@@ -94,7 +96,7 @@ import FDactor._
 
 class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
   def save =
-    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
+    (snap : Snap) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
 }
 
@@ -119,7 +121,7 @@ case class ACElem(name: String, moves: Moves, rank: Int, pres: Presentation, wei
 
 object ACElem{
   val fromSnap =
-    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
+    (snap: Snap) =>
   {
     val d = snap.state._2
     d.supp map ((x) => {
@@ -141,7 +143,7 @@ case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
 
 object ACThm{
   val fromSnap =
-    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
+    (snap: Snap) =>
       { val rank = snap.param.rank
         val d = toPresentation(rank, snap.state._2)
         d.supp map ((x) => {      
@@ -151,23 +153,13 @@ object ACThm{
 }
 
 object ACFlowSaver{
-  implicit val system = Hub.system
-
-  implicit val mat  = ActorMaterializer()
-
-  /**
-   * A source from an actor, to which messages are sent to start the flow.
-   * Actor reference only after materialization.
-   */
-  val src =
-    Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]](100, OverflowStrategy.dropHead)
 
     /**
      * Saving to files.
      */
   def fileSaver(dir: String = "acDev", rank: Int = 2) =
     Sink.foreach {
-    (snap: SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>
+    (snap: Snap) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
   }
   
@@ -186,7 +178,7 @@ object ACFlowSaver{
   def snapFile(batch: Int) = snapd / (LocalDate.now.toString()) / batch.toString
   
   def snapSave = 
-    (snap : SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]) =>      
+    (snap : Snap) =>      
         write.append(snapFile(snap.loops / 100), uwrite(snap))
       
   val snapSink = Sink.foreach(snapSave)
@@ -198,36 +190,9 @@ object ACFlowSaver{
     (ls(wd / date).toStream map (_.name)).
     sortBy(_.toInt).
     flatMap ((filename : String) => (read.lines!!(snapd / date / filename)).toStream).
-    map (uread[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]])
+    map (uread[Snap])
   
   def snapSource(date: String) = Src(snapStream(date)) 
-    
-  /**
-   * Flow extracting actor names and number of loops from snapshot.
-   */
-  val loopsFlow = Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] map {
-    (snap) => (snap.name, snap.loops)
-  }
-  
-  /**
-   * Flow extracting all theorems (with weights etc) at a stage from the snapshot at that stage.
-   */
-  val thmsFlow = 
-    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] mapConcat(ACThm.fromSnap)
-
-   /**
-   * Flow extracting all elements, i.e., sequences of moves, (with weights etc) at a stage from the snapshot at that stage.
-   */ 
-  def elemsFlow =
-    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] mapConcat(ACElem.fromSnap)
-
-    /**
-     * Flow extracting weights on atomic moves from a snapshot. Only evolved state stored.
-     */
-  def fdMFlow =     
-    Flow[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]] map {
-    (snap) => (snap.name, snap.state._1)
-  }
 
   import Hub.Casbah._
 
@@ -325,7 +290,7 @@ object ACFlowSaver{
   val fdmCasbahUpdate = 
     fdMFlow to Sink.foreach {case (name, fdm) => updateFDM(name, fdm)}
     
-  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
+  
   
   /** 
    *  ActorRef from materialized flow saving various things in Casbah mongo database
@@ -335,7 +300,6 @@ object ACFlowSaver{
         , M]
         = Sink.foreach(
             (x : Snap) =>{})) = {
-    val fl = Flow[Snap]
     // Note: loops saved last so they should reflect the correct number.
     val sink = 
       fl alsoTo fdmCasbahUpdate alsoTo thmsCashbahAdd alsoTo elemsCashbahAdd alsoTo loopsCasbahUpdate to interface

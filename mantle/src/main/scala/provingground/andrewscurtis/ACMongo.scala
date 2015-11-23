@@ -5,6 +5,8 @@ import provingground._
 import reactivemongo.api._
 import reactivemongo.bson._
 
+import reactivemongo.api.commands.WriteResult
+
 import upickle.default.{write => uwrite, read => uread, _}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -17,7 +19,7 @@ import scala.concurrent._
 
 import Collections._
 
-object ACMongo {
+object ACMongo extends ACWriter{
   lazy val driver = new MongoDriver()
   
   lazy val connection = driver.connection(List("localhost"))
@@ -136,7 +138,7 @@ object ACMongo {
     val checkCursor = actorsDB.find(selector).cursor[BSONDocument]()
     val emptyFut = checkCursor.headOption map (_.isEmpty)
     
-    emptyFut.foreach ((check) =>
+    emptyFut map ((check) =>
       if (check) actorsDB.insert(init) else actorsDB.update(selector, modifier)
       )
   }
@@ -192,9 +194,14 @@ object ACMongo {
           }
         )
 
+        
+        
   def  mapFutOpt[S, T](futOpt : Future[Option[S]])(fn: S => T) = {
     futOpt map ((opt) => opt map (fn))
   }
+
+  def collect[T](xs: Seq[Future[Option[T]]]) = 
+    Future.sequence(xs) map (_.flatten)
   
   def getFutOptFDV(name: String) =
     mapFutOpt(getFutOptElems(name))(
