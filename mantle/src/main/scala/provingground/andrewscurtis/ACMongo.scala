@@ -7,6 +7,8 @@ import reactivemongo.bson._
 
 import reactivemongo.api.commands.WriteResult
 
+import reactivemongo.api.indexes._
+
 import upickle.default.{write => uwrite, read => uread, _}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -28,7 +30,17 @@ object ACMongo extends ACWriter{
   
   lazy val elemsDB = db("elements")
   
+  val elemsInd = elemsDB.indexesManager
+  
+  val index = new Index(Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending))
+  
+  elemsInd.ensure(index)
+  
   lazy val thmsDB = db("theorems")
+  
+  val thmsInd = thmsDB.indexesManager
+  
+  thmsInd.ensure(index)
   
   lazy val actorsDB = db("actors")
   
