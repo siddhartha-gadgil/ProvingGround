@@ -26,6 +26,8 @@ object ACMongo {
   
   lazy val actorsDB = db("actors")
   
+  lazy val moveWeightsDB = db("move-weights")
+  
   implicit object ElemsWriter extends BSONDocumentWriter[ACElem]{
     def write(elem: ACElem) =
       BSONDocument(
@@ -85,12 +87,41 @@ object ACMongo {
     }
   }
   
+  
+  implicit object MoveWeightWriter extends BSONDocumentWriter[ACMoveWeights]{
+    def write(elem: ACMoveWeights) = 
+      BSONDocument(
+          "name" -> elem.name,
+          "fdM" -> uwrite(elem.fdM),
+          "loops" -> elem.loops
+)
+  }
+  
+  implicit object MoveWeightReader extends BSONDocumentReader[ACMoveWeights]{
+    def read(doc: BSONDocument) = {
+      val opt = 
+        for (
+            name <- doc.getAs[String]("name");
+            pfdM <- doc.getAs[String]("fdM");
+            loops <- doc.getAs[Int]("loops")
+            )
+        yield ACMoveWeights(
+            name,  
+            uread[FiniteDistribution[AtomicMove]](pfdM), 
+            loops)
+      opt.get
+    }
+  }
+  
   def addElem(el: ACElem) =  
     elemsDB.insert(el)
    
   def addThm(thm: ACThm) = 
     thmsDB.insert(thm)
  
+  def addMoveWeight(wts: ACMoveWeights) =
+    moveWeightsDB.insert(wts)
+    
   def updateLoops(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name)
    
@@ -106,3 +137,7 @@ object ACMongo {
       )
   }
 }
+
+
+case class ACMoveWeights(name: String, fdM : FiniteDistribution[AtomicMove], loops: Int)
+    
