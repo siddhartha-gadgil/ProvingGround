@@ -23,6 +23,12 @@ import DefaultJsonProtocol._
 
 import ACFlowSaver._
 
+import ACMongo._
+
+import com.github.nscala_time.time.Imports._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 object ACBatch {
   val wd = cwd / 'data
   
@@ -31,21 +37,35 @@ object ACBatch {
       steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1, //start parameters
       smooth: Boolean = false
        ){
-    def init = (getState(name) orElse
+
+    def initOld = (getState(name) orElse
       (ls(wd / dir) find (_.name == name+".acstate") map (loadState))).
       getOrElse((learnerMoves(rank), eVec))
+
     val p = Param(rank, size, wrdCntn, dir)
-    val runner = 
+    
+    def initFut = getFutState(name, rank)
+    
+    def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = 
       if (!smooth) 
         rawSpawn(name, rank, size, wrdCntn, init, 
         ACMongo.writerRef(), p)
       else
         smoothSpawn(name, rank, size, wrdCntn, init, 
         ACMongo.writerRef(), p)
-    def run(implicit hub: ActorRef) = {
-      start(runner, steps, strictness, epsilon)(hub)
-      runner
+    
+    def runOld(implicit hub: ActorRef) = {
+      val r = runner(initOld)
+      start(r, steps, strictness, epsilon)(hub)
+      r
     }
+    
+    def run =
+      {
+        val rs = initFut map (runner)
+        rs.foreach(start(_, steps, strictness, epsilon))
+        rs
+      }
   }
   
   object StartData{
@@ -81,10 +101,16 @@ object ACBatch {
   
   implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
   
+  def quickStartOld(dir: String = "acDev", file: String = "acbatch.json") = {
+    val ds = loadStartData(dir, file)
+    ds foreach ((d) => write.append(wd / dir /file, s"# Started: $d at ${DateTime.now}"))
+    val runners = ds map (_.runOld(quickhub))
+    runners
+  }
+  
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
-    
-    val runners = ds map (_.run(quickhub))
+    val runners = ds map (_.run)
     runners
   }
 }

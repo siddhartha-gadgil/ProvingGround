@@ -45,6 +45,10 @@ class FDactor[X : LinearStructure, P](
         srcRef ! snapShot(newState)
         sender ! Done(steps, strictness, epsilon)
       }
+    case RunnerStop =>
+      sender ! Stopping(self)
+      println(s"actor ${self.path.name} stopping") 
+      context.stop(self)
   }
 }
 
@@ -79,7 +83,11 @@ object FDactor{
 
   case class Pause(runner: ActorRef)
 
-  case object StopAll
+  case object StopHub
+  
+  case object RunnerStop
+  
+  case class Stopping(ref: ActorRef)
 
   case class Resume(runner: ActorRef)
 }

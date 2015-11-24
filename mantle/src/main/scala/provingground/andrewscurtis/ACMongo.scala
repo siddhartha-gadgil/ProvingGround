@@ -238,6 +238,12 @@ object ACMongo extends ACWriter{
         case _ => None
     }
     }
+  
+  def getFutState(name: String, rank: Int = 2) = {
+    import SimpleAcEvolution.{eVec, learnerMoves}
+    val default = (learnerMoves(rank), eVec)
+    getFutOptState(name) map (_.getOrElse(default))
+  }
 }
 
 
