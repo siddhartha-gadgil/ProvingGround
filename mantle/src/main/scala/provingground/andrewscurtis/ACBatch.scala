@@ -15,7 +15,7 @@ import ammonite.ops._
 
 import upickle.default.{read => uread, write => uwrite, _}
 
-import SimpleAcEvolution._
+import MoveGenerator._
 
 import spray.json._
 
@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object ACBatch {
   val wd = cwd / 'data
-  
+
   case class StartData(name: String, dir : String = "acDev",
       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1, //spawn parameters
       steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1, //start parameters
@@ -43,23 +43,23 @@ object ACBatch {
       getOrElse((learnerMoves(rank), eVec))
 
     val p = Param(rank, size, wrdCntn, dir)
-    
+
     def initFut = getFutState(name, rank)
-    
-    def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = 
-      if (!smooth) 
-        rawSpawn(name, rank, size, wrdCntn, init, 
+
+    def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =
+      if (!smooth)
+        rawSpawn(name, rank, size, wrdCntn, init,
         ACMongo.writerRef(), p)
       else
-        smoothSpawn(name, rank, size, wrdCntn, init, 
+        smoothSpawn(name, rank, size, wrdCntn, init,
         ACMongo.writerRef(), p)
-    
+
     def runOld(implicit hub: ActorRef) = {
       val r = runner(initOld)
       start(r, steps, strictness, epsilon)(hub)
       r
     }
-    
+
     def run =
       {
         val rs = initFut map (runner)
@@ -67,7 +67,7 @@ object ACBatch {
         rs
       }
   }
-  
+
   object StartData{
     def fromJson(st: String) = {
       val map = st.parseJson.asJsObject.fields
@@ -83,31 +83,31 @@ object ACBatch {
       StartData(name, dir, rank, size, wrdCntn, steps, strictness, epsilon, smooth)
     }
   }
-  
-  
-  
+
+
+
   def loadRawStartData(dir: String = "acDev", file: String = "acbatch.json") = {
     val jsFile = if (file.endsWith(".json")) file else file+".json"
     val js  = ammonite.ops.read.lines(wd / dir/ jsFile) filter((l) => !(l.startsWith("#")))
     println(js)
     js
   }
-  
+
   def loadStartData(dir: String = "acDev", file: String = "acbatch.json") =
     {
-    val d = loadRawStartData(dir, file) 
+    val d = loadRawStartData(dir, file)
     d map (StartData.fromJson)
     }
-  
+
   implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
-  
+
   def quickStartOld(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
     ds foreach ((d) => write.append(wd / dir /file, s"# Started: $d at ${DateTime.now}"))
     val runners = ds map (_.runOld(quickhub))
     runners
   }
-  
+
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
     val runners = ds map (_.run)

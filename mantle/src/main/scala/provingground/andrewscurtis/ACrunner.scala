@@ -11,7 +11,6 @@ import Collections._
 
 import FiniteDistributionLearner._
 import LinearStructure._
-import SimpleAcEvolution._
 
 import akka.actor._
 import ACrunner._
@@ -31,7 +30,7 @@ class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
       ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
 
-      
+
 object ACrunner {
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
@@ -114,10 +113,9 @@ object ACrunner {
             runner
           }
 
-  import SimpleAcEvolution._
 
   def initState(rank: Int) = (learnerMoves(rank), eVec)
-  
+
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
@@ -141,11 +139,6 @@ object ACrunner {
     for (j <- 1 to mult) yield spawnSmooth(name+"."+j.toString, p, init)
   }
 
-  case class Param(
-       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1,
-       dir : String = "acDev"
-       )
+
 
 }
-
-

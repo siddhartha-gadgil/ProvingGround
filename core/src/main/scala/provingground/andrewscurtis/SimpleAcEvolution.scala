@@ -53,57 +53,7 @@ object SimpleAcEvolution {
     }
   }
 
-  val E = Weighted(Moves.empty, 1)
 
-  lazy val eSet = FiniteDistributionSet(Set(E))
-
-  lazy val eVec = FiniteDistribution(Vector(E))
-
-  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
-
-  def allMoves(rank: Int) = genAllMoves(rank, rank)
-
-  def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
-
-  def extendedMovesList(rank: Int): List[AtomicMove] = {
-    val id = List(Id)
-    val inv = genAllInv(rank)
-    val lftmult = genLftMult(rank)
-    val rtmult = genRtMult(rank)
-    val conj = genConj(rank, rank)
-    val lftmultinv = genLftInvMult(rank)
-    val rtmultinv = genRtInvMult(rank)
-    val transp = genTranspose(rank)
-    id ++ inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
-  }
-  
-  def learnerMoves(rank: Int)  = {
-    val inv = genAllInv(rank)
-    val lftmult = genLftMult(rank)
-    val rtmult = genRtMult(rank)
-    val conj = genConj(rank, rank)
-    val lftmultinv = genLftInvMult(rank)
-    val rtmultinv = genRtInvMult(rank)
-    val transp = genTranspose(rank)
-    val moves = inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
-    val moveWeight = 0.5 / (moves.size)
-    val pmf =  Weighted(Id : AtomicMove, 0.5) :: (moves map (Weighted(_, moveWeight)))
-    FiniteDistribution(pmf)
-  }
-  
-  def extendedMoves(rank: Int) = FiniteDistribution.uniform(extendedMovesList(rank))
-  
-  def genLftInvMult(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield LftMultInv(j, k)).toList
-  }
-  
-  def genRtInvMult(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield RtMultInv(j, k)).toList
-  }
-  
-  def genTranspose(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield Transpose(j, k)).toList
-  }
 
   case class Path(rank: Int, steps: Int,
     wordCntn: Double, size: Double, scale: Double,

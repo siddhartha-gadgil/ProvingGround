@@ -12,8 +12,6 @@ import LinearStructure._
 
 import FiniteDistribution._
 
-import SimpleAcEvolution._
-
 import ACrunner._
 
 import scala.io.Source
@@ -21,6 +19,8 @@ import scala.io.Source
 import akka.actor._
 
 import FreeGroups._
+
+import ACElem._
 
 import ACData._
 
@@ -66,24 +66,22 @@ case class ACData(
 case class ACStateData(
     states: Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
     dir : String) extends ACStates{
-    def revive(name : String, p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
+    def revive(name : String, p : Param = Param())(implicit hub: ActorRef) = {
     import p.{dir => d, _}
-    import SimpleAcEvolution._
     val state = states(name)
     val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
 //    FDhub.start(ref)
     ref
   }
 
-  def reviveAll(p : ACrunner.Param = Param())(implicit hub: ActorRef) = {
+  def reviveAll(p : Param = Param())(implicit hub: ActorRef) = {
     val refs = for (name <- names) yield revive(name, p)
     refs
   }
 
 
-  def spawn(name : String, p : ACrunner.Param = Param()) = {
+  def spawn(name : String, p : Param = Param()) = {
     import p.{dir => d, _}
-    import SimpleAcEvolution._
     rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
   }
 
@@ -108,49 +106,7 @@ object ACFileSaver{
   def actorRef(dir: String = "acDev", rank: Int) = Hub.system.actorOf(props(dir, rank))
 }
 
-/**
- * An element in the Andrews-Curtis evolution, 
- * namely: 
- * * actor name, 
- * * number of loops, 
- * * rank
- * * associated presentation
- * * weight in distribution
- */
-case class ACElem(name: String, moves: Moves, rank: Int, pres: Presentation, weight: Double, loops: Int)
 
-object ACElem{
-  val fromSnap =
-    (snap: Snap) =>
-  {
-    val d = snap.state._2
-    d.supp map ((x) => {
-      val rank = snap.param.rank
-      ACElem(snap.name, x, rank, Moves.actOnTriv(rank)(x).get, d(x), snap.loops)
-      } )
-  }
-}
-
-/**
- * An presentation (theorem) in the Andrews-Curtis evolution, 
- * namely: 
- * * actor name, 
- * * number of loops, 
- * * presentation
- * * weight in distribution on presentations
- */
-case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
-
-object ACThm{
-  val fromSnap =
-    (snap: Snap) =>
-      { val rank = snap.param.rank
-        val d = toPresentation(rank, snap.state._2)
-        d.supp map ((x) => {      
-        ACThm(snap.name, x, d(x), snap.loops)
-      } )
-  }
-}
 
 object ACFlowSaver{
 
@@ -162,9 +118,9 @@ object ACFlowSaver{
     (snap: Snap) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
   }
-  
+
   /**
-   * ActorRef for messages to start a flow, with file saving. 
+   * ActorRef for messages to start a flow, with file saving.
    * Obtained by materializing source with file saver sink.
    */
   def actorRef(dir: String = "acDev", rank: Int = 2) =
@@ -172,27 +128,27 @@ object ACFlowSaver{
     val sink = fileSaver(dir, rank)
     sink.runWith(src)
   }
-  
+
   val snapd = wd / "ACSnaps"
 
   def snapFile(batch: Int) = snapd / (LocalDate.now.toString()) / batch.toString
-  
-  def snapSave = 
-    (snap : Snap) =>      
+
+  def snapSave =
+    (snap : Snap) =>
         write.append(snapFile(snap.loops / 100), uwrite(snap))
-      
+
   val snapSink = Sink.foreach(snapSave)
-  
-  def snapSource(date: String, batch: String) = 
+
+  def snapSource(date: String, batch: String) =
     Src(read.lines!!(snapd / date / batch.toString) toStream)
-  
-  def snapStream(date: String) = 
+
+  def snapStream(date: String) =
     (ls(wd / date).toStream map (_.name)).
     sortBy(_.toInt).
     flatMap ((filename : String) => (read.lines!!(snapd / date / filename)).toStream).
     map (uread[Snap])
-  
-  def snapSource(date: String) = Src(snapStream(date)) 
+
+  def snapSource(date: String) = Src(snapStream(date))
 
   import Hub.Casbah._
 
@@ -206,12 +162,12 @@ object ACFlowSaver{
    * on creation additional parameter data can be added; only number of loops is updated.
    */
   val actorData = db("ACActorData")
-  
+
   /**
    * Data base for weights on atomic moves.
    */
   val fdMdb = db("AC-FDM")
-  
+
   /**
    * Database for presentations (theorems).
    */
@@ -245,7 +201,7 @@ object ACFlowSaver{
         "weight" -> weight)
     thmsdb.insert(obj)
   }
-  
+
   /**
    * Sink for adding all elements from snapshot
    */
@@ -256,8 +212,8 @@ object ACFlowSaver{
      * sink for adding all theorems from snapshot.
      */
   def thmsCashbahAdd =
-    thmsFlow to Sink.foreach(addThm)  
-    
+    thmsFlow to Sink.foreach(addThm)
+
   /**
    * update number of loops from snapshot
    */
@@ -268,7 +224,7 @@ object ACFlowSaver{
     if (exists) actorData.update(query, update) // updat number of loops, leaving other actor data unchanged.
     else actorData.insert(MongoDBObject("name" -> name, "loops" -> loops)) // if no actor data, add number of loops.
   }
-  
+
   /**
    * Update the weights of atomic moves given name and distribution
    */
@@ -287,12 +243,12 @@ object ACFlowSaver{
   /**
    * sink for updating weights of atomic moves in databse from snapshot
    */
-  val fdmCasbahUpdate = 
+  val fdmCasbahUpdate =
     fdMFlow to Sink.foreach {case (name, fdm) => updateFDM(name, fdm)}
-    
-  
-  
-  /** 
+
+
+
+  /**
    *  ActorRef from materialized flow saving various things in Casbah mongo database
    */
   def mongoSaveRef[M](
@@ -301,30 +257,30 @@ object ACFlowSaver{
         = Sink.foreach(
             (x : Snap) =>{})) = {
     // Note: loops saved last so they should reflect the correct number.
-    val sink = 
+    val sink =
       fl alsoTo fdmCasbahUpdate alsoTo thmsCashbahAdd alsoTo elemsCashbahAdd alsoTo loopsCasbahUpdate to interface
     sink.runWith(src)
   }
-  
-  
+
+
   /**
    * returns iterator of weights of a given presentation for a given actor at all stages, ordered by loops/
    */
-  def presWeights(name: String, pres: Presentation) = 
+  def presWeights(name: String, pres: Presentation) =
   {
     val query = MongoDBObject("presentation" -> uwrite(pres), "name" -> name)
     val sorter = MongoDBObject("loops" -> 1)
     val cursor = thmsdb.find(query)
     for (e <- cursor) yield e.as[Double]("weight")
   }
-  
+
   /**
    * returns finite distribution on Moves given stage and number of loops.
    */
   def FDV(name: String, loops: Int) = {
     val query = MongoDBObject("loops" -> loops, "name" -> name) // query by given name, stage
     val cursor = elems.find(query)
-    val pmf = 
+    val pmf =
       (for (c <- cursor) yield {
         for (mvs <- c.getAs[String]("moves"); // pickled Moves
         wt <- c.getAs[Double]("weight")) // associate weight
@@ -332,25 +288,25 @@ object ACFlowSaver{
       }).toVector.flatten // vector, flattened as options are returned.
     FiniteDistribution(pmf)
   }
-  
+
   def getElems(name: String, loops: Int) = {
     val query = MongoDBObject("loops" -> loops, "name" -> name) // query by given name, stage
     val cursor = elems.find(query)
-    val list = 
+    val list =
       (for (c <- cursor) yield {
         for (mvs <- c.getAs[String]("moves"); // pickled Moves
         wt <- c.getAs[Double]("weight"); // associate weight
         pres <- c.getAs[String]("presentation");
         rank <- c.getAs[Int]("rank")
-        ) 
+        )
           yield ACElem(name, uread[Moves](mvs), rank, uread[Presentation](pres), wt, loops) // Weighted Moves
       }).toVector.flatten // vector, flattened as options are returned.
     list
   }
-  
+
   def getCurrentElems(name: String) = getElems(name, actorLoops(name).get)
-  
-  
+
+
   /**
    * Names of actors in database.
    */
@@ -358,7 +314,7 @@ object ACFlowSaver{
     val cursor = actorData.find()
     (for (c <- cursor) yield c.getAs[String]("name")).toVector.flatten
   }
-  
+
   /**
    * (optional) number of loops of an actor in database
    */
@@ -367,13 +323,13 @@ object ACFlowSaver{
     val cursor = actorData.findOne(query)
     (for (c <- cursor) yield c.getAs[Int]("loops")).flatten
   }
-  
+
   /**
-   * (optional) Finite distribution on moves given actor name, for the latest stage of the actor 
+   * (optional) Finite distribution on moves given actor name, for the latest stage of the actor
    */
-  def currentFDV(name: String) = 
+  def currentFDV(name: String) =
     actorLoops(name) map (FDV(name, _))
-  
+
     /**
      * Weights on atomic moves for the actor.
      */
@@ -382,50 +338,50 @@ object ACFlowSaver{
     (fdMdb.findOne(query).
           flatMap (_.getAs[String]("fdM"))) map (uread[FiniteDistribution[AtomicMove]])
   }
-  
+
   def getState(name: String) = {
     for (fdV <- currentFDV(name); fdM <- FDM(name)) yield (fdM, fdV)
   }
-  
+
 }
 
 
 class StateView(elems: Vector[ACElem], fdM : FiniteDistribution[AtomicMove]){
   def fdV = FiniteDistribution(elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
-  
+
   def fdP = FiniteDistribution(elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
-  
+
   def proofs(thm: Presentation) = elems filter(_.pres == thm)
-  
+
   def proofWeight(mvs: Moves) = {
     val ps = mvs.moves map (fdM(_))
     (1.0 /: ps)(_ * _)
   }
-  
-  def totalProofWeight(thm: Presentation) = 
+
+  def totalProofWeight(thm: Presentation) =
     (proofs(thm) map ((x: ACElem) => proofWeight(x.moves))).sum
-    
-  def hardness(thm: Presentation) = 
+
+  def hardness(thm: Presentation) =
     scala.util.Try(math.log(fdP(thm))/math.log(totalProofWeight(thm))).getOrElse(0.0)
-    
+
   def hardThms = fdP.supp.sortBy(hardness).reverse
 }
 
 object StateView{
   import ACFlowSaver._
-  
+
   def apply(name: String, loops: Int) = fromCasbah(name, loops)
-  
+
   def apply(name: String) = new StateView(getCurrentElems(name), FDM(name).get)
-    
+
   def fromCasbah(name: String, loops: Int) = {
     new StateView(getElems(name, loops), FDM(name).get)
   }
-    
+
 }
 
 object ACData {
-  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef() 
+  def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef()
     //ACFlowSaver.actorRef(batch, rank)
 
 

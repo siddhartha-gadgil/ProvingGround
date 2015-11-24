@@ -60,7 +60,7 @@ trait FDsrc[X, P] extends Actor{
   }
 }
 
-case class SnapShot[X, P](state: X, name: String, loops: Int, param: P)
+
 
 object FDactor{
   case class Continue(steps: Int, strictness : Double = 1.0, epsilon: Double = 1.0)

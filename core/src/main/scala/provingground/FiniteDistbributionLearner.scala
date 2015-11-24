@@ -10,6 +10,8 @@ import annotation._
 
 import FiniteDistribution._
 
+case class SnapShot[X, P](state: X, name: String, loops: Int, param: P)
+
 /**
  * A combinator for learning systems with state finite distributions on vertices.
  * Systems are built from components labeled by elements of a set M.

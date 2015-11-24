@@ -4,9 +4,10 @@ import provingground._
 
 import akka.stream._
 
-import ACrunner.Param
 
 import ACFlow._
+
+import ACElem._
 
 import akka.stream.scaladsl.{Source => Src, _}
 
@@ -19,31 +20,31 @@ import akka.actor._
  * concrete methods give sinks, a flow that does all the saving.
  */
 trait ACWriter {
-  def addElem(el: ACElem)   
-   
-  def addThm(thm: ACThm)  
- 
+  def addElem(el: ACElem)
+
+  def addThm(thm: ACThm)
+
   def addMoveWeight(wts: ACMoveWeights)
-    
-  def updateLoops(name: String, loops: Int) 
-  
+
+  def updateLoops(name: String, loops: Int)
+
   val elemsSink = elemsFlow to Sink.foreach(addElem)
-  
+
   val thmsSink = thmsFlow to Sink.foreach(addThm)
-  
+
   val moveWeightsSink = moveWeightsFlow to Sink.foreach(addMoveWeight)
-  
-  val loopsSink = 
+
+  val loopsSink =
     loopsFlow to Sink.foreach({case (name, loops) => updateLoops(name, loops)})
-    
-  val writerFlow = 
-    fl alsoTo 
+
+  val writerFlow =
+    fl alsoTo
     elemsSink alsoTo
     thmsSink alsoTo
     moveWeightsSink alsoTo
     loopsSink
 
-  /** 
+  /**
    *  ActorRef from materialized flow saving various things in Casbah mongo database
    */
   def writerRef[M](

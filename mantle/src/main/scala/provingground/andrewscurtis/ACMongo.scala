@@ -21,6 +21,8 @@ import scala.concurrent._
 
 import Collections._
 
+import MoveGenerator._
+
 object ACMongo extends ACWriter{
   lazy val driver = new MongoDriver()
   
@@ -41,6 +43,10 @@ object ACMongo extends ACWriter{
   val thmsInd = thmsDB.indexesManager
   
   thmsInd.ensure(index)
+  
+  val thmsPresIndex = new Index(Seq("presentation" -> IndexType.Hashed))
+  
+  thmsInd.ensure(thmsPresIndex)
   
   lazy val actorsDB = db("actors")
   
@@ -240,9 +246,18 @@ object ACMongo extends ACWriter{
     }
   
   def getFutState(name: String, rank: Int = 2) = {
-    import SimpleAcEvolution.{eVec, learnerMoves}
     val default = (learnerMoves(rank), eVec)
     getFutOptState(name) map (_.getOrElse(default))
+  }
+  
+  def thmWeights(thm: Presentation) = {
+    val query = BSONDocument("presentation" -> uwrite(thm))
+    val cursor = 
+      thmsDB.
+      find(query).
+      sort(BSONDocument("loops" -> 1)).
+      cursor[ACThm]()
+    cursor.collect[Stream]()
   }
 }
 
