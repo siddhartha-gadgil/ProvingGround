@@ -72,7 +72,7 @@ object Application extends Controller {
 
   def bouncestream = Action {
       implicit request => {
-          Ok.feed(bounceOut &> EventSource()).as("text/event-stream")
+          Ok.feed(bounceOut through EventSource()).as("text/event-stream")
       }
   }
 
