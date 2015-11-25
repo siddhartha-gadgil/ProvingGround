@@ -5,6 +5,8 @@ import akka.stream._
 import akka.stream.scaladsl.{Source => Src, _}
 import akka.pattern.ask
 
+import scala.concurrent._
+
 import Hub.system
 
 import akka.util.Timeout
@@ -20,7 +22,7 @@ class BufferActor[A] extends Actor{
   
   def receive = {
     case Save(a) => 
-      buffer :+ (a.asInstanceOf[A])
+      buffer = buffer :+ (a.asInstanceOf[A])
     case Query =>
       sender ! buffer
       buffer = Vector()
@@ -43,13 +45,18 @@ class BufferFlow[A]{
   
   val actor = system.actorOf(props)
   
-  def sink = Sink.foreach((a: A) => actor ! Save(a)) 
+  def sink() = Sink.foreach((a: A) => actor ! Save(a)) 
   
   implicit val timeout = Timeout(5.seconds)
   
-  def query = (actor ? Query).map (_.asInstanceOf[A])
+  def query() = {
+    val fut = (actor ? Query).map (_.asInstanceOf[Vector[A]])
+    Await.result(fut, 5.seconds)
+  }
+    
+  def flow[X] = Flow[X] mapConcat ((t) => query())
   
-  val flt = Flow[Ticker]
+  def ticksource(d: FiniteDuration = 100.millis) = Src.tick(0.seconds, d, Tick : Ticker) 
   
-  def flow = (flt mapAsync[A] _)(2)((t: Ticker) => query)
+  def source(d: FiniteDuration = 100.millis) = ticksource(d) via (flow[Ticker])
 }
