@@ -39,7 +39,8 @@ lazy val jvmSettings = Seq(
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
-    "com.lihaoyi" %% "pprint" % "0.3.6")
+    "com.lihaoyi" %% "pprint" % "0.3.6"),
+    resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
 
 lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
@@ -133,7 +134,7 @@ lazy val mantle = (project in file("mantle")).
         settings(name := "ProvingGround-mantle").
         settings(commonSettings : _*).
         settings(jvmSettings : _*).
-        settings(serverSettings : _*).
+//        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Repl.run("$initCommands") """).
         dependsOn(coreJVM).dependsOn(functionfinder)

@@ -44,7 +44,7 @@ object ACBatch {
 
     val p = Param(rank, size, wrdCntn, dir)
 
-    def initFut = getFutState(name, rank)
+    def initFut = getFutStateDefault(name, rank)
 
     def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =
       if (!smooth)

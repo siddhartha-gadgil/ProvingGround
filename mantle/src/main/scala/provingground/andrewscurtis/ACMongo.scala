@@ -245,10 +245,13 @@ object ACMongo extends ACWriter{
     }
     }
   
-  def getFutState(name: String, rank: Int = 2) = {
+  def getFutStateDefault(name: String, rank: Int = 2) = {
     val default = (learnerMoves(rank), eVec)
     getFutOptState(name) map (_.getOrElse(default))
   }
+  
+  def getFutState(name: String) = 
+    getFutOptState(name) map (_.get)
   
   def thmWeights(thm: Presentation) = {
     val query = BSONDocument("presentation" -> uwrite(thm))

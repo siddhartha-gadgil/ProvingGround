@@ -34,7 +34,8 @@ class FDhub extends Actor {
       runners = runners filter (_._1 != ref)
       if (runners.isEmpty) {
         println("All runners stop, hub stopping")
-        context.stop(self) 
+        Hub.system.shutdown()
+//        context.stop(self) 
       }
 
     case Done(_, _, _) => 
