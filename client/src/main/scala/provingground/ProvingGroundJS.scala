@@ -2,10 +2,14 @@ package provingground
 
 import scala.scalajs.js
 import org.scalajs.dom
-import dom.html
+import dom.html._
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 import scala.util.Try
+
+import scala.concurrent._
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import HoTT._
 
@@ -20,4 +24,12 @@ object ProvingGroundJS extends js.JSApp {
 
 //      JsTest.jstest()
   }
+  
+  val jsDiv = dom.document.getElementById("jsdiv")
+  
+  def insertDiv(div: Div) = 
+    jsDiv.appendChild(div)
+  
+  def insertDiv(futDiv: Future[Div]) = 
+    futDiv.foreach(jsDiv.appendChild(_))
 }
