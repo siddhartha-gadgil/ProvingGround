@@ -23,10 +23,10 @@ object HttpServer extends App {
   server.stop  
 }
 
-class ServerStart{
+class ServerStart(port: Int = 8080){
   val route = acRoutes ~ getFromResourceDirectory("")
   
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
+  val bindingFuture = Http().bindAndHandle(route, "localhost", port)
   
   def stop() = 
     bindingFuture.
