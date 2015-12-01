@@ -179,6 +179,11 @@ object ACMongo extends ACWriter{
     moveWeightsDB.find(selector).cursor[ACMoveWeights]().headOption map ((opt) => opt map (_.fdM))
   }
   
+  def getFutActors = {
+    val entries = actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
+    entries map ((vec) => (vec map (_.getAs[String]("name"))).flatten)
+  }
+  
   def getFutOptLoops(name: String) = {
     val selector = BSONDocument("name" -> name)
     val futOpt = actorsDB.find(selector).cursor[BSONDocument]().headOption
