@@ -179,7 +179,7 @@ object ACMongo extends ACWriter{
     moveWeightsDB.find(selector).cursor[ACMoveWeights]().headOption map ((opt) => opt map (_.fdM))
   }
   
-  def getFutActors = {
+  def getFutActors() = {
     val entries = actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
     entries map ((vec) => (vec map (_.getAs[String]("name"))).flatten)
   }
