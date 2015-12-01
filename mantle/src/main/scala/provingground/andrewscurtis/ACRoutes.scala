@@ -46,6 +46,10 @@ object ACRoutes {
     complete(thms)
   }
   
+  val actors = path("actors"){
+    complete(???) // add query for actors here, but not synced.
+  }
+  
   val getData = get {
     pathPrefix("data") (thms ~ thmEvolve ~ terms ~ moveWeights)
   }
