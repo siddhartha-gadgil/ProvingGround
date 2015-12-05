@@ -23,26 +23,29 @@ import ACBatch._
 import Moves._
 
 object ACRoutes {
-  val thmEvolve  = path("theorem-evolution" / Segment){ppres =>
-    val thms = thmWeights(uread[Presentation](ppres)) map (uwrite[Stream[ACThm]])
-    complete(thms)
+  val thmEvolve  = path("theorem-evolution" / Segment / Segment){
+    case (name, ppress) => {
+      val pres = uread[Presentation](ppress)
+      val thms = thmWeights(pres, name) map (uwrite[Stream[ACThm]])
+      complete(thms)
+    }
   }
   
   val thms = path("theorems" / Segment){name =>
     val thmsOptFut = getFutOptThms(name)
-    val thms = mapFutOpt(thmsOptFut)(uwrite[FiniteDistribution[Presentation]])
+    val thms = thmsOptFut mapp (uwrite[FiniteDistribution[Presentation]])
     complete(thms)
   }
   
   val terms = path("terms" / Segment){name =>
     val thmsOptFDV = getFutOptFDV(name)
-    val thms = mapFutOpt(thmsOptFDV)(uwrite[FiniteDistribution[Moves]])
+    val thms = thmsOptFDV mapp (uwrite[FiniteDistribution[Moves]])
     complete(thms)
   }
   
   val moveWeights = path("move-weights" / Segment){name =>
     val thmsOptFDM = getFutOptFDM(name)
-    val thms = mapFutOpt(thmsOptFDM)(uwrite[FiniteDistribution[AtomicMove]])
+    val thms = thmsOptFDM mapp (uwrite[FiniteDistribution[AtomicMove]])
     complete(thms)
   }
   

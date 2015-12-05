@@ -45,7 +45,8 @@ trait ACWriter {
     loopsSink
 
   /**
-   *  ActorRef from materialized flow saving various things in Casbah mongo database
+   *  ActorRef from materialized flow saving various things in
+   *  appropriate database, concretely reactive-mongo
    */
   def writerRef[M](
       interface: Sink[Snap
