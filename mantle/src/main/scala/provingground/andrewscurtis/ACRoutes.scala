@@ -30,25 +30,25 @@ object ACRoutes {
       complete(thms)
     }
   }
-  
+
   val thms = path("theorems" / Segment){name =>
     val thmsOptFut = getFutOptThms(name)
     val thms = thmsOptFut mapp (uwrite[FiniteDistribution[Presentation]])
     complete(thms)
   }
-  
+
   val terms = path("terms" / Segment){name =>
     val thmsOptFDV = getFutOptFDV(name)
     val thms = thmsOptFDV mapp (uwrite[FiniteDistribution[Moves]])
     complete(thms)
   }
-  
+
   val moveWeights = path("move-weights" / Segment){name =>
     val thmsOptFDM = getFutOptFDM(name)
     val thms = thmsOptFDM mapp (uwrite[FiniteDistribution[AtomicMove]])
     complete(thms)
   }
-  
+
   val actors = path("actors"){
     val actors = getFutActors() map (uwrite[Vector[String]])
     complete(actors)
@@ -57,8 +57,8 @@ object ACRoutes {
   val getData = get {
     pathPrefix("data") (thms ~ thmEvolve ~ terms ~ moveWeights)
   }
-  
-  val start = 
+
+  val start =
     post {
       path("start"){
         entity(as[String]) {d =>
@@ -68,8 +68,8 @@ object ACRoutes {
         }
       }
     }
-  
-  val quickstart = 
+
+  val quickstart =
     post {
       path("quickstart"){
         val ds = loadStartData()
@@ -78,14 +78,14 @@ object ACRoutes {
         complete(uwrite(names))
       }
   }
-  
-  val stop = 
+
+  val stop =
     post {
       path("stop"){
         FDhub.stop
         complete("stop requested")
       }
   }
-  
+
   val acRoutes = pathPrefix("andrews-curtis")(getData ~ start ~ quickstart ~ stop)
 }
