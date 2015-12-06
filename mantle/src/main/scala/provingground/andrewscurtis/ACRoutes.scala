@@ -50,7 +50,8 @@ object ACRoutes {
   }
   
   val actors = path("actors"){
-    complete(???) // add query for actors here, but not synced.
+    val actors = getFutActors() map (uwrite[Vector[String]])
+    complete(actors)
   }
   
   val getData = get {
