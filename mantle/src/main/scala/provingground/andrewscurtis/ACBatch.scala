@@ -29,6 +29,9 @@ import com.github.nscala_time.time.Imports._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import reactivemongo.api._
+import reactivemongo.bson._
+
 object ACBatch {
   val wd = cwd / 'data
 
@@ -71,6 +74,17 @@ object ACBatch {
       r
     }
 
+    def log = {
+      val query = BSONDocument("name" -> name)
+      val prevStarts = 
+        actorsDB.find(query).cursor[BSONDocument]().headOption.
+          map ((docOpt) => (docOpt flatMap (_.getAs[String]("start-data") map (uread[List[StartData]]))).getOrElse(List()))
+      val updatedStartsFut = prevStarts map (this :: _) 
+      val futDoc =  updatedStartsFut map(
+          (us : List[StartData]) => BSONDocument("name" -> name, "loops" ->0, "start-data" -> uwrite(us)))
+      futDoc map ((doc) => actorsDB.insert(doc))
+    }
+    
     /**
      * spawns and starts runner for data.
      */
@@ -78,6 +92,7 @@ object ACBatch {
       {
         val rs = initFut map (runner)
         rs.foreach(start(_, steps, strictness, epsilon))
+        log
         rs
       }
   }
