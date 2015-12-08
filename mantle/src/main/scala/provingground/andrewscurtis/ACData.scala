@@ -140,12 +140,12 @@ object ACFlowSaver{
   val snapSink = Sink.foreach(snapSave)
 
   def snapSource(date: String, batch: String) =
-    Src(read.lines!!(snapd / date / batch.toString) toStream)
+    Src(read.lines.iter(snapd / date / batch.toString) toStream)
 
   def snapStream(date: String) =
     (ls(wd / date).toStream map (_.name)).
     sortBy(_.toInt).
-    flatMap ((filename : String) => (read.lines!!(snapd / date / filename)).toStream).
+    flatMap ((filename : String) => (read.lines.iter(snapd / date / filename)).toStream).
     map (uread[Snap])
 
   def snapSource(date: String) = Src(snapStream(date))
@@ -346,39 +346,6 @@ object ACFlowSaver{
 }
 
 
-class StateView(elems: Vector[ACElem], fdM : FiniteDistribution[AtomicMove]){
-  def fdV = FiniteDistribution(elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
-
-  def fdP = FiniteDistribution(elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
-
-  def proofs(thm: Presentation) = elems filter(_.pres == thm)
-
-  def proofWeight(mvs: Moves) = {
-    val ps = mvs.moves map (fdM(_))
-    (1.0 /: ps)(_ * _)
-  }
-
-  def totalProofWeight(thm: Presentation) =
-    (proofs(thm) map ((x: ACElem) => proofWeight(x.moves))).sum
-
-  def hardness(thm: Presentation) =
-    scala.util.Try(math.log(fdP(thm))/math.log(totalProofWeight(thm))).getOrElse(0.0)
-
-  def hardThms = fdP.supp.sortBy(hardness).reverse
-}
-
-object StateView{
-  import ACFlowSaver._
-
-  def apply(name: String, loops: Int) = fromCasbah(name, loops)
-
-  def apply(name: String) = new StateView(getCurrentElems(name), FDM(name).get)
-
-  def fromCasbah(name: String, loops: Int) = {
-    new StateView(getElems(name, loops), FDM(name).get)
-  }
-
-}
 
 object ACData {
   def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef()
@@ -391,7 +358,7 @@ object ACData {
     val target = wd / dir / s"${file}.acthms.csv"
     val l =
       (lines map ((n) =>
-        ((read.lines!!(source)).take(n)).toVector
+        ((read.lines.iter(source)).take(n)).toVector
         )).
         getOrElse(read.lines(source))
     val pmfs = l map (uread[Vector[(String, Double)]])
@@ -449,7 +416,7 @@ object ACData {
 
   def load(name: String, dir : String ="acDev") = {
     val file = wd / dir / (name+".acrun")
-    val lines = (read.lines!!(file)).toStream
+    val lines = (read.lines.iter(file)).toStream
     lines map (unpickle)
   }
 
