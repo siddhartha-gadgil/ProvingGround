@@ -68,5 +68,5 @@ object ACThm{
   }
   
   def weightVector(thms: Vector[ACThm], loops: Int) = (pres: Presentation) => 
-    (0 until loops).toVector map (weight(thms, pres, _))
+    (1 to loops).toVector map (weight(thms, pres, _))
 }
