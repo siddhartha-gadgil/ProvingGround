@@ -262,7 +262,7 @@ object ACMongo extends ACWriter{
   def getFutOptElems(name: String) =
     getFutOptLoops(name) flatMap (
           {
-            case Some(loops) => getFutElemsStep(name, loops) map ((vec) => Some(vec))
+            case Some(loops) => getFutElemsStep(name, loops - 1) map ((vec) => Some(vec))
             case None => Future.successful(None)
           }
         )
@@ -272,7 +272,7 @@ object ACMongo extends ACWriter{
   def getFutOptThmElems(name: String) =
     getFutOptLoops(name) flatMap (
           {
-            case Some(loops) => getFutThmElemsStep(name, loops) map ((vec) => Some(vec))
+            case Some(loops) => getFutThmElemsStep(name, loops - 1) map ((vec) => Some(vec))
             case None => Future.successful(None)
           }
         )
@@ -283,7 +283,7 @@ object ACMongo extends ACWriter{
   def getFutOptFDM(name: String) =
     getFutOptLoops(name) flatMap (
           {
-            case Some(loops) => getFutOptFDMStep(name, loops)
+            case Some(loops) => getFutOptFDMStep(name, loops - 1)
             case None => Future.successful(None)
           }
         )
