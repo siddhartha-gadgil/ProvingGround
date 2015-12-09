@@ -10,7 +10,7 @@ import ACMongo._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class StateView(elems: Vector[ACElem], fdM : FiniteDistribution[AtomicMove]){
+class StateView(name: String, elems: Vector[ACElem], fdM : FiniteDistribution[AtomicMove]){
   def fdV = FiniteDistribution(elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
 
   def fdP = FiniteDistribution(elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
@@ -41,10 +41,10 @@ object StateView{
   def apply(name: String) = fromMongo(name)
 
   def fromCasbah(name: String, loops: Int) = {
-    new StateView(getElems(name, loops), FDM(name).get)
+    new StateView(name, getElems(name, loops), FDM(name).get)
   }
 
   def fromMongo(name: String) =
     (getFutOptElems(name) flatMapp ((vec) =>
-      getFutOptFDM(name) mapp (new StateView(vec, _)))) map (_.get)
+      getFutOptFDM(name) mapp (new StateView(name, vec, _)))) map (_.get)
 }

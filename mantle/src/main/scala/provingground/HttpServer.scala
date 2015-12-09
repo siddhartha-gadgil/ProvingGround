@@ -31,5 +31,5 @@ class ServerStart(port: Int = 8080){
   def stop() = 
     bindingFuture.
     flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ ⇒ FDhub.stop(ACBatch.quickhub)) // and shutdown when done
+    .onComplete(_ ⇒ FDhub.stop(StartData.quickhub)) // and shutdown when done
 }

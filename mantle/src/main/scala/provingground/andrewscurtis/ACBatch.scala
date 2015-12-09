@@ -32,9 +32,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api._
 import reactivemongo.bson._
 
-object ACBatch {
-  val wd = cwd / 'data
 
+import StartData._
   /**
    * data for spawning and starting an andrews-curtis runner.
    */
@@ -44,6 +43,8 @@ object ACBatch {
       smooth: Boolean = false
        ){
 
+//    import StartData.quickhub
+       
     @deprecated("use mongo initialized", "to remove")
     def initOld = (getState(name) orElse
       (ls(wd / dir) find (_.name == name+".acstate") map (loadState))).
@@ -91,13 +92,15 @@ object ACBatch {
     def run =
       {
         val rs = initFut map (runner)
-        rs.foreach(start(_, steps, strictness, epsilon))
+        rs.foreach(start(_, steps, strictness, epsilon)(quickhub))
         log
         rs
       }
   }
 
   object StartData{
+    
+    implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
     /**
      * reads with defaults start paratmeters from JSON.
      */
@@ -115,6 +118,10 @@ object ACBatch {
       StartData(name, dir, rank, size, wrdCntn, steps, strictness, epsilon, smooth)
     }
   }
+
+
+object ACBatch {
+  val wd = cwd / 'data
 
 
 
@@ -137,13 +144,13 @@ object ACBatch {
     d map (StartData.fromJson)
     }
 
-  implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
+  
 
   @deprecated("use mongo initialized", "to remove")
   def quickStartOld(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
     ds foreach ((d) => write.append(wd / dir /file, s"# Started: $d at ${DateTime.now}"))
-    val runners = ds map (_.runOld(quickhub))
+    val runners = ds map (_.runOld(StartData.quickhub))
     runners
   }
 

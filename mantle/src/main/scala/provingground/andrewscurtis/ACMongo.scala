@@ -238,6 +238,11 @@ object ACMongo extends ACWriter{
     val entries = actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
     entries map ((vec) => (vec map (_.getAs[String]("name"))).flatten)
   }
+  
+  def getFutStartData() = {
+    val entries = actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
+    entries map ((vec) => (vec map (_.getAs[String]("start-data") map (uread[StartData]))).flatten)
+  }
 
   /**
    * get the number of loops run by an actor as an optional future.
