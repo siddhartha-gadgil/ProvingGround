@@ -385,6 +385,46 @@ object ACMongo extends ACWriter{
       cursor[ACThm]()
     cursor.collect[Stream]()
   }
+  
+  def allThmWeights(name: String) = {
+    val query =
+      BSONDocument(
+        "name" -> name) // matches against pickled theorem
+    val cursor =
+      thmsDB.
+      find(query).
+      cursor[ACThm]()
+    cursor.collect[Vector]()
+  }
+  
+  def thmSupp(name: String) = {
+    val query =
+      BSONDocument(
+        "name" -> name) // matches against pickled theorem
+    val cursor =
+      thmsDB.
+      find(query).
+      cursor[ACThm]()
+    cursor.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector)
+  }
+  
+  def thmView(thms: Vector[ACThm])(thm: Presentation, name: String, loops: Int) = 
+    ((thm.toString) +: (ACThm.weightVector(thms, loops)(thm) map (_.toString))).mkString(",")
+    
+  def thmSaveCSV(thms: Vector[ACThm])(name: String, loops: Int, dir: String ="ac-data") = {
+    import ammonite.ops._ 
+    val wd = cwd / 'data / dir
+    val file = wd / s"$name-thms.csv"
+    def supp = (thms map (_.pres)).toSet.toVector
+    rm(file)
+    supp.foreach((thm) => write.append(file, thmView(thms)(thm, name, loops)+"\n"))
+  }
+  
+  def thmsCSV(name: String, dir: String ="ac-data") = {
+    for (thms <- allThmWeights(name); optLoops <- getFutOptLoops(name)) yield
+      optLoops.foreach((loops) => thmSaveCSV(thms)(name, loops, dir))
+  }
+   
 }
 
 

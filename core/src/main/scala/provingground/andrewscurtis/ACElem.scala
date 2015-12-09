@@ -62,4 +62,11 @@ object ACThm{
         ACThm(snap.name, x, d(x), snap.loops)
       } )
   }
+      
+  def weight(thms : Vector[ACThm], pres: Presentation, step: Int) = {
+    (thms filter ((thm) => thm.pres == pres && thm.loops == step)).headOption map (_.weight) getOrElse(0.0)
+  }
+  
+  def weightVector(thms: Vector[ACThm], loops: Int) = (pres: Presentation) => 
+    (0 until loops).toVector map (weight(thms, pres, _))
 }
