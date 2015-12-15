@@ -25,6 +25,8 @@ import ACFlowSaver._
 
 import ACMongo._
 
+import ACElem.Snap
+
 import com.github.nscala_time.time.Imports._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -32,12 +34,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api._
 import reactivemongo.bson._
 
+import scala.concurrent._
+
+import akka.stream.scaladsl._
 
 import StartData._
   /**
    * data for spawning and starting an andrews-curtis runner.
    */
-  case class StartData(name: String, dir : String = "acDev",
+  case class StartData(name: String,
       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1, //spawn parameters
       steps: Int = 3, strictness : Double = 1, epsilon: Double = 0.1, //start parameters
       smooth: Boolean = false
@@ -45,12 +50,12 @@ import StartData._
 
 //    import StartData.quickhub
        
-    @deprecated("use mongo initialized", "to remove")
-    def initOld = (getState(name) orElse
-      (ls(wd / dir) find (_.name == name+".acstate") map (loadState))).
-      getOrElse((learnerMoves(rank), eVec))
+//    @deprecated("use mongo initialized", "to remove")
+//    def initOld = (getState(name) orElse
+//      (ls(wd / dir) find (_.name == name+".acstate") map (loadState))).
+//      getOrElse((learnerMoves(rank), eVec))
 
-    val p = Param(rank, size, wrdCntn, dir)
+    val p = Param(rank, size, wrdCntn)
 
     /**
      * initial data, from database or default
@@ -60,20 +65,22 @@ import StartData._
     /**
      * spawns running actor
      */
-    def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =
+    def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), 
+        sse: Sink[Snap, Future[Unit]] = Sink.foreach((a: Snap) => {})
+        ) =
       if (!smooth)
         rawSpawn(name, rank, size, wrdCntn, init,
-        ACMongo.writerRef(), p)
+        ACMongo.writerRef(sse), p)
       else
         smoothSpawn(name, rank, size, wrdCntn, init,
-        ACMongo.writerRef(), p)
+        ACMongo.writerRef(sse), p)
 
-    @deprecated("use mongo initialized", "to remove") 
-    def runOld(implicit hub: ActorRef) = {
-      val r = runner(initOld)
-      start(r, steps, strictness, epsilon)(hub)
-      r
-    }
+//    @deprecated("use mongo initialized", "to remove") 
+//    def runOld(implicit hub: ActorRef) = {
+//      val r = runner(initOld)
+//      start(r, steps, strictness, epsilon)(hub)
+//      r
+//    }
 
     def log = {
       val query = BSONDocument("name" -> name)
@@ -89,9 +96,9 @@ import StartData._
     /**
      * spawns and starts runner for data.
      */
-    def run =
+    def run(sse: Sink[Snap, Future[Unit]] = Sink.foreach((a: Snap) => {})) =
       {
-        val rs = initFut map (runner)
+        val rs = initFut map ((x) => runner(x, sse))
         rs.foreach(start(_, steps, strictness, epsilon)(quickhub))
         log
         rs
@@ -107,7 +114,7 @@ import StartData._
     def fromJson(st: String) = {
       val map = st.parseJson.asJsObject.fields
       val name = map("name").convertTo[String]
-      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
+//      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
       val rank = (map.get("rank") map (_.convertTo[Int])) getOrElse(2)
       val size = (map.get("size") map (_.convertTo[Int])) getOrElse(1000)
       val steps = (map.get("steps") map (_.convertTo[Int])) getOrElse(3)
@@ -115,7 +122,7 @@ import StartData._
       val epsilon = (map.get("epsilon") map (_.convertTo[Double])) getOrElse(0.1)
       val smooth = (map.get("smooth") map (_.convertTo[Boolean])) getOrElse(false)
       val strictness = (map.get("strictness") map (_.convertTo[Double])) getOrElse(1.0)
-      StartData(name, dir, rank, size, wrdCntn, steps, strictness, epsilon, smooth)
+      StartData(name, rank, size, wrdCntn, steps, strictness, epsilon, smooth)
     }
   }
 
@@ -146,20 +153,20 @@ object ACBatch {
 
   
 
-  @deprecated("use mongo initialized", "to remove")
-  def quickStartOld(dir: String = "acDev", file: String = "acbatch.json") = {
-    val ds = loadStartData(dir, file)
-    ds foreach ((d) => write.append(wd / dir /file, s"# Started: $d at ${DateTime.now}"))
-    val runners = ds map (_.runOld(StartData.quickhub))
-    runners
-  }
+//  @deprecated("use mongo initialized", "to remove")
+//  def quickStartOld(dir: String = "acDev", file: String = "acbatch.json") = {
+//    val ds = loadStartData(dir, file)
+//    ds foreach ((d) => write.append(wd / dir /file, s"# Started: $d at ${DateTime.now}"))
+//    val runners = ds map (_.runOld(StartData.quickhub))
+//    runners
+//  }
 
   /**
    * Load start data, start actors, return references to these.
    */
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
     val ds = loadStartData(dir, file)
-    val runners = ds map (_.run)
+    val runners = ds map (_.run())
     runners
   }
 }

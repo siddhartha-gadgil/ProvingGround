@@ -22,8 +22,7 @@ case class ACElem(name: String, moves: Moves, rank: Int, pres: Presentation, wei
 import ACElem._
 
 case class Param(
-       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1,
-       dir : String = "acDev"
+       rank: Int = 2, size : Int = 1000, wrdCntn: Double = 0.1
        )
 
 object ACElem{

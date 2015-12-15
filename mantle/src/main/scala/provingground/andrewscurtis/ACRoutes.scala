@@ -65,7 +65,7 @@ object ACRoutes {
       path("start"){
         entity(as[String]) {d =>
           val startData = uread[StartData](d)
-          val ref = startData.run
+          val ref = startData.run()
           complete(startData.name)
         }
       }
@@ -75,7 +75,7 @@ object ACRoutes {
     post {
       path("quickstart"){
         val ds = loadStartData()
-        ds map (_.run)
+        ds map (_.run())
         val names = ds map (_.name)
         complete(uwrite(names))
       }

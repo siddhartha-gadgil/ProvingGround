@@ -67,7 +67,7 @@ case class ACStateData(
     states: Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
     dir : String) extends ACStates{
     def revive(name : String, p : Param = Param())(implicit hub: ActorRef) = {
-    import p.{dir => d, _}
+    import p._
     val state = states(name)
     val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
 //    FDhub.start(ref)
@@ -81,7 +81,7 @@ case class ACStateData(
 
 
   def spawn(name : String, p : Param = Param()) = {
-    import p.{dir => d, _}
+    import p._
     rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
   }
 

@@ -119,7 +119,7 @@ object ACrunner {
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
-    rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(dir, rank), p)
+    rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
 }
 
 
@@ -127,7 +127,7 @@ object ACrunner {
   def spawnSmooth(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
     import ACData.fileSave
-    smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(dir, rank), p)
+    smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
 }
 
 

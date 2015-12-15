@@ -38,12 +38,17 @@ object BufferActor{
   class Ticker
   
   case object Tick extends Ticker
+  
+  def save[A](ref: ActorRef) = (a: A) => ref ! Save(a)
+  
+  def props[A] = Props(new BufferActor[A])
+  
+  def buffer[A] = system.actorOf(props[A])
 }
 
 class BufferFlow[A]{
-  def props = Props(new BufferActor[A])
   
-  val actor = system.actorOf(props)
+  val actor = buffer[A]
   
   def sink() = Sink.foreach((a: A) => actor ! Save(a)) 
   
