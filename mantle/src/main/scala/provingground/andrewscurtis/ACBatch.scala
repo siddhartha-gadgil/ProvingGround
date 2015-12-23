@@ -90,7 +90,12 @@ import StartData._
       val updatedStartsFut = prevStarts map (this :: _) 
       val futDoc =  updatedStartsFut map(
           (us : List[StartData]) => BSONDocument("name" -> name, "loops" ->0, "start-data" -> uwrite(us)))
-      futDoc map ((doc) => actorsDB.insert(doc))
+      val res = futDoc.map(
+          (doc) => 
+            //println(doc) 
+            actorsDB.insert(doc)
+          )
+      (futDoc, res)
     }
     
     /**

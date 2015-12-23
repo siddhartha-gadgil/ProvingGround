@@ -1,5 +1,7 @@
 import sbt.Project.projectToRef
 
+scalaVersion in ThisBuild := "2.11.7"
+
 lazy val jsProjects = Seq(client)
 
 lazy val commonSettings = Seq(
