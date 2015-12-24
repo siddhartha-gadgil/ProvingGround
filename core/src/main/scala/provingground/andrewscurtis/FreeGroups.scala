@@ -21,6 +21,56 @@ object FreeGroups{
    */
   def letterUnic(n : Int) = if (n > 0) ('a' + n -1).toChar.toString else ('a' - n -1).toChar.toString+ '\u0305'.toString
 
+
+  object Word{
+
+    /**
+     * sanity checker for listFromChars.
+     * to add further checks later.
+     */
+    def isParsable(s: List[Char]): Boolean = {
+      if(s.isEmpty)
+        true
+      else if((s.head == '\u0305') || (s.head == '!'))
+        false
+      else
+        true
+    }
+
+    /**
+     * helper for fromString
+     */
+    def listFromChars(s: List[Char]) : List[Int] = {
+      require(isParsable(s), "The list of characters is not well formed and should not be parsed.")
+      s match {
+      case Nil => List()
+      case x :: '\u0305' :: tail =>
+        (-(x - 'a' + 1)) :: listFromChars(tail)
+      case x :: '!' :: tail =>
+        (-(x - 'a' + 1)) :: listFromChars(tail)
+      case x :: tail =>
+        (x - 'a' + 1) :: listFromChars(tail)
+      }
+    }
+
+    /**
+     * word from a string.
+     */
+    def fromString(s: String): Word = if (s=="1") Word(List())
+      else Word(listFromChars(s.replace("!", "\u0305").replace(" ", "").replace(".", "").toList))
+
+    /**
+     * word from a string.
+     */
+    def apply(w: String) = fromString(w)
+
+    /**
+     * the identity
+     */
+    val e = Word(List())
+  }
+
+
   /**
    * A word in a free group.
    * @param ls letters of the words represented as integers; 1 represents a, -1 represents a^{-1}
@@ -126,53 +176,6 @@ object FreeGroups{
     def rmvtop(rank : Int) = Word (ls filter (_.abs < rank))
   }
 
-  object Word{
-
-    /**
-     * sanity checker for listFromChars.
-     * to add further checks later.
-     */
-    def isParsable(s: List[Char]): Boolean = {
-      if(s.isEmpty)
-        true
-      else if((s.head == '\u0305') || (s.head == '!'))
-        false
-      else
-        true
-    }
-
-    /**
-     * helper for fromString
-     */
-    def listFromChars(s: List[Char]) : List[Int] = {
-      require(isParsable(s), "The list of characters is not well formed and should not be parsed.")
-      s match {
-      case Nil => List()
-      case x :: '\u0305' :: tail =>
-        (-(x - 'a' + 1)) :: listFromChars(tail)
-      case x :: '!' :: tail =>
-        (-(x - 'a' + 1)) :: listFromChars(tail)
-      case x :: tail =>
-        (x - 'a' + 1) :: listFromChars(tail)
-      }
-    }
-
-    /**
-     * word from a string.
-     */
-    def fromString(s: String): Word = if (s=="1") Word(List())
-      else Word(listFromChars(s.replace("!", "\u0305").replace(" ", "").replace(".", "").toList))
-
-    /**
-     * word from a string.
-     */
-    def apply(w: String) = fromString(w)
-
-    /**
-     * the identity
-     */
-    val e = Word(List())
-  }
 
   /**
    * weight of a word, for a generation process where we extend with some probability, picking letters at random.
