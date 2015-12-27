@@ -104,3 +104,6 @@ project/sbt-ui.sbt
 *.acrun
 *.acstate
 *.acthms
+
+wiki/
+gh-pages/
