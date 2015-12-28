@@ -25,7 +25,7 @@ class ACLooper(rank: Int, size: Int, wrdCntn: Double,
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param
       ](ACLooper.dyn(rank, size) , ACLooper.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
-class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
+class ACsmoothLooper(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef, param: Param
     ) extends FDLooper[
@@ -88,12 +88,12 @@ object ACLooper {
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef, param: Param
     ) : Props = Props(
-        new ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
+        new ACsmoothLooper(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef, param
     ) )
 
-  def rawSpawn(name: String, rank: Int, size: Int, wrdCntn: Double,
+  def spawn(name: String, rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef, param: Param
     ) = {
@@ -122,10 +122,11 @@ object ACLooper {
 
   def initState(rank: Int) = (learnerMoves(rank), eVec)
 
+/*
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
   //  import ACData.fileSave
-    rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
+    spawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
 }
 
 
@@ -144,7 +145,7 @@ object ACLooper {
   def spawnsSmooth(name: String, mult : Int = 4, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     for (j <- 1 to mult) yield spawnSmooth(name+"."+j.toString, p, init)
   }
-
+*/
 
 
 }

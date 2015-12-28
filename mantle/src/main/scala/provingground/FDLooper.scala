@@ -67,7 +67,7 @@ class FDLooper[X: LinearStructure, P](
   import FDHub._
 
   def receive = {
-    case Continue(steps, strictness, epsilon) =>
+    case Continue(steps, strictness, epsilon) => // another loop
       {
         val newState = normalize(state |+| (shift(state, strictness, steps, epsilon)))
         state = newState
@@ -75,7 +75,7 @@ class FDLooper[X: LinearStructure, P](
         srcRef ! snapShot(newState)
         sender ! Done(steps, strictness, epsilon)
       }
-    case RunnerStop =>
+    case RunnerStop => //stop self after sending acknowledgement
       sender ! Stopping(self)
       println(s"actor ${self.path.name} stopping")
       context.stop(self)

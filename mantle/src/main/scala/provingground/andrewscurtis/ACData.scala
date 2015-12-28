@@ -69,7 +69,7 @@ case class ACStateData(
     def revive(name : String, p : Param = Param())(implicit hub: ActorRef) = {
     import p._
     val state = states(name)
-    val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
+    val ref = ACLooper.spawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
 //    FDHub.start(ref)
     ref
   }
@@ -82,7 +82,7 @@ case class ACStateData(
 
   def spawn(name : String, p : Param = Param()) = {
     import p._
-    rawSpawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
+    ACLooper.spawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
   }
 
   def spawns(name: String, mult : Int = 4, p: Param = Param()) = {

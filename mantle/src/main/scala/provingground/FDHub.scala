@@ -9,69 +9,77 @@ import FDLooper._
 
 import FDHub._
 
+/**
+* Actor controlling (bu not creating) the various loopers for running;
+* maintains info on the state etc. of loopers,
+* keeps telling a running looper to continue.
+* Running loopers is separated into spawning them, in general from outside the actor system,
+* and starting them from a Hub.
+*/
 class FDHub extends Actor {
-  var runners: Map[ActorRef, State] = Map.empty
+  var loopers: Map[ActorRef, State] = Map.empty
 
-  def names = (for ((r, x) <- runners) yield r.path.name).toList
+  def names = (for ((r, x) <- loopers) yield r.path.name).toList
 
-  def states = (for ((r, x) <- runners) yield (r.path.name -> x))
+  def states = (for ((r, x) <- loopers) yield (r.path.name -> x))
 
   def receive = {
-    case Start(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double) =>
+    case Start(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double) => // start a looper
       {
-        runners = runners + (runner -> State(true, steps, strictness, epsilon))
+        loopers = loopers + (runner -> State(true, steps, strictness, epsilon))
         println(runner)
-        println(runners)
+        println(loopers)
         runner ! Continue(steps, strictness, epsilon)
       }
 
-    case StopHub => {
-      for (runner <- runners.keys) runner ! RunnerStop
-      runners = Map.empty
+    case StopHub => // send messages to all loopers to stop. When return messages come, stop hub.
+    {
+      for (runner <- loopers.keys) runner ! RunnerStop
+//      loopers = Map.empty
     }
 
-    case Stopping(ref) =>
-      runners = runners filter (_._1 != ref)
-      if (runners.isEmpty) {
-        println("All runners stop, hub stopping")
-        Hub.system.shutdown()
-//        context.stop(self)
+    case Stopping(ref) => // message that a looper has stopped.
+      loopers = loopers filter (_._1 != ref)
+      if (loopers.isEmpty) {
+        println("All loopers stopped, hub stopping")
+//        Hub.system.shutdown()
+        context.stop(self)
       }
 
-    case Done(_, _, _) =>
-      val state = runners(sender)
+    case Done(_, _, _) => // message that loop is finished
+      val state = loopers(sender)
       import state._
       if (running) sender ! Continue(steps, strictness, epsilon)
     case Pause(runner) =>
-        val state = runners(sender)
+        val state = loopers(sender)
         import state._
-        runners + (runner -> State(false, steps, strictness, epsilon))
+        loopers + (runner -> State(false, steps, strictness, epsilon))
     case Resume(runner) =>
-        val state = runners(sender)
+        val state = loopers(sender)
         import state._
-        runners + (runner -> State(true, steps, strictness, epsilon))
+        loopers + (runner -> State(true, steps, strictness, epsilon))
         runner ! Continue(steps, strictness, epsilon)
 
     case SetParam(runner, steps, strictness, epsilon) =>
-      val running = runners(runner).running
-      runners + (runner -> State(running, steps, strictness, epsilon))
+      val running = loopers(runner).running
+      loopers + (runner -> State(running, steps, strictness, epsilon))
 
     case SetSteps(runner, newSteps) =>
-      val state = runners(runner)
+      val state = loopers(runner)
       import state._
-      runners + (runner -> State(running, newSteps, strictness, epsilon))
+      loopers + (runner -> State(running, newSteps, strictness, epsilon))
 
     case SetStrictness(runner, newStrictness) =>
-      val state = runners(runner)
+      val state = loopers(runner)
       import state._
-      runners + (runner -> State(running, steps, newStrictness, epsilon))
+      loopers + (runner -> State(running, steps, newStrictness, epsilon))
 
     case SetEpsilon(runner, newEpsilon) =>
-      val state = runners(runner)
+      val state = loopers(runner)
       import state._
-      runners + (runner -> State(running, steps, strictness, newEpsilon))
+      loopers + (runner -> State(running, steps, strictness, newEpsilon))
 
-    case Runners =>
+    case Loopers =>
       sender ! names
 
     case States =>
@@ -80,7 +88,7 @@ class FDHub extends Actor {
 }
 
 object FDHub {
-  case object Runners
+  case object Loopers
 
   case object States
 
@@ -124,8 +132,8 @@ object FDHub {
 
   import system.dispatcher
 
-  def runners(implicit hub: ActorRef) =
-    (hub ? Runners).mapTo[List[String]]
+  def loopers(implicit hub: ActorRef) =
+    (hub ? Loopers).mapTo[List[String]]
 
   def states(implicit hub: ActorRef) =
     (hub ? States).mapTo[Map[String, State]]
