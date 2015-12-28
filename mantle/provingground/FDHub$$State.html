@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>SetSteps - provingground.FDactor.SetSteps</title>
-          <meta name="description" content="SetSteps - provingground.FDactor.SetSteps" />
-          <meta name="keywords" content="SetSteps provingground.FDactor.SetSteps" />
+          <title>State - provingground.FDHub.State</title>
+          <meta name="description" content="State - provingground.FDHub.State" />
+          <meta name="keywords" content="State provingground.FDHub.State" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
-            var hash = 'provingground.FDactor$$SetSteps';
+            var hash = 'provingground.FDHub$$State';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -29,11 +29,11 @@
         <body class="type">
       <div id="definition">
         <img alt="Class" src="../lib/class_big.png" />
-        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="FDactor$.html" class="extype" name="provingground.FDactor">FDactor</a></p>
-        <h1>SetSteps</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="FDactor$.html" class="extype" name="provingground.FDactor">package FDactor</a>
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="FDHub$.html" class="extype" name="provingground.FDHub">FDHub</a></p>
+        <h1>State</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="FDHub$.html" class="extype" name="provingground.FDHub">package FDHub</a>
           </div></span></h3><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -45,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SetSteps</span><span class="params">(<span name="runner">runner: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">State</span><span class="params">(<span name="running">running: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>, <span name="strictness">strictness: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -69,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.FDactor.SetSteps"><span>SetSteps</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.FDHub.State"><span>State</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -88,19 +88,19 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.FDactor.SetSteps#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(runner:akka.actor.ActorRef,steps:Int):provingground.FDactor.SetSteps"></a>
-      <a id="&lt;init&gt;:SetSteps"></a>
+              <ol><li name="provingground.FDHub.State#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(running:Boolean,steps:Int,strictness:Double,epsilon:Double):provingground.FDHub.State"></a>
+      <a id="&lt;init&gt;:State"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SetSteps</span><span class="params">(<span name="runner">runner: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">State</span><span class="params">(<span name="running">running: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>, <span name="strictness">strictness: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@&lt;init&gt;(runner:akka.actor.ActorRef,steps:Int):provingground.FDactor.SetSteps" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@&lt;init&gt;(running:Boolean,steps:Int,strictness:Double,epsilon:Double):provingground.FDHub.State" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -126,7 +126,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -143,7 +143,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@##():Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@##():Int" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -160,7 +160,7 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -177,7 +177,7 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -194,7 +194,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@clone():Object" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@clone():Object" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -205,6 +205,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.FDHub.State#epsilon" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="epsilon:Double"></a>
+      <a id="epsilon:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">epsilon</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDHub$$State@epsilon:Double" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -217,7 +234,7 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -234,7 +251,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@finalize():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@finalize():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -257,7 +274,7 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -274,7 +291,7 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -291,7 +308,7 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -308,7 +325,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@notify():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@notify():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -325,29 +342,29 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.FDactor.SetSteps#runner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="runner:akka.actor.ActorRef"></a>
-      <a id="runner:ActorRef"></a>
+    </li><li name="provingground.FDHub.State#running" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="running:Boolean"></a>
+      <a id="running:Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">runner</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
+        <span class="name">running</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@runner:akka.actor.ActorRef" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@running:Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
-    </li><li name="provingground.FDactor.SetSteps#steps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.FDHub.State#steps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="steps:Int"></a>
       <a id="steps:Int"></a>
       <h4 class="signature">
@@ -359,7 +376,24 @@
         <span class="name">steps</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@steps:Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@steps:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FDHub.State#strictness" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="strictness:Double"></a>
+      <a id="strictness:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">strictness</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDHub$$State@strictness:Double" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -376,7 +410,7 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -393,7 +427,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@wait():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@wait():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -416,7 +450,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -439,7 +473,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDactor$$SetSteps@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDHub$$State@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

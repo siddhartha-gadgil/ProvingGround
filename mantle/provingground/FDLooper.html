@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>FDhub - provingground.FDhub</title>
-          <meta name="description" content="FDhub - provingground.FDhub" />
-          <meta name="keywords" content="FDhub provingground.FDhub" />
+          <title>FDLooper - provingground.FDLooper</title>
+          <meta name="description" content="FDLooper - provingground.FDLooper" />
+          <meta name="keywords" content="FDLooper provingground.FDLooper" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
-            var hash = 'provingground.FDhub';
+            var hash = 'provingground.FDLooper';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,14 +28,14 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="FDhub$.html" title="See companion object"><img alt="Class/Object" src="../lib/class_to_object_big.png" /></a>
+        <a href="FDLooper$.html" title="See companion object"><img alt="Class/Object" src="../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
-        <h1><a href="FDhub$.html" title="See companion object">FDhub</a></h1><h3><span class="morelinks"><div>
+        <h1><a href="FDLooper$.html" title="See companion object">FDLooper</a></h1><h3><span class="morelinks"><div>
             Related Docs:
-            <a href="FDhub$.html" title="See companion object">object FDhub</a>
+            <a href="FDLooper$.html" title="See companion object">object FDLooper</a>
             | <a href="package.html" class="extype" name="provingground">package provingground</a>
           </div></span></h3><span class="permalink">
-      <a href="../index.html#provingground.FDhub" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -47,14 +47,18 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">FDhub</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+        <span class="name">FDLooper</span><span class="tparams">[<span name="X">X</span>, <span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Actor for carrying out loops in a learning dynamical system
+</p></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>state type</p></dd><dt class="tparam">P</dt><dd class="cmt"><p>parameter type</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="akka.actor.Actor">Actor</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="andrewscurtis/ACLooper.html" class="extype" name="provingground.andrewscurtis.ACLooper">ACLooper</a>, <a href="andrewscurtis/ACsmoothRunner.html" class="extype" name="provingground.andrewscurtis.ACsmoothRunner">ACsmoothRunner</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -71,7 +75,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.FDhub"><span>FDhub</span></li><li class="in" name="akka.actor.Actor"><span>Actor</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.FDLooper"><span>FDLooper</span></li><li class="in" name="akka.actor.Actor"><span>Actor</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -90,23 +94,23 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.FDhub#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():provingground.FDhub"></a>
-      <a id="&lt;init&gt;:FDhub"></a>
+              <ol><li name="provingground.FDLooper#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(dyn:provingground.DiffbleFunction[X,X],feedback:Double=&gt;(X=&gt;(X=&gt;X)),normalize:X=&gt;X,init:X,srcRef:akka.actor.ActorRef,param:P)(implicitevidence$1:provingground.LinearStructure[X]):provingground.FDLooper[X,P]"></a>
+      <a id="&lt;init&gt;:FDLooper[X,P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">FDhub</span><span class="params">()</span>
+        <span class="name">FDLooper</span><span class="params">(<span name="dyn">dyn: <span class="extype" name="provingground.DiffbleFunction">DiffbleFunction</span>[<span class="extype" name="provingground.FDLooper.X">X</span>, <span class="extype" name="provingground.FDLooper.X">X</span>]</span>, <span name="feedback">feedback: (<span class="extype" name="scala.Double">Double</span>) ⇒ (<span class="extype" name="provingground.FDLooper.X">X</span>) ⇒ (<span class="extype" name="provingground.FDLooper.X">X</span>) ⇒ <span class="extype" name="provingground.FDLooper.X">X</span></span>, <span name="normalize">normalize: (<span class="extype" name="provingground.FDLooper.X">X</span>) ⇒ <span class="extype" name="provingground.FDLooper.X">X</span></span>, <span name="init">init: <span class="extype" name="provingground.FDLooper.X">X</span></span>, <span name="srcRef">srcRef: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="param">param: <span class="extype" name="provingground.FDLooper.P">P</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="provingground.LinearStructure">LinearStructure</span>[<span class="extype" name="provingground.FDLooper.X">X</span>]</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@&lt;init&gt;():provingground.FDhub" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@&lt;init&gt;(dyn:provingground.DiffbleFunction[X,X],feedback:Double=&gt;(X=&gt;(X=&gt;X)),normalize:X=&gt;X,init:X,srcRef:akka.actor.ActorRef,param:P)(implicitevidence$1:provingground.LinearStructure[X]):provingground.FDLooper[X,P]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">dyn</dt><dd class="cmt"><p>evolution function</p></dd><dt class="param">feedback</dt><dd class="cmt"><p>Feedback, depending on _strictness_, _initial state_ and _final state_.</p></dd><dt class="param">normalize</dt><dd class="cmt"><p>normalization for total weight, merging equal terms etc.</p></dd><dt class="param">init</dt><dd class="cmt"><p>initial state</p></dd><dt class="param">srcRef</dt><dd class="cmt"><p>actor to whom snapshots are sent to save, send over sse etc.</p></dd><dt class="param">param</dt><dd class="cmt"><p>parameters for the system that can be changed while running.</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -124,7 +128,7 @@
         <span class="name">Receive</span><span class="result"> = <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Any">Any</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@Receive=akka.actor.Actor.Receive" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@Receive=akka.actor.Actor.Receive" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -148,7 +152,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -165,7 +169,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@##():Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@##():Int" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -182,13 +186,13 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="akka.actor.Actor#aroundPostRestart" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="aroundPostRestart(reason:&lt;?&gt;):Unit"></a>
+      <a id="aroundPostRestart(reason:Throwable):Unit"></a>
       <a id="aroundPostRestart(Throwable):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -199,7 +203,7 @@
         <span class="name">aroundPostRestart</span><span class="params">(<span name="reason">reason: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@aroundPostRestart(reason:Throwable):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@aroundPostRestart(reason:Throwable):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -216,13 +220,13 @@
         <span class="name">aroundPostStop</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@aroundPostStop():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@aroundPostStop():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../akka/package.html" class="extype" name="akka">akka</a>] </dd><dt>Definition Classes</dt><dd>Actor</dd></dl></div>
     </li><li name="akka.actor.Actor#aroundPreRestart" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="aroundPreRestart(reason:&lt;?&gt;,message:&lt;?&gt;):Unit"></a>
+      <a id="aroundPreRestart(reason:Throwable,message:Option[Any]):Unit"></a>
       <a id="aroundPreRestart(Throwable,Option[Any]):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -233,7 +237,7 @@
         <span class="name">aroundPreRestart</span><span class="params">(<span name="reason">reason: <span class="extype" name="scala.Throwable">Throwable</span></span>, <span name="message">message: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@aroundPreRestart(reason:Throwable,message:Option[Any]):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@aroundPreRestart(reason:Throwable,message:Option[Any]):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -250,13 +254,13 @@
         <span class="name">aroundPreStart</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@aroundPreStart():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@aroundPreStart():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../akka/package.html" class="extype" name="akka">akka</a>] </dd><dt>Definition Classes</dt><dd>Actor</dd></dl></div>
     </li><li name="akka.actor.Actor#aroundReceive" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="aroundReceive(receive:&lt;?&gt;,msg:&lt;?&gt;):Unit"></a>
+      <a id="aroundReceive(receive:akka.actor.Actor.Receive,msg:Any):Unit"></a>
       <a id="aroundReceive(akka.actor.Actor.Receive,Any):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -267,7 +271,7 @@
         <span class="name">aroundReceive</span><span class="params">(<span name="receive">receive: <span class="extype" name="akka.actor.Actor.Receive">akka.actor.Actor.Receive</span></span>, <span name="msg">msg: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@aroundReceive(receive:akka.actor.Actor.Receive,msg:Any):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@aroundReceive(receive:akka.actor.Actor.Receive,msg:Any):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -284,7 +288,7 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -301,7 +305,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@clone():Object" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@clone():Object" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -324,7 +328,7 @@
         <span class="name">context</span><span class="result">: <span class="extype" name="akka.actor.ActorContext">ActorContext</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@context:akka.actor.ActorContext" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@context:akka.actor.ActorContext" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -341,7 +345,7 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -358,7 +362,7 @@
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -375,7 +379,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@finalize():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@finalize():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -398,7 +402,7 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -415,7 +419,7 @@
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@hashCode():Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@hashCode():Int" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -432,28 +436,28 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.FDhub#names" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="names:List[String]"></a>
-      <a id="names:List[String]"></a>
+    </li><li name="provingground.FDLooper#loops" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="loops:Int"></a>
+      <a id="loops:Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">var</span>
       </span>
       <span class="symbol">
-        <span class="name">names</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">loops</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@names:List[String]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@loops:Int" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">loops completed so far</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -466,7 +470,7 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -483,7 +487,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@notify():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@notify():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -500,13 +504,30 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.FDLooper#param" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="param:P"></a>
+      <a id="param:P"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">param</span><span class="result">: <span class="extype" name="provingground.FDLooper.P">P</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDLooper@param:P" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">parameters for the system that can be changed while running.</p>
     </li><li name="akka.actor.Actor#postRestart" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="postRestart(reason:&lt;?&gt;):Unit"></a>
+      <a id="postRestart(reason:Throwable):Unit"></a>
       <a id="postRestart(Throwable):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -517,7 +538,7 @@
         <span class="name">postRestart</span><span class="params">(<span name="reason">reason: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@postRestart(reason:Throwable):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@postRestart(reason:Throwable):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -540,7 +561,7 @@
         <span class="name">postStop</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@postStop():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@postStop():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -552,7 +573,7 @@
               
         </dd></dl></div>
     </li><li name="akka.actor.Actor#preRestart" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="preRestart(reason:&lt;?&gt;,message:&lt;?&gt;):Unit"></a>
+      <a id="preRestart(reason:Throwable,message:Option[Any]):Unit"></a>
       <a id="preRestart(Throwable,Option[Any]):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -563,7 +584,7 @@
         <span class="name">preRestart</span><span class="params">(<span name="reason">reason: <span class="extype" name="scala.Throwable">Throwable</span></span>, <span name="message">message: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@preRestart(reason:Throwable,message:Option[Any]):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@preRestart(reason:Throwable,message:Option[Any]):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -586,7 +607,7 @@
         <span class="name">preStart</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@preStart():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@preStart():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -597,7 +618,7 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.FDhub#receive" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.FDLooper#receive" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="receive:PartialFunction[Any,Unit]"></a>
       <a id="receive:PartialFunction[Any,Unit]"></a>
       <h4 class="signature">
@@ -609,28 +630,11 @@
         <span class="name">receive</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Any">Any</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@receive:PartialFunction[Any,Unit]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@receive:PartialFunction[Any,Unit]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.FDhub">FDhub</a> → Actor</dd></dl></div>
-    </li><li name="provingground.FDhub#runners" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="runners:Map[akka.actor.ActorRef,provingground.FDactor.State]"></a>
-      <a id="runners:Map[ActorRef,State]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">runners</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>, <a href="FDactor$$State.html" class="extype" name="provingground.FDactor.State">State</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@runners:Map[akka.actor.ActorRef,provingground.FDactor.State]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.FDLooper">FDLooper</a> → Actor</dd></dl></div>
     </li><li name="akka.actor.Actor#self" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="self:akka.actor.ActorRef"></a>
       <a id="self:ActorRef"></a>
@@ -643,7 +647,7 @@
         <span class="name">self</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@self:akka.actor.ActorRef" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@self:akka.actor.ActorRef" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -660,28 +664,64 @@
         <span class="name">sender</span><span class="params">()</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@sender():akka.actor.ActorRef" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@sender():akka.actor.ActorRef" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Actor</dd></dl></div>
-    </li><li name="provingground.FDhub#states" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="states:scala.collection.immutable.Map[String,provingground.FDactor.State]"></a>
-      <a id="states:Map[String,State]"></a>
+    </li><li name="provingground.FDLooper#shift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="shift(start:X,strictness:Double,steps:Int,epsilon:Double):X"></a>
+      <a id="shift(X,Double,Int,Double):X"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">states</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="FDactor$$State.html" class="extype" name="provingground.FDactor.State">State</a>]</span>
+        <span class="name">shift</span><span class="params">(<span name="start">start: <span class="extype" name="provingground.FDLooper.X">X</span></span>, <span name="strictness">strictness: <span class="extype" name="scala.Double">Double</span></span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span><span class="result">: <span class="extype" name="provingground.FDLooper.X">X</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@states:scala.collection.immutable.Map[String,provingground.FDactor.State]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@shift(start:X,strictness:Double,steps:Int,epsilon:Double):X" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">change to make for next step: evolve, compute feedback, pullback feedback</p>
+    </li><li name="provingground.FDLooper#snapShot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="snapShot(x:X):provingground.SnapShot[X,P]"></a>
+      <a id="snapShot(X):SnapShot[X,P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">snapShot</span><span class="params">(<span name="x">x: <span class="extype" name="provingground.FDLooper.X">X</span></span>)</span><span class="result">: <span class="extype" name="provingground.SnapShot">SnapShot</span>[<span class="extype" name="provingground.FDLooper.X">X</span>, <span class="extype" name="provingground.FDLooper.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDLooper@snapShot(x:X):provingground.SnapShot[X,P]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">snapshot from state
+</p>
+    </li><li name="provingground.FDLooper#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state:X"></a>
+      <a id="state:X"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <span class="extype" name="provingground.FDLooper.X">X</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDLooper@state:X" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">current state (mutable)
+</p>
     </li><li name="akka.actor.Actor#supervisorStrategy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="supervisorStrategy:akka.actor.SupervisorStrategy"></a>
       <a id="supervisorStrategy:SupervisorStrategy"></a>
@@ -694,7 +734,7 @@
         <span class="name">supervisorStrategy</span><span class="result">: <span class="extype" name="akka.actor.SupervisorStrategy">SupervisorStrategy</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@supervisorStrategy:akka.actor.SupervisorStrategy" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@supervisorStrategy:akka.actor.SupervisorStrategy" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -711,7 +751,7 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -728,13 +768,13 @@
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@toString():String" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@toString():String" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="akka.actor.Actor#unhandled" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unhandled(message:&lt;?&gt;):Unit"></a>
+      <a id="unhandled(message:Any):Unit"></a>
       <a id="unhandled(Any):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -745,7 +785,7 @@
         <span class="name">unhandled</span><span class="params">(<span name="message">message: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@unhandled(message:Any):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@unhandled(message:Any):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -762,7 +802,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@wait():Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@wait():Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -785,7 +825,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -808,7 +848,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FDhub@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FDLooper@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

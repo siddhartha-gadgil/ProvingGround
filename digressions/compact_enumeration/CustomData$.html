@@ -868,7 +868,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="compact_enumeration.CustomData#extrapolateLowerBound" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="compact_enumeration.CustomData#extrapolateLowerBound" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="extrapolateLowerBound(cube:compact_enumeration.CustomData.Cube,face:Map[compact_enumeration.CustomData.Index,compact_enumeration.CustomData.Sign],faceBound:compact_enumeration.CustomData.Real,slopes:Map[compact_enumeration.CustomData.Index,compact_enumeration.CustomData.Real],corner:Map[compact_enumeration.CustomData.Index,compact_enumeration.CustomData.Sign]):compact_enumeration.CustomData.Real"></a>
       <a id="extrapolateLowerBound(Cube,Map[Index,Sign],Real,Map[Index,Real],Map[Index,Sign]):Real"></a>
       <h4 class="signature">
@@ -884,7 +884,9 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Given lower bound for value on a face, bounds for certain derivatives gives a lower bound at a corner.</p>
+      <p class="shortcomment cmt">Given lower bound for value on a face, bounds for certain derivatives gives a lower bound at a corner.</p><div class="fullcomment"><div class="comment cmt"><p>Given lower bound for value on a face, bounds for certain derivatives gives a lower bound at a corner.
+</p></div><dl class="paramcmts block"><dt class="param">cube</dt><dd class="cmt"><p>the domain</p></dd><dt class="param">face</dt><dd class="cmt"><p>signs giving the face, the size of the map is the codimension.</p></dd><dt class="param">faceBound</dt><dd class="cmt"><p>lower bound on the function on a face.</p></dd><dt class="param">slopes</dt><dd class="cmt"><p>bounds on partial derivative, lower/upper depending on coordinate for the face.</p></dd><dt class="param">corner</dt><dd class="cmt"><p>the corner to which extrapolation is done, depends only on coordinates specified for the face.
+Should be private, but public for tests/debugging.</p></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
