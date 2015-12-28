@@ -5,11 +5,11 @@ import akka.pattern.ask
 import scala.concurrent.duration._
 import akka.util.Timeout
 
-import FDactor._
+import FDLooper._
 
-import FDhub._
+import FDHub._
 
-class FDhub extends Actor {
+class FDHub extends Actor {
   var runners: Map[ActorRef, State] = Map.empty
 
   def names = (for ((r, x) <- runners) yield r.path.name).toList
@@ -29,47 +29,47 @@ class FDhub extends Actor {
       for (runner <- runners.keys) runner ! RunnerStop
       runners = Map.empty
     }
-    
+
     case Stopping(ref) =>
       runners = runners filter (_._1 != ref)
       if (runners.isEmpty) {
         println("All runners stop, hub stopping")
         Hub.system.shutdown()
-//        context.stop(self) 
+//        context.stop(self)
       }
 
-    case Done(_, _, _) => 
+    case Done(_, _, _) =>
       val state = runners(sender)
       import state._
       if (running) sender ! Continue(steps, strictness, epsilon)
-    case Pause(runner) =>      
+    case Pause(runner) =>
         val state = runners(sender)
         import state._
-        runners + (runner -> State(false, steps, strictness, epsilon))      
-    case Resume(runner) =>      
+        runners + (runner -> State(false, steps, strictness, epsilon))
+    case Resume(runner) =>
         val state = runners(sender)
         import state._
         runners + (runner -> State(true, steps, strictness, epsilon))
         runner ! Continue(steps, strictness, epsilon)
-      
-    case SetParam(runner, steps, strictness, epsilon) => 
+
+    case SetParam(runner, steps, strictness, epsilon) =>
       val running = runners(runner).running
       runners + (runner -> State(running, steps, strictness, epsilon))
-      
-    case SetSteps(runner, newSteps) => 
+
+    case SetSteps(runner, newSteps) =>
       val state = runners(runner)
       import state._
       runners + (runner -> State(running, newSteps, strictness, epsilon))
-    
-    case SetStrictness(runner, newStrictness) => 
+
+    case SetStrictness(runner, newStrictness) =>
       val state = runners(runner)
       import state._
       runners + (runner -> State(running, steps, newStrictness, epsilon))
-    
-    case SetEpsilon(runner, newEpsilon) => 
+
+    case SetEpsilon(runner, newEpsilon) =>
       val state = runners(runner)
       import state._
-      runners + (runner -> State(running, steps, strictness, newEpsilon))  
+      runners + (runner -> State(running, steps, strictness, newEpsilon))
 
     case Runners =>
       sender ! names
@@ -79,12 +79,36 @@ class FDhub extends Actor {
   }
 }
 
-object FDhub {
+object FDHub {
   case object Runners
 
   case object States
 
-  def props: Props = Props[FDhub]
+  case class Done(steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+
+  case class Start(runner: ActorRef, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+
+  case class StartAll(steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+
+  case class State(running: Boolean, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+
+  case class SetParam(runner: ActorRef, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+
+  case class SetSteps(runner: ActorRef, steps: Int)
+
+  case class SetStrictness(runner: ActorRef, steps: Double)
+
+  case class SetEpsilon(runner: ActorRef, steps: Double)
+
+  case class Pause(runner: ActorRef)
+
+  case object StopHub
+
+  case class Stopping(ref: ActorRef)
+
+  case class Resume(runner: ActorRef)
+
+  def props: Props = Props[FDHub]
 
   import Hub.system
 

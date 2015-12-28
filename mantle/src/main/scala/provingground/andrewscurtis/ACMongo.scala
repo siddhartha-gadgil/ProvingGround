@@ -13,7 +13,6 @@ import upickle.default.{write => uwrite, read => uread, _}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import Moves._
 
 import FreeGroups._
 

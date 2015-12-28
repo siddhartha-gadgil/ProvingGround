@@ -55,7 +55,7 @@ object ACRoutes {
     val actors = getFutActors() map (uwrite[Vector[String]])
     complete(actors)
   }
-  
+
   val getData = get {
     pathPrefix("data") (thms ~ thmEvolve ~ terms ~ moveWeights)
   }
@@ -80,11 +80,11 @@ object ACRoutes {
         complete(uwrite(names))
       }
   }
-  
+
   val stop =
     post {
       path("stop"){
-        FDhub.stop
+        FDHub.stop
         complete("stop requested")
       }
   }

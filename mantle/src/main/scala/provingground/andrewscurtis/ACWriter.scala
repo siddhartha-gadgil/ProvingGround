@@ -17,16 +17,16 @@ import akka.actor._
 /**
  * Saving the results of Andrews-Curtis runs
  * abstract methods are for the various saves and updates
- * concrete methods give sinks, a flow that does all the saving.
+ * concrete methods give sinks and a flow that does all the saving.
  */
 trait ACWriter {
-  def addElem(el: ACElem)
+  def addElem(el: ACElem) : Unit
 
-  def addThm(thm: ACThm)
+  def addThm(thm: ACThm) : Unit
 
-  def addMoveWeight(wts: ACMoveWeights)
+  def addMoveWeight(wts: ACMoveWeights) : Unit
 
-  def updateLoops(name: String, loops: Int)
+  def updateLoops(name: String, loops: Int) : Unit
 
   val elemsSink = elemsFlow to Sink.foreach(addElem)
 
@@ -47,10 +47,10 @@ trait ACWriter {
   /**
    *  ActorRef from materialized flow saving various things in
    *  appropriate database, concretely reactive-mongo
+   * @param interface e.g. SSE feed.
    */
   def writerRef[M](
-      interface: Sink[Snap
-        , M]
+      interface: Sink[Snap, M]
         = Sink.foreach(
             (x : Snap) =>{})) = {
     val sink = writerFlow to interface

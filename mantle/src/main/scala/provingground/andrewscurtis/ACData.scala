@@ -12,7 +12,7 @@ import LinearStructure._
 
 import FiniteDistribution._
 
-import ACrunner._
+import ACLooper._
 
 import scala.io.Source
 
@@ -70,7 +70,7 @@ case class ACStateData(
     import p._
     val state = states(name)
     val ref = rawSpawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
-//    FDhub.start(ref)
+//    FDHub.start(ref)
     ref
   }
 
@@ -90,9 +90,9 @@ case class ACStateData(
   }
 }
 
-import FDactor._
+import FDLooper._
 
-class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDsrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
+class ACFileSaver(dir: String = "acDev", rank: Int = 2) extends FDSrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
   def save =
     (snap : Snap) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
@@ -452,7 +452,7 @@ object ACData {
     for (Weighted(x, p) <- ent) write.append(wd / file, s"$x, $p\n")
   }
 
-  import FDhub._
+  import FDHub._
 
   import Hub.system
 

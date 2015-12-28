@@ -1,13 +1,11 @@
 package provingground
 
-import scala.annotation._
-import scala.util._
 
 import scala.language.implicitConversions
 
 import Collections._
 
-import LinearStructure._
+//import LinearStructure._
 
 import scala.collection.parallel.immutable.ParVector
 
@@ -33,7 +31,7 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
   def pickle = flatten.map((t: T) => t.toString).pmf.toList.
     map((w) => (w.elem, w.weight))
 
-  /** 
+  /**
    * add together all probabilities for
    */
   def getsum(label : T): Double
@@ -70,7 +68,7 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
   /**
    * A more efficient support
    */
-  def supp = //if (injective) elems else 
+  def supp = //if (injective) elems else
     flatten.elems
 
   /**
@@ -165,7 +163,7 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
 
 
   def purge(epsilon: Double) = filter((t: T) => (apply(t) > epsilon))
-  
+
 
   override def toString = {
     val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
@@ -186,6 +184,7 @@ sealed trait GenFiniteDistribution[T] extends Any /*ProbabilityDistribution[T] w
 
 
 
+
 object FiniteDistribution{
   // choose default implementation
 //  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
@@ -193,9 +192,9 @@ object FiniteDistribution{
     FiniteDistribution(pmf.toVector)
 
   implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
-  
-    
-    
+
+
+
   def uniform[A](s: Traversable[A]) = {
     val prob = 1.0/s.size
     val pmf = (s map (Weighted(_, prob)))
@@ -271,7 +270,6 @@ object FiniteDistribution{
 }
 
 
-
 case class FiniteDistributionSet[T](pmf: Set[Weighted[T]], epsilon: Double = 0.0) extends GenFiniteDistribution[T]{
   val injective = true
 
@@ -328,8 +326,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
 
   def flatten : FiniteDistribution[T]  = FiniteDistribution(Weighted.flatten(pmf).toVector)
 
-  override def supp : Vector[T] = (Weighted.flatten(pmf) map (_.elem)).toVector 
-  
+  override def supp : Vector[T] = (Weighted.flatten(pmf) map (_.elem)).toVector
+
 //  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
 
   def getsum(label : T) = (pmf filter (_.elem == label) map (_.weight)).sum
@@ -343,7 +341,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   def ++(that: GenFiniteDistribution[T]) : FiniteDistribution[T] = {
     FiniteDistribution(pmf ++ that.pmf)
   }
-  
+
   def ++(that: FiniteDistribution[T]) : FiniteDistribution[T] = {
     FiniteDistribution(pmf ++ that.pmf)
   }
@@ -383,11 +381,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   private def preMemo : Map[T, Double] = {
     (for (Weighted(x, p) <- pmf) yield (x -> p)).toMap
   }
-  
+
   def memo : Map[T, Double] = flatten.preMemo
-  
+
   def total = (supp map (getsum)).sum
-  
+
     /**
    * entropy feedback for the finite distribution to move in the direction of the base distribution,
    * however values outside support are ignored.
@@ -418,7 +416,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
     val normaldiff = for (Weighted(pres, prob)<-rawdiff) yield Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff)
   }
-  
+
   /**
    * gradient w.r.t. inner product scaled by presentation weights,
    * perpendicular to the gradient (w.r.t. same inner product) of the "total weight" function.

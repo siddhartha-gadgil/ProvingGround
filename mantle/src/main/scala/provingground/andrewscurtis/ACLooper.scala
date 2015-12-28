@@ -3,35 +3,41 @@ package provingground.andrewscurtis
 import provingground._
 
 import FreeGroups._
-import Moves._
+//import Moves._
 import MoveGenerator._
 import DiffStructure._
 import FiniteDistribution._
-import Collections._
+//import Collections._
 
 import FiniteDistributionLearner._
 import LinearStructure._
 
 import akka.actor._
-import ACrunner._
+import ACLooper._
 
-class ACrunner(rank: Int, size: Int, wrdCntn: Double,
+/**
+* The loop for learning specialized to Andrews-Curtis moves
+*/
+class ACLooper(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef : ActorRef, param: Param
-    ) extends FDactor[
+    ) extends FDLooper[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param
-      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
+      ](ACLooper.dyn(rank, size) , ACLooper.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
 class ACsmoothRunner(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef, param: Param
-    ) extends FDactor[
+    ) extends FDLooper[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param
-      ](ACrunner.dyn(rank, size) , ACrunner.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
+      ](ACLooper.dyn(rank, size) , ACLooper.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
 
 
-object ACrunner {
+object ACLooper {
+  /**
+  * The dynamical system for andrews-curtis learning
+  */
   def dyn(rank: Int, size: Int) = {
     sampleV(size) andthen genExtendM(allMoves(rank))
   }
@@ -73,7 +79,7 @@ object ACrunner {
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef, param: Param
     ) : Props = Props(
-        new ACrunner(rank: Int, size: Int, wrdCntn: Double,
+        new ACLooper(rank: Int, size: Int, wrdCntn: Double,
     init : (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef, param
     ) )
@@ -118,7 +124,7 @@ object ACrunner {
 
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
-    import ACData.fileSave
+  //  import ACData.fileSave
     rawSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
 }
 
@@ -126,7 +132,7 @@ object ACrunner {
 
   def spawnSmooth(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
-    import ACData.fileSave
+    //import ACData.fileSave
     smoothSpawn(name, rank, size, wrdCntn, (init(rank), eVec), ACData.srcRef(rank = p.rank), p)
 }
 

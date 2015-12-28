@@ -2,12 +2,12 @@ package provingground.andrewscurtis
 
 import provingground._
 
-import ACrunner._
-import FDactor._
+import ACLooper._
+import FDLooper._
 
 import akka.actor._
 
-import FDhub.start
+import FDHub.start
 
 import ACData._
 
@@ -112,7 +112,7 @@ import StartData._
 
   object StartData{
     
-    implicit val quickhub = FDhub.startHub(s"FD-QuickStart-Hub")
+    implicit val quickhub = FDHub.startHub(s"FD-QuickStart-Hub")
     /**
      * reads with defaults start paratmeters from JSON.
      */

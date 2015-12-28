@@ -4,7 +4,7 @@ import provingground._
 
 import FreeGroups._
 
-import Moves._
+// import Moves._
 
 
 /**
