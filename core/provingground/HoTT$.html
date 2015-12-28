@@ -1,0 +1,2112 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>HoTT - provingground.HoTT</title>
+          <meta name="description" content="HoTT - provingground.HoTT" />
+          <meta name="keywords" content="HoTT provingground.HoTT" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.HoTT$';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Object" src="../lib/object_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1>HoTT</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.HoTT$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">HoTT</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The Homotopy type theory objects, types and utility functions
+S
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.HoTT"><span>HoTT</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.HoTT.AbsPair" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AbsPair[+U&lt;:provingground.HoTT.Term,+V&lt;:provingground.HoTT.Term]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.AbsPair[U,V]]"></a>
+      <a id="AbsPair[+U&lt;:Term,+V&lt;:Term]:AbsPair[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$AbsPair.html"><span class="name">AbsPair</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="V">+V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<span class="extype" name="provingground.HoTT.AbsPair.U">U</span>, <span class="extype" name="provingground.HoTT.AbsPair.V">V</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@AbsPair[+U&lt;:provingground.HoTT.Term,+V&lt;:provingground.HoTT.Term]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.AbsPair[U,V]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type.</p>
+    </li><li name="provingground.HoTT.AnySym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AnySymextendsAnyRef"></a>
+      <a id="AnySym:AnySym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$AnySym.html"><span class="name">AnySym</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@AnySymextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbol
+</p>
+    </li><li name="provingground.HoTT.ApplnSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApplnSym[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="ApplnSym[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:ApplnSym[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$ApplnSym.html"><span class="name">ApplnSym</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.ApplnSym.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.ApplnSym.U">U</span>]</span>]</span><span class="params">(<span name="func">func: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.ApplnSym.W">W</span>, <span class="extype" name="provingground.HoTT.ApplnSym.U">U</span>]</span>, <span name="arg">arg: <span class="extype" name="provingground.HoTT.ApplnSym.W">W</span></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@ApplnSym[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.AtomicTerm" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AtomicTermextendsHoTT.TermwithHoTT.Subs[provingground.HoTT.AtomicTerm]"></a>
+      <a id="AtomicTerm:AtomicTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$AtomicTerm.html"><span class="name">AtomicTerm</span></a><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$AtomicTerm.html" class="extype" name="provingground.HoTT.AtomicTerm">AtomicTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@AtomicTermextendsHoTT.TermwithHoTT.Subs[provingground.HoTT.AtomicTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Objects with simple substitution.</p>
+    </li><li name="provingground.HoTT.Cnst" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CnstextendsHoTT.Term"></a>
+      <a id="Cnst:Cnst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Cnst.html"><span class="name">Cnst</span></a><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@CnstextendsHoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Just a wrapper to allow singleton objects
+</p>
+    </li><li name="provingground.HoTT.CnstFunc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CnstFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.CnstwithHoTT.Func[U,V]"></a>
+      <a id="CnstFunc[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:CnstFunc[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$CnstFunc.html"><span class="name">CnstFunc</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.CnstFunc.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.CnstFunc.V">V</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Cnst.html" class="extype" name="provingground.HoTT.Cnst">Cnst</a> with <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.CnstFunc.U">U</span>, <span class="extype" name="provingground.HoTT.CnstFunc.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@CnstFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.CnstwithHoTT.Func[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.CnstFuncLike" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CnstFuncLike[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.CnstwithHoTT.FuncLike[U,V]"></a>
+      <a id="CnstFuncLike[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:CnstFuncLike[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$CnstFuncLike.html"><span class="name">CnstFuncLike</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.CnstFuncLike.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.CnstFuncLike.V">V</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Cnst.html" class="extype" name="provingground.HoTT.Cnst">Cnst</a> with <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.CnstFuncLike.U">U</span>, <span class="extype" name="provingground.HoTT.CnstFuncLike.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@CnstFuncLike[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.CnstwithHoTT.FuncLike[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.CodomSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CodomSymextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="CodomSym:CodomSym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$CodomSym.html"><span class="name">CodomSym</span></a><span class="params">(<span name="func">func: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@CodomSymextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbol for co-domain of a symbolic function
+</p>
+    </li><li name="provingground.HoTT.ConstantTerm" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ConstantTermextendsHoTT.Term"></a>
+      <a id="ConstantTerm:ConstantTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$ConstantTerm.html"><span class="name">ConstantTerm</span></a><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@ConstantTermextendsHoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.ConstantTyp" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ConstantTypextendsHoTT.Typ[provingground.HoTT.Term]"></a>
+      <a id="ConstantTyp:ConstantTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$ConstantTyp.html"><span class="name">ConstantTyp</span></a><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@ConstantTypextendsHoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.DepFunc" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="DepFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]"></a>
+      <a id="DepFunc[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:DepFunc[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$DepFunc.html"><span class="name">DepFunc</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFunc.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFunc.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.DepFunc.W">W</span>, <span class="extype" name="provingground.HoTT.DepFunc.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@DepFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Object in a dependent function type, i.e.,
+ a dependent function.</p><div class="fullcomment"><div class="comment cmt"><p> Object in a dependent function type, i.e.,
+ a dependent function. Has a family of codomains
+</p></div></div>
+    </li><li name="provingground.HoTT.DepFuncDefn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DepFuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.DepFunc[W,U]"></a>
+      <a id="DepFuncDefn[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:DepFuncDefn[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$DepFuncDefn.html"><span class="name">DepFuncDefn</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.DepFuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncDefn.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@DepFuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.DepFunc[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A dependent function given by a scala funcion</p>
+    </li><li name="provingground.HoTT.DepFuncSymb" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DepFuncSymb[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithHoTT.DepFunc[W,U]withHoTT.SymbolicwithProductwithSerializable"></a>
+      <a id="DepFuncSymb[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:DepFuncSymb[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$DepFuncSymb.html"><span class="name">DepFuncSymb</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncSymb.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepFuncSymb.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="fibers">fibers: <a href="#TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepFuncSymb.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncSymb.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.DepFuncSymb.W">W</span>, <span class="extype" name="provingground.HoTT.DepFuncSymb.U">U</span>] with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@DepFuncSymb[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithHoTT.DepFunc[W,U]withHoTT.SymbolicwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbolic dependent function
+</p>
+    </li><li name="provingground.HoTT.DepPair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DepPair[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.DepPair[W,U]]withHoTT.AbsPair[W,U]withProductwithSerializable"></a>
+      <a id="DepPair[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:DepPair[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$DepPair.html"><span class="name">DepPair</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepPair.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.DepPair.U">U</span>]</span>]</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.HoTT.DepPair.W">W</span></span>, <span name="second">second: <span class="extype" name="provingground.HoTT.DepPair.U">U</span></span>, <span name="fibers">fibers: <a href="#TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.DepPair.W">W</span>, <span class="extype" name="provingground.HoTT.DepPair.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a>[<span class="extype" name="provingground.HoTT.DepPair.W">W</span>, <span class="extype" name="provingground.HoTT.DepPair.U">U</span>]] with <a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<span class="extype" name="provingground.HoTT.DepPair.W">W</span>, <span class="extype" name="provingground.HoTT.DepPair.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@DepPair[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.DepPair[W,U]]withHoTT.AbsPair[W,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Dependent pair (a: A, b : B(a)) - element of a Sigma type.</p>
+    </li><li name="provingground.HoTT.DomSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DomSymextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="DomSym:DomSym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$DomSym.html"><span class="name">DomSym</span></a><span class="params">(<span name="func">func: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@DomSymextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbol for domain of a symbolic function
+</p>
+    </li><li name="provingground.HoTT.Func" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Func[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]withHoTT.Subs[provingground.HoTT.Func[W,U]]"></a>
+      <a id="Func[W&lt;:TermwithSubs[W],+U&lt;:TermwithSubs[U]]:Func[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Func.html"><span class="name">Func</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Func.W">W</span>]</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Func.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.Func.W">W</span>, <span class="extype" name="provingground.HoTT.Func.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.Func.W">W</span>, <span class="extype" name="provingground.HoTT.Func.U">U</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Func[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]withHoTT.Subs[provingground.HoTT.Func[W,U]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.</p>
+    </li><li name="provingground.HoTT.FuncDefn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[W,U]"></a>
+      <a id="FuncDefn[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:FuncDefn[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$FuncDefn.html"><span class="name">FuncDefn</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncDefn.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncDefn.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.FuncDefn.W">W</span>, <span class="extype" name="provingground.HoTT.FuncDefn.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@FuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[W,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A function given by a scala function</p>
+    </li><li name="provingground.HoTT.FuncLike" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FuncLike[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithW=&gt;UwithHoTT.Subs[provingground.HoTT.FuncLike[W,U]]"></a>
+      <a id="FuncLike[W&lt;:TermwithSubs[W],+U&lt;:TermwithSubs[U]]:FuncLike[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$FuncLike.html"><span class="name">FuncLike</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>]</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with (<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.FuncLike.U">U</span> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@FuncLike[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithW=&gt;UwithHoTT.Subs[provingground.HoTT.FuncLike[W,U]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Includes both functions and dependent functions</p>
+    </li><li name="provingground.HoTT.FuncSymb" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncSymb[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithHoTT.Func[W,U]withHoTT.Subs[provingground.HoTT.Func[W,U]]withHoTT.SymbolicwithProductwithSerializable"></a>
+      <a id="FuncSymb[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:FuncSymb[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$FuncSymb.html"><span class="name">FuncSymb</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncSymb.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncSymb.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.FuncSymb.W">W</span>]</span>, <span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.FuncSymb.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.FuncSymb.W">W</span>, <span class="extype" name="provingground.HoTT.FuncSymb.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.FuncSymb.W">W</span>, <span class="extype" name="provingground.HoTT.FuncSymb.U">U</span>]] with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@FuncSymb[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithHoTT.Func[W,U]withHoTT.Subs[provingground.HoTT.Func[W,U]]withHoTT.SymbolicwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbol containing function info</p>
+    </li><li name="provingground.HoTT.FuncTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.Func[W,U]]withHoTT.Subs[provingground.HoTT.FuncTyp[W,U]]withProductwithSerializable"></a>
+      <a id="FuncTyp[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:FuncTyp[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$FuncTyp.html"><span class="name">FuncTyp</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncTyp.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.FuncTyp.U">U</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.FuncTyp.W">W</span>]</span>, <span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.FuncTyp.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.FuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.FuncTyp.U">U</span>]] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<span class="extype" name="provingground.HoTT.FuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.FuncTyp.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@FuncTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.Func[W,U]]withHoTT.Subs[provingground.HoTT.FuncTyp[W,U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Function type (not dependent functions)</p>
+    </li><li name="provingground.HoTT.IdentityTyp" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="IdentityTyp[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.Term]withHoTT.Subs[provingground.HoTT.IdentityTyp[U]]withProductwithSerializable"></a>
+      <a id="IdentityTyp[+U&lt;:TermwithSubs[U]]:IdentityTyp[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$IdentityTyp.html"><span class="name">IdentityTyp</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.U">U</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.U">U</span>]</span>, <span name="lhs">lhs: <span class="extype" name="provingground.HoTT.IdentityTyp.U">U</span></span>, <span name="rhs">rhs: <span class="extype" name="provingground.HoTT.IdentityTyp.U">U</span></span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@IdentityTyp[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.Term]withHoTT.Subs[provingground.HoTT.IdentityTyp[U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The identity type.</p><div class="fullcomment"><div class="comment cmt"><p>The identity type.
+ This is the type lhs = rhs
+</p></div></div>
+    </li><li name="provingground.HoTT.Lambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Lambda[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withProductwithSerializable"></a>
+      <a id="Lambda[X&lt;:TermwithSubs[X],Y&lt;:TermwithSubs[Y]]:Lambda[X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Lambda.html"><span class="name">Lambda</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Lambda.X">X</span>]</span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Lambda.Y">Y</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Lambda.X">X</span></span>, <span name="value">value: <span class="extype" name="provingground.HoTT.Lambda.Y">Y</span></span>)</span><span class="result"> extends <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>[<span class="extype" name="provingground.HoTT.Lambda.X">X</span>, <span class="extype" name="provingground.HoTT.Lambda.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Lambda[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">functions given by lambda, which may be dependent - this is checked by making a substitution.</p>
+    </li><li name="provingground.HoTT.LambdaFixed" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LambdaFixed[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Func[X,Y]withHoTT.Subs[provingground.HoTT.LambdaFixed[X,Y]]withProductwithSerializable"></a>
+      <a id="LambdaFixed[X&lt;:TermwithSubs[X],Y&lt;:TermwithSubs[Y]]:LambdaFixed[X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$LambdaFixed.html"><span class="name">LambdaFixed</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LambdaFixed.X">X</span>]</span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LambdaFixed.Y">Y</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.LambdaFixed.X">X</span></span>, <span name="value">value: <span class="extype" name="provingground.HoTT.LambdaFixed.Y">Y</span></span>)</span><span class="result"> extends <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>[<span class="extype" name="provingground.HoTT.LambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LambdaFixed.Y">Y</span>] with <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.LambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LambdaFixed.Y">Y</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a>[<span class="extype" name="provingground.HoTT.LambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LambdaFixed.Y">Y</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@LambdaFixed[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Func[X,Y]withHoTT.Subs[provingground.HoTT.LambdaFixed[X,Y]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">lambda which is known to have fixed codomain.</p>
+    </li><li name="provingground.HoTT.LambdaLike" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="LambdaLike[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.FuncLike[X,Y]"></a>
+      <a id="LambdaLike[X&lt;:TermwithSubs[X],Y&lt;:TermwithSubs[Y]]:LambdaLike[X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$LambdaLike.html"><span class="name">LambdaLike</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LambdaLike.X">X</span>]</span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LambdaLike.Y">Y</span>]</span>]</span><span class="result"> extends <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.LambdaLike.X">X</span>, <span class="extype" name="provingground.HoTT.LambdaLike.Y">Y</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@LambdaLike[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.FuncLike[X,Y]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> A lambda-expression.</p><div class="fullcomment"><div class="comment cmt"><p> A lambda-expression.
+ variable is mapped to value.
+ This may or may not be a dependent function.
+ If it is important to note that it is not dependent, and hence has scala type Func, then use LambdaFixed</p></div></div>
+    </li><li name="provingground.HoTT.LeftSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LeftSymextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="LeftSym:LeftSym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$LeftSym.html"><span class="name">LeftSym</span></a><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@LeftSymextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> symbol for left component in pair from a given symbol
+</p>
+    </li><li name="provingground.HoTT.Name" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NameextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="Name:Name"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Name.html"><span class="name">Name</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@NameextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Strings as symbols
+</p>
+    </li><li name="provingground.HoTT.NamedDepFunc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NamedDepFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]withProductwithSerializable"></a>
+      <a id="NamedDepFunc[W&lt;:TermwithSubs[W],+U&lt;:TermwithSubs[U]]:NamedDepFunc[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$NamedDepFunc.html"><span class="name">NamedDepFunc</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.NamedDepFunc.W">W</span>]</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.NamedDepFunc.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="func">func: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.NamedDepFunc.W">W</span>, <span class="extype" name="provingground.HoTT.NamedDepFunc.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.NamedDepFunc.W">W</span>, <span class="extype" name="provingground.HoTT.NamedDepFunc.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@NamedDepFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[W,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">wrap dependent function adding name
+</p>
+    </li><li name="provingground.HoTT.NamedFunc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NamedFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[W,U]withProductwithSerializable"></a>
+      <a id="NamedFunc[W&lt;:TermwithSubs[W],+U&lt;:TermwithSubs[U]]:NamedFunc[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$NamedFunc.html"><span class="name">NamedFunc</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.NamedFunc.W">W</span>]</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.NamedFunc.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="func">func: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.NamedFunc.W">W</span>, <span class="extype" name="provingground.HoTT.NamedFunc.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.NamedFunc.W">W</span>, <span class="extype" name="provingground.HoTT.NamedFunc.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@NamedFunc[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[W,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">wrap function adding name
+</p>
+    </li><li name="provingground.HoTT.OptDepFuncDefn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OptDepFuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W]]extendsHoTT.DepFunc[W,provingground.HoTT.Term]withHoTT.Subs[provingground.HoTT.OptDepFuncDefn[W]]withProductwithSerializable"></a>
+      <a id="OptDepFuncDefn[W&lt;:TermwithSubs[W]]:OptDepFuncDefn[W]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$OptDepFuncDefn.html"><span class="name">OptDepFuncDefn</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.OptDepFuncDefn.W">W</span>]</span>]</span><span class="params">(<span name="func">func: (<span class="extype" name="provingground.HoTT.OptDepFuncDefn.W">W</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.OptDepFuncDefn.W">W</span>]</span>)</span><span class="result"> extends <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>[<span class="extype" name="provingground.HoTT.OptDepFuncDefn.W">W</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$OptDepFuncDefn.html" class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</a>[<span class="extype" name="provingground.HoTT.OptDepFuncDefn.W">W</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@OptDepFuncDefn[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W]]extendsHoTT.DepFunc[W,provingground.HoTT.Term]withHoTT.Subs[provingground.HoTT.OptDepFuncDefn[W]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.PairObj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PairObj[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.AbsPair[U,V]withHoTT.Subs[provingground.HoTT.PairObj[U,V]]withProductwithSerializable"></a>
+      <a id="PairObj[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:PairObj[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$PairObj.html"><span class="name">PairObj</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PairObj.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PairObj.V">V</span>]</span>]</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.HoTT.PairObj.U">U</span></span>, <span name="second">second: <span class="extype" name="provingground.HoTT.PairObj.V">V</span></span>)</span><span class="result"> extends <a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<span class="extype" name="provingground.HoTT.PairObj.U">U</span>, <span class="extype" name="provingground.HoTT.PairObj.V">V</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$PairObj.html" class="extype" name="provingground.HoTT.PairObj">PairObj</a>[<span class="extype" name="provingground.HoTT.PairObj.U">U</span>, <span class="extype" name="provingground.HoTT.PairObj.V">V</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@PairObj[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.AbsPair[U,V]withHoTT.Subs[provingground.HoTT.PairObj[U,V]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Object (a, b) in (A, B)</p>
+    </li><li name="provingground.HoTT.PairTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PairTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.Typ[provingground.HoTT.PairObj[U,V]]withHoTT.AbsPair[provingground.HoTT.Typ[U],provingground.HoTT.Typ[V]]withHoTT.Subs[provingground.HoTT.PairTyp[U,V]]withProductwithSerializable"></a>
+      <a id="PairTyp[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:PairTyp[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$PairTyp.html"><span class="name">PairTyp</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PairTyp.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PairTyp.V">V</span>]</span>]</span><span class="params">(<span name="first">first: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.PairTyp.U">U</span>]</span>, <span name="second">second: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.PairTyp.V">V</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$PairObj.html" class="extype" name="provingground.HoTT.PairObj">PairObj</a>[<span class="extype" name="provingground.HoTT.PairTyp.U">U</span>, <span class="extype" name="provingground.HoTT.PairTyp.V">V</span>]] with <a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.PairTyp.U">U</span>], <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.PairTyp.V">V</span>]] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$PairTyp.html" class="extype" name="provingground.HoTT.PairTyp">PairTyp</a>[<span class="extype" name="provingground.HoTT.PairTyp.U">U</span>, <span class="extype" name="provingground.HoTT.PairTyp.V">V</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@PairTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.Typ[provingground.HoTT.PairObj[U,V]]withHoTT.AbsPair[provingground.HoTT.Typ[U],provingground.HoTT.Typ[V]]withHoTT.Subs[provingground.HoTT.PairTyp[U,V]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Pair of types (A, B)</p>
+    </li><li name="provingground.HoTT.PiTyp" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PiTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.FuncLike[W,U]]withHoTT.Subs[provingground.HoTT.PiTyp[W,U]]withProductwithSerializable"></a>
+      <a id="PiTyp[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:PiTyp[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$PiTyp.html"><span class="name">PiTyp</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PiTyp.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.PiTyp.U">U</span>]</span>]</span><span class="params">(<span name="fibers">fibers: <a href="#TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.PiTyp.W">W</span>, <span class="extype" name="provingground.HoTT.PiTyp.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiTyp.W">W</span>, <span class="extype" name="provingground.HoTT.PiTyp.U">U</span>]] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a>[<span class="extype" name="provingground.HoTT.PiTyp.W">W</span>, <span class="extype" name="provingground.HoTT.PiTyp.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@PiTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.FuncLike[W,U]]withHoTT.Subs[provingground.HoTT.PiTyp[W,U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> For all/Product for a type family.</p><div class="fullcomment"><div class="comment cmt"><p> For all/Product for a type family. This is the type of dependent functions
+</p></div></div>
+    </li><li name="provingground.HoTT.PlusTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PlusTypextendsHoTT.SmallTypwithProductwithSerializable"></a>
+      <a id="PlusTyp:PlusTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$PlusTyp.html"><span class="name">PlusTyp</span></a><span class="params">(<span name="first">first: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="second">second: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="HoTT$$SmallTyp.html" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@PlusTypextendsHoTT.SmallTypwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">type A + B
+</p>
+    </li><li name="provingground.HoTT.Refl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Refl[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AtomicTermwithProductwithSerializable"></a>
+      <a id="Refl[U&lt;:TermwithSubs[U]]:Refl[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Refl.html"><span class="name">Refl</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Refl.U">U</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Refl.U">U</span>]</span>, <span name="value">value: <span class="extype" name="provingground.HoTT.Refl.U">U</span></span>)</span><span class="result"> extends <a href="HoTT$$AtomicTerm.html" class="extype" name="provingground.HoTT.AtomicTerm">AtomicTerm</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Refl[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AtomicTermwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.RichTerm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RichTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsAnyRef"></a>
+      <a id="RichTerm[U&lt;:TermwithSubs[U]]:RichTerm[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$RichTerm.html"><span class="name">RichTerm</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.U">U</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@RichTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.RightSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RightSymextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="RightSym:RightSym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$RightSym.html"><span class="name">RightSym</span></a><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@RightSymextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> symbol for right component in pair from a given symbol
+</p>
+    </li><li name="provingground.HoTT.SigmaTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SigmaTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.DepPair[W,U]]withProductwithSerializable"></a>
+      <a id="SigmaTyp[W&lt;:TermwithSubs[W],U&lt;:TermwithSubs[U]]:SigmaTyp[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$SigmaTyp.html"><span class="name">SigmaTyp</span></a><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.SigmaTyp.W">W</span>]</span>, <span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.SigmaTyp.U">U</span>]</span>]</span><span class="params">(<span name="fibers">fibers: <a href="#TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.HoTT.SigmaTyp.W">W</span>, <span class="extype" name="provingground.HoTT.SigmaTyp.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a>[<span class="extype" name="provingground.HoTT.SigmaTyp.W">W</span>, <span class="extype" name="provingground.HoTT.SigmaTyp.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SigmaTyp[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.HoTT.DepPair[W,U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Exists/Sum for a type family
+</p>
+    </li><li name="provingground.HoTT.SmallTyp" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SmallTypextendsHoTT.Typ[provingground.HoTT.Term]"></a>
+      <a id="SmallTyp:SmallTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$SmallTyp.html"><span class="name">SmallTyp</span></a><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SmallTypextendsHoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Types with symbolic objects not refined.</p>
+    </li><li name="provingground.HoTT.Subs" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Subs[+U&lt;:provingground.HoTT.Term]extendsAnyRef"></a>
+      <a id="Subs[+U&lt;:Term]:Subs[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Subs.html"><span class="name">Subs</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Subs[+U&lt;:provingground.HoTT.Term]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">specify result of substitution, typically so a class is closed under substitution.</p>
+    </li><li name="provingground.HoTT.SymbObj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbObj[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.SymbolicwithProductwithSerializable"></a>
+      <a id="SymbObj[+U&lt;:TermwithSubs[U]]:SymbObj[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$SymbObj.html"><span class="name">SymbObj</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SymbObj[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.SymbolicwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> symbolic objects that are Terms but no more refined
+ ie, not pairs, formal functions etc.</p>
+    </li><li name="provingground.HoTT.SymbTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbTypextendsHoTT.Typ[provingground.HoTT.Term]withHoTT.SymbolicwithProductwithSerializable"></a>
+      <a id="SymbTyp:SymbTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$SymbTyp.html"><span class="name">SymbTyp</span></a><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SymbTypextendsHoTT.Typ[provingground.HoTT.Term]withHoTT.SymbolicwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbolic types, which the compiler knows are types.</p>
+    </li><li name="provingground.HoTT.Symbolic" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SymbolicextendsAnyRef"></a>
+      <a id="Symbolic:Symbolic"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Symbolic.html"><span class="name">Symbolic</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SymbolicextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">terms that are given (and determined) by name;
+ does not include, for instance, pairs each of whose instance is given by a name;
+ most useful for pattern matching, where the name contains information about formal function applications etc.</p>
+    </li><li name="provingground.HoTT.Term" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TermextendsHoTT.Subs[provingground.HoTT.Term]"></a>
+      <a id="Term:Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Term.html"><span class="name">Term</span></a><span class="result"> extends <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@TermextendsHoTT.Subs[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstract object</p>
+    </li><li name="provingground.HoTT.TermSymbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermSymbolextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="TermSymbol:TermSymbol"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$TermSymbol.html"><span class="name">TermSymbol</span></a><span class="params">(<span name="term">term: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@TermSymbolextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">term as a symbol
+</p>
+    </li><li name="provingground.HoTT.TermSyms" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TermSymsextendsAnyRef"></a>
+      <a id="TermSyms:TermSyms"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$TermSyms.html"><span class="name">TermSyms</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@TermSymsextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">symbols for printing
+</p>
+    </li><li name="provingground.HoTT.Typ" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="Typ[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.Typ[U]]"></a>
+      <a id="Typ[+U&lt;:TermwithSubs[U]]:Typ[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Typ.html"><span class="name">Typ</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.Typ.U">U</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Typ[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.Subs[provingground.HoTT.Typ[U]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">HoTT Type;
+ The compiler knows that objects have scala-type extending U.</p><div class="fullcomment"><div class="comment cmt"><p>HoTT Type;
+ The compiler knows that objects have scala-type extending U.
+ In particular, we can specify that the objects are types, functions, dependent functions etc.</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>bound on onjects with this as type.</p></dd></dl></div>
+    </li><li name="provingground.HoTT.TypFamily" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]"></a>
+      <a id="TypFamily[W&lt;:TermwithSubs[W],+U&lt;:TermwithSubs[U]]:TypFamily[W,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">TypFamily</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.TypFamily.W">W</span>]</span>, <span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.TypFamily.U">U</span>]</span>]</span><span class="result"> = <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.TypFamily.W">W</span>, <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.TypFamily.U">U</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">type family
+</p>
+    </li><li name="provingground.HoTT.Univ" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Univ=provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a>
+      <a id="Univ:Univ"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Univ</span><span class="result"> = <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Univ=provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Notation for universes.</p>
+    </li><li name="provingground.HoTT.Universe" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UniverseextendsHoTT.UnivwithProductwithSerializable"></a>
+      <a id="Universe:Universe"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Universe.html"><span class="name">Universe</span></a><span class="params">(<span name="level">level: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="#Univ=provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]" class="extmbr" name="provingground.HoTT.Univ">Univ</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@UniverseextendsHoTT.UnivwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The (usual) universes</p>
+    </li><li name="provingground.HoTT.LazyLambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LazyLambda[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Subs[provingground.HoTT.LazyLambda[X,Y]]"></a>
+      <a id="LazyLambda[X&lt;:TermwithSubs[X],Y&lt;:TermwithSubs[Y]]:LazyLambda[X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$LazyLambda.html"><span class="name deprecated" title="Deprecated: (Since version to be purged) Using function definition">LazyLambda</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LazyLambda.X">X</span>]</span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LazyLambda.Y">Y</span>]</span>]</span><span class="result"> extends <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>[<span class="extype" name="provingground.HoTT.LazyLambda.X">X</span>, <span class="extype" name="provingground.HoTT.LazyLambda.Y">Y</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$LazyLambda.html" class="extype" name="provingground.HoTT.LazyLambda">LazyLambda</a>[<span class="extype" name="provingground.HoTT.LazyLambda.X">X</span>, <span class="extype" name="provingground.HoTT.LazyLambda.Y">Y</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@LazyLambda[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Subs[provingground.HoTT.LazyLambda[X,Y]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version to be purged)</i> Using function definition</p></dd></dl></div>
+    </li><li name="provingground.HoTT.LazyLambdaFixed" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LazyLambdaFixed[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Func[X,Y]withHoTT.Subs[provingground.HoTT.LazyLambdaFixed[X,Y]]"></a>
+      <a id="LazyLambdaFixed[X&lt;:TermwithSubs[X],Y&lt;:TermwithSubs[Y]]:LazyLambdaFixed[X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$LazyLambdaFixed.html"><span class="name deprecated" title="Deprecated: (Since version to be purged) Using function definition">LazyLambdaFixed</span></a><span class="tparams">[<span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LazyLambdaFixed.X">X</span>]</span>, <span name="Y">Y &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.LazyLambdaFixed.Y">Y</span>]</span>]</span><span class="result"> extends <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>[<span class="extype" name="provingground.HoTT.LazyLambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LazyLambdaFixed.Y">Y</span>] with <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.LazyLambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LazyLambdaFixed.Y">Y</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$LazyLambdaFixed.html" class="extype" name="provingground.HoTT.LazyLambdaFixed">LazyLambdaFixed</a>[<span class="extype" name="provingground.HoTT.LazyLambdaFixed.X">X</span>, <span class="extype" name="provingground.HoTT.LazyLambdaFixed.Y">Y</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@LazyLambdaFixed[X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Y]]extendsHoTT.LambdaLike[X,Y]withHoTT.Func[X,Y]withHoTT.Subs[provingground.HoTT.LazyLambdaFixed[X,Y]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version to be purged)</i> Using function definition</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT.AbsPair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AbsPair"></a>
+      <a id="AbsPair:AbsPair"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$AbsPair$.html"><span class="name">AbsPair</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@AbsPair" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.Deprec" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Deprec"></a>
+      <a id="Deprec:Deprec"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Deprec$.html"><span class="name">Deprec</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Deprec" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.Fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Fold"></a>
+      <a id="Fold:Fold"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Fold$.html"><span class="name">Fold</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Fold" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.FormalAppln" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FormalAppln"></a>
+      <a id="FormalAppln:FormalAppln"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$FormalAppln$.html"><span class="name">FormalAppln</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@FormalAppln" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.NameFactory" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NameFactory"></a>
+      <a id="NameFactory:NameFactory"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$NameFactory$.html"><span class="name">NameFactory</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@NameFactory" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#One" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="One:provingground.HoTT.Unit.type"></a>
+      <a id="One:Unit.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">One</span><span class="result">: <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@One:provingground.HoTT.Unit.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.PlusTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PlusTyp"></a>
+      <a id="PlusTyp:PlusTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$PlusTyp$.html"><span class="name">PlusTyp</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@PlusTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.Sgma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Sgma"></a>
+      <a id="Sgma:Sgma"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Sgma$.html"><span class="name">Sgma</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Sgma" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.SimpleSyms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleSyms"></a>
+      <a id="SimpleSyms:SimpleSyms"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$SimpleSyms$.html"><span class="name">SimpleSyms</span></a><span class="result"> extends <a href="HoTT$$TermSyms.html" class="extype" name="provingground.HoTT.TermSyms">TermSyms</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@SimpleSyms" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">simple symbols for maps etc.</p>
+    </li><li name="provingground.HoTT.Star" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Star"></a>
+      <a id="Star:Star"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Star$.html"><span class="name">Star</span></a><span class="result"> extends <a href="HoTT$$AtomicTerm.html" class="extype" name="provingground.HoTT.AtomicTerm">AtomicTerm</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Star" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> the object in the Unit type
+</p>
+    </li><li name="provingground.HoTT.Tuple" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple"></a>
+      <a id="Tuple:Tuple"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Tuple$.html"><span class="name">Tuple</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Tuple" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.UnicodeSyms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnicodeSyms"></a>
+      <a id="UnicodeSyms:UnicodeSyms"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$UnicodeSyms$.html"><span class="name">UnicodeSyms</span></a><span class="result"> extends <a href="HoTT$$TermSyms.html" class="extype" name="provingground.HoTT.TermSyms">TermSyms</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@UnicodeSyms" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">unicode symbols for maps etc.</p>
+    </li><li name="provingground.HoTT.Unit" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Unit"></a>
+      <a id="Unit:Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Unit$.html"><span class="name">Unit</span></a><span class="result"> extends <a href="HoTT$$SmallTyp.html" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unit type.</p>
+    </li><li name="provingground.HoTT.Zero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zero"></a>
+      <a id="Zero:Zero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$Zero$.html"><span class="name">Zero</span></a><span class="result"> extends <a href="HoTT$$SmallTyp.html" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@Zero" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Empty type
+</p>
+    </li><li name="provingground.HoTT#__" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="__:provingground.HoTT.Universe"></a>
+      <a id="__:Universe"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">__</span><span class="result">: <a href="HoTT$$Universe.html" class="extype" name="provingground.HoTT.Universe">Universe</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@__:provingground.HoTT.Universe" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The first universe
+</p>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT#asLambdas" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="asLambdas[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](term:U):Option[U]"></a>
+      <a id="asLambdas[U&lt;:TermwithSubs[U]](U):Option[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asLambdas</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.asLambdas.U">U</span>]</span>]</span><span class="params">(<span name="term">term: <span class="extype" name="provingground.HoTT.asLambdas.U">U</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.HoTT.asLambdas.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@asLambdas[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](term:U):Option[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#changeTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="changeTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](term:U,newtyp:provingground.HoTT.Typ[U]):U"></a>
+      <a id="changeTyp[U&lt;:TermwithSubs[U]](U,Typ[U]):U"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeTyp</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.changeTyp.U">U</span>]</span>]</span><span class="params">(<span name="term">term: <span class="extype" name="provingground.HoTT.changeTyp.U">U</span></span>, <span name="newtyp">newtyp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.changeTyp.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.changeTyp.U">U</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@changeTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](term:U,newtyp:provingground.HoTT.Typ[U]):U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns symbolic object with new type.</p>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.HoTT#composition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="composition[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W]](f:provingground.HoTT.Func[V,W],g:provingground.HoTT.Func[U,V]):provingground.HoTT.Func[U,W]"></a>
+      <a id="composition[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V],W&lt;:TermwithSubs[W]](Func[V,W],Func[U,V]):Func[U,W]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">composition</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.composition.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.composition.V">V</span>]</span>, <span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.composition.W">W</span>]</span>]</span><span class="params">(<span name="f">f: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.composition.V">V</span>, <span class="extype" name="provingground.HoTT.composition.W">W</span>]</span>, <span name="g">g: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.composition.U">U</span>, <span class="extype" name="provingground.HoTT.composition.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.composition.U">U</span>, <span class="extype" name="provingground.HoTT.composition.W">W</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@composition[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W]](f:provingground.HoTT.Func[V,W],g:provingground.HoTT.Func[U,V]):provingground.HoTT.Func[U,W]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.HoTT#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fold(fn:provingground.HoTT.Term)(args:provingground.HoTT.Term*):provingground.HoTT.Term"></a>
+      <a id="fold(Term)(Term*):Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fold</span><span class="params">(<span name="fn">fn: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="params">(<span name="args">args: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>*</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@fold(fn:provingground.HoTT.Term)(args:provingground.HoTT.Term*):provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#foldnames" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="foldnames:(provingground.HoTT.Term,List[provingground.HoTT.AnySym])=&gt;provingground.HoTT.Term"></a>
+      <a id="foldnames:(Term,List[AnySym])⇒Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldnames</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.List">List</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@foldnames:(provingground.HoTT.Term,List[provingground.HoTT.AnySym])=&gt;provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">folds in as many terms with names given by the list as possible,
+applying terms as long as the result is a function and the list is non-empty.</p>
+    </li><li name="provingground.HoTT#foldterms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="foldterms:(provingground.HoTT.Term,List[provingground.HoTT.Term])=&gt;provingground.HoTT.Term"></a>
+      <a id="foldterms:(Term,List[Term])⇒Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldterms</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@foldterms:(provingground.HoTT.Term,List[provingground.HoTT.Term])=&gt;provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">folds in as many terms of the list as possible,
+applying terms as long as the result is a function and the list is non-empty.</p>
+    </li><li name="provingground.HoTT#fromZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.FuncSymb[provingground.HoTT.Term,U]"></a>
+      <a id="fromZero[U&lt;:TermwithSubs[U]](Typ[U]):FuncSymb[Term,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromZero</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>]</span><span class="params">(<span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncSymb.html" class="extype" name="provingground.HoTT.FuncSymb">FuncSymb</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.FuncSymb[provingground.HoTT.Term,U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Map from 0 to A.</p>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT#getVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getVar[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):Uwithprovingground.HoTT.Subs[U]"></a>
+      <a id="getVar[U&lt;:TermwithSubs[U]](Typ[U]):UwithSubs[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getVar</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.getVar.U">U</span>]</span>]</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.getVar.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.getVar.U">U</span> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.getVar.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@getVar[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):Uwithprovingground.HoTT.Subs[U]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#hasName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasName(sym:provingground.HoTT.AnySym):provingground.HoTT.Term=&gt;Boolean"></a>
+      <a id="hasName(AnySym):(Term)⇒Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasName</span><span class="params">(<span name="sym">sym: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@hasName(sym:provingground.HoTT.AnySym):provingground.HoTT.Term=&gt;Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">checks if symbolic object has given name.</p>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT#instantiate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="instantiate(substitutions:provingground.HoTT.Term=&gt;Option[provingground.HoTT.Term],target:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Term=&gt;Option[provingground.HoTT.Term]"></a>
+      <a id="instantiate((Term)⇒Option[Term],Typ[Term]):(Term)⇒Option[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">instantiate</span><span class="params">(<span name="substitutions">substitutions: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="target">target: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@instantiate(substitutions:provingground.HoTT.Term=&gt;Option[provingground.HoTT.Term],target:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Term=&gt;Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">instantiates variable values in a term if it is made from lambdas, to give a term (if possible) of a required HoTT type.</p><div class="fullcomment"><div class="comment cmt"><p>instantiates variable values in a term if it is made from lambdas, to give a term (if possible) of a required HoTT type.</p></div><dl class="paramcmts block"><dt class="param">substitutions</dt><dd class="cmt"><p>substitutions to make.</p></dd><dt class="param">target</dt><dd class="cmt"><p>required type after instantiation</p></dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT#lambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]"></a>
+      <a id="lambda[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](U)(V):FuncLike[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambda</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lambda.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lambda.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.lambda.U">U</span></span>)</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.HoTT.lambda.V">V</span></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.lambda.U">U</span>, <span class="extype" name="provingground.HoTT.lambda.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Lambda constructor</p>
+    </li><li name="provingground.HoTT#lambdaPair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambdaPair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.DepPair[U,V]"></a>
+      <a id="lambdaPair[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](U)(V):DepPair[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambdaPair</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lambdaPair.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lambdaPair.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.lambdaPair.U">U</span></span>)</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.HoTT.lambdaPair.V">V</span></span>)</span><span class="result">: <a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a>[<span class="extype" name="provingground.HoTT.lambdaPair.U">U</span>, <span class="extype" name="provingground.HoTT.lambdaPair.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@lambdaPair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.DepPair[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#lmbda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]"></a>
+      <a id="lmbda[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](U)(V):Func[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lmbda</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lmbda.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.lmbda.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.lmbda.U">U</span></span>)</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.HoTT.lmbda.V">V</span></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.lmbda.U">U</span>, <span class="extype" name="provingground.HoTT.lmbda.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">lambda constructor for fixed codomain
+</p>
+    </li><li name="provingground.HoTT#mkPair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mkPair:(provingground.HoTT.Term,provingground.HoTT.Term)=&gt;provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="mkPair:(Term,Term)⇒AbsPair[Term,Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mkPair</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@mkPair:(provingground.HoTT.Term,provingground.HoTT.Term)=&gt;provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">makes a pair with the appropriate runtime type
+</p>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT#nextChar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nextChar(s:Traversable[Char]):Char"></a>
+      <a id="nextChar(Traversable[Char]):Char"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nextChar</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@nextChar(s:Traversable[Char]):Char" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbol factory</p>
+    </li><li name="provingground.HoTT#nextName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nextName(name:String):String"></a>
+      <a id="nextName(String):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nextName</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@nextName(name:String):String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#nextVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nextVar(s:Traversable[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]"></a>
+      <a id="nextVar(Traversable[Term])(Typ[Term]):TermwithSubs[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nextVar</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Traversable">Traversable</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@nextVar(s:Traversable[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT#optlambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="optlambda(variable:provingground.HoTT.Term):provingground.HoTT.Term=&gt;provingground.HoTT.Term"></a>
+      <a id="optlambda(Term):(Term)⇒Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">optlambda</span><span class="params">(<span name="variable">variable: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@optlambda(variable:provingground.HoTT.Term):provingground.HoTT.Term=&gt;provingground.HoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">lambda if necessary, otherwise constant.</p>
+    </li><li name="provingground.HoTT#pair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](first:provingground.HoTT.Typ[U]withprovingground.HoTT.Subs[provingground.HoTT.Typ[U]],second:provingground.HoTT.Typ[V]withprovingground.HoTT.Subs[provingground.HoTT.Typ[V]]):provingground.HoTT.PairTyp[U,V]"></a>
+      <a id="pair[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](Typ[U]withSubs[Typ[U]],Typ[V]withSubs[Typ[V]]):PairTyp[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.pair.V">V</span>]</span>]</span><span class="params">(<span name="first">first: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>]]</span>, <span name="second">second: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.pair.V">V</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.pair.V">V</span>]]</span>)</span><span class="result">: <a href="HoTT$$PairTyp.html" class="extype" name="provingground.HoTT.PairTyp">PairTyp</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>, <span class="extype" name="provingground.HoTT.pair.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@pair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](first:provingground.HoTT.Typ[U]withprovingground.HoTT.Subs[provingground.HoTT.Typ[U]],second:provingground.HoTT.Typ[V]withprovingground.HoTT.Subs[provingground.HoTT.Typ[V]]):provingground.HoTT.PairTyp[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">overloaded method returning a pair object or a pair type.</p>
+    </li><li name="provingground.HoTT#pair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](first:U,second:V):provingground.HoTT.PairObj[U,V]"></a>
+      <a id="pair[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](U,V):PairObj[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.pair.V">V</span>]</span>]</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.HoTT.pair.U">U</span></span>, <span name="second">second: <span class="extype" name="provingground.HoTT.pair.V">V</span></span>)</span><span class="result">: <a href="HoTT$$PairObj.html" class="extype" name="provingground.HoTT.PairObj">PairObj</a>[<span class="extype" name="provingground.HoTT.pair.U">U</span>, <span class="extype" name="provingground.HoTT.pair.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@pair[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](first:U,second:V):provingground.HoTT.PairObj[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">overloaded method returning a pair object or a pair type.</p>
+    </li><li name="provingground.HoTT#sigma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sigma[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:provingground.HoTT.Typ[V]):provingground.HoTT.SigmaTyp[U,V]"></a>
+      <a id="sigma[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](U)(Typ[V]):SigmaTyp[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sigma</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.sigma.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.sigma.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.sigma.U">U</span></span>)</span><span class="params">(<span name="value">value: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.sigma.V">V</span>]</span>)</span><span class="result">: <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<span class="extype" name="provingground.HoTT.sigma.U">U</span>, <span class="extype" name="provingground.HoTT.sigma.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@sigma[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:provingground.HoTT.Typ[V]):provingground.HoTT.SigmaTyp[U,V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Sigma type based on lambda</p>
+    </li><li name="provingground.HoTT#stringSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stringSym(name:String):provingground.HoTT.Name"></a>
+      <a id="stringSym(String):Name"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stringSym</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@stringSym(name:String):provingground.HoTT.Name" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">use strings as symbols.</p>
+    </li><li name="provingground.HoTT#symSubs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="symSubs[U&lt;:provingground.HoTT.Term](symbobj:provingground.HoTT.AnySym=&gt;U)(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.AnySym=&gt;U"></a>
+      <a id="symSubs[U&lt;:Term]((AnySym)⇒U)(Term,Term):(AnySym)⇒U"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symSubs</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="params">(<span name="symbobj">symbobj: (<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>) ⇒ <span class="extype" name="provingground.HoTT.symSubs.U">U</span></span>)</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: (<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>) ⇒ <span class="extype" name="provingground.HoTT.symSubs.U">U</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@symSubs[U&lt;:provingground.HoTT.Term](symbobj:provingground.HoTT.AnySym=&gt;U)(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.AnySym=&gt;U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">substitute symbols, with the only non-trivial substitution for formal applications.</p>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT#termSymbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="termSymbol(term:provingground.HoTT.Term):provingground.HoTT.AnySym"></a>
+      <a id="termSymbol(Term):AnySym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">termSymbol</span><span class="params">(<span name="term">term: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@termSymbol(term:provingground.HoTT.Term):provingground.HoTT.AnySym" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.HoTT#univlevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="univlevel:provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]=&gt;Int"></a>
+      <a id="univlevel:(Typ[Typ[Term]])⇒Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">univlevel</span><span class="result">: (<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]) ⇒ <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@univlevel:provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]=&gt;Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT#usedChars" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="usedChars(s:Traversable[provingground.HoTT.Term]):Traversable[Char]"></a>
+      <a id="usedChars(Traversable[Term]):Traversable[Char]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">usedChars</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Traversable">Traversable</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@usedChars(s:Traversable[provingground.HoTT.Term]):Traversable[Char]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Helper for symbol factory</p>
+    </li><li name="provingground.HoTT.vacuous" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="vacuous"></a>
+      <a id="vacuous:vacuous"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$vacuous$.html"><span class="name">vacuous</span></a><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@vacuous" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Symbol for map 0 -&gt; A
+</p>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

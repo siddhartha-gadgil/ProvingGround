@@ -1,0 +1,1 @@
+Index.PACKAGES = {"mizar" : [{"object" : "mizar\/MizarLang$.html", "name" : "mizar.MizarLang"}, {"object" : "mizar\/Parser$.html", "name" : "mizar.Parser"}]};

@@ -1,0 +1,1335 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>Aware - provingground.Aware</title>
+          <meta name="description" content="Aware - provingground.Aware" />
+          <meta name="keywords" content="Aware provingground.Aware" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.Aware$';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Object" src="../lib/object_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1>Aware</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.Aware$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Aware</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.Aware"><span>Aware</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.Aware.Acknowledgement" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Acknowledgement[A]extendsProductwithSerializable"></a>
+      <a id="Acknowledgement[A]:Acknowledgement[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Acknowledgement.html"><span class="name">Acknowledgement</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="solution">solution: <a href="Aware$$Solution.html" class="extype" name="provingground.Aware.Solution">Solution</a>[<span class="extype" name="provingground.Aware.Acknowledgement.A">A</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Acknowledgement[A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Ask" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AskextendsAware.ResponsewithProductwithSerializable"></a>
+      <a id="Ask:Ask"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Ask.html"><span class="name">Ask</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@AskextendsAware.ResponsewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Attention" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Attention[A]extendsAnyRef"></a>
+      <a id="Attention[A]:Attention[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Attention.html"><span class="name">Attention</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Attention[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.BoundedTask" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BoundedTaskextendsAware.TaskwithProductwithSerializable"></a>
+      <a id="BoundedTask:BoundedTask"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$BoundedTask.html"><span class="name">BoundedTask</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="bound">bound: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@BoundedTaskextendsAware.TaskwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Continue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContinueextendsProductwithSerializable"></a>
+      <a id="Continue:Continue"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Continue.html"><span class="name">Continue</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@ContinueextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Contribution" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Contribution[+A]extendsAnyRef"></a>
+      <a id="Contribution[+A]:Contribution[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Contribution.html"><span class="name">Contribution</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Contribution[+A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Critic" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Critic[A,B]extendsAnyRef"></a>
+      <a id="Critic[A,B]:Critic[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Critic.html"><span class="name">Critic</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Critic[A,B]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Description" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Description[A]extendsAnyRef"></a>
+      <a id="Description[A]:Description[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Description.html"><span class="name">Description</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Description[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.DeterminateTask" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DeterminateTaskextendsAware.Task"></a>
+      <a id="DeterminateTask:DeterminateTask"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$DeterminateTask.html"><span class="name">DeterminateTask</span></a><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@DeterminateTaskextendsAware.Task" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Failed" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FailedextendsProductwithSerializable"></a>
+      <a id="Failed:Failed"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Failed.html"><span class="name">Failed</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@FailedextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.FindInStream" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FindInStream[A]extendsAware.TaskwithProductwithSerializable"></a>
+      <a id="FindInStream[A]:FindInStream[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$FindInStream.html"><span class="name">FindInStream</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Stream">Stream</span>[<span class="extype" name="provingground.Aware.FindInStream.A">A</span>]</span>, <span name="p">p: (<span class="extype" name="provingground.Aware.FindInStream.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@FindInStream[A]extendsAware.TaskwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Generate" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Generate[A,B]extendsAware.TaskwithProductwithSerializable"></a>
+      <a id="Generate[A,B]:Generate[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Generate.html"><span class="name">Generate</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="gen">gen: <a href="Aware$$Generator.html" class="extype" name="provingground.Aware.Generator">Generator</a>[<span class="extype" name="provingground.Aware.Generate.A">A</span>, <span class="extype" name="provingground.Aware.Generate.B">B</span>]</span>, <span name="n">n: <span class="extype" name="scala.Long">Long</span></span>, <span name="init">init: <span class="extype" name="provingground.Aware.Generate.B">B</span></span>)</span><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Generate[A,B]extendsAware.TaskwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Generator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Generator[A,B]extendsAnyRef"></a>
+      <a id="Generator[A,B]:Generator[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Generator.html"><span class="name">Generator</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Generator[A,B]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.GeneratorActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeneratorActor[A,B]extendsActor"></a>
+      <a id="GeneratorActor[A,B]:GeneratorActor[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$GeneratorActor.html"><span class="name">GeneratorActor</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@GeneratorActor[A,B]extendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.GeneratorOut" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeneratorOut[A,B]extendsProductwithSerializable"></a>
+      <a id="GeneratorOut[A,B]:GeneratorOut[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$GeneratorOut.html"><span class="name">GeneratorOut</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="out">out: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.Aware.GeneratorOut.A">A</span>]</span>, <span name="newGen">newGen: <a href="Aware$$Generator.html" class="extype" name="provingground.Aware.Generator">Generator</a>[<span class="extype" name="provingground.Aware.GeneratorOut.A">A</span>, <span class="extype" name="provingground.Aware.GeneratorOut.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@GeneratorOut[A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.GeneratorRouter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeneratorRouter[A,B]extendsActor"></a>
+      <a id="GeneratorRouter[A,B]:GeneratorRouter[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$GeneratorRouter.html"><span class="name">GeneratorRouter</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@GeneratorRouter[A,B]extendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.NamedRelation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NamedRelation[A,B]extendsAware.Relation[A,B]withProductwithSerializable"></a>
+      <a id="NamedRelation[A,B]:NamedRelation[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$NamedRelation.html"><span class="name">NamedRelation</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.Aware.NamedRelation.A">A</span></span>, <span name="second">second: <span class="extype" name="provingground.Aware.NamedRelation.B">B</span></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="Aware$$Relation.html" class="extype" name="provingground.Aware.Relation">Relation</a>[<span class="extype" name="provingground.Aware.NamedRelation.A">A</span>, <span class="extype" name="provingground.Aware.NamedRelation.B">B</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@NamedRelation[A,B]extendsAware.Relation[A,B]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.NotFound" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NotFoundextendsAware.ResponsewithProductwithSerializable"></a>
+      <a id="NotFound:NotFound"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$NotFound.html"><span class="name">NotFound</span></a><span class="params">(<span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@NotFoundextendsAware.ResponsewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.OpenEndedTask" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="OpenEndedTaskextendsAware.Task"></a>
+      <a id="OpenEndedTask:OpenEndedTask"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$OpenEndedTask.html"><span class="name">OpenEndedTask</span></a><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@OpenEndedTaskextendsAware.Task" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.PartialSolution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PartialSolution[+A,+B]extendsAware.ResponsewithAware.Result[A]withProductwithSerializable"></a>
+      <a id="PartialSolution[+A,+B]:PartialSolution[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$PartialSolution.html"><span class="name">PartialSolution</span></a><span class="tparams">[<span name="A">+A</span>, <span name="B">+B</span>]</span><span class="params">(<span name="result">result: <span class="extype" name="provingground.Aware.PartialSolution.A">A</span></span>, <span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="persist">persist: <span class="extype" name="provingground.Aware.PartialSolution.B">B</span> = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="provingground.Aware.PartialSolution.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@PartialSolution[+A,+B]extendsAware.ResponsewithAware.Result[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.PreResource" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PreResourceextendsAnyRef"></a>
+      <a id="PreResource:PreResource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$PreResource.html"><span class="name">PreResource</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@PreResourceextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Checks if a task can be translated to a form applicable to a resource; if so returns it.</p>
+    </li><li name="provingground.Aware.Query" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="QueryextendsProductwithSerializable"></a>
+      <a id="Query:Query"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Query.html"><span class="name">Query</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="asker">asker: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@QueryextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Reduction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Reduction[A,B]extendsAware.ResponsewithAware.Result[(provingground.Aware.Task,provingground.Aware.Solution[A]=&gt;provingground.Aware.Solution[B])]withProductwithSerializable"></a>
+      <a id="Reduction[A,B]:Reduction[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Reduction.html"><span class="name">Reduction</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="reduction">reduction: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="solver">solver: (<a href="Aware$$Solution.html" class="extype" name="provingground.Aware.Solution">Solution</a>[<span class="extype" name="provingground.Aware.Reduction.A">A</span>]) ⇒ <a href="Aware$$Solution.html" class="extype" name="provingground.Aware.Solution">Solution</a>[<span class="extype" name="provingground.Aware.Reduction.B">B</span>]</span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[(<a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a>, (<a href="Aware$$Solution.html" class="extype" name="provingground.Aware.Solution">Solution</a>[<span class="extype" name="provingground.Aware.Reduction.A">A</span>]) ⇒ <a href="Aware$$Solution.html" class="extype" name="provingground.Aware.Solution">Solution</a>[<span class="extype" name="provingground.Aware.Reduction.B">B</span>])] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Reduction[A,B]extendsAware.ResponsewithAware.Result[(provingground.Aware.Task,provingground.Aware.Solution[A]=&gt;provingground.Aware.Solution[B])]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Relation" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Relation[A,B]extendsAnyRef"></a>
+      <a id="Relation[A,B]:Relation[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Relation.html"><span class="name">Relation</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Relation[A,B]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Response" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ResponseextendsAnyRef"></a>
+      <a id="Response:Response"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Response.html"><span class="name">Response</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@ResponseextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Result" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Result[+A]extendsAnyRef"></a>
+      <a id="Result[+A]:Result[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Result.html"><span class="name">Result</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Result[+A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Results" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ResultsextendsAware.Result[List[provingground.Aware.Result[Any]]]withProductwithSerializable"></a>
+      <a id="Results:Results"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Results.html"><span class="name">Results</span></a><span class="params">(<span name="result">result: <span class="extype" name="scala.List">List</span>[<a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="scala.Any">Any</span>]]</span>)</span><span class="result"> extends <a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="scala.List">List</span>[<a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="scala.Any">Any</span>]]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@ResultsextendsAware.Result[List[provingground.Aware.Result[Any]]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Seek" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Seek[A,S]extendsAware.TaskwithProductwithSerializable"></a>
+      <a id="Seek[A,S]:Seek[A,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Seek.html"><span class="name">Seek</span></a><span class="tparams">[<span name="A">A</span>, <span name="S">S</span>]</span><span class="params">(<span name="s">s: <a href="Aware$$Seeker.html" class="extype" name="provingground.Aware.Seeker">Seeker</a>[<span class="extype" name="provingground.Aware.Seek.A">A</span>, <span class="extype" name="provingground.Aware.Seek.S">S</span>]</span>, <span name="p">p: (<span class="extype" name="provingground.Aware.Seek.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="n">n: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Seek[A,S]extendsAware.TaskwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Seeker" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Seeker[A,S]extendsAnyRef"></a>
+      <a id="Seeker[A,S]:Seeker[A,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Seeker.html"><span class="name">Seeker</span></a><span class="tparams">[<span name="A">A</span>, <span name="S">S</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Seeker[A,S]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SeekerResource" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SeekerResourceextendsAnyRef"></a>
+      <a id="SeekerResource:SeekerResource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SeekerResource.html"><span class="name">SeekerResource</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SeekerResourceextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SeekerResourceRouter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekerResourceRouterextendsActor"></a>
+      <a id="SeekerResourceRouter:SeekerResourceRouter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SeekerResourceRouter.html"><span class="name">SeekerResourceRouter</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SeekerResourceRouterextendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SeekerResourceSeeker" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekerResourceSeekerextendsActor"></a>
+      <a id="SeekerResourceSeeker:SeekerResourceSeeker"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SeekerResourceSeeker.html"><span class="name">SeekerResourceSeeker</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SeekerResourceSeekerextendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SeekerResponse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekerResponseextendsProductwithSerializable"></a>
+      <a id="SeekerResponse:SeekerResponse"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SeekerResponse.html"><span class="name">SeekerResponse</span></a><span class="params">(<span name="response">response: <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a></span>, <span name="nextiter">nextiter: <a href="Aware$$SeekerResource.html" class="extype" name="provingground.Aware.SeekerResource">SeekerResource</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SeekerResponseextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SimpleResource" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SimpleResourceextendsAnyRef"></a>
+      <a id="SimpleResource:SimpleResource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SimpleResource.html"><span class="name">SimpleResource</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SimpleResourceextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SimpleResourceActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleResourceActorextendsActor"></a>
+      <a id="SimpleResourceActor:SimpleResourceActor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SimpleResourceActor.html"><span class="name">SimpleResourceActor</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SimpleResourceActorextendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Solution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Solution[+A]extendsAware.ResponsewithAware.Result[A]withProductwithSerializable"></a>
+      <a id="Solution[+A]:Solution[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Solution.html"><span class="name">Solution</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="params">(<span name="result">result: <span class="extype" name="provingground.Aware.Solution.A">A</span></span>, <span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="provingground.Aware.Solution.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Solution[+A]extendsAware.ResponsewithAware.Result[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.StreamResource" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="StreamResourceextendsAnyRef"></a>
+      <a id="StreamResource:StreamResource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$StreamResource.html"><span class="name">StreamResource</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@StreamResourceextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.StringDescription" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StringDescription[A]extendsAware.Description[A]withProductwithSerializable"></a>
+      <a id="StringDescription[A]:StringDescription[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$StringDescription.html"><span class="name">StringDescription</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="subject">subject: <span class="extype" name="provingground.Aware.StringDescription.A">A</span></span>, <span name="description">description: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="Aware$$Description.html" class="extype" name="provingground.Aware.Description">Description</a>[<span class="extype" name="provingground.Aware.StringDescription.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@StringDescription[A]extendsAware.Description[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Success" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SuccessextendsAware.ResponsewithProductwithSerializable"></a>
+      <a id="Success:Success"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Success.html"><span class="name">Success</span></a><span class="params">(<span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <a href="Aware$$Response.html" class="extype" name="provingground.Aware.Response">Response</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SuccessextendsAware.ResponsewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Task" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskextendsAnyRef"></a>
+      <a id="Task:Task"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Task.html"><span class="name">Task</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TaskextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.TaskHelpers" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskHelpersextendsAnyRef"></a>
+      <a id="TaskHelpers:TaskHelpers"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$TaskHelpers.html"><span class="name">TaskHelpers</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TaskHelpersextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Find related task</p>
+    </li><li name="provingground.Aware.TaskHelps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TaskHelpsextendsProductwithSerializable"></a>
+      <a id="TaskHelps:TaskHelps"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$TaskHelps.html"><span class="name">TaskHelps</span></a><span class="params">(<span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="helper">helper: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="measure">measure: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TaskHelpsextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.TaskMaster" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TaskMasterextendsActor"></a>
+      <a id="TaskMaster:TaskMaster"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$TaskMaster.html"><span class="name">TaskMaster</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TaskMasterextendsActor" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.TaskUsing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TaskUsing[A]extendsAware.TaskwithProductwithSerializable"></a>
+      <a id="TaskUsing[A]:TaskUsing[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$TaskUsing.html"><span class="name">TaskUsing</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="using">using: <a href="Aware$$Result.html" class="extype" name="provingground.Aware.Result">Result</a>[<span class="extype" name="provingground.Aware.TaskUsing.A">A</span>]</span>)</span><span class="result"> extends <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TaskUsing[A]extendsAware.TaskwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Timedout" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TimedoutextendsProductwithSerializable"></a>
+      <a id="Timedout:Timedout"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Timedout.html"><span class="name">Timedout</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@TimedoutextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Updates" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UpdatesextendsProductwithSerializable"></a>
+      <a id="Updates:Updates"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Updates.html"><span class="name">Updates</span></a><span class="params">(<span name="task">task: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@UpdatesextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.UsefulForTask" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UsefulForTask[A]extendsProductwithSerializable"></a>
+      <a id="UsefulForTask[A]:UsefulForTask[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$UsefulForTask.html"><span class="name">UsefulForTask</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="goal">goal: <a href="Aware$$Task.html" class="extype" name="provingground.Aware.Task">Task</a></span>, <span name="a">a: <span class="extype" name="provingground.Aware.UsefulForTask.A">A</span></span>, <span name="measure">measure: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@UsefulForTask[A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.Value" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Value[A]extendsAware.Description[A]"></a>
+      <a id="Value[A]:Value[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$Value.html"><span class="name">Value</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Aware$$Description.html" class="extype" name="provingground.Aware.Description">Description</a>[<span class="extype" name="provingground.Aware.Value.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@Value[A]extendsAware.Description[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Aware.AllUpdates" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AllUpdates"></a>
+      <a id="AllUpdates:AllUpdates"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$AllUpdates$.html"><span class="name">AllUpdates</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@AllUpdates" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Aware.SeekerResource" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekerResource"></a>
+      <a id="SeekerResource:SeekerResource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Aware$$SeekerResource$.html"><span class="name">SeekerResource</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@SeekerResource" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Aware$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

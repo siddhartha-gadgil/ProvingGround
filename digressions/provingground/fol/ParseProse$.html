@@ -1,0 +1,1035 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>ParseProse - provingground.fol.ParseProse</title>
+          <meta name="description" content="ParseProse - provingground.fol.ParseProse" />
+          <meta name="keywords" content="ParseProse provingground.fol.ParseProse" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'provingground.fol.ParseProse$';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Object" src="../../lib/object_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="provingground">provingground</a>.<a href="package.html" class="extype" name="provingground.fol">fol</a></p>
+        <h1>ParseProse</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground.fol">package fol</a>
+          </div></span></h3><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ParseProse</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Translates Stanford Dependency tree to Logical expression</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.fol.ParseProse"><span>ParseProse</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.fol.ParseProse.MapProseFormula" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="MapProseFormula[A]extendsAnyRef"></a>
+      <a id="MapProseFormula[A]:MapProseFormula[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$MapProseFormula.html"><span class="name">MapProseFormula</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@MapProseFormula[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Makes unparsed prose function, predicate etc to unparsed formula</p>
+    </li><li name="provingground.fol.ParseProse.ProseCondPropt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProseCondProptextendsprovingground.fol.Logic.CondProptwithParseProse.ProsePrintwithProductwithSerializable"></a>
+      <a id="ProseCondPropt:ProseCondPropt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$ProseCondPropt.html"><span class="name">ProseCondPropt</span></a><span class="params">(<span name="t">t: <span class="extype" name="provingground.NlpProse.ProseTree">ProseTree</span></span>)</span><span class="result"> extends <a href="Logic$.html#CondPropt=(provingground.fol.Logic.Var,provingground.fol.Logic.Formula)=&gt;provingground.fol.Logic.Formula" class="extmbr" name="provingground.fol.Logic.CondPropt">CondPropt</a> with <a href="ParseProse$$ProsePrint.html" class="extype" name="provingground.fol.ParseProse.ProsePrint">ProsePrint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ProseCondProptextendsprovingground.fol.Logic.CondProptwithParseProse.ProsePrintwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unparsed ConditionProperty</p>
+    </li><li name="provingground.fol.ParseProse.ProseCondition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProseConditionextendsprovingground.fol.Logic.ConditionwithParseProse.MapProseFormula[provingground.fol.Logic.Formula]withParseProse.ProsePrint"></a>
+      <a id="ProseCondition:ProseCondition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$ProseCondition.html"><span class="name">ProseCondition</span></a><span class="result"> extends <a href="Logic$.html#Condition=provingground.fol.Logic.Formula=&gt;provingground.fol.Logic.Formula" class="extmbr" name="provingground.fol.Logic.Condition">Condition</a> with <a href="ParseProse$$MapProseFormula.html" class="extype" name="provingground.fol.ParseProse.MapProseFormula">MapProseFormula</a>[<a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>] with <a href="ParseProse$$ProsePrint.html" class="extype" name="provingground.fol.ParseProse.ProsePrint">ProsePrint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ProseConditionextendsprovingground.fol.Logic.ConditionwithParseProse.MapProseFormula[provingground.fol.Logic.Formula]withParseProse.ProsePrint" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unparsed Condition</p>
+    </li><li name="provingground.fol.ParseProse.ProseFormula" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProseFormulaextendsLogic.FormulawithParseProse.ProsePrintwithProductwithSerializable"></a>
+      <a id="ProseFormula:ProseFormula"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$ProseFormula.html"><span class="name">ProseFormula</span></a><span class="params">(<span name="t">t: <span class="extype" name="provingground.NlpProse.ProseTree">ProseTree</span></span>)</span><span class="result"> extends <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a> with <a href="ParseProse$$ProsePrint.html" class="extype" name="provingground.fol.ParseProse.ProsePrint">ProsePrint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ProseFormulaextendsLogic.FormulawithParseProse.ProsePrintwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unparsed  formula</p>
+    </li><li name="provingground.fol.ParseProse.ProsePrint" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ProsePrintextendsAnyRef"></a>
+      <a id="ProsePrint:ProsePrint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$ProsePrint.html"><span class="name">ProsePrint</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ProsePrintextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Print tree for unparsed prose</p>
+    </li><li name="provingground.fol.ParseProse.ProsePropt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProseProptextendsprovingground.fol.Logic.ProptwithParseProse.MapProseFormula[provingground.fol.Logic.Var]withParseProse.ProsePrintwithProductwithSerializable"></a>
+      <a id="ProsePropt:ProsePropt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$ProsePropt.html"><span class="name">ProsePropt</span></a><span class="params">(<span name="t">t: <span class="extype" name="provingground.NlpProse.ProseTree">ProseTree</span></span>)</span><span class="result"> extends <a href="Logic$.html#Propt=provingground.fol.Logic.Var=&gt;provingground.fol.Logic.Formula" class="extmbr" name="provingground.fol.Logic.Propt">Propt</a> with <a href="ParseProse$$MapProseFormula.html" class="extype" name="provingground.fol.ParseProse.MapProseFormula">MapProseFormula</a>[<a href="Logic$$Var.html" class="extype" name="provingground.fol.Logic.Var">Var</a>] with <a href="ParseProse$$ProsePrint.html" class="extype" name="provingground.fol.ParseProse.ProsePrint">ProsePrint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ProseProptextendsprovingground.fol.Logic.ProptwithParseProse.MapProseFormula[provingground.fol.Logic.Var]withParseProse.ProsePrintwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unparsed Property</p>
+    </li><li name="provingground.fol.ParseProse.Scope" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ScopeextendsParseProse.Variables"></a>
+      <a id="Scope:Scope"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Scope.html"><span class="name">Scope</span></a><span class="result"> extends <a href="ParseProse$$Variables.html" class="extype" name="provingground.fol.ParseProse.Variables">Variables</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ScopeextendsParseProse.Variables" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The scope of a formula</p>
+    </li><li name="provingground.fol.ParseProse.Variables" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VariablesextendsAnyRef"></a>
+      <a id="Variables:Variables"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Variables.html"><span class="name">Variables</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@VariablesextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for variable symbols</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@##():Int" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse.Advcl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Advcl"></a>
+      <a id="Advcl:Advcl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Advcl$.html"><span class="name">Advcl</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@Advcl" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for Adverbial Clause</p>
+    </li><li name="provingground.fol.ParseProse.Amods" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Amods"></a>
+      <a id="Amods:Amods"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Amods$.html"><span class="name">Amods</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@Amods" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for (several) adjectival properties</p>
+    </li><li name="provingground.fol.ParseProse.Det" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Det"></a>
+      <a id="Det:Det"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Det$.html"><span class="name">Det</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@Det" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for determiner</p>
+    </li><li name="provingground.fol.ParseProse.FmlaData" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FmlaData"></a>
+      <a id="FmlaData:FmlaData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$FmlaData$.html"><span class="name">FmlaData</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@FmlaData" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Pattern for Fmla(Formula)</p>
+    </li><li name="provingground.fol.ParseProse.Global" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Global"></a>
+      <a id="Global:Global"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$Global$.html"><span class="name">Global</span></a><span class="result"> extends <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@Global" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The default scope</p>
+    </li><li name="provingground.fol.ParseProse.IfMark" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IfMark"></a>
+      <a id="IfMark:IfMark"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$IfMark$.html"><span class="name">IfMark</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@IfMark" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for 'if' as determiner</p>
+    </li><li name="provingground.fol.ParseProse.OneOf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OneOf"></a>
+      <a id="OneOf:OneOf"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$OneOf$.html"><span class="name">OneOf</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@OneOf" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for <code>one of'</code></p>
+    </li><li name="provingground.fol.ParseProse.PredParams" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PredParams"></a>
+      <a id="PredParams:PredParams"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$PredParams$.html"><span class="name">PredParams</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@PredParams" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor for a predicate and its parameters; Optionally returns predicate name and trees for parameters</p>
+    </li><li name="provingground.fol.ParseProse.SimpPropt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpPropt"></a>
+      <a id="SimpPropt:SimpPropt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$SimpPropt$.html"><span class="name">SimpPropt</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@SimpPropt" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A simple property : word is taken as the name of the property</p>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@clone():Object" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#hasVowel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasVowel(s:String):Boolean"></a>
+      <a id="hasVowel(String):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasVowel</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@hasVowel(s:String):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Has a vowel</p>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#isFormula" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isFormula(d:provingground.NlpProse.ParseData):Boolean"></a>
+      <a id="isFormula(ParseData):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isFormula</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@isFormula(d:provingground.NlpProse.ParseData):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#isName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isName(s:String):Boolean"></a>
+      <a id="isName(String):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isName</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@isName(s:String):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A crude criterion for being a name: has more than one letter and contains a vowel</p>
+    </li><li name="provingground.fol.ParseProse#isVowel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isVowel(c:Char):Boolean"></a>
+      <a id="isVowel(Char):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isVowel</span><span class="params">(<span name="c">c: <span class="extype" name="scala.Char">Char</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@isVowel(c:Char):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Is a vowel</p>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@notify():Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#optAssert" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="optAssert(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Theory.Document.Paragraph]"></a>
+      <a id="optAssert(ParseData,Scope):Option[Paragraph]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">optAssert</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="Theory$$Document$$Paragraph.html" class="extype" name="provingground.fol.Theory.Document.Paragraph">Paragraph</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@optAssert(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Theory.Document.Paragraph]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Optionally parses to an Assertion</p>
+    </li><li name="provingground.fol.ParseProse#optFmla" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="optFmla(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Theory.Document.Paragraph]"></a>
+      <a id="optFmla(ParseData,Scope):Option[Paragraph]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">optFmla</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="Theory$$Document$$Paragraph.html" class="extype" name="provingground.fol.Theory.Document.Paragraph">Paragraph</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@optFmla(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Theory.Document.Paragraph]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Optionally parses to Fmla(Formula)</p>
+    </li><li name="provingground.fol.ParseProse#optFormula" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="optFormula(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Logic.Formula]"></a>
+      <a id="optFormula(ParseData,Scope):Option[Formula]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">optFormula</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@optFormula(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):Option[provingground.fol.Logic.Formula]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Optional Formula</p>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#toAction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toAction(d:provingground.NlpProse.ParseData):provingground.fol.Logic.Formula=&gt;provingground.fol.Theory.Document.Paragraph"></a>
+      <a id="toAction(ParseData):(Formula)⇒Paragraph"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toAction</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>)</span><span class="result">: (<a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>) ⇒ <a href="Theory$$Document$$Paragraph.html" class="extype" name="provingground.fol.Theory.Document.Paragraph">Paragraph</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toAction(d:provingground.NlpProse.ParseData):provingground.fol.Logic.Formula=&gt;provingground.fol.Theory.Document.Paragraph" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.fol.ParseProse#toCondPropt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toCondPropt(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):(provingground.fol.Logic.Var,provingground.fol.Logic.Formula)=&gt;provingground.fol.Logic.Formula"></a>
+      <a id="toCondPropt(ParseData,Scope):(Var,Formula)⇒Formula"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toCondPropt</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: (<a href="Logic$$Var.html" class="extype" name="provingground.fol.Logic.Var">Var</a>, <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>) ⇒ <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toCondPropt(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):(provingground.fol.Logic.Var,provingground.fol.Logic.Formula)=&gt;provingground.fol.Logic.Formula" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns Condition-Property (Var, Formula) =&gt; Formula from ProseTree</p>
+    </li><li name="provingground.fol.ParseProse#toCondition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toCondition(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Formula=&gt;provingground.fol.Logic.Formula"></a>
+      <a id="toCondition(ParseData,Scope):(Formula)⇒Formula"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toCondition</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: (<a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>) ⇒ <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toCondition(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Formula=&gt;provingground.fol.Logic.Formula" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns condition (Formula =&gt; Formula) from ProseTree</p>
+    </li><li name="provingground.fol.ParseProse#toFormula" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toFormula(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Formula"></a>
+      <a id="toFormula(ParseData,Scope):Formula"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toFormula</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toFormula(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Formula" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns Formula from ProseTree</p>
+    </li><li name="provingground.fol.ParseProse#toPara" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toPara(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Theory.Document.Paragraph"></a>
+      <a id="toPara(ParseData,Scope):Paragraph"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toPara</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: <a href="Theory$$Document$$Paragraph.html" class="extype" name="provingground.fol.Theory.Document.Paragraph">Paragraph</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toPara(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Theory.Document.Paragraph" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Parses to a paragraph, fallback to Text()</p>
+    </li><li name="provingground.fol.ParseProse#toPropt" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toPropt(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Var=&gt;provingground.fol.Logic.Formula"></a>
+      <a id="toPropt(ParseData,Scope):(Var)⇒Formula"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toPropt</span><span class="params">(<span name="d">d: <span class="extype" name="provingground.NlpProse.ParseData">ParseData</span></span>, <span name="scope">scope: <a href="ParseProse$$Scope.html" class="extype" name="provingground.fol.ParseProse.Scope">Scope</a></span>)</span><span class="result">: (<a href="Logic$$Var.html" class="extype" name="provingground.fol.Logic.Var">Var</a>) ⇒ <a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toPropt(d:provingground.NlpProse.ParseData,scope:provingground.fol.ParseProse.Scope):provingground.fol.Logic.Var=&gt;provingground.fol.Logic.Formula" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns Property (Var =&gt; Formula) from ProseTree</p><div class="fullcomment"><div class="comment cmt"><p>Returns Property (Var =&gt; Formula) from ProseTree</p><p>Note that a term is returned as Var = Term</p></div></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@toString():String" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.fol.ParseProse#unParsed" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unParsed:PartialFunction[provingground.fol.Logic.Formula,provingground.NlpProse.ProseTree]"></a>
+      <a id="unParsed:PartialFunction[Formula,ProseTree]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unParsed</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="Logic$$Formula.html" class="extype" name="provingground.fol.Logic.Formula">Formula</a>, <span class="extype" name="provingground.NlpProse.ProseTree">ProseTree</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@unParsed:PartialFunction[provingground.fol.Logic.Formula,provingground.NlpProse.ProseTree]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@wait():Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Deprecated Value Members</h3>
+              <ol><li name="provingground.fol.ParseProse.If" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="If"></a>
+      <a id="If:If"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParseProse$$If$.html"><span class="name deprecated" title="Deprecated: (Since version Replacement ready, to test) Use Advcl followed by IfMark">If</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.fol.ParseProse$@If" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version Replacement ready, to test)</i> Use Advcl followed by IfMark</p></dd></dl></div>
+    </li></ol>
+            </div>
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

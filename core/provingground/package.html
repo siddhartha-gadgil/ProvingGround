@@ -1,0 +1,1866 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>provingground - provingground</title>
+          <meta name="description" content="provingground - provingground" />
+          <meta name="keywords" content="provingground provingground" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../lib/package_big.png" />
+        
+        <h1>provingground</h1><span class="permalink">
+      <a href="../index.html#provingground.package" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">provingground</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.Apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApplyextendsTermExprwithProductwithSerializable"></a>
+      <a id="Apply:Apply"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Apply.html"><span class="name">Apply</span></a><span class="params">(<span name="func">func: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="arg">arg: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ApplyextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression func(arg)
+</p>
+    </li><li name="provingground.Arrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ArrowextendsTermExprwithProductwithSerializable"></a>
+      <a id="Arrow:Arrow"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Arrow.html"><span class="name">Arrow</span></a><span class="params">(<span name="lhs">lhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="rhs">rhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ArrowextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression for A -&gt; B
+</p>
+    </li><li name="provingground.AtomicSimplifier" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AtomicSimplifier[A]extendsSimplifier[A]"></a>
+      <a id="AtomicSimplifier[A]:AtomicSimplifier[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicSimplifier.html"><span class="name">AtomicSimplifier</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.AtomicSimplifier.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@AtomicSimplifier[A]extendsSimplifier[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.CnstDepFuncPtn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CnstDepFuncPtn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveConstructorPattern[C,provingground.HoTT.Term,U,provingground.HoTT.FuncLike[provingground.HoTT.Term,U]]withProductwithSerializable"></a>
+      <a id="CnstDepFuncPtn[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V],VV&lt;:TermwithSubs[VV],C&lt;:TermwithSubs[C]]:CnstDepFuncPtn[U,V,VV,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CnstDepFuncPtn.html"><span class="name">CnstDepFuncPtn</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstDepFuncPtn.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstDepFuncPtn.V">V</span>]</span>, <span name="VV">VV &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstDepFuncPtn.VV">VV</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstDepFuncPtn.C">C</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.CnstDepFuncPtn.C">C</span>, <span class="extype" name="provingground.CnstDepFuncPtn.U">U</span>] { ... /* 2 definitions in type refinement */ }</span>, <span name="headlevel">headlevel: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result"> extends <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a>[<span class="extype" name="provingground.CnstDepFuncPtn.C">C</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.CnstDepFuncPtn.U">U</span>, <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.CnstDepFuncPtn.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@CnstDepFuncPtn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveConstructorPattern[C,provingground.HoTT.Term,U,provingground.HoTT.FuncLike[provingground.HoTT.Term,U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Dependent extension by a constant type  of a constructor-pattern depending on elements of that type.</p>
+    </li><li name="provingground.CnstFncPtn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CnstFncPtn[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC]]extendsRecursiveConstructorPattern[Cod,provingground.HoTT.Term,HC,provingground.HoTT.Func[provingground.HoTT.Term,HC]]withProductwithSerializable"></a>
+      <a id="CnstFncPtn[Cod&lt;:TermwithSubs[Cod],HC&lt;:TermwithSubs[HC]]:CnstFncPtn[Cod,HC]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CnstFncPtn.html"><span class="name">CnstFncPtn</span></a><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstFncPtn.Cod">Cod</span>]</span>, <span name="HC">HC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.CnstFncPtn.HC">HC</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="head">head: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.CnstFncPtn.Cod">Cod</span>, <span class="extype" name="provingground.CnstFncPtn.HC">HC</span>]</span>)</span><span class="result"> extends <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a>[<span class="extype" name="provingground.CnstFncPtn.Cod">Cod</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.CnstFncPtn.HC">HC</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.CnstFncPtn.HC">HC</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@CnstFncPtn[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC]]extendsRecursiveConstructorPattern[Cod,provingground.HoTT.Term,HC,provingground.HoTT.Func[provingground.HoTT.Term,HC]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extending a poly-pattern by a constant type, i.e., not depending on W.</p>
+    </li><li name="provingground.Constructor" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="Constructor[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]extendsAnyRef"></a>
+      <a id="Constructor[Cod&lt;:TermwithSubs[Cod]]:Constructor[Cod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Constructor.html"><span class="name">Constructor</span></a><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Constructor[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Constructor for an inductive type, with given scala type and poly-pattern of this type.</p><div class="fullcomment"><div class="comment cmt"><p>Constructor for an inductive type, with given scala type and poly-pattern of this type.</p><p>abstraction of ConstructorDefn mainly to allow different type parameters.
+</p></div></div>
+    </li><li name="provingground.ConstructorDefn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ConstructorDefn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsConstructor[C]withProductwithSerializable"></a>
+      <a id="ConstructorDefn[U&lt;:TermwithSubs[U],C&lt;:TermwithSubs[C]]:ConstructorDefn[U,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ConstructorDefn.html"><span class="name">ConstructorDefn</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>]</span>]</span><span class="params">(<span name="pattern">pattern: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="cons">cons: <span class="extype" name="provingground.ConstructorDefn.U">U</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ConstructorDefn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsConstructor[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a constructor given by its parameters.</p><div class="fullcomment"><div class="comment cmt"><p>a constructor given by its parameters.
+</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>scala type of polypattern.</p></dd><dt class="param">pattern</dt><dd class="cmt"><p>poly-pattern for the constructor.</p></dd><dt class="param">cons</dt><dd class="cmt"><p>constructor function.</p></dd></dl></div>
+    </li><li name="provingground.ConstructorPattern" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ConstructorPattern[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],CnstrctrType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CnstrctrType]]extendsAnyRef"></a>
+      <a id="ConstructorPattern[Cod&lt;:TermwithSubs[Cod],CnstrctrType&lt;:TermwithSubs[CnstrctrType]]:ConstructorPattern[Cod,CnstrctrType]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ConstructorPattern.html"><span class="name">ConstructorPattern</span></a><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>, <span name="CnstrctrType">CnstrctrType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ConstructorPattern[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],CnstrctrType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CnstrctrType]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A composite pattern for inductive types.</p><div class="fullcomment"><div class="comment cmt"><p>A composite pattern for inductive types.
+Typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types
+Assumed to have fixed type for codomain  X.
+</p></div></div>
+    </li><li name="provingground.DepFuncPolyRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DepFuncPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.FuncLike[U,X],W=&gt;Y]withProductwithSerializable"></a>
+      <a id="DepFuncPolyRep[U&lt;:TermwithSubs[U],W,X&lt;:TermwithSubs[X],Y]:DepFuncPolyRep[U,W,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DepFuncPolyRep.html"><span class="name">DepFuncPolyRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPolyRep.U">U</span>]</span>, <span name="W">W</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPolyRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.DepFuncPolyRep.U">U</span>, <span class="extype" name="provingground.DepFuncPolyRep.W">W</span>]</span>, <span name="codrep">codrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.DepFuncPolyRep.X">X</span>, <span class="extype" name="provingground.DepFuncPolyRep.Y">Y</span>]</span>)</span><span class="result"> extends <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.DepFuncPolyRep.U">U</span>, <span class="extype" name="provingground.DepFuncPolyRep.X">X</span>], (<span class="extype" name="provingground.DepFuncPolyRep.W">W</span>) ⇒ <span class="extype" name="provingground.DepFuncPolyRep.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DepFuncPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.FuncLike[U,X],W=&gt;Y]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.DepFuncPtn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DepFuncPtn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]]extendsRecursiveConstructorPattern[C,F,U,provingground.HoTT.FuncLike[F,U]]withProductwithSerializable"></a>
+      <a id="DepFuncPtn[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V],VV&lt;:TermwithSubs[VV],W&lt;:TermwithSubs[W],C&lt;:TermwithSubs[C],F&lt;:TermwithSubs[F]]:DepFuncPtn[U,V,VV,W,C,F]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DepFuncPtn.html"><span class="name">DepFuncPtn</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.V">V</span>]</span>, <span name="VV">VV &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.VV">VV</span>]</span>, <span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.W">W</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.C">C</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncPtn.F">F</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.DepFuncPtn.C">C</span>, <span class="extype" name="provingground.DepFuncPtn.F">F</span>]</span>, <span name="headfibre">headfibre: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.DepFuncPtn.C">C</span>, <span class="extype" name="provingground.DepFuncPtn.U">U</span>] { ... /* 2 definitions in type refinement */ }</span>, <span name="headlevel">headlevel: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result"> extends <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a>[<span class="extype" name="provingground.DepFuncPtn.C">C</span>, <span class="extype" name="provingground.DepFuncPtn.F">F</span>, <span class="extype" name="provingground.DepFuncPtn.U">U</span>, <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.DepFuncPtn.F">F</span>, <span class="extype" name="provingground.DepFuncPtn.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DepFuncPtn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]]extendsRecursiveConstructorPattern[C,F,U,provingground.HoTT.FuncLike[F,U]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Dependent extension of a poly-pattern by a type pattern.</p><div class="fullcomment"><div class="comment cmt"><p>Dependent extension of a poly-pattern by a type pattern.
+XXX this may never be applicable
+</p></div></div>
+    </li><li name="provingground.DepFuncRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DepFuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.FuncLike[U,X],V=&gt;Y]withProductwithSerializable"></a>
+      <a id="DepFuncRep[U&lt;:TermwithSubs[U],V,X&lt;:TermwithSubs[X],Y]:DepFuncRep[U,V,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DepFuncRep.html"><span class="name">DepFuncRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncRep.U">U</span>]</span>, <span name="V">V</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.DepFuncRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.DepFuncRep.U">U</span>, <span class="extype" name="provingground.DepFuncRep.V">V</span>]</span>, <span name="codomreps">codomreps: (<span class="extype" name="provingground.DepFuncRep.V">V</span>) ⇒ <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.DepFuncRep.X">X</span>, <span class="extype" name="provingground.DepFuncRep.Y">Y</span>]</span>, <span name="fibers">fibers: <a href="HoTT$.html#TypFamily[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]=provingground.HoTT.Func[W,provingground.HoTT.Typ[U]]" class="extmbr" name="provingground.HoTT.TypFamily">TypFamily</a>[<span class="extype" name="provingground.DepFuncRep.U">U</span>, <span class="extype" name="provingground.DepFuncRep.X">X</span>]</span>)</span><span class="result"> extends <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.DepFuncRep.U">U</span>, <span class="extype" name="provingground.DepFuncRep.X">X</span>], (<span class="extype" name="provingground.DepFuncRep.V">V</span>) ⇒ <span class="extype" name="provingground.DepFuncRep.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DepFuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.FuncLike[U,X],V=&gt;Y]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Formal extendsion of a dependent function given scalareps for the domain and codomains.</p>
+    </li><li name="provingground.DiffbleFunction" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DiffbleFunction[A,B]extendsAnyRef"></a>
+      <a id="DiffbleFunction[A,B]:DiffbleFunction[A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="DiffbleFunction.html"><span class="name">DiffbleFunction</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DiffbleFunction[A,B]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Equality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EqualityextendsTermExprwithProductwithSerializable"></a>
+      <a id="Equality:Equality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Equality.html"><span class="name">Equality</span></a><span class="params">(<span name="dom">dom: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="lhs">lhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="rhs">rhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@EqualityextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">TermExpr a = b
+</p>
+    </li><li name="provingground.FiniteDistribution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FiniteDistribution[T]extendsAnyValwithGenFiniteDistribution[T]withProductwithSerializable"></a>
+      <a id="FiniteDistribution[T]:FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDistribution.html"><span class="name">FiniteDistribution</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Vector">Vector</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FiniteDistribution[T]extendsAnyValwithGenFiniteDistribution[T]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FiniteDistributionParVec" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FiniteDistributionParVec[T]extendsGenFiniteDistribution[T]withProductwithSerializable"></a>
+      <a id="FiniteDistributionParVec[T]:FiniteDistributionParVec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDistributionParVec.html"><span class="name">FiniteDistributionParVec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="parpmf">parpmf: <span class="extype" name="scala.collection.parallel.immutable.ParVector">ParVector</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistributionParVec.T">T</span>]]</span>, <span name="injective">injective: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result"> extends <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistributionParVec.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FiniteDistributionParVec[T]extendsGenFiniteDistribution[T]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FiniteDistributionSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FiniteDistributionSet[T]extendsGenFiniteDistribution[T]withProductwithSerializable"></a>
+      <a id="FiniteDistributionSet[T]:FiniteDistributionSet[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDistributionSet.html"><span class="name">FiniteDistributionSet</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistributionSet.T">T</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result"> extends <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistributionSet.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FiniteDistributionSet[T]extendsGenFiniteDistribution[T]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FoldedTerm" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FoldedTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Term"></a>
+      <a id="FoldedTerm[U&lt;:TermwithSubs[U]]:FoldedTerm[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="FoldedTerm.html"><span class="name">FoldedTerm</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FoldedTerm.U">U</span>]</span>]</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FoldedTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Term" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FuncPolyRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.Func[U,X],W=&gt;Y]withProductwithSerializable"></a>
+      <a id="FuncPolyRep[U&lt;:TermwithSubs[U],W,X&lt;:TermwithSubs[X],Y]:FuncPolyRep[U,W,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FuncPolyRep.html"><span class="name">FuncPolyRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncPolyRep.U">U</span>]</span>, <span name="W">W</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncPolyRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.FuncPolyRep.U">U</span>, <span class="extype" name="provingground.FuncPolyRep.W">W</span>]</span>, <span name="codrep">codrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.FuncPolyRep.X">X</span>, <span class="extype" name="provingground.FuncPolyRep.Y">Y</span>]</span>)</span><span class="result"> extends <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.FuncPolyRep.U">U</span>, <span class="extype" name="provingground.FuncPolyRep.X">X</span>], (<span class="extype" name="provingground.FuncPolyRep.W">W</span>) ⇒ <span class="extype" name="provingground.FuncPolyRep.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FuncPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.Func[U,X],W=&gt;Y]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FuncPtn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncPtn[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC]]extendsRecursiveConstructorPattern[C,F,HC,provingground.HoTT.Func[F,HC]]withProductwithSerializable"></a>
+      <a id="FuncPtn[C&lt;:TermwithSubs[C],F&lt;:TermwithSubs[F],HC&lt;:TermwithSubs[HC]]:FuncPtn[C,F,HC]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FuncPtn.html"><span class="name">FuncPtn</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncPtn.C">C</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncPtn.F">F</span>]</span>, <span name="HC">HC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncPtn.HC">HC</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.FuncPtn.C">C</span>, <span class="extype" name="provingground.FuncPtn.F">F</span>]</span>, <span name="head">head: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.FuncPtn.C">C</span>, <span class="extype" name="provingground.FuncPtn.HC">HC</span>]</span>)</span><span class="result"> extends <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a>[<span class="extype" name="provingground.FuncPtn.C">C</span>, <span class="extype" name="provingground.FuncPtn.F">F</span>, <span class="extype" name="provingground.FuncPtn.HC">HC</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.FuncPtn.F">F</span>, <span class="extype" name="provingground.FuncPtn.HC">HC</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FuncPtn[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC]]extendsRecursiveConstructorPattern[C,F,HC,provingground.HoTT.Func[F,HC]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extending a constructor-pattern by a type pattern.</p>
+    </li><li name="provingground.FuncRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.Func[U,X],V=&gt;Y]withProductwithSerializable"></a>
+      <a id="FuncRep[U&lt;:TermwithSubs[U],V,X&lt;:TermwithSubs[X],Y]:FuncRep[U,V,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FuncRep.html"><span class="name">FuncRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncRep.U">U</span>]</span>, <span name="V">V</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FuncRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.FuncRep.U">U</span>, <span class="extype" name="provingground.FuncRep.V">V</span>]</span>, <span name="codomrep">codomrep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.FuncRep.X">X</span>, <span class="extype" name="provingground.FuncRep.Y">Y</span>]</span>)</span><span class="result"> extends <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.FuncRep.U">U</span>, <span class="extype" name="provingground.FuncRep.X">X</span>], (<span class="extype" name="provingground.FuncRep.V">V</span>) ⇒ <span class="extype" name="provingground.FuncRep.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.Func[U,X],V=&gt;Y]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Representations for functions given ones for the domain and codomain.</p>
+    </li><li name="provingground.GenFiniteDistribution" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="GenFiniteDistribution[T]extendsAny"></a>
+      <a id="GenFiniteDistribution[T]:GenFiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="GenFiniteDistribution.html"><span class="name">GenFiniteDistribution</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@GenFiniteDistribution[T]extendsAny" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.</p>
+    </li><li name="provingground.IdRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IdRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[U,U]withProductwithSerializable"></a>
+      <a id="IdRep[U&lt;:TermwithSubs[U]]:IdRep[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IdRep.html"><span class="name">IdRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IdRep.U">U</span>]</span>]</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IdRep.U">U</span>]</span>)</span><span class="result"> extends <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.IdRep.U">U</span>, <span class="extype" name="provingground.IdRep.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@IdRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[U,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A term representing itself.</p>
+    </li><li name="provingground.IndexedConstructorPatterns" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IndexedConstructorPatterns[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F],Ind&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Ind],I&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[I],IT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IT],DI&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[DI],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],Fmly&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fmly]]extendsAnyRef"></a>
+      <a id="IndexedConstructorPatterns[F&lt;:TermwithSubs[F],Ind&lt;:TermwithSubs[Ind],I&lt;:TermwithSubs[I],IT&lt;:TermwithSubs[IT],DI&lt;:TermwithSubs[DI],C&lt;:TermwithSubs[C],Fmly&lt;:TermwithSubs[Fmly]]:IndexedConstructorPatterns[F,Ind,I,IT,DI,C,Fmly]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexedConstructorPatterns.html"><span class="name">IndexedConstructorPatterns</span></a><span class="tparams">[<span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.F">F</span>]</span>, <span name="Ind">Ind &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.Ind">Ind</span>]</span>, <span name="I">I &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.I">I</span>]</span>, <span name="IT">IT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.IT">IT</span>]</span>, <span name="DI">DI &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.DI">DI</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.C">C</span>]</span>, <span name="Fmly">Fmly &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatterns.Fmly">Fmly</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@IndexedConstructorPatterns[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F],Ind&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Ind],I&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[I],IT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IT],DI&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[DI],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],Fmly&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fmly]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.InducDefinitionCons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InducDefinitionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsInductiveDefinition[C]withProductwithSerializable"></a>
+      <a id="InducDefinitionCons[D&lt;:TermwithSubs[D],C&lt;:TermwithSubs[C]]:InducDefinitionCons[D,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InducDefinitionCons.html"><span class="name">InducDefinitionCons</span></a><span class="tparams">[<span name="D">D &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.InducDefinitionCons.D">D</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.InducDefinitionCons.C">C</span>]</span>]</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.InducDefinitionCons.D">D</span></span>, <span name="caseFn">caseFn: (<span class="extype" name="provingground.InducDefinitionCons.D">D</span>) ⇒ (<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.InducDefinitionCons.C">C</span>]) ⇒ (<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.InducDefinitionCons.C">C</span>]) ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.InducDefinitionCons.C">C</span>]</span>, <span name="tail">tail: <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InducDefinitionCons.C">C</span>]</span>)</span><span class="result"> extends <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InducDefinitionCons.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@InducDefinitionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsInductiveDefinition[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.InducDefinitionTail" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InducDefinitionTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsInductiveDefinition[C]withProductwithSerializable"></a>
+      <a id="InducDefinitionTail[C&lt;:TermwithSubs[C]]:InducDefinitionTail[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="InducDefinitionTail.html"><span class="name">InducDefinitionTail</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.InducDefinitionTail.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="Xs">Xs: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.InducDefinitionTail.C">C</span>]]</span>)</span><span class="result"> extends <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InducDefinitionTail.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@InducDefinitionTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsInductiveDefinition[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">recursive definition with empty constructor, hence empty data
+</p>
+    </li><li name="provingground.InductiveDefinition" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="InductiveDefinition[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef"></a>
+      <a id="InductiveDefinition[C&lt;:TermwithSubs[C]]:InductiveDefinition[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InductiveDefinition.html"><span class="name">InductiveDefinition</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.InductiveDefinition.C">C</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@InductiveDefinition[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.IntVector" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IntVectorextendsScalaTyp[Vector[Int]]withProductwithSerializable"></a>
+      <a id="IntVector:IntVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IntVector.html"><span class="name">IntVector</span></a><span class="params">(<span name="dim">dim: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="ScalaTyp.html" class="extype" name="provingground.ScalaTyp">ScalaTyp</a>[<span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Int">Int</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@IntVectorextendsScalaTyp[Vector[Int]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.LambdaExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LambdaExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="LambdaExpr:LambdaExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LambdaExpr.html"><span class="name">LambdaExpr</span></a><span class="params">(<span name="x">x: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="y">y: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@LambdaExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">LambdaTermExpr maps to a lambda
+</p>
+    </li><li name="provingground.LinearStructure" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LinearStructure[A]extendsProductwithSerializable"></a>
+      <a id="LinearStructure[A]:LinearStructure[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LinearStructure.html"><span class="name">LinearStructure</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="zero">zero: <span class="extype" name="provingground.LinearStructure.A">A</span></span>, <span name="sum">sum: (<span class="extype" name="provingground.LinearStructure.A">A</span>, <span class="extype" name="provingground.LinearStructure.A">A</span>) ⇒ <span class="extype" name="provingground.LinearStructure.A">A</span></span>, <span name="mult">mult: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="provingground.LinearStructure.A">A</span>) ⇒ <span class="extype" name="provingground.LinearStructure.A">A</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@LinearStructure[A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ListTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],X]extendsScalaTyp[List[X]]withProductwithSerializable"></a>
+      <a id="ListTyp[U&lt;:TermwithSubs[U],X]:ListTyp[U,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ListTyp.html"><span class="name">ListTyp</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ListTyp.U">U</span>]</span>, <span name="X">X</span>]</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="baserep">baserep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.ListTyp.U">U</span>, <span class="extype" name="provingground.ListTyp.X">X</span>]</span>)</span><span class="result"> extends <a href="ScalaTyp.html" class="extype" name="provingground.ScalaTyp">ScalaTyp</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListTyp.X">X</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],X]extendsScalaTyp[List[X]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.LiteralParser" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LiteralParserextendsAnyRef"></a>
+      <a id="LiteralParser:LiteralParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LiteralParser.html"><span class="name">LiteralParser</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@LiteralParserextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.OrElse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OrElse[A]extendsSimplifier[A]withProductwithSerializable"></a>
+      <a id="OrElse[A]:OrElse[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="OrElse.html"><span class="name">OrElse</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="first">first: <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.OrElse.A">A</span>]</span>, <span name="second">second: <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.OrElse.A">A</span>]</span>)</span><span class="result"> extends <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.OrElse.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@OrElse[A]extendsSimplifier[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.OrScalaPolyRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OrScalaPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsScalaPolyRep[U,W]withProductwithSerializable"></a>
+      <a id="OrScalaPolyRep[U&lt;:TermwithSubs[U],W]:OrScalaPolyRep[U,W]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="OrScalaPolyRep.html"><span class="name">OrScalaPolyRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.OrScalaPolyRep.U">U</span>]</span>, <span name="W">W</span>]</span><span class="params">(<span name="first">first: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.OrScalaPolyRep.U">U</span>, <span class="extype" name="provingground.OrScalaPolyRep.W">W</span>]</span>, <span name="second">second: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.OrScalaPolyRep.U">U</span>, <span class="extype" name="provingground.OrScalaPolyRep.W">W</span>]</span>)</span><span class="result"> extends <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.OrScalaPolyRep.U">U</span>, <span class="extype" name="provingground.OrScalaPolyRep.W">W</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@OrScalaPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsScalaPolyRep[U,W]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.PairExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PairExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PairExpr:PairExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PairExpr.html"><span class="name">PairExpr</span></a><span class="params">(<span name="first">first: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="second">second: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@PairExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.PairPolyRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PairPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.AbsPair[U,X],(W,Y)]withProductwithSerializable"></a>
+      <a id="PairPolyRep[U&lt;:TermwithSubs[U],W,X&lt;:TermwithSubs[X],Y]:PairPolyRep[U,W,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PairPolyRep.html"><span class="name">PairPolyRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.PairPolyRep.U">U</span>]</span>, <span name="W">W</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.PairPolyRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="firstrep">firstrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.PairPolyRep.U">U</span>, <span class="extype" name="provingground.PairPolyRep.W">W</span>]</span>, <span name="secondrep">secondrep: <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.PairPolyRep.X">X</span>, <span class="extype" name="provingground.PairPolyRep.Y">Y</span>]</span>)</span><span class="result"> extends <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<span class="extype" name="provingground.PairPolyRep.U">U</span>, <span class="extype" name="provingground.PairPolyRep.X">X</span>], (<span class="extype" name="provingground.PairPolyRep.W">W</span>, <span class="extype" name="provingground.PairPolyRep.Y">Y</span>)] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@PairPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaPolyRep[provingground.HoTT.AbsPair[U,X],(W,Y)]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.PiExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PiExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PiExpr:PiExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PiExpr.html"><span class="name">PiExpr</span></a><span class="params">(<span name="fiber">fiber: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@PiExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.PlusTypExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PlusTypExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PlusTypExpr:PlusTypExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PlusTypExpr.html"><span class="name">PlusTypExpr</span></a><span class="params">(<span name="first">first: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="second">second: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@PlusTypExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.RecDefinitionCons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecDefinitionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveDefinition[C]withProductwithSerializable"></a>
+      <a id="RecDefinitionCons[D&lt;:TermwithSubs[D],C&lt;:TermwithSubs[C]]:RecDefinitionCons[D,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RecDefinitionCons.html"><span class="name">RecDefinitionCons</span></a><span class="tparams">[<span name="D">D &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecDefinitionCons.D">D</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecDefinitionCons.C">C</span>]</span>]</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.RecDefinitionCons.D">D</span></span>, <span name="caseFn">caseFn: (<span class="extype" name="provingground.RecDefinitionCons.D">D</span>) ⇒ (<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecDefinitionCons.C">C</span>]) ⇒ (<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecDefinitionCons.C">C</span>]) ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecDefinitionCons.C">C</span>]</span>, <span name="tail">tail: <a href="RecursiveDefinition.html" class="extype" name="provingground.RecursiveDefinition">RecursiveDefinition</a>[<span class="extype" name="provingground.RecDefinitionCons.C">C</span>]</span>)</span><span class="result"> extends <a href="RecursiveDefinition.html" class="extype" name="provingground.RecursiveDefinition">RecursiveDefinition</a>[<span class="extype" name="provingground.RecDefinitionCons.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecDefinitionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveDefinition[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.RecDefinitionTail" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecDefinitionTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveDefinition[C]withProductwithSerializable"></a>
+      <a id="RecDefinitionTail[C&lt;:TermwithSubs[C]]:RecDefinitionTail[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RecDefinitionTail.html"><span class="name">RecDefinitionTail</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecDefinitionTail.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecDefinitionTail.C">C</span>]</span>)</span><span class="result"> extends <a href="RecursiveDefinition.html" class="extype" name="provingground.RecursiveDefinition">RecursiveDefinition</a>[<span class="extype" name="provingground.RecDefinitionTail.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecDefinitionTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecursiveDefinition[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">recursive definition with empty constructor, hence empty data
+</p>
+    </li><li name="provingground.RecFn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecFn[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="RecFn[C&lt;:TermwithSubs[C]]:RecFn[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RecFn.html"><span class="name">RecFn</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFn.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="X">X: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecFn.C">C</span>]</span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecFn[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.RecFunction" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RecFunction[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef"></a>
+      <a id="RecFunction[C&lt;:TermwithSubs[C]]:RecFunction[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RecFunction.html"><span class="name">RecFunction</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFunction.C">C</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecFunction[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">rec(W)(X) is the value, defined recursively.</p><div class="fullcomment"><div class="comment cmt"><p>rec(W)(X) is the value, defined recursively.</p></div><dl class="paramcmts block"><dt class="tparam">C</dt><dd class="cmt"><p>codomain (scala) type</p></dd></dl></div>
+    </li><li name="provingground.RecFunctionCons" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RecFunctionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecFunction[C]withProductwithSerializable"></a>
+      <a id="RecFunctionCons[D&lt;:TermwithSubs[D],C&lt;:TermwithSubs[C]]:RecFunctionCons[D,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RecFunctionCons.html"><span class="name">RecFunctionCons</span></a><span class="tparams">[<span name="D">D &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFunctionCons.D">D</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFunctionCons.C">C</span>]</span>]</span><span class="params">(<span name="recdom">recdom: (<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecFunctionCons.C">C</span>]) ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecFunctionCons.D">D</span>]</span>, <span name="caseFn">caseFn: (<span class="extype" name="provingground.RecFunctionCons.D">D</span>) ⇒ (<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecFunctionCons.C">C</span>]) ⇒ (<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecFunctionCons.C">C</span>]) ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.RecFunctionCons.C">C</span>]</span>, <span name="tail">tail: <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecFunctionCons.C">C</span>]</span>)</span><span class="result"> extends <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecFunctionCons.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecFunctionCons[D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecFunction[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">cons for recursion function, i.e., adding a new constructor</p><div class="fullcomment"><div class="comment cmt"><p>cons for recursion function, i.e., adding a new constructor</p></div><dl class="paramcmts block"><dt class="param">caseFn</dt><dd class="cmt"><p>given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern and gives new function</p></dd><dt class="param">tail</dt><dd class="cmt"><p>previously added constructors</p></dd></dl></div>
+    </li><li name="provingground.RecTail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RecTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecFunction[C]withProductwithSerializable"></a>
+      <a id="RecTail[C&lt;:TermwithSubs[C]]:RecTail[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RecTail.html"><span class="name">RecTail</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecTail.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecTail[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsRecFunction[C]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">container for rec(W)(X) in the case of no constructors.</p><div class="fullcomment"><div class="comment cmt"><p>container for rec(W)(X) in the case of no constructors.
+rec(W)(X) is defined to be formal application of itself.
+Lazy lambda is used to avoid infinite loops
+</p></div></div>
+    </li><li name="provingground.RecursiveConstructorPattern" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RecursiveConstructorPattern[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],ArgT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ArgT],HeadT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HeadT],CT&lt;:provingground.HoTT.FuncLike[ArgT,HeadT]withprovingground.HoTT.Subs[CT]]extendsConstructorPattern[Cod,CT]"></a>
+      <a id="RecursiveConstructorPattern[Cod&lt;:TermwithSubs[Cod],ArgT&lt;:TermwithSubs[ArgT],HeadT&lt;:TermwithSubs[HeadT],CT&lt;:FuncLike[ArgT,HeadT]withSubs[CT]]:RecursiveConstructorPattern[Cod,ArgT,HeadT,CT]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RecursiveConstructorPattern.html"><span class="name">RecursiveConstructorPattern</span></a><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.Cod">Cod</span>]</span>, <span name="ArgT">ArgT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.ArgT">ArgT</span>]</span>, <span name="HeadT">HeadT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.HeadT">HeadT</span>]</span>, <span name="CT">CT &lt;: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.ArgT">ArgT</span>, <span class="extype" name="provingground.RecursiveConstructorPattern.HeadT">HeadT</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.CT">CT</span>]</span>]</span><span class="result"> extends <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.RecursiveConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.RecursiveConstructorPattern.CT">CT</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecursiveConstructorPattern[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],ArgT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ArgT],HeadT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HeadT],CT&lt;:provingground.HoTT.FuncLike[ArgT,HeadT]withprovingground.HoTT.Subs[CT]]extendsConstructorPattern[Cod,CT]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Functional extension of a type pattern
+</p>
+    </li><li name="provingground.RecursiveDefinition" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RecursiveDefinition[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef"></a>
+      <a id="RecursiveDefinition[C&lt;:TermwithSubs[C]]:RecursiveDefinition[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RecursiveDefinition.html"><span class="name">RecursiveDefinition</span></a><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecursiveDefinition.C">C</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecursiveDefinition[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.Refine" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Refine[A]extendsSimplifier[A]withProductwithSerializable"></a>
+      <a id="Refine[A]:Refine[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Refine.html"><span class="name">Refine</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="base">base: <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.Refine.A">A</span>]</span>)</span><span class="result"> extends <a href="Simplifier.html" class="extype" name="provingground.Simplifier">Simplifier</a>[<span class="extype" name="provingground.Refine.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Refine[A]extendsSimplifier[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.RepTerm" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RepTerm[A]extendsHoTT.TermwithHoTT.Subs[provingground.RepTerm[A]]"></a>
+      <a id="RepTerm[A]:RepTerm[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RepTerm.html"><span class="name">RepTerm</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="provingground.RepTerm.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RepTerm[A]extendsHoTT.TermwithHoTT.Subs[provingground.RepTerm[A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaPolyRep" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ScalaPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsAnyRef"></a>
+      <a id="ScalaPolyRep[U&lt;:TermwithSubs[U],W]:ScalaPolyRep[U,W]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaPolyRep.html"><span class="name">ScalaPolyRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaPolyRep.U">U</span>]</span>, <span name="W">W</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaPolyRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaRep" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ScalaRep[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V]extendsAnyRef"></a>
+      <a id="ScalaRep[+U&lt;:TermwithSubs[U],V]:ScalaRep[U,V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaRep.html"><span class="name">ScalaRep</span></a><span class="tparams">[<span name="U">+U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRep.U">U</span>]</span>, <span name="V">V</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaRep[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Representation by a scala object of a HoTT term
+</p><div class="fullcomment"><div class="comment cmt"><p>Representation by a scala object of a HoTT term
+</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>the HoTT type represented</p></dd><dt class="tparam">V</dt><dd class="cmt"><p>scala type representing the given object.</p></dd></dl></div>
+    </li><li name="provingground.ScalaRepWrap" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaRepWrap[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsScalaPolyRep[U,W]withProductwithSerializable"></a>
+      <a id="ScalaRepWrap[U&lt;:TermwithSubs[U],W]:ScalaRepWrap[U,W]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaRepWrap.html"><span class="name">ScalaRepWrap</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRepWrap.U">U</span>]</span>, <span name="W">W</span>]</span><span class="params">(<span name="rep">rep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.ScalaRepWrap.U">U</span>, <span class="extype" name="provingground.ScalaRepWrap.W">W</span>]</span>)</span><span class="result"> extends <a href="ScalaPolyRep.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.ScalaRepWrap.U">U</span>, <span class="extype" name="provingground.ScalaRepWrap.W">W</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaRepWrap[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],W]extendsScalaPolyRep[U,W]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaTyp[A]extendsHoTT.Typ[provingground.RepTerm[A]]"></a>
+      <a id="ScalaTyp[A]:ScalaTyp[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaTyp.html"><span class="name">ScalaTyp</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="provingground.ScalaTyp.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaTyp[A]extendsHoTT.Typ[provingground.RepTerm[A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaVec" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaVec[X]extendsAnyRef"></a>
+      <a id="ScalaVec[X]:ScalaVec[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaVec.html"><span class="name">ScalaVec</span></a><span class="tparams">[<span name="X">X</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaVec[X]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SigmaExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SigmaExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="SigmaExpr:SigmaExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SigmaExpr.html"><span class="name">SigmaExpr</span></a><span class="params">(<span name="fiber">fiber: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SigmaExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SigmaRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SigmaRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.Term,(V,Y)]withProductwithSerializable"></a>
+      <a id="SigmaRep[U&lt;:TermwithSubs[U],V,X&lt;:TermwithSubs[X],Y]:SigmaRep[U,V,X,Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SigmaRep.html"><span class="name">SigmaRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.SigmaRep.U">U</span>]</span>, <span name="V">V</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.SigmaRep.X">X</span>]</span>, <span name="Y">Y</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.SigmaRep.U">U</span>, <span class="extype" name="provingground.SigmaRep.V">V</span>]</span>, <span name="codrepfmly">codrepfmly: (<span class="extype" name="provingground.SigmaRep.V">V</span>) ⇒ <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.SigmaRep.X">X</span>, <span class="extype" name="provingground.SigmaRep.Y">Y</span>]</span>)</span><span class="result"> extends <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<span class="extype" name="provingground.SigmaRep.V">V</span>, <span class="extype" name="provingground.SigmaRep.Y">Y</span>)] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SigmaRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X],Y]extendsScalaRep[provingground.HoTT.Term,(V,Y)]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SimpleFuncRep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SimpleFuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X]]extendsScalaRep[provingground.HoTT.FuncLike[U,X],V=&gt;X]withProductwithSerializable"></a>
+      <a id="SimpleFuncRep[U&lt;:TermwithSubs[U],V,X&lt;:TermwithSubs[X]]:SimpleFuncRep[U,V,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleFuncRep.html"><span class="name">SimpleFuncRep</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.SimpleFuncRep.U">U</span>]</span>, <span name="V">V</span>, <span name="X">X &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.SimpleFuncRep.X">X</span>]</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.SimpleFuncRep.U">U</span>, <span class="extype" name="provingground.SimpleFuncRep.V">V</span>]</span>, <span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.SimpleFuncRep.X">X</span>]</span>)</span><span class="result"> extends <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.SimpleFuncRep.U">U</span>, <span class="extype" name="provingground.SimpleFuncRep.X">X</span>], (<span class="extype" name="provingground.SimpleFuncRep.V">V</span>) ⇒ <span class="extype" name="provingground.SimpleFuncRep.X">X</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SimpleFuncRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V,X&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[X]]extendsScalaRep[provingground.HoTT.FuncLike[U,X],V=&gt;X]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Function rep with codomain representing itself.</p><div class="fullcomment"><div class="comment cmt"><p>Function rep with codomain representing itself. Should perhaps use  IdRep instead.
+</p></div></div>
+    </li><li name="provingground.Simplifier" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Simplifier[A]extendsAnyRef"></a>
+      <a id="Simplifier[A]:Simplifier[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Simplifier.html"><span class="name">Simplifier</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Simplifier[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SnapShot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SnapShot[X,P]extendsProductwithSerializable"></a>
+      <a id="SnapShot[X,P]:SnapShot[X,P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SnapShot.html"><span class="name">SnapShot</span></a><span class="tparams">[<span name="X">X</span>, <span name="P">P</span>]</span><span class="params">(<span name="state">state: <span class="extype" name="provingground.SnapShot.X">X</span></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>, <span name="param">param: <span class="extype" name="provingground.SnapShot.P">P</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SnapShot[X,P]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SvgPlot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SvgPlotextendsAnyRef"></a>
+      <a id="SvgPlot:SvgPlot"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SvgPlot.html"><span class="name">SvgPlot</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SvgPlotextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SymbolicCRig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbolicCRig[A]extendsAnyRef"></a>
+      <a id="SymbolicCRig[A]:SymbolicCRig[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig.html"><span class="name">SymbolicCRig</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SymbolicCRig[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SymbolicCRing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbolicCRing[A]extendsSymbolicCRig[A]"></a>
+      <a id="SymbolicCRing[A]:SymbolicCRing[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRing.html"><span class="name">SymbolicCRing</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a>[<span class="extype" name="provingground.SymbolicCRing.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SymbolicCRing[A]extendsSymbolicCRig[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SymbolicField" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbolicField[A]extendsSymbolicCRing[A]"></a>
+      <a id="SymbolicField[A]:SymbolicField[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicField.html"><span class="name">SymbolicField</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="provingground.SymbolicField.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SymbolicField[A]extendsSymbolicCRing[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.TermExpr" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TermExprextendsAnyRef"></a>
+      <a id="TermExpr:TermExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr.html"><span class="name">TermExpr</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TermExprextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.TermParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermParserextendsJavaTokenParsers"></a>
+      <a id="TermParser:TermParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermParser.html"><span class="name">TermParser</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TermParserextendsJavaTokenParsers" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.TermRec" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TermRec[U]extendsAnyRef"></a>
+      <a id="TermRec[U]:TermRec[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TermRec.html"><span class="name">TermRec</span></a><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TermRec[U]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TypedLiteral" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypedLiteralextendsTermExprwithProductwithSerializable"></a>
+      <a id="TypedLiteral:TypedLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TypedLiteral.html"><span class="name">TypedLiteral</span></a><span class="params">(<span name="lit">lit: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TypedLiteralextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TypedVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypedVarextendsTermExprwithProductwithSerializable"></a>
+      <a id="TypedVar:TypedVar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TypedVar.html"><span class="name">TypedVar</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TypedVarextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbolic variable with given type
+</p>
+    </li><li name="provingground.VarTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VarTypextendsTermExprwithProductwithSerializable"></a>
+      <a id="VarTyp:VarTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="VarTyp.html"><span class="name">VarTyp</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@VarTypextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.VecTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VecTyp[X,+U&lt;:provingground.RepTerm[X]withprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.RepTerm[Vector[X]]]withProductwithSerializable"></a>
+      <a id="VecTyp[X,+U&lt;:RepTerm[X]withSubs[U]]:VecTyp[X,U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="VecTyp.html"><span class="name">VecTyp</span></a><span class="tparams">[<span name="X">X</span>, <span name="U">+U &lt;: <a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="provingground.VecTyp.X">X</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.VecTyp.U">U</span>]</span>]</span><span class="params">(<span name="basetyp">basetyp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.VecTyp.U">U</span>]</span>, <span name="dim">dim: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="_baserep">_baserep: <a href="ScalaRep.html" class="extype" name="provingground.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.VecTyp.U">U</span>, <span class="extype" name="provingground.VecTyp.X">X</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="provingground.VecTyp.X">X</span>]]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@VecTyp[X,+U&lt;:provingground.RepTerm[X]withprovingground.HoTT.Subs[U]]extendsHoTT.Typ[provingground.RepTerm[Vector[X]]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="provingground.BaseTypes" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BaseTypes"></a>
+      <a id="BaseTypes:BaseTypes"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BaseTypes$.html"><span class="name">BaseTypes</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@BaseTypes" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Collections" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Collections"></a>
+      <a id="Collections:Collections"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Collections$.html"><span class="name">Collections</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Collections" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ConstructorPattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConstructorPattern"></a>
+      <a id="ConstructorPattern:ConstructorPattern"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ConstructorPattern$.html"><span class="name">ConstructorPattern</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ConstructorPattern" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.DSL" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DSL"></a>
+      <a id="DSL:DSL"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DSL$.html"><span class="name">DSL</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DSL" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.DiffbleFunction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DiffbleFunction"></a>
+      <a id="DiffbleFunction:DiffbleFunction"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DiffbleFunction$.html"><span class="name">DiffbleFunction</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@DiffbleFunction" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Families" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Families"></a>
+      <a id="Families:Families"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Families$.html"><span class="name">Families</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Families" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.FiniteDistribution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FiniteDistribution"></a>
+      <a id="FiniteDistribution:FiniteDistribution"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDistribution$.html"><span class="name">FiniteDistribution</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FiniteDistribution" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FiniteDistributionLearner" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FiniteDistributionLearner"></a>
+      <a id="FiniteDistributionLearner:FiniteDistributionLearner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FiniteDistributionLearner$.html"><span class="name">FiniteDistributionLearner</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@FiniteDistributionLearner" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A combinator for learning systems with state finite distributions on vertices.</p><div class="fullcomment"><div class="comment cmt"><p>A combinator for learning systems with state finite distributions on vertices.
+Systems are built from components labeled by elements of a set M.
+The state also has weights for these components.
+The components are built from: moves (partial functions), partial combinations and islands.</p></div></div>
+    </li><li name="provingground.Header" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Header"></a>
+      <a id="Header:Header"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Header$.html"><span class="name">Header</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Header" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.HoTT" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HoTT"></a>
+      <a id="HoTT:HoTT"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$.html"><span class="name">HoTT</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@HoTT" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The Homotopy type theory objects, types and utility functions
+S
+</p>
+    </li><li name="provingground.HoTTgen" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HoTTgen"></a>
+      <a id="HoTTgen:HoTTgen"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTTgen$.html"><span class="name">HoTTgen</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@HoTTgen" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.IdW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IdW"></a>
+      <a id="IdW:IdW"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IdW$.html"><span class="name">IdW</span></a><span class="result"> extends <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@IdW" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The constructor pattern W - the only valid head for constructor-patterns.</p>
+    </li><li name="provingground.InductiveDefinition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InductiveDefinition"></a>
+      <a id="InductiveDefinition:InductiveDefinition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="InductiveDefinition$.html"><span class="name">InductiveDefinition</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@InductiveDefinition" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.IntVector" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IntVector"></a>
+      <a id="IntVector:IntVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IntVector$.html"><span class="name">IntVector</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@IntVector" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.LinearStructure" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LinearStructure"></a>
+      <a id="LinearStructure:LinearStructure"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LinearStructure$.html"><span class="name">LinearStructure</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@LinearStructure" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.LiteralParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LiteralParser"></a>
+      <a id="LiteralParser:LiteralParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LiteralParser$.html"><span class="name">LiteralParser</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@LiteralParser" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.NatTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NatTyp"></a>
+      <a id="NatTyp:NatTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NatTyp$.html"><span class="name">NatTyp</span></a><span class="result"> extends <a href="ScalaTyp.html" class="extype" name="provingground.ScalaTyp">ScalaTyp</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@NatTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.NlpProse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NlpProse"></a>
+      <a id="NlpProse:NlpProse"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NlpProse$.html"><span class="name">NlpProse</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@NlpProse" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Stanford dependency trees and associated methods</p>
+    </li><li name="provingground.RecFunction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecFunction"></a>
+      <a id="RecFunction:RecFunction"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RecFunction$.html"><span class="name">RecFunction</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecFunction" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.RecursiveDefinition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecursiveDefinition"></a>
+      <a id="RecursiveDefinition:RecursiveDefinition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RecursiveDefinition$.html"><span class="name">RecursiveDefinition</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@RecursiveDefinition" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaPolyRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaPolyRep"></a>
+      <a id="ScalaPolyRep:ScalaPolyRep"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaPolyRep$.html"><span class="name">ScalaPolyRep</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaPolyRep" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaRep"></a>
+      <a id="ScalaRep:ScalaRep"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaRep$.html"><span class="name">ScalaRep</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaRep" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ScalaUniverses" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScalaUniverses"></a>
+      <a id="ScalaUniverses:ScalaUniverses"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalaUniverses$.html"><span class="name">ScalaUniverses</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@ScalaUniverses" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.StringParse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StringParse"></a>
+      <a id="StringParse:StringParse"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="StringParse$.html"><span class="name">StringParse</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@StringParse" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.SvgPlot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SvgPlot"></a>
+      <a id="SvgPlot:SvgPlot"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SvgPlot$.html"><span class="name">SvgPlot</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SvgPlot" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SymbolicCRig"></a>
+      <a id="SymbolicCRig:SymbolicCRig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$.html"><span class="name">SymbolicCRig</span></a><span class="result"> extends <a href="LiteralParser.html" class="extype" name="provingground.LiteralParser">LiteralParser</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@SymbolicCRig" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermExpr"></a>
+      <a id="TermExpr:TermExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$.html"><span class="name">TermExpr</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TermExpr" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermFormat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermFormat"></a>
+      <a id="TermFormat:TermFormat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TermFormat$.html"><span class="name">TermFormat</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TermFormat" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TextToInt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TextToInt"></a>
+      <a id="TextToInt:TextToInt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TextToInt$.html"><span class="name">TextToInt</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@TextToInt" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Converts prose numbers to Integers without checking for bad cases</p>
+    </li><li name="provingground.U" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="U"></a>
+      <a id="U:U"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="U$.html"><span class="name">U</span></a><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the first universe
+</p>
+    </li><li name="provingground.Unify" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Unify"></a>
+      <a id="Unify:Unify"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Unify$.html"><span class="name">Unify</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@Unify" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.VecTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VecTyp"></a>
+      <a id="VecTyp:VecTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VecTyp$.html"><span class="name">VecTyp</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@VecTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.VectorRepresentations" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VectorRepresentations"></a>
+      <a id="VectorRepresentations:VectorRepresentations"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorRepresentations$.html"><span class="name">VectorRepresentations</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@VectorRepresentations" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="andrewscurtis"></a>
+      <a id="andrewscurtis:andrewscurtis"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="andrewscurtis/package.html"><span class="name">andrewscurtis</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.package@andrewscurtis" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
