@@ -51,7 +51,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Actor controlling (bu not creating) the various loopers for running;
+maintains info on the state etc. of loopers,
+keeps telling a running looper to continue.
+Running loopers is separated into spawning them, in general from outside the actor system,
+and starting them from a Hub.</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="akka.actor.Actor">Actor</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -437,6 +441,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.FDHub#loopers" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="loopers:Map[akka.actor.ActorRef,provingground.FDHub.State]"></a>
+      <a id="loopers:Map[ActorRef,State]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loopers</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>, <a href="FDHub$$State.html" class="extype" name="provingground.FDHub.State">State</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FDHub@loopers:Map[akka.actor.ActorRef,provingground.FDHub.State]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.FDHub#names" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="names:List[String]"></a>
       <a id="names:List[String]"></a>
@@ -614,23 +635,6 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.FDHub">FDHub</a> → Actor</dd></dl></div>
-    </li><li name="provingground.FDHub#runners" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="runners:Map[akka.actor.ActorRef,provingground.FDHub.State]"></a>
-      <a id="runners:Map[ActorRef,State]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">runners</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>, <a href="FDHub$$State.html" class="extype" name="provingground.FDHub.State">State</a>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.FDHub@runners:Map[akka.actor.ActorRef,provingground.FDHub.State]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="akka.actor.Actor#self" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="self:akka.actor.ActorRef"></a>
       <a id="self:ActorRef"></a>

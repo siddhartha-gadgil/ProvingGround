@@ -466,23 +466,6 @@
       </a>
     </span>
       
-    </li><li name="provingground.andrewscurtis.ACLooper#rawSpawn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="rawSpawn(name:String,rank:Int,size:Int,wrdCntn:Double,init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),srcRef:akka.actor.ActorRef,param:provingground.andrewscurtis.Param):akka.actor.ActorRef"></a>
-      <a id="rawSpawn(String,Int,Int,Double,(FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),ActorRef,Param):ActorRef"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">rawSpawn</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="rank">rank: <span class="extype" name="scala.Int">Int</span></span>, <span name="size">size: <span class="extype" name="scala.Int">Int</span></span>, <span name="wrdCntn">wrdCntn: <span class="extype" name="scala.Double">Double</span></span>, <span name="init">init: (<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>], <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>])</span>, <span name="srcRef">srcRef: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="param">param: <span class="extype" name="provingground.andrewscurtis.Param">Param</span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@rawSpawn(name:String,rank:Int,size:Int,wrdCntn:Double,init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),srcRef:akka.actor.ActorRef,param:provingground.andrewscurtis.Param):akka.actor.ActorRef" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="provingground.andrewscurtis.ACLooper#smoothFeedback" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="smoothFeedback(rank:Int,wrdCntn:Double,strictness:Double):((provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]))=&gt;(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves])"></a>
       <a id="smoothFeedback(Int,Double,Double):((FiniteDistribution[AtomicMove],FiniteDistribution[Moves]))⇒(FiniteDistribution[AtomicMove],FiniteDistribution[Moves])"></a>
@@ -534,70 +517,19 @@
       </a>
     </span>
       
-    </li><li name="provingground.andrewscurtis.ACLooper#spawnRaw" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="spawnRaw(name:String,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):akka.actor.ActorRef"></a>
-      <a id="spawnRaw(String,Param,(Int)⇒FiniteDistribution[AtomicMove]):ActorRef"></a>
+    </li><li name="provingground.andrewscurtis.ACLooper#spawn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="spawn(name:String,rank:Int,size:Int,wrdCntn:Double,init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),srcRef:akka.actor.ActorRef,param:provingground.andrewscurtis.Param):akka.actor.ActorRef"></a>
+      <a id="spawn(String,Int,Int,Double,(FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),ActorRef,Param):ActorRef"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">spawnRaw</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="p">p: <span class="extype" name="provingground.andrewscurtis.Param">Param</span> = <span class="symbol">Param()</span></span>, <span name="init">init: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>] = <span class="symbol">learnerMoves</span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
+        <span class="name">spawn</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="rank">rank: <span class="extype" name="scala.Int">Int</span></span>, <span name="size">size: <span class="extype" name="scala.Int">Int</span></span>, <span name="wrdCntn">wrdCntn: <span class="extype" name="scala.Double">Double</span></span>, <span name="init">init: (<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>], <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>])</span>, <span name="srcRef">srcRef: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>, <span name="param">param: <span class="extype" name="provingground.andrewscurtis.Param">Param</span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@spawnRaw(name:String,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):akka.actor.ActorRef" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.andrewscurtis.ACLooper#spawnSmooth" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="spawnSmooth(name:String,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):akka.actor.ActorRef"></a>
-      <a id="spawnSmooth(String,Param,(Int)⇒FiniteDistribution[AtomicMove]):ActorRef"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">spawnSmooth</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="p">p: <span class="extype" name="provingground.andrewscurtis.Param">Param</span> = <span class="symbol">Param()</span></span>, <span name="init">init: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>] = <span class="symbol">learnerMoves</span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@spawnSmooth(name:String,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):akka.actor.ActorRef" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.andrewscurtis.ACLooper#spawnsRaw" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="spawnsRaw(name:String,mult:Int,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):scala.collection.immutable.IndexedSeq[akka.actor.ActorRef]"></a>
-      <a id="spawnsRaw(String,Int,Param,(Int)⇒FiniteDistribution[AtomicMove]):IndexedSeq[ActorRef]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">spawnsRaw</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="mult">mult: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">4</span></span>, <span name="p">p: <span class="extype" name="provingground.andrewscurtis.Param">Param</span> = <span class="symbol">Param()</span></span>, <span name="init">init: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>] = <span class="symbol">learnerMoves</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.IndexedSeq">IndexedSeq</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@spawnsRaw(name:String,mult:Int,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):scala.collection.immutable.IndexedSeq[akka.actor.ActorRef]" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.andrewscurtis.ACLooper#spawnsSmooth" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="spawnsSmooth(name:String,mult:Int,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):scala.collection.immutable.IndexedSeq[akka.actor.ActorRef]"></a>
-      <a id="spawnsSmooth(String,Int,Param,(Int)⇒FiniteDistribution[AtomicMove]):IndexedSeq[ActorRef]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">spawnsSmooth</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="mult">mult: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">4</span></span>, <span name="p">p: <span class="extype" name="provingground.andrewscurtis.Param">Param</span> = <span class="symbol">Param()</span></span>, <span name="init">init: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>] = <span class="symbol">learnerMoves</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.IndexedSeq">IndexedSeq</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@spawnsSmooth(name:String,mult:Int,p:provingground.andrewscurtis.Param,init:Int=&gt;provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):scala.collection.immutable.IndexedSeq[akka.actor.ActorRef]" title="Permalink" target="_top">
+      <a href="../../index.html#provingground.andrewscurtis.ACLooper$@spawn(name:String,rank:Int,size:Int,wrdCntn:Double,init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),srcRef:akka.actor.ActorRef,param:provingground.andrewscurtis.Param):akka.actor.ActorRef" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
