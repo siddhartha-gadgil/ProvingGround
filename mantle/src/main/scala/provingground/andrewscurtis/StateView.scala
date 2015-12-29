@@ -32,18 +32,18 @@ class StateView(name: String, elems: Vector[ACElem], fdM : FiniteDistribution[At
 }
 
 object StateView{
-  import ACFlowSaver._
+//  import ACFlowSaver._
 
-  def apply(name: String, loops: Int) = fromCasbah(name, loops)
+//  def apply(name: String, loops: Int) = fromCasbah(name, loops)
 
 //  def apply(name: String) = new StateView(getCurrentElems(name), FDM(name).get)
 
   def apply(name: String) = fromMongo(name)
-
+/*
   def fromCasbah(name: String, loops: Int) = {
     new StateView(name, getElems(name, loops), FDM(name).get)
   }
-
+*/
   def fromMongo(name: String) =
     (getFutOptElems(name) flatMapp ((vec) =>
       getFutOptFDM(name) mapp (new StateView(name, vec, _)))) map (_.get)
