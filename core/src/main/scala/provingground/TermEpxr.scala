@@ -116,7 +116,7 @@ sealed trait TermExpr{
           SigmaTyp(fibre)
         }
       case  _ =>
-        throw(new IllegalArgumentException("cannot construct Sigma Type with fibre $fiber.asTerm"))
+        throw(new IllegalArgumentException("cannot construct Sigma Type with fibre ${fiber.asTerm}"))
     }
 
     override def toString = s"${Sigma}_($fiber)"
@@ -131,7 +131,7 @@ sealed trait TermExpr{
           PiTyp(fibre)
         }
       case  _ =>
-        throw(new IllegalArgumentException("cannot construct Pi Type with fibre $fiber.asTerm"))
+        throw(new IllegalArgumentException("cannot construct Pi Type with fibre ${fiber.asTerm}"))
     }
    override def toString = s"${Pi}_$fiber"
   }
