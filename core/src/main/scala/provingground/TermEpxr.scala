@@ -181,15 +181,15 @@ object TermExpr{
     def pi(fibre: TermExpr): TermExpr = PiExpr(fibre)
 
     def plus(first: TermExpr,second: TermExpr): TermExpr = PlusTypExpr(first, second)
-     
+
     def sigma(fibre: TermExpr): TermExpr = SigmaExpr(fibre)
 
 
-    def symbobj(term: provingground.HoTT.SymbObj[Term])(implicit typ: provingground.HoTT.Typ[Term]): TermExpr =
+    def symbobj(term: provingground.HoTT.SymbObj[Term]): TermExpr =
       TypedVar(term.name.toString, apply(term.typ))
 
     def symbtyp(typ: provingground.HoTT.SymbTyp): TermExpr = VarTyp(typ.name.toString)
 
-    def symbolic(name: AnySym) (implicit typ: provingground.HoTT.Typ[Term]): TermExpr = TypedVar(name.toString, apply(typ))
+    def symbolic(name: AnySym, typ: provingground.HoTT.Typ[Term]): TermExpr = TypedVar(name.toString, apply(typ))
   }
 }
