@@ -93,7 +93,8 @@ object HoTTgen {
 	}
 
 
-	lazy val moves : List[(Move.Value, DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] = List((Move.appl, CombinationFn(funcappl, isFunc)),
+	lazy val moves : List[(Move.Value, DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
+    List((Move.appl, CombinationFn(funcappl, isFunc)),
 	    (Move.arrow, CombinationFn(functyp, isTyp)),
 	    (Move.pi, MoveFn(pityp)),
 	    (Move.sigma, MoveFn(sigmatyp)),
