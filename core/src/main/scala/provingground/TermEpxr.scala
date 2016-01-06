@@ -90,8 +90,8 @@ sealed trait TermExpr{
   /**
    * the first universe
    */
-  case object U extends TermExpr{
-    def asTerm(implicit lp: LiteralParser) = __
+  case class UnivTerm(n: Int) extends TermExpr{
+    def asTerm(implicit lp: LiteralParser) = Universe(n)
 
     override def toString = s"${UnivSym}"
   }
@@ -111,7 +111,7 @@ sealed trait TermExpr{
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match{
       case fib : Func[_, _] =>
         {
-          val x = fib.dom.obj
+          val x = fib.dom.Var
           val fibre =   lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
           SigmaTyp(fibre)
         }
@@ -126,7 +126,7 @@ sealed trait TermExpr{
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match{
       case fib : Func[_, _] =>
         {
-          val x = fib.dom.obj
+          val x = fib.dom.Var
           val fibre =   lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
           PiTyp(fibre)
         }
@@ -163,6 +163,8 @@ object LiteralParser{
 object TermExpr{
   def pickle(expr: TermExpr) = write(expr)
 
+  def simple(term: Term) = expr(LiteralParser.Empty)(term)
+
   def unpickle(str: String) = read[TermExpr](str)
 
   case class expr(lp: LiteralParser, specialTerms: PartialFunction[Term,TermExpr] = Map.empty) extends TermRec[TermExpr]{
@@ -191,5 +193,7 @@ object TermExpr{
     def symbtyp(typ: provingground.HoTT.SymbTyp): TermExpr = VarTyp(typ.name.toString)
 
     def symbolic(name: AnySym, typ: provingground.HoTT.Typ[Term]): TermExpr = TypedVar(name.toString, apply(typ))
+
+    def univ(n: Int) = UnivTerm(n)
   }
 }

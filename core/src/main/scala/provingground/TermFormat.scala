@@ -2,6 +2,8 @@ package provingground
 
 import HoTT._
 
+import UnicodeSyms.UnivSym
+
 object TermFormat {
   implicit class StringFormat(syms: TermSyms) extends TermRec[String] {
     val specialTerms: PartialFunction[Term, String] = Map()
@@ -29,5 +31,7 @@ object TermFormat {
     def symbtyp(typ: SymbTyp): String = typ.toString + " : _"
 
     def symbolic(name: AnySym, typ: Typ[Term]): String = s"$name : ${this(typ)}"
+
+    def univ(n: Int) = s"${UnivSym}"
   }
 }

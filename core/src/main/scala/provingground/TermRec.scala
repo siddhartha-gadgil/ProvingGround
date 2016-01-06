@@ -35,6 +35,8 @@ trait FoldedTerm[U <: Term with Subs[U]] extends Term{
 
     def symbolic(name: AnySym, typ: Typ[Term]) : U
 
+    def univ(n: Int) : U
+
     def apply(term: Term)/*(implicit typ: Typ[Term])*/: U = specialTerms.lift(term) getOrElse {term match {
       case FormalAppln(func, arg) => appln(apply(func), apply(arg))
       case LambdaFixed(x : Term, y: Term) => lambda(apply(x), apply(y))
@@ -48,6 +50,7 @@ trait FoldedTerm[U <: Term with Subs[U]] extends Term{
       case sym: SymbTyp => symbtyp(sym)
       case sym: Symbolic => symbolic(sym.name, term.typ)
       case IdentityTyp(dom, lhs: Term, rhs : Term) => equality(apply(dom), apply(lhs), apply(rhs))
+      case Universe(n) => univ(n)
       case fld: FoldedTerm[v] => {
         val terms = fld.elems map (apply)
         val op = apply(fld.op)

@@ -4,7 +4,7 @@ import HoTT._
 import org.scalatest.FlatSpec
 
 
-class HoTTSpec extends FlatSpec{
+object HoTTSpec{
   val A = "A" :: __
   val a = "a" :: A
 
@@ -18,7 +18,7 @@ class HoTTSpec extends FlatSpec{
 
   val id = lambda(A)(lambda(a)(a))
 
-  val Bs = "B(a)" :: (A ->: __)
+  val Bs = "B(_ : A)" :: (A ->: __)
 
   val fdep = "f" :: PiTyp(Bs)
 
@@ -43,6 +43,10 @@ class HoTTSpec extends FlatSpec{
     lambda(pair(a, b))(
       pair(b, a)
     )
+}
+
+class HoTTSpec extends FlatSpec{
+  import HoTTSpec._
 
   "A symbolic object" should "have the correct type" in{
     assert(a.typ == A)
