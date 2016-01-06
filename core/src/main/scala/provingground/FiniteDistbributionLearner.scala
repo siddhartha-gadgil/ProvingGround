@@ -66,7 +66,7 @@ object FiniteDistributionLearner {
    * Normalizing a finite distribution.
    */
   case class NormalizeFD[V]() extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
-    val func = (d: FiniteDistribution[V]) => d.normalized()
+    val func = (d: FiniteDistribution[V]) => d.normalized().flatten
 
     val grad = (d: FiniteDistribution[V]) => (w: FiniteDistribution[V]) => w * (1 / d.norm)
   }

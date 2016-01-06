@@ -31,14 +31,14 @@ object HoTTgen {
 	}
 
 	val functyp : (Term, Term) => Option[Term] = {
-	  case (u: Typ[Term], v: Typ[Term]) => Some(FuncTyp(u, v))
+	  case (u: Typ[Term], v: Typ[Term]) if (u.typ == __) => Some(FuncTyp(u, v))
 	  case _ => None
 	}
 
 	val pityp : Term => Option[Term] = {
 	  case fmly : Func[u, _] => fmly.codom.typ match {
 	    case _ : Typ[w] => Try {
-        val x = fmly.dom.obj
+        val x = fmly.dom.Var
         val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
         val fibre = lmbda(x)(y)
         PiTyp[u, w](fibre)
@@ -51,7 +51,7 @@ object HoTTgen {
 	val sigmatyp : Term => Option[Term] = {
 	  case fmly : Func[u, _] => fmly.codom.typ match {
       case _ : Typ[w] => Try {
-        val x = fmly.dom.obj
+        val x = fmly.dom.Var
         val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
         val fibre = lmbda(x)(y)
         SigmaTyp[u, w](fibre)
@@ -62,11 +62,15 @@ object HoTTgen {
 	}
 
 	val pairtyp : (Term, Term) => Option[Term] = {
-	  case (a : Typ[u], b: Typ[v]) => Some(PairTyp(a, b))
+	  case (a : Typ[u], b: Typ[v]) if (a.typ == __) && (b.typ == __) => Some(PairTyp(a, b))
 	  case _ => None
 	}
 
-	val pairobj : (Term, Term) => Option[Term] = (a, b) => Some(pair(a, b))
+	val pairobj : (Term, Term) => Option[Term] = {
+    case (_ : Universe, _) => None
+    case (_, _: Universe) => None
+    case (a, b) => Some(pair(a, b))
+  }
 
 	val paircons : Term => Option[Term] = {
 	  case p : PairTyp[_, _] => Some(p.paircons)
@@ -85,11 +89,11 @@ object HoTTgen {
 	}
 
 	object Move extends Enumeration{
-	  lazy val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons  = Move
+	  lazy val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons, id  = Value
 	}
 
 
-	lazy val moves = List((Move.appl, CombinationFn(funcappl, isFunc)),
+	lazy val moves : List[(Move.Value, DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] = List((Move.appl, CombinationFn(funcappl, isFunc)),
 	    (Move.arrow, CombinationFn(functyp, isTyp)),
 	    (Move.pi, MoveFn(pityp)),
 	    (Move.sigma, MoveFn(sigmatyp)),
@@ -97,14 +101,15 @@ object HoTTgen {
 	    (Move.pair, CombinationFn(pairobj)),
 	    (Move.paircons, MoveFn(paircons)),
 	    (Move.icons, MoveFn(icons)),
-	    (Move.jcons, MoveFn(icons))
+	    (Move.jcons, MoveFn(icons)),
+      (Move.id, Id[FiniteDistribution[Term]])
 	    )
 
-	val wtdDyn = weightedDyn[Move.type, FiniteDistribution[Term]]
+	val wtdDyn = weightedDyn[Move.Value, FiniteDistribution[Term]]
 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 
-	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move.type], NormalizeFD[Term])
+	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move.Value], NormalizeFD[Term])
 
 	def lambdaFn[M](l: M,
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
@@ -140,7 +145,7 @@ object HoTTgen {
 	  extendM(withIsle)
 	}
 
-	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.type], NormalizeFD[Term]))
+	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.Value], NormalizeFD[Term]))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None
