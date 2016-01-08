@@ -88,12 +88,13 @@ object HoTTgen {
 	  case _ => None
 	}
 
+  /*
 	object Move extends Enumeration{
 	  lazy val lambda, appl, arrow, pi, sigma, pairt, pair, paircons, icons, jcons, id  = Value
 	}
+*/
 
-
-	lazy val moves : List[(Move.Value, DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
+	lazy val moves : List[(Move, DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
     List((Move.appl, CombinationFn(funcappl, isFunc)),
 	    (Move.arrow, CombinationFn(functyp, isTyp)),
 	    (Move.pi, MoveFn(pityp)),
@@ -106,11 +107,37 @@ object HoTTgen {
       (Move.id, Id[FiniteDistribution[Term]])
 	    )
 
-	val wtdDyn = weightedDyn[Move.Value, FiniteDistribution[Term]]
+  object Move{
+    case object lambda extends Move
+
+    case object appl extends Move
+
+    case object arrow extends Move
+
+    case object pi extends Move
+
+    case object sigma extends Move
+
+    case object  pair extends Move
+
+    case object pairt extends Move
+
+    case object paircons extends Move
+
+    case object icons extends Move
+
+    case object jcons extends Move
+
+    case object id extends Move
+  }
+
+  sealed trait Move
+
+	val wtdDyn = weightedDyn[Move, FiniteDistribution[Term]]
 
 	val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 
-	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move.Value], NormalizeFD[Term])
+	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move], NormalizeFD[Term])
 
 	def lambdaFn[M](l: M,
 	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
@@ -146,7 +173,7 @@ object HoTTgen {
 	  extendM(withIsle)
 	}
 
-	val hottDyn = DiffbleFunction.mixinIsle(wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move.Value], NormalizeFD[Term]))
+	val hottDyn = DiffbleFunction.mixinIsle[(FiniteDistribution[Move], FiniteDistribution[Term])](wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move], NormalizeFD[Term]))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None
