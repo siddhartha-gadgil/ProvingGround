@@ -140,7 +140,7 @@ object HoTTgen {
 	val wtdMoveSum = vBigSum(wtdMoveList) andthen block(NormalizeFD[Move], NormalizeFD[Term])
 
 	def lambdaFn[M](l: M,
-	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
+	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
 	    )(typ: Typ[Term]) = {
 	  import DiffbleFunction._
 	  val x = typ.Var
@@ -149,11 +149,11 @@ object HoTTgen {
 	  val export = MoveFn((t: Term) =>
 	    if (t != __) Some(lambda(x)(t) : Term) else None)
 	  val head = incl andthen init
-	  head andthen export
+	  extendM(head) andthen f andthen block(Id[FiniteDistribution[M]], export)
 	}
 
 	def lambdaSum[M](l: M)(
-	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), FiniteDistribution[Term]]
+	    f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
 	    ) = {
 			val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
 				val terms = fd._2.supp
@@ -163,7 +163,7 @@ object HoTTgen {
 				}
 			DiffbleFunction.BigSum(lambdas)
 			}
-
+/*
 	def lambdaSumM[M](l : M)(
 	    g: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]
 	    ) = {
@@ -172,8 +172,8 @@ object HoTTgen {
 	  val withIsle = lambdaSum(l)(f)
 	  extendM(withIsle)
 	}
-
-	val hottDyn = DiffbleFunction.mixinIsle[(FiniteDistribution[Move], FiniteDistribution[Term])](wtdMoveSum, lambdaSumM(Move.lambda), block(NormalizeFD[Move], NormalizeFD[Term]))
+*/
+	val hottDyn = DiffbleFunction.mixinIsle[(FiniteDistribution[Move], FiniteDistribution[Term])](wtdMoveSum, lambdaSum(Move.lambda), block(NormalizeFD[Move], NormalizeFD[Term]))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == __) Some(t.typ) else None

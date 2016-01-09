@@ -540,7 +540,7 @@ object HoTT {
         case t : Cnst => Try(apply(t.term.asInstanceOf[W])).getOrElse(act(arg))
         case _ => act(arg)
       }
-      
+
       act(arg)
     }
     //      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncLike[WW, UU]
@@ -1273,7 +1273,7 @@ object HoTT {
 
     def get = {
       name = nextName(name)
-      name
+      "$"+name
     }
   }
 
@@ -1298,48 +1298,48 @@ object HoTT {
     case _ => None
   }
 
-  
+
   /**
    * Just a wrapper to allow singleton objects
    */
   class Cnst(val term: Term) extends Term{
 //    val value = term
-    
+
     val typ = term.typ
-    
+
     def subs(x: Term, y: Term) = this
-    
+
     def newobj = this
   }
 
   class CnstFunc[U <: Term with Subs[U], V <: Term with Subs[V]](override val term : Func[U, V]) extends Cnst(term) with Func[U, V]{
 //    override val value : Func[U, V] = term
-    
+
     def act(x: U) = term(x)
-    
+
     val dom = term.dom
-    
+
     val codom = term.codom
-    
+
     override def newobj = this
-    
+
     override def subs(x: Term, y: Term) = this
   }
-  
+
   class CnstFuncLike[U <: Term with Subs[U], V <: Term with Subs[V]](override val term : FuncLike[U, V]) extends Cnst(term) with FuncLike[U, V]{
-//    override val value: 
-    
+//    override val value:
+
     def act(x: U) = term(x)
-    
+
     val dom = term.dom
-    
+
     val depcodom = term.depcodom
-    
+
     override def newobj = this
-    
+
     override def subs(x: Term, y: Term) = this
   }
-  
+
   // -----------------------------------------------
   // Deprecated code - old style type families.
 
