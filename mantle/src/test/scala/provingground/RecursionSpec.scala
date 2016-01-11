@@ -9,7 +9,7 @@ import ConstructorPattern._
 
 import RecFunction.{ recFunction }
 
-import BaseTypes._
+import BaseConstructorTypes._
 
 import RecursiveDefinition._
 

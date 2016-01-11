@@ -1,4 +1,4 @@
-import BaseTypes._
+import BaseConstructorTypes._
 import RecFunction._
 val NatCons = List(succC, zeroC)
 val r = recFn(NatCons, Nat, Nat)

@@ -8,7 +8,7 @@ import ConstructorPattern._
 
 import RecFunction._
 
-object BaseTypes{
+object BaseConstructorTypes{
   case object Bool extends SmallTyp
 
   case object Nat extends SmallTyp

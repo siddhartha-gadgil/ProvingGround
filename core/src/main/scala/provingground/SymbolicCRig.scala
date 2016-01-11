@@ -18,21 +18,21 @@ import scala.language.{implicitConversions, existentials}
  * Requires a commutative rig, but Pi's and Sigma's are written to allow rings and fields
  *
  * Terms of type RepTerm[A] are created, i.e., terms with the refinement that they correspond to the scala type A.
- * 
+ *
  * Any term should be of the following forms:
- * 
+ *
  * With respect to addition, if p denoted non-literal terms indecomposable with respect to addition:
- * 
- * * a literal c
+ *
+ * * literal c
  * * p
  * * c + p
  * * c + Sigma{ps}, ps a set of elements p with at least two elements.
- * 
+ *
  * With respect to multiplication, if x denotes an element indecomposable under both addition and multiplication, c is a literal, and k is an integer.
  * * x
  * * c x
  * * c Pi{(x -> k)}; no k is zero, there are either at least two terms or there is one term with k not 1.
- * 
+ *
  * Using type Rig, not CRig as CRing does not extend CRig
  */
 class SymbolicCRig[A : Rig] {self =>
@@ -40,11 +40,16 @@ class SymbolicCRig[A : Rig] {self =>
 
   import rig._
 
+  val two = rig.plus(rig.one, rig.one)
+
   type LocalTerm = RepTerm[A]
 
   type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
 
-  object LocalTyp extends ScalaTyp[A]{
+
+  case object LocalTyp extends ScalaTyp[A]{
+    override def toString = self.toString()
+
     type Obj = LocalTerm
   }
 
@@ -67,11 +72,13 @@ class SymbolicCRig[A : Rig] {self =>
   case class SigmaTerm(elems: Set[LocalTerm]) extends LocalTerm with FoldedTerm[LocalTerm]{
     require(elems.size >1, s"Cannot create Sigma term of set $elems with less than 2 elements")
 
-    val op = sum 
-    
+//    println(s"created sigma-term [$elems]")
+
+    val op = sum
+
     val typ = LocalTyp
 
-    def subs(x: Term, y: Term) = (elems map (_.replace(x, y))).reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
+    def subs(x: Term, y: Term) = (elems.toList map (_.replace(x, y))).reduceRight((a: LocalTerm, b: LocalTerm) => sum(a)(b))
 
     def newobj = LocalTyp.obj
 
@@ -81,7 +88,7 @@ class SymbolicCRig[A : Rig] {self =>
       if (elems.tail.size == 1) elems.tail.head else SigmaTerm(elems.tail)
 
     /**
-     * add a term, 
+     * add a term,
      * simplifies assuming the term added is in normal form, and does not involve a literal
      */
     def +:(x: LocalTerm) : LocalTerm = {
@@ -94,15 +101,15 @@ class SymbolicCRig[A : Rig] {self =>
       }
 
   }
-  
+
   object SigmaTerm{
     import LitProd.addReduce
-    
+
     /**
      * recursively fold in a term to a list of terms.
-     * if sum with head simplifies, this is called recursively, 
+     * if sum with head simplifies, this is called recursively,
      * otherwise head is retained and term is added with fold to tail.
-     * this assumes that we cannot have chains of simplifications, as list is already simplified. 
+     * this assumes that we cannot have chains of simplifications, as list is already simplified.
      */
     def fold(x: LocalTerm)(l: List[LocalTerm]) : List[LocalTerm] = (x, l) match {
       case (_, List()) => List(x)
@@ -125,11 +132,17 @@ class SymbolicCRig[A : Rig] {self =>
     }
 
     /**
-     * (optionally) returns a single term (w.r.t. +) after summing if simplification takes place. 
+     * (optionally) returns a single term (w.r.t. +) after summing if simplification takes place.
      */
     def addReduce(x: LocalTerm, y: LocalTerm) = (x, y) match {
       case (LitProd(a, u), LitProd(b, v)) if u == v =>
         Some(LitProd(a + b, u))
+      case (LitProd(a, u), v) if u ==v =>
+        Some(LitProd(rig.plus(a, rig.one), u))
+      case (v, LitProd(a, u)) if u ==v =>
+        Some(LitProd(rig.plus(a, rig.one), u))
+      case (u, v) if u ==v =>
+        Some(LitProd(two, u))
       case _ => None
     }
   }
@@ -141,8 +154,8 @@ class SymbolicCRig[A : Rig] {self =>
    * * no exponent is 0.
    */
   case class PiTerm(multElems: Map[LocalTerm, Int]) extends LocalTerm with FoldedTerm[LocalTerm]{
-    val typ = LocalTyp 
-    
+    val typ = LocalTyp
+
     def subs(x: Term, y: Term) =
       (multElems map ((an) => power(an._1.replace(x, y), an._2))).reduce((a: LocalTerm, b: LocalTerm) => prod(a)(b))
 
@@ -160,9 +173,9 @@ class SymbolicCRig[A : Rig] {self =>
       val ind = (multElems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
       PiTerm.purge(multElems + (base(y) -> ind))
     }
-    
+
     val elems = multElems.keys.toList flatMap ((x) => PiTerm.powList(x, multElems(x)))
-    
+
     val op = prod
   }
 
@@ -171,26 +184,26 @@ class SymbolicCRig[A : Rig] {self =>
       val nontriv = elems filter ({case (x, p) => p != 0 })
       PiTerm.reduce(nontriv)
     }
-    
+
     def reduce(elems: Map[LocalTerm, Int]) = {
       val keys = elems.keySet
-      if (keys.isEmpty) Literal(one) 
+      if (keys.isEmpty) Literal(one)
       else
-        if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems) 
+        if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems)
         else keys.head
     }
-    
-    def powList(x: LocalTerm, k: Int) = 
+
+    def powList(x: LocalTerm, k: Int) =
     {
       val base = if (k< 0) Reciprocal.Formal(x) else x
       List.fill(math.abs(k))(base)
     }
   }
-  
+
   /**
    * override this in fields
    */
-   val reciprocal : Func[LocalTerm, LocalTerm] = ???
+   lazy val reciprocal : Func[LocalTerm, LocalTerm] = ???
   //  val div: Op = ???
 
   object Reciprocal{
@@ -198,7 +211,7 @@ class SymbolicCRig[A : Rig] {self =>
       case Reciprocal(b) => b
       case _ => PiTerm(Map(a -> -1))
     }
-    
+
     def unapply(a : Term) = a match {
       case PiTerm(elems) => {
         elems.toList match {
@@ -206,7 +219,7 @@ class SymbolicCRig[A : Rig] {self =>
           case _ => None
         }
       }
-      case FormalAppln(`reciprocal`, b : LocalTerm) => Some(b)      
+      case FormalAppln(`reciprocal`, b : LocalTerm) => Some(b)
       case _ => None
     }
 
@@ -222,16 +235,16 @@ class SymbolicCRig[A : Rig] {self =>
 
   /*
   case class Formal(x: LocalTerm) extends LocalTerm with FoldedTerm[LocalTerm]{
-   
+
     def newobj  = this
     def subs(u: provingground.HoTT.Term,y: provingground.HoTT.Term)  = Formal(x.subs(u, y))
 
     val typ = LocalTyp
-    
+
     val op = div
     val elems : List[LocalTerm] = List(Literal(one), x)
   }*/
-  
+
   object Formal{
     def apply(x: LocalTerm) = FormalAppln(reciprocal, x)
   }
@@ -260,17 +273,17 @@ class SymbolicCRig[A : Rig] {self =>
           lmbda(x)(x)
         }
         else
-          AddLiteral(a) 
+          AddLiteral(a)
       case Comb(op, u, v) if op == sum =>
         composition(sum(u), sum(v))
       case s @ SigmaTerm(terms) =>
         composition(sum(s.head), sum(s.tail))
       case y => AddTerm(y)
     }
-    
+
     override def toString="sum"
   }
-  
+
 
   case class AddLiteral(a : A) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp
@@ -289,11 +302,13 @@ class SymbolicCRig[A : Rig] {self =>
       case p => Comb(sum, Literal(a), p)
     }
   }
-  
+
   /**
    * returns function x + _ where x is not a literal and is indecomposable under sum
    */
   case class AddTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
+//    println(s"addterm $x")
+
     val dom = LocalTyp
 
     val codom = LocalTyp
@@ -304,12 +319,14 @@ class SymbolicCRig[A : Rig] {self =>
 
     def newobj = this
 
-    def act(y: LocalTerm) = y match{
+    def act(y: LocalTerm) = {
+//      println(s"AddTerm($x) applied to $y")
+      y match{
       case Literal(a) => Comb(sum, Literal(a), x)
       case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
       case s : SigmaTerm => x +: s
-      case _ => LitProd.addReduce(x, y) getOrElse(SigmaTerm(Set(x, y)))
-    }
+      case _ => LitProd.addReduce(x, y) getOrElse(if (y ==x) LitProd(two, x) else SigmaTerm(Set(x, y)))
+    }}
   }
 
   def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm) = {
@@ -350,9 +367,9 @@ class SymbolicCRig[A : Rig] {self =>
    * in generality an error for negative n;
    * should be overridden in fields, where negative powers are meaningful
    */
-  def power(x: LocalTerm, n: Int) : LocalTerm = 
+  def power(x: LocalTerm, n: Int) : LocalTerm =
     posPower(x, n)
-    
+
   case object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]]{
     val dom = LocalTyp
 
@@ -385,13 +402,13 @@ class SymbolicCRig[A : Rig] {self =>
         else prod(p.head)
       case y => multTerm(y)
     }
-    
+
     override def toString = "prod"
   }
 
   case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm]{
     val x = Literal(b)
-    
+
     val dom = LocalTyp
 
     import Reciprocal.{base, expo}
@@ -412,7 +429,7 @@ class SymbolicCRig[A : Rig] {self =>
       case p  => Comb(prod, x, p)
     }
   }
-  
+
 
   case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp
@@ -454,9 +471,10 @@ import spire.syntax._
 
   object SymbolicCRig extends LiteralParser{
 
-    
+
+
     def parse(typ: Typ[Term])(str: String) : Option[Term] = typ match {
-      case FuncTyp(a : SymbolicCRig[u], FuncTyp(b, c)) if a ==b && b ==c => 
+      case FuncTyp(a : SymbolicCRig[u], FuncTyp(b, c)) if a ==b && b ==c =>
         str match {
           case x if x == a.sum.toString() => Some(a.sum)
           case x if x == a.prod.toString() => Some(a.prod)
@@ -465,7 +483,7 @@ import spire.syntax._
       case tp : SymbolicCRig[a] => Try(tp.Literal.fromInt(str.toInt)).toOption
       case _ => None
     }
-    
+
     def literal(term: Term) = term.typ match {
       case tp : SymbolicCRig[a] => term match {
         case tp.Literal(a) => Some(a.toString)

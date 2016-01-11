@@ -18,7 +18,7 @@ class SymbolicField[A : Field]  extends SymbolicCRing[A]{self =>
   
   import field._
   
-  override case object reciprocal extends Func[LocalTerm, LocalTerm]{
+  override lazy val reciprocal : Func[LocalTerm, LocalTerm] = new Func[LocalTerm, LocalTerm]{
     val dom =  LocalTyp
     
     val codom = LocalTyp 

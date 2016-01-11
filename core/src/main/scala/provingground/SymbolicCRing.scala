@@ -34,3 +34,13 @@ class SymbolicCRing[A: CRing] extends SymbolicCRig[A] {self =>
     def negate(x: LocalTerm) = self.negate(x)
   }
 }
+
+object SymbolicCRing{
+  case object NatRing extends SymbolicCRing[SafeLong]
+
+  val NatTyp = NatRing.LocalTyp
+  
+  type Nat = NatRing.LocalTerm
+  
+  
+}
