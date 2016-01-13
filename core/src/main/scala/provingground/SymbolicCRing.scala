@@ -36,11 +36,14 @@ class SymbolicCRing[A: CRing] extends SymbolicCRig[A] {self =>
 }
 
 object SymbolicCRing{
-  case object NatRing extends SymbolicCRing[SafeLong]
+  case object NatRing extends SymbolicCRing[SafeLong]{
+    val x = "x" :: LocalTyp
+    val succ = lmbda(x)(x + 1)
+  }
 
   val NatTyp = NatRing.LocalTyp
 
   type Nat = NatRing.LocalTerm
-  
+
 
 }
