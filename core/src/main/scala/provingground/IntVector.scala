@@ -7,12 +7,12 @@ import ScalaRep._
 case class IntVector(dim: Int) extends ScalaTyp[Vector[Int]]
 
 object IntVector{
-  import NatTyp.rep
- 
+  import NatTypLong.rep
+
   import ScalaRep.UnivRep
 
   val u = implicitly[ScalaRep[Typ[Term], Typ[Term]]]
-   
+
 
 
   import ScalaPolyRep._
@@ -32,5 +32,5 @@ object IntVector{
   }
 
     val Vec = ScalaPolyTerm((n: Long) => IntVector(n.toInt) : Typ[Term])
-  
+
 }

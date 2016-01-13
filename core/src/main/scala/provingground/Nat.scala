@@ -4,7 +4,7 @@ import HoTT._
 
 import ScalaRep._
 
-object NatTyp extends ScalaTyp[Long]{
+object NatTypLong extends ScalaTyp[Long]{
   val zero = 0.toLong.term
 
   val succ = ((n: Long) => n+1).term

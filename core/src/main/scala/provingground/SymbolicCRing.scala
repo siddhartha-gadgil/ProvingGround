@@ -39,8 +39,8 @@ object SymbolicCRing{
   case object NatRing extends SymbolicCRing[SafeLong]
 
   val NatTyp = NatRing.LocalTyp
-  
+
   type Nat = NatRing.LocalTerm
   
-  
+
 }

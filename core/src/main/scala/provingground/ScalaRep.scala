@@ -10,6 +10,12 @@ import scala.language.implicitConversions
 /**
  * Representation by a scala object of a HoTT term
  *
+ * It is assumed that there is a single HoTT type corresponding to the given scala type,
+ * when the scala rep is in scope. If one needs several HoTT types, eg. vectors of different lengths,
+ * one uses ScalaPolyRep.
+ *
+ * ScalaRep objects are recursively constructed from
+ *
  * @tparam U the HoTT type represented
  * @tparam V scala type representing the given object.
  */
@@ -95,25 +101,17 @@ case class FuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   def subs(x: Term, y: Term) = FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
 }
 
-/**
- * Representation by  wrapping.
- */
-/*
-case class SimpleRep[V](typ: Typ[Term]) extends ScalaRep[Term, V] {
-  def apply(v: V) = SimpleConst(v, typ)
-
-  def unapply(u: Term): Option[V] = u match {
-    case smp: SimpleConst[V] if smp.typ == typ => Some(smp.value)
-    case _ => None
-  }
-
-  def subs(x: Term, y: Term) = SimpleRep(typ.subs(x, y))
+object SimpleFuncRep{
+  def apply[U <: Term with Subs[U], V, X <: Term with Subs[X]](
+    domrep: ScalaRep[U, V], codom: Typ[X]
+  ) = FuncRep(domrep, IdRep(codom))
 }
- */
+
 
 /**
  * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
  */
+ /*
 case class SimpleFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X]](
   domrep: ScalaRep[U, V], codom: Typ[X]
 ) extends ScalaRep[FuncLike[U, X], V => X] {
@@ -130,6 +128,7 @@ case class SimpleFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X]](
 
   def subs(x: Term, y: Term) = SimpleFuncRep(domrep.subs(x, y), codom.subs(x, y))
 }
+*/
 
 case class SigmaRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   domrep: ScalaRep[U, V],
@@ -194,7 +193,7 @@ class ScalaTyp[A] extends Typ[RepTerm[A]]{
       case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
       case _ => this
     }
-    
+
     implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
   }
 
@@ -217,7 +216,7 @@ object ScalaRep {
 
 
 
-  
+
  case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
@@ -228,12 +227,12 @@ object ScalaRep {
       symSubs(symbobj)(x, y)(name)
     }
   }
-  
-  
- 
-  case object Nat extends ScalaTyp[Int]
 
-  import Nat.rep
+
+
+  case object NatInt extends ScalaTyp[Int]
+
+  import NatInt.rep
 
   implicit val UnivRep = idRep(__)
 
@@ -300,10 +299,10 @@ object ScalaRep {
     def subs(x: Term, y: Term) = SimpleRep(typ.subs(x, y))
 
   }
- 
+
   class ScalaSym[U <: Term with Subs[U], V](typ: Typ[U]){
     def apply(v : V) = typ.symbObj(ScalaSymbol(v))
-    
+
     def unapply(u: Term) : Option[V] = u match {
       case sym : Symbolic if u.typ == typ => sym.name match {
         case ScalaSymbol(value) => Try(value.asInstanceOf[V]).toOption

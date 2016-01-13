@@ -36,19 +36,19 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[RepTerm
   
   
   
-  implicit val nrep = poly(NatTyp.rep)
+  implicit val nrep = poly(NatTypLong.rep)
   
   implicit val urep = poly(ScalaRep.UnivRep)
   
   private val a = basetyp.Var
 
   
-  private val n = "n" :: NatTyp
+  private val n = "n" :: NatTypLong
   
   
-  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(NatTyp ->: __).get
+  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(NatTypLong ->: __).get
   
-  private val ltyp = n ~>: (Vec(n) ->: NatTyp)
+  private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
   
   private val vsize = (n : Long) => 
     (v : Vector[X]) => {
@@ -67,11 +67,11 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[RepTerm
           a +: v  
           }
         
-  val m : RepTerm[Long] = NatTyp.succ(n)      
+  val m : RepTerm[Long] = NatTypLong.succ(n)      
         
-  private val constyp  = n  ~>: NatTyp ->: (Vec(n) ->: Vec(m))
+  private val constyp  = n  ~>: NatTypLong ->: (Vec(n) ->: Vec(m))
   
-  import NatTyp.rep
+  import NatTypLong.rep
   
   implicitly[ScalaPolyRep[RepTerm[Long], Long]]
   

@@ -49,16 +49,16 @@ object VecTyp{
   implicit def vecRep[U <: Term with Subs[U], X](implicit baserep: ScalaPolyRep[U, X]) : ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
   
 
-  val n = "n" :: NatTyp
+  val n = "n" :: NatTypLong
   
-  import NatTyp._
+  import NatTypLong._
   
   
-  implicit val NatVecRep = vecRep[RepTerm[Long], Long](poly(NatTyp.rep))
+  implicit val NatVecRep = vecRep[RepTerm[Long], Long](poly(NatTypLong.rep))
 
-  val Vec = (((n: Long) => (VecTyp[Long, RepTerm[Long]](NatTyp, n.toInt) : Typ[Term])).hott(Nat ->: __)).get 
+  val Vec = (((n: Long) => (VecTyp[Long, RepTerm[Long]](NatTypLong, n.toInt) : Typ[Term])).hott(NatInt ->: __)).get 
   
-  private val ltyp = n ~>: (Vec(n) ->: Nat)
+  private val ltyp = n ~>: (Vec(n) ->: NatInt)
   
   private val vsize = (n : Long) => 
     (v : Vector[Long]) => {
@@ -76,7 +76,7 @@ object VecTyp{
           a +: v  
           }
         
-  private val nsucctyp  = n  ~>: NatTyp ->: (Vec(n) ->: Vec(NatTyp.succ(n)))
+  private val nsucctyp  = n  ~>: NatTypLong ->: (Vec(n) ->: Vec(NatTypLong.succ(n)))
   
   val nsucc = nvsucc.hott(nsucctyp)
 }

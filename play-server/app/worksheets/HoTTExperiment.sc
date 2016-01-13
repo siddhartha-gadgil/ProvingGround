@@ -161,12 +161,12 @@ object HoTTExperiment {
   BoolType.constructors
  
  
- object NatTyp extends InductiveTyp with SmallTyp{
+ object NatTypLong extends InductiveTyp with SmallTyp{
   //                     implicit val self = this
  
            lazy val constructors =List(cnstr(this), cnstr(this -->: this))
  }
  
- val List(zero, succ) = NatTyp.constructors
+ val List(zero, succ) = NatTypLong.constructors
  succ.cons.typ */
 }
