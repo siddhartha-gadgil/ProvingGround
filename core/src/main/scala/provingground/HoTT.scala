@@ -1180,6 +1180,16 @@ object HoTT {
       def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
     }
 
+    /**
+     * B -> A + B
+     */
+    case class ScndIncl(typ: PlusTyp, value: Term) extends Term {
+      def newobj = this
+
+      def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
+    }
+  }
+
   /**
    * type A + B
    */
@@ -1199,15 +1209,7 @@ object HoTT {
     }
   }
 
-    /**
-     * B -> A + B
-     */
-    case class ScndIncl(typ: PlusTyp, value: Term) extends Term {
-      def newobj = this
 
-      def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
-    }
-  }
 
   /**
    * folds in as many terms of the list as possible,

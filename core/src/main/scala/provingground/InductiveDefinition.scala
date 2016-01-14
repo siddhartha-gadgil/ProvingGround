@@ -23,29 +23,29 @@ trait InductiveDefinition[C<: Term with Subs[C]] {self =>
    * Xs in ind(W)(Xs)
    */
    val Xs : Func[Term, Typ[C]]
-  
+
   /**
    * recursive definition, with offspring applying f.
    */
   def induction(f : => FuncLike[Term, C]) : FuncLike[Term, C]
-  
+
   /**
    * the function to use, applying itself to recursion
-   */ 
+   */
   def func: FuncLike[Term, C] = induction(func)
-  
+
   def prependPair(cons: Constructor[C])(arg: cons.pattern.InducDataType) : InductiveDefinition[C] = {
     type D = cons.pattern.InducDataType
-    
+
     val caseFn : D => FuncLike[Term, C] => FuncLike[Term, C] => FuncLike[Term, C] =
          (d) => (f) => (g) => cons.pattern.inducModify(cons.cons)(d)(f)(g)
-    
+
     InducDefinitionCons(arg, caseFn, self)
   }
-  
+
   import InductiveDefinition._
-  
-  def prepend(cons: Constructor[C], sym: AnySym) = 
+
+  def prepend(cons: Constructor[C], sym: AnySym) =
     prependPair(cons)(cons.pattern.inducDom(W, Xs)(cons.cons).symbObj(sym))
 }
 
@@ -53,7 +53,7 @@ trait InductiveDefinition[C<: Term with Subs[C]] {self =>
  * recursive definition with empty constructor, hence empty data
  */
 case class InducDefinitionTail[C<: Term with Subs[C]](W: Typ[Term], Xs: Func[Term, Typ[C]]) extends InductiveDefinition[C]{
-  def induction(f : => FuncLike[Term, C]) = 
+  def induction(f : => FuncLike[Term, C]) =
     new DepFuncDefn((a: Term) => Xs(a).symbObj(ApplnSym(f, a)), W, Xs)
 }
 
@@ -61,36 +61,36 @@ case class InducDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
     arg: D,
     caseFn : D => FuncLike[Term, C] => FuncLike[Term, C] => FuncLike[Term, C],
     tail: InductiveDefinition[C]) extends InductiveDefinition[C]{
-  
+
   lazy val W = tail.W
-  
+
   lazy val Xs = tail.Xs
-  
+
   def induction(f: => FuncLike[Term, C]) = {
     def fn(x: Term) = caseFn(arg)(f)(tail.induction(f))(x)
     new DepFuncDefn(fn, W, Xs)
   }
-  
+
 }
 
 object InductiveDefinition{
-  
-  
-  
+
+
+
   def inducFn[C <: Term with Subs[C]](conss: List[Constructor[C]], W: Typ[Term], Xs: Func[Term, Typ[C]]) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
-    
-    def addCons[C<: Term with Subs[C]]( cn :(Constructor[C], String), defn : InductiveDefinition[C]) = 
+
+    def addCons( cn :(Constructor[C], String), defn : InductiveDefinition[C]) = 
       defn.prepend(cn._1, cn._2)
-      
+
     val init : InductiveDefinition[C] = InducDefinitionTail(W, Xs)
     val lambdaValue : Term = (namedConss :\ init)(addCons).func
-    
+
     val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.inducDom(W, Xs)(c.cons).symbObj(name)
-    
+
     (variables :\ lambdaValue)(lmbda(_)(_))
   }
-       
-      
-  
+
+
+
 }
