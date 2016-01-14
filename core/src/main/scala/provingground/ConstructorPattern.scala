@@ -588,4 +588,3 @@ case class ConstructorDefn[U <: Term with Subs[U], C <: Term with Subs[C]](
 
   //    type Cod = C
 }
-

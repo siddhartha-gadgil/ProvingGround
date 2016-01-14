@@ -1168,6 +1168,18 @@ object HoTT {
 
   //	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
 
+
+  object PlusTyp {
+    /**
+     * A -> A + B
+     */
+    case class FirstIncl(typ: PlusTyp, value: Term) extends Term {
+
+      def newobj = this
+
+      def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
+    }
+
   /**
    * type A + B
    */
@@ -1186,17 +1198,6 @@ object HoTT {
       lmbda[Term, Term](a)(j(a))
     }
   }
-
-  object PlusTyp {
-    /**
-     * A -> A + B
-     */
-    case class FirstIncl(typ: PlusTyp, value: Term) extends Term {
-
-      def newobj = this
-
-      def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
-    }
 
     /**
      * B -> A + B
