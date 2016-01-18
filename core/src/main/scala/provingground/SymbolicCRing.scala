@@ -68,7 +68,7 @@ object SymbolicCRing{
         case _ => FormalAppln(recValue, x)
       }
 
-
+    }
 
     val recLambda = lmbda(n)(recValue(n))
 
@@ -80,12 +80,12 @@ object SymbolicCRing{
           )
         )
       )
-    }
 
     val Xs = "X()" :: NatTyp ->: __
 
     val gs = (NatTyp ~>: (Xs(n) ~>: Xs(succ(n)))).Var
 
+/*
     object inducValue extends FuncLike[LocalTerm, Term]{
       val h = (n: SafeLong) => gs(Literal(n))
 
@@ -113,7 +113,7 @@ object SymbolicCRing{
           inducValue : FuncLike[LocalTerm, Term]
         )
       )
-    )
+    )*/
 }
 
   val NatTyp = NatRing.LocalTyp
