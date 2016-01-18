@@ -1,14 +1,12 @@
 package provingground
 
 import HoTT._
-
 import ScalaRep._
-
-import spire.algebra._
-import spire.math._
-import spire.implicits._
+import scala.language.{existentials, implicitConversions}
 import scala.util._
-import scala.language.{implicitConversions, existentials}
+import spire.algebra._
+import spire.implicits._
+import spire.syntax._
 
 /**
  * @author gadgil
@@ -284,6 +282,12 @@ class SymbolicCRig[A : Rig] {self =>
     override def toString="sum"
   }
 
+  object LiteralSum{
+    def unapply(x: LocalTerm) = x match {
+      case Comb(f, Literal(b), v) if f == sum => Some((b, v))
+      case _ => None
+    }
+  }
 
   case class AddLiteral(a : A) extends Func[LocalTerm, LocalTerm]{
     val dom = LocalTyp
@@ -465,9 +469,6 @@ class SymbolicCRig[A : Rig] {self =>
     def times(x: LocalTerm, y: LocalTerm) = self.prod(x)(y)
   }
 }
-
-
-import spire.syntax._
 
   object SymbolicCRig extends LiteralParser{
 
