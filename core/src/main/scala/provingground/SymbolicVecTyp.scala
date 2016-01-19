@@ -13,9 +13,9 @@ import spire.implicits._
 import scala.util._
 import scala.language.implicitConversions
 
-import SymbolicCRing.{NatTyp, NatRing}
+import NatRing._
 
-import SymbolicCRing.NatTyp._
+import NatTyp._
 
 /**
  * @author gadgil

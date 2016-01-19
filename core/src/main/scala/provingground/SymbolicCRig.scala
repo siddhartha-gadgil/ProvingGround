@@ -36,7 +36,7 @@ import spire.syntax._
 class SymbolicCRig[A : Rig] {self =>
   val rig = implicitly[Rig[A]]
 
-  import rig._
+  import rig.{sumn, zero, one}
 
   val two = rig.plus(rig.one, rig.one)
 

@@ -571,11 +571,11 @@ object HoTT {
 
         def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: Func[U, V], x: U) =
           fn.codom.symbObj(ApplnSym(fn, x))
+          
+        def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: FuncLike[U, V], x: U) =
+          fn.depcodom(x).symbObj(ApplnSym(fn, x))
       }
 
-  //
-  //    val applptnterm = ApplnPattern[Term, Term]()
-  //   val applptnterm = new ApplnPatternAny
 
   /**
    *  a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.

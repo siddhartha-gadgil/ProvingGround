@@ -19,7 +19,7 @@ lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
-val akkaStreamV = "2.0-M1"
+val akkaStreamV = "2.0.1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
