@@ -21,7 +21,6 @@ import NatTyp._
  * @author gadgil
  */
 case class SymbolicVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: SafeLong)(implicit baserep: ScalaRep[U, X]) extends Typ[RepTerm[Vector[X]]]{
-//    val baserep = _baserep
 
     val typ = Universe(0)
 
@@ -66,6 +65,7 @@ object SymbolicVecTyp{
 
 //  implicit val NatVecRep = vecRep[RepTerm[SafeLong], SafeLong](poly(NatTyp.rep))
 
+  
   val Vec = (((n: SafeLong) => (SymbolicVecTyp[SafeLong, RepTerm[SafeLong]](NatTyp, n) : Typ[Term])).hott(NatTyp ->: __)).get
 
   private val ltyp = n ~>: (Vec(n) ->: NatTyp)
