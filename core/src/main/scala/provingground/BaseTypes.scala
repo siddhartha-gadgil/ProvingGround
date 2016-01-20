@@ -13,6 +13,8 @@ object BaseConstructorTypes{
 
   case object Nat extends SmallTyp
 
+  val W = IdW[Term]()
+  
   val ttC  = W.constructor(Bool, "true")
 
   val ffC = W.constructor(Bool, "false")

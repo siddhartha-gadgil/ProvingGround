@@ -100,7 +100,7 @@ object Families {
 
     def target(x: Typ[Cod]): Typ[TargetType]
 
-    def depTarget(xs: Func[Term, Typ[Cod]]): Family => Typ[DepTargetType]
+    def depTarget(xs: Func[O, Typ[Cod]]): Family => Typ[DepTargetType]
 
 
     def withCod[CC <: Term with Subs[CC]]: FmlyPtn[O, CC, Family]
@@ -183,7 +183,7 @@ object Families {
 
     def target(x: Typ[Cod]) = x
 
-    def depTarget(xs: Func[Term, Typ[Cod]]) = xs
+    def depTarget(xs: Func[O, Typ[Cod]]) = xs
 
     def withCod[CC <: Term with Subs[CC]] = IdFmlyPtn[O, CC]
 
@@ -222,7 +222,7 @@ object Families {
 
     val headfibre: Term => FmlyPtn[O, C, V] { type ArgType = S; type TargetType = T; type DepTargetType = D }
 
-    def depTarget(xs: Func[Term, Typ[Cod]]) = (fmly: Family) =>
+    def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) =>
       {
         val a = tail.Var
         val b = fmly(a)
@@ -338,7 +338,7 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     def target(x: Typ[Cod]) = tail ->: head.target(x)
 
-    def depTarget(xs: Func[Term, Typ[Cod]]) = (fmly: Family) =>
+    def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) =>
       {
         val a = tail.Var
         val b = fmly(a)

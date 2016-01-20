@@ -10,18 +10,18 @@ import scala.language.implicitConversions
 
 import RecFunction._
 
-case class RecFn[C<: Term with Subs[C]](W: Typ[Term], X: Typ[C]) extends AnySym
+case class RecFn[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Typ[C]) extends AnySym
 
 /**
  * rec(W)(X) is the value, defined recursively.
  * @tparam C codomain (scala) type
  * @tparam F full type of rec
  */
-trait RecFunction[C<: Term with Subs[C]]{self =>
+trait RecFunction[C<: Term with Subs[C], H <: Term with Subs[H]]{self =>
   /**
    * W in rec(W)(X)
    */
-  val W: Typ[Term]
+  val W: Typ[H]
 
   /**
    * X in rec(W)(X)
@@ -51,12 +51,12 @@ trait RecFunction[C<: Term with Subs[C]]{self =>
   /**
    * prepend a constructor, passing on the function on offspring
    */
-   def prepend[U <: Term with Subs[U]](cons: Constructor[C]) = {
+   def prepend[U <: Term with Subs[U]](cons: Constructor[C, H]) = {
     val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
     type D = cons.pattern.RecDataType
-    val caseFn : D => Func[Term, C] => Func[Term, C] => Func[Term, C] =
+    val caseFn : D => Func[H, C] => Func[H, C] => Func[H, C] =
        (d) => (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
-    RecFunctionCons[D, C](recdom, caseFn, self)
+    RecFunctionCons[D, C, H](recdom, caseFn, self)
   }
 
   def fn(x: Typ[C]) : FullType = recursion(x)(fn(x))
@@ -67,14 +67,14 @@ object RecFunction{
 
   implicit def WAsPtn(w: IdW.type) = IdFmlyPtn[Term, Term]
 
-  def recFunction[C <: Term with Subs[C], U <: Term with Subs[U]](
-      conss: List[Constructor[C]], W: Typ[Term]) = {
-    val init : RecFunction[C] = RecTail[C](W)
+  def recFunction[C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
+      conss: List[Constructor[C, H]], W: Typ[H]) = {
+    val init : RecFunction[C, H] = RecTail[C, H](W)
     (init /: (conss.reverse))(_ prepend _)
   }
 
-  def recFn[C <: Term with Subs[C], U <: Term with Subs[U]](
-    conss: List[Constructor[C]], W: Typ[Term], X: Typ[C]) =
+  def recFn[C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
+    conss: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) =
       recFunction(conss, W).fn(X)
       }
 /*
@@ -88,7 +88,7 @@ case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
  * rec(W)(X) is defined to be formal application of itself.
  * Lazy lambda is used to avoid infinite loops
  */
-case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
+case class RecTail[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) extends RecFunction[C, H]{
   type FullType = Func[Term, C]
 
   def fullTyp(x: Typ[C]) : Typ[FullType] = W ->: x
@@ -107,10 +107,10 @@ case class RecTail[C <: Term with Subs[C]](W: Typ[Term]) extends RecFunction[C]{
  * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern and gives new function
  * @param tail previously added constructors
  */
-case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C]](
+case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C], H <: Term with Subs[H]](
     recdom: Typ[C] => Typ[D],
-    caseFn : D => Func[Term, C] => Func[Term, C] => Func[Term, C],
-    tail: RecFunction[C]) extends RecFunction[C]{
+    caseFn : D => Func[H, C] => Func[H, C] => Func[H, C],
+    tail: RecFunction[C, H]) extends RecFunction[C, H]{
   val W = tail.W
 
 //  val X = tail.X
