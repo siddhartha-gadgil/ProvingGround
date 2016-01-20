@@ -65,7 +65,7 @@ trait RecFunction[C<: Term with Subs[C], H <: Term with Subs[H]]{self =>
 
 object RecFunction{
 
-  implicit def WAsPtn(w: IdW.type) = IdFmlyPtn[Term, Term]
+  implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
 
   def recFunction[C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
       conss: List[Constructor[C, H]], W: Typ[H]) = {

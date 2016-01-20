@@ -237,7 +237,7 @@ object ScalaRep {
   implicit val UnivRep = idRep(__)
 
 
-  implicit val boolRep : ScalaRep[Term, Boolean] = SimpleRep(BaseConstructorTypes.Bool)
+  implicit val boolRep : ScalaRep[Term, Boolean] = SimpleRep(BaseConstructorTypes.SmallBool)
 
 
   def incl[U <: Term with Subs[U], V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {

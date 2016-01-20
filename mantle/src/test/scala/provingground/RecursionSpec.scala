@@ -16,26 +16,26 @@ import RecursiveDefinition._
 class RecursionSpec extends FlatSpec {
 
   "Boolean type" should "have constructors of type Bool" in {
-    assert(tt.typ == Bool)
-    assert(ff.typ == Bool)
+    assert(tt.typ == SmallBool)
+    assert(ff.typ == SmallBool)
   }
 
   it should "have constructor data for recursion to X with type X" in {
-    assert(W.recDom(Bool, Bool) == Bool)
-    assert(W.recDom(Bool, Nat) == Nat)
+    assert(W.recDom(SmallBool, SmallBool) == SmallBool)
+    assert(W.recDom(SmallBool, SmallNat) == SmallNat)
   }
 
-  val recBool = recFunction(BoolCons, Bool)
+  val recBool = recFunction(BoolCons, SmallBool)
 
   it should "have recursion function to X with type X -> X -> Bool -> X" in {
-    assert(recBool.fullTyp(Bool) == Bool ->: Bool ->: Bool ->: Bool)
+    assert(recBool.fullTyp(SmallBool) == SmallBool ->: SmallBool ->: SmallBool ->: SmallBool)
 
-    assert(recBool.fullTyp(Nat) == Nat ->: Nat ->: Bool ->: Nat)
+    assert(recBool.fullTyp(SmallNat) == SmallNat ->: SmallNat ->: SmallBool ->: SmallNat)
 
   }
 
   "Recursion defintion for a case" should "when applied to constructor give defining data, and other None" in {
-    val fn = W.recDef(tt, ff, (BoolType.Bool ->: BoolType.Bool).symbObj("dummy-function"))
+    val fn = W.recDef(tt, ff, (SmallBool ->: SmallBool).symbObj("dummy-function"))
 
     assert(fn(tt) == Some(ff))
 
@@ -43,7 +43,7 @@ class RecursionSpec extends FlatSpec {
   }
 
   it should "modify a function according to the case" in {
-    val dummy = (BoolType.Bool ->: BoolType.Bool).symbObj("dummy")
+    val dummy = (SmallBool ->: SmallBool).symbObj("dummy")
 
     val negTrue = W.recModify(tt)(ff)(dummy)(dummy)
 
@@ -57,7 +57,7 @@ class RecursionSpec extends FlatSpec {
   }
 
   val recBoolBool =
-    recFn(BoolCons, Bool, Bool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+    recFn(BoolCons, SmallBool, SmallBool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
   "Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
     val neg = recBoolBool(ff)(tt)
@@ -66,7 +66,7 @@ class RecursionSpec extends FlatSpec {
   }
 
   val recBoolNat =
-    recFn(BoolCons, Bool, Nat).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
+    recFn(BoolCons, SmallBool, SmallNat).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
   "Recursion function from Bool to Nat" should "when applied to constructors give defining data" in
     {
@@ -78,13 +78,13 @@ class RecursionSpec extends FlatSpec {
     }
 
   import Fold._
-  val recNatNat = recFn(NatCons, Nat, Nat)
+  val recNatNat = recFn(NatCons, SmallNat, SmallNat)
 
   "Recursion functions from Nat to Nat" should "recursively apply the definition" in {
 
-    val x = "x" :: Nat
+    val x = "x" :: SmallNat
 
-    val y = "y" :: Nat
+    val y = "y" :: SmallNat
 
     val next = lambda(x)(lambda(y)(succ(y)))
 
@@ -108,21 +108,21 @@ class RecursionSpec extends FlatSpec {
 
   }
 
-  def recNat[C <: Term with Subs[C]](X: Typ[C]) = recFn(NatCons, Nat, X)
+  def recNat[C <: Term with Subs[C]](X: Typ[C]) = recFn(NatCons, SmallNat, X)
 
-  def recBool[C <: Term with Subs[C]](X: Typ[C]) = recFn(BoolCons, Bool, X)
+  def recBool[C <: Term with Subs[C]](X: Typ[C]) = recFn(BoolCons, SmallBool, X)
 
   "And defined recursively" should "have correct values" in {
-    val a = "a" :: Bool
-    val and = recBool(Bool ->: Bool)(lambda(a)(a), lambda(a)(ff))
+    val a = "a" :: SmallBool
+    val and = recBool(SmallBool ->: SmallBool)(lambda(a)(a), lambda(a)(ff))
     assert(and(tt, tt) == tt)
   }
 
   "Sum defined recursively" should "have correct values" in {
-    val n = "n" :: Nat
-    val k = "k" :: Nat
-    val f = "f" :: (Nat ->: Nat)
-    val add = recNat(Nat ->: Nat)(
+    val n = "n" :: SmallNat
+    val k = "k" :: SmallNat
+    val f = "f" :: (SmallNat ->: SmallNat)
+    val add = recNat(SmallNat ->: SmallNat)(
       lambda(n)(n),
       lambda(n)(
         lambda(f)(
