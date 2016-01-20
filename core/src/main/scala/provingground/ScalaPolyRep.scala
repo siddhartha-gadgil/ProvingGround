@@ -93,6 +93,8 @@ object ScalaPolyRep{
 
   implicit class ScalaPolyTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaPolyRep[U, W]){
     def hott(typ: Typ[Term]) = rep(typ)(elem)
+    
+    def getTerm(typ: Typ[Term]) = hott(typ).get
   }
 
   implicit class PolyTermScala[U <: Term with Subs[U]](term : U){
@@ -105,10 +107,10 @@ object ScalaPolyRep{
  
   
   implicit def poly[U<: Term with Subs[U], W](implicit rep : ScalaRep[U, W]) : ScalaPolyRep[U, W] = ScalaRepWrap(rep)
-  /*
-  implicit def funcPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](implicit domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]
+  
+  def funcPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](implicit domrep : ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y]
   ) : ScalaPolyRep[Func[U, X], W => Y] = FuncPolyRep(domrep, codrep)
-  */
+  
   
     /**
    * Formal extension of a function given by a definition and representations for

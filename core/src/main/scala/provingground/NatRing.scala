@@ -65,4 +65,11 @@ object NatRing extends SymbolicCRing[SafeLong]{
         }
 
     }
+   
+   object Induc{
+     def cast[U <: Term with Subs[U]](
+       typFamily: Func[Nat, Typ[U]], init: U, g: FuncLike[Nat, FuncLike[U, U]]) = 
+         Induc(typFamily, init, g.asInstanceOf[FuncLike[Nat, Func[U, U]]])
+     
+   }
 }
