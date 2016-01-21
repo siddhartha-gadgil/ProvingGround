@@ -43,7 +43,7 @@ class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep:
   
   val Vec = ((n: SafeLong) => SymbolicVecTyp[X, U](basetyp, n) : Typ[Term]).term
   
-  val empty = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
+  val Empty = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
   
   val consTyp = n ~>: (basetyp ->: Vec(n) ->: Vec(succ(n)))
   
@@ -60,6 +60,8 @@ class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep:
 
   val cons = consLike.asInstanceOf[FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
 }
+
+object NatVecTyps extends VecTyps[SafeLong, Nat](NatTyp)
 
 object SymbolicVecTyp{
   case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]{
