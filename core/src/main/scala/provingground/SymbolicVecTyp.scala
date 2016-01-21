@@ -34,6 +34,33 @@ case class SymbolicVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim:
     }
 }
 
+class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep: ScalaRep[U, X]){
+  implicit val vrep = SymbolicVecTyp.vecRep[U, X]
+  
+  assert(basetyp ==baserep.typ, s"specified type $basetyp does not match type of ${baserep.typ} of scalarep")
+  
+  val n = "n" :: NatTyp
+  
+  val Vec = ((n: SafeLong) => SymbolicVecTyp[X, U](basetyp, n) : Typ[Term]).term
+  
+  val empty = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
+  
+  val consTyp = n ~>: (basetyp ->: Vec(n) ->: Vec(succ(n)))
+  
+  val consFn = (n: SafeLong) => (x: X) => (v: Vector[X]) => (x +: v)
+  
+
+  val consRep =
+    depFuncPolyRep(poly(NatTyp.rep),
+        depFuncPolyRep(poly(baserep),
+            depFuncPolyRep(vrep, vrep)
+            ))          
+            
+  val consLike = ScalaPolyTerm(consFn)(consRep).getTerm(consTyp)
+
+  val cons = consLike.asInstanceOf[FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
+}
+
 object SymbolicVecTyp{
   case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]{
 

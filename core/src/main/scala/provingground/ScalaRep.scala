@@ -75,6 +75,7 @@ case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
   def subs(x: Term, y: Term) = IdRep(typ.subs(x, y))
 }
 
+
 /**
  * Representations for functions given ones for the domain and codomain.
  */
