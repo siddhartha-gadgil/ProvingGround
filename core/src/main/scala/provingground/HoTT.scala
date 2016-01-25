@@ -378,7 +378,16 @@ object HoTT {
     def subs(x: Term, y: Term) = this
 
     override def toString = UnivSym
+
+    override def equals(that: Any) = that match {
+      case Universe(k) if  k==level => true
+      case _ : ScalaUniverses.ScalaUniv[_] if level == 0 => true
+      case _ => false
+      }
+  
   }
+  
+
 
   def univlevel: Typ[Typ[Term]] => Int = {
     case Universe(l) => l

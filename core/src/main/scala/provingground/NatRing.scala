@@ -20,6 +20,7 @@ object NatRing extends SymbolicCRing[SafeLong]{
 
   type Nat = LocalTerm
 
+  implicit def intLiteral(n: Int) : Nat = Literal(n)
 
   @tailrec def recDefn[U <: Term with Subs[U]](n: SafeLong, formal: U, h: SafeLong => U => U) : U =
     if (n == 0) formal else recDefn(n -1 , h(n)(formal), h)
