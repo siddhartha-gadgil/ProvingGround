@@ -363,6 +363,16 @@ object HoTT {
    */
   type Univ = Typ[Typ[Term]]
 
+  trait BaseUniv{
+    override def hashCode = __.hashCode
+    
+    override def equals(a: Any) = a match{
+      case _ : BaseUniv => true
+      case `__` => true
+      case _ => false
+    }
+  }
+  
   /** The (usual) universes */
   case class Universe(level: Int) extends Univ {
     require(level >= 0)
@@ -381,7 +391,7 @@ object HoTT {
 
     override def equals(that: Any) = that match {
       case Universe(k) if  k==level => true
-      case _ : ScalaUniverses.ScalaUniv[_] if level == 0 => true
+      case _ : BaseUniv if level == 0 => true
       case _ => false
       }
   

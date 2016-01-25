@@ -11,15 +11,7 @@ object ScalaUniverses {
      * Wrapper for universe with refined scala type for objects (i.e., types) in it.
      * Refined scala types typically recursively built from (dependent) function types and types of already refined types.
      */
-    case class ScalaUniv[U <: Term with Subs[U]](univ: Typ[Typ[U]]){
-      override def hashCode = __.hashCode
-      
-      override def equals(that: Any) = that match {
-        case _ : ScalaUniv[_] => true
-        case `__` => true
-        case _ => false
-      }
-    }
+    case class ScalaUniv[U <: Term with Subs[U]](univ: Typ[Typ[U]]) extends BaseUniv
 
     /**
      * scala universe with no refinement.
@@ -137,7 +129,6 @@ object ScalaUniverses {
       new DepFuncDefn(func, dom, fibers)
     }
   }
-
 
     /**
    * create type family, implicitly using a scala-universe object to build the codomain.
