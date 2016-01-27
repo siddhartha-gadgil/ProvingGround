@@ -590,7 +590,7 @@ object HoTT {
 
         def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: Func[U, V], x: U) =
           fn.codom.symbObj(ApplnSym(fn, x))
-          
+
         def apply[U<: Term with Subs[U], V<: Term with Subs[V]](fn: FuncLike[U, V], x: U) =
           fn.depcodom(x).symbObj(ApplnSym(fn, x))
       }
@@ -976,7 +976,8 @@ object HoTT {
    *  For all/Product for a type family. This is the type of dependent functions
    */
   case class PiTyp[W <: Term with Subs[W], U <: Term with Subs[U]](fibers: TypFamily[W, U]) extends Typ[FuncLike[W, U]] with Subs[PiTyp[W, U]] {
-    type Obj = DepFunc[W, U]
+    //type Obj = DepFunc[W, U]
+    type Obj = FuncLike[W, U]
 
     lazy val typ = Universe(max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
