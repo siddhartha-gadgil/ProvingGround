@@ -121,7 +121,7 @@ object HoTT {
    */
   trait Typ[+U <: Term with Subs[U]] extends Term with Subs[Typ[U]] { self =>
     /** scala type of objects with this HoTT-type */
-    type Obj <: U with Subs[U]
+    type Obj <: U with Subs[Obj]
 
     /**
      * factor for producing objects of the given type.

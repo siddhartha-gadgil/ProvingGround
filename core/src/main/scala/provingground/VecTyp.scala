@@ -12,6 +12,8 @@ import ScalaRep._
 case class VecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: Long)(implicit _baserep: ScalaRep[U, X]) extends Typ[RepTerm[Vector[X]]]{
     val baserep = _baserep
 
+    type Obj = RepTerm[Vector[X]]
+    
     val typ = Universe(0)
 
     def symbObj(name: AnySym): RepTerm[Vector[X]] = RepSymbObj[Vector[X], RepTerm[Vector[X]]](name, this)

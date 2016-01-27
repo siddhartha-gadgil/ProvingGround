@@ -21,7 +21,8 @@ import NatTyp._
  * @author gadgil
  */
 case class SymbolicVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: SafeLong)(implicit baserep: ScalaRep[U, X]) extends Typ[RepTerm[Vector[X]]]{
-
+    type Obj = RepTerm[Vector[X]]
+  
     val typ = Universe(0)
 
     def symbObj(name: AnySym): RepTerm[Vector[X]] = RepSymbObj[Vector[X], RepTerm[Vector[X]]](name, this)

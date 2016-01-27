@@ -48,7 +48,7 @@ class SymbolicCRig[A : Rig] {self =>
   object LocalTyp extends ScalaTyp[A]{
     override def toString = self.toString() + ".Typ"
 
-    type Obj = LocalTerm
+    override type Obj = LocalTerm
   }
 
 

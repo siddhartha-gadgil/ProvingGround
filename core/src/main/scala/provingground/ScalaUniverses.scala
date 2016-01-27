@@ -30,6 +30,8 @@ case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
   domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]
 ) extends Typ[FuncTyp[W, U]] {
 
+  type Obj = FuncTyp[W, U]
+  
   lazy val typ = HigherUniv(this)
 
   def symbObj(name: AnySym) = {
@@ -50,6 +52,8 @@ case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
   domuniv: Typ[Typ[W]], codomuniv: Typ[Typ[U]]
 ) extends Typ[PiTyp[W, U]] {
 
+  type Obj = PiTyp[W, U]
+  
   lazy val typ = HigherUniv(this)
 
   def symbObj(name: AnySym) = {
@@ -88,7 +92,9 @@ case class FineSymbTyp[U<: Term with Subs[U]](name: AnySym, symobj: AnySym => U)
   }
 }
 
-case class FineUniv[U<: Term with Subs[U]](symobj: AnySym => U) extends Typ[Typ[U]]{
+case class FineUniv[U<: Term with Subs[U]](symobj: AnySym => U) extends Typ[Typ[U]] with BaseUniv{
+  type Obj = Typ[U]
+  
   lazy val typ = HigherUniv(this)
 
   def symbObj(name: AnySym) = FineSymbTyp(name, symobj)

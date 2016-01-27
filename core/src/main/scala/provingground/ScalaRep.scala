@@ -195,6 +195,8 @@ trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
   }
 
 class ScalaTyp[A] extends Typ[RepTerm[A]]{
+    type Obj = RepTerm[A]
+  
     val typ = ScalaTypUniv[A]
 
     def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
@@ -211,9 +213,11 @@ class ScalaTyp[A] extends Typ[RepTerm[A]]{
 
 case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic
 
-case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]]{
+case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv{
   lazy val typ = HigherUniv(this)
 
+  type Obj = Typ[RepTerm[A]]
+  
   def subs(x: Term, y: Term) = this
 
   def newobj = this
