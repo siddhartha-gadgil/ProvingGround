@@ -85,7 +85,8 @@ case class FineSymbTyp[U<: Term with Subs[U]](name: AnySym, symobj: AnySym => U)
       def symbobj(name: AnySym) = FineSymbTyp(name, symobj)
       symSubs(symbobj)(x, y)(name)
     }
-
+  }
+}
 
 case class FineUniv[U<: Term with Subs[U]](symobj: AnySym => U) extends Typ[Typ[U]]{
   lazy val typ = HigherUniv(this)
@@ -114,12 +115,6 @@ object ScalaUniverses {
     ScalaUniv(HigherUniv(sc.univ))
   }
 
-      def symbObj(name: AnySym) = {
-        val dom = domuniv.symbObj(DomSym(name))
-        val codom = codomuniv.symbObj(CodomSym(name))
-        val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
-        PiTyp(typFmly)
-      }
 
       def newobj = this
 
@@ -139,7 +134,7 @@ object ScalaUniverses {
     ScalaUniv(PiTypUniv(domsc.univ, codomsc.univ): Typ[PiTyp[W, U]])
   }
 
-  
+
   /**
    * returns dependent function inferring type fiber.
    */
