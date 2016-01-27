@@ -41,7 +41,7 @@ class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep:
   
   val n = "n" :: NatTyp
   
-  val Vec = ((n: SafeLong) => SymbolicVecTyp[X, U](basetyp, n) : Typ[Term]).term
+  val Vec = ((n: SafeLong) => SymbolicVecTyp[X, U](basetyp, n) : Typ[RepTerm[Vector[X]]]).term
   
   val Empty = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
   

@@ -78,10 +78,10 @@ case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
 
 case class IdTypRep[U<: Term with Subs[U]](implicit univ: Typ[Typ[U]]) extends ScalaRep[Typ[U], Typ[U]]{
   val typ = univ
-  
+
   def apply(v: Typ[U]) = v
 
-  def unapply(u: Term): Option[Typ[U]] = 
+  def unapply(u: Term): Option[Typ[U]] =
     Try(u.asInstanceOf[Typ[U]]).toOption
 
   def subs(x: Term, y: Term) = this
@@ -123,7 +123,7 @@ object SimpleFuncRep{
 /**
  * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
  */
- 
+
 case class SmpleFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X]](
   domrep: ScalaRep[U, V], codom: Typ[X]
 ) extends ScalaRep[FuncLike[U, X], V => X] {
@@ -211,20 +211,22 @@ class ScalaTyp[A] extends Typ[RepTerm[A]]{
 
 case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic
 
-case class ScalaTypUniv[A]() extends Univ{
-  val typ = Universe(1)
-  
+case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]]{
+  lazy val typ = HigherUniv(this)
+
   def subs(x: Term, y: Term) = this
-  
+
   def newobj = this
-  
+
   def symbObj(name: AnySym) = SymbScalaTyp[A](name)
 }
 
 object ScalaRep {
 
   implicit val UnivRep = idRep(__)
-  
+
+  implicit def scalaUnivRep[A] = idRep(ScalaTypUniv[A])
+
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] = IdRep(typ)
 
   implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaRep[U, W]){
