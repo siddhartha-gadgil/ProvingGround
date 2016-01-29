@@ -211,7 +211,15 @@ class ScalaTyp[A] extends Typ[RepTerm[A]]{
     implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
   }
 
-case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic
+case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic{
+  override def subs(x: Term, y: Term) = (x, y) match {
+      case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[RepTerm[A]]]
+      case _ => {
+        def symbobj(name: AnySym) = SymbScalaTyp[A](name)
+        symSubs(symbobj)(x, y)(name)
+      }
+    }
+}
 
 case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv{
   lazy val typ = HigherUniv(this)
