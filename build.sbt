@@ -13,7 +13,7 @@ lazy val commonSettings = Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
-  "org.spire-math" %% "spire" % "0.9.1",
+  "org.spire-math" %% "spire" % "0.11.0",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
@@ -41,8 +41,7 @@ lazy val jvmSettings = Seq(
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
-    "com.lihaoyi" %% "pprint" % "0.3.6",
-    "com.quantifind" %% "wisp" % "0.0.4"),
+    "com.lihaoyi" %% "pprint" % "0.3.6"),
     resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
 
@@ -85,7 +84,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.spire-math" %% "spire" % "0.9.1"),
+  libraryDependencies ++= Seq("org.spire-math" %% "spire" % "0.11.0"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
   )
