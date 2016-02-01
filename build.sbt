@@ -28,10 +28,10 @@ lazy val jvmSettings = Seq(
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
     "com.typesafe.akka" %% "akka-slf4j" % "2.3.11",
-    "ch.qos.logback" % "logback-classic" % "1.0.9",
+//    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "3.0.0",
-    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
+//    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream-experimental"             % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-core-experimental"          % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
@@ -45,7 +45,7 @@ lazy val jvmSettings = Seq(
     resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
 
-lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
+//lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
 
 lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
