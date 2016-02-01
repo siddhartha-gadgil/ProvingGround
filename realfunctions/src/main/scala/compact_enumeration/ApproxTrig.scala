@@ -33,7 +33,11 @@ class ApproxTrig(N: SafeLong) {
    */
   val E = Interval.closed(-width, width)
 
-  implicit val appr = new ApproximationContext(width)
+//  implicit val appr = new ApproximationContext(width)
+
+  import java.math.MathContext
+
+  implicit val mc = MathContext.DECIMAL128
 
   val pi = ConstantBound(Interval.point(Real.pi.toRational) + E)
 
@@ -43,17 +47,17 @@ class ApproxTrig(N: SafeLong) {
    * returns bound on a positive interval,
    * given a bound, with index k, for the
    * function in in [(k -1)/N, k/N] (or [0, 0] if k = 0
-   * 
+   *
    * @param stream bound for function on [k/N, (k+1)/N] is stream(n)
    * @param xs interval whose image is bounded.
-   * 
-   * 
+   *
+   *
    */
   def spanPositive(stream: Int => Interval[Rational])(
       xs: Interval[Rational]) : Option[Interval[Rational]] =
       if (xs.isEmpty) Some(Interval.empty)
       else {
-        assert(!xs.hasBelow(0), 
+        assert(!xs.hasBelow(0),
             s"""spanPositive should have input a positive interval,
               tried to bound on $xs""")
         import ApproxTrig.getBound
@@ -69,20 +73,20 @@ class ApproxTrig(N: SafeLong) {
         imagesOpt map (_.reduce (_ union _))
 
   }
-  
+
   /**
    * for a monotonic function, gives bound on [(k-1)/N, k/N] given bound at the point k/N.
    */
-  def monotoneBound(endBound: Int => Interval[Rational]) : Int => Interval[Rational] = 
+  def monotoneBound(endBound: Int => Interval[Rational]) : Int => Interval[Rational] =
     (k) => if (k ==0) endBound(k) else endBound(k-1) + endBound(k)
 
   /**
    * returns bound on an interval
-   * 
+   *
    * @param stream bound for function on [k/N, (k+1)/N] is stream(n)
    * @param xs interval whose image is bounded.
    * @param inv : inversion, i.e., f(-x) = inv(f(x))
- 
+
    */
   def span(stream: Int => Interval[Rational],
       inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) =
@@ -142,18 +146,18 @@ class ApproxTrig(N: SafeLong) {
     }
   )
 
-  
+
   /**
    * bound on log(1 + x) for x in [(k-1)/N, k/N] at index k.
    */
   val logBound = monotoneBound(logStream)
-  
+
   def logOptBounds(xs: Interval[Rational]) =
     if (xs.hasAtOrBelow(0)) None // log(-x) not defined
     else {
       val spl = xs.split(1)
       val aboveOneOpt = spanPositive(logBound)(spl._2 - 1) // bound log(1+x), x>1
-      val belowOneOpt = 
+      val belowOneOpt =
         spanPositive(logBound)((Interval.point(r"1") / spl._1) - 1) map ((I) => -I) //for x in (0, 1), use log(x) = -log(1/x) = -log(1 + (1/x-1))
 
       for (aboveOne <- aboveOneOpt; belowOne <- belowOneOpt) yield (aboveOne + belowOne) // union bound
@@ -180,11 +184,17 @@ class ApproxTrig(N: SafeLong) {
 
     lazy val derSignChange = derImage.crossesZero // check if derivative can a priori cross 0
 
-    implicit val appr = new ApproximationContext(width)
+//    implicit val appr = new ApproximationContext(width)
+
+  import java.math.MathContext
+
+  implicit val mc = MathContext.DECIMAL128
+
+  import spire.math.Numeric._
 
     lazy val b2c2 = (b.pow(2) * 2 + c.pow(2)).sqrt + Interval.closed(-width, width)
 
-    lazy val discriminantNonNegative = 
+    lazy val discriminantNonNegative =
       ((-c - b2c2) union (-c + b2c2))/(Rational(4)) // interval outside which discriminant is non-negative
 
     lazy val a = if (derSignChange && (endsBound intersects discriminantNonNegative))
@@ -241,8 +251,10 @@ class ApproxTrig(N: SafeLong) {
       span((j: Int) => cosStream(j)._2,
         (I) => I)
         )
-        
-  val sqrt : Approx = 
+
+  import spire.math.Numeric._
+
+  val sqrt : Approx =
     (J) =>
       Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
 }
@@ -272,9 +284,9 @@ object ApproxTrig{
   @tailrec def get[A](xs: Stream[A], n: SafeLong) : A = {
     if (n ==0) xs.head else get(xs.tail, n-1)
   }
-  
-  
-  
+
+
+
   import spire.math.Interval._
 
   /**
@@ -284,7 +296,7 @@ object ApproxTrig{
     case ValueBound(a) => Some(a)
     case _ => None
   }
-  
+
   /**
    * (optionally) split an interval.
    */
@@ -295,7 +307,7 @@ object ApproxTrig{
 
 
   /**
-   * A constant bound on the image of a function, on a domain, 
+   * A constant bound on the image of a function, on a domain,
    * independent of an interval;
    * used for functions of several variables, where an interval as input makes no sense.
    */
@@ -325,18 +337,18 @@ object ApproxTrig{
       /**
        * recursively split a cube k times.
        */
-      def recSplit(k: Int) : Option[Set[Cube]] = 
+      def recSplit(k: Int) : Option[Set[Cube]] =
         if (k<1) Some(Set(this)) // no splitting
         else
         {
         val prevSplit = recSplit(k - 1)
         prevSplit flatMap ((cs) => // sub-cubes in the spltting of depth (k-1), if split successful
-          { 
+          {
           val setopts = cs map (_.splitCube) // split each sub-cube if possible.
           if (setopts contains None) None  // if some sub-cube fails to split, no total split.
           else Some(setopts.flatten.flatten) // Extract split cubes (from option type) as Set(Set) and flatten
         }
-        )        
+        )
         }
 
       /**
@@ -370,7 +382,7 @@ object ApproxTrig{
   import compact_enumeration.FormalElemFunction
 
   /**
-   * Bounds for elementary functions on a cube; 
+   * Bounds for elementary functions on a cube;
    * bounds for sin, cos etc are a function on an interval;
    * bounds for coordinates only depend on the cube.
    * Combining the two should be done with care (as is done in rationalBound)
@@ -389,7 +401,7 @@ object ApproxTrig{
   }
 
   import FormalElemFunction.multiVar
-  
+
   /**
    * rational bound for a formal elementary function on a cube;
    * function should be a multivariate function of coordinates, not involving direct univariates such as sin;
