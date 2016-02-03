@@ -1,6 +1,6 @@
 package provingground
 import provingground.HoTT._
-import scala.reflect.runtime.universe.{ Try => UnivTry, Function => FunctionUniv, _ }
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 import scala.util._
 
@@ -75,8 +75,7 @@ case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
   def subs(x: Term, y: Term) = IdRep(typ.subs(x, y))
 }
 
-
-case class IdTypRep[U<: Term with Subs[U]](implicit univ: Typ[Typ[U]]) extends ScalaRep[Typ[U], Typ[U]]{
+case class IdTypRep[U <: Term with Subs[U]](implicit univ: Typ[Typ[U]]) extends ScalaRep[Typ[U], Typ[U]] {
   val typ = univ
 
   def apply(v: Typ[U]) = v
@@ -113,12 +112,11 @@ case class FuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   def subs(x: Term, y: Term) = FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
 }
 
-object SimpleFuncRep{
+object SimpleFuncRep {
   def apply[U <: Term with Subs[U], V, X <: Term with Subs[X]](
     domrep: ScalaRep[U, V], codom: Typ[X]
   ) = FuncRep(domrep, IdRep(codom))
 }
-
 
 /**
  * Function rep with codomain representing itself. Should perhaps use  IdRep instead.
@@ -140,7 +138,6 @@ case class SmpleFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X]](
 
   def subs(x: Term, y: Term) = SimpleFuncRep(domrep.subs(x, y), codom.subs(x, y))
 }
-
 
 case class SigmaRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   domrep: ScalaRep[U, V],
@@ -189,43 +186,42 @@ case class DepFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   def subs(x: Term, y: Term) = DepFuncRep(domrep.subs(x, y), (v: V) => codomreps(v).subs(x, y), fibers.subs(x, y))
 }
 
-
-trait RepTerm[A] extends Term with Subs[RepTerm[A]]{
-    val typ: Typ[RepTerm[A]]
-  }
-
-class ScalaTyp[A] extends Typ[RepTerm[A]]{
-    type Obj = RepTerm[A]
-  
-    val typ = ScalaTypUniv[A]
-
-    def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
-
-    def newobj = this
-
-    def subs(x: Term, y: Term) = (x, y) match {
-      case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
-      case _ => this
-    }
-
-    implicit val rep : ScalaRep[RepTerm[A], A] = SimpleRep(this)
-  }
-
-case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic{
-  override def subs(x: Term, y: Term) = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[RepTerm[A]]]
-      case _ => {
-        def symbobj(name: AnySym) = SymbScalaTyp[A](name)
-        symSubs(symbobj)(x, y)(name)
-      }
-    }
+trait RepTerm[A] extends Term with Subs[RepTerm[A]] {
+  val typ: Typ[RepTerm[A]]
 }
 
-case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv{
+class ScalaTyp[A] extends Typ[RepTerm[A]] {
+  type Obj = RepTerm[A]
+
+  val typ = ScalaTypUniv[A]
+
+  def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
+
+  def newobj = this
+
+  def subs(x: Term, y: Term) = (x, y) match {
+    case (xt: Typ[_], yt: Typ[_]) if (xt == this) => yt.asInstanceOf[Typ[RepTerm[A]]]
+    case _ => this
+  }
+
+  implicit val rep: ScalaRep[RepTerm[A], A] = SimpleRep(this)
+}
+
+case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic {
+  override def subs(x: Term, y: Term) = (x, y) match {
+    case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[RepTerm[A]]]
+    case _ => {
+      def symbobj(name: AnySym) = SymbScalaTyp[A](name)
+      symSubs(symbobj)(x, y)(name)
+    }
+  }
+}
+
+case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
   lazy val typ = HigherUniv(this)
 
   type Obj = Typ[RepTerm[A]]
-  
+
   def subs(x: Term, y: Term) = this
 
   def newobj = this
@@ -241,22 +237,18 @@ object ScalaRep {
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] = IdRep(typ)
 
-  implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaRep[U, W]){
+  implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(implicit rep: ScalaRep[U, W]) {
     def term = rep(elem)
   }
 
-  implicit class TermScala[U <: Term with Subs[U]](term : U){
+  implicit class TermScala[U <: Term with Subs[U]](term: U) {
     type Rep[W] = ScalaRep[U, W]
-    def as[W : Rep] = implicitly[ScalaRep[U, W]].unapply(term)
+    def as[W: Rep] = implicitly[ScalaRep[U, W]].unapply(term)
   }
 
-  implicit def funcRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](implicit
-    domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]) : ScalaRep[Func[U, X], V => Y] = FuncRep(domrep, codomrep)
+  implicit def funcRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](implicit domrep: ScalaRep[U, V], codomrep: ScalaRep[X, Y]): ScalaRep[Func[U, X], V => Y] = FuncRep(domrep, codomrep)
 
-
-
-
- case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
+  case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](name: AnySym, typ: Typ[U]) extends RepTerm[A] with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj = RepSymbObj(new InnerSym(this), typ)
@@ -267,15 +259,11 @@ object ScalaRep {
     }
   }
 
-
-
   case object NatInt extends ScalaTyp[Int]
 
   import NatInt.rep
 
-
-  implicit val boolRep : ScalaRep[Term, Boolean] = SimpleRep(BaseConstructorTypes.SmallBool)
-
+  implicit val boolRep: ScalaRep[Term, Boolean] = SimpleRep(BaseConstructorTypes.SmallBool)
 
   def incl[U <: Term with Subs[U], V, W]: (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
     case (x, y) if x == y => Some((v: V) => v.asInstanceOf[W])
@@ -322,11 +310,11 @@ object ScalaRep {
 
   case class ScalaSymbol[X](value: X) extends AnySym
 
-  case class SimpleRep[U <: Term with Subs[U], V](typ: Typ[U]) extends ScalaRep[U, V]{
-    def apply(v : V) = typ.symbObj(ScalaSymbol(v))
+  case class SimpleRep[U <: Term with Subs[U], V](typ: Typ[U]) extends ScalaRep[U, V] {
+    def apply(v: V) = typ.symbObj(ScalaSymbol(v))
 
     def unapply(u: Term) = u match {
-      case sym : Symbolic if u.typ == typ => sym.name match {
+      case sym: Symbolic if u.typ == typ => sym.name match {
         case ScalaSymbol(value) => Try(value.asInstanceOf[V]).toOption
         case _ => None
       }
@@ -337,11 +325,11 @@ object ScalaRep {
 
   }
 
-  class ScalaSym[U <: Term with Subs[U], V](typ: Typ[U]){
-    def apply(v : V) = typ.symbObj(ScalaSymbol(v))
+  class ScalaSym[U <: Term with Subs[U], V](typ: Typ[U]) {
+    def apply(v: V) = typ.symbObj(ScalaSymbol(v))
 
-    def unapply(u: Term) : Option[V] = u match {
-      case sym : Symbolic if u.typ == typ => sym.name match {
+    def unapply(u: Term): Option[V] = u match {
+      case sym: Symbolic if u.typ == typ => sym.name match {
         case ScalaSymbol(value) => Try(value.asInstanceOf[V]).toOption
         case _ => None
       }
@@ -472,7 +460,6 @@ object ScalaRep {
     }
 
   }
-
 
   object dsl {
     def i[V](typ: Typ[Term]) = SimpleRep[Term, V](typ)
