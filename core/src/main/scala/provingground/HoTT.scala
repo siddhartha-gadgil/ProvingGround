@@ -766,7 +766,7 @@ object HoTT {
 
     val depcodom: X => Typ[Y] = (t: X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
-    val dep = value dependsOn variable
+    val dep = value.typ dependsOn variable
 
     def newobj = Lambda(variable.newobj, value.newobj)
 
@@ -923,7 +923,7 @@ object HoTT {
    */
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(value: V): FuncLike[U, V] = {
     val newvar = variable.newobj
-    if (variable.typ dependsOn value) Lambda(newvar, value.replace(variable, newvar)) else LambdaFixed(newvar, value.replace(variable, newvar))
+    if (value.typ dependsOn variable) Lambda(newvar, value.replace(variable, newvar)) else LambdaFixed(newvar, value.replace(variable, newvar))
   }
 
   /**
