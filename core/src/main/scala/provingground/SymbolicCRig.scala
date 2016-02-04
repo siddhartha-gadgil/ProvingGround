@@ -201,7 +201,11 @@ class SymbolicCRig[A : Rig] {self =>
   /**
    * override this in fields
    */
-   lazy val reciprocal : Func[LocalTerm, LocalTerm] = ???
+   val reciprocalOpt : Option[Func[LocalTerm, LocalTerm]] = None
+
+   lazy val reciprocal : Func[LocalTerm, LocalTerm] =
+        reciprocalOpt.get
+
   //  val div: Op = ???
 
   object Reciprocal{
@@ -217,7 +221,7 @@ class SymbolicCRig[A : Rig] {self =>
           case _ => None
         }
       }
-      case FormalAppln(`reciprocal`, b : LocalTerm) => Some(b)
+      case FormalAppln(r, b : LocalTerm) if Some(r) == reciprocalOpt => Some(b)
       case _ => None
     }
 

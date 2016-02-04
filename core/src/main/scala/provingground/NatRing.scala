@@ -39,12 +39,14 @@ object NatRing extends SymbolicCRing[SafeLong]{
 
         def act(x: LocalTerm) = x match {
           case Literal(n) => recDefn(n, init, h)
-          case LiteralSum(n, x) => recDefn(n, Rec(init, g)(x), (n: SafeLong) => g(Literal(n)))
+          case LiteralSum(n, x) =>
+            recDefn(n, Rec(init, g)(x), (k: SafeLong) => g(sum(Literal(k))(x))
+              )
           case _ => FormalAppln[Nat, U](self, x)
         }
 
     }
-  
+
    case class Induc[U <: Term with Subs[U]](
        typFamily: Func[Nat, Typ[U]], init: U, g: FuncLike[Nat, Func[U, U]]) extends FuncLike[Nat, U]{self =>
         def h = (n: SafeLong) => g(Literal(n))
@@ -52,7 +54,7 @@ object NatRing extends SymbolicCRing[SafeLong]{
         val dom = NatTyp
 
         val typ = PiTyp(typFamily)
-        
+
         val depcodom = typFamily
 
         def subs(x: Term, y: Term) = this
@@ -66,11 +68,11 @@ object NatRing extends SymbolicCRing[SafeLong]{
         }
 
     }
-   
+
    object Induc{
      def cast[U <: Term with Subs[U]](
-       typFamily: Func[Nat, Typ[U]], init: U, g: FuncLike[Nat, FuncLike[U, U]]) = 
+       typFamily: Func[Nat, Typ[U]], init: U, g: FuncLike[Nat, FuncLike[U, U]]) =
          Induc(typFamily, init, g.asInstanceOf[FuncLike[Nat, Func[U, U]]])
-     
+
    }
 }
