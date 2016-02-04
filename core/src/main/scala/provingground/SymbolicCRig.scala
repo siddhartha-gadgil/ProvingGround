@@ -155,13 +155,13 @@ class SymbolicCRig[A : Rig] {self =>
     val typ = LocalTyp
 
     def subs(x: Term, y: Term) =
-      (multElems map ((an) => power(an._1.replace(x, y), an._2))).reduce((a: LocalTerm, b: LocalTerm) => prod(a)(b))
+      (multElems.toList map ((an) => power(an._1.replace(x, y), an._2))).reduceRight((a: LocalTerm, b: LocalTerm) => prod(a)(b))
 
     def newobj = LocalTyp.obj
 
-    val head = power(multElems.head._1, multElems.head._2)
+    lazy val head = power(multElems.head._1, multElems.head._2)
 
-    val tail = PiTerm.reduce(multElems.tail)
+    lazy val tail = PiTerm.reduce(multElems.tail)
 
     val isComposite = (multElems.size > 1)
 
@@ -360,10 +360,10 @@ class SymbolicCRig[A : Rig] {self =>
   @annotation.tailrec
   final def posPower(x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
     require(n >=0, s"attempted to compute negative power $n of $x recursively")
-    if (n ==0) Literal(one)
+    if (n ==0)
+      accum
     else
-      if (n == 1) x
-      else posPower(x, n-1, prod(accum)(x))
+      posPower(x, n-1, prod(accum)(x))
   }
 
   /**
