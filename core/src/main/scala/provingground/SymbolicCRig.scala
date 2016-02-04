@@ -159,11 +159,20 @@ class SymbolicCRig[A : Rig] {self =>
 
     def newobj = LocalTyp.obj
 
-    lazy val head = power(multElems.head._1, multElems.head._2)
+    lazy val head = multElems.head match {
+      case (x, k) if k == -1 => PiTerm(Map(x -> k))
+      case (x, k) if k == 1 => x
+      case (x, k) if k > 1 => x
+      case (x, k) if k < -1 => PiTerm(Map(x -> (-1)))
+    }
 
-    lazy val tail = PiTerm.reduce(multElems.tail)
+    lazy val tail = multElems.head match {
+      case (x, k) if math.abs(k) == 1 => PiTerm.reduce(multElems.tail)
+      case (x, k) if k > 1 => PiTerm.reduce(multElems.tail + (x -> (k-1)))
+      case (x, k) if k < -1 => PiTerm.reduce(multElems.tail + (x -> (k+1)))
+    }
 
-    val isComposite = (multElems.size > 1)
+    val isComposite = (multElems.size > 1) || (math.abs(multElems.head._2) != 1)
 
     def *:(y: LocalTerm) = {
       import Reciprocal.{base, expo}
@@ -367,7 +376,7 @@ class SymbolicCRig[A : Rig] {self =>
     if (n ==0)
       accum
     else
-      posPower(x, n-1, prod(accum)(x))
+      posPower(x, n-1, prod(x)(accum))
   }
 
   /**
