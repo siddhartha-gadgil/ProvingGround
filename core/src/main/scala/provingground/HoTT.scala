@@ -365,14 +365,14 @@ object HoTT {
 
   trait BaseUniv{
     override def hashCode = __.hashCode
-    
+
     override def equals(a: Any) = a match{
       case _ : BaseUniv => true
       case `__` => true
       case _ => false
     }
   }
-  
+
   /** The (usual) universes */
   case class Universe(level: Int) extends Univ {
     require(level >= 0)
@@ -394,9 +394,9 @@ object HoTT {
       case _ : BaseUniv if level == 0 => true
       case _ => false
       }
-  
+
   }
-  
+
 
 
   def univlevel: Typ[Typ[Term]] => Int = {
@@ -953,7 +953,7 @@ object HoTT {
 
     def composition[U<: Term with Subs[U], V<: Term with Subs[V], W<: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
       val x = g.dom.Var
-      lmbda(x)(f(g(x)))
+      LambdaFixed(x, f(g(x)))
     }
 
   /**

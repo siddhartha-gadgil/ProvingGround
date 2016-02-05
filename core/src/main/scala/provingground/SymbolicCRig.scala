@@ -155,9 +155,16 @@ class SymbolicCRig[A : Rig] {self =>
     val typ = LocalTyp
 
     def subs(x: Term, y: Term) =
-      (multElems.toList map ((an) => power(an._1.replace(x, y), an._2))).reduceRight((a: LocalTerm, b: LocalTerm) => prod(a)(b))
+      (atomize map (_.replace(x, y))).reduceRight((a: LocalTerm, b: LocalTerm) => prod(a)(b))
 
     def newobj = LocalTyp.obj
+
+    lazy val atomize: List[LocalTerm] = {
+      multElems.toList flatMap {
+        case (x, e) =>
+          if (e > 0) List.fill(e)(x) else List.fill(-e)(PiTerm(Map(x -> -1)))
+      }
+    }
 
     lazy val head = multElems.head match {
       case (x, k) if k == -1 => PiTerm(Map(x -> k))
