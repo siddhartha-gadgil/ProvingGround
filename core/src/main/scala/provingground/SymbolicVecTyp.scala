@@ -20,9 +20,9 @@ import NatTyp._
 /**
  * @author gadgil
  */
-case class SymbolicVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: SafeLong)(implicit baserep: ScalaRep[U, X]) extends Typ[RepTerm[Vector[X]]]{
+case class IndexedVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: SafeLong)(implicit baserep: ScalaRep[U, X]) extends Typ[RepTerm[Vector[X]]]{
     type Obj = RepTerm[Vector[X]]
-  
+
     val typ = Universe(0)
 
     def symbObj(name: AnySym): RepTerm[Vector[X]] = RepSymbObj[Vector[X], RepTerm[Vector[X]]](name, this)
@@ -36,27 +36,27 @@ case class SymbolicVecTyp[X, +U<: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim:
 }
 
 class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep: ScalaRep[U, X]){
-  implicit val vrep = SymbolicVecTyp.vecRep[U, X]
-  
+  implicit val vrep = IndexedVecTyp.vecRep[U, X]
+
   assert(basetyp ==baserep.typ, s"specified type $basetyp does not match type of ${baserep.typ} of scalarep")
-  
+
   val n = "n" :: NatTyp
-  
-  val Vec = ((n: SafeLong) => SymbolicVecTyp[X, U](basetyp, n) : Typ[RepTerm[Vector[X]]]).term
-  
-  val Empty = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
-  
+
+  val Vec = ((n: SafeLong) => IndexedVecTyp[X, U](basetyp, n) : Typ[RepTerm[Vector[X]]]).term
+
+  val NilVec = (Vector() : Vector[X]).getTerm(Vec(Literal(0)))
+
   val consTyp = n ~>: (basetyp ->: Vec(n) ->: Vec(succ(n)))
-  
+
   val consFn = (n: SafeLong) => (x: X) => (v: Vector[X]) => (x +: v)
-  
+
 
   val consRep =
     depFuncPolyRep(poly(NatTyp.rep),
         depFuncPolyRep(poly(baserep),
             depFuncPolyRep(vrep, vrep)
-            ))          
-            
+            ))
+
   val consLike = ScalaPolyTerm(consFn)(consRep).getTerm(consTyp)
 
   val cons = consLike.asInstanceOf[FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
@@ -64,11 +64,11 @@ class VecTyps[X, U<: RepTerm[X] with Subs[U]](basetyp: Typ[U])(implicit baserep:
 
 object NatVecTyps extends VecTyps[SafeLong, Nat](NatTyp)
 
-object SymbolicVecTyp{
+object IndexedVecTyp{
   case class VecPolyRep[U <: Term with Subs[U], X]() extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]{
 
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match{
-      case tp @ SymbolicVecTyp(basetyp, dim) if dim == elem.size => {
+      case tp @ IndexedVecTyp(basetyp, dim) if dim == elem.size => {
         val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](tp.asInstanceOf[Typ[RepTerm[Vector[X]]]])
         Some(pattern(elem))
       }
@@ -76,7 +76,7 @@ object SymbolicVecTyp{
     }
 
     def unapply(term: RepTerm[Vector[X]]) = term.typ match {
-      case tp : SymbolicVecTyp[_, X] => {
+      case tp : IndexedVecTyp[_, X] => {
         val pattern = new ScalaSym[Term, Vector[X]](tp)
         pattern.unapply(term)
       }
@@ -91,32 +91,4 @@ object SymbolicVecTyp{
 
   val n = "n" :: NatTyp
 
-
-
-//  implicit val NatVecRep = vecRep[RepTerm[SafeLong], SafeLong](poly(NatTyp.rep))
-
-  
-  val Vec = (((n: SafeLong) => (SymbolicVecTyp[SafeLong, RepTerm[SafeLong]](NatTyp, n) : Typ[Term])).hott(NatTyp ->: __)).get
-
-  private val ltyp = n ~>: (Vec(n) ->: NatTyp)
-
-  private val vsize = (n : SafeLong) =>
-    (v : Vector[SafeLong]) => {
-      assert(v.size ==n ,"domain mismatch in Pi-type")
-      n
-  }
-
-  val nsize = vsize.hott(ltyp)
-
-  private val nvsucc =
-    (n : SafeLong) =>
-      (a : SafeLong) =>
-        (v : Vector[SafeLong]) => {
-          assert(v.size ==n ,"domain mismatch in Pi-type")
-          a +: v
-          }
-
-  private val nsucctyp  = n  ~>: NatTyp ->: (Vec(n) ->: Vec(NatRing.succ(n)))
-
-  val nsucc = nvsucc.hott(nsucctyp)
 }

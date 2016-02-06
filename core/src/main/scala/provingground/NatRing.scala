@@ -22,8 +22,8 @@ object NatRing extends SymbolicCRing[SafeLong]{
 
   implicit def intLiteral(n: Int) : Nat = Literal(n)
 
-  @tailrec def recDefn[U <: Term with Subs[U]](n: SafeLong, formal: U, h: SafeLong => U => U) : U =
-    if (n == 0) formal else recDefn(n -1 , h(n)(formal), h)
+  def recDefn[U <: Term with Subs[U]](n: SafeLong, formal: U, h: SafeLong => U => U) : U =
+    if (n == 0) formal else h(n - 1)(recDefn(n -1, formal, h))
 
     case class Rec[U <: Term with Subs[U]](init: U, g: Func[Nat, Func[U, U]]) extends Func[Nat, U]{self =>
         def h = (n: SafeLong) => g(Literal(n))
@@ -63,7 +63,7 @@ object NatRing extends SymbolicCRing[SafeLong]{
 
         def act(x: LocalTerm) = x match {
           case Literal(n) => recDefn(n, init, h)
-          case LiteralSum(n, x) => recDefn(n, Induc(typFamily, init, g)(x), (n: SafeLong) => g(Literal(n)))
+          case LiteralSum(n, x) => recDefn(n, Induc(typFamily, init, g)(x), (k: SafeLong) => g(sum(Literal(k))(x)))
           case _ => FormalAppln[Nat, U](self, x)
         }
 
