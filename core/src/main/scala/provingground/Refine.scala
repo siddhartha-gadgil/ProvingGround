@@ -22,7 +22,7 @@ object RefineTerms {
   }
 
   def refineTyp(typ: Typ[Term]): Typ[Term] = typ match {
-    case FuncTyp(dom : Typ[Term], codom: Typ[Term]) =>
+    case FuncTyp(dom : Typ[u], codom: Typ[v]) =>
       val newdom = refineTyp(dom)
       val newcod = refineTyp(codom)
       FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]], newcod.asInstanceOf[Typ[newcod.Obj]])

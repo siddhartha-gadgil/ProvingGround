@@ -174,8 +174,8 @@ object HoTT {
      * dependent function type (Pi-Type) define by a lambda:
      *  `this` depends on a variable, which hence gives a type family.
      */
-    def ~>:[UU >: U <: Term with Subs[UU]](variable: Term) = {
-      val fiber = LambdaFixed[Term, Typ[UU]](variable, this)
+    def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](variable: V) = {
+      val fiber = LambdaFixed[V, Typ[UU]](variable, this)
       PiTyp(fiber)
     }
 
@@ -937,6 +937,11 @@ object HoTT {
     val newvar = variable.newobj
     LambdaFixed(newvar, value.replace(variable, newvar))
   }
+  
+  def id[U <: Term with Subs[U]](typ: Typ[U]) = {
+    val x = typ.Var
+    lmbda(x)(x)
+  }
 
   /**
    * lambda if necessary, otherwise constant.
@@ -1171,7 +1176,8 @@ object HoTT {
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U) extends AtomicTerm {
     lazy val typ = IdentityTyp(dom, value, value)
   }
-
+    
+  
   implicit class RichTerm[U <: Term with Subs[U]](term: U) {
 
     def =:=(rhs: U) = {
@@ -1182,6 +1188,66 @@ object HoTT {
     def :->[V <: Term with Subs[V]](that: V) = lmbda(term)(that)
 
     def :~>[V <: Term with Subs[V]](that: V) = lambda(term)(that)
+  }
+  
+  object IdentityTyp{
+    case class RecSym[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], target : Typ[V]) extends AnySym
+    
+    def rec[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], target : Typ[V]) = {
+      val baseCase = dom ->: target
+      val x = dom.Var
+      val y = dom.Var
+      val resultTyp = x ~>: y ~>: (IdentityTyp(dom, x, y) ->: target)
+      (baseCase ->: resultTyp).symbObj(RecSym(dom, target))
+    }
+    
+    case class InducSym[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) extends AnySym
+    
+    def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) = {
+      val x = dom.Var
+      val y = dom.Var
+      val p = IdentityTyp(dom, x, y).Var
+       val baseCase = x ~>: (targetFmly(x)(x)(Refl(dom, x)))
+      val resultTyp = x ~>: y ~>: p~>: (IdentityTyp(dom, x, y) ->: targetFmly(x)(y)(p))
+      (baseCase ->: resultTyp).symbObj(InducSym(dom, targetFmly))
+    }
+    
+    def symm[U<: Term with Subs[U]](dom: Typ[U]) = {
+      val x = dom.Var
+      val y = dom.Var
+      val p = IdentityTyp(dom, x, y).Var
+      val typFamily = lmbda(x)(lmbda(y)(lmbda(p)(IdentityTyp(dom, y, x))))
+      val inducFn = induc(dom, typFamily)
+      val baseCase = lmbda(x)(IdentityTyp(dom, x, x))
+      inducFn(baseCase)
+    }
+    
+    def trans[U<: Term with Subs[U]](dom: Typ[U]) = {
+      val x = dom.Var
+      val y = dom.Var
+      val z = dom.Var
+      val p = IdentityTyp(dom, x, y).Var
+      val typFamily = lmbda(x)(lmbda(y)(lmbda(p)((x =:= y) ->: (y =:= z) ->: (x =:= z) )))
+      val inducFn = induc(dom, typFamily)
+      val q = (x =:= x).Var
+      val baseCase = lambda(x)(lmbda(q)(id(x =:= z)))
+      lambda(z)(inducFn(baseCase))
+    }
+    
+    def extnslty[U <: Term with Subs[U], V<: Term with Subs[V]](f: Func[U, V]) = {
+      val x = f.dom.Var
+      val y = f.dom.Var
+      val p = IdentityTyp(f.dom, x, y).Var
+      val typFamily = lmbda(x)(lmbda(y)(lmbda(p)( (f(x) =:= f(y)) )))
+      val inducFn = induc(f.dom, typFamily)
+      val image = Refl(f.codom, f(x)) : Term
+      val baseCase = lambda(x)(image)
+      inducFn(baseCase)
+    }
   }
 
   //	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
