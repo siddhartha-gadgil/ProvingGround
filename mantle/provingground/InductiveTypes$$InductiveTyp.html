@@ -95,7 +95,7 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="provingground.HoTT.Typ.Obj" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Obj&lt;:Uwithprovingground.HoTT.Subs[U]"></a>
+      <a id="Obj&lt;:Uwithprovingground.HoTT.Subs[Typ.this.Obj]"></a>
       <a id="Obj:Obj"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -103,10 +103,10 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Obj</span><span class="result"> &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]</span>
+        <span class="name">Obj</span><span class="result"> &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<a href="#Obj&lt;:Uwithprovingground.HoTT.Subs[Typ.this.Obj]" class="extmbr" name="provingground.InductiveTypes.InductiveTyp.Obj">Obj</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@Obj&lt;:Uwithprovingground.HoTT.Subs[U]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@Obj&lt;:Uwithprovingground.HoTT.Subs[Typ.this.Obj]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -117,18 +117,18 @@
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="provingground.InductiveTypes.InductiveTyp#constructors" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="constructors:List[provingground.Constructor[provingground.HoTT.Term]]"></a>
-      <a id="constructors:List[Constructor[Term]]"></a>
+      <a id="constructors:List[provingground.Constructor[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
+      <a id="constructors:List[Constructor[Term,Term]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">constructors</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.Constructor">Constructor</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]]</span>
+        <span class="name">constructors</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.Constructor">Constructor</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@constructors:List[provingground.Constructor[provingground.HoTT.Term]]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@constructors:List[provingground.Constructor[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -629,18 +629,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Typ</dd></dl></div>
     </li><li name="provingground.InductiveTypes.InductiveTyp#ptns" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ptns:List[provingground.ConstructorPattern[provingground.HoTT.Term,x$1.ConstructorType]forSome{valx$1:provingground.Constructor[provingground.HoTT.Term]}]"></a>
-      <a id="ptns:List[ConstructorPattern[Term,ptns.$anonfun.x$1.type.ConstructorType]forSome{valx$1:Constructor[Term]}]"></a>
+      <a id="ptns:List[provingground.ConstructorPattern[provingground.HoTT.Term,x$1.ConstructorType,provingground.HoTT.Term]forSome{valx$1:provingground.Constructor[provingground.HoTT.Term,provingground.HoTT.Term]}]"></a>
+      <a id="ptns:List[ConstructorPattern[Term,ptns.$anonfun.x$1.type.ConstructorType,Term]forSome{valx$1:Constructor[Term,Term]}]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">ptns</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="provingground.ConstructorPattern">ConstructorPattern</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.Constructor.ConstructorType">ptns.$anonfun.x$1.type.ConstructorType</span>] forSome {val x$1: <span class="extype" name="provingground.Constructor">Constructor</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]}]</span>
+        <span class="name">ptns</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="provingground.ConstructorPattern">ConstructorPattern</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.Constructor.ConstructorType">ptns.$anonfun.x$1.type.ConstructorType</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>] forSome {val x$1: <span class="extype" name="provingground.Constructor">Constructor</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]}]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@ptns:List[provingground.ConstructorPattern[provingground.HoTT.Term,x$1.ConstructorType]forSome{valx$1:provingground.Constructor[provingground.HoTT.Term]}]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@ptns:List[provingground.ConstructorPattern[provingground.HoTT.Term,x$1.ConstructorType,provingground.HoTT.Term]forSome{valx$1:provingground.Constructor[provingground.HoTT.Term,provingground.HoTT.Term]}]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -697,18 +697,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.InductiveTypes.InductiveTyp#thisAsPtn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="thisAsPtn(me:InductiveTyp.this.type):provingground.ConstructorPattern[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="thisAsPtn(InductiveTyp.this.type):ConstructorPattern[Term,Term]"></a>
+      <a id="thisAsPtn(me:InductiveTyp.this.type):provingground.ConstructorPattern[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Term]"></a>
+      <a id="thisAsPtn(InductiveTyp.this.type):ConstructorPattern[Term,Term,Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">implicit </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">thisAsPtn</span><span class="params">(<span name="me">me: <a href="" class="extype" name="provingground.InductiveTypes.InductiveTyp">InductiveTyp</a>.this.type</span>)</span><span class="result">: <span class="extype" name="provingground.ConstructorPattern">ConstructorPattern</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]</span>
+        <span class="name">thisAsPtn</span><span class="params">(<span name="me">me: <a href="" class="extype" name="provingground.InductiveTypes.InductiveTyp">InductiveTyp</a>.this.type</span>)</span><span class="result">: <span class="extype" name="provingground.ConstructorPattern">ConstructorPattern</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@thisAsPtn(me:InductiveTyp.this.type):provingground.ConstructorPattern[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@thisAsPtn(me:InductiveTyp.this.type):provingground.ConstructorPattern[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -817,18 +817,18 @@
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.Typ#~&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](variable:provingground.HoTT.Term):provingground.HoTT.PiTyp[provingground.HoTT.Term,UU]"></a>
-      <a id="~&gt;:[UU&lt;:TermwithSubs[UU]&gt;:Term](Term):PiTyp[Term,UU]"></a>
+      <a id="~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.PiTyp[V,UU]"></a>
+      <a id="~&gt;:[UU&lt;:TermwithSubs[UU]&gt;:Term,V&lt;:TermwithSubs[V]](V):PiTyp[V,UU]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="UU">UU &gt;: <span class="extype" name="provingground.HoTT.Term">Term</span> &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Term">Term</span></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.PiTyp">PiTyp</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>
+        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="UU">UU &gt;: <span class="extype" name="provingground.HoTT.Term">Term</span> &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>, <span name="V">V &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ.~&gt;:.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Typ.~&gt;:.V">V</span></span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.PiTyp">PiTyp</span>[<span class="extype" name="provingground.HoTT.Typ.~&gt;:.V">V</span>, <span class="extype" name="provingground.HoTT.Typ.~&gt;:.UU">UU</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](variable:provingground.HoTT.Term):provingground.HoTT.PiTyp[provingground.HoTT.Term,UU]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.InductiveTypes$$InductiveTyp@~&gt;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.PiTyp[V,UU]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

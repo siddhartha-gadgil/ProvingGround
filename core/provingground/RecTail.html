@@ -45,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">RecTail</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecTail.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">RecTail</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecTail.C">C</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecTail.H">H</span>]</span>]</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecTail.H">H</span>]</span>)</span><span class="result"> extends <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>, <span class="extype" name="provingground.RecTail.H">H</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -54,7 +54,7 @@ rec(W)(X) is defined to be formal application of itself.
 Lazy lambda is used to avoid infinite loops
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>, <span class="extype" name="provingground.RecTail.H">H</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -92,18 +92,18 @@ Lazy lambda is used to avoid infinite loops
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.RecTail#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(W:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.RecTail[C]"></a>
-      <a id="&lt;init&gt;:RecTail[C]"></a>
+      <a id="&lt;init&gt;(W:provingground.HoTT.Typ[H]):provingground.RecTail[C,H]"></a>
+      <a id="&lt;init&gt;:RecTail[C,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">RecTail</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span>
+        <span class="name">RecTail</span><span class="params">(<span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecTail.H">H</span>]</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.RecTail@&lt;init&gt;(W:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.RecTail[C]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.RecTail@&lt;init&gt;(W:provingground.HoTT.Typ[H]):provingground.RecTail[C,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -191,18 +191,18 @@ Lazy lambda is used to avoid infinite loops
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.RecTail#W" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="W:provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="W:Typ[Term]"></a>
+      <a id="W:provingground.HoTT.Typ[H]"></a>
+      <a id="W:Typ[H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.RecTail.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.RecTail@W:provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.RecTail@W:provingground.HoTT.Typ[H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -409,18 +409,18 @@ Lazy lambda is used to avoid infinite loops
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.RecFunction#prepend" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="prepend[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](cons:provingground.Constructor[C]):provingground.RecFunctionCons[D,C]"></a>
-      <a id="prepend[U&lt;:TermwithSubs[U]](Constructor[C]):RecFunctionCons[D,C]"></a>
+      <a id="prepend[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](cons:provingground.Constructor[C,H]):provingground.RecFunctionCons[D,C,H]"></a>
+      <a id="prepend[U&lt;:TermwithSubs[U]](Constructor[C,H]):RecFunctionCons[D,C,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">prepend</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFunction.prepend.U">U</span>]</span>]</span><span class="params">(<span name="cons">cons: <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.RecTail.C">C</span>]</span>)</span><span class="result">: <a href="RecFunctionCons.html" class="extype" name="provingground.RecFunctionCons">RecFunctionCons</a>[<span class="extype" name="provingground.RecFunction.prepend.D">D</span>, <span class="extype" name="provingground.RecTail.C">C</span>]</span>
+        <span class="name">prepend</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.RecFunction.prepend.U">U</span>]</span>]</span><span class="params">(<span name="cons">cons: <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.RecTail.C">C</span>, <span class="extype" name="provingground.RecTail.H">H</span>]</span>)</span><span class="result">: <a href="RecFunctionCons.html" class="extype" name="provingground.RecFunctionCons">RecFunctionCons</a>[<span class="extype" name="provingground.RecFunction.prepend.D">D</span>, <span class="extype" name="provingground.RecTail.C">C</span>, <span class="extype" name="provingground.RecTail.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.RecTail@prepend[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](cons:provingground.Constructor[C]):provingground.RecFunctionCons[D,C]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.RecTail@prepend[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](cons:provingground.Constructor[C,H]):provingground.RecFunctionCons[D,C,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -566,7 +566,7 @@ Lazy lambda is used to avoid infinite loops
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.RecFunction">
-              <h3>Inherited from <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>]</h3>
+              <h3>Inherited from <a href="RecFunction.html" class="extype" name="provingground.RecFunction">RecFunction</a>[<span class="extype" name="provingground.RecTail.C">C</span>, <span class="extype" name="provingground.RecTail.H">H</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
