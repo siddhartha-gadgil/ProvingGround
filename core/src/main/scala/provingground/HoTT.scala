@@ -842,16 +842,12 @@ object HoTT {
 
     def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 
-    override def subs(x: Term, y: Term): LambdaFixed[X, Y] = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
-        val newvar = changeTyp(variable, variable.typ.replace(u, v))
-        LambdaFixed(newvar.asInstanceOf[X], value.replace(x, y))
-      case _ =>
-        val newvar = variable.newobj
-        val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
-        LambdaFixed(variable, newval)
-    }
-
+    override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
+      {
+        val newVar = dom.replace(x, y).Var
+        val newVal = value.replace(variable, newVar).replace(x, y)
+        LambdaFixed(newVar, newVal)
+      }
   }
 
   /**
@@ -937,7 +933,7 @@ object HoTT {
     val newvar = variable.newobj
     LambdaFixed(newvar, value.replace(variable, newvar))
   }
-  
+
   def id[U <: Term with Subs[U]](typ: Typ[U]) = {
     val x = typ.Var
     lmbda(x)(x)
@@ -1176,8 +1172,8 @@ object HoTT {
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U) extends AtomicTerm {
     lazy val typ = IdentityTyp(dom, value, value)
   }
-    
-  
+
+
   implicit class RichTerm[U <: Term with Subs[U]](term: U) {
 
     def =:=(rhs: U) = {
@@ -1189,11 +1185,11 @@ object HoTT {
 
     def :~>[V <: Term with Subs[V]](that: V) = lambda(term)(that)
   }
-  
+
   object IdentityTyp{
     case class RecSym[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target : Typ[V]) extends AnySym
-    
+
     def rec[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target : Typ[V]) = {
       val baseCase = dom ->: target
@@ -1202,10 +1198,10 @@ object HoTT {
       val resultTyp = x ~>: y ~>: (IdentityTyp(dom, x, y) ->: target)
       (baseCase ->: resultTyp).symbObj(RecSym(dom, target))
     }
-    
+
     case class InducSym[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) extends AnySym
-    
+
     def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) = {
       val x = dom.Var
@@ -1215,7 +1211,7 @@ object HoTT {
       val resultTyp = x ~>: y ~>: p~>: (IdentityTyp(dom, x, y) ->: targetFmly(x)(y)(p))
       (baseCase ->: resultTyp).symbObj(InducSym(dom, targetFmly))
     }
-    
+
     def symm[U<: Term with Subs[U]](dom: Typ[U]) = {
       val x = dom.Var
       val y = dom.Var
@@ -1225,7 +1221,7 @@ object HoTT {
       val baseCase = lmbda(x)(IdentityTyp(dom, x, x))
       inducFn(baseCase)
     }
-    
+
     def trans[U<: Term with Subs[U]](dom: Typ[U]) = {
       val x = dom.Var
       val y = dom.Var
@@ -1237,7 +1233,7 @@ object HoTT {
       val baseCase = lambda(x)(lmbda(q)(id(x =:= z)))
       lambda(z)(inducFn(baseCase))
     }
-    
+
     def extnslty[U <: Term with Subs[U], V<: Term with Subs[V]](f: Func[U, V]) = {
       val x = f.dom.Var
       val y = f.dom.Var
