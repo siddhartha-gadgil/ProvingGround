@@ -75,7 +75,7 @@ object HoTT {
      * testing for types also done.
      */
     def replace(x: Term, y: Term): U with Subs[U] = {
-      require(x.typ == y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
+//      require(x.typ == y.typ, s"cannot replace $x of type ${x.typ} with $y of type ${y.typ}")
       (x, y) match {
         case (ab: AbsPair[u, v], cd: AbsPair[w, x]) if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
           replace(ab.first, cd.first) replace (ab.second, cd.second)
@@ -744,15 +744,7 @@ object HoTT {
       41 * (variable.typ.hashCode + 41) + newval.hashCode
     }
 
-    def subs(x: Term, y: Term) = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
-        val newvar = changeTyp(variable, variable.typ.replace(u, v))
-        Lambda(newvar.asInstanceOf[X], value.replace(x, y))
-      case _ =>
-        val newvar = variable.replace(x, y).newobj
-        val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
-        Lambda(variable, newval)
-    }
+    def subs(x: Term, y: Term) : LambdaLike[X, Y] = Lambda(variable replace (x, y), value replace (x, y))
 
     private lazy val myv = variable.newobj
 
@@ -842,15 +834,8 @@ object HoTT {
 
     def newobj = LambdaFixed(variable.newobj.asInstanceOf[X], value.newobj)
 
-    override def subs(x: Term, y: Term): LambdaFixed[X, Y] = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
-        val newvar = changeTyp(variable, variable.typ.replace(u, v))
-        LambdaFixed(newvar.asInstanceOf[X], value.replace(x, y))
-      case _ =>
-        val newvar = variable.replace(x, y).newobj
-        val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
-        LambdaFixed(variable, newval)
-    }
+    override def subs(x: Term, y: Term): LambdaFixed[X, Y] = 
+      LambdaFixed(variable replace (x, y), value replace (x, y))
 
   }
 
