@@ -1177,7 +1177,7 @@ object HoTT {
   }
 
   object IdentityTyp{
-    case class RecSym[U <: Term with Subs[U], V <: Term with Subs[V]](
+    case class RecFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target : Typ[V]) extends AnySym
 
     def rec[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -1186,29 +1186,29 @@ object HoTT {
       val x = dom.Var
       val y = dom.Var
       val resultTyp = x ~>: y ~>: (IdentityTyp(dom, x, y) ->: target)
-      (baseCase ->: resultTyp).symbObj(RecSym(dom, target))
+      (baseCase ->: resultTyp).symbObj(RecFunc(dom, target))
     }
 
-    case class InducSym[U <: Term with Subs[U], V <: Term with Subs[V]](
-        dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) extends AnySym
+    case class InducFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], targetFmly : FuncLike[U, FuncLike[U, Func[Term, Typ[V]]]]) extends AnySym
 
     def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
-        dom: Typ[U], targetFmly : Func[U, Func[U, Func[Term, Typ[V]]]]) = {
+        dom: Typ[U], targetFmly : FuncLike[U, FuncLike[U, Func[Term, Typ[V]]]]) = {
       val x = dom.Var
       val y = dom.Var
       val p = IdentityTyp(dom, x, y).Var
-       val baseCase = x ~>: (targetFmly(x)(x)(Refl(dom, x)))
+      val baseCaseTyp = x ~>: (targetFmly(x)(x)(Refl(dom, x)))
       val resultTyp = x ~>: y ~>: p~>: (IdentityTyp(dom, x, y) ->: targetFmly(x)(y)(p))
-      (baseCase ->: resultTyp).symbObj(InducSym(dom, targetFmly))
+      (baseCaseTyp ->: resultTyp).symbObj(InducFunc(dom, targetFmly))
     }
 
     def symm[U<: Term with Subs[U]](dom: Typ[U]) = {
       val x = dom.Var
       val y = dom.Var
       val p = IdentityTyp(dom, x, y).Var
-      val typFamily = lmbda(x)(lmbda(y)(lmbda(p)(IdentityTyp(dom, y, x))))
+      val typFamily = lambda(x)(lambda(y)(lmbda(p)(IdentityTyp(dom, y, x))))
       val inducFn = induc(dom, typFamily)
-      val baseCase = lmbda(x)(IdentityTyp(dom, x, x))
+      val baseCase = lambda(x)(id(x =:= x))
       inducFn(baseCase)
     }
 
