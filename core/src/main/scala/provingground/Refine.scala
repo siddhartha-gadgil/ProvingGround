@@ -26,6 +26,11 @@ object RefineTerms {
       val newdom = refineTyp(dom)
       val newcod = refineTyp(codom)
       FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]], newcod.asInstanceOf[Typ[newcod.Obj]])
+    case PiTyp(fibre) =>
+      refine(fibre) match {
+        case newFibre : Func[u, Typ[v]] => PiTyp(newFibre)
+        case _ => typ
+      }
     case _ => typ
   }
 }
