@@ -23,7 +23,7 @@ val akkaStreamV = "2.0.1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.2" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.5" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
@@ -37,11 +37,11 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.5.2",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.5",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
-    "com.lihaoyi" %% "pprint" % "0.3.6"),
+    "com.lihaoyi" %% "pprint" % "0.3.8"),
     resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
 
