@@ -4,10 +4,12 @@ scalaVersion in ThisBuild := "2.11.7"
 
 lazy val jsProjects = Seq(client)
 
-lazy val commonSettings = Seq(
+lazy val baseSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
-  scalaVersion := "2.11.7",
+  scalaVersion := "2.11.7")
+
+lazy val commonSettings = baseSettings ++ Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
@@ -148,6 +150,10 @@ lazy val nlp = (project in file("nlp")).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         dependsOn(coreJVM).dependsOn(functionfinder)
+
+lazy val translation = (project in file("translation")).
+      settings(name := "ProvingGround-Translation").
+      settings(baseSettings : _*)
 
 lazy val playServer = (project in file("play-server")).enablePlugins(PlayScala).
         settings(name := "ProvingGround-Play-Server").
