@@ -1,6 +1,8 @@
 package provingground
 
-trait Translator[I, O] {self =>
+import scala.util.Try
+
+trait Translator[I, O]  extends (I => Option[O]){self =>
   def recTranslate(rec: => Translator[I, O]): I => Option[O]
 
   def apply(inp: I) = recTranslate(self)(inp)
@@ -14,6 +16,8 @@ trait Translator[I, O] {self =>
       split: I => Option[XI], join: XO => Option[O]
       )(implicit oml: OptMapLift[I, O, XI, XO]) =
         this || Translator.MultiJunction(split, join)
+
+  def as[X <: I, Y >: O] = Translator.Simple[X, Y](self)
 }
 
 
@@ -60,6 +64,11 @@ object OptMapLift{
 
   implicit def extendLift[I, O, J <: I] = new OptMapLift[I, O, J, O]{
     def lift(optMap: I => Option[O]) = (inp: J) => optMap(inp)
+  }
+
+  implicit def restrictLift[I, O, L <: O] = new OptMapLift[I, O, I, L]{
+    def lift(optMap: I => Option[O]) =
+      (inp : I) => optMap(inp) flatMap ((x: O) => Try(x.asInstanceOf[L]).toOption)
   }
 
   implicit def listLift[I, O, XI, XO](implicit lft: OptMapLift[I, O, XI, XO]) = new OptMapLift[I, O, List[XI], List[XO]]{
