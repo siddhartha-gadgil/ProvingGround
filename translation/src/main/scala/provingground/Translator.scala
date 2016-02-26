@@ -1,13 +1,46 @@
 package provingground
 
 import scala.util.Try
-
+/**
+ * Translator from an input I to an output O, designed to be built recursively.
+ * 
+ * 
+ * ==Translation by Splitting and joining==
+ * 
+ * The most import class of translators are constructed from 
+ * 
+ * * a split map I => Option[X], where X is obtained from I by taking Tuples, Lists and sub-types
+ * 
+ * * a join map Y => Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I, 
+ * e.g. X = (I, I) and Y = (O, O).
+ * 
+ * However X and Y may involve taking sub-types independently of each other. 
+ * 
+ * Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).
+ * 
+ * ==Combinations, Basic Translators==
+ * 
+ * Translators are built by combining others by OrElse, starting with basic translators specified by a function I => Option[O].
+ * One can instead start with an empty translator. 
+ * 
+ * Note that we can restrict the domain or extend the codomain of a translator by 
+ * just using it as a function I => Option[O]. However this should be done after making all OrElse combinations, as the
+ * wrapped translator does not combine recursively.
+ * 
+ */
 trait Translator[I, O]  extends (I => Option[O]){self =>
+  /**
+   * the abstract method translating using an in general different translator on sub-inputs
+   * @param rec The translator used on sub-inputs
+   */
   def recTranslate(rec: => Translator[I, O]): I => Option[O]
 
+  /**
+   * returns the optional result of translation.
+   */
   def apply(inp: I) = recTranslate(self)(inp)
 
-  def ||(that: Translator[I, O]) = Translator.Or(self, that)
+  def ||(that: Translator[I, O]) = Translator.OrElse(self, that)
 
   def |||[X >: I, Y <: O](that: X => Option[Y]) = self || Translator.Simple[I, O](that)
 
@@ -24,24 +57,44 @@ trait Translator[I, O]  extends (I => Option[O]){self =>
 
 
 object Translator{
+  /**
+   * Empty translator, always fails
+   */
   case class Empty[I, O]() extends Translator[I, O]{
     def recTranslate(rec: => Translator[I, O]) = (_ : I) => None
   }
 
+  /**
+   * Simple translator given by a function. Ignores sub-translator
+   */
   case class Simple[I,O](translate: I => Option[O]) extends Translator[I, O]{
     def recTranslate(rec: => Translator[I, O]) = translate
   }
 
-  case class Or[I, O](first: Translator[I, O], second: Translator[I, O]) extends Translator[I, O]{
+  /**
+   * Tries the first translator at top level, then the second. Is recursive.
+   */
+  case class OrElse[I, O](first: Translator[I, O], second: Translator[I, O]) extends Translator[I, O]{
     def recTranslate(rec: => Translator[I, O]) =
       (inp : I) => first.recTranslate(rec)(inp) orElse second.recTranslate(rec)(inp)
   }
 
+  /**
+   * Translator built from pattern matching and joining, but without any actual splitting.
+   * In case of a match, applies sub-translator to result.
+   */
   case class Junction[I, O](split: I => Option[I], join: O => Option[O]) extends Translator[I, O]{
     def recTranslate(rec: => Translator[I, O]) =
       (inp: I) => split(inp) flatMap((x: I) => rec(x).flatMap(join(_)))
   }
 
+  /**
+   * The main recursive translator:
+   * 
+   * @param split matches and optionally splits to a type XI derived from I, possibly starting with a sub-type of I.
+   * @param join optionally combined from a type XO built from O, possibly starting with a sub-type of O.
+   * 
+   */
   case class MultiJunction[I, O, J <: I, L <: O, XI, XO](
       split: J => Option[XI], join: XO => Option[L]
       )(implicit oml: OptMapLift[I, O, XI, XO]) extends Translator[I, O]{

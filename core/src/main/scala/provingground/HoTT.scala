@@ -928,6 +928,9 @@ object HoTT {
     val x = typ.Var
     lmbda(x)(x)
   }
+  
+  def pi[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(value: Typ[V]) = 
+    if (value dependsOn variable) PiTyp(lmbda(variable)(value)) else (variable.typ.asInstanceOf[Typ[U]] ->: value)
 
   /**
    * lambda if necessary, otherwise constant.
