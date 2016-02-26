@@ -49,7 +49,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Translator built from pattern matching and joining, but without any actual splitting.
+In case of a match, applies sub-translator to result.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>], (<span class="extype" name="provingground.Translator.Junction.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.O">O</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -149,35 +151,35 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.Translator#++" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="++[XI,XO](split:I=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.Or[I,O]"></a>
-      <a id="++[XI,XO]((I)⇒Option[XI],(XO)⇒Option[O])(OptMapLift[I,O,XI,XO]):Or[I,O]"></a>
+      <a id="++[XI,XO](split:I=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="++[XI,XO]((I)⇒Option[XI],(XO)⇒Option[O])(OptMapLift[I,O,XI,XO]):OrElse[I,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $plus$plus" class="name">++</span><span class="tparams">[<span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Junction.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.++.XI">XI</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.++.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>, <span class="extype" name="provingground.Translator.++.XI">XI</span>, <span class="extype" name="provingground.Translator.++.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$Or.html" class="extype" name="provingground.Translator.Or">Or</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
+        <span title="gt4s: $plus$plus" class="name">++</span><span class="tparams">[<span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Junction.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.++.XI">XI</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.++.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>, <span class="extype" name="provingground.Translator.++.XI">XI</span>, <span class="extype" name="provingground.Translator.++.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Junction@++[XI,XO](split:I=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.Or[I,O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Junction@++[XI,XO](split:I=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator#++" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="++(split:I=&gt;Option[I],join:O=&gt;Option[O]):provingground.Translator.Or[I,O]"></a>
-      <a id="++((I)⇒Option[I],(O)⇒Option[O]):Or[I,O]"></a>
+      <a id="++(split:I=&gt;Option[I],join:O=&gt;Option[O]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="++((I)⇒Option[I],(O)⇒Option[O]):OrElse[I,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $plus$plus" class="name">++</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Junction.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.I">I</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.Junction.O">O</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="result">: <a href="Translator$$Or.html" class="extype" name="provingground.Translator.Or">Or</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
+        <span title="gt4s: $plus$plus" class="name">++</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Junction.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.I">I</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.Junction.O">O</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Junction@++(split:I=&gt;Option[I],join:O=&gt;Option[O]):provingground.Translator.Or[I,O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Junction@++(split:I=&gt;Option[I],join:O=&gt;Option[O]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -235,7 +237,8 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a> → Function1</dd></dl></div>
+      <p class="shortcomment cmt">returns the optional result of translation.</p><div class="fullcomment"><div class="comment cmt"><p>returns the optional result of translation.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a> → Function1</dd></dl></div>
     </li><li name="provingground.Translator#as" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="as[X&lt;:I,Y&gt;:O]:provingground.Translator.Simple[X,Y]"></a>
       <a id="as[X&lt;:I,Y&gt;:O]:Simple[X,Y]"></a>
@@ -471,7 +474,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Translator.Junction">Junction</a> → <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
+      <p class="shortcomment cmt">the abstract method translating using an in general different translator on sub-inputs</p><div class="fullcomment"><div class="comment cmt"><p>the abstract method translating using an in general different translator on sub-inputs</p></div><dl class="paramcmts block"><dt class="param">rec</dt><dd class="cmt"><p>The translator used on sub-inputs</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Translator.Junction">Junction</a> → <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator.Junction#split" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="split:I=&gt;Option[I]"></a>
       <a id="split:(I)⇒Option[I]"></a>
@@ -593,35 +596,35 @@
               
         </dd></dl></div>
     </li><li name="provingground.Translator#||" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="||(that:provingground.Translator[I,O]):provingground.Translator.Or[I,O]"></a>
-      <a id="||(Translator[I,O]):Or[I,O]"></a>
+      <a id="||(that:provingground.Translator[I,O]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="||(Translator[I,O]):OrElse[I,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="result">: <a href="Translator$$Or.html" class="extype" name="provingground.Translator.Or">Or</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
+        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Junction@||(that:provingground.Translator[I,O]):provingground.Translator.Or[I,O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Junction@||(that:provingground.Translator[I,O]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator#|||" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|||[X&gt;:I,Y&lt;:O](that:X=&gt;Option[Y]):provingground.Translator.Or[I,O]"></a>
-      <a id="|||[X&gt;:I,Y&lt;:O]((X)⇒Option[Y]):Or[I,O]"></a>
+      <a id="|||[X&gt;:I,Y&lt;:O](that:X=&gt;Option[Y]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="|||[X&gt;:I,Y&lt;:O]((X)⇒Option[Y]):OrElse[I,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$bar$bar" class="name">|||</span><span class="tparams">[<span name="X">X &gt;: <span class="extype" name="provingground.Translator.Junction.I">I</span></span>, <span name="Y">Y &lt;: <span class="extype" name="provingground.Translator.Junction.O">O</span></span>]</span><span class="params">(<span name="that">that: (<span class="extype" name="provingground.Translator.|||.X">X</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.|||.Y">Y</span>]</span>)</span><span class="result">: <a href="Translator$$Or.html" class="extype" name="provingground.Translator.Or">Or</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
+        <span title="gt4s: $bar$bar$bar" class="name">|||</span><span class="tparams">[<span name="X">X &gt;: <span class="extype" name="provingground.Translator.Junction.I">I</span></span>, <span name="Y">Y &lt;: <span class="extype" name="provingground.Translator.Junction.O">O</span></span>]</span><span class="params">(<span name="that">that: (<span class="extype" name="provingground.Translator.|||.X">X</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.|||.Y">Y</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Junction.I">I</span>, <span class="extype" name="provingground.Translator.Junction.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Junction@|||[X&gt;:I,Y&lt;:O](that:X=&gt;Option[Y]):provingground.Translator.Or[I,O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Junction@|||[X&gt;:I,Y&lt;:O](that:X=&gt;Option[Y]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

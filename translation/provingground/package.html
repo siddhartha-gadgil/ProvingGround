@@ -100,7 +100,7 @@
       </a>
     </span>
       
-    </li><li name="provingground.Translator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Translator" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="Translator[I,O]extendsI=&gt;Option[O]"></a>
       <a id="Translator[I,O]:Translator[I,O]"></a>
       <h4 class="signature">
@@ -116,7 +116,11 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Translator from an input I to an output O, designed to be built recursively.</p><div class="fullcomment"><div class="comment cmt"><p>Translator from an input I to an output O, designed to be built recursively.</p><h4>Translation by Splitting and joining</h4><p>The most import class of translators are constructed from</p><p>* a split map I =&gt; Option[X], where X is obtained from I by taking Tuples, Lists and sub-types</p><p>* a join map Y =&gt; Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I,
+e.g. X = (I, I) and Y = (O, O).</p><p>However X and Y may involve taking sub-types independently of each other.</p><p>Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).</p><h4>Combinations, Basic Translators</h4><p>Translators are built by combining others by OrElse, starting with basic translators specified by a function I =&gt; Option[O].
+One can instead start with an empty translator.</p><p>Note that we can restrict the domain or extend the codomain of a translator by
+just using it as a function I =&gt; Option[O]. However this should be done after making all OrElse combinations, as the
+wrapped translator does not combine recursively.</p></div></div>
     </li></ol>
             </div>
 
