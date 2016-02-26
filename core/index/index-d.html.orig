@@ -1,0 +1,168 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/ref-index.css" media="screen" type="text/css" rel="stylesheet" />
+      <script type="text/javascript" src="../lib/jquery.js"></script>
+    
+        </head>
+        <body><div class="entry">
+      <div class="name">D</div>
+      <div class="occurrences"><a href="../provingground/HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a> <a href="../provingground/HoTT$$FuncDefn.html" class="extype" name="provingground.HoTT.FuncDefn">FuncDefn</a> <a href="../provingground/HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> </div>
+    </div><div class="entry">
+      <div class="name">DSL</div>
+      <div class="occurrences"><a href="../provingground/package.html" class="extype" name="provingground">provingground</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFunc</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> <a href="../provingground/ScalaUniverses$.html" class="extype" name="provingground.ScalaUniverses">ScalaUniverses</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncDefn</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncFmlyPtn</div>
+      <div class="occurrences"><a href="../provingground/Families$.html" class="extype" name="provingground.Families">Families</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncPolyRep</div>
+      <div class="occurrences"><a href="../provingground/package.html" class="extype" name="provingground">provingground</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncPtn</div>
+      <div class="occurrences"><a href="../provingground/package.html" class="extype" name="provingground">provingground</a> <a href="../provingground/IndexedConstructorPatterns.html" class="extype" name="provingground.IndexedConstructorPatterns">IndexedConstructorPatterns</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncRep</div>
+      <div class="occurrences"><a href="../provingground/package.html" class="extype" name="provingground">provingground</a> </div>
+    </div><div class="entry">
+      <div class="name">DepFuncSymb</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> </div>
+    </div><div class="entry">
+      <div class="name">DepPair</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> </div>
+    </div><div class="entry">
+      <div class="name">DepRel</div>
+      <div class="occurrences"><a href="../provingground/NlpProse$.html" class="extype" name="provingground.NlpProse">NlpProse</a> </div>
+    </div><div class="entry">
+      <div class="name">DepTargetType</div>
+      <div class="occurrences"><a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> <a href="../provingground/Families$$RecFmlyPtn.html" class="extype" name="provingground.Families.RecFmlyPtn">RecFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">Deprec</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> </div>
+    </div><div class="entry">
+      <div class="name">Diagonal</div>
+      <div class="occurrences"><a href="../provingground/DiffbleFunction$.html" class="extype" name="provingground.DiffbleFunction">DiffbleFunction</a> </div>
+    </div><div class="entry">
+      <div class="name">DiffStructure</div>
+      <div class="occurrences"><a href="../provingground/andrewscurtis/package.html" class="extype" name="provingground.andrewscurtis">andrewscurtis</a> </div>
+    </div><div class="entry">
+      <div class="name">DiffbleFunction</div>
+      <div class="occurrences"><a href="../provingground/package.html" class="extype" name="provingground">provingground</a> </div>
+    </div><div class="entry">
+      <div class="name">DomSym</div>
+      <div class="occurrences"><a href="../provingground/HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> </div>
+    </div><div class="entry">
+      <div class="name">DomainType</div>
+      <div class="occurrences"><a href="../provingground/ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a> </div>
+    </div><div class="entry">
+      <div class="name">DotOp</div>
+      <div class="occurrences"><a href="../provingground/Collections$.html" class="extype" name="provingground.Collections">Collections</a> </div>
+    </div><div class="entry">
+      <div class="name">DotProd</div>
+      <div class="occurrences"><a href="../provingground/DiffbleFunction$.html" class="extype" name="provingground.DiffbleFunction">DiffbleFunction</a> </div>
+    </div><div class="entry">
+      <div class="name">Dyn</div>
+      <div class="occurrences"><a href="../provingground/Collections$$ApproxSeq$.html" class="extype" name="provingground.Collections.ApproxSeq">ApproxSeq</a> </div>
+    </div><div class="entry">
+      <div class="name">decryFlat</div>
+      <div class="occurrences"><a href="../provingground/FiniteDistributionParVec.html" class="extype" name="provingground.FiniteDistributionParVec">FiniteDistributionParVec</a> </div>
+    </div><div class="entry">
+      <div class="name">defect</div>
+      <div class="occurrences"><a href="../provingground/andrewscurtis/FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a> </div>
+    </div><div class="entry">
+      <div class="name">dep</div>
+      <div class="occurrences"><a href="../provingground/HoTT$$Lambda.html" class="extype" name="provingground.HoTT.Lambda">Lambda</a> <a href="../provingground/HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a> <a href="../provingground/HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> <a href="../provingground/HoTT$$LazyLambda.html" class="extype" name="provingground.HoTT.LazyLambda">LazyLambda</a> <a href="../provingground/HoTT$$LazyLambdaFixed.html" class="extype" name="provingground.HoTT.LazyLambdaFixed">LazyLambdaFixed</a> <a href="../provingground/NlpProse$$DepRel.html" class="extype" name="provingground.NlpProse.DepRel">DepRel</a> </div>
+    </div><div class="entry">
+      <div class="name">depCurry</div>
+      <div class="occurrences"><a href="../provingground/Families$$DepFuncFmlyPtn.html" class="extype" name="provingground.Families.DepFuncFmlyPtn">DepFuncFmlyPtn</a> <a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">depFill</div>
+      <div class="occurrences"><a href="../provingground/Families$$DepFuncFmlyPtn.html" class="extype" name="provingground.Families.DepFuncFmlyPtn">DepFuncFmlyPtn</a> <a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">depFunc</div>
+      <div class="occurrences"><a href="../provingground/ScalaUniverses$.html" class="extype" name="provingground.ScalaUniverses">ScalaUniverses</a> </div>
+    </div><div class="entry">
+      <div class="name">depFuncPolyRep</div>
+      <div class="occurrences"><a href="../provingground/ScalaPolyRep$.html" class="extype" name="provingground.ScalaPolyRep">ScalaPolyRep</a> </div>
+    </div><div class="entry">
+      <div class="name">depTarget</div>
+      <div class="occurrences"><a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> <a href="../provingground/Families$$RecFmlyPtn.html" class="extype" name="provingground.Families.RecFmlyPtn">RecFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">depTotalDomain</div>
+      <div class="occurrences"><a href="../provingground/Families$$DepFuncFmlyPtn.html" class="extype" name="provingground.Families.DepFuncFmlyPtn">DepFuncFmlyPtn</a> <a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">depUncurry</div>
+      <div class="occurrences"><a href="../provingground/Families$$DepFuncFmlyPtn.html" class="extype" name="provingground.Families.DepFuncFmlyPtn">DepFuncFmlyPtn</a> <a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">depcodom</div>
+      <div class="occurrences"><a href="../provingground/HoTT$$CnstFuncLike.html" class="extype" name="provingground.HoTT.CnstFuncLike">CnstFuncLike</a> <a href="../provingground/HoTT$$DepFuncDefn.html" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> <a href="../provingground/HoTT$$DepFuncSymb.html" class="extype" name="provingground.HoTT.DepFuncSymb">DepFuncSymb</a> <a href="../provingground/HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> <a href="../provingground/HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> <a href="../provingground/HoTT$$Lambda.html" class="extype" name="provingground.HoTT.Lambda">Lambda</a> <a href="../provingground/HoTT$$LazyLambda.html" class="extype" name="provingground.HoTT.LazyLambda">LazyLambda</a> <a href="../provingground/HoTT$$NamedDepFunc.html" class="extype" name="provingground.HoTT.NamedDepFunc">NamedDepFunc</a> <a href="../provingground/HoTT$$OptDepFuncDefn.html" class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</a> <a href="../provingground/NatRing$$Induc.html" class="extype" name="provingground.NatRing.Induc">Induc</a> <a href="../provingground/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a> </div>
+    </div><div class="entry">
+      <div class="name">dependsOn</div>
+      <div class="occurrences"><a href="../provingground/HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> <a href="../provingground/Unify$.html" class="extype" name="provingground.Unify">Unify</a> </div>
+    </div><div class="entry">
+      <div class="name">deptype</div>
+      <div class="occurrences"><a href="../provingground/NlpProse$$DepRel.html" class="extype" name="provingground.NlpProse.DepRel">DepRel</a> </div>
+    </div><div class="entry">
+      <div class="name">desc</div>
+      <div class="occurrences"><a href="../provingground/NlpProse$$ProseTree.html" class="extype" name="provingground.NlpProse.ProseTree">ProseTree</a> </div>
+    </div><div class="entry">
+      <div class="name">dfn</div>
+      <div class="occurrences"><a href="../provingground/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaPolyRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$SimpleExtendedFunction.html" class="extype" name="provingground.ScalaRep.SimpleExtendedFunction">SimpleExtendedFunction</a> </div>
+    </div><div class="entry">
+      <div class="name">diagonal</div>
+      <div class="occurrences"><a href="../provingground/Collections$$ApproxSeq$.html" class="extype" name="provingground.Collections.ApproxSeq">ApproxSeq</a> <a href="../provingground/Collections$$InfSeq$.html" class="extype" name="provingground.Collections.InfSeq">InfSeq</a> </div>
+    </div><div class="entry">
+      <div class="name">diff</div>
+      <div class="occurrences"><a href="../provingground/LinearStructure.html" class="extype" name="provingground.LinearStructure">LinearStructure</a> </div>
+    </div><div class="entry">
+      <div class="name">diffFnLS</div>
+      <div class="occurrences"><a href="../provingground/DiffbleFunction$.html" class="extype" name="provingground.DiffbleFunction">DiffbleFunction</a> </div>
+    </div><div class="entry">
+      <div class="name">dim</div>
+      <div class="occurrences"><a href="../provingground/IndexedVecTyp.html" class="extype" name="provingground.IndexedVecTyp">IndexedVecTyp</a> <a href="../provingground/IntVector.html" class="extype" name="provingground.IntVector">IntVector</a> <a href="../provingground/ScalaVec$VecTyp.html" class="extype" name="provingground.ScalaVec.VecTyp">VecTyp</a> <a href="../provingground/VecTyp.html" class="extype" name="provingground.VecTyp">VecTyp</a> </div>
+    </div><div class="entry">
+      <div class="name">dom</div>
+<<<<<<< HEAD
+      <div class="occurrences"><a href="../provingground/Equality.html" class="extype" name="provingground.Equality">Equality</a> <a href="../provingground/HoTT$$CnstFunc.html" class="extype" name="provingground.HoTT.CnstFunc">CnstFunc</a> <a href="../provingground/HoTT$$CnstFuncLike.html" class="extype" name="provingground.HoTT.CnstFuncLike">CnstFuncLike</a> <a href="../provingground/HoTT$$DepFuncDefn.html" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> <a href="../provingground/HoTT$$DepFuncSymb.html" class="extype" name="provingground.HoTT.DepFuncSymb">DepFuncSymb</a> <a href="../provingground/HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> <a href="../provingground/HoTT$$FuncDefn.html" class="extype" name="provingground.HoTT.FuncDefn">FuncDefn</a> <a href="../provingground/HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> <a href="../provingground/HoTT$$FuncSymb.html" class="extype" name="provingground.HoTT.FuncSymb">FuncSymb</a> <a href="../provingground/HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a> <a href="../provingground/HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a> <a href="../provingground/HoTT$$IdentityTyp$$InducFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFunc">InducFunc</a> <a href="../provingground/HoTT$$IdentityTyp$$RecFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFunc">RecFunc</a> <a href="../provingground/HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a> <a href="../provingground/HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> <a href="../provingground/HoTT$$LazyLambdaFixed.html" class="extype" name="provingground.HoTT.LazyLambdaFixed">LazyLambdaFixed</a> <a href="../provingground/HoTT$$NamedDepFunc.html" class="extype" name="provingground.HoTT.NamedDepFunc">NamedDepFunc</a> <a href="../provingground/HoTT$$NamedFunc.html" class="extype" name="provingground.HoTT.NamedFunc">NamedFunc</a> <a href="../provingground/HoTT$$OptDepFuncDefn.html" class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</a> <a href="../provingground/HoTT$$Refl.html" class="extype" name="provingground.HoTT.Refl">Refl</a> <a href="../provingground/NatRing$$Induc.html" class="extype" name="provingground.NatRing.Induc">Induc</a> <a href="../provingground/NatRing$$Rec.html" class="extype" name="provingground.NatRing.Rec">Rec</a> <a href="../provingground/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaPolyRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$SimpleExtendedFunction.html" class="extype" name="provingground.ScalaRep.SimpleExtendedFunction">SimpleExtendedFunction</a> <a href="../provingground/SymbolicCRig$AddLiteral.html" class="extype" name="provingground.SymbolicCRig.AddLiteral">AddLiteral</a> <a href="../provingground/SymbolicCRig$AddTerm.html" class="extype" name="provingground.SymbolicCRig.AddTerm">AddTerm</a> <a href="../provingground/SymbolicCRig$AdditiveMorphism.html" class="extype" name="provingground.SymbolicCRig.AdditiveMorphism">AdditiveMorphism</a> <a href="../provingground/SymbolicCRig$multLiteral.html" class="extype" name="provingground.SymbolicCRig.multLiteral">multLiteral</a> <a href="../provingground/SymbolicCRig$multTerm.html" class="extype" name="provingground.SymbolicCRig.multTerm">multTerm</a> <a href="../provingground/SymbolicCRig$prod$.html" class="extype" name="provingground.SymbolicCRig.prod">prod</a> <a href="../provingground/SymbolicCRig$sum$.html" class="extype" name="provingground.SymbolicCRig.sum">sum</a> </div>
+=======
+      <div class="occurrences"><a href="../provingground/Equality.html" class="extype" name="provingground.Equality">Equality</a> <a href="../provingground/HoTT$$CnstFunc.html" class="extype" name="provingground.HoTT.CnstFunc">CnstFunc</a> <a href="../provingground/HoTT$$CnstFuncLike.html" class="extype" name="provingground.HoTT.CnstFuncLike">CnstFuncLike</a> <a href="../provingground/HoTT$$DepFuncDefn.html" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a> <a href="../provingground/HoTT$$DepFuncSymb.html" class="extype" name="provingground.HoTT.DepFuncSymb">DepFuncSymb</a> <a href="../provingground/HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> <a href="../provingground/HoTT$$FuncDefn.html" class="extype" name="provingground.HoTT.FuncDefn">FuncDefn</a> <a href="../provingground/HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> <a href="../provingground/HoTT$$FuncSymb.html" class="extype" name="provingground.HoTT.FuncSymb">FuncSymb</a> <a href="../provingground/HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a> <a href="../provingground/HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a> <a href="../provingground/HoTT$$IdentityTyp$$InducSym.html" class="extype" name="provingground.HoTT.IdentityTyp.InducSym">InducSym</a> <a href="../provingground/HoTT$$IdentityTyp$$RecSym.html" class="extype" name="provingground.HoTT.IdentityTyp.RecSym">RecSym</a> <a href="../provingground/HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a> <a href="../provingground/HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> <a href="../provingground/HoTT$$LazyLambdaFixed.html" class="extype" name="provingground.HoTT.LazyLambdaFixed">LazyLambdaFixed</a> <a href="../provingground/HoTT$$NamedDepFunc.html" class="extype" name="provingground.HoTT.NamedDepFunc">NamedDepFunc</a> <a href="../provingground/HoTT$$NamedFunc.html" class="extype" name="provingground.HoTT.NamedFunc">NamedFunc</a> <a href="../provingground/HoTT$$OptDepFuncDefn.html" class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</a> <a href="../provingground/HoTT$$Refl.html" class="extype" name="provingground.HoTT.Refl">Refl</a> <a href="../provingground/NatRing$$Induc.html" class="extype" name="provingground.NatRing.Induc">Induc</a> <a href="../provingground/NatRing$$Rec.html" class="extype" name="provingground.NatRing.Rec">Rec</a> <a href="../provingground/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaPolyRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$SimpleExtendedFunction.html" class="extype" name="provingground.ScalaRep.SimpleExtendedFunction">SimpleExtendedFunction</a> <a href="../provingground/SymbolicCRig$AddLiteral.html" class="extype" name="provingground.SymbolicCRig.AddLiteral">AddLiteral</a> <a href="../provingground/SymbolicCRig$AddTerm.html" class="extype" name="provingground.SymbolicCRig.AddTerm">AddTerm</a> <a href="../provingground/SymbolicCRig$AdditiveMorphism.html" class="extype" name="provingground.SymbolicCRig.AdditiveMorphism">AdditiveMorphism</a> <a href="../provingground/SymbolicCRig$multLiteral.html" class="extype" name="provingground.SymbolicCRig.multLiteral">multLiteral</a> <a href="../provingground/SymbolicCRig$multTerm.html" class="extype" name="provingground.SymbolicCRig.multTerm">multTerm</a> <a href="../provingground/SymbolicCRig$prod$.html" class="extype" name="provingground.SymbolicCRig.prod">prod</a> <a href="../provingground/SymbolicCRig$sum$.html" class="extype" name="provingground.SymbolicCRig.sum">sum</a> </div>
+>>>>>>> d3a8e785c84f29af125e7daca36e1904f496f8aa
+    </div><div class="entry">
+      <div class="name">domTotal</div>
+      <div class="occurrences"><a href="../provingground/Families$$DepFuncFmlyPtn.html" class="extype" name="provingground.Families.DepFuncFmlyPtn">DepFuncFmlyPtn</a> <a href="../provingground/Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a> <a href="../provingground/Families$$FuncFmlyPtn.html" class="extype" name="provingground.Families.FuncFmlyPtn">FuncFmlyPtn</a> <a href="../provingground/Families$$IdFmlyPtn.html" class="extype" name="provingground.Families.IdFmlyPtn">IdFmlyPtn</a> </div>
+    </div><div class="entry">
+      <div class="name">domrep</div>
+      <div class="occurrences"><a href="../provingground/DepFuncPolyRep.html" class="extype" name="provingground.DepFuncPolyRep">DepFuncPolyRep</a> <a href="../provingground/DepFuncRep.html" class="extype" name="provingground.DepFuncRep">DepFuncRep</a> <a href="../provingground/FuncPolyRep.html" class="extype" name="provingground.FuncPolyRep">FuncPolyRep</a> <a href="../provingground/FuncRep.html" class="extype" name="provingground.FuncRep">FuncRep</a> <a href="../provingground/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaPolyRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaPolyRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a> <a href="../provingground/ScalaRep$$ExtendedFunction.html" class="extype" name="provingground.ScalaRep.ExtendedFunction">ExtendedFunction</a> <a href="../provingground/ScalaRep$$SimpleExtendedFunction.html" class="extype" name="provingground.ScalaRep.SimpleExtendedFunction">SimpleExtendedFunction</a> <a href="../provingground/SigmaRep.html" class="extype" name="provingground.SigmaRep">SigmaRep</a> <a href="../provingground/SmpleFuncRep.html" class="extype" name="provingground.SmpleFuncRep">SmpleFuncRep</a> </div>
+    </div><div class="entry">
+      <div class="name">domuniv</div>
+      <div class="occurrences"><a href="../provingground/FuncTypUniv.html" class="extype" name="provingground.FuncTypUniv">FuncTypUniv</a> <a href="../provingground/PiTypUniv.html" class="extype" name="provingground.PiTypUniv">PiTypUniv</a> </div>
+    </div><div class="entry">
+      <div class="name">dot</div>
+      <div class="occurrences"><a href="../provingground/Collections$$InnerProduct.html" class="extype" name="provingground.Collections.InnerProduct">InnerProduct</a> <a href="../provingground/Collections$$LabelledVector.html" class="extype" name="provingground.Collections.LabelledVector">LabelledVector</a> <a href="../provingground/FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a> </div>
+    </div><div class="entry">
+      <div class="name">draw</div>
+      <div class="occurrences"><a href="../provingground/SvgPlot.html" class="extype" name="provingground.SvgPlot">SvgPlot</a> </div>
+    </div><div class="entry">
+      <div class="name">drop</div>
+      <div class="occurrences"><a href="../provingground/Collections$$InfSeq.html" class="extype" name="provingground.Collections.InfSeq">InfSeq</a> </div>
+    </div><div class="entry">
+      <div class="name">dsl</div>
+      <div class="occurrences"><a href="../provingground/ScalaRep$.html" class="extype" name="provingground.ScalaRep">ScalaRep</a> </div>
+    </div><div class="entry">
+      <div class="name">dyn</div>
+      <div class="occurrences"><a href="../provingground/Collections$$ApproxSeq$$Dyn.html" class="extype" name="provingground.Collections.ApproxSeq.Dyn">Dyn</a> </div>
+    </div><div class="entry">
+      <div class="name">dynTypFlow</div>
+      <div class="occurrences"><a href="../provingground/HoTTgen$.html" class="extype" name="provingground.HoTTgen">HoTTgen</a> </div>
+    </div></body>
+      </html>
