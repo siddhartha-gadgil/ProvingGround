@@ -221,23 +221,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.OptMapLift#extendLift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="extendLift[I,O,J&lt;:I]:provingground.OptMapLift[I,O,J,O]"></a>
-      <a id="extendLift[I,O,J&lt;:I]:OptMapLift[I,O,J,O]"></a>
+    </li><li name="provingground.OptMapLift#filterLift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="filterLift[I,O,L&lt;:O]:provingground.OptMapLift[I,O,I,L]"></a>
+      <a id="filterLift[I,O,L&lt;:O]:OptMapLift[I,O,I,L]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">implicit </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">extendLift</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="J">J &lt;: <span class="extype" name="provingground.OptMapLift.extendLift.I">I</span></span>]</span><span class="result">: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.OptMapLift.extendLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.extendLift.O">O</span>, <span class="extype" name="provingground.OptMapLift.extendLift.J">J</span>, <span class="extype" name="provingground.OptMapLift.extendLift.O">O</span>]</span>
+        <span class="name">filterLift</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="L">L &lt;: <span class="extype" name="provingground.OptMapLift.filterLift.O">O</span></span>]</span><span class="result">: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.OptMapLift.filterLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.filterLift.O">O</span>, <span class="extype" name="provingground.OptMapLift.filterLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.filterLift.L">L</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.OptMapLift$@extendLift[I,O,J&lt;:I]:provingground.OptMapLift[I,O,J,O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.OptMapLift$@filterLift[I,O,L&lt;:O]:provingground.OptMapLift[I,O,I,L]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Lift to a restricted codomain, by attempting to cast and returning None on failing.</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -311,7 +311,8 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Trivial lifting by the identity
+</p>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -345,7 +346,7 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Given a lift to XI and XO, lift to maps between corresponding lists.</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -398,22 +399,22 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.OptMapLift#restrictLift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="restrictLift[I,O,L&lt;:O]:provingground.OptMapLift[I,O,I,L]"></a>
-      <a id="restrictLift[I,O,L&lt;:O]:OptMapLift[I,O,I,L]"></a>
+      <a id="restrictLift[I,O,J&lt;:I]:provingground.OptMapLift[I,O,J,O]"></a>
+      <a id="restrictLift[I,O,J&lt;:I]:OptMapLift[I,O,J,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">implicit </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">restrictLift</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="L">L &lt;: <span class="extype" name="provingground.OptMapLift.restrictLift.O">O</span></span>]</span><span class="result">: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.OptMapLift.restrictLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.O">O</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.L">L</span>]</span>
+        <span class="name">restrictLift</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="J">J &lt;: <span class="extype" name="provingground.OptMapLift.restrictLift.I">I</span></span>]</span><span class="result">: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.OptMapLift.restrictLift.I">I</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.O">O</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.J">J</span>, <span class="extype" name="provingground.OptMapLift.restrictLift.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.OptMapLift$@restrictLift[I,O,L&lt;:O]:provingground.OptMapLift[I,O,I,L]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.OptMapLift$@restrictLift[I,O,J&lt;:I]:provingground.OptMapLift[I,O,J,O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">lift by restricting the domain.</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -464,7 +465,8 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Lift to tuple given lift to individual components
+</p>
     </li><li name="provingground.OptMapLift#tuple3Lift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="tuple3Lift[I,O,XI1,XO1,XI2,XO2,XI3,XO3](implicitlft1:provingground.OptMapLift[I,O,XI1,XO1],implicitlft2:provingground.OptMapLift[I,O,XI2,XO2],implicitlft3:provingground.OptMapLift[I,O,XI3,XO3]):provingground.OptMapLift[I,O,(XI1,XI2,XI3),(XO1,XO2,XO3)]"></a>
       <a id="tuple3Lift[I,O,XI1,XO1,XI2,XO2,XI3,XO3](OptMapLift[I,O,XI1,XO1],OptMapLift[I,O,XI2,XO2],OptMapLift[I,O,XI3,XO3]):OptMapLift[I,O,(XI1,XI2,XI3),(XO1,XO2,XO3)]"></a>
@@ -481,7 +483,8 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Lift to tuple given lift to individual components
+</p>
     </li><li name="provingground.OptMapLift#tuple4Lift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="tuple4Lift[I,O,XI1,XO1,XI2,XO2,XI3,XO3,XI4,XO4](implicitlft1:provingground.OptMapLift[I,O,XI1,XO1],implicitlft2:provingground.OptMapLift[I,O,XI2,XO2],implicitlft3:provingground.OptMapLift[I,O,XI3,XO3],implicitlft4:provingground.OptMapLift[I,O,XI4,XO4]):provingground.OptMapLift[I,O,(XI1,XI2,XI3,XI4),(XO1,XO2,XO3,XO4)]"></a>
       <a id="tuple4Lift[I,O,XI1,XO1,XI2,XO2,XI3,XO3,XI4,XO4](OptMapLift[I,O,XI1,XO1],OptMapLift[I,O,XI2,XO2],OptMapLift[I,O,XI3,XO3],OptMapLift[I,O,XI4,XO4]):OptMapLift[I,O,(XI1,XI2,XI3,XI4),(XO1,XO2,XO3,XO4)]"></a>
@@ -498,7 +501,8 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Lift to tuple given lift to individual components
+</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

@@ -147,7 +147,10 @@ In case of a match, applies sub-translator to result.
     </span>
       <p class="shortcomment cmt">The main recursive translator:
 </p><div class="fullcomment"><div class="comment cmt"><p>The main recursive translator:
-</p></div><dl class="paramcmts block"><dt class="param">split</dt><dd class="cmt"><p>matches and optionally splits to a type XI derived from I, possibly starting with a sub-type of I.</p></dd><dt class="param">join</dt><dd class="cmt"><p>optionally combined from a type XO built from O, possibly starting with a sub-type of O.</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="param">split</dt><dd class="cmt"><p>matches and optionally splits to a type XI derived from I, possibly starting with a sub-type of I.</p></dd><dt class="param">join</dt><dd class="cmt"><p>optionally combined from a type XO built from O, possibly starting with a sub-type of O.
+inference of I and O is difficult in this case, so should generally not be used directly.
+Instead when combining translations I and J are determined by the base, and the rest of the
+type parameters by the split and join.</p></dd></dl></div>
     </li><li name="provingground.Translator.OrElse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="OrElse[I,O]extendsTranslator[I,O]withProductwithSerializable"></a>
       <a id="OrElse[I,O]:OrElse[I,O]"></a>
