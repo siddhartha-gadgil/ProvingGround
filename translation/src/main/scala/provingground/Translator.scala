@@ -7,7 +7,9 @@ trait Translator[I, O]  extends (I => Option[O]){self =>
 
   def apply(inp: I) = recTranslate(self)(inp)
 
-  def ||(that: Translator[I, O]) = Translator.Or(this, that)
+  def ||(that: Translator[I, O]) = Translator.Or(self, that)
+
+  def |||[X >: I, Y <: O](that: X => Option[Y]) = self || Translator.Simple[I, O](that)
 
   def ++(split: I => Option[I], join: O => Option[O]) =
     this || Translator.Junction(split, join)
