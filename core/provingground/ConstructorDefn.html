@@ -45,14 +45,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ConstructorDefn</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>]</span>]</span><span class="params">(<span name="pattern">pattern: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="cons">cons: <span class="extype" name="provingground.ConstructorDefn.U">U</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ConstructorDefn</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>]</span><span class="params">(<span name="pattern">pattern: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>, <span name="cons">cons: <span class="extype" name="provingground.ConstructorDefn.U">U</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>)</span><span class="result"> extends <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>a constructor given by its parameters.
 </p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>scala type of polypattern.</p></dd><dt class="param">pattern</dt><dd class="cmt"><p>poly-pattern for the constructor.</p></dd><dt class="param">cons</dt><dd class="cmt"><p>constructor function.</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -90,18 +90,18 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.ConstructorDefn#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(pattern:provingground.ConstructorPattern[C,U],cons:U,W:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.ConstructorDefn[U,C]"></a>
-      <a id="&lt;init&gt;:ConstructorDefn[U,C]"></a>
+      <a id="&lt;init&gt;(pattern:provingground.ConstructorPattern[C,U,H],cons:U,W:provingground.HoTT.Typ[H]):provingground.ConstructorDefn[U,C,H]"></a>
+      <a id="&lt;init&gt;:ConstructorDefn[U,C,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ConstructorDefn</span><span class="params">(<span name="pattern">pattern: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>, <span name="cons">cons: <span class="extype" name="provingground.ConstructorDefn.U">U</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span>
+        <span class="name">ConstructorDefn</span><span class="params">(<span name="pattern">pattern: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>, <span name="cons">cons: <span class="extype" name="provingground.ConstructorDefn.U">U</span></span>, <span name="W">W: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorDefn@&lt;init&gt;(pattern:provingground.ConstructorPattern[C,U],cons:U,W:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.ConstructorDefn[U,C]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorDefn@&lt;init&gt;(pattern:provingground.ConstructorPattern[C,U,H],cons:U,W:provingground.HoTT.Typ[H]):provingground.ConstructorDefn[U,C,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -189,18 +189,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.ConstructorDefn#W" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="W:provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="W:Typ[Term]"></a>
+      <a id="W:provingground.HoTT.Typ[H]"></a>
+      <a id="W:Typ[H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorDefn@W:provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorDefn@W:provingground.HoTT.Typ[H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -390,18 +390,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.ConstructorDefn#pattern" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="pattern:provingground.ConstructorPattern[C,U]"></a>
-      <a id="pattern:ConstructorPattern[C,U]"></a>
+      <a id="pattern:provingground.ConstructorPattern[C,U,H]"></a>
+      <a id="pattern:ConstructorPattern[C,U,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">pattern</span><span class="result">: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>]</span>
+        <span class="name">pattern</span><span class="result">: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.U">U</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorDefn@pattern:provingground.ConstructorPattern[C,U]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorDefn@pattern:provingground.ConstructorPattern[C,U,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -510,7 +510,7 @@
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.Constructor">
-              <h3>Inherited from <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>]</h3>
+              <h3>Inherited from <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorDefn.C">C</span>, <span class="extype" name="provingground.ConstructorDefn.H">H</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

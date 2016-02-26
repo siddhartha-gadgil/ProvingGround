@@ -117,7 +117,7 @@
       </a>
     </span>
       
-    </li><li name="provingground.FDHub" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.FDHub" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="FDHubextendsActor"></a>
       <a id="FDHub:FDHub"></a>
       <h4 class="signature">
@@ -133,7 +133,12 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Actor controlling (bu not creating) the various loopers for running;
+maintains info on the state etc.</p><div class="fullcomment"><div class="comment cmt"><p>Actor controlling (bu not creating) the various loopers for running;
+maintains info on the state etc. of loopers,
+keeps telling a running looper to continue.
+Running loopers is separated into spawning them, in general from outside the actor system,
+and starting them from a Hub.</p></div></div>
     </li><li name="provingground.FDLooper" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="FDLooper[X,P]extendsActor"></a>
       <a id="FDLooper[X,P]:FDLooper[X,P]"></a>

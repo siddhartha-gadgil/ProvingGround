@@ -51,13 +51,15 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Representation by a scala object of a HoTT term
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Representation by a scala object of a HoTT term</p><p>It is assumed that there is a single HoTT type corresponding to the given scala type,
+when the scala rep is in scope. If one needs several HoTT types, eg. vectors of different lengths,
+one uses ScalaPolyRep.</p><p>ScalaRep objects are recursively constructed from
 </p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>the HoTT type represented</p></dd><dt class="tparam">V</dt><dd class="cmt"><p>scala type representing the given object.</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="DepFuncRep.html" class="extype" name="provingground.DepFuncRep">DepFuncRep</a>, <a href="FuncRep.html" class="extype" name="provingground.FuncRep">FuncRep</a>, <a href="IdRep.html" class="extype" name="provingground.IdRep">IdRep</a>, <a href="SigmaRep.html" class="extype" name="provingground.SigmaRep">SigmaRep</a>, <a href="SimpleFuncRep.html" class="extype" name="provingground.SimpleFuncRep">SimpleFuncRep</a>, <a href="ScalaRep$$SimpleRep.html" class="extype" name="provingground.ScalaRep.SimpleRep">SimpleRep</a></div>
+            <div class="subClasses hiddenContent"><a href="DepFuncRep.html" class="extype" name="provingground.DepFuncRep">DepFuncRep</a>, <a href="FuncRep.html" class="extype" name="provingground.FuncRep">FuncRep</a>, <a href="IdRep.html" class="extype" name="provingground.IdRep">IdRep</a>, <a href="IdTypRep.html" class="extype" name="provingground.IdTypRep">IdTypRep</a>, <a href="SigmaRep.html" class="extype" name="provingground.SigmaRep">SigmaRep</a>, <a href="ScalaRep$$SimpleRep.html" class="extype" name="provingground.ScalaRep.SimpleRep">SimpleRep</a>, <a href="SmpleFuncRep.html" class="extype" name="provingground.SmpleFuncRep">SmpleFuncRep</a></div>
           </div></div>
         
 
@@ -261,18 +263,18 @@
       <p class="shortcomment cmt">scalarep for function
 </p>
     </li><li name="provingground.ScalaRep#:--&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id=":--&gt;[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.SimpleFuncRep[UU,V,W]"></a>
-      <a id=":--&gt;[W&lt;:TermwithSubs[W],UU&lt;:TermwithSubs[UU]&gt;:U](Typ[W]):SimpleFuncRep[UU,V,W]"></a>
+      <a id=":--&gt;[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.FuncRep[UU,V,W,W]"></a>
+      <a id=":--&gt;[W&lt;:TermwithSubs[W],UU&lt;:TermwithSubs[UU]&gt;:U](Typ[W]):FuncRep[UU,V,W,W]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $colon$minus$minus$greater" class="name">:--&gt;</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>, <span name="UU">UU &gt;: <span class="extype" name="provingground.ScalaRep.U">U</span> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.UU">UU</span>]</span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>)</span><span class="result">: <a href="SimpleFuncRep.html" class="extype" name="provingground.SimpleFuncRep">SimpleFuncRep</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.UU">UU</span>, <span class="extype" name="provingground.ScalaRep.V">V</span>, <span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>
+        <span title="gt4s: $colon$minus$minus$greater" class="name">:--&gt;</span><span class="tparams">[<span name="W">W &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>, <span name="UU">UU &gt;: <span class="extype" name="provingground.ScalaRep.U">U</span> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.UU">UU</span>]</span>]</span><span class="params">(<span name="that">that: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>)</span><span class="result">: <a href="FuncRep.html" class="extype" name="provingground.FuncRep">FuncRep</a>[<span class="extype" name="provingground.ScalaRep.:--&gt;.UU">UU</span>, <span class="extype" name="provingground.ScalaRep.V">V</span>, <span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>, <span class="extype" name="provingground.ScalaRep.:--&gt;.W">W</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ScalaRep@:--&gt;[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.SimpleFuncRep[UU,V,W]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ScalaRep@:--&gt;[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.FuncRep[UU,V,W,W]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

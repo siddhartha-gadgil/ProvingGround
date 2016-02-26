@@ -45,12 +45,12 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Constructor</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Constructor</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Constructor.H">H</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Constructor for an inductive type, with given scala type and poly-pattern of this type.</p><p>abstraction of ConstructorDefn mainly to allow different type parameters.
-</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>]</dd></dl><div class="toggleContainer block">
+</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>, <span class="extype" name="provingground.Constructor.H">H</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -118,18 +118,18 @@
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="provingground.Constructor#W" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="W:provingground.HoTT.Typ[provingground.HoTT.Term]"></a>
-      <a id="W:Typ[Term]"></a>
+      <a id="W:provingground.HoTT.Typ[H]"></a>
+      <a id="W:Typ[H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">W</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.Constructor.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Constructor@W:provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Constructor@W:provingground.HoTT.Typ[H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -153,18 +153,18 @@
     </span>
       <p class="shortcomment cmt">the constructor (function or constant) itself.</p>
     </li><li name="provingground.Constructor#pattern" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="pattern:provingground.ConstructorPattern[Cod,Constructor.this.ConstructorType]"></a>
-      <a id="pattern:ConstructorPattern[Cod,ConstructorType]"></a>
+      <a id="pattern:provingground.ConstructorPattern[Cod,Constructor.this.ConstructorType,H]"></a>
+      <a id="pattern:ConstructorPattern[Cod,ConstructorType,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">pattern</span><span class="result">: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>, <a href="#ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Constructor.this.ConstructorType]" class="extmbr" name="provingground.Constructor.ConstructorType">ConstructorType</a>]</span>
+        <span class="name">pattern</span><span class="result">: <a href="ConstructorPattern.html" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.Constructor.Cod">Cod</span>, <a href="#ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Constructor.this.ConstructorType]" class="extmbr" name="provingground.Constructor.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.Constructor.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Constructor@pattern:provingground.ConstructorPattern[Cod,Constructor.this.ConstructorType]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Constructor@pattern:provingground.ConstructorPattern[Cod,Constructor.this.ConstructorType,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
