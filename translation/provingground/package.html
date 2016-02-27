@@ -122,7 +122,32 @@ Generally constructed using combinators, starting with the identity.
 e.g. X = (I, I) and Y = (O, O).</p><p>However X and Y may involve taking sub-types independently of each other.</p><p>Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).</p><h4>Combinations, Basic Translators</h4><p>Translators are built by combining others by OrElse, starting with basic translators specified by a function I =&gt; Option[O].
 One can instead start with an empty translator.</p><p>Note that we can restrict the domain or extend the codomain of a translator by
 just using it as a function I =&gt; Option[O]. However this should be done after making all OrElse combinations, as the
-wrapped translator does not combine recursively.</p></div></div>
+wrapped translator does not combine recursively.</p><p>A typical example of usage is as below</p><pre>scala&gt; <span class="kw">import</span> provingground._
+<span class="kw">import</span> provingground._
+
+scala&gt; <span class="kw">import</span> OptMapLift._
+<span class="kw">import</span> OptMapLift._
+
+scala&gt; <span class="kw">class</span> A
+defined <span class="kw">class</span> A
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> B(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> B
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> C(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> C
+
+scala&gt; <span class="kw">case</span> <span class="kw">object</span> D <span class="kw">extends</span> A
+defined <span class="kw">object</span> D
+
+scala&gt; <span class="kw">val</span> tt = Translator.Simple((x: A) <span class="kw">=&gt;</span> <span class="std">Some</span>(x))
+tt: provingground.Translator.Simple[A,A] = &lt;function1&gt;
+
+scala&gt; <span class="kw">val</span> t = tt.&lt;&lt;&gt;&gt;(B.unapply _ , (C.apply _).tupled)
+t: provingground.Translator.OrElse[A,A] = &lt;function1&gt;
+
+scala&gt; t (B(D, D))
+res1: <span class="std">Option</span>[A] = <span class="std">Some</span>(C(D,D))</pre></div></div>
     </li></ol>
             </div>
 
