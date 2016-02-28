@@ -168,6 +168,26 @@
       <p class="shortcomment cmt">mixin translator obtained by optionally splitting and optionally joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator obtained by optionally splitting and optionally joining.
 the new translator is tried first.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
+    </li><li name="provingground.Translator#&lt;&lt;&gt;&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;&lt;&gt;&gt;[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="&lt;&lt;&gt;&gt;[J&lt;:I,II,OO,XI,XO]((J)⇒Option[XI],(II)⇒Option[OO],(XO)⇒Option[O])(OptMapLift[II,OO,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$less$greater$greater" class="name">&lt;&lt;&gt;&gt;</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="II">II</span>, <span name="OO">OO</span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.XI">XI</span>]</span>, <span name="subTranslate">subTranslate: (<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.II">II</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.OO">OO</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.II">II</span>, <span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.OO">OO</span>, <span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.XI">XI</span>, <span class="extype" name="provingground.Translator.&lt;&lt;&gt;&gt;.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@&lt;&lt;&gt;&gt;[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator#&lt;&lt;|&gt;&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;&lt;|&gt;&gt;:(splitJoin:(I=&gt;Option[I],O=&gt;Option[O])):provingground.Translator.OrElse[I,O]"></a>
       <a id="&lt;&lt;|&gt;&gt;:(((I)⇒Option[I],(O)⇒Option[O])):OrElse[I,O]"></a>
@@ -186,6 +206,26 @@ the new translator is tried first.
     </span>
       <p class="shortcomment cmt">mixin translator obtained by optionally pattern matching and optionally joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator obtained by optionally pattern matching and optionally joining.
 the new  translator is tried first.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
+    </li><li name="provingground.Translator#&lt;&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;&gt;[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="&lt;&gt;[J&lt;:I,II,OO,XI,XO]((J)⇒Option[XI],(II)⇒Option[OO],(XO)⇒Option[O])(OptMapLift[II,OO,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$greater" class="name">&lt;&gt;</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="II">II</span>, <span name="OO">OO</span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.&lt;&gt;.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.&lt;&gt;.XI">XI</span>]</span>, <span name="subTranslate">subTranslate: (<span class="extype" name="provingground.Translator.&lt;&gt;.II">II</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.&lt;&gt;.OO">OO</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.&lt;&gt;.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.&lt;&gt;.II">II</span>, <span class="extype" name="provingground.Translator.&lt;&gt;.OO">OO</span>, <span class="extype" name="provingground.Translator.&lt;&gt;.XI">XI</span>, <span class="extype" name="provingground.Translator.&lt;&gt;.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@&lt;&gt;[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator#&lt;&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;&gt;[J&lt;:I,XI,XO](split:J=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
@@ -378,6 +418,45 @@ the new translator (which is a prefix) is tried first.
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.Translator#elseOr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="elseOr[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="elseOr[J&lt;:I,II,OO,XI,XO]((J)⇒Option[XI],(II)⇒Option[OO],(XO)⇒Option[O])(OptMapLift[II,OO,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">elseOr</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="II">II</span>, <span name="OO">OO</span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.elseOr.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.elseOr.XI">XI</span>]</span>, <span name="subTranslate">subTranslate: (<span class="extype" name="provingground.Translator.elseOr.II">II</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.elseOr.OO">OO</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.elseOr.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.elseOr.II">II</span>, <span class="extype" name="provingground.Translator.elseOr.OO">OO</span>, <span class="extype" name="provingground.Translator.elseOr.XI">XI</span>, <span class="extype" name="provingground.Translator.elseOr.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@elseOr[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
+    </li><li name="provingground.Translator#elseOr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="elseOr[J&lt;:I,XI,XO](split:J=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="elseOr[J&lt;:I,XI,XO]((J)⇒Option[XI],(XO)⇒Option[O])(OptMapLift[I,O,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">elseOr</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.elseOr.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.elseOr.XI">XI</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.elseOr.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>, <span class="extype" name="provingground.Translator.elseOr.XI">XI</span>, <span class="extype" name="provingground.Translator.elseOr.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@elseOr[J&lt;:I,XI,XO](split:J=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator obtained by optionally splitting and optionally joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator obtained by optionally splitting and optionally joining.
+the new translator is tried first.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -503,6 +582,45 @@ the new translator (which is a prefix) is tried first.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.Translator#orElse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="orElse[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="orElse[J&lt;:I,II,OO,XI,XO]((J)⇒Option[XI],(II)⇒Option[OO],(XO)⇒Option[O])(OptMapLift[II,OO,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orElse</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="II">II</span>, <span name="OO">OO</span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.orElse.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.orElse.XI">XI</span>]</span>, <span name="subTranslate">subTranslate: (<span class="extype" name="provingground.Translator.orElse.II">II</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.orElse.OO">OO</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.orElse.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.orElse.II">II</span>, <span class="extype" name="provingground.Translator.orElse.OO">OO</span>, <span class="extype" name="provingground.Translator.orElse.XI">XI</span>, <span class="extype" name="provingground.Translator.orElse.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@orElse[J&lt;:I,II,OO,XI,XO](split:J=&gt;Option[XI],subTranslate:II=&gt;Option[OO],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[II,OO,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator after splitting and joining with _different_ input and output  types;
+lift of a specified translator is applied to the result of splitting before joining.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
+    </li><li name="provingground.Translator#orElse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="orElse[J&lt;:I,XI,XO](split:J=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]"></a>
+      <a id="orElse[J&lt;:I,XI,XO]((J)⇒Option[XI],(XO)⇒Option[O])(OptMapLift[I,O,XI,XO]):OrElse[I,O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orElse</span><span class="tparams">[<span name="J">J &lt;: <span class="extype" name="provingground.Translator.Simple.I">I</span></span>, <span name="XI">XI</span>, <span name="XO">XO</span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.orElse.J">J</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.orElse.XI">XI</span>]</span>, <span name="join">join: (<span class="extype" name="provingground.Translator.orElse.XO">XO</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="oml">oml: <a href="OptMapLift.html" class="extype" name="provingground.OptMapLift">OptMapLift</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>, <span class="extype" name="provingground.Translator.orElse.XI">XI</span>, <span class="extype" name="provingground.Translator.orElse.XO">XO</span>]</span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.Translator.OrElse">OrElse</a>[<span class="extype" name="provingground.Translator.Simple.I">I</span>, <span class="extype" name="provingground.Translator.Simple.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Simple@orElse[J&lt;:I,XI,XO](split:J=&gt;Option[XI],join:XO=&gt;Option[O])(implicitoml:provingground.OptMapLift[I,O,XI,XO]):provingground.Translator.OrElse[I,O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mixin translator obtained by optionally splitting and optionally joining.</p><div class="fullcomment"><div class="comment cmt"><p>mixin translator obtained by optionally splitting and optionally joining.
+this is tried if the present one fails.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Translator.html" class="extype" name="provingground.Translator">Translator</a></dd></dl></div>
     </li><li name="provingground.Translator.Simple#recTranslate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="recTranslate(rec:=&gt;provingground.Translator[I,O]):I=&gt;Option[O]"></a>
       <a id="recTranslate(⇒Translator[I,O]):(I)⇒Option[O]"></a>
