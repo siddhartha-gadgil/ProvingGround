@@ -103,10 +103,36 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
    * mixin translator obtained by optionally splitting and optionally joining.
    * this is tried if the present one fails.
    */
-  def <>[J <: I, XI, XO](
+  def orElse[J <: I, XI, XO](
     split: J => Option[XI], join: XO => Option[O]
   )(implicit oml: OptMapLift[I, O, XI, XO]) =
     |(Translator.MultiJunction[I, O, J, XI, XO](split, join))
+
+  /**
+   * mixin translator after splitting and joining with _different_ input and output  types;
+   * lift of a specified translator is applied to the result of splitting before joining.
+   */
+  def orElse[J <: I, II, OO, XI, XO](
+    split: J => Option[XI], subTranslate: II => Option[OO], join: XO => Option[O]
+  )(implicit oml: OptMapLift[II, OO, XI, XO]) =
+    self | Translator.Simple(Translator.HybridJunction(split, subTranslate, join))
+
+  /**
+   * mixin translator obtained by optionally splitting and optionally joining.
+   * this is tried if the present one fails.
+   */
+  def <>[J <: I, XI, XO](
+    split: J => Option[XI], join: XO => Option[O]
+  )(implicit oml: OptMapLift[I, O, XI, XO]) = orElse(split, join)
+
+  /**
+   * mixin translator after splitting and joining with _different_ input and output  types;
+   * lift of a specified translator is applied to the result of splitting before joining.
+   */
+  def <>[J <: I, II, OO, XI, XO](
+    split: J => Option[XI], subTranslate: II => Option[OO], join: XO => Option[O]
+  )(implicit oml: OptMapLift[II, OO, XI, XO]) =
+    orElse(split, subTranslate, join)
 
   /**
    * mixin translator obtained by optionally pattern matching and optionally joining.
@@ -119,10 +145,38 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
    * mixin translator obtained by optionally splitting and optionally joining.
    * the new translator is tried first.
    */
-  def <<>>[J <: I, XI, XO](
+  def elseOr[J <: I, XI, XO](
     split: J => Option[XI], join: XO => Option[O]
   )(implicit oml: OptMapLift[I, O, XI, XO]) =
     |:(Translator.MultiJunction[I, O, J, XI, XO](split, join))
+
+  /**
+   * mixin translator after splitting and joining with _different_ input and output  types;
+   * lift of a specified translator is applied to the result of splitting before joining.
+   */
+  def elseOr[J <: I, II, OO, XI, XO](
+    split: J => Option[XI], subTranslate: II => Option[OO], join: XO => Option[O]
+  )(implicit oml: OptMapLift[II, OO, XI, XO]) =
+    |:(Translator.Simple(
+      Translator.HybridJunction(split, subTranslate, join)
+    ))
+
+  /**
+   * mixin translator after splitting and joining with _different_ input and output  types;
+   * lift of a specified translator is applied to the result of splitting before joining.
+   */
+  def <<>>[J <: I, II, OO, XI, XO](
+    split: J => Option[XI], subTranslate: II => Option[OO], join: XO => Option[O]
+  )(implicit oml: OptMapLift[II, OO, XI, XO]) =
+    elseOr(split, subTranslate, join)
+
+  /**
+   * mixin translator obtained by optionally splitting and optionally joining.
+   * the new translator is tried first.
+   */
+  def <<>>[J <: I, XI, XO](
+    split: J => Option[XI], join: XO => Option[O]
+  )(implicit oml: OptMapLift[I, O, XI, XO]) = elseOr(split, join)
 
   /**
    * Restricts domain and expands codomain by treating this as simple a function I => Option[O]
@@ -182,6 +236,16 @@ object Translator {
           split(inp.asInstanceOf[J]) flatMap ((x: XI) => oml.lift(rec.apply)(x).flatMap(join(_)))
         ).toOption.flatten
     }
+  }
+
+  case class HybridJunction[I, O, J <: I, II, OO, XI, XO](
+    split: J => Option[XI], subTranslate: II => Option[OO], join: XO => Option[O]
+  )(implicit oml: OptMapLift[II, OO, XI, XO]) extends (I => Option[O]) {
+
+    def apply(inp: I) =
+      Try(
+        split(inp.asInstanceOf[J]) flatMap ((x: XI) => oml.lift(subTranslate)(x).flatMap(join(_)))
+      ).toOption.flatten
   }
 
 }
