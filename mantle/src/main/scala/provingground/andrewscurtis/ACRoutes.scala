@@ -28,31 +28,31 @@ object ACRoutes {
   val thmEvolve  = path("theorem-evolution" / Segment / Segment){
     case (name, ppress) => {
       val pres = uread[Presentation](ppress)
-      val thms = thmWeights(pres, name) map (uwrite[Stream[ACThm]])
+      val thms = thmWeights(pres, name) map ((x: Stream[ACThm]) => uwrite(x))
       complete(thms)
     }
   }
 
   val thms = path("theorems" / Segment){name =>
     val thmsOptFut = getFutOptThms(name)
-    val thms = thmsOptFut mapp (uwrite[FiniteDistribution[Presentation]])
+    val thms = thmsOptFut mapp ((d: FiniteDistribution[Presentation]) => uwrite(d))
     complete(thms)
   }
 
   val terms = path("terms" / Segment){name =>
     val thmsOptFDV = getFutOptFDV(name)
-    val thms = thmsOptFDV mapp (uwrite[FiniteDistribution[Moves]])
+    val thms = thmsOptFDV mapp ((m : FiniteDistribution[Moves]) => uwrite(m))
     complete(thms)
   }
 
   val moveWeights = path("move-weights" / Segment){name =>
     val thmsOptFDM = getFutOptFDM(name)
-    val thms = thmsOptFDM mapp (uwrite[FiniteDistribution[AtomicMove]])
+    val thms = thmsOptFDM mapp ((m: FiniteDistribution[AtomicMove]) => uwrite(m))
     complete(thms)
   }
 
   val actors = path("actors"){
-    val actors = getFutActors() map (uwrite[Vector[String]])
+    val actors = getFutActors() map ((v: Vector[String]) => uwrite(v))
     complete(actors)
   }
 

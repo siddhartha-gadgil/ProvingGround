@@ -4,10 +4,12 @@ scalaVersion in ThisBuild := "2.11.7"
 
 lazy val jsProjects = Seq(client)
 
-lazy val commonSettings = Seq(
+lazy val baseSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
-  scalaVersion := "2.11.7",
+  scalaVersion := "2.11.7")
+
+lazy val commonSettings = baseSettings ++ Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
@@ -23,7 +25,7 @@ val akkaStreamV = "2.0.1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.2" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.5" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
@@ -37,11 +39,11 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.5.2",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.5",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
-    "com.lihaoyi" %% "pprint" % "0.3.6"),
+    "com.lihaoyi" %% "pprint" % "0.3.8"),
     resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
 
@@ -139,7 +141,7 @@ lazy val mantle = (project in file("mantle")).
 //        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Main.run("$initCommands") """).
-        dependsOn(coreJVM).dependsOn(functionfinder)
+        dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(translation)
 
 lazy val nlp = (project in file("nlp")).
         settings(name := "ProvingGround-NLP").
@@ -148,6 +150,10 @@ lazy val nlp = (project in file("nlp")).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
         dependsOn(coreJVM).dependsOn(functionfinder)
+
+lazy val translation = (project in file("translation")).
+      settings(name := "ProvingGround-Translation").
+      settings(baseSettings : _*)
 
 lazy val playServer = (project in file("play-server")).enablePlugins(PlayScala).
         settings(name := "ProvingGround-Play-Server").
