@@ -70,7 +70,7 @@ object Families {
 
     def depTotalDomain(g: IterDepFunc) : Typ[Total]
 
-    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod] 
+    def depUncurry(g: IterDepFunc) : FuncLike[Total, Cod]
 
     def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
@@ -128,6 +128,26 @@ object Families {
     def inducedDep(f: FuncLike[O, Cod]): Family => DepTargetType
   }
 
+  object FmlyPtn{
+    def get[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F]](typ: Typ[O])(fmlyTyp: Typ[F]) : FmlyPtn[O, C, F]  =
+      fmlyTyp match {
+        case `typ` => IdFmlyPtn[O, C].asInstanceOf[FmlyPtn[O, C, F]]
+        case FuncTyp(dom : Typ[u], codom : Typ[v]) =>
+          val head = get[O, C, v](typ)(codom)
+          val tail = dom
+          val headCast: FmlyPtn[O,C,v]{
+            type FamilyType = head.FamilyType;
+            type IterFunc = head.IterFunc;
+            type IterTypFunc = head.IterTypFunc;
+            type IterDepFunc = head.IterDepFunc;
+            type ArgType = head.ArgType; type TargetType = head.TargetType;
+            type DepTargetType = head.DepTargetType;
+            type Total = head.Total} = head
+          val funcFmlyPtn = FuncFmlyPtn(tail, headCast)
+          funcFmlyPtn.asInstanceOf[FmlyPtn[O, C, F]]
+      }
+  }
+
   /**
    * The identity family
    */
@@ -162,7 +182,7 @@ object Families {
 
     def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = g
 
-    def curry(f: Func[Total, Cod]): IterFunc = f 
+    def curry(f: Func[Total, Cod]): IterFunc = f
 
     def totalDomain(g: IterFunc) = g.dom
 
@@ -232,7 +252,7 @@ object Families {
 
   }
 
-  case class FuncFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], IT <: Term with Subs[IT], 
+  case class FuncFmlyPtn[V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], IT <: Term with Subs[IT],
 DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
     tail : Typ[Term],
     head : FmlyPtn[O, C, V] {
@@ -386,7 +406,7 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     }
   }
- 
+
   /**
    * Extending by a constant type A a family of type patterns depending on (a : A).
    *
