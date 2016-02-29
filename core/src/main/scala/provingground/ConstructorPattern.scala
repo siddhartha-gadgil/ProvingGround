@@ -359,10 +359,10 @@ case class FuncPtn[C <: Term with Subs[C], F <: Term with Subs[F], HC <: Term wi
 /**
  * Extending a poly-pattern by a constant type, i.e., not depending on W.
  */
-case class CnstFncPtn[Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <: Term with Subs[H]](
-  tail: Typ[Term],
+case class CnstFncPtn[T <: Term with Subs[T], Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <: Term with Subs[H]](
+  tail: Typ[T],
   head: ConstructorPattern[Cod, HC, H]
-) extends RecursiveConstructorPattern[Cod, Term, HC, Func[Term, HC], H] { self =>
+) extends RecursiveConstructorPattern[Cod, T, HC, Func[T, HC], H] { self =>
   //   type ArgType = Term
 
   //   type HeadType = head.ConstructorType
@@ -370,7 +370,7 @@ case class CnstFncPtn[Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <:
   //  type Cod = head.Cod
 
   def withCod[CC <: Term with Subs[CC]] = {
-    CnstFncPtn[CC, HC, H](tail, head.withCod[CC])
+    CnstFncPtn[T, CC, HC, H](tail, head.withCod[CC])
   }
 
   val _head: ConstructorPattern[Cod, HC, H] {
@@ -380,9 +380,9 @@ case class CnstFncPtn[Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <:
 
   val headfibre = (t: ArgType) => _head
 
-  type RecDataType = Func[Term, head.RecDataType]
+  type RecDataType = Func[T, head.RecDataType]
 
-  type InducDataType = FuncLike[Term, head.InducDataType]
+  type InducDataType = FuncLike[T, head.InducDataType]
 
   def recDom(w: Typ[H], x: Typ[Cod]) = tail ->: head.recDom(w, x)
 
@@ -403,7 +403,7 @@ case class CnstFncPtn[Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <:
 
   def headInducData(data: InducDataType, arg: ArgType, f: => FuncLike[H, Cod]): HeadInducDataType = data(arg)
 
-  def apply(W: Typ[H]) = FuncTyp[Term, head.ConstructorType](tail, head(W))
+  def apply(W: Typ[H]) = FuncTyp[T, head.ConstructorType](tail, head(W))
 
   val univLevel = head.univLevel
 }
