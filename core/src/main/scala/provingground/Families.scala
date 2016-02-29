@@ -257,7 +257,7 @@ object Families {
 
   case class FuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], IT <: Term with Subs[IT],
 DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
-    tail : Typ[Term],
+    tail : Typ[TT],
     head : FmlyPtn[O, C, V] {
       type FamilyType = FV;
       type IterFunc = I;
@@ -267,22 +267,22 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
       type TargetType = T; type DepTargetType = D;
       type Total = HTot;
     }
-  )  extends FmlyPtn[O, C, Func[Term, V]] {
-    def apply(W: Typ[O]) = FuncTyp[Term, V](tail, head(W))
+  )  extends FmlyPtn[O, C, Func[TT, V]] {
+    def apply(W: Typ[O]) = FuncTyp[TT, V](tail, head(W))
 
     //  override type Family =  Func[Term, V]
 
-    type FamilyType = Func[Term, FV]
+    type FamilyType = Func[TT, FV]
 
-    type Total = PairObj[Term, HTot]
+    type Total = PairObj[TT, HTot]
 
-    type IterFunc = Func[Term, head.IterFunc]
+    type IterFunc = Func[TT, head.IterFunc]
 
-    type IterTypFunc = Func[Term, head.IterTypFunc]
+    type IterTypFunc = Func[TT, head.IterTypFunc]
 
-    type IterDepFunc = FuncLike[Term, head.IterDepFunc]
+    type IterDepFunc = FuncLike[TT, head.IterDepFunc]
 
-    type DepTargetType = FuncLike[Term, D]
+    type DepTargetType = FuncLike[TT, D]
 
     def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
       val headtyp = head.iterFuncTyp(w(w.dom.obj), x)
@@ -296,7 +296,7 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
     }
 
 
-    type ArgType = PairObj[Term, S]
+    type ArgType = PairObj[TT, S]
 
 //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
@@ -355,7 +355,7 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     def contractType(w: FamilyType)(arg: ArgType): Typ[O] = headfibre(arg).contractType(w(arg.first))(arg.second)
 
-    type TargetType = Func[Term, T]
+    type TargetType = Func[TT, T]
 
 //    type DepTargetType = FuncLike[Term, D]
 
