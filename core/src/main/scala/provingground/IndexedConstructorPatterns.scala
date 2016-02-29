@@ -4,7 +4,7 @@ import HoTT._
 import Families._
 
 import scala.language.implicitConversions
-import scala.util._
+//import scala.util._
 import scala.language.existentials
 import ConstructorPattern._
 
@@ -12,9 +12,9 @@ import ConstructorPattern._
  * @author gadgil
  */
 class IndexedConstructorPatterns[
-  F <: Term with Subs[F], Ind <: Term with Subs[Ind], 
-  I <: Term with Subs[I], IT <: Term with Subs[IT], 
-  DI <: Term with Subs[DI], C <: Term with Subs[C], 
+  F <: Term with Subs[F], Ind <: Term with Subs[Ind],
+  I <: Term with Subs[I], IT <: Term with Subs[IT],
+  DI <: Term with Subs[DI], C <: Term with Subs[C],
   Fmly <: Term with Subs[Fmly],
   H<: Term with Subs[H]](
   val typFmlyPtn: FmlyPtn[H, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }
@@ -48,7 +48,7 @@ class IndexedConstructorPatterns[
      * (scala) type of data for recursion corresponding to the single constructor
      */
     type RecDataType <: Term with Subs[RecDataType]
- 
+
     type InducDataType <: Term with Subs[InducDataType]
 
     /**
@@ -66,17 +66,17 @@ class IndexedConstructorPatterns[
      */
     def recDef(cons: ConstructorType, data: RecDataType, f: => I): Term => Option[Cod]
 
-    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod] 
+    def inducDef(cons: ConstructorType, data : InducDataType, f : => DI): Term => Option[Cod]
 
-    def inClass[TF <: Term with Subs[TF], 
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
+    def inClass[TF <: Term with Subs[TF],
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
       CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[Cnstr]
 
     def codClass[CC<: Term with Subs[CC]] ={
       val _codfmly = typFmlyPtn.withCod[CC]
-     val codfmly = _codfmly.asInstanceOf[FmlyPtn[H, CC, Fmly] { type FamilyType = _codfmly.FamilyType; type ArgType = Ind; type IterFunc = _codfmly.IterFunc; 
+     val codfmly = _codfmly.asInstanceOf[FmlyPtn[H, CC, Fmly] { type FamilyType = _codfmly.FamilyType; type ArgType = Ind; type IterFunc = _codfmly.IterFunc;
 type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc }]
       new IndexedConstructorPatterns(codfmly)
     }
@@ -138,7 +138,7 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
   }
 
 
-  
+
 
 
 
@@ -169,9 +169,9 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     }
 
     def inClass[TF <: Term with Subs[TF],
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
       CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[H] = that.iW(index)
 
 
@@ -280,11 +280,11 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     PiTyp(fibre)
   }
 
-    def inClass[TF <: Term with Subs[TF],
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
-      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = 
+    def inClass[
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
+      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] =
       that.FuncPtn(tail.withCod[CC], tailIndex, head.inClass(that))
 
 
@@ -300,11 +300,11 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
   }
 
-  case class CnstFncPtn[HC <: Term with Subs[HC]](
-    tail: Typ[Term],
+  case class CnstFncPtn[TT <: Term with Subs[TT], HC <: Term with Subs[HC]](
+    tail: Typ[TT],
     tailIndex: Ind,
     head: ConstructorPattern[HC]
-  ) extends RecursiveConstructorPattern[Term, HC, Func[Term, HC]] {
+  ) extends RecursiveConstructorPattern[TT, HC, Func[TT, HC]] {
 //    type ArgType = Term
 
 //    type HeadType = head.ConstructorType
@@ -321,14 +321,14 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
     val index = head.index
 
-    val _head: ConstructorPattern[HC] { type ConstructorType = HeadType; type RecDataType = HeadRecDataType; 
+    val _head: ConstructorPattern[HC] { type ConstructorType = HeadType; type RecDataType = HeadRecDataType;
       type InducDataType = HeadInducDataType} = head
 
     val headfibre = (t: ArgType) => _head
 
-    type RecDataType = Func[Term, head.RecDataType]
+    type RecDataType = Func[TT, head.RecDataType]
 
-    type InducDataType = FuncLike[Term, head.InducDataType]
+    type InducDataType = FuncLike[TT, head.InducDataType]
 
     def apply(tps: F) = {
       FuncTyp[ArgType, head.ConstructorType](tail, head(tps))
@@ -347,10 +347,10 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
   }
 
    def inClass[TF <: Term with Subs[TF],
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
-      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = 
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
+      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] =
       that.CnstFncPtn(tail, tailIndex, head.inClass(that))
 
 
@@ -417,13 +417,13 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     PiTyp(fibre)
   }
 
-   def inClass[TF <: Term with Subs[TF],
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
+   def inClass[
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
       CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = {
      val eg = headfibre(Star).inClass(that)
-     val thatheadfibre = (x: Term) => headfibre(x).inClass(that).asInstanceOf[that.ConstructorPattern[U]{type RecDataType = eg.RecDataType; type InducDataType = eg.InducDataType}]       
+     val thatheadfibre = (x: Term) => headfibre(x).inClass(that).asInstanceOf[that.ConstructorPattern[U]{type RecDataType = eg.RecDataType; type InducDataType = eg.InducDataType}]
       that.DepFuncPtn(tail.withCod[CC], tailIndex, index,  thatheadfibre)
    }
 
@@ -440,11 +440,11 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
   }
 
-  case class CnstDepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], VV<: Term with Subs[VV], W <: Term with Subs[W]](
-    tail: Typ[Term],
+  case class CnstDepFuncPtn[TT <: Term with Subs[TT], U <: Term with Subs[U], V <: Term with Subs[V], VV<: Term with Subs[VV], W <: Term with Subs[W]](
+    tail: Typ[TT],
     index : Ind,
     headfibre: Term => (ConstructorPattern[U] {type RecDataType = V; type InducDataType = VV})
-  ) extends RecursiveConstructorPattern[Term, U, FuncLike[Term, U]] {
+  ) extends RecursiveConstructorPattern[TT, U, FuncLike[TT, U]] {
 //    type ArgType = Term
 
 //    type HeadType = U
@@ -461,9 +461,9 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
     //      val arg = head.arg
 
-    type RecDataType = FuncLike[Term, V]
+    type RecDataType = FuncLike[TT, V]
 
-    type InducDataType = FuncLike[Term, VV]
+    type InducDataType = FuncLike[TT, VV]
 
     def apply(tps: F) = {
       val a = tail.Var
@@ -486,12 +486,12 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
 
 
    def inClass[TF <: Term with Subs[TF],
-      TI <: Term with Subs[TI], 
-      TIT <: Term with Subs[TIT], 
-      TDI <: Term with Subs[TDI], 
+      TI <: Term with Subs[TI],
+      TIT <: Term with Subs[TIT],
+      TDI <: Term with Subs[TDI],
       CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = {
      val eg = headfibre(Star).inClass(that)
-     val thatheadfibre = (x: Term) => headfibre(x).inClass(that).asInstanceOf[that.ConstructorPattern[U]{type RecDataType = eg.RecDataType; type InducDataType = eg.InducDataType}]       
+     val thatheadfibre = (x: Term) => headfibre(x).inClass(that).asInstanceOf[that.ConstructorPattern[U]{type RecDataType = eg.RecDataType; type InducDataType = eg.InducDataType}]
       that.CnstDepFuncPtn(tail, index,  thatheadfibre)
    }
 
@@ -517,7 +517,7 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     /**
      * scala type, especially (nested) functions
      */
-    type ConstructorType = Cnstr 
+    type ConstructorType = Cnstr
 
     //  type Cod <: Term with Subs[Cod]
     /**
@@ -567,29 +567,29 @@ trait IndexedRecursiveDefinition {self =>
    * X in rec(W)(X)
    */
    val X : Typ[C]
-  
+
   /**
    * recursive definition, with offspring applying f.
    */
   def recursion(f : => I) : I
-  
+
   /**
    * the function to use, applying itself to recursion
-   */ 
+   */
   def func: I = recursion(func)
-  
+
   def prependPair(cons: Constructor[C])(arg: cons.pattern.RecDataType) : IndexedRecursiveDefinition = {
     type D = cons.pattern.RecDataType
-    
+
     val caseFn : D => I => I => I =
          (d) => (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
-    
+
     IndexedRecDefinitionCons(arg, caseFn, self)
   }
-  
-  import RecursiveDefinition._
-  
-  def prepend(cons: Constructor[C], sym: AnySym) = 
+
+//  import RecursiveDefinition._
+
+  def prepend(cons: Constructor[C], sym: AnySym) =
     prependPair(cons)(cons.pattern.recDom(W, X).symbObj(sym))
 }
 
@@ -609,36 +609,36 @@ case class IndexedRecDefinitionCons[D<: Term with Subs[D]](
     arg: D,
     caseFn : D => I => I => I,
     tail: IndexedRecursiveDefinition) extends IndexedRecursiveDefinition{
-  
+
   lazy val W = tail.W
-  
+
   lazy val X = tail.X
-  
+
   def recursion(f: => I) = {
     def fn = caseFn(arg)(f)(tail.recursion(f))
     fn
   }
-  
+
 }
 
 object IndexedRecursiveDefinition{
-  
-  
-  
+
+
+
   def recFn(conss: List[Constructor[C]], W: F, X: Typ[C], index: Ind) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
-    
-    def addCons(cn :(Constructor[C], String), defn : IndexedRecursiveDefinition) = 
+
+    def addCons(cn :(Constructor[C], String), defn : IndexedRecursiveDefinition) =
       defn.prepend(cn._1, cn._2)
-      
+
     val init : IndexedRecursiveDefinition = IndexedRecDefinitionTail(W, X, index)
     val lambdaValue : Term = (namedConss :\ init)(addCons).func
-    
+
     val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.recDom(W, X).symbObj(name)
-    
+
     (variables :\ lambdaValue)(lmbda(_)(_))
   }
-       
+
 }
 
 // Copied from InductiveDefinition
@@ -653,29 +653,29 @@ trait IndexedInductiveDefinition{self =>
    * Xs in ind(W)(Xs)
    */
    val Xs : Func[H, Typ[C]]
-  
+
   /**
    * recursive definition, with offspring applying f.
    */
   def induction(f : => DI) : DI
-  
+
   /**
    * the function to use, applying itself to recursion
-   */ 
+   */
   def func: DI = induction(func)
-  
+
   def prependPair(cons: Constructor[C])(arg: cons.pattern.InducDataType) : IndexedInductiveDefinition = {
     type D = cons.pattern.InducDataType
-    
+
     val caseFn : D => DI => DI => DI =
          (d) => (f) => (g) => cons.pattern.inducModify(cons.cons)(d)(f)(g)
-    
+
     IndexedInducDefinitionCons(arg, caseFn, self)
   }
-  
-  import InductiveDefinition._
-  
-  def prepend(cons: Constructor[C], sym: AnySym) = 
+
+//  import InductiveDefinition._
+
+  def prepend(cons: Constructor[C], sym: AnySym) =
     prependPair(cons)(cons.pattern.inducDom(W, Xs)(cons.cons).symbObj(sym))
 }
 
@@ -699,38 +699,38 @@ case class IndexedInducDefinitionCons[D<: Term with Subs[D]](
     arg: D,
     caseFn : D => DI => DI => DI,
     tail: IndexedInductiveDefinition) extends IndexedInductiveDefinition{
-  
+
   lazy val W = tail.W
-  
+
   lazy val Xs = tail.Xs
-  
+
   def induction(f: => DI) = {
    def fn = caseFn(arg)(f)(tail.induction(f))
     fn
    }
-  
+
 }
 
 object IndexedInductiveDefinition{
-  
-  
-  
+
+
+
   def inducFn(conss: List[Constructor[C]], W: F, Xs: Func[H, Typ[C]]) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
-    
-    def addCons(cn :(Constructor[C], String), defn : IndexedInductiveDefinition) = 
+
+    def addCons(cn :(Constructor[C], String), defn : IndexedInductiveDefinition) =
       defn.prepend(cn._1, cn._2)
-      
+
     val init : IndexedInductiveDefinition = IndexedInducDefinitionTail(W, Xs)
     val lambdaValue : Term = (namedConss :\ init)(addCons).func
-    
+
     val variables : List[Term] = for ((c, name) <- namedConss) yield c.pattern.inducDom(W, Xs)(c.cons).symbObj(name)
-    
+
     (variables :\ lambdaValue)(lmbda(_)(_))
   }
-       
-      
-  
+
+
+
 }
 
 
