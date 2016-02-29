@@ -6,7 +6,7 @@ import math._
 import scala.util._
 import scala.language.existentials
 
-import RecFunction._
+//import RecFunction._
 
 /**
  * constructors, their patterns, recursion
@@ -22,7 +22,7 @@ import RecFunction._
 sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term with Subs[CnstrctrType], H <: Term with Subs[H]] { self =>
 
   type DomainType = H
-  
+
   type ConstructorType = CnstrctrType
   /**
    * changes codomain and propagates changes to other types.
@@ -211,7 +211,7 @@ case class IdW[H<: Term with Subs[H]]() extends ConstructorPattern[Term, H, H] {
     case _ => None
   }
 
-
+}
   case class IdTarg[C <: Term with Subs[C], H<: Term with Subs[H]]() extends ConstructorPattern[C, H, H] {
     def apply(W: Typ[H]) = W
 
@@ -244,14 +244,14 @@ case class IdW[H<: Term with Subs[H]]() extends ConstructorPattern[Term, H, H] {
 
   }
 
-}
+
 
 /**
  * Functional extension of a type pattern
  */
-sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod], 
-  ArgT <: Term with Subs[ArgT], 
-  HeadT <: Term with Subs[HeadT], 
+sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod],
+  ArgT <: Term with Subs[ArgT],
+  HeadT <: Term with Subs[HeadT],
   CT <: FuncLike[ArgT, HeadT] with Subs[CT],
   H <: Term with Subs[H]] extends ConstructorPattern[Cod, CT, H] { self =>
   /**
@@ -415,11 +415,11 @@ case class CnstFncPtn[Cod <: Term with Subs[Cod], HC <: Term with Subs[HC], H <:
  * Dependent extension of a poly-pattern by a type pattern.
  * XXX this may never be applicable
  */
-case class DepFuncPtn[U <: Term with Subs[U], 
-  V <: Term with Subs[V], 
-  VV <: Term with Subs[VV], 
-  W <: Term with Subs[W], 
-  C <: Term with Subs[C], 
+case class DepFuncPtn[U <: Term with Subs[U],
+  V <: Term with Subs[V],
+  VV <: Term with Subs[VV],
+  W <: Term with Subs[W],
+  C <: Term with Subs[C],
   F <: Term with Subs[F],
   H <: Term with Subs[H]](
   tail: FmlyPtn[H, C, F],
@@ -493,9 +493,9 @@ case class DepFuncPtn[U <: Term with Subs[U],
 /**
  * Dependent extension by a constant type  of a constructor-pattern depending on elements of that type.
  */
-case class CnstDepFuncPtn[U <: Term with Subs[U], 
-  V <: Term with Subs[V], 
-  VV <: Term with Subs[VV], 
+case class CnstDepFuncPtn[U <: Term with Subs[U],
+  V <: Term with Subs[V],
+  VV <: Term with Subs[VV],
   C <: Term with Subs[C],
   H <: Term with Subs[H]](
   tail: Typ[H],
