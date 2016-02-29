@@ -145,20 +145,25 @@ object Families {
             type Total = head.Total} = head
           val funcFmlyPtn = FuncFmlyPtn(tail, headCast)
           funcFmlyPtn.asInstanceOf[FmlyPtn[O, C, F]]
-/*        case tp: PiTyp[u, v] =>
+        case tp: PiTyp[u, v] =>
           val fibre = tp.fibers
           val tail = fibre.dom
           val a = tail.Var
-          val headfibre = fibre(a)
+          val headfibre = (x: u) =>
+            get[O, C, v](typ)(fibre(x))
           val newHead = headfibre(tail.symbObj(Star))
           type VV = newHead.Family
+          type I = newHead.IterFunc
+          type IT = newHead.IterTypFunc
+          type DI = newHead.IterDepFunc
           type FVV = newHead.FamilyType
           type SS = newHead.ArgType
           type TTT = newHead.TargetType
           type DD = newHead.DepTargetType
-          val newHeadFibre = (t: Term) =>
+          type HTot = newHead.Total
+          val newHeadFibre = (t: u) =>
             (
-              headfibre(t).withCod[CC].asInstanceOf[FmlyPtn[O, CC, VV] {
+              headfibre(t).asInstanceOf[FmlyPtn[O, C, VV] {
                 type FamilyType = FVV;
                 type IterFunc = I;
                 type IterTypFunc = IT;
@@ -168,9 +173,7 @@ object Families {
                 type Total = HTot
               }]
             )
-          DepFuncFmlyPtn[u, VV, FVV, I, IT, DI, SS, TTT, DD, O, CC, HTot](tail, newHeadFibre)
-            ???
-            */
+          DepFuncFmlyPtn(tail, newHeadFibre).asInstanceOf[FmlyPtn[O, C, F]]
       }
   }
 
