@@ -1,14 +1,14 @@
 package provingground
 
 import HoTT._
-import Families._
-import ConstructorPattern._
+//import Families._
+//import ConstructorPattern._
 import scala.language.implicitConversions
-import scala.util._
+//import scala.util._
 import scala.language.existentials
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-import Math._
-import provingground.ScalaUniverses._
+//import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+//import Math._
+//import provingground.ScalaUniverses._
 
 /**
  * Inductively defined types in homotopy type theory

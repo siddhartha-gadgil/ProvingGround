@@ -280,11 +280,11 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     PiTyp(fibre)
   }
 
-    def inClass[
+    def inClass[TFF <: Term with Subs[TFF],
       TI <: Term with Subs[TI],
       TIT <: Term with Subs[TIT],
       TDI <: Term with Subs[TDI],
-      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] =
+      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TFF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] =
       that.FuncPtn(tail.withCod[CC], tailIndex, head.inClass(that))
 
 
@@ -417,11 +417,11 @@ type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
     PiTyp(fibre)
   }
 
-   def inClass[
+   def inClass[TFF<: Term with Subs[TFF],
       TI <: Term with Subs[TI],
       TIT <: Term with Subs[TIT],
       TDI <: Term with Subs[TDI],
-      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = {
+      CC <: Term with Subs[CC]](that : IndexedConstructorPatterns[TFF, Ind, TI, TIT, TDI, CC, Fmly, H]) : that.ConstructorPattern[ConstructorType] = {
      val eg = headfibre(Star).inClass(that)
      val thatheadfibre = (x: Term) => headfibre(x).inClass(that).asInstanceOf[that.ConstructorPattern[U]{type RecDataType = eg.RecDataType; type InducDataType = eg.InducDataType}]
       that.DepFuncPtn(tail.withCod[CC], tailIndex, index,  thatheadfibre)
