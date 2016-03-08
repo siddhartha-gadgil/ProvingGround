@@ -198,7 +198,7 @@ object LeanExportElem {
     def read(line: String, ds: Vector[Data]) : Option[Bind] =
       if (line.startsWith("#BIND"))
         {
-          val params = line drop(5) split(' ') map (_.toLong)
+          val params = line drop(6) split(' ') map (_.toLong)
           val numParam = params(0).toInt
           val numTypes = params(1).toInt
           val univParams = (params.drop(2) map ((x) => Name.get(ds, x))).flatten.toList
@@ -215,7 +215,7 @@ object LeanExportElem {
     def read(line: String, ds: Vector[Data]) =
       if (line.startsWith("#IND"))
       {
-      val Array(nid, eid) = line.drop(4) split(' ') map (_.toLong)
+      val Array(nid, eid) = line.drop(5) split(' ') map (_.toLong)
       for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Ind(a, b))
     }
       else None
@@ -225,9 +225,9 @@ object LeanExportElem {
 
   object Intro{
     def read(line: String, ds: Vector[Data]) =
-      if (line.startsWith("#IND"))
+      if (line.startsWith("#INTRO"))
       {
-      val Array(nid, eid) = line.drop(4) split(' ') map (_.toLong)
+      val Array(nid, eid) = line.drop(7) split(' ') map (_.toLong)
       for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Intro(a, b))
     }
       else None
@@ -263,5 +263,20 @@ object LeanExportElem {
         InducBlock(bind, InducDefn.readAll(lines.tail, ds, bind.numTypes))
       }
     }
+
+    def getBlock(lines: Vector[String]) = {
+      val block =
+        (lines dropWhile ((x) => !(x.startsWith("#BIND")))) takeWhile((x) => !(x.startsWith("#EIND")))
+      if (block.size > 0) Some(block) else None
+    }
+
+    def readAll(lines: Vector[String]) : Vector[InducBlock] = {
+      val ds = Data.readAll(lines)
+      getBlock(lines) flatMap {(block: Vector[String]) =>
+        val head = InducBlock.read(block, ds)
+        val tail = readAll(lines drop(block.size+1))
+        head map (_ +: tail)
+      }
+    }.getOrElse(Vector())
   }
 }
