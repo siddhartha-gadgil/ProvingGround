@@ -192,12 +192,76 @@ object LeanExportElem {
       (lines map (read(_, ds))).flatten
   }
 
-  case class Bind(numParam: Long, numTypes: Long, univParams: List[Long]) extends LeanExportElem
+  case class Bind(numParam: Int, numTypes: Int, univParams: List[Name]) extends LeanExportElem
+
+  object Bind{
+    def read(line: String, ds: Vector[Data]) : Option[Bind] =
+      if (line.startsWith("#BIND"))
+        {
+          val params = line drop(5) split(' ') map (_.toLong)
+          val numParam = params(0).toInt
+          val numTypes = params(1).toInt
+          val univParams = (params.drop(2) map ((x) => Name.get(ds, x))).flatten.toList
+          Some(Bind(numParam, numTypes, univParams))
+        }
+      else None
+  }
 
   case object Eind extends LeanExportElem
 
   case class Ind(name: Name, tpe: Expr) extends LeanExportElem
 
-  case class Longro(name: Name, tpe: Expr) extends LeanExportElem
+  object Ind{
+    def read(line: String, ds: Vector[Data]) =
+      if (line.startsWith("#IND"))
+      {
+      val Array(nid, eid) = line.drop(4) split(' ') map (_.toLong)
+      for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Ind(a, b))
+    }
+      else None
+  }
 
+  case class Intro(name: Name, tpe: Expr) extends LeanExportElem
+
+  object Intro{
+    def read(line: String, ds: Vector[Data]) =
+      if (line.startsWith("#IND"))
+      {
+      val Array(nid, eid) = line.drop(4) split(' ') map (_.toLong)
+      for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Intro(a, b))
+    }
+      else None
+  }
+
+  case class InducDefn(ind: Ind, cons: Vector[Intro]){
+    def size = cons.size + 1
+  }
+
+  object InducDefn{
+    def read(lines: Vector[String], ds: Vector[Data]) =
+      InducDefn(Ind.read(lines.head,ds).get, lines.tail map (Intro.read(_, ds).get))
+
+    def readFrom(lines: Vector[String], ds: Vector[Data]) = {
+      val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
+      read(ls, ds)
+    }
+
+    def readAll(lines: Vector[String], ds: Vector[Data], n: Int): Vector[InducDefn] =  {
+      if (n == 1) Vector(readFrom(lines, ds))
+      else {
+        val head = readFrom(lines, ds)
+        head +: readAll(lines drop (head.size), ds, n-1)
+      }
+    }
+  }
+
+  case class InducBlock(bind: Bind, defns: Vector[InducDefn])
+
+  object InducBlock{
+    def read(lines: Vector[String], ds: Vector[Data]) = {
+      Bind.read(lines.head, ds) map {(bind) =>
+        InducBlock(bind, InducDefn.readAll(lines.tail, ds, bind.numTypes))
+      }
+    }
+  }
 }
