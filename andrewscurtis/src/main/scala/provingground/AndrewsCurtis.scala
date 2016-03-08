@@ -5,14 +5,14 @@ import provingground.Collections._
 
 import provingground._
 
-import FiniteDistribution._
+//import FiniteDistribution._
 import annotation._
 //import play.api.libs.json._
 //import play.api.libs.iteratee._
 //import play.api.libs.concurrent._
-import akka.actor._
+//import akka.actor._
 //import play.api.libs.concurrent.Execution.Implicits._
-import scala.concurrent._
+//import scala.concurrent._
 //import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 object AndrewsCurtis{
@@ -97,19 +97,21 @@ object AndrewsCurtis{
   /*
    * Andrews-Curtis moves
    */
-  trait ACMoveType
-
-  case object ACStabMv extends ACMoveType
-  case object ACDeStabMv extends ACMoveType
-  case object RtMultMv extends ACMoveType
-  case object LftMultMv extends ACMoveType
-  case object ConjMv extends ACMoveType
-  case object InvMv extends ACMoveType
+  sealed trait ACMoveType
 
   object ACMoveType{
+    case object ACStabMv extends ACMoveType
+    case object ACDeStabMv extends ACMoveType
+    case object RtMultMv extends ACMoveType
+    case object LftMultMv extends ACMoveType
+    case object ConjMv extends ACMoveType
+    case object InvMv extends ACMoveType
+
+
     def fromString(mv : String) : ACMoveType = (MoveTypeList find (_.toString == mv)).get
   }
 
+  import ACMoveType._
   val MoveTypeList : List[ACMoveType] = List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
 
 /*
@@ -134,10 +136,10 @@ object AndrewsCurtis{
   def multiplicity(rk: Int) : MoveType => Long = {
     case ACStabMv => 1 : Long
     case ACDeStabMv => (1 : Long) // can be zero in practice
-    case RtMultMv => (rk : Long) * ((rk : Long) - 1)
-    case LftMultMv => (rk : Long) * ((rk : Long) - 1)
-    case ConjMv => (rk : Long) * ((rk : Long) * 2 - 1)
-    case InvMv => (rk : Long)
+    case RtMultMv => (rk.toLong : Long) * ((rk.toLong) - 1)
+    case LftMultMv => (rk.toLong) * ((rk.toLong) - 1)
+    case ConjMv => (rk.toLong) * ((rk.toLong) * 2 - 1)
+    case InvMv => (rk.toLong)
   }
 
   def allMoves(pres : Presentation): MoveType => List[Move] = {

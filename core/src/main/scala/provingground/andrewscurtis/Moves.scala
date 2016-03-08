@@ -1,12 +1,12 @@
 package provingground.andrewscurtis
 
 import provingground.andrewscurtis.FreeGroups._
-import provingground.Collections._
+//import provingground.Collections._
 import scala.language.implicitConversions
 import Moves._
-import AtomicMove._
+//import AtomicMove._
 import provingground._
-import FiniteDistribution._
+//import FiniteDistribution._
 import FiniteDistributionLearner._
 
 object AtomicMove {
@@ -248,8 +248,8 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal{
   }
 
   def actOnTriv(rank: Int) = this(Presentation.trivial(rank))
-  
-  def idLast = 
+
+  def idLast =
     Moves(moves.filter(_ != Id) ++ moves.filter(_ == Id))
 }
 

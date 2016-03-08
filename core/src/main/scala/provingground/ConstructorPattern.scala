@@ -1,6 +1,6 @@
 package provingground
 import HoTT._
-import Families._
+//import FmlyPtn._
 import math._
 //import ScalaUniverses._
 import scala.util._
