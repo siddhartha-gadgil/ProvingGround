@@ -19,7 +19,7 @@ object LinearStructure{
   }
 
   def vAverage[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) ={
-  ls.mult(1/xs.size, vBigSum(xs))
+  ls.mult(1.0/xs.size, vBigSum(xs))
   }
 
   def nrec[X](base: X, ind: Int => X => X)(implicit ls: LinearStructure[X]): Int => X = {

@@ -7,7 +7,7 @@ import scala.language.existentials
 /**
  * @author gadgil
  */
-object Families {
+
 
   /**
    * A pattern for families, e.g. of inductive types to be defined
@@ -625,5 +625,3 @@ DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: T
 
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
-
-}
