@@ -42,5 +42,16 @@ object Graph{
      deepLearn.fit(provider)
      deepLearn
    }
+   
+   def getVector(gv: GraphVectorsImpl[V, java.lang.Double])(v: V) : Vector[Double] = {
+     gv.getVertexVector(index(v)).data.asDouble().toVector
+   }
+   
+   def vectorRep(learningRate: Double = 0.01,
+       vectorSize: Int = 100,
+       windowSize: Int = 5,
+       walkLength: Int = 20) =getVector(graphVectors(learningRate, vectorSize, windowSize, walkLength)) _
   }
+  
+  
 }
