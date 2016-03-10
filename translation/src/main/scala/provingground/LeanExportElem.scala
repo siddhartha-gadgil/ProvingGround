@@ -186,6 +186,9 @@ object LeanExportElem {
     def readDefs(lines: Vector[String], ds: Vector[Data]) =
       (lines map (read(_, ds))).flatten
 
+    def defnMap(defs : Vector[Definition]) = {
+      (defs map ((d) => (d.name, d.dependents))).toMap
+    }
   }
 
   case class Axiom(name: Name, univParams: List[Name] = List(), tpe: Expr) extends LeanExportElem{

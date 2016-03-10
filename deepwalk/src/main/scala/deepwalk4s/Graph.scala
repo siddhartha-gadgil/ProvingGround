@@ -53,5 +53,11 @@ object Graph{
        walkLength: Int = 20) =getVector(graphVectors(learningRate, vectorSize, windowSize, walkLength)) _
   }
   
-  
+  object Graph{
+    def fromMap[V](map: Map[V, List[V]], weight: Double = 1.0, oriented: Boolean = false) = {
+      val vertices = map.keys.toList ++ map.values.toList.flatten
+      val edges = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
+      Graph(vertices, edges.toList)
+    }
+  }
 }
