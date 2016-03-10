@@ -22,11 +22,17 @@ object LeanExportElem {
   sealed trait Name extends LeanExportElem
 
   object Name {
-    case object anonymous extends Name
+    case object anonymous extends Name{
+      override def toString = "@"
+    }
 
-    case class NameString(env: Name, name: String) extends Name
+    case class NameString(env: Name, name: String) extends Name{
+      override def toString = env.toString()+"."+name
+    }
 
-    case class NameLong(env: Name, number: Long) extends Name
+    case class NameLong(env: Name, number: Long) extends Name{
+      override def toString = env.toString()+"."+number.toString
+    }
 
     def get(ds: Vector[Data], index: Long): Option[Name] =
       if (index == 0) Some(anonymous)
@@ -77,7 +83,9 @@ object LeanExportElem {
     val get = Map("#BD" -> BD, "#BI" -> BI, "#BS" -> BS, "#BC" -> BC)
   }
 
-  sealed trait Expr extends LeanExportElem
+  sealed trait Expr extends LeanExportElem{
+    val constants: List[Name]
+  }
 
   object Expr {
     def get(ds: Vector[Data], index: Long): Option[Expr] =
@@ -107,17 +115,29 @@ object LeanExportElem {
           ) yield (Pi(Info.get(info), a, b, c))
       }
 
-    case class Var(index: Long) extends Expr
+    case class Var(index: Long) extends Expr{
+      val constants = List()
+    }
 
-    case class Sort(univ: Univ) extends Expr
+    case class Sort(univ: Univ) extends Expr{
+      val constants = List()
+    }
 
-    case class Const(name: Name, univs: List[Univ]) extends Expr
+    case class Const(name: Name, univs: List[Univ]) extends Expr{
+      val constants = List(name)
+    }
 
-    case class Appln(func: Expr, arg: Expr) extends Expr
+    case class Appln(func: Expr, arg: Expr) extends Expr{
+      val constants = func.constants ++ arg.constants
+    }
 
-    case class Lambda(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr
+    case class Lambda(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
+      val constants = varName :: value.constants
+    }
 
-    case class Pi(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr
+    case class Pi(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
+      val constants = varName :: value.constants
+    }
   }
 
   sealed trait Import extends LeanExportElem
@@ -138,7 +158,9 @@ object LeanExportElem {
       }
   }
 
-  case class Definition(name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr) extends LeanExportElem
+  case class Definition(name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr) extends LeanExportElem{
+    def dependents = tpe.constants ++ value.constants
+  }
 
   object Definition{
     def read(command: String, ds: Vector[Data]) : Option[Definition] = {
@@ -166,7 +188,9 @@ object LeanExportElem {
 
   }
 
-  case class Axiom(name: Name, univParams: List[Name] = List(), tpe: Expr) extends LeanExportElem
+  case class Axiom(name: Name, univParams: List[Name] = List(), tpe: Expr) extends LeanExportElem{
+    def dependents = tpe.constants
+  }
 
   object Axiom{
     def read(command: String, ds: Vector[Data]) : Option[Axiom] = {
