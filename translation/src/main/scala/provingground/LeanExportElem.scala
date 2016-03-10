@@ -18,6 +18,154 @@ object LeanExportElem {
 
     def readAll(lines: Vector[String]) = (lines map (read)).flatten
   }
+  
+  implicit class DataBase(dat: Vector[Data]){
+    val map = (dat map ((data) => ((data.index, data.tpe.take(2)), data))).toMap
+    
+    def find(index: Long, tpe: String) = map.get((index, tpe))
+    
+    def getName(index: Long) : Option[Name] =
+      if (index == 0) Some(Name.anonymous)
+      else find(index, "#N") flatMap {
+        case Data(_, "#NS", List(nid, name)) =>
+          getName(nid.toLong) map (Name.NameString(_, name))
+        case Data(_, "#NI", List(nid, id)) =>
+          getName(nid.toLong) map (Name.NameLong(_, id.toLong))
+      }
+    
+    def getUniv(index: Long): Option[Univ] =
+      find(index, "#U") flatMap {
+        case Data(_, "#US", List(uid)) => getUniv(uid.toLong) map (Univ.Succ(_))
+        case Data(_, "#UM", List(uid1, uid2)) =>
+          for (a <- getUniv(uid1.toLong); b <- getUniv(uid2.toLong)) yield (Univ.Max(a, b))
+        case Data(_, "#UIM", List(uid1, uid2)) =>
+          for (a <- getUniv(uid1.toLong); b <- getUniv(uid2.toLong)) yield (Univ.IMax(a, b))
+        case Data(_, "#UP", List(nid)) => getName(nid.toLong) map (Univ.Param(_))
+        case Data(_, "#UG", List(nid)) => getName(nid.toLong) map (Univ.Global(_))
+      }
+    
+    def getExpr(index: Long): Option[Expr] =
+      find(index, "#E") flatMap {
+        case Data(_, "#EV", List(ind)) => Some(Expr.Var(ind.toLong))
+        case Data(_, "#ES", List(uid)) =>
+          getUniv(uid.toLong) map (Expr.Sort(_))
+        case Data(_, "#EA", List(eid1, eid2)) =>
+          for (a <- getExpr(eid1.toLong); b <- getExpr(eid2.toLong)) yield (Expr.Appln(a, b))
+        case Data(_, "#EC", nid :: uids) =>
+          {
+            val univs = (uids map ((x) => getUniv(x.toLong))).flatten
+            getName(nid.toLong) map (Expr.Const(_, univs))
+          }
+        case Data(_, "#EL", List(info, nid, eid1, eid2)) =>
+          for (
+            a <- getName(nid.toLong);
+            b <- getExpr(eid1.toLong);
+            c <- getExpr(eid2.toLong)
+          ) yield (Expr.Lambda(Info.get(info), a, b, c))
+        case Data(_, "#EP", List(info, nid, eid1, eid2)) =>
+          for (
+            a <- getName(nid.toLong);
+            b <- getExpr(eid1.toLong);
+            c <- getExpr(eid2.toLong)
+          ) yield (Expr.Pi(Info.get(info), a, b, c))
+      }
+   
+    def readDef(command: String) : Option[Definition] = {
+      if (command.startsWith("#DEF"))
+        {
+          val args = command.drop(5)
+          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
+          val nid  = headArgs.head.toLong
+          val nids = headArgs.tail.map(_.toLong).toList
+          val (eid1, eid2) = (tailArgs(1).toLong, tailArgs(2).toLong)
+          val univParams = (nids map ((x) => getName(x.toLong))).flatten
+          for (
+            a <- getName(nid.toLong);
+            b <- getExpr(eid1.toLong);
+            c <- getExpr(eid2.toLong)
+          ) yield (Definition(a, univParams, b, c))
+        }
+      else None
+    }
+    
+    def readDefs(lines: Vector[String]) = (lines map (readDef)).flatten
+    
+    def readAxiom(command: String) : Option[Axiom] = {
+      if (command.startsWith("#DEF"))
+        {
+          val args = command.drop(5)
+          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
+          val nid  = headArgs.head.toLong
+          val nids = headArgs.tail.map(_.toLong).toList
+          val eid = tailArgs(1).toLong
+          val univParams = (nids map ((x) => getName(x.toLong))).flatten
+          for (
+            a <- getName(nid.toLong);
+            b <- getExpr(eid.toLong)
+          ) yield (Axiom(a, univParams, b))
+        }
+      else None
+    }
+    
+    def readAxioms(lines: Vector[String]) = (lines map (readAxiom)).flatten
+    
+    def readBind(line: String) : Option[Bind] =
+      if (line.startsWith("#BIND"))
+        {
+          val params = line drop(6) split(' ') map (_.toLong)
+          val numParam = params(0).toInt
+          val numTypes = params(1).toInt
+          val univParams = (params.drop(2) map ((x) => getName(x))).flatten.toList
+          Some(Bind(numParam, numTypes, univParams))
+        }
+      else None
+    
+    def readInd(line: String) = 
+      if (line.startsWith("#IND"))
+      {
+      val Array(nid, eid) = line.drop(5) split(' ') map (_.toLong)
+      for (a <- getName(nid); b <- getExpr(eid)) yield (Ind(a, b))
+    }
+      else None
+  
+    def readIntro(line: String) =
+      if (line.startsWith("#INTRO"))
+      {
+      val Array(nid, eid) = line.drop(7) split(' ') map (_.toLong)
+      for (a <- getName(nid); b <- getExpr(eid)) yield (Intro(a, b))
+    }
+      else None
+
+    def readInducDefn(lines: Vector[String]) =
+      InducDefn(readInd(lines.head).get, lines.tail map (readIntro(_).get))
+
+    def readInducDefnFrom(lines: Vector[String]) = {
+      val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
+      readInducDefn(ls)
+    }
+
+    def readAllInducDefn(lines: Vector[String], n: Int): Vector[InducDefn] =  {
+      if (n == 1) Vector(readInducDefnFrom(lines))
+      else {
+        val head = readInducDefnFrom(lines)
+        head +: readAllInducDefn(lines drop (head.size), n-1)
+      }
+    }
+    
+    def readInducBlock(lines: Vector[String]) = {
+      readBind(lines.head) map {(bind) =>
+        InducBlock(bind, readAllInducDefn(lines.tail, bind.numTypes))
+      }
+    }
+    
+    def readAllInducBlock(lines: Vector[String]) : Vector[InducBlock] = {
+      InducBlock.getBlock(lines) flatMap {(block: Vector[String]) =>
+        val head = readInducBlock(block)
+        val tail = readAllInducBlock(lines drop(block.size+1))
+        head map (_ +: tail)
+      }
+    }.getOrElse(Vector())
+  }
 
   sealed trait Name extends LeanExportElem
 
@@ -150,7 +298,7 @@ object LeanExportElem {
 
   case class GlobalUniv(name: Name) extends LeanExportElem
 
-  object GlobalUniv{
+  object GlobalUniv{ // Wrong, not in data
     def get(ds: Vector[Data], index: Long) : Option[GlobalUniv] =
       Data.find(ds, index, "#UNI") flatMap {
         case Data(_, _, List(nid)) =>
