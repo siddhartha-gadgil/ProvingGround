@@ -13,7 +13,7 @@ object Graph{
   
   case class IndexEdge(init: Int, term: Int, weight: java.lang.Double, oriented: Boolean) extends graph.api.Edge(init, term, weight, oriented)
   
-  case class Graph[V](vertices: List[V], edges: List[Edge[V]]){
+  case class Graph[V](vertices: Set[V], edges: List[Edge[V]]){
     val index = vertices.zipWithIndex.toMap
     
     val vert = index map {case (x, n) => (n, x)}
@@ -57,7 +57,7 @@ object Graph{
     def fromMap[V](map: Map[V, List[V]], weight: Double = 1.0, oriented: Boolean = false) = {
       val vertices = map.keys.toList ++ map.values.toList.flatten
       val edges = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
-      Graph(vertices, edges.toList)
+      Graph(vertices.toSet, edges.toList)
     }
     
     def fromSeqs[V](ss: Seq[Seq[V]], weight: Double = 1.0, oriented: Boolean = false) = {
