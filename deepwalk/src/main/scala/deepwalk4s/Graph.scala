@@ -59,5 +59,15 @@ object Graph{
       val edges = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
       Graph(vertices, edges.toList)
     }
+    
+    def fromSeqs[V](ss: Seq[Seq[V]], weight: Double = 1.0, oriented: Boolean = false) = {
+      val map = (ss map ((row) => (row.head, row.tail.toList))).toMap
+      fromMap(map, weight, oriented)
+    }
+    
+    def fromLines(lines: Seq[String], weight: Double = 1.0, oriented: Boolean = false, separator: String = "\t") = {
+      val ss = lines map (_.split(separator).toList)
+      fromSeqs(ss, weight, oriented)
+    }
   }
 }

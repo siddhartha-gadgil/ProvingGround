@@ -70,6 +70,10 @@ object LeanExportElem {
           ) yield (Expr.Pi(Info.get(info), a, b, c))
       }
    
+    def readGlobalUniv(command: String) : Option[GlobalUniv] = 
+      if (command.startsWith("#UNI")) getName(command.split(' ')(1).toLong) map (GlobalUniv(_))
+      else None
+    
     def readDef(command: String) : Option[Definition] = {
       if (command.startsWith("#DEF"))
         {
@@ -112,7 +116,7 @@ object LeanExportElem {
     def readBind(line: String) : Option[Bind] =
       if (line.startsWith("#BIND"))
         {
-          val params = line drop(6) split(' ') map (_.toLong)
+          val params = line.split(' ').tail map (_.toLong)
           val numParam = params(0).toInt
           val numTypes = params(1).toInt
           val univParams = (params.drop(2) map ((x) => getName(x))).flatten.toList
@@ -123,7 +127,7 @@ object LeanExportElem {
     def readInd(line: String) = 
       if (line.startsWith("#IND"))
       {
-      val Array(nid, eid) = line.drop(5) split(' ') map (_.toLong)
+      val Array(nid, eid) = line.split(' ').tail map (_.toLong)
       for (a <- getName(nid); b <- getExpr(eid)) yield (Ind(a, b))
     }
       else None
@@ -131,7 +135,7 @@ object LeanExportElem {
     def readIntro(line: String) =
       if (line.startsWith("#INTRO"))
       {
-      val Array(nid, eid) = line.drop(7) split(' ') map (_.toLong)
+      val Array(nid, eid) = line.split(' ').tail map (_.toLong)
       for (a <- getName(nid); b <- getExpr(eid)) yield (Intro(a, b))
     }
       else None
@@ -170,6 +174,17 @@ object LeanExportElem {
   sealed trait Name extends LeanExportElem
 
   object Name {
+    def readAtom(s: String, env: Name) : Name = 
+      Try(NameLong(env, s.toLong)).toOption getOrElse(NameString(env, s))
+    
+    /**
+     * Reads a String, assuming the first part of the name represents anonymous.
+     */
+    def read(s: String) : Name = {
+        val l = s.split(".")
+        if (l.length > 1) readAtom(l.last, read(l.init.mkString("."))) else anonymous
+      }
+    
     case object anonymous extends Name{
       override def toString = "@"
     }
@@ -298,16 +313,11 @@ object LeanExportElem {
 
   case class GlobalUniv(name: Name) extends LeanExportElem
 
-  object GlobalUniv{ // Wrong, not in data
-    def get(ds: Vector[Data], index: Long) : Option[GlobalUniv] =
-      Data.find(ds, index, "#UNI") flatMap {
-        case Data(_, _, List(nid)) =>
-          Name.get(ds, nid.toLong) map (GlobalUniv(_))
-      }
-  }
 
   case class Definition(name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr) extends LeanExportElem{
     def dependents = tpe.constants ++ value.constants
+    
+    def linePickle = (name :: dependents).mkString("\t")
   }
 
   object Definition{
@@ -373,7 +383,7 @@ object LeanExportElem {
     def read(line: String, ds: Vector[Data]) : Option[Bind] =
       if (line.startsWith("#BIND"))
         {
-          val params = line drop(6) split(' ') map (_.toLong)
+          val params = line.split(' ').tail map (_.toLong)
           val numParam = params(0).toInt
           val numTypes = params(1).toInt
           val univParams = (params.drop(2) map ((x) => Name.get(ds, x))).flatten.toList
@@ -390,7 +400,7 @@ object LeanExportElem {
     def read(line: String, ds: Vector[Data]) =
       if (line.startsWith("#IND"))
       {
-      val Array(nid, eid) = line.drop(5) split(' ') map (_.toLong)
+      val Array(nid, eid) = line.split(' ').tail map (_.toLong)
       for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Ind(a, b))
     }
       else None
