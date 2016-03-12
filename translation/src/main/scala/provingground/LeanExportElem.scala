@@ -295,11 +295,11 @@ object LeanExportElem {
     }
 
     case class Lambda(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
-      val constants = varName :: value.constants
+      val constants = value.constants filter (_ != varName)
     }
 
     case class Pi(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
-      val constants = varName :: value.constants
+      val constants = value.constants filter (_ != varName)
     }
   }
 
@@ -317,7 +317,7 @@ object LeanExportElem {
   case class Definition(name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr) extends LeanExportElem{
     def dependents = tpe.constants ++ value.constants
     
-    def linePickle = (name :: dependents).mkString("\t")
+    def depPickle = (name :: dependents).map(_.toString.drop(2)).mkString("\t")
   }
 
   object Definition{
