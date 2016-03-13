@@ -25,7 +25,7 @@ val akkaStreamV = "2.0.1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.5" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.6" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
@@ -65,7 +65,8 @@ lazy val serverSettings = Seq(
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
-    "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models"
+    "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
+    "com.google.protobuf" % "protobuf-java" % "2.6.1"
     )
   )
 
@@ -149,6 +150,8 @@ lazy val nlp = (project in file("nlp")).
         settings(nlpSettings : _*).
         settings(jvmSettings : _*).
         settings(serverSettings : _*).
+        settings(initialCommands in (Test, console) :=
+          s"""ammonite.repl.Main.run("import scala.collection.JavaConversions._") """).
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val translation = (project in file("translation")).
