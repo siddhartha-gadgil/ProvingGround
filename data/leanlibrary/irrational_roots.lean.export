@@ -1,0 +1,145 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 data
+3 #NS 2 rat
+#DI 3
+4 #NS 0 sqrt_two_irrational
+5 #NS 0 a
+6 #NS 0 nat
+0 #EC 6
+7 #NS 0 b
+8 #NS 0 co
+9 #NS 6 coprime
+1 #EC 9
+2 #EV 1
+3 #EA 1 2
+4 #EV 0
+5 #EA 3 4
+10 #NS 0 ne
+1 #US 0
+6 #EC 10 1
+7 #EA 6 0
+11 #NS 0 pow_nat
+8 #EC 11 1
+9 #EA 8 0
+12 #NS 6 nat_has_pow_nat
+10 #EC 12
+11 #EA 9 10
+12 #EV 2
+13 #EA 11 12
+13 #NS 0 bit0
+14 #EC 13 1
+15 #EA 14 0
+14 #NS 6 _trans_of_decidable_linear_ordered_semiring_2
+16 #EC 14
+17 #EA 15 16
+15 #NS 0 one
+18 #EC 15 1
+19 #EA 18 0
+16 #NS 6 _trans_of_decidable_linear_ordered_semiring_22
+20 #EC 16
+21 #EA 19 20
+22 #EA 17 21
+23 #EA 13 22
+24 #EA 7 23
+17 #NS 0 mul
+25 #EC 17 1
+26 #EA 25 0
+18 #NS 6 _trans_of_decidable_linear_ordered_semiring_26
+27 #EC 18
+28 #EA 26 27
+29 #EA 28 22
+30 #EA 11 2
+31 #EA 30 22
+32 #EA 29 31
+33 #EA 24 32
+34 #EP #BD 8 5 33
+35 #EP #BI 7 0 34
+36 #EP #BI 5 0 35
+#AX 4 | 36
+19 #NS 0 root_irrational
+20 #NS 0 c
+21 #NS 0 n
+22 #NS 0 npos
+23 #NS 0 gt
+37 #EC 23 1
+38 #EA 37 0
+24 #NS 6 _trans_of_decidable_linear_ordered_semiring_13
+39 #EC 24
+40 #EA 38 39
+41 #EA 40 4
+25 #NS 0 zero
+42 #EC 25 1
+43 #EA 42 0
+26 #NS 6 _trans_of_decidable_linear_ordered_semiring_6
+44 #EC 26
+45 #EA 43 44
+46 #EA 41 45
+27 #NS 0 apos
+47 #EV 4
+48 #EA 40 47
+49 #EA 48 45
+50 #EV 5
+51 #EA 1 50
+52 #EA 51 47
+28 #NS 0 H
+29 #NS 0 eq
+53 #EC 29 1
+54 #EA 53 0
+55 #EV 6
+56 #EA 11 55
+57 #EV 3
+58 #EA 56 57
+59 #EA 54 58
+60 #EA 28 47
+61 #EA 11 50
+62 #EA 61 57
+63 #EA 60 62
+64 #EA 59 63
+65 #EA 54 55
+66 #EA 65 21
+67 #EP #BD 28 64 66
+68 #EP #BD 8 52 67
+69 #EP #BD 27 49 68
+70 #EP #BD 22 46 69
+71 #EP #BI 21 0 70
+72 #EP #BI 20 0 71
+73 #EP #BI 7 0 72
+74 #EP #BI 5 0 73
+#AX 19 | 74
+30 #NS 0 denom_eq_one_of_pow_eq
+31 #NS 0 q
+32 #NS 0 rat
+75 #EC 32
+33 #NS 0 int
+76 #EC 33
+77 #EA 40 2
+78 #EA 77 45
+79 #EA 53 75
+80 #EA 8 75
+34 #NS 32 rat_has_pow_nat
+81 #EC 34
+82 #EA 80 81
+83 #EA 82 57
+84 #EA 83 12
+85 #EA 79 84
+35 #NS 32 of_int
+86 #EC 35
+87 #EA 86 2
+88 #EA 85 87
+89 #EA 53 76
+36 #NS 32 denom
+90 #EC 36
+91 #EA 90 47
+92 #EA 89 91
+93 #EA 18 76
+37 #NS 33 _trans_of_linear_ordered_comm_ring_23
+94 #EC 37
+95 #EA 93 94
+96 #EA 92 95
+97 #EP #BD 28 88 96
+98 #EP #BD 22 78 97
+99 #EP #BI 20 76 98
+100 #EP #BI 21 0 99
+101 #EP #BI 31 75 100
+#AX 30 | 101

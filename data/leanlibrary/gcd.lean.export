@@ -1,0 +1,181 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 private
+3 #NI 2 2375371020
+4 #NS 3 pair_nat
+5 #NS 4 lt
+6 #NS 0 a
+7 #NS 0 prod
+1 #US 0
+0 #EC 7 1 1
+8 #NS 0 nat
+1 #EC 8
+2 #EA 0 1
+3 #EA 2 1
+4 #ES 0
+5 #EP #BD 6 3 4
+6 #EP #BD 6 3 5
+9 #NS 8 measure
+7 #EC 9 1
+8 #EA 7 3
+10 #NS 7 pr2
+9 #EC 10 1 1
+10 #EA 9 1
+11 #EA 10 1
+12 #EA 8 11
+#DEF 5 | 6 12
+11 #NI 2 2008329197
+12 #NS 11 pair_nat
+13 #NS 12 lt
+14 #NS 13 wf
+15 #NS 0 well_founded
+13 #EC 15 1
+14 #EA 13 3
+15 #EC 5
+16 #EA 14 15
+16 #NS 15 intro_k
+17 #EC 16 1
+18 #EA 17 3
+19 #EA 18 15
+17 #NS 9 wf
+20 #EC 17 1
+21 #EA 20 3
+22 #EA 21 11
+23 #EA 19 22
+18 #NS 0 bit0
+24 #EC 18 1
+25 #EA 24 1
+19 #NS 0 nat_has_add
+26 #EC 19
+27 #EA 25 26
+20 #NS 0 bit1
+28 #EC 20 1
+29 #EA 28 1
+21 #NS 0 nat_has_one
+30 #EC 21
+31 #EA 29 30
+32 #EA 31 26
+22 #NS 0 one
+33 #EC 22 1
+34 #EA 33 1
+35 #EA 34 30
+36 #EA 27 35
+37 #EA 32 36
+38 #EA 27 37
+39 #EA 27 38
+40 #EA 23 39
+#DEF 14 | 16 40
+23 #NS 8 gcd
+24 #NS 23 F
+25 #NS 0 p₁
+26 #NS 0 p₂
+41 #EV 0
+42 #EA 15 41
+43 #EV 1
+44 #EA 42 43
+45 #EP #BD 6 44 1
+46 #EP #BD 26 3 45
+47 #EP #BD 6 46 1
+48 #EP #BD 25 3 47
+#AX 24 | 48
+27 #NS 8 lcm
+28 #NS 0 m
+29 #NS 0 n
+49 #EP #BD 29 1 1
+50 #EP #BD 28 1 49
+#AX 27 | 50
+30 #NS 27 comm
+31 #NS 0 eq
+51 #EC 31 1
+52 #EA 51 1
+53 #EC 27
+54 #EA 53 43
+55 #EA 54 41
+56 #EA 52 55
+57 #EA 53 41
+58 #EA 57 43
+59 #EA 56 58
+60 #EP #BD 29 1 59
+61 #EP #BD 28 1 60
+#AX 30 | 61
+32 #NS 8 lcm_zero_left
+33 #NS 0 zero
+62 #EC 33 1
+63 #EA 62 1
+34 #NS 0 nat_has_zero
+64 #EC 34
+65 #EA 63 64
+66 #EA 53 65
+67 #EA 66 41
+68 #EA 52 67
+69 #EA 68 65
+70 #EP #BD 28 1 69
+#AX 32 | 70
+35 #NS 8 lcm_zero_right
+71 #EA 57 65
+72 #EA 52 71
+73 #EA 72 65
+74 #EP #BD 28 1 73
+36 #NS 31 subst
+75 #EC 36 1
+76 #EA 75 1
+77 #EA 76 67
+78 #EA 77 71
+79 #EA 52 41
+80 #EA 79 65
+81 #EL #BD 6 1 80
+82 #EA 78 81
+83 #EC 30
+84 #EA 83 65
+85 #EA 84 41
+86 #EA 82 85
+87 #EC 32
+88 #EA 87 41
+89 #EA 86 88
+90 #EL #BD 28 1 89
+#DEF 35 | 74 90
+37 #NS 8 lcm_one_left
+91 #EA 53 35
+92 #EA 91 41
+93 #EA 52 92
+94 #EA 93 41
+95 #EP #BD 28 1 94
+#AX 37 | 95
+38 #NS 8 lcm_one_right
+96 #EA 57 35
+97 #EA 52 96
+98 #EA 97 41
+99 #EP #BD 28 1 98
+100 #EA 76 92
+101 #EA 100 96
+102 #EA 79 43
+103 #EL #BD 6 1 102
+104 #EA 101 103
+105 #EA 83 35
+106 #EA 105 41
+107 #EA 104 106
+108 #EC 37
+109 #EA 108 41
+110 #EA 107 109
+111 #EL #BD 28 1 110
+#DEF 38 | 99 111
+39 #NS 8 lcm_self
+112 #EA 57 41
+113 #EA 52 112
+114 #EA 113 41
+115 #EP #BD 28 1 114
+#AX 39 | 115
+40 #NS 27 assoc
+41 #NS 0 k
+116 #EV 2
+117 #EA 53 116
+118 #EA 117 43
+119 #EA 53 118
+120 #EA 119 41
+121 #EA 52 120
+122 #EA 117 55
+123 #EA 121 122
+124 #EP #BD 41 1 123
+125 #EP #BD 29 1 124
+126 #EP #BD 28 1 125
+#AX 40 | 126

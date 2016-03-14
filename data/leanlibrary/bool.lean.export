@@ -1,0 +1,70 @@
+1 #NS 0 init
+2 #NS 1 datatypes
+#DI 2
+3 #NS 1 reserved_notation
+#DI 3
+4 #NS 0 bool
+5 #NS 4 cond
+6 #NS 0 l_1
+7 #NS 0 A
+1 #UP 6
+0 #ES 1
+8 #NS 0 b
+1 #EC 4
+9 #NS 0 t
+2 #EV 1
+10 #NS 0 e
+3 #EV 2
+4 #EV 3
+5 #EP #BD 10 3 4
+6 #EP #BD 9 2 5
+7 #EP #BD 8 1 6
+8 #EP #BI 7 0 7
+11 #NS 4 rec_on
+9 #EC 11 1
+12 #NS 0 n
+10 #EV 4
+11 #EL #BD 12 1 10
+12 #EA 9 11
+13 #EA 12 3
+14 #EV 0
+15 #EA 13 14
+16 #EA 15 2
+17 #EL #BD 10 3 16
+18 #EL #BD 9 2 17
+19 #EL #BD 8 1 18
+20 #EL #BD 7 0 19
+#DEF 5 6 | 8 20
+13 #NS 4 bor
+14 #NS 0 a
+21 #EP #BD 8 1 1
+22 #EP #BD 14 1 21
+2 #US 0
+23 #EC 11 2
+24 #EL #BD 12 1 1
+25 #EA 23 24
+26 #EA 25 2
+27 #EA 25 14
+15 #NS 4 ff
+28 #EC 15
+29 #EA 27 28
+16 #NS 4 tt
+30 #EC 16
+31 #EA 29 30
+32 #EA 26 31
+33 #EA 32 30
+34 #EL #BD 8 1 33
+35 #EL #BD 14 1 34
+#DEF 13 | 22 35
+17 #NS 4 band
+36 #EA 26 28
+37 #EA 36 31
+38 #EL #BD 8 1 37
+39 #EL #BD 14 1 38
+#DEF 17 | 22 39
+18 #NS 4 bnot
+40 #EP #BD 14 1 1
+41 #EA 27 30
+42 #EA 41 28
+43 #EL #BD 14 1 42
+#DEF 18 | 40 43
