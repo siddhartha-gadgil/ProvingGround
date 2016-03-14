@@ -1,0 +1,122 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 algebra
+3 #NS 2 group
+#DI 3
+4 #NS 0 data
+#DI 4
+5 #NS 0 private
+6 #NI 5 3219017665
+7 #NS 6 and_left_true
+8 #NS 0 a
+0 #ES 0
+9 #NS 0 b
+10 #NS 0 Pa
+1 #EV 1
+11 #NS 0 iff
+2 #EC 11
+12 #NS 0 and
+3 #EC 12
+4 #EV 2
+5 #EA 3 4
+6 #EA 5 1
+7 #EA 2 6
+8 #EA 7 1
+9 #EP #BD 10 1 8
+10 #EP #BI 9 0 9
+11 #EP #BI 8 0 10
+13 #NS 0 eq
+14 #NS 13 rec
+1 #US 0
+12 #EC 14 0 1
+13 #EA 12 0
+15 #NS 0 true
+14 #EC 15
+15 #EA 13 14
+16 #NS 0 x
+16 #EV 0
+17 #EA 3 16
+18 #EA 17 4
+19 #EA 2 18
+20 #EA 19 4
+21 #EL #BD 16 0 20
+22 #EA 15 21
+23 #EA 13 1
+24 #EA 2 16
+25 #EA 24 4
+26 #EL #BD 16 0 25
+27 #EA 23 26
+17 #NS 11 refl
+28 #EC 17
+29 #EA 28 1
+30 #EA 27 29
+31 #EA 3 14
+32 #EA 31 1
+33 #EA 30 32
+18 #NS 13 symm
+34 #EC 18 1
+35 #EA 34 0
+36 #EA 35 32
+37 #EA 36 1
+19 #NS 0 propext
+38 #EC 19
+39 #EA 38 32
+40 #EA 39 1
+20 #NS 0 true_and
+41 #EC 20
+42 #EA 41 1
+43 #EA 40 42
+44 #EA 37 43
+45 #EA 33 44
+46 #EA 22 45
+47 #EA 46 4
+48 #EA 35 4
+49 #EA 48 14
+50 #EA 38 4
+51 #EA 50 14
+21 #NS 0 iff_true_intro
+52 #EC 21
+53 #EA 52 4
+54 #EA 53 16
+55 #EA 51 54
+56 #EA 49 55
+57 #EA 47 56
+58 #EL #BD 10 1 57
+59 #EL #BD 9 0 58
+60 #EL #BD 8 0 59
+#DEF 7 | 11 60
+22 #NS 0 group_theory
+23 #NS 22 orbit_partition
+24 #NS 0 l_2
+25 #NS 0 S
+2 #UP 24
+61 #ES 2
+26 #NS 0 _inst_3
+27 #NS 0 fintype
+62 #EC 27 2
+63 #EA 62 16
+28 #NS 0 _inst_4
+29 #NS 0 decidable_eq
+64 #EC 29 2
+65 #EA 64 1
+30 #NS 0 finset
+31 #NS 30 partition
+66 #EC 31 2
+67 #EA 66 4
+68 #EA 67 16
+69 #EP #BC 28 65 68
+70 #EP #BC 26 63 69
+71 #EP #BI 25 61 70
+#AX 23 24 | 71
+32 #NS 22 orbits
+3 #UM 1 2
+72 #EC 30 3
+73 #EC 30 2
+74 #EA 73 4
+75 #EA 72 74
+76 #EP #BC 28 65 75
+77 #EP #BC 26 63 76
+78 #EP #BI 25 61 77
+#AX 32 24 | 78
+33 #NS 22 fixed_point_orbits
+#AX 33 24 | 78

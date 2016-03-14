@@ -1,0 +1,213 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 theories
+3 #NS 2 number_theory
+4 #NS 3 primes
+#DI 4
+5 #NS 0 data
+#DI 5
+6 #NS 0 algebra
+7 #NS 6 group
+#DI 7
+8 #NS 6 group_power
+#DI 8
+9 #NS 6 group_bigops
+#DI 9
+10 #NS 0 group_theory
+11 #NS 10 psubg
+12 #NS 0 l_1
+13 #NS 0 G
+1 #UP 12
+0 #ES 1
+14 #NS 0 ambientG
+15 #NS 0 group
+1 #EC 15 1
+2 #EV 0
+3 #EA 1 2
+16 #NS 0 H
+17 #NS 0 finset
+4 #EC 17 1
+5 #EV 1
+6 #EA 4 5
+18 #NS 0 p
+19 #NS 0 nat
+7 #EC 19
+20 #NS 0 m
+8 #ES 0
+9 #EP #BD 20 7 8
+10 #EP #BD 18 7 9
+11 #EP #BD 16 6 10
+12 #EP #BC 14 3 11
+13 #EP #BI 13 0 12
+21 #NS 0 and
+14 #EC 21
+22 #NS 19 prime
+15 #EC 22
+16 #EA 15 5
+17 #EA 14 16
+23 #NS 0 eq
+2 #US 0
+18 #EC 23 2
+19 #EA 18 7
+24 #NS 17 card
+20 #EC 24 1
+21 #EV 4
+22 #EA 20 21
+23 #EV 2
+24 #EA 22 23
+25 #EA 19 24
+25 #NS 0 pow_nat
+26 #EC 25 2
+27 #EA 26 7
+26 #NS 19 nat_has_pow_nat
+28 #EC 26
+29 #EA 27 28
+30 #EA 29 5
+31 #EA 30 2
+32 #EA 25 31
+33 #EA 17 32
+34 #EL #BD 20 7 33
+35 #EL #BD 18 7 34
+36 #EL #BD 16 6 35
+37 #EL #BD 14 3 36
+38 #EL #BD 13 0 37
+#DEF 11 12 | 13 38
+27 #NS 10 all_prodl_eq_one
+28 #NS 0 A
+29 #NS 0 ambA
+30 #NS 0 finA
+31 #NS 0 fintype
+39 #EC 31 1
+40 #EA 39 5
+32 #NS 0 n
+33 #NS 0 list
+3 #UM 2 1
+41 #EC 33 3
+42 #EC 33 1
+43 #EV 3
+44 #EA 42 43
+45 #EA 41 44
+46 #EP #BD 32 7 45
+47 #EP #BC 30 40 46
+48 #EP #BC 29 3 47
+49 #EP #BD 28 0 48
+#AX 27 12 | 49
+34 #NS 10 prodl_eq_one_of_mem_all_prodl_eq_one
+35 #NS 0 l
+36 #NS 0 a
+37 #NS 33 mem
+50 #EC 37 3
+51 #EA 42 21
+52 #EA 50 51
+53 #EA 52 2
+54 #EC 27 1
+55 #EA 54 21
+56 #EA 55 43
+57 #EA 56 23
+58 #EA 57 5
+59 #EA 53 58
+60 #EC 23 1
+61 #EV 5
+62 #EA 60 61
+38 #NS 0 Prodl
+63 #EC 38 1 1
+64 #EA 63 61
+65 #EA 64 61
+39 #NS 15 to_monoid
+66 #EC 39 1
+67 #EA 66 61
+68 #EA 67 21
+69 #EA 65 68
+70 #EA 69 5
+40 #NS 0 id
+71 #EC 40 1
+72 #EA 71 61
+73 #EA 70 72
+74 #EA 62 73
+41 #NS 0 one
+75 #EC 41 1
+76 #EA 75 61
+42 #NS 15 _trans_of_to_monoid
+77 #EC 42 1
+78 #EA 77 61
+79 #EA 78 21
+80 #EA 76 79
+81 #EA 74 80
+82 #EP #BD 36 59 81
+83 #EP #BI 35 44 82
+84 #EP #BI 32 7 83
+85 #EP #BC 30 40 84
+86 #EP #BC 29 3 85
+87 #EP #BI 28 0 86
+#AX 34 12 | 87
+43 #NS 10 length_of_mem_all_prodl_eq_one
+44 #NS 33 length
+88 #EC 44 1
+89 #EA 88 61
+90 #EA 89 5
+91 #EA 19 90
+45 #NS 19 succ
+92 #EC 45
+93 #EA 92 23
+94 #EA 91 93
+95 #EP #BD 36 59 94
+96 #EP #BI 35 44 95
+97 #EP #BI 32 7 96
+98 #EP #BC 30 40 97
+99 #EP #BC 29 3 98
+100 #EP #BI 28 0 99
+#AX 43 12 | 100
+46 #NS 10 nodup_all_prodl_eq_one
+47 #NS 33 nodup
+101 #EC 47 3
+102 #EA 101 44
+103 #EA 54 43
+104 #EA 103 23
+105 #EA 104 5
+106 #EA 105 2
+107 #EA 102 106
+108 #EP #BI 32 7 107
+109 #EP #BC 30 40 108
+110 #EP #BC 29 3 109
+111 #EP #BI 28 0 110
+#AX 46 12 | 111
+48 #NS 10 all_prodl_eq_one_complete
+112 #EA 88 21
+113 #EA 112 2
+114 #EA 19 113
+115 #EA 92 5
+116 #EA 114 115
+117 #EV 6
+118 #EA 42 117
+119 #EA 50 118
+120 #EA 119 23
+121 #EA 54 117
+122 #EA 121 61
+123 #EA 122 21
+124 #EA 123 43
+125 #EA 120 124
+126 #EP #BD 36 81 125
+127 #EP #BD 36 116 126
+128 #EP #BI 35 44 127
+129 #EP #BI 32 7 128
+130 #EP #BC 30 40 129
+131 #EP #BC 29 3 130
+132 #EP #BI 28 0 131
+#AX 48 12 | 132
+49 #NS 10 length_all_prodl_eq_one
+133 #EC 44 3
+134 #EA 133 44
+135 #EA 134 106
+136 #EA 19 135
+50 #NS 31 card
+137 #EC 50 1
+138 #EA 137 43
+139 #EA 138 5
+140 #EA 29 139
+141 #EA 140 2
+142 #EA 136 141
+143 #EP #BI 32 7 142
+144 #EP #BC 30 40 143
+145 #EP #BC 29 3 144
+146 #EP #BI 28 0 145
+#AX 49 12 | 146

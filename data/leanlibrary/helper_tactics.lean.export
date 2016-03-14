@@ -1,0 +1,16 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 logic
+3 #NS 2 eq
+#DI 3
+4 #NS 0 helper_tactics
+5 #NS 4 apply_refl
+6 #NS 0 tactic
+0 #EC 6
+7 #NS 6 apply
+1 #EC 7
+8 #NS 6 expr
+9 #NS 8 builtin
+2 #EC 9
+3 #EA 1 2
+#DEF 5 | 0 3

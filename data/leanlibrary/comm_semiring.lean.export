@@ -1,0 +1,93 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 data
+3 #NS 2 set
+4 #NS 3 basic
+#DI 4
+5 #NS 0 algebra
+6 #NS 5 ring
+#DI 6
+7 #NS 0 set_comm_semiring
+8 #NS 0 l_1
+9 #NS 0 A
+1 #UP 8
+0 #ES 1
+10 #NS 0 comm_semiring
+2 #US 0
+3 #UM 2 1
+1 #EC 10 3
+11 #NS 0 set
+2 #EC 11 1
+3 #EV 0
+4 #EA 2 3
+5 #EA 1 4
+6 #EP #BD 9 0 5
+12 #NS 10 mk
+7 #EC 12 3
+8 #EA 7 4
+13 #NS 11 union
+9 #EC 13 1
+10 #EA 9 3
+11 #EA 8 10
+14 #NS 11 union_assoc
+12 #EC 14 1
+13 #EA 12 3
+14 #EA 11 13
+15 #NS 11 empty
+15 #EC 15 1
+16 #EA 15 3
+17 #EA 14 16
+16 #NS 11 empty_union
+18 #EC 16 1
+19 #EA 18 3
+20 #EA 17 19
+17 #NS 11 union_empty
+21 #EC 17 1
+22 #EA 21 3
+23 #EA 20 22
+18 #NS 11 union_comm
+24 #EC 18 1
+25 #EA 24 3
+26 #EA 23 25
+19 #NS 11 inter
+27 #EC 19 1
+28 #EA 27 3
+29 #EA 26 28
+20 #NS 11 inter_assoc
+30 #EC 20 1
+31 #EA 30 3
+32 #EA 29 31
+21 #NS 11 univ
+33 #EC 21 1
+34 #EA 33 3
+35 #EA 32 34
+22 #NS 11 univ_inter
+36 #EC 22 1
+37 #EA 36 3
+38 #EA 35 37
+23 #NS 11 inter_univ
+39 #EC 23 1
+40 #EA 39 3
+41 #EA 38 40
+24 #NS 11 inter_distrib_left
+42 #EC 24 1
+43 #EA 42 3
+44 #EA 41 43
+25 #NS 11 inter_distrib_right
+45 #EC 25 1
+46 #EA 45 3
+47 #EA 44 46
+26 #NS 11 empty_inter
+48 #EC 26 1
+49 #EA 48 3
+50 #EA 47 49
+27 #NS 11 inter_empty
+51 #EC 27 1
+52 #EA 51 3
+53 #EA 50 52
+28 #NS 11 inter_comm
+54 #EC 28 1
+55 #EA 54 3
+56 #EA 53 55
+57 #EL #BD 9 0 56
+#DEF 7 8 | 6 57

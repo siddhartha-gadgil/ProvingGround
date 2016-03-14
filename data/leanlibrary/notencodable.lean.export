@@ -1,0 +1,179 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 data
+3 #NS 2 encodable
+#DI 3
+4 #NS 0 private
+5 #NI 4 2160960992
+6 #NS 5 decode_fun
+7 #NS 0 nat_nat_encodable
+8 #NS 0 encodable
+1 #US 0
+0 #EC 8 1
+9 #NS 0 a
+10 #NS 0 nat
+1 #EC 10
+2 #EP #BD 9 1 1
+3 #EA 0 2
+11 #NS 0 n
+12 #NS 0 option
+4 #EC 12 1
+5 #EA 4 2
+6 #EP #BD 11 1 5
+7 #EP #BD 7 3 6
+13 #NS 8 decode
+8 #EC 13 1
+9 #EA 8 2
+#DEF 6 | 7 9
+14 #NI 4 3045541515
+15 #NS 14 encode_fun
+16 #NS 0 f
+10 #EP #BD 16 2 1
+11 #EP #BD 7 3 10
+17 #NS 8 encode
+12 #EC 17 1
+13 #EA 12 2
+#DEF 15 | 11 13
+18 #NI 4 2407185657
+19 #NS 18 encodek_fun
+20 #NS 0 eq
+14 #EC 20 1
+15 #EA 14 5
+16 #EC 6
+17 #EV 1
+18 #EA 16 17
+19 #EC 15
+20 #EA 19 17
+21 #EV 0
+22 #EA 20 21
+23 #EA 18 22
+24 #EA 15 23
+21 #NS 12 some
+25 #EC 21 1
+26 #EA 25 2
+27 #EA 26 21
+28 #EA 24 27
+29 #EP #BD 16 2 28
+30 #EP #BD 7 3 29
+22 #NS 8 encodek
+31 #EC 22 1
+32 #EA 31 2
+#DEF 19 | 30 32
+23 #NI 4 13132361
+24 #NS 23 f
+33 #EP #BD 11 1 1
+34 #EP #BD 7 3 33
+25 #NS 12 cases_on
+35 #EC 25 1 1
+26 #NI 0 18
+27 #NI 26 119
+36 #EP #BD 27 1 1
+37 #EA 35 36
+28 #NI 26 105
+38 #EA 4 36
+39 #EL #BD 28 38 1
+40 #EA 37 39
+41 #EA 18 21
+42 #EA 40 41
+29 #NS 0 zero
+43 #EC 29 1
+44 #EA 43 1
+30 #NS 10 _trans_of_decidable_linear_ordered_semiring_6
+45 #EC 30
+46 #EA 44 45
+47 #EA 42 46
+31 #NS 10 succ
+48 #EC 31
+49 #EA 21 17
+50 #EA 48 49
+51 #EL #BD 9 36 50
+52 #EA 47 51
+53 #EL #BD 11 1 52
+54 #EL #BD 7 3 53
+#DEF 24 | 34 54
+32 #NI 4 3655904545
+33 #NS 32 v
+55 #EP #BD 7 3 1
+56 #EA 19 21
+57 #EC 24
+58 #EA 57 21
+59 #EA 56 58
+60 #EL #BD 7 3 59
+#DEF 33 | 55 60
+34 #NI 4 3562873312
+35 #NS 34 f_eq
+61 #EA 14 1
+62 #EC 33
+63 #EA 62 21
+64 #EA 58 63
+65 #EA 48 64
+66 #EA 61 65
+67 #EA 66 64
+68 #EP #BD 7 3 67
+36 #NS 20 rec
+69 #EC 36 0 1
+70 #EA 69 5
+71 #EA 26 58
+72 #EA 70 71
+37 #NS 0 x
+73 #EA 57 17
+74 #EA 62 17
+75 #EA 73 74
+76 #EA 48 75
+77 #EA 61 76
+38 #NI 26 274
+78 #EP #BD 38 1 1
+79 #EA 35 78
+39 #NI 26 260
+80 #EA 4 78
+81 #EL #BD 39 80 1
+82 #EA 79 81
+83 #EA 82 21
+84 #EA 83 46
+85 #EV 2
+86 #EA 62 85
+87 #EA 21 86
+88 #EA 48 87
+89 #EL #BD 9 78 88
+90 #EA 84 89
+91 #EA 77 90
+92 #EL #BD 37 5 91
+93 #EA 72 92
+40 #NS 20 refl
+94 #EC 40 1
+95 #EA 94 1
+96 #EA 95 65
+97 #EA 93 96
+98 #EA 16 21
+99 #EA 98 59
+100 #EA 97 99
+41 #NS 20 symm
+101 #EC 41 1
+102 #EA 101 5
+103 #EA 102 99
+104 #EA 103 71
+105 #EC 19
+106 #EA 105 21
+107 #EA 106 58
+108 #EA 104 107
+109 #EA 100 108
+110 #EL #BD 7 3 109
+#DEF 35 | 68 110
+42 #NS 0 not_encodable_nat_arrow_nat
+43 #NS 0 false
+111 #EC 43
+112 #EP #BD 9 3 111
+44 #NS 0 h
+45 #NS 0 absurd
+113 #EC 45 0
+114 #EA 113 67
+115 #EA 114 111
+116 #EC 35
+117 #EA 116 21
+118 #EA 115 117
+46 #NS 10 succ_ne_self
+119 #EC 46
+120 #EA 119 64
+121 #EA 118 120
+122 #EL #BD 44 3 121
+#DEF 42 | 112 122

@@ -1,0 +1,6 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 logic
+#DI 2
+3 #NS 0 data
+#DI 3

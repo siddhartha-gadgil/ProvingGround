@@ -1,0 +1,96 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 mk_left_inv
+3 #NS 0 l_1
+4 #NS 0 l_2
+5 #NS 0 A
+1 #UP 3
+0 #ES 1
+6 #NS 0 B
+2 #UP 4
+1 #ES 2
+7 #NS 0 h
+8 #NS 0 nonempty
+2 #EC 8 1
+3 #EV 1
+4 #EA 2 3
+9 #NS 0 f
+10 #NS 0 a
+5 #EV 2
+6 #EP #BD 10 5 5
+7 #EV 4
+8 #EP #BD 10 5 7
+9 #EP #BD 9 6 8
+10 #EP #BC 7 4 9
+11 #EP #BI 6 1 10
+12 #EP #BI 5 0 11
+11 #NS 0 b
+12 #NS 0 dite
+13 #EC 12 1
+13 #NS 0 Exists
+14 #EC 13 1
+15 #EA 14 7
+14 #NS 0 eq
+16 #EC 14 2
+17 #EA 16 7
+18 #EV 0
+19 #EA 5 18
+20 #EA 17 19
+21 #EA 20 3
+22 #EL #BD 10 7 21
+23 #EA 15 22
+24 #EA 13 23
+15 #NS 0 classical
+16 #NS 15 prop_decidable
+25 #EC 16
+26 #EA 25 23
+27 #EA 24 26
+28 #EA 27 7
+17 #NS 15 some
+29 #EC 17 1
+30 #EA 29 7
+31 #EA 30 22
+32 #EA 28 31
+18 #NS 0 ex
+19 #NS 0 not
+33 #EC 19
+34 #EA 33 23
+20 #NS 0 inhabited
+21 #NS 20 value
+35 #EC 21 1
+36 #EV 5
+37 #EA 35 36
+22 #NS 15 inhabited_of_nonempty
+38 #EC 22 1
+39 #EA 38 36
+40 #EV 3
+41 #EA 39 40
+42 #EA 37 41
+43 #EL #BD 18 34 42
+44 #EA 32 43
+45 #EL #BD 11 5 44
+46 #EL #BD 9 6 45
+47 #EL #BD 7 4 46
+48 #EL #BD 6 1 47
+49 #EL #BD 5 0 48
+#DEF 2 3 4 | 12 49
+23 #NS 0 has_left_inverse_of_injective
+50 #EP #BD 10 3 3
+51 #EA 2 5
+24 #NS 0 function
+25 #NS 24 injective
+52 #EC 25 1 2
+53 #EA 52 40
+54 #EA 53 5
+55 #EA 54 3
+26 #NS 24 has_left_inverse
+56 #EC 26 1 2
+57 #EA 56 7
+58 #EA 57 40
+59 #EA 58 5
+60 #EP #BD 10 55 59
+61 #EP #BD 10 51 60
+62 #EP #BI 9 50 61
+63 #EP #BI 6 1 62
+64 #EP #BI 5 0 63
+#AX 23 3 4 | 64

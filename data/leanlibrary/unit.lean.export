@@ -1,0 +1,82 @@
+1 #NS 0 init
+#DI 1
+2 #NS 0 logic
+3 #NS 2 eq
+#DI 3
+4 #NS 0 unit
+5 #NS 4 eq
+6 #NS 0 a
+0 #EC 4
+7 #NS 0 b
+8 #NS 0 eq
+1 #US 0
+1 #EC 8 1
+2 #EA 1 0
+3 #EV 1
+4 #EA 2 3
+5 #EV 0
+6 #EA 4 5
+7 #EP #BD 7 0 6
+8 #EP #BD 6 0 7
+9 #NS 4 rec_on
+9 #EC 9 0
+10 #NS 0 n
+10 #EA 2 5
+11 #EA 10 3
+12 #EL #BD 10 0 11
+13 #EA 9 12
+14 #EA 13 3
+11 #NS 4 star
+15 #EC 11
+16 #EA 2 15
+17 #EA 9 16
+18 #EA 17 5
+12 #NS 0 rfl
+19 #EC 12 1
+20 #EA 19 0
+21 #EA 20 15
+22 #EA 18 21
+23 #EA 14 22
+24 #EL #BD 7 0 23
+25 #EL #BD 6 0 24
+#DEF 5 | 8 25
+13 #NS 4 eq_star
+26 #EA 10 15
+27 #EP #BD 6 0 26
+28 #EC 5
+29 #EA 28 5
+30 #EA 29 15
+31 #EL #BD 6 0 30
+#DEF 13 | 27 31
+14 #NS 4 subsingleton
+15 #NS 0 subsingleton
+32 #EC 15 1
+33 #EA 32 0
+16 #NS 15 intro
+34 #EC 16 1
+35 #EA 34 0
+36 #EA 35 28
+#DEF 14 | 33 36
+17 #NS 4 is_inhabited
+18 #NS 0 inhabited
+37 #EC 18 1
+38 #EA 37 0
+19 #NS 18 mk
+39 #EC 19 1
+40 #EA 39 0
+41 #EA 40 15
+#DEF 17 | 38 41
+20 #NS 4 has_decidable_eq
+21 #NS 0 decidable_eq
+42 #EC 21 1
+43 #EA 42 0
+22 #NS 0 decidable
+23 #NS 22 inl
+44 #EC 23
+45 #EA 44 6
+46 #EA 28 3
+47 #EA 46 5
+48 #EA 45 47
+49 #EL #BD 7 0 48
+50 #EL #BD 6 0 49
+#DEF 20 | 43 50
