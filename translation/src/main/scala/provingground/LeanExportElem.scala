@@ -18,12 +18,12 @@ object LeanExportElem {
 
     def readAll(lines: Vector[String]) = (lines map (read)).flatten
   }
-  
+
   implicit class DataBase(dat: Vector[Data]){
     val map = (dat map ((data) => ((data.index, data.tpe.take(2)), data))).toMap
-    
+
     def find(index: Long, tpe: String) = map.get((index, tpe))
-    
+
     def getName(index: Long) : Option[Name] =
       if (index == 0) Some(Name.anonymous)
       else find(index, "#N") flatMap {
@@ -32,7 +32,7 @@ object LeanExportElem {
         case Data(_, "#NI", List(nid, id)) =>
           getName(nid.toLong) map (Name.NameLong(_, id.toLong))
       }
-    
+
     def getUniv(index: Long): Option[Univ] =
       find(index, "#U") flatMap {
         case Data(_, "#US", List(uid)) => getUniv(uid.toLong) map (Univ.Succ(_))
@@ -43,7 +43,7 @@ object LeanExportElem {
         case Data(_, "#UP", List(nid)) => getName(nid.toLong) map (Univ.Param(_))
         case Data(_, "#UG", List(nid)) => getName(nid.toLong) map (Univ.Global(_))
       }
-    
+
     def getExpr(index: Long): Option[Expr] =
       find(index, "#E") flatMap {
         case Data(_, "#EV", List(ind)) => Some(Expr.Var(ind.toLong))
@@ -69,11 +69,11 @@ object LeanExportElem {
             c <- getExpr(eid2.toLong)
           ) yield (Expr.Pi(Info.get(info), a, b, c))
       }
-   
-    def readGlobalUniv(command: String) : Option[GlobalUniv] = 
+
+    def readGlobalUniv(command: String) : Option[GlobalUniv] =
       if (command.startsWith("#UNI")) getName(command.split(' ')(1).toLong) map (GlobalUniv(_))
       else None
-    
+
     def readDef(command: String) : Option[Definition] = {
       if (command.startsWith("#DEF"))
         {
@@ -91,9 +91,9 @@ object LeanExportElem {
         }
       else None
     }
-    
+
     def readDefs(lines: Vector[String]) = (lines map (readDef)).flatten
-    
+
     def readAxiom(command: String) : Option[Axiom] = {
       if (command.startsWith("#DEF"))
         {
@@ -110,9 +110,9 @@ object LeanExportElem {
         }
       else None
     }
-    
+
     def readAxioms(lines: Vector[String]) = (lines map (readAxiom)).flatten
-    
+
     def readBind(line: String) : Option[Bind] =
       if (line.startsWith("#BIND"))
         {
@@ -123,15 +123,15 @@ object LeanExportElem {
           Some(Bind(numParam, numTypes, univParams))
         }
       else None
-    
-    def readInd(line: String) = 
+
+    def readInd(line: String) =
       if (line.startsWith("#IND"))
       {
       val Array(nid, eid) = line.split(' ').tail map (_.toLong)
       for (a <- getName(nid); b <- getExpr(eid)) yield (Ind(a, b))
     }
       else None
-  
+
     def readIntro(line: String) =
       if (line.startsWith("#INTRO"))
       {
@@ -155,13 +155,13 @@ object LeanExportElem {
         head +: readAllInducDefn(lines drop (head.size), n-1)
       }
     }
-    
+
     def readInducBlock(lines: Vector[String]) = {
       readBind(lines.head) map {(bind) =>
         InducBlock(bind, readAllInducDefn(lines.tail, bind.numTypes))
       }
     }
-    
+
     def readAllInducBlock(lines: Vector[String]) : Vector[InducBlock] = {
       InducBlock.getBlock(lines) flatMap {(block: Vector[String]) =>
         val head = readInducBlock(block)
@@ -174,9 +174,9 @@ object LeanExportElem {
   sealed trait Name extends LeanExportElem
 
   object Name {
-    def readAtom(s: String, env: Name) : Name = 
+    def readAtom(s: String, env: Name) : Name =
       Try(NameLong(env, s.toLong)).toOption getOrElse(NameString(env, s))
-    
+
     /**
      * Reads a String, assuming the first part of the name represents anonymous.
      */
@@ -184,7 +184,7 @@ object LeanExportElem {
         val l = s.split(".")
         if (l.length > 1) readAtom(l.last, read(l.init.mkString("."))) else anonymous
       }
-    
+
     case object anonymous extends Name{
       override def toString = "@"
     }
@@ -295,11 +295,11 @@ object LeanExportElem {
     }
 
     case class Lambda(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
-      val constants = value.constants filter (_ != varName)
+      val constants = value.constants
     }
 
     case class Pi(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
-      val constants = value.constants filter (_ != varName)
+      val constants = value.constants
     }
   }
 
@@ -316,7 +316,7 @@ object LeanExportElem {
 
   case class Definition(name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr) extends LeanExportElem{
     def dependents = tpe.constants ++ value.constants
-    
+
     def depPickle = (name :: dependents).map(_.toString.drop(2)).mkString("\t")
   }
 
