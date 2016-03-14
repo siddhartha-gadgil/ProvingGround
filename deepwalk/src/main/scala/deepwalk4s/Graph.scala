@@ -18,7 +18,9 @@ object Graph{
     
     val vert = index map {case (x, n) => (n, x)}
     
-    val jVertices = (for ((n, v) <- vert) yield (IndexedVertex(n, v) : graph.api.Vertex[V])).toList.asJava
+    val vertex = (for ((n, v) <- vert) yield ((v, IndexedVertex(n, v) : graph.api.Vertex[V]))).toMap
+    
+    val jVertices = vertex.values.toList.asJava
     
     val jEdges = edges map ((e) => 
       IndexEdge(index(e.initial), index(e.terminal), e.weight, e.oriented)
@@ -37,7 +39,8 @@ object Graph{
      val base = new DeepWalk.Builder[V, java.lang.Double]()
      val builder = base.learningRate(learningRate).vectorSize(vectorSize).windowSize(windowSize)
      val deepLearn = builder.build()
-     val provider = new WeightedRandomWalkGraphIteratorProvider(jGraph, walkLength)
+     val provider = new WeightedRandomWalkGraphIteratorProvider(jGraph, 
+         walkLength, 12345, org.deeplearning4j.graph.api.NoEdgeHandling.SELF_LOOP_ON_DISCONNECTED)
      deepLearn.initialize(jGraph)
      deepLearn.fit(provider)
      deepLearn
