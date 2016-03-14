@@ -39,7 +39,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.5.5",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.6",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
@@ -155,7 +155,8 @@ lazy val nlp = (project in file("nlp")).
         dependsOn(coreJVM).dependsOn(functionfinder)
 
 lazy val translation = (project in file("translation")).
-      settings(name := "ProvingGround-Translation").
+      settings(name := "ProvingGround-Translation",
+        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.6").
       settings(baseSettings : _*)
 
 lazy val deepwalk = (project in file("deepwalk")).
