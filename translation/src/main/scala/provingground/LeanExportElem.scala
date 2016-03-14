@@ -34,6 +34,7 @@ object LeanExportElem {
       }
 
     def getUniv(index: Long): Option[Univ] =
+      if (index == 0) Some(Univ.Zero) else
       find(index, "#U") flatMap {
         case Data(_, "#US", List(uid)) => getUniv(uid.toLong) map (Univ.Succ(_))
         case Data(_, "#UM", List(uid1, uid2)) =>
@@ -210,6 +211,8 @@ object LeanExportElem {
   sealed trait Univ extends LeanExportElem
 
   object Univ {
+    case object Zero extends Univ
+
     case class Succ(base: Univ) extends Univ
 
     case class Max(first: Univ, second: Univ) extends Univ
