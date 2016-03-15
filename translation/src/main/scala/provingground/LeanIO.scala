@@ -23,7 +23,7 @@ object LeanIO {
     val lines = defs map (_.depPickle)
     val out = outputDir / file.name
     rm(out)
-    lines map((l) => {write.append(out, l); l})
+    lines map((l) => {write.append(out+"\n", l); l})
   }
 
   def futPickleDefs(file: Path, outputDir: Path) =
@@ -31,7 +31,7 @@ object LeanIO {
 
   def makeDefs(inDir: Path = cwd / 'data / 'leanlibrary, outDir: Path = cwd / 'data / 'leandefs) = {
     val files = ls(inDir) filter (_.ext == "export")
-    (files map ((f) => (f.name, futPickleDefs(f, outDir)))).toMap
+    (files map ((f) => (f.name+".defs", futPickleDefs(f, outDir)))).toMap
   }
 
   def snapshot(fd: Map[String,Future[Vector[String]]]) =
