@@ -164,7 +164,8 @@ lazy val deepwalk = (project in file("deepwalk")).
       libraryDependencies ++= Seq(
         "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.8",
         "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.8",
-        "org.nd4j" % "nd4j-x86" % "0.4-rc3.8"
+        "org.nd4j" % "nd4j-x86" % "0.4-rc3.8",
+        "org.nd4j" % "nd4s_2.11" % "0.4-rc3.8"
       )).
       settings(baseSettings : _*)
 
