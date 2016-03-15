@@ -1,0 +1,23 @@
+heq.drec_on	heq.rec
+heq.to_cast_eq	eq	cast	type_eq_of_heq	heq.drec_on	eq	cast	type_eq_of_heq	cast_eq	type_eq_of_heq	heq.refl
+hcongr_fun	heq	eq.cases_on	heq	eq.rec	heq	heq.cases_on	heq	eq.rec	heq	heq.refl	eq_of_heq	eq.refl	heq.refl	eq.refl
+hcongr	heq	heq.cases_on	heq	eq.rec	heq	eq.rec	heq	heq.cases_on	heq	eq.rec	heq	heq.cases_on	heq	eq.rec	heq	heq.refl	eq_of_heq	eq.refl	heq.refl	eq_of_heq	eq.refl	heq.refl	eq_of_heq	eq.refl	heq.refl
+hcongr_arg	heq	eq.subst	heq	heq.refl
+hcongr_arg2	heq	hcongr	hcongr_arg	hcongr_arg
+hcongr_arg3	heq	hcongr	hcongr_arg2	hcongr_arg2
+eq_rec_to_heq	heq	eq.drec	heq	eq.rec	eq.rec_on	eq.refl	heq	heq.refl
+cast_to_heq	heq	eq_rec_to_heq
+hproof_irrel	heq	eq_rec_to_heq	proof_irrel	cast
+cast_trans	eq	cast	cast	cast	eq.trans	eq.drec	eq	cast	cast	cast	eq.trans	eq.refl	cast	cast	eq.refl
+pi_eq	eq	eq.rec	eq	eq.refl
+rec_on_app	heq	eq.rec_on	eq.drec	heq	eq.rec_on	heq.refl	eq.rec_on	eq.refl
+rec_on_pull	eq	eq.rec_on	eq.rec_on	congr_fun	eq_of_heq	eq.rec_on	eq.rec_on	congr_fun	heq.trans	eq.rec_on	eq.rec_on	congr_fun	rec_on_app	heq.symm	eq.rec_on	congr_fun	eq_rec_heq	congr_fun
+cast_app	heq	cast	pi_eq	eq.drec	heq	cast	pi_eq	heq.refl	cast	pi_eq	eq.refl
+hfunext	heq	cast_to_heq	pi_eq	funext	type_eq_of_heq	funext	cast	pi_eq	funext	type_eq_of_heq	eq_of_heq	cast	pi_eq	funext	type_eq_of_heq	heq.trans	cast	pi_eq	funext	type_eq_of_heq	cast_app	funext	type_eq_of_heq
+hcongr_arg4	heq	hcongr	hcongr_arg3	hcongr_arg3
+dcongr_arg2	eq	eq_of_heq	hcongr_arg2	eq_rec_to_heq
+dcongr_arg3	eq	eq_of_heq	hcongr_arg3	eq_rec_to_heq	eq_rec_to_heq	dcongr_arg2
+dcongr_arg4	eq	eq_of_heq	hcongr_arg4	eq_rec_to_heq	eq_rec_to_heq	dcongr_arg2	eq_rec_to_heq	dcongr_arg3
+hdcongr_arg3	eq	eq_of_heq	hcongr_arg3	eq_rec_to_heq	eq_of_heq	hcongr_arg2
+hhdcongr_arg4	eq	eq_of_heq	hcongr_arg4	eq_rec_to_heq	dcongr_arg3	eq.trans	eq.rec_on	eq.rec_on	type_eq_of_heq	eq.rec_on_irrel_arg	type_eq_of_heq	heq.to_cast_eq	eq.trans	cast	dcongr_arg2	eq.trans	eq.rec_on	eq.rec_on	type_eq_of_heq	eq.rec_on_irrel_arg	type_eq_of_heq	heq.to_cast_eq	eq.rec_on	type_eq_of_heq	eq.rec_on_irrel_arg	dcongr_arg2	eq.trans	eq.rec_on	eq.rec_on	type_eq_of_heq	eq.rec_on_irrel_arg	type_eq_of_heq	heq.to_cast_eq	type_eq_of_heq	heq.to_cast_eq
+hddcongr_arg4	eq	eq_of_heq	hcongr_arg4	eq_rec_to_heq	eq_of_heq	hcongr_arg2	eq_rec_to_heq	hdcongr_arg3

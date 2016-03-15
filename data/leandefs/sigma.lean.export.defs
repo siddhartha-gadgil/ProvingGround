@@ -1,0 +1,9 @@
+dpair	sigma	sigma.mk
+ex_of_sig	Exists	sigma.cases_on	Exists	exists.intro
+sigma.dpair_eq	eq	sigma	sigma.mk	sigma.mk	eq.cases_on	eq	sigma	sigma.mk	sigma.mk	eq.rec	eq	sigma	sigma.mk	sigma.mk	eq.cases_on	eq.rec_on	eq	sigma	sigma.mk	sigma.mk	rfl	sigma	sigma.mk	eq.refl
+sigma.eq	eq	sigma	sigma.destruct	eq	sigma	sigma.destruct	eq	sigma	sigma.mk	sigma.dpair_eq	sigma.pr1	sigma.mk	sigma.pr1	sigma.mk
+sigma.lex.rec_on	sigma.lex.rec
+sigma.lex.induction_on	sigma.lex.rec
+sigma.lex.cases_on	sigma.lex.rec
+sigma.lex.accessible	acc	sigma	sigma.lex	sigma.mk	acc.rec_on	acc	sigma	sigma.lex	sigma.mk	acc.rec_on	acc	sigma	sigma.lex	sigma.mk	well_founded.apply	acc.intro	sigma	sigma.lex	sigma.mk	rfl	heq.refl	sigma.lex.rec_on	acc	sigma	sigma.lex	sigma.mk	eq.cases_on	acc	sigma	sigma.lex	sigma.mk	eq.rec	acc	sigma	sigma.lex	sigma.mk	eq.refl	eq.cases_on	acc	sigma	sigma.lex	sigma.mk	eq.rec	acc	sigma	sigma.lex	sigma.mk	heq.cases_on	sigma.pr1	sigma.mk	acc	sigma	sigma.lex	sigma.mk	eq.rec	acc	sigma	sigma.lex	sigma.mk	eq_of_heq	eq.refl	heq.refl	eq.refl
+sigma.lex.wf	well_founded	sigma	sigma.lex	well_founded.intro	sigma	sigma.lex	sigma.destruct	acc	sigma	sigma.lex	sigma.lex.accessible	well_founded.apply

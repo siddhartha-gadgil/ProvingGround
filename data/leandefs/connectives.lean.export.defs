@@ -1,0 +1,45 @@
+imp
+imp.id
+imp.intro
+imp.mp
+imp.syl
+imp.left
+imp_true	iff	true	true	iff_true_intro	true	imp.intro	true	trivial
+true_imp	iff	iff.intro	trivial	imp.intro	true
+imp_false	iff	false	not	iff.rfl	false
+false_imp	iff	true	iff_true_intro	false.elim
+not.elim	absurd
+not.mto	not	imp.left	false
+not_imp_not_of_imp	not	not.mto
+not_not_of_not_implies	not	not	not.mto	not	not.elim
+not_of_not_implies	not	not.mto	imp.intro
+not_not_em	not	not	or	not	or.inr	not	not.mto	or	not	or.inl	not
+not_iff_not	iff	not	not	iff.intro	not	not	not.mto	iff.mpr	not.mto	iff.mp
+not_and_of_not_left	not	and	not.mto	and	and.left
+not_and_of_not_right	not	and	not.mto	and	and.right
+and.imp_left	and	and.imp	imp.id
+and.imp_right	and	and.imp	imp.id
+and_of_and_of_imp_of_imp	and	and.imp
+and_of_and_of_imp_left	and	and.imp_left
+and_of_and_of_imp_right	and	and.imp_right
+and_imp_iff	iff	iff.intro	and.intro	and.rec
+and_imp_eq	eq	propext	and_imp_iff
+not_or	not	or	or.rec	false
+or_of_or_of_imp_of_imp	or	or.imp
+or_of_or_of_imp_left	or	or.imp_left
+or_of_or_of_imp_right	or	or.imp_right
+or.elim3	or.elim	or	or.elim
+or_resolve_right	or.elim	not.elim	imp.id
+or_resolve_left	or_resolve_right	or.swap
+or.imp_distrib	iff	and	iff.intro	and	and.intro	imp.syl	or	or.inl	imp.syl	or	or.inr	and.rec	or.rec
+or_iff_right_of_imp	iff	or	iff.intro	or	or.rec	imp.id	or.inr
+or_iff_left_of_imp	iff	or	iff.intro	or	or.rec	imp.id	or.inl
+or_iff_or	iff	or	or	iff.intro	or	or	or.imp	iff.mp	iff.mp	or.imp	iff.mpr	iff.mpr
+and.left_distrib	iff	and	or	or	and	and	iff.intro	and	or	or	and	and	and.rec	or	or	and	and	or.imp	and	and	and.intro	and.intro	or.rec	and	and	and	or	and.imp_right	or	or.inl	and.imp_right	or	or.inr
+and.right_distrib	iff	and	or	or	and	and	iff.trans	and	or	or	and	and	or	and	and	iff.trans	and	or	and	or	or	and	and	and.comm	or	and.left_distrib	or_iff_or	and	and	and	and	and.comm	and.comm
+or.left_distrib	iff	or	and	and	or	or	iff.intro	or	and	and	or	or	or.rec	and	and	or	or	and.intro	or	or	or.inl	or.inl	and.imp	or	or	or.inr	or.inr	and.rec	or	or	or	and	or.rec	or	and	imp.syl	or	and	or	and	imp.intro	or	and	or	or.inl	and	imp.syl	and	or	and	or.imp_right	and	and.intro
+or.right_distrib	iff	or	and	and	or	or	iff.trans	or	and	and	or	or	and	or	or	iff.trans	or	and	or	and	and	or	or	or.comm	and	or.left_distrib	and_congr	or	or	or	or	or.comm	or.comm
+iff.def	eq	iff	and	rfl	iff
+forall_imp_forall
+forall_iff_forall	iff	iff.intro	iff.elim_left	iff.elim_right
+imp_iff	iff	iff.intro	imp.intro

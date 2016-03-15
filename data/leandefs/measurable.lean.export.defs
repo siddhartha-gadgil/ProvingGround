@@ -1,0 +1,14 @@
+measurable.rec_on	measurable.rec
+measurable.induction_on	measurable.rec
+measurable.cases_on	measurable.rec
+measurable.no_confusion_type	measurable.cases_on	measurable.cases_on
+measurable.no_confusion	measurable.no_confusion_type	eq.rec	measurable	measurable.no_confusion_type	measurable.cases_on	measurable.no_confusion_type	eq.refl	nat
+size_of	nat	measurable.rec_on	nat
+nat.measurable	measurable	nat	measurable.mk	nat
+option.measurable	measurable	option	measurable.mk	option	option.cases_on	nat	nat.zero	size_of
+prod.measurable	measurable	prod	measurable.mk	prod	prod.cases_on	nat	add	nat	nat_has_add	size_of	size_of
+sum.measurable	measurable	sum	measurable.mk	sum	sum.cases_on	nat	size_of	size_of
+bool.measurable	measurable	bool	measurable.mk	bool	nat.zero
+Prop.measurable	measurable	measurable.mk	nat.zero
+unit.measurable	measurable	unit	measurable.mk	unit	nat.zero
+fn.measurable	measurable	measurable.mk	nat.zero

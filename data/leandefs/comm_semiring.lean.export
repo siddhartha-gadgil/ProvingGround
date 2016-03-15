@@ -1,1 +1,0 @@
-set_comm_semiring	comm_semiring	set	comm_semiring.mk	set	set.union	set.union_assoc	set.empty	set.empty_union	set.union_empty	set.union_comm	set.inter	set.inter_assoc	set.univ	set.univ_inter	set.inter_univ	set.inter_distrib_left	set.inter_distrib_right	set.empty_inter	set.inter_empty	set.inter_comm

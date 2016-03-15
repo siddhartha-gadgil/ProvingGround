@@ -1,0 +1,30 @@
+matrix
+matrix.val
+matrix.ext	eq	matrix	funext	fin	funext	fin
+matrix.has_decidable_eq	decidable_eq	matrix	decidable_eq_fun	fin	fin.is_fintype	decidable_eq_fun	fin	fin.is_fintype
+matrix.to_matrix	matrix
+matrix.map	matrix	matrix.val
+matrix.map₂	matrix	matrix.val	matrix.val
+matrix.transpose	matrix	matrix.val
+matrix.symmetric	eq	matrix	matrix.transpose
+matrix.identity	matrix	ite	eq	fin	fin.has_decidable_eq	one	comm_ring._trans_of_to_comm_semiring_1	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.I	matrix	matrix.identity
+matrix.zero	matrix	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.add	matrix	add	comm_ring._trans_of_to_comm_semiring_11	matrix.val	matrix.val
+matrix.sub	matrix	sub	add_group_has_sub	add_comm_group.to_add_group	ring.to_add_comm_group	comm_ring.to_ring	matrix.val	matrix.val
+matrix.mul	matrix	fin.foldl	has_add.add	comm_ring._trans_of_to_comm_semiring_11	zero	comm_ring._trans_of_to_comm_semiring_13	mul	comm_ring._trans_of_to_comm_semiring_3	matrix.val	matrix.val
+matrix.smul	matrix	mul	comm_ring._trans_of_to_comm_semiring_3	matrix.val
+matrix.matrix_has_zero	has_zero	matrix	has_zero.mk	matrix	matrix.zero
+matrix.matrix_has_one	has_one	matrix	has_one.mk	matrix	matrix.identity
+matrix.matrix_has_add	has_add	matrix	has_add.mk	matrix	matrix.add
+matrix.matrix_has_mul	has_mul	matrix	has_mul.mk	matrix	matrix.mul
+matrix.add_zero	eq	matrix	add	matrix	matrix.matrix_has_add	zero	matrix	matrix.matrix_has_zero	matrix.ext	add	matrix	matrix.matrix_has_add	zero	matrix	matrix.matrix_has_zero	add_zero	comm_ring._trans_of_to_comm_semiring_9	matrix.val
+matrix.zero_add	eq	matrix	add	matrix	matrix.matrix_has_add	zero	matrix	matrix.matrix_has_zero	matrix.ext	add	matrix	matrix.matrix_has_add	zero	matrix	matrix.matrix_has_zero	zero_add	comm_ring._trans_of_to_comm_semiring_9	matrix.val
+matrix.add.comm	eq	matrix	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	matrix.ext	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add.comm	comm_ring._trans_of_to_comm_semiring_8	matrix.val	matrix.val
+matrix.add.assoc	eq	matrix	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	matrix.ext	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add	matrix	matrix.matrix_has_add	add.assoc	comm_ring._trans_of_to_comm_semiring_7	matrix.val	matrix.val	matrix.val
+matrix.is_diagonal	or	eq	fin	eq	matrix.val	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.is_zero	eq	matrix.val	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.is_upper_triangular	eq	matrix.val	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.is_lower_triangular	eq	matrix.val	zero	comm_ring._trans_of_to_comm_semiring_13
+matrix.inverse	and	eq	matrix	mul	matrix	matrix.matrix_has_mul	matrix.I	eq	matrix	mul	matrix	matrix.matrix_has_mul	matrix.I
+matrix.invertible	Exists	matrix	matrix.inverse

@@ -1,0 +1,16 @@
+reflexive
+symmetric
+transitive
+equivalence	and	reflexive	and	symmetric	transitive
+total	or
+mk_equivalence	equivalence	and.intro	reflexive	and	symmetric	transitive	and.intro	symmetric	transitive
+irreflexive	not
+anti_symmetric	eq
+empty_relation	false
+subrelation
+inv_image
+inv_image.trans	transitive	inv_image
+inv_image.irreflexive	irreflexive	inv_image
+tc.rec_on	tc.rec
+tc.induction_on	tc.rec
+tc.cases_on	tc.rec

@@ -1,0 +1,36 @@
+acc.rec_on	acc.rec
+acc.induction_on	acc.rec
+acc.cases_on	acc.rec
+acc.inv	acc	acc.rec_on	acc
+acc.drec	acc.rec
+well_founded.rec_on	well_founded.rec
+well_founded.induction_on	well_founded.rec
+well_founded.cases_on	well_founded.rec
+well_founded.apply	acc	well_founded.rec_on	acc
+well_founded.recursion	acc.rec_on	well_founded.apply
+well_founded.induction	well_founded.recursion
+well_founded.fix_F	acc.rec_on
+well_founded.fix_F_eq	eq	well_founded.fix_F	well_founded.fix_F	acc.inv	acc.drec	eq	well_founded.fix_F	well_founded.fix_F	acc.inv	eq.refl	well_founded.fix_F	acc.intro
+well_founded.fix	well_founded.fix_F	well_founded.apply
+well_founded.fix_eq	eq	well_founded.fix	well_founded.fix	well_founded.fix_F_eq	well_founded.apply
+empty.wf	well_founded	empty_relation	well_founded.intro	empty_relation	acc.intro	empty_relation	false.rec	acc	empty_relation
+subrelation.accessible	acc	acc.rec	acc	acc.intro
+subrelation.wf	well_founded	well_founded.intro	subrelation.accessible	well_founded.apply
+private.2750383571.acc_aux	acc	inv_image	acc.rec	acc	inv_image	acc.intro	inv_image	eq.rec	acc	inv_image	rfl
+inv_image.accessible	acc	inv_image	private.2750383571.acc_aux	rfl
+inv_image.wf	well_founded	inv_image	well_founded.intro	inv_image	inv_image.accessible	well_founded.apply
+tc.accessible	acc	tc	acc.rec	acc	tc	acc.intro	tc	tc.rec	acc	tc	acc.inv	tc
+tc.wf	well_founded	tc	well_founded.intro	tc	tc.accessible	well_founded.apply
+nat.lt.wf	well_founded	nat	lt	nat	nat.nat_has_lt	well_founded.intro	nat	lt	nat	nat.nat_has_lt	nat.rec	acc	nat	lt	nat	nat.nat_has_lt	acc.intro	nat	lt	nat	nat.nat_has_lt	nat.zero	absurd	lt	nat	nat.nat_has_lt	nat.zero	acc	nat	lt	nat	nat.nat_has_lt	nat.not_lt_zero	acc.intro	nat	lt	nat	nat.nat_has_lt	nat.succ	or.elim	eq	nat	lt	nat	nat.nat_has_lt	acc	nat	lt	nat	nat.nat_has_lt	nat.eq_or_lt_of_le	nat.le_of_succ_le_succ	eq.substr	nat	acc	nat	lt	nat	nat.nat_has_lt	acc.inv	nat	lt	nat	nat.nat_has_lt
+nat.measure	inv_image	nat	lt	nat	nat.nat_has_lt
+nat.measure.wf	well_founded	nat.measure	inv_image.wf	nat	lt	nat	nat.nat_has_lt	nat.lt.wf
+prod.lex.rec_on	prod.lex.rec
+prod.lex.induction_on	prod.lex.rec
+prod.lex.cases_on	prod.lex.rec
+prod.rprod.rec_on	prod.rprod.rec
+prod.rprod.induction_on	prod.rprod.rec
+prod.rprod.cases_on	prod.rprod.rec
+prod.lex.accessible	acc	prod	prod.lex	prod.mk	acc.rec_on	acc	prod	prod.lex	prod.mk	acc.rec_on	acc	prod	prod.lex	prod.mk	acc.intro	prod	prod.lex	prod.mk	rfl	rfl	prod.lex.rec_on	acc	prod	prod.lex	prod.mk	eq.rec_on	eq.rec_on	acc	prod	prod.lex	prod.mk	eq.rec_on	eq	rfl	eq.rec_on
+prod.lex.wf	well_founded	prod	prod.lex	well_founded.intro	prod	prod.lex	prod.destruct	acc	prod	prod.lex	prod.lex.accessible	well_founded.apply	well_founded.apply
+prod.rprod.sub_lex	prod.lex	prod.rprod.rec_on	prod.lex	prod.lex.left
+prod.rprod.wf	well_founded	prod	prod.rprod	subrelation.wf	prod	prod.lex	prod.rprod	prod.rprod.sub_lex	prod.lex.wf

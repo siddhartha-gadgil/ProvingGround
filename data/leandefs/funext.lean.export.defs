@@ -1,0 +1,11 @@
+function.equiv	eq
+function.equiv.refl	function.equiv	rfl
+function.equiv.symm	function.equiv	eq.symm
+function.equiv.trans	function.equiv	eq.trans
+function.equiv.is_equivalence	equivalence	function.equiv	mk_equivalence	function.equiv	function.equiv.refl	function.equiv.symm	function.equiv.trans
+private.1179328327.fun_setoid	setoid	setoid.mk	function.equiv	function.equiv.is_equivalence
+private.253446806.extfun	quot	private.1179328327.fun_setoid
+private.3830389365.fun_to_extfun	private.253446806.extfun	quot.mk	private.1179328327.fun_setoid
+private.3264165319.extfun_app	quot.lift_on	private.1179328327.fun_setoid
+funext	eq	eq.trans	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid	eq.trans	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid	rfl	eq.subst	quot	private.1179328327.fun_setoid	quot.mk	private.1179328327.fun_setoid	quot.mk	private.1179328327.fun_setoid	eq	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid	private.3264165319.extfun_app	quot.sound	private.1179328327.fun_setoid	eq.refl	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid	rfl	private.3264165319.extfun_app	quot.mk	private.1179328327.fun_setoid
+subsingleton_pi	subsingleton	subsingleton.intro	funext	subsingleton.elim

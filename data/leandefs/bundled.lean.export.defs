@@ -1,0 +1,96 @@
+Semigroup.carrier	Semigroup.rec
+Semigroup.struct	semigroup	Semigroup.carrier	Semigroup.rec	semigroup	Semigroup.carrier
+Semigroup.rec_on	Semigroup.rec
+Semigroup.induction_on	Semigroup.rec
+Semigroup.destruct	Semigroup.rec
+Semigroup.cases_on	Semigroup.rec
+Semigroup.no_confusion_type	Semigroup.cases_on	Semigroup.cases_on
+Semigroup.no_confusion	Semigroup.no_confusion_type	eq.rec	Semigroup	Semigroup.no_confusion_type	Semigroup.cases_on	Semigroup.no_confusion_type	eq.refl	heq.refl	semigroup
+CommSemigroup.carrier	CommSemigroup.rec
+CommSemigroup.struct	comm_semigroup	CommSemigroup.carrier	CommSemigroup.rec	comm_semigroup	CommSemigroup.carrier
+CommSemigroup.rec_on	CommSemigroup.rec
+CommSemigroup.induction_on	CommSemigroup.rec
+CommSemigroup.destruct	CommSemigroup.rec
+CommSemigroup.cases_on	CommSemigroup.rec
+CommSemigroup.no_confusion_type	CommSemigroup.cases_on	CommSemigroup.cases_on
+CommSemigroup.no_confusion	CommSemigroup.no_confusion_type	eq.rec	CommSemigroup	CommSemigroup.no_confusion_type	CommSemigroup.cases_on	CommSemigroup.no_confusion_type	eq.refl	heq.refl	comm_semigroup
+Monoid.carrier	Monoid.rec
+Monoid.struct	monoid	Monoid.carrier	Monoid.rec	monoid	Monoid.carrier
+Monoid.rec_on	Monoid.rec
+Monoid.induction_on	Monoid.rec
+Monoid.destruct	Monoid.rec
+Monoid.cases_on	Monoid.rec
+Monoid.no_confusion_type	Monoid.cases_on	Monoid.cases_on
+Monoid.no_confusion	Monoid.no_confusion_type	eq.rec	Monoid	Monoid.no_confusion_type	Monoid.cases_on	Monoid.no_confusion_type	eq.refl	heq.refl	monoid
+CommMonoid.carrier	CommMonoid.rec
+CommMonoid.struct	comm_monoid	CommMonoid.carrier	CommMonoid.rec	comm_monoid	CommMonoid.carrier
+CommMonoid.rec_on	CommMonoid.rec
+CommMonoid.induction_on	CommMonoid.rec
+CommMonoid.destruct	CommMonoid.rec
+CommMonoid.cases_on	CommMonoid.rec
+CommMonoid.no_confusion_type	CommMonoid.cases_on	CommMonoid.cases_on
+CommMonoid.no_confusion	CommMonoid.no_confusion_type	eq.rec	CommMonoid	CommMonoid.no_confusion_type	CommMonoid.cases_on	CommMonoid.no_confusion_type	eq.refl	heq.refl	comm_monoid
+Group.carrier	Group.rec
+Group.struct	group	Group.carrier	Group.rec	group	Group.carrier
+Group.rec_on	Group.rec
+Group.induction_on	Group.rec
+Group.destruct	Group.rec
+Group.cases_on	Group.rec
+Group.no_confusion_type	Group.cases_on	Group.cases_on
+Group.no_confusion	Group.no_confusion_type	eq.rec	Group	Group.no_confusion_type	Group.cases_on	Group.no_confusion_type	eq.refl	heq.refl	group
+CommGroup.carrier	CommGroup.rec
+CommGroup.struct	comm_group	CommGroup.carrier	CommGroup.rec	comm_group	CommGroup.carrier
+CommGroup.rec_on	CommGroup.rec
+CommGroup.induction_on	CommGroup.rec
+CommGroup.destruct	CommGroup.rec
+CommGroup.cases_on	CommGroup.rec
+CommGroup.no_confusion_type	CommGroup.cases_on	CommGroup.cases_on
+CommGroup.no_confusion	CommGroup.no_confusion_type	eq.rec	CommGroup	CommGroup.no_confusion_type	CommGroup.cases_on	CommGroup.no_confusion_type	eq.refl	heq.refl	comm_group
+AddSemigroup.carrier	AddSemigroup.rec
+AddSemigroup.struct	add_semigroup	AddSemigroup.carrier	AddSemigroup.rec	add_semigroup	AddSemigroup.carrier
+AddSemigroup.rec_on	AddSemigroup.rec
+AddSemigroup.induction_on	AddSemigroup.rec
+AddSemigroup.destruct	AddSemigroup.rec
+AddSemigroup.cases_on	AddSemigroup.rec
+AddSemigroup.no_confusion_type	AddSemigroup.cases_on	AddSemigroup.cases_on
+AddSemigroup.no_confusion	AddSemigroup.no_confusion_type	eq.rec	AddSemigroup	AddSemigroup.no_confusion_type	AddSemigroup.cases_on	AddSemigroup.no_confusion_type	eq.refl	heq.refl	add_semigroup
+AddCommSemigroup.carrier	AddCommSemigroup.rec
+AddCommSemigroup.struct	add_comm_semigroup	AddCommSemigroup.carrier	AddCommSemigroup.rec	add_comm_semigroup	AddCommSemigroup.carrier
+AddCommSemigroup.rec_on	AddCommSemigroup.rec
+AddCommSemigroup.induction_on	AddCommSemigroup.rec
+AddCommSemigroup.destruct	AddCommSemigroup.rec
+AddCommSemigroup.cases_on	AddCommSemigroup.rec
+AddCommSemigroup.no_confusion_type	AddCommSemigroup.cases_on	AddCommSemigroup.cases_on
+AddCommSemigroup.no_confusion	AddCommSemigroup.no_confusion_type	eq.rec	AddCommSemigroup	AddCommSemigroup.no_confusion_type	AddCommSemigroup.cases_on	AddCommSemigroup.no_confusion_type	eq.refl	heq.refl	add_comm_semigroup
+AddMonoid.carrier	AddMonoid.rec
+AddMonoid.struct	add_monoid	AddMonoid.carrier	AddMonoid.rec	add_monoid	AddMonoid.carrier
+AddMonoid.rec_on	AddMonoid.rec
+AddMonoid.induction_on	AddMonoid.rec
+AddMonoid.destruct	AddMonoid.rec
+AddMonoid.cases_on	AddMonoid.rec
+AddMonoid.no_confusion_type	AddMonoid.cases_on	AddMonoid.cases_on
+AddMonoid.no_confusion	AddMonoid.no_confusion_type	eq.rec	AddMonoid	AddMonoid.no_confusion_type	AddMonoid.cases_on	AddMonoid.no_confusion_type	eq.refl	heq.refl	add_monoid
+AddCommMonoid.carrier	AddCommMonoid.rec
+AddCommMonoid.struct	add_comm_monoid	AddCommMonoid.carrier	AddCommMonoid.rec	add_comm_monoid	AddCommMonoid.carrier
+AddCommMonoid.rec_on	AddCommMonoid.rec
+AddCommMonoid.induction_on	AddCommMonoid.rec
+AddCommMonoid.destruct	AddCommMonoid.rec
+AddCommMonoid.cases_on	AddCommMonoid.rec
+AddCommMonoid.no_confusion_type	AddCommMonoid.cases_on	AddCommMonoid.cases_on
+AddCommMonoid.no_confusion	AddCommMonoid.no_confusion_type	eq.rec	AddCommMonoid	AddCommMonoid.no_confusion_type	AddCommMonoid.cases_on	AddCommMonoid.no_confusion_type	eq.refl	heq.refl	add_comm_monoid
+AddGroup.carrier	AddGroup.rec
+AddGroup.struct	add_group	AddGroup.carrier	AddGroup.rec	add_group	AddGroup.carrier
+AddGroup.rec_on	AddGroup.rec
+AddGroup.induction_on	AddGroup.rec
+AddGroup.destruct	AddGroup.rec
+AddGroup.cases_on	AddGroup.rec
+AddGroup.no_confusion_type	AddGroup.cases_on	AddGroup.cases_on
+AddGroup.no_confusion	AddGroup.no_confusion_type	eq.rec	AddGroup	AddGroup.no_confusion_type	AddGroup.cases_on	AddGroup.no_confusion_type	eq.refl	heq.refl	add_group
+AddCommGroup.carrier	AddCommGroup.rec
+AddCommGroup.struct	add_comm_group	AddCommGroup.carrier	AddCommGroup.rec	add_comm_group	AddCommGroup.carrier
+AddCommGroup.rec_on	AddCommGroup.rec
+AddCommGroup.induction_on	AddCommGroup.rec
+AddCommGroup.destruct	AddCommGroup.rec
+AddCommGroup.cases_on	AddCommGroup.rec
+AddCommGroup.no_confusion_type	AddCommGroup.cases_on	AddCommGroup.cases_on
+AddCommGroup.no_confusion	AddCommGroup.no_confusion_type	eq.rec	AddCommGroup	AddCommGroup.no_confusion_type	AddCommGroup.cases_on	AddCommGroup.no_confusion_type	eq.refl	heq.refl	add_comm_group

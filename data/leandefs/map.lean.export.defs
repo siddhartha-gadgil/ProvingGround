@@ -1,0 +1,38 @@
+set.map.func	set.map.rec
+set.map.mapsto	set.maps_to	set.map.func	set.map.rec	set.maps_to	set.map.func
+set.map.rec_on	set.map.rec
+set.map.induction_on	set.map.rec
+set.map.destruct	set.map.rec
+set.map.cases_on	set.map.rec
+set.map.no_confusion_type	set.map.cases_on	set.map.cases_on
+set.map.no_confusion	set.map.no_confusion_type	eq.rec	set.map	set.map.no_confusion_type	set.map.cases_on	set.map.no_confusion_type	eq.refl	heq.refl	set.maps_to
+set.map.equiv	eq	set.map.func	set.map.func
+set.map.equiv.refl	set.map.equiv	rfl	set.map.func
+set.map.equiv.symm	set.map.equiv	eq.symm	set.map.func	set.map.func
+set.map.equiv.trans	set.map.equiv	eq.trans	set.map.func	set.map.func	set.map.func
+set.map.equiv.is_equivalence	equivalence	set.map	set.map.equiv	mk_equivalence	set.map	set.map.equiv	set.map.equiv.refl	set.map.equiv.symm	set.map.equiv.trans
+set.map.range	set	set.image	set.map.func
+set.map.range_eq_range_of_equiv	eq	set	set.map.range	set.map.range	set.image_eq_image_of_eq_on	set.map.func	set.map.func
+set.map.injective	set.inj_on	set.map.func
+set.map.injective_of_equiv	set.map.injective	set.inj_on_of_eq_on	set.map.func	set.map.func
+set.map.surjective	set.surj_on	set.map.func
+set.map.surjective_of_equiv	set.map.surjective	set.surj_on_of_eq_on	set.map.func	set.map.func
+set.map.image_eq_of_surjective	eq	set	set.image	set.map.func	set.image_eq_of_maps_to_of_surj_on	set.map.func	set.map.mapsto
+set.map.bijective	and	set.map.injective	set.map.surjective
+set.map.bijective_of_equiv	set.map.bijective	and.intro	set.map.injective	set.map.surjective	set.map.injective_of_equiv	and.left	set.map.injective	set.map.surjective	set.map.surjective_of_equiv	and.right	set.map.injective	set.map.surjective
+set.map.bijective_compose	set.map.bijective	set.map.compose	and.cases_on	set.map.injective	set.map.surjective	set.map.bijective	set.map.compose	and.cases_on	set.map.injective	set.map.surjective	set.map.bijective	set.map.compose	and.intro	set.map.injective	set.map.compose	set.map.surjective	set.map.compose	set.map.injective_compose	set.map.surjective_compose
+set.map.image_eq_of_bijective	eq	set	set.image	set.map.func	set.map.image_eq_of_surjective	and.right	set.map.injective	set.map.surjective
+set.map.left_inverse	set.left_inv_on	set.map.func	set.map.func
+set.map.left_inverse_of_equiv_left	set.map.left_inverse	set.left_inv_on_of_eq_on_left	set.map.func	set.map.func	set.map.func	set.map.mapsto
+set.map.left_inverse_of_equiv_right	set.map.left_inverse	set.left_inv_on_of_eq_on_right	set.map.func	set.map.func	set.map.func
+set.map.injective_of_left_inverse	set.map.injective	set.inj_on_of_left_inv_on	set.map.func	set.map.func
+set.map.right_inverse	set.map.left_inverse
+set.map.right_inverse_of_equiv_left	set.map.right_inverse	set.map.left_inverse_of_equiv_right
+set.map.right_inverse_of_equiv_right	set.map.right_inverse	set.map.left_inverse_of_equiv_left
+set.map.right_inverse_of_injective_of_left_inverse	set.map.right_inverse	set.right_inv_on_of_inj_on_of_left_inv_on	set.map.func	set.map.func	set.map.mapsto	set.map.mapsto
+set.map.surjective_of_right_inverse	set.map.surjective	set.surj_on_of_right_inv_on	set.map.func	set.map.func	set.map.mapsto
+set.map.left_inverse_of_surjective_of_right_inverse	set.map.left_inverse	set.left_inv_on_of_surj_on_right_inv_on	set.map.func	set.map.func
+set.map.right_inverse_compose	set.map.right_inverse	set.map.compose	set.map.compose	set.map.left_inverse_compose
+set.map.equiv_of_map.left_inverse_of_right_inverse	set.map.equiv	set.eq_on_of_left_inv_of_right_inv	set.map.func	set.map.func	set.map.func	set.map.mapsto
+set.map.is_inverse	and	set.map.left_inverse	set.map.right_inverse
+set.map.bijective_of_is_inverse	set.map.bijective	and.intro	set.map.injective	set.map.surjective	set.map.injective_of_left_inverse	and.left	set.map.left_inverse	set.map.right_inverse	set.map.surjective_of_right_inverse	and.right	set.map.left_inverse	set.map.right_inverse

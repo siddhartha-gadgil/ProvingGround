@@ -1,0 +1,239 @@
+id
+implies
+implies.trans	implies
+trivial	true	true.intro
+not	false
+absurd	false.rec
+not.intro	not
+mt	not	absurd	false
+implies.resolve	not
+not_false	not	false
+non_contradictory	not	not
+non_contradictory_intro	not	not	absurd	false
+false.elim	false.rec
+rfl	eq	eq.refl
+proof_irrel	eq	rfl
+eq.drec	eq.rec
+eq.drec_on	eq.drec
+eq.subst	eq.rec
+eq.trans	eq	eq.subst	eq
+eq.symm	eq	eq.rec	eq	eq.refl
+eq.substr	eq.subst	eq.symm
+eq.mp	eq.rec_on
+eq.mpr	eq.rec_on	eq.symm
+congr	eq	eq.subst	eq	eq.subst	eq	rfl
+congr_fun	eq	eq.subst	eq	eq.refl
+congr_arg	eq	congr	rfl
+trans_rel_left	eq.subst
+trans_rel_right	eq.subst	eq.symm
+of_eq_true	eq.subst	true	eq.symm	true	trivial
+not_of_eq_false	not	eq.subst	false
+cast	eq.rec
+cast_proof_irrel	eq	cast	cast	rfl	cast
+cast_eq	eq	cast	rfl	cast
+ne	not	eq
+ne.intro	ne
+ne.elim	false
+ne.irrefl	false	rfl
+ne.symm	ne	eq.symm
+false_of_ne	false	ne.irrefl
+ne_false_of_self	ne	false	eq.subst	false
+ne_true_of_not	ne	true	eq.subst	true	not	trivial
+true_ne_false	not	eq	true	false	ne_false_of_self	true	trivial
+eq_of_heq	eq	heq.rec	eq	eq.rec	eq.refl	eq.refl
+heq.elim	eq.rec_on	eq_of_heq
+heq.subst	heq.rec_on
+heq.symm	heq	heq.rec_on	heq	heq.refl
+heq_of_eq	heq	eq.subst	heq	heq.refl
+heq.trans	heq	heq.subst	heq
+heq_of_heq_of_eq	heq	heq.trans	heq_of_eq
+heq_of_eq_of_heq	heq	heq.trans	heq_of_eq
+type_eq_of_heq	eq	heq.rec_on	eq	eq.refl
+eq_rec_heq	heq	eq.rec	eq.drec_on	heq	eq.rec	heq.refl
+heq_of_eq_rec_left	heq	eq.cases_on	heq	eq.rec	heq	eq.rec_on	eq.rec	eq.refl	heq	heq.refl	eq.refl
+heq_of_eq_rec_right	heq	eq.cases_on	heq	eq.rec	heq	eq.rec_on	heq	eq.rec	eq.refl	heq.refl	eq.refl
+of_heq_true	of_eq_true	eq_of_heq	true
+eq_rec_compose	eq	eq.rec	eq.rec	eq.rec	eq.trans	eq.cases_on	eq	eq.rec	eq.rec	eq.rec	eq.trans	eq.rec	eq	eq.rec	eq.rec	eq.rec	eq.trans	eq.cases_on	eq	eq.rec	eq.rec	eq.rec	eq.trans	eq.rec	eq	eq.rec	eq.rec	eq.rec	eq.trans	eq.trans	eq.rec	eq.rec	eq.refl	eq.refl	eq.rec	eq.refl	eq.rec	eq.trans	eq.refl	eq.refl	rfl	eq.rec	eq.rec	eq.refl	eq.refl	eq.subst	eq	eq.refl	eq.trans	eq.refl	eq.refl	eq	eq.rec	eq.rec	proof_irrel	eq	eq.refl	eq.trans	eq.refl	eq.refl	eq.refl	eq.rec	eq.refl	eq.refl	eq.refl
+eq_rec_eq_eq_rec	eq	eq.rec	eq.symm	eq.drec_on	eq	eq.rec	eq.symm	eq.drec_on	eq.rec	eq.refl	eq	eq.rec	eq.symm	eq.refl	rfl	eq.rec	eq.rec	eq.refl	eq.symm	eq.refl
+eq_rec_of_heq_left	eq	eq.rec	type_eq_of_heq	heq.cases_on	eq	eq.rec	type_eq_of_heq	eq.rec	eq	eq.rec	type_eq_of_heq	eq.rec	eq	eq.rec	type_eq_of_heq	rfl	eq.rec	type_eq_of_heq	heq.refl	eq_of_heq	eq.refl	heq.refl
+eq_rec_of_heq_right	eq	eq.rec	eq.symm	type_eq_of_heq	eq_rec_eq_eq_rec	type_eq_of_heq	eq_rec_of_heq_left
+cast_heq	heq	cast	eq.cases_on	heq	cast	eq.rec	heq	cast	heq.refl	cast	eq.refl	eq.refl
+and.elim	and.rec
+and.swap	and	and.rec	and	and.intro
+or.elim	or.rec
+non_contradictory_em	not	not	or	not	absurd	or	not	false	or.inr	not	absurd	or	not	false	or.inl	not
+or.swap	or	or.rec	or	or.inr	or.inl
+iff	and
+iff.intro	iff	and.intro
+iff.elim	and.rec
+iff.elim_left	and.left
+iff.mp	iff.elim_left
+iff.elim_right	and.right
+iff.mpr	iff.elim_right
+iff.refl	iff	iff.intro
+iff.rfl	iff	iff.refl
+iff.trans	iff	iff.intro	iff.mp	iff.mp	iff.mpr	iff.mpr
+iff.symm	iff	iff.intro	iff.elim_right	iff.elim_left
+iff.comm	iff	iff	iff	iff.intro	iff	iff	iff.symm	iff.symm
+iff.of_eq	iff	eq.rec_on	iff	iff.rfl
+not_iff_not_of_iff	iff	not	not	iff.intro	not	false	iff.elim_right	iff.elim_left
+of_iff_true	iff.mp	true	iff.symm	true	trivial
+not_of_iff_false	not	iff.mp	false
+iff_true_intro	iff	true	iff.intro	true	trivial
+iff_false_intro	iff	false	iff.intro	false	false.rec
+not_non_contradictory_iff_absurd	iff	not	not	not	not	iff.intro	not	not	not	false	non_contradictory_intro	absurd	false	false
+imp_congr	iff	iff.intro	iff.mp	iff.mpr	iff.mpr	iff.mp
+imp_congr_right	iff	iff.intro	iff.elim_left	iff.elim_right
+not_not_intro	not	not
+not_of_not_not_not	not	absurd	not	not	false	not_not_intro
+not_true	iff	not	true	false	iff_false_intro	not	true	not_not_intro	true	trivial
+not_false_iff	iff	not	false	true	iff_true_intro	not	false	not_false
+not_congr	iff	not	not	iff.intro	false	false	iff.mpr	iff.mp
+ne_self_iff_false	iff	not	eq	false	iff.intro	ne	false	false_of_ne	false.elim	ne
+eq_self_iff_true	iff	eq	true	iff_true_intro	eq	rfl
+heq_self_iff_true	iff	heq	true	iff_true_intro	heq	heq.refl
+iff_not_self	iff	iff	not	false	iff_false_intro	iff	not	iff.mpr	not	iff.mp	false
+not_iff_self	iff	iff	not	false	iff_false_intro	iff	not	iff.mp	not	iff.mpr	false
+true_iff_false	iff	iff	true	false	false	iff_false_intro	iff	true	false	iff.mp	true	false	trivial
+false_iff_true	iff	iff	false	true	false	iff_false_intro	iff	false	true	iff.mpr	false	true	trivial
+false_of_true_iff_false	false	iff.mp	true	false	trivial
+and.imp	and	and.rec	and	and.intro
+and_congr	iff	and	and	iff.intro	and	and	and.imp	iff.mp	iff.mp	and.imp	iff.mpr	iff.mpr
+and_congr_right	iff	and	and	iff.intro	and	and	and.cases_on	and	and.intro	iff.elim_left	and.cases_on	and	and.intro	iff.elim_right
+and.comm	iff	and	and	iff.intro	and	and	and.swap	and.swap
+and.assoc	iff	and	and	and	and	iff.intro	and	and	and	and	and.rec	and	and	and	and.rec	and	and	and.intro	and	and.intro	and.rec	and	and	and	and.rec	and	and	and.intro	and	and.intro
+and.left_comm	iff	and	and	and	and	iff.trans	and	and	and	and	and	and	iff.symm	and	and	and	and	and.assoc	iff.trans	and	and	and	and	and	and	and_congr	and	and	and.comm	iff.refl	and.assoc
+and_iff_left	iff	and	iff.intro	and	and.left	and.intro
+and_iff_right	iff	and	iff.intro	and	and.right	and.intro
+and_true	iff	and	true	and_iff_left	true	trivial
+true_and	iff	and	true	and_iff_right	true	trivial
+and_false	iff	and	false	false	iff_false_intro	and	false	and.right	false
+false_and	iff	and	false	false	iff_false_intro	and	false	and.left	false
+not_and_self	iff	and	not	false	iff_false_intro	and	not	and.elim	not	false	absurd	false
+and_not_self	iff	and	not	false	iff_false_intro	and	not	and.elim	not	false	absurd	false
+and_self	iff	and	iff.intro	and	and.left	and.intro
+or.imp	or	or.rec	or	or.inl	or.inr
+or.imp_left	or	or.imp	id
+or.imp_right	or	or.imp	id
+or_congr	iff	or	or	iff.intro	or	or	or.imp	iff.mp	iff.mp	or.imp	iff.mpr	iff.mpr
+or.comm	iff	or	or	iff.intro	or	or	or.swap	or.swap
+or.assoc	iff	or	or	or	or	iff.intro	or	or	or	or	or.rec	or	or	or	or.imp_right	or	or.inl	or.inr	or	or.inr	or.rec	or	or	or	or.inl	or	or.inl	or.imp_left	or	or.inr
+or.left_comm	iff	or	or	or	or	iff.trans	or	or	or	or	or	or	iff.symm	or	or	or	or	or.assoc	iff.trans	or	or	or	or	or	or	or_congr	or	or	or.comm	iff.refl	or.assoc
+or_true	iff	or	true	true	iff_true_intro	or	true	or.inr	true	trivial
+true_or	iff	or	true	true	iff_true_intro	or	true	or.inl	true	trivial
+or_false	iff	or	false	iff.intro	or	false	or.rec	false	id	false.elim	or.inl	false
+false_or	iff	or	false	iff.trans	or	false	or	false	or.comm	false	or_false
+or_self	iff	or	iff.intro	or	or.rec	id	id	or.inl
+or.resolve_left	or.elim	absurd	id
+or.neg_resolve_left	or.elim	not	absurd	id
+or.resolve_right	or.elim	id	absurd
+or.neg_resolve_right	or.elim	not	id	absurd
+iff_true	iff	iff	true	iff.intro	iff	true	iff.mpr	true	trivial	iff_true_intro
+true_iff	iff	iff	true	iff.trans	iff	true	iff	true	iff.comm	true	iff_true
+iff_false	iff	iff	false	not	iff.intro	and	not	not	and.left	not	iff_false_intro
+false_iff	iff	iff	false	not	iff.trans	iff	false	iff	false	not	iff.comm	false	iff_false
+iff_self	iff	iff	true	iff_true_intro	iff	iff.rfl
+iff_congr	iff	iff	iff	and_congr	imp_congr	imp_congr
+Exists.rec_on	Exists.rec
+Exists.induction_on	Exists.rec
+Exists.cases_on	Exists.rec
+exists.intro	Exists	Exists.intro
+exists.elim	Exists.rec
+exists_unique	Exists	and	eq
+exists_unique.intro	exists_unique	exists.intro	and	eq	and.intro	eq
+exists_unique.elim	exists.elim	and	eq	and.left	eq	and.right	eq
+exists_unique_of_exists_of_unique	exists_unique	exists.elim	exists_unique	exists_unique.intro
+exists_of_exists_unique	Exists	exists.elim	and	eq	Exists	exists.intro	and.left	eq
+unique_of_exists_unique	eq	exists_unique.elim	eq	eq.trans	eq.symm
+forall_congr	iff	iff.intro	iff.mp	iff.mpr
+exists_imp_exists	Exists	exists.elim	Exists	exists.intro
+exists_congr	iff	Exists	Exists	iff.intro	Exists	Exists	exists_imp_exists	iff.mp	exists_imp_exists	iff.mpr
+exists_unique_congr	iff	exists_unique	exists_unique	exists_congr	and	eq	and	eq	and_congr	eq	eq	forall_congr	eq	eq	imp_congr	eq	eq	iff.rfl	eq
+decidable.rec_on	decidable.rec
+decidable.induction_on	decidable.rec
+decidable.cases_on	decidable.rec
+decidable.no_confusion_type	decidable.cases_on	decidable.cases_on	decidable.cases_on
+decidable.no_confusion	decidable.no_confusion_type	eq.rec	decidable	decidable.no_confusion_type	decidable.cases_on	decidable.no_confusion_type	eq.refl	eq.refl	not
+decidable_true	decidable	true	decidable.inl	true	trivial
+decidable_false	decidable	false	decidable.inr	false	not_false
+dite	decidable.rec_on
+ite	decidable.rec_on
+decidable.rec_on_true	decidable.rec_on	decidable.rec_on	decidable.rec_on	false.rec	decidable.rec_on	decidable.inr
+decidable.rec_on_false	decidable.rec_on	decidable.rec_on	decidable.rec_on	false.rec	decidable.rec_on	decidable.inl
+decidable.by_cases	dite
+decidable.em	or	not	decidable.by_cases	or	not	or.inl	not	or.inr	not
+decidable.by_contradiction	dite	false.rec
+decidable_of_decidable_of_iff	decidable	dite	decidable	decidable.inl	iff.mp	decidable.inr	iff.mp	not	not	not_iff_not_of_iff
+decidable_of_decidable_of_eq	decidable	decidable_of_decidable_of_iff	iff.of_eq
+or.by_cases	dite	dite	false.rec	or.elim	false
+decidable_and	decidable	and	dite	decidable	and	dite	decidable	and	decidable.inl	and	and.intro	decidable.inr	and	and.right	decidable.inr	and	and.left
+decidable_or	decidable	or	dite	decidable	or	decidable.inl	or	or.inl	dite	decidable	or	decidable.inl	or	or.inr	decidable.inr	or	or.rec	false
+decidable_not	decidable	not	dite	decidable	not	decidable.inr	not	absurd	false	decidable.inl	not
+decidable_implies	decidable	dite	decidable	dite	decidable	decidable.inl	decidable.inr	absurd	false	decidable.inl	absurd
+decidable_iff	decidable	iff	decidable_and	decidable_implies	decidable_implies
+decidable_pred	decidable
+decidable_rel	decidable
+decidable_eq	decidable_rel	eq
+decidable_ne	decidable	ne	decidable_implies	eq	false	decidable_false
+bool.ff_ne_tt	false	eq.cases_on	bool	bool.ff	false	bool.no_confusion	false	bool.tt	bool.ff	bool.tt	eq.refl	bool	bool.tt
+is_dec_eq	eq
+is_dec_refl	eq	bool	bool.tt
+bool.has_decidable_eq	decidable	eq	bool	bool.cases_on	decidable	eq	bool	bool.cases_on	decidable	eq	bool	bool.ff	decidable.inl	eq	bool	bool.ff	bool.ff	rfl	bool	bool.ff	decidable.inr	eq	bool	bool.ff	bool.tt	bool.ff_ne_tt	bool.cases_on	decidable	eq	bool	bool.tt	decidable.inr	eq	bool	bool.tt	bool.ff	ne.symm	bool	bool.ff	bool.tt	bool.ff_ne_tt	decidable.inl	eq	bool	bool.tt	bool.tt	rfl	bool	bool.tt
+decidable_eq_of_bool_pred	decidable_eq	dite	eq	bool	bool.tt	bool.has_decidable_eq	bool.tt	decidable	eq	decidable.inl	eq	decidable.inr	eq	eq.subst	not	eq	bool	bool.tt
+decidable_eq_inl_refl	eq	decidable	eq	decidable.inl	eq	eq.refl	decidable.cases_on	eq	eq	decidable	eq	decidable.inl	eq	eq.refl	rfl	decidable	eq	decidable.inl	eq	eq.refl	absurd	eq	eq	decidable	eq	decidable.inr	eq	decidable.inl	eq	eq.refl	rfl
+decidable_eq_inr_neg	eq	decidable	eq	decidable.inr	eq	decidable.cases_on	eq	eq	decidable	eq	decidable.inr	eq	absurd	eq	eq	decidable	eq	decidable.inl	eq	decidable.inr	eq	eq.subst	ne	eq	decidable	eq	decidable.inr	eq	decidable.inr	eq	proof_irrel	ne	rfl	decidable	eq	decidable.inr	eq
+inhabited.rec_on	inhabited.rec
+inhabited.induction_on	inhabited.rec
+inhabited.cases_on	inhabited.rec
+inhabited.no_confusion_type	inhabited.cases_on	inhabited.cases_on
+inhabited.no_confusion	inhabited.no_confusion_type	eq.rec	inhabited	inhabited.no_confusion_type	inhabited.cases_on	inhabited.no_confusion_type	eq.refl
+inhabited.value	inhabited.rec
+inhabited.destruct	inhabited.rec
+default	inhabited.value
+arbitrary	inhabited.value
+Prop.is_inhabited	inhabited	inhabited.mk	true
+inhabited_fun	inhabited	inhabited.rec_on	inhabited	inhabited.mk
+inhabited_Pi	inhabited	inhabited.mk	default
+bool.is_inhabited	inhabited	bool	inhabited.mk	bool	bool.ff
+pos_num.is_inhabited	inhabited	pos_num	inhabited.mk	pos_num	pos_num.one
+num.is_inhabited	inhabited	num	inhabited.mk	num	num.zero
+nonempty.rec_on	nonempty.rec
+nonempty.induction_on	nonempty.rec
+nonempty.cases_on	nonempty.rec
+nonempty.elim	nonempty.rec
+nonempty_of_inhabited	nonempty	nonempty.intro	default
+nonempty_of_exists	nonempty	Exists.rec	nonempty	nonempty.intro
+subsingleton.rec_on	subsingleton.rec
+subsingleton.induction_on	subsingleton.rec
+subsingleton.cases_on	subsingleton.rec
+subsingleton.elim	eq	subsingleton.rec	eq
+subsingleton.helim	heq	eq.rec	heq	heq_of_eq	subsingleton.elim
+subsingleton_prop	subsingleton	subsingleton.intro	proof_irrel
+subsingleton_decidable	subsingleton	decidable	subsingleton.intro	decidable	decidable.cases_on	eq	decidable	decidable.cases_on	eq	decidable	decidable.inl	eq.rec_on	eq	decidable	decidable.inl	decidable.inl	proof_irrel	rfl	decidable	decidable.inl	absurd	eq	decidable	decidable.inl	decidable.inr	decidable.cases_on	eq	decidable	decidable.inr	absurd	eq	decidable	decidable.inr	decidable.inl	eq.rec_on	not	eq	decidable	decidable.inr	decidable.inr	proof_irrel	not	rfl	decidable	decidable.inr
+rec_subsingleton	subsingleton	decidable.rec_on	decidable.rec_on	subsingleton	decidable.rec_on
+if_pos	eq	ite	decidable.rec	eq	ite	eq.refl	ite	decidable.inl	absurd	eq	ite	decidable.inr
+if_neg	eq	ite	decidable.rec	eq	ite	absurd	eq	ite	decidable.inl	eq.refl	ite	decidable.inr
+if_t_t	eq	ite	decidable.rec	eq	ite	eq.refl	ite	decidable.inl	eq.refl	ite	decidable.inr
+implies_of_if_pos	eq.rec_on	ite	if_pos
+implies_of_if_neg	eq.rec_on	ite	if_neg
+if_ctx_congr	eq	ite	ite	decidable.rec_on	eq	ite	ite	eq.trans	ite	ite	eq.trans	ite	if_pos	iff.mp	eq.symm	ite	if_pos	iff.mp	eq.trans	ite	ite	eq.trans	ite	if_neg	iff.mp	not	not	not_iff_not_of_iff	eq.symm	ite	if_neg	iff.mp	not	not	not_iff_not_of_iff
+if_congr	eq	ite	ite	if_ctx_congr
+if_ctx_simp_congr	eq	ite	ite	decidable_of_decidable_of_iff	if_ctx_congr	decidable_of_decidable_of_iff
+if_simp_congr	eq	ite	ite	decidable_of_decidable_of_iff	if_ctx_simp_congr
+if_true	eq	ite	true	decidable_true	if_pos	true	decidable_true	trivial
+if_false	eq	ite	false	decidable_false	if_neg	false	decidable_false	not_false
+if_ctx_congr_prop	iff	ite	ite	decidable.rec_on	iff	ite	ite	iff.trans	ite	ite	iff.trans	ite	iff.of_eq	ite	if_pos	iff.mp	iff.symm	ite	iff.of_eq	ite	if_pos	iff.mp	iff.trans	ite	ite	iff.trans	ite	iff.of_eq	ite	if_neg	iff.mp	not	not	not_iff_not_of_iff	iff.symm	ite	iff.of_eq	ite	if_neg	iff.mp	not	not	not_iff_not_of_iff
+if_congr_prop	iff	ite	ite	if_ctx_congr_prop
+if_ctx_simp_congr_prop	iff	ite	ite	decidable_of_decidable_of_iff	if_ctx_congr_prop	decidable_of_decidable_of_iff
+if_simp_congr_prop	iff	ite	ite	decidable_of_decidable_of_iff	if_ctx_simp_congr_prop
+dif_pos	eq	dite	decidable.rec	eq	dite	eq.refl	dite	decidable.inl	absurd	eq	dite	decidable.inr
+dif_neg	eq	dite	decidable.rec	eq	dite	absurd	eq	dite	decidable.inl	eq.refl	dite	decidable.inr
+dif_ctx_congr	eq	dite	dite	decidable.rec_on	eq	dite	dite	eq.trans	dite	iff.mp	dite	eq.trans	dite	iff.mpr	iff.mp	iff.mp	eq.trans	dite	iff.mpr	iff.mp	dif_pos	eq.subst	iff.mpr	iff.mp	eq	proof_irrel	iff.mpr	iff.mp	eq.refl	iff.mp	eq.symm	dite	iff.mp	dif_pos	iff.mp	eq.trans	dite	iff.mp	not	not	not_iff_not_of_iff	dite	eq.trans	dite	iff.mpr	not	not	not_iff_not_of_iff	iff.mp	not	not	not_iff_not_of_iff	iff.mp	not	not	not_iff_not_of_iff	eq.trans	dite	iff.mpr	not	not	not_iff_not_of_iff	iff.mp	not	not	not_iff_not_of_iff	dif_neg	eq.subst	not	iff.mpr	not	not	not_iff_not_of_iff	iff.mp	not	not	not_iff_not_of_iff	eq	proof_irrel	not	iff.mpr	not	not	not_iff_not_of_iff	iff.mp	not	not	not_iff_not_of_iff	eq.refl	iff.mp	not	not	not_iff_not_of_iff	eq.symm	dite	iff.mp	not	not	not_iff_not_of_iff	dif_neg	iff.mp	not	not	not_iff_not_of_iff
+dif_ctx_simp_congr	eq	dite	dite	decidable_of_decidable_of_iff	dif_ctx_congr	decidable_of_decidable_of_iff
+dite_ite_eq	eq	dite	ite	rfl	dite
+is_true	ite	true	false
+is_false	ite	false	true
+of_is_true	decidable.rec_on	false.rec	eq.subst	ite	true	false	false	if_neg	true	false
+not_of_not_is_true	not	dite	not	absurd	true	not	trivial	eq.subst	ite	true	false	true	not	if_pos	true	false
+not_of_is_false	not	dite	not	false.rec	not	eq.subst	ite	false	true	false	if_pos	false	true
+of_not_is_false	dite	absurd	true	trivial	eq.subst	ite	false	true	true	not	if_neg	false	true

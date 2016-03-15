@@ -1,0 +1,1 @@
+private.3219017665.and_left_true	iff	and	eq.rec	true	iff	and	eq.rec	iff	iff.refl	and	true	eq.symm	and	true	propext	and	true	true_and	eq.symm	true	propext	true	iff_true_intro

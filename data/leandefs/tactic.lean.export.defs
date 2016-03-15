@@ -1,0 +1,110 @@
+tactic.rec_on	tactic.rec
+tactic.induction_on	tactic.rec
+tactic.cases_on	tactic.rec
+tactic.no_confusion_type	tactic.cases_on	tactic.cases_on
+tactic.no_confusion	tactic.no_confusion_type	eq.rec	tactic	tactic.no_confusion_type	tactic.cases_on	tactic.no_confusion_type
+tactic.and_then	tactic	tactic.builtin
+tactic.or_else	tactic	tactic.builtin
+tactic.append	tactic	tactic.builtin
+tactic.interleave	tactic	tactic.builtin
+tactic.par	tactic	tactic.builtin
+tactic.fixpoint	tactic	tactic.builtin
+tactic.repeat	tactic	tactic.builtin
+tactic.at_most	tactic	tactic.builtin
+tactic.discard	tactic	tactic.builtin
+tactic.focus_at	tactic	tactic.builtin
+tactic.try_for	tactic	tactic.builtin
+tactic.all_goals	tactic	tactic.builtin
+tactic.now	tactic	tactic.builtin
+tactic.assumption	tactic	tactic.builtin
+tactic.eassumption	tactic	tactic.builtin
+tactic.state	tactic	tactic.builtin
+tactic.fail	tactic	tactic.builtin
+tactic.id	tactic	tactic.builtin
+tactic.beta	tactic	tactic.builtin
+tactic.info	tactic	tactic.builtin
+tactic.whnf	tactic	tactic.builtin
+tactic.contradiction	tactic	tactic.builtin
+tactic.exfalso	tactic	tactic.builtin
+tactic.congruence	tactic	tactic.builtin
+tactic.rotate_left	tactic	tactic.builtin
+tactic.rotate_right	tactic	tactic.builtin
+tactic.rotate	tactic	tactic.rotate_left
+tactic.norm_num	tactic	tactic.builtin
+tactic.expr.rec_on	tactic.expr.rec
+tactic.expr.induction_on	tactic.expr.rec
+tactic.expr.cases_on	tactic.expr.rec
+tactic.expr.no_confusion_type	tactic.expr.cases_on	tactic.expr.cases_on
+tactic.expr.no_confusion	tactic.expr.no_confusion_type	eq.rec	tactic.expr	tactic.expr.no_confusion_type	tactic.expr.cases_on	tactic.expr.no_confusion_type
+tactic.expr_list.rec_on	tactic.expr_list.rec
+tactic.expr_list.induction_on	tactic.expr_list.rec
+tactic.expr_list.cases_on	tactic.expr_list.rec
+tactic.expr_list.no_confusion_type	tactic.expr_list.cases_on	tactic.expr_list.cases_on	tactic.expr_list.cases_on
+tactic.expr_list.no_confusion	tactic.expr_list.no_confusion_type	eq.rec	tactic.expr_list	tactic.expr_list.no_confusion_type	tactic.expr_list.cases_on	tactic.expr_list.no_confusion_type	eq.refl	tactic.expr	eq.refl	tactic.expr_list
+tactic.expr_list.below	tactic.expr_list.rec	poly_unit	prod
+tactic.expr_list.ibelow	tactic.expr_list.rec	true	and
+tactic.expr_list.brec_on	prod.pr1	tactic.expr_list.below	tactic.expr_list.rec	prod	tactic.expr_list.below	prod.mk	tactic.expr_list.nil	poly_unit	tactic.expr_list.nil	poly_unit.star	poly_unit.star	prod.mk	tactic.expr_list.cons	prod	tactic.expr_list.below	tactic.expr_list.cons
+tactic.expr_list.binduction_on	and.elim_left	tactic.expr_list.ibelow	tactic.expr_list.rec	and	tactic.expr_list.ibelow	and.intro	tactic.expr_list.nil	true	tactic.expr_list.nil	true.intro	true.intro	and.intro	tactic.expr_list.cons	and	tactic.expr_list.ibelow	tactic.expr_list.cons
+tactic.opt_expr_list	tactic.expr_list
+tactic.identifier	tactic.expr
+tactic.identifier_list	tactic.expr_list
+tactic.opt_identifier_list	tactic.expr_list
+tactic.location	tactic.expr
+tactic.with_expr	tactic.expr
+tactic.using_expr	tactic.expr
+tactic.none_expr	tactic.expr	tactic.expr.builtin
+tactic.apply	tactic	tactic.builtin
+tactic.eapply	tactic	tactic.builtin
+tactic.fapply	tactic	tactic.builtin
+tactic.rename	tactic	tactic.builtin
+tactic.intro	tactic	tactic.builtin
+tactic.generalize_tac	tactic	tactic.builtin
+tactic.clear	tactic	tactic.builtin
+tactic.revert	tactic	tactic.builtin
+tactic.refine	tactic	tactic.builtin
+tactic.exact	tactic	tactic.builtin
+tactic.rexact	tactic	tactic.builtin
+tactic.check_expr	tactic	tactic.builtin
+tactic.trace	tactic	tactic.builtin
+tactic.rewrite_tac	tactic	tactic.builtin
+tactic.xrewrite_tac	tactic	tactic.builtin
+tactic.krewrite_tac	tactic	tactic.builtin
+tactic.replace	tactic	tactic.builtin
+tactic.blast	tactic	tactic.builtin
+tactic.with_options_tac	tactic	tactic.builtin
+tactic.with_attributes_tac	tactic	tactic.builtin
+tactic.simp	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.simp_nohyps	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.simp_topdown	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.inst_simp	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.rec_simp	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.rec_inst_simp	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.grind	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.grind_simp	tactic	tactic.with_options_tac	tactic.expr.builtin	tactic.blast	tactic.expr_list.nil	tactic.expr_list.nil
+tactic.cases	tactic	tactic.builtin
+tactic.induction	tactic	tactic.builtin
+tactic.intros	tactic	tactic.builtin
+tactic.generalizes	tactic	tactic.builtin
+tactic.clears	tactic	tactic.builtin
+tactic.reverts	tactic	tactic.builtin
+tactic.change	tactic	tactic.builtin
+tactic.assert_hypothesis	tactic	tactic.builtin
+tactic.note_tac	tactic	tactic.builtin
+tactic.constructor	tactic	tactic.builtin
+tactic.fconstructor	tactic	tactic.builtin
+tactic.existsi	tactic	tactic.builtin
+tactic.split	tactic	tactic.builtin
+tactic.left	tactic	tactic.builtin
+tactic.right	tactic	tactic.builtin
+tactic.injection	tactic	tactic.builtin
+tactic.subst	tactic	tactic.builtin
+tactic.substvars	tactic	tactic.builtin
+tactic.reflexivity	tactic	tactic.builtin
+tactic.symmetry	tactic	tactic.builtin
+tactic.transitivity	tactic	tactic.builtin
+tactic.try	tactic	tactic.or_else	tactic.id
+tactic.repeat1	tactic	tactic.and_then	tactic.repeat
+tactic.focus	tactic	tactic.focus_at	zero	num	num_has_zero
+tactic.determ	tactic	tactic.at_most	one	num	num_has_one
+tactic.trivial	tactic	tactic.or_else	tactic.or_else	tactic.apply	tactic.expr.builtin	tactic.apply	tactic.expr.builtin	tactic.assumption
+tactic.do	tactic	nat.rec	tactic	tactic.id	tactic.and_then	nat.of_num

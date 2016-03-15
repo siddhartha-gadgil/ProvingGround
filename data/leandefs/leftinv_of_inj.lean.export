@@ -1,1 +1,0 @@
-mk_left_inv	dite	Exists	eq	classical.prop_decidable	Exists	eq	classical.some	eq	inhabited.value	classical.inhabited_of_nonempty

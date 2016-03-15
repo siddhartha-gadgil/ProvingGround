@@ -1,0 +1,15 @@
+subtype.elt_of	subtype.rec
+subtype.has_property	subtype.elt_of	subtype.rec	subtype.elt_of
+subtype.rec_on	subtype.rec
+subtype.induction_on	subtype.rec
+subtype.destruct	subtype.rec
+subtype.cases_on	subtype.rec
+subtype.elt_of.tag	eq	subtype.elt_of	subtype.tag	eq.refl	subtype.elt_of	subtype.tag
+subtype.no_confusion_type	subtype.cases_on	subtype.cases_on
+subtype.no_confusion	subtype.no_confusion_type	eq.rec	subtype	subtype.no_confusion_type	subtype.cases_on	subtype.no_confusion_type	eq.refl	heq.refl
+subtype.exists_of_subtype	Exists	subtype.cases_on	Exists	exists.intro
+subtype.tag_irrelevant	eq	subtype	subtype.tag	subtype.tag	rfl	subtype	subtype.tag
+subtype.tag_eq	eq	subtype	subtype.tag	subtype.tag	eq.subst	eq	subtype	subtype.tag	subtype.tag	subtype.tag_irrelevant
+subtype.eq	eq	subtype	subtype.cases_on	eq	subtype	subtype.cases_on	eq	subtype	subtype.tag	subtype.tag_eq	subtype.elt_of	subtype.tag	subtype.elt_of	subtype.tag
+subtype.is_inhabited	inhabited	subtype	inhabited.mk	subtype	subtype.tag
+subtype.has_decidable_eq	decidable	eq	subtype	subtype.cases_on	decidable	eq	subtype	subtype.cases_on	decidable	eq	subtype	subtype.tag	decidable_of_decidable_of_iff	eq	eq	subtype	subtype.tag	subtype.tag	iff.intro	eq	eq	subtype	subtype.tag	subtype.tag	subtype.tag_eq	subtype.no_confusion	eq	subtype.tag	subtype.tag

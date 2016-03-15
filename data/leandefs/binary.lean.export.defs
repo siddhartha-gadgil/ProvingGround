@@ -1,0 +1,20 @@
+binary.commutative	eq
+binary.associative	eq
+binary.left_identity	eq
+binary.right_identity	eq
+binary.left_inverse	eq
+binary.right_inverse	eq
+binary.left_cancelative	eq
+binary.right_cancelative	eq
+binary.inv_op_cancel_left	eq
+binary.op_inv_cancel_left	eq
+binary.inv_op_cancel_right	eq
+binary.op_inv_cancel_right	eq
+binary.left_distributive	eq
+binary.right_distributive	eq
+binary.right_commutative	eq
+binary.left_commutative	eq
+binary.left_comm	binary.left_commutative	eq.trans	eq.trans	eq.symm	eq.subst	eq	eq.refl
+binary.right_comm	binary.right_commutative	eq.trans	eq.trans	eq.subst	eq	eq.refl	eq.symm
+binary.comm4	eq	eq.trans	eq.trans	eq.symm	eq.subst	eq	binary.right_comm	eq.refl
+binary.assoc4helper	eq	eq.trans	eq.subst	eq	eq.symm	eq.refl

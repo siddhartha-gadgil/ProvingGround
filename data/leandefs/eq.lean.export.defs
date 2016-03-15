@@ -1,0 +1,22 @@
+eq.irrel	eq	eq	proof_irrel	eq
+eq.id_refl	eq	eq	eq.refl	rfl	eq
+eq.rec_on_id	eq	eq.rec_on	rfl	eq.rec_on
+eq.rec_on_constant	eq	eq.rec_on	eq.drec_on	eq	eq.rec_on	rfl
+eq.rec_on_constant2	eq	eq.rec_on	eq.rec_on	eq.trans	eq.rec_on	eq.rec_on	eq.rec_on_constant	eq.symm	eq.rec_on	eq.rec_on_constant
+eq.rec_on_irrel_arg	eq	eq.rec_on	eq.rec_on	eq.drec_on	eq	eq.rec_on	eq.rec_on	eq.symm	eq.rec_on	eq.rec_on	eq.refl	eq.rec_on	eq.refl	eq.rec_on_id	eq.rec_on	eq.refl
+eq.rec_on_irrel	eq	eq.drec_on	eq.drec_on	eq.subst	eq	eq	eq.drec_on	eq.drec_on	proof_irrel	eq	rfl	eq.drec_on
+eq.rec_on_compose	eq	eq.rec_on	eq.rec_on	eq.rec_on	eq.trans	eq.drec_on	eq	eq.rec_on	eq.rec_on	eq.rec_on	eq.trans	eq.rec_on_id	eq.rec_on	eq.trans
+congr_arg2	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr_arg3	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr_arg4	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr_arg5	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr2	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr3	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr4	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+congr5	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.rec	eq	eq.refl
+equal_f	eq	congr_fun
+eqmp	eq.subst
+eqmpr	eq.subst	eq.symm
+imp_trans
+imp_eq_trans	eq.subst
+eq_imp_trans	eq.subst

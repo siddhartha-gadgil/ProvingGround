@@ -1,0 +1,14 @@
+Phi
+matchA	Phi	A	recA	Phi	A
+betaA	eq	Phi	A	matchA	introA	recA_comp	Phi	A
+introA_injective	eq	Phi	A	eq.rec	Phi	A	matchA	introA	eq	Phi	A	eq.rec	Phi	A	matchA	introA	eq	Phi	A	matchA	introA	betaA	betaA	eq.rec	A	introA	eq	Phi	A	matchA	matchA	introA	eq.refl	Phi	A	matchA	introA	introA	eq.symm	A	introA	introA
+i	eq
+i_injective	eq	eq.symm	eq.subst	eq	eq	rfl	eq.rec	i	eq	i	eq.refl	i	i	eq.symm	i	i
+f	A	introA	i
+f_injective	eq	i_injective	introA_injective	i	i
+P0	Exists	and	eq	A	f	not
+x0	A	f	P0
+fP0_eq	eq	A	f	P0	x0	rfl	A	f	P0
+not_P0_x0	not	P0	x0	Exists.cases_on	and	eq	A	f	x0	not	x0	false	absurd	P0	x0	false	and.elim_right	eq	A	f	P0	x0	not	P0	x0	eq.rec	and	eq	A	f	x0	not	x0	P0	f_injective	P0	and.elim_left	eq	A	f	f	P0	not	x0
+P0_x0	P0	x0	exists.intro	and	eq	A	f	x0	not	x0	P0	and.intro	eq	A	f	P0	x0	not	P0	x0	fP0_eq	not_P0_x0
+inconsistent	false	absurd	P0	x0	false	P0_x0	not_P0_x0

@@ -1,0 +1,11 @@
+setoid.r	setoid.rec
+setoid.iseqv	equivalence	setoid.r	setoid.rec	equivalence	setoid.r
+setoid.rec_on	setoid.rec
+setoid.induction_on	setoid.rec
+setoid.destruct	setoid.rec
+setoid.cases_on	setoid.rec
+setoid.no_confusion_type	setoid.cases_on	setoid.cases_on
+setoid.no_confusion	setoid.no_confusion_type	eq.rec	setoid	setoid.no_confusion_type	setoid.cases_on	setoid.no_confusion_type	eq.refl	heq.refl	equivalence
+setoid.refl	setoid.r	and.elim_left	reflexive	setoid.r	and	symmetric	setoid.r	transitive	setoid.r	setoid.iseqv
+setoid.symm	setoid.r	and.elim_left	symmetric	setoid.r	transitive	setoid.r	and.elim_right	reflexive	setoid.r	and	symmetric	setoid.r	transitive	setoid.r	setoid.iseqv
+setoid.trans	setoid.r	and.elim_right	symmetric	setoid.r	transitive	setoid.r	and.elim_right	reflexive	setoid.r	and	symmetric	setoid.r	transitive	setoid.r	setoid.iseqv

@@ -1,0 +1,4 @@
+bool.cond	bool.rec_on
+bool.bor	bool	bool.rec_on	bool	bool.rec_on	bool	bool.ff	bool.tt	bool.tt
+bool.band	bool	bool.rec_on	bool	bool.ff	bool.rec_on	bool	bool.ff	bool.tt
+bool.bnot	bool	bool.rec_on	bool	bool.tt	bool.ff

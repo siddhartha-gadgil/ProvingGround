@@ -1,0 +1,5 @@
+pair	prod	prod.mk
+prod.destruct	prod.cases_on
+prod.pr1.mk	eq	prod.pr1	prod.mk	rfl	prod.pr1	prod.mk
+prod.pr2.mk	eq	prod.pr2	prod.mk	rfl	prod.pr2	prod.mk
+prod.eta	eq	prod	prod.mk	prod.pr1	prod.pr2	prod.cases_on	eq	prod	prod.mk	prod.pr1	prod.pr2	rfl	prod	prod.mk	prod.pr1	prod.mk	prod.pr2	prod.mk

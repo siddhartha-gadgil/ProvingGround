@@ -1,0 +1,5 @@
+unit.eq	eq	unit	unit.rec_on	eq	unit	unit.rec_on	eq	unit	unit.star	rfl	unit	unit.star
+unit.eq_star	eq	unit	unit.star	unit.eq	unit.star
+unit.subsingleton	subsingleton	unit	subsingleton.intro	unit	unit.eq
+unit.is_inhabited	inhabited	unit	inhabited.mk	unit	unit.star
+unit.has_decidable_eq	decidable_eq	unit	decidable.inl	eq	unit	unit.eq

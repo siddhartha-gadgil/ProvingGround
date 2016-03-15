@@ -1,0 +1,11 @@
+private.3434745746.eqv	true
+private.3273445464.eqv_refl	private.3434745746.eqv	trivial
+private.3425053949.eqv_symm	private.3434745746.eqv	trivial
+private.3457088348.eqv_trans	private.3434745746.eqv	trivial
+squash_setoid	setoid	setoid.mk	private.3434745746.eqv	mk_equivalence	private.3434745746.eqv	private.3273445464.eqv_refl	private.3425053949.eqv_symm	private.3457088348.eqv_trans
+squash	quot	squash_setoid
+squash.mk	squash	quot.mk	squash_setoid
+squash.irrelevant	eq	squash	quot.induction_on₂	squash_setoid	squash_setoid	eq	quot	squash_setoid	quot.sound	squash_setoid	trivial
+squash.lift	quot.lift_on	squash_setoid	subsingleton.elim
+decidable_eq_squash	decidable_eq	squash	decidable.inl	eq	squash	squash.irrelevant
+subsingleton_squash	subsingleton	squash	subsingleton.intro	squash	squash.irrelevant

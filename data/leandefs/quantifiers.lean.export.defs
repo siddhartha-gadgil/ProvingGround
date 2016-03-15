@@ -1,0 +1,14 @@
+exists_imp_distrib	iff	iff.intro	exists.intro	Exists.rec
+forall_iff_not_exists	iff	not	Exists	not	exists_imp_distrib	false
+not_forall_not_of_exists	not	not	Exists.cases_on	false	absurd	false
+not_exists_not_of_forall	not	Exists	not	Exists.cases_on	not	false	absurd	false
+not_forall_of_exists_not	not	not_exists_not_of_forall
+forall_true_iff_true	iff	true	true	iff_true_intro	true	trivial
+forall_p_iff_p	iff	iff.intro	inhabited.destruct
+exists_p_iff_p	iff	Exists	iff.intro	Exists	Exists.rec	inhabited.destruct	Exists	exists.intro
+forall_and_distribute	iff	and	and	iff.intro	and	and	and.intro	and.left	and.right	and.intro	and.left	and.right
+exists_or_distribute	iff	Exists	or	or	Exists	Exists	iff.intro	Exists	or	or	Exists	Exists	Exists.rec	or	or	Exists	Exists	or.imp	Exists	Exists	exists.intro	exists.intro	or.rec	Exists	Exists	Exists	or	exists_imp_exists	or	or.inl	exists_imp_exists	or	or.inr
+decidable_exists_eq	decidable	Exists	and	eq	dite	decidable	Exists	and	eq	decidable.inl	Exists	and	eq	exists.intro	and	eq	and.intro	eq	rfl	decidable.inr	Exists	and	eq	Exists.rec	and	eq	false	and.rec	eq	false	eq.substr	not
+the	classical.some	exists_of_exists_unique
+the_spec	the	classical.some_spec	exists_of_exists_unique
+eq_the	eq	the	unique_of_exists_unique	the	the_spec
