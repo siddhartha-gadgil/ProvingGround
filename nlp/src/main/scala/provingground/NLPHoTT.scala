@@ -1,11 +1,11 @@
 package provingground
 
 import provingground.NlpProse._
-import provingground.HoTT._
+//import provingground.HoTT._
 import provingground.TheoryTypes.{Term => TheoryTerm, Apply => TheoryApply, _}
 
 
-import scala.language.implicitConversions
+//import scala.language.implicitConversions
 
 /** Parses prose to HoTT
  *  Gives context-free expressions, not actual typed terms.
