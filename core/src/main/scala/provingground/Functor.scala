@@ -39,6 +39,22 @@ object Functor{
   implicit def composeFunctors[X[_]: Functor, Y[_] : Functor] =
     new ComposeFunctors[X, Y].Func
   
+  class ConstFunc[C]{
+    type Z[A] = C
+    def Func : Functor[Z] = new Functor[Z]{
+      def map[A, B](fa: C)(f: A => B) = fa
+    }
+  }
+  
+  implicit def constantFunctor[C] = 
+    new ConstFunc[C].Func
+    
+  type Weight[A] = (A, Double)
+  
+  implicit object WeightFunctor extends Functor[Weight]{
+    def map[A, B](fa: (A, Double))(f: A => B)  = (f(fa._1), fa._2)
+  }
+    
   class T2[X[_]: Functor, Y[_] : Functor]{
     type Z[A] = (X[A], Y[A])
     def Func : Functor[Z] = new Functor[Z]{
