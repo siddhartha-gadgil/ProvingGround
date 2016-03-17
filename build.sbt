@@ -152,7 +152,7 @@ lazy val nlp = (project in file("nlp")).
         settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Main.run("import scala.collection.JavaConversions._") """).
-        dependsOn(coreJVM).dependsOn(functionfinder)
+        dependsOn(coreJVM)
 
 lazy val translation = (project in file("translation")).
       settings(name := "ProvingGround-Translation",
