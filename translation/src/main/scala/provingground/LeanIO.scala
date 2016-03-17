@@ -23,7 +23,7 @@ object LeanIO {
     val lines = defs map (_.depPickle)
     val out = outputDir / file.name
     rm(out)
-    lines map((l) => {write.append(out+"\n", l); l})
+    lines map((l) => {write.append(out, l+"\n"); l})
   }
 
   def futPickleDefs(file: Path, outputDir: Path) =
