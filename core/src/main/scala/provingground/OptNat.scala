@@ -51,5 +51,57 @@ object OptNat{
   
   implicit def t2ON[X1[_] : OptNat, X2[_] : OptNat] = 
     new T2[X1, X2].OpN
+    
+    
+  class T3[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat]{
+    type Z[A] = (X1[A], X2[A], X3[A])
+    
+    def OpN : OptNat[Z] = new OptNat[Z]{
+      def optF[A](fo : Z[Option[A]]) = 
+        for (
+            x1<- implicitly[OptNat[X1]].optF(fo._1);
+            x2<- implicitly[OptNat[X2]].optF(fo._2);
+            x3<- implicitly[OptNat[X3]].optF(fo._3)) 
+          yield (x1, x2, x3)
+    }
+  }
+  
+  implicit def t3ON[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat] = 
+    new T3[X1, X2, X3].OpN
+    
+  class T4[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat, X4[_] : OptNat]{
+    type Z[A] = (X1[A], X2[A], X3[A], X4[A])
+    
+    def OpN : OptNat[Z] = new OptNat[Z]{
+      def optF[A](fo : Z[Option[A]]) = 
+        for (
+            x1<- implicitly[OptNat[X1]].optF(fo._1);
+            x2<- implicitly[OptNat[X2]].optF(fo._2);
+            x3<- implicitly[OptNat[X3]].optF(fo._3);
+            x4<- implicitly[OptNat[X4]].optF(fo._4)) 
+          yield (x1, x2, x3, x4)
+    }
+  }
+  
+  implicit def t4ON[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat, X4[_] : OptNat] = 
+    new T4[X1, X2, X3, X4].OpN
+    
+  class T5[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat, X4[_] : OptNat, X5[_] : OptNat]{
+    type Z[A] = (X1[A], X2[A], X3[A], X4[A], X5[A])
+    
+    def OpN : OptNat[Z] = new OptNat[Z]{
+      def optF[A](fo : Z[Option[A]]) = 
+        for (
+            x1<- implicitly[OptNat[X1]].optF(fo._1);
+            x2<- implicitly[OptNat[X2]].optF(fo._2);
+            x3<- implicitly[OptNat[X3]].optF(fo._3);
+            x4<- implicitly[OptNat[X4]].optF(fo._4);
+            x5<- implicitly[OptNat[X5]].optF(fo._5)) 
+          yield (x1, x2, x3, x4, x5)
+    }
+  }
+  
+  implicit def t5ON[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat, X4[_] : OptNat, X5[_] : OptNat] = 
+    new T5[X1, X2, X3, X4, X5].OpN
   
 }

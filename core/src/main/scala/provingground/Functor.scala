@@ -96,14 +96,14 @@ object Functor{
 object Tests{
   type LL[A] = (List[A], List[A]); val ll = implicitly[Functor[LL]]
 
-  type LI[A] = (Id[A], List[A]); val li = implicitly[Functor[LI]]
+  type IL[A] = (Id[A], List[A]); val li = implicitly[Functor[IL]]
   
-  val xx : LI[Int] = (1, List(1, 2))
+  val xx : IL[Int] = (1, List(1, 2))
   
   val a = liftMap(List(1, 2, 3), (n: Int) => n + 1)
   
   val b = liftMap[Int, Int, LL]((List(1), List(2)), (n: Int) => n +1)
   
-  val c = liftMap[Int, Int, LI]((3, List(1, 2)), (n: Int) => n+1)
+  val c = liftMap[Int, Int, IL]((3, List(1, 2)), (n: Int) => n+1)
   }
 }
