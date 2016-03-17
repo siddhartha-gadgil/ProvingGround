@@ -25,11 +25,19 @@ As this is small enough, it is more convenient to build a custom language. This 
   * with these commuting in unusual ways.
   * allowing interpretation as types by picking witnesses to statements.  
 
+**Use Type-classes:**
+
+* Whether a built expression is valid, especially for function applications, depends on details of interpretation, especially types.
+* Hence it is not good to just have formal expressions.
+* Instead we define a type-class for being able to build expressions.
+* We may even factor into different type-classes, for instance with _some_ and _all_ separated from the core operations.
+* Further, we can have more evolved type-classes with Pi's and lambda's (not just fragments) built implicitly from the basic ones.
+* As the source language is likely to be fixed, we do not abstract for now.
+
 ### Source
 
-The raw source will be wikipedia and latex files. This is processed by the Stanford NLP tools to give _constituent parse_ trees, as well as _ner_, _coref_ etc.
-
-In addition, the source contains latex. This has to be parsed separately, with formulas being replaced by dummy proper nouns (_Capitalized_ names) before parsing.
+* The raw source will be wikipedia and latex files. This is processed by the Stanford NLP tools to give _constituent parse_ trees, as well as _ner_, _coref_ etc.
+* In addition, the source contains latex. This has to be parsed separately, with formulas being replaced by dummy proper nouns (_Capitalized_ names) before parsing.
 
 ### Recursive parsing
 
