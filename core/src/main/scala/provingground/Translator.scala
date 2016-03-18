@@ -63,4 +63,26 @@ object Translator{
     }
   }
   
+  case class MatchSplit[I, X[_]: Functor : OptNat](split: I => Option[X[I]]){
+    def map[J](f: I => I) = {
+      val lift = (xi: X[I]) => Functor.liftMap(xi, f)
+      MatchSplit((inp: I) => split(inp) map lift)
+    }
+    
+    def join[O](build: X[O] => Option[O]) = Junction(split, build)
+  }
+  
+  
+  object MatchSplit{
+    def fromMatcher[I, X[_]: Functor : OptNat, S](matcher: I => Option[Map[S, I]], varword: X[S]) = {
+      MatchSplit( 
+        (inp: I) => 
+          matcher(inp) map (Functor.liftMap(varword, _))
+        )
+    }
+  }
+  
+  case class VarWord[X[_]: Functor : OptNat, S](word: X[S]){
+    def apply[I](matcher: I => Option[Map[S, I]]) = MatchSplit.fromMatcher(matcher, word)
+  }
 }
