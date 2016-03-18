@@ -303,3 +303,25 @@ The lifts we actually use are:
     (. .)))
 
 ```
+
+* ``if a prime number P divides MN, P divides one of M and N``
+
+```
+(ROOT
+  (S
+    (SBAR (IN if)
+      (S
+        (NP (DT a) (JJ prime) (NN number) (NN P))
+        (VP (VBZ divides)
+          (NP (NNP MN)))))
+    (, ,)
+    (NP (NNP P))
+    (VP (VBZ divides)
+      (NP
+        (NP (CD one))
+        (PP (IN of)
+          (NP (NNP M)
+            (CC and)
+            (NNP N)))))))
+
+```

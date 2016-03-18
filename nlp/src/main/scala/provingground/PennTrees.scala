@@ -17,14 +17,18 @@ object PennTrees {
     }
   }
   
-  sealed class TreeView
+  sealed trait TreeModel
   
-  case class LeafView(value: String) extends TreeView
+  case class LeafModel(value: String) extends TreeModel{
+    override def toString = s"""Leaf("$value")"""
+  }
   
-  case class NodeView(value: String, children: List[TreeView]) extends TreeView
+  case class NodeModel(value: String, children: List[TreeModel]) extends TreeModel{
+    override def toString = s"""Node("$value", ${children})"""
+  }
   
-  def view(t: Tree) : TreeView = t match {
-    case Leaf(s) => LeafView(s)
-    case Node(s, children) => NodeView(s, children map view)
+  def model(t: Tree) : TreeModel = t match {
+    case Leaf(s) => LeafModel(s)
+    case Node(s, children) => NodeModel(s, children map model)
   }
 }
