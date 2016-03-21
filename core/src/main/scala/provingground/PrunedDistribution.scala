@@ -17,7 +17,7 @@ sealed trait PrunedDistribution[A] {
   
   def <*>(scale: Double) = PrunedDistribution.Scaled(this, scale)
   
-  def <+>(that: PrunedDistribution[A]) = PrunedDistribution.Sum(this, that) 
+  def <+>(that: => PrunedDistribution[A]) = PrunedDistribution.Sum(this, that) 
   
   def map[B](f: A => B) = getFD flatMap ((fd) => pruneFD(fd.map(f), cutoff))
   
