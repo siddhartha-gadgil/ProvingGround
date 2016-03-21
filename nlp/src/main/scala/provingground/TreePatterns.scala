@@ -9,32 +9,24 @@ object TreePatterns {
     def unapply(s: String) : Option[String] = Some(s.toLowerCase)
   }
   
-  object IfClause{
-    def unapply(tree: Tree) = tree match {
-  case Node("SBAR", List(Node("IN", List(Leaf(word("if")))), t)) => Some(t)
-  case _ => None
-  }
+  class Pattern[Z](pf: PartialFunction[Tree, Z]){
+    def unapply(t: Tree) = pf.lift(t)
   }
   
-  object Then{
-    def unapply(tree: Tree) = tree match {
-      case Node("S", x :: Node("ADVP",List(Node("RB",List(Leaf(word("then")))))) :: ys) => Some((x, ys))
-      case _ => None
-    }
-  }
+  object IfClause extends Pattern({case Node("SBAR", List(Node("IN", List(Leaf(word("if")))), t)) => t})
   
-  object IfTree{
-    def unapply(tree: Tree) = tree match {
-      case Node("S", IfClause(x) :: ys) => Some((x, ys))
-      case IfClause(Then(x, ys)) => Some((x, ys))
-      case _ => None
-    }
-  }
+  object Then extends Pattern({case Node("S", x :: Node("ADVP",List(Node("RB",List(Leaf(word("then")))))) :: ys) => (x, ys)})
   
-  object NPVP{
-    def unapply(tree: Tree) = tree match {
-      case Node("S", List(Node("NP", xs), Node("VP", ys))) => Some((xs, ys))
-      case _ => None
-    }
-  }
+  object IfTree extends Pattern(
+      {case Node("S", IfClause(x) :: ys) => (x, ys)
+      case IfClause(Then(x, ys)) => (x, ys)
+      })
+  
+  object VP extends Pattern({case Node("VP", xs) => xs})
+  
+  object NP extends Pattern({case Node("NP", xs) => xs})
+  
+  object NPVP extends Pattern(
+      {case Node("S", List(NP(xs), VP(ys))) => (xs, ys)})
+  
 }

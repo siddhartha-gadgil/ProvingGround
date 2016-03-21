@@ -55,6 +55,11 @@ The lifts we actually use are:
 * From A => Option[B] we get X[A] => Option[X[B]].
 * From C => Option[D] we get Option[C] = > Option[D] (ordinary flatMap).
 
+### Stochasticity: correcting for incorrect parse trees.
+
+* We can make only the builders stochastic.
+* __Question:__ Can this be achieved by just taking the output language to be probability distributions?
+
 ## Rules for parsing
 
 * A noun phrase, verb phrase can represent function application, with the verb being interpreted as a function.
