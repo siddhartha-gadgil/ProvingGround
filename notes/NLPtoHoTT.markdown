@@ -330,3 +330,91 @@ The lifts we actually use are:
             (NNP N)))))))
 
 ```
+
+* ``If a prime number divides MN, it divides one of M and N``
+
+```
+(ROOT
+  (S
+    (SBAR (IN If)
+      (S
+        (NP (DT a) (JJ prime) (NN number))
+        (VP (VBZ divides)
+          (NP (NNP MN)))))
+    (, ,)
+    (NP (PRP it))
+    (VP (VBZ divides)
+      (NP
+        (NP (CD one))
+        (PP (IN of)
+          (NP (NNP M)
+            (CC and)
+            (NNP N)))))))
+
+```
+
+* ``If a prime number P divides MN, it divides one of M and N``
+
+```
+(ROOT
+  (S
+    (SBAR (IN If)
+      (S
+        (NP (DT a) (JJ prime) (NN number) (NN P))
+        (VP (VBZ divides)
+          (NP (NNP MN)))))
+    (, ,)
+    (NP (PRP it))
+    (VP (VBZ divides)
+      (NP
+        (NP (CD one))
+        (PP (IN of)
+          (NP (NNP M)
+            (CC and)
+            (NNP N)))))))
+
+```
+
+* ``If a prime number Pong divides MN, Pong divides one of M and N``
+
+```
+(ROOT
+  (S
+    (SBAR (IN If)
+      (S
+        (NP (DT a) (JJ prime) (NN number) (NNP Pong))
+        (VP (VBZ divides)
+          (NP (NNP MN)))))
+    (, ,)
+    (NP (NNP Pong))
+    (VP (VBZ divides)
+      (NP
+        (NP (CD one))
+        (PP (IN of)
+          (NP (NNP M)
+            (CC and)
+            (NNP N)))))))
+
+```
+
+* ``If a prime number Pong divides MN, it divides one of M and N``
+
+```
+(ROOT
+  (S
+    (SBAR (IN If)
+      (S
+        (NP (DT a) (JJ prime) (NN number) (NNP Pong))
+        (VP (VBZ divides)
+          (NP (NNP MN)))))
+    (, ,)
+    (NP (PRP it))
+    (VP (VBZ divides)
+      (NP
+        (NP (CD one))
+        (PP (IN of)
+          (NP (NNP M)
+            (CC and)
+            (NNP N)))))))
+
+```
