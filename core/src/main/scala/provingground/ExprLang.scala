@@ -17,14 +17,22 @@ trait ExprLang[E]{
    */
   def anonVar(typ: E): Option[E]
 
+  /**
+   * meta-variable of a given type, i.e., whose value must be inferred 
+   * (elaborated in lean's terminology). 
+   */
+  def metaVar(typ: E): Option[E]
+  
   def lambda(variable: E, value: E) : Option[E]
 
   def pi(variable: E, typ: E): Option[E]
 
   def appln(func: E, arg: E): Option[E]
 
-  def sigma(variable: E, typFamily: E) : Option[E]
-
+  def equality(lhs: E, rhs: E) : Option[E]
+  
+  def sigma(variable: E, typFamily: E) : Option[E]  
+  
   def pair (x: E, y: E): Option[E]
 
   def proj1(xy: E): Option[E]
@@ -58,7 +66,10 @@ trait ExprLang[E]{
   def formula(fmla: String):  Option[E]
 
   /**
-   * optionally parse token, such as function in language, to expression.
+   * optionally parse token, such as function in language, to expression;
+   * note that this changes with more definitions,
+   * so it may be best to refer to something external, which can be a mutable buffer, database etc.;
+   * this may also be context  specific - so signature may change (e.g. to include context).
    */
   def vocab(name: String): Option[E]
 
