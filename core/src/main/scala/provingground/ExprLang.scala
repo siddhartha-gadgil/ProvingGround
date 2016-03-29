@@ -66,12 +66,12 @@ trait ExprLang[E]{
   def formula(fmla: String):  Option[E]
 
   /**
-   * optionally parse token, such as function in language, to expression;
+   * optionally parse token, such as function in language, to expression, depending on context;
    * note that this changes with more definitions,
    * so it may be best to refer to something external, which can be a mutable buffer, database etc.;
-   * this may also be context  specific - so signature may change (e.g. to include context).
+   * 
    */
-  def vocab(name: String): Option[E]
+  def vocab[C](name: String, context: C): Option[E]
 
   def numeral(n: Int): Option[E]
   
