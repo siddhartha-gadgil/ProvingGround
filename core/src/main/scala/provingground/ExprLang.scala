@@ -10,7 +10,7 @@ import scala.util.Try
 * * variables with names and anonymous variables
 */
 trait ExprLang[E]{
-  def variable(name: String, typ: E): Option[E]
+  def variable[S](name: S, typ: E): Option[E]
 
   /**
    * anonymous variable
