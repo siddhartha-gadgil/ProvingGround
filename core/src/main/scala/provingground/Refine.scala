@@ -28,7 +28,11 @@ object RefineTerms {
       FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]], newcod.asInstanceOf[Typ[newcod.Obj]])
     case PiTyp(fibre) =>
       refine(fibre) match {
-        case newFibre : Func[u, Typ[v]] if newFibre.isInstanceOf[Func[u, Typ[v]]] => PiTyp(newFibre)
+        case newFibre : Func[u, _] =>
+          newFibre.codom match {
+            case _ : Typ[v] =>
+              PiTyp(newFibre.asInstanceOf[Func[u, Typ[v]]])
+          }
         case _ => typ
       }
     case _ => typ
