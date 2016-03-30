@@ -29,7 +29,7 @@ object RefineTerms {
     case PiTyp(fibre) =>
       refine(fibre) match {
         case newFibre : Func[u, _] =>
-          newFibre.codom match {
+          newFibre.codom.obj match {
             case _ : Typ[v] =>
               PiTyp(newFibre.asInstanceOf[Func[u, Typ[v]]])
           }
