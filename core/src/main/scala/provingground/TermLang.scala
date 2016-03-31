@@ -77,11 +77,11 @@ case class TermLang(
   }
   
   def incl1(typ : Term) : Option[Term] = typ match {
-    case pt: PlusTyp => Some(pt.ifn)
+    case pt: PlusTyp[u, v] => Some(pt.ifn)
   }
 
   def incl2(typ: Term) :  Option[Term] = typ match {
-    case pt: PlusTyp => Some(pt.jfn)
+    case pt: PlusTyp[u, v] => Some(pt.jfn)
   }
 
   /**

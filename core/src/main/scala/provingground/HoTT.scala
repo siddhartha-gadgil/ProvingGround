@@ -1248,7 +1248,7 @@ object HoTT {
     /**
      * A -> A + B
      */
-    case class FirstIncl(typ: PlusTyp, value: Term) extends Term {
+    case class FirstIncl[U<: Term with Subs[U], V <: Term with Subs[V]](typ: PlusTyp[U, V], value: Term) extends Term {
 
       def newobj = this
 
@@ -1258,7 +1258,7 @@ object HoTT {
     /**
      * B -> A + B
      */
-    case class ScndIncl(typ: PlusTyp, value: Term) extends Term {
+    case class ScndIncl[U<: Term with Subs[U], V <: Term with Subs[V]](typ: PlusTyp[U, V], value: Term) extends Term {
       def newobj = this
 
       def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
@@ -1268,7 +1268,7 @@ object HoTT {
   /**
    * type A + B
    */
-  case class PlusTyp(first: Typ[Term], second: Typ[Term]) extends SmallTyp {
+  case class PlusTyp[U<: Term with Subs[U], V <: Term with Subs[V]](first: Typ[U], second: Typ[V]) extends SmallTyp {
     def i(value: Term) = PlusTyp.FirstIncl(this, value)
 
     def j(value: Term) = PlusTyp.ScndIncl(this, value)
