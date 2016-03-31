@@ -75,6 +75,17 @@ object Statement{
   
 }
 
+sealed trait Scoped[S]{
+  def ::[L](label: L) = Scoped.Cons(label, this)
+}
+
+object Scoped{
+  case class Outer[S](body: S) extends Scoped[S]
+  
+  case class Cons[L, S](label: L, inner: Scoped[S]) extends Scoped[S]
+}
+
+
 /**
  * Type-class for  writing to a document of type D in terms of expressions of type E.
  * We can write statements and begin and end blocks.
@@ -110,4 +121,10 @@ object MathWriter{
       def end(e: Statement.Beginning, doc: NestedDoc[Statement[E]]) =
         doc.end(e)
   }
+}
+
+trait MathReader[D, E]{
+  def read(doc: D): Vector[Scoped[Statement[E]]]
+  
+  def contexts(doc: D) : Map[Scoped[Statement[E]], Vector[Scoped[Statement[E]]]]
 }
