@@ -1248,7 +1248,8 @@ object HoTT {
     /**
      * A -> A + B
      */
-    case class FirstIncl[U<: Term with Subs[U], V <: Term with Subs[V]](typ: PlusTyp[U, V], value: U) extends Term {
+    case class FirstIncl[U<: Term with Subs[U], V <: Term with Subs[V]](
+        typ: PlusTyp[U, V], value: U) extends Term with Subs[FirstIncl[U, V]] {
 
       def newobj = this
 
@@ -1258,7 +1259,8 @@ object HoTT {
     /**
      * B -> A + B
      */
-    case class ScndIncl[U<: Term with Subs[U], V <: Term with Subs[V]](typ: PlusTyp[U, V], value: V) extends Term {
+    case class ScndIncl[U<: Term with Subs[U], V <: Term with Subs[V]](
+        typ: PlusTyp[U, V], value: V) extends Term with Subs[ScndIncl[U, V]] {
       def newobj = this
 
       def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
@@ -1275,12 +1277,12 @@ object HoTT {
 
     val ifn = {
       val a = first.Var
-      lmbda[U, Term](a)(i(a))
+      lmbda(a)(i(a))
     }
 
     val jfn = {
       val a = second.Var
-      lmbda[V, Term](a)(j(a))
+      lmbda(a)(j(a))
     }
   }
 

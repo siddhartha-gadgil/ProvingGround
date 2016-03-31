@@ -18,8 +18,8 @@ object PlusTypInduc {
 		def newobj = this
 
 	  def act(u : Term) = u match {
-	    case FirstIncl(`first`, a) => firstfn(a)
-	    case ScndIncl(`second`, b) => scndfn(b)
+	    case FirstIncl(`first`, a: Term) => firstfn(a)
+	    case ScndIncl(`second`, b: Term) => scndfn(b)
 	    case _ => codom.symbObj(ApplnSym(this, u))
 	  }
 
@@ -43,8 +43,8 @@ object PlusTypInduc {
 		def newobj = this
 
 	  def act(u : Term) = u match {
-	    case FirstIncl(`first`, a) => firstfn(a)
-	    case ScndIncl(`second`, b) => scndfn(b)
+	    case FirstIncl(`first`, a: Term) => firstfn(a)
+	    case ScndIncl(`second`, b: Term) => scndfn(b)
 	    case _ => depcodom(u).symbObj(ApplnSym(this, u))
 	  }
 
