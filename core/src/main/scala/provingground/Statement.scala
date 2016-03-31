@@ -128,3 +128,12 @@ trait MathReader[D, E]{
   
   def contexts(doc: D) : Map[Scoped[Statement[E]], Vector[Scoped[Statement[E]]]]
 }
+
+object MathReader{
+  implicit def nestedDocReader[E] : MathReader[NestedDoc[Statement[E]], E] = 
+    new MathReader[NestedDoc[Statement[E]], E]{
+      def read(doc: NestedDoc[Statement[E]]) = doc.read
+      
+      def contexts(doc: NestedDoc[Statement[E]]) = doc.contexts
+  }
+}
