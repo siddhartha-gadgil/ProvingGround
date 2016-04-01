@@ -84,23 +84,23 @@ object Translator{
    * The splitting part of a junction, pattern matching and splitting to a given shape.
    * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
    */
-  case class MatchSplit[I, X[_]: Functor : OptNat](split: I => Option[X[I]]){
+  case class Pattern[I, X[_]: Functor : OptNat](split: I => Option[X[I]]){
     def map[J](f: I => I) = {
       val lift = (xi: X[I]) => Functor.liftMap(xi, f)
-      MatchSplit((inp: I) => split(inp) map lift)
+      Pattern((inp: I) => split(inp) map lift)
     }
     
     def join[O](build: X[O] => Option[O]) = Junction(split, build)
   }
   
   
-  object MatchSplit{
+  object Pattern{
     /**
      * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
      * This is problematic if lists should be returned.
      */
     def fromMatcher[I, X[_]: Functor : OptNat, S](matcher: I => Option[Map[S, I]], varword: X[S]) = {
-      MatchSplit( 
+      Pattern( 
         (inp: I) => 
           matcher(inp) map (Functor.liftMap(varword, _))
         )
@@ -111,13 +111,13 @@ object Translator{
      * The shape X[_] must be specified.
      */
     def cast[I, X[_]: Functor : OptNat](split: I => Option[Any]) = 
-      MatchSplit[I, X]((inp: I) => split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption)) 
+      Pattern[I, X]((inp: I) => split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption)) 
   }
   
   /**
    * A word fixing the shape of patterns to which we match. Should work fine for tuples, but problematic with Lists returned.
    */
   case class VarWord[X[_]: Functor : OptNat, S](word: X[S]){
-    def apply[I](matcher: I => Option[Map[S, I]]) = MatchSplit.fromMatcher(matcher, word)
+    def apply[I](matcher: I => Option[Map[S, I]]) = Pattern.fromMatcher(matcher, word)
   }
 }

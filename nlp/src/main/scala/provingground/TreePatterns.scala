@@ -24,8 +24,11 @@ object TreePatterns {
   
   import Translator._
     
-  val ifMatch = MatchSplit[Tree, Functor.IL](IfTree.unapply)
+  val ifPattern = Translator.Pattern[Tree, Functor.IL](IfTree.unapply)
 
+  object Test{
+    val ifTrans = ifPattern.join((xl: (Int, List[Int])) => xl._2.headOption map (_ + xl._1))
+  }
   
   object VP extends Pattern({case Node("VP", xs) => xs})
   
