@@ -22,6 +22,11 @@ object TreePatterns {
       case IfClause(Then(x, ys)) => (x, ys)
       })
   
+  import Translator._
+    
+  val ifMatch = MatchSplit[Tree, Functor.IL](IfTree.unapply)
+
+  
   object VP extends Pattern({case Node("VP", xs) => xs})
   
   object NP extends Pattern({case Node("NP", xs) => xs})

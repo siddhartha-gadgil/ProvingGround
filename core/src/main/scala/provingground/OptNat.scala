@@ -104,4 +104,11 @@ object OptNat{
   implicit def t5ON[X1[_] : OptNat, X2[_] : OptNat, X3[_] : OptNat, X4[_] : OptNat, X5[_] : OptNat] = 
     new T5[X1, X2, X3, X4, X5].OpN
   
+  object Tests{
+    val ii =implicitly[OptNat[Functor.II]]
+    
+    val li = implicitly[OptNat[Functor.IL]]
+    
+    val ll = implicitly[OptNat[Functor.LL]]
+  }
 }

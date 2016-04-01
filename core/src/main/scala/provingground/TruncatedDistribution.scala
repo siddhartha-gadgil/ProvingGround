@@ -18,7 +18,7 @@ sealed trait TruncatedDistribution[A] {
   def flatMap[B](f: A => TruncatedDistribution[B]) =
     TruncatedDistribution.FlatMap(this, f)
 }
-
+ 
 object TruncatedDistribution{
   case class Empty[A]() extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = None
@@ -27,7 +27,7 @@ object TruncatedDistribution{
 
   def pruneFD[A](fd:  => FiniteDistribution[A], cutoff: Double) =
     if (cutoff > 1.0) None
-      else {
+      else { 
         val dist = fd.flatten.pmf filter (_.weight > cutoff)
         if (dist.isEmpty) None else Some(FiniteDistribution(dist))
       }
@@ -62,6 +62,16 @@ object TruncatedDistribution{
       base: TruncatedDistribution[A], f: A =>B) extends TruncatedDistribution[B]{
     def getFD(cutoff: Double) = base.getFD(cutoff).map((d) => d map f)
   }
+  
+  def lift[A, B](f: A =>B) = 
+    (base: TruncatedDistribution[A]) => (Map(base, f) : TruncatedDistribution[B])
+    
+  def liftOp[A, B, C](op: (A, B) => C) = { 
+    def lop(xd : TruncatedDistribution[A], yd: TruncatedDistribution[B]) = 
+        (for (x <- xd; y <- yd) yield op(x, y)) : TruncatedDistribution[C]
+    lop _
+    }
+  
 
   case class FlatMap[A, B](
       base: TruncatedDistribution[A], f: A => TruncatedDistribution[B]) extends TruncatedDistribution[B]{

@@ -108,11 +108,19 @@ object Functor{
     new T5[X1, X2, X3, X4, X5].Func
   }
   
+  type LL[A] = (List[A], List[A]); 
+
+  type IL[A] = (Id[A], List[A]); 
+  
+  type II[A] = (Id[A], Id[A]);
+  
   // Tests:  
 object Tests{
-  type LL[A] = (List[A], List[A]); val ll = implicitly[Functor[LL]]
-
-  type IL[A] = (Id[A], List[A]); val li = implicitly[Functor[IL]]
+  val ll = implicitly[Functor[LL]]
+  
+  val li = implicitly[Functor[IL]]
+  
+   val ii = implicitly[Functor[II]]
   
   val xx : IL[Int] = (1, List(1, 2))
   
