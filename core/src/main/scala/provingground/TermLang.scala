@@ -8,10 +8,7 @@ import scala.language.existentials
 
 import scala.util.Try
 
-case class TermLang(
-    dictionary : String => Option[Term] = (s) => None,
-    formulas : String => Option[Term] = (f) => None,
-    conversions: Term => Iterator[Term] = (t) => Seq(t).iterator) extends ExprLang[Term]{
+case object TermLang extends ExprLang[Term]{
    def variable[S](name: S, typ: Term): Option[Term] = (name, typ) match {
      case (s: String, t: Typ[u]) =>
        Some(t.symbObj(s))
@@ -40,20 +37,28 @@ case class TermLang(
     case _ => None
   }
 
+  def appln(func: Term, arg: Term) = func match 
+  {
+    case fn : FuncLike[u, v] if fn.dom == arg.typ => Try(fn(arg.asInstanceOf[u])).toOption
+    case _ => None
+  }
+  /*
   def appln(func: Term, arg: Term): Option[Term] ={
     def act(x: Term) = func match 
   {
-    case fn : FuncLike[u, v] => Try(fn(x.asInstanceOf[u])).toOption
+    case fn : FuncLike[u, v] if fn.dom == arg.typ => Try(fn(x.asInstanceOf[u])).toOption
     case _ => None
   }
     (conversions(arg) map (act)).flatten.toStream.headOption
 //    act(arg)
   }
+  */
+  
   def equality(lhs: Term, rhs: Term) : Option[Term] = 
-    Try(lhs =:= rhs).toOption
+    if (lhs.typ == rhs.typ) Try(lhs =:= rhs).toOption else None
   
   def sigma(variable: Term, typ: Term) : Option[Term] = typ match {    
-    case t: Typ[u] => Try(refine(HoTT.sigma(variable)(t))).toOption
+    case t: Typ[u]  => Try(refine(HoTT.sigma(variable)(t))).toOption
     case _ => None
   }
   
@@ -97,23 +102,26 @@ case class TermLang(
   /**
    * false type
    */
-  def ff : Option[Term] = Some(Zero)
+  def ff : Option[Term] = Some(Zero) 
 
-  /**
-   * optionally parse formula (such as latex) to expression.
-   */
-  def formula(fmla: String):  Option[Term] = formulas(fmla)
 
-  /**
-   * optionally parse token, such as function in language, to expression, depending on context;
-   * note that this changes with more definitions,
-   * so it may be best to refer to something external, which can be a mutable buffer, database etc.;
-   * 
-   */
-  def vocab[C](name: String, context: C): Option[Term] = 
-    dictionary(name)
 
   def numeral(n: Int): Option[Term] = 
     Try(NatRing.Literal(n)).toOption
-   
+ 
+    
+  def isPair : Term => Option[(Term, Term)] = {
+    case xy : AbsPair[u, v] => Some((xy.first, xy.second))
+    case _ => None
+  }
+    
+  def domain : Term => Option[Term] = {
+    case fn : FuncLike[u, v] => Some(fn.dom)
+    case _ => None
+  }
+  
+  implicit def termLang: ExprLang[Term] = this
+    
 }
+
+   

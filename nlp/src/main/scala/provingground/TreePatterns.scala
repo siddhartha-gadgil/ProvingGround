@@ -37,4 +37,16 @@ object TreePatterns {
   object NPVP extends Pattern(
       {case Node("S", List(NP(xs), VP(ys))) => (xs, ys)})
   
+  object SimpleNPVP extends Pattern(
+      {case Node("S", List(NP(List(x)), VP(List(y)))) => (x, y)}
+      ){
+    val pattern = Translator.Pattern[Tree, Functor.II](unapply)
+    
+    def translate[E: ExprLang] = {
+      pattern.join(ExprLang.appln[E])
+    }
+  }
+  
+  val npvpPattern = Translator.Pattern[Tree, Functor.LL](NPVP.unapply)
+  
 }

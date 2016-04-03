@@ -25,7 +25,7 @@ val akkaStreamV = "2.0.1"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.6" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.7" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % "2.3.11",
@@ -39,7 +39,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.5.6",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.7",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
@@ -156,7 +156,7 @@ lazy val nlp = (project in file("nlp")).
 
 lazy val translation = (project in file("translation")).
       settings(name := "ProvingGround-Translation",
-        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.6").
+        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.7").
       settings(baseSettings : _*)
 
 lazy val deepwalk = (project in file("deepwalk")).

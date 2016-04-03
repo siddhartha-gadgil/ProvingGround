@@ -4,7 +4,6 @@ import HoTT._
 import FiniteDistributionLearner._
 import DiffbleFunction._
 import scala.util._
-import Collections.Weighted
 import FiniteDistribution._
 import LinearStructure._
 import scala.language.existentials
