@@ -42,11 +42,12 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
         if (dist.isEmpty) None else Some(FiniteDistribution(dist))
       }
 
-  case class Atom[A](opt: Option[A]) extends TruncatedDistribution[A]{
+  case class OptAtom[A](opt: Option[A]) extends TruncatedDistribution[A]{
     def getFD(cutoff: Double)
     = opt flatMap ((value) => pruneFD(FiniteDistribution(Vector(Weighted(value, 1.0))), cutoff))
   }
 
+  def atom[A](a: A) = OptAtom(Some(a))
 
   case class FD[A](fd: FiniteDistribution[A]){
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)

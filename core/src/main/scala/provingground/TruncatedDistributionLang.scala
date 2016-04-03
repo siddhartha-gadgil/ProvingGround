@@ -19,7 +19,7 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   def metaVar(typ: TD[E]): Option[TD[E]] = ???
   
   def lambda(variable: TD[E], value: TD[E]) : Option[TD[E]] = 
-    Some(TD.liftOpFlatten(l.lambda)(variable, value))
+    TD.optF(TD.mapOp(variable, value)(l.lambda))
 
   def pi(variable: TD[E], typ: TD[E]): Option[TD[E]] = ???
 
@@ -31,7 +31,8 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   
   def pair (x: TD[E], y: TD[E]): Option[TD[E]] = ???
 
-  def proj1(xy: TD[E]): Option[TD[E]] = ???
+  def proj1(xy: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.map(xy)(l.proj1))
 
   def proj2(xy: TD[E]): Option[TD[E]] = ???
 
@@ -44,7 +45,10 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   /**
    * true type
    */
-  def tt : Option[TD[E]] = ???
+  def tt : Option[TD[E]] = 
+     l.tt map ((e: E) => TD.atom(e))      
+    
+//    TD.optF(l.tt map ((e: E) => TD.Atom[E](e)))
 
   /**
    * element of true type
