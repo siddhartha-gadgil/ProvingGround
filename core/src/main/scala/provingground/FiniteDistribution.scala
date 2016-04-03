@@ -191,6 +191,9 @@ object FiniteDistribution{
   def apply[T](pmf: Traversable[Weighted[T]]) : FiniteDistribution[T] =
     FiniteDistribution(pmf.toVector)
 
+  def collect[T](fd: FiniteDistribution[Option[T]]) = 
+    FiniteDistribution(fd.pmf.filter (wo => !(wo.elem.isEmpty)).map ((wo) => wo.map(_.get) ))
+    
   implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
 
 
