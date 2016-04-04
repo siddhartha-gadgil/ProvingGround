@@ -107,7 +107,7 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   })
   }  
 
-  case class Flattened[A](
+  case class FlattenOpt[A](
       base: TruncatedDistribution[Option[A]]) extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = {
       base.getFD(cutoff). 
@@ -119,8 +119,30 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
     }
   }
   
+  case class Flatten[A](
+      base: TruncatedDistribution[TruncatedDistribution[A]]) extends TruncatedDistribution[A]{
+    def getFD(cutoff: Double) =  
+        base.getFD(cutoff).
+        flatMap(
+            (fdtd) => 
+              {
+                val fdfd = fdtd mapOpt ((td) => td.getFD(cutoff))
+                val pmf = 
+                  for (
+                      Weighted(fd, p) <- fdfd.pmf;
+                      Weighted(a, q) <- fd.pmf) yield Weighted(a, p * q)
+                val fd = FiniteDistribution(pmf)
+                pruneFD(fd, cutoff)
+                }
+              )
+    
+  }
+  
+  def flatten[A](
+      base: TruncatedDistribution[TruncatedDistribution[A]]) = Flatten(base)
+  
   def optF[A](fo : TruncatedDistribution[Option[A]]): Option[TruncatedDistribution[A]] = 
-    fo.getOpt map (Flattened(_)) 
+    fo.getOpt map (FlattenOpt(_)) 
 
   
   def map[A, B](base: TruncatedDistribution[A])(f: A =>B) = (base map (f))
@@ -142,7 +164,7 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   def liftOpFlatten[A, B, C](op: (A, B) => Option[C]) = {
     def lop(xd : TruncatedDistribution[A], yd: TruncatedDistribution[B]) = {
       val tdOpt =  (for (x <- xd; y <- yd) yield op(x, y)) : TruncatedDistribution[Option[C]]
-      Flattened(tdOpt): TruncatedDistribution[C]
+      FlattenOpt(tdOpt): TruncatedDistribution[C]
     }
     lop _
     }
