@@ -1,7 +1,6 @@
 package provingground
 
-class ExprApplnOps[E: ExprLang](appln : => (E, E) => Option[E]) {
-  val l = implicitly[ExprLang[E]]
+class ExprApplnOps[E](appln : => (E, E) => Option[E])(implicit l : ExprLang[E]) {
   
   def base(f: E, x: E) = l.appln(f, x)
   

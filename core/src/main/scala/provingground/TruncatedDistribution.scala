@@ -9,7 +9,7 @@ sealed trait TruncatedDistribution[A] {
   def getFD(cutoff: Double) : Option[FiniteDistribution[A]]
 
 
-  def <*>(scale: Double) = TruncatedDistribution.Scaled(this, scale)
+  def <*>(scale: Double) = if (scale > 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
 
   def <+>(that: => TruncatedDistribution[A]) = TruncatedDistribution.sum(this, that)
 
@@ -28,11 +28,26 @@ sealed trait TruncatedDistribution[A] {
     
   def mapOpt[B](f: A => Option[B]) : TruncatedDistribution[B] =
     TruncatedDistribution.MapOpt(this, f)
+
+  def getOpt: Option[TruncatedDistribution[A]] = Some(this)
 }
 
 object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[TruncatedDistribution]{
   case class Empty[A]() extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = None
+    
+    override def getOpt = None
+    
+    override def map[B](f: A => B) : TruncatedDistribution[B] =
+      TruncatedDistribution.Empty[B]
+
+    override def flatMap[B](f: A => TruncatedDistribution[B]) : TruncatedDistribution[B] =
+    TruncatedDistribution.Empty[B]
+    
+    override def mapOpt[B](f: A => Option[B]) : TruncatedDistribution[B] =
+    TruncatedDistribution.Empty[B]
+
+    override def <*>(scale: Double) = this
   }
 
   def pruneFD[A](fd:  => FiniteDistribution[A], cutoff: Double) =
@@ -105,7 +120,7 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   }
   
   def optF[A](fo : TruncatedDistribution[Option[A]]): Option[TruncatedDistribution[A]] = 
-    Some(Flattened(fo))
+    fo.getOpt map (Flattened(_)) 
 
   
   def map[A, B](base: TruncatedDistribution[A])(f: A =>B) = (base map (f))

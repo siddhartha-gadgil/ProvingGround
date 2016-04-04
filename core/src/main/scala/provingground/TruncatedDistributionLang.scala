@@ -5,12 +5,14 @@ import provingground.{TruncatedDistribution => TD}
 class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribution[E]] {
     val l = implicitly[ExprLang[E]]
   
-    def variable[S](name: S, typ: TD[E]): Option[TD[E]] = ???
+    def variable[S](name: S, typ: TD[E]): Option[TD[E]] = 
+      TD.optF(TD.map(typ)(l.variable(name, _)))
 
   /**
    * anonymous variable
    */
-  def anonVar(typ: TD[E]): Option[TD[E]] = ???
+  def anonVar(typ: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.map(typ)(l.anonVar))
 
   /**
    * meta-variable of a given type, i.e., whose value must be inferred 
@@ -21,26 +23,35 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   def lambda(variable: TD[E], value: TD[E]) : Option[TD[E]] = 
     TD.optF(TD.mapOp(variable, value)(l.lambda))
 
-  def pi(variable: TD[E], typ: TD[E]): Option[TD[E]] = ???
+  def pi(variable: TD[E], typ: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.mapOp(variable, typ)(l.pi))
 
-  def appln(func: TD[E], arg: TD[E]): Option[TD[E]] = ???
+  def appln(func: TD[E], arg: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.mapOp(func, arg)(l.appln))
 
-  def equality(lhs: TD[E], rhs: TD[E]) : Option[TD[E]] = ???
+  def equality(lhs: TD[E], rhs: TD[E]) : Option[TD[E]] = 
+    TD.optF(TD.mapOp(lhs, rhs)(l.equality))
   
-  def sigma(variable: TD[E], typFamily: TD[E]) : Option[TD[E]] = ???  
+  def sigma(variable: TD[E], typ: TD[E]) : Option[TD[E]] = 
+    TD.optF(TD.mapOp(variable, typ)(l.sigma))
   
-  def pair (x: TD[E], y: TD[E]): Option[TD[E]] = ???
+  def pair (x: TD[E], y: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.mapOp(x, y)(l.pair))
 
   def proj1(xy: TD[E]): Option[TD[E]] = 
     TD.optF(TD.map(xy)(l.proj1))
 
-  def proj2(xy: TD[E]): Option[TD[E]] = ???
+  def proj2(xy: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.map(xy)(l.proj2))
 
-  def or(first: TD[E], second: TD[E]):  Option[TD[E]] = ???
+  def or(first: TD[E], second: TD[E]):  Option[TD[E]] = 
+    TD.optF(TD.mapOp(first, second)(l.or))
 
-  def incl1(typ : TD[E]) : Option[TD[E]] = ???
+  def incl1(typ : TD[E]) : Option[TD[E]] = 
+    TD.optF(TD.map(typ)(l.incl1))
 
-  def incl2(typ: TD[E]) :  Option[TD[E]] = ???
+  def incl2(typ: TD[E]) :  Option[TD[E]] = 
+    TD.optF(TD.map(typ)(l.incl2))
 
   /**
    * true type
@@ -53,16 +64,25 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   /**
    * element of true type
    */
-  def qed : Option[TD[E]] = ???
+  def qed : Option[TD[E]] =
+    l.qed map ((e: E) => TD.atom(e))
 
   /**
    * false type
    */
-  def ff : Option[TD[E]] = ???
+  def ff : Option[TD[E]] = 
+    l.ff map ((e: E) => TD.atom(e))
 
-  def numeral(n: Int): Option[TD[E]] = ???
+  def numeral(n: Int): Option[TD[E]] = 
+    l.numeral(n) map ((e: E) => TD.atom(e))
   
-  def isPair: TD[E] => Option[(TD[E], TD[E])] = ???
+  def isPair: TD[E] => Option[(TD[E], TD[E])] = 
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isPair))
+        tdPairOpt  map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+      }
   
-  def domain: TD[E] => Option[TD[E]] = ???
+  def domain: TD[E] => Option[TD[E]] = (f: TD[E]) =>
+    TD.optF(TD.map(f)(l.domain))
 }
