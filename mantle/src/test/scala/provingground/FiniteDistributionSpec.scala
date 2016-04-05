@@ -4,6 +4,8 @@ import Collections._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import LinearStructure._
+import Weighted._
+
 
 class FiniteDistributionSpec extends FlatSpec{
   def finDist[T] = (pmf: Traversable[Weighted[T]]) => FiniteDistribution(pmf.toVector)

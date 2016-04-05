@@ -4,6 +4,7 @@ import Collections._ ; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import LinearStructure._
+import Weighted._
 
 import scala.util._
 

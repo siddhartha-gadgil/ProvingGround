@@ -4,6 +4,8 @@ import Collections._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import LinearStructure._
+import Weighted._
+
 
 trait FiniteDistributionBehaviours { this : FlatSpec =>
 
