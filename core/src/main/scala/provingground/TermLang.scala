@@ -116,12 +116,20 @@ case object TermLang extends ExprLang[Term]{
   }
   
   def isSigma : Term => Option[(Term, Term)] = {
-    case xy : AbsPair[u, v] => Some((xy.first, xy.second))
+    case st : SigmaTyp[u, v]  =>
+      val x = st.fibers.dom.Var
+      Some((x, st.fibers(x)))
+    case st: PairTyp[u, v] =>
+      Some((st.first.Var, st.second))
     case _ => None
   }
    
   def isPi : Term => Option[(Term, Term)] = {
-    case xy : AbsPair[u, v] => Some((xy.first, xy.second))
+    case st : PiTyp[u, v]  =>
+      val x = st.fibers.dom.Var
+      Some((x, st.fibers(x)))
+    case st: FuncTyp[u, v] =>
+      Some((st.dom.Var, st.codom))
     case _ => None
   }
   
