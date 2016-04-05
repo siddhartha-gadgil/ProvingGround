@@ -19,7 +19,7 @@ import Math._
  * The Homotopy type theory objects, types and utility functions
  *S
  */
-object S {
+object HoTT {
   /**
    * Symbol
    */
@@ -449,7 +449,7 @@ object S {
   }
 
   /** Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type. */
-  trait AbsPair[+U <: Term, +V <: Term] extends Term with Subs[AbsPair[U, V]]{
+  trait AbsPair[+U <: Term with Subs[U], +V <: Term with Subs[V]] extends Term with Subs[AbsPair[U, V]]{
     val first: U
     val second: V
 
@@ -956,7 +956,7 @@ object S {
    */
   def sigma[U <: Term with Subs[U], V <: Term with Subs[V]](
     variable: U
-  )(value: Typ[V]) =
+  )(value: Typ[V]) : Typ[AbsPair[U, V]] =
     if (value.dependsOn(variable)) {
       val fibre = lmbda(variable)(value)
       SigmaTyp(fibre)
