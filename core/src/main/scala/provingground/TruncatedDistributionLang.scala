@@ -76,13 +76,27 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
   def numeral(n: Int): Option[TD[E]] = 
     l.numeral(n) map ((e: E) => TD.atom(e))
   
-  def isPair: TD[E] => Option[(TD[E], TD[E])] = 
+  def isPair : TD[E] => Option[(TD[E], TD[E])] = 
     (td: TD[E]) =>
       {
         val tdPairOpt = TD.optF(td map (l.isPair))
         tdPairOpt  map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
       }
   
+  def isSigma : TD[E] => Option[(TD[E], TD[E])] = 
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isSigma))
+        tdPairOpt  map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+      }
+  
+  def isPi : TD[E] => Option[(TD[E], TD[E])] = 
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isPi))
+        tdPairOpt  map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+      }      
+      
   def domain: TD[E] => Option[TD[E]] = (f: TD[E]) =>
     TD.optF(TD.map(f)(l.domain))
 }

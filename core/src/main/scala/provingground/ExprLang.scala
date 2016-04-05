@@ -64,6 +64,10 @@ trait ExprLang[E]{
   
   def isPair: E => Option[(E, E)]
   
+  def isSigma: E => Option[(E, E)]
+  
+  def isPi : E => Option[(E, E)]
+  
   def domain: E => Option[E]
   
   /**

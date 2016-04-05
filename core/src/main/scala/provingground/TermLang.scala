@@ -114,7 +114,17 @@ case object TermLang extends ExprLang[Term]{
     case xy : AbsPair[u, v] => Some((xy.first, xy.second))
     case _ => None
   }
-    
+  
+  def isSigma : Term => Option[(Term, Term)] = {
+    case xy : AbsPair[u, v] => Some((xy.first, xy.second))
+    case _ => None
+  }
+   
+  def isPi : Term => Option[(Term, Term)] = {
+    case xy : AbsPair[u, v] => Some((xy.first, xy.second))
+    case _ => None
+  }
+  
   def domain : Term => Option[Term] = {
     case fn : FuncLike[u, v] => Some(fn.dom)
     case _ => None

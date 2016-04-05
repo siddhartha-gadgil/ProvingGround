@@ -19,7 +19,7 @@ import Math._
  * The Homotopy type theory objects, types and utility functions
  *S
  */
-object HoTT {
+object S {
   /**
    * Symbol
    */
@@ -956,10 +956,13 @@ object HoTT {
    */
   def sigma[U <: Term with Subs[U], V <: Term with Subs[V]](
     variable: U
-  )(value: Typ[V]) = {
-    val fibre = lmbda(variable)(value)
-    SigmaTyp(fibre)
-  }
+  )(value: Typ[V]) =
+    if (value.dependsOn(variable)) {
+      val fibre = lmbda(variable)(value)
+      SigmaTyp(fibre)
+      }
+    else PairTyp(variable.typ.asInstanceOf[Typ[U]], value)
+
 
   /**
    * type family
