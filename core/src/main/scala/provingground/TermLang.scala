@@ -8,7 +8,7 @@ import scala.language.existentials
 
 import scala.util.Try
 
-case object TermLang extends ExprLang[Term]{
+case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[Term]{
    def variable[S](name: S, typ: Term): Option[Term] = (name, typ) match {
      case (s: String, t: Typ[u]) =>
        Some(t.symbObj(s))

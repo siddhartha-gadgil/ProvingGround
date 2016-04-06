@@ -2,7 +2,7 @@ package provingground
 
 import provingground.{TruncatedDistribution => TD, TruncatedDistributionLang => TDL}
 
-class StochasticLang[E: ExprLang](
+class StochasticLang[E: ExprLang : Domain : ExprPatterns](
     baseWeight : Double = 1.0,
     flipWeight : Double = 0.0,
     argShiftWeight : Double = 0.0,
@@ -10,7 +10,9 @@ class StochasticLang[E: ExprLang](
 
   override def appln(func: TD[E], arg: TD[E]) = {
     val base = new TDL[E]
-    val oc = new ExprApplnOps(self.appln)(base)
+    val bd = new TruncatedDistributionDomain
+    val be = new TruncatedDistributionExprPatterns
+    val oc = new ExprApplnOps(self.appln)(base, bd, be)
     val withOps =for (
         b <- oc.base(func, arg);
         f<- oc.flip(func, arg);

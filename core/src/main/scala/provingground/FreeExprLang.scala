@@ -40,10 +40,6 @@ object FreeExprLang{
       for (tp <- xy.as[E]; result <- l.proj2(tp)) yield result
   }
   
-  case class Domain(typ: FreeExprLang) extends FreeExprLang{
-    def as[E](implicit l: ExprLang[E]) = 
-      for (tp <- typ.as[E]; result <- l.domain(tp)) yield result
-  }
   
   
   case class Lambda(variable: FreeExprLang, value: FreeExprLang)extends FreeExprLang{
@@ -101,7 +97,7 @@ object FreeExprLang{
   case class Numeral(n: Int) extends FreeExprLang{
     def as[E](implicit l: ExprLang[E]) = l.numeral(n)
   }
-  implicit object FreeLang extends ExprLang[FreeExprLang]{
+  implicit object FreeLang extends ExprLang[FreeExprLang] with ExprPatterns[FreeExprLang]{
     def variable[S](name: S, typ: FreeExprLang): Option[FreeExprLang] = Some(Variable(name, typ))
 
   /**
@@ -171,6 +167,5 @@ object FreeExprLang{
     case _ => None
   }
   
-  def domain: FreeExprLang => Option[FreeExprLang] = (typ) => Some(Domain(typ))
   }
 }

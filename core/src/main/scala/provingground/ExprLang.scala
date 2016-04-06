@@ -79,14 +79,6 @@ trait ExprLang[E]{
 
   def numeral(n: Int): Option[E]
   
-  def isPair: E => Option[(E, E)]
-  
-  def isSigma: E => Option[(E, E)]
-  
-  def isPi : E => Option[(E, E)]
-  
-  def domain: E => Option[E]
-  
   /**
    * non-dependent pair built from abstract methods.
    */
@@ -176,5 +168,17 @@ trait FormulaParser[E]{
    * optionally parse formula (such as latex) to expression.
    */
   def formula(fmla: String):  Option[E]
+}
+
+trait Domain[E]{
+  def domain: E => Option[E]
+}
+
+trait ExprPatterns[E]{
+    def isPair: E => Option[(E, E)]
+  
+  def isSigma: E => Option[(E, E)]
+  
+  def isPi : E => Option[(E, E)]
 }
 
