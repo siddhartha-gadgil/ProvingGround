@@ -23,7 +23,10 @@ class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implici
     case fn: FuncTyp[_, _] => 
       for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye)) yield result
     case sym: Symbolic with Term => 
-      for (typ <- expr(sym.typ); result <- l.variable(sym.toString, typ)) yield result
+      sym.name match {
+        case Name(name) => for (typ <- expr(sym.typ); result <- l.variable(name, typ)) yield result
+        case _ => None
+      }
     case IdentityTyp(dom, lhs: Term, rhs : Term) => 
       for (xe <- expr(lhs); ye <- expr(rhs); result <- l.equality(xe, ye)) yield result
     case Universe(n) => 

@@ -59,6 +59,8 @@ trait ExprLang[E]{
    * false type
    */
   def ff : Option[E]
+  
+  def orCases(first: E, second: E) : Option[E]
 
   def numeral(n: Int): Option[E]
   

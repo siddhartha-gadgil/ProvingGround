@@ -18,7 +18,8 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
    * meta-variable of a given type, i.e., whose value must be inferred 
    * (elaborated in lean's terminology). 
    */
-  def metaVar(typ: TD[E]): Option[TD[E]] = ???
+  def metaVar(typ: TD[E]): Option[TD[E]] = 
+    TD.optF(TD.map(typ)(l.metaVar))
   
   def lambda(variable: TD[E], value: TD[E]) : Option[TD[E]] = 
     TD.optF(TD.mapOp(variable, value)(l.lambda))
@@ -72,6 +73,9 @@ class TruncatedDistributionLang[E: ExprLang] extends ExprLang[TruncatedDistribut
    */
   def ff : Option[TD[E]] = 
     l.ff map ((e: E) => TD.atom(e))
+    
+  def orCases(first: TD[E], second: TD[E]):  Option[TD[E]] = 
+    TD.optF(TD.mapOp(first, second)(l.orCases))
 
   def numeral(n: Int): Option[TD[E]] = 
     l.numeral(n) map ((e: E) => TD.atom(e))
