@@ -2,12 +2,27 @@ package provingground
 import scala.util.Try
 
 /**
-* language structure for the target of translation;
-* includes:
-* * the ways of forming expressions: function application, lambdas and (dependent) function types.
-* * pre-defined objects:
-*     (dependent) pair and union types and associated inclusions and projections, true and false types
-* * variables with names and anonymous variables
+* Abstraction (as a type class) of a language for mathematical expressions, i.e., of 
+* 
+* * methods for forming expressions, 
+* * some basic expressions such as true, false, numbers etc.
+* 
+* Expression include functions and  propositions. 
+* However, expressions here need not include sophisticated, and foundation specific, constructions such as inductive types;
+* these should be abstracted separately.
+* 
+* While the design is based on homotopy type theory, implementations can be with a range of logics or functional languages,
+* for instance HOL or the Wolfram language. All methods are optional, so anything outside a language is just not built.
+* 
+* This is integrated with and used by many components.
+* 
+* * As a target for natural language and latex translation.
+* * Bidirectional integration with HoTT implementations: 
+* * * terms have such a structure, 
+* * * terms can be translated to a language with this structure.
+* * Allows pickling of terms by implementing a formal expression language.
+* * _Goal:_ Bidirectional integration with lean expressions.
+*
 */
 trait ExprLang[E]{
   def variable[S](name: S, typ: E): Option[E]

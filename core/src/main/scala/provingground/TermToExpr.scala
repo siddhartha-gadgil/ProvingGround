@@ -4,6 +4,7 @@ import HoTT._
 
 class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implicit l: ExprLang[E]) {
   def expr: Term => Option[E] = {
+    case term if !predef(term).isEmpty => predef(term)
     case FormalAppln(func, arg) => 
       for (f <- expr(func); x <- expr(arg); fx <- l.appln(f, x)) yield fx
     case LambdaFixed(x : Term, y: Term) => 
@@ -40,5 +41,5 @@ class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implici
     case Zero => l.ff
   }
   
-  def apply(term: Term) = predef(term) orElse expr(term)
+  def apply(term: Term) = expr(term)
 }

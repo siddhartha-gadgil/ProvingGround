@@ -9,6 +9,7 @@ import UnicodeSyms.{Arrow => Arr, _}
 /**
  * @author gadgil
  */
+@deprecated("Use Expression language", "April 2016")
 sealed trait TermExpr {
 
 
@@ -22,6 +23,7 @@ sealed trait TermExpr {
 
 }
 
+@deprecated("Use Expression language", "April 2016")
 object TermExpr {
 
 /**
