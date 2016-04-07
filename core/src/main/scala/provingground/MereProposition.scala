@@ -22,10 +22,10 @@ object MereProposition {
     
     type Obj = Term 
     
-    lazy val witness = isPropn(this)
+    lazy val propWitness = isPropn(this)
   }
   
-  case class Instance[U <: Term with Subs[U]](base: Typ[U]) extends Func[U, Term]{
+  case class Quotient[U <: Term with Subs[U]](base: Typ[U]) extends Func[U, Term]{
     lazy val dom = base
     
     lazy val codom = Truncation(base)
@@ -35,14 +35,14 @@ object MereProposition {
   
     def act(arg: U): provingground.HoTT.Term = codom.symbObj(ApplnSym(this, arg))   
     
-    def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = Instance(base.replace(x, y))      
+    def subs(x: provingground.HoTT.Term,y: provingground.HoTT.Term) = Quotient(base.replace(x, y))      
     
-    def newobj = Instance(base.newobj)
+    def newobj = Quotient(base.newobj)
     
   }
   
-  case class Factorise[U <: Term with Subs[U], V<: Typ[V] with Subs[V]](
-      A: Typ[U], B: Typ[V]) extends Func[Term, Func[Func[U, V], Func[Term, V]]] with Subs[Factorise[U, V]]{
+  case class Factorize[U <: Term with Subs[U], V<: Term with Subs[V]](
+      A: Typ[U], B: Typ[V]) extends Func[Term, Func[Func[U, V], Func[Term, V]]] with Subs[Factorize[U, V]]{
     
     lazy val dom =  isPropn(B)
     
@@ -50,11 +50,20 @@ object MereProposition {
     
     lazy val typ = dom ->: codom
     
-    def subs(x: Term, y: Term) = Factorise(A.replace(x,y), B.replace(x, y))
+    def subs(x: Term, y: Term) = Factorize(A.replace(x,y), B.replace(x, y))
     
-    def newobj = Factorise(A.newobj, B.newobj)
+    def newobj = Factorize(A.newobj, B.newobj)
     
     def act(arg: Term)= codom.symbObj(ApplnSym(this, arg))
     
   }
+  
+  
+  //mainly for testing
+  def mere[U <: Term with Subs[U], V <: Term with Subs[V]](fn: Func[U, V]) = {
+    val A = fn.dom
+    val B = fn.codom
+    Factorize(A, Truncation(B))(Truncation(B).propWitness)(fn)
+  }
+  
 }
