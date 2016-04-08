@@ -101,7 +101,7 @@ object Collections{
       def diagonal[T](seq: ApproxSeq[ApproxSeq[T]]): ApproxSeq[T] = cons(seq.head.head, diagonal(seq.tail.tail), seq.stable && seq.head.stable)
     }
 
-
+/*
     trait ProbabilityDistribution[T] extends Any{self =>
       def next: T
 
@@ -128,7 +128,7 @@ object Collections{
       def next = random.nextDouble
     }
 
-
+*/
 
 
 
