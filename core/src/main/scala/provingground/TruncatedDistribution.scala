@@ -1,5 +1,6 @@
 package provingground
 
+import scala.language.implicitConversions
 
 import provingground.{FiniteDistribution => FD}
 
@@ -9,10 +10,15 @@ sealed trait TruncatedDistribution[A] {
   def getFD(cutoff: Double) : Option[FiniteDistribution[A]]
 
 
-  def <*>(scale: Double) = if (scale > 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
+  def <*>(scale: Double) = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
 
+  def <*>:(scale: Double) = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
+  
   def <+>(that: => TruncatedDistribution[A]) = TruncatedDistribution.sum(this, that)
 
+  def |+|(that : => FiniteDistribution[A]) = 
+    TruncatedDistribution.sum(this, TruncatedDistribution.FD(that))
+  
   def <++>(that: => List[Weighted[TruncatedDistribution[A]]]): TruncatedDistribution[A] =
     that match {
       case List() => this
@@ -29,6 +35,8 @@ sealed trait TruncatedDistribution[A] {
   def mapOpt[B](f: A => Option[B]) : TruncatedDistribution[B] =
     TruncatedDistribution.MapOpt(this, f)
 
+  def filter(f: A => Boolean) = TruncatedDistribution.Filter(this, f)
+    
   def getOpt: Option[TruncatedDistribution[A]] = Some(this)
 }
 
@@ -53,7 +61,7 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   def pruneFD[A](fd:  => FiniteDistribution[A], cutoff: Double) =
     if (cutoff > 1.0) None
       else {
-        val dist = fd.flatten.pmf filter (_.weight > cutoff)
+        val dist = fd.flatten.pmf filter ((x) => math.abs(x.weight) > cutoff)
         if (dist.isEmpty) None else Some(FiniteDistribution(dist))
       }
 
@@ -64,7 +72,13 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
 
   def atom[A](a: A) = OptAtom(Some(a))
 
-  case class FD[A](fd: FiniteDistribution[A]){
+  def apply[A](fd: FiniteDistribution[A]) = FD(fd)
+  
+  def apply[A](ws : Seq[Weighted[A]]) = FD(FiniteDistribution(ws.toVector))
+  
+  implicit def td[A](fd: FiniteDistribution[A]) = FD(fd)
+  
+  case class FD[A](fd: FiniteDistribution[A]) extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)
   }
 
@@ -94,6 +108,10 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
     def getFD(cutoff: Double) = base.getFD(cutoff).map((d) => d mapOpt f)
   }  
 
+  case class Filter[A](
+      base: TruncatedDistribution[A], f: A => Boolean) extends TruncatedDistribution[A]{
+    def getFD(cutoff: Double) = base.getFD(cutoff) map (_.filter(f))
+  }  
 
   case class FlatMap[A, B](
       base: TruncatedDistribution[A], f: A => TruncatedDistribution[B]) extends TruncatedDistribution[B]{
