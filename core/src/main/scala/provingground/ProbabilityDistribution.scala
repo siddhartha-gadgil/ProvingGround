@@ -2,6 +2,10 @@ package provingground
 
 import scala.util._
 
+import scala.concurrent._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 trait ProbabilityDistribution[A] extends Any {
   def next: A  
   
@@ -13,6 +17,15 @@ trait ProbabilityDistribution[A] extends Any {
     
   def hasNext: Boolean = true
   
+  @annotation.tailrec
+  private def findRaw(p: A => Boolean) : A =
+  {
+    val a = next
+    if (p(a)) a else findRaw(p)
+  }
+  
+  def find(p: A => Boolean) = Future(findRaw(p))
+  
   def pick = next
   
   def sample(n: Int) = 
@@ -22,6 +35,12 @@ trait ProbabilityDistribution[A] extends Any {
   def <++>(components: => Vector[Weighted[ProbabilityDistribution[A]]]) =
     new ProbabilityDistribution.Mixture(this, components)
  
+  def <+>(mixin : => ProbabilityDistribution[A], weight: Double) =
+    new ProbabilityDistribution.Mixin(this, mixin, weight)
+  
+  def <+?>(mixin : => ProbabilityDistribution[Option[A]], weight: Double) =
+    new ProbabilityDistribution.MixinOpt(this, mixin, weight)
+  
   def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))
 }
@@ -45,6 +64,23 @@ object ProbabilityDistribution{
         def next = 
           chooseOpt(rand.nextDouble, components) map (_.next) getOrElse (base.next)
       }
+  
+  class Mixin[A](
+      base: ProbabilityDistribution[A], 
+      mixin: => ProbabilityDistribution[A],
+      weight: Double) extends ProbabilityDistribution[A]{
+    def next = 
+      if (rand.nextDouble < weight) mixin.next else base.next
+  }
+  
+  class MixinOpt[A](
+      base: ProbabilityDistribution[A], 
+      mixin: => ProbabilityDistribution[Option[A]],
+      weight: Double) extends ProbabilityDistribution[A]{
+    def next = 
+      if (rand.nextDouble < weight) mixin.next.getOrElse(next) 
+      else base.next
+  }
   
   case class Mapped[A, B](
       base: ProbabilityDistribution[A], 
