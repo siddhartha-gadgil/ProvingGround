@@ -4,15 +4,18 @@ import scala.language.implicitConversions
 
 import provingground.{FiniteDistribution => FD}
 
+import FiniteDistribution.FiniteDistVec
+import LinearStructure._
+
 sealed trait TruncatedDistribution[A] {
 //  import TruncatedDistribution.{pruneFD, sum}
 
   def getFD(cutoff: Double) : Option[FiniteDistribution[A]]
 
 
-  def <*>(scale: Double) = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
+  def <*>(scale: Double) : TruncatedDistribution[A] = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
 
-  def <*>:(scale: Double) = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
+  def <*>:(scale: Double) : TruncatedDistribution[A] = if (scale != 0.0) TruncatedDistribution.Scaled(this, scale) else TruncatedDistribution.Empty[A]
   
   def <+>(that: => TruncatedDistribution[A]) = TruncatedDistribution.sum(this, that)
 
@@ -32,6 +35,9 @@ sealed trait TruncatedDistribution[A] {
   def flatMap[B](f: A => TruncatedDistribution[B]) : TruncatedDistribution[B] =
     TruncatedDistribution.FlatMap(this, f)
     
+  def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B]) : TruncatedDistribution[B] =
+    TruncatedDistribution.MapFD(this, f)
+    
   def mapOpt[B](f: A => Option[B]) : TruncatedDistribution[B] =
     TruncatedDistribution.MapOpt(this, f)
 
@@ -50,7 +56,10 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
       TruncatedDistribution.Empty[B]
 
     override def flatMap[B](f: A => TruncatedDistribution[B]) : TruncatedDistribution[B] =
-    TruncatedDistribution.Empty[B]
+      TruncatedDistribution.Empty[B]
+    
+    override def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B]) =
+      TruncatedDistribution.Empty[B]
     
     override def mapOpt[B](f: A => Option[B]) : TruncatedDistribution[B] =
     TruncatedDistribution.Empty[B]
@@ -125,6 +134,12 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   })
   }  
 
+  case class MapFD[A, B](
+      base: TruncatedDistribution[A], 
+      f: FiniteDistribution[A] => FiniteDistribution[B]) extends TruncatedDistribution[B]{
+    def getFD(cutoff: Double) = base.getFD(cutoff) map ((fd) => f(fd))    
+  }
+  
   case class FlattenOpt[A](
       base: TruncatedDistribution[Option[A]]) extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = {
@@ -154,6 +169,13 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
                 }
               )
     
+  }
+  
+  case class BigSum[A](tds: Vector[TruncatedDistribution[A]]) extends TruncatedDistribution[A]{
+    def getFD(cutoff: Double) = {
+      val fdsOpt = (tds map (_.getFD(cutoff)))
+      if (fdsOpt.isEmpty) None else Some(vBigSum(fdsOpt.flatten))
+    }
   }
   
   def flatten[A](
