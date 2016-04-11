@@ -82,4 +82,33 @@ object Deducer {
         groupBy(_._1) mapValues ((v) => v map ((z) => Weighted(z._2 : Term, z._3)))
     pmf mapValues (FiniteDistribution(_).flatten)
   }
+  
+  def lambdaTD(td: TD[Term]) =
+    (typ: Typ[Term]) => 
+      td mapFD ((fd) => lambdaFDMap(fd).get(typ).getOrElse(FD.empty[Term]))
+  
+  def lambdaAdjointDist(
+      recAdj : => (FD[Term] => TD[Term] => TD[Term]))(
+          fd: FD[Term])(
+              typ: Typ[Term])(w : => TD[Term]) = {
+        val neww = lambdaTD(w)(typ)
+        val x = typ.symbObj(sym)
+    lambdaFDMap(fd).get(typ) map {
+      (newp) =>
+        recAdj(newp)(neww)
+    } getOrElse(TD.Empty[Term]) <*> (fd(typ)) map ((t) => HoTT.lambda(x)(t))
+  }
+      
+  def lambdaAdjointCoeff(
+      recAdj : => (FD[Term] => TD[Term] => TD[Term]))(
+          fd: FD[Term])(
+              typ: Typ[Term])(w : => TD[Term])(cutoff: Double) = {
+        val neww = lambdaTD(w)(typ)
+        val x = typ.symbObj(sym)
+    lambdaFDMap(fd).get(typ) map {
+      (newp) =>
+        val wfd = neww.getFD(cutoff).getOrElse(FD.empty[Term])
+        (wfd map ((t) => newp(t))).expectation
+    } 
+  }    
 }

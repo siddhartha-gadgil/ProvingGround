@@ -178,6 +178,13 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
     }
   }
   
+  case class Coeffs[A](support: Vector[A], coeffs: Double => A => Option[Double]) extends TruncatedDistribution[A]{
+    def getFD(cutoff: Double) = {
+      val pmf = (support map ((a) => coeffs(cutoff)(a) map (Weighted(a, _)))).flatten
+      if (pmf.isEmpty) None else Some(FiniteDistribution(pmf))
+    }
+  }
+  
   def flatten[A](
       base: TruncatedDistribution[TruncatedDistribution[A]]) = Flatten(base)
   
