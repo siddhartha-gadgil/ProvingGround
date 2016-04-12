@@ -35,9 +35,17 @@ trait ProbabilityDistribution[A] extends Any {
   def <++>(components: => Vector[Weighted[ProbabilityDistribution[A]]]) =
     new ProbabilityDistribution.Mixture(this, components)
  
+  /**
+   * generates from the mixed in distribution with probability _weight_, 
+   * otherwise defaults to this.
+   */
   def <+>(mixin : => ProbabilityDistribution[A], weight: Double) =
     new ProbabilityDistribution.Mixin(this, mixin, weight)
   
+  /**
+   * generates from the mixed in optional valued distribution with probability _weight_, 
+   * otherwise, or if the optional returns None, defaults to this. 
+   */
   def <+?>(mixin : => ProbabilityDistribution[Option[A]], weight: Double) =
     new ProbabilityDistribution.MixinOpt(this, mixin, weight)
   
@@ -78,7 +86,7 @@ object ProbabilityDistribution{
       mixin: => ProbabilityDistribution[Option[A]],
       weight: Double) extends ProbabilityDistribution[A]{
     def next = 
-      if (rand.nextDouble < weight) mixin.next.getOrElse(next) 
+      if (rand.nextDouble < weight) mixin.next.getOrElse(base.next) 
       else base.next
   }
   
