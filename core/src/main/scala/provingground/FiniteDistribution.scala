@@ -196,6 +196,9 @@ object FiniteDistribution{
     val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
   }
+  
+  def rawUnif[A](s: Traversable[A]) =
+    FiniteDistribution(s map ((Weighted(_, 1.0))))
 
   def unif[A](as: A*) = uniform(as.toSet)
 
