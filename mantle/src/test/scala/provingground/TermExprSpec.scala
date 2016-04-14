@@ -3,6 +3,7 @@ package provingground
 import HoTT._
 import org.scalatest.FlatSpec
 
+@deprecated("Use expression spec", "April 2016")
 class TermExprSpec extends FlatSpec{
   import HoTTSpec.{g, f, b, B, a, mp, A, Bs}
 
