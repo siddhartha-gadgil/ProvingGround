@@ -24,12 +24,13 @@ import QDI._
 
 import upickle.default._
 
+import provingground.{FiniteDistribution => FD}
 
 /**
  * @author gadgil
  */
 object ACevolution {
-  type FD[X] = FiniteDistribution[X]
+//  type FD[X] = FiniteDistribution[X]
 
   type M = AtomicMove
 

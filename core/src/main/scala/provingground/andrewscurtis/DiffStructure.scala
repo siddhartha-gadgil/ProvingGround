@@ -10,12 +10,16 @@ import provingground._
 import provingground.FiniteDistribution._
 import LinearStructure._
 
+import provingground.{FiniteDistribution => FD}
+
+
+
 object DiffStructure {
 
   /*
    * Type aliases
    */
-  type FD[X] = FiniteDistribution[X]
+//  type FD[X] = FiniteDistribution[X]
   type M = AtomicMove
   type V = Moves
   type P = Presentation
