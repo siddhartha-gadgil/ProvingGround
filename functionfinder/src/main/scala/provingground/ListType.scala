@@ -38,14 +38,14 @@ object ListType {
     rep((f: U => V) => (l: List[U]) => l map (f))
   }
   
-  private val u = "u" :: __
-  private val v = "v" :: __
+  private val u = "u" :: Type
+  private val v = "v" :: Type
   
   lazy val lmap = lambda(u)(lambda(v)(lmapFunc(u, v)))
-    //depFunc(__, (u: Typ[Term])=> depFunc(__, (v: Typ[Term]) => lmapFunc(u, v)))
+    //depFunc(Type, (u: Typ[Term])=> depFunc(Type, (v: Typ[Term]) => lmapFunc(u, v)))
   
   lazy val foldLeft = lambda(u)(lambda(v)(foldFunction(u, v)))
-    //depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => foldFunction(u, v)))
+    //depFunc(Type, (u: Typ[Term]) => depFunc(Type, (v: Typ[Term]) => foldFunction(u, v)))
   
 
   def headOptFn[U <: Term with Subs[U]](typ: Typ[U])  = {

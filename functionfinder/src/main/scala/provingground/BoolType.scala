@@ -23,7 +23,7 @@ object BoolType {
 
   lazy val or = binrep((x: Boolean) => (y: Boolean) => x || y)
 
-  lazy val boolFmly = b -->: __
+  lazy val boolFmly = b -->: Type
 
   lazy val isTrue = boolFmly((x: Boolean) => if (x) One else Zero)
 
@@ -62,8 +62,8 @@ object BoolType {
     rep((cond: Boolean) => (yes: U) => (no : U) => if (cond) yes else no)
   }
 
-  lazy val ite = lambda("u" :: __)(iteFunc("u" :: __))
-    //depFunc(__, iteFunc[Term])
+  lazy val ite = lambda("u" :: Type)(iteFunc("u" :: Type))
+    //depFunc(Type, iteFunc[Term])
 
   private type FnFn = Func[Term, Func[Term, Term]]
 
@@ -85,13 +85,13 @@ object BoolType {
   }
 
   /*
-  lazy val itedep = depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => iteDepFunc(u, v)))
+  lazy val itedep = depFunc(Type, (u: Typ[Term]) => depFunc(Type, (v: Typ[Term]) => iteDepFunc(u, v)))
 */
   
   
   lazy val itedep = {
-    val u = "u" :: __
-    val v = "v" :: __
+    val u = "u" :: Type
+    val v = "v" :: Type
     lambda(u)(lambda(v)(iteDepFunc(u, v)))
   }
 }

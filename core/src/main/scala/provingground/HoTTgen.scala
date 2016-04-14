@@ -30,7 +30,7 @@ object HoTTgen {
 	}
 
 	val functyp : (Term, Term) => Option[Term] = {
-	  case (u: Typ[Term], v: Typ[Term]) if (u.typ == __) => Some(FuncTyp(u, v))
+	  case (u: Typ[Term], v: Typ[Term]) if (u.typ == Type) => Some(FuncTyp(u, v))
 	  case _ => None
 	}
 
@@ -61,7 +61,7 @@ object HoTTgen {
 	}
 
 	val pairtyp : (Term, Term) => Option[Term] = {
-	  case (a : Typ[u], b: Typ[v]) if (a.typ == __) && (b.typ == __) => Some(PairTyp(a, b))
+	  case (a : Typ[u], b: Typ[v]) if (a.typ == Type) && (b.typ == Type) => Some(PairTyp(a, b))
 	  case _ => None
 	}
 
@@ -146,7 +146,7 @@ object HoTTgen {
 	  val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
 	  val init = NewVertex(x)
 	  val export = MoveFn((t: Term) =>
-	    if (t != __) Some(lambda(x)(t) : Term) else None)
+	    if (t != Type) Some(lambda(x)(t) : Term) else None)
 	  val head = incl andthen init
 	  extendM(head) andthen f andthen block(Id[FiniteDistribution[M]], export)
 	}
@@ -175,11 +175,11 @@ object HoTTgen {
 	val hottDyn = DiffbleFunction.mixinIsle[(FiniteDistribution[Move], FiniteDistribution[Term])](wtdMoveSum, lambdaSum(Move.lambda), block(NormalizeFD[Move], NormalizeFD[Term]))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
-    if (t.typ.typ == __) Some(t.typ) else None
+    if (t.typ.typ == Type) Some(t.typ) else None
         )
 
   private def ifTyp : Term => Option[Typ[Term]] = {
-    case typ: Typ[Term] if typ.typ == __ => Some(typ)
+    case typ: Typ[Term] if typ.typ == Type => Some(typ)
     case _ => None
   }
 

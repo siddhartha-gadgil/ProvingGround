@@ -54,10 +54,10 @@ object EnumFuncs {
 	  rep(allFunc)
 	}
 
-	val enumFn = lambda("u" :: __)(
-      lambda("v" :: __)(
-          EnumFunc("u" :: __, "v" :: __)))
-    //depFunc(__, (u: Typ[Term]) => depFunc(__, (v: Typ[Term]) => EnumFunc(u, v)))
+	val enumFn = lambda("u" :: Type)(
+      lambda("v" :: Type)(
+          EnumFunc("u" :: Type, "v" :: Type)))
+    //depFunc(Type, (u: Typ[Term]) => depFunc(Type, (v: Typ[Term]) => EnumFunc(u, v)))
 
 
 
@@ -77,9 +77,9 @@ object EnumFuncs {
 	}
 
 
-	private val A = "A" :: __
+	private val A = "A" :: Type
 
-	private val Bs = "B" :: A ->:  __
+	private val Bs = "B" :: A ->:  Type
 
 
 	val enumSec =

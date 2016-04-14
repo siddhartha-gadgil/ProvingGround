@@ -80,7 +80,7 @@ object TheoryTypes{
 	  
 	  def sym: Parser[Term] = varSym | realSym | intSym
 	  
-	  def underscore: Parser[Term] = "__" ^^ {case _ => Underscore}
+	  def underscore: Parser[Term] = "Type" ^^ {case _ => Underscore}
 	  
 	  def equality: Parser[Term] = noRelTerm~"="~term ^^ {case lhs~"="~rhs => Equality(lhs, rhs)}
 	  

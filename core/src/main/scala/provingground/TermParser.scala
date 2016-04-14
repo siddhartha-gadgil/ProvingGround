@@ -36,7 +36,7 @@ class TermParser extends JavaTokenParsers{
 
   def typ: Parser[Typ[Term]] = symbTyp | arrowTyp | uni
 
-  def uni : Parser[Typ[Typ[Term]]] = univ ^^ {_ => __}
+  def uni : Parser[Typ[Typ[Term]]] = univ ^^ {_ => Type}
 
   def symbTerm : Parser[Term] = name~colon~"("~typ<~")" ^^ {case nm~_~_~typ => typ.symbObj(nm)}
 

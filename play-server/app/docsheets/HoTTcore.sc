@@ -7,17 +7,17 @@ object HoTTcore {
    
   //Identity on the universe
   
-  val iduniv = lambda("A" :: __)("A" :: __)       //> iduniv  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.H
+  val iduniv = lambda("A" :: Type)("A" :: Type)       //> iduniv  : provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.H
                                                   //| oTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.
                                                   //| HoTT.Term]],provingground.HoTT.Typ[provingground.HoTT.Term] with provinggrou
                                                   //| nd.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]]] = (A|->A)
  
  	// Some variable types for convenience. Note that such variables should not be generated as they represent possibly empty types.
  	
- 	val A = "A" :: __                         //> A  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
+ 	val A = "A" :: Type                         //> A  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A
  	
- 	val B = "B" :: __                         //> B  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
+ 	val B = "B" :: Type                         //> B  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = B
  	
  	// Apply identity on universe to the type B.
@@ -99,7 +99,7 @@ object HoTTcore {
   MP(A)(B).typ                                    //> res10: provingground.HoTT.Typ[provingground.HoTT.Term] = (A->((A->B)->B))
 
 // A substitution check
- MP("X" :: __)("Y" :: __).typ                     //> res11: provingground.HoTT.Typ[provingground.HoTT.Term] = (X->((X->Y)->Y))
+ MP("X" :: Type)("Y" :: Type).typ                     //> res11: provingground.HoTT.Typ[provingground.HoTT.Term] = (X->((X->Y)->Y))
 
 //  A more subtle check - works now :)
 MP(B).typ                                         //> res12: provingground.HoTT.Typ[provingground.HoTT.Term] = (_->(B->((B->B)->B

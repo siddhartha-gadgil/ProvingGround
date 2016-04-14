@@ -7,9 +7,9 @@ import EnumType._
 import BigOps._
 
 object MatrixTypes {
-  val X = "X" :: __
-  val Y = "Y" :: __
-  val W = "W" :: __
+  val X = "X" :: Type
+  val Y = "Y" :: Type
+  val W = "W" :: Type
   
   // TODO replace this by recursive records.
   val Zmat = {

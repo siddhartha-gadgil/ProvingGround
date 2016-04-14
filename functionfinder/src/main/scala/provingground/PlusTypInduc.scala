@@ -58,11 +58,11 @@ object PlusTypInduc {
 	      depcodom.subs(x, y), firstfn.subs(x,y), scndfn.subs(x,y))
   }
 
-	val A ="A" :: __
+	val A ="A" :: Type
 
-	val B = "B" :: __
+	val B = "B" :: Type
 
-	val C = "C" :: __
+	val C = "C" :: Type
 
 	val f = "f" :: A ->: C
 
@@ -81,7 +81,7 @@ object PlusTypInduc {
 
     import AplusB.{i, j}
 
-    val Cs = "C" :: AplusB ->: __
+    val Cs = "C" :: AplusB ->: Type
 
     val a = "A" :: A
 

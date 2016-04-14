@@ -110,7 +110,7 @@ object HoTT {
 
     def symbObj(name: AnySym) = SymbObj(name, this)
 
-    val typ = __
+    val typ = Type
   }
 
   /**
@@ -364,11 +364,11 @@ object HoTT {
   type Univ = Typ[Typ[Term]]
 
   trait BaseUniv{
-    override def hashCode = __.hashCode
+    override def hashCode = Type.hashCode
 
     override def equals(a: Any) = a match{
       case _ : BaseUniv => true
-      case `__` => true
+      case `Type` => true
       case _ => false
     }
   }
@@ -407,7 +407,7 @@ object HoTT {
   /**
    * The first universe
    */
-  val __ = Universe(0)
+  val Type = Universe(0)
 
   /** Pair of types (A, B) */
   case class PairTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -1288,47 +1288,47 @@ object HoTT {
       val a = second.Var
       lmbda(a)(j(a))
     }
-    
+
     case class Rec[W<: Term with Subs[W]](
-        codom: Typ[W], 
+        codom: Typ[W],
         firstCase: Func[U, W],
         secondCase: Func[V, W]) extends Func[Term, W]{
       def act(x: Term) = x match {
-        case PlusTyp.FirstIncl(`first`, y) => 
+        case PlusTyp.FirstIncl(`first`, y) =>
           firstCase(y.asInstanceOf[U])
-        case PlusTyp.ScndIncl(`second`, y) => 
+        case PlusTyp.ScndIncl(`second`, y) =>
           secondCase(y.asInstanceOf[V])
         case _ =>
           codom.symbObj(ApplnSym(this, x))
       }
-      
+
       lazy val typ = dom ->: codom
-      
+
       def subs(x: Term, y: Term) = this
-       
-      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp      
+
+      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
       def newobj = this
     }
-    
+
     case class Induc[W<: Term with Subs[W]](
-        depcodom: Func[Term, Typ[W]], 
+        depcodom: Func[Term, Typ[W]],
         firstCase: FuncLike[U, W],
         secondCase: FuncLike[V, W]) extends FuncLike[Term, W]{
       def act(x: Term) = x match {
-        case PlusTyp.FirstIncl(`first`, y) => 
+        case PlusTyp.FirstIncl(`first`, y) =>
           firstCase(y.asInstanceOf[U])
-        case PlusTyp.ScndIncl(`second`, y) => 
+        case PlusTyp.ScndIncl(`second`, y) =>
           secondCase(y.asInstanceOf[V])
         case _ =>
           depcodom(x).symbObj(ApplnSym(this, x))
       }
-      
+
       lazy val typ = PiTyp(depcodom)
-      
+
       def subs(x: Term, y: Term) = this
-       
-      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp      
+
+      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
       def newobj = this
     }

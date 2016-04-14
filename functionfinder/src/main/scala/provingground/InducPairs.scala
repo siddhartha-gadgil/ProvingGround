@@ -8,11 +8,11 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
  * Recursion and induction for (dependent) pairs.
  */
 object InducPairs {
-  val A ="A" :: __
+  val A ="A" :: Type
   
-  val B = "B" :: __
+  val B = "B" :: Type
   
-  val C = "C" :: __
+  val C = "C" :: Type
   
   val f = "f" :: (A ->: B ->: C)
 
@@ -32,7 +32,7 @@ object InducPairs {
             		  ))))
   
   
-  val Bs = "B" :: A ->: __
+  val Bs = "B" :: A ->: Type
   
   val Btype = PiTyp(Bs)
   
@@ -54,7 +54,7 @@ object InducPairs {
 
   
    
-  val Cs = "C" :: A ->: B ->: __
+  val Cs = "C" :: A ->: B ->: Type
   
 //  val toCs = PiTyp(lmbda(a)(PiTyp(lmbda(b)(Cs(a)(b)))))
   

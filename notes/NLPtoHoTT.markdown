@@ -58,7 +58,7 @@ The lifts we actually use are:
 ### Stochasticity: correcting for incorrect parse trees.
 
 * We can make only the builders stochastic.
-* __Question:__ Can this be achieved by just taking the output language to be probability distributions?
+* TypeQuestion:Type Can this be achieved by just taking the output language to be probability distributions?
 
 ## Rules for parsing
 

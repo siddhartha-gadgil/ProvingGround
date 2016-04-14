@@ -24,7 +24,7 @@ sealed trait GenFiniteDistribution[T] extends Any with ProbabilityDistribution[T
 //  val epsilon: Double
 
 //  def next = ProbabilityDistribution.choose(pmf)
-  
+
   /**
    * flatten distribution collating elements.
    */
@@ -138,9 +138,13 @@ sealed trait GenFiniteDistribution[T] extends Any with ProbabilityDistribution[T
   def --(that: GenFiniteDistribution[T]) = this ++ (that * (-1))
 
   /**
-   * map distribution without normalizing.
+   * map distribution without normalizing, concretely implemented to avoid
+   * probability distribution map (with weaker type) overriding this.
    */
- // override def map[S](f: T => S) : GenFiniteDistribution[S]
+  override def map[S](f: T => S) : GenFiniteDistribution[S] = {
+    val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
+    FiniteDistribution(newpmf)
+  }
 
   def mapOpt[S](f: T => Option[S]) : GenFiniteDistribution[S]
 
@@ -184,9 +188,9 @@ object FiniteDistribution{
   def apply[T](pmf: Traversable[Weighted[T]]) : FiniteDistribution[T] =
     FiniteDistribution(pmf.toVector)
 
-  def collect[T](fd: FiniteDistribution[Option[T]]) = 
+  def collect[T](fd: FiniteDistribution[Option[T]]) =
     FiniteDistribution(fd.pmf.filter (wo => !(wo.elem.isEmpty)).map ((wo) => wo.map(_.get) ))
-    
+
   implicit def finiteDistInnerProd[X] = InnerProduct[FiniteDistribution[X]](_ dot _)
 
 
@@ -196,7 +200,7 @@ object FiniteDistribution{
     val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
   }
-  
+
   def rawUnif[A](s: Traversable[A]) =
     FiniteDistribution(s map ((Weighted(_, 1.0))))
 
@@ -334,13 +338,13 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
   def normalized(t : Double = 0.0) : FiniteDistribution[T] = FiniteDistribution((posmf(t) map (_.scale(1.0/postotal(t)))).toVector)
 
   def prunedPMF(epsilon: Double) = flatten.pmf filter ((x) => math.abs(x.weight) > epsilon)
-  
-  def pruneMap[S](f: => (T => S), epsilon : Double) = 
+
+  def pruneMap[S](f: => (T => S), epsilon : Double) =
   {
-   if (prunedPMF(epsilon).isEmpty) FiniteDistribution.empty[S] 
+   if (prunedPMF(epsilon).isEmpty) FiniteDistribution.empty[S]
    else FiniteDistribution(prunedPMF(epsilon)) map (f)
   }
-  
+
   def filter(p : T => Boolean) = FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
   def *(sc: Double) : FiniteDistribution[T] = FiniteDistribution(pmf map (_.scale(sc)))
@@ -380,13 +384,13 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]]) extends AnyVal with G
     val pmf = support.toVector map ((s: S) => Weighted(s, f(s).map(memFn).getOrElse(0)))
     FiniteDistribution(pmf)
   }
-  
+
   def flatMap[S](f: T => FiniteDistribution[S]) = {
     implicit val ls = FiniteDistribution.FiniteDistVec[S]
     val distdist = map(f)
     distdist.expectation
   }
-  
+
   def pickle = flatten.map((t: T) => t.toString).pmf.toList.
     map((w) => (w.elem, w.weight))
 

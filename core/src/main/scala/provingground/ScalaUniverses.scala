@@ -112,7 +112,7 @@ object ScalaUniverses {
   /**
    * scala universe with no refinement.
    */
-  implicit val baseUniv: ScalaUniv[Term] = ScalaUniv(__)
+  implicit val baseUniv: ScalaUniv[Term] = ScalaUniv(Type)
 
   /**
    * implicitly returns from a scala universe of Typ[U] one of Typ[Typ[U]]

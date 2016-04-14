@@ -5,10 +5,10 @@ import provingground.HoTT._
 object HoTTmore {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
-  val A = "A" :: __                               //> A  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
+  val A = "A" :: Type                               //> A  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A
   
-  val B = "B" :: __                               //> B  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
+  val B = "B" :: Type                               //> B  : provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT
                                                   //| .Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = B
   
   val AB = pair(A, B)                             //> AB  : provingground.HoTT.PairTyp[provingground.HoTT.Term,provingground.HoTT.
@@ -29,7 +29,7 @@ object HoTTmore {
 	
 	(A ->: B) dependsOn B                     //> res5: Boolean = true
 
-	(A ->: B) dependsOn ("C" :: __)           //> res6: Boolean = false
+	(A ->: B) dependsOn ("C" :: Type)           //> res6: Boolean = false
 	
 	val a = "a" :: A                          //> a  : provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT
                                                   //| .Term] = (a : A)

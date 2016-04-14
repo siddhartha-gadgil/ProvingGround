@@ -8,7 +8,7 @@ import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv,
 
 object BigOps {
   
-  val A = "A" :: __ // a type symbol
+  val A = "A" :: Type // a type symbol
   
   val f = "f" :: A ->: N
   

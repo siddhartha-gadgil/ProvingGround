@@ -58,7 +58,7 @@ object VecTyp{
 
   implicit val NatVecRep = vecRep[RepTerm[Long], Long](poly(NatTypLong.rep))
 
-  val Vec = (((n: Long) => (VecTyp[Long, RepTerm[Long]](NatTypLong, n) : Typ[Term])).hott(NatTypLong ->: __)).get
+  val Vec = (((n: Long) => (VecTyp[Long, RepTerm[Long]](NatTypLong, n) : Typ[Term])).hott(NatTypLong ->: Type)).get
 
   private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
 

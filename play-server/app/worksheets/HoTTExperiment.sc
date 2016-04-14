@@ -5,7 +5,7 @@ import provingground.InductiveTypes._
 object HoTTExperiment {
   println("Welcome to the Scala worksheet")
   
-  val A = "A" ::__
+  val A = "A" ::Type
   val a = "a" :: A
   lambda(a)(a)
   
@@ -22,7 +22,7 @@ object HoTTExperiment {
   }
 
 	val Id = {
-		val A = "A" :: __
+		val A = "A" :: Type
 		lambda(A)({
 			val a = "a" :: A
 			lambda(a)(a)}
@@ -35,8 +35,8 @@ object HoTTExperiment {
    
   Id.typ
 	val MPall = {
-		val A = "A" :: __
-		val B = "B" :: __
+		val A = "A" :: Type
+		val B = "B" :: Type
 		lambda(A)(
 			lambda(B)({
 			val a = "a" :: A
@@ -49,8 +49,8 @@ object HoTTExperiment {
 		}
   MPall.typ
 	val MP = {
-		val A = "A" :: __
-		val B = "B" :: __
+		val A = "A" :: Type
+		val B = "B" :: Type
 			val a = "a" :: A
 			val ab = "a->b" :: (A ->: B)
 			lambda(a)(
@@ -61,8 +61,8 @@ object HoTTExperiment {
 					}
 	MP.typ
 
-	val X = "X" :: __
-	val Y = "Y" :: __
+	val X = "X" :: Type
+	val Y = "Y" :: Type
     
     
     
@@ -71,7 +71,7 @@ object HoTTExperiment {
  
  A.subs(A, X)
  
- val C = "C" :: __
+ val C = "C" :: Type
  
  (A ->: C).subs(A, X)
  
@@ -105,7 +105,7 @@ object HoTTExperiment {
 	
 	MPall.typ
 	
-	__.subs(A, X)
+	Type.subs(A, X)
 	
 	val lm = MPall.asInstanceOf[Lambda[Term, Term]]
 	

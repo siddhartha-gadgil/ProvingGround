@@ -10,7 +10,7 @@ class TermExprSpec extends FlatSpec{
 
   val Bf = lmbda(a)(Bs(a))
 
-  val typs : List[Typ[Term]] = List (A, B, A ->: B, SigmaTyp(Bf), PiTyp(Bf), __)
+  val typs : List[Typ[Term]] = List (A, B, A ->: B, SigmaTyp(Bf), PiTyp(Bf), Type)
 
   implicit val lp = LiteralParser.Empty
 

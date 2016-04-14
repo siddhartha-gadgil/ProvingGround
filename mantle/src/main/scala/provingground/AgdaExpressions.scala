@@ -283,7 +283,7 @@ object AgdaExpressions{
    * the first universe
    */
   case object U extends TypExpression{
-    def asTerm(name: String => Option[Term]) = Some(__)
+    def asTerm(name: String => Option[Term]) = Some(Type)
   }
 
   /**

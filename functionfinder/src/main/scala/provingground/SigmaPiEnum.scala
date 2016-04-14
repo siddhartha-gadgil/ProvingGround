@@ -6,9 +6,9 @@ import ListType._
 import ScalaRep._
 
 object SigmaPiEnum {
-	private val A = "A" :: __
+	private val A = "A" :: Type
 
-	private val B ="B" :: A ->: __
+	private val B ="B" :: A ->: Type
 	
 	private val a = "a" :: A
 
@@ -30,7 +30,7 @@ object SigmaPiEnum {
 	  (l :\ (PiTyp(B) : Typ[Term]))(_ ->: _)
 	}
 	
-	private val rep = EnumRep(A) -->: __
+	private val rep = EnumRep(A) -->: Type
 	
 	private val foldArrow = rep(fn)	    
 	    

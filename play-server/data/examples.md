@@ -3,11 +3,11 @@
 
 ## Modus Poens: A theorem, i.e.,
 ## we define a type and this has a representative
-A : __ -> B : __ ->
+A : Type -> B : Type ->
 A -> (A -> B) -> B
 
 ## Variant of Modus Poens:
-(A: __ , B: __) ->
+(A: Type , B: Type) ->
 A -> (A -> B) -> B
 
 ## Semigroup
@@ -40,18 +40,18 @@ Abelian :=
   G: Group -> ForAll a, b: G, a * b = b * a 
 
 ## Order on Sets 
-IsOrder: S: Set -> ((S, S) -> __) -> __
+IsOrder: S: Set -> ((S, S) -> Type) -> Type
 IsOrder = 
 S: Set ->
-_<=_ : (S, S) -> __ ->
-__ : S
+_<=_ : (S, S) -> Type ->
+Type : S
 (require) a <= a,
 a <= b, b <= a -> a = b
 a <= b, b <= c -> a <= c
 
 
 ## Total order on a set
-IsTotalOrder : S: Set -> _<=_ : Order(S) -> __
+IsTotalOrder : S: Set -> _<=_ : Order(S) -> Type
 IsTotalOrder = a : S, b: S -> (a <= b) + (b <= a)
 
 ## Order: Better version

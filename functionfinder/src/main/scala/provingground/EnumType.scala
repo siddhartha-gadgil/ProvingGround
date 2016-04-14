@@ -33,5 +33,5 @@ object EnumType {
     rep((en: EnumTerm[U]) => en.value)
   }
   
-  val enumlist = lambda("u" :: __)(enumList("u":: __))
+  val enumlist = lambda("u" :: Type)(enumList("u":: Type))
 }

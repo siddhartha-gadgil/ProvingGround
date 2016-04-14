@@ -47,7 +47,7 @@ object IntTypes {
     else { assert(n == 0, "induction at" + n); thenApply(f0) }
   }
 
-  private val A = "A" :: __
+  private val A = "A" :: Type
 
 
 
@@ -63,7 +63,7 @@ object IntTypes {
   }
   
   val inducN = {
-    val P = "P" :: N ->: __
+    val P = "P" :: N ->: Type
     val k = "k" :: N
     val init = "a" :: P(N.zero)
     val steptyp = PiTyp(lmbda(k)(P(k) ->: P(N.succ(k))))
@@ -91,7 +91,7 @@ object IntTypes {
   }
 
   def induction[U <: Term with Subs[U]](us: Func[Term, Typ[U]])/*(implicit suu: ScalaUniv[U])*/ = {
-    val stepfmlyrep = (n -->: __)
+    val stepfmlyrep = (n -->: Type)
     val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k + 1)))
     val steprep = n ~~>: stepfmly
     val stpfm = (k: Long) => us(n(k)) -->: us(n(k + 1))
@@ -100,14 +100,14 @@ object IntTypes {
     rep(induccurry)
   }
 
-  //  val recN = depFunc(__, (u: Typ[Term]) => recursion(u))
+  //  val recN = depFunc(Type, (u: Typ[Term]) => recursion(u))
 
   
-//  val inducN = depFunc(N ->: __, (us: Func[Term, Typ[Term]]) => induction(us))
+//  val inducN = depFunc(N ->: Type, (us: Func[Term, Typ[Term]]) => induction(us))
 
   case class Fin(n: Long) extends IntTyp
 
-  val Nfmly = n -->: __
+  val Nfmly = n -->: Type
 
   val FinFn = Nfmly((n: Long) => Fin(n))
 

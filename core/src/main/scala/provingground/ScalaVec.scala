@@ -46,7 +46,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(implicit baserep: ScalaPolyRep[RepTerm
   private val n = "n" :: NatTypLong
   
   
-  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(NatTypLong ->: __).get
+  val Vec = ((n: Long) => (VecTyp(n.toInt) : Typ[Term])).hott(NatTypLong ->: Type).get
   
   private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
   

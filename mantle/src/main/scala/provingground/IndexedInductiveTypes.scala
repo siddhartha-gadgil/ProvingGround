@@ -136,7 +136,7 @@ import Math._
 	case class DepFuncPtn[U <: Term ](tail: FmlyPtn,
 	    headfibre : Term => ConstructorPattern[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
-	    val head = headfibre(__.symbObj(Star))
+	    val head = headfibre(Type.symbObj(Star))
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }

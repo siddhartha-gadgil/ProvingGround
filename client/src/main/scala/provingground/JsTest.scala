@@ -12,7 +12,7 @@ import HoTT._
 
 object JsTest{
   def jstest() : Unit = {
-    dom.document.getElementById("scalajs").textContent = "Hello from Scala-js: " + __
+    dom.document.getElementById("scalajs").textContent = "Hello from Scala-js: " + Type
 
     val bouncers = div.render
 

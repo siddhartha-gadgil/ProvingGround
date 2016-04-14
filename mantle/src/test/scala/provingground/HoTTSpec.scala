@@ -5,10 +5,10 @@ import org.scalatest.FlatSpec
 
 
 object HoTTSpec{
-  val A = "A" :: __
+  val A = "A" :: Type
   val a = "a" :: A
 
-  val B = "B" :: __
+  val B = "B" :: Type
   val b = "b" :: B
   val f = "f" :: (A ->: B)
 
@@ -18,7 +18,7 @@ object HoTTSpec{
 
   val id = lambda(A)(lambda(a)(a))
 
-  val Bs = "B(_ : A)" :: (A ->: __)
+  val Bs = "B(_ : A)" :: (A ->: Type)
 
   val fdep = "f" :: PiTyp(Bs)
 
@@ -50,7 +50,7 @@ class HoTTSpec extends FlatSpec{
 
   "A symbolic object" should "have the correct type" in{
     assert(a.typ == A)
-    assert(A.typ == __)
+    assert(A.typ == Type)
     assert(f.typ == (A ->: B))
   }
 
@@ -65,8 +65,8 @@ class HoTTSpec extends FlatSpec{
     assert(a == "a" :: A)
     assert(!(a == "a":: B))
     assert(!(a == "b" :: A))
-    assert(A == "A" :: __)
-    assert(!(A == "B" :: __))
+    assert(A == "A" :: Type)
+    assert(!(A == "B" :: Type))
     assert(!(A == "A" :: A))
   }
 

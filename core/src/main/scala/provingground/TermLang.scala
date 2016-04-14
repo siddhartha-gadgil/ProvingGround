@@ -117,7 +117,7 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
       val x2 = fn2.dom.Var
       val fibre1 = lmbda(x1)(fn1(x1).typ.asInstanceOf[Typ[w]])
       val fibre2 = lmbda(x2)(fn2(x2).typ.asInstanceOf[Typ[w]])
-      val fibre = tp.Rec(__, fibre1, fibre2)
+      val fibre = tp.Rec(Type, fibre1, fibre2)
       Some(tp.Induc(fibre, fn1, fn2))
     case _ => None
   }

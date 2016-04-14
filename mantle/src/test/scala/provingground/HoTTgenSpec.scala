@@ -12,9 +12,9 @@ object HoTTgenSpec{
   */
   val lamAppl = FiniteDistribution.unif(Move.id : Move, Move.lambda, Move.appl)
 
-  val A = "A" :: __
+  val A = "A" :: Type
 
-  val B = "B" :: __
+  val B = "B" :: Type
 
   val a = "a" :: A
 

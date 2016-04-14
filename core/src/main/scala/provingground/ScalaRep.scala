@@ -144,9 +144,9 @@ case class SigmaRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
   codrepfmly: V => ScalaRep[X, Y]
 ) extends ScalaRep[Term, (V, Y)] {
 
-  //    val rep = SimpleFuncRep(domrep, __)
+  //    val rep = SimpleFuncRep(domrep, Type)
 
-  val rep = FuncRep(domrep, __)
+  val rep = FuncRep(domrep, Type)
 
   val fibers = rep((v: V) => codrepfmly(v).typ)
 
@@ -231,7 +231,7 @@ case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
 
 object ScalaRep {
 
-  implicit val UnivRep = idRep(__)
+  implicit val UnivRep = idRep(Type)
 
   implicit def scalaUnivRep[A] = idRep(ScalaTypUniv[A])
 
@@ -418,7 +418,7 @@ object ScalaRep {
 
     def ~~>:[U <: Term with Subs[U]](domrep: ScalaRep[U, V]) /*(implicit
         sux : ScalaUniv[X], suu: ScalaUniv[U])*/ = {
-      val univrep = domrep -->: __
+      val univrep = domrep -->: Type
       val fmly = univrep((v: V) => section(v).typ)
       val x = "x" :: domrep.typ
 
