@@ -185,7 +185,9 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
     }
   }
   
-  case class FromFDs[A](getFD: Double => FiniteDistribution[A])
+  case class FromFDs[A](fds: Double => Option[FiniteDistribution[A]]) extends TruncatedDistribution[A]{
+    def getFD(cutoff: Double) = fds(cutoff)
+  }
   
   def flatten[A](
       base: TruncatedDistribution[TruncatedDistribution[A]]) = Flatten(base)

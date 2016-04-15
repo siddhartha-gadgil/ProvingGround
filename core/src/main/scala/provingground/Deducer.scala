@@ -184,10 +184,10 @@ object Deducer {
         TD.BigSum(vec)
   }
       
-  def lambdaAdjointCoeff(
+  def lambdaAdjointOnProbs(
       recAdj : => (FD[Term] => TD[Term] => TD[Term]))(
-          fd: FD[Term])(w : => TD[Term]) = {
-        def pmf(cutoff: Double)   = 
+          fd: FD[Term])(w : => TD[Term]) : TD[Term] = {
+        def pmf(cutoff: Double)   =  
           fd.supp collect {
             case typ: Typ[u] =>
               val neww = lambdaTD(w)(typ)
@@ -196,9 +196,14 @@ object Deducer {
               val wfd = neww.getFD(cutoff).getOrElse(FD.empty[Term])
               Weighted(typ: Term, (wfd map ((t) => newp(t))).expectation)
     }
-        def finDist(cutoff: Double) = FD(pmf(cutoff))
-      TD.FromFDs(finDist)
+        def finDist(cutoff: Double) = Some(FD(pmf(cutoff)))
+      recAdj(fd)(TD.FromFDs(finDist))
   }
+  
+  def lambdaAdjoint(
+      recAdj : => (FD[Term] => TD[Term] => TD[Term]))(
+          fd: FD[Term])(w : => TD[Term]) : TD[Term] = 
+            lambdaAdjointOnProbs(recAdj)(fd)(w) <+> lambdaAdjointOnIslands(recAdj)(fd)(w)
   
 }
 
