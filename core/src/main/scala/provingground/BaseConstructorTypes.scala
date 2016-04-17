@@ -2,19 +2,22 @@ package provingground
 
 import HoTT._
 
-import ConstructorPattern._
+//import ConstructorPattern._
 
-import ConstructorPattern._
+//import ConstructorPattern._
+import scala.language.implicitConversions
 
-import RecFunction._
+//import RecFunction._
 
 object BaseConstructorTypes{
+  implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
+
   case object SmallBool extends SmallTyp
 
   case object SmallNat extends SmallTyp
 
   val W = IdW[Term]()
-  
+
   val ttC  = W.constructor(SmallBool, "true")
 
   val ffC = W.constructor(SmallBool, "false")

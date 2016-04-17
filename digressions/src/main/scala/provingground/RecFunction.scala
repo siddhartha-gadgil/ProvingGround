@@ -1,14 +1,14 @@
 package provingground
 import HoTT._
 //import Families._
-import math._
+//import math._
 //import ScalaUniverses._
-import scala.util._
+//import scala.util._
 import scala.language.existentials
 
 import scala.language.implicitConversions
 
-import RecFunction._
+import RecFunction.recFn
 
 case class RecFn[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Typ[C]) extends AnySym
 
@@ -17,6 +17,7 @@ case class RecFn[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Ty
  * @tparam C codomain (scala) type
  * @tparam F full type of rec
  */
+ @deprecated("recursion not implemented", "must remove")
 trait RecFunction[C<: Term with Subs[C], H <: Term with Subs[H]]{self =>
   /**
    * W in rec(W)(X)
@@ -46,6 +47,7 @@ trait RecFunction[C<: Term with Subs[C], H <: Term with Subs[H]]{self =>
   /**
    * the recursion function for all cases so far, given the function to apply on offspring.
    */
+   @deprecated("recursion not implemented", "must remove")
   def recursion(X: Typ[C])(f: => FullType): FullType
 
   /**
@@ -59,13 +61,14 @@ trait RecFunction[C<: Term with Subs[C], H <: Term with Subs[H]]{self =>
     RecFunctionCons[D, C, H](recdom, caseFn, self)
   }
 
+@deprecated("recursion not implemented", "must remove")
   def fn(x: Typ[C]) : FullType = recursion(x)(fn(x))
 
 }
 
 object RecFunction{
 
-  implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
+  
 
   def recFunction[C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
       conss: List[Constructor[C, H]], W: Typ[H]) = {
@@ -73,6 +76,7 @@ object RecFunction{
     (init /: (conss.reverse))(_ prepend _)
   }
 
+@deprecated("recursion not implemented", "must remove")
   def recFn[C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
     conss: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) =
       recFunction(conss, W).fn(X)
@@ -88,6 +92,7 @@ case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{
  * rec(W)(X) is defined to be formal application of itself.
  * Lazy lambda is used to avoid infinite loops
  */
+ @deprecated("recursion not implemented", "must remove")
 case class RecTail[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) extends RecFunction[C, H]{
   type FullType = Func[Term, C]
 
@@ -107,6 +112,7 @@ case class RecTail[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) ex
  * @param caseFn given (previous?) rec(W)(X) and function in domain (to be applied to value) matches pattern and gives new function
  * @param tail previously added constructors
  */
+ @deprecated("recursion not implemented", "must remove")
 case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C], H <: Term with Subs[H]](
     recdom: Typ[C] => Typ[D],
     caseFn : D => Func[H, C] => Func[H, C] => Func[H, C],
@@ -129,8 +135,8 @@ case class RecFunctionCons[D<: Term with Subs[D], C <: Term with Subs[C], H <: T
     def func(x: D) : tail.FullType = {
       ???
     }
-    
-    new FuncDefn((x: D) => 
+
+    new FuncDefn((x: D) =>
       func(x), recdom(X), tail.fullTyp(X))
   }
 }
