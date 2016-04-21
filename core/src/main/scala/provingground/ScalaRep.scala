@@ -1,6 +1,6 @@
 package provingground
 import provingground.HoTT._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv}
 
 import scala.util._
 

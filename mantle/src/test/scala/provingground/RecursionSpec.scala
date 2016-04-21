@@ -10,6 +10,8 @@ import org.scalatest.FlatSpec
 
 import BaseConstructorTypes._
 
+import scala.util.Try
+
 import RecursiveDefinition._
 
 class RecursionSpec extends FlatSpec {
@@ -58,10 +60,16 @@ class RecursionSpec extends FlatSpec {
   val recBoolBool =
     recFn(BoolCons, SmallBool, SmallBool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]
 
+  val neg = recBoolBool(ff)(tt)
+
   "Recursion function from Bool to Bool" should "when applied to constructors give defining data" in {
-    val neg = recBoolBool(ff)(tt)
 
     assert(neg(tt) == ff)
+  }
+
+  it should "give a formal object when applied to a variable" ignore {
+    val negTry = Try(neg("x" :: SmallBool))
+    assert(!(negTry.toOption.isEmpty))
   }
 
   val recBoolNat =

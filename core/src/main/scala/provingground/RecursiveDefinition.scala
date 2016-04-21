@@ -54,8 +54,8 @@ trait RecursiveDefinition[C<: Term with Subs[C],  H<: Term with Subs[H]] {self =
  */
 case class RecDefinitionTail[C<: Term with Subs[C],  H<: Term with Subs[H]](
     W: Typ[H], X: Typ[C]) extends RecursiveDefinition[C, H]{
-  def recursion(f : => Func[H, C]) =
-    new FuncDefn((a: H) => X.symbObj(ApplnSym(f, a)), W, X)
+  def recursion(f : => Func[H, C]) : Func[H, C] =
+    new FuncDefn((a: H) => X.symbObj(ApplnSym(func, a)), W, X)
 }
 
 case class RecDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C],  H<: Term with Subs[H]](
@@ -94,5 +94,52 @@ object RecursiveDefinition{
   }
 
 
+
+}
+
+trait RecursiveCaseDefinition[H<: Term with Subs[H], C <: Term with Subs[C]] extends Func[H, C]{self =>
+  def caseFn(f : => Func[H, C])(arg: H) : Option[C]
+
+  def act(arg: H) = {
+    caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(self, arg))
+  }
+
+  def subs(x: Term, y: Term) : RecursiveCaseDefinition[H, C]
+}
+
+object RecursiveCaseDefinition{
+  case class Empty[H<: Term with Subs[H], C<: Term with Subs[C]](
+    dom: Typ[H], codom: Typ[C]) extends RecursiveCaseDefinition[H,C]{
+      val typ = dom ->: codom
+
+      def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
+
+      def newobj = Empty(dom.newobj, codom.newobj)
+
+      def caseFn(f : => Func[H, C])(arg: H) : Option[C] = None
+    }
+
+  case class DataCons[
+    H  <: Term with  Subs[H],
+    C<: Term with Subs[C],
+    D <: Term with Subs[D]](
+      data: D,
+      defn: D => Func[H, C] => H => Option[C],
+    tail: RecursiveCaseDefinition[H, C]) extends RecursiveCaseDefinition[H, C]{
+      val dom = tail.dom
+
+      val codom = tail.codom
+
+      val typ  = dom ->: codom
+
+      def newobj = DataCons(data.newobj, defn, tail)
+
+      def subs(x: Term, y: Term) =
+        DataCons(data.replace(x, y), defn, tail.subs(x, y))
+
+
+      def caseFn(f : => Func[H, C])(arg: H) : Option[C] =
+        defn(data)(f)(arg) orElse(tail.caseFn(f)(arg))
+    }
 
 }
