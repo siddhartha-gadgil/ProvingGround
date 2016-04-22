@@ -13,6 +13,7 @@ import scala.language.implicitConversions
  * @author gadgil
  * A recursive function definition, i.e., rec_{W,X}(d1)(d2)...
  */
+ @deprecated("use orElse based case definitions", "April 22, 2016")
 trait RecursiveDefinition[C<: Term with Subs[C],  H<: Term with Subs[H]] {self =>
     /**
    * W in rec(W)(X)
@@ -52,24 +53,26 @@ trait RecursiveDefinition[C<: Term with Subs[C],  H<: Term with Subs[H]] {self =
 /**
  * recursive definition with empty constructor, hence empty data
  */
+ @deprecated("use orElse based case definitions", "April 22, 2016")
 case class RecDefinitionTail[C<: Term with Subs[C],  H<: Term with Subs[H]](
     W: Typ[H], X: Typ[C]) extends RecursiveDefinition[C, H]{
   def recursion(f : => Func[H, C]) : Func[H, C] =
     new Func[H, C]{
       def newobj = this
-      
+
       def subs(x: Term, y: Term) = this
-      
+
       val dom = W
-      
+
       val codom = X
-      
+
       val typ = W ->: X
-      
+
       def act(w: H) = X.symbObj(ApplnSym(f, w))
   }
 }
 
+@deprecated("use orElse based case definitions", "April 22, 2016")
 case class RecDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C],  H<: Term with Subs[H]](
     arg: D,
     caseFn : D => Func[H, C] => Func[H, C] => Func[H, C],
@@ -106,52 +109,5 @@ object RecursiveDefinition{
   }
 
 
-
-}
-
-trait RecursiveCaseDefinition[H<: Term with Subs[H], C <: Term with Subs[C]] extends Func[H, C]{self =>
-  def caseFn(f : => Func[H, C])(arg: H) : Option[C]
-
-  def act(arg: H) = {
-    caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(self, arg))
-  }
-
-  def subs(x: Term, y: Term) : RecursiveCaseDefinition[H, C]
-}
-
-object RecursiveCaseDefinition{
-  case class Empty[H<: Term with Subs[H], C<: Term with Subs[C]](
-    dom: Typ[H], codom: Typ[C]) extends RecursiveCaseDefinition[H,C]{
-      val typ = dom ->: codom
-
-      def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
-
-      def newobj = Empty(dom.newobj, codom.newobj)
-
-      def caseFn(f : => Func[H, C])(arg: H) : Option[C] = None
-    }
-
-  case class DataCons[
-    H  <: Term with  Subs[H],
-    C<: Term with Subs[C],
-    D <: Term with Subs[D]](
-      data: D,
-      defn: D => Func[H, C] => H => Option[C],
-    tail: RecursiveCaseDefinition[H, C]) extends RecursiveCaseDefinition[H, C]{
-      val dom = tail.dom
-
-      val codom = tail.codom
-
-      val typ  = dom ->: codom
-
-      def newobj = DataCons(data.newobj, defn, tail)
-
-      def subs(x: Term, y: Term) =
-        DataCons(data.replace(x, y), defn, tail.subs(x, y))
-
-
-      def caseFn(f : => Func[H, C])(arg: H) : Option[C] =
-        defn(data)(f)(arg) orElse(tail.caseFn(f)(arg))
-    }
 
 }

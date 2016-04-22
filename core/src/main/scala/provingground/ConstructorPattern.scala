@@ -67,7 +67,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
    * @param data definition data for the image of the constructor.
    * @param f the function being defined recursively, to be used recursively in definition.
    */
-  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Cod]): Term => Option[Cod]
+  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Cod]): H => Option[Cod]
 
   /**
    * given a term, matches to see if this is the image of a given (quasi)-constructor, with `this` constructor pattern.
@@ -81,6 +81,13 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
 
   // Concrete methods implementing recursion
 
+/**
+* Mixin in this constructor in a recutrsive definition with many cases.
+* @param g result of previous cases
+* @param f the final function being defined, to be called recursively.
+* should not use this in new design, but use optional recDef directly.
+*/
+@deprecated("Use recDef instead, with formal application outside for concrete method", "April 22, 2016")
   def recModify(cons: ConstructorType)(data: RecDataType)(
     f: => Func[H, Cod]
   )(g: => Func[H, Cod]): Func[H, Cod] = new Func[H, Cod] {
@@ -126,7 +133,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
    */
   def rec[CC <: Term with Subs[CC]] = {
     val newPtn = withCod[CC]
-    val fn: (ConstructorType, newPtn.RecDataType, Func[H, CC]) => Term => Option[CC] = { (cons, data, f) => (t) => newPtn.recDef(cons, data, f)(t)
+    val fn: (ConstructorType, newPtn.RecDataType, Func[H, CC]) => H => Option[CC] = { (cons, data, f) => (t) => newPtn.recDef(cons, data, f)(t)
     }
     fn
   }
@@ -286,7 +293,7 @@ sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod], ArgT <: Ter
    */
   def headData(data: RecDataType, arg: ArgType, f: => Func[H, Cod]): HeadRecDataType
 
-  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Cod]): Term => Option[Cod] = {
+  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Cod]): H => Option[Cod] = {
     t =>
       for (arg <- getArg(cons)(t); term <- headfibre(arg).recDef(cons(arg), headData(data, arg, f), f)(t)) yield term
   }
@@ -568,6 +575,10 @@ trait Constructor[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] { self =>
    * the type for which this is a constructor
    */
   val W: Typ[H]
+}
+
+object Constructor{
+  case class Sym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) extends AnySym
 }
 
 /**
