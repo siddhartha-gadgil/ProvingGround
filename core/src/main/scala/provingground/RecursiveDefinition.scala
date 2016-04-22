@@ -55,7 +55,19 @@ trait RecursiveDefinition[C<: Term with Subs[C],  H<: Term with Subs[H]] {self =
 case class RecDefinitionTail[C<: Term with Subs[C],  H<: Term with Subs[H]](
     W: Typ[H], X: Typ[C]) extends RecursiveDefinition[C, H]{
   def recursion(f : => Func[H, C]) : Func[H, C] =
-    new FuncDefn((a: H) => X.symbObj(ApplnSym(func, a)), W, X)
+    new Func[H, C]{
+      def newobj = this
+      
+      def subs(x: Term, y: Term) = this
+      
+      val dom = W
+      
+      val codom = X
+      
+      val typ = W ->: X
+      
+      def act(w: H) = X.symbObj(ApplnSym(f, w))
+  }
 }
 
 case class RecDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C],  H<: Term with Subs[H]](
