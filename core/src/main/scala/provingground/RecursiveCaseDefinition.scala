@@ -70,7 +70,9 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
 
   type RecType <: Term with Subs[RecType]
 
-  val rec : RecType
+  def polyLambda : Func[H, C] => RecType
+
+  lazy val rec : RecType = polyLambda(recCaseDefn)
 
   def ::(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
 }
@@ -81,7 +83,9 @@ object ConstructorSeq {
 
     type RecType = Func[H, C]
 
-    val rec : Func[H, C] = recCaseDefn
+    def polyLambda = (f) => f
+
+//    val rec : Func[H, C] = recCaseDefn
   }
 
   case class Cons[C <: Term with Subs[C], H <: Term with Subs[H]](
@@ -100,7 +104,9 @@ object ConstructorSeq {
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
-    val rec = lmbda(data)(tail.rec)
+    def polyLambda = f => lmbda(data)(tail.polyLambda(f))
+
+//    val rec = lmbda(data)(tail.rec) //FIXME wrong
   }
 
   def fold[C<: Term with Subs[C], H<: Term with Subs[H]](
@@ -110,6 +116,6 @@ object ConstructorSeq {
     }
 
   def recFn[C<: Term with Subs[C], H<: Term with Subs[H]](
-    W: Typ[H], X: Typ[C])(cs: List[Constructor[C, H]]) = fold(W, X)(cs).rec
+    cs: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) = fold(W, X)(cs).rec
 
 }

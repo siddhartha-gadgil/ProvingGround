@@ -12,7 +12,9 @@ import BaseConstructorTypes._
 
 import scala.util.Try
 
-import RecursiveDefinition._
+//import RecursiveDefinition._
+
+import ConstructorSeq.recFn
 
 class RecursionSpec extends FlatSpec {
 
@@ -67,7 +69,7 @@ class RecursionSpec extends FlatSpec {
     assert(neg(tt) == ff)
   }
 
-  it should "give a formal object when applied to a variable" ignore {
+  it should "give a formal object when applied to a variable" in {
     val negTry = Try(neg("x" :: SmallBool))
     assert(!(negTry.toOption.isEmpty))
   }

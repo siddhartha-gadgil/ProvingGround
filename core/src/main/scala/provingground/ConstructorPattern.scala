@@ -212,7 +212,7 @@ case class IdW[H <: Term with Subs[H]]() extends ConstructorPattern[Term, H, H] 
 
   def withCod[CC <: Term with Subs[CC]] = IdTarg[CC, H]
 
-  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Term]): Term => Option[Term] = {
+  def recDef(cons: ConstructorType, data: RecDataType, f: => Func[H, Term]): H => Option[Term] = {
     case (t: Term) if t == cons => Some(data)
     case _ => None
   }
