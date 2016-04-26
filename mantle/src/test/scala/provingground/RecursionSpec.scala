@@ -45,19 +45,19 @@ class RecursionSpec extends FlatSpec {
     assert(fn(ff) == None)
   }
 
-  it should "modify a function according to the case" in {
-    val dummy = (SmallBool ->: SmallBool).symbObj("dummy")
-
-    val negTrue = W.recModify(tt)(ff)(dummy)(dummy)
-
-    assert(negTrue(tt) == ff)
-
-    val neg = W.recModify(ff)(tt)(negTrue)(negTrue)
-
-    assert(neg(tt) == ff)
-
-    assert(neg(ff) == tt)
-  }
+  // it should "modify a function according to the case" in {
+  //   val dummy = (SmallBool ->: SmallBool).symbObj("dummy")
+  //
+  //   val negTrue = W.recModify(tt)(ff)(dummy)(dummy)
+  //
+  //   assert(negTrue(tt) == ff)
+  //
+  //   val neg = W.recModify(ff)(tt)(negTrue)(negTrue)
+  //
+  //   assert(neg(tt) == ff)
+  //
+  //   assert(neg(ff) == tt)
+  // }
 
   val recBoolBool =
     recFn(BoolCons, SmallBool, SmallBool).asInstanceOf[Func[Term, Func[Term, Func[Term, Term]]]]

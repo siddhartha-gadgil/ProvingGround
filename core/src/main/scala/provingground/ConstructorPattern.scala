@@ -76,7 +76,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
    * @param data definition data for the image of the constructor.
    * @param f the function being defined inductively, to be used recursively in definition.
    */
-  def inducDef(cons: ConstructorType, data: InducDataType, f: => FuncLike[H, Cod]): Term => Option[Cod]
+  def inducDef(cons: ConstructorType, data: InducDataType, f: => FuncLike[H, Cod]): H => Option[Cod]
 
 
   // Concrete methods implementing recursion
@@ -106,6 +106,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
     override def toString = f.toString
   }
 
+  @deprecated("Use inducDef instead, with formal application outside for concrete method", "April 26, 2016")
   def inducModify(cons: ConstructorType)(data: InducDataType)(
     f: => FuncLike[H, Cod]
   )(g: FuncLike[H, Cod]): FuncLike[H, Cod] = new FuncLike[H, Cod] {
@@ -300,7 +301,7 @@ sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod], ArgT <: Ter
 
   def headInducData(data: InducDataType, arg: ArgType, f: => FuncLike[H, Cod]): HeadInducDataType
 
-  def inducDef(cons: ConstructorType, data: InducDataType, f: => FuncLike[H, Cod]): Term => Option[Cod] = {
+  def inducDef(cons: ConstructorType, data: InducDataType, f: => FuncLike[H, Cod]): H => Option[Cod] = {
     t =>
       for (arg <- getArg(cons)(t); term <- headfibre(arg).inducDef(cons(arg), headInducData(data, arg, f), f)(t)) yield term
   }
@@ -578,7 +579,9 @@ trait Constructor[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] { self =>
 }
 
 object Constructor{
-  case class Sym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) extends AnySym
+  case class RecSym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) extends AnySym
+  
+  case class InducSym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) extends AnySym
 }
 
 /**

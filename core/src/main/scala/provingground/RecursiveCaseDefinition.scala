@@ -1,7 +1,6 @@
 package provingground
 
 import HoTT._
-//import scala.language.existentials
 
 trait RecursiveCaseDefinition[H <: Term with Subs[H], C <: Term with Subs[C]] extends Func[H, C] { self =>
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
@@ -46,7 +45,7 @@ object RecursiveCaseDefinition {
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
   }
 
-  def sym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) = Constructor.Sym(cons)
+  def sym[C <: Term with Subs[C], H <: Term with Subs[H]](cons: Constructor[C, H]) = Constructor.RecSym(cons)
 
   //for experimentation, should actually chain constructors.
   def constructorFunc[H <: Term with Subs[H], C <: Term with Subs[C]](
@@ -58,64 +57,5 @@ object RecursiveCaseDefinition {
       val fn: Func[H, C] = DataCons(data, defn, tail)
       lmbda(data)(fn)
     }
-
-}
-
-trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
-  val recCaseDefn: RecursiveCaseDefinition[H, C]
-
-  val W: Typ[H]
-
-  val X: Typ[C]
-
-  type RecType <: Term with Subs[RecType]
-
-  def polyLambda : Func[H, C] => RecType
-
-  lazy val rec : RecType = polyLambda(recCaseDefn)
-
-  def ::(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
-}
-
-object ConstructorSeq {
-  case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Typ[C]) extends ConstructorSeq[C, H] {
-    val recCaseDefn = RecursiveCaseDefinition.Empty(W, X)
-
-    type RecType = Func[H, C]
-
-    def polyLambda = (f) => f
-
-//    val rec : Func[H, C] = recCaseDefn
-  }
-
-  case class Cons[C <: Term with Subs[C], H <: Term with Subs[H]](
-    cons: Constructor[C, H], tail: ConstructorSeq[C, H]
-  ) extends ConstructorSeq[C, H] {
-
-    val W = tail.W
-
-    val X = tail.X
-
-    val data: cons.pattern.RecDataType = cons.pattern.recDom(cons.W, X).symbObj(Constructor.Sym(cons))
-
-    val defn = (d: cons.pattern.RecDataType) => (f: Func[H, C]) => cons.pattern.recDef(cons.cons, d, f)
-
-    val recCaseDefn = RecursiveCaseDefinition.DataCons(data, defn, tail.recCaseDefn)
-
-    type RecType = Func[cons.pattern.RecDataType, tail.RecType]
-
-    def polyLambda = f => lmbda(data)(tail.polyLambda(f))
-
-//    val rec = lmbda(data)(tail.rec) //FIXME wrong
-  }
-
-  def fold[C<: Term with Subs[C], H<: Term with Subs[H]](
-    W: Typ[H], X: Typ[C]): List[Constructor[C, H]] => ConstructorSeq[C, H] = {
-      case List() => ConstructorSeq.Empty(W, X)
-      case head :: tail => ConstructorSeq.Cons(head, fold(W, X)(tail))
-    }
-
-  def recFn[C<: Term with Subs[C], H<: Term with Subs[H]](
-    cs: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) = fold(W, X)(cs).rec
 
 }

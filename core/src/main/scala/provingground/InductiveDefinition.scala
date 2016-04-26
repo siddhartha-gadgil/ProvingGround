@@ -13,6 +13,7 @@ import scala.language.implicitConversions
  * @author gadgil
  * A recursive function definition, i.e., rec_{W,X}(d1)(d2)...
  */
+@deprecated("Use inducDef instead, with formal application outside for concrete method", "April 26, 2016")  
 trait InductiveDefinition[C<: Term with Subs[C], H<: Term with Subs[H]] {self =>
     /**
    * W in ind(W)(X)
@@ -52,12 +53,14 @@ trait InductiveDefinition[C<: Term with Subs[C], H<: Term with Subs[H]] {self =>
 /**
  * recursive definition with empty constructor, hence empty data
  */
+@deprecated("Use inducDef instead, with formal application outside for concrete method", "April 26, 2016")
 case class InducDefinitionTail[C<: Term with Subs[C],  H<: Term with Subs[H]](
     W: Typ[H], Xs: Func[H, Typ[C]]) extends InductiveDefinition[C, H]{
   def induction(f : => FuncLike[H, C]) =
     new DepFuncDefn((a: H) => Xs(a).symbObj(ApplnSym(f, a)), W, Xs)
 }
 
+@deprecated("Use inducDef instead, with formal application outside for concrete method", "April 26, 2016")
 case class InducDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C],  H<: Term with Subs[H]](
     arg: D,
     caseFn : D => FuncLike[H, C] => FuncLike[H, C] => FuncLike[H, C],
@@ -77,7 +80,7 @@ case class InducDefinitionCons[D<: Term with Subs[D], C <: Term with Subs[C],  H
 object InductiveDefinition{
 
 
-
+@deprecated("Use inducDef instead, with formal application outside for concrete method", "April 26, 2016")
   def inducFn[C <: Term with Subs[C],  H<: Term with Subs[H]](
       conss: List[Constructor[C, H]], W: Typ[H], Xs: Func[H, Typ[C]]) = {
     val namedConss = for (c <- conss) yield (c, NameFactory.get)
