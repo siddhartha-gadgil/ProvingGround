@@ -36,12 +36,12 @@ sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term w
   type Family = F
 
   /**
-   *  type of the total space, i.e., of W, sections to a universe.
+   *  type of  W, i.e., sections to a universe.
    */
   type FamilyType <: Term with Subs[FamilyType]
 
   /**
-  * type of the total space. TODO figure out difference with `FamilyType`.
+  * type of the total space, i.e., all terms in some W.
   */
   type Total <: Term with Subs[Total]
 

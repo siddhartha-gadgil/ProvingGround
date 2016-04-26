@@ -13,15 +13,15 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
 
   def rec(X: Typ[C]) : RecType = recDataLambda(X: Typ[C])(recCaseDefn(X: Typ[C]))
 
-  
+
   def inducCaseDefn(fibre: Func[H, Typ[C]]) : InductiveCaseDefinition[H, C]
-  
+
   type InducType <: Term with Subs[InducType]
-  
+
   def inducDataLambda(fibre: Func[H, Typ[C]]) : FuncLike[H, C] => InducType
-  
+
   def induc(fibre: Func[H, Typ[C]]) = inducDataLambda(fibre)(inducCaseDefn(fibre))
-  
+
   def ::(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
 }
 
@@ -35,9 +35,9 @@ object ConstructorSeq {
     def recDataLambda(X: Typ[C]) = (f) => f
 
     def inducCaseDefn(fibre: Func[H, Typ[C]]) = InductiveCaseDefinition.Empty(fibre)
-    
+
     type InducType = FuncLike[H, C]
-    
+
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
   }
 
@@ -57,17 +57,17 @@ object ConstructorSeq {
 
     def recDataLambda(X: Typ[C]) = f => lmbda(data(X))(tail.recDataLambda(X)(f))
 
-    
+
     type InducType = Func[cons.pattern.InducDataType, tail.InducType]
-    
+
     def inducData(fibre: Func[H, Typ[C]]) = cons.pattern.inducDom(W, fibre)(cons.cons).symbObj(Constructor.InducSym(cons))
-    
+
     val inducDefn =
       (d: cons.pattern.InducDataType) => (f: FuncLike[H, C]) => cons.pattern.inducDef(cons.cons, d, f)
-    
-    def inducCaseDefn(fibre: Func[H, Typ[C]]) = 
+
+    def inducCaseDefn(fibre: Func[H, Typ[C]]) =
       InductiveCaseDefinition.DataCons(inducData(fibre), inducDefn, tail.inducCaseDefn(fibre))
-    
+
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
   }
 
