@@ -4,6 +4,8 @@ import HoTT._
 import math._
 import scala.language.existentials
 
+import scala.util.Try
+
 /**
  * @author gadgil
  */
@@ -12,7 +14,7 @@ import scala.language.existentials
  * A pattern for families, e.g. of inductive types to be defined
  * for instance A -> B -> W, where W is the type to be defined;
  * ends with the type with members.
- * the pattern is a function of the type W.
+ * 
  * given a codomain C, or a family of codomains, we can lift functions W -> C to functions on families.
  * @tparam O scala type of objects of W, i.e., members of the family.
  * @tparam F scala type of sections, e.g. A -> B -> W
@@ -151,6 +153,9 @@ sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term w
 }
 
 object FmlyPtn {
+  def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O])(fmlyTyp: Typ[F]) = 
+    Try(get[O, Term, F](typ)(fmlyTyp)).toOption
+  
   def get[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F]](typ: Typ[O])(fmlyTyp: Typ[F]): FmlyPtn[O, C, F] =
     fmlyTyp match {
       case `typ` => IdFmlyPtn[O, C].asInstanceOf[FmlyPtn[O, C, F]]
