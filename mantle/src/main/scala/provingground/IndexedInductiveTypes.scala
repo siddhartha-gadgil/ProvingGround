@@ -2,11 +2,6 @@ package provingground
 
 import provingground.HoTT._
 
-import scala.language.implicitConversions
-import scala.util._
-import scala.language.existentials
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
-import Math._
 
 	/*
 	 * Indexed version of induction
@@ -136,7 +131,7 @@ import Math._
 	case class DepFuncPtn[U <: Term ](tail: FmlyPtn,
 	    headfibre : Term => ConstructorPattern[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
-	    val head = headfibre(Type.symbObj(Star))
+	    val head = headfibre(Type.Var)
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
@@ -151,7 +146,7 @@ import Math._
 	case class CnstDepFuncPtn[U <: Term ](tail: Typ[Term],
 	    headfibre : Term => ConstructorPattern[U], headlevel: Int = 0)(implicit su: ScalaUniv[U]) extends ConstructorPattern[FuncLike[Term, U]]{
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]] = {
-	    val head = headfibre(tail.symbObj(Star))
+	    val head = headfibre(tail.Var)
 	    val fiber = typFamily[Term, U](tail, (t : Term) => headfibre(t)(W))
 	    PiTyp[Term, U](fiber)
 	  }
@@ -177,7 +172,7 @@ import Math._
 	    PiTyp[Term, head.ConstructorType](fiber)
 	  }
 
-	  val head = headfibre(tail.symbObj(Star))
+	  val head = headfibre(tail.Var)
 
 //	  type ConstructorType = FuncLike[Term, head.ConstructorType]
 

@@ -7,10 +7,10 @@ import ScalaPolyRep._
 import ScalaRep._
 
 
-import spire.algebra._
+//import spire.algebra._
 import spire.math.{poly => mathpoly, _}
 import spire.implicits._
-import scala.util._
+//import scala.util._
 import scala.language.implicitConversions
 
 import NatRing._
