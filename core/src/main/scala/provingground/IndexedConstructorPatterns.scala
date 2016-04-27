@@ -70,55 +70,6 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       inClass(thatClass)
     }
 
-    //    def recModify(cons: ConstructorType)(data: RecDataType)(f: => I)(g: => I): I = {
-    //      lazy val ff = uncurry(f)
-    //      lazy val gg = uncurry(g)
-    //      def fn = new Func[Total, Cod] {
-    //        lazy val dom = ff.dom
-    //
-    //        lazy val codom = ff.codom
-    //
-    //        lazy val typ = dom ->: codom
-    //
-    //        def newobj = this
-    //
-    //        def act(a: Total) = (recDef(cons, data, f)(a)).getOrElse(gg(a))
-    //
-    //        def subs(x: Term, y: Term) = this
-    //
-    //        override def toString = f.toString
-    //      }
-    //      curry(fn)
-    //
-    //    }
-    //
-    //  def inducModify(cons: ConstructorType)(data: InducDataType)(
-    //    f: => DI
-    //  )(g: => DI): DI = {
-    //      lazy val ff = depUncurry(f)
-    //      lazy val gg = depUncurry(g)
-    //
-    //    def fn = new FuncLike[Total, Cod] {
-    //      lazy val dom = ff.dom
-    //
-    //      lazy val a = "a" :: dom
-    //
-    //      lazy val depcodom = ff.depcodom
-    //
-    //      lazy val fibre = lmbda(a)(depcodom(a))
-    //
-    //      lazy val typ = PiTyp(fibre)
-    //
-    //      def newobj = this
-    //
-    //      def act(a: Total) = (inducDef(cons, data, f)(a)).getOrElse(gg(a))
-    //
-    //      def subs(x: Term, y: Term) = this
-    //
-    //      override def toString = f.toString
-    //    }
-    //    depCurry(fn)
-    //  }
   }
 
   case class iW(index: Ind) extends ConstructorPattern[H] {
@@ -475,7 +426,18 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
     def recDataLambda(X: Typ[C]): I => RecType
 
     def rec(X: Typ[C]): RecType = recDataLambda(X: Typ[C])(curry(recCaseDefn(X: Typ[C])))
+    
+    type InducType <: Term with Subs[InducType]
+    
+    def inducCaseDefn(fibre: Func[H, Typ[Cod]]): InductiveCaseDefinition[Total, Cod]
+    
+    def inducDataLambda(fibre: Func[H, Typ[Cod]]) : DI => InducType
 
+  }
+  
+  def totalFibre(fibre: Func[H, Typ[Cod]], W: F) : Func[Total, Typ[Cod]] = {
+    val x = domTotal(W).Var
+    lmbda(x)(fibre(value(x)))
   }
 
   object ConstructorSeq {
@@ -485,6 +447,12 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
       type RecType = I
 
       def recDataLambda(X: Typ[C]) = (f) => f
+      
+      type InducType = DI
+      
+      def inducCaseDefn(fibre: Func[H, Typ[Cod]]) = InductiveCaseDefinition.Empty(totalFibre(fibre, W))
+      
+      def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
     }
 
   }
@@ -504,6 +472,26 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
     def recDataLambda(X: Typ[C]) = f => lmbda(data(X))(tail.recDataLambda(X)(f))
+
+    
+    
+    def inducData(fibre: Func[H, Typ[Cod]]) = cons.pattern.inducDom(W, fibre)(cons.cons).symbObj(Constructor.InducSym(cons))
+
+    
+    type InducType = Func[cons.pattern.InducDataType, tail.InducType]
+    
+    val inducDefn =
+      (d: cons.pattern.InducDataType) => 
+        (f: FuncLike[Total, C]) => 
+          cons.pattern.inducDef(cons.cons, d, depCurry(f))
+           
+
+    def inducCaseDefn(fibre: Func[H, Typ[C]]) = {
+      InductiveCaseDefinition.DataCons(inducData(fibre), inducDefn, tail.inducCaseDefn(fibre))
+      }
+      
+    def inducDataLambda(fibre: Func[H, Typ[C]]) = (f: DI) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
+
 
 }
 

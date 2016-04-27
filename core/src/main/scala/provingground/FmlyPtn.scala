@@ -46,6 +46,11 @@ sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term w
   type Total <: Term with Subs[Total]
 
   /**
+   * project an element of the total type to its value, i.e., drop arguments
+   */
+  def value(x: Total): O
+  
+  /**
    *  Type of Curried function to X.
    */
   type IterFunc <: Term with Subs[IterFunc]
@@ -90,6 +95,9 @@ sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term w
    */
   type ArgType <: Term with Subs[ArgType]
 
+  
+//  def arg(x: Total): ArgType
+  
   /**
    * scala type of target for induced functions
    */
@@ -204,6 +212,8 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends F
 
   type Total = O
 
+  def value(x: Total): O = x
+  
   type IterFunc = Func[O, C]
 
   type IterTypFunc = Func[O, Typ[C]]
@@ -215,6 +225,8 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends F
   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
 
   type ArgType = AtomicTerm
+  
+  def arg(x: Total) : AtomicTerm = Star
 
   def domTotal(w: FamilyType): Typ[Total] = w
 
@@ -314,6 +326,8 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <: T
   type FamilyType = Func[TT, FV]
 
   type Total = PairObj[TT, HTot]
+  
+  def value(x: Total): O = head.value(x.second)
 
   type IterFunc = Func[TT, head.IterFunc]
 
@@ -335,6 +349,8 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <: T
   }
 
   type ArgType = PairObj[TT, S]
+  
+//  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
 
   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
@@ -448,7 +464,12 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <: T
  * Extending by a constant type A a family of type patterns depending on (a : A).
  *
  */
-case class DepFuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], IT <: Term with Subs[IT], DI <: Term with Subs[DI], S <: Term with Subs[S], T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
+case class DepFuncFmlyPtn[
+  TT <: Term with Subs[TT], 
+  V <: Term with Subs[V], FV <: Term with Subs[FV], I <: Term with Subs[I], 
+  IT <: Term with Subs[IT], DI <: Term with Subs[DI], S <: Term with Subs[S], 
+  T <: Term with Subs[T], D <: Term with Subs[D], O <: Term with Subs[O], 
+  C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
   tail: Typ[TT],
   headfibre: TT => FmlyPtn[O, C, V] {
     type FamilyType = FV;
@@ -467,6 +488,8 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT], V <: Term with Subs[V], FV <
   type FamilyType = FuncLike[TT, FV]
 
   type Total = DepPair[TT, HTot]
+  
+  def value(x: Total) = headfibre(x.first).value(x.second)  
 
   type IterFunc = FuncLike[TT, I]
 
