@@ -6,6 +6,8 @@ import math.max
 import scala.util._
 import scala.language.existentials
 
+import IterFuncPattern._
+
 //import RecFunction._
 
 /**
@@ -289,7 +291,9 @@ case class IdTarg[C <: Term with Subs[C], H <: Term with Subs[H]]() extends Cons
 /**
  * Functional extension of a type pattern
  */
-sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod], ArgT <: Term with Subs[ArgT], HeadT <: Term with Subs[HeadT], CT <: FuncLike[ArgT, HeadT] with Subs[CT], H <: Term with Subs[H]] extends ConstructorPattern[Cod, CT, H] { self =>
+sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod],
+ArgT <: Term with Subs[ArgT], HeadT <: Term with Subs[HeadT], CT <: FuncLike[ArgT, HeadT] with Subs[CT],
+H <: Term with Subs[H]] extends ConstructorPattern[Cod, CT, H] { self =>
   /**
    * scala type of argument to constructor A -> ... (or A ~> ...)
    */

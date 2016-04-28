@@ -8,11 +8,12 @@ import HoTT._
 //import scala.language.existentials
 import ConstructorPattern._
 
+import IterFuncPattern._
 /**
  * @author gadgil
  */
 class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[Ind], I <: Term with Subs[I], IT <: Term with Subs[IT], DI <: Term with Subs[DI], C <: Term with Subs[C], Fmly <: Term with Subs[Fmly], H <: Term with Subs[H]](
-  val typFmlyPtn: FmlyPtn[H, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }
+  val typFmlyPtn: FamilyPattern.FmlyPtn[H, C, Fmly] { type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }
 ) { outer =>
   type Cod = C
   import typFmlyPtn._
@@ -60,7 +61,7 @@ class IndexedConstructorPatterns[F <: Term with Subs[F], Ind <: Term with Subs[I
 
     def codClass[CC <: Term with Subs[CC]](w: Typ[H]) = {
       val _codfmly = typFmlyPtn.withCod[CC](w)
-      val codfmly = _codfmly.asInstanceOf[FmlyPtn[H, CC, Fmly] {
+      val codfmly = _codfmly.asInstanceOf[FamilyPattern.FmlyPtn[H, CC, Fmly] {
         type FamilyType = _codfmly.FamilyType; type ArgType = Ind; type IterFunc = _codfmly.IterFunc;
         type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
       }]

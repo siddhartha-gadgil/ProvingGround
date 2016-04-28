@@ -7,6 +7,8 @@ import HoTT._
 //import ConstructorPattern._
 import scala.language.implicitConversions
 
+import IterFuncPattern._
+
 //import RecFunction._
 
 object BaseConstructorTypes{
