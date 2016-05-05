@@ -5,7 +5,7 @@ import provingground._
 
 import ACLooper._
 
-import ammonite.ops._
+//import ammonite.ops._
 
 import upickle.default.{read => uread, write => uwrite, _}
 
@@ -17,7 +17,7 @@ import ACElem.Snap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import reactivemongo.api._
+//import reactivemongo.api._
 import reactivemongo.bson._
 
 import scala.concurrent._
