@@ -5,13 +5,13 @@ import FreeGroups._
 
 import upickle.default.{write => uwrite, read => uread, _}
 
-import akka.actor._
+//import akka.actor._
 
-import akka.http._
-import akka.http.scaladsl._
+//import akka.http._
+//import akka.http.scaladsl._
 import akka.http.scaladsl.server.Directives._
 
-import scala.concurrent._
+//import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import ACFlow.{system, mat}
@@ -22,7 +22,7 @@ import ACBatch._
 
 import StartData._
 
-import Moves._
+//import Moves._
 
 object ACRoutes {
   val thmEvolve  = path("theorem-evolution" / Segment / Segment){

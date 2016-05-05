@@ -18,7 +18,7 @@ import FreeGroups._
 
 import scala.concurrent._
 
-import Collections._
+//import Collections._
 
 import MoveGenerator._
 

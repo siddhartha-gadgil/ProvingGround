@@ -48,7 +48,7 @@ case class StartData(name: String,
    * spawns running actor
    */
   def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-      sse: Sink[Snap, Future[Unit]] = Sink.foreach((a: Snap) => {})
+      sse: Sink[Snap, Future[akka.Done]] = Sink.foreach((a: Snap) => {})
       ) =
     if (!smooth)
       spawn(name, rank, size, wrdCntn, init,
@@ -78,7 +78,7 @@ case class StartData(name: String,
   /**
    * spawns and starts runner for data.
    */
-  def run(sse: Sink[Snap, Future[Unit]] = Sink.foreach((a: Snap) => {})) =
+  def run(sse: Sink[Snap, Future[akka.Done]] = Sink.foreach((a: Snap) => {})) =
     {
       val rs = initFut map ((x) => runner(x, sse))
       rs.foreach(FDHub.start(_, steps, strictness, epsilon)(quickhub))

@@ -21,23 +21,23 @@ lazy val commonSettings = baseSettings ++ Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
-val akkaStreamV = "2.0.1"
+val akkaV = "2.4.4"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi" % "ammonite-repl" % "0.5.7" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
-    "com.typesafe.akka" %% "akka-actor" % "2.3.11",
-    "com.typesafe.akka" %% "akka-slf4j" % "2.3.11",
+    "com.typesafe.akka" %% "akka-actor" % akkaV,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaV,
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "3.0.0",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
-    "com.typesafe.akka" %% "akka-stream-experimental"             % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-core-experimental"          % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-experimental"               % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaStreamV,
+    "com.typesafe.akka" %% "akka-stream"             % akkaV,
+//    "com.typesafe.akka" %% "akka-http"          % akkaV,
+    "com.typesafe.akka" %% "akka-http-experimental"               % akkaV,
+    "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
     "com.lihaoyi" %% "ammonite-ops" % "0.5.7",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
@@ -64,6 +64,7 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
+    "com.lihaoyi" % "ammonite-repl" % "0.5.7" cross CrossVersion.full,
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
     "com.google.protobuf" % "protobuf-java" % "2.6.1"
@@ -72,14 +73,14 @@ lazy val nlpSettings = Seq(
 
 lazy val digressionSettings = Seq(
   name := "ProvingGround-Digressions",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % akkaV
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % "2.3.11"
+  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % akkaV
     ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.andrewscurtis._"""
@@ -148,8 +149,8 @@ lazy val nlp = (project in file("nlp")).
         settings(name := "ProvingGround-NLP").
         settings(commonSettings : _*).
         settings(nlpSettings : _*).
-        settings(jvmSettings : _*).
-        settings(serverSettings : _*).
+//        settings(jvmSettings : _*).
+//        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Main.run("import scala.collection.JavaConversions._") """).
         dependsOn(coreJVM)
