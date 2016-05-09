@@ -763,7 +763,8 @@ object HoTT {
     def newobj = Lambda(variable.newobj, value.newobj)
 
     override def equals(that: Any) = that match {
-      case Lambda(x: Term, y: Term) => Try(y.replace(x, variable) == value).getOrElse(false)
+      case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+        (Try(y.replace(x, variable)) map (_ == value)).getOrElse(false)
       case _ => false
     }
   }
@@ -829,7 +830,8 @@ object HoTT {
     val dep = false
 
     override def equals(that: Any) = that match {
-      case LambdaFixed(x: Term, y: Term) => Try(y.replace(x, variable) == value).getOrElse(false)
+      case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ)=>
+        (Try(y.replace(x, variable)) map (_ == value)).getOrElse(false)
       case _ => false
     }
 
