@@ -21,6 +21,23 @@ import com.github.nscala_time.time.Imports._
  * @author gadgil
  */
 object QDI {
+  lazy val runTime = java.lang.Runtime.getRuntime()
+
+      def  freeMem = runTime.freeMemory()
+
+      def maxMem = runTime.maxMemory
+
+      def totalMem = runTime.totalMemory
+
+      def gc = runTime.gc
+
+  def timed[A](result : => A) = {
+    val start = DateTime.now
+    val computation = result
+    println((start to (DateTime.now)).millis)
+    computation
+  }
+
   lazy val desktop = Desktop.getDesktop
 
   def datafile =  DateTime.now.toString.replace(":", "_")+".dat"

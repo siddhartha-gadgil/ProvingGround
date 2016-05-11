@@ -9,7 +9,7 @@ import akka.actor.ActorSystem
 import com.typesafe.config._
 import com.mongodb.casbah.Imports
 
-object Hub{
+object Hub{    
   // gets an instance of the driver
   // (creates an actor system)
 
@@ -29,7 +29,7 @@ object Hub{
     println(cnf.getConfig("mongo-async-driver").getString("loglevel"))
     println(cnf.getConfig("mongo-async-driver").getConfig("akka").getString("stdout-loglevel"))
     println(cnf.getConfig("mongo-async-driver").getString("stdout-loglevel"))
-  
+
 
   object ReactiveMongo{
     lazy val driver = new MongoDriver(Some(cnf))

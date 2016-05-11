@@ -9,16 +9,6 @@ import scala.language.implicitConversions
 object Collections{
     lazy val random = new Random
 
-    lazy val runTime = java.lang.Runtime.getRuntime()
-
-    def  freeMem = runTime.freeMemory()
-
-    def maxMem = runTime.maxMemory
-
-    def totalMem = runTime.totalMemory
-
-    def gc = runTime.gc
-
     implicit val ZeroReal : Double = 0
 
     implicit def ZeroPair[A, B](za: A, zb: B): (A, B) = (za, zb)
