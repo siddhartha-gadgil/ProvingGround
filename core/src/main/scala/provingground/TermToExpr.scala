@@ -24,9 +24,9 @@ class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implici
     case fn: FuncTyp[_, _] =>
       for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye)) yield result
     case sym: Symbolic with Term =>
-      sym.name match {
+      outerSym(sym).name match {
         case Name(name) => for (typ <- expr(sym.typ); result <- l.variable(name, typ)) yield result
-        case inn: InnerSym[_] => expr(inn.variable)
+//        case inn: InnerSym[_] => expr(inn.variable)
         case _ => None
       }
     case IdentityTyp(dom, lhs: Term, rhs : Term) =>

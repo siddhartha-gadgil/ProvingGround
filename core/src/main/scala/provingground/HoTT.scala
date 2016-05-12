@@ -49,7 +49,7 @@ object HoTT {
      * returns whether this depends on that
      */
     def dependsOn(that: Term) = {
-      val newVar = innervar(that)
+      val newVar = that.newobj//innervar(that)
       replace(that, newVar) != this
     }
 
@@ -891,17 +891,22 @@ object HoTT {
   /**
    * A symbol to be used to generate new variables of a type, with string matching given variable.
    */
-  class InnerSym[U <: Term](val variable: U) extends AnySym {
+  class InnerSym[U <: Term](val variable: U with Symbolic) extends AnySym {
     override def toString = variable match {
       case sym: Symbolic => sym.name.toString
       case x => x.toString
     }
   }
 
+  def outerSym(sym: Symbolic) : Symbolic = sym.name match{
+    case inn: InnerSym[_] => outerSym(inn.variable)
+    case _ => sym
+  }
+
   /**
    * variable of given type with string as in given variable.
    */
-  private def innervar[U <: Term with Subs[U]](variable: U): U = {
+/*  private def innervar[U <: Term with Subs[U]](variable: U): U = {
     val typ = variable.typ.asInstanceOf[Typ[U]]
     val newvar = new InnerSym(variable)
     variable match {
@@ -920,7 +925,7 @@ object HoTT {
       case _ => typ.symbObj(newvar)
     }
 
-  }
+  }*/
 
   /**
    * Lambda constructor
@@ -1431,6 +1436,8 @@ object HoTT {
       name = nextName(name)
       "$"+name
     }
+
+    def reset = {name = ""} //may cause race conditions
   }
 
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) = typ.symbObj(NameFactory.get)

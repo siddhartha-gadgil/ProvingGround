@@ -15,6 +15,11 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
      case  _ => None
    }
 
+   def typVariable[S](name: S): Option[Term] = name match {
+     case s: String => Some(SymbTyp(s))
+     case _ => None
+   }
+
   /**
    * anonymous variable
    */
@@ -24,27 +29,27 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
   }
 
   /**
-   * meta-variable of a given type, i.e., whose value must be inferred 
-   * (elaborated in lean's terminology). 
+   * meta-variable of a given type, i.e., whose value must be inferred
+   * (elaborated in lean's terminology).
    */
   def metaVar(typ: Term): Option[Term] = None
-  
+
   def lambda(variable: Term, value: Term) : Option[Term] =
     Try(refine(HoTT.lambda(variable)(value))).toOption
 
-  def pi(variable: Term, typ: Term): Option[Term] = typ match {    
+  def pi(variable: Term, typ: Term): Option[Term] = typ match {
     case t: Typ[u] => Try(refine(HoTT.pi(variable)(t))).toOption
     case _ => None
   }
 
-  def appln(func: Term, arg: Term) = func match 
+  def appln(func: Term, arg: Term) = func match
   {
     case fn : FuncLike[u, v] if fn.dom == arg.typ => Try(fn(arg.asInstanceOf[u])).toOption
     case _ => None
   }
   /*
   def appln(func: Term, arg: Term): Option[Term] ={
-    def act(x: Term) = func match 
+    def act(x: Term) = func match
   {
     case fn : FuncLike[u, v] if fn.dom == arg.typ => Try(fn(x.asInstanceOf[u])).toOption
     case _ => None
@@ -53,16 +58,16 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
 //    act(arg)
   }
   */
-  
-  def equality(lhs: Term, rhs: Term) : Option[Term] = 
+
+  def equality(lhs: Term, rhs: Term) : Option[Term] =
     if (lhs.typ == rhs.typ) Try(lhs =:= rhs).toOption else None
-  
-  def sigma(variable: Term, typ: Term) : Option[Term] = typ match {    
+
+  def sigma(variable: Term, typ: Term) : Option[Term] = typ match {
     case t: Typ[u]  => Try(refine(HoTT.sigma(variable)(t))).toOption
     case _ => None
   }
-  
-  def pair (x: Term, y: Term): Option[Term] = 
+
+  def pair (x: Term, y: Term): Option[Term] =
     Some(mkPair(x, y))
 
   def proj1(xy: Term): Option[Term] = xy match {
@@ -80,7 +85,7 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
     case (f: Typ[u], s: Typ[v]) => Some(PlusTyp(f, s))
     case  _ => None
   }
-  
+
   def incl1(typ : Term) : Option[Term] = typ match {
     case pt: PlusTyp[u, v] => Some(pt.ifn)
   }
@@ -102,7 +107,7 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
   /**
    * false type
    */
-  def ff : Option[Term] = Some(Zero) 
+  def ff : Option[Term] = Some(Zero)
 
 
   def orCases(first: Term, second: Term) =  (first, second) match {
@@ -121,17 +126,17 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
       Some(tp.Induc(fibre, fn1, fn2))
     case _ => None
   }
-  
-  
-  def numeral(n: Int): Option[Term] = 
+
+
+  def numeral(n: Int): Option[Term] =
     Try(NatRing.Literal(n)).toOption
- 
-    
+
+
   def isPair : Term => Option[(Term, Term)] = {
     case xy : AbsPair[u, v] => Some((xy.first, xy.second))
     case _ => None
   }
-  
+
   def isSigma : Term => Option[(Term, Term)] = {
     case st : SigmaTyp[u, v]  =>
       val x = st.fibers.dom.Var
@@ -140,7 +145,7 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
       Some((st.first.Var, st.second))
     case _ => None
   }
-   
+
   def isPi : Term => Option[(Term, Term)] = {
     case st : PiTyp[u, v]  =>
       val x = st.fibers.dom.Var
@@ -149,14 +154,12 @@ case object TermLang extends ExprLang[Term] with Domain[Term] with ExprPatterns[
       Some((st.dom.Var, st.codom))
     case _ => None
   }
-  
+
   def domain : Term => Option[Term] = {
     case fn : FuncLike[u, v] => Some(fn.dom)
     case _ => None
   }
-  
-  implicit def termLang: ExprLang[Term] = this
-    
-}
 
-   
+  implicit def termLang: ExprLang[Term] = this
+
+}
