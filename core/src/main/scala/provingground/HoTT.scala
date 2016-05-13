@@ -1423,21 +1423,38 @@ object HoTT {
     typ.symbObj(Name(nextChar(usedChars(s)).toString))
   }
 
-  def nextName(name: String): String = {
-    if (name == "") "a"
-    else if (name.takeRight(1) == "z") nextName(name.dropRight(1)) + "a"
-    else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString
-  }
+//  def nextName(name: String): String = {
+//    if (name == "") "a"
+//    else if (name.takeRight(1) == "z") nextName(name.dropRight(1)) + "a"
+//    else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString
+//  }
+  
+  def nextName(nameOpt: Option[String]) : String = {
+    nameOpt map (
+        (name) => 
+          if (name.takeRight(1) == "z") nextName(Some(name.dropRight(1))) + "a"
+    else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString)
+  }.getOrElse("a")
 
   object NameFactory {
-    var name = ""
+//    var name = ""
+    
+    var nameOpt: Option[String] = None
+    
+//    def get = {
+//      name = nextName(name)
+//      "$"+name
+//    }
 
     def get = {
-      name = nextName(name)
-      "$"+name
+      val newname = nextName(nameOpt)
+      
+      nameOpt = Some(newname)
+      
+      "$"+newname
     }
-
-    def reset = {name = ""} //may cause race conditions
+    
+ //   def reset = {name = ""} //may cause race conditions
   }
 
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) = typ.symbObj(NameFactory.get)

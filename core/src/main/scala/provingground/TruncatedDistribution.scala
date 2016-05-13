@@ -173,8 +173,8 @@ object TruncatedDistribution extends OptNat[TruncatedDistribution] with Functor[
   
   case class BigSum[A](tds: Vector[TruncatedDistribution[A]]) extends TruncatedDistribution[A]{
     def getFD(cutoff: Double) = {
-      val fdsOpt = (tds map (_.getFD(cutoff)))
-      if (fdsOpt.isEmpty) None else Some(vBigSum(fdsOpt.flatten))
+      val fds = (tds map (_.getFD(cutoff))).flatten
+      if (fds.isEmpty) None else Some(vBigSum(fds))
     }
   }
   
