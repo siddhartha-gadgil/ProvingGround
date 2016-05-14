@@ -14,6 +14,8 @@ object FreeExprLang{
     def as[E](implicit l: ExprLang[E]) =
       l.typVariable(name)
   }
+  
+  val Univ = TypVariable("Type")
 
   case class AnonVar(typ: FreeExprLang) extends FreeExprLang{
     def as[E](implicit l: ExprLang[E]) =
@@ -102,6 +104,7 @@ object FreeExprLang{
   case class Numeral(n: Int) extends FreeExprLang{
     def as[E](implicit l: ExprLang[E]) = l.numeral(n)
   }
+  
   implicit object FreeLang extends ExprLang[FreeExprLang] with ExprPatterns[FreeExprLang]{
     def variable[S](name: S, typ: FreeExprLang): Option[FreeExprLang] = Some(Variable(name, typ))
 
@@ -174,4 +177,9 @@ object FreeExprLang{
   }
 
   }
+  
+  
+  object FromTerm extends TermToExpr[FreeExprLang](univ = (n) => Univ, predef = (t) => None)(FreeLang)
+  
+  def fromTerm(t: HoTT.Term) = FromTerm(t)
 }

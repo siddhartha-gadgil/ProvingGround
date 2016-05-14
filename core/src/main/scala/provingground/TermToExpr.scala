@@ -44,3 +44,49 @@ class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implici
 
   def apply(term: Term) = expr(term)
 }
+
+
+object TermToExpr{
+  class NewNameFactory(prefix: String ="$") {
+    
+    var nameOpt: Option[String] = None
+    
+    def get = {
+      val newname = nextName(nameOpt)
+      
+      nameOpt = Some(newname)
+      
+      prefix + newname
+    }
+    
+    val termNames : scala.collection.mutable.Map[Term, String] = scala.collection.mutable.Map()
+    
+    def getName(t: Term) = 
+      termNames.get(t) getOrElse {
+        val name = get
+        termNames += (t -> name)
+        name
+    }
+    
+    def getTerm(t: Term) = getName(t) :: (t.typ)
+  }
+  
+  
+  
+  import TermLang._
+  
+  def isVar(t: Term) = t match {
+    case sym: Symbolic if sym.name.toString.startsWith("$") => true
+    case _ => false
+  }
+  
+  def newTermOpt(term: Term, prefix: String= ".") = {
+    val myNames = new NewNameFactory(prefix)
+    def predefs(t: Term) = 
+      if (isVar(t)) Some(myNames.getTerm(t)) else None
+    val rebuilder = new TermToExpr((n) => Universe(n), predefs)
+    rebuilder(term)
+  }
+  
+  def rebuild(t: Term, prefix: String= ".") = newTermOpt(t, prefix).get
+}
