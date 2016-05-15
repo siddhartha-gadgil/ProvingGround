@@ -114,23 +114,20 @@ object LeanExportElem {
 
     def readAxioms(lines: Vector[String]) = (lines map (readAxiom)).flatten
 
-    def readBind(line: String) : Option[Bind] =
-      if (line.startsWith("#BIND"))
-        {
-          val params = line.split(' ').tail map (_.toLong)
-          val numParam = params(0).toInt
-          val numTypes = params(1).toInt
-          val univParams = (params.drop(2) map ((x) => getName(x))).flatten.toList
-          Some(Bind(numParam, numTypes, univParams))
-        }
-      else None
-
     def readInd(line: String) =
       if (line.startsWith("#IND"))
       {
-      val Array(nid, eid) = line.split(' ').tail map (_.toLong)
-      for (a <- getName(nid); b <- getExpr(eid)) yield (Ind(a, b))
-    }
+          val args = line.drop(5)
+          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
+          val numParams  = headArgs.head.toInt
+          val uids = headArgs.tail.map(_.toLong).toList
+          val (nid, eid, numConstructors) = (tailArgs(1).toLong, tailArgs(2).toLong, tailArgs(3).toInt)
+          val univParams = (uids map ((x) => getUniv(x.toLong))).flatten
+          for (
+            a <- getName(nid.toLong);
+            b <- getExpr(eid.toLong)
+          ) yield (Ind(numParams, univParams, a , b, numConstructors))
+        }
       else None
 
     def readIntro(line: String) =
@@ -141,35 +138,25 @@ object LeanExportElem {
     }
       else None
 
-    def readInducDefn(lines: Vector[String]) =
+    def readInducDefn(lines: Vector[String]) = 
       InducDefn(readInd(lines.head).get, lines.tail map (readIntro(_).get))
 
     def readInducDefnFrom(lines: Vector[String]) = {
       val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
       readInducDefn(ls)
     }
-
-    def readAllInducDefn(lines: Vector[String], n: Int): Vector[InducDefn] =  {
-      if (n == 1) Vector(readInducDefnFrom(lines))
-      else {
-        val head = readInducDefnFrom(lines)
-        head +: readAllInducDefn(lines drop (head.size), n-1)
-      }
+    
+    def readNextInducDefn(lines: Vector[String]) : Option[InducDefn] = {
+      val start= lines dropWhile ((x) => !(x.startsWith("#IND")))
+      if (start.isEmpty) None
+      else Some(readInducDefnFrom(start))
     }
-
-    def readInducBlock(lines: Vector[String]) = {
-      readBind(lines.head) map {(bind) =>
-        InducBlock(bind, readAllInducDefn(lines.tail, bind.numTypes))
-      }
+      
+    def readAllInducDefns(lines: Vector[String], accum: Vector[InducDefn] = Vector()): Vector[InducDefn] = {
+      (readNextInducDefn(lines) map ((dfn) =>
+        readAllInducDefns(lines drop (dfn.size), dfn +: accum))
+        ).getOrElse(accum)
     }
-
-    def readAllInducBlock(lines: Vector[String]) : Vector[InducBlock] = {
-      InducBlock.getBlock(lines) flatMap {(block: Vector[String]) =>
-        val head = readInducBlock(block)
-        val tail = readAllInducBlock(lines drop(block.size+1))
-        head map (_ +: tail)
-      }
-    }.getOrElse(Vector())
   }
 
   sealed trait Name extends LeanExportElem
@@ -324,28 +311,28 @@ object LeanExportElem {
   }
 
   object Definition{
-    def read(command: String, ds: Vector[Data]) : Option[Definition] = {
-      if (command.startsWith("#DEF"))
-        {
-          val args = command.drop(5)
-          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
-          val nid  = headArgs.head.toLong
-          val nids = headArgs.tail.map(_.toLong).toList
-          val (eid1, eid2) = (tailArgs(1).toLong, tailArgs(2).toLong)
-          val univParams = (nids map ((x) => Name.get(ds, x.toLong))).flatten
-          for (
-            a <- Name.get(ds, nid.toLong);
-            b <- Expr.get(ds, eid1.toLong);
-            c <- Expr.get(ds, eid2.toLong)
-          ) yield (Definition(a, univParams, b, c))
-        }
-      else None
-    }
-
-    def readAll(lines: Vector[String]) = readDefs(lines, (lines map (Data.read)).flatten)
-
-    def readDefs(lines: Vector[String], ds: Vector[Data]) =
-      (lines map (read(_, ds))).flatten
+//    def read(command: String, ds: Vector[Data]) : Option[Definition] = {
+//      if (command.startsWith("#DEF"))
+//        {
+//          val args = command.drop(5)
+//          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
+//          val nid  = headArgs.head.toLong
+//          val nids = headArgs.tail.map(_.toLong).toList
+//          val (eid1, eid2) = (tailArgs(1).toLong, tailArgs(2).toLong)
+//          val univParams = (nids map ((x) => Name.get(ds, x.toLong))).flatten
+//          for (
+//            a <- Name.get(ds, nid.toLong);
+//            b <- Expr.get(ds, eid1.toLong);
+//            c <- Expr.get(ds, eid2.toLong)
+//          ) yield (Definition(a, univParams, b, c))
+//        }
+//      else None
+//    }
+//
+//    def readAll(lines: Vector[String]) = readDefs(lines, (lines map (Data.read)).flatten)
+//
+//    def readDefs(lines: Vector[String], ds: Vector[Data]) =
+//      (lines map (read(_, ds))).flatten
 
     def defnMap(defs : Vector[Definition]) = {
       (defs map ((d) => (d.name, d.dependents))).toMap
@@ -357,114 +344,40 @@ object LeanExportElem {
   }
 
   object Axiom{
-    def read(command: String, ds: Vector[Data]) : Option[Axiom] = {
-      if (command.startsWith("#DEF"))
-        {
-          val args = command.drop(5)
-          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
-          val nid  = headArgs.head.toLong
-          val nids = headArgs.tail.map(_.toLong).toList
-          val eid = tailArgs(1).toLong
-          val univParams = (nids map ((x) => Name.get(ds, x.toLong))).flatten
-          for (
-            a <- Name.get(ds, nid.toLong);
-            b <- Expr.get(ds, eid.toLong)
-          ) yield (Axiom(a, univParams, b))
-        }
-      else None
-    }
+//    def read(command: String, ds: Vector[Data]) : Option[Axiom] = {
+//      if (command.startsWith("#DEF"))
+//        {
+//          val args = command.drop(5)
+//          val Array(headArgs, tailArgs) = args split ('|') map ((s) => s.split(' '))
+//          val nid  = headArgs.head.toLong
+//          val nids = headArgs.tail.map(_.toLong).toList
+//          val eid = tailArgs(1).toLong
+//          val univParams = (nids map ((x) => Name.get(ds, x.toLong))).flatten
+//          for (
+//            a <- Name.get(ds, nid.toLong);
+//            b <- Expr.get(ds, eid.toLong)
+//          ) yield (Axiom(a, univParams, b))
+//        }
+//      else None
+//    }
 
-    def readAll(lines: Vector[String]) = readAxs(lines, (lines map (Data.read)).flatten)
-
-    def readAxs(lines: Vector[String], ds: Vector[Data]) =
-      (lines map (read(_, ds))).flatten
   }
 
-  case class Bind(numParam: Int, numTypes: Int, univParams: List[Name]) extends LeanExportElem
 
-  object Bind{
-    def read(line: String, ds: Vector[Data]) : Option[Bind] =
-      if (line.startsWith("#BIND"))
-        {
-          val params = line.split(' ').tail map (_.toLong)
-          val numParam = params(0).toInt
-          val numTypes = params(1).toInt
-          val univParams = (params.drop(2) map ((x) => Name.get(ds, x))).flatten.toList
-          Some(Bind(numParam, numTypes, univParams))
-        }
-      else None
-  }
-
-  case object Eind extends LeanExportElem
-
-  case class Ind(name: Name, tpe: Expr) extends LeanExportElem
+  case class Ind(numParam : Int, univParams : List[Univ],
+      name: Name, tpe: Expr, numConstructors: Int) extends LeanExportElem
 
   object Ind{
-    def read(line: String, ds: Vector[Data]) =
-      if (line.startsWith("#IND"))
-      {
-      val Array(nid, eid) = line.split(' ').tail map (_.toLong)
-      for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Ind(a, b))
-    }
-      else None
+
   }
 
   case class Intro(name: Name, tpe: Expr) extends LeanExportElem
 
-  object Intro{
-    def read(line: String, ds: Vector[Data]) =
-      if (line.startsWith("#INTRO"))
-      {
-      val Array(nid, eid) = line.drop(7) split(' ') map (_.toLong)
-      for (a <- Name.get(ds, nid); b <- Expr.get(ds, eid)) yield (Intro(a, b))
-    }
-      else None
-  }
+
 
   case class InducDefn(ind: Ind, cons: Vector[Intro]){
     def size = cons.size + 1
   }
 
-  object InducDefn{
-    def read(lines: Vector[String], ds: Vector[Data]) =
-      InducDefn(Ind.read(lines.head,ds).get, lines.tail map (Intro.read(_, ds).get))
 
-    def readFrom(lines: Vector[String], ds: Vector[Data]) = {
-      val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
-      read(ls, ds)
-    }
-
-    def readAll(lines: Vector[String], ds: Vector[Data], n: Int): Vector[InducDefn] =  {
-      if (n == 1) Vector(readFrom(lines, ds))
-      else {
-        val head = readFrom(lines, ds)
-        head +: readAll(lines drop (head.size), ds, n-1)
-      }
-    }
-  }
-
-  case class InducBlock(bind: Bind, defns: Vector[InducDefn])
-
-  object InducBlock{
-    def read(lines: Vector[String], ds: Vector[Data]) = {
-      Bind.read(lines.head, ds) map {(bind) =>
-        InducBlock(bind, InducDefn.readAll(lines.tail, ds, bind.numTypes))
-      }
-    }
-
-    def getBlock(lines: Vector[String]) = {
-      val block =
-        (lines dropWhile ((x) => !(x.startsWith("#BIND")))) takeWhile((x) => !(x.startsWith("#EIND")))
-      if (block.size > 0) Some(block) else None
-    }
-
-    def readAll(lines: Vector[String]) : Vector[InducBlock] = {
-      val ds = Data.readAll(lines)
-      getBlock(lines) flatMap {(block: Vector[String]) =>
-        val head = InducBlock.read(block, ds)
-        val tail = readAll(lines drop(block.size+1))
-        head map (_ +: tail)
-      }
-    }.getOrElse(Vector())
-  }
 }
