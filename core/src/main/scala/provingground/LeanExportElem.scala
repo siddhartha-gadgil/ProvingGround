@@ -47,7 +47,7 @@ object LeanExportElem {
 
     def getExpr(index: Long): Option[Expr] =
       find(index, "#E") flatMap {
-        case Data(_, "#EV", List(ind)) => Some(Expr.Var(ind.toLong))
+        case Data(_, "#EV", List(ind)) => Some(Expr.Var(ind.toInt))
         case Data(_, "#ES", List(uid)) =>
           getUniv(uid.toLong) map (Expr.Sort(_))
         case Data(_, "#EA", List(eid1, eid2)) =>
@@ -138,20 +138,24 @@ object LeanExportElem {
     }
       else None
 
-    def readInducDefn(lines: Vector[String]) = 
-      InducDefn(readInd(lines.head).get, lines.tail map (readIntro(_).get))
+    def readInducDefn(lines: Vector[String]) = {
+        val ind = readInd(lines.head).get
+        val intros = lines.tail take (ind.numConstructors) map (readIntro(_).get)
+        InducDefn(ind,intros)
+      }
+      
 
     def readInducDefnFrom(lines: Vector[String]) = {
       val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
       readInducDefn(ls)
     }
-    
+
     def readNextInducDefn(lines: Vector[String]) : Option[InducDefn] = {
       val start= lines dropWhile ((x) => !(x.startsWith("#IND")))
       if (start.isEmpty) None
       else Some(readInducDefnFrom(start))
     }
-      
+
     def readAllInducDefns(lines: Vector[String], accum: Vector[InducDefn] = Vector()): Vector[InducDefn] = {
       (readNextInducDefn(lines) map ((dfn) =>
         readAllInducDefns(lines drop (dfn.size), dfn +: accum))
@@ -182,7 +186,7 @@ object LeanExportElem {
     }
 
     case class NameLong(env: Name, number: Long) extends Name{
-      override def toString = env.toString()+"."+number.toString
+      override def toString = env.toString()+"."+"#"+number.toString
     }
 
     def get(ds: Vector[Data], index: Long): Option[Name] =
@@ -243,7 +247,7 @@ object LeanExportElem {
   object Expr {
     def get(ds: Vector[Data], index: Long): Option[Expr] =
       Data.find(ds, index, "#EV", "#ES", "#EC", "#EA", "#EL", "#EP") flatMap {
-        case Data(_, "#EV", List(ind)) => Some(Var(ind.toLong))
+        case Data(_, "#EV", List(ind)) => Some(Var(ind.toInt))
         case Data(_, "#ES", List(uid)) =>
           Univ.get(ds, uid.toLong) map (Sort(_))
         case Data(_, "#EA", List(eid1, eid2)) =>
@@ -268,7 +272,7 @@ object LeanExportElem {
           ) yield (Pi(Info.get(info), a, b, c))
       }
 
-    case class Var(index: Long) extends Expr{
+    case class Var(index: Int) extends Expr{
       val constants = List()
     }
 
@@ -284,11 +288,11 @@ object LeanExportElem {
       val constants = func.constants ++ arg.constants
     }
 
-    case class Lambda(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
+    case class Lambda(info: Info, varName: Name, varTyp: Expr, value: Expr) extends Expr{
       val constants = value.constants
     }
 
-    case class Pi(info: Info, varName: Name, variable: Expr, value: Expr) extends Expr{
+    case class Pi(info: Info, varName: Name, varTyp: Expr, value: Expr) extends Expr{
       val constants = value.constants
     }
   }
@@ -380,4 +384,59 @@ object LeanExportElem {
   }
 
 
+}
+
+import HoTT._
+import LeanExportElem._
+
+class LeanToTerm(
+    univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) => Some(Type), 
+    predef: Expr => Option[Term] = (c) => None,
+    env: LeanExportElem.Name => Option[Term] =(name) => None){
+  import Expr._
+  def exprToTerm(expr: Expr, variables: Vector[Term] = Vector()) : Option[Term] = expr match {
+    case expr if !predef(expr).isEmpty => predef(expr)
+    case Var(n) => Try(variables(n)).toOption
+    case Const(name, _) => env(name)
+    case Sort(univ) => univs(univ)
+    case Appln(func, arg) =>
+      exprToTerm(func, variables) match {
+        case Some(fn: FuncLike[u, v]) => 
+          exprToTerm(arg, variables) flatMap((x) =>  Try(fn(x.asInstanceOf[u])).toOption)
+        case _ => None
+      }
+    case Expr.Lambda(_, name, typExpr, valueExpr) =>
+      val typOpt = exprToTerm(typExpr, variables)
+      typOpt match {
+        case Some(typ: Typ[u]) =>
+          val x = name.toString :: typ
+          val yOpt = exprToTerm(valueExpr, variables :+ x)
+          yOpt map ((y) => lmbda(x)(y))
+        case _ => None
+      }
+    case Expr.Pi(_, name, typExpr, valueExpr) =>
+      val typOpt = exprToTerm(typExpr, variables)
+      typOpt match {
+        case Some(typ: Typ[u]) =>
+          val x = name.toString :: typ
+          val yOpt = exprToTerm(valueExpr, variables :+ x)
+          yOpt match {
+            case Some(tp: Typ[v]) =>
+              Try(pi(x)(tp)).toOption
+            case _ => None
+          }
+        case _ => None
+      }
+    case _ => None   
+  }
+  
+  def defnToIdentity(dfn: Definition) = {
+    val varTypOpt = exprToTerm(dfn.tpe)
+    val varOpt : Option[Term] = varTypOpt match {
+      case Some(typ: Typ[u]) => Some(dfn.name.toString :: typ)
+      case _ => None
+    }
+    for(x<- varOpt; y <- exprToTerm(dfn.value)) yield (x =:= y)
+  } 
+  
 }

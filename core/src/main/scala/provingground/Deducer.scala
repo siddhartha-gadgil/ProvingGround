@@ -47,6 +47,18 @@ object Deducer {
         FD.unif(None : Option[Term])
       )
   }
+  
+  def eqSubs(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(save: (Term, IdentityTyp[Term], Term) => Unit) = {
+    rec(p) flatMap {
+      case eq @ IdentityTyp(dom, lhs: Term, rhs: Term) =>
+        rec(p) map ((x) =>
+          if (x.typ == dom)
+            Some(x.subs(lhs, rhs)) map ((y) => {save(x, eq.asInstanceOf[IdentityTyp[Term]], y); y})
+            else None)          
+      case _ =>
+        FD.unif(None : Option[Term])
+    }
+  }
 
    /**
    * generating optionally as lambdas, with function and argument generated recursively;
@@ -243,16 +255,22 @@ class DeducerFunc(applnWeight: Double, lambdaWeight: Double, piWeight: Double, v
 
   var invImageMap : scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
+    
+  var subsInvMap : scala.collection.mutable.Map[Term, Set[(IdentityTyp[Term], Term)]] =
+    scala.collection.mutable.Map()
 
   def save(f: Term, x: Term, y: Term) =
     invImageMap(y) = invImageMap.getOrElse(y, Set()) + ((f, x))
 
+  def saveSubs(x: Term, eq: IdentityTyp[Term], result: Term) =   
+    subsInvMap(result) = subsInvMap.getOrElse(result, Set()) + ((eq, x))
+    
   def memFunc(pd: PD[Term]): PD[Term] =
     pd.
     <+?> (memAppln(func)(pd)(save), applnWeight).
     <+?> (lambda(varWeight)(func)(pd), lambdaWeight).
-    <+?> (pi(varWeight)(func)(pd), lambdaWeight)
-
+    <+?> (pi(varWeight)(func)(pd), lambdaWeight)    
+    
   def funcPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term]): Term => TD[Term] =
     (result) => 
       invImageMap.get(result) map (
@@ -269,6 +287,23 @@ class DeducerFunc(applnWeight: Double, lambdaWeight: Double, piWeight: Double, v
    def funcProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term])(td: TD[Term]) =
      td flatMap (funcPropTerm(backProp)(fd))
    
+   def eqSubsPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term]): Term => TD[Term] =
+    (result) => 
+      subsInvMap.get(result) map (
+          (v) => {
+            val tds = v.toVector map {
+              case (eq, x) =>
+                val eqSubsWeight: Double = ???
+                val scale = eqSubsWeight *fd(eq) * fd(x)/fd(result)
+                backProp(fd)(TD.FD(FD.unif(eq, x)) <*> scale)
+            }
+            TD.BigSum(tds)
+          }
+          ) getOrElse (TD.Empty[Term])   
+   
+   def eqSubsProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term])(td: TD[Term]) =
+     td flatMap (eqSubsPropTerm(backProp)(fd))       
+          
    def lambdaPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term]): Term => TD[Term] = {
          case l: LambdaLike[_, _] =>          

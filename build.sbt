@@ -158,7 +158,8 @@ lazy val nlp = (project in file("nlp")).
 lazy val translation = (project in file("translation")).
       settings(name := "ProvingGround-Translation",
         libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.7").
-      settings(baseSettings : _*)
+      settings(baseSettings : _*).
+      dependsOn(coreJVM)
 
 lazy val deepwalk = (project in file("deepwalk")).
       settings(name := "DeepWalk4s",

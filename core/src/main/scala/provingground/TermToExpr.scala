@@ -2,7 +2,9 @@ package provingground
 
 import HoTT._
 
-class TermToExpr[E](univ : Int => E, predef : Term => Option[E] = Map())(implicit l: ExprLang[E]) {
+class TermToExpr[E](
+    univ : Int => E, 
+    predef : Term => Option[E] = (t: Term) => None)(implicit l: ExprLang[E]) {
   def expr: Term => Option[E] = {
     case term if !predef(term).isEmpty => predef(term)
     case FormalAppln(func, arg) =>
