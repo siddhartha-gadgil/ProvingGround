@@ -1,4 +1,3 @@
-
 package provingground
 import HoTT._
 //import Families._
@@ -13,7 +12,6 @@ import IterFuncPattern._
  * @author gadgil
  */
 class IndexedConstructorPatterns[
-
 C <: Term with Subs[C], Fmly <: Term with Subs[Fmly], H <: Term with Subs[H]](
   val typFmlyPtn: FamilyPattern.FmlyPtn[H, C, Fmly] /*{
     type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }*/
@@ -205,8 +203,7 @@ C <: Term with Subs[C], Fmly <: Term with Subs[Fmly], H <: Term with Subs[H]](
       PiTyp(fibre)
     }
 
-    def inClass[
-    CC <: Term with Subs[CC]](w: Typ[H])(that: IndexedConstructorPatterns[CC, Fmly, H]): that.ConstructorPattern[ConstructorType] =
+    def inClass[CC <: Term with Subs[CC]](w: Typ[H])(that: IndexedConstructorPatterns[CC, Fmly, H]): that.ConstructorPattern[ConstructorType] =
       that.FuncPtn(tail.withCod[CC](w), tailIndex.asInstanceOf[that.Ind], head.inClass(w)(that))
 
     def headData(data: RecDataType, arg: ArgType, f: => I): HeadRecDataType = {

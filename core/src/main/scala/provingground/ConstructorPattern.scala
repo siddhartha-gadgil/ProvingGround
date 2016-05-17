@@ -153,12 +153,12 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
   /**
    * constructor for this pattern given inductive type and name.
    */
-  def constructor(tp: => Typ[H], name: AnySym): Constructor[Cod, H] = {
+  def constructor(tp: => Typ[H], name: AnySym) = {
     val cons = apply(tp).symbObj(name)
     ConstructorDefn[ConstructorType, Cod, H](this, cons, tp)
   }
 
-  def cons(tp: => Typ[H], name: AnySym) = constructor(tp, name).cons
+  def cons(tp: => Typ[H], name: AnySym) : CnstrctrType = constructor(tp, name).cons
 
   /**
    * constructor for this pattern given inductive type, with a name symbol generated.
@@ -602,6 +602,8 @@ trait Constructor[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] { self =>
    * the type for which this is a constructor
    */
   val W: Typ[H]
+  
+  def withCod[CC<: Term with Subs[CC]]: Constructor[CC, H]
 }
 
 object Constructor{
@@ -625,5 +627,17 @@ case class ConstructorDefn[U <: Term with Subs[U], C <: Term with Subs[C], H <: 
 ) extends Constructor[C, H] {
   type ConstructorType = U
 
+  def withCod[CC<: Term with Subs[CC]] =
+    ConstructorDefn(pattern.withCod[CC](W), cons, W)
   //    type Cod = C
+}
+
+object ConstructorDefn{
+  def fromName[U <: Term with Subs[U], C <: Term with Subs[C], H <: Term with Subs[H]](
+  pattern: ConstructorPattern[C, U, H],
+  name: String) = 
+    (w: Typ[H]) => {
+      val cons : U = pattern.cons(w, name)
+      ConstructorDefn[U, C,  H](pattern, cons, w)
+    }
 }

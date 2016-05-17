@@ -1460,6 +1460,16 @@ object HoTT {
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) = typ.symbObj(NameFactory.get)
 
 
+  def funcToLambda[U<: Term with Subs[U], V <: Term with Subs[V]](fn: FuncLike[U, V]) = fn match {
+    case l : LambdaLike[U, V] => l
+    case f: Func[U, V] =>
+      val x = f.dom.Var
+      LambdaFixed(x, f(x))
+    case f: FuncLike[U, V] =>
+      val x = f.dom.Var
+      Lambda(x, f(x))
+  }
+  
   def asLambdas[U <: Term with Subs[U]](term: U) : Option[U] = term match {
     case LambdaFixed(x: Term, y : Term) =>
       for (z <- asLambdas(y); w <- Try(lmbda(x)(z).asInstanceOf[U]).toOption) yield w
@@ -1478,6 +1488,17 @@ object HoTT {
     case _ => None
   }
 
+  def getVariables(n: Int)(t : Term) : List[Term] = 
+    if (n == 0)  List()
+    else t match{
+      case fn: FuncLike[u, v] =>
+        val l = funcToLambda(fn)
+        l.variable :: getVariables(n - 1)(l.value) 
+    }
+  
+  def getTypVariables(n: Int)(t : Term) : List[Typ[Term]] = 
+    getVariables(n)(t) map {case t: Typ[u] => t}
+      
 
   /**
    * Just a wrapper to allow singleton objects

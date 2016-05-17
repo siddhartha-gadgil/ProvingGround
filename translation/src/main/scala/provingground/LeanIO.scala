@@ -15,7 +15,7 @@ object LeanIO {
 
     val dat = Data.readAll(lines)
 
-    dat.readDefs(lines)
+    new DataBase(dat, lines).getAllDefs
   }
 
   def pickleDefs(file: Path, outputDir: Path) = {

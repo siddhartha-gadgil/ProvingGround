@@ -19,7 +19,7 @@ object LeanExportElem {
     def readAll(lines: Vector[String]) = (lines map (read)).flatten
   }
 
-  implicit class DataBase(dat: Vector[Data]){
+  class DataBase(dat: Vector[Data], lines: Vector[String]){
     val map = (dat map ((data) => ((data.index, data.tpe.take(2)), data))).toMap
 
     def find(index: Long, tpe: String) = map.get((index, tpe))
@@ -93,8 +93,11 @@ object LeanExportElem {
       else None
     }
 
-    def readDefs(lines: Vector[String]) = (lines map (readDef)).flatten
+    lazy val getAllDefs = (lines map (readDef)).flatten
 
+    def getDef(name: Name) = 
+      getAllDefs find ((dfn) => dfn.name == name) map (_.value)
+    
     def readAxiom(command: String) : Option[Axiom] = {
       if (command.startsWith("#DEF"))
         {
@@ -112,7 +115,7 @@ object LeanExportElem {
       else None
     }
 
-    def readAxioms(lines: Vector[String]) = (lines map (readAxiom)).flatten
+    lazy val  readAxioms = (lines map (readAxiom)).flatten
 
     def readInd(line: String) =
       if (line.startsWith("#IND"))
@@ -161,6 +164,8 @@ object LeanExportElem {
         readAllInducDefns(lines drop (dfn.size), dfn +: accum))
         ).getOrElse(accum)
     }
+    
+    lazy val getAllInducDefns = readAllInducDefns(lines)
   }
 
   sealed trait Name extends LeanExportElem
@@ -392,12 +397,14 @@ import LeanExportElem._
 class LeanToTerm(
     univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) => Some(Type), 
     predef: Expr => Option[Term] = (c) => None,
-    env: LeanExportElem.Name => Option[Term] =(name) => None){
+    env: LeanExportElem.Name => Option[Expr] =(name) => None){
   import Expr._
   def exprToTerm(expr: Expr, variables: Vector[Term] = Vector()) : Option[Term] = expr match {
     case expr if !predef(expr).isEmpty => predef(expr)
-    case Var(n) => Try(variables(n)).toOption
-    case Const(name, _) => env(name)
+    case Var(n) => 
+      Try(variables(n)).toOption
+    case Const(name, _) => 
+      env(name) flatMap ((e) => exprToTerm(e))
     case Sort(univ) => univs(univ)
     case Appln(func, arg) =>
       exprToTerm(func, variables) match {
@@ -430,7 +437,7 @@ class LeanToTerm(
     case _ => None   
   }
   
-  def defnToIdentity(dfn: Definition) = {
+  def defnToEquality(dfn: Definition) = {
     val varTypOpt = exprToTerm(dfn.tpe)
     val varOpt : Option[Term] = varTypOpt match {
       case Some(typ: Typ[u]) => Some(dfn.name.toString :: typ)

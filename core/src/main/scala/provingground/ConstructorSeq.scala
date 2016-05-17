@@ -80,4 +80,6 @@ object ConstructorSeq {
   def recFn[C<: Term with Subs[C], H<: Term with Subs[H]](
     cs: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) = fold(W)(cs).rec(X)
 
+  def inducFn[C<: Term with Subs[C], H<: Term with Subs[H]](
+    cs: List[Constructor[C, H]], W: Typ[H], Xs: Func[H, Typ[C]]) = fold(W)(cs).induc(Xs)
 }
