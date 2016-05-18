@@ -26,7 +26,7 @@ object FamilyPattern{
  * Hence we need two kinds of induced functions, e.g., (A -> B -> W) -> (A -> B -> X) and (A -> B -> W -> X).
  *
  */
- sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]] {
+ sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]] {self =>
    /**
     * the universe containing the type
     */
@@ -105,19 +105,29 @@ object FamilyPattern{
 
    def withCod[CC <: Term with Subs[CC]](w: Typ[O]): FmlyPtn[O, CC]
 
+   val me: FmlyPtn[O,C]{type FamilyType = self.FamilyType;
+     type IterFunc = self.IterFunc;
+     type IterTypFunc = self.IterTypFunc;
+     type IterDepFunc = self.IterDepFunc;
+     type ArgType = self.ArgType;
+     type Total = self.Total} = self
+
+   def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]) = FuncFmlyPtn(tail, me)
+
+//   def subs(x: Term, y: Term): FmlyPtn[O, C]
  }
 
  object FmlyPtn {
-   def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O])(fmlyTyp: Typ[F]) =
-     Try(get[O, Term, F](typ)(fmlyTyp)).toOption
+   def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O], fmlyTyp: Typ[F]) =
+     Try(get[O, F](typ, fmlyTyp)).toOption
 
-   def get[O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F]](typ: Typ[O])(fmlyTyp: Typ[F]): FmlyPtn[O, C] =
+   def get[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O], fmlyTyp: Typ[F]): FmlyPtn[O, Term] =
      fmlyTyp match {
-       case `typ` => IdFmlyPtn[O, C]
+       case `typ` => IdFmlyPtn[O, Term]
        case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
-         val head = get[O, C, v](typ)(codom)
+         val head = get[O, v](typ, codom)
          val tail = dom
-         val headCast: FmlyPtn[O, C] {
+         val headCast: FmlyPtn[O, Term] {
            type FamilyType = head.FamilyType;
            type IterFunc = head.IterFunc;
            type IterTypFunc = head.IterTypFunc;
@@ -132,7 +142,7 @@ object FamilyPattern{
          val tail = fibre.dom
          val a = tail.Var
          val headfibre = (x: u) =>
-           get[O, C, v](typ)(fibre(x))
+           get[O, v](typ, fibre(x))
          val newHead = headfibre(tail.Var)
 //         type VV = newHead.Family
          type I = newHead.IterFunc
@@ -143,7 +153,7 @@ object FamilyPattern{
          type HTot = newHead.Total
          val newHeadFibre = (t: u) =>
            (
-             headfibre(t).asInstanceOf[FmlyPtn[O, C] {
+             headfibre(t).asInstanceOf[FmlyPtn[O, Term] {
                type FamilyType = FVV;
                type IterFunc = I;
                type IterTypFunc = IT;
@@ -162,6 +172,7 @@ object FamilyPattern{
  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends FmlyPtn[O, C] {
    def apply(W: Typ[O]) = W
 
+   def subs(x: Term, y: Term) = this
    //    type Family =  O
 
    type FamilyType = Typ[O]

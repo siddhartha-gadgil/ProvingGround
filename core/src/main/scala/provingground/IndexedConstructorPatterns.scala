@@ -9,7 +9,7 @@ import ConstructorPattern._
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
-import FamilyPattern.FmlyPtn 
+import FamilyPattern.FmlyPtn
 
 import IterFuncPattern._
 
@@ -18,7 +18,7 @@ import IterFuncPattern._
  */
 class IndexedConstructorPatterns[
 C <: Term with Subs[C], H <: Term with Subs[H]](
-  val typFmlyPtn: FamilyPattern.FmlyPtn[H, C] /*{
+  val typFmlyPtn: FmlyPtn[H, C] /*{
     type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }*/
 ) { outer =>
 
@@ -74,7 +74,7 @@ C <: Term with Subs[C], H <: Term with Subs[H]](
 
     def codClass[CC <: Term with Subs[CC]](w: Typ[H]) = {
       val _codfmly = typFmlyPtn.withCod[CC](w)
-      val codfmly = _codfmly.asInstanceOf[FamilyPattern.FmlyPtn[H, CC] {
+      val codfmly = _codfmly.asInstanceOf[FmlyPtn[H, CC] {
         type FamilyType = _codfmly.FamilyType; type ArgType = Ind; type IterFunc = _codfmly.IterFunc;
         type IterTypFunc = _codfmly.IterTypFunc; type IterDepFunc = _codfmly.IterDepFunc
       }]
