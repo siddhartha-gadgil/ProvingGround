@@ -1,10 +1,12 @@
 package provingground
 import HoTT._
-//import FmlyPtn._
+//import IterFuncPtn._
 import math.max
 //import ScalaUniverses._
 import scala.util.Try
 import scala.language.existentials
+
+//import IterFuncPattern.{IterFuncPtn => IterFuncPtn, _}
 
 import IterFuncPattern._
 
@@ -145,7 +147,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod], CnstrctrType <: Term
    * function pattern.
    */
   def -->:[V <: Term with Subs[V], T <: Term with Subs[T], D <: Term with Subs[D], F <: Term with Subs[F]](
-    that: FmlyPtn[H, Cod, F]
+    that: IterFuncPtn[H, Cod, F]
   ) = FuncPtn(that, this)
 
   /**
@@ -195,7 +197,7 @@ object ConstructorPattern {
     case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
       val head = get(codom, w)
       if (dom.dependsOn(w)) {
-        val tail = FmlyPtn.get[H, Term, u](w)(dom)
+        val tail = IterFuncPtn.get[H, Term, u](w)(dom)
         val fp = FuncPtn(tail, head)
         fp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
       } else CnstFncPtn(codom, head).asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
@@ -206,7 +208,7 @@ object ConstructorPattern {
         (t: Term) =>
           get(fibre(t.asInstanceOf[u]), w).asInstanceOf[ConstructorPattern[HoTT.Term, v, H] { type RecDataType = egfib.RecDataType; type InducDataType = egfib.InducDataType }]
       if (fibre.dom.dependsOn(w)) {
-        val tail = FmlyPtn.get[H, Term, u](w)(fibre.dom)
+        val tail = IterFuncPtn.get[H, Term, u](w)(fibre.dom)
         val tp = DepFuncPtn[v, egfib.RecDataType, egfib.InducDataType, Term, u, H](tail, headfibre)
         tp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
       } else {
@@ -340,7 +342,7 @@ sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod], ArgT <: Ter
  * Extending a constructor-pattern by a type pattern.
  */
 case class FuncPtn[C <: Term with Subs[C], F <: Term with Subs[F], HC <: Term with Subs[HC], H <: Term with Subs[H]](
-  tail: FmlyPtn[H, C, F], head: ConstructorPattern[C, HC, H]
+  tail: IterFuncPtn[H, C, F], head: ConstructorPattern[C, HC, H]
 ) extends RecursiveConstructorPattern[C, F, HC, Func[F, HC], H] { self =>
   //    type ArgType = F
 
@@ -448,7 +450,7 @@ case class CnstFncPtn[T <: Term with Subs[T], Cod <: Term with Subs[Cod], HC <: 
  * XXX this may never be applicable
  */
 case class DepFuncPtn[U <: Term with Subs[U], V <: Term with Subs[V], VV <: Term with Subs[VV], C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
-  tail: FmlyPtn[H, C, F],
+  tail: IterFuncPtn[H, C, F],
   headfibre: F => (ConstructorPattern[C, U, H] { type RecDataType = V; type InducDataType = VV }),
   headlevel: Int = 0
 ) /*(implicit su: ScalaUniv[U])*/ extends RecursiveConstructorPattern[C, F, U, FuncLike[F, U], H] { self =>
@@ -622,7 +624,7 @@ object Constructor {
         case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
           val head = fromFormal(codom, w)(typ)
           if (dom.dependsOn(w)) {
-            val tail = FmlyPtn.get[Term, Term, u](w)(dom)
+            val tail = IterFuncPtn.get[Term, Term, u](w)(dom)
             val fp = FuncPtn(tail, head.pattern)
             fp.constructor(typ, name)
           } else CnstFncPtn(codom, head.pattern).constructor(typ, name)
@@ -633,7 +635,7 @@ object Constructor {
             (t: Term) =>
               fromFormal(fibre(t.asInstanceOf[u]), w)(typ).pattern.asInstanceOf[ConstructorPattern[HoTT.Term, v, Term] { type RecDataType = egfib.RecDataType; type InducDataType = egfib.InducDataType }]
           if (fibre.dom.dependsOn(w)) {
-            val tail = FmlyPtn.get[Term, Term, u](w)(fibre.dom)
+            val tail = IterFuncPtn.get[Term, Term, u](w)(fibre.dom)
             val tp = DepFuncPtn[v, egfib.RecDataType, egfib.InducDataType, Term, u, Term](tail, headfibrePtn)
             tp.constructor(typ, name)
           } else {
