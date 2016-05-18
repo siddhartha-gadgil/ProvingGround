@@ -782,53 +782,6 @@ object HoTT {
     }
   }
 
-  @deprecated("Using function definition", "to be purged")
-  class LazyLambda[X <: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, _value: => Y) extends LambdaLike[X, Y] with Subs[LazyLambda[X, Y]] {
-
-    lazy val value = _value
-
-    lazy val depcodom: X => Typ[Y] = (t: X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
-
-    lazy val dep = true
-
-    def newobj = new LazyLambda(variable.newobj, value.newobj)
-
-    override def subs(x: Term, y: Term): LazyLambda[X, Y] = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
-        val newvar = ??? //changeTyp(variable, variable.typ.replace(u, v))
-        new LazyLambda(newvar.asInstanceOf[X], value.replace(x, y))
-      case _ =>
-        val newvar = variable.newobj
-        val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
-        new LazyLambda(variable, newval)
-    }
-  }
-
-  @deprecated("Using function definition", "to be purged")
-  class LazyLambdaFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](val variable: X, _value: => Y) extends LambdaLike[X, Y] with Func[X, Y] with Subs[LazyLambdaFixed[X, Y]] {
-
-    lazy val value = _value
-
-    //    lazy val depcodom : X => Typ[Y] = (t : X) => value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
-
-    override val dom = variable.typ.asInstanceOf[Typ[X]]
-
-    lazy val codom = value.typ.asInstanceOf[Typ[Y]]
-
-    lazy val dep = false
-
-    def newobj = new LazyLambdaFixed(variable.newobj, value.newobj)
-
-    override def subs(x: Term, y: Term): LazyLambdaFixed[X, Y] = (x, y) match {
-      case (u: Typ[_], v: Typ[_]) if (variable.typ.replace(u, v) != variable.typ) =>
-        val newvar = ???// changeTyp(variable, variable.typ.replace(u, v))
-        new LazyLambdaFixed[X, Y](newvar.asInstanceOf[X], value.replace(x, y))
-      case _ =>
-        val newvar = variable.newobj
-        val newval = value.replace(variable, newvar).replace(x, y).replace(newvar, variable) // change variable to avoid name clashes.
-        new LazyLambdaFixed[X, Y](variable, newval)
-    }
-  }
 
 
   /**
@@ -1406,6 +1359,11 @@ object HoTT {
     case (t, _) => t
   }
 
+  def polyLambda(variables: List[Term], value: Term): Term = variables match {
+    case List() => value
+    case x:: ys => lambda(x)(polyLambda(ys, value))
+  }
+
   /** Symbol factory */
   def nextChar(s: Traversable[Char]) = if (s.isEmpty) 'a' else (s.max + 1).toChar
 
@@ -1428,19 +1386,19 @@ object HoTT {
 //    else if (name.takeRight(1) == "z") nextName(name.dropRight(1)) + "a"
 //    else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString
 //  }
-  
+
   def nextName(nameOpt: Option[String]) : String = {
     nameOpt map (
-        (name) => 
+        (name) =>
           if (name.takeRight(1) == "z") nextName(Some(name.dropRight(1))) + "a"
     else (name.dropRight(1)) + (name.toCharArray.last + 1).toChar.toString)
   }.getOrElse("a")
 
   object NameFactory {
 //    var name = ""
-    
+
     var nameOpt: Option[String] = None
-    
+
 //    def get = {
 //      name = nextName(name)
 //      "$"+name
@@ -1448,12 +1406,12 @@ object HoTT {
 
     def get = {
       val newname = nextName(nameOpt)
-      
+
       nameOpt = Some(newname)
-      
+
       "$"+newname
     }
-    
+
  //   def reset = {name = ""} //may cause race conditions
   }
 
@@ -1469,7 +1427,7 @@ object HoTT {
       val x = f.dom.Var
       Lambda(x, f(x))
   }
-  
+
   def asLambdas[U <: Term with Subs[U]](term: U) : Option[U] = term match {
     case LambdaFixed(x: Term, y : Term) =>
       for (z <- asLambdas(y); w <- Try(lmbda(x)(z).asInstanceOf[U]).toOption) yield w
@@ -1488,17 +1446,17 @@ object HoTT {
     case _ => None
   }
 
-  def getVariables(n: Int)(t : Term) : List[Term] = 
+  def getVariables(n: Int)(t : Term) : List[Term] =
     if (n == 0)  List()
     else t match{
       case fn: FuncLike[u, v] =>
         val l = funcToLambda(fn)
-        l.variable :: getVariables(n - 1)(l.value) 
+        l.variable :: getVariables(n - 1)(l.value)
     }
-  
-  def getTypVariables(n: Int)(t : Term) : List[Typ[Term]] = 
+
+  def getTypVariables(n: Int)(t : Term) : List[Typ[Term]] =
     getVariables(n)(t) map {case t: Typ[u] => t}
-      
+
 
   /**
    * Just a wrapper to allow singleton objects

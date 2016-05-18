@@ -95,9 +95,9 @@ object LeanExportElem {
 
     lazy val getAllDefs = (lines map (readDef)).flatten
 
-    def getDef(name: Name) = 
+    def getDef(name: Name) =
       getAllDefs find ((dfn) => dfn.name == name) map (_.value)
-    
+
     def readAxiom(command: String) : Option[Axiom] = {
       if (command.startsWith("#DEF"))
         {
@@ -146,7 +146,7 @@ object LeanExportElem {
         val intros = lines.tail take (ind.numConstructors) map (readIntro(_).get)
         InducDefn(ind,intros)
       }
-      
+
 
     def readInducDefnFrom(lines: Vector[String]) = {
       val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
@@ -164,7 +164,7 @@ object LeanExportElem {
         readAllInducDefns(lines drop (dfn.size), dfn +: accum))
         ).getOrElse(accum)
     }
-    
+
     lazy val getAllInducDefns = readAllInducDefns(lines)
   }
 
@@ -395,20 +395,20 @@ import HoTT._
 import LeanExportElem._
 
 class LeanToTerm(
-    univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) => Some(Type), 
+    univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) => Some(Type),
     predef: Expr => Option[Term] = (c) => None,
     env: LeanExportElem.Name => Option[Expr] =(name) => None){
   import Expr._
   def exprToTerm(expr: Expr, variables: Vector[Term] = Vector()) : Option[Term] = expr match {
     case expr if !predef(expr).isEmpty => predef(expr)
-    case Var(n) => 
+    case Var(n) =>
       Try(variables(n)).toOption
-    case Const(name, _) => 
+    case Const(name, _) =>
       env(name) flatMap ((e) => exprToTerm(e))
     case Sort(univ) => univs(univ)
     case Appln(func, arg) =>
       exprToTerm(func, variables) match {
-        case Some(fn: FuncLike[u, v]) => 
+        case Some(fn: FuncLike[u, v]) =>
           exprToTerm(arg, variables) flatMap((x) =>  Try(fn(x.asInstanceOf[u])).toOption)
         case _ => None
       }
@@ -434,9 +434,9 @@ class LeanToTerm(
           }
         case _ => None
       }
-    case _ => None   
+    case _ => None
   }
-  
+
   def defnToEquality(dfn: Definition) = {
     val varTypOpt = exprToTerm(dfn.tpe)
     val varOpt : Option[Term] = varTypOpt match {
@@ -444,6 +444,24 @@ class LeanToTerm(
       case _ => None
     }
     for(x<- varOpt; y <- exprToTerm(dfn.value)) yield (x =:= y)
-  } 
-  
-}
+  }
+
+  def inductiveTypes(induc : InducDefn) = {
+    val fullTypOpt = exprToTerm(induc.ind.tpe)
+
+    val paramsOpt = fullTypOpt flatMap ((typ) => Try(getVariables(induc.size)(typ)).toOption)
+
+    val fullConstructorList = (induc.cons map ((c) => exprToTerm(c.tpe))).flatten
+
+    val formalConsOpt =
+      paramsOpt map {(params) =>fullConstructorList map (foldterms(_, params))}
+
+    val formalTyp = induc.ind.name.toString :: Type
+
+    val valueOpt = formalConsOpt map ((formalCons) => InductiveTyp.fromFormal(formalCons.toList, formalTyp))
+
+    val checkTyp = fullTypOpt flatMap ((typ) => Try(foldterms(typ, paramsOpt.get)).toOption)
+
+    for (params <- paramsOpt; value <- valueOpt if checkTyp == Some(Type)) yield polyLambda(params, value)
+  }
+ }
