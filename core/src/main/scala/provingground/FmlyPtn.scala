@@ -114,7 +114,23 @@ object FamilyPattern{
 
    def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]) = FuncFmlyPtn(tail, me)
 
-//   def subs(x: Term, y: Term): FmlyPtn[O, C]
+   def ~>:[TT <: Term with Subs[TT]](tailVar: TT) = {
+     val tail = tailVar.typ
+     val newHeadFibre = (t: Term) =>
+       (
+         self.subs(tailVar, t).asInstanceOf[FmlyPtn[O, C] {
+           type FamilyType = self.FamilyType;
+           type IterFunc = self.IterFunc;
+           type IterTypFunc = self.IterTypFunc;
+           type IterDepFunc = self.IterDepFunc;
+           type ArgType = self.ArgType;
+           type Total = self.Total
+         }]
+       )
+       DepFuncFmlyPtn(tail, newHeadFibre)
+   }
+   
+   def subs(x: Term, y: Term): FmlyPtn[O, C]
  }
 
  object FmlyPtn {
@@ -373,6 +389,12 @@ object FamilyPattern{
      FuncFmlyPtn[TT, newHead.FamilyType, newHead.IterFunc, newHead.IterTypFunc, newHead.IterDepFunc, newHead.ArgType,
       O, CC, newHead.Total](tail, newHead)
    }
+   
+   def subs(x: Term, y: Term) = {
+     val newHead = head.subs(x, y)
+     FuncFmlyPtn[TT, newHead.FamilyType, newHead.IterFunc, newHead.IterTypFunc, newHead.IterDepFunc, newHead.ArgType,
+      O, C, newHead.Total](tail.replace(x, y), newHead)
+   }
 
    val headfibre = (arg: Term) => head
 
@@ -521,6 +543,25 @@ object FamilyPattern{
          }]
        )
      DepFuncFmlyPtn[TT,  FVV, I, IT, DI, SS,  O, CC, HTot](tail, newHeadFibre)
+   }
+   
+   def subs(x: Term, y: Term) = {
+     val newHead = headfibre(tail.Var)
+//     type VV = newHead.Family
+     type FVV = newHead.FamilyType
+     type SS = newHead.ArgType
+     val newHeadFibre = (t: TT) =>
+       (
+         headfibre(t).subs(x, y).asInstanceOf[FmlyPtn[O, C] {
+           type FamilyType = FVV;
+           type IterFunc = I;
+           type IterTypFunc = IT;
+           type IterDepFunc = DI;
+           type ArgType = SS;
+           type Total = HTot
+         }]
+       )
+     DepFuncFmlyPtn[TT,  FVV, I, IT, DI, SS,  O, C, HTot](tail replace (x, y), newHeadFibre)
    }
 
    //    val head = headfibre(tail.Var)
