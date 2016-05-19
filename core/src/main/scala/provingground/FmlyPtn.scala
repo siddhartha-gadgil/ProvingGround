@@ -92,6 +92,8 @@ object FamilyPattern{
 
    def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
+
+
    //    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
 
    /**
@@ -181,6 +183,8 @@ object FamilyPattern{
          DepFuncFmlyPtn(tail, newHeadFibre).asInstanceOf[FmlyPtn[O, Term, F]]
      }
  }
+
+ val Types = IdFmlyPtn[Term, Term]()
 
  /**
   * The identity family

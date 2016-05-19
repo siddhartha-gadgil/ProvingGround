@@ -47,14 +47,14 @@ object Deducer {
         FD.unif(None : Option[Term])
       )
   }
-  
+
   def eqSubs(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(save: (Term, IdentityTyp[Term], Term) => Unit) = {
     rec(p) flatMap {
       case eq @ IdentityTyp(dom, lhs: Term, rhs: Term) =>
         rec(p) map ((x) =>
           if (x.typ == dom)
             Some(x.subs(lhs, rhs)) map ((y) => {save(x, eq.asInstanceOf[IdentityTyp[Term]], y); y})
-            else None)          
+            else None)
       case _ =>
         FD.unif(None : Option[Term])
     }
@@ -88,7 +88,7 @@ object Deducer {
     }
     )
 
-    
+
     // Helpers that may not be used
   /**
    * returns map of inverse image under function application,
@@ -133,12 +133,12 @@ object Deducer {
   def invTD(supp: Vector[Term])(fn: Term) : Term => TD[Term] =
     (y: Term) => ((funcInvImage(supp)(fn)) mapValues ((xs) => TD(FD.rawUnif(xs)))).getOrElse(y, TD.Empty[Term])
 // End of unused helpers.
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
   def argInvTD(supp: Vector[Term])(arg: Term) : Term => TD[Term] =
     (y: Term) => ((argInvImage(supp)(arg)) mapValues ((xs) => TD(FD.rawUnif(xs)))).getOrElse(y, TD.Empty[Term])
 
@@ -176,7 +176,7 @@ object Deducer {
       Some(l.value replace (l.variable, variable(l.variable.typ)))
     case _ => None
   }
-  
+
   def piValue[U <: Term with Subs[U]](typ: Typ[U]) : Term => Option[Term] = {
     case fn: FuncLike[u, v] =>
       val x = variable(fn.dom)
@@ -199,15 +199,15 @@ object Deducer {
   def lambdaFD(fd: FD[Term]) =
     (typ: Typ[Term]) =>
       fd mapOpt (lambdaValue(typ))
- 
+
   def piTD(td: TD[Term]) =
     (typ: Typ[Term]) =>
-      td mapOpt (piValue(typ))    
-      
+      td mapOpt (piValue(typ))
+
   def piFD(fd: FD[Term]) =
     (typ: Typ[Term]) =>
-      fd mapOpt (piValue(typ))    
-      
+      fd mapOpt (piValue(typ))
+
   def lambdaAdjointOnIslands(
       recAdj : => (FD[Term] => TD[Term] => TD[Term]))(
           fd: FD[Term])(w : => TD[Term]) : TD[Term]  = {
@@ -255,24 +255,24 @@ class DeducerFunc(applnWeight: Double, lambdaWeight: Double, piWeight: Double, v
 
   var invImageMap : scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
-    
+
   var subsInvMap : scala.collection.mutable.Map[Term, Set[(IdentityTyp[Term], Term)]] =
     scala.collection.mutable.Map()
 
   def save(f: Term, x: Term, y: Term) =
     invImageMap(y) = invImageMap.getOrElse(y, Set()) + ((f, x))
 
-  def saveSubs(x: Term, eq: IdentityTyp[Term], result: Term) =   
+  def saveSubs(x: Term, eq: IdentityTyp[Term], result: Term) =
     subsInvMap(result) = subsInvMap.getOrElse(result, Set()) + ((eq, x))
-    
+
   def memFunc(pd: PD[Term]): PD[Term] =
     pd.
     <+?> (memAppln(func)(pd)(save), applnWeight).
     <+?> (lambda(varWeight)(func)(pd), lambdaWeight).
-    <+?> (pi(varWeight)(func)(pd), lambdaWeight)    
-    
+    <+?> (pi(varWeight)(func)(pd), lambdaWeight)
+
   def funcPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term]): Term => TD[Term] =
-    (result) => 
+    (result) =>
       invImageMap.get(result) map (
           (v) => {
             val tds = v.toVector map {
@@ -282,56 +282,56 @@ class DeducerFunc(applnWeight: Double, lambdaWeight: Double, piWeight: Double, v
             }
             TD.BigSum(tds)
           }
-          ) getOrElse (TD.Empty[Term])          
-          
+          ) getOrElse (TD.Empty[Term])
+
    def funcProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term])(td: TD[Term]) =
      td flatMap (funcPropTerm(backProp)(fd))
-   
+
    def eqSubsPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term]): Term => TD[Term] =
-    (result) => 
+    (result) =>
       subsInvMap.get(result) map (
           (v) => {
             val tds = v.toVector map {
               case (eq, x) =>
-                val eqSubsWeight: Double = ???
+                val eqSubsWeight: Double = 0.0
                 val scale = eqSubsWeight *fd(eq) * fd(x)/fd(result)
                 backProp(fd)(TD.FD(FD.unif(eq, x)) <*> scale)
             }
             TD.BigSum(tds)
           }
-          ) getOrElse (TD.Empty[Term])   
-   
+          ) getOrElse (TD.Empty[Term])
+
    def eqSubsProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(fd: FD[Term])(td: TD[Term]) =
-     td flatMap (eqSubsPropTerm(backProp)(fd))       
-          
+     td flatMap (eqSubsPropTerm(backProp)(fd))
+
    def lambdaPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term]): Term => TD[Term] = {
-         case l: LambdaLike[_, _] =>          
-           val atom = TD.atom(l.variable.typ : Term) 
+         case l: LambdaLike[_, _] =>
+           val atom = TD.atom(l.variable.typ : Term)
            backProp(fd)(atom)
          case _ => TD.Empty[Term]
    }
-       
+
    def lambdaPropVar(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-       fd: FD[Term])(td: TD[Term]) = 
+       fd: FD[Term])(td: TD[Term]) =
          td flatMap (lambdaPropVarTerm(backProp)(fd))
-   
+
    def lambdaPropValuesForTyp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term])(td: TD[Term])(tp: Typ[Term]) : TD[Term] = {
      import Deducer.{lambdaTD, lambdaFD, variable}
      val inner = backProp(lambdaFD(fd)(tp))(lambdaTD(td)(tp))
      inner map ((y) => HoTT.lambda(variable(tp))(y))
    }
-         
+
    def lambdaPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term])(td: TD[Term]) : TD[Term] = {
      val v = fd.supp collect {
-       case tp: Typ[_] => 
+       case tp: Typ[_] =>
          lambdaPropValuesForTyp(backProp)(fd)(td)(tp)
      }
      TD.BigSum(v)
    }
-   
+
    def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term]): Term => TD[Term] = {
          case fn: FuncLike[u, v] =>
@@ -340,34 +340,34 @@ class DeducerFunc(applnWeight: Double, lambdaWeight: Double, piWeight: Double, v
            backProp(fd)(atom)
          case _ => TD.Empty[Term]
    }
-   
-   
+
+
    def piPropVar(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-       fd: FD[Term])(td: TD[Term]) = 
-         td flatMap (piPropVarTerm(backProp)(fd))    
-   
+       fd: FD[Term])(td: TD[Term]) =
+         td flatMap (piPropVarTerm(backProp)(fd))
+
    def piPropValuesForTyp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term])(td: TD[Term])(tp: Typ[Term]) : TD[Term] = {
      import Deducer.{piTD, piFD, variable}
      val inner = backProp(piFD(fd)(tp))(piTD(td)(tp))
      inner mapOpt {
-       case y : Typ[u] => 
+       case y : Typ[u] =>
          Some(HoTT.pi(variable(tp))(y.asInstanceOf[Typ[Term]]))
        case _ => None}
    }
-   
+
    def piPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
        fd: FD[Term])(td: TD[Term]) : TD[Term] = {
      val v = fd.supp collect {
-       case tp: Typ[_] => 
+       case tp: Typ[_] =>
          piPropValuesForTyp(backProp)(fd)(td)(tp)
      }
      TD.BigSum(v)
    }
-   
-    def backProp(epsilon: Double)(fd: FD[Term]): TD[Term] => TD[Term] = 
-      (td) => 
-        td <*> (1 - epsilon) <+> 
+
+    def backProp(epsilon: Double)(fd: FD[Term]): TD[Term] => TD[Term] =
+      (td) =>
+        td <*> (1 - epsilon) <+>
         (funcProp(backProp(epsilon))(fd)(td) <*> epsilon) <+>
         (lambdaPropVar(backProp(epsilon))(fd)(td) <*> epsilon) <+>
         (lambdaPropValues(backProp(epsilon))(fd)(td) <*> epsilon) <+>

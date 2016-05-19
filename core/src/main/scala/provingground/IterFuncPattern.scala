@@ -21,8 +21,6 @@ object IterFuncPattern{
     type Family = F
 
 
-  //  def arg(x: Total): ArgType
-
     /**
      * scala type of target for induced functions
      */
@@ -52,6 +50,7 @@ object IterFuncPattern{
 
     def withCod[CC <: Term with Subs[CC]](w: Typ[O]): IterFuncPtn[O, CC, Family]
 
+    def subs(x: Term, y: Term) : IterFuncPtn[O, C, Family]
     /**
      * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
      *
@@ -114,6 +113,33 @@ object IterFuncPattern{
       }
   }
 
+
+  case class IterFuncTyp[
+    O <: Term with Subs[O],
+    C <: Term with Subs[C],
+    F <: Term with Subs[F]](pattern: IterFuncPtn[O, C, F], typ: Typ[O]){
+
+      def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+        FuncFmlyPtn(tail, pattern)
+
+      def ~>:[TT<: Term with Subs[TT]](tailVar: TT) = {
+        val fibre = (t: Term) =>
+          pattern.subs(tailVar, t).
+          asInstanceOf[IterFuncPtn[O,C,F]{type TargetType = pattern.TargetType; type DepTargetType = pattern.DepTargetType} ]
+        DepFuncFmlyPtn(tailVar.typ, fibre)
+      }
+    }
+
+  implicit class IterFuncTypHead[O<: Term with Subs[O]](typ: Typ[O]){
+    def pair = IterFuncTyp(IdFmlyPtn[O, Term], typ)
+
+    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+      IterFuncTyp(tail ->: pair, typ)
+
+    def ~|>:[TT <: Term with Subs[TT]](tailVar : TT) =
+      IterFuncTyp(tailVar ~>: pair, typ)
+  }
+
   /**
    * The identity family
    */
@@ -138,34 +164,6 @@ object IterFuncPattern{
 
     def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
 
-    type ArgType = AtomicTerm
-
-    def arg(x: Total) : AtomicTerm = Star
-
-    def domTotal(w: FamilyType): Typ[Total] = w
-
-    //    def contract(f: O)(arg: ArgType): O = f
-
-    //    def contractDep(f: O)(arg: ArgType) = f
-
-    def fill(g: IterFunc)(arg: ArgType): Func[O, C] = g
-
-    def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = g
-
-    def curry(f: Func[Total, Cod]): IterFunc = f
-
-    def totalDomain(g: IterFunc) = g.dom
-
-    def uncurry(g: IterFunc): Func[Total, Cod] = g
-
-    def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = f
-
-    def depTotalDomain(g: IterDepFunc) = g.dom
-
-    def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = g
-
-    def contractType(w: FamilyType)(arg: ArgType): Typ[O] = w
-
     type TargetType = C
 
     type DepTargetType = C
@@ -175,6 +173,8 @@ object IterFuncPattern{
     def depTarget(xs: Func[O, Typ[Cod]]) = xs
 
     def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdFmlyPtn[O, CC]
+
+    def subs(x: Term, y: Term) = this
 
     //    type Cod = C
 
@@ -195,14 +195,6 @@ object IterFuncPattern{
 
   trait RecFmlyPtn[TT <: Term with Subs[TT], V<: Term with Subs[V], T <: Term with Subs[T],
   D <: Term with Subs[D], O <: Term with Subs[O], C <: Term with Subs[C]] extends IterFuncPtn[O, C, FuncLike[TT, V]] {
-
-    //    type Family <:  FuncLike[Term, V] with Subs[Family]
-
-
-
-    //   type ArgType <: AbsPair[Typ[Term], S] with Subs[AbsPair[Typ[Term], S]]
-
-    //   def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
     type TargetType <: FuncLike[TT, T] with Subs[TargetType]
 
@@ -230,21 +222,14 @@ object IterFuncPattern{
     head: IterFuncPtn[O, C, V] {
       type TargetType = T; type DepTargetType = D;
     }
-  ) extends IterFuncPtn[O, C, Func[TT, V]] {
+  ) extends IterFuncPtn[O, C, Func[TT, V]] {self =>
     def apply(W: Typ[O]) = FuncTyp[TT, V](tail, head(W))
-
-    //  override type Family =  Func[Term, V]
 
     type DepTargetType = FuncLike[TT, D]
 
 
-  //  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
-
-    //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
-
     type TargetType = Func[TT, T]
 
-    //    type DepTargetType = FuncLike[Term, D]
 
     def target(x: Typ[Cod]) = tail ->: head.target(x)
 
@@ -261,6 +246,11 @@ object IterFuncPattern{
     def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {
       val newHead = head.withCod[CC](w)
       FuncFmlyPtn[TT, newHead.Family,  newHead.TargetType, newHead.DepTargetType, O, CC](tail, newHead)
+    }
+
+    def subs(x: Term, y: Term) = {
+      val newHead = head.subs(x, y)
+      FuncFmlyPtn[TT, newHead.Family,  newHead.TargetType, newHead.DepTargetType, O, C](tail, newHead)
     }
 
     val headfibre = (arg: Term) => head
@@ -350,6 +340,22 @@ object IterFuncPattern{
           }]
         )
       DepFuncFmlyPtn[TT, VV,  TTT, DD, O, CC](tail, newHeadFibre)
+    }
+
+    def subs(x: Term, y: Term) = {
+      val newHead = headfibre(tail.Var)
+      type VV = newHead.Family
+      type TTT = newHead.TargetType
+      type DD = newHead.DepTargetType
+      val newHeadFibre = (t: TT) =>
+        (
+          headfibre(t).subs(x, y).asInstanceOf[IterFuncPtn[O, C, VV] {
+
+            type TargetType = TTT; type DepTargetType = DD;
+
+          }]
+        )
+      DepFuncFmlyPtn[TT, VV,  TTT, DD, O, C](tail, newHeadFibre)
     }
 
     //    val head = headfibre(tail.Var)

@@ -222,8 +222,6 @@ class SymbolicCRig[A : Rig] {self =>
    lazy val reciprocal : Func[LocalTerm, LocalTerm] =
         reciprocalOpt.get
 
-  //  val div: Op = ???
-
   object Reciprocal{
     def apply(a: LocalTerm) =  a match {
       case Reciprocal(b) => b

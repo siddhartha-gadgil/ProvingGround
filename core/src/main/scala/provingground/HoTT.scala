@@ -1,7 +1,7 @@
 package provingground
 
 import scala.language.implicitConversions
-import scala.util._
+import scala.util.Try
 import scala.language.existentials
 import Math._
 
