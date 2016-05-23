@@ -3,7 +3,7 @@ package provingground
 import HoTT._
 
 class TermToExpr[E](
-    univ : Int => E, 
+    univ : Int => E,
     predef : Term => Option[E] = (t: Term) => None)(implicit l: ExprLang[E]) {
   def expr: Term => Option[E] = {
     case term if !predef(term).isEmpty => predef(term)
@@ -50,45 +50,45 @@ class TermToExpr[E](
 
 object TermToExpr{
   class NewNameFactory(prefix: String ="$") {
-    
-    var nameOpt: Option[String] = None
-    
+
+    var name: String = ""
+
     def get = {
-      val newname = nextName(nameOpt)
-      
-      nameOpt = Some(newname)
-      
+      val newname = nextName(name)
+
+      name = newname
+
       prefix + newname
     }
-    
+
     val termNames : scala.collection.mutable.Map[Term, String] = scala.collection.mutable.Map()
-    
-    def getName(t: Term) = 
+
+    def getName(t: Term) =
       termNames.get(t) getOrElse {
         val name = get
         termNames += (t -> name)
         name
     }
-    
+
     def getTerm(t: Term) = getName(t) :: (t.typ)
   }
-  
-  
-  
+
+
+
   import TermLang._
-  
+
   def isVar(t: Term) = t match {
     case sym: Symbolic if sym.name.toString.startsWith("$") => true
     case _ => false
   }
-  
+
   def newTermOpt(term: Term, prefix: String= ".") = {
     val myNames = new NewNameFactory(prefix)
-    def predefs(t: Term) = 
+    def predefs(t: Term) =
       if (isVar(t)) Some(myNames.getTerm(t)) else None
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)
     rebuilder(term)
   }
-  
+
   def rebuild(t: Term, prefix: String= ".") = newTermOpt(t, prefix).get
 }
