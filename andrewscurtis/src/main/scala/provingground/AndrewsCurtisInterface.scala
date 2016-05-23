@@ -9,7 +9,6 @@ import akka.actor._
 //import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent._
 
-
 object AndrewsCurtisInterface {
   /*
   def sendDstbn(dstbn : FiniteDistribution[Presentation]) = dstbnChannel.push(dstbnJson(dstbn))
@@ -17,9 +16,9 @@ object AndrewsCurtisInterface {
   def pushDstbn(d : DynDstbn) = sendDstbn(d.vrtdst)
   
   /*
-   * sending out distributions on presentations to frontend : the dstbnout Enumerator is sent in response to an sse request
-   * 
-   */
+ * sending out distributions on presentations to frontend : the dstbnout Enumerator is sent in response to an sse request
+ * 
+ */
   
   val (dstbnout, dstbnChannel) = Concurrent.broadcast[JsValue]
   
@@ -54,5 +53,5 @@ object AndrewsCurtisInterface {
     
   val flowController = FlowController.props(ACparameters())
 
-*/
+ */
 }

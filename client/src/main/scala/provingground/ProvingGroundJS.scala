@@ -17,7 +17,9 @@ import HoTT._
 
 object ProvingGroundJS extends js.JSApp {
   def main(): Unit = {
-    val page = Try(dom.document.getElementById("page")).map (_.textContent).getOrElse("default")
+    val page = Try(dom.document.getElementById("page"))
+      .map(_.textContent)
+      .getOrElse("default")
 
     page match {
       case "andrews-curtis" => AndrewsCurtisJS.andrewscurtisJS()
@@ -26,25 +28,25 @@ object ProvingGroundJS extends js.JSApp {
 
 //      JsTest.jstest()
   }
-  
+
   val jsDiv = dom.document.getElementById("jsdiv")
-  
-  def insertDiv(div: Div) = 
+
+  def insertDiv(div: Div) =
     jsDiv.appendChild(div)
-  
-  def insertDiv(futDiv: Future[Div]) = 
+
+  def insertDiv(futDiv: Future[Div]) =
     futDiv.foreach(jsDiv.appendChild(_))
-    
+
   // Newer approach  
-    
-  val jsElems = dom.document.getElementsByClassName("js-element") map (_.asInstanceOf[Element])
-  
-  val script : Map[String, Element] = Map()
-  
-  
-  jsElems foreach((elem) => {
-    elem.innerHTML = ""
-    elem.appendChild(script(elem.getAttribute("data-script")))
-  }
-  )
+
+  val jsElems =
+    dom.document.getElementsByClassName("js-element") map (_.asInstanceOf[
+            Element])
+
+  val script: Map[String, Element] = Map()
+
+  jsElems foreach ((elem) => {
+        elem.innerHTML = ""
+        elem.appendChild(script(elem.getAttribute("data-script")))
+      })
 }

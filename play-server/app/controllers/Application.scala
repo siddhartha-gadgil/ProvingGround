@@ -7,7 +7,6 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 
-
 // Play Json imports
 import play.api.libs.json._
 
@@ -24,8 +23,6 @@ import provingground.MoveLearner._
 
 object Application extends Controller {
 
-
-
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
@@ -38,9 +35,7 @@ object Application extends Controller {
     Redirect("build/web/provingground.html")
   }
 
-
-
-/*
+  /*
   def ACupdate = Action {
     implicit request => {
       val params = ACform.bindFromRequest.get
@@ -48,7 +43,7 @@ object Application extends Controller {
       Ok(params.toString)
     }
   }
-  */
+   */
   /*
 
   def dstbnstream = Action {
@@ -56,59 +51,52 @@ object Application extends Controller {
           Ok.feed(ACsource).as("text/event-stream")
       }
   }
-  *
-  *
-  */
+   *
+   *
+   */
   /*
   def dstbnstream = Action {
       implicit request => {
           Ok.feed(dstbnout &> EventSource()).as("text/event-stream")
       }
   }
-  *
-  */
+   *
+   */
 
   val (bounceOut, bounceChannel) = Concurrent.broadcast[String]
 
-  def bouncestream = Action {
-      implicit request => {
-          Ok.feed(bounceOut through EventSource()).as("text/event-stream")
-      }
+  def bouncestream = Action { implicit request =>
+    {
+      Ok.feed(bounceOut through EventSource()).as("text/event-stream")
+    }
   }
 
-  case class bouncePair(value: String, mult: Int){
+  case class bouncePair(value: String, mult: Int) {
     def send = (0 to mult) foreach ((_) => bounceChannel.push(value))
   }
 
   val bounceForm = Form(
-      mapping(
-          "value" -> text,
-          "mult" -> number)
-          (bouncePair.apply)(bouncePair.unapply)
-          )
+      mapping("value" -> text, "mult" -> number)(bouncePair.apply)(
+          bouncePair.unapply)
+  )
 
-  def bounce = Action (parse.text){
-    implicit request =>
- //     val p = bounceForm.bindFromRequest.get
- import upickle.default._
-      bounceChannel.push(write((request.body, request.body)))
-      println(request.body)
-  //    p.send
-      Ok("bounced")
+  def bounce = Action(parse.text) { implicit request =>
+    //     val p = bounceForm.bindFromRequest.get
+    import upickle.default._
+    bounceChannel.push(write((request.body, request.body)))
+    println(request.body)
+    //    p.send
+    Ok("bounced")
   }
 
-
-
-    def acLoopStart = Action {
+  def acLoopStart = Action {
     Ok(views.html.acLoopStart())
   }
 
-
-  def acLoop = Action {implicit request =>
+  def acLoop = Action { implicit request =>
     val presGen = presentationGenForm.bindFromRequest.get
     val learnLoop = learnerForm(presGen.feedback).bindFromRequest.get
     val finalDst = learnLoop.outerlearn(defaultdstbn)
     Ok(views.html.acLoop(???))
-    }
-
+  }
 }

@@ -7,574 +7,602 @@ import scala.language.existentials
 import scala.util.Try
 
 /**
- * @author gadgil
- */
+  * @author gadgil
+  */
+object FamilyPattern {
 
-object FamilyPattern{
-
-/**
- * A pattern for families, e.g. of inductive types to be defined
- * for instance A -> B -> W, where W is the type to be defined;
- * ends with the type with members.
- *
- * given a codomain C, or a family of codomains, we can lift functions W -> C to functions on families.
- * @tparam O scala type of objects of W, i.e., members of the family.
- * @tparam F scala type of sections, e.g. A -> B -> W
- * @tparam C scala type of the codomain, needed to deduce types for induced functions.
- *
- * This is used in more than one way, which perhaps should be separated: for constructor types and for inductive families.
- * Hence we need two kinds of induced functions, e.g., (A -> B -> W) -> (A -> B -> X) and (A -> B -> W -> X).
- *
- */
- sealed trait FmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C], F<: Term with Subs[F]] {self =>
-   /**
-    * the universe containing the type
+  /**
+    * A pattern for families, e.g. of inductive types to be defined
+    * for instance A -> B -> W, where W is the type to be defined;
+    * ends with the type with members.
+    *
+    * given a codomain C, or a family of codomains, we can lift functions W -> C to functions on families.
+    * @tparam O scala type of objects of W, i.e., members of the family.
+    * @tparam F scala type of sections, e.g. A -> B -> W
+    * @tparam C scala type of the codomain, needed to deduce types for induced functions.
+    *
+    * This is used in more than one way, which perhaps should be separated: for constructor types and for inductive families.
+    * Hence we need two kinds of induced functions, e.g., (A -> B -> W) -> (A -> B -> X) and (A -> B -> W -> X).
+    *
     */
-   val univLevel: Int
+  sealed trait FmlyPtn[
+      O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F]] {
+    self =>
 
-   type Cod = C
+    /**
+      * the universe containing the type
+      */
+    val univLevel: Int
 
-   /**
-    * scala type (upper bound) for a member of the family, i.e., sections
-    */
+    type Cod = C
+
+    /**
+      * scala type (upper bound) for a member of the family, i.e., sections
+      */
 //   type Family = F
 
-   /**
-    *  type of  W, i.e., sections to a universe.
-    */
-   type FamilyType = F
+    /**
+      *  type of  W, i.e., sections to a universe.
+      */
+    type FamilyType = F
 
-   /**
-   * type of the total space, i.e., all terms in some W.
-   */
-   type Total <: Term with Subs[Total]
+    /**
+      * type of the total space, i.e., all terms in some W.
+      */
+    type Total <: Term with Subs[Total]
 
-   /**
-    * project an element of the total type to its value, i.e., drop arguments
-    */
-   def value(x: Total): O
+    /**
+      * project an element of the total type to its value, i.e., drop arguments
+      */
+    def value(x: Total): O
 
-   /**
-    *  Type of Curried function to X.
-    */
-   type IterFunc <: Term with Subs[IterFunc]
+    /**
+      *  Type of Curried function to X.
+      */
+    type IterFunc <: Term with Subs[IterFunc]
 
-   /**
-    *  Type of curried function to typ[X]
-    */
-   type IterTypFunc <: Term with Subs[IterTypFunc]
+    /**
+      *  Type of curried function to typ[X]
+      */
+    type IterTypFunc <: Term with Subs[IterTypFunc]
 
-   type IterDepFunc <: Term with Subs[IterDepFunc]
+    type IterDepFunc <: Term with Subs[IterDepFunc]
 
-   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc]
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc]
 
-   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc]
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc]
 
-   def domTotal(w: FamilyType): Typ[Total]
+    def domTotal(w: FamilyType): Typ[Total]
 
-   //    def contract(f: Family)(arg: ArgType): O
+    //    def contract(f: Family)(arg: ArgType): O
 
-   def fill(g: IterFunc)(arg: ArgType): Func[O, C]
+    def fill(g: IterFunc)(arg: ArgType): Func[O, C]
 
-   def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C]
+    def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C]
 
-   def curry(f: Func[Total, Cod]): IterFunc
+    def curry(f: Func[Total, Cod]): IterFunc
 
-   def totalDomain(g: IterFunc): Typ[Total]
+    def totalDomain(g: IterFunc): Typ[Total]
 
-   def uncurry(g: IterFunc): Func[Total, Cod]
+    def uncurry(g: IterFunc): Func[Total, Cod]
 
-   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc
+    def depCurry(f: FuncLike[Total, Cod]): IterDepFunc
 
-   def depTotalDomain(g: IterDepFunc): Typ[Total]
+    def depTotalDomain(g: IterDepFunc): Typ[Total]
 
-   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod]
+    def depUncurry(g: IterDepFunc): FuncLike[Total, Cod]
 
-   def contractType(w: FamilyType)(arg: ArgType): Typ[O]
+    def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
+    //    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
 
+    /**
+      *  type of total index
+      */
+    type ArgType <: Term with Subs[ArgType]
 
-   //    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
+    //  def arg(x: Total): ArgType
 
-   /**
-    *  type of total index
-    */
-   type ArgType <: Term with Subs[ArgType]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]): FmlyPtn[O, CC, F]
 
+    val me: FmlyPtn[O, C, F] {
+      type IterFunc = self.IterFunc;
+      type IterTypFunc = self.IterTypFunc;
+      type IterDepFunc = self.IterDepFunc;
+      type ArgType = self.ArgType;
+      type Total = self.Total
+    } = self
 
- //  def arg(x: Total): ArgType
+    def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]) = FuncFmlyPtn(tail, me)
 
+    def ~>:[TT <: Term with Subs[TT]](tailVar: TT) = {
+      val tail = tailVar.typ
+      val newHeadFibre = (t: Term) =>
+        (
+            self
+              .subs(tailVar, t)
+              .asInstanceOf[FmlyPtn[O, C, F] {
+                    //         type FamilyType = self.FamilyType;
+                    type IterFunc = self.IterFunc;
+                    type IterTypFunc = self.IterTypFunc;
+                    type IterDepFunc = self.IterDepFunc;
+                    type ArgType = self.ArgType;
+                    type Total = self.Total
+                  }]
+        )
+      DepFuncFmlyPtn(tail, newHeadFibre)
+    }
 
-   def withCod[CC <: Term with Subs[CC]](w: Typ[O]): FmlyPtn[O, CC, F]
+    def subs(x: Term, y: Term): FmlyPtn[O, C, F]
+  }
 
-   val me: FmlyPtn[O,C, F]{
-     type IterFunc = self.IterFunc;
-     type IterTypFunc = self.IterTypFunc;
-     type IterDepFunc = self.IterDepFunc;
-     type ArgType = self.ArgType;
-     type Total = self.Total} = self
+  object FmlyPtn {
+    def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](
+        typ: Typ[O], fmlyTyp: Typ[F]) =
+      Try(get[O, F](typ, fmlyTyp)).toOption
 
-   def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]) = FuncFmlyPtn(tail, me)
-
-   def ~>:[TT <: Term with Subs[TT]](tailVar: TT) = {
-     val tail = tailVar.typ
-     val newHeadFibre = (t: Term) =>
-       (
-         self.subs(tailVar, t).asInstanceOf[FmlyPtn[O, C, F] {
-  //         type FamilyType = self.FamilyType;
-           type IterFunc = self.IterFunc;
-           type IterTypFunc = self.IterTypFunc;
-           type IterDepFunc = self.IterDepFunc;
-           type ArgType = self.ArgType;
-           type Total = self.Total
-         }]
-       )
-       DepFuncFmlyPtn(tail, newHeadFibre)
-   }
-
-   def subs(x: Term, y: Term): FmlyPtn[O, C, F]
- }
-
- object FmlyPtn {
-   def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O], fmlyTyp: Typ[F]) =
-     Try(get[O, F](typ, fmlyTyp)).toOption
-
-   def get[O <: Term with Subs[O], F <: Term with Subs[F]](typ: Typ[O], fmlyTyp: Typ[F]): FmlyPtn[O, Term, F] =
-     fmlyTyp match {
-       case `typ` => IdFmlyPtn[O, Term].asInstanceOf[FmlyPtn[O, Term, F]]
-       case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
-         val head = get[O, v](typ, codom)
-         val tail = dom
-         val headCast: FmlyPtn[O, Term, head.FamilyType] {
+    def get[O <: Term with Subs[O], F <: Term with Subs[F]](
+        typ: Typ[O], fmlyTyp: Typ[F]): FmlyPtn[O, Term, F] =
+      fmlyTyp match {
+        case `typ` => IdFmlyPtn[O, Term].asInstanceOf[FmlyPtn[O, Term, F]]
+        case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+          val head = get[O, v](typ, codom)
+          val tail = dom
+          val headCast: FmlyPtn[O, Term, head.FamilyType] {
 //           type FamilyType = head.FamilyType;
-           type IterFunc = head.IterFunc;
-           type IterTypFunc = head.IterTypFunc;
-           type IterDepFunc = head.IterDepFunc;
-           type ArgType = head.ArgType;
-           type Total = head.Total
-         } = head
-         val funcFmlyPtn = FuncFmlyPtn(tail, headCast)
-         funcFmlyPtn.asInstanceOf[FmlyPtn[O, Term, F]]
-       case tp: PiTyp[u, v] =>
-         val fibre = tp.fibers
-         val tail = fibre.dom
-         val a = tail.Var
-         val headfibre = (x: u) =>
-           get[O, v](typ, fibre(x))
-         val newHead = headfibre(tail.Var)
+            type IterFunc = head.IterFunc;
+            type IterTypFunc = head.IterTypFunc;
+            type IterDepFunc = head.IterDepFunc;
+            type ArgType = head.ArgType;
+            type Total = head.Total
+          } = head
+          val funcFmlyPtn = FuncFmlyPtn(tail, headCast)
+          funcFmlyPtn.asInstanceOf[FmlyPtn[O, Term, F]]
+        case tp: PiTyp[u, v] =>
+          val fibre = tp.fibers
+          val tail = fibre.dom
+          val a = tail.Var
+          val headfibre = (x: u) => get[O, v](typ, fibre(x))
+          val newHead = headfibre(tail.Var)
 //         type VV = newHead.Family
-         type I = newHead.IterFunc
-         type IT = newHead.IterTypFunc
-         type DI = newHead.IterDepFunc
-         type FVV = newHead.FamilyType
-         type SS = newHead.ArgType
-         type HTot = newHead.Total
-         val newHeadFibre = (t: u) =>
-           (
-             headfibre(t).asInstanceOf[FmlyPtn[O, Term, FVV] {
+          type I = newHead.IterFunc
+          type IT = newHead.IterTypFunc
+          type DI = newHead.IterDepFunc
+          type FVV = newHead.FamilyType
+          type SS = newHead.ArgType
+          type HTot = newHead.Total
+          val newHeadFibre = (t: u) =>
+            (
+                headfibre(t).asInstanceOf[FmlyPtn[O, Term, FVV] {
 //               type FamilyType = FVV;
-               type IterFunc = I;
-               type IterTypFunc = IT;
-               type IterDepFunc = DI;
-               type ArgType = SS;
-               type Total = HTot
-             }]
-           )
-         DepFuncFmlyPtn(tail, newHeadFibre).asInstanceOf[FmlyPtn[O, Term, F]]
-     }
- }
+                      type IterFunc = I;
+                      type IterTypFunc = IT;
+                      type IterDepFunc = DI;
+                      type ArgType = SS;
+                      type Total = HTot
+                    }]
+          )
+          DepFuncFmlyPtn(tail, newHeadFibre).asInstanceOf[FmlyPtn[O, Term, F]]
+      }
+  }
 
- val Types = IdFmlyPtn[Term, Term]()
+  val Types = IdFmlyPtn[Term, Term]()
 
- /**
-  * The identity family
-  */
- case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]() extends FmlyPtn[O, C, Typ[O]] {
-   def apply(W: Typ[O]) = W
-
-   def subs(x: Term, y: Term) = this
-   //    type Family =  O
-
-  // type FamilyType = Typ[O]
-
-   type Total = O
-
-   def value(x: Total): O = x
-
-   type IterFunc = Func[O, C]
-
-   type IterTypFunc = Func[O, Typ[C]]
-
-   type IterDepFunc = FuncLike[O, C]
-
-   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = w ->: x
-
-   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
-
-   type ArgType = AtomicTerm
-
-   def arg(x: Total) : AtomicTerm = Star
-
-   def domTotal(w: FamilyType): Typ[Total] = w
-
-   //    def contract(f: O)(arg: ArgType): O = f
-
-   //    def contractDep(f: O)(arg: ArgType) = f
-
-   def fill(g: IterFunc)(arg: ArgType): Func[O, C] = g
-
-   def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = g
-
-   def curry(f: Func[Total, Cod]): IterFunc = f
-
-   def totalDomain(g: IterFunc) = g.dom
-
-   def uncurry(g: IterFunc): Func[Total, Cod] = g
-
-   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = f
-
-   def depTotalDomain(g: IterDepFunc) = g.dom
-
-   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = g
-
-   def contractType(w: FamilyType)(arg: ArgType): Typ[O] = w
-
-   type TargetType = C
-
-   type DepTargetType = C
-
-   def target(x: Typ[Cod]) = x
-
-   def depTarget(xs: Func[O, Typ[Cod]]) = xs
-
-   def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdFmlyPtn[O, CC]
-
-   //    type Cod = C
-
-   //    type MemberType = O
-
-   val univLevel = 0
-
-   /**
-    * induced function is the given one.
+  /**
+    * The identity family
     */
-   def induced(f: Func[O, C]) = f
+  case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]()
+      extends FmlyPtn[O, C, Typ[O]] {
+    def apply(W: Typ[O]) = W
 
-   /**
-    * induced function is the given one.
-    */
-   def inducedDep(f: FuncLike[O, C]) = f
- }
+    def subs(x: Term, y: Term) = this
+    //    type Family =  O
 
- trait RecFmlyPtn[TT <: Term with Subs[TT],  FV <: Term with Subs[FV], F <: FuncLike[TT, FV] with Subs[F],
- S <: Term with Subs[S],  O <: Term with Subs[O], C <: Term with Subs[C]] extends FmlyPtn[O, C, F] {
+    // type FamilyType = Typ[O]
 
-   //    type Family <:  FuncLike[Term, V] with Subs[Family]
+    type Total = O
+
+    def value(x: Total): O = x
+
+    type IterFunc = Func[O, C]
+
+    type IterTypFunc = Func[O, Typ[C]]
+
+    type IterDepFunc = FuncLike[O, C]
+
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = w ->: x
+
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
+
+    type ArgType = AtomicTerm
+
+    def arg(x: Total): AtomicTerm = Star
+
+    def domTotal(w: FamilyType): Typ[Total] = w
+
+    //    def contract(f: O)(arg: ArgType): O = f
+
+    //    def contractDep(f: O)(arg: ArgType) = f
+
+    def fill(g: IterFunc)(arg: ArgType): Func[O, C] = g
+
+    def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = g
+
+    def curry(f: Func[Total, Cod]): IterFunc = f
+
+    def totalDomain(g: IterFunc) = g.dom
+
+    def uncurry(g: IterFunc): Func[Total, Cod] = g
+
+    def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = f
+
+    def depTotalDomain(g: IterDepFunc) = g.dom
+
+    def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = g
+
+    def contractType(w: FamilyType)(arg: ArgType): Typ[O] = w
+
+    type TargetType = C
+
+    type DepTargetType = C
+
+    def target(x: Typ[Cod]) = x
+
+    def depTarget(xs: Func[O, Typ[Cod]]) = xs
+
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdFmlyPtn[O, CC]
+
+    //    type Cod = C
+
+    //    type MemberType = O
+
+    val univLevel = 0
+
+    /**
+      * induced function is the given one.
+      */
+    def induced(f: Func[O, C]) = f
+
+    /**
+      * induced function is the given one.
+      */
+    def inducedDep(f: FuncLike[O, C]) = f
+  }
+
+  trait RecFmlyPtn[TT <: Term with Subs[TT],
+                   FV <: Term with Subs[FV],
+                   F <: FuncLike[TT, FV] with Subs[F],
+                   S <: Term with Subs[S],
+                   O <: Term with Subs[O],
+                   C <: Term with Subs[C]]
+      extends FmlyPtn[O, C, F] {
+
+    //    type Family <:  FuncLike[Term, V] with Subs[Family]
 
 //   type FamilyType <: FuncLike[TT, FV] with Subs[FamilyType]
 
-   //   type ArgType <: AbsPair[Typ[Term], S] with Subs[AbsPair[Typ[Term], S]]
+    //   type ArgType <: AbsPair[Typ[Term], S] with Subs[AbsPair[Typ[Term], S]]
 
-   //   def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
+    //   def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
+    val tail: Typ[TT]
 
-   val tail: Typ[TT]
+    val headfibre: TT => FmlyPtn[O, C, FV] { type ArgType = S; }
+  }
 
-   val headfibre: TT => FmlyPtn[O, C, FV] { type ArgType = S;}
-
-
-
- }
-
- case class FuncFmlyPtn[TT <: Term with Subs[TT],
- FV <: Term with Subs[FV], I <: Term with Subs[I], IT <: Term with Subs[IT],
- DI <: Term with Subs[DI], S <: Term with Subs[S],  O <: Term with Subs[O], C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
-   tail: Typ[TT],
-   head: FmlyPtn[O, C, FV] {
+  case class FuncFmlyPtn[TT <: Term with Subs[TT],
+                         FV <: Term with Subs[FV],
+                         I <: Term with Subs[I],
+                         IT <: Term with Subs[IT],
+                         DI <: Term with Subs[DI],
+                         S <: Term with Subs[S],
+                         O <: Term with Subs[O],
+                         C <: Term with Subs[C],
+                         HTot <: Term with Subs[HTot]](
+      tail: Typ[TT],
+      head: FmlyPtn[O, C, FV] {
 //     type FamilyType = FV;
-     type IterFunc = I;
-     type IterTypFunc = IT;
-     type IterDepFunc = DI;
-     type ArgType = S;
-     type Total = HTot;
-   }
- ) extends FmlyPtn[O, C, Func[TT, FV]] {
+        type IterFunc = I;
+        type IterTypFunc = IT;
+        type IterDepFunc = DI;
+        type ArgType = S;
+        type Total = HTot;
+      }
+  )
+      extends FmlyPtn[O, C, Func[TT, FV]] {
 
-
-   //  override type Family =  Func[Term, V]
+    //  override type Family =  Func[Term, V]
 
 //   type FamilyType = Func[TT, FV]
 
-   type Total = PairObj[TT, HTot]
+    type Total = PairObj[TT, HTot]
 
-   def value(x: Total): O = head.value(x.second)
+    def value(x: Total): O = head.value(x.second)
 
-   type IterFunc = Func[TT, head.IterFunc]
+    type IterFunc = Func[TT, head.IterFunc]
 
-   type IterTypFunc = Func[TT, head.IterTypFunc]
+    type IterTypFunc = Func[TT, head.IterTypFunc]
 
-   type IterDepFunc = FuncLike[TT, head.IterDepFunc]
+    type IterDepFunc = FuncLike[TT, head.IterDepFunc]
 
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
+      val headtyp = head.iterFuncTyp(w(w.dom.obj), x)
+      tail ->: headtyp
+    }
 
-   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
-     val headtyp = head.iterFuncTyp(w(w.dom.obj), x)
-     tail ->: headtyp
-   }
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
+      val a = tail.Var
+      val headtyp = lmbda(a)(head.iterDepFuncTyp(w(w.dom.obj), xs(a)))
+      PiTyp(headtyp)
+    }
 
-   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
-     val a = tail.Var
-     val headtyp = lmbda(a)(head.iterDepFuncTyp(w(w.dom.obj), xs(a)))
-     PiTyp(headtyp)
-   }
+    type ArgType = PairObj[TT, S]
 
-   type ArgType = PairObj[TT, S]
+    //  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
 
- //  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
+    //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
-   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
+    def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
+      headfibre(arg.first).fill(g(arg.first))(arg.second)
+    }
 
-   def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
-     headfibre(arg.first).fill(g(arg.first))(arg.second)
-   }
+    def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = {
+      headfibre(arg.first).depFill(g(arg.first))(arg.second)
+    }
 
-   def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = {
-     headfibre(arg.first).depFill(g(arg.first))(arg.second)
-   }
+    def curry(f: Func[Total, Cod]): IterFunc = {
+      val fdom = f.dom
+      val z = fdom.Var
+      val x = z.first
+      val y = z.second
+      lmbda(x)(
+          headfibre(x).curry(
+              lmbda(y)(f(z))
+          )
+      )
+    }
 
-   def curry(f: Func[Total, Cod]): IterFunc = {
-     val fdom = f.dom
-     val z = fdom.Var
-     val x = z.first
-     val y = z.second
-     lmbda(x)(
-       headfibre(x).curry(
-         lmbda(y)(f(z))
-       )
-     )
-   }
+    def domTotal(w: FamilyType): Typ[Total] =
+      PairTyp(w.dom, head.domTotal(w(w.dom.obj)))
 
-   def domTotal(w: FamilyType): Typ[Total] = PairTyp(w.dom, head.domTotal(w(w.dom.obj)))
+    def totalDomain(g: IterFunc) =
+      PairTyp(g.dom, head.totalDomain(g(g.dom.obj)))
 
-   def totalDomain(g: IterFunc) = PairTyp(g.dom, head.totalDomain(g(g.dom.obj)))
+    def uncurry(g: IterFunc): Func[Total, Cod] = {
+      val dom = totalDomain(g)
+      val ab = dom.Var
+      lmbda(ab)(head.uncurry(g(ab.first))(ab.second))
+    }
 
-   def uncurry(g: IterFunc): Func[Total, Cod] = {
-     val dom = totalDomain(g)
-     val ab = dom.Var
-     lmbda(ab)(head.uncurry(g(ab.first))(ab.second))
-   }
+    def depTotalDomain(g: IterDepFunc) =
+      PairTyp(g.dom, head.depTotalDomain(g(g.dom.obj)))
 
-   def depTotalDomain(g: IterDepFunc) = PairTyp(g.dom, head.depTotalDomain(g(g.dom.obj)))
+    def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
+      val dom = depTotalDomain(g)
+      val ab = dom.Var
+      lambda(ab)(head.depUncurry(g(ab.first))(ab.second))
+    }
 
-   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
-     val dom = depTotalDomain(g)
-     val ab = dom.Var
-     lambda(ab)(head.depUncurry(g(ab.first))(ab.second))
-   }
+    def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
+      val fdom = f.dom
+      val z = fdom.Var
+      val x = z.first
+      val y = z.second
+      lambda(x)(
+          headfibre(x).depCurry(
+              lambda(y)(f(z))
+          )
+      )
+    }
 
-   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
-     val fdom = f.dom
-     val z = fdom.Var
-     val x = z.first
-     val y = z.second
-     lambda(x)(
-       headfibre(x).depCurry(
-         lambda(y)(f(z))
-       )
-     )
-   }
+    def contractType(w: FamilyType)(arg: ArgType): Typ[O] =
+      headfibre(arg).contractType(w(arg.first))(arg.second)
 
-   def contractType(w: FamilyType)(arg: ArgType): Typ[O] = headfibre(arg).contractType(w(arg.first))(arg.second)
+    //    type Cod = head.Cod
 
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {
+      val newHead = head.withCod[CC](w)
+      FuncFmlyPtn[TT,
+                  newHead.FamilyType,
+                  newHead.IterFunc,
+                  newHead.IterTypFunc,
+                  newHead.IterDepFunc,
+                  newHead.ArgType,
+                  O,
+                  CC,
+                  newHead.Total](tail, newHead)
+    }
 
-   //    type Cod = head.Cod
+    def subs(x: Term, y: Term) = {
+      val newHead = head.subs(x, y)
+      FuncFmlyPtn[TT,
+                  newHead.FamilyType,
+                  newHead.IterFunc,
+                  newHead.IterTypFunc,
+                  newHead.IterDepFunc,
+                  newHead.ArgType,
+                  O,
+                  C,
+                  newHead.Total](tail.replace(x, y), newHead)
+    }
 
-   def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {
-     val newHead = head.withCod[CC](w)
-     FuncFmlyPtn[TT, newHead.FamilyType, newHead.IterFunc, newHead.IterTypFunc, newHead.IterDepFunc, newHead.ArgType,
-      O, CC, newHead.Total](tail, newHead)
-   }
+    val headfibre = (arg: Term) => head
 
-   def subs(x: Term, y: Term) = {
-     val newHead = head.subs(x, y)
-     FuncFmlyPtn[TT, newHead.FamilyType, newHead.IterFunc, newHead.IterTypFunc, newHead.IterDepFunc, newHead.ArgType,
-      O, C, newHead.Total](tail.replace(x, y), newHead)
-   }
+    val univLevel = max(head.univLevel, univlevel(tail.typ))
+  }
 
-   val headfibre = (arg: Term) => head
-
-   val univLevel = max(head.univLevel, univlevel(tail.typ))
-
-
-
- }
-
- /**
-  * Extending by a constant type A a family of type patterns depending on (a : A).
-  *
-  */
- case class DepFuncFmlyPtn[
-   TT <: Term with Subs[TT],
-   FV <: Term with Subs[FV], I <: Term with Subs[I],
-   IT <: Term with Subs[IT], DI <: Term with Subs[DI], S <: Term with Subs[S],
-    O <: Term with Subs[O],
-   C <: Term with Subs[C], HTot <: Term with Subs[HTot]](
-   tail: Typ[TT],
-   headfibre: TT => FmlyPtn[O, C, FV] {
+  /**
+    * Extending by a constant type A a family of type patterns depending on (a : A).
+    *
+    */
+  case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
+                            FV <: Term with Subs[FV],
+                            I <: Term with Subs[I],
+                            IT <: Term with Subs[IT],
+                            DI <: Term with Subs[DI],
+                            S <: Term with Subs[S],
+                            O <: Term with Subs[O],
+                            C <: Term with Subs[C],
+                            HTot <: Term with Subs[HTot]](
+      tail: Typ[TT],
+      headfibre: TT => FmlyPtn[O, C, FV] {
 //     type FamilyType = FV;
-     type IterFunc = I;
-     type IterTypFunc = IT;
-     type IterDepFunc = DI;
-     type ArgType = S;
-     type Total = HTot
-   },
-   headlevel: Int = 0
- ) extends RecFmlyPtn[TT, FV, FuncLike[TT, FV], S, O, C] {
+        type IterFunc = I;
+        type IterTypFunc = IT;
+        type IterDepFunc = DI;
+        type ArgType = S;
+        type Total = HTot
+      },
+      headlevel: Int = 0
+  )
+      extends RecFmlyPtn[TT, FV, FuncLike[TT, FV], S, O, C] {
 
-   //    type Family =  FuncLike[Term, V]
+    //    type Family =  FuncLike[Term, V]
 
 //   type FamilyType = FuncLike[TT, FV]
 
-   type Total = DepPair[TT, HTot]
+    type Total = DepPair[TT, HTot]
 
-   def value(x: Total) = headfibre(x.first).value(x.second)
+    def value(x: Total) = headfibre(x.first).value(x.second)
 
-   type IterFunc = FuncLike[TT, I]
+    type IterFunc = FuncLike[TT, I]
 
-   type IterTypFunc = Func[TT, IT]
+    type IterTypFunc = Func[TT, IT]
 
-   type IterDepFunc = FuncLike[TT, DI]
+    type IterDepFunc = FuncLike[TT, DI]
 
-   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
-     val a = tail.Var
-     val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w(a), x))
-     PiTyp(fibre)
-   }
+    def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
+      val a = tail.Var
+      val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w(a), x))
+      PiTyp(fibre)
+    }
 
-   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
-     val a = tail.Var
-     val fibre = lmbda(a)(headfibre(a).iterDepFuncTyp(w(a), xs(a)))
-     PiTyp(fibre)
-   }
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
+      val a = tail.Var
+      val fibre = lmbda(a)(headfibre(a).iterDepFuncTyp(w(a), xs(a)))
+      PiTyp(fibre)
+    }
 
-   type ArgType = DepPair[TT, S]
+    type ArgType = DepPair[TT, S]
 
-   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
+    //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
-   def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
-     headfibre(arg.first).fill(g(arg.first))(arg.second)
-   }
+    def fill(g: IterFunc)(arg: ArgType): Func[O, C] = {
+      headfibre(arg.first).fill(g(arg.first))(arg.second)
+    }
 
-   def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = {
-     headfibre(arg.first).depFill(g(arg.first))(arg.second)
-   }
+    def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C] = {
+      headfibre(arg.first).depFill(g(arg.first))(arg.second)
+    }
 
-   def curry(f: Func[Total, Cod]): IterFunc = {
-     val fdom = f.dom
-     val z = fdom.Var
-     val x = z.first
-     val y = z.second
-     lmbda(x)(
-       headfibre(x).curry(
-         lmbda(y)(f(z))
-       )
-     )
-   }
+    def curry(f: Func[Total, Cod]): IterFunc = {
+      val fdom = f.dom
+      val z = fdom.Var
+      val x = z.first
+      val y = z.second
+      lmbda(x)(
+          headfibre(x).curry(
+              lmbda(y)(f(z))
+          )
+      )
+    }
 
-   def domTotal(w: FamilyType): Typ[Total] = {
-     val a = w.dom.Var
-     val fibre = lmbda(a)(headfibre(a).domTotal(w(a)))
-     SigmaTyp(fibre)
-   }
+    def domTotal(w: FamilyType): Typ[Total] = {
+      val a = w.dom.Var
+      val fibre = lmbda(a)(headfibre(a).domTotal(w(a)))
+      SigmaTyp(fibre)
+    }
 
-   def totalDomain(g: IterFunc) = {
-     val a = g.dom.Var
-     val fibre = lmbda(a)(headfibre(a).totalDomain(g(a)))
-     SigmaTyp(fibre)
-   }
+    def totalDomain(g: IterFunc) = {
+      val a = g.dom.Var
+      val fibre = lmbda(a)(headfibre(a).totalDomain(g(a)))
+      SigmaTyp(fibre)
+    }
 
-   def uncurry(g: IterFunc): Func[Total, Cod] = {
-     val dom = totalDomain(g)
-     val ab = dom.Var
-     lmbda(ab)(headfibre(ab.first).uncurry(g(ab.first))(ab.second))
-   }
+    def uncurry(g: IterFunc): Func[Total, Cod] = {
+      val dom = totalDomain(g)
+      val ab = dom.Var
+      lmbda(ab)(headfibre(ab.first).uncurry(g(ab.first))(ab.second))
+    }
 
-   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
-     val fdom = f.dom
-     val z = fdom.Var
-     val x = z.first
-     val y = z.second
-     lambda(x)(
-       headfibre(x).depCurry(
-         lambda(y)(f(z))
-       )
-     )
+    def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
+      val fdom = f.dom
+      val z = fdom.Var
+      val x = z.first
+      val y = z.second
+      lambda(x)(
+          headfibre(x).depCurry(
+              lambda(y)(f(z))
+          )
+      )
+    }
 
-   }
+    def depTotalDomain(g: IterDepFunc) = {
+      val a = g.dom.obj
+      val fibre = lmbda(a)(headfibre(a).depTotalDomain(g(a)))
+      SigmaTyp(fibre)
+    }
 
-   def depTotalDomain(g: IterDepFunc) = {
-     val a = g.dom.obj
-     val fibre = lmbda(a)(headfibre(a).depTotalDomain(g(a)))
-     SigmaTyp(fibre)
-   }
+    def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
+      val dom = depTotalDomain(g)
+      val ab = dom.Var
+      lambda(ab)(headfibre(ab.first).depUncurry(g(ab.first))(ab.second))
+    }
 
-   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
-     val dom = depTotalDomain(g)
-     val ab = dom.Var
-     lambda(ab)(headfibre(ab.first).depUncurry(g(ab.first))(ab.second))
-   }
+    def contractType(w: FamilyType)(arg: ArgType): Typ[O] =
+      headfibre(arg.first).contractType(w(arg.first))(arg.second)
 
-   def contractType(w: FamilyType)(arg: ArgType): Typ[O] = headfibre(arg.first).contractType(w(arg.first))(arg.second)
+    // type DepTargetType = FuncLike[Term, D]
 
+    //  type Cod = C
 
-   // type DepTargetType = FuncLike[Term, D]
-
-   //  type Cod = C
-
-   def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {
-     val newHead = headfibre(tail.Var)
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {
+      val newHead = headfibre(tail.Var)
 //     type VV = newHead.Family
-     type FVV = newHead.FamilyType
-     type SS = newHead.ArgType
-     val newHeadFibre = (t: TT) =>
-       (
-         headfibre(t).withCod[CC](w).asInstanceOf[FmlyPtn[O, CC, FVV] {
+      type FVV = newHead.FamilyType
+      type SS = newHead.ArgType
+      val newHeadFibre = (t: TT) =>
+        (
+            headfibre(t)
+              .withCod[CC](w)
+              .asInstanceOf[FmlyPtn[O, CC, FVV] {
 //           type FamilyType = FVV;
-           type IterFunc = I;
-           type IterTypFunc = IT;
-           type IterDepFunc = DI;
-           type ArgType = SS;
-           type Total = HTot
-         }]
-       )
-     DepFuncFmlyPtn[TT,  FVV, I, IT, DI, SS,  O, CC, HTot](tail, newHeadFibre)
-   }
+                    type IterFunc = I;
+                    type IterTypFunc = IT;
+                    type IterDepFunc = DI;
+                    type ArgType = SS;
+                    type Total = HTot
+                  }]
+        )
+      DepFuncFmlyPtn[TT, FVV, I, IT, DI, SS, O, CC, HTot](tail, newHeadFibre)
+    }
 
-   def subs(x: Term, y: Term) = {
-     val newHead = headfibre(tail.Var)
+    def subs(x: Term, y: Term) = {
+      val newHead = headfibre(tail.Var)
 //     type VV = newHead.Family
-     type FVV = newHead.FamilyType
-     type SS = newHead.ArgType
-     val newHeadFibre = (t: TT) =>
-       (
-         headfibre(t).subs(x, y).asInstanceOf[FmlyPtn[O, C, FVV] {
+      type FVV = newHead.FamilyType
+      type SS = newHead.ArgType
+      val newHeadFibre = (t: TT) =>
+        (
+            headfibre(t)
+              .subs(x, y)
+              .asInstanceOf[FmlyPtn[O, C, FVV] {
 //           type FamilyType = FVV;
-           type IterFunc = I;
-           type IterTypFunc = IT;
-           type IterDepFunc = DI;
-           type ArgType = SS;
-           type Total = HTot
-         }]
-       )
-     DepFuncFmlyPtn[TT,  FVV, I, IT, DI, SS,  O, C, HTot](tail replace (x, y), newHeadFibre)
-   }
+                    type IterFunc = I;
+                    type IterTypFunc = IT;
+                    type IterDepFunc = DI;
+                    type ArgType = SS;
+                    type Total = HTot
+                  }]
+        )
+      DepFuncFmlyPtn[TT, FVV, I, IT, DI, SS, O, C, HTot](
+          tail replace (x, y), newHeadFibre)
+    }
 
-   //    val head = headfibre(tail.Var)
+    //    val head = headfibre(tail.Var)
 
-   //    type Family = FuncLike[Term, head.Family]
+    //    type Family = FuncLike[Term, head.Family]
 
-
-
-
-   val univLevel = max(univlevel(tail.typ), headlevel)
- }
+    val univLevel = max(univlevel(tail.typ), headlevel)
+  }
 }

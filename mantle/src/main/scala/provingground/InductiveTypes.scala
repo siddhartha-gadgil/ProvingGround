@@ -11,61 +11,59 @@ import scala.language.existentials
 //import provingground.ScalaUniverses._
 
 /**
- * Inductively defined types in homotopy type theory
- */
-object InductiveTypes{
-
-
-
-
-
+  * Inductively defined types in homotopy type theory
+  */
+object InductiveTypes {
 
 //	case class Constructor(cons: Term, pattern : ConstructorPattern, typ : Typ[Term]){
 //	  require(cons.typ == pattern(typ))
 //	}
 
-
-
-	/**
+  /**
 	 * inductive type, specified by constructors.
 	 */
-	trait InductiveTyp extends Typ[Term]{
-	  /**
+  trait InductiveTyp extends Typ[Term] {
+
+    /**
 	   * just the constructor patterns.
 	   */
-	  val ptns  = constructors map (_.pattern)
+    val ptns = constructors map (_.pattern)
 
-	  /**
+    /**
 	   * just the constructor functions
 	   */
-	  val constructorFns : List[Term] = constructors map (_.cons)
+    val constructorFns: List[Term] = constructors map (_.cons)
 
-	  /**
+    /**
 	   * the constructors, including functions and patterns
 	   */
-	  val constructors : List[Constructor[Term, Term]]
+    val constructors: List[Constructor[Term, Term]]
 
 //	  def cnstr[U <: Term](ptn: ConstructorPattern[U]) = ptn.newconstructor(this)
 
 //	  assert((constructorFns.map(_.typ)) == (ptns map (_(this))), "constructors do not have given patterns")
 
-	  implicit def thisAsPtn(me :this.type): ConstructorPattern[Term, Term, Term] = IdW[Term]
+    implicit def thisAsPtn(
+        me: this.type): ConstructorPattern[Term, Term, Term] = IdW[Term]
 
+    implicit val self: Typ[Term] = this
+  }
 
-	  implicit val self: Typ[Term] = this
-	}
-
-	/**
+  /**
 	 * inductive type constructed from given patterns and names of corresponding functions.
 	 */
-	class InductiveTypDefn(symptns : List[(AnySym, ConstructorPattern[Term, Term, Term])]) extends SmallTyp with InductiveTyp{
+  class InductiveTypDefn(
+      symptns: List[(AnySym, ConstructorPattern[Term, Term, Term])])
+      extends SmallTyp
+      with InductiveTyp {
 //	  type Obj = Term
 
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
 
 //	  val ptns = for ((a, p) <- symptns) yield p
 
-	  lazy val constructors = for ((name, ptn) <- symptns) yield ptn.constructor(this, name)
+    lazy val constructors = for ((name, ptn) <- symptns) yield
+      ptn.constructor(this, name)
 /*
 	  val univLevel = (ptns map (_.univLevel)).max
 
@@ -74,7 +72,5 @@ object InductiveTypes{
 	  def subs(x : Term, y: Term) = this
 
 	  def symbObj(name: AnySym): Term = SymbObj(name, this)*/
-	}
-
-
+  }
 }

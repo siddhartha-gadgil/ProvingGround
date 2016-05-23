@@ -9,21 +9,23 @@ import provingground._
 import TreePatterns._
 
 object IfThen {
-  
-import provingground._
-  	val sent = new Sentence("if a prime number P divides MN, P divides one of M and N")
-  	
-  	val tree = sent.parse
-  	
-  	val st = tree.subTrees.toList
 
-  	val matches = st.map(IfTree.unapply).flatten
-  	
-  	val sent2 = new Sentence("if a prime number P divides MN then P divides one of M and N")
-  	
-  	val tree2 = sent2.parse
-  	
-  	val st2 = tree2.subTrees.toList
+  import provingground._
+  val sent = new Sentence(
+      "if a prime number P divides MN, P divides one of M and N")
 
-  	val matches2 = st2.map(IfTree.unapply).flatten
+  val tree = sent.parse
+
+  val st = tree.subTrees.toList
+
+  val matches = st.map(IfTree.unapply).flatten
+
+  val sent2 = new Sentence(
+      "if a prime number P divides MN then P divides one of M and N")
+
+  val tree2 = sent2.parse
+
+  val st2 = tree2.subTrees.toList
+
+  val matches2 = st2.map(IfTree.unapply).flatten
 }

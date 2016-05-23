@@ -27,8 +27,8 @@ import upickle.default._
 import provingground.{FiniteDistribution => FD}
 
 /**
- * @author gadgil
- */
+  * @author gadgil
+  */
 object ACevolution {
 //  type FD[X] = FiniteDistribution[X]
 
@@ -38,11 +38,10 @@ object ACevolution {
 
   type P = Presentation
 
-  def foldPair(rank : Int) : DiffbleFunction[(FD[M], FD[V]), FD[P]] = (projectV andthen genPresentationMoveFn(rank))
+  def foldPair(rank: Int): DiffbleFunction[(FD[M], FD[V]), FD[P]] =
+    (projectV andthen genPresentationMoveFn(rank))
 
   def trivMoveSeq = FiniteDistribution.uniform(Some(Moves.empty))
-
-
 
   def evolve(rank: Int, steps: Int = 5, initV: FD[V] = eVec) = {
     val fn = iterateDiff(allMoves(rank), steps)
@@ -53,21 +52,22 @@ object ACevolution {
     genExtendM(allMoves(rank))
   }
 
-  def presDist(r: Int)(mv : (FD[M], FD[V])) = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get)
+  def presDist(r: Int)(mv: (FD[M], FD[V])) =
+    mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get)
 
-  def viewAll(mv : (FD[M], FD[V]), r: Int) = {
+  def viewAll(mv: (FD[M], FD[V]), r: Int) = {
     viewPage(fdDiv(mv._1), "tmp/movedist.html")
     viewPage(fdDiv(mv._2), "tmp/vertexdist.html")
-    val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
-    viewPage(fdDiv(presdist),
-      "presentationdist.html"
-    )
+    val presdist =
+      mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
+    viewPage(fdDiv(presdist), "presentationdist.html")
   }
 
-  def pickleTriple(mv : (FD[M], FD[V]), r: Int) = {
-    val m = mv._1.map((m : M) => m.toPlainString).pickle
+  def pickleTriple(mv: (FD[M], FD[V]), r: Int) = {
+    val m = mv._1.map((m: M) => m.toPlainString).pickle
     val v = mv._2.pickle
-    val presdist = mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
+    val presdist =
+      mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
     val triple = (m, v, presdist.pickle)
     val pickled = write(triple)
     write((Header.fdMVP, pickled))

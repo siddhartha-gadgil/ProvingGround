@@ -16,19 +16,15 @@ import SimpleAcEvolution._
 
 import upickle.default._
 
-object AndrewsCurtisJS{
+object AndrewsCurtisJS {
   def readPath(s: String) = read[PickledPath](s).unpickle
 
   import dom.ext._
 
   import Header._
-  import scala.scalajs
-              .concurrent
-              .JSExecutionContext
-              .Implicits
-              .runNow
+  import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
-  val sse= new dom.EventSource("/acstream")
+  val sse = new dom.EventSource("/acstream")
 
   val debugDiv = div.render
 
@@ -36,26 +32,24 @@ object AndrewsCurtisJS{
 
   sse.onmessage = (event: dom.MessageEvent) => {
 //    debug(event.data.toString)
-      val (header, message) = read[(String, String)](event.data.toString)
+    val (header, message) = read[(String, String)](event.data.toString)
 //      debug(header)
 //    val header = fdMVP
 //    val message = event.data.toString
-      header match {
-        case fdMVP => {
-          val (pmfM, pmfV, pmfP) = read[
-            (List[(String, Double)],
-                List[(String, Double)],
-                List[(String, Double)])](message)
+    header match {
+      case fdMVP => {
+          val (pmfM, pmfV, pmfP) = read[(List[(String, Double)],
+                                         List[(String, Double)],
+                                         List[(String, Double)])](message)
           val output = pmfMVPdiv(pmfM, pmfV, pmfP)
           fdOut(output)
         }
-      }
     }
+  }
 
-  def pmfMVPdiv(
-      pmfM : List[(String, Double)],
-      pmfV : List[(String, Double)],
-      pmfP : List[(String, Double)]) = {
+  def pmfMVPdiv(pmfM: List[(String, Double)],
+                pmfV: List[(String, Double)],
+                pmfP: List[(String, Double)]) = {
     div(
         h3("Distribution on Moves"),
         pmfDiv(pmfM),
@@ -63,47 +57,46 @@ object AndrewsCurtisJS{
         pmfDiv(pmfV),
         h3("Distribution on Presentations"),
         pmfDiv(pmfP)
-        ).render
+    ).render
   }
 
   def pmfDiv(fd: List[(String, Double)]) = {
     val lst = fd.sortBy((x) => -x._2).zipWithIndex
-    val title = div(`class`:="atom")(
-        span(`class`:="index")("index"),
-        span(`class`:="probability")("probability"),
-        span(`class`:="entropy")("entropy"),
-        span(`class`:="element")("element")
-        )
+    val title = div(`class` := "atom")(
+        span(`class` := "index")("index"),
+        span(`class` := "probability")("probability"),
+        span(`class` := "entropy")("entropy"),
+        span(`class` := "element")("element")
+    )
 
-    val nodeList = for (((a, x), j) <- lst)
-      yield (
-          div(`class`:="atom")(
-        span(`class`:="index")(j),
-        span(`class`:="probability")(x),
-        span(`class`:="entropy")(-math.log(x)/math.log(2)),
-        span(`class`:="element")(a.toString)
-        )
-        )
-   div(`class`:="finite-distribution")(title,
-       div(nodeList : _*)).render
-
+    val nodeList = for (((a, x), j) <- lst) yield
+      (
+          div(`class` := "atom")(
+              span(`class` := "index")(j),
+              span(`class` := "probability")(x),
+              span(`class` := "entropy")(-math.log(x) / math.log(2)),
+              span(`class` := "element")(a.toString)
+          )
+      )
+    div(`class` := "finite-distribution")(title, div(nodeList: _*)).render
   }
 
   def getPMF(pickled: String) = read[List[(String, Double)]](pickled)
 
   def getFDtriple(pickled: String) =
-    read[(List[(String, Double)], List[(String, Double)],
-        List[(String, Double)])](pickled)
+    read[(List[(String, Double)],
+          List[(String, Double)],
+          List[(String, Double)])](pickled)
 
-  lazy val dashboard = div(`class`:= "dashboard")(
-      h3("Dashboard"),
-      div(b("rank: "), rankBox),
-      p(""),
-      div(b("steps: "), stepsBox),
-      p(""),
-      div(evolveButton)).render
+  lazy val dashboard = div(`class` := "dashboard")(h3("Dashboard"),
+                                                   div(b("rank: "), rankBox),
+                                                   p(""),
+                                                   div(b("steps: "), stepsBox),
+                                                   p(""),
+                                                   div(evolveButton)).render
 
-  lazy val output = div(`class` := "output")(h3("Ouput"), debugDiv, fdOutDiv).render
+  lazy val output =
+    div(`class` := "output")(h3("Ouput"), debugDiv, fdOutDiv).render
 
   lazy val fdOutDiv = div.render
 
@@ -125,16 +118,16 @@ object AndrewsCurtisJS{
   }
 
   val rankBox = input(
-        `type`:="number",
-        size := 4,
-        value := "2"
-        ).render
+      `type` := "number",
+      size := 4,
+      value := "2"
+  ).render
 
   val stepsBox = input(
-        `type`:="number",
-        size := 4,
-        value := "2"
-        ).render
+      `type` := "number",
+      size := 4,
+      value := "2"
+  ).render
 
   def getRank = rankBox.value.toInt
 
@@ -142,9 +135,11 @@ object AndrewsCurtisJS{
 
   def runEvolve = postEvolve(getRank, getSteps)
 
-  val evolveButton = input(`type` := "submit", value := "Start evolution").render
+  val evolveButton =
+    input(`type` := "submit", value := "Start evolution").render
 
   evolveButton.onclick = (e: dom.Event) => {
     fdOut(div(p("output?")).render)
-    runEvolve}
+    runEvolve
+  }
 }

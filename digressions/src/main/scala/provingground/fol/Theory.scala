@@ -7,23 +7,24 @@ import provingground.Aware._
 import scala.language.implicitConversions
 
 /**
- * The Meta-logical layer; 
- *  Contains: core of a mathematical theory
- *
- *  Separate objects as:
- *
- *    Targets of documents
- *
- *   Data
- *
- *   Proofs
- */
+  * The Meta-logical layer; 
+  *  Contains: core of a mathematical theory
+  *
+  *  Separate objects as:
+  *
+  *    Targets of documents
+  *
+  *   Data
+  *
+  *   Proofs
+  */
 object Theory {
 
-  case class Context(boundedVars: Set[Var] = Set.empty, assumptions: Set[Formula] = Set.empty) {
+  case class Context(boundedVars: Set[Var] = Set.empty,
+                     assumptions: Set[Formula] = Set.empty) {
     def subs(xt: Var => Term) = {
-      val newVars = for (x <- boundedVars) yield (
-        xt(x) match {
+      val newVars = for (x <- boundedVars) yield
+        (xt(x) match {
           case y: Var => y
           case _ => x
         })
@@ -55,9 +56,12 @@ object Theory {
 
   trait Assertion extends Result with Claim with Justification
 
-  case class Construction(given: Context, result: Term, condition: Formula = Formula.empty) extends Term {
+  case class Construction(
+      given: Context, result: Term, condition: Formula = Formula.empty)
+      extends Term {
     def freeVars = result.freeVars -- given.boundedVars
-    def subs(xt: Var => Term) = new Construction(given subs xt, result subs xt, condition subs xt)
+    def subs(xt: Var => Term) =
+      new Construction(given subs xt, result subs xt, condition subs xt)
   }
 
   case class Definition(given: Context, require: Formula) extends Formula {
@@ -78,8 +82,10 @@ object Theory {
 
   /** Justification for a claim */
   trait Justification {
+
     /** combining justifications */
     def &(that: Justification) = Justification.PolyJust(this, that)
+
     /** combining justifications */
     def and(that: Justification) = Justification.PolyJust(this, that)
 
@@ -117,11 +123,13 @@ object Theory {
   }
 
   object Justification {
+
     /** No justification */
     case object empty extends Justification
 
     /** Recursive step for a collection of justifications*/
-    case class PolyJust(first: Justification, second: Justification) extends Justification
+    case class PolyJust(first: Justification, second: Justification)
+        extends Justification
 
     /** A method of proving, e.g. induction */
     trait Method
@@ -160,28 +168,32 @@ object Theory {
     def symmetric(r: BinRel): Formula = forAll(x, y)(r(x, y) implies r(y, x))
 
     /** Formula saying a Binary relation is anti-symmetric */
-    def antiSymmetric(r: BinRel): Formula = forAll(x, y)((r(x, y) & r(y, x)) implies x =:= y)
+    def antiSymmetric(r: BinRel): Formula =
+      forAll(x, y)((r(x, y) & r(y, x)) implies x =:= y)
 
     /** Formula saying a Binary relation is transitive */
-    def transitive(r: BinRel): Formula = forAll(x, y, z)((r(x, y) & r(y, z)) implies r(x, z))
+    def transitive(r: BinRel): Formula =
+      forAll(x, y, z)((r(x, y) & r(y, z)) implies r(x, z))
 
     /** Formula saying a Binary relation is reflexive */
     def reflexive(r: BinRel): Formula = forAll(x)(r(x, x))
 
     /** Formula saying a Binary relation is an Equivalence relation */
-    def equivalence(r: BinRel): Formula = symmetric(r) & reflexive(r) & transitive(r)
+    def equivalence(r: BinRel): Formula =
+      symmetric(r) & reflexive(r) & transitive(r)
   }
 
   object DSL {
     implicit def varSym(s: String) = VarSym(s)
 
     implicit def binOpSym(s: String) = BinOp(s)
-
   }
 
   object Data {
+
     /** Axiom */
     trait Axiom {
+
       /** the assumption of the Axiom */
       val axiom: Formula
 
@@ -193,6 +205,7 @@ object Theory {
 
       /** Returns (axiom => formula) given Formula */
       def have(that: Formula): Formula = axiom implies that
+
       /** Returns (axiom => claim) given Claim */
       def have(that: Claim): Formula = axiom implies (that.claim)
     }
@@ -203,11 +216,13 @@ object Theory {
     }
 
     trait Data extends Term with Axiom {
+
       /** Substitute in term as well as in the assumed axiom */
       def subsData(xt: Var => Term): Data = DataTerm(subs(xt), axiom.subs(xt))
 
       /** Such that : Add an axiom */
       def suchthat(cond: Formula) = DataCond(this, cond)
+
       /** Such that: Add an axiom */
       def st(cond: Formula) = suchthat(cond)
 
@@ -225,7 +240,8 @@ object Theory {
     }
 
     case class Represent(data: Data, term: Term) extends Formula {
-      def subs(xt: Var => Term): Formula = Represent(dataTerm(data subs xt), term subs xt)
+      def subs(xt: Var => Term): Formula =
+        Represent(dataTerm(data subs xt), term subs xt)
       val freeVars: Set[Var] = Set.empty
     }
 
@@ -259,7 +275,8 @@ object Theory {
 
     /** A list of terms as data to be viewed as folded by */
     case class DataFoldList(lt: List[Data], b: BinOp) extends Data {
-      def subs(xt: Var => Term): Term = DataFoldList(lt map (_.subsData(xt)), b)
+      def subs(xt: Var => Term): Term =
+        DataFoldList(lt map (_.subsData(xt)), b)
       val freeVars: Set[Var] = (lt map (_.freeVars)) reduce (_ union _)
       val axiom = True
     }
@@ -273,7 +290,6 @@ object Theory {
 
     /** Constructs a DataList from several data parameters */
     def given(ds: Data*) = DataList(ds.toList)
-
   }
 
   /* Target of documents */
@@ -305,7 +321,8 @@ object Theory {
     case class InDomain(S: ZFC.AbsSet, p: Paragraph) extends Paragraph
 
     object InDomain {
-      def apply(S: ZFC.AbsSet)(paras: Paragraph*): InDomain = InDomain(S, Para(paras.toList))
+      def apply(S: ZFC.AbsSet)(paras: Paragraph*): InDomain =
+        InDomain(S, Para(paras.toList))
     }
 
     /** A collection of axioms giving an Axiom*/
@@ -319,12 +336,12 @@ object Theory {
 
     /** ConditionClause for a Formula */
     trait ConditionClause extends Phrases {
+
       /** returns formula given condition */
       def apply(p: Formula) = thenhave(p)
 
       /** returns formula given condition */
       def thenhave(p: Formula): Formula
-
     }
 
     /** If condition */
@@ -339,20 +356,25 @@ object Theory {
     def as(c: ConditionClause) = As(c)
 
     /**
-     * Data: A collection of terms and an axiom they are supposed to satisfy
-     *
-     * In practice, the axiom is a collection of axioms combined with &
-     */
-
-    class LanguageMap(cm: Map[Const, Const] = Map.empty, fm: Map[Func, Func] = Map.empty, pm: Map[Pred, Pred] = Map.empty) {
+      * Data: A collection of terms and an axiom they are supposed to satisfy
+      *
+      * In practice, the axiom is a collection of axioms combined with &
+      */
+    class LanguageMap(cm: Map[Const, Const] = Map.empty,
+                      fm: Map[Func, Func] = Map.empty,
+                      pm: Map[Pred, Pred] = Map.empty) {
       def apply(t: Term): Term = t match {
         case c: Const => cm.applyOrElse(c, (c: Const) => c)
-        case RecTerm(f, params) => RecTerm(fm.applyOrElse(f, (g: Func) => g), params map ((t: Term) => apply(t)))
+        case RecTerm(f, params) =>
+          RecTerm(fm.applyOrElse(f, (g: Func) => g),
+                  params map ((t: Term) => apply(t)))
         case term: Term => term
       }
 
       val formulaMap: PartialFunction[Formula, Formula] = {
-        case AtomFormula(p, params) => AtomFormula(pm.applyOrElse(p, (g: Pred) => g), params map ((t: Term) => apply(t)))
+        case AtomFormula(p, params) =>
+          AtomFormula(pm.applyOrElse(p, (g: Pred) => g),
+                      params map ((t: Term) => apply(t)))
       }
 
       def apply(formula: Formula): Formula = recFormula(formula, formulaMap)
@@ -360,9 +382,11 @@ object Theory {
 
     val DefaultLangMap = new LanguageMap()
 
-    case class Structure(signature: List[LanguageParam], axiom: Formula) extends Axiom
+    case class Structure(signature: List[LanguageParam], axiom: Formula)
+        extends Axiom
 
-    class SetObject(val struct: Structure, lm: LanguageMap = DefaultLangMap) extends ZFC.AbsSet
+    class SetObject(val struct: Structure, lm: LanguageMap = DefaultLangMap)
+        extends ZFC.AbsSet
 
     /** A result; may be just a reference to one */
     //  trait Result extends Phrases
@@ -374,29 +398,33 @@ object Theory {
     case object Contradiction extends Claim { val claim: Formula = False }
 
     /**
-     * Formal Property: Given data gives a Formula corresponding to satisfying this
-     * This is simply a property name, which we can bind to a definition by an axiom
-     */
+      * Formal Property: Given data gives a Formula corresponding to satisfying this
+      * This is simply a property name, which we can bind to a definition by an axiom
+      */
     abstract class Property(deg: Int) extends Pred(deg) with Axiom {
+
       /**
-       * returns data with additional condition given by the formal property
-       * For example, {{{p :: prime}}} returns p with axiom prime(p)
-       */
+        * returns data with additional condition given by the formal property
+        * For example, {{{p :: prime}}} returns p with axiom prime(p)
+        */
       def ::(d: Data) = DataCond(d, apply(d))
+
       /**
-       * Returns condition corresponding this viewed as a predicate
-       * For example, {{{p ::: prime}}} returns prime(p)
-       */
+        * Returns condition corresponding this viewed as a predicate
+        * For example, {{{p ::: prime}}} returns prime(p)
+        */
       def :::(t: Term): Formula = apply(t)
     }
 
     /**
-     * Property given by a definition
-     * The definition is given by a function of a predicate, for example
-     * to define prime(p) we use definition
-     * {{(prime: Pred) => (prime(p) implies ((p=:=1) or (p=:=p))}}
-     */
-    case class PropertyDefn(deg: Int, defn: Pred => Formula) extends Property(deg) with Axiom {
+      * Property given by a definition
+      * The definition is given by a function of a predicate, for example
+      * to define prime(p) we use definition
+      * {{(prime: Pred) => (prime(p) implies ((p=:=1) or (p=:=p))}}
+      */
+    case class PropertyDefn(deg: Int, defn: Pred => Formula)
+        extends Property(deg)
+        with Axiom {
       val axiom = defn(this)
     }
 
@@ -404,9 +432,9 @@ object Theory {
     abstract class Mapping(deg: Int) extends Func(deg) with Axiom
 
     /**
-     * Function with a defining axiom. For example, we can define square by
-     * (sq: Func) => sq(x) =:= x * x
-     */
+      * Function with a defining axiom. For example, we can define square by
+      * (sq: Func) => sq(x) =:= x * x
+      */
     case class MapDefn(deg: Int, defn: Func => Formula) extends Mapping(deg) {
       val axiom = defn(this)
     }
@@ -460,34 +488,41 @@ object Theory {
 
     /** Assertion: justified claim */
     trait Assertion extends Claim with Because {
+
       /** Justify assertion by method*/
       def by(meth: Method) = Assert(claim, because :+ By(meth))
+
       /** Justify assertion by method with given name*/
       def by(name: String) = Assert(claim, because :+ By(NamedMethod(name)))
 
       /** Justify assertion by result*/
       def using(result: Claim) = Assert(claim, because :+ Using(result))
+
       /** Justify assertion by result with given name or description*/
-      def using(name: String) = Assert(claim, because :+ Using(ResultRef(name)))
+      def using(name: String) =
+        Assert(claim, because :+ Using(ResultRef(name)))
 
       /** Additional conditions for assertion */
-      def where(assumption: Formula) = Assert(assumption implies claim, because)
-
+      def where(assumption: Formula) =
+        Assert(assumption implies claim, because)
     }
 
     /** Assert without justification */
-    case class Assert(claim: Formula, because: List[Justification] = List()) extends Assertion
+    case class Assert(claim: Formula, because: List[Justification] = List())
+        extends Assertion
 
     /** Assert without justification */
     object Observe {
-      def apply(claim: Formula, because: List[Justification] = List()) = Assert(claim, because)
+      def apply(claim: Formula, because: List[Justification] = List()) =
+        Assert(claim, because)
     }
 
     /** Conclusion, i.e., assertion justified by above */
     trait Conclusion extends Assertion
 
     /** Make conclusion */
-    case class Conclude(claim: Formula, because: List[Justification] = List()) extends Conclusion
+    case class Conclude(claim: Formula, because: List[Justification] = List())
+        extends Conclusion
 
     /** QED */
     case object QED extends Paragraph
@@ -532,7 +567,9 @@ object Theory {
     def deduce(p: Formula) = Assert(p, List(ByAbove))
 
     /** Claim in the form of Data, Hypothesis and Conclusion */
-    class Propn(val data: Data, val hypothesis: Formula, val conclusion: Formula) extends Claim {
+    class Propn(
+        val data: Data, val hypothesis: Formula, val conclusion: Formula)
+        extends Claim {
       val claim = (data.axiom & hypothesis) implies conclusion
     }
 
@@ -540,25 +577,45 @@ object Theory {
       val label: String
     }
 
-    def theorem(name: Any)(clm: Claim) = new Claim with Label { val claim = clm.claim; val label = name.toString }
+    def theorem(name: Any)(clm: Claim) = new Claim with Label {
+      val claim = clm.claim; val label = name.toString
+    }
 
-    def theorem(name: Any)(clm: Formula) = new Claim with Label { val claim = clm; val label = name.toString }
+    def theorem(name: Any)(clm: Formula) = new Claim with Label {
+      val claim = clm; val label = name.toString
+    }
 
-    def thm(name: Any)(clm: Claim) = new Claim with Label { val claim = clm.claim; val label = name.toString }
+    def thm(name: Any)(clm: Claim) = new Claim with Label {
+      val claim = clm.claim; val label = name.toString
+    }
 
-    def thm(name: Any)(clm: Formula) = new Claim with Label { val claim = clm; val label = name.toString }
+    def thm(name: Any)(clm: Formula) = new Claim with Label {
+      val claim = clm; val label = name.toString
+    }
 
-    def lemma(name: Any)(clm: Claim) = new Claim with Label { val claim = clm.claim; val label = name.toString }
+    def lemma(name: Any)(clm: Claim) = new Claim with Label {
+      val claim = clm.claim; val label = name.toString
+    }
 
-    def lemma(name: Any)(clm: Formula) = new Claim with Label { val claim = clm; val label = name.toString }
+    def lemma(name: Any)(clm: Formula) = new Claim with Label {
+      val claim = clm; val label = name.toString
+    }
 
-    def proposition(name: Any)(clm: Claim) = new Claim with Label { val claim = clm.claim; val label = name.toString }
+    def proposition(name: Any)(clm: Claim) = new Claim with Label {
+      val claim = clm.claim; val label = name.toString
+    }
 
-    def proposition(name: Any)(clm: Formula) = new Claim with Label { val claim = clm; val label = name.toString }
+    def proposition(name: Any)(clm: Formula) = new Claim with Label {
+      val claim = clm; val label = name.toString
+    }
 
-    def propn(name: Any)(clm: Claim) = new Claim with Label { val claim = clm.claim; val label = name.toString }
+    def propn(name: Any)(clm: Claim) = new Claim with Label {
+      val claim = clm.claim; val label = name.toString
+    }
 
-    def propn(name: Any)(clm: Formula) = new Claim with Label { val claim = clm; val label = name.toString }
+    def propn(name: Any)(clm: Formula) = new Claim with Label {
+      val claim = clm; val label = name.toString
+    }
 
     case class Prove(p: Formula) extends DeterminateTask
 
@@ -581,7 +638,6 @@ object Theory {
     }
 
     type Transformation = PartialFunction[Para, Para]
-
   }
 
   object Proof {
@@ -621,15 +677,19 @@ object Theory {
       case p: Formula => Set(p)
     }
 
-    def isLogicPoly(p: Formula) = (atoms(p) map (_.isInstanceOf[FormulaVar])) reduce (_ && _)
+    def isLogicPoly(p: Formula) =
+      (atoms(p) map (_.isInstanceOf[FormulaVar])) reduce (_ && _)
 
     def isTautology(p: Formula) = isLogicPoly(p) && {
-      (allMaps(atoms(p), Set(true, false)) map (recValue(p, _))) reduce (_ && _)
+      (allMaps(atoms(p), Set(true, false)) map (recValue(p, _))) reduce (_ &&
+          _)
     }
 
-    def isTautology(p: Schema) = isLogicPoly(p) && (p.params.toSet == atoms(p.formula)) && {
-      (allMaps(atoms(p.formula), Set(true, false)) map (recValue(p.formula, _))) reduce (_ && _)
-    }
+    def isTautology(p: Schema) =
+      isLogicPoly(p) && (p.params.toSet == atoms(p.formula)) && {
+        (allMaps(atoms(p.formula), Set(true, false)) map (recValue(
+                    p.formula, _))) reduce (_ && _)
+      }
 
     case class Tautology(f: Schema, ps: Formula*) extends LogicProof {
       val hyp: Set[Formula] = Set.empty
@@ -639,4 +699,3 @@ object Theory {
     }
   }
 }
-

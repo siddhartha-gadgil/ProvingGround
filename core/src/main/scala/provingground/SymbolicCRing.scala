@@ -12,11 +12,10 @@ import scala.language.implicitConversions
 import annotation.tailrec
 //import scala.language.existentials
 
-
 /**
- * @author gadgil
- */
-class SymbolicCRing[A: CRing] extends SymbolicCRig[A] {self =>
+  * @author gadgil
+  */
+class SymbolicCRing[A: CRing] extends SymbolicCRig[A] { self =>
   val ring = implicitly[Ring[A]]
 
   import ring._
@@ -25,7 +24,7 @@ class SymbolicCRing[A: CRing] extends SymbolicCRig[A] {self =>
 
   val negate = prod(minusone)
 
-  implicit val cringStructure : CRing[LocalTerm] = new CRing[LocalTerm]{
+  implicit val cringStructure: CRing[LocalTerm] = new CRing[LocalTerm] {
     val zero = Literal(ring.zero)
 
     val one = Literal(ring.one)
@@ -38,12 +37,4 @@ class SymbolicCRing[A: CRing] extends SymbolicCRig[A] {self =>
   }
 }
 
-object SymbolicCRing{
-
-
-}
-
-
-
-
-
+object SymbolicCRing {}

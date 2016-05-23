@@ -8,8 +8,8 @@ import provingground.fol.Logic._
 import provingground.NlpProse._
 import provingground.fol.ParseProse._
 
-
- object ParserGUI /*extends SimpleSwingApplication*/{/*
+object ParserGUI /*extends SimpleSwingApplication*/ {
+  /*
     val s = new Dimension(1500, 1500)
     val pipe = newPipe
 	val toParse = new TextArea(10, 40){
@@ -65,4 +65,4 @@ import provingground.fol.ParseProse._
 			depListView.listData = parsedTree.tree
 			depHeader.text = parsedTree.root.toString
 		}*/
-	}
+}
