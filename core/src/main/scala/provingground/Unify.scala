@@ -2,11 +2,11 @@ package provingground
 
 import provingground.HoTT._
 //import provingground.Contexts._
-import scala.util._
+import scala.util.Try
 //import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
-object Unify{
-  def multisub[U <: Term with Subs[U]](x: U, m : Map[Term, Term]): U = m.toList  match {
+object Unify {
+  def multisub[U <: Term with Subs[U]](x: U, m: Map[Term, Term]): U = m.toList match {
     case List() => x
     case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
   }
@@ -25,75 +25,82 @@ object Unify{
   def mergeOptMaps[U, V](x: Option[Map[U, V]], y: Option[Map[U, V]]): Option[Map[U, V]] =
     x flatMap ((a) =>
       y flatMap ((b) =>
-        mergeMaps(a, b)
-  ))
+        mergeMaps(a, b)))
+
+  def mergeAll[U, V](xs: Option[Map[U, V]]*): Option[Map[U, V]] = xs.toList match {
+    case List() => Some(Map())
+    case x :: ys =>
+      mergeOptMaps(x, mergeAll(ys: _*))
+  }
+
+  def unifyList(xys: List[(Term, Term)], freeVars: List[Term]) : Option[Map[Term, Term]] = xys match {
+      case List() => None
+      case List((x, y)) => unify(x, y, freeVars)
+      case head :: tail =>
+        unify(head._1, head._2, freeVars) flatMap (
+          (subMap) =>
+            {
+              val newVars = freeVars filter ((x) => !(subMap.keySet contains x))
+              val newTail =
+                tail map {
+                  case (a, b) => (multisub(a, subMap), multisub(b, subMap))}
+              val tailMapOpt =unifyList(newTail, newVars)
+              val mapOpt = tailMapOpt map ((tm) => subMap ++ tm)
+              mapOpt})
+  }
+
+  def unifyAll(freeVars: List[Term])(xys : (Term, Term)*) =
+    unifyList(xys.toList, freeVars)
 
   def unify(lhs: Term, rhs: Term, freevars: List[Term]): Option[Map[Term, Term]] = {
-    if (!dependsOn(lhs)(freevars))
-      {if (lhs == rhs) Some(Map()) else None}
+    if (!dependsOn(lhs)(freevars) && !dependsOn(rhs)(freevars)) { if (lhs == rhs) Some(Map()) else None }
     else
       (lhs, rhs) match {
-      case (PiTyp(f), PiTyp(g)) => unify(f,g, freevars)
-//      case (SigmaTyp(f), SigmaTyp(g)) => unify(f,g, freevars)
-      case (FuncTyp(a, b), FuncTyp(c, d)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
-      case (PlusTyp(a, b), PlusTyp(c, d)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
-      case (x: AbsPair[_, _], y: AbsPair[_, _])=>
-        mergeOptMaps(unify(x.first, y.first, freevars), unify(x.second, y.second,freevars))
-      case (fst: Symbolic, scnd: Symbolic) => (fst.name, scnd.name) match{
-      case (ApplnSym(a, b: Term), ApplnSym(c, d: Term)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+        case (variable, value) if (freevars contains variable) =>
+          Some(Map(variable -> value))
+        case (value, variable) if (freevars contains variable) =>
+            Some(Map(variable -> value))
+        case (PiTyp(f), PiTyp(g)) => unify(f, g, freevars)
+        case (SigmaTyp(f), SigmaTyp(g)) => unify(f, g, freevars)
+        case (FuncTyp(a: Typ[u], b: Typ[v]), FuncTyp(c: Typ[w], d: Typ[x])) =>
+          unifyAll(freevars)(a ->c, b -> d)
+        case (PlusTyp(a: Typ[u], b: Typ[v]), PlusTyp(c: Typ[w], d: Typ[x])) =>
+          unifyAll(freevars)(a ->c, b -> d)
+        case (x: AbsPair[_, _], y: AbsPair[_, _]) =>
+          unifyAll(freevars)(x.first -> y.first, x.second -> y.second)
+        case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
+          unifyAll(freevars)(a ->c, b -> d, f1.typ -> f2.typ)
+        case (f : FuncLike[_, _], g: FuncLike[_, _]) =>
+          val newName = NameFactory.get
+          unifyAll(freevars)(
+            f(newName :: f.dom) -> g(newName :: g.dom), f.typ ->g.typ)
+        case _ => None
       }
-      case _ => None
-    }
   }
 
-  def mkLambda[U <: Term with Subs[U] , V<: Term with Subs[V] ]: FuncLike[U, V] => FuncLike[U, V] = {
-    case lm: Lambda[U, V] => lm
-    case f: FuncLike[U,V] => {
-    	val newvar = f.dom.obj.asInstanceOf[U]
-    	lambda(newvar)(f(newvar))
-    }
+  def subsApply(func: Term, arg: Term, unifMap : Map[Term, Term], freeVars: List[Term]) = {
+    val fn = multisub(func, unifMap)
+    val x = multisub(arg, unifMap)
+    val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
+    import Fold._
+    Try(polyLambda(lambdaVars,fn(x))).toOption
   }
 
-  def mkLmbda[U <: Term with Subs[U] , V<: Term with Subs[V] ] :Func[U, V] => Func[U, V] = {
-    case lm: LambdaFixed[U, V] => lm
-    case f: Func[U,V] => {
-    	val newvar = f.dom.obj.asInstanceOf[U]
-    	lmbda(newvar)(f(newvar))
-    }
-  }
-
-/*
-object Old{
-  def multisub(x: Term, m : Map[Term, Term]): Term = m.toList  match {
-    case List() => x
-    case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
-  }
-
-  def unify(source: Term, target: Term, freevars: Set[Term]) : Option[Map[Term,Term]] = (source, target) match {
-    case (x, y) if freevars contains x => Some(Map(x -> y))
-    case (x: Symbolic, y: Symbolic) if x.typ != y.typ =>
-      unify(x.typ, y.typ, freevars) flatMap((m) =>
-      unify(multisub(x, m), y, freevars -- m.keySet))
-//    case (applptnterm(f, x), applptnterm(g, y)) =>
-//      for (mx <- unify(f, g, freevars); my <- unify(multisub(x, mx), y, freevars -- mx.keySet)) yield (mx ++ my)
-    case (FuncTyp(a, b), FuncTyp(c, d)) =>
-      for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
-    case (Lambda(a: Term, b : Term), Lambda(c: Term, d : Term)) =>
-      for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
-    case (PiTyp(a), PiTyp(c)) =>
-      unify(a, c, freevars)
-    case (SigmaTyp(a), SigmaTyp(c)) =>
-      unify(a, c, freevars)
+  def unifApply(func: Term, arg: Term, freeVars: List[Term]) = func match {
+    case fn : FuncLike[u, v] => unify(fn.dom, arg.typ, freeVars) flatMap (subsApply(func, arg, _, freeVars))
     case _ => None
   }
 
-  def unifyctx(source: Term, target: Term, freevars: Set[Term], ctx: Context[Term, Term]) : Option[Map[Term,Term]] = ctx match {
-    case _ : Context.empty[_] => unify(source, target, freevars)
-    case LambdaMixin(x, tail, _) => unifyctx(source, target, freevars + x, tail)
-    case _ => unifyctx(source, target, freevars, ctx.tail)
-  }
-}*/
+
+  def appln(func: Term, arg: Term, freeVars: List[Term] = List()) : Option[Term] =
+    unifApply(func, arg, freeVars) orElse(
+      func match{
+        case fn: FuncLike[u, v] =>
+          val l = funcToLambda(fn)
+          appln(l.value, arg, l.variable :: freeVars)
+        case _ => None
+      })
+
+
+
 }
