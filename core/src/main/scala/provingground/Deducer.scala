@@ -25,19 +25,21 @@ object Deducer {
     * generating optionally using function application, with function and argument generated recursively;
     * to be mixed in using `<+?>`
     */
-  def appln(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
+  def appln(rec: => (PD[Term] => PD[Term]))(
+      p: PD[Term], vars: List[Term] = List()) =
     rec(p) flatMap ((f) =>
           if (isFunc(f))
-            rec(p) map (Unify.appln(f, _))
+            rec(p) map (Unify.appln(f, _, vars))
           else
             FD.unif(None: Option[Term]))
 
   def memAppln(rec: => (PD[Term] => PD[Term]))(
-      p: PD[Term])(save: (Term, Term, Term) => Unit) = {
+      p: PD[Term], vars: List[Term] = List())(
+      save: (Term, Term, Term) => Unit) = {
     rec(p) flatMap ((f) =>
           if (isFunc(f))
             rec(p) map ((x) =>
-                  Unify.appln(f, x) map ((y) => { save(f, x, y); y }))
+                  Unify.appln(f, x, vars) map ((y) => { save(f, x, y); y }))
           else
             FD.unif(None: Option[Term]))
   }
@@ -239,10 +241,11 @@ object Deducer {
 class DeducerFunc(applnWeight: Double,
                   lambdaWeight: Double,
                   piWeight: Double,
-                  varWeight: Double) {
+                  varWeight: Double,
+                  vars: List[Term] = List()) {
   import Deducer._
   def func(pd: PD[Term]): PD[Term] =
-    pd.<+?>(appln(func)(pd), applnWeight)
+    pd.<+?>(appln(func)(pd, vars), applnWeight)
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
 
@@ -259,7 +262,7 @@ class DeducerFunc(applnWeight: Double,
     subsInvMap(result) = subsInvMap.getOrElse(result, Set()) + ((eq, x))
 
   def memFunc(pd: PD[Term]): PD[Term] =
-    pd.<+?>(memAppln(func)(pd)(save), applnWeight)
+    pd.<+?>(memAppln(func)(pd, vars)(save), applnWeight)
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
 
