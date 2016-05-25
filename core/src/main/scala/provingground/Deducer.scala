@@ -252,8 +252,12 @@ class DeducerFunc(applnWeight: Double,
   var invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
 
+  def invImages = TermToExpr.rebuildMap(invImageMap.toMap)
+
   var subsInvMap: scala.collection.mutable.Map[
       Term, Set[(IdentityTyp[Term], Term)]] = scala.collection.mutable.Map()
+
+ def subsInvImages = TermToExpr.rebuildMap(subsInvMap.toMap)
 
   def save(f: Term, x: Term, y: Term) =
     invImageMap(y) = invImageMap.getOrElse(y, Set()) + ((f, x))

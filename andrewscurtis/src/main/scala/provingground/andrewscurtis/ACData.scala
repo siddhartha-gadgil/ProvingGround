@@ -404,8 +404,8 @@ object ACData {
     val file = wd / dir / (name + ".acrun")
     val statefile = wd / dir / (name + ".acstate")
     val thmfile = wd / dir / (name + ".acthms")
-    write.append(file, s"${pickle(fdM, fdV)}\n")
-    write.over(statefile, s"${pickle(fdM, fdV)}\n")
+    write.append(file, s"${pickle((fdM, fdV))}\n")
+    write.over(statefile, s"${pickle((fdM, fdV))}\n")
     def writethms = {
       val thms =
         (toPresentation(2, fdV) map (_.toString)).flatten.pmf map {
