@@ -182,8 +182,8 @@ object GeneticEvolver {
                        weight: A => Int,
                        size: A => Long,
                        n: Long,
-                       soFar: Set[A] =
-                         Set.empty)(implicit rand: Random): Set[A] = {
+                       soFar: Set[A] = Set.empty)(
+      implicit rand: Random): Set[A] = {
     if (n < 0) soFar
     else {
       val newElem = pickRandByWeight(l, weight)

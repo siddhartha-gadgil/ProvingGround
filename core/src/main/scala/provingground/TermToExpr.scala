@@ -102,7 +102,7 @@ object TermToExpr {
 
   def rebuild(t: Term, prefix: String = ".") = newTermOpt(t, prefix).get
 
-  def rebuildList(ts: List[Term], prefix: String=".") = {
+  def rebuildList(ts: List[Term], prefix: String = ".") = {
     val myNames = new NewNameFactory(prefix)
     def predefs(t: Term) =
       if (isVar(t)) Some(myNames.getTerm(t)) else None
@@ -116,17 +116,23 @@ object TermToExpr {
     recc(ts)
   }
 
-  def rebuildMap[U <: Term with Subs[U]](m: Map[Term, Set[(U, Term)]], prefix: String =".") = {
-    val list = m.toList map {
-      case (x, s) =>
-        val myNames = new NewNameFactory(prefix)
-        def predefs(t: Term) =
-          if (isVar(t)) Some(myNames.getTerm(t)) else None
-        val rebuilder = new TermToExpr[Term]((n) => Universe(n), predefs)
-        val xx = rebuilder(x).get
-        val ss = s map {case (x, y) => (rebuilder(x).get.asInstanceOf[U], rebuilder(y).get)}
-        (xx, ss)
-    }
+  def rebuildMap[U <: Term with Subs[U]](
+      m: Map[Term, Set[(U, Term)]], prefix: String = ".") = {
+    val list =
+      m.toList map {
+        case (x, s) =>
+          val myNames = new NewNameFactory(prefix)
+          def predefs(t: Term) =
+            if (isVar(t)) Some(myNames.getTerm(t)) else None
+          val rebuilder = new TermToExpr[Term]((n) => Universe(n), predefs)
+          val xx = rebuilder(x).get
+          val ss =
+            s map {
+              case (x, y) =>
+                (rebuilder(x).get.asInstanceOf[U], rebuilder(y).get)
+            }
+          (xx, ss)
+      }
     list.toMap
   }
 }
