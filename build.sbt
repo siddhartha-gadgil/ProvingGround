@@ -25,7 +25,7 @@ val akkaV = "2.4.4"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.7" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.8" cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.6",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -39,7 +39,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.5.7",
+    "com.lihaoyi" %% "ammonite-ops" % "0.5.8",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.13",
     "org.slf4j" % "slf4j-nop" %"1.7.13",
@@ -64,7 +64,7 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.5.7" cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite-repl" % "0.5.8" cross CrossVersion.full,
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
     "com.google.protobuf" % "protobuf-java" % "2.6.1"
@@ -157,7 +157,7 @@ lazy val nlp = (project in file("nlp")).
 
 lazy val translation = (project in file("translation")).
       settings(name := "ProvingGround-Translation",
-        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.7").
+        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.5.8").
       settings(baseSettings : _*).
       dependsOn(coreJVM)
 

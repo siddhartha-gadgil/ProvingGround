@@ -19,7 +19,10 @@ case object TermLang
   }
 
   def typVariable[S](name: S): Option[Term] = name match {
-    case s: String => Some(SymbTyp(s))
+//    case t : Typ[u] => Some(t)
+    case "Type" => Some(Type)
+    case s: String =>
+      Some(SymbTyp(s))
     case _ => None
   }
 

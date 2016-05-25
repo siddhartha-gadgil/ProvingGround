@@ -1,16 +1,18 @@
 package provingground
 
+import upickle.default._
+
 sealed trait FreeExprLang {
   def as[E](implicit l: ExprLang[E]): Option[E]
 }
 
 object FreeExprLang {
-  case class Variable[S](name: S, typ: FreeExprLang) extends FreeExprLang {
+  case class Variable(name: String, typ: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.variable(name, tp)) yield result
   }
 
-  case class TypVariable[S](name: S) extends FreeExprLang {
+  case class TypVariable(name: String) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       l.typVariable(name)
   }
@@ -123,9 +125,10 @@ object FreeExprLang {
       extends ExprLang[FreeExprLang]
       with ExprPatterns[FreeExprLang] {
     def variable[S](name: S, typ: FreeExprLang): Option[FreeExprLang] =
-      Some(Variable(name, typ))
+      Some(Variable(name.toString(), typ))
 
-    def typVariable[S](name: S): Option[FreeExprLang] = Some(TypVariable(name))
+    def typVariable[S](name: S): Option[FreeExprLang] =
+      Some(TypVariable(name.toString))
 
     /**
       * anonymous variable
@@ -191,17 +194,17 @@ object FreeExprLang {
     def numeral(n: Int): Option[FreeExprLang] = Some(Numeral(n))
 
     def isPair: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Pair(first, second) => Some(first, second)
+      case Pair(first, second) => Some((first, second))
       case _ => None
     }
 
     def isSigma: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Sigma(first, second) => Some(first, second)
+      case Sigma(first, second) => Some((first, second))
       case _ => None
     }
 
     def isPi: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Pi(first, second) => Some(first, second)
+      case Pi(first, second) => Some((first, second))
       case _ => None
     }
   }
@@ -211,4 +214,8 @@ object FreeExprLang {
           univ = (n) => Univ, predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
+
+  def writeTerm(t: HoTT.Term) = write(fromTerm(t).get)
+
+  def readTerm(s: String) = read[FreeExprLang](s).as[HoTT.Term](TermLang).get
 }

@@ -3,6 +3,8 @@ package provingground
 import java.io._
 import java.awt.Desktop
 
+import ammonite.ops
+
 import scala.xml._
 import scala.language.implicitConversions
 
@@ -19,6 +21,24 @@ import com.github.nscala_time.time.Imports._
   * @author gadgil
   */
 object QDI {
+  def writeFD(fd: FiniteDistribution[String],
+              filename: String,
+              dir: String = "data") = {
+    val file = ops.cwd / dir / filename
+    ops.rm(file)
+    fd.pmf.foreach { case Weighted(s, p) => ops.write(file, s"$s\t$p\n") }
+  }
+
+  def readFD(filename: String, dir: String = "data") = {
+    val file = ops.cwd / dir / filename
+    val pmf =
+      ops.read.lines(file) map ((l) => {
+            val Array(s, p) = l.split("\t")
+            Weighted(s, p.toDouble)
+          })
+    FiniteDistribution(pmf)
+  }
+
   lazy val runTime = java.lang.Runtime.getRuntime()
 
   def freeMem = runTime.freeMemory()
