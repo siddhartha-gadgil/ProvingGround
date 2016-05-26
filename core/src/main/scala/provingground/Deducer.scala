@@ -151,13 +151,13 @@ object Deducer {
   def applnAdjointOnFuncs(fd: FD[Term])(w: => TD[Term]): TD[Term] = {
     val tds = for (Weighted(f, p) <- fd.pmf if isFunc(f)) yield
       (w flatMap ((y) => invTD(fd.supp)(f)(y))) <*> p
-    TD.BigSum(tds)
+    TD.bigSum(tds)
   }
 
   def applnAdjointOnArgs(fd: FD[Term])(w: => TD[Term]): TD[Term] = {
     val tds = for (Weighted(x, p) <- fd.pmf) yield
       (w flatMap ((y) => argInvTD(fd.supp)(x)(y))) <*> p
-    TD.BigSum(tds)
+    TD.bigSum(tds)
   }
 
   def applnAdjoint(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
@@ -214,7 +214,7 @@ object Deducer {
             fd mapOpt (lambdaValue(typ)) // this already is scaled by weight of type and of lambda-term
           recAdj(innerp)(innerw) map ((t) => HoTT.lambda(x)(t): Term)
       }
-    TD.BigSum(vec)
+    TD.bigSum(vec)
   }
 
   def lambdaAdjointOnProbs(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
@@ -281,7 +281,7 @@ class DeducerFunc(applnWeight: Double,
                   val scale = applnWeight * fd(f) * fd(x) / fd(result)
                   backProp(fd)(TD.FD(FD.unif(f, x)) <*> scale)
               }
-            TD.BigSum(tds)
+            TD.bigSum(tds)
           }
       ) getOrElse (TD.Empty[Term])
 
@@ -301,7 +301,7 @@ class DeducerFunc(applnWeight: Double,
                   val scale = eqSubsWeight * fd(eq) * fd(x) / fd(result)
                   backProp(fd)(TD.FD(FD.unif(eq, x)) <*> scale)
               }
-            TD.BigSum(tds)
+            TD.bigSum(tds)
           }
       ) getOrElse (TD.Empty[Term])
 
@@ -335,7 +335,7 @@ class DeducerFunc(applnWeight: Double,
         case tp: Typ[_] =>
           lambdaPropValuesForTyp(backProp)(fd)(td)(tp)
       }
-    TD.BigSum(v)
+    TD.bigSum(v)
   }
 
   def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
@@ -369,7 +369,7 @@ class DeducerFunc(applnWeight: Double,
         case tp: Typ[_] =>
           piPropValuesForTyp(backProp)(fd)(td)(tp)
       }
-    TD.BigSum(v)
+    TD.bigSum(v)
   }
 
   def backProp(epsilon: Double)(fd: FD[Term]): TD[Term] => TD[Term] =

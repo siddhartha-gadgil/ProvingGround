@@ -13,11 +13,11 @@ sealed trait TruncatedDistribution[A] {
   def getFD(cutoff: Double): Option[FiniteDistribution[A]]
 
   def <*>(scale: Double): TruncatedDistribution[A] =
-    if (scale != 0.0) TruncatedDistribution.Scaled(this, scale)
+    if (scale != 0.0) new TruncatedDistribution.Scaled(this, scale)
     else TruncatedDistribution.Empty[A]
 
   def <*>:(scale: Double): TruncatedDistribution[A] =
-    if (scale != 0.0) TruncatedDistribution.Scaled(this, scale)
+    if (scale != 0.0) new TruncatedDistribution.Scaled(this, scale)
     else TruncatedDistribution.Empty[A]
 
   def <+>(that: => TruncatedDistribution[A]) =
@@ -35,19 +35,19 @@ sealed trait TruncatedDistribution[A] {
     }
 
   def map[B](f: A => B): TruncatedDistribution[B] =
-    TruncatedDistribution.Map(this, f)
+    new TruncatedDistribution.Map(this, f)
 
-  def flatMap[B](f: A => TruncatedDistribution[B]): TruncatedDistribution[B] =
-    TruncatedDistribution.FlatMap(this, f)
+  def flatMap[B](f: =>(A => TruncatedDistribution[B])): TruncatedDistribution[B] =
+    new TruncatedDistribution.FlatMap(this, f)
 
   def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B])
     : TruncatedDistribution[B] =
-    TruncatedDistribution.MapFD(this, f)
+    new TruncatedDistribution.MapFD(this, f)
 
   def mapOpt[B](f: A => Option[B]): TruncatedDistribution[B] =
-    TruncatedDistribution.MapOpt(this, f)
+    new TruncatedDistribution.MapOpt(this, f)
 
-  def filter(f: A => Boolean) = TruncatedDistribution.Filter(this, f)
+  def filter(f: A => Boolean) = new TruncatedDistribution.Filter(this, f)
 
   def getOpt: Option[TruncatedDistribution[A]] = Some(this)
 }
@@ -64,7 +64,7 @@ object TruncatedDistribution
       TruncatedDistribution.Empty[B]
 
     override def flatMap[B](
-        f: A => TruncatedDistribution[B]): TruncatedDistribution[B] =
+        f: =>( A => TruncatedDistribution[B])): TruncatedDistribution[B] =
       TruncatedDistribution.Empty[B]
 
     override def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B]) =
@@ -102,7 +102,7 @@ object TruncatedDistribution
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)
   }
 
-  case class Scaled[A](base: TruncatedDistribution[A], scale: Double)
+  class Scaled[A](base: => TruncatedDistribution[A], scale: Double)
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) =
       base.getFD(cutoff / scale) map (_ * scale)
@@ -121,23 +121,23 @@ object TruncatedDistribution
       }
   }
 
-  case class Map[A, B](base: TruncatedDistribution[A], f: A => B)
+  class Map[A, B](base: => TruncatedDistribution[A], f: A => B)
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) = base.getFD(cutoff).map((d) => d map f)
   }
 
-  case class MapOpt[A, B](base: TruncatedDistribution[A], f: A => Option[B])
+  class MapOpt[A, B](base: => TruncatedDistribution[A], f: A => Option[B])
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) = base.getFD(cutoff).map((d) => d mapOpt f)
   }
 
-  case class Filter[A](base: TruncatedDistribution[A], f: A => Boolean)
+  class Filter[A](base: => TruncatedDistribution[A], f: A => Boolean)
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = base.getFD(cutoff) map (_.filter(f))
   }
 
-  case class FlatMap[A, B](
-      base: TruncatedDistribution[A], f: A => TruncatedDistribution[B])
+  class FlatMap[A, B](
+      base: =>  TruncatedDistribution[A], f: => (A => TruncatedDistribution[B]))
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) =
       base.getFD(cutoff) flatMap ((fd) => {
@@ -151,13 +151,13 @@ object TruncatedDistribution
           })
   }
 
-  case class MapFD[A, B](base: TruncatedDistribution[A],
+  class MapFD[A, B](base: => TruncatedDistribution[A],
                          f: FiniteDistribution[A] => FiniteDistribution[B])
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) = base.getFD(cutoff) map ((fd) => f(fd))
   }
 
-  case class FlattenOpt[A](base: TruncatedDistribution[Option[A]])
+  class FlattenOpt[A](base: => TruncatedDistribution[Option[A]])
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = {
       base
@@ -168,7 +168,7 @@ object TruncatedDistribution
     }
   }
 
-  case class Flatten[A](base: TruncatedDistribution[TruncatedDistribution[A]])
+  class Flatten[A](base: => TruncatedDistribution[TruncatedDistribution[A]])
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) =
       base
@@ -184,13 +184,16 @@ object TruncatedDistribution
         )
   }
 
-  case class BigSum[A](tds: Vector[TruncatedDistribution[A]])
+  class BigSum[A](tds: => Vector[TruncatedDistribution[A]])
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = {
       val fds = (tds map (_.getFD(cutoff))).flatten
       if (fds.isEmpty) None else Some(vBigSum(fds))
     }
   }
+
+  def bigSum[A](tds: => Vector[TruncatedDistribution[A]]) =
+    new BigSum(tds)
 
   case class Coeffs[A](
       support: Vector[A], coeffs: Double => A => Option[Double])
@@ -208,11 +211,11 @@ object TruncatedDistribution
   }
 
   def flatten[A](base: TruncatedDistribution[TruncatedDistribution[A]]) =
-    Flatten(base)
+    new Flatten(base)
 
   def optF[A](
       fo: TruncatedDistribution[Option[A]]): Option[TruncatedDistribution[A]] =
-    fo.getOpt map (FlattenOpt(_))
+    fo.getOpt map (new FlattenOpt(_))
 
   def map[A, B](base: TruncatedDistribution[A])(f: A => B) = (base map (f))
 
@@ -235,7 +238,7 @@ object TruncatedDistribution
     def lop(xd: TruncatedDistribution[A], yd: TruncatedDistribution[B]) = {
       val tdOpt = (for (x <- xd; y <- yd) yield
         op(x, y)): TruncatedDistribution[Option[C]]
-      FlattenOpt(tdOpt): TruncatedDistribution[C]
+      new FlattenOpt(tdOpt): TruncatedDistribution[C]
     }
     lop _
   }
