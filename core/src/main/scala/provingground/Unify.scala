@@ -73,8 +73,8 @@ object Unify {
           unifyAll(freevars)(a -> c, b -> d)
         case (PlusTyp(a: Typ[u], b: Typ[v]), PlusTyp(c: Typ[w], d: Typ[x])) =>
           unifyAll(freevars)(a -> c, b -> d)
-        case (IdentityTyp(a: Term, b: Term), IdentityTyp(c: Term, d: Term)) =>
-            unifyAll(freevars)(a -> c, b -> d)
+        case (IdentityTyp(dom1: Typ[u], a: Term, b: Term), IdentityTyp(dom2: Typ[v], c: Term, d: Term)) =>
+            unifyAll(freevars)(dom1 -> dom2, a -> c, b -> d)
         case (x: AbsPair[_, _], y: AbsPair[_, _]) =>
           unifyAll(freevars)(x.first -> y.first, x.second -> y.second)
         case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
