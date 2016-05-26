@@ -87,99 +87,19 @@ object Deducer {
       case _ => FD.unif(None)
     })
 
-//   // Helpers that may not be used
-//   /**
-//     * returns map of inverse image under function application,
-//     * i.e., for `y` in range, returns vector of pairs `(f, x)` with `f(x) = y`
-//     */
-//   def applnInvImage(supp: Vector[Term]) = {
-//     val pairs = (supp collect {
-//           case fn: FuncLike[_, _] =>
-//             supp filter (_.typ == fn.dom) map ((fn: Term, _))
-//         }).flatten
-//     val optMap = pairs groupBy { case (f, x) => TL.appln(f, x) }
-//     for ((yo, fx) <- optMap; y <- yo) yield (y, fx)
-//   }
-//
-//   /**
-//     * returns map of inverse image for a fixed function `f`,
-//     * i.e., for `y` in range, returns `x` with `f(x) = y`
-//     */
-//   def funcInvImage(supp: Vector[Term])(fn: Term): Map[Term, Vector[Term]] =
-//     fn match {
-//       case f: FuncLike[_, _] =>
-//         val optMap = supp filter (_.typ == f.dom) groupBy (TL.appln(f, _))
-//         for ((yo, fx) <- optMap; y <- yo) yield (y, fx)
-//       case _ => Map.empty
-//     }
-//
-//   def argInvImage(supp: Vector[Term])(arg: Term): Map[Term, Vector[Term]] = {
-//     val optMap =
-//       (supp collect { case fn: FuncLike[u, v] if fn.dom == arg.typ => fn }) groupBy (TL
-//             .appln(_, arg))
-//     for ((yo, fx) <- optMap; y <- yo) yield (y, fx)
-//   }
-//
-//   /**
-//     * inverse image of a function as a finite distribution;
-//     * an atom of weight 1 at each inverse image point.
-//     */
-//   def invDstbn(supp: Vector[Term])(fn: Term) =
-//     (y: Term) =>
-//       ((funcInvImage(supp)(fn)) mapValues (FD.rawUnif(_)))
-//         .getOrElse(y, FD.empty[Term])
-//
-//   /**
-//     * inverse image of a function as a truncated distribution;
-//     * an atom of weight 1 at each inverse image point.
-//     */
-//   def invTD(supp: Vector[Term])(fn: Term): Term => TD[Term] =
-//     (y: Term) =>
-//       ((funcInvImage(supp)(fn)) mapValues ((xs) => TD(FD.rawUnif(xs))))
-//         .getOrElse(y, TD.Empty[Term])
-// // End of unused helpers.
-//
-//   def argInvTD(supp: Vector[Term])(arg: Term): Term => TD[Term] =
-//     (y: Term) =>
-//       ((argInvImage(supp)(arg)) mapValues ((xs) => TD(FD.rawUnif(xs))))
-//         .getOrElse(y, TD.Empty[Term])
-
-  // /**
-  //   * returns the term of the application adjoint with differentiation holding a function fixed;
-  //   * this is the sum over all functions of the adjoint of that function application, scaled by the function weight.
-  //   */
-  // def applnAdjointOnFuncs(fd: FD[Term])(w: => TD[Term]): TD[Term] = {
-  //   val tds = for (Weighted(f, p) <- fd.pmf if isFunc(f)) yield
-  //     (w flatMap ((y) => invTD(fd.supp)(f)(y))) <*> p
-  //   TD.bigSum(tds)
-  // }
-  //
-  // def applnAdjointOnArgs(fd: FD[Term])(w: => TD[Term]): TD[Term] = {
-  //   val tds = for (Weighted(x, p) <- fd.pmf) yield
-  //     (w flatMap ((y) => argInvTD(fd.supp)(x)(y))) <*> p
-  //   TD.bigSum(tds)
-  // }
-  //
-  // def applnAdjoint(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(w: => TD[Term]) =
-  //   recAdj(fd)(applnAdjointOnArgs(fd)(w) <+> applnAdjointOnFuncs(fd)(w))
-  //
-  // case object variable extends AnySym {
-  //   def apply[U <: Term with Subs[U]](typ: Typ[U]) = typ.symbObj(this)
-  // }
 
   /**
     * given a type, returns optionally values of lambda terms with variable of the given type
     * with variable in values from the above `variable` object
     */
-  def lambdaValue[U <: Term with Subs[U]](typ: Typ[U], variable: U): Term => Option[Term] = {
-    case l: LambdaLike[u, v] =>
+  def lambdaValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
+    case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
       Some(l.value replace (l.variable, variable))
     case _ => None
   }
 
-  def piValue[U <: Term with Subs[U]](typ: Typ[U], variable: U): Term => Option[Term] = {
-    case fn: FuncLike[u, v] =>
+  def piValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
+    case fn: FuncLike[u, v] if fn.dom.typ == variable.typ =>
       val x = variable.asInstanceOf[u]
       val codom = fn.depcodom(x)
       Some(codom)
@@ -191,51 +111,17 @@ object Deducer {
     * returns the truncated distribution of `value`s of lambda terms of that type;
     * with variable in the values from the above `variable` object
     */
-  def lambdaTD(td: TD[Term])(typ: Typ[Term], variable: Term) =
-      td mapOpt (lambdaValue(typ, variable))
+  def lambdaTD(td: TD[Term])(variable: Term) =
+      td mapOpt (lambdaValue(variable))
 
-  def lambdaFD(fd: FD[Term])(typ: Typ[Term], variable: Term) =
-      fd mapOpt (lambdaValue(typ, variable))
+  def lambdaFD(fd: FD[Term])(variable: Term) =
+      fd mapOpt (lambdaValue(variable))
 
-  def piTD(td: TD[Term])(typ: Typ[Term], variable: Term) =
-      td mapOpt (piValue(typ, variable))
+  def piTD(td: TD[Term])(variable: Term) =
+      td mapOpt (piValue(variable))
 
-  def piFD(fd: FD[Term])(typ: Typ[Term], variable: Term) =
-      fd mapOpt (piValue(typ, variable))
-
-  // def lambdaAdjointOnIslands(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(w: => TD[Term]): TD[Term] = {
-  //   val vec =
-  //     fd.supp collect {
-  //       case typ: Typ[u] =>
-  //         val innerw = w mapOpt (lambdaValue(typ))
-  //         val x = variable(typ)
-  //         val innerp =
-  //           fd mapOpt (lambdaValue(typ)) // this already is scaled by weight of type and of lambda-term
-  //         recAdj(innerp)(innerw) map ((t) => HoTT.lambda(x)(t): Term)
-  //     }
-  //   TD.bigSum(vec)
-  // }
-  //
-  // def lambdaAdjointOnProbs(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(w: => TD[Term]): TD[Term] = {
-  //   def pmf(cutoff: Double) =
-  //     fd.supp collect {
-  //       case typ: Typ[u] =>
-  //         val neww = lambdaTD(w)(typ)
-  //         val x = variable(typ)
-  //         val newp = fd mapOpt (lambdaValue(typ))
-  //         val wfd = neww.getFD(cutoff).getOrElse(FD.empty[Term])
-  //         Weighted(typ: Term, (wfd map ((t) => newp(t))).expectation)
-  //     }
-  //   def finDist(cutoff: Double) = Some(FD(pmf(cutoff)))
-  //   recAdj(fd)(TD.FromFDs(finDist))
-  // }
-  //
-  // def lambdaAdjoint(recAdj: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(w: => TD[Term]): TD[Term] =
-  //   lambdaAdjointOnProbs(recAdj)(fd)(w) <+> lambdaAdjointOnIslands(recAdj)(fd)(
-  //       w)
+  def piFD(fd: FD[Term])(variable: Term) =
+      fd mapOpt (piValue(variable))
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -321,11 +207,10 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]) =
     td flatMap (lambdaPropVarTerm(backProp)(fd))
 
-  def lambdaPropValuesForTyp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term])(tp: Typ[Term]): TD[Term] = {
+  def lambdaPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+      fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
     import Deducer.{lambdaTD, lambdaFD}
-    val x = tp.Var
-    val inner = backProp(lambdaFD(fd)(tp, x))(lambdaTD(td)(tp, x))
+    val inner = backProp(lambdaFD(fd)(x))(lambdaTD(td)(x))
     inner map ((y) => HoTT.lambda(x)(y))
   }
 
@@ -333,8 +218,8 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]): TD[Term] = {
     val v =
       fd.supp collect {
-        case tp: Typ[_] =>
-          lambdaPropValuesForTyp(backProp)(fd)(td)(tp)
+        case l : LambdaLike[u, v] =>
+          lambdaPropValuesTerm(backProp)(fd)(td)(l.variable)
       }
     TD.bigSum(v)
   }
@@ -352,11 +237,10 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]) =
     td flatMap (piPropVarTerm(backProp)(fd))
 
-  def piPropValuesForTyp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term])(tp: Typ[Term]): TD[Term] = {
+  def piPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+      fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
     import Deducer.{piTD, piFD}
-    val x= tp.Var
-    val inner = backProp(piFD(fd)(tp, x))(piTD(td)(tp, x))
+    val inner = backProp(piFD(fd)(x))(piTD(td)(x))
     inner mapOpt {
       case y: Typ[u] =>
         Some(HoTT.pi(x)(y.asInstanceOf[Typ[Term]]))
@@ -368,8 +252,9 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]): TD[Term] = {
     val v =
       fd.supp collect {
-        case tp: Typ[_] =>
-          piPropValuesForTyp(backProp)(fd)(td)(tp)
+        case fn: FuncLike[u, v] =>
+        val x= fn.dom.Var
+          piPropValuesTerm(backProp)(fd)(td)(x)
       }
     TD.bigSum(v)
   }
