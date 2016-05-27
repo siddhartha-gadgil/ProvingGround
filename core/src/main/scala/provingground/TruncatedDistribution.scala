@@ -37,7 +37,8 @@ sealed trait TruncatedDistribution[A] {
   def map[B](f: A => B): TruncatedDistribution[B] =
     new TruncatedDistribution.Map(this, f)
 
-  def flatMap[B](f: =>(A => TruncatedDistribution[B])): TruncatedDistribution[B] =
+  def flatMap[B](
+      f: => (A => TruncatedDistribution[B])): TruncatedDistribution[B] =
     new TruncatedDistribution.FlatMap(this, f)
 
   def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B])
@@ -64,7 +65,7 @@ object TruncatedDistribution
       TruncatedDistribution.Empty[B]
 
     override def flatMap[B](
-        f: =>( A => TruncatedDistribution[B])): TruncatedDistribution[B] =
+        f: => (A => TruncatedDistribution[B])): TruncatedDistribution[B] =
       TruncatedDistribution.Empty[B]
 
     override def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B]) =
@@ -137,7 +138,7 @@ object TruncatedDistribution
   }
 
   class FlatMap[A, B](
-      base: =>  TruncatedDistribution[A], f: => (A => TruncatedDistribution[B]))
+      base: => TruncatedDistribution[A], f: => (A => TruncatedDistribution[B]))
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) =
       base.getFD(cutoff) flatMap ((fd) => {
@@ -152,7 +153,7 @@ object TruncatedDistribution
   }
 
   class MapFD[A, B](base: => TruncatedDistribution[A],
-                         f: FiniteDistribution[A] => FiniteDistribution[B])
+                    f: FiniteDistribution[A] => FiniteDistribution[B])
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) = base.getFD(cutoff) map ((fd) => f(fd))
   }

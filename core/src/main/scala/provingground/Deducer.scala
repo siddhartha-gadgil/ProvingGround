@@ -87,7 +87,6 @@ object Deducer {
       case _ => FD.unif(None)
     })
 
-
   /**
     * given a type, returns optionally values of lambda terms with variable of the given type
     * with variable in values from the above `variable` object
@@ -112,16 +111,16 @@ object Deducer {
     * with variable in the values from the above `variable` object
     */
   def lambdaTD(td: TD[Term])(variable: Term) =
-      td mapOpt (lambdaValue(variable))
+    td mapOpt (lambdaValue(variable))
 
   def lambdaFD(fd: FD[Term])(variable: Term) =
-      fd mapOpt (lambdaValue(variable))
+    fd mapOpt (lambdaValue(variable))
 
   def piTD(td: TD[Term])(variable: Term) =
-      td mapOpt (piValue(variable))
+    td mapOpt (piValue(variable))
 
   def piFD(fd: FD[Term])(variable: Term) =
-      fd mapOpt (piValue(variable))
+    fd mapOpt (piValue(variable))
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -130,6 +129,11 @@ class DeducerFunc(applnWeight: Double,
                   varWeight: Double,
                   vars: List[Term] = List()) {
   import Deducer._
+
+  import TermToExpr.isVar
+
+  import Unify.{unify, multisub}
+
   def func(pd: PD[Term]): PD[Term] =
     pd.<+?>(appln(func)(pd, vars), applnWeight)
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
@@ -138,7 +142,25 @@ class DeducerFunc(applnWeight: Double,
   val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
 
-  def invImages = TermToExpr.rebuildMap(invImageMap.toMap)
+  def unifInv(term: Term, invMap: Map[Term, Set[(Term, Term)]]) = {
+    val optInverses =
+      invMap map {
+        case (result, fxs) =>
+          {
+            val uniMapOpt = unify(term, result, isVar)
+            val newInvOpt =
+              uniMapOpt map { (uniMap) =>
+                fxs map {
+                  case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
+                }
+              }
+            newInvOpt
+          }
+      }
+    optInverses.flatten.flatten.toSet
+  }
+
+  def applnInvImage(term: Term) = unifInv(term, invImageMap.toMap)
 
   val subsInvMap: scala.collection.mutable.Map[
       Term, Set[(IdentityTyp[Term], Term)]] = scala.collection.mutable.Map()
@@ -218,7 +240,7 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]): TD[Term] = {
     val v =
       fd.supp collect {
-        case l : LambdaLike[u, v] =>
+        case l: LambdaLike[u, v] =>
           lambdaPropValuesTerm(backProp)(fd)(td)(l.variable)
       }
     TD.bigSum(v)
@@ -253,7 +275,7 @@ class DeducerFunc(applnWeight: Double,
     val v =
       fd.supp collect {
         case fn: FuncLike[u, v] =>
-        val x= fn.dom.Var
+          val x = fn.dom.Var
           piPropValuesTerm(backProp)(fd)(td)(x)
       }
     TD.bigSum(v)

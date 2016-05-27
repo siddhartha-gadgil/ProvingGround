@@ -35,15 +35,15 @@ object Unify {
         mergeOptMaps(x, mergeAll(ys: _*))
     }
 
-  def unifyList(
-      xys: List[(Term, Term)], freeVars: List[Term]): Option[Map[Term, Term]] =
+  def unifyList(xys: List[(Term, Term)],
+                freeVars: Term => Boolean): Option[Map[Term, Term]] =
     xys match {
       case List() => None
       case List((x, y)) => unify(x, y, freeVars)
       case head :: tail =>
         unify(head._1, head._2, freeVars) flatMap ((subMap) => {
               val newVars =
-                freeVars filter ((x) => !(subMap.keySet contains x))
+                (x: Term) => freeVars(x) && !(subMap.keySet contains x)
               val newTail =
                 tail map {
                   case (a, b) => (multisub(a, subMap), multisub(b, subMap))
@@ -54,18 +54,18 @@ object Unify {
             })
     }
 
-  def unifyAll(freeVars: List[Term])(xys: (Term, Term)*) =
+  def unifyAll(freeVars: Term => Boolean)(xys: (Term, Term)*) =
     unifyList(xys.toList, freeVars)
 
-  def unify(
-      lhs: Term, rhs: Term, freevars: List[Term]): Option[Map[Term, Term]] = {
-    if (!dependsOn(lhs)(freevars) && !dependsOn(rhs)(freevars)) {
-      if (lhs == rhs) Some(Map()) else None
-    } else
+  def unify(lhs: Term,
+            rhs: Term,
+            freevars: Term => Boolean): Option[Map[Term, Term]] = {
+    if (lhs == rhs) Some(Map())
+    else
       (lhs, rhs) match {
-        case (variable, value) if (freevars contains variable) =>
+        case (variable, value) if (freevars(variable)) =>
           Some(Map(variable -> value))
-        case (value, variable) if (freevars contains variable) =>
+        case (value, variable) if (freevars(variable)) =>
           Some(Map(variable -> value))
         case (PiTyp(f), PiTyp(g)) => unify(f, g, freevars)
         case (SigmaTyp(f), SigmaTyp(g)) => unify(f, g, freevars)
@@ -73,14 +73,15 @@ object Unify {
           unifyAll(freevars)(a -> c, b -> d)
         case (PlusTyp(a: Typ[u], b: Typ[v]), PlusTyp(c: Typ[w], d: Typ[x])) =>
           unifyAll(freevars)(a -> c, b -> d)
-        case (IdentityTyp(dom1: Typ[u], a: Term, b: Term), IdentityTyp(dom2: Typ[v], c: Term, d: Term)) =>
-            unifyAll(freevars)(dom1 -> dom2, a -> c, b -> d)
+        case (IdentityTyp(dom1: Typ[u], a: Term, b: Term),
+              IdentityTyp(dom2: Typ[v], c: Term, d: Term)) =>
+          unifyAll(freevars)(dom1 -> dom2, a -> c, b -> d)
         case (x: AbsPair[_, _], y: AbsPair[_, _]) =>
           unifyAll(freevars)(x.first -> y.first, x.second -> y.second)
         case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
           unifyAll(freevars)(a -> c, b -> d, f1.typ -> f2.typ)
         case (f: FuncLike[_, _], g: FuncLike[_, _]) =>
-          val newName = NameFactory.get
+          val newName = "!" + NameFactory.get
           unifyAll(freevars)(
               f(newName :: f.dom) -> g(newName :: g.dom), f.typ -> g.typ)
         case _ => None
@@ -100,7 +101,7 @@ object Unify {
 
   def unifApply(func: Term, arg: Term, freeVars: List[Term]) = func match {
     case fn: FuncLike[u, v] =>
-      unify(fn.dom, arg.typ, freeVars) flatMap (subsApply(
+      unify(fn.dom, arg.typ, (t) => freeVars contains t) flatMap (subsApply(
               func, arg, _, freeVars))
     case _ => None
   }
