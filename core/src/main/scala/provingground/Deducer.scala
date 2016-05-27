@@ -25,11 +25,10 @@ object Deducer {
     * generating optionally using function application, with function and argument generated recursively;
     * to be mixed in using `<+?>`
     */
-  def appln(rec: => (PD[Term] => PD[Term]))(
-      p: PD[Term], vars: List[Term] = List()) =
+  def appln(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
     rec(p) flatMap ((f) =>
           if (isFunc(f))
-            rec(p) map (Unify.appln(f, _, vars))
+            rec(p) map (TL.appln(f, _))
           else
             FD.unif(None: Option[Term]))
 
@@ -39,7 +38,7 @@ object Deducer {
     rec(p) flatMap ((f) =>
           if (isFunc(f))
             rec(p) map ((x) =>
-                  Unify.appln(f, x, vars) map ((y) => { save(f, x, y); y }))
+                  TL.appln(f, x) map ((y) => { save(f, x, y); y }))
           else
             FD.unif(None: Option[Term]))
   }
@@ -121,6 +120,22 @@ object Deducer {
 
   def piFD(fd: FD[Term])(variable: Term) =
     fd mapOpt (piValue(variable))
+
+  def mkLambda(x: Term)(t: Term) =
+    if (t dependsOn x) HoTT.lambda(x)(t) else t
+
+  def toLambda(xs: List[Term])(t: Term): Term = xs match {
+    case List() => t
+    case head :: tail => mkLambda(head)(toLambda(tail)(t))
+  }
+
+  def mkPi(x: Term)(t: Typ[Term]) =
+    if (t dependsOn x) HoTT.pi(x)(t) else t
+
+  def toPi(xs: List[Term])(t: Typ[Term]): Typ[Term] = xs match {
+    case List() => t
+    case head :: tail => mkPi(head)(toPi(tail)(t))
+  }
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -135,7 +150,7 @@ class DeducerFunc(applnWeight: Double,
   import Unify.{unify, multisub}
 
   def func(pd: PD[Term]): PD[Term] =
-    pd.<+?>(appln(func)(pd, vars), applnWeight)
+    pd.<+?>(appln(func)(pd), applnWeight)
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
 
@@ -289,4 +304,64 @@ class DeducerFunc(applnWeight: Double,
       (lambdaPropValues(backProp(epsilon))(fd)(td) <*> epsilon) <+>
       (piPropVar(backProp(epsilon))(fd)(td) <*> epsilon) <+>
       (piPropValues(backProp(epsilon))(fd)(td) <*> epsilon)
+
+  case class ProofAnalysis(proofs: FiniteDistribution[Term]) {
+    lazy val thms = (proofs map (_.typ)).normalized()
+
+    def mkLambda(wt: Weighted[Term], x: Term): Weighted[Term] =
+      if (wt.elem dependsOn x)
+        Weighted(lmbda(x)(wt.elem), wt.weight * lambdaWeight * thms(x.typ))
+      else wt
+
+    def toLambda(wt: Weighted[Term], xs: List[Term]): Weighted[Term] =
+      xs match {
+        case List() => wt
+        case head :: tail => mkLambda(toLambda(wt, tail), head)
+      }
+
+    lazy val abstractProofs = FiniteDistribution(
+        proofs.pmf map ((wt) => toLambda(wt, vars))).normalized()
+
+    def mkPi(wt: Weighted[Typ[Term]], x: Term): Weighted[Typ[Term]] =
+      if (wt.elem dependsOn x)
+        Weighted(HoTT.pi(x)(wt.elem), wt.weight * piWeight * thms(x.typ))
+      else wt
+
+    def toPi(wt: Weighted[Typ[Term]], xs: List[Term]): Weighted[Typ[Term]] =
+      xs match {
+        case List() => wt
+        case head :: tail => mkPi(toPi(wt, tail), head)
+      }
+
+    lazy val typDist =
+      proofs mapOpt {
+        case tp: Typ[u] => Some(tp): Option[Typ[Term]]
+        case _ => None
+      }
+
+    /**
+      * theorems weighted by their weights as types, normalized
+      */
+    lazy val abstractThms =
+      FiniteDistribution(typDist.pmf map ((wt) => toPi(wt, vars))).flatten
+        .filter(abstractThmProofs.supp.contains(_))
+        .normalized()
+
+    /**
+      * theorems weighted by the weight of their proofs.
+      */
+    lazy val abstractThmProofs = abstractProofs map (_.typ)
+
+    import math.log
+
+    def thmEntropy(thm: Typ[Term]) = -log(abstractThms(thm))
+
+    def proofEntropy(thm: Typ[Term]) = -log(abstractThmProofs(thm))
+
+    def entropyValue(thm: Typ[Term]) = proofEntropy(thm) - thmEntropy(thm)
+
+    lazy val thmFeedbacks =
+      (abstractThms.supp map ((thm) => Weighted(thm, ???))).sortBy((wt) =>
+            -wt.weight)
+  }
 }
