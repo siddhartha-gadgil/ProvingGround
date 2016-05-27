@@ -1,13 +1,15 @@
 import sbt.Project.projectToRef
 
-scalaVersion in ThisBuild := "2.11.7"
+val scalaV = "2.11.8"
+
+scalaVersion in ThisBuild := scalaV
 
 lazy val jsProjects = Seq(client)
 
 lazy val baseSettings = Seq(
   version := "0.8",
   organization := "in.ernet.iisc.math",
-  scalaVersion := "2.11.7")
+  scalaVersion := scalaV)
 
 lazy val commonSettings = baseSettings ++ Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -97,7 +99,7 @@ lazy val nfSettings = Seq(
 
 lazy val client = project.
   settings(name := "ProvingGround-JS",
-  scalaVersion := "2.11.7",
+  scalaVersion := scalaV,
   persistLauncher := true,
   persistLauncher in Test := false,
   sourceMapsDirectories += coreJS.base / "..",

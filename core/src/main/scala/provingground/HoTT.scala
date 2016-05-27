@@ -970,7 +970,7 @@ object HoTT {
       value: V): Func[U, V] = {
     require(
         value.typ.indepOf(variable),
-        s"lambda returns function type but value $value has type ${value.typ} depending on variable $variable"
+        s"lmbda returns function type but value $value has type ${value.typ} depending on variable $variable; you may wish to use lambda instead"
     )
     val newvar = variable.newobj
     LambdaFixed(newvar, value.replace(variable, newvar))
@@ -1261,11 +1261,20 @@ object HoTT {
       IdentityTyp(dom.replace(x, y), lhs.replace(x, y), rhs.replace(x, y))
 
     def symbObj(name: AnySym) = SymbObj(name, this)
+
+    override def toString = s"$lhs = $rhs"
   }
 
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U)
-      extends AtomicTerm {
+      extends Term with Subs[Refl[U]]{
     lazy val typ = IdentityTyp(dom, value, value)
+
+    def subs(x: Term, y: Term) = Refl(dom.subs(x, y), value.subs(x, y))
+
+    def newobj = {
+      val newvalue = value.newobj
+      Refl(newvalue.typ.asInstanceOf[Typ[U]], newvalue)
+    }
   }
 
   implicit class RichTerm[U <: Term with Subs[U]](term: U) {
@@ -1307,7 +1316,7 @@ object HoTT {
       val p = IdentityTyp(dom, x, y).Var
       val baseCaseTyp = x ~>: (targetFmly(x)(x)(Refl(dom, x)))
       val resultTyp =
-        x ~>: y ~>: p ~>: (IdentityTyp(dom, x, y) ->: targetFmly(x)(y)(p))
+        x ~>: y ~>: p ~>: (targetFmly(x)(y)(p))
       (baseCaseTyp ->: resultTyp).symbObj(InducFunc(dom, targetFmly))
     }
 
@@ -1315,9 +1324,9 @@ object HoTT {
       val x = dom.Var
       val y = dom.Var
       val p = IdentityTyp(dom, x, y).Var
-      val typFamily = lambda(x)(lambda(y)(lmbda(p)(IdentityTyp(dom, y, x))))
+      val typFamily = lambda(x)(lambda(y)(lmbda(p)(y =:= x)))
       val inducFn = induc(dom, typFamily)
-      val baseCase = lambda(x)(id(x =:= x))
+      val baseCase = lambda(x)(Refl(dom, x))
       inducFn(baseCase)
     }
 
@@ -1327,10 +1336,10 @@ object HoTT {
       val z = dom.Var
       val p = IdentityTyp(dom, x, y).Var
       val typFamily =
-        lmbda(x)(lmbda(y)(lmbda(p)((x =:= y) ->: (y =:= z) ->: (x =:= z))))
+        lambda(x)(lambda(y)(lmbda(p)((y =:= z) ->: (x =:= z))))
       val inducFn = induc(dom, typFamily)
       val q = (x =:= x).Var
-      val baseCase = lambda(x)(lmbda(q)(id(x =:= z)))
+      val baseCase = lambda(x)(id(x =:= z))
       lambda(z)(inducFn(baseCase))
     }
 
