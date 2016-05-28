@@ -23,7 +23,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
 
-val akkaV = "2.4.4"
+val akkaV = "2.4.6"
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
@@ -37,7 +37,7 @@ lazy val jvmSettings = Seq(
     "org.mongodb" %% "casbah" % "3.0.0",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream"             % akkaV,
-//    "com.typesafe.akka" %% "akka-http"          % akkaV,
+    "com.typesafe.akka" %% "akka-http-core"          % akkaV,
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaV,
     "com.lihaoyi" %% "upickle" % "0.3.4",
