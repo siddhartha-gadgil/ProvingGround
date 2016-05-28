@@ -97,9 +97,9 @@ object Deducer {
   }
 
   def piValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
-    case fn: FuncLike[u, v] if fn.dom.typ == variable.typ =>
+    case pt: PiTyp[u, v] if pt.fibers.dom.typ == variable.typ =>
       val x = variable.asInstanceOf[u]
-      val codom = fn.depcodom(x)
+      val codom = pt.fibers(x)
       Some(codom)
     case _ => None
   }
@@ -189,9 +189,9 @@ class DeducerFunc(applnWeight: Double,
     subsInvMap(result) = subsInvMap.getOrElse(result, Set()) + ((eq, x))
 
   def memFunc(pd: PD[Term]): PD[Term] =
-    pd.<+?>(memAppln(func)(pd, vars)(save), applnWeight)
-      .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
-      .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
+    pd.<+?>(memAppln(memFunc)(pd, vars)(save), applnWeight)
+      .<+?>(lambda(varWeight)(memFunc)(pd), lambdaWeight)
+      .<+?>(pi(varWeight)(memFunc)(pd), lambdaWeight)
 
   def funcPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] =
