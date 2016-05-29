@@ -75,12 +75,12 @@ object FansiFormat extends TermRec[fansi.Str]{
   def symbobj(term: SymbObj[Term]): Str =
     Green(Str(term.name.toString))
 
-  def symbtyp(typ: SymbTyp): Str = Green(Str(typ.name.toString))
+  def symbtyp(typ: SymbTyp): Str = Cyan(Str(typ.name.toString))
 
   def symbolic(name: AnySym, typ: Typ[Term]): Str =
-    Green(Str(name.toString))
+    Magenta(Str(name.toString))
 
-  def univ(n: Int) = LightGreen(Str(UnivSym))
+  def univ(n: Int) = LightCyan(Str(UnivSym))
 
 
 }
