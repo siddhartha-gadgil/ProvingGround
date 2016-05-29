@@ -16,7 +16,7 @@ trait TermRec[U] {
 
   def arrow(dom: U, codom: U): U
 
-  def lambda(variable: U, value: U): U
+  def lambda(variable: U, typ: U, value: U): U
 
   def pi(fibre: U): U
 
@@ -40,8 +40,10 @@ trait TermRec[U] {
     specialTerms.lift(term) getOrElse {
       term match {
         case FormalAppln(func, arg) => appln(apply(func), apply(arg))
-        case LambdaFixed(x: Term, y: Term) => lambda(apply(x), apply(y))
-        case Lambda(x: Term, y: Term) => lambda(apply(x), apply(y))
+        case LambdaFixed(x: Term, y: Term) =>
+          lambda(apply(x), apply(x.typ), apply(y))
+        case Lambda(x: Term, y: Term) =>
+          lambda(apply(x), apply(x.typ), apply(y))
         case PiTyp(fibre) => pi(apply(fibre))
         case SigmaTyp(fibre) => sigma(apply(fibre))
         case PlusTyp(first, scnd) => plus(apply(first), apply(scnd))

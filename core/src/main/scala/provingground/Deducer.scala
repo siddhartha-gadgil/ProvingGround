@@ -361,7 +361,7 @@ class DeducerFunc(applnWeight: Double,
     def entropyValue(thm: Typ[Term]) = proofEntropy(thm) - thmEntropy(thm)
 
     lazy val thmFeedbacks =
-      (abstractThms.supp map ((thm) => Weighted(thm, entropyValue(thm)))).sortBy((wt) =>
-            -wt.weight)
+      (abstractThms.supp map ((thm) => Weighted(thm, entropyValue(thm))))
+        .sortBy((wt) => -wt.weight)
   }
 }

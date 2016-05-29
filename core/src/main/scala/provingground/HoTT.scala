@@ -1266,7 +1266,8 @@ object HoTT {
   }
 
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U)
-      extends Term with Subs[Refl[U]]{
+      extends Term
+      with Subs[Refl[U]] {
     lazy val typ = IdentityTyp(dom, value, value)
 
     def subs(x: Term, y: Term) = Refl(dom.subs(x, y), value.subs(x, y))
@@ -1315,8 +1316,7 @@ object HoTT {
       val y = dom.Var
       val p = IdentityTyp(dom, x, y).Var
       val baseCaseTyp = x ~>: (targetFmly(x)(x)(Refl(dom, x)))
-      val resultTyp =
-        x ~>: y ~>: p ~>: (targetFmly(x)(y)(p))
+      val resultTyp = x ~>: y ~>: p ~>: (targetFmly(x)(y)(p))
       (baseCaseTyp ->: resultTyp).symbObj(InducFunc(dom, targetFmly))
     }
 
@@ -1335,8 +1335,7 @@ object HoTT {
       val y = dom.Var
       val z = dom.Var
       val p = IdentityTyp(dom, x, y).Var
-      val typFamily =
-        lambda(x)(lambda(y)(lmbda(p)((y =:= z) ->: (x =:= z))))
+      val typFamily = lambda(x)(lambda(y)(lmbda(p)((y =:= z) ->: (x =:= z))))
       val inducFn = induc(dom, typFamily)
       val q = (x =:= x).Var
       val baseCase = lambda(x)(id(x =:= z))

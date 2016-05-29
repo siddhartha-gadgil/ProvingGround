@@ -157,7 +157,7 @@ object TermExpr {
     def fromString(str: String)(implicit typ: Typ[Term]): TermExpr =
       TypedLiteral(str, apply(typ))
 
-    def lambda(variable: TermExpr, value: TermExpr): TermExpr =
+    def lambda(variable: TermExpr, typ: TermExpr, value: TermExpr): TermExpr =
       LambdaExpr(variable, value)
 
     def pair(first: TermExpr, second: TermExpr): TermExpr =

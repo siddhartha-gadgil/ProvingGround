@@ -18,7 +18,9 @@ lazy val commonSettings = baseSettings ++ Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
   "org.spire-math" %% "spire" % "0.11.0",
-  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
+  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+  "com.lihaoyi" %% "fansi" % "0.1.1",
+  "com.lihaoyi" %% "upickle" % "0.4.0"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )
@@ -40,7 +42,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-core"          % akkaV,
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaV,
-    "com.lihaoyi" %% "upickle" % "0.3.4",
+//    "com.lihaoyi" %% "upickle" % "0.3.4",
     "com.lihaoyi" %% "ammonite-ops" % "0.5.8",
 //    "com.lihaoyi" %% "ammonite-shell" % "0.5.8",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
@@ -107,7 +109,7 @@ lazy val client = project.
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.8.0",
     "com.lihaoyi" %%% "scalatags" % "0.4.6",
-    "com.lihaoyi" %%% "upickle" % "0.3.4"
+    "com.lihaoyi" %%% "upickle" % "0.4.0"
     )
   ).
   enablePlugins(ScalaJSPlugin, ScalaJSPlay).
@@ -119,7 +121,7 @@ lazy val core = (crossProject.crossType(CrossType.Pure) in  file("core")).
   settings(commonSettings : _*).
   settings(name := "ProvingGround-Core").
   settings(libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "upickle" % "0.3.4"
+//      "com.lihaoyi" %%% "upickle" % "0.3.4"
     )).
   jsConfigure(_ enablePlugins ScalaJSPlay).
   jsSettings(sourceMapsBase := baseDirectory.value / "..")
