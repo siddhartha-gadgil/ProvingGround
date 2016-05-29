@@ -2,7 +2,7 @@ package provingground
 
 import scala.language.implicitConversions
 import scala.util.Try
-import scala.language.existentials
+//import scala.language.existentials
 import Math._
 
 // To Do:
@@ -84,6 +84,8 @@ object HoTT {
           replace(ab.first, cd.first) replace (ab.second, cd.second)
         case (FormalAppln(f, x), FormalAppln(g, y)) =>
           replace(f, g) replace (x, y)
+        case (xs: Symbolic, ys: Symbolic) if (x.typ != y.typ) =>
+          replace(x.typ, y.typ) replace((y.typ).symbObj(xs.name), y)
         case _ => subs(x, y)
       }
     }

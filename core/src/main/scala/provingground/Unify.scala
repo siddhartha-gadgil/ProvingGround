@@ -63,7 +63,7 @@ object Unify {
     if (lhs == rhs) Some(Map())
     else
       (lhs, rhs) match {
-        case (variable, value) if (freevars(variable)) =>
+        case (variable, value) if (freevars(variable)) && (variable.replace(variable, value) == value) =>
           Some(Map(variable -> value))
         // case (value, variable) if (freevars(variable)) =>
         //   Some(Map(variable -> value))
