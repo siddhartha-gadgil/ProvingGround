@@ -157,6 +157,8 @@ class DeducerFunc(applnWeight: Double,
   val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
 
+    import scala.util.{Try, Success}
+
   def unifInv(term: Term, invMap: Map[Term, Set[(Term, Term)]]) = {
     val optInverses =
       invMap map {
@@ -172,7 +174,8 @@ class DeducerFunc(applnWeight: Double,
             newInvOpt
           }
       }
-    optInverses.flatten.flatten.toSet
+    optInverses.flatten.flatten.toSet filter (
+      (fx) => Try(fold(fx._1)(fx._2)) == Success(term))
   }
 
   def applnInvImage(term: Term) = unifInv(term, invImageMap.toMap)

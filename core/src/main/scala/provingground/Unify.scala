@@ -9,7 +9,7 @@ object Unify {
   def multisub[U <: Term with Subs[U]](x: U, m: Map[Term, Term]): U =
     m.toList match {
       case List() => x
-      case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
+      case (a, b) :: tail => multisub(x.replace(a, b), tail.toMap)
     }
 
   def dependsOn(term: Term): List[Term] => Boolean = {
@@ -81,12 +81,12 @@ object Unify {
         case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
           unifyAll(freevars)(a -> c, b -> d, f1.typ -> f2.typ)
         case (f: LambdaLike[u, v], g: LambdaLike[w, x]) =>
-          unify(f.variable.typ, g.variable.typ, freevars) flatMap ((m) => {
+          unify(f.variable, g.variable, freevars) flatMap ((m) => {
                 val xx = multisub(f.variable, m)
                 val yy = multisub(f.value, m)
                 val newvars =
                   (x: Term) => freevars(x) && (!(m.keySet contains x))
-                unify(yy.subs(xx, g.variable), g.value, newvars)
+                unify(yy.subs(xx, g.variable), g.value, newvars) map (m ++ _)
               })
         case _ => None
       }

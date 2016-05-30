@@ -84,7 +84,7 @@ object HoTT {
           replace(ab.first, cd.first) replace (ab.second, cd.second)
         case (FormalAppln(f, x), FormalAppln(g, y)) =>
           replace(f, g) replace (x, y)
-        case (xs: Symbolic, ys: Symbolic) if (x.typ != y.typ) =>
+        case (xs: Symbolic, _) if (x.typ != y.typ) =>
           replace(x.typ, y.typ) replace((y.typ).symbObj(xs.name), y)
         case _ => subs(x, y)
       }
@@ -1272,7 +1272,7 @@ object HoTT {
       with Subs[Refl[U]] {
     lazy val typ = IdentityTyp(dom, value, value)
 
-    def subs(x: Term, y: Term) = Refl(dom.subs(x, y), value.subs(x, y))
+    def subs(x: Term, y: Term) = Refl(dom.replace(x, y), value.replace(x, y))
 
     def newobj = {
       val newvalue = value.newobj
