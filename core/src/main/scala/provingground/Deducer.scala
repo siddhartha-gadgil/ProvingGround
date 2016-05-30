@@ -28,7 +28,7 @@ object Deducer {
   def appln(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
     rec(p) flatMap ((f) =>
           if (isFunc(f))
-            rec(p) map (TL.appln(f, _))
+            rec(p) map (Unify.appln(f, _))
           else
             FD.unif(None: Option[Term]))
 
@@ -38,7 +38,7 @@ object Deducer {
     rec(p) flatMap ((f) =>
           if (isFunc(f))
             rec(p) map ((x) =>
-                  TL.appln(f, x) map ((y) => { save(f, x, y); y }))
+                  Unify.appln(f, x) map ((y) => { save(f, x, y); y }))
           else
             FD.unif(None: Option[Term]))
   }
@@ -175,7 +175,7 @@ class DeducerFunc(applnWeight: Double,
           }
       }
     optInverses.flatten.flatten.toSet filter (
-      (fx) => Try(fold(fx._1)(fx._2)) == Success(term))
+      (fx) => Unify.appln(fx._1, fx._2) == Some(term))
   }
 
   def applnInvImage(term: Term) = unifInv(term, invImageMap.toMap)
