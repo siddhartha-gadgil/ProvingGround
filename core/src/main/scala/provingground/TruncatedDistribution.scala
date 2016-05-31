@@ -2,7 +2,7 @@ package provingground
 
 import scala.language.implicitConversions
 
-import provingground.{FiniteDistribution => FD}
+//import provingground.{FiniteDistribution => FD}
 
 import FiniteDistribution.FiniteDistVec
 import LinearStructure._

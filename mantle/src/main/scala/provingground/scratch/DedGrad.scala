@@ -36,7 +36,7 @@ object DedGrad {
 
     val x = A.Var
 
-    val terms = List(f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(a)(f(a)))
+    val terms = List(f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
 
     type Prop = (=> FD[Term] => TD[Term] => TD[Term]) => FD[Term] => TD[Term] => TD[Term]
 

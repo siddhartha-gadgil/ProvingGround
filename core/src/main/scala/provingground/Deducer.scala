@@ -147,13 +147,13 @@ class DeducerFunc(applnWeight: Double,
     * with variable in the values from the above `variable` object
     */
   def lambdaTD(td: TD[Term])(variable: Term) =
-    (td mapOpt (lambdaValue(variable))) <+> (TD.atom(variable) <*> varWeight)
+    (td mapOpt (lambdaValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
 
   def lambdaFD(fd: FD[Term])(variable: Term) =
     (fd mapOpt (lambdaValue(variable))) ++ (FD.unif(variable) * varWeight)
 
   def piTD(td: TD[Term])(variable: Term) =
-    (td mapOpt (piValue(variable))) <+> (TD.atom(variable) <*> varWeight)
+    (td mapOpt (piValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
 
   def piFD(fd: FD[Term])(variable: Term) =
     (fd mapOpt (piValue(variable))) ++ (FD.unif(variable) * varWeight)
@@ -278,24 +278,40 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]) =
     td flatMap (lambdaPropVarTerm(backProp)(fd))
 
+
   def lambdaPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
-    //import Deducer.{lambdaTD, lambdaFD}
-    val inner = backProp(lambdaFD(fd)(x))(lambdaTD(td)(x))
-    inner map ((y) => HoTT.lambda(x)(y))
+      fd: FD[Term]): Term => TD[Term] = {
+    case l: LambdaLike[u, v] =>
+      val x = l.variable
+      val y = l.value
+      val lfd = lambdaFD(fd)(x)
+      val scale = lambdaWeight * fd(x.typ) * lfd(y)/fd(l)
+      val atom = TD.atom(y: Term) <*> scale
+      (backProp(lfd)(atom)) filter ((z) => !(z.dependsOn(x)))
+    case _ => TD.Empty[Term]
   }
 
   def lambdaPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term]): TD[Term] = {
-    val v =
-      fd.supp collect {
-        case l: LambdaLike[u, v] =>
-          val x = l.variable
-          val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value))/fd(l)
-          lambdaPropValuesTerm(backProp)(fd)(td)(l.variable) <*> scale
-      }
-    TD.bigSum(v)
-  }
+      fd: FD[Term])(td: TD[Term]) =
+    td flatMap (lambdaPropValuesTerm(backProp)(fd))
+
+  // def lambdaPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+  //     fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
+  //   val inner = backProp(lambdaFD(fd)(x))(lambdaTD(td)(x))
+  //   inner map ((y) => HoTT.lambda(x)(y))
+  // }
+  //
+  // def lambdaPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+  //     fd: FD[Term])(td: TD[Term]): TD[Term] = {
+  //   val v =
+  //     fd.supp collect {
+  //       case l: LambdaLike[u, v] =>
+  //         val x = l.variable
+  //         val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value))/fd(l)
+  //         lambdaPropValuesTerm(backProp)(fd)(td)(l.variable) <*> scale
+  //     }
+  //   TD.bigSum(v)
+  // }
 
   def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] = {
@@ -318,31 +334,26 @@ class DeducerFunc(applnWeight: Double,
     td flatMap (piPropVarTerm(backProp)(fd))
 
   def piPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
-    val inner = backProp(piFD(fd)(x))(piTD(td)(x))
-    inner mapOpt {
-      case y: Typ[u] =>
-        Some(HoTT.pi(x)(y.asInstanceOf[Typ[Term]]))
-      case _ => None
-    }
+      fd: FD[Term]): Term => TD[Term] = {
+    case pt: PiTyp[u, v] =>
+      val x = pt.fibers.dom.Var
+      val codom = pt.fibers(x)
+      val pfd = piFD(fd)(x)
+      val scale = piWeight * fd(pt.fibers.dom) * pfd(codom) / fd(pt)
+      val atom = TD.atom(codom: Term) <*> scale
+      backProp(pfd)(atom) filter ((z) => !(z.dependsOn(x)))
+    case ft @  FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+      val atom = TD.atom(codom: Term)
+      val x = dom.Var
+      val pfd = piFD(fd)(x)
+      val scale = piWeight * fd(dom) * pfd(codom) / fd(ft)
+      backProp(pfd)(atom)
+    case _ => TD.Empty[Term]
   }
 
   def piPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-      fd: FD[Term])(td: TD[Term]): TD[Term] = {
-    val v =
-      fd.supp collect {
-        case pt: PiTyp[u, v] =>
-          val fn = pt.fibers
-          val x = fn.dom.Var
-          val scale = piWeight * fd(x) * (piFD(fd)(x)(fn(x))) / fd(pt)
-          piPropValuesTerm(backProp)(fd)(td)(x) <*> scale
-        case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
-          val x = dom.Var
-          val scale = piWeight * fd(x) * (piFD(fd)(x)(codom)) / fd(ft)
-        piPropValuesTerm(backProp)(fd)(td)(x) <*> scale
-      }
-    TD.bigSum(v)
-  }
+      fd: FD[Term])(td: TD[Term]) =
+    td flatMap (piPropValuesTerm(backProp)(fd))
 
   def backProp(epsilon: Double)(fd: FD[Term]): TD[Term] => TD[Term] =
     (td) =>
