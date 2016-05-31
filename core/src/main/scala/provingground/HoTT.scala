@@ -84,11 +84,12 @@ object HoTT {
           replace(ab.first, cd.first) replace (ab.second, cd.second)
         case (FormalAppln(f, x), FormalAppln(g, y)) =>
           replace(f, g) replace (x, y)
-        case (xs: Symbolic, _) if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-          println((this, x, y, x.typ, y.typ, x.typ == y.typ))
+        case (xs: Symbolic, _)
+            if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
+    //      println((this, x, y, x.typ, y.typ, x.typ == y.typ))
           val typchange = replace(x.typ, y.typ)
-          println((typchange, (y.typ).symbObj(xs.name).typ == y.typ))
-          typchange replace((y.typ).symbObj(xs.name), y)
+    //      println((typchange, (y.typ).symbObj(xs.name).typ == y.typ))
+          typchange replace ((y.typ).symbObj(xs.name), y)
         case _ => subs(x, y)
       }
     }
@@ -411,7 +412,7 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-    override def toString = UnivSym + "_"+ level
+    override def toString = UnivSym + "_" + level
 
     override def equals(that: Any) = that match {
       case Universe(k) if k == level => true

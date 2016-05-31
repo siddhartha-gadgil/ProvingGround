@@ -97,10 +97,11 @@ object Deducer {
   }
 
   def piValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
-    case pt: PiTyp[u, v] if pt.fibers.dom.typ == variable.typ =>
+    case pt: PiTyp[u, v] if pt.fibers.dom == variable.typ =>
       val x = variable.asInstanceOf[u]
       val codom = pt.fibers(x)
       Some(codom)
+    case FuncTyp(dom : Typ[u], codom: Typ[v]) if dom == variable.typ => Some(codom)
     case _ => None
   }
 
@@ -136,6 +137,13 @@ object Deducer {
     case List() => t
     case head :: tail => mkPi(head)(toPi(tail)(t))
   }
+
+  def shift(fd: FD[Term], td: TD[Term], cutoff: Double) = {
+    val shifts = td.getFD(cutoff) getOrElse (FD.Empty[Term])
+    val newpmf = for (Weighted(x, p) <- fd.pmf) yield
+      Weighted(x, p * math.exp(shifts(x)))
+    FD(newpmf)
+  }
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -157,14 +165,14 @@ class DeducerFunc(applnWeight: Double,
   val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
 
-    import scala.util.{Try, Success}
+//    import scala.util.{Try, Success}
 
-  def unifInv(term: Term, invMap: Map[Term, Set[(Term, Term)]]) = {
+  def unifInv[U <: Term with Subs[U]](term: Term, invMap: Map[Term, Set[(U, Term)]]) = {
     val optInverses =
-      invMap map {
+      invMap flatMap {
         case (result, fxs) =>
           {
-            val uniMapOpt = unify(term, result, isVar)
+            val uniMapOpt = unify(result, term, isVar)
             val newInvOpt =
               uniMapOpt map { (uniMap) =>
                 fxs map {
@@ -174,14 +182,16 @@ class DeducerFunc(applnWeight: Double,
             newInvOpt
           }
       }
-    optInverses.flatten.flatten.toSet filter (
-      (fx) => Unify.appln(fx._1, fx._2) == Some(term))
+    optInverses.flatten.toSet filter ((fx) =>
+          Unify.appln(fx._1, fx._2) == Some(term))
   }
 
   def applnInvImage(term: Term) = unifInv(term, invImageMap.toMap)
 
   val subsInvMap: scala.collection.mutable.Map[
       Term, Set[(IdentityTyp[Term], Term)]] = scala.collection.mutable.Map()
+
+  def subsInvImage(term: Term) = unifInv(term, subsInvMap.toMap)
 
   def subsInvImages = TermToExpr.rebuildMap(subsInvMap.toMap)
 
@@ -211,9 +221,25 @@ class DeducerFunc(applnWeight: Double,
           }
       ) getOrElse (TD.Empty[Term])
 
+  def funcUniPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+      fd: FD[Term]): Term => TD[Term] =
+    (result) => {
+      val tds =
+        applnInvImage(result).toVector map {
+          case (f, x) =>
+            val scale = applnWeight * fd(f) * fd(x) / fd(result)
+            backProp(fd)(TD.FD(FD.unif(f, x)) <*> scale)
+        }
+      TD.bigSum(tds)
+    }
+
   def funcProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term])(td: TD[Term]) =
     td flatMap (funcPropTerm(backProp)(fd))
+
+  def funcUniProp(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
+      fd: FD[Term])(td: TD[Term]) =
+    td flatMap (funcUniPropTerm(backProp)(fd))
 
   def eqSubsPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] =
@@ -266,9 +292,12 @@ class DeducerFunc(applnWeight: Double,
 
   def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] = {
-    case fn: FuncLike[u, v] =>
-      val codom = fn.depcodom(fn.dom.Var)
-      val atom = TD.atom(fn.dom: Term)
+    case pt: PiTyp[u, v] =>
+  //    val codom = fn.depcodom(fn.dom.Var)
+      val atom = TD.atom(pt.fibers.dom: Term)
+      backProp(fd)(atom)
+    case FuncTyp(dom: Typ[u], _) =>
+      val atom = TD.atom(dom: Term)
       backProp(fd)(atom)
     case _ => TD.Empty[Term]
   }
