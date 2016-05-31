@@ -22,7 +22,7 @@ object DedGrad {
 
     lazy val samp = ev sample 100000
 
-    lazy val sampLambda = Deducer.lambdaFD(samp)(x)
+    lazy val sampLambda = deduc.lambdaFD(samp)(x)
 
     val idProp = (fd: FD[Term]) => (td: TD[Term]) => td
 

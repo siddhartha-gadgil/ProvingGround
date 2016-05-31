@@ -105,22 +105,6 @@ object Deducer {
     case _ => None
   }
 
-  /**
-    * given a truncated distribution of terms and a type,
-    * returns the truncated distribution of `value`s of lambda terms of that type;
-    * with variable in the values from the above `variable` object
-    */
-  def lambdaTD(td: TD[Term])(variable: Term) =
-    td mapOpt (lambdaValue(variable))
-
-  def lambdaFD(fd: FD[Term])(variable: Term) =
-    fd mapOpt (lambdaValue(variable))
-
-  def piTD(td: TD[Term])(variable: Term) =
-    td mapOpt (piValue(variable))
-
-  def piFD(fd: FD[Term])(variable: Term) =
-    fd mapOpt (piValue(variable))
 
   def mkLambda(x: Term)(t: Term) =
     if (t dependsOn x) HoTT.lambda(x)(t) else t
@@ -156,6 +140,25 @@ class DeducerFunc(applnWeight: Double,
   import TermToExpr.isVar
 
   import Unify.{unify, multisub}
+
+  /**
+    * given a truncated distribution of terms and a type,
+    * returns the truncated distribution of `value`s of lambda terms of that type;
+    * with variable in the values from the above `variable` object
+    */
+  def lambdaTD(td: TD[Term])(variable: Term) =
+    (td mapOpt (lambdaValue(variable))) <+> (TD.atom(variable) <*> varWeight)
+
+  def lambdaFD(fd: FD[Term])(variable: Term) =
+    (fd mapOpt (lambdaValue(variable))) ++ (FD.unif(variable) * varWeight)
+
+  def piTD(td: TD[Term])(variable: Term) =
+    (td mapOpt (piValue(variable))) <+> (TD.atom(variable) <*> varWeight)
+
+  def piFD(fd: FD[Term])(variable: Term) =
+    (fd mapOpt (piValue(variable))) ++ (FD.unif(variable) * varWeight)
+
+
 
   def func(pd: PD[Term]): PD[Term] =
     pd.<+?>(appln(func)(pd), applnWeight)
@@ -264,7 +267,9 @@ class DeducerFunc(applnWeight: Double,
   def lambdaPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] = {
     case l: LambdaLike[_, _] =>
-      val atom = TD.atom(l.variable.typ: Term)
+      val x = l.variable
+      val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value))/fd(l)
+      val atom = TD.atom(l.variable.typ: Term) <*> scale
       backProp(fd)(atom)
     case _ => TD.Empty[Term]
   }
@@ -275,7 +280,7 @@ class DeducerFunc(applnWeight: Double,
 
   def lambdaPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
-    import Deducer.{lambdaTD, lambdaFD}
+    //import Deducer.{lambdaTD, lambdaFD}
     val inner = backProp(lambdaFD(fd)(x))(lambdaTD(td)(x))
     inner map ((y) => HoTT.lambda(x)(y))
   }
@@ -285,7 +290,9 @@ class DeducerFunc(applnWeight: Double,
     val v =
       fd.supp collect {
         case l: LambdaLike[u, v] =>
-          lambdaPropValuesTerm(backProp)(fd)(td)(l.variable)
+          val x = l.variable
+          val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value))/fd(l)
+          lambdaPropValuesTerm(backProp)(fd)(td)(l.variable) <*> scale
       }
     TD.bigSum(v)
   }
@@ -293,11 +300,15 @@ class DeducerFunc(applnWeight: Double,
   def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] = {
     case pt: PiTyp[u, v] =>
-  //    val codom = fn.depcodom(fn.dom.Var)
-      val atom = TD.atom(pt.fibers.dom: Term)
+      val x = pt.fibers.dom.Var
+      val codom = pt.fibers(x)
+      val scale = piWeight * fd(pt.fibers.dom) * piFD(fd)(x)(codom) / fd(pt)
+      val atom = TD.atom(pt.fibers.dom: Term) <*> scale
       backProp(fd)(atom)
-    case FuncTyp(dom: Typ[u], _) =>
+    case ft @  FuncTyp(dom: Typ[u], codom: Typ[v]) =>
       val atom = TD.atom(dom: Term)
+      val x = dom.Var
+      val scale = piWeight * fd(dom) * piFD(fd)(x)(codom) / fd(ft)
       backProp(fd)(atom)
     case _ => TD.Empty[Term]
   }
@@ -308,7 +319,6 @@ class DeducerFunc(applnWeight: Double,
 
   def piPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
-    import Deducer.{piTD, piFD}
     val inner = backProp(piFD(fd)(x))(piTD(td)(x))
     inner mapOpt {
       case y: Typ[u] =>
@@ -321,9 +331,15 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]): TD[Term] = {
     val v =
       fd.supp collect {
-        case fn: FuncLike[u, v] =>
+        case pt: PiTyp[u, v] =>
+          val fn = pt.fibers
           val x = fn.dom.Var
-          piPropValuesTerm(backProp)(fd)(td)(x)
+          val scale = piWeight * fd(x) * (piFD(fd)(x)(fn(x))) / fd(pt)
+          piPropValuesTerm(backProp)(fd)(td)(x) <*> scale
+        case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+          val x = dom.Var
+          val scale = piWeight * fd(x) * (piFD(fd)(x)(codom)) / fd(ft)
+        piPropValuesTerm(backProp)(fd)(td)(x) <*> scale
       }
     TD.bigSum(v)
   }
@@ -331,7 +347,7 @@ class DeducerFunc(applnWeight: Double,
   def backProp(epsilon: Double)(fd: FD[Term]): TD[Term] => TD[Term] =
     (td) =>
       td <*> (1 - epsilon) <+>
-      (funcProp(backProp(epsilon))(fd)(td) <*> epsilon) <+>
+      (funcUniProp(backProp(epsilon))(fd)(td) <*> epsilon) <+>
       (lambdaPropVar(backProp(epsilon))(fd)(td) <*> epsilon) <+>
       (lambdaPropValues(backProp(epsilon))(fd)(td) <*> epsilon) <+>
       (piPropVar(backProp(epsilon))(fd)(td) <*> epsilon) <+>
