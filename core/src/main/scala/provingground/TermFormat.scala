@@ -145,11 +145,13 @@ object FansiShow{
   }
 
   implicit def weighted[U: FansiShow]: FansiShow[Weighted[U]] = new FansiShow[Weighted[U]]{
-    def show(x: Weighted[U]) = Weighted(x.elem.fansi, x.weight).toString
+    def show(x: Weighted[U]) =
+       s"${x.elem.fansi} -> ${x.weight}"
   }
 
   implicit def fd[U: FansiShow] : FansiShow[FiniteDistribution[U]] =
     new FansiShow[FiniteDistribution[U]]{
-    def show(x: FiniteDistribution[U]) = (x map (_.fansi)).toString
+    def show(x: FiniteDistribution[U]) =
+      (x.flatten.sort map (_.fansi)).pmf.fansi
   }
 }
