@@ -140,7 +140,7 @@ lazy val mizar = project.
   settings(name := "Mizar-Parser",
   libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.2.1")
 
-val initCommands = """import provingground._; import HoTT._; import ammonite.ops._"""
+val initCommands = """import provingground._; import HoTT._; import ammonite.ops._; import FansiShow._"""
 
 lazy val mantle = (project in file("mantle")).
         settings(name := "ProvingGround-mantle").

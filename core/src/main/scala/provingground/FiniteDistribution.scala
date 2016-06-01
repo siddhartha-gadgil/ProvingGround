@@ -338,6 +338,9 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def flatten: FiniteDistribution[T] =
     FiniteDistribution(Weighted.flatten(pmf).toVector)
 
+  def sort : FiniteDistribution[T] =
+    FiniteDistribution(pmf.sortBy((wt) => 1 - wt.weight))
+
   override def supp: Vector[T] = (Weighted.flatten(pmf) map (_.elem)).toVector
 
 //  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)

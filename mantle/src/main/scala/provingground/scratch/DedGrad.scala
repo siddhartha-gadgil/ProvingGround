@@ -40,6 +40,8 @@ object DedGrad {
 
     type Prop = (=> FD[Term] => TD[Term] => TD[Term]) => FD[Term] => TD[Term] => TD[Term]
 
+    lazy val backEg = deduc.backProp(0.5)(samp)(TD.atom(lmbda(x)(f(x))))
+
     def grad(p: Prop) =
       (for (t <- terms) yield (
         p, t, p(idProp)(samp)(TD.atom(t)).getFD(0.001)
