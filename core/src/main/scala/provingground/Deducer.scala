@@ -108,21 +108,21 @@ object Deducer {
   }
 
 
-  def mkLambda(x: Term)(t: Term) =
-    if (t dependsOn x) HoTT.lambda(x)(t) else t
-
-  def toLambda(xs: List[Term])(t: Term): Term = xs match {
-    case List() => t
-    case head :: tail => mkLambda(head)(toLambda(tail)(t))
-  }
-
-  def mkPi(x: Term)(t: Typ[Term]) =
-    if (t dependsOn x) HoTT.pi(x)(t) else t
-
-  def toPi(xs: List[Term])(t: Typ[Term]): Typ[Term] = xs match {
-    case List() => t
-    case head :: tail => mkPi(head)(toPi(tail)(t))
-  }
+//  def mkLambda(x: Term)(t: Term) =
+//    if (t dependsOn x) HoTT.lambda(x)(t) else t
+//
+//  def toLambda(xs: List[Term])(t: Term): Term = xs match {
+//    case List() => t
+//    case head :: tail => mkLambda(head)(toLambda(tail)(t))
+//  }
+//
+//  def mkPi(x: Term)(t: Typ[Term]) =
+//    if (t dependsOn x) HoTT.pi(x)(t) else t
+//
+//  def toPi(xs: List[Term])(t: Typ[Term]): Typ[Term] = xs match {
+//    case List() => t
+//    case head :: tail => mkPi(head)(toPi(tail)(t))
+//  }
 
   def shift(fd: FD[Term], td: TD[Term], cutoff: Double) = {
     val shifts = td.getFD(cutoff) getOrElse (FD.Empty[Term])
@@ -143,6 +143,11 @@ class DeducerFunc(applnWeight: Double,
 
   import Unify.{unify, multisub}
 
+  object bucket extends TermBucket
+  
+  object absBucket extends WeightedTermBucket{
+  }
+  
   /**
     * given a truncated distribution of terms and a type,
     * returns the truncated distribution of `value`s of lambda terms of that type;
@@ -211,6 +216,8 @@ class DeducerFunc(applnWeight: Double,
       .<+?>(lambda(varWeight)(memFunc)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(memFunc)(pd), lambdaWeight)
 
+  def sample(pd: PD[Term], n: Int) = (1 to n).foreach((_) => bucket.append(memFunc(pd).next))
+      
   def funcPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] =
     (result) =>
@@ -297,23 +304,6 @@ class DeducerFunc(applnWeight: Double,
       fd: FD[Term])(td: TD[Term]) =
     td flatMap (lambdaPropValuesTerm(backProp)(fd))
 
-  // def lambdaPropValuesTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(td: TD[Term])(x: Term): TD[Term] = {
-  //   val inner = backProp(lambdaFD(fd)(x))(lambdaTD(td)(x))
-  //   inner map ((y) => HoTT.lambda(x)(y))
-  // }
-  //
-  // def lambdaPropValues(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
-  //     fd: FD[Term])(td: TD[Term]): TD[Term] = {
-  //   val v =
-  //     fd.supp collect {
-  //       case l: LambdaLike[u, v] =>
-  //         val x = l.variable
-  //         val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value))/fd(l)
-  //         lambdaPropValuesTerm(backProp)(fd)(td)(l.variable) <*> scale
-  //     }
-  //   TD.bigSum(v)
-  // }
 
   def piPropVarTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] = {
@@ -371,7 +361,7 @@ class DeducerFunc(applnWeight: Double,
 
     def mkLambda(wt: Weighted[Term], x: Term): Weighted[Term] =
       if (wt.elem dependsOn x)
-        Weighted(HoTT.lambda(x)(wt.elem), wt.weight * lambdaWeight * thms(x.typ))
+        Weighted(HoTT.lambda(x)(wt.elem), wt.weight * lambdaWeight * proofs(x.typ))
       else wt
 
     def toLambda(wt: Weighted[Term], xs: List[Term]): Weighted[Term] =
@@ -380,12 +370,10 @@ class DeducerFunc(applnWeight: Double,
         case head :: tail => mkLambda(toLambda(wt, tail), head)
       }
 
-    lazy val abstractProofs = FiniteDistribution(
-        proofs.pmf map ((wt) => toLambda(wt, vars))).normalized()
 
     def mkPi(wt: Weighted[Typ[Term]], x: Term): Weighted[Typ[Term]] =
       if (wt.elem dependsOn x)
-        Weighted(HoTT.pi(x)(wt.elem), wt.weight * piWeight * thms(x.typ))
+        Weighted(HoTT.pi(x)(wt.elem), wt.weight * piWeight * proofs(x.typ))
       else wt
 
     def toPi(wt: Weighted[Typ[Term]], xs: List[Term]): Weighted[Typ[Term]] =
@@ -394,6 +382,9 @@ class DeducerFunc(applnWeight: Double,
         case head :: tail => mkPi(toPi(wt, tail), head)
       }
 
+    lazy val abstractProofs = FiniteDistribution(
+        proofs.pmf map ((wt) => toLambda(wt, vars))).normalized()
+    
     lazy val typDist =
       proofs mapOpt {
         case tp: Typ[u] => Some(tp): Option[Typ[Term]]

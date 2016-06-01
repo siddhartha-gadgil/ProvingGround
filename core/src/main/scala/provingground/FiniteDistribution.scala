@@ -187,7 +187,7 @@ object FiniteDistribution {
   implicit def finiteDistInnerProd[X] =
     InnerProduct[FiniteDistribution[X]](_ dot _)
 
-  def uniform[A](s: Traversable[A]) = {
+  def uniform[A](s: Traversable[A]) : FiniteDistribution[A] = {
     val prob = 1.0 / s.size
     val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
