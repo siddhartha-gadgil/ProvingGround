@@ -3,6 +3,8 @@ import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, Pro
 
 import HoTT._
 
+import scala.language.postfixOps
+
 /**
   * Generating terms from given ones using the main HoTT operations, and the adjoint of this generation.
   * This is viewed as deduction.
@@ -369,7 +371,7 @@ class DeducerFunc(applnWeight: Double,
 
     def mkLambda(wt: Weighted[Term], x: Term): Weighted[Term] =
       if (wt.elem dependsOn x)
-        Weighted(lmbda(x)(wt.elem), wt.weight * lambdaWeight * thms(x.typ))
+        Weighted(HoTT.lambda(x)(wt.elem), wt.weight * lambdaWeight * thms(x.typ))
       else wt
 
     def toLambda(wt: Weighted[Term], xs: List[Term]): Weighted[Term] =
@@ -409,7 +411,7 @@ class DeducerFunc(applnWeight: Double,
     /**
       * theorems weighted by the weight of their proofs.
       */
-    lazy val abstractThmProofs = abstractProofs map (_.typ)
+    lazy val abstractThmProofs = abstractProofs map (_.typ) flatten
 
     import math.log
 
