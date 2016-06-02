@@ -120,4 +120,33 @@ object Unify {
             appln(l.value, arg, l.variable :: freeVars)
           case _ => None
         })
+
+  def purgeInv(r1: Term, inv1: Set[(Term, Term)], r2: Term, inv2: Set[(Term, Term)], freeVars: Term => Boolean) = {
+    val imageOpt = unify(r1, r2, freeVars) map (
+      (uniMap) =>
+        inv2 map {case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))})
+    inv2 -- imageOpt.getOrElse(Set())
+  }
+
+import annotation.tailrec
+
+
+  def purgeList(r2: Term, inv2: Set[(Term, Term)], invList : List[(Term, Set[(Term, Term)])], freeVars: Term => Boolean)  =
+    invList.foldRight((r2, inv2)){case (ri1, ri2) => (ri2._1, purgeInv(ri1._1, ri1._2, ri2._1, ri2._2, freeVars))}
+
+
+
+@tailrec
+  def purgedInvList(
+    invList: List[(Term, Set[(Term, Term)])],
+    accum: List[(Term, Set[(Term, Term)])] = List(),
+    freeVars: Term => Boolean = TermToExpr.isVar) : List[(Term, Set[(Term, Term)])] =
+    invList match {
+      case List() => accum
+      case head :: tail =>
+        val newhead = purgeList(head._1, head._2, accum, freeVars)
+        val newaccum = accum map {case (r2, inv2) => (r2, purgeInv(head._1, newhead._2, r2, inv2, freeVars))}
+        purgedInvList(tail, newhead :: newaccum, freeVars)
+    }
+
 }

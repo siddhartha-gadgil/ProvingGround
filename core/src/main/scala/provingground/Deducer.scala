@@ -144,10 +144,10 @@ class DeducerFunc(applnWeight: Double,
   import Unify.{unify, multisub}
 
   object bucket extends TermBucket
-  
+
   object absBucket extends WeightedTermBucket{
   }
-  
+
   /**
     * given a truncated distribution of terms and a type,
     * returns the truncated distribution of `value`s of lambda terms of that type;
@@ -217,7 +217,7 @@ class DeducerFunc(applnWeight: Double,
       .<+?>(pi(varWeight)(memFunc)(pd), lambdaWeight)
 
   def sample(pd: PD[Term], n: Int) = (1 to n).foreach((_) => bucket.append(memFunc(pd).next))
-      
+
   def funcPropTerm(backProp: => (FD[Term] => TD[Term] => TD[Term]))(
       fd: FD[Term]): Term => TD[Term] =
     (result) =>
@@ -384,7 +384,7 @@ class DeducerFunc(applnWeight: Double,
 
     lazy val abstractProofs = FiniteDistribution(
         proofs.pmf map ((wt) => toLambda(wt, vars))).normalized()
-    
+
     lazy val typDist =
       proofs mapOpt {
         case tp: Typ[u] => Some(tp): Option[Typ[Term]]

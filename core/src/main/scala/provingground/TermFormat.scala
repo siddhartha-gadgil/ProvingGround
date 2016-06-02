@@ -102,7 +102,7 @@ object FansiShow{
   }
 
   implicit def list[U: FansiShow]: FansiShow[List[U]] = new FansiShow[List[U]]{
-    def show(x: List[U]) = (x map (_.fansi)).toString
+    def show(x: List[U]) = (x map (_.fansi)).mkString("[", "\n", "]")
   }
 
   implicit def vec[U: FansiShow]: FansiShow[Vector[U]] = new FansiShow[Vector[U]]{
