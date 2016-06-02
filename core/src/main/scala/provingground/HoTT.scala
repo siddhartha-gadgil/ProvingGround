@@ -86,9 +86,9 @@ object HoTT {
           replace(f, g) replace (x, y)
         case (xs: Symbolic, _)
             if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-    //      println((this, x, y, x.typ, y.typ, x.typ == y.typ))
+          //      println((this, x, y, x.typ, y.typ, x.typ == y.typ))
           val typchange = replace(x.typ, y.typ)
-    //      println((typchange, (y.typ).symbObj(xs.name).typ == y.typ))
+          //      println((typchange, (y.typ).symbObj(xs.name).typ == y.typ))
           typchange replace ((y.typ).symbObj(xs.name), y)
         case _ => subs(x, y)
       }

@@ -15,7 +15,7 @@ object DedGrad {
 
   val idA = lmbda(a)(a)
 
-  object SimpleGrad{
+  object SimpleGrad {
     val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3)
 
     val ev = deduc.memFunc(FD.unif(A, a, f))
@@ -28,24 +28,30 @@ object DedGrad {
 
     import deduc._
 
-    lazy val props : List[Prop]  =
-      List(
-        funcProp _, funcUniProp _,
-        lambdaPropVar _, lambdaPropValues _,
-        piPropVar _, piPropValues _)
+    lazy val props: List[Prop] = List(funcProp _,
+                                      lambdaPropVar _,
+                                      lambdaPropValues _,
+                                      piPropVar _,
+                                      piPropValues _)
 
     val x = A.Var
 
-    val terms = List(f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
+    val terms = List(
+        f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
 
-    type Prop = (=> FD[Term] => TD[Term] => TD[Term]) => FD[Term] => TD[Term] => TD[Term]
+    type Prop =
+      (=> FD[Term] => TD[Term] => TD[Term]) => FD[Term] => TD[Term] => TD[Term]
 
-    lazy val backEg = deduc.backProp(0.5)(samp)(TD.atom(lmbda(x)(f(x))))
+    lazy val backEg =
+      deduc.backProp(0.5, deduc.applnInvImage)(samp)(TD.atom(lmbda(x)(f(x))))
 
     def grad(p: Prop) =
-      (for (t <- terms) yield (
-        p, t, p(idProp)(samp)(TD.atom(t)).getFD(0.001)
-      )) groupBy (_._1)
+      (for (t <- terms) yield
+        (
+            p,
+            t,
+            p(idProp)(samp)(TD.atom(t)).getFD(0.001)
+        )) groupBy (_._1)
   }
 
   object ABU {
@@ -56,7 +62,6 @@ object DedGrad {
     lazy val samp = ev sample 100000
 
     def invIdA = deduc.applnInvImage(idA)
-
 
     def invProdIdA = {
       for ((f, x) <- invIdA) yield (Unify.appln(f, x), f, x)

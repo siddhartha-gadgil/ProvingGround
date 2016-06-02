@@ -187,7 +187,7 @@ object FiniteDistribution {
   implicit def finiteDistInnerProd[X] =
     InnerProduct[FiniteDistribution[X]](_ dot _)
 
-  def uniform[A](s: Traversable[A]) : FiniteDistribution[A] = {
+  def uniform[A](s: Traversable[A]): FiniteDistribution[A] = {
     val prob = 1.0 / s.size
     val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
@@ -338,7 +338,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def flatten: FiniteDistribution[T] =
     FiniteDistribution(Weighted.flatten(pmf).toVector)
 
-  def sort : FiniteDistribution[T] =
+  def sort: FiniteDistribution[T] =
     FiniteDistribution(pmf.sortBy((wt) => 1 - wt.weight))
 
   override def supp: Vector[T] = (Weighted.flatten(pmf) map (_.elem)).toVector
