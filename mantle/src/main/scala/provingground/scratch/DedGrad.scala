@@ -16,15 +16,17 @@ object DedGrad {
   val idA = lmbda(a)(a)
 
   object SimpleGrad {
+    type Prob = Term => Double
+
     val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3)
 
     val ev = deduc.memFunc(FD.unif(A, a, f))
 
-    lazy val samp = ev sample 100000
+    lazy val samp = (x: Term) => (ev sample 100000)(x)
 
     lazy val sampLambda = deduc.lambdaFD(samp)(x)
 
-    val idProp = (fd: FD[Term]) => (td: TD[Term]) => td
+    val idProp = (fd: Prob) => (td: TD[Term]) => td
 
     import deduc._
 
@@ -40,10 +42,10 @@ object DedGrad {
         f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
 
     type Prop =
-      (=> FD[Term] => TD[Term] => TD[Term]) => FD[Term] => TD[Term] => TD[Term]
+      (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[Term]
 
     lazy val backEg =
-      deduc.backProp(0.5, deduc.applnInvImage)(samp)(TD.atom(lmbda(x)(f(x))))
+      deduc.backProp(0.5, deduc.applnInvImage)((x: Term) => samp(x))(TD.atom(lmbda(x)(f(x))))
 
     def grad(p: Prop) =
       (for (t <- terms) yield

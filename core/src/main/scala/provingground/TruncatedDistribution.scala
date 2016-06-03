@@ -7,6 +7,64 @@ import scala.language.implicitConversions
 import FiniteDistribution.FiniteDistVec
 import LinearStructure._
 
+
+case class TruncDistVal[A](getFD: Double => Option[A => Double]) extends AnyVal{
+
+  def <*>(scale: Double) = TruncDistVal.scaled(this, scale)
+
+  def <+>(that: => TruncDistVal[A]) = TruncDistVal.sum(this, that)
+
+  def filter(p: A => Boolean) = {
+    def newFD(c: Double) = getFD(c: Double) map (
+      (f) => (x: A) => if (p(x)) f(x) else 0)
+    TruncDistVal(newFD)
+  }
+}
+
+
+object TruncDistVal{
+  def scaled[A](td: TruncDistVal[A], scale: Double) =
+    TruncDistVal((c: Double) => td.getFD(c/scale) map ((f) => (x: A) => f(x) * scale))
+
+  def sum[A](first: => TruncDistVal[A], second: => TruncDistVal[A]) = {
+    def getFD = (c: Double) =>
+      for (f1<- first.getFD(c); f2 <- second.getFD(c)) yield ((x: A) => f1(x) + f2(x))
+    TruncDistVal(getFD)
+  }
+
+  def FD[A](fd: FiniteDistribution[A]) = {
+    def getFD(cutoff: Double) =
+      if (cutoff > 1.0) None
+    else {
+      val dist = fd.flatten.pmf filter ((x) => math.abs(x.weight) > cutoff)
+      if (dist.isEmpty) None else Some((x: A) => FiniteDistribution(dist)(x))
+    }
+    TruncDistVal(getFD)
+  }
+
+  def Empty[A] = TruncDistVal[A]((c: Double) => None)
+
+  def atom[A](a: A) = {
+    def getFD(cutoff: Double) =
+      if (cutoff > 1.0) None
+    else
+      Some((x: A) => if (x == a) 1.0 else 0.0)
+    TruncDistVal(getFD)
+  }
+
+  def bigSum[A](tds: => Vector[TruncatedDistribution[A]]) = {
+    def getFD(cutoff: Double) = {
+      val fds = (tds map (_.getFD(cutoff))).flatten
+      if (fds.isEmpty) None
+      else Some(
+        (x: A) => (fds map (_(x))).sum
+      )
+    }
+    TruncDistVal(getFD)
+  }
+}
+
+
 sealed trait TruncatedDistribution[A] {
 //  import TruncatedDistribution.{pruneFD, sum}
 
