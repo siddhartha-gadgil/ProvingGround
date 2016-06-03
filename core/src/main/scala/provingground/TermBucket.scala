@@ -8,10 +8,20 @@ class TermBucket {
 
   import TermBucket.{fd, fdMap}
 
+  /**
+  * terms counted, sorted by types
+  */
   val terms: mMap[Typ[Term], List[Term]] = mMap()
 
+
+  /**
+  * number of  terms of a given type
+  */
   val termTypes: mMap[Typ[Term], Long] = mMap()
 
+  /**
+  * count of generation of a type (as a term)
+  */
   val types: mMap[Typ[Term], Long] = mMap()
 
   def append(t: Term) = {
@@ -30,11 +40,31 @@ class TermBucket {
     }
   }
 
-  def termDistMap = fdMap(terms, tot) mapValues (_.flatten)
+/**
+* finite distribution of terms with a given type (total not 1, but weight of type)
+*/
+  def getTermDistMap = fdMap(terms, tot) mapValues (_.flatten)
 
-  def termTypDist = fd(termTypes, tot).flatten
+/**
+* theorems weighted by the total weight of their prooofs
+*/
+  def getThmsByProofs = fd(termTypes, tot).flatten
 
-  def typDist = fd(types, tot).flatten
+/**
+* types weighted by their frequency of generation as terms
+*/
+  def getTypDist = fd(types, tot).flatten
+
+  /**
+  * inhabited types (i.e. theorems) weighted by their frequency of generation as terms,
+  * normalized to account for most types not being theorems
+  */
+  def getTheorems = {
+    val typDist = getTypDist
+    val pmf = getThmsByProofs.supp map ((t) => Weighted(t, typDist(t)))
+    FiniteDistribution(pmf).normalized()
+  }
+
 }
 
 object TermBucket {
@@ -65,6 +95,13 @@ object TermBucket {
       toLambda(head.elem, scale * head.weight)(mkLambda(tail, scale)(yp))
   }
 
+  def lambdaDist(vars: List[Weighted[Term]], scale: Double)(
+      fd: FiniteDistribution[Term]) = {
+        FiniteDistribution(
+          fd.pmf map (mkLambda(vars, scale)(_))
+        )
+      }
+
   def toPi(
       x: Term, scale: Double): Weighted[Typ[Term]] => Weighted[Typ[Term]] = {
     case Weighted(y, p) =>
@@ -77,6 +114,13 @@ object TermBucket {
     case head :: tail =>
       toPi(head.elem, scale * head.weight)(mkPi(tail, scale)(yp))
   }
+
+  def piDist(vars: List[Weighted[Term]], scale: Double)(
+      fd: FiniteDistribution[Typ[Term]]) = {
+        FiniteDistribution(
+          fd.pmf map (mkPi(vars, scale)(_))
+        )
+      }
 }
 
 class WeightedTermBucket {

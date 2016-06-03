@@ -108,28 +108,34 @@ object Deducer {
     case _ => None
   }
 
-//  def mkLambda(x: Term)(t: Term) =
-//    if (t dependsOn x) HoTT.lambda(x)(t) else t
-//
-//  def toLambda(xs: List[Term])(t: Term): Term = xs match {
-//    case List() => t
-//    case head :: tail => mkLambda(head)(toLambda(tail)(t))
-//  }
-//
-//  def mkPi(x: Term)(t: Typ[Term]) =
-//    if (t dependsOn x) HoTT.pi(x)(t) else t
-//
-//  def toPi(xs: List[Term])(t: Typ[Term]): Typ[Term] = xs match {
-//    case List() => t
-//    case head :: tail => mkPi(head)(toPi(tail)(t))
-//  }
 
-  def shift(fd:  FD[Term], td: TD[Term], cutoff: Double) = {
-    val shifts = td.getFD(cutoff) getOrElse (FD.Empty[Term])
+  def shifted(fd:  FD[Term], td: TD[Term], cutoff: Double) = {
+    val shifts = td.getFD(cutoff) getOrElse (FD.empty[Term])
     val newpmf = for (Weighted(x, p) <- fd.pmf) yield
       Weighted(x, p * math.exp(shifts(x)))
     FD(newpmf)
   }
+
+  def feedback(
+    absTheorems: FD[Typ[Term]],
+    absThmsByProofs : FD[Typ[Term]],
+    proofs: Map[Typ[Term], FD[Term]],
+    piVars: List[Weighted[Term]], lambdaWeight: Double, piWeight: Double) = {
+      import TermBucket.{mkPi, mkLambda}
+      import math.log
+      def forTyp(typ: Typ[Term]) = {
+        val weightedTerms = proofs(typ).pmf
+        val absTyp = mkPi(piVars, piWeight)(Weighted(typ, 1)).elem
+        val entDiff = - log(absThmsByProofs(absTyp)) + log(absTheorems(absTyp))
+        def termWeight(wt: Weighted[Term]) =
+          entDiff * mkLambda(piVars, lambdaWeight)(wt).weight / absThmsByProofs(absTyp)
+        val typPMF = weightedTerms map ((wt) => Weighted(wt.elem, termWeight(wt)))
+        FD(typPMF)
+      }
+      (proofs.keys map (forTyp)).fold(FD.empty[Term])(_ ++ _)
+    }
+
+
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -154,8 +160,8 @@ class DeducerFunc(applnWeight: Double,
     * returns the truncated distribution of `value`s of lambda terms of that type;
     * with variable in the values from the above `variable` object
     */
-  def lambdaTD(td: TD[Term])(variable: Term) =
-    (td mapOpt (lambdaValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
+  // def lambdaTD(td: TD[Term])(variable: Term) =
+  //   (td mapOpt (lambdaValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
 
   def lambdaFD(fd: Prob)(variable: Term) =
     (y: Term) => fd(HoTT.lambda(variable)(y))
@@ -167,8 +173,8 @@ class DeducerFunc(applnWeight: Double,
     (y: Term) => prob(HoTT.lambda(variable)(y))
 
 
-  def piTD(td: TD[Term])(variable: Term) =
-    (td mapOpt (piValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
+  // def piTD(td: TD[Term])(variable: Term) =
+  //   (td mapOpt (piValue(variable))) //<+> (TD.atom(variable) <*> varWeight)
 
   def piFD(fd: Prob)(variable: Term) : Prob =
     {
@@ -369,6 +375,42 @@ class DeducerFunc(applnWeight: Double,
       (lambdaPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
       (piPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
       (piPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon)
+
+
+
+  def piVars = vars map ((t) => Weighted(t, bucket.getThmsByProofs(t.typ)))
+
+  import TermBucket.piDist
+
+  def getAbstractTheorems =
+    piDist(piVars, piWeight)(bucket.getTheorems)
+
+
+  def getAbstractTheoremsByProofs =
+    piDist(piVars, piWeight)(bucket.getThmsByProofs)
+
+  def abstractTyp(typ : Typ[Term]) =
+    (TermBucket.mkPi(vars map ((t) => Weighted(t, 1)), 1)(Weighted(typ, 1))).elem
+
+/**
+* proofs of an abstracted theorem
+*/
+  def getProofs(absTyp: Typ[Term]) = {
+    val typs = bucket.getThmsByProofs
+    val piVars = vars map ((t) => Weighted(t, 1))
+    val origTyps = typs.supp filter ((tp) =>  (TermBucket.mkPi(piVars, 1)(Weighted(tp, 1))).elem == absTyp)
+    val termMap = bucket.getTermDistMap
+    val vec : Vector[FD[Term]] = origTyps map ((tp) => termMap.getOrElse(tp, FD.empty[Term]))
+    vec.fold(FD.empty[Term])(_++_)
+  }
+
+  def getFeedback = {
+    val thmtyps = bucket.getThmsByProofs
+    feedback(getAbstractTheorems, getAbstractTheoremsByProofs, bucket.getTermDistMap, piVars
+      , lambdaWeight, piWeight)
+  }
+
+
 
   case class ProofAnalysis(proofs: FiniteDistribution[Term]) {
     lazy val thms = (proofs map (_.typ)).normalized()

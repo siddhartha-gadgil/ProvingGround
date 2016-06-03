@@ -8,7 +8,7 @@ import FiniteDistribution.FiniteDistVec
 import LinearStructure._
 
 
-case class TruncDistVal[A](getFD: Double => Option[A => Double]) extends AnyVal{
+case class TruncDistVal[A](getFD: Double => Option[FiniteDistribution[A]]) extends AnyVal{
 
   def <*>(scale: Double) = TruncDistVal.scaled(this, scale)
 
@@ -16,29 +16,40 @@ case class TruncDistVal[A](getFD: Double => Option[A => Double]) extends AnyVal{
 
   def filter(p: A => Boolean) = {
     def newFD(c: Double) = getFD(c: Double) map (
-      (f) => (x: A) => if (p(x)) f(x) else 0)
+      (fd) => fd filter (p))
     TruncDistVal(newFD)
+  }
+
+  def flatMap[B](f: A => TruncDistVal[B]) : TruncDistVal[B] = {
+    def flatGetFD(cutoff: Double) =
+      getFD(cutoff) flatMap {(fd)=>
+      val dists = fd.supp map (f)
+
+      val empty: TruncDistVal[B] =
+        TruncDistVal.Empty[B]
+
+      val trunc = (dists :\ empty)(TruncDistVal.sum[B](_, _))
+      trunc.getFD(cutoff)
+    }
+    TruncDistVal(flatGetFD)
   }
 }
 
 
 object TruncDistVal{
   def scaled[A](td: TruncDistVal[A], scale: Double) =
-    TruncDistVal((c: Double) => td.getFD(c/scale) map ((f) => (x: A) => f(x) * scale))
+    TruncDistVal((c: Double) => td.getFD(c/scale) map ((fd) => fd * scale))
 
   def sum[A](first: => TruncDistVal[A], second: => TruncDistVal[A]) = {
     def getFD = (c: Double) =>
-      for (f1<- first.getFD(c); f2 <- second.getFD(c)) yield ((x: A) => f1(x) + f2(x))
+      for (f1<- first.getFD(c); f2 <- second.getFD(c)) yield (f1 ++ f2)
     TruncDistVal(getFD)
   }
 
   def FD[A](fd: FiniteDistribution[A]) = {
     def getFD(cutoff: Double) =
       if (cutoff > 1.0) None
-    else {
-      val dist = fd.flatten.pmf filter ((x) => math.abs(x.weight) > cutoff)
-      if (dist.isEmpty) None else Some((x: A) => FiniteDistribution(dist)(x))
-    }
+    else TruncatedDistribution.pruneFD(fd, cutoff)
     TruncDistVal(getFD)
   }
 
@@ -48,16 +59,16 @@ object TruncDistVal{
     def getFD(cutoff: Double) =
       if (cutoff > 1.0) None
     else
-      Some((x: A) => if (x == a) 1.0 else 0.0)
+      Some(FiniteDistribution(Vector(Weighted(a, 1))))
     TruncDistVal(getFD)
   }
 
-  def bigSum[A](tds: => Vector[TruncatedDistribution[A]]) = {
+  def bigSum[A](tds: => Vector[TruncDistVal[A]]) = {
     def getFD(cutoff: Double) = {
       val fds = (tds map (_.getFD(cutoff))).flatten
       if (fds.isEmpty) None
       else Some(
-        (x: A) => (fds map (_(x))).sum
+        vBigSum(fds)
       )
     }
     TruncDistVal(getFD)
