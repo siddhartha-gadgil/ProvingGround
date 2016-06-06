@@ -7,49 +7,47 @@ import scala.language.implicitConversions
 import FiniteDistribution.FiniteDistVec
 import LinearStructure._
 
-
-case class TruncDistVal[A](getFD: Double => Option[FiniteDistribution[A]]) extends AnyVal{
+case class TruncDistVal[A](getFD: Double => Option[FiniteDistribution[A]])
+    extends AnyVal {
 
   def <*>(scale: Double) = TruncDistVal.scaled(this, scale)
 
   def <+>(that: => TruncDistVal[A]) = TruncDistVal.sum(this, that)
 
   def filter(p: A => Boolean) = {
-    def newFD(c: Double) = getFD(c: Double) map (
-      (fd) => fd filter (p))
+    def newFD(c: Double) = getFD(c: Double) map ((fd) => fd filter (p))
     TruncDistVal(newFD)
   }
 
-  def flatMap[B](f: A => TruncDistVal[B]) : TruncDistVal[B] = {
+  def flatMap[B](f: A => TruncDistVal[B]): TruncDistVal[B] = {
     def flatGetFD(cutoff: Double) =
-      getFD(cutoff) flatMap {(fd)=>
-      val dists = fd.supp map (f)
+      getFD(cutoff) flatMap { (fd) =>
+        val dists = fd.supp map (f)
 
-      val empty: TruncDistVal[B] =
-        TruncDistVal.Empty[B]
+        val empty: TruncDistVal[B] = TruncDistVal.Empty[B]
 
-      val trunc = (dists :\ empty)(TruncDistVal.sum[B](_, _))
-      trunc.getFD(cutoff)
-    }
+        val trunc = (dists :\ empty)(TruncDistVal.sum[B](_, _))
+        trunc.getFD(cutoff)
+      }
     TruncDistVal(flatGetFD)
   }
 }
 
-
-object TruncDistVal{
+object TruncDistVal {
   def scaled[A](td: TruncDistVal[A], scale: Double) =
-    TruncDistVal((c: Double) => td.getFD(c/scale) map ((fd) => fd * scale))
+    TruncDistVal((c: Double) => td.getFD(c / scale) map ((fd) => fd * scale))
 
   def sum[A](first: => TruncDistVal[A], second: => TruncDistVal[A]) = {
-    def getFD = (c: Double) =>
-      for (f1<- first.getFD(c); f2 <- second.getFD(c)) yield (f1 ++ f2)
+    def getFD =
+      (c: Double) =>
+        for (f1 <- first.getFD(c); f2 <- second.getFD(c)) yield (f1 ++ f2)
     TruncDistVal(getFD)
   }
 
   def FD[A](fd: FiniteDistribution[A]) = {
     def getFD(cutoff: Double) =
       if (cutoff > 1.0) None
-    else TruncatedDistribution.pruneFD(fd, cutoff)
+      else TruncatedDistribution.pruneFD(fd, cutoff)
     TruncDistVal(getFD)
   }
 
@@ -58,8 +56,8 @@ object TruncDistVal{
   def atom[A](a: A) = {
     def getFD(cutoff: Double) =
       if (cutoff > 1.0) None
-    else
-      Some(FiniteDistribution(Vector(Weighted(a, 1))))
+      else
+        Some(FiniteDistribution(Vector(Weighted(a, 1))))
     TruncDistVal(getFD)
   }
 
@@ -67,14 +65,14 @@ object TruncDistVal{
     def getFD(cutoff: Double) = {
       val fds = (tds map (_.getFD(cutoff))).flatten
       if (fds.isEmpty) None
-      else Some(
-        vBigSum(fds)
-      )
+      else
+        Some(
+            vBigSum(fds)
+        )
     }
     TruncDistVal(getFD)
   }
 }
-
 
 sealed trait TruncatedDistribution[A] {
 //  import TruncatedDistribution.{pruneFD, sum}

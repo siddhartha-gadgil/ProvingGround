@@ -44,8 +44,8 @@ object DedGrad {
     type Prop =
       (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[Term]
 
-    lazy val backEg =
-      deduc.backProp(0.5, deduc.applnInvImage)((x: Term) => samp(x))(TD.atom(lmbda(x)(f(x))))
+    lazy val backEg = deduc.backProp(0.5, deduc.applnInvImage)((x: Term) =>
+          samp(x))(TD.atom(lmbda(x)(f(x))))
 
     def grad(p: Prop) =
       (for (t <- terms) yield
@@ -57,7 +57,8 @@ object DedGrad {
   }
 
   object ABU {
-    val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3, List(Weighted(A, 0.4), Weighted(B, 0.4)))
+    val deduc = new DeducerFunc(
+        0.2, 0.2, 0.2, 0.3, List(Weighted(A, 0.4), Weighted(B, 0.4)))
 
     val ev = deduc.memFunc(FD.unif(A, B, Type))
 

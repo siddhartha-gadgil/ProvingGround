@@ -217,5 +217,7 @@ object FreeExprLang {
 
   def writeTerm(t: HoTT.Term) = write(fromTerm(t).get)
 
-  def readTerm(s: String) = read[FreeExprLang](s).as[HoTT.Term](TermLang).get
+  def readTerm(s: String) : HoTT.Term = read[FreeExprLang](s).as[HoTT.Term](TermLang).get
+
+  def readTyp(s: String) : HoTT.Typ[HoTT.Term] = read[FreeExprLang](s).as[HoTT.Term](TermLang).get.asInstanceOf[HoTT.Typ[HoTT.Term]]
 }
