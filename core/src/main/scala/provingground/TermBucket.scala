@@ -3,6 +3,7 @@ import HoTT._
 
 import scala.collection.mutable.{Map => mMap}
 
+
 class TermBucket {
   var tot: Long = 0
 
@@ -23,6 +24,12 @@ class TermBucket {
   * count of generation of a type (as a term)
   */
   val types: mMap[Typ[Term], Long] = mMap()
+
+  def clear() = {
+    terms.clear()
+    termTypes.clear()
+    types.clear()
+  }
 
   def append(t: Term) = {
     tot += 1

@@ -39,6 +39,47 @@ object QDI {
     FiniteDistribution(pmf)
   }
 
+  def runFor[A](
+    f: A => A, init: A,
+    duration : Long,
+    save: (A, Int) => Unit) = {
+    val start = System.currentTimeMillis()
+    var steps = 0
+    var state = init
+    while(System.currentTimeMillis() < start + duration){
+      val next = f(state)
+      steps += 1
+      state = next
+      save(state, steps)
+    }
+    state
+  }
+
+  def runFor[A](
+    f: A => A, init: A,
+    duration : Long) = {
+    val start = System.currentTimeMillis()
+    var steps = 0
+    var state = init
+    while(System.currentTimeMillis() < start + duration){
+      val next = f(state)
+      steps += 1
+      state = next
+    }
+    state
+  }
+
+  def runForFut[A](
+    f: A => A, init: A,
+    duration : Long,
+    save: (A, Int) => Unit) =
+      Future(runFor(f, init, duration, save))
+
+  def runForFut[A](
+    f: A => A, init: A,
+    duration : Long) =
+      Future(runFor(f, init, duration))
+
   lazy val runTime = java.lang.Runtime.getRuntime()
 
   def freeMem = runTime.freeMemory()

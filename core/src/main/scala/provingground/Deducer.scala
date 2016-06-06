@@ -35,7 +35,7 @@ object Deducer {
             FD.unif(None: Option[Term]))
 
   def memAppln(rec: => (PD[Term] => PD[Term]))(
-      p: PD[Term], vars: List[Term] = List())(
+      p: PD[Term])(
       save: (Term, Term, Term) => Unit) = {
     rec(p) flatMap ((f) =>
           if (isFunc(f))
@@ -120,15 +120,15 @@ object Deducer {
     absTheorems: FD[Typ[Term]],
     absThmsByProofs : FD[Typ[Term]],
     proofs: Map[Typ[Term], FD[Term]],
-    piVars: List[Weighted[Term]], lambdaWeight: Double, piWeight: Double) = {
+    vars: List[Weighted[Term]], lambdaWeight: Double, piWeight: Double) = {
       import TermBucket.{mkPi, mkLambda}
       import math.log
       def forTyp(typ: Typ[Term]) = {
         val weightedTerms = proofs(typ).pmf
-        val absTyp = mkPi(piVars, piWeight)(Weighted(typ, 1)).elem
+        val absTyp = mkPi(vars, piWeight)(Weighted(typ, 1)).elem
         val entDiff = - log(absThmsByProofs(absTyp)) + log(absTheorems(absTyp))
         def termWeight(wt: Weighted[Term]) =
-          entDiff * mkLambda(piVars, lambdaWeight)(wt).weight / absThmsByProofs(absTyp)
+          entDiff * mkLambda(vars, lambdaWeight)(wt).weight / absThmsByProofs(absTyp)
         val typPMF = weightedTerms map ((wt) => Weighted(wt.elem, termWeight(wt)))
         FD(typPMF)
       }
@@ -142,7 +142,9 @@ class DeducerFunc(applnWeight: Double,
                   lambdaWeight: Double,
                   piWeight: Double,
                   varWeight: Double,
-                  vars: List[Term] = List()) {
+                  vars: List[Weighted[Term]] = List(),
+                  propDecay: Double = 0.5, cutoff: Double = 0.1, feedbackScale: Double = 0.1,
+                  abstractionWeight: Double = 1.0, genMemory: Double = 1.0) {
   import Deducer._
 
   import TermToExpr.isVar
@@ -194,10 +196,19 @@ class DeducerFunc(applnWeight: Double,
   def invImage(accum: List[(Term, Set[(Term, Term)])] = List()) =
     Unify.purgedInvList(invImageMap.toList, accum, isVar)
 
+  var cumInvImage : List[(Term, Set[(Term, Term)])] = List()
+
+  def getInvImage() = {
+    val combined = invImage(cumInvImage)
+    cumInvImage = combined
+    invImageMap.clear()
+    (t: Term) => unifInv(t, combined)
+  }
+
 //    import scala.util.{Try, Success}
 
   def unifInv[U <: Term with Subs[U]](
-      term: Term, invMap: Map[Term, Set[(U, Term)]]) = {
+      term: Term, invMap: List[(Term, Set[(U, Term)])]) = {
     val optInverses =
       invMap flatMap {
         case (result, fxs) =>
@@ -216,12 +227,12 @@ class DeducerFunc(applnWeight: Double,
           Unify.appln(fx._1, fx._2) == Some(term))
   }
 
-  def applnInvImage(term: Term) = unifInv(term, invImageMap.toMap)
+  def applnInvImage(term: Term) = unifInv(term, invImageMap.toList)
 
   val subsInvMap: scala.collection.mutable.Map[
       Term, Set[(IdentityTyp[Term], Term)]] = scala.collection.mutable.Map()
 
-  def subsInvImage(term: Term) = unifInv(term, subsInvMap.toMap)
+  def subsInvImage(term: Term) = unifInv(term, subsInvMap.toList)
 
   def subsInvImages = TermToExpr.rebuildMap(subsInvMap.toMap)
 
@@ -232,7 +243,7 @@ class DeducerFunc(applnWeight: Double,
     subsInvMap(result) = subsInvMap.getOrElse(result, Set()) + ((eq, x))
 
   def memFunc(pd: PD[Term]): PD[Term] =
-    pd.<+?>(memAppln(memFunc)(pd, vars)(save), applnWeight)
+    pd.<+?>(memAppln(memFunc)(pd)(save), applnWeight)
       .<+?>(lambda(varWeight)(memFunc)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(memFunc)(pd), lambdaWeight)
 
@@ -258,7 +269,7 @@ class DeducerFunc(applnWeight: Double,
       fd: Prob, invImage: Term => Set[(Term, Term)]): Term => TD[Term] =
     (result) => {
       val tds =
-        applnInvImage(result).toVector map {
+        invImage(result).toVector map {
           case (f, x) =>
             val scale = applnWeight * fd(f) * fd(x) / fd(result)
             backProp(fd)(TD.FD(FD.unif(f, x)) <*> scale)
@@ -366,7 +377,7 @@ class DeducerFunc(applnWeight: Double,
       fd: Prob)(td: TD[Term]) =
     td flatMap (piPropValuesTerm(backProp)(fd))
 
-  def backProp(epsilon: Double, invImage: Term => Set[(Term, Term)])(
+  def backProp(epsilon: Double, invImage: Term => Set[(Term, Term)] = getInvImage())(
       fd: Prob): TD[Term] => TD[Term] =
     (td) =>
       td <*> (1 - epsilon) <+>
@@ -376,29 +387,58 @@ class DeducerFunc(applnWeight: Double,
       (piPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
       (piPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon)
 
-
-
-  def piVars = vars map ((t) => Weighted(t, bucket.getThmsByProofs(t.typ)))
-
   import TermBucket.piDist
 
+  def getPopulation =
+    TermPopulation(bucket.getTermDistMap, bucket.getTypDist, bucket.getThmsByProofs, vars, lambdaWeight, piWeight)
+
+// side-effect warning : clears the bucket
+  def nextGen(popln: TermPopulation, batchSize: Int) = {
+    import Deducer.{shifted}
+
+    import TermBucket.{lambdaDist, piDist}
+
+    val td = TD.FD(popln.feedback * feedbackScale)
+
+    val fd = backProp(propDecay)((t: Term) => popln.terms(t))(td).getFD(cutoff).get
+
+    val tfd = fd map {case tp: Typ[u] => tp}
+
+    val absFD =
+      (fd ++
+        ((lambdaDist(vars, lambdaWeight)(fd) ++
+        piDist(vars, piWeight)(tfd). map ((t) => t: Term))* abstractionWeight)
+      ).normalized()
+
+    bucket.clear()
+
+    sample(absFD, batchSize)
+
+    getPopulation
+  }
+
+  def nextPopulation(popln: TermPopulation, batchSize: Int) = {
+    ((popln * genMemory) ++ nextGen(popln, batchSize)).normalized
+  }
+
+
   def getAbstractTheorems =
-    piDist(piVars, piWeight)(bucket.getTheorems)
+    piDist(vars, piWeight)(bucket.getTheorems)
 
 
   def getAbstractTheoremsByProofs =
-    piDist(piVars, piWeight)(bucket.getThmsByProofs)
+    piDist(vars, piWeight)(bucket.getThmsByProofs)
 
-  def abstractTyp(typ : Typ[Term]) =
-    (TermBucket.mkPi(vars map ((t) => Weighted(t, 1)), 1)(Weighted(typ, 1))).elem
+  def abstractTyps(typ : Typ[Term]) =
+    (TermBucket.mkPi(vars, 1)(Weighted(typ, 1))).elem
 
 /**
 * proofs of an abstracted theorem
 */
   def getProofs(absTyp: Typ[Term]) = {
     val typs = bucket.getThmsByProofs
-    val piVars = vars map ((t) => Weighted(t, 1))
-    val origTyps = typs.supp filter ((tp) =>  (TermBucket.mkPi(piVars, 1)(Weighted(tp, 1))).elem == absTyp)
+//    val vars = vars map ((t) => Weighted(t, 1))
+    val origTyps = typs.supp filter ((tp) =>  (TermBucket.mkPi(vars, 1)(Weighted(tp, 1))).elem == absTyp)
     val termMap = bucket.getTermDistMap
     val vec : Vector[FD[Term]] = origTyps map ((tp) => termMap.getOrElse(tp, FD.empty[Term]))
     vec.fold(FD.empty[Term])(_++_)
@@ -406,33 +446,34 @@ class DeducerFunc(applnWeight: Double,
 
   def getFeedback = {
     val thmtyps = bucket.getThmsByProofs
-    feedback(getAbstractTheorems, getAbstractTheoremsByProofs, bucket.getTermDistMap, piVars
+    feedback(getAbstractTheorems, getAbstractTheoremsByProofs, bucket.getTermDistMap, vars
       , lambdaWeight, piWeight)
   }
+
 
 
 
   case class ProofAnalysis(proofs: FiniteDistribution[Term]) {
     lazy val thms = (proofs map (_.typ)).normalized()
 
-    def mkLambda(wt: Weighted[Term], x: Term): Weighted[Term] =
-      if (wt.elem dependsOn x)
+    def mkLambda(wt: Weighted[Term], wx: Weighted[Term]): Weighted[Term] =
+      if (wt.elem dependsOn wx.elem)
         Weighted(
-            HoTT.lambda(x)(wt.elem), wt.weight * lambdaWeight * proofs(x.typ))
+            HoTT.lambda(wx.elem)(wt.elem), wt.weight * lambdaWeight * wx.weight)
       else wt
 
-    def toLambda(wt: Weighted[Term], xs: List[Term]): Weighted[Term] =
+    def toLambda(wt: Weighted[Term], xs: List[Weighted[Term]]): Weighted[Term] =
       xs match {
         case List() => wt
         case head :: tail => mkLambda(toLambda(wt, tail), head)
       }
 
-    def mkPi(wt: Weighted[Typ[Term]], x: Term): Weighted[Typ[Term]] =
-      if (wt.elem dependsOn x)
-        Weighted(HoTT.pi(x)(wt.elem), wt.weight * piWeight * proofs(x.typ))
+    def mkPi(wt: Weighted[Typ[Term]], wx: Weighted[Term]): Weighted[Typ[Term]] =
+      if (wt.elem dependsOn wx.elem)
+        Weighted(HoTT.pi(wx.elem)(wt.elem), wt.weight * piWeight * wx.weight)
       else wt
 
-    def toPi(wt: Weighted[Typ[Term]], xs: List[Term]): Weighted[Typ[Term]] =
+    def toPi(wt: Weighted[Typ[Term]], xs: List[Weighted[Term]]): Weighted[Typ[Term]] =
       xs match {
         case List() => wt
         case head :: tail => mkPi(toPi(wt, tail), head)
@@ -473,3 +514,50 @@ class DeducerFunc(applnWeight: Double,
         .sortBy((wt) => -wt.weight)
   }
 }
+
+
+case class TermPopulation(
+  termsByType : Map[Typ[Term], FD[Term]],
+  types : FD[Typ[Term]],
+  thmsByProofs: FD[Typ[Term]],
+  vars: List[Weighted[Term]], lambdaWeight: Double, piWeight: Double){ self =>
+    val theorems =
+      FD(thmsByProofs.supp map ((t) => Weighted(t, types(t)))).normalized()
+
+    import TermBucket._
+
+    def ++(that: TermPopulation) = {
+      val termsByType =
+        ((this.termsByType.keySet union that.termsByType.keySet) map (
+          (typ : Typ[Term]) =>
+          (typ,
+            this.termsByType.getOrElse(typ, FD.empty[Term]) ++ that.termsByType.getOrElse(typ, FD.empty[Term])
+          )
+        )).toMap
+      TermPopulation(
+        termsByType,
+        this.types ++ that.types,
+        this.thmsByProofs ++ that.thmsByProofs,
+        vars, lambdaWeight, piWeight)
+    }
+
+    def *(scale: Double) =
+      TermPopulation(termsByType mapValues ((fd) => fd * scale), types * scale, thmsByProofs * scale, vars
+      , lambdaWeight, piWeight)
+
+    def normalized =
+        TermPopulation(termsByType mapValues ((fd) => fd.normalized()), types.normalized(), thmsByProofs.normalized(), vars
+      , lambdaWeight, piWeight)
+
+    val terms = termsByType.values.fold(FD.empty[Term])(_ ++ _)
+
+    val abstractTheorems =
+        piDist(vars, piWeight)(theorems)
+
+    val abstractTheoremsByProofs =
+        piDist(vars, piWeight)(thmsByProofs)
+
+    lazy val feedback = Deducer.feedback(abstractTheorems, abstractTheoremsByProofs
+      , termsByType, vars, lambdaWeight, piWeight)
+
+  }

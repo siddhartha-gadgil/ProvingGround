@@ -57,7 +57,7 @@ object DedGrad {
   }
 
   object ABU {
-    val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3, List(A, B))
+    val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3, List(Weighted(A, 0.4), Weighted(B, 0.4)))
 
     val ev = deduc.memFunc(FD.unif(A, B, Type))
 
