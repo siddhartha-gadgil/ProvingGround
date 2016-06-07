@@ -24,6 +24,7 @@ class TermBucket {
   val types: mMap[Typ[Term], Long] = mMap()
 
   def clear() = {
+    tot = 0
     terms.clear()
     termTypes.clear()
     types.clear()
