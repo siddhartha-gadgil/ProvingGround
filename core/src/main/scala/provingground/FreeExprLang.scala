@@ -6,7 +6,6 @@ sealed trait FreeExprLang {
   def as[E](implicit l: ExprLang[E]): Option[E]
 }
 
-object FreeExprLang {
   case class Variable(name: String, typ: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.variable(name, tp)) yield result
@@ -17,7 +16,7 @@ object FreeExprLang {
       l.typVariable(name)
   }
 
-  val Univ = TypVariable("Type")
+  
 
   case class AnonVar(typ: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
@@ -29,62 +28,62 @@ object FreeExprLang {
       for (tp <- typ.as[E]; result <- l.anonVar(tp)) yield result
   }
 
-  case class Incl1(typ: FreeExprLang) extends FreeExprLang {
+  case class FreeIncl1(typ: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.incl1(tp)) yield result
   }
 
-  case class Incl2(typ: FreeExprLang) extends FreeExprLang {
+  case class FreeIncl2(typ: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.incl2(tp)) yield result
   }
 
-  case class Proj1(xy: FreeExprLang) extends FreeExprLang {
+  case class FreeProj1(xy: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- xy.as[E]; result <- l.proj1(tp)) yield result
   }
 
-  case class Proj2(xy: FreeExprLang) extends FreeExprLang {
+  case class FreeProj2(xy: FreeExprLang) extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- xy.as[E]; result <- l.proj2(tp)) yield result
   }
 
-  case class Lambda(variable: FreeExprLang, value: FreeExprLang)
+  case class FreeLambda(variable: FreeExprLang, value: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- variable.as[E]; y <- value.as[E]; result <- l.lambda(x, y)) yield
         result
   }
 
-  case class Pi(variable: FreeExprLang, value: FreeExprLang)
+  case class FreePi(variable: FreeExprLang, value: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- variable.as[E]; y <- value.as[E]; result <- l.pi(x, y)) yield
         result
   }
 
-  case class Appln(func: FreeExprLang, arg: FreeExprLang)
+  case class FreeAppln(func: FreeExprLang, arg: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- func.as[E]; y <- arg.as[E]; result <- l.appln(x, y)) yield
         result
   }
 
-  case class Equality(lhs: FreeExprLang, rhs: FreeExprLang)
+  case class FreeEquality(lhs: FreeExprLang, rhs: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- lhs.as[E]; y <- rhs.as[E]; result <- l.equality(x, y)) yield
         result
   }
 
-  case class Sigma(variable: FreeExprLang, value: FreeExprLang)
+  case class FreeSigma(variable: FreeExprLang, value: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- variable.as[E]; y <- value.as[E]; result <- l.sigma(x, y)) yield
         result
   }
 
-  case class Pair(first: FreeExprLang, second: FreeExprLang)
+  case class FreePair(first: FreeExprLang, second: FreeExprLang)
       extends FreeExprLang {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- first.as[E]; y <- second.as[E]; result <- l.pair(x, y)) yield
@@ -121,6 +120,10 @@ object FreeExprLang {
     def as[E](implicit l: ExprLang[E]) = l.numeral(n)
   }
 
+object FreeExprLang {
+
+  val Univ = TypVariable("Type")
+  
   implicit object FreeLang
       extends ExprLang[FreeExprLang]
       with ExprPatterns[FreeExprLang] {
@@ -143,34 +146,34 @@ object FreeExprLang {
 
     def lambda(
         variable: FreeExprLang, value: FreeExprLang): Option[FreeExprLang] =
-      Some(Lambda(variable, value))
+      Some(FreeLambda(variable, value))
 
     def pi(variable: FreeExprLang, typ: FreeExprLang): Option[FreeExprLang] =
-      Some(Pi(variable, typ))
+      Some(FreePi(variable, typ))
 
     def appln(func: FreeExprLang, arg: FreeExprLang): Option[FreeExprLang] =
-      Some(Appln(func, arg))
+      Some(FreeAppln(func, arg))
 
     def equality(lhs: FreeExprLang, rhs: FreeExprLang): Option[FreeExprLang] =
-      Some(Equality(lhs, rhs))
+      Some(FreeEquality(lhs, rhs))
 
     def sigma(variable: FreeExprLang,
               typFamily: FreeExprLang): Option[FreeExprLang] =
-      Some(Sigma(variable, typFamily))
+      Some(FreeSigma(variable, typFamily))
 
     def pair(x: FreeExprLang, y: FreeExprLang): Option[FreeExprLang] =
-      Some(Pair(x, y))
+      Some(FreePair(x, y))
 
-    def proj1(xy: FreeExprLang): Option[FreeExprLang] = Some(Proj1(xy))
+    def proj1(xy: FreeExprLang): Option[FreeExprLang] = Some(FreeProj1(xy))
 
-    def proj2(xy: FreeExprLang): Option[FreeExprLang] = Some(Proj2(xy))
+    def proj2(xy: FreeExprLang): Option[FreeExprLang] = Some(FreeProj2(xy))
 
     def or(first: FreeExprLang, second: FreeExprLang): Option[FreeExprLang] =
       Some(Or(first, second))
 
-    def incl1(typ: FreeExprLang): Option[FreeExprLang] = Some(Incl1(typ))
+    def incl1(typ: FreeExprLang): Option[FreeExprLang] = Some(FreeIncl1(typ))
 
-    def incl2(typ: FreeExprLang): Option[FreeExprLang] = Some(Incl2(typ))
+    def incl2(typ: FreeExprLang): Option[FreeExprLang] = Some(FreeIncl2(typ))
 
     /**
       * true type
@@ -194,17 +197,17 @@ object FreeExprLang {
     def numeral(n: Int): Option[FreeExprLang] = Some(Numeral(n))
 
     def isPair: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Pair(first, second) => Some((first, second))
+      case FreePair(first, second) => Some((first, second))
       case _ => None
     }
 
     def isSigma: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Sigma(first, second) => Some((first, second))
+      case FreeSigma(first, second) => Some((first, second))
       case _ => None
     }
 
     def isPi: FreeExprLang => Option[(FreeExprLang, FreeExprLang)] = {
-      case Pi(first, second) => Some((first, second))
+      case FreePi(first, second) => Some((first, second))
       case _ => None
     }
   }
@@ -214,8 +217,10 @@ object FreeExprLang {
           univ = (n) => Univ, predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
+  
+  def writeExpr(fr: FreeExprLang) = write(fr)
 
-  def writeTerm(t: HoTT.Term) = write(fromTerm(t).get)
+  def writeTerm(t: HoTT.Term) : String = writeExpr(fromTerm(t).get)
 
   def readTerm(s: String): HoTT.Term =
     read[FreeExprLang](s).as[HoTT.Term](TermLang).get
