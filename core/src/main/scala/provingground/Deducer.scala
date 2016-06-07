@@ -3,6 +3,8 @@ import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, Pro
 
 import HoTT._
 
+import upickle.default._
+
 import scala.language.postfixOps
 
 /**
@@ -135,6 +137,8 @@ object Deducer {
     }
     (proofs.keys map (forTyp)).fold(FD.empty[Term])(_ ++ _)
   }
+
+  def unpickle(str: String) = read[PickledTermPopulation](str).unpickle
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -146,7 +150,7 @@ class DeducerFunc(applnWeight: Double,
                   cutoff: Double = 0.1,
                   feedbackScale: Double = 0.1,
                   abstractionWeight: Double = 1.0,
-                  genMemory: Double = 1.0) {
+                  genMemory: Double = 0.5) {
   import Deducer._
 
   import TermToExpr.isVar
@@ -405,8 +409,11 @@ class DeducerFunc(applnWeight: Double,
 
     val td = TD.FD(popln.feedback * feedbackScale)
 
-    val fd =
-      backProp(propDecay)((t: Term) => popln.terms(t))(td).getFD(cutoff).get
+    val fd = shifted(
+        popln.terms,
+        backProp(propDecay)((t: Term) => popln.terms(t))(td),
+        cutoff
+    )
 
     val tfd = fd filter (isTyp) map { case tp: Typ[u] => tp }
 
@@ -423,7 +430,8 @@ class DeducerFunc(applnWeight: Double,
   }
 
   def nextPopulation(popln: TermPopulation, batchSize: Int) = {
-    ((popln * genMemory) ++ nextGen(popln, batchSize)).normalized
+    ((popln * genMemory) ++ nextGen(popln, batchSize) * (1 -
+            genMemory)).normalized
   }
 
   def getAbstractTheorems =
@@ -580,17 +588,44 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                                        vars,
                                        lambdaWeight,
                                        piWeight)
+
+  def pickledPopulation = {
+    import FreeExprLang.writeTerm
+    val termsByType = for ((typ, terms) <- this.termsByType) yield
+      (writeTerm(typ),
+       (terms map (writeTerm)).pmf map (PickledWeighted.pickle))
+
+    PickledTermPopulation(
+        termsByType,
+        (types map (writeTerm)).pmf map (PickledWeighted.pickle),
+        (types map (writeTerm)).pmf map (PickledWeighted.pickle),
+        vars map (PickledWeighted.pickle),
+        lambdaWeight,
+        piWeight
+    )
+  }
+
+  def pickle = write(pickledPopulation)
 }
 
-case class PickledTermPopulation(termsByType: Map[String, Vector[PickledWeighted]],
-                          types: Vector[PickledWeighted],
-                          thmsByProofs: Vector[PickledWeighted],
-                          vars: List[PickledWeighted],
-                          lambdaWeight: Double,
-                          piWeight: Double){
-   import FreeExprLang._
-   def unpickle = {
-     val termsByType = for ((typ, termsPMF) <- this.termsByType) yield (
-       readTyp(typ), FD(termsPMF map ((pw) => pw.map(readTerm))))
-   }
-                          }
+case class PickledTermPopulation(
+    termsByType: Map[String, Vector[PickledWeighted]],
+    types: Vector[PickledWeighted],
+    thmsByProofs: Vector[PickledWeighted],
+    vars: List[PickledWeighted],
+    lambdaWeight: Double,
+    piWeight: Double) {
+  import FreeExprLang._
+  def unpickle = {
+    val termsByType = for ((typ, termsPMF) <- this.termsByType) yield
+      (readTyp(typ), FD(termsPMF map ((pw) => pw.map(readTerm))))
+    TermPopulation(
+        termsByType,
+        FD(types map ((pw) => pw map (readTyp))),
+        FD(types map ((pw) => pw map (readTyp))),
+        vars map ((pw) => pw.map(readTerm)),
+        lambdaWeight,
+        piWeight
+    )
+  }
+}
