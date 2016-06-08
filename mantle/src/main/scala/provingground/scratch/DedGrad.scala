@@ -73,7 +73,7 @@ object DedGrad {
     def unifInvIdA =
       for (result <- deduc.invImageMap.keys;
            (f, x) <- deduc.invImageMap(result);
-           unif <- Unify.unify(result, idA, TermToExpr.isVar)) yield
+           unif <- Unify.unify(result, idA, HoTT.isVar)) yield
         UnifInv(idA, result, unif, f, x)
   }
 }

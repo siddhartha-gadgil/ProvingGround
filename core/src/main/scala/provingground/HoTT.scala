@@ -874,7 +874,7 @@ object HoTT {
 
     override def equals(that: Any) = that match {
       case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
-        y.replace(x, variable)  == value
+        y.replace(x, variable) == value
       case _ => false
     }
 
@@ -1545,6 +1545,21 @@ object HoTT {
 
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) =
     typ.symbObj(NameFactory.get)
+
+  def isVar(t: Term) = t match {
+    case sym: Symbolic if sym.name.toString.startsWith("$") => true
+    case _ => false
+  }
+
+  def isFunc: Term => Boolean = {
+    case _: FuncLike[_, _] => true
+    case _ => false
+  }
+
+  def isTyp: Term => Boolean = {
+    case _: Typ[_] => true
+    case _ => false
+  }
 
   def funcToLambda[U <: Term with Subs[U], V <: Term with Subs[V]](
       fn: FuncLike[U, V]) = fn match {

@@ -87,11 +87,6 @@ object TermToExpr {
 
   import TermLang._
 
-  def isVar(t: Term) = t match {
-    case sym: Symbolic if sym.name.toString.startsWith("$") => true
-    case _ => false
-  }
-
   def newTermOpt(term: Term, prefix: String = ".") = {
     val myNames = new NewNameFactory(prefix)
     def predefs(t: Term) =

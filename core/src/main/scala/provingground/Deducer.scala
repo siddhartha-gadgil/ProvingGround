@@ -15,15 +15,6 @@ import scala.language.postfixOps
   *
   */
 object Deducer {
-  def isFunc: Term => Boolean = {
-    case _: FuncLike[_, _] => true
-    case _ => false
-  }
-
-  def isTyp: Term => Boolean = {
-    case _: Typ[_] => true
-    case _ => false
-  }
 
   /**
     * generating optionally using function application, with function and argument generated recursively;
@@ -153,7 +144,7 @@ class DeducerFunc(applnWeight: Double,
                   genMemory: Double = 0.5) {
   import Deducer._
 
-  import TermToExpr.isVar
+  import HoTT.isVar
 
   import Unify.{unify, multisub}
 
@@ -407,7 +398,7 @@ class DeducerFunc(applnWeight: Double,
 
     import TermBucket.{lambdaDist, piDist}
 
-    val td = TD.FD(popln.feedback * feedbackScale)
+    val td = TD.PosFD(popln.feedback * feedbackScale)
 
     val fd = shifted(
         popln.terms,

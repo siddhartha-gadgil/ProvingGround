@@ -149,7 +149,7 @@ object Unify {
   def purgedInvList(invList: List[(Term, Set[(Term, Term)])],
                     accum: List[(Term, Set[(Term, Term)])] = List(),
                     freeVars: Term => Boolean =
-                      TermToExpr.isVar): List[(Term, Set[(Term, Term)])] =
+                      HoTT.isVar): List[(Term, Set[(Term, Term)])] =
     invList match {
       case List() => accum
       case head :: tail =>
