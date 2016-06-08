@@ -306,7 +306,7 @@ object HoTT {
     *
     */
   case class SymbTyp(name: AnySym, level: Int) extends Typ[Term] with Symbolic {
-    lazy val typ = Universe(0)
+    lazy val typ = Universe(level)
 
     def newobj = SymbTyp(new InnerSym(this), level)
 
