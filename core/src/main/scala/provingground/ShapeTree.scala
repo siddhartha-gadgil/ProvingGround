@@ -3,63 +3,63 @@ package provingground
 import HoTT._
 
 sealed trait ShapeTree {
-  def subTrees: Set[ShapeTree] // excuding the single leaf
+  def recSubTrees: Set[ShapeTree] // excuding the single leaf
 
-  def subShapeTrees = subTrees + ShapeTree.Leaf
+  lazy val subTrees = recSubTrees + ShapeTree.Leaf
 }
 
 object ShapeTree {
   case object Leaf extends ShapeTree {
-    def subTrees = Set()
+    def recSubTrees = Set()
   }
 
   case class ApplnNode(func: ShapeTree, arg: ShapeTree) extends ShapeTree {
-    def subTrees =
-      for (funcTree <- func.subShapeTrees; argTree <- arg.subShapeTrees) yield
+    def recSubTrees =
+      for (funcTree <- func.subTrees; argTree <- arg.subTrees) yield
         ApplnNode(funcTree, argTree)
   }
 
   case class ArrowNode(dom: ShapeTree, codom: ShapeTree) extends ShapeTree {
-    def subTrees =
-      for (domTree <- dom.subShapeTrees; codomTree <- codom.subShapeTrees) yield
+    def recSubTrees =
+      for (domTree <- dom.subTrees; codomTree <- codom.subTrees) yield
         ArrowNode(domTree, codomTree)
   }
 
   case class PiNode(fibre: ShapeTree) extends ShapeTree {
-    def subTrees = fibre.subShapeTrees map (PiNode(_))
+    def recSubTrees = fibre.subTrees map (PiNode(_))
   }
 
   case class SigmaNode(fibre: ShapeTree) extends ShapeTree {
-    def subTrees = fibre.subShapeTrees map (SigmaNode(_))
+    def recSubTrees = fibre.subTrees map (SigmaNode(_))
   }
 
   case class LambdaNode(variable: ShapeTree, dom: ShapeTree, value: ShapeTree)
       extends ShapeTree {
-    def subTrees =
-      for (domTree <- dom.subShapeTrees;
-           varTree <- variable.subShapeTrees;
-           valTree <- value.subShapeTrees) yield
-        EqualityNode(varTree, domTree, valTree)
+    def recSubTrees =
+      for (domTree <- dom.subTrees;
+           varTree <- variable.subTrees;
+           valTree <- value.subTrees) yield
+        LambdaNode(varTree, domTree, valTree)
   }
 
   case class EqualityNode(dom: ShapeTree, lhs: ShapeTree, rhs: ShapeTree)
       extends ShapeTree {
-    def subTrees =
-      for (domTree <- dom.subShapeTrees;
-           lhsTree <- lhs.subShapeTrees;
-           rhsTree <- rhs.subShapeTrees) yield
+    def recSubTrees =
+      for (domTree <- dom.subTrees;
+           lhsTree <- lhs.subTrees;
+           rhsTree <- rhs.subTrees) yield
         EqualityNode(domTree, lhsTree, rhsTree)
   }
 
   case class PairNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {
-    def subTrees =
-      for (firstTree <- first.subShapeTrees; secondTree <- second.subShapeTrees) yield
+    def recSubTrees =
+      for (firstTree <- first.subTrees; secondTree <- second.subTrees) yield
         PairNode(firstTree, secondTree)
   }
 
   case class PlusNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {
-    def subTrees =
-      for (firstTree <- first.subShapeTrees; secondTree <- second.subShapeTrees) yield
+    def recSubTrees =
+      for (firstTree <- first.subTrees; secondTree <- second.subTrees) yield
         PlusNode(firstTree, secondTree)
   }
 }

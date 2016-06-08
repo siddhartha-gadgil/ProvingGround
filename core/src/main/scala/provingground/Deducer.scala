@@ -130,6 +130,47 @@ object Deducer {
   }
 
   def unpickle(str: String) = read[PickledTermPopulation](str).unpickle
+
+  import Unify._
+
+  def unifInv[U <: Term with Subs[U]](
+      term: Term, invMap: Vector[(Term, Set[(U, Term)])]) = {
+    val optInverses =
+      invMap flatMap {
+        case (result, fxs) =>
+          {
+            val uniMapOpt = unify(result, term, isVar)
+            val newInvOpt =
+              uniMapOpt map { (uniMap) =>
+                fxs map {
+                  case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
+                }
+              }
+            newInvOpt
+          }
+      }
+    optInverses.flatten.toSet filter ((fx) =>
+          Unify.appln(fx._1, fx._2) == Some(term))
+  }
+
+  def hashedUnifInv[U<: Term with Subs[U]](
+    term: Term, hashedInvMap : Map[ShapeTree, Vector[(Term, Set[(U, Term)])]]) = {
+      val invMapSet =
+        (TermShapeTree(term).subTrees map ((shape) =>
+          hashedInvMap.getOrElse(shape, Vector())))
+      val invMap = invMapSet.fold(Vector())(_ ++ _)
+      unifInv(term, invMap)
+    }
+
+
+  class HashedUnifInv[U<: Term with Subs[U]](
+    invMap : Vector[(Term, Set[(U, Term)])]) extends (Term => Set[(U, Term)]){
+    val hashedInvMap = invMap groupBy ((kv) => TermShapeTree(kv._1))
+
+    def apply(term: Term) = hashedUnifInv(term, hashedInvMap)
+  }
+
+
 }
 
 class DeducerFunc(applnWeight: Double,
@@ -199,27 +240,15 @@ class DeducerFunc(applnWeight: Double,
       unifInv(t, combined)
   }
 
-//    import scala.util.{Try, Success}
-
-  def unifInv[U <: Term with Subs[U]](
-      term: Term, invMap: Vector[(Term, Set[(U, Term)])]) = {
-    val optInverses =
-      invMap flatMap {
-        case (result, fxs) =>
-          {
-            val uniMapOpt = unify(result, term, isVar)
-            val newInvOpt =
-              uniMapOpt map { (uniMap) =>
-                fxs map {
-                  case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
-                }
-              }
-            newInvOpt
-          }
-      }
-    optInverses.flatten.toSet filter ((fx) =>
-          Unify.appln(fx._1, fx._2) == Some(term))
+  def getHashedInvImage() : Term => Set[(Term, Term)] = {
+    val combined = invImage(cumInvImage)
+    cumInvImage = combined
+    invImageMap.clear()
+    new HashedUnifInv(cumInvImage)
   }
+
+
+
 
   def applnInvImage(term: Term) = unifInv(term, invImageMap.toVector)
 
