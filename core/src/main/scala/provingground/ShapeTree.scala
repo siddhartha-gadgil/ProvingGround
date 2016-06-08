@@ -13,6 +13,14 @@ object ShapeTree {
     def recSubTrees = Set()
   }
 
+  case object TypLeaf extends ShapeTree {
+    def recSubTrees = Set()
+  }
+
+  case object UnivLeaf extends ShapeTree {
+    def recSubTrees = Set()
+  }
+
   case class ApplnNode(func: ShapeTree, arg: ShapeTree) extends ShapeTree {
     def recSubTrees =
       for (funcTree <- func.subTrees; argTree <- arg.subTrees) yield
@@ -68,6 +76,7 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
   import ShapeTree._
 
   val specialTerms: PartialFunction[Term, ShapeTree] = {
+    case atomTyp: Typ[u] if isAtom(atomTyp) => TypLeaf
     case atom: Term if isAtom(atom) => Leaf
   }
 
@@ -97,11 +106,11 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
 
   def symbobj(term: SymbObj[Term]): ShapeTree = Leaf
 
-  def symbtyp(term: SymbTyp): ShapeTree = Leaf
+  def symbtyp(term: SymbTyp): ShapeTree = TypLeaf
 
   def symbolic(name: AnySym, typ: Typ[Term]): ShapeTree = Leaf
 
-  def univ(n: Int): ShapeTree = Leaf
+  def univ(n: Int): ShapeTree = UnivLeaf
 }
 
 object TermShapeTree extends ShapeTreeFormat(isVar)
