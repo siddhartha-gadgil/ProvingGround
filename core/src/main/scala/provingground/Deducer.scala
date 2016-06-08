@@ -187,7 +187,7 @@ class DeducerFunc(applnWeight: Double,
 
   import HoTT.isVar
 
-  import Unify.{unify, multisub}
+//  import Unify.{unify, multisub}
 
   object bucket extends TermBucket
 
@@ -454,6 +454,22 @@ class DeducerFunc(applnWeight: Double,
             genMemory)).normalized
   }
 
+  def runWhile(
+    initDist: FD[Term],
+    initBatch: Int,
+    batchSize: Int,
+    save: String => Unit,
+    halt: Boolean) = {
+      bucket.clear()
+      sample(initDist, initBatch)
+      var pop = getPopulation
+      while (!halt){
+        save(pop.pickle)
+        val next = nextPopulation(pop, batchSize)
+        pop = next
+      }
+  }
+
   def getAbstractTheorems =
     piDist(vars, piWeight)(bucket.getTheorems)
 
@@ -462,6 +478,10 @@ class DeducerFunc(applnWeight: Double,
 
   def abstractTyps(typ: Typ[Term]) =
     (TermBucket.mkPi(vars, 1)(Weighted(typ, 1))).elem
+
+  def getElapsedTime = bucket.elapsedTime
+
+  def getLoops = bucket.loops
 
   /**
     * proofs of an abstracted theorem

@@ -6,6 +6,12 @@ import scala.collection.mutable.{Map => mMap}
 class TermBucket {
   var tot: Long = 0
 
+  var loops: Int = 0
+
+  var startTime : Long = System.currentTimeMillis()
+
+  def elapsedTime = System.currentTimeMillis() - startTime
+
   import TermBucket.{fd, fdMap}
 
   /**
@@ -25,6 +31,8 @@ class TermBucket {
 
   def clear() = {
     tot = 0
+    loops = 0
+    startTime = System.currentTimeMillis()
     terms.clear()
     termTypes.clear()
     types.clear()
