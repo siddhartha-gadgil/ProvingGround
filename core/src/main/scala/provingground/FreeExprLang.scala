@@ -11,9 +11,9 @@ case class Variable(name: String, typ: FreeExprLang) extends FreeExprLang {
     for (tp <- typ.as[E]; result <- l.variable(name, tp)) yield result
 }
 
-case class TypVariable(name: String) extends FreeExprLang {
+case class TypVariable(name: String, level: Int) extends FreeExprLang {
   def as[E](implicit l: ExprLang[E]) =
-    l.typVariable(name)
+    l.typVariable(name, level)
 }
 
 case class AnonVar(typ: FreeExprLang) extends FreeExprLang {
@@ -118,7 +118,7 @@ case class Numeral(n: Int) extends FreeExprLang {
 
 object FreeExprLang {
 
-  val Univ = TypVariable("Type")
+  def Univ(n: Int) = TypVariable("Type", n) // FIXME : should better encode universes
 
   implicit object FreeLang
       extends ExprLang[FreeExprLang]
@@ -126,8 +126,8 @@ object FreeExprLang {
     def variable[S](name: S, typ: FreeExprLang): Option[FreeExprLang] =
       Some(Variable(name.toString(), typ))
 
-    def typVariable[S](name: S): Option[FreeExprLang] =
-      Some(TypVariable(name.toString))
+    def typVariable[S](name: S, level: Int): Option[FreeExprLang] =
+      Some(TypVariable(name.toString, level))
 
     /**
       * anonymous variable
@@ -210,7 +210,7 @@ object FreeExprLang {
 
   object FromTerm
       extends TermToExpr[FreeExprLang](
-          univ = (n) => Univ, predef = (t) => None)(FreeLang)
+          univ = (n) => Univ(n), predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
 
