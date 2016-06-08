@@ -76,7 +76,7 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
   import ShapeTree._
 
   val specialTerms: PartialFunction[Term, ShapeTree] = {
-    case atomTyp: Typ[u] if isAtom(atomTyp) => TypLeaf
+//    case atomTyp: Typ[u] if isAtom(atomTyp) => TypLeaf
     case atom: Term if isAtom(atom) => Leaf
   }
 
@@ -106,11 +106,11 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
 
   def symbobj(term: SymbObj[Term]): ShapeTree = Leaf
 
-  def symbtyp(term: SymbTyp): ShapeTree = TypLeaf
+  def symbtyp(term: SymbTyp): ShapeTree = Leaf
 
   def symbolic(name: AnySym, typ: Typ[Term]): ShapeTree = Leaf
 
-  def univ(n: Int): ShapeTree = UnivLeaf
+  def univ(n: Int): ShapeTree = Leaf
 }
 
 object TermShapeTree extends ShapeTreeFormat(isVar)
