@@ -30,7 +30,7 @@ object DedGrad {
 
     import deduc._
 
-    lazy val props: List[Prop] = List(funcProp _,
+    lazy val props: Vector[Prop] = Vector(funcProp _,
                                       lambdaPropVar _,
                                       lambdaPropValues _,
                                       piPropVar _,
@@ -38,7 +38,7 @@ object DedGrad {
 
     val x = A.Var
 
-    val terms = List(
+    val terms = Vector(
         f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
 
     type Prop =
@@ -58,7 +58,7 @@ object DedGrad {
 
   object ABU {
     val deduc = new DeducerFunc(
-        0.2, 0.2, 0.2, 0.3, List(Weighted(A, 0.4), Weighted(B, 0.4)))
+        0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)))
 
     val ev = deduc.memFunc(FD.unif(A, B, Type))
 

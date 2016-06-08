@@ -110,7 +110,7 @@ object Deducer {
   def feedback(absTheorems: FD[Typ[Term]],
                absThmsByProofs: FD[Typ[Term]],
                proofs: Map[Typ[Term], FD[Term]],
-               vars: List[Weighted[Term]],
+               vars: Vector[Weighted[Term]],
                lambdaWeight: Double,
                piWeight: Double) = {
     import TermBucket.{mkPi, mkLambda}
@@ -136,7 +136,7 @@ class DeducerFunc(applnWeight: Double,
                   lambdaWeight: Double,
                   piWeight: Double,
                   varWeight: Double,
-                  vars: List[Weighted[Term]] = List(),
+                  vars: Vector[Weighted[Term]] = Vector(),
                   propDecay: Double = 0.5,
                   cutoff: Double = 0.1,
                   feedbackScale: Double = 0.1,
@@ -186,10 +186,10 @@ class DeducerFunc(applnWeight: Double,
   val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
     scala.collection.mutable.Map()
 
-  def invImage(accum: List[(Term, Set[(Term, Term)])] = List()) =
-    Unify.purgedInvList(invImageMap.toList, accum, isVar)
+  def invImage(accum: Vector[(Term, Set[(Term, Term)])] = Vector()) =
+    Unify.purgedInvVector(invImageMap.toVector, accum, isVar)
 
-  var cumInvImage: List[(Term, Set[(Term, Term)])] = List()
+  var cumInvImage: Vector[(Term, Set[(Term, Term)])] = Vector()
 
   def getInvImage() = {
     val combined = invImage(cumInvImage)
@@ -202,7 +202,7 @@ class DeducerFunc(applnWeight: Double,
 //    import scala.util.{Try, Success}
 
   def unifInv[U <: Term with Subs[U]](
-      term: Term, invMap: List[(Term, Set[(U, Term)])]) = {
+      term: Term, invMap: Vector[(Term, Set[(U, Term)])]) = {
     val optInverses =
       invMap flatMap {
         case (result, fxs) =>
@@ -221,12 +221,12 @@ class DeducerFunc(applnWeight: Double,
           Unify.appln(fx._1, fx._2) == Some(term))
   }
 
-  def applnInvImage(term: Term) = unifInv(term, invImageMap.toList)
+  def applnInvImage(term: Term) = unifInv(term, invImageMap.toVector)
 
   val subsInvMap: scala.collection.mutable.Map[
       Term, Set[(IdentityTyp[Term], Term)]] = scala.collection.mutable.Map()
 
-  def subsInvImage(term: Term) = unifInv(term, subsInvMap.toList)
+  def subsInvImage(term: Term) = unifInv(term, subsInvMap.toVector)
 
   def subsInvImages = TermToExpr.rebuildMap(subsInvMap.toMap)
 
@@ -469,10 +469,10 @@ class DeducerFunc(applnWeight: Double,
       else wt
 
     def toLambda(
-        wt: Weighted[Term], xs: List[Weighted[Term]]): Weighted[Term] =
+        wt: Weighted[Term], xs: Vector[Weighted[Term]]): Weighted[Term] =
       xs match {
-        case List() => wt
-        case head :: tail => mkLambda(toLambda(wt, tail), head)
+        case Vector() => wt
+        case head +: tail => mkLambda(toLambda(wt, tail), head)
       }
 
     def mkPi(
@@ -482,10 +482,10 @@ class DeducerFunc(applnWeight: Double,
       else wt
 
     def toPi(wt: Weighted[Typ[Term]],
-             xs: List[Weighted[Term]]): Weighted[Typ[Term]] =
+             xs: Vector[Weighted[Term]]): Weighted[Typ[Term]] =
       xs match {
-        case List() => wt
-        case head :: tail => mkPi(toPi(wt, tail), head)
+        case Vector() => wt
+        case head +: tail => mkPi(toPi(wt, tail), head)
       }
 
     lazy val abstractProofs = FiniteDistribution(
@@ -527,7 +527,7 @@ class DeducerFunc(applnWeight: Double,
 case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                           types: FD[Typ[Term]],
                           thmsByProofs: FD[Typ[Term]],
-                          vars: List[Weighted[Term]],
+                          vars: Vector[Weighted[Term]],
                           lambdaWeight: Double,
                           piWeight: Double) { self =>
   val theorems =
@@ -603,7 +603,7 @@ case class PickledTermPopulation(
     termsByType: Map[String, Vector[PickledWeighted]],
     types: Vector[PickledWeighted],
     thmsByProofs: Vector[PickledWeighted],
-    vars: List[PickledWeighted],
+    vars: Vector[PickledWeighted],
     lambdaWeight: Double,
     piWeight: Double) {
   import FreeExprLang._
