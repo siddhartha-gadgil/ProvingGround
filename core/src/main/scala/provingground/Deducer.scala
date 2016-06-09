@@ -7,6 +7,11 @@ import upickle.default._
 
 import scala.language.postfixOps
 
+import scala.concurrent._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
+
 /**
   * Generating terms from given ones using the main HoTT operations, and the adjoint of this generation.
   * This is viewed as deduction.
@@ -179,7 +184,7 @@ class DeducerFunc(applnWeight: Double,
                   varWeight: Double,
                   vars: Vector[Weighted[Term]] = Vector(),
                   propDecay: Double = 0.5,
-                  cutoff: Double = 0.1,
+                  cutoff: Double = 0.01,
                   feedbackScale: Double = 0.1,
                   abstractionWeight: Double = 1.0,
                   genMemory: Double = 0.5) {
@@ -446,6 +451,8 @@ class DeducerFunc(applnWeight: Double,
 
     sample(absFD, batchSize)
 
+    bucket.loops += 1
+    
     getPopulation
   }
 
@@ -468,6 +475,30 @@ class DeducerFunc(applnWeight: Double,
         val next = nextPopulation(pop, batchSize)
         pop = next
       }
+  }
+  
+  class BufferedRun(
+    initDist: FD[Term],
+    initBatch: Int,
+    batchSize: Int,
+    halt: Boolean = (getElapsedTime > 5 * 60 * 1000),
+    save: TermPopulation => Unit = (_) => ()){
+      
+      import scala.collection.mutable.ArrayBuffer
+      var popBuffer : ArrayBuffer[TermPopulation] = ArrayBuffer()
+      var pop = getPopulation // probably a dummy
+      def run = 
+        Future {
+          bucket.clearAll()
+          while (!halt){
+            sample(initDist, initBatch)
+            pop = getPopulation
+            popBuffer append (pop)
+            save(pop)
+            println(s"Time : $getElapsedTime; Loops: $getLoops")
+            val next = nextPopulation(pop, batchSize)
+            pop = next
+      }}
   }
 
   def getAbstractTheorems =

@@ -11,6 +11,14 @@ object DedGrad {
 
   val a = "a" :: A
 
+  val b = "b" :: B
+  
+  val distABU = FD.unif[Term](A, B, Type)
+  
+  val distAB = FD.unif[Term](A, B)
+  
+  val cnst = lmbda(a)(lmbda(b)(a))
+  
   val f = "f" :: (A ->: A)
 
   val idA = lmbda(a)(a)
@@ -60,6 +68,8 @@ object DedGrad {
     val deduc = new DeducerFunc(
         0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)))
 
+    
+    
     val ev = deduc.memFunc(FD.unif(A, B, Type))
 
     lazy val samp = ev sample 100000

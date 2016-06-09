@@ -31,11 +31,15 @@ class TermBucket {
 
   def clear() = {
     tot = 0
-    loops = 0
-    startTime = System.currentTimeMillis()
     terms.clear()
     termTypes.clear()
     types.clear()
+  }
+  
+  def clearAll() = {
+    clear()
+    loops = 0
+    startTime = System.currentTimeMillis()
   }
 
   def append(t: Term) = {

@@ -115,7 +115,7 @@ sealed trait GenFiniteDistribution[T]
     * total of the positive weights
     */
   def postotal(t: Double = 0.0) =
-    ((posmf(t).toSeq map (_.weight))).sum ensuring (_ > 0)
+    ((posmf(t).toSeq map (_.weight))).sum 
 
   /**
     * add weighted element without normalizing
@@ -201,6 +201,7 @@ object FiniteDistribution {
   def empty[T]: FiniteDistribution[T] =
     FiniteDistribution[T](Vector(): Vector[Weighted[T]]) //Empty[T]
 
+    @deprecated("use empty method", "to remove")
   case class Empty[T]() extends GenFiniteDistribution[T] {
     val pmf: Traversable[Weighted[T]] = Traversable.empty
 
