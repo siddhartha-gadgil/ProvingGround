@@ -638,14 +638,14 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
     PickledTermPopulation(
         termsByType,
         (types map (writeTerm)).pmf map (PickledWeighted.pickle),
-        (types map (writeTerm)).pmf map (PickledWeighted.pickle),
-        vars map (PickledWeighted.pickle),
+        (thmsByProofs map (writeTerm)).pmf map (PickledWeighted.pickle),
+        vars map {case Weighted(t, w) => PickledWeighted(writeTerm(t), w)},
         lambdaWeight,
         piWeight
     )
   }
 
-  def pickle = write(pickledPopulation)
+  def pickle = write[PickledTermPopulation](pickledPopulation)
 }
 
 case class PickledTermPopulation(
