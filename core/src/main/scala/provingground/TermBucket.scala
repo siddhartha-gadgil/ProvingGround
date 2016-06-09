@@ -6,12 +6,18 @@ import scala.collection.mutable.{Map => mMap}
 class TermBucket {
   var tot: Long = 0
 
+  var loops: Int = 0
+
+  var startTime : Long = System.currentTimeMillis()
+
+  def elapsedTime = System.currentTimeMillis() - startTime
+
   import TermBucket.{fd, fdMap}
 
   /**
     * terms counted, sorted by types
     */
-  val terms: mMap[Typ[Term], List[Term]] = mMap()
+  val terms: mMap[Typ[Term], Vector[Term]] = mMap()
 
   /**
     * number of  terms of a given type
@@ -25,6 +31,8 @@ class TermBucket {
 
   def clear() = {
     tot = 0
+    loops = 0
+    startTime = System.currentTimeMillis()
     terms.clear()
     termTypes.clear()
     types.clear()
@@ -35,7 +43,7 @@ class TermBucket {
 
     val typ = t.typ
 
-    terms(typ) = t :: (terms.getOrElse(typ, List()))
+    terms(typ) = t +: (terms.getOrElse(typ, Vector()))
 
     termTypes(typ) = termTypes.getOrElse(typ, 0: Long) + 1
 
@@ -73,7 +81,7 @@ class TermBucket {
 }
 
 object TermBucket {
-  def fdMap[A](m: mMap[A, List[Term]], tot: Long) = {
+  def fdMap[A](m: mMap[A, Vector[Term]], tot: Long) = {
 //    val tot = m.values.flatten.size
     (m mapValues (
             (l) =>
@@ -93,14 +101,14 @@ object TermBucket {
       else Weighted(y, p)
   }
 
-  def mkLambda(vars: List[Weighted[Term]], scale: Double)(
+  def mkLambda(vars: Vector[Weighted[Term]], scale: Double)(
       yp: Weighted[Term]): Weighted[Term] = vars match {
-    case List() => yp
-    case head :: tail =>
+    case Vector() => yp
+    case head +: tail =>
       toLambda(head.elem, scale * head.weight)(mkLambda(tail, scale)(yp))
   }
 
-  def lambdaDist(vars: List[Weighted[Term]], scale: Double)(
+  def lambdaDist(vars: Vector[Weighted[Term]], scale: Double)(
       fd: FiniteDistribution[Term]) = {
     FiniteDistribution(
         fd.pmf map (mkLambda(vars, scale)(_))
@@ -113,14 +121,14 @@ object TermBucket {
       if (y dependsOn (x)) Weighted(pi(x)(y), p * scale) else Weighted(y, p)
   }
 
-  def mkPi(vars: List[Weighted[Term]], scale: Double)(
+  def mkPi(vars: Vector[Weighted[Term]], scale: Double)(
       yp: Weighted[Typ[Term]]): Weighted[Typ[Term]] = vars match {
-    case List() => yp
-    case head :: tail =>
+    case Vector() => yp
+    case head +: tail =>
       toPi(head.elem, scale * head.weight)(mkPi(tail, scale)(yp))
   }
 
-  def piDist(vars: List[Weighted[Term]], scale: Double)(
+  def piDist(vars: Vector[Weighted[Term]], scale: Double)(
       fd: FiniteDistribution[Typ[Term]]) = {
     FiniteDistribution(
         fd.pmf map (mkPi(vars, scale)(_))
@@ -133,7 +141,7 @@ class WeightedTermBucket {
 
   import WeightedTermBucket.{fd, fdMap}
 
-  val terms: mMap[Typ[Term], List[Weighted[Term]]] = mMap()
+  val terms: mMap[Typ[Term], Vector[Weighted[Term]]] = mMap()
 
   val termTypes: mMap[Typ[Term], Double] = mMap()
 
@@ -144,7 +152,7 @@ class WeightedTermBucket {
 
     val typ = t.elem.typ
 
-    terms(typ) = t :: (terms.getOrElse(typ, List()))
+    terms(typ) = t +: (terms.getOrElse(typ, Vector()))
 
     termTypes(typ) = termTypes.getOrElse(typ, 0.0) + t.weight
 
@@ -169,7 +177,7 @@ object WeightedTermBucket {
     FiniteDistribution(pmf.toVector)
   }
 
-  def fdMap[A](m: mMap[A, List[Weighted[Term]]], tot: Double) = {
+  def fdMap[A](m: mMap[A, Vector[Weighted[Term]]], tot: Double) = {
     //  val tot = (m.values.flatten map (_.weight)).sum
     (m mapValues (
             (l) =>

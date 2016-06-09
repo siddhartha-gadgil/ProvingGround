@@ -26,7 +26,7 @@ class TermParser extends JavaTokenParsers {
 
   def name: Parser[AnySym] = "[a-zA-Z0-9!@#$%^&*()_+-]+".r ^^ { makeSymbol(_) }
 
-  def symbTyp: Parser[Typ[Term]] = name <~ colon ~ univ ^^ (SymbTyp(_))
+  def symbTyp: Parser[Typ[Term]] = name <~ colon ~ univ ^^ (SymbTyp(_, 0))
 
   def arrowTyp: Parser[Typ[Term]] =
     "(" ~> typ ~ ")" ~ arrow ~ "(" ~ typ <~ ")" ^^ {

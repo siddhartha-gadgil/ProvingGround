@@ -151,6 +151,13 @@ object TruncatedDistribution
       if (dist.isEmpty) None else Some(FiniteDistribution(dist))
     }
 
+  def prunePosFD[A](fd: => FiniteDistribution[A], cutoff: Double) =
+    if (cutoff > 1.0) None
+    else {
+      val dist = fd.flatten.pmf filter ((x) => x.weight > cutoff)
+      if (dist.isEmpty) None else Some(FiniteDistribution(dist))
+    }
+
   case class OptAtom[A](opt: Option[A]) extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) =
       opt flatMap ((value) =>
@@ -168,6 +175,11 @@ object TruncatedDistribution
   case class FD[A](fd: FiniteDistribution[A])
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)
+  }
+
+  case class PosFD[A](fd: FiniteDistribution[A])
+      extends TruncatedDistribution[A] {
+    def getFD(cutoff: Double) = prunePosFD(fd, cutoff)
   }
 
   class Scaled[A](base: => TruncatedDistribution[A], scale: Double)

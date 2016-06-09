@@ -18,11 +18,11 @@ case object TermLang
     case _ => None
   }
 
-  def typVariable[S](name: S): Option[Term] = name match {
+  def typVariable[S](name: S, level: Int): Option[Term] = name match {
 //    case t : Typ[u] => Some(t)
-    case "Type" => Some(Type)
+    case "Type" => Some(HoTT.Universe(level))
     case s: String =>
-      Some(SymbTyp(s))
+      Some(SymbTyp(s, level))
     case _ => None
   }
 

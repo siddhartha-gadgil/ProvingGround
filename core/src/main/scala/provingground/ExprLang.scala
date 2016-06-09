@@ -27,7 +27,7 @@ import scala.util.Try
 trait ExprLang[E] {
   def variable[S](name: S, typ: E): Option[E]
 
-  def typVariable[S](name: S): Option[E]
+  def typVariable[S](name: S, level: Int): Option[E]
 
   /**
     * anonymous variable

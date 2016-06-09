@@ -9,8 +9,8 @@ class TruncatedDistributionLang[E: ExprLang]
   def variable[S](name: S, typ: TD[E]): Option[TD[E]] =
     TD.optF(TD.map(typ)(l.variable(name, _)))
 
-  def typVariable[S](name: S): Option[TD[E]] =
-    l.typVariable(name) map ((e: E) => TD.atom(e))
+  def typVariable[S](name: S, level: Int): Option[TD[E]] =
+    l.typVariable(name, level) map ((e: E) => TD.atom(e))
 
   /**
     * anonymous variable

@@ -51,7 +51,7 @@ object TermExpr {
   }
 
   case class VarTyp(name: String) extends TermExpr {
-    def asTerm(implicit lp: LiteralParser): Term = SymbTyp(name)
+    def asTerm(implicit lp: LiteralParser): Term = SymbTyp(name, 0)
 
     override def toString = s"$name"
   }
