@@ -187,7 +187,8 @@ class DeducerFunc(applnWeight: Double,
                   cutoff: Double = 0.01,
                   feedbackScale: Double = 0.1,
                   abstractionWeight: Double = 1.0,
-                  genMemory: Double = 0.5) {
+                  genMemory: Double = 0.5,
+                  sampleWeight : Double = 0.5) {
   import Deducer._
 
   import HoTT.isVar
@@ -453,7 +454,7 @@ class DeducerFunc(applnWeight: Double,
 
     bucket.loops += 1
     
-    getPopulation
+    (getPopulation * sampleWeight) +++ (fd * (1.0 - sampleWeight))
   }
 
   def nextPopulation(popln: TermPopulation, batchSize: Int) = {
@@ -481,7 +482,7 @@ class DeducerFunc(applnWeight: Double,
     initDist: FD[Term],
     initBatch: Int,
     batchSize: Int,
-    halt: Boolean = (getElapsedTime > 5 * 60 * 1000),
+    halt: => Boolean =  getElapsedTime > 5 * 60 * 1000,
     save: TermPopulation => Unit = (_) => ()){
       
       import scala.collection.mutable.ArrayBuffer
@@ -604,6 +605,7 @@ class DeducerFunc(applnWeight: Double,
   }
 }
 
+
 case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                           types: FD[Typ[Term]],
                           thmsByProofs: FD[Typ[Term]],
@@ -629,6 +631,16 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                    vars,
                    lambdaWeight,
                    piWeight)
+  }
+  
+  def +++(that: FiniteDistribution[Term]) = {
+    val termsByType = (that.pmf groupBy(_.elem.typ)) mapValues (FD(_))
+    val types = (that mapOpt {
+      case tp : Typ[u] => Some(tp: Typ[Term])
+      case _ => None
+    }).normalized()
+    val thmsByProofs = that map (_.typ)
+    ++(TermPopulation(termsByType, types, thmsByProofs, vars, lambdaWeight, piWeight))
   }
 
   def *(scale: Double) =

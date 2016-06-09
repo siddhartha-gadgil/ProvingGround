@@ -63,6 +63,11 @@ object DedGrad {
             p(idProp)(samp)(TD.atom(t)).getFD(0.001)
         )) groupBy (_._1)
   }
+  
+  object AB{
+    val ded = new DeducerFunc(
+        0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)), 0.5, 0.01, 0.5, 0, 0.5, 0.1)
+  }
 
   object ABU {
     val deduc = new DeducerFunc(
