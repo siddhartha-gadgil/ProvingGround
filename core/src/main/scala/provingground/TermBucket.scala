@@ -59,7 +59,7 @@ class TermBucket {
   /**
     * types weighted by their frequency of generation as terms
     */
-  def getTypDist = fd(types, tot).flatten
+  def getTypDist = fd(types, tot).flatten.normalized()
 
   /**
     * inhabited types (i.e. theorems) weighted by their frequency of generation as terms,
