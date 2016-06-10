@@ -4,6 +4,18 @@ import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, _}
 
 import HoTT._
 
+import ammonite.ops._
+
+//import upickle.default._
+
+import scala.io.StdIn
+
+object TempMain extends App{
+  DedGrad.LongRun.buf.run
+  println(s"Long running process (about 10 hours)\nPress RETURN to stop...")
+  StdIn.readLine() // for the future transformation
+}
+
 object DedGrad {
   val A = "A" :: Type
 
@@ -22,6 +34,20 @@ object DedGrad {
   val f = "f" :: (A ->: A)
 
   val idA = lmbda(a)(a)
+
+  object LongRun{
+    val file = cwd / 'data / "ABrun.dist"
+
+    write.over(file, "# 10 hour run with A, B")
+
+    def save(fd: FD[Term]) = write.append(file, FreeExprLang.writeDist(fd))
+
+    val ded = new Deducer(vars = Vector(Weighted(A, 0.3), Weighted(B, 0.3)))
+
+    val longtime = 1000.toLong * 3600 * 10
+
+    val buf = new ded.BufferedRun(distAB, 10000000, 10000, _.getElapsedTime > longtime , save)
+  }
 
   object SimpleGrad {
     type Prob = Term => Double

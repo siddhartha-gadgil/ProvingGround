@@ -175,16 +175,16 @@ object Deducer {
   }
 }
 
-class Deducer(applnWeight: Double,
-              lambdaWeight: Double,
-              piWeight: Double,
-              varWeight: Double,
+class Deducer(applnWeight: Double = 0.2,
+              lambdaWeight: Double = 0.2,
+              piWeight: Double = 0.2,
+              varWeight: Double = 0.3,
               vars: Vector[Weighted[Term]] = Vector(),
               propDecay: Double = 0.5,
               cutoff: Double = 0.01,
               feedbackScale: Double = 0.1,
-              abstractionWeight: Double = 1.0,
-              genMemory: Double = 0.5,
+              abstractionWeight: Double = 0.3,
+              genMemory: Double = 0.8,
               sampleWeight: Double = 0.5) {
   import Deducer._
 
