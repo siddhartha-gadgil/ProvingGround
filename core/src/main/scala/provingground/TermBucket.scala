@@ -8,7 +8,7 @@ class TermBucket {
 
   var loops: Int = 0
 
-  var startTime : Long = System.currentTimeMillis()
+  var startTime: Long = System.currentTimeMillis()
 
   def elapsedTime = System.currentTimeMillis() - startTime
 
@@ -35,7 +35,7 @@ class TermBucket {
     termTypes.clear()
     types.clear()
   }
-  
+
   def clearAll() = {
     clear()
     loops = 0

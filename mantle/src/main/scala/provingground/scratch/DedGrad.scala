@@ -12,13 +12,13 @@ object DedGrad {
   val a = "a" :: A
 
   val b = "b" :: B
-  
+
   val distABU = FD.unif[Term](A, B, Type)
-  
+
   val distAB = FD.unif[Term](A, B)
-  
+
   val cnst = lmbda(a)(lmbda(b)(a))
-  
+
   val f = "f" :: (A ->: A)
 
   val idA = lmbda(a)(a)
@@ -26,23 +26,23 @@ object DedGrad {
   object SimpleGrad {
     type Prob = Term => Double
 
-    val deduc = new DeducerFunc(0.2, 0.2, 0.2, 0.3)
+    val deduc = new Deducer(0.2, 0.2, 0.2, 0.3)
 
-    val ev = deduc.memFunc(FD.unif(A, a, f))
+//    val ev = deduc.memFunc(FD.unif(A, a, f))
 
-    lazy val samp = (x: Term) => (ev sample 100000)(x)
-
-    lazy val sampLambda = deduc.lambdaFD(samp)(x)
-
-    val idProp = (fd: Prob) => (td: TD[Term]) => td
-
-    import deduc._
-
-    lazy val props: Vector[Prop] = Vector(funcProp _,
-                                      lambdaPropVar _,
-                                      lambdaPropValues _,
-                                      piPropVar _,
-                                      piPropValues _)
+    // lazy val samp = (x: Term) => (ev sample 100000)(x)
+    //
+    // lazy val sampLambda = deduc.lambdaFD(samp)(x)
+    //
+    // val idProp = (fd: Prob) => (td: TD[Term]) => td
+    //
+    // import deduc._
+    //
+    // lazy val props: Vector[Prop] = Vector(funcProp _,
+    //                                       lambdaPropVar _,
+    //                                       lambdaPropValues _,
+    //                                       piPropVar _,
+    //                                       piPropValues _)
 
     val x = A.Var
 
@@ -52,44 +52,51 @@ object DedGrad {
     type Prop =
       (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[Term]
 
-    lazy val backEg = deduc.backProp(0.5, deduc.applnInvImage)((x: Term) =>
-          samp(x))(TD.atom(lmbda(x)(f(x))))
-
-    def grad(p: Prop) =
-      (for (t <- terms) yield
-        (
-            p,
-            t,
-            p(idProp)(samp)(TD.atom(t)).getFD(0.001)
-        )) groupBy (_._1)
+    // lazy val backEg = deduc.backProp(0.5, deduc.applnInvImage)((x: Term) =>
+    //       samp(x))(TD.atom(lmbda(x)(f(x))))
+    //
+    // def grad(p: Prop) =
+    //   (for (t <- terms) yield
+    //     (
+    //         p,
+    //         t,
+    //         p(idProp)(samp)(TD.atom(t)).getFD(0.001)
+    //     )) groupBy (_._1)
   }
-  
-  object AB{
-    val ded = new DeducerFunc(
-        0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)), 0.5, 0.01, 0.5, 0, 0.5, 0.1)
+
+  object AB {
+    val ded = new Deducer(0.2,
+                          0.2,
+                          0.2,
+                          0.3,
+                          Vector(Weighted(A, 0.4), Weighted(B, 0.4)),
+                          0.5,
+                          0.01,
+                          0.5,
+                          0,
+                          0.5,
+                          0.1)
   }
 
   object ABU {
-    val deduc = new DeducerFunc(
+    val deduc = new Deducer(
         0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)))
 
-    
-    
-    val ev = deduc.memFunc(FD.unif(A, B, Type))
-
-    lazy val samp = ev sample 100000
-
-    def invIdA = deduc.applnInvImage(idA)
-
-    def invProdIdA = {
-      for ((f, x) <- invIdA) yield (Unify.appln(f, x), f, x)
-    }
-
-    def unifInvIdA =
-      for (result <- deduc.invImageMap.keys;
-           (f, x) <- deduc.invImageMap(result);
-           unif <- Unify.unify(result, idA, HoTT.isVar)) yield
-        UnifInv(idA, result, unif, f, x)
+    // val ev = deduc.memFunc(FD.unif(A, B, Type))
+    //
+    // lazy val samp = ev sample 100000
+    //
+    // def invIdA = deduc.applnInvImage(idA)
+    //
+    // def invProdIdA = {
+    //   for ((f, x) <- invIdA) yield (Unify.appln(f, x), f, x)
+    // }
+    //
+    // def unifInvIdA =
+    //   for (result <- deduc.invImageMap.keys;
+    //        (f, x) <- deduc.invImageMap(result);
+    //        unif <- Unify.unify(result, idA, HoTT.isVar)) yield
+    //     UnifInv(idA, result, unif, f, x)
   }
 }
 

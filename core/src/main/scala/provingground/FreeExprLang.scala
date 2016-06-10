@@ -118,7 +118,8 @@ case class Numeral(n: Int) extends FreeExprLang {
 
 object FreeExprLang {
 
-  def Univ(n: Int) = TypVariable("Type", n) // FIXME : should better encode universes
+  def Univ(n: Int) =
+    TypVariable("Type", n) // FIXME : should better encode universes
 
   implicit object FreeLang
       extends ExprLang[FreeExprLang]
@@ -220,6 +221,16 @@ object FreeExprLang {
 
   def readTerm(s: String): HoTT.Term =
     read[FreeExprLang](s).as[HoTT.Term](TermLang).get
+
+  def writeDist(fd: FiniteDistribution[HoTT.Term]) =
+    fd.pmf map {case Weighted(t, w) => PickledWeighted(writeTerm(t), w)}
+
+  def readDist(fd: Vector[PickledWeighted]) : FiniteDistribution[HoTT.Term] =
+    FiniteDistribution(
+      fd map {
+        case PickledWeighted(t, w) => Weighted(readTerm(t), w)
+      }
+    ).flatten
 
   def readTyp(s: String): HoTT.Typ[HoTT.Term] =
     read[FreeExprLang](s)

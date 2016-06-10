@@ -36,7 +36,7 @@ object Unify {
     }
 
   def unifyVector(xys: Vector[(Term, Term)],
-                freeVars: Term => Boolean): Option[Map[Term, Term]] =
+                  freeVars: Term => Boolean): Option[Map[Term, Term]] =
     xys match {
       case Vector() => None
       case Vector((x, y)) => unify(x, y, freeVars)
@@ -137,19 +137,33 @@ object Unify {
   import annotation.tailrec
 
   def purgeVector(r2: Term,
-                inv2: Set[(Term, Term)],
-                invVector: Vector[(Term, Set[(Term, Term)])],
-                freeVars: Term => Boolean) =
+                  inv2: Set[(Term, Term)],
+                  invVector: Vector[(Term, Set[(Term, Term)])],
+                  freeVars: Term => Boolean) =
     invVector.foldRight((r2, inv2)) {
       case (ri1, ri2) =>
         (ri2._1, purgeInv(ri1._1, ri1._2, ri2._1, ri2._2, freeVars))
     }
 
   @tailrec
+  def purgedPairsList(fxs: List[(Term, Term)],
+                      accum: List[(Term, Term)] =
+                        List()): List[(Term, Term)] = fxs match {
+    case List() => accum
+    case head :: tail =>
+      val needHead = (tail find ((fx) =>
+                !unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isEmpty)).isEmpty
+      if (needHead) purgedPairsList(tail, head :: accum)
+      else purgedPairsList(tail, accum)
+  }
+
+  def purgedPairs(fxs: Set[(Term, Term)]) = purgedPairsList(fxs.toList).toSet
+
+  @tailrec
   def purgedInvVector(invVector: Vector[(Term, Set[(Term, Term)])],
-                    accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
-                    freeVars: Term => Boolean =
-                      HoTT.isVar): Vector[(Term, Set[(Term, Term)])] =
+                      accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                      freeVars: Term => Boolean =
+                        HoTT.isVar): Vector[(Term, Set[(Term, Term)])] =
     invVector match {
       case Vector() => accum
       case head +: tail =>

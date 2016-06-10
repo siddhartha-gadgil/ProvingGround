@@ -305,14 +305,17 @@ object HoTT {
     * Symbolic types, which the compiler knows are types.
     *
     */
-  case class SymbTyp(name: AnySym, level: Int) extends Typ[Term] with Symbolic {
+  case class SymbTyp(name: AnySym, level: Int)
+      extends Typ[Term]
+      with Symbolic {
     lazy val typ = Universe(level)
 
     def newobj = SymbTyp(new InnerSym(this), level)
 
     type Obj = Term
 
-    def symbObj(name: AnySym) = if (level ==0) SymbObj(name, this) else SymbTyp(name, level - 1)
+    def symbObj(name: AnySym) =
+      if (level == 0) SymbObj(name, this) else SymbTyp(name, level - 1)
 
     override def toString = s"""${name.toString} : $UnivSym"""
 
