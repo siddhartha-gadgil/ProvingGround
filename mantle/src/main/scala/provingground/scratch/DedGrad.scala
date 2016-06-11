@@ -38,13 +38,27 @@ object DedGrad {
   object LongRun{
     val file = cwd / 'data / "ABrun.dist"
 
-    write.over(file, "# 10 hour run with A, B")
+    write.over(file, "# 10 hour run with A, B\n")
 
-    def save(fd: FD[Term]) = write.append(file, FreeExprLang.writeDist(fd))
+    val hfile = cwd / 'data / "ABrunHour.dist"
+
+    write.over(hfile, "# 1 hour run with A, B\n")
+
+
+    def save(fd: FD[Term]) = write.append(file, FreeExprLang.writeDist(fd)+"\n")
+
+    def hsave(fd: FD[Term]) = write.append(hfile, FreeExprLang.writeDist(fd)+"\n")
+
 
     val ded = new Deducer(vars = Vector(Weighted(A, 0.3), Weighted(B, 0.3)))
 
+    val dedh = new Deducer(vars = Vector(Weighted(A, 0.3), Weighted(B, 0.3)))
+
     val longtime = 1000.toLong * 3600 * 10
+
+    val hour = 1000.toLong * 3600
+
+    val hbuf = new dedh.BufferedRun(distAB, 100000, 5000, _.getElapsedTime > hour , hsave)
 
     val buf = new ded.BufferedRun(distAB, 10000000, 10000, _.getElapsedTime > longtime , save)
   }
