@@ -17,9 +17,13 @@ object WebServer {
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
-  val views: MutMap[String, String] = MutMap()
+  private val views: MutMap[String, String] = MutMap()
 
-  val texts: MutMap[String, String] = MutMap()
+  private val texts: MutMap[String, String] = MutMap()
+
+  def showView(name: String, data: String) = { views(name) = data }
+
+  def showText(name: String, data: String) = { texts(name) = data }
 
   def getView(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name

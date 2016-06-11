@@ -175,17 +175,17 @@ object Deducer {
   }
 }
 
-class Deducer(applnWeight: Double = 0.2,
-              lambdaWeight: Double = 0.2,
-              piWeight: Double = 0.2,
-              varWeight: Double = 0.3,
-              vars: Vector[Weighted[Term]] = Vector(),
-              propDecay: Double = 0.5,
-              cutoff: Double = 0.01,
-              feedbackScale: Double = 0.1,
-              abstractionWeight: Double = 0.3,
-              genMemory: Double = 0.8,
-              sampleWeight: Double = 0.5) {
+case class Deducer(applnWeight: Double = 0.2,
+                   lambdaWeight: Double = 0.2,
+                   piWeight: Double = 0.2,
+                   varWeight: Double = 0.3,
+                   vars: Vector[Weighted[Term]] = Vector(),
+                   propDecay: Double = 0.5,
+                   cutoff: Double = 0.01,
+                   feedbackScale: Double = 0.1,
+                   abstractionWeight: Double = 0.3,
+                   genMemory: Double = 0.8,
+                   sampleWeight: Double = 0.5) {
   import Deducer._
 
   import HoTT.isVar
@@ -283,8 +283,8 @@ class Deducer(applnWeight: Double = 0.2,
   class Sampler {
     object bucket extends TermBucket
 
-    val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
-      scala.collection.mutable.Map()
+    private val invImageMap: scala.collection.mutable.Map[
+        Term, Set[(Term, Term)]] = scala.collection.mutable.Map()
 
     def save(f: Term, x: Term, y: Term) =
       invImageMap(y) = invImageMap.getOrElse(y, Set()) + ((f, x))
@@ -312,7 +312,9 @@ class Deducer(applnWeight: Double = 0.2,
                      invImage(accum))
   }
 
-  def getSample(pd: PD[Term], n: Int, accum: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
+  def getSample(pd: PD[Term],
+                n: Int,
+                accum: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
     val sampler = new Sampler
     sampler.mkSample(pd, n)
     sampler.getPopulation(accum)
@@ -320,81 +322,88 @@ class Deducer(applnWeight: Double = 0.2,
 
   import TermBucket.{lambdaDist, piDist}
 
- def absFD(fd: FD[Term]) = {
-   val tfd = fd filter (isTyp) map { case tp: Typ[u] => tp }
-   (fd ++
-       ((lambdaDist(vars, lambdaWeight)(fd) ++
-               piDist(vars, piWeight)(tfd).map((t) => t: Term)) * abstractionWeight))
-     .normalized()
- }
+  def absFD(fd: FD[Term]) = {
+    val tfd = fd filter (isTyp) map { case tp: Typ[u] => tp }
+    (fd ++
+        ((lambdaDist(vars, lambdaWeight)(fd) ++
+                piDist(vars, piWeight)(tfd).map((t) => t: Term)) * abstractionWeight))
+      .normalized()
+  }
 
- def shiftFD(popln: TermPopulation, cumApplnInv : Vector[(Term, Set[(Term, Term)])] = Vector()) = {
-   val td = TD.PosFD(popln.feedback * feedbackScale)
-   val back =
-     backProp(propDecay, popln.applnInv)((t: Term) => popln.terms(t))(td)
-   back.getFD(cutoff).getOrElse(FD.empty[Term])
- }
+  def shiftFD(popln: TermPopulation,
+              cumApplnInv: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
+    val td = TD.PosFD(popln.feedback * feedbackScale)
+    val back =
+      backProp(propDecay, popln.applnInv)((t: Term) => popln.terms(t))(td)
+    back.getFD(cutoff).getOrElse(FD.empty[Term])
+  }
 
+  def nextDistribution(fd: FD[Term],
+                       n: Int,
+                       memory: Boolean = true,
+                       accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                       smooth: FD[Term] => FD[Term] = identity) = {
+    import Deducer.flow
 
- def nextDistribution(fd: FD[Term], n: Int, memory: Boolean = true,
-   accum: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
-   import Deducer.flow
+    val pop = getSample(fd, n, accum)
 
-   val pop = getSample(fd, n, accum)
+    val feed = pop.feedback
 
-   val feed = pop.feedback
+    val shift = shiftFD(pop)
 
-   val shift = shiftFD(pop)
+    val newPop = absFD(pop.terms)
 
-   val newPop = absFD(pop.terms)
+    val mixedPop =
+      if (memory)
+        (fd * genMemory ++ (newPop * (1 - genMemory)))
+      else newPop
 
-   val mixedPop =
-     if (memory)
-      (fd * genMemory ++ (newPop * (1 - genMemory)))
-    else newPop
+    (smooth(flow(mixedPop, shift)), pop.applnInvMap)
+  }
 
-  (flow(mixedPop, shift), pop.applnInvMap)
+  class BufferedRun(initDist: FD[Term],
+                    initBatch: Int,
+                    batchSize: Int,
+                    halt: => (BufferedRun => Boolean) = (bfr) =>
+                      bfr.getElapsedTime > (1000 * 5 * 60),
+                    save: FD[Term] => Unit = (_) => (),
+                    smooth: FD[Term] => FD[Term] = identity) { self =>
 
- }
+    import scala.collection.mutable.ArrayBuffer
+    private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
- class BufferedRun(initDist: FD[Term],
-                   initBatch: Int,
-                   batchSize: Int,
-                   halt: => (BufferedRun => Boolean) = (bfr) => bfr.getElapsedTime > (1000* 5 * 60),
-                   save: FD[Term] => Unit = (_) => ()) {self =>
+    def getTimeSeries = distBuffer.toVector
 
-   import scala.collection.mutable.ArrayBuffer
-   var distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
+    private var runHook: Boolean = true
 
-   def getTimeSeries = distBuffer.toVector
+    def stop() = { runHook = false }
 
-   var startTime: Long = System.currentTimeMillis()
+    val startTime: Long = System.currentTimeMillis()
 
-   def getElapsedTime = System.currentTimeMillis() - startTime
+    def getElapsedTime = System.currentTimeMillis() - startTime
 
-   var loops: Int = 0
+    private var loops: Int = 0
 
-   def getLoops = loops
+    def getLoops = loops
 
     def run =
       Future {
-        var mutDistAccum = nextDistribution(initDist, initBatch, false)
+        var mutDistAccum =
+          nextDistribution(initDist, initBatch, false, Vector(), smooth)
         distBuffer.append(mutDistAccum._1)
         save(mutDistAccum._1)
-        while (!halt(self)) {
-          loops +=1
+        while (runHook && !halt(self)) {
+          loops += 1
           println(s"Time : $getElapsedTime; Loops: $getLoops")
-          val (dist, accum) = nextDistribution(mutDistAccum._1, batchSize, true, mutDistAccum._2)
+          val (dist, accum) = nextDistribution(
+              mutDistAccum._1, batchSize, true, mutDistAccum._2, smooth)
           distBuffer append (dist)
-          save (dist)
-           mutDistAccum = (dist, accum)
-         }
-         println(s"Halted: (_, $initBatch, $batchSize)")
+          save(dist)
+          mutDistAccum = (dist, accum)
+        }
+        println(s"Halted: (_, $initBatch, $batchSize)")
       }
- }
-
-
-
+  }
 
   def funcUniPropTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
       fd: Prob, invImage: Term => Set[(Term, Term)]): Term => TD[Term] =
@@ -407,7 +416,6 @@ class Deducer(applnWeight: Double = 0.2,
         }
       TD.bigSum(tds)
     }
-
 
   def funcUniProp(backProp: => (Prob => TD[Term] => TD[Term]))(
       fd: Prob, invImage: Term => Set[(Term, Term)])(td: TD[Term]) =
@@ -505,8 +513,7 @@ class Deducer(applnWeight: Double = 0.2,
       td: TD[Term]) =
     td flatMap (piPropValuesTerm(backProp)(fd))
 
-  def backProp(
-      epsilon: Double, invImage: Term => Set[(Term, Term)])(
+  def backProp(epsilon: Double, invImage: Term => Set[(Term, Term)])(
       fd: Prob): TD[Term] => TD[Term] =
     (td) =>
       td <*> (1 - epsilon) <+>
@@ -643,7 +650,6 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
   import TermBucket._
 
   import Deducer._
-
 
   val applnInv = (t: Term) => unifInv(t, applnInvMap)
 

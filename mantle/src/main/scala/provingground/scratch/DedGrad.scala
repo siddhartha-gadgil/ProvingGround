@@ -10,7 +10,7 @@ import ammonite.ops._
 
 import scala.io.StdIn
 
-object TempMain extends App{
+object TempMain /*extends App*/ {
   DedGrad.LongRun.buf.run
   println(s"Long running process (about 10 hours)\nPress RETURN to stop...")
   StdIn.readLine() // for the future transformation
@@ -35,7 +35,7 @@ object DedGrad {
 
   val idA = lmbda(a)(a)
 
-  object LongRun{
+  object LongRun {
     val file = cwd / 'data / "ABrun.dist"
 
     write.over(file, "# 10 hour run with A, B\n")
@@ -44,11 +44,11 @@ object DedGrad {
 
     write.over(hfile, "# 1 hour run with A, B\n")
 
+    def save(fd: FD[Term]) =
+      write.append(file, FreeExprLang.writeDist(fd) + "\n")
 
-    def save(fd: FD[Term]) = write.append(file, FreeExprLang.writeDist(fd)+"\n")
-
-    def hsave(fd: FD[Term]) = write.append(hfile, FreeExprLang.writeDist(fd)+"\n")
-
+    def hsave(fd: FD[Term]) =
+      write.append(hfile, FreeExprLang.writeDist(fd) + "\n")
 
     val ded = new Deducer(vars = Vector(Weighted(A, 0.3), Weighted(B, 0.3)))
 
@@ -58,9 +58,11 @@ object DedGrad {
 
     val hour = 1000.toLong * 3600
 
-    val hbuf = new dedh.BufferedRun(distAB, 100000, 5000, _.getElapsedTime > hour , hsave)
+    val hbuf = new dedh.BufferedRun(
+        distAB, 100000, 5000, _.getElapsedTime > hour, hsave)
 
-    val buf = new ded.BufferedRun(distAB, 10000000, 10000, _.getElapsedTime > longtime , save)
+    val buf = new ded.BufferedRun(
+        distAB, 10000000, 10000, _.getElapsedTime > longtime, save)
   }
 
   object SimpleGrad {
