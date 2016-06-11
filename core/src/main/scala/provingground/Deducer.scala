@@ -184,8 +184,7 @@ case class Deducer(applnWeight: Double = 0.2,
                    cutoff: Double = 0.01,
                    feedbackScale: Double = 0.1,
                    abstractionWeight: Double = 0.3,
-                   genMemory: Double = 0.8,
-                   sampleWeight: Double = 0.5) {
+                   genMemory: Double = 0.8) {
   import Deducer._
 
   import HoTT.isVar
