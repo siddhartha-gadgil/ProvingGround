@@ -152,6 +152,9 @@ lazy val mantle = (project in file("mantle")).
           s"""ammonite.repl.Main(predef = "$initCommands").run() """).
         dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(translation).dependsOn(deepwalk)
 
+lazy val exploring = project.
+              settings(name := "ProvingGround-exploring").dependsOn(coreJVM).dependsOn(mantle)
+
 lazy val nlp = (project in file("nlp")).
         settings(name := "ProvingGround-NLP").
         settings(commonSettings : _*).

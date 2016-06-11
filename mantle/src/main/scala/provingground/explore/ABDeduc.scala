@@ -28,7 +28,9 @@ object ABDeduc{
 
   val idA = lmbda(a)(a)
 
-  val ded = Deducer()
+  val varsAB = Vector(A, B) map (Weighted[Term](_, 0.3))
+
+  val ded = Deducer(vars = varsAB)
 
   val X = "X" :: Type
 
@@ -42,13 +44,19 @@ object ABDeduc{
 
   import FreeExprLang.writeDist
 
-  def save(t: FD[Term]) = write.append(dir /"AB.fds", writeDist(t))
+  def save(t: FD[Term]) = write.append(dir /"AB.fds", writeDist(t)+"\n")
 
-  def saveFine(t: FD[Term]) = write.append(dir /"ABfine.fds", writeDist(t))
+  def save2(t: FD[Term]) = write.append(dir /"AB2.fds", writeDist(t)+"\n")
+
+  def saveFine(t: FD[Term]) = write.append(dir /"ABfine.fds", writeDist(t)+"\n")
 
   val buf = new ded.BufferedRun(distAB, 10000000, 100000, (_) => false, save, smooth)
 
   val bufQuick = new ded.BufferedRun(distAB, 100000, 10000, (_) => false, (_) => (), smooth)
 
   val bufFine = new dedFine.BufferedRun(distAB, 10000000, 100000, (_) => false, saveFine, smooth)
+
+  val twodays = 1000.toLong * 3600 * 24 * 2
+
+  val buf2Days = new ded.BufferedRun(distAB, 10000000, 100000, (b) => b.getElapsedTime > twodays, save2, smooth)
 }

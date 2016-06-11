@@ -385,8 +385,9 @@ case class Deducer(applnWeight: Double = 0.2,
 
     def getLoops = loops
 
-    def run =
-      Future {
+    def run = Future(await)
+    
+    def await = {
         var mutDistAccum =
           nextDistribution(initDist, initBatch, false, Vector(), smooth)
         distBuffer.append(mutDistAccum._1)
