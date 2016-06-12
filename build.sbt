@@ -27,12 +27,15 @@ lazy val commonSettings = baseSettings ++ Seq(
 
 val akkaV = "2.4.6"
 
+assemblyMergeStrategy in assembly := {
+  case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
+}
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi" % "ammonite-repl" % "0.6.0" % "test"  cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
-    "org.reactivemongo" %% "reactivemongo" % "0.11.6",
+    "org.reactivemongo" %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
     "com.typesafe.akka" %% "akka-slf4j" % akkaV,
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
@@ -47,8 +50,8 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi" %% "ammonite-ops" % "0.6.0",
 //    "com.lihaoyi" %% "ammonite-shell" % "0.6.0",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-    "org.slf4j" % "slf4j-api" %"1.7.13",
-    "org.slf4j" % "slf4j-nop" %"1.7.13",
+    "org.slf4j" % "slf4j-api" %"1.7.16",
+//    "org.slf4j" % "slf4j-nop" %"1.7.16",
     "com.lihaoyi" %% "pprint" % "0.3.8"),
     resources in Compile += (fastOptJS in (client, Compile)).value.data
   )
