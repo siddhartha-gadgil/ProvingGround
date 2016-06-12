@@ -5,7 +5,7 @@ import scala.language.implicitConversions
 import scala.util.Try
 
 /**
-  * Translator from an input I to an output O, designed to be built recursively.
+  * TrnsLtr from an input I to an output O, designed to be built recursively.
   *
   *
   * ==Translation by Splitting and joining==
@@ -21,9 +21,9 @@ import scala.util.Try
   *
   * Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).
   *
-  * ==Combinations, Basic Translators==
+  * ==Combinations, Basic TrnsLtrs==
   *
-  * Translators are built by combining others by OrElse, starting with basic translators specified by a function I => Option[O].
+  * TrnsLtrs are built by combining others by OrElse, starting with basic translators specified by a function I => Option[O].
   * One can instead start with an empty translator.
   *
   * Note that we can restrict the domain or extend the codomain of a translator by
@@ -50,11 +50,11 @@ import scala.util.Try
   * scala> case object D extends A
   * defined object D
   *
-  * scala> val tt = Translator.Simple((x: A) => Some(x))
-  * tt: provingground.Translator.Simple[A,A] = <function1>
+  * scala> val tt = TrnsLtr.Simple((x: A) => Some(x))
+  * tt: provingground.TrnsLtr.Simple[A,A] = <function1>
   *
   * scala> val t = tt.<<>>(B.unapply _ , (C.apply _).tupled)
-  * t: provingground.Translator.OrElse[A,A] = <function1>
+  * t: provingground.TrnsLtr.OrElse[A,A] = <function1>
   *
   * scala> t (B(D, D))
   * res1: Option[A] = Some(C(D,D))
@@ -62,13 +62,13 @@ import scala.util.Try
   *
   * }}}
   */
-trait Translator[I, O] extends (I => Option[O]) { self =>
+trait TrnsLtr[I, O] extends (I => Option[O]) { self =>
 
   /**
     * the abstract method translating using an in general different translator on sub-inputs
     * @param rec The translator used on sub-inputs
     */
-  def recTranslate(rec: => Translator[I, O]): I => Option[O]
+  def recTranslate(rec: => TrnsLtr[I, O]): I => Option[O]
 
   /**
     * returns the optional result of translation.
@@ -78,23 +78,23 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
   /**
     * OrElse combinator, tries other translator if the first fails.
     */
-  def |(that: Translator[I, O]) = Translator.OrElse(self, that)
+  def |(that: TrnsLtr[I, O]) = TrnsLtr.OrElse(self, that)
 
   /**
     * OrElse combinator, tries other translator first, then this one.
     * Other translator must be preprended
     */
-  def |:(that: Translator[I, O]) = Translator.OrElse(that, self)
+  def |:(that: TrnsLtr[I, O]) = TrnsLtr.OrElse(that, self)
 
   def ||[X >: I, Y <: O](that: X => Option[Y]) =
-    |(Translator.Simple[I, O](that))
+    |(TrnsLtr.Simple[I, O](that))
 
   /**
     * mixin translator obtained by optionally pattern matching and optionally joining.
     * this is tried if the present one fails.
     */
   def <|>(split: I => Option[I], join: O => Option[O]) =
-    |(Translator.Junction(split, join))
+    |(TrnsLtr.Junction(split, join))
 
   /**
     * mixin translator obtained by optionally pattern matching and optionally joining.
@@ -111,7 +111,7 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
       split: J => Option[XI],
       join: XO => Option[O]
   )(implicit oml: OptMapLift[I, O, XI, XO]) =
-    |(Translator.MultiJunction[I, O, J, XI, XO](split, join))
+    |(TrnsLtr.MultiJunction[I, O, J, XI, XO](split, join))
 
   /**
     * mixin translator after splitting and joining with _different_ input and output  types;
@@ -122,8 +122,8 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
       subTranslate: II => Option[OO],
       join: XO => Option[O]
   )(implicit oml: OptMapLift[II, OO, XI, XO]) =
-    self | Translator.Simple(
-        Translator.HybridJunction(split, subTranslate, join))
+    self | TrnsLtr.Simple(
+        TrnsLtr.HybridJunction(split, subTranslate, join))
 
   /**
     * mixin translator obtained by optionally splitting and optionally joining.
@@ -150,7 +150,7 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
     * the new translator (which is a prefix) is tried first.
     */
   def <|>:(split: I => Option[I], join: O => Option[O]) =
-    |:(Translator.Junction(split, join))
+    |:(TrnsLtr.Junction(split, join))
 
   /**
     * mixin translator obtained by optionally splitting and optionally joining.
@@ -160,7 +160,7 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
       split: J => Option[XI],
       join: XO => Option[O]
   )(implicit oml: OptMapLift[I, O, XI, XO]) =
-    |:(Translator.MultiJunction[I, O, J, XI, XO](split, join))
+    |:(TrnsLtr.MultiJunction[I, O, J, XI, XO](split, join))
 
   /**
     * mixin translator after splitting and joining with _different_ input and output  types;
@@ -172,8 +172,8 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
       join: XO => Option[O]
   )(implicit oml: OptMapLift[II, OO, XI, XO]) =
     |:(
-        Translator.Simple(
-            Translator.HybridJunction(split, subTranslate, join)
+        TrnsLtr.Simple(
+            TrnsLtr.HybridJunction(split, subTranslate, join)
         ))
 
   /**
@@ -199,42 +199,42 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
   /**
     * Restricts domain and expands codomain by treating this as simple a function I => Option[O]
     */
-  def as[X <: I, Y >: O] = Translator.Simple[X, Y](self)
+  def as[X <: I, Y >: O] = TrnsLtr.Simple[X, Y](self)
 }
 
-object Translator {
+object TrnsLtr {
 
   /**
     * Empty translator, always fails
     */
-  case class Empty[I, O]() extends Translator[I, O] {
-    def recTranslate(rec: => Translator[I, O]) = (_: I) => None
+  case class Empty[I, O]() extends TrnsLtr[I, O] {
+    def recTranslate(rec: => TrnsLtr[I, O]) = (_: I) => None
   }
 
   /**
     * Simple translator given by a function. Ignores sub-translator
     */
-  case class Simple[I, O](translate: I => Option[O]) extends Translator[I, O] {
-    def recTranslate(rec: => Translator[I, O]) = translate
+  case class Simple[I, O](translate: I => Option[O]) extends TrnsLtr[I, O] {
+    def recTranslate(rec: => TrnsLtr[I, O]) = translate
   }
 
   /**
     * Tries the first translator at top level, then the second. Is recursive.
     */
-  case class OrElse[I, O](first: Translator[I, O], second: Translator[I, O])
-      extends Translator[I, O] {
-    def recTranslate(rec: => Translator[I, O]) =
+  case class OrElse[I, O](first: TrnsLtr[I, O], second: TrnsLtr[I, O])
+      extends TrnsLtr[I, O] {
+    def recTranslate(rec: => TrnsLtr[I, O]) =
       (inp: I) =>
         first.recTranslate(rec)(inp) orElse second.recTranslate(rec)(inp)
   }
 
   /**
-    * Translator built from pattern matching and joining, but without any actual splitting.
+    * TrnsLtr built from pattern matching and joining, but without any actual splitting.
     * In case of a match, applies sub-translator to result.
     */
   case class Junction[I, O](split: I => Option[I], join: O => Option[O])
-      extends Translator[I, O] {
-    def recTranslate(rec: => Translator[I, O]) =
+      extends TrnsLtr[I, O] {
+    def recTranslate(rec: => TrnsLtr[I, O]) =
       (inp: I) => split(inp) flatMap ((x: I) => rec(x).flatMap(join(_)))
   }
 
@@ -252,9 +252,9 @@ object Translator {
       split: J => Option[XI],
       join: XO => Option[O]
   )(implicit oml: OptMapLift[I, O, XI, XO])
-      extends Translator[I, O] {
+      extends TrnsLtr[I, O] {
 
-    def recTranslate(rec: => Translator[I, O]) = { (inp: I) =>
+    def recTranslate(rec: => TrnsLtr[I, O]) = { (inp: I) =>
       Try(
           split(inp.asInstanceOf[J]) flatMap ((x: XI) =>
                 oml.lift(rec.apply)(x).flatMap(join(_)))

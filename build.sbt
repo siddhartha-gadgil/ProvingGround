@@ -153,7 +153,9 @@ lazy val mantle = (project in file("mantle")).
         dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(translation).dependsOn(deepwalk)
 
 lazy val exploring = project.
-              settings(name := "ProvingGround-exploring").dependsOn(coreJVM).dependsOn(mantle)
+              settings(name := "ProvingGround-exploring").
+              dependsOn(coreJVM).dependsOn(mantle).
+              enablePlugins(JavaAppPackaging)
 
 lazy val nlp = (project in file("nlp")).
         settings(name := "ProvingGround-NLP").
