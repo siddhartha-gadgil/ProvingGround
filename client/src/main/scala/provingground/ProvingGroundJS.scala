@@ -29,7 +29,7 @@ object ProvingGroundJS extends js.JSApp {
 //      JsTest.jstest()
   }
 
-  val jsDiv = dom.document.getElementById("jsdiv")
+  lazy val jsDiv = dom.document.getElementById("jsdiv")
 
   def insertDiv(div: Div) =
     jsDiv.appendChild(div)
@@ -37,16 +37,22 @@ object ProvingGroundJS extends js.JSApp {
   def insertDiv(futDiv: Future[Div]) =
     futDiv.foreach(jsDiv.appendChild(_))
 
-  // Newer approach  
+  def welcome = div("Dynamic view started")
+
+  // Newer approach
+
+  @JSExport
+  def dynamic() : Unit = {
 
   val jsElems =
     dom.document.getElementsByClassName("js-element") map (_.asInstanceOf[
-            Element])
+          Element])
 
-  val script: Map[String, Element] = Map()
+    val script: Map[String, Element] = Map("welcome" -> welcome.render)
 
   jsElems foreach ((elem) => {
         elem.innerHTML = ""
         elem.appendChild(script(elem.getAttribute("data-script")))
-      })
+        })
+      }
 }

@@ -27,7 +27,29 @@ object WebServer {
 
   def getView(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name
-    views.get(index).getOrElse(s"<h2>No view with index <i>$name</i></h2>")
+    val div = views.get(index).getOrElse(
+      s"""<h2>No view with index <i>$name</i></h2>
+      <div class="js-element" data-script="welcome"></div>
+      <script type="text/javascript">
+        provingground.ProvingGroundJS().dynamic()
+      </script>
+
+      """)
+    val page =
+      s"""
+      <html>
+      <head>
+      <title>Proving-Ground : Automating theorem proving</title>
+      </head>
+      <body>
+      <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
+      $div
+
+      </body>
+      </html>
+      """
+
+    page
   }
 
   def getText(name: String) = {
@@ -47,7 +69,10 @@ object WebServer {
     }
   }
 
-  val route = htmlRoute ~ textRoute
+  val resourceRoute = path("resource" / Segment){ name =>
+      getFromResource(name)}
+
+  val route = htmlRoute ~ textRoute ~ resourceRoute
 
   val helloRoute = path("hello") {
     get {
