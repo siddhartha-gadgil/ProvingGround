@@ -11,13 +11,15 @@ import scala.util.Try
 
 import scala.concurrent._
 
+import upickle.default._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import org.scalajs.dom.ext._
 
 import HoTT._
 
-import FreeExprLang.{readTerm, readDist}
+//import FreeExprLang.{readTerm, readDist}
 
 
 object ProvingGroundJS extends js.JSApp {
@@ -56,12 +58,12 @@ object ProvingGroundJS extends js.JSApp {
     }
   }
 
-  def fdView(fd: FiniteDistribution[Term]) = {
-    def row(wt: Weighted[Term]) =
-      tr(td(wt.elem.toString), td(wt.elem.typ.toString), td(-math.log(wt.weight)))
-    
-    val rows = fd.pmf map (row)
-      
+  def fdView(fd: Vector[(String, String, Double)]) = {
+    def row(wt: (String, String, Double)) =
+      tr(td(wt._1), td(wt._2), td(-math.log(wt._3)))
+
+    val rows = fd map (row)
+
     div(
         table(
             caption("Entropies of terms"),
@@ -72,16 +74,16 @@ object ProvingGroundJS extends js.JSApp {
                 )
             ).render
   }
-    
-  
-  
+
+
+
   @JSExport
   def showFD() = {
     val jsDiv = dom.document.getElementById("finite-distribution")
-    Ajax.get("../terms-data").onSuccess{ 
+    Ajax.get("../terms-data").onSuccess{
       case xhr =>
         jsDiv.appendChild(
-        fdView(readDist(xhr.responseText))
+        fdView(read[Vector[(String, String, Double)]](xhr.responseText))
       )
       }
   }

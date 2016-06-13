@@ -13,6 +13,10 @@ import scala.collection.mutable.{Map => MutMap}
 
 import HoTT._
 
+import FansiShow._
+
+import upickle.default._
+
 //import scalatags.Text.all._
 
 object WebServer {
@@ -50,7 +54,7 @@ object WebServer {
       """)
     makePage(div)
   }
-  
+
   def makePage(divs: String) =
     s"""
       <!DOCTYPE html>
@@ -75,24 +79,27 @@ object WebServer {
         """
     makePage(divs)
   }
-  
-  var fdTerms : FiniteDistribution[Term] = FiniteDistribution.empty[Term] 
-  
-  def showDist(fd: FiniteDistribution[Term]) = (fdTerms == fd)
-  
+
+  var fdVec : Vector[(String, String, Double)] = Vector()
+
+  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) =
+    {
+      fdVec = fd.pmf map ((wt) => (wt.elem.toString, wt.elem.typ.toString, wt.weight))
+    }
+
   import FreeExprLang.writeDist
-  
-  val fdPath = 
+
+  val fdRoute =
     path("terms") {
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, termsView))
       }
     } ~ path("terms-data") {
       get{
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, writeDist(fdTerms)))
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(fdVec)))
       }
     }
-  
+
   val dummy =
     """
     <div id ="dummy-space">The dummy space</div>
@@ -141,7 +148,7 @@ object WebServer {
 
   def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
 
-  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute)
+  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
 
   val helloRoute = path("hello") {
     get {
