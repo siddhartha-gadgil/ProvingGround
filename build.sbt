@@ -153,11 +153,13 @@ lazy val mantle = (project in file("mantle")).
 //        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Main(predef = "$initCommands").run() """).
-        dependsOn(coreJVM).dependsOn(functionfinder).dependsOn(translation).dependsOn(deepwalk)
+        dependsOn(coreJVM).dependsOn(functionfinder).
+        dependsOn(translation).dependsOn(deepwalk).dependsOn(exploring)
 
 lazy val exploring = project.
-              settings(name := "ProvingGround-exploring").
-              dependsOn(coreJVM).dependsOn(mantle).
+              settings(name := "ProvingGround-exploring",
+              libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.6.0").
+              dependsOn(coreJVM).
               enablePlugins(JavaAppPackaging)
 
 lazy val nlp = (project in file("nlp")).
@@ -179,8 +181,8 @@ lazy val translation = (project in file("translation")).
 lazy val deepwalk = (project in file("deepwalk")).
       settings(name := "DeepWalk4s",
       libraryDependencies ++= Seq(
-        "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.8",
-        "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.8",
+        "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.10",
+        "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10",
         "org.nd4j" % "nd4j-x86" % "0.4-rc3.8",
         "org.nd4j" % "nd4s_2.11" % "0.4-rc3.8"
       )).
