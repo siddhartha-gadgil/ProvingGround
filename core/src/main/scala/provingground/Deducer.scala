@@ -386,7 +386,17 @@ case class Deducer(applnWeight: Double = 0.2,
     def getLoops = loops
 
     def run = Future(await)
-    
+
+    def iterator = {
+      val start = nextDistribution(initDist, initBatch, false, Vector(), smooth)
+      def func(pair: (FD[Term], Vector[(Term, Set[(Term, Term)])])) :
+          (FD[Term], Vector[(Term, Set[(Term, Term)])]) =
+            nextDistribution(
+                pair._1, batchSize, true, pair._2, smooth)
+
+      Iterator.iterate(start)(func)
+    }
+
     def await = {
         var mutDistAccum =
           nextDistribution(initDist, initBatch, false, Vector(), smooth)
