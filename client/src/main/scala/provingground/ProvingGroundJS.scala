@@ -39,6 +39,17 @@ object ProvingGroundJS extends js.JSApp {
 
   def welcome = div("Dynamic view started")
 
+
+  @JSExport
+  def dummyUpdate() = {
+    val jsDiv = dom.document.getElementById("dummy-space")
+    jsDiv.appendChild(div("updating without query").render)
+    Ajax.get("../../data/dummy").onSuccess{ case xhr =>
+        jsDiv.appendChild(
+        div(xhr.responseText).render
+      )
+    }
+  }
   // Newer approach
 
   @JSExport

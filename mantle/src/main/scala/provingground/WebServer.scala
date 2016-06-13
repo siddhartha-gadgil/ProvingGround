@@ -2,6 +2,7 @@ package provingground
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import scala.io.StdIn
 import akka.actor.ActorSystem
@@ -21,9 +22,17 @@ object WebServer {
 
   private val texts: MutMap[String, String] = MutMap()
 
+  def dummyData = () => s"Dummy data at ${System.currentTimeMillis / 1000}"
+
+  private val data: MutMap[String, () => String] = MutMap()
+
   def showView(name: String, data: String) = { views(name) = data }
 
   def showText(name: String, data: String) = { texts(name) = data }
+
+  def showData(name: String, dataVal: () => String) = {data(name) = dataVal}
+
+  def getData(name: String) = data.getOrElse(name, () => "no data")()
 
   def getView(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name
@@ -37,6 +46,7 @@ object WebServer {
       """)
     val page =
       s"""
+      <!DOCTYPE html>
       <html>
       <head>
       <title>Proving-Ground : Automating theorem proving</title>
@@ -51,6 +61,24 @@ object WebServer {
 
     page
   }
+
+  val dummy =
+    """
+    <!DOCTYPE html>
+    <html>
+    <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
+    <div id ="dummy-space">The dummy space</div>
+    <script type="text/javascript">
+      provingground.ProvingGroundJS().dummyUpdate()
+    </script>
+    </html>
+    """
+
+  def showDummy = {
+    showView("dummy", dummy)
+    showData("dummy", dummyData)
+  }
+
 
   def getText(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name
@@ -69,10 +97,23 @@ object WebServer {
     }
   }
 
+  val dataRoute = path("data" / Segment) { name =>
+    get {
+      complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, getData(name)))
+    }
+  }
+
   val resourceRoute = path("resource" / Segment){ name =>
       getFromResource(name)}
 
-  val route = htmlRoute ~ textRoute ~ resourceRoute
+  var otherRoutes: Option[Route] = None
+
+  def addRoute(route: Route) =
+    (otherRoutes = (otherRoutes map (_ ~ route)).orElse(Some(route)))
+
+  def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
+
+  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute)
 
   val helloRoute = path("hello") {
     get {

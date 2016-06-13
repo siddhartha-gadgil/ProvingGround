@@ -9,6 +9,10 @@ tmpBin/
 
 .tmpBin/
 
+*.dist
+
+*.fds
+
 bin/
 
 doc/*.log
