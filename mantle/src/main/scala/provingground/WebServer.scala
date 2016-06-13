@@ -11,6 +11,8 @@ import akka.http.scaladsl.model._
 
 import scala.collection.mutable.{Map => MutMap}
 
+import LatexFormat.latex
+
 import HoTT._
 
 import FansiShow._
@@ -55,12 +57,32 @@ object WebServer {
     makePage(div)
   }
 
+  val mathjax=
+    """
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+"""
+
   def makePage(divs: String) =
     s"""
       <!DOCTYPE html>
       <html>
       <head>
       <title>Proving-Ground : Automating theorem proving</title>
+      $mathjax
       </head>
       <body>
       <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
@@ -84,7 +106,7 @@ object WebServer {
 
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) =
     {
-      fdVec = fd.pmf map ((wt) => (wt.elem.toString, wt.elem.typ.toString, wt.weight))
+      fdVec = fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
     }
 
   import FreeExprLang.writeDist

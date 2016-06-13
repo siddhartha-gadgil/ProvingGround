@@ -44,6 +44,44 @@ object PrintFormat extends TermRec[String] {
   def univ(n: Int) = s"${UnivSym}"
 }
 
+object LatexFormat extends TermRec[String] {
+  def latex(t: Term) = "$"+apply(t)+"$"
+
+  val specialTerms: PartialFunction[Term, String] = Map()
+
+  def fromString(str: String)(implicit typ: Typ[Term]): String = str
+
+  def appln(func: String, arg: String): String = func + "(" + arg + ")"
+
+  def arrow(dom: String, codom: String): String =
+    dom + """ \to """ + codom
+
+  def lambda(variable: String, typ: String, value: String): String =
+    s"""($variable : $typ) \mapsto  $value"""
+
+  def equality(dom: String, lhs: String, rhs: String) =
+    s"$lhs = $rhs (in $dom)"
+
+  def pi(fibre: String): String = s"""\\prod\limits_$fibre"""
+
+  def sigma(fibre: String): String = s"""\\sum\limits_$fibre"""
+
+  def plus(first: String, scnd: String): String = first + " + " + scnd
+
+  def pair(first: String, second: String) =
+    "(" + first + " , " + second + ")"
+
+  def symbobj(term: SymbObj[Term]): String =
+    term.name.toString
+
+  def symbtyp(typ: SymbTyp): String = typ.name.toString
+
+  def symbolic(name: AnySym, typ: Typ[Term]): String =
+    name.toString
+
+  def univ(n: Int) = "\\mathcal{U}"
+}
+
 object FansiFormat extends TermRec[fansi.Str] {
   import fansi.Str
   import fansi.Color._
@@ -87,6 +125,7 @@ object FansiFormat extends TermRec[fansi.Str] {
 
   def univ(n: Int) = LightCyan(Str(UnivSym))
 }
+
 
 trait FansiShow[-U] {
   def show(x: U): String
