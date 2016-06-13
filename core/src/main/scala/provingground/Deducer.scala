@@ -371,6 +371,8 @@ case class Deducer(applnWeight: Double = 0.2,
     import scala.collection.mutable.ArrayBuffer
     private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
+    def saveMem(fd: FD[Term]) = {distBuffer.append(fd); save(fd)}
+
     def getTimeSeries = distBuffer.toVector
 
     private var runHook: Boolean = true
@@ -387,7 +389,7 @@ case class Deducer(applnWeight: Double = 0.2,
 
     def run = Future(await)
 
-    def iterator = {
+    def iteratorPair = {
       val start = nextDistribution(initDist, initBatch, false, Vector(), smooth)
       def func(pair: (FD[Term], Vector[(Term, Set[(Term, Term)])])) :
           (FD[Term], Vector[(Term, Set[(Term, Term)])]) =
@@ -396,6 +398,19 @@ case class Deducer(applnWeight: Double = 0.2,
 
       Iterator.iterate(start)(func)
     }
+
+    def iterator = iteratorPair map (_._1)
+
+    def iteratorWhile(p : FD[Term] => Boolean = (_) =>  runHook && !halt(self)) =
+      iterator.takeWhile(p)
+
+    def iterate(s: FD[Term] => Unit = saveMem) = Future(iterator.foreach(s))
+
+    def iterateWhile(p : FD[Term] => Boolean = (_) =>  runHook && !halt(self))(
+      s: FD[Term] => Unit = saveMem) =
+      Future(iteratorWhile(p).foreach(s))
+
+    def awaitIterate = iteratorWhile().foreach(saveMem)
 
     def await = {
         var mutDistAccum =
