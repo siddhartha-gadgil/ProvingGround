@@ -7,6 +7,8 @@ import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 import scala.util.Try
 
+//import FansiShow._
+
 import scala.concurrent._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -14,6 +16,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom.ext._
 
 import HoTT._
+
+import FreeExprLang.{readTerm, readDist}
+
 
 object ProvingGroundJS extends js.JSApp {
   def main(): Unit = {
@@ -50,7 +55,36 @@ object ProvingGroundJS extends js.JSApp {
       )
     }
   }
-  // Newer approach
+
+  def fdView(fd: FiniteDistribution[Term]) = {
+    def row(wt: Weighted[Term]) =
+      tr(td(wt.elem.toString), td(wt.elem.typ.toString), td(-math.log(wt.weight)))
+    
+    val rows = fd.pmf map (row)
+      
+    div(
+        table(
+            caption("Entropies of terms"),
+            thead(
+                tr(th("Term"), th("Type"), th("Entropy"))
+                ),
+            tbody(rows: _*)
+                )
+            ).render
+  }
+    
+  
+  
+  @JSExport
+  def showFD() = {
+    val jsDiv = dom.document.getElementById("finite-distribution")
+    Ajax.get("../terms-data").onSuccess{ 
+      case xhr =>
+        jsDiv.appendChild(
+        fdView(readDist(xhr.responseText))
+      )
+      }
+  }
 
   @JSExport
   def dynamic() : Unit = {

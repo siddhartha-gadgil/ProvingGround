@@ -11,6 +11,10 @@ import akka.http.scaladsl.model._
 
 import scala.collection.mutable.{Map => MutMap}
 
+import HoTT._
+
+//import scalatags.Text.all._
+
 object WebServer {
 
   implicit val system = Hub.system
@@ -44,8 +48,11 @@ object WebServer {
       </script>
 
       """)
-    val page =
-      s"""
+    makePage(div)
+  }
+  
+  def makePage(divs: String) =
+    s"""
       <!DOCTYPE html>
       <html>
       <head>
@@ -53,20 +60,41 @@ object WebServer {
       </head>
       <body>
       <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
-      $div
-
+      $divs
       </body>
       </html>
       """
 
-    page
+  val termsView = {
+    val divs =
+      """
+        <div id="finite-distribution"></div>
+        <script type="text/javascript">
+        provingground.ProvingGroundJS().showFD()
+        </script>
+        """
+    makePage(divs)
   }
-
+  
+  var fdTerms : FiniteDistribution[Term] = FiniteDistribution.empty[Term] 
+  
+  def showDist(fd: FiniteDistribution[Term]) = (fdTerms == fd)
+  
+  import FreeExprLang.writeDist
+  
+  val fdPath = 
+    path("terms") {
+      get {
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, termsView))
+      }
+    } ~ path("terms-data") {
+      get{
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, writeDist(fdTerms)))
+      }
+    }
+  
   val dummy =
     """
-    <!DOCTYPE html>
-    <html>
-    <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
     <div id ="dummy-space">The dummy space</div>
     <script type="text/javascript">
       provingground.ProvingGroundJS().dummyUpdate()
