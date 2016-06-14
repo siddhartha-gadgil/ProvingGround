@@ -371,11 +371,22 @@ case class Deducer(applnWeight: Double = 0.2,
     import scala.collection.mutable.ArrayBuffer
     private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
-    def saveMem(fd: FD[Term]) = {distBuffer.append(fd); save(fd)}
+    def saveMem(fd: FD[Term]) = {
+      distBuffer.append(fd);
+      eventHook(fd)
+      save(fd)
+    }
 
     def getTimeSeries = distBuffer.toVector
 
     private var runHook: Boolean = true
+
+    var eventHook : FD[Term] => Unit = (_) => ()
+
+    def onChange(react: FD[Term] => Unit) = {
+      val prevHook = eventHook
+      eventHook = (fd: FD[Term]) => {react(fd); prevHook(fd)}
+    }
 
     def stop() = { runHook = false }
 
@@ -415,15 +426,13 @@ case class Deducer(applnWeight: Double = 0.2,
     def await = {
         var mutDistAccum =
           nextDistribution(initDist, initBatch, false, Vector(), smooth)
-        distBuffer.append(mutDistAccum._1)
-        save(mutDistAccum._1)
+        saveMem(mutDistAccum._1)
         while (runHook && !halt(self)) {
           loops += 1
           println(s"Time : $getElapsedTime; Loops: $getLoops")
           val (dist, accum) = nextDistribution(
               mutDistAccum._1, batchSize, true, mutDistAccum._2, smooth)
-          distBuffer append (dist)
-          save(dist)
+          saveMem(mutDistAccum._1)
           mutDistAccum = (dist, accum)
         }
         println(s"Halted: (_, $initBatch, $batchSize)")

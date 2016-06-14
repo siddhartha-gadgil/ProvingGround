@@ -22,7 +22,7 @@ object ABDeduc{
 
   val cnst = lmbda(a)(lmbda(b)(a))
 
-  val f = "f" :: (A ->: A)
+  val f = "f" :: (A ->: B)
 
   val g = "g" :: (A ->: A)
 

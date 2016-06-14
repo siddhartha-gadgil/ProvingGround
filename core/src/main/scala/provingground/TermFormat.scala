@@ -45,7 +45,7 @@ object PrintFormat extends TermRec[String] {
 }
 
 object LatexFormat extends TermRec[String] {
-  def latex(t: Term) = "$"+apply(t)+"$"
+  def latex(t: Term) = "$"+ (apply(t).replace("$", ".")) +"$"
 
   val specialTerms: PartialFunction[Term, String] = Map()
 
@@ -54,17 +54,17 @@ object LatexFormat extends TermRec[String] {
   def appln(func: String, arg: String): String = func + "(" + arg + ")"
 
   def arrow(dom: String, codom: String): String =
-    dom + """ \to """ + codom
+    dom + " \\to " + codom
 
   def lambda(variable: String, typ: String, value: String): String =
-    s"""($variable : $typ) \mapsto  $value"""
+    s"($variable : $typ)"+" \\mapsto "+  s"$value"
 
   def equality(dom: String, lhs: String, rhs: String) =
     s"$lhs = $rhs (in $dom)"
 
-  def pi(fibre: String): String = s"""\\prod\limits_$fibre"""
+  def pi(fibre: String): String = s"\\prod\\limits_{$fibre}"
 
-  def sigma(fibre: String): String = s"""\\sum\limits_$fibre"""
+  def sigma(fibre: String): String = s"\\sum\\limits_{$fibre}"
 
   def plus(first: String, scnd: String): String = first + " + " + scnd
 

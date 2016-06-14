@@ -4,8 +4,8 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import scala.io.StdIn
-import akka.actor.ActorSystem
+//import scala.io.StdIn
+//import akka.actor.ActorSystem
 //import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 
@@ -15,7 +15,7 @@ import LatexFormat.latex
 
 import HoTT._
 
-import FansiShow._
+//import FansiShow._
 
 import upickle.default._
 
@@ -59,6 +59,8 @@ object WebServer {
 
   val mathjax=
     """
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
     <!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -94,7 +96,17 @@ MathJax.Hub.Config({
   val termsView = {
     val divs =
       """
-        <div id="finite-distribution"></div>
+      <h1> Deduction viewer </h2>
+      <h2> Time series for Deduction </h2>
+        <svg version="1.1"
+          baseProfile="full"
+          width="1000" height="300"
+          xmlns="http://www.w3.org/2000/svg"
+          id="time-series">
+          <div id="time-series-console"></div>
+          <br>
+          <h2> Finite Distribution snapshot </h2>
+        <div id="finite-distribution" style="overflow-y: auto; height: 400px;"></div>
         <script type="text/javascript">
         provingground.ProvingGroundJS().showFD()
         </script>
@@ -104,12 +116,27 @@ MathJax.Hub.Config({
 
   var fdVec : Vector[(String, String, Double)] = Vector()
 
+  val timeSeries : MutMap[String, Vector[Double]] = MutMap()
+
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) =
     {
       fdVec = fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
     }
 
-  import FreeExprLang.writeDist
+  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double]) ={
+    timeSeries(latex(term)) = ts
+  }
+
+  def showFDs[U <: Term with Subs[U]](
+    fds: Vector[FiniteDistribution[U]], terms: U*) = {
+        showDist(fds.last)
+        timeSeries.clear
+        for (x <- terms) showTimeSeries(x, fds map ((fd) => - math.log(fd(x))))
+    }
+
+  def getTimeSeries = timeSeries.toList
+
+//  import FreeExprLang.writeDist
 
   val fdRoute =
     path("terms") {
@@ -119,6 +146,10 @@ MathJax.Hub.Config({
     } ~ path("terms-data") {
       get{
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(fdVec)))
+      }
+    } ~ path("terms-time-series") {
+      get{
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
       }
     }
 
