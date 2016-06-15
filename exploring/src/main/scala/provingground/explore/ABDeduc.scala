@@ -36,7 +36,7 @@ object ABDeduc{
 
   def swap(t: Term) = t.replace(A, X).replace(B, A).replace(X, B)
 
-  def smooth (fd: FD[Term]) = (fd * 0.5) ++ ((fd map (swap)) * 0.5)
+  def smooth (fd: FD[Term]) = ((fd * 0.5) ++ ((fd map (swap)) * 0.5)).flatten
 
   val dedFine = Deducer(cutoff = 0.001)
 

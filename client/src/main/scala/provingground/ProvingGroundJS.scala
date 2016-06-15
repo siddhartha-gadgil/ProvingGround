@@ -90,9 +90,9 @@ object ProvingGroundJS extends js.JSApp {
   }
 
 
-  def yc(y: Double) = (300 - (y * 30)).toInt
+  def yc(y: Double) = (300 - (y * 20)).toInt
 
-  def xc(x: Double) = (30 * x).toInt
+  def xc(x: Double) = (15 * x).toInt
 
   def svgLines(lines: List[(String, Vector[Double])]) =
     for (
@@ -108,7 +108,7 @@ object ProvingGroundJS extends js.JSApp {
           cons.appendChild(katex(label))
         }})(
           x1 := xc(index), y1 := yc(val1), x2 := xc(index + 1), y2 := yc(val2),
-          stroke := "red", strokeWidth := 4).render
+          stroke := "black", strokeWidth := 3).render
 
 
     }
