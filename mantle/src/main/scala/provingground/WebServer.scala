@@ -88,6 +88,7 @@ object WebServer {
           width="1000" height="300"
           xmlns="http://www.w3.org/2000/svg"
           id="time-series">
+          <div id="jsdiv"></div>
           <div id="time-series-console"></div>
           <br>
           <h2> Finite Distribution snapshot </h2>

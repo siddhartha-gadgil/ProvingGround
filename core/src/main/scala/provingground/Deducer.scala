@@ -359,6 +359,25 @@ case class Deducer(applnWeight: Double = 0.2,
 
     (smooth(flow(mixedPop, shift)), pop.applnInvMap)
   }
+  
+  def learnerNextDistribution(fd: FD[Term],
+                        theorems: FD[Typ[Term]],
+                       n: Int,
+                       memory: Boolean = true,
+                       accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                       smooth: FD[Term] => FD[Term] = identity) = {
+    val absTheorems = piDist(vars, piWeight)(theorems)
+    
+    import Deducer.flow
+
+    val pop = getSample(fd, n, accum)
+
+    val feed = pop.learnerFeedback(absTheorems)
+
+    val shift = shiftFD(pop)
+
+    (smooth(flow(fd, shift)), pop.applnInvMap)
+  }
 
   class BufferedRun(initDist: FD[Term],
                     initBatch: Int,
@@ -371,6 +390,8 @@ case class Deducer(applnWeight: Double = 0.2,
     import scala.collection.mutable.ArrayBuffer
     private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
+    val theorems = (initDist filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
+    
     def saveMem(fd: FD[Term]) = {
       distBuffer.append(fd);
       eventHook(fd)
@@ -399,6 +420,8 @@ case class Deducer(applnWeight: Double = 0.2,
     def getLoops = loops
 
     def run = Future(await)
+    
+    def learn = Future(learnAwait)
 
     def iteratorPair = {
       val start = nextDistribution(initDist, initBatch, false, Vector(), smooth)
@@ -436,6 +459,23 @@ case class Deducer(applnWeight: Double = 0.2,
           mutDistAccum = (dist, accum)
         }
         println(s"Halted: (_, $initBatch, $batchSize)")
+        getTimeSeries
+      }
+    
+    def learnAwait = {
+        var mutDistAccum =
+          learnerNextDistribution(initDist, theorems, initBatch, false, Vector(), smooth)
+        saveMem(mutDistAccum._1)
+        while (runHook && !halt(self)) {
+          loops += 1
+          println(s"Time : $getElapsedTime; Loops: $getLoops")
+          val (dist, accum) = learnerNextDistribution(
+              mutDistAccum._1, theorems, batchSize, true, mutDistAccum._2, smooth)
+          saveMem(mutDistAccum._1)
+          mutDistAccum = (dist, accum)
+        }
+        println(s"Halted: (_, $initBatch, $batchSize)")
+        getTimeSeries
       }
   }
 
@@ -557,79 +597,6 @@ case class Deducer(applnWeight: Double = 0.2,
       (piPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
       (piPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon)
 
-  // import TermBucket.piDist
-  //
-  // def getPopulation =
-  //   TermPopulation(bucket.getTermDistMap,
-  //                  bucket.getTypDist,
-  //                  bucket.getThmsByProofs,
-  //                  vars,
-  //                  lambdaWeight,
-  //                  piWeight)
-  //
-
-// side-effect warning : clears the bucket
-  // def nextGen(popln: TermPopulation, batchSize: Int) = {
-  //
-  //   val td = TD.PosFD(popln.feedback * feedbackScale)
-  //
-  //   val fd = shifted(
-  //       popln.terms,
-  //       backProp(propDecay)((t: Term) => popln.terms(t))(td)
-  //   )
-  //
-  //   bucket.clear()
-  //
-  //   sample(absFD(fd), batchSize)
-  //
-  //   bucket.loops += 1
-  //
-  //   (getPopulation * sampleWeight) +++ (fd * (1.0 - sampleWeight))
-  // }
-  //
-  // def nextPopulation(popln: TermPopulation, batchSize: Int) = {
-  //   ((popln * genMemory) ++ nextGen(popln, batchSize) * (1 -
-  //           genMemory)).normalized
-  // }
-  //
-  // def runWhile(initDist: FD[Term],
-  //              initBatch: Int,
-  //              batchSize: Int,
-  //              save: String => Unit,
-  //              halt: Boolean) = {
-  //   bucket.clear()
-  //   sample(initDist, initBatch)
-  //   var pop = getPopulation
-  //   while (!halt) {
-  //     save(pop.pickle)
-  //     val next = nextPopulation(pop, batchSize)
-  //     pop = next
-  //   }
-  // }
-  //
-  // class BufferedRun(initDist: FD[Term],
-  //                   initBatch: Int,
-  //                   batchSize: Int,
-  //                   halt: => Boolean = getElapsedTime > 5 * 60 * 1000,
-  //                   save: TermPopulation => Unit = (_) => ()) {
-  //
-  //   import scala.collection.mutable.ArrayBuffer
-  //   var popBuffer: ArrayBuffer[TermPopulation] = ArrayBuffer()
-  //   var pop = getPopulation // probably a dummy
-  //   def run =
-  //     Future {
-  //       bucket.clearAll()
-  //       while (!halt) {
-  //         sample(initDist, initBatch)
-  //         pop = getPopulation
-  //         popBuffer append (pop)
-  //         save(pop)
-  //         println(s"Time : $getElapsedTime; Loops: $getLoops")
-  //         val next = nextPopulation(pop, batchSize)
-  //         pop = next
-  //       }
-  //     }
-  // }
 
   def getAbstractTheorems =
     piDist(vars, piWeight)(bucket.getTheorems)
@@ -754,6 +721,14 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                                        lambdaWeight,
                                        piWeight)
 
+  def learnerFeedback(absTheorems : FD[Typ[Term]]) = Deducer.feedback(absTheorems,
+                                       abstractTheoremsByProofs,
+                                       termsByType,
+                                       vars,
+                                       lambdaWeight,
+                                       piWeight)
+                                       
+                                       
   def pickledPopulation = {
     import FreeExprLang.writeTerm
     val termsByType = for ((typ, terms) <- this.termsByType) yield
