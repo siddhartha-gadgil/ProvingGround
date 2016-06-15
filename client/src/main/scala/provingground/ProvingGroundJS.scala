@@ -5,6 +5,7 @@ import org.scalajs.dom
 import dom.html.{Map => _, _}
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
+import scalatags.JsDom.all
 import scala.util.Try
 import scalatags.JsDom.svgTags._
 import scalatags.JsDom.svgAttrs._
@@ -90,10 +91,24 @@ object ProvingGroundJS extends js.JSApp {
   }
 
 
-  def yc(y: Double) = (300 - (y * 20)).toInt
+  var yScale = 20
+  
+  var xScale = 15
+  
+  def yc(y: Double) = (300 - (y * yScale)).toInt
 
-  def xc(x: Double) = (15 * x).toInt
+  def xc(x: Double) = (xScale * x).toInt
 
+  val xcBox = input(all.`type` := "number", value := 15).render
+  
+  xcBox.onchange = (ev: dom.Event) => {xScale = xcBox.value.toInt}
+  
+  val ycBox = input(all.`type` := "number", value := 20).render
+  
+  ycBox.onchange = (ev: dom.Event) => {yScale = ycBox.value.toInt}
+  
+  val queryDiv = div(span("x-scale:"), xcBox, span("; y-scale:"), ycBox).render    
+  
   def svgLines(lines: List[(String, Vector[Double])]) =
     for (
       (label, points) <-lines;
@@ -127,7 +142,8 @@ object ProvingGroundJS extends js.JSApp {
 
   @JSExport
   def showFD() = {
-    val jsDiv = dom.document.getElementById("finite-distribution")
+      jsDiv.appendChild(queryDiv)
+    val fdDiv = dom.document.getElementById("finite-distribution")
     val svg = dom.document.getElementById("time-series")
     svg.appendChild(
       rect(
@@ -137,7 +153,7 @@ object ProvingGroundJS extends js.JSApp {
     )
     Ajax.get("../terms-data").onSuccess{
       case xhr =>
-        jsDiv.appendChild(
+        fdDiv.appendChild(
         fdView(read[Vector[(String, String, Double)]](xhr.responseText))
       )
       }

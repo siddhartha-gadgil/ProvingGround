@@ -154,7 +154,9 @@ lazy val mantle = (project in file("mantle")).
         settings(initialCommands in (Test, console) :=
           s"""ammonite.repl.Main(predef = "$initCommands").run() """).
         dependsOn(coreJVM).dependsOn(functionfinder).
-        dependsOn(translation).dependsOn(deepwalk).dependsOn(exploring)
+        dependsOn(translation).
+//        dependsOn(deepwalk).
+        dependsOn(exploring)
 
 lazy val exploring = project.
               settings(name := "ProvingGround-exploring",

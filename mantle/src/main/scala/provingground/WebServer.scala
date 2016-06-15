@@ -91,7 +91,7 @@ object WebServer {
           <div id="time-series-console"></div>
           <br>
           <h2> Finite Distribution snapshot </h2>
-        <div id="finite-distribution" style="overflow-y: auto; height: 400px;"></div>
+        <div id="finite-distribution" style="overflow-y: auto; height: 300px;"></div>
         <script type="text/javascript">
         provingground.ProvingGroundJS().showFD()
         </script>
