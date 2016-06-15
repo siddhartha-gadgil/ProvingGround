@@ -1,8 +1,8 @@
 package provingground
 
-import scala.scalajs.js
+//import scala.scalajs.js
 import org.scalajs.dom
-import dom.html
+//import dom.html
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 

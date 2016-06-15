@@ -9,7 +9,7 @@ import akka.stream.ActorMaterializer
 //import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 
-import scala.collection.mutable.{Map => MutMap}
+import scala.collection.mutable.{Map => MutMap, Set => MutSet}
 
 import LatexFormat.latex
 
@@ -57,25 +57,10 @@ object WebServer {
     makePage(div)
   }
 
-  val mathjax=
+  val katex=
     """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
-    <!-- mathjax config similar to math.stackexchange -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  jax: ["input/TeX", "output/HTML-CSS"],
-  tex2jax: {
-    inlineMath: [ ['$', '$'] ],
-    displayMath: [ ['$$', '$$']],
-    processEscapes: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-  },
-  messageStyle: "none",
-  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-});
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
 """
 
   def makePage(divs: String) =
@@ -84,7 +69,7 @@ MathJax.Hub.Config({
       <html>
       <head>
       <title>Proving-Ground : Automating theorem proving</title>
-      $mathjax
+      $katex
       </head>
       <body>
       <script type="text/javascript" src="../resource/provingground-js-fastopt.js"></script>
@@ -133,6 +118,16 @@ MathJax.Hub.Config({
         timeSeries.clear
         for (x <- terms) showTimeSeries(x, fds map ((fd) => - math.log(fd(x))))
     }
+
+  val viewTerms : MutSet[Term] = MutSet()
+
+  def displayTS(
+    fds: Vector[FiniteDistribution[Term]]) = showFDs(fds, viewTerms.toSeq : _*)
+
+  def display(buf : Deducer#BufferedRun) = {
+    displayTS(buf.getTimeSeries)
+    buf.onChange((_) => displayTS(buf.getTimeSeries))
+  }
 
   def getTimeSeries = timeSeries.toList
 
