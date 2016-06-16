@@ -13,10 +13,16 @@ import provingground.{FiniteDistribution => FD}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import ammonite.ops._
+
+import scala.concurrent.duration._
+
 class DeducerSource(ded: Deducer, initDist: FD[Term],
                   initBatch: Int,
                   batchSize: Int,
                   smooth: FD[Term] => FD[Term] = identity){
+    import DeducerSource._
+  
     import Hub.{system, materializer}
 
     import ded._
@@ -56,8 +62,6 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def deducResult = deduc.fold(FD.empty[Term]){case (_, result) => result}
 
-    def lastResult = Flow[FD[Term]].fold(FD.empty[Term]){case (_, result) => result}
-
     def learnBatches(fdInit: FD[Term], invMap : InvMap) =
       {
       val theorems = (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
@@ -90,6 +94,33 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
       (fd) => learnBatchesConc(threads)(fd, Vector())
     }
 
+
+    def loopy(dedLoops: Int, learnLoops: Int) =
+      deduc.take(dedLoops).alsoTo(display).via(learnFlow).take(learnLoops).runWith(display)
+      
+   
+    def loopyConc(dedLoops: Int, learnLoops: Int, threads: Int = 3) =
+      deducConc(threads).take(dedLoops).alsoTo(display).via(learnFlowConc(threads)).alsoTo(display).take(learnLoops).runWith(display)
+      
+    def loopySaved(dedLoops: Int, learnLoops: Int, name : String) =
+      deduc.take(dedLoops).alsoTo(display).alsoTo(saveDeduc(name)).
+      via(learnFlow).take(learnLoops).alsoTo(display).alsoTo(saveLearn(name)). runWith(Sink.ignore)
+
+    def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
+      deduc.takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
+      via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).runWith(Sink.ignore)
+    }
+    
+    def timedRunConc(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String, threads: Int = 3) = {
+      deducConc(threads).takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
+      via(learnFlowConc(threads)).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).runWith(Sink.ignore)
+    }
+}
+
+
+object DeducerSource{
+    def lastResult = Flow[FD[Term]].fold(FD.empty[Term]){case (_, result) => result}
+    
     def withTimeSeries(terms: => Traversable[Term]) = {
       Flow[FD[Term]].scan(FD.empty[Term] -> (Map() : Map[Term, Vector[Double]])){
         case ((_, m), fd) => (
@@ -108,12 +139,35 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
         Sink.foreach {
           case (fd, m) => {
             showDist(fd)
-            m.foreach{case (t, v) => showTimeSeries(t, v)}
+            m.foreach{case (t, v) => showTimeSeries(t, v map (-math.log(_)))}
           }
         })
     }
 
-    def loopy(dedLoops: Int, learnLoops: Int) =
-      deduc.take(dedLoops).alsoTo(display).via(learnFlow).runWith(display)
-
+    import FreeExprLang._
+    
+    def saveDeduc(name: String) = {
+      val file = cwd / 'data / s"${name}.deduc"
+      Sink.foreach{(fd: FD[Term]) => 
+        write.append(file, writeDist(fd)+"\n")}
+    }
+    
+    def saveLearn(name: String) = {
+      val file = cwd / 'data / s"${name}.learn"
+      Sink.foreach{(fd: FD[Term]) => 
+        write.append(file, writeDist(fd)+"\n")}
+    }
+    
+    def loadDeduc(name: String) = {
+      val file = cwd / 'data / s"${name}.deduc"
+      val it = read.lines.iter(file) map (readDist)
+      Source.fromIterator { () => it }
+    }
+    
+    def loadLearn(name: String) = {
+      val file = cwd / 'data / s"${name}.learn"
+      val it = read.lines.iter(file) map (readDist)
+      Source.fromIterator { () => it }
+    }
+  
 }
