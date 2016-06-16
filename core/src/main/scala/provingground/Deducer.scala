@@ -19,6 +19,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   *
   */
 object Deducer {
+  type InvMap = Vector[ (Term, Set[(Term, Term)])]
 
   /**
     * generating optionally using function application, with function and argument generated recursively;
@@ -236,10 +237,10 @@ case class Deducer(applnWeight: Double = 0.2,
   // val invImageMap: scala.collection.mutable.Map[Term, Set[(Term, Term)]] =
   //   scala.collection.mutable.Map()
   //
-  // def invImage(accum: Vector[(Term, Set[(Term, Term)])] = Vector()) =
+  // def invImage(accum: InvMap = Vector()) =
   //   Unify.purgedInvVector(invImageMap.toVector, accum, isVar)
   //
-  // var cumInvImage: Vector[(Term, Set[(Term, Term)])] = Vector()
+  // var cumInvImage: InvMap = Vector()
   //
   // def getInvImage() = {
   //   val combined = invImage(cumInvImage)
@@ -296,12 +297,12 @@ case class Deducer(applnWeight: Double = 0.2,
     def mkSample(pd: PD[Term], n: Int) =
       (1 to n).foreach((_) => bucket.append(memFunc(pd).next))
 
-    def invImage(accum: Vector[(Term, Set[(Term, Term)])] = Vector()) =
+    def invImage(accum: InvMap = Vector()) =
       Unify.purgedInvVector(invImageMap.toVector, accum, isVar) map {
         case (x, s) => (x, Unify.purgedPairs(s))
       }
 
-    def getPopulation(accum: Vector[(Term, Set[(Term, Term)])] = Vector()) =
+    def getPopulation(accum: InvMap = Vector()) =
       TermPopulation(bucket.getTermDistMap,
                      bucket.getTypDist,
                      bucket.getThmsByProofs,
@@ -313,7 +314,7 @@ case class Deducer(applnWeight: Double = 0.2,
 
   def getSample(pd: PD[Term],
                 n: Int,
-                accum: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
+                accum: InvMap = Vector()) = {
     val sampler = new Sampler
     sampler.mkSample(pd, n)
     sampler.getPopulation(accum)
@@ -330,7 +331,7 @@ case class Deducer(applnWeight: Double = 0.2,
   }
 
   def shiftFD(popln: TermPopulation,
-              cumApplnInv: Vector[(Term, Set[(Term, Term)])] = Vector()) = {
+              cumApplnInv: InvMap = Vector()) = {
     val td = TD.PosFD(popln.feedback * feedbackScale)
     val back =
       backProp(propDecay, popln.applnInv)((t: Term) => popln.terms(t))(td)
@@ -340,7 +341,7 @@ case class Deducer(applnWeight: Double = 0.2,
   def nextDistribution(fd: FD[Term],
                        n: Int,
                        memory: Boolean = true,
-                       accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                       accum: InvMap = Vector(),
                        smooth: FD[Term] => FD[Term] = identity) = {
     import Deducer.flow
 
@@ -359,15 +360,15 @@ case class Deducer(applnWeight: Double = 0.2,
 
     (smooth(flow(mixedPop, shift)), pop.applnInvMap)
   }
-  
+
   def learnerNextDistribution(fd: FD[Term],
                         theorems: FD[Typ[Term]],
                        n: Int,
                        memory: Boolean = true,
-                       accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                       accum: InvMap = Vector(),
                        smooth: FD[Term] => FD[Term] = identity) = {
     val absTheorems = piDist(vars, piWeight)(theorems)
-    
+
     import Deducer.flow
 
     val pop = getSample(fd, n, accum)
@@ -391,7 +392,7 @@ case class Deducer(applnWeight: Double = 0.2,
     private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
     val theorems = (initDist filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
-    
+
     def saveMem(fd: FD[Term]) = {
       distBuffer.append(fd);
       eventHook(fd)
@@ -420,13 +421,13 @@ case class Deducer(applnWeight: Double = 0.2,
     def getLoops = loops
 
     def run = Future(await)
-    
+
     def learn = Future(learnAwait)
 
     def iteratorPair = {
       val start = nextDistribution(initDist, initBatch, false, Vector(), smooth)
-      def func(pair: (FD[Term], Vector[(Term, Set[(Term, Term)])])) :
-          (FD[Term], Vector[(Term, Set[(Term, Term)])]) =
+      def func(pair: (FD[Term], InvMap)) :
+          (FD[Term], InvMap) =
             nextDistribution(
                 pair._1, batchSize, true, pair._2, smooth)
 
@@ -461,7 +462,7 @@ case class Deducer(applnWeight: Double = 0.2,
         println(s"Halted: (_, $initBatch, $batchSize)")
         getTimeSeries
       }
-    
+
     def learnAwait = {
         var mutDistAccum =
           learnerNextDistribution(initDist, theorems, initBatch, false, Vector(), smooth)
@@ -637,13 +638,15 @@ case class Deducer(applnWeight: Double = 0.2,
   }
 }
 
+import Deducer._
+
 case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                           types: FD[Typ[Term]],
                           thmsByProofs: FD[Typ[Term]],
                           vars: Vector[Weighted[Term]],
                           lambdaWeight: Double,
                           piWeight: Double,
-                          applnInvMap: Vector[(Term, Set[(Term, Term)])] =
+                          applnInvMap: InvMap =
                             Vector()) { self =>
   val theorems =
     FD(thmsByProofs.supp map ((t) => Weighted(t, types(t)))).normalized()
@@ -727,8 +730,8 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                                        vars,
                                        lambdaWeight,
                                        piWeight)
-                                       
-                                       
+
+
   def pickledPopulation = {
     import FreeExprLang.writeTerm
     val termsByType = for ((typ, terms) <- this.termsByType) yield

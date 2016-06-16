@@ -1,9 +1,9 @@
 package provingground
 
-import akka.http.scaladsl.Http
+import akka.http.scaladsl._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.stream.ActorMaterializer
+//import akka.stream.ActorMaterializer
 //import scala.io.StdIn
 //import akka.actor.ActorSystem
 //import akka.http.scaladsl.model.HttpMethods._
@@ -23,8 +23,10 @@ import upickle.default._
 
 object WebServer {
 
-  implicit val system = Hub.system
-  implicit val materializer = ActorMaterializer()
+//  implicit val system = Hub.system
+//  implicit val materializer = ActorMaterializer()
+  import Hub._
+
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 

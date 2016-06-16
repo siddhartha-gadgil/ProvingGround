@@ -5,6 +5,7 @@ import reactivemongo.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 
 import com.typesafe.config._
 import com.mongodb.casbah.Imports
@@ -57,5 +58,7 @@ object Hub {
     lazy val db = mongoClient("provingground")
   }
 
-  lazy val system = ActorSystem("provingground")
+  implicit val system = ActorSystem("provingground")
+
+  implicit val materializer = ActorMaterializer()
 }
