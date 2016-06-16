@@ -22,7 +22,7 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
                   batchSize: Int,
                   smooth: FD[Term] => FD[Term] = identity){
     import DeducerSource._
-  
+
     import Hub.{system, materializer}
 
     import ded._
@@ -39,17 +39,17 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def deducBatches(fdInit: FD[Term], invMap : InvMap) =
       Source.unfold(fdInit -> (invMap)){
-        case (fd, invMap) =>
+        case (fd, invM) =>
           val next = nextDistribution(
-              fd, batchSize, true, invMap, smooth)
+              fd, batchSize, true, invM, smooth)
           Some(next -> fd)}
 
     def deducBatchesConc(threads: Int)(fdInit: FD[Term], invMap : InvMap) =
       Source.unfoldAsync(fdInit -> (invMap)){
-        case (fd, invMap) =>
+        case (fd, invM) =>
           val nextFut =
             Future.sequence{
-              (1 to threads) map ((_) => Future{nextDistribution(fd, batchSize, true, Vector(), smooth)})
+              (1 to threads) map ((_) => Future{nextDistribution(fd, batchSize, true, invM, smooth)})
             }.map ((fdsInvMap) => fdsInvMap.fold((FD.empty[Term], Vector()))(
               (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
             ))
@@ -66,19 +66,19 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
       {
       val theorems = (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
       Source.unfold(fdInit -> (invMap)){
-        case (fd, invMap) =>
+        case (fd, invM) =>
           val next = learnerNextDistribution(
-              fd, theorems, batchSize, true, invMap, smooth)
+              fd, theorems, batchSize, true, invM, smooth)
           Some(next -> fd)}
         }
 
     def learnBatchesConc(threads: Int)(fdInit: FD[Term], invMap : InvMap) = {
       val theorems = (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
       Source.unfoldAsync(fdInit -> (invMap)){
-        case (fd, invMap) =>
+        case (fd, invM) =>
           val nextFut =
             Future.sequence{
-              (1 to threads) map ((_) => Future{learnerNextDistribution(fd, theorems, batchSize, true, Vector(), smooth)})
+              (1 to threads) map ((_) => Future{learnerNextDistribution(fd, theorems, batchSize, true, invM, smooth)})
             }.map ((fdsInvMap) => fdsInvMap.fold((FD.empty[Term], Vector()))(
               (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
             ))
@@ -97,20 +97,23 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def loopy(dedLoops: Int, learnLoops: Int) =
       deduc.take(dedLoops).alsoTo(display).via(learnFlow).take(learnLoops).runWith(display)
-      
-   
+
+
     def loopyConc(dedLoops: Int, learnLoops: Int, threads: Int = 3) =
       deducConc(threads).take(dedLoops).alsoTo(display).via(learnFlowConc(threads)).alsoTo(display).take(learnLoops).runWith(display)
-      
+
     def loopySaved(dedLoops: Int, learnLoops: Int, name : String) =
       deduc.take(dedLoops).alsoTo(display).alsoTo(saveDeduc(name)).
       via(learnFlow).take(learnLoops).alsoTo(display).alsoTo(saveLearn(name)). runWith(Sink.ignore)
 
     def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
       deduc.takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
-      via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).runWith(Sink.ignore)
+//      alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}"))).
+      via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).
+//      alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}"))).
+      runWith(Sink.ignore)
     }
-    
+
     def timedRunConc(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String, threads: Int = 3) = {
       deducConc(threads).takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
       via(learnFlowConc(threads)).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).runWith(Sink.ignore)
@@ -120,7 +123,7 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
 object DeducerSource{
     def lastResult = Flow[FD[Term]].fold(FD.empty[Term]){case (_, result) => result}
-    
+
     def withTimeSeries(terms: => Traversable[Term]) = {
       Flow[FD[Term]].scan(FD.empty[Term] -> (Map() : Map[Term, Vector[Double]])){
         case ((_, m), fd) => (
@@ -145,29 +148,29 @@ object DeducerSource{
     }
 
     import FreeExprLang._
-    
+
     def saveDeduc(name: String) = {
       val file = cwd / 'data / s"${name}.deduc"
-      Sink.foreach{(fd: FD[Term]) => 
+      Sink.foreach{(fd: FD[Term]) =>
         write.append(file, writeDist(fd)+"\n")}
     }
-    
+
     def saveLearn(name: String) = {
       val file = cwd / 'data / s"${name}.learn"
-      Sink.foreach{(fd: FD[Term]) => 
+      Sink.foreach{(fd: FD[Term]) =>
         write.append(file, writeDist(fd)+"\n")}
     }
-    
+
     def loadDeduc(name: String) = {
       val file = cwd / 'data / s"${name}.deduc"
       val it = read.lines.iter(file) map (readDist)
       Source.fromIterator { () => it }
     }
-    
+
     def loadLearn(name: String) = {
       val file = cwd / 'data / s"${name}.learn"
       val it = read.lines.iter(file) map (readDist)
       Source.fromIterator { () => it }
     }
-  
+
 }
