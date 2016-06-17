@@ -5,7 +5,7 @@ import org.scalajs.dom
 import dom.html.{Map => _, _}
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
-//import scalatags.JsDom.all
+import scalatags.JsDom.all
 import scala.util.Try
 import scalatags.JsDom.svgTags._
 import scalatags.JsDom.svgAttrs._
@@ -27,6 +27,11 @@ import org.scalajs.dom.ext._
 //import HoTT._
 
 //import FreeExprLang.{readTerm, readDist}
+
+
+
+
+
 
 
 object ProvingGroundJS extends js.JSApp {
@@ -73,8 +78,6 @@ object ProvingGroundJS extends js.JSApp {
 
   def fdView(fd: Vector[(String, String, Double)]) = {
     def row(wt: (String, String, Double)) = {
-  //    val tdiv = div.render
-  //    tdiv.innerHTML = g.katex.renderToString(wt._1.replace("$", "")).toString
       tr(td(katex(wt._1)), td(katex(wt._2)), td(-math.log(wt._3)))
 }
     val rows = fd sortBy((t) => 1 - t._3)  take (100) map (row)
@@ -95,7 +98,7 @@ object ProvingGroundJS extends js.JSApp {
 
   var xScale = 5
 
-  def yc(y: Double) = (300 - (y * yScale)).toInt
+  def yc(y: Double) = (250 - (y * yScale)).toInt
 
   def xc(x: Double) = (xScale * x).toInt
 
@@ -123,10 +126,9 @@ object ProvingGroundJS extends js.JSApp {
           cons.appendChild(katex(label))
         }})(
           x1 := xc(index), y1 := yc(val1), x2 := xc(index + 1), y2 := yc(val2),
-          stroke := "black", strokeWidth := 3).render
-
-
+          stroke := "black", strokeWidth := 2).render
     }
+
   def svgGroup(lines: List[(String, Vector[Double])]) = {
     val group = svgTags.g.render
     group.innerHTML = "<title> Hover </title>"

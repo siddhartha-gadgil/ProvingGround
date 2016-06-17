@@ -15,6 +15,10 @@ import LatexFormat.latex
 
 import HoTT._
 
+import akka.stream.scaladsl._
+
+import akka.stream._
+
 //import FansiShow._
 
 import upickle.default._
@@ -80,6 +84,15 @@ object WebServer {
       </html>
       """
 
+  val fdView = makePage(
+    """
+    <div id ="jsdiv"></div>
+    <script type="text/javascript">
+    provingground.DeducerJS().main()
+    </script>
+    """
+  )
+
   val termsView = {
     val divs =
       """
@@ -106,6 +119,8 @@ object WebServer {
 
   val timeSeries : MutMap[String, Vector[Double]] = MutMap()
 
+  val typTimeSeries : MutMap[String, Vector[Double]] = MutMap()
+
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) =
     {
       fdVec = fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
@@ -116,16 +131,20 @@ object WebServer {
   }
 
   def showFDs[U <: Term with Subs[U]](
-    fds: Vector[FiniteDistribution[U]], terms: U*) = {
+    fds: Vector[FiniteDistribution[U]], terms: Set[U], typs: Set[Typ[Term]]) = {
         showDist(fds.last)
         timeSeries.clear
+        val typFDs = fds map ((fd) => fd map (_.typ))
         for (x <- terms) showTimeSeries(x, fds map ((fd) => - math.log(fd(x))))
+        for (x <- typs) showTimeSeries(x, typFDs map ((fd) => - math.log(fd(x))))
     }
 
   val viewTerms : MutSet[Term] = MutSet()
 
+  val viewTypes : MutSet[Typ[Term]] = MutSet()
+
   def displayTS(
-    fds: Vector[FiniteDistribution[Term]]) = showFDs(fds, viewTerms.toSeq : _*)
+    fds: Vector[FiniteDistribution[Term]]) = showFDs(fds, viewTerms.toSet, viewTypes.toSet)
 
   def display(buf : Deducer#BufferedRun) = {
     displayTS(buf.getTimeSeries)
@@ -134,10 +153,18 @@ object WebServer {
 
   def getTimeSeries = timeSeries.toList
 
+  val pingQueue = Source.queue[Unit](10, OverflowStrategy.dropHead)
+
+//  def ping() = pingQueue.offer(())
+
 //  import FreeExprLang.writeDist
 
   val fdRoute =
     path("terms") {
+      get {
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, fdView))
+      }
+    } ~ path("trms") {
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, termsView))
       }

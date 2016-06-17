@@ -38,6 +38,7 @@ lazy val jvmSettings = Seq(
     "org.reactivemongo" %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
     "com.typesafe.akka" %% "akka-slf4j" % akkaV,
+    "de.heikoseeberger" %% "akka-sse" % "1.8.1",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.mongodb" %% "casbah" % "3.0.0",

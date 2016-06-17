@@ -45,7 +45,7 @@ object PrintFormat extends TermRec[String] {
 }
 
 object LatexFormat extends TermRec[String] {
-  def latex(t: Term) = "$"+ (apply(t).replace("$", ".")) +"$"
+  def latex(t: Term) = (apply(t).replace("$", "."))
 
   val specialTerms: PartialFunction[Term, String] = Map()
 
