@@ -95,14 +95,14 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
     }
 
 
-    def loopy(dedLoops: Int, learnLoops: Int) =
+    def loopy(dedLoops: Long, learnLoops: Long) =
       deduc.take(dedLoops).alsoTo(display).via(learnFlow).take(learnLoops).runWith(display)
 
 
-    def loopyConc(dedLoops: Int, learnLoops: Int, threads: Int = 3) =
+    def loopyConc(dedLoops: Long, learnLoops: Long, threads: Int = 3) =
       deducConc(threads).take(dedLoops).alsoTo(display).via(learnFlowConc(threads)).alsoTo(display).take(learnLoops).runWith(display)
 
-    def loopySaved(dedLoops: Int, learnLoops: Int, name : String) =
+    def loopySaved(dedLoops: Long, learnLoops: Long, name : String) =
       deduc.take(dedLoops).alsoTo(display).alsoTo(saveDeduc(name)).
       via(learnFlow).take(learnLoops).alsoTo(display).alsoTo(saveLearn(name)). runWith(Sink.ignore)
 

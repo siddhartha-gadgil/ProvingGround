@@ -1356,7 +1356,7 @@ object HoTT {
       val x = f.dom.Var
       val y = f.dom.Var
       val p = IdentityTyp(f.dom, x, y).Var
-      val typFamily = lmbda(x)(lmbda(y)(lmbda(p)((f(x) =:= f(y)))))
+      val typFamily = lambda(x)(lambda(y)(lmbda(p)((f(x) =:= f(y)))))
       val inducFn = induc(f.dom, typFamily)
       val image = Refl(f.codom, f(x)): Term
       val baseCase = lambda(x)(image)
