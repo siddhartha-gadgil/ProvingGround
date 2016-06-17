@@ -37,6 +37,8 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def initSource = Source.fromFuture(firstBatchFut)
 
+    def initSourceConc(threads: Int) = Source.fromFuture(firstBatchConc(threads))
+
     def deducBatches(fdInit: FD[Term], invMap : InvMap) =
       Source.unfold(fdInit -> (invMap)){
         case (fd, invM) =>
@@ -58,7 +60,7 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def deduc = initSource flatMapConcat((pair) => deducBatches(pair._1, pair._2))
 
-    def deducConc(threads: Int) = initSource flatMapConcat((pair) => deducBatchesConc(threads)(pair._1, pair._2))
+    def deducConc(threads: Int) = (initSourceConc(threads)) flatMapConcat((pair) => deducBatchesConc(threads)(pair._1, pair._2))
 
     def deducResult = deduc.fold(FD.empty[Term]){case (_, result) => result}
 

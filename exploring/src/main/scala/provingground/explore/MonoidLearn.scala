@@ -9,7 +9,7 @@ import scala.concurrent._
 import library.Monoid._
 
 object MonoidLearn{
-  val dedSrc = new DeducerSource(ded, dist, 1000000, 100000, smooth)
+  val dedSrc = new DeducerSource(ded, dist, 300000, 30000, smooth)
 
   val mediumRun = dedSrc.timedRunConc(10.hours, 20.hours, "monoid-30hours")
 
