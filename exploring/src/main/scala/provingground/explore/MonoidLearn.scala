@@ -11,7 +11,7 @@ import library.Monoid._
 object MonoidLearn{
   val dedSrc = new DeducerSource(ded, dist, 1000000, 100000, smooth)
 
-  val mediumRun = dedSrc.timedRun(10.hours, 20.hours, "monoid-30hours")
+  val mediumRun = dedSrc.timedRunConc(10.hours, 20.hours, "monoid-30hours")
 
   import WebServer._
 
