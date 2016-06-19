@@ -10,7 +10,7 @@ import library.Monoid._
 
 import scala.io.StdIn
 
-object MonoidLearn{
+object MonoidLearn {
   val dedSrc = new DeducerSource(ded, dist, 30, 30, smooth)
 
   def shortRun = dedSrc.timedRun(5.minutes, 10.minutes, "monoid-quick")
@@ -20,7 +20,7 @@ object MonoidLearn{
   viewTypes ++= Set(l =:= r, leftId.typ, (b ~>: (op(r)(b) =:= b)), idUnique)
 }
 
-object MonoidLearnRun extends App{
+object MonoidLearnRun extends App {
   import ammonite.ops._
 
   val file = cwd / "tmp" / "blah"

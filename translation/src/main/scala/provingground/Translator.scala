@@ -122,8 +122,7 @@ trait TrnsLtr[I, O] extends (I => Option[O]) { self =>
       subTranslate: II => Option[OO],
       join: XO => Option[O]
   )(implicit oml: OptMapLift[II, OO, XI, XO]) =
-    self | TrnsLtr.Simple(
-        TrnsLtr.HybridJunction(split, subTranslate, join))
+    self | TrnsLtr.Simple(TrnsLtr.HybridJunction(split, subTranslate, join))
 
   /**
     * mixin translator obtained by optionally splitting and optionally joining.

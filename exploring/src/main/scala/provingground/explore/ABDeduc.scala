@@ -8,7 +8,7 @@ import ammonite.ops._
 
 import HoTT._
 
-object ABDeduc{
+object ABDeduc {
   import HoTT.Type
   val A = "A" :: HoTT.Type
 
@@ -36,7 +36,7 @@ object ABDeduc{
 
   def swap(t: Term) = t.replace(A, X).replace(B, A).replace(X, B)
 
-  def smooth (fd: FD[Term]) = ((fd * 0.5) ++ ((fd map (swap)) * 0.5)).flatten
+  def smooth(fd: FD[Term]) = ((fd * 0.5) ++ ((fd map (swap)) * 0.5)).flatten
 
   val dedFine = Deducer(cutoff = 0.001)
 
@@ -44,19 +44,28 @@ object ABDeduc{
 
   import FreeExprLang.writeDist
 
-  def save(t: FD[Term]) = write.append(dir /"AB.fds", writeDist(t)+"\n")
+  def save(t: FD[Term]) = write.append(dir / "AB.fds", writeDist(t) + "\n")
 
-  def save2(t: FD[Term]) = write.append(dir /"AB2.fds", writeDist(t)+"\n")
+  def save2(t: FD[Term]) = write.append(dir / "AB2.fds", writeDist(t) + "\n")
 
-  def saveFine(t: FD[Term]) = write.append(dir /"ABfine.fds", writeDist(t)+"\n")
+  def saveFine(t: FD[Term]) =
+    write.append(dir / "ABfine.fds", writeDist(t) + "\n")
 
-  val buf = new ded.BufferedRun(distAB, 10000000, 100000, (_) => false, save, smooth)
+  val buf =
+    new ded.BufferedRun(distAB, 10000000, 100000, (_) => false, save, smooth)
 
-  val bufQuick = new ded.BufferedRun(distAB, 100000, 10000, (_) => false, (_) => (), smooth)
+  val bufQuick =
+    new ded.BufferedRun(distAB, 100000, 10000, (_) => false, (_) => (), smooth)
 
-  val bufFine = new dedFine.BufferedRun(distAB, 10000000, 100000, (_) => false, saveFine, smooth)
+  val bufFine = new dedFine.BufferedRun(
+      distAB, 10000000, 100000, (_) => false, saveFine, smooth)
 
   val twodays = 1000.toLong * 3600 * 24 * 2
 
-  val buf2Days = new ded.BufferedRun(distAB, 10000000, 100000, (b) => b.getElapsedTime > twodays, save2, smooth)
+  val buf2Days = new ded.BufferedRun(distAB,
+                                     10000000,
+                                     100000,
+                                     (b) => b.getElapsedTime > twodays,
+                                     save2,
+                                     smooth)
 }

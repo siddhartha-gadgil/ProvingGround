@@ -226,13 +226,17 @@ object FreeExprLang {
 
   import HoTT.Term
 
-  def writeDist(fd: FiniteDistribution[HoTT.Term], names: Vector[(Term, String)] = Vector()) =
+  def writeDist(fd: FiniteDistribution[HoTT.Term],
+                names: Vector[(Term, String)] = Vector()) =
     write(
         fd.pmf map {
-          case Weighted(t, w) =>
-          PickledWeighted(writeTerm(encode(names)(t)), w) })
+      case Weighted(t, w) =>
+        PickledWeighted(writeTerm(encode(names)(t)), w)
+    })
 
-  def readDist(s: String, names: Vector[(Term, String)] = Vector()): FiniteDistribution[HoTT.Term] =
+  def readDist(s: String,
+               names: Vector[(Term, String)] =
+                 Vector()): FiniteDistribution[HoTT.Term] =
     FiniteDistribution(
         read[Vector[PickledWeighted]](s) map {
           case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)

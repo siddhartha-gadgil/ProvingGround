@@ -46,14 +46,14 @@ object WebServer {
 
   def showText(name: String, data: String) = { texts(name) = data }
 
-  def showData(name: String, dataVal: () => String) = {data(name) = dataVal}
+  def showData(name: String, dataVal: () => String) = { data(name) = dataVal }
 
   def getData(name: String) = data.getOrElse(name, () => "no data")()
 
   def getView(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name
-    val div = views.get(index).getOrElse(
-      s"""<h2>No view with index <i>$name</i></h2>
+    val div =
+      views.get(index).getOrElse(s"""<h2>No view with index <i>$name</i></h2>
       <div class="js-element" data-script="welcome"></div>
       <script type="text/javascript">
         provingground.ProvingGroundJS().dynamic()
@@ -63,7 +63,7 @@ object WebServer {
     makePage(div)
   }
 
-  val katex=
+  val katex =
     """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
@@ -85,7 +85,7 @@ object WebServer {
       """
 
   val fdView = makePage(
-    """
+      """
     <div id ="jsdiv"></div>
     <script type="text/javascript">
     provingground.DeducerJS().main()
@@ -115,38 +115,39 @@ object WebServer {
     makePage(divs)
   }
 
-  var fdVec : Vector[(String, String, Double)] = Vector()
+  var fdVec: Vector[(String, String, Double)] = Vector()
 
-  val timeSeries : MutMap[String, Vector[Double]] = MutMap()
+  val timeSeries: MutMap[String, Vector[Double]] = MutMap()
 
-  val typTimeSeries : MutMap[String, Vector[Double]] = MutMap()
+  val typTimeSeries: MutMap[String, Vector[Double]] = MutMap()
 
-  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) =
-    {
-      fdVec = fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
-    }
+  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) = {
+    fdVec =
+      fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
+  }
 
-  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double]) ={
+  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double]) = {
     timeSeries(latex(term)) = ts
   }
 
-  def showFDs[U <: Term with Subs[U]](
-    fds: Vector[FiniteDistribution[U]], terms: Set[U], typs: Set[Typ[Term]]) = {
-        showDist(fds.last)
-        timeSeries.clear
-        val typFDs = fds map ((fd) => fd map (_.typ))
-        for (x <- terms) showTimeSeries(x, fds map ((fd) => - math.log(fd(x))))
-        for (x <- typs) showTimeSeries(x, typFDs map ((fd) => - math.log(fd(x))))
-    }
+  def showFDs[U <: Term with Subs[U]](fds: Vector[FiniteDistribution[U]],
+                                      terms: Set[U],
+                                      typs: Set[Typ[Term]]) = {
+    showDist(fds.last)
+    timeSeries.clear
+    val typFDs = fds map ((fd) => fd map (_.typ))
+    for (x <- terms) showTimeSeries(x, fds map ((fd) => -math.log(fd(x))))
+    for (x <- typs) showTimeSeries(x, typFDs map ((fd) => -math.log(fd(x))))
+  }
 
-  val viewTerms : MutSet[Term] = MutSet()
+  val viewTerms: MutSet[Term] = MutSet()
 
-  val viewTypes : MutSet[Typ[Term]] = MutSet()
+  val viewTypes: MutSet[Typ[Term]] = MutSet()
 
-  def displayTS(
-    fds: Vector[FiniteDistribution[Term]]) = showFDs(fds, viewTerms.toSet, viewTypes.toSet)
+  def displayTS(fds: Vector[FiniteDistribution[Term]]) =
+    showFDs(fds, viewTerms.toSet, viewTypes.toSet)
 
-  def display(buf : Deducer#BufferedRun) = {
+  def display(buf: Deducer#BufferedRun) = {
     displayTS(buf.getTimeSeries)
     buf.onChange((_) => displayTS(buf.getTimeSeries))
   }
@@ -169,17 +170,17 @@ object WebServer {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, termsView))
       }
     } ~ path("terms-data") {
-      get{
+      get {
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(fdVec)))
       }
     } ~ path("terms-time-series") {
-      get{
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
+      get {
+        complete(
+            HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
       }
     }
 
-  val dummy =
-    """
+  val dummy = """
     <div id ="dummy-space">The dummy space</div>
     <script type="text/javascript">
       provingground.ProvingGroundJS().dummyUpdate()
@@ -191,7 +192,6 @@ object WebServer {
     showView("dummy", dummy)
     showData("dummy", dummyData)
   }
-
 
   def getText(name: String) = {
     val index = if (name.endsWith(".html")) name.dropRight(5) else name
@@ -216,8 +216,9 @@ object WebServer {
     }
   }
 
-  val resourceRoute = path("resource" / Segment){ name =>
-      getFromResource(name)}
+  val resourceRoute = path("resource" / Segment) { name =>
+    getFromResource(name)
+  }
 
   var otherRoutes: Option[Route] = None
 
@@ -226,7 +227,8 @@ object WebServer {
 
   def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
 
-  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
+  val route = mixin(
+      htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
 
   val helloRoute = path("hello") {
     get {

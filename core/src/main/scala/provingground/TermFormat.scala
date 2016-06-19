@@ -57,7 +57,7 @@ object LatexFormat extends TermRec[String] {
     dom + " \\to " + codom
 
   def lambda(variable: String, typ: String, value: String): String =
-    s"($variable : $typ)"+" \\mapsto "+  s"$value"
+    s"($variable : $typ)" + " \\mapsto " + s"$value"
 
   def equality(dom: String, lhs: String, rhs: String) =
     s"$lhs = $rhs (in $dom)"
@@ -125,7 +125,6 @@ object FansiFormat extends TermRec[fansi.Str] {
 
   def univ(n: Int) = LightCyan(Str(UnivSym))
 }
-
 
 trait FansiShow[-U] {
   def show(x: U): String

@@ -61,27 +61,29 @@ class TermToExpr[E](
 
 object TermToExpr {
   import TermLang._
-  def encode(names: Vector[(Term, String)]) : Term => Term = {
-    def predefs(term: Term) : Option[Term] = {
+  def encode(names: Vector[(Term, String)]): Term => Term = {
+    def predefs(term: Term): Option[Term] = {
       val nameOpt = names find (_._1 == term) map (_._2)
-      val typOpt : Option[Typ[Term]] = encode(names)(term.typ) match {
-        case tp : Typ[u] => Some(tp)
+      val typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
+        case tp: Typ[u] => Some(tp)
         case _ => None
       }
-      for (typ <- typOpt; name <- nameOpt) yield (("@"+name) :: typ)
+      for (typ <- typOpt; name <- nameOpt) yield (("@" + name) :: typ)
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)
-    (term: Term) => rebuilder(term) getOrElse(term)
+    (term: Term) =>
+      rebuilder(term) getOrElse (term)
   }
 
-  def decode(names: Vector[(Term, String)]) : Term => Term = {
-    def predefs(term: Term) : Option[Term] = term match {
-        case sym : Symbolic =>
-          names find ("@" + _._2 == sym.name.toString) map (_._1)
-        case _ => None
+  def decode(names: Vector[(Term, String)]): Term => Term = {
+    def predefs(term: Term): Option[Term] = term match {
+      case sym: Symbolic =>
+        names find ("@" + _._2 == sym.name.toString) map (_._1)
+      case _ => None
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)
-    (term: Term) => rebuilder(term) getOrElse(term)
+    (term: Term) =>
+      rebuilder(term) getOrElse (term)
   }
 
   class NewNameFactory(prefix: String = "$") {
@@ -111,7 +113,7 @@ object TermToExpr {
 
   import TermLang._
 
-  def newTermOpt(term: Term, prefix: String = ".") : Option[Term] = {
+  def newTermOpt(term: Term, prefix: String = "."): Option[Term] = {
     val myNames = new NewNameFactory(prefix)
     def predefs(t: Term) =
       if (isVar(t)) Some(myNames.getTerm(rebuildTyp(t.typ, prefix))) else None
@@ -121,7 +123,8 @@ object TermToExpr {
 
   def rebuild(t: Term, prefix: String = ".") = newTermOpt(t, prefix).get
 
-  def rebuildTyp(t: Typ[Term], prefix: String) = rebuild(t, prefix).asInstanceOf[Typ[Term]]
+  def rebuildTyp(t: Typ[Term], prefix: String) =
+    rebuild(t, prefix).asInstanceOf[Typ[Term]]
 
   def rebuildList(ts: List[Term], prefix: String = ".") = {
     val myNames = new NewNameFactory(prefix)
@@ -144,7 +147,8 @@ object TermToExpr {
         case (x, s) =>
           val myNames = new NewNameFactory(prefix)
           def predefs(t: Term) =
-            if (isVar(t)) Some(myNames.getTerm(rebuildTyp(t.typ, prefix))) else None
+            if (isVar(t)) Some(myNames.getTerm(rebuildTyp(t.typ, prefix)))
+            else None
           val rebuilder = new TermToExpr[Term]((n) => Universe(n), predefs)
           val xx = rebuilder(x).get
           val ss =

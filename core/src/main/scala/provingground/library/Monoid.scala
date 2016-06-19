@@ -26,17 +26,16 @@ object Monoid {
 
   val refl = lambda(a)(Refl(M, a))
 
-  val idUnique = b ~>: (
-    (a ~>: (op(l)(a) =:= a)) ~>: (l =:= b)
+  val idUnique =
+    b ~>: (
+        (a ~>: (op(l)(a) =:= a)) ~>: (l =:= b)
+    )
 
-  )
+  val assoc = (a ~>: (b ~>: (c ~>: (
+                  op(a)(op(b)(c)) =:= op(op(a)(b))(c)
+              )))).Var
 
-  val assoc =
-    (a ~>: (b ~>: (c ~>: (
-      op(a)(op(b)(c)) =:= op(op(a)(b))(c)
-      )))).Var
-
-  val MVars = Vector[Term](a, b, c) map (Weighted(_, 1.0/3.0))
+  val MVars = Vector[Term](a, b, c) map (Weighted(_, 1.0 / 3.0))
 
   val X = "X" :: Type
 
@@ -48,43 +47,59 @@ object Monoid {
 
   val x = "x" :: X
 
-  val extensionality =
-    lambda(X)(
+  val extensionality = lambda(X)(
       lambda(Y)(
-    lambda(f)(IdentityTyp.extnslty(f))
-  ))
+          lambda(f)(IdentityTyp.extnslty(f))
+      ))
 
-  val transfer =
-    (X ~>: (
-      Y ~>: (
-        f ~>: (
-          g ~>: (
-            x ~>: ((f =:= g) ->: (f(x) =:= g(x)))
+  val transfer = (X ~>: (
+          Y ~>: (
+              f ~>: (
+                  g ~>: (
+                      x ~>: ((f =:= g) ->: (f(x) =:= g(x)))
+                  )
+              )
           )
-        )
-      )
-    )).Var
+      )).Var
 
-    val names =
-      Vector(
-        refl -> "id.reflexivity",
-        sym -> "id.symmetry",
-        trans -> "id.transitivity",
-        extensionality -> "id.extendsionality",
-        transfer -> "id.transfer")
+  val names = Vector(refl -> "id.reflexivity",
+                     sym -> "id.symmetry",
+                     trans -> "id.transitivity",
+                     extensionality -> "id.extendsionality",
+                     transfer -> "id.transfer")
 
-    val dist = FiniteDistribution.unif(M, a, b, c, l, r, op, leftId, rightId, refl, sym, trans, assoc, extensionality, transfer)
+  val dist = FiniteDistribution.unif(M,
+                                     a,
+                                     b,
+                                     c,
+                                     l,
+                                     r,
+                                     op,
+                                     leftId,
+                                     rightId,
+                                     refl,
+                                     sym,
+                                     trans,
+                                     assoc,
+                                     extensionality,
+                                     transfer)
 
-    val ded = Deducer(vars = MVars, cutoff = 0.01)
+  val ded = Deducer(vars = MVars, cutoff = 0.01)
 
-    def smooth (fd: FiniteDistribution[Term]) = (fd ++ (fd map (sigma)) ++ fd map ((t) => sigma(sigma(t)))).normalized()
+  def smooth(fd: FiniteDistribution[Term]) =
+    (fd ++ (fd map (sigma)) ++ fd map ((t) => sigma(sigma(t)))).normalized()
 
-    def sigma(t: Term) = {
-      val aa = "aa" :: M
-      val bb = "bb" :: M
-      val cc = "cc" :: M
-      t.replace(a, aa).replace(b, bb).replace(c, cc).replace(aa, b).replace(bb, c).replace(cc, a)
-    }
+  def sigma(t: Term) = {
+    val aa = "aa" :: M
+    val bb = "bb" :: M
+    val cc = "cc" :: M
+    t.replace(a, aa)
+      .replace(b, bb)
+      .replace(c, cc)
+      .replace(aa, b)
+      .replace(bb, c)
+      .replace(cc, a)
+  }
 }
 
 object Group {
