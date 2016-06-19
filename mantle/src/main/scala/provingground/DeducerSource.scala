@@ -110,9 +110,9 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
 
     def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
       deduc.takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
-//      alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}"))).
+      alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}"))).
       via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).
-//      alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}"))).
+      alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}"))).
       runWith(Sink.ignore)
     }
 
@@ -152,9 +152,14 @@ object DeducerSource{
     import FreeExprLang._
 
     def saveDeduc(name: String) = {
+      println("saving")
       val file = cwd / 'data / s"${name}.deduc"
+      println(s"saving to: $file")
       Sink.foreach{(fd: FD[Term]) =>
-        write.append(file, writeDist(fd)+"\n")}
+          println("Dummy save: see dist")
+          println(scala.util.Try(writeDist(fd)))
+    //    write.append(file, writeDist(fd)+"\n")
+      }
     }
 
     def saveLearn(name: String) = {

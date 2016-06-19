@@ -8,10 +8,12 @@ import scala.concurrent._
 
 import library.Monoid._
 
-object MonoidLearn{
-  val dedSrc = new DeducerSource(ded, dist, 300000, 30000, smooth)
+import scala.io.StdIn
 
-  val mediumRun = dedSrc.timedRunConc(10.hours, 20.hours, "monoid-30hours")
+object MonoidLearn{
+  val dedSrc = new DeducerSource(ded, dist, 30, 30, smooth)
+
+  def shortRun = dedSrc.timedRun(5.minutes, 10.minutes, "monoid-quick")
 
   import WebServer._
 
@@ -19,9 +21,20 @@ object MonoidLearn{
 }
 
 object MonoidLearnRun extends App{
+  import ammonite.ops._
+
+  val file = cwd / "tmp" / "blah"
+
+  write.append(file, "reached here")
+
   import WebServer._
 
   viewTypes ++= Set(l =:= r, leftId.typ, (b ~>: (op(r)(b) =:= b)), idUnique)
 
-  Await.result(MonoidLearn.mediumRun, 40.hours)
+//  MonoidLearn.shortRun
+
+  println("running")
+
+//  StdIn.readLine()
+  Await.result(MonoidLearn.shortRun, 30.minutes)
 }

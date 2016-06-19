@@ -78,3 +78,13 @@ object Monoid {
       t.replace(a, aa).replace(b, bb).replace(c, cc).replace(aa, b).replace(bb, c).replace(cc, a)
     }
 }
+
+object Group {
+  import Monoid.{M => G, l => e, _}
+
+  val i = "inv" :: G ->: G
+
+  val lInv = a ~>: (op(a)(i(a)) =:= a)
+
+  val rInv = a ~>: (op(i(a))(a) =:= a)
+}

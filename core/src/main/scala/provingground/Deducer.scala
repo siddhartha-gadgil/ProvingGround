@@ -283,7 +283,7 @@ case class Deducer(applnWeight: Double = 0.2,
   class Sampler {
     object bucket extends TermBucket
 
-    private val invImageMap: scala.collection.mutable.Map[
+    val invImageMap: scala.collection.mutable.Map[
         Term, Set[(Term, Term)]] = scala.collection.mutable.Map()
 
     def save(f: Term, x: Term, y: Term) =
@@ -355,10 +355,10 @@ case class Deducer(applnWeight: Double = 0.2,
 
     val mixedPop =
       if (memory)
-        (fd * genMemory ++ (newPop * (1 - genMemory)))
-      else newPop
+        ((fd * genMemory ++ (newPop * (1 - genMemory)))).flatten
+      else newPop.flatten
 
-    (smooth(flow(mixedPop, shift)), pop.applnInvMap)
+    (smooth(flow(mixedPop, shift)).flatten, pop.applnInvMap)
   }
 
   def learnerNextDistribution(fd: FD[Term],
