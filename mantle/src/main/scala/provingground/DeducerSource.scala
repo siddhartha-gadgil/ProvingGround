@@ -20,7 +20,7 @@ import scala.concurrent.duration._
 class DeducerSource(ded: Deducer, initDist: FD[Term],
                   initBatch: Int,
                   batchSize: Int,
-                  smooth: FD[Term] => FD[Term] = identity){
+                  smooth: FD[Term] => FD[Term] = identity, names: Vector[(Term, String)] = Vector()){
     import DeducerSource._
 
     import Hub.{system, materializer}
@@ -105,20 +105,20 @@ class DeducerSource(ded: Deducer, initDist: FD[Term],
       deducConc(threads).take(dedLoops).alsoTo(display).via(learnFlowConc(threads)).alsoTo(display).take(learnLoops).runWith(display)
 
     def loopySaved(dedLoops: Long, learnLoops: Long, name : String) =
-      deduc.take(dedLoops).alsoTo(display).alsoTo(saveDeduc(name)).
-      via(learnFlow).take(learnLoops).alsoTo(display).alsoTo(saveLearn(name)). runWith(Sink.ignore)
+      deduc.take(dedLoops).alsoTo(display).alsoTo(saveDeduc(name, names)).
+      via(learnFlow).take(learnLoops).alsoTo(display).alsoTo(saveLearn(name, names)). runWith(Sink.ignore)
 
     def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
-      deduc.takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
+      deduc.takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name, names)).
       alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}"))).
-      via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).
+      via(learnFlow).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name, names)).
       alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}"))).
       runWith(Sink.ignore)
     }
 
     def timedRunConc(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String, threads: Int = 3) = {
-      deducConc(threads).takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name)).
-      via(learnFlowConc(threads)).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name)).runWith(Sink.ignore)
+      deducConc(threads).takeWithin(dedTime).alsoTo(display).alsoTo(saveDeduc(name, names)).
+      via(learnFlowConc(threads)).takeWithin(learnTime).alsoTo(display).alsoTo(saveLearn(name, names)).runWith(Sink.ignore)
     }
 }
 
@@ -151,32 +151,32 @@ object DeducerSource{
 
     import FreeExprLang._
 
-    def saveDeduc(name: String) = {
+    def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
       println("saving")
       val file = cwd / 'data / s"${name}.deduc"
       println(s"saving to: $file")
       Sink.foreach{(fd: FD[Term]) =>
           println("Dummy save: see dist")
-          println(scala.util.Try(writeDist(fd)))
-    //    write.append(file, writeDist(fd)+"\n")
+          println(scala.util.Try(writeDist(fd, names)))
+        write.append(file, writeDist(fd, names)+"\n")
       }
     }
 
-    def saveLearn(name: String) = {
+    def saveLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
       val file = cwd / 'data / s"${name}.learn"
       Sink.foreach{(fd: FD[Term]) =>
-        write.append(file, writeDist(fd)+"\n")}
+        write.append(file, writeDist(fd, names)+"\n")}
     }
 
-    def loadDeduc(name: String) = {
+    def loadDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
       val file = cwd / 'data / s"${name}.deduc"
-      val it = read.lines.iter(file) map (readDist)
+      val it = read.lines.iter(file) map ((t) => readDist(t, names))
       Source.fromIterator { () => it }
     }
 
-    def loadLearn(name: String) = {
+    def loadLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
       val file = cwd / 'data / s"${name}.learn"
-      val it = read.lines.iter(file) map (readDist)
+      val it = read.lines.iter(file) map ((t) => readDist(t, names))
       Source.fromIterator { () => it }
     }
 

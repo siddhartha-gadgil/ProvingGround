@@ -65,7 +65,15 @@ object Monoid {
       )
     )).Var
 
-    val dist = FiniteDistribution.unif(M, a, b, c, l, r, op, leftId, rightId, refl, assoc, extensionality, transfer)
+    val names =
+      Vector(
+        refl -> "id.reflexivity",
+        sym -> "id.symmetry",
+        trans -> "id.transitivity",
+        extensionality -> "id.extendsionality",
+        transfer -> "id.transfer")
+
+    val dist = FiniteDistribution.unif(M, a, b, c, l, r, op, leftId, rightId, refl, sym, trans, assoc, extensionality, transfer)
 
     val ded = Deducer(vars = MVars, cutoff = 0.01)
 
