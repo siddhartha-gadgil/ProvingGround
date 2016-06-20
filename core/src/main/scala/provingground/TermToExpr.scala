@@ -61,24 +61,46 @@ class TermToExpr[E](
 
 object TermToExpr {
   import TermLang._
+
+  import IdentityTyp._
+
+  val (reflFn, formalRefl) = {
+    val X = "X" :: Type
+    val x = "x" :: X
+    (HoTT.lambda(X)(HoTT.lambda(x)(Refl(X, x))),
+      "@refl" :: (
+        HoTT.pi(X)(HoTT.pi(x)(x =:= x))
+       ))
+  }
+
+
   def encode(names: Vector[(Term, String)]): Term => Term = {
+    def reflDef: Term => Option[Term] = {
+      case Refl(t : Typ[u], a: Term) => Some(encode(names)(formalRefl(t)(a)))
+      case _ => None
+    }
+
     def predefs(term: Term): Option[Term] = {
       val nameOpt = names find (_._1 == term) map (_._2)
-      val typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
-        case tp: Typ[u] => Some(tp)
-        case _ => None
+      nameOpt flatMap {(name) => {
+        def typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
+          case tp: Typ[u] => Some(tp)
+          case _ => None
+        }
+        typOpt map ((typ) => s"@$name" :: typ)
       }
-      for (typ <- typOpt; name <- nameOpt) yield (("@" + name) :: typ)
+      }
     }
-    val rebuilder = new TermToExpr((n) => Universe(n), predefs)
+    val rebuilder = new TermToExpr((n) => Universe(n), (term) => reflDef(term) orElse predefs(term))
     (term: Term) =>
       rebuilder(term) getOrElse (term)
   }
 
   def decode(names: Vector[(Term, String)]): Term => Term = {
+    val reflNames = (reflFn -> "refl") +: names
     def predefs(term: Term): Option[Term] = term match {
       case sym: Symbolic =>
-        names find ("@" + _._2 == sym.name.toString) map (_._1)
+        reflNames find ("@" + _._2 == sym.name.toString) map (_._1)
       case _ => None
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)

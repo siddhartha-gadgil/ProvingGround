@@ -62,7 +62,7 @@ object Monoid {
           )
       )).Var
 
-  val names = Vector(refl -> "id.reflexivity",
+  val names = Vector(//refl -> "id.reflexivity",
                      sym -> "id.symmetry",
                      trans -> "id.transitivity",
                      extensionality -> "id.extendsionality",

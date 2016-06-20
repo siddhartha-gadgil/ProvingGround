@@ -75,6 +75,7 @@ sealed trait GenFiniteDistribution[T]
   /**
     * next instance of a random variable with the given distribution
     */
+
   def next = Weighted.pick(posmf(), random.nextDouble * postotal())
 
   /**
@@ -126,7 +127,7 @@ sealed trait GenFiniteDistribution[T]
   /**
     * subtract distribution
     */
-  def --(that: GenFiniteDistribution[T]) = this ++ (that * (-1))
+  def --(that: GenFiniteDistribution[T]) = (this ++ (that * (-1))).flatten
 
   /**
     * map distribution without normalizing, concretely implemented to avoid
@@ -375,6 +376,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def ++(that: FiniteDistribution[T]): FiniteDistribution[T] = {
     FiniteDistribution(pmf ++ that.pmf)
   }
+
+  def --(that: FiniteDistribution[T]) = (this ++ (that * (-1))).flatten
 
   override def +(elem: T, prob: Double): FiniteDistribution[T] =
     this ++ FiniteDistribution(Vector(Weighted(elem, prob)))

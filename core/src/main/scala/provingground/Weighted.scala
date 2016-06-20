@@ -21,7 +21,7 @@ object Weighted {
     Weighted(seq.head.elem, Weighted.sumWeigths(seq))
 
   def flatten[T](seq: Seq[Weighted[T]]) =
-    seq groupBy (_.elem) map (_._2) map (gather(_))
+    (seq groupBy (_.elem) map (_._2) map (gather(_))).filter(_.weight != 0)
 
   def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)
 
