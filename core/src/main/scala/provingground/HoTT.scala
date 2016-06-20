@@ -565,7 +565,7 @@ object HoTT {
 
     lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
-    def symbObj(name: AnySym) = FuncSymb[W, U](name, dom, codom)
+    def symbObj(name: AnySym) : Func[W, U] = FuncSymb[W, U](name, dom, codom)
 
     override def toString = s"(${dom.toString}) $Arrow (${codom.toString})"
 
@@ -1046,7 +1046,7 @@ object HoTT {
     lazy val typ = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
-    override def symbObj(name: AnySym) = DepFuncSymb[W, U](name, fibers)
+    override def symbObj(name: AnySym) : FuncLike[W, U] = DepFuncSymb[W, U](name, fibers)
 
     def newobj = PiTyp(fibers.newobj)
 
@@ -1315,12 +1315,12 @@ object HoTT {
     }
 
     case class InducFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
-        dom: Typ[U], targetFmly: FuncLike[U, FuncLike[U, Func[Term, Typ[V]]]])
+        dom: Typ[U], targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]])
         extends AnySym
 
     def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U],
-        targetFmly: FuncLike[U, FuncLike[U, Func[Term, Typ[V]]]]) = {
+        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]) = {
       val x = dom.Var
       val y = dom.Var
       val p = IdentityTyp(dom, x, y).Var

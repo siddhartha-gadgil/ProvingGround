@@ -72,11 +72,43 @@ object TermToExpr {
         HoTT.pi(X)(HoTT.pi(x)(x =:= x))
        ))
   }
+  
+  val (idRec, formalIdRec) = {
+    val X = "X" :: Type
+    val Y = "Y" :: Type
+    val idRec = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y) : Term))
+    (idRec, "@id.rec" :: (idRec.typ))
+  }
 
+  val (idInduc, formalIdInduc) = {
+    val X = "X" :: Type
+    val a = "a" :: X
+    val b = "b" :: X
+    val p = "p" :: (a =:= b)
+    
+    val Ys = 
+      "Ys" :: (
+          a ~>: (b ~>: (p ~>: Type))
+        )
+    val fmly = HoTT.lambda(a)(HoTT.lambda(b)(HoTT.lambda(p)(Ys(a)(b)(p))))
+    val idInduc= HoTT.lambda(X)(HoTT.lambda(fmly)(induc(X, fmly)))
+    (idInduc, "@id.induc" :: (idInduc.typ))
+  }
+  
 
   def encode(names: Vector[(Term, String)]): Term => Term = {
-    def reflDef: Term => Option[Term] = {
+    def formalDefs: Term => Option[Term] = {
       case Refl(t : Typ[u], a: Term) => Some(encode(names)(formalRefl(t)(a)))
+      case sym: Symbolic => sym.name match {
+        case ind : InducFunc[u, v] =>
+          val cind = ind.asInstanceOf[InducFunc[Term, Term]]
+          import Fold._
+          Some((formalIdInduc(cind.dom)(cind.targetFmly)))
+        case RecFunc(dom: Typ[u], codom: Typ[v]) =>
+          import Fold._
+          Some((formalIdRec(dom)(codom)))
+        case _ => None
+      }
       case _ => None
     }
 
@@ -91,16 +123,16 @@ object TermToExpr {
       }
       }
     }
-    val rebuilder = new TermToExpr((n) => Universe(n), (term) => reflDef(term) orElse predefs(term))
+    val rebuilder = new TermToExpr((n) => Universe(n), (term) => formalDefs(term) orElse predefs(term))
     (term: Term) =>
       rebuilder(term) getOrElse (term)
   }
 
   def decode(names: Vector[(Term, String)]): Term => Term = {
-    val reflNames = (reflFn -> "refl") +: names
+    val formalNames = Vector(reflFn -> "refl", idInduc ->"id.induc", idRec -> "id.rec") ++ names
     def predefs(term: Term): Option[Term] = term match {
       case sym: Symbolic =>
-        reflNames find ("@" + _._2 == sym.name.toString) map (_._1)
+        formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
       case _ => None
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)
