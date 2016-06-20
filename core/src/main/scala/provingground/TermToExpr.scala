@@ -72,12 +72,13 @@ object TermToExpr {
         HoTT.pi(X)(HoTT.pi(x)(x =:= x))
        ))
   }
-  
+
   val (idRec, formalIdRec) = {
     val X = "X" :: Type
     val Y = "Y" :: Type
     val idRec = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y) : Term))
-    (idRec, "@id.rec" :: (idRec.typ))
+    val formal =  HoTT.lambda(X)(HoTT.lambda(Y)("@id.rec" :: idRec(X)(Y).typ))
+    (idRec, formal)
   }
 
   val (idInduc, formalIdInduc) = {
@@ -85,28 +86,35 @@ object TermToExpr {
     val a = "a" :: X
     val b = "b" :: X
     val p = "p" :: (a =:= b)
-    
-    val Ys = 
-      "Ys" :: (
+
+    val Ys =
+      "fmly" :: (
           a ~>: (b ~>: (p ~>: Type))
         )
-    val fmly = HoTT.lambda(a)(HoTT.lambda(b)(HoTT.lambda(p)(Ys(a)(b)(p))))
-    val idInduc= HoTT.lambda(X)(HoTT.lambda(fmly)(induc(X, fmly)))
-    (idInduc, "@id.induc" :: (idInduc.typ))
+//    val fmly = HoTT.lambda(a)(HoTT.lambda(b)(HoTT.lambda(p)(Ys(a)(b)(p))))
+    val idInduc= HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
+    val formal =  HoTT.lambda(X)(HoTT.lambda(Ys)("@id.induc" :: idInduc(X)(Ys).typ))
+    (idInduc, formal)
   }
-  
+
 
   def encode(names: Vector[(Term, String)]): Term => Term = {
     def formalDefs: Term => Option[Term] = {
-      case Refl(t : Typ[u], a: Term) => Some(encode(names)(formalRefl(t)(a)))
+      case Refl(t : Typ[u], a: Term) =>
+        import Fold._
+        val newTyp = encode(names)(t)
+        val newPoint = encode(names)(a)
+        Some(formalRefl(newTyp)(newPoint))
       case sym: Symbolic => sym.name match {
         case ind : InducFunc[u, v] =>
-          val cind = ind.asInstanceOf[InducFunc[Term, Term]]
+          val newDom = encode(names)(ind.dom)
+          val newTgt = encode(names)(ind.targetFmly)
           import Fold._
-          Some((formalIdInduc(cind.dom)(cind.targetFmly)))
+          val newFormalIdInduc = encode(names)(formalIdInduc)
+          Some((newFormalIdInduc(newDom)(newTgt)))
         case RecFunc(dom: Typ[u], codom: Typ[v]) =>
           import Fold._
-          Some((formalIdRec(dom)(codom)))
+          Some((formalIdRec(encode(names)(dom))(encode(names)(codom))))
         case _ => None
       }
       case _ => None
