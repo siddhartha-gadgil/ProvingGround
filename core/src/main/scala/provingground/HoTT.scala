@@ -26,6 +26,10 @@ object HoTT {
     */
   class AnySym
 
+
+  trait SymSubs extends AnySym{
+    def subs(x: Term, y: Term) : SymSubs
+  }
   /**
     * Strings as symbols
     */
@@ -298,6 +302,8 @@ object HoTT {
       Try((fx.func
             .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
             .asInstanceOf[U]) getOrElse symbobj(fx)
+    case s : SymSubs =>
+      symbobj(s.subs(x, y))
     case sym => symbobj(sym)
   }
 
@@ -847,7 +853,7 @@ object HoTT {
     val depcodom: X => Typ[Y] = (t: X) =>
       value.typ.replace(variable, t).asInstanceOf[Typ[Y]]
 
-    val dep = value.typ dependsOn variable
+    val dep = true //value.typ dependsOn variable
 
     def newobj = {
       val newvar = variable.newobj
@@ -1303,7 +1309,9 @@ object HoTT {
   object IdentityTyp {
     case class RecFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target: Typ[V])
-        extends AnySym
+        extends SymSubs{
+          def subs(x: Term, y: Term) = RecFunc(dom.replace(x, y), target.replace(x, y))
+        }
 
     def rec[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target: Typ[V]) = {
@@ -1316,7 +1324,9 @@ object HoTT {
 
     case class InducFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]])
-        extends AnySym
+        extends SymSubs{
+          def subs(x: Term, y: Term) = InducFunc(dom.replace(x, y), targetFmly.replace(x, y))
+        }
 
     def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U],
@@ -1485,6 +1495,19 @@ object HoTT {
     implicit class Folder[U <: Term with Subs[U]](fn: U) {
       def apply(args: Term*) = fold(fn)(args: _*)
     }
+
+    def domain: Term => Typ[Term] = {
+      case fn : FuncLike[u, v] => fn.dom
+    }
+
+    def variable : Term => Term = {
+      case l: LambdaLike[_, _] => l.variable
+    }
+
+    def value : Term => Term = {
+      case l: LambdaLike[_, _] => l.value
+    }
+
   }
 
   /**

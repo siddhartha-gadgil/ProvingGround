@@ -97,6 +97,30 @@ object TermToExpr {
     (idInduc, formal)
   }
 
+  def fromFormalInduc(term: Term) = {
+    import Fold._
+
+    val x = domain(term).Var
+
+    val g = term(x)
+
+    val X = domain(g)
+
+    val a = "a" :: X
+
+    val b = "b" :: X
+
+    val p = "p" :: (a =:= b)
+
+    val family = HoTT.lambda(a)(
+      HoTT.lambda(b)(
+        HoTT.Lambda(p, g(a)(b)(p).typ) : Term
+      )
+      )
+
+    (X, family)
+  }
+
 
   def encode(names: Vector[(Term, String)]): Term => Term = {
     def formalDefs: Term => Option[Term] = {
@@ -137,10 +161,15 @@ object TermToExpr {
   }
 
   def decode(names: Vector[(Term, String)]): Term => Term = {
-    val formalNames = Vector(reflFn -> "refl", idInduc ->"id.induc", idRec -> "id.rec") ++ names
+    val formalNames = Vector(reflFn -> "refl", idRec -> "id.rec") ++ names
     def predefs(term: Term): Option[Term] = term match {
       case sym: Symbolic =>
-        formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
+        sym.name match {
+          case Name("@id.induc") =>
+            val (x, fmly) = fromFormalInduc(term)
+            Some(fold(idInduc)(x, fmly))
+          case _ =>formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
+      }
       case _ => None
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)
