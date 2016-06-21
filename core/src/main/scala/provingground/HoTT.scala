@@ -562,12 +562,23 @@ object HoTT {
     case (a, b) => PairObj(a, b)
   }
 
+
   /** Function type (not dependent functions)*/
   case class FuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       dom: Typ[W], codom: Typ[U])
       extends Typ[Func[W, U]]
       with Subs[FuncTyp[W, U]] {
     type Obj = Func[W, U]
+
+    def asPi = PiTyp(lmbda("###" :: dom)(codom))
+
+    override def hashCode = asPi.hashCode
+
+    override def equals(that: Any)=  that match {
+      case FuncTyp(d, c) => (d == dom) && (c == codom)
+      case PiTyp(fibre) => (fibre.dom == dom) && (fibre(dom.obj) == codom)
+      case _ => false
+    }
 
     lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
@@ -863,6 +874,8 @@ object HoTT {
     override def equals(that: Any) = that match {
       case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
         y.replace(x, variable) == value
+      case LambdaFixed(x: Term, y: Term) if x.typ == variable.typ =>
+          y.replace(x, variable) == value
       case _ => false
     }
   }
@@ -884,6 +897,8 @@ object HoTT {
     override def equals(that: Any) = that match {
       case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
         y.replace(x, variable) == value
+      case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+          y.replace(x, variable) == value
       case _ => false
     }
 
@@ -1053,6 +1068,12 @@ object HoTT {
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
     override def symbObj(name: AnySym) : FuncLike[W, U] = DepFuncSymb[W, U](name, fibers)
+
+    override def equals(that: Any) = that match {
+      case PiTyp(f) => f == fibers
+      case fn : FuncTyp[u, v] => fn.asPi == this
+      case _ => false
+    }
 
     def newobj = PiTyp(fibers.newobj)
 
