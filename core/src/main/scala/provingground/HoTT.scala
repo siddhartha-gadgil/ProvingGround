@@ -562,23 +562,32 @@ object HoTT {
     case (a, b) => PairObj(a, b)
   }
 
+  
+  class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](val fib: Func[W, Typ[U]]){
+    override def hashCode = fib.hashCode()
+    
+    override def equals(that: Any) = that match {
+      case g : GenFuncTyp[u, v] => g.fib == fib
+      case _ => false
+    }
+  }
 
   /** Function type (not dependent functions)*/
   case class FuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
-      dom: Typ[W], codom: Typ[U])
-      extends Typ[Func[W, U]]
+      dom: Typ[W], codom: Typ[U]) extends GenFuncTyp[W, U](lmbda("###" :: dom)(codom))
+      with Typ[Func[W, U]]
       with Subs[FuncTyp[W, U]] {
     type Obj = Func[W, U]
 
     def asPi = PiTyp(lmbda("###" :: dom)(codom))
 
-    override def hashCode = asPi.hashCode
-
-    override def equals(that: Any)=  that match {
-      case FuncTyp(d, c) => (d == dom) && (c == codom)
-      case PiTyp(fibre) => (fibre.dom == dom) && (fibre(dom.obj) == codom)
-      case _ => false
-    }
+//    override def hashCode = asPi.hashCode
+//
+//    override def equals(that: Any)=  that match {
+//      case FuncTyp(d, c) => (d == dom) && (c == codom)
+//      case PiTyp(fibre) => (fibre.dom == dom) && (fibre(dom.obj) == codom)
+//      case _ => false
+//    }
 
     lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
@@ -1059,7 +1068,7 @@ object HoTT {
     */
   case class PiTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       fibers: TypFamily[W, U])
-      extends Typ[FuncLike[W, U]]
+      extends  GenFuncTyp(fibers) with  Typ[FuncLike[W, U]]
       with Subs[PiTyp[W, U]] {
     //type Obj = DepFunc[W, U]
     type Obj = FuncLike[W, U]
@@ -1069,11 +1078,11 @@ object HoTT {
 
     override def symbObj(name: AnySym) : FuncLike[W, U] = DepFuncSymb[W, U](name, fibers)
 
-    override def equals(that: Any) = that match {
-      case PiTyp(f) => f == fibers
-      case fn : FuncTyp[u, v] => fn.asPi == this
-      case _ => false
-    }
+//    override def equals(that: Any) = that match {
+//      case PiTyp(f) => f == fibers
+//      case fn : FuncTyp[u, v] => fn.asPi == this
+//      case _ => false
+//    }
 
     def newobj = PiTyp(fibers.newobj)
 
