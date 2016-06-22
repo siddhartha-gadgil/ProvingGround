@@ -82,16 +82,16 @@ object TermToExpr {
   }
 
   val (idInduc, formalIdInduc) = {
-    val X = "X" :: Type
-    val a = "a" :: X
-    val b = "b" :: X
-    val p = "p" :: (a =:= b)
+    val X = Type.Var
+    val a = X.Var
+    val b = X.Var
+    val p = (a =:= b).Var
 
     val Ys =
-      "fmly" :: (
+      (
           a ~>: (b ~>: (p ~>: Type))
-        )
-//    val fmly = HoTT.lambda(a)(HoTT.lambda(b)(HoTT.lambda(p)(Ys(a)(b)(p))))
+        ).Var
+        
     val idInduc= HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
     val formal =  HoTT.lambda(X)(HoTT.lambda(Ys)("@id.induc" :: idInduc(X)(Ys).typ))
     (idInduc, formal)
@@ -106,11 +106,11 @@ object TermToExpr {
 
     val X = domain(g)
 
-    val a = "a" :: X
+    val a = X.Var
 
-    val b = "b" :: X
+    val b = X.Var
 
-    val p = "p" :: (a =:= b)
+    val p = (a =:= b).Var
 
     val family = HoTT.lambda(a)(
       HoTT.lambda(b)(
@@ -167,7 +167,9 @@ object TermToExpr {
         sym.name match {
           case Name("@id.induc") =>
             val (x, fmly) = fromFormalInduc(term)
-            Some(fold(idInduc)(x, fmly))
+            val xD = decode(names)(x)
+            val fmlyD = decode(names)(fmly)
+            Some(fold(idInduc)(xD, fmlyD))
           case _ =>formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
       }
       case _ => None
