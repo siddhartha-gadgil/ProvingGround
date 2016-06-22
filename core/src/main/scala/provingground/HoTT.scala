@@ -195,7 +195,8 @@ object HoTT {
     def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         variable: V) = {
       val fiber = LambdaFixed[V, Typ[UU]](variable, this)
-      PiTyp(fiber)
+      val fib = lmbda(variable)(this : Typ[UU])
+      PiTyp(fib)
     }
 
     /**
