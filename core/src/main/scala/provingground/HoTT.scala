@@ -562,10 +562,10 @@ object HoTT {
     case (a, b) => PairObj(a, b)
   }
 
-  
+
   class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](val fib: Func[W, Typ[U]]){
     override def hashCode = fib.hashCode()
-    
+
     override def equals(that: Any) = that match {
       case g : GenFuncTyp[u, v] => g.fib == fib
       case _ => false
@@ -855,6 +855,12 @@ object HoTT {
       41 * (variable.typ.hashCode + 41) + newval.hashCode
     }
 
+    override def equals(that: Any) = that match {
+      case l : LambdaLike[u, v]  if l.variable.typ == variable.typ =>
+        l.value.replace(l.variable, variable) == value && value.replace(variable, l.variable) == l.value
+      case _ => false
+    }
+
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
       Lambda(variable replace (x, y), value replace (x, y))
 
@@ -880,13 +886,13 @@ object HoTT {
       Lambda(newvar, value.replace(variable, newvar))
     }
 
-    override def equals(that: Any) = that match {
-      case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
-        y.replace(x, variable) == value
-      case LambdaFixed(x: Term, y: Term) if x.typ == variable.typ =>
-          y.replace(x, variable) == value
-      case _ => false
-    }
+    // override def equals(that: Any) = that match {
+    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //     y.replace(x, variable) == value
+    //   case LambdaFixed(x: Term, y: Term) if x.typ == variable.typ =>
+    //       y.replace(x, variable) == value
+    //   case _ => false
+    // }
   }
 
   /**
@@ -903,13 +909,13 @@ object HoTT {
 
     val dep = false
 
-    override def equals(that: Any) = that match {
-      case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
-        y.replace(x, variable) == value
-      case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
-          y.replace(x, variable) == value
-      case _ => false
-    }
+    // override def equals(that: Any) = that match {
+    //   case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
+    //     y.replace(x, variable) == value
+    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //       y.replace(x, variable) == value
+    //   case _ => false
+    // }
 
     def newobj = {
       val newvar = variable.newobj
@@ -1515,7 +1521,10 @@ object HoTT {
     case (t, List()) => t
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f(x.asInstanceOf[u]))(ys: _*)
-    case (t, _) =>
+      case (f: FuncLike[u, _], x :: ys) =>
+      throw new IllegalArgumentException(
+          s"attempting to apply $f, which has domain ${f.dom} to $x with type ${x.typ}")
+    case (t, x :: ys) =>
       throw new IllegalArgumentException(
           s"attempting to apply $t, which is not a function"
       )

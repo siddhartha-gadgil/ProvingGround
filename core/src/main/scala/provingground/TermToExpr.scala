@@ -91,7 +91,7 @@ object TermToExpr {
       (
           a ~>: (b ~>: (p ~>: Type))
         ).Var
-        
+
     val idInduc= HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
     val formal =  HoTT.lambda(X)(HoTT.lambda(Ys)("@id.induc" :: idInduc(X)(Ys).typ))
     (idInduc, formal)
@@ -114,7 +114,7 @@ object TermToExpr {
 
     val family = HoTT.lambda(a)(
       HoTT.lambda(b)(
-        HoTT.Lambda(p, g(a)(b)(p).typ) : Term
+        HoTT.lambda(p)(g(a)(b)(p).typ) : Term
       )
       )
 
