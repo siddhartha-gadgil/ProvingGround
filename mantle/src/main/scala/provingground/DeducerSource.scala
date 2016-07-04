@@ -17,6 +17,8 @@ import ammonite.ops._
 
 import scala.concurrent.duration._
 
+import TermToExpr.encode
+
 class DeducerSource(ded: Deducer,
                     initDist: FD[Term],
                     initBatch: Int,
@@ -118,28 +120,28 @@ class DeducerSource(ded: Deducer,
   def loopy(dedLoops: Long, learnLoops: Long) =
     deduc
       .take(dedLoops)
-      .alsoTo(display)
+      .alsoTo(display())
       .via(learnFlow)
       .take(learnLoops)
-      .runWith(display)
+      .runWith(display())
 
   def loopyConc(dedLoops: Long, learnLoops: Long, threads: Int = 3) =
     deducConc(threads)
       .take(dedLoops)
-      .alsoTo(display)
+      .alsoTo(display())
       .via(learnFlowConc(threads))
-      .alsoTo(display)
+      .alsoTo(display())
       .take(learnLoops)
-      .runWith(display)
+      .runWith(display())
 
   def loopySaved(dedLoops: Long, learnLoops: Long, name: String) =
     deduc
       .take(dedLoops)
-      .alsoTo(display)
+      .alsoTo(display())
       .alsoTo(saveDeduc(name, names))
       .via(learnFlow)
       .take(learnLoops)
-      .alsoTo(display)
+      .alsoTo(display())
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
 
@@ -147,12 +149,12 @@ class DeducerSource(ded: Deducer,
       dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
     deduc
       .takeWithin(dedTime)
-      .alsoTo(display)
+      .alsoTo(display())
       .alsoTo(saveDeduc(name, names))
       .alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}")))
       .via(learnFlow)
       .takeWithin(learnTime)
-      .alsoTo(display)
+   //   .alsoTo(display)
       .alsoTo(saveLearn(name, names))
       .alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}")))
       .runWith(Sink.ignore)
@@ -164,11 +166,11 @@ class DeducerSource(ded: Deducer,
                    threads: Int = 3) = {
     deducConc(threads)
       .takeWithin(dedTime)
-      .alsoTo(display)
+      .alsoTo(display())
       .alsoTo(saveDeduc(name, names))
       .via(learnFlowConc(threads))
       .takeWithin(learnTime)
-      .alsoTo(display)
+   //   .alsoTo(display)
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
   }
@@ -189,13 +191,13 @@ object DeducerSource {
     }
   }
 
-  def display = {
+  def display(names: Vector[(Term, String)] = Vector()) = {
     import WebServer._
     withTimeSeries(viewTerms).to(
         Sink.foreach {
       case (fd, m) => {
-          showDist(fd)
-          m.foreach { case (t, v) => showTimeSeries(t, v map (-math.log(_))) }
+          showDist(fd, names)
+          m.foreach { case (t, v) => showTimeSeries(t, v map (-math.log(_)), names) }
         }
     })
   }
@@ -203,12 +205,14 @@ object DeducerSource {
   import FreeExprLang._
 
   def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
-    println("saving")
+  //  println("saving")
     val file = cwd / 'data / s"${name}.deduc"
-    println(s"saving to: $file")
+  //  println(s"saving to: $file")
     Sink.foreach { (fd: FD[Term]) =>
-      println("Dummy save: see dist")
-      println(scala.util.Try(writeDist(fd, names)))
+  //    println("Dummy save: see dist")
+  //    println(scala.util.Try(writeDist(fd, names)))
+  //    val distFut = Future(writeDist(fd, names))
+  //    distFut.foreach((p) => write.append(file, p + "\n"))
       write.append(file, writeDist(fd, names) + "\n")
     }
   }
@@ -216,6 +220,8 @@ object DeducerSource {
   def saveLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = cwd / 'data / s"${name}.learn"
     Sink.foreach { (fd: FD[Term]) =>
+   //   val distFut = Future(writeDist(fd, names))
+  //    distFut.foreach((p) => write.append(file, p + "\n"))      
       write.append(file, writeDist(fd, names) + "\n")
     }
   }
@@ -236,3 +242,28 @@ object DeducerSource {
     }
   }
 }
+
+import scala.collection.mutable.{Map =>mMap}
+
+class DeducerBuffer(terms: List[Term]){
+  var loops: Int = 0
+  
+  var dist: FD[Term] = FD.empty[Term]
+  
+  val timeSeries : mMap[Term, Vector[Double]] = {
+    val pairs = terms map (name => (name, Vector()))
+    mMap(pairs : _*)
+  }
+  
+  def save(fd: FD[Term]) = {
+    dist = fd
+    terms.foreach{
+        (term) =>
+          timeSeries(term) = timeSeries(term) :+ fd(term)
+    }
+    loops += 1
+  }
+  
+  def sink = Sink.foreach(save)
+}
+

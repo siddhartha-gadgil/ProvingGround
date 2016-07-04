@@ -19,6 +19,8 @@ import akka.stream.scaladsl._
 
 import akka.stream._
 
+import TermToExpr.encode
+
 //import FansiShow._
 
 import upickle.default._
@@ -121,31 +123,31 @@ object WebServer {
 
   val typTimeSeries: MutMap[String, Vector[Double]] = MutMap()
 
-  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U]) = {
+  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U], names: Vector[(Term, String)]) = {
     fdVec =
-      fd.pmf map ((wt) => (latex(wt.elem), latex(wt.elem.typ), wt.weight))
+      fd.pmf map ((wt) => (latex(encode(names)(wt.elem)), latex(encode(names)(wt.elem.typ)), wt.weight))
   }
 
-  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double]) = {
-    timeSeries(latex(term)) = ts
+  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double], names: Vector[(Term, String)]) = {
+    timeSeries(latex(encode(names)(term))) = ts
   }
 
   def showFDs[U <: Term with Subs[U]](fds: Vector[FiniteDistribution[U]],
                                       terms: Set[U],
-                                      typs: Set[Typ[Term]]) = {
-    showDist(fds.last)
+                                      typs: Set[Typ[Term]], names: Vector[(Term, String)]) = {
+    showDist(fds.last, names)
     timeSeries.clear
     val typFDs = fds map ((fd) => fd map (_.typ))
-    for (x <- terms) showTimeSeries(x, fds map ((fd) => -math.log(fd(x))))
-    for (x <- typs) showTimeSeries(x, typFDs map ((fd) => -math.log(fd(x))))
+    for (x <- terms) showTimeSeries(x, fds map ((fd) => -math.log(fd(x))), names)
+    for (x <- typs) showTimeSeries(x, typFDs map ((fd) => -math.log(fd(x))), names)
   }
 
   val viewTerms: MutSet[Term] = MutSet()
 
   val viewTypes: MutSet[Typ[Term]] = MutSet()
 
-  def displayTS(fds: Vector[FiniteDistribution[Term]]) =
-    showFDs(fds, viewTerms.toSet, viewTypes.toSet)
+  def displayTS(fds: Vector[FiniteDistribution[Term]], names: Vector[(Term, String)] = Vector()) =
+    showFDs(fds, viewTerms.toSet, viewTypes.toSet, names)
 
   def display(buf: Deducer#BufferedRun) = {
     displayTS(buf.getTimeSeries)
