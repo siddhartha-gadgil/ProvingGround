@@ -4,6 +4,4 @@ package provingground
 import provingground.HoTT._
 import IntTypes._
 
-object FunctionFeedback {
-
-}
+object FunctionFeedback {}

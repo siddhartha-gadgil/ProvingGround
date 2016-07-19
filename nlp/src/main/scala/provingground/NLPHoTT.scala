@@ -4,15 +4,14 @@ import provingground.NlpProse._
 //import provingground.HoTT._
 import provingground.TheoryTypes.{Term => TheoryTerm, Apply => TheoryApply, _}
 
-
 //import scala.language.implicitConversions
 
 /** Parses prose to HoTT
- *  Gives context-free expressions, not actual typed terms.
- *  Warning: Should handle conjunctions carefully
- */
-object NLPHoTT{
-  val parse: ProseTree =>  TheoryTerm = {
+  *  Gives context-free expressions, not actual typed terms.
+  *  Warning: Should handle conjunctions carefully
+  */
+object NLPHoTT {
+  val parse: ProseTree => TheoryTerm = {
     case ProseTree(root, List()) => TermSym(root.word)
 
     case Cop(first, second) => Is(parse(first), parse(second))
@@ -27,5 +26,4 @@ object NLPHoTT{
 
     case t => TermSym(t)
   }
-
 }

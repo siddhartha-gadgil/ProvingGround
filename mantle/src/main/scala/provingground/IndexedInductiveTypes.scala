@@ -2,11 +2,11 @@ package provingground
 
 import provingground.HoTT._
 
-
-	/*
+/*
 	 * Indexed version of induction
 	 */
-	class IndexedInductiveTypes[I <: Term]{/*
+class IndexedInductiveTypes[I <: Term] {
+  /*
 	  	trait FmlyPtn[U <: Term] extends FmlyPtn{
 	  	 type ConstructorType = U
 

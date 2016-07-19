@@ -2,98 +2,180 @@ package provingground
 
 import provingground.HoTT._
 //import provingground.Contexts._
-import scala.util._
+import scala.util.Try
 //import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
-object Unify{
-  def multisub[U <: Term with Subs[U]](x: U, m : Map[Term, Term]): U = m.toList  match {
-    case List() => x
-    case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
-  }
+object Unify {
+  def multisub[U <: Term with Subs[U]](x: U, m: Map[Term, Term]): U =
+    m.toVector match {
+      case Vector() => x
+      case (a, b) +: tail => multisub(x.replace(a, b), tail.toMap)
+    }
 
-  def dependsOn(term: Term): List[Term] => Boolean = {
-    case List() => false
-    case x :: ys => term.dependsOn(x) || dependsOn(term)(ys)
+  def dependsOn(term: Term): Vector[Term] => Boolean = {
+    case Vector() => false
+    case x +: ys => term.dependsOn(x) || dependsOn(term)(ys)
   }
 
   def mergeMaps[U, V](x: Map[U, V], y: Map[U, V]): Option[Map[U, V]] =
-    x.keys match {
-      case List() => Some(y)
-      case a :: bs => if (y.getOrElse(a, x(a)) == x(a)) Some(y + ((a, x(a)))) else None
+    x.keys.toVector match {
+      case Vector() => Some(y)
+      case a +: bs =>
+        if (y.getOrElse(a, x(a)) == x(a)) Some(y + ((a, x(a)))) else None
     }
 
-  def mergeOptMaps[U, V](x: Option[Map[U, V]], y: Option[Map[U, V]]): Option[Map[U, V]] =
-    x flatMap ((a) =>
-      y flatMap ((b) =>
-        mergeMaps(a, b)
-  ))
+  def mergeOptMaps[U, V](
+      x: Option[Map[U, V]], y: Option[Map[U, V]]): Option[Map[U, V]] =
+    x flatMap ((a) => y flatMap ((b) => mergeMaps(a, b)))
 
-  def unify(lhs: Term, rhs: Term, freevars: List[Term]): Option[Map[Term, Term]] = {
-    if (!dependsOn(lhs)(freevars))
-      {if (lhs == rhs) Some(Map()) else None}
+  def mergeAll[U, V](xs: Option[Map[U, V]]*): Option[Map[U, V]] =
+    xs.toVector match {
+      case Vector() => Some(Map())
+      case x +: ys =>
+        mergeOptMaps(x, mergeAll(ys: _*))
+    }
+
+  def unifyVector(xys: Vector[(Term, Term)],
+                  freeVars: Term => Boolean): Option[Map[Term, Term]] =
+    xys match {
+      case Vector() => None
+      case Vector((x, y)) => unify(x, y, freeVars)
+      case head +: tail =>
+        unify(head._1, head._2, freeVars) flatMap ((subMap) => {
+              val newVars =
+                (x: Term) => freeVars(x) && !(subMap.keySet contains x)
+              val newTail =
+                tail map {
+                  case (a, b) => (multisub(a, subMap), multisub(b, subMap))
+                }
+              val tailMapOpt = unifyVector(newTail, newVars)
+              val mapOpt = tailMapOpt map ((tm) => subMap ++ tm)
+              mapOpt
+            })
+    }
+
+  def unifyAll(freeVars: Term => Boolean)(xys: (Term, Term)*) =
+    unifyVector(xys.toVector, freeVars)
+
+  def unify(lhs: Term,
+            rhs: Term,
+            freevars: Term => Boolean): Option[Map[Term, Term]] = {
+    if (lhs == rhs) Some(Map())
     else
       (lhs, rhs) match {
-      case (PiTyp(f), PiTyp(g)) => unify(f,g, freevars)
-//      case (SigmaTyp(f), SigmaTyp(g)) => unify(f,g, freevars)
-      case (FuncTyp(a, b), FuncTyp(c, d)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
-      case (PlusTyp(a, b), PlusTyp(c, d)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
-      case (x: AbsPair[_, _], y: AbsPair[_, _])=>
-        mergeOptMaps(unify(x.first, y.first, freevars), unify(x.second, y.second,freevars))
-      case (fst: Symbolic, scnd: Symbolic) => (fst.name, scnd.name) match{
-      case (ApplnSym(a, b: Term), ApplnSym(c, d: Term)) =>
-        mergeOptMaps(unify(a,c, freevars), unify(b,d,freevars))
+        case (variable, value)
+            if (freevars(variable)) &&
+            (variable.replace(variable, value) == value) =>
+          Some(Map(variable -> value))
+        // case (value, variable) if (freevars(variable)) =>
+        //   Some(Map(variable -> value))
+        case (PiTyp(f), PiTyp(g)) => unify(f, g, freevars)
+        case (SigmaTyp(f), SigmaTyp(g)) => unify(f, g, freevars)
+        case (FuncTyp(a: Typ[u], b: Typ[v]), FuncTyp(c: Typ[w], d: Typ[x])) =>
+          unifyAll(freevars)(a -> c, b -> d)
+        case (PlusTyp(a: Typ[u], b: Typ[v]), PlusTyp(c: Typ[w], d: Typ[x])) =>
+          unifyAll(freevars)(a -> c, b -> d)
+        case (IdentityTyp(dom1: Typ[u], a: Term, b: Term),
+              IdentityTyp(dom2: Typ[v], c: Term, d: Term)) =>
+          unifyAll(freevars)(dom1 -> dom2, a -> c, b -> d)
+        case (x: AbsPair[_, _], y: AbsPair[_, _]) =>
+          unifyAll(freevars)(x.first -> y.first, x.second -> y.second)
+        case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
+          unifyAll(freevars)(a -> c, b -> d, f1.typ -> f2.typ)
+        case (f: LambdaLike[u, v], g: LambdaLike[w, x]) =>
+          unify(f.variable, g.variable, freevars) flatMap ((m) => {
+                val xx = multisub(f.variable, m)
+                val yy = multisub(f.value, m)
+                val newvars =
+                  (x: Term) => freevars(x) && (!(m.keySet contains x))
+                unify(yy.subs(xx, g.variable), g.value, newvars) map (m ++ _)
+              })
+        case _ => None
       }
-      case _ => None
-    }
   }
 
-  def mkLambda[U <: Term with Subs[U] , V<: Term with Subs[V] ]: FuncLike[U, V] => FuncLike[U, V] = {
-    case lm: Lambda[U, V] => lm
-    case f: FuncLike[U,V] => {
-    	val newvar = f.dom.obj.asInstanceOf[U]
-    	lambda(newvar)(f(newvar))
-    }
+  def subsApply(func: Term,
+                arg: Term,
+                unifMap: Map[Term, Term],
+                freeVars: Vector[Term]) = {
+    val fn = multisub(func, unifMap)
+    val x = multisub(arg, unifMap)
+    val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
+    import Fold._
+    Try(polyLambda(lambdaVars.toList, fn(x))).toOption
   }
 
-  def mkLmbda[U <: Term with Subs[U] , V<: Term with Subs[V] ] :Func[U, V] => Func[U, V] = {
-    case lm: LambdaFixed[U, V] => lm
-    case f: Func[U,V] => {
-    	val newvar = f.dom.obj.asInstanceOf[U]
-    	lmbda(newvar)(f(newvar))
-    }
-  }
-
-/*
-object Old{
-  def multisub(x: Term, m : Map[Term, Term]): Term = m.toList  match {
-    case List() => x
-    case (a, b) :: tail => multisub(x.subs(a, b), tail.toMap)
-  }
-
-  def unify(source: Term, target: Term, freevars: Set[Term]) : Option[Map[Term,Term]] = (source, target) match {
-    case (x, y) if freevars contains x => Some(Map(x -> y))
-    case (x: Symbolic, y: Symbolic) if x.typ != y.typ =>
-      unify(x.typ, y.typ, freevars) flatMap((m) =>
-      unify(multisub(x, m), y, freevars -- m.keySet))
-//    case (applptnterm(f, x), applptnterm(g, y)) =>
-//      for (mx <- unify(f, g, freevars); my <- unify(multisub(x, mx), y, freevars -- mx.keySet)) yield (mx ++ my)
-    case (FuncTyp(a, b), FuncTyp(c, d)) =>
-      for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
-    case (Lambda(a: Term, b : Term), Lambda(c: Term, d : Term)) =>
-      for (mx <- unify(a, c, freevars); my <- unify(multisub(b, mx), d, freevars -- mx.keySet)) yield (mx ++ my)
-    case (PiTyp(a), PiTyp(c)) =>
-      unify(a, c, freevars)
-    case (SigmaTyp(a), SigmaTyp(c)) =>
-      unify(a, c, freevars)
+  def unifApply(func: Term, arg: Term, freeVars: Vector[Term]) = func match {
+    case fn: FuncLike[u, v] =>
+      unify(fn.dom, arg.typ, (t) => freeVars contains t) flatMap (subsApply(
+              func, arg, _, freeVars))
     case _ => None
   }
 
-  def unifyctx(source: Term, target: Term, freevars: Set[Term], ctx: Context[Term, Term]) : Option[Map[Term,Term]] = ctx match {
-    case _ : Context.empty[_] => unify(source, target, freevars)
-    case LambdaMixin(x, tail, _) => unifyctx(source, target, freevars + x, tail)
-    case _ => unifyctx(source, target, freevars, ctx.tail)
+  def appln(
+      func: Term, arg: Term, freeVars: Vector[Term] = Vector()): Option[Term] =
+    unifApply(func, arg, freeVars) orElse (func match {
+          case fn: FuncLike[u, v] =>
+            val l = funcToLambda(fn)
+            appln(l.value, arg, l.variable +: freeVars)
+          case _ => None
+        })
+
+  def purgeInv(r1: Term,
+               inv1: Set[(Term, Term)],
+               r2: Term,
+               inv2: Set[(Term, Term)],
+               freeVars: Term => Boolean) = {
+    val imageOpt =
+      unify(r1, r2, freeVars) map ((uniMap) =>
+            inv2 map {
+              case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
+          })
+    inv2 -- imageOpt.getOrElse(Set())
   }
-}*/
+
+  import annotation.tailrec
+
+  def purgeVector(r2: Term,
+                  inv2: Set[(Term, Term)],
+                  invVector: Vector[(Term, Set[(Term, Term)])],
+                  freeVars: Term => Boolean) =
+    invVector.foldRight((r2, inv2)) {
+      case (ri1, ri2) =>
+        (ri2._1, purgeInv(ri1._1, ri1._2, ri2._1, ri2._2, freeVars))
+    }
+
+  @tailrec
+  def purgedPairsList(fxs: List[(Term, Term)],
+                      accum: List[(Term, Term)] =
+                        List()): List[(Term, Term)] = fxs match {
+    case List() => accum
+    case head :: tail =>
+      val needHead = (tail find ((fx) =>
+                !unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isEmpty)).isEmpty
+      if (needHead) purgedPairsList(tail, head :: accum)
+      else purgedPairsList(tail, accum)
+  }
+
+  def purgedPairs(fxs: Set[(Term, Term)]) = purgedPairsList(fxs.toList).toSet
+
+  @tailrec
+  def purgedInvVector(invVector: Vector[(Term, Set[(Term, Term)])],
+                      accum: Vector[(Term, Set[(Term, Term)])] = Vector(),
+                      freeVars: Term => Boolean =
+                        HoTT.isVar): Vector[(Term, Set[(Term, Term)])] =
+    invVector match {
+      case Vector() => accum
+      case head +: tail =>
+        val newhead = purgeVector(head._1, head._2, accum, freeVars)
+
+        if (newhead._2 != Set()) {
+          val newaccum =
+            accum map {
+              case (r2, inv2) =>
+                (r2, purgeInv(head._1, newhead._2, r2, inv2, freeVars))
+            } filter (_._2 != Set())
+          purgedInvVector(tail, newhead +: newaccum, freeVars)
+        } else purgedInvVector(tail, accum, freeVars)
+    }
 }

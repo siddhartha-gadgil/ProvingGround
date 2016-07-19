@@ -4,7 +4,6 @@ import ScalaRep._
 import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 // import provingground.ScalaUniverses._
 
-
 object BoolType {
   case object Bool extends SmallTyp
 
@@ -27,17 +26,12 @@ object BoolType {
 
   lazy val isTrue = boolFmly((x: Boolean) => if (x) One else Zero)
 
-
-
-
-
-
   // Most of the cod below is deprecated.
   case class isTrueTyp(value: Boolean) extends SmallTyp
 
   //  lazy val isTrue = boolFmly((x: Boolean) => isTrueTyp(x))
 
-  case object yes extends ConstTerm[Boolean]{
+  case object yes extends ConstTerm[Boolean] {
     val value = true
 
     val typ = isTrueTyp(true)
@@ -45,7 +39,7 @@ object BoolType {
     override def toString = "true"
   }
 
-    case object notnot extends ConstTerm[Boolean]{
+  case object notnot extends ConstTerm[Boolean] {
     val value = true
 
     val typ = isTrueTyp(false) ->: Zero
@@ -53,21 +47,18 @@ object BoolType {
     override def toString = "true"
   }
 
-
-
-
-
-  def iteFunc[U <: Term with Subs[U] ](u: Typ[U]) = {
+  def iteFunc[U <: Term with Subs[U]](u: Typ[U]) = {
     val rep = b -->: u -->: u -->: u
-    rep((cond: Boolean) => (yes: U) => (no : U) => if (cond) yes else no)
+    rep((cond: Boolean) => (yes: U) => (no: U) => if (cond) yes else no)
   }
 
   lazy val ite = lambda("u" :: Type)(iteFunc("u" :: Type))
-    //depFunc(Type, iteFunc[Term])
+  //depFunc(Type, iteFunc[Term])
 
   private type FnFn = Func[Term, Func[Term, Term]]
 
-  def iteDepFunc(u: Typ[Term], v : Typ[Term])/*(implicit fnfn : ScalaUniv[FnFn])*/ = {
+  def iteDepFunc(
+      u: Typ[Term], v: Typ[Term]) /*(implicit fnfn : ScalaUniv[FnFn])*/ = {
 
     val x = "x" :: u
 
@@ -86,9 +77,8 @@ object BoolType {
 
   /*
   lazy val itedep = depFunc(Type, (u: Typ[Term]) => depFunc(Type, (v: Typ[Term]) => iteDepFunc(u, v)))
-*/
-  
-  
+   */
+
   lazy val itedep = {
     val u = "u" :: Type
     val v = "v" :: Type

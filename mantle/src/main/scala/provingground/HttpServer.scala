@@ -23,13 +23,13 @@ object HttpServer extends App {
   server.stop
 }
 
-class ServerStart(port: Int = 8080){
+class ServerStart(port: Int = 8080) {
   val route = acRoutes ~ getFromResourceDirectory("")
 
   val bindingFuture = Http().bindAndHandle(route, "localhost", port)
 
   def stop() =
-    bindingFuture.
-    flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ ⇒ FDHub.stop(StartData.quickhub)) // and shutdown when done
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ ⇒ FDHub.stop(StartData.quickhub)) // and shutdown when done
 }

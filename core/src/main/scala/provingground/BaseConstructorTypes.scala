@@ -11,7 +11,7 @@ import IterFuncPattern._
 
 //import RecFunction._
 
-object BaseConstructorTypes{
+object BaseConstructorTypes {
   implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
 
   case object SmallBool extends SmallTyp
@@ -20,13 +20,13 @@ object BaseConstructorTypes{
 
   val W = IdW[Term]()
 
-  val ttC  = W.constructor(SmallBool, "true")
+  val ttC = W.constructor(SmallBool, "true")
 
   val ffC = W.constructor(SmallBool, "false")
 
-  val tt : Term = ttC.cons
+  val tt: Term = ttC.cons
 
-  val ff : Term = ffC.cons
+  val ff: Term = ffC.cons
 
   val BoolCons = List(ttC, ffC)
 
@@ -34,9 +34,9 @@ object BaseConstructorTypes{
 
   val succC = (W -->: W).constructor(SmallNat, "succ")
 
-  val zero : Term = zeroC.cons
+  val zero: Term = zeroC.cons
 
-  val succ : Term = succC.cons
+  val succ: Term = succC.cons
 
   val one = fold(succ)(zero)
 

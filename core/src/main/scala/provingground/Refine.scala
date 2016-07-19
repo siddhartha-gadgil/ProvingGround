@@ -9,28 +9,31 @@ object RefineTerms {
       val newval = refine(value)
       val vartyp = newvar.typ
       val valtyp = newval.typ
-      LambdaFixed[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj], newval.asInstanceOf[valtyp.Obj])
+      LambdaFixed[vartyp.Obj, valtyp.Obj](
+          newvar.asInstanceOf[vartyp.Obj], newval.asInstanceOf[valtyp.Obj])
     case Lambda(variable: Term, value: Term) =>
       val newvar = refine(variable)
       val newval = refine(value)
       val vartyp = newvar.typ
       val valtyp = newval.typ
-      Lambda[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj], newval.asInstanceOf[valtyp.Obj])
+      Lambda[vartyp.Obj, valtyp.Obj](
+          newvar.asInstanceOf[vartyp.Obj], newval.asInstanceOf[valtyp.Obj])
     case sym: Symbolic =>
       refineTyp(sym.typ).symbObj(sym.name)
     case _ => term
   }
 
   def refineTyp(typ: Typ[Term]): Typ[Term] = typ match {
-    case FuncTyp(dom : Typ[u], codom: Typ[v]) =>
+    case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
       val newdom = refineTyp(dom)
       val newcod = refineTyp(codom)
-      FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]], newcod.asInstanceOf[Typ[newcod.Obj]])
+      FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]],
+                                      newcod.asInstanceOf[Typ[newcod.Obj]])
     case PiTyp(fibre) =>
       refine(fibre) match {
-        case newFibre : Func[u, _] =>
+        case newFibre: Func[u, _] =>
           newFibre.codom.obj match {
-            case _ : Typ[v] =>
+            case _: Typ[v] =>
               PiTyp(newFibre.asInstanceOf[Func[u, Typ[v]]])
           }
         case _ => typ

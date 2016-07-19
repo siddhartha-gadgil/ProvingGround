@@ -4,10 +4,10 @@ import ammonite.ops._
 
 import edu.stanford.nlp.simple._
 
-object Script{
+object Script {
   val file = cwd / "notes" / "NLPtoHoTT.markdown"
 
-  def save(s: String) = write.append(file, "\n"+s+"\n")
+  def save(s: String) = write.append(file, "\n" + s + "\n")
 
   def saveCode(s: String) = save(s"""```\n$s\n```""")
 

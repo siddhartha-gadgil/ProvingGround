@@ -15,7 +15,7 @@ object LeanIO {
 
     val dat = Data.readAll(lines)
 
-    dat.readDefs(lines)
+    new DataBase(dat, lines).getAllDefs
   }
 
   def pickleDefs(file: Path, outputDir: Path) = {
@@ -23,23 +23,23 @@ object LeanIO {
     val lines = defs map (_.depPickle)
     val out = outputDir / file.name
     rm(out)
-    lines map((l) => {write.append(out, l+"\n"); l})
+    lines map ((l) => { write.append(out, l + "\n"); l })
   }
 
   def futPickleDefs(file: Path, outputDir: Path) =
     Future(pickleDefs(file, outputDir))
 
-  def makeDefs(inDir: Path = cwd / 'data / 'leanlibrary, outDir: Path = cwd / 'data / 'leandefs) = {
+  def makeDefs(inDir: Path = cwd / 'data / 'leanlibrary,
+               outDir: Path = cwd / 'data / 'leandefs) = {
     val files = ls(inDir) filter (_.ext == "export")
-    (files map ((f) => (f.name+".defs", futPickleDefs(f, outDir)))).toMap
+    (files map ((f) => (f.name + ".defs", futPickleDefs(f, outDir)))).toMap
   }
 
-  def snapshot(fd: Map[String,Future[Vector[String]]]) =
+  def snapshot(fd: Map[String, Future[Vector[String]]]) =
     ((fd.values map (_.value)).flatten map (_.toOption)).flatten.toVector.flatten
 
   def recallDefs(defDir: Path = cwd / 'data / 'leandefs) = {
     ls(defDir).toVector flatMap ((f) =>
-      read.lines(f) map (_.split("\t").toList)
-      )
+          read.lines(f) map (_.split("\t").toList))
   }
 }

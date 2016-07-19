@@ -9,6 +9,14 @@ tmpBin/
 
 .tmpBin/
 
+*.dist
+
+*.fds
+
+*.deduc
+
+*.learn
+
 bin/
 
 doc/*.log

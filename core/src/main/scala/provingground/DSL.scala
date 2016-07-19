@@ -4,26 +4,26 @@ import scala.reflect.macros.blackbox.Context
 import HoTT._
 
 /**
- * @author gadgil
- */
+  * @author gadgil
+  */
 object DSL {
-  def self(n : Int) : Int = macro selfImpl
+  def self(n: Int): Int = macro selfImpl
 
-  def selfImpl(c : Context)(n : c.Expr[Int]) : c.Expr[Int] = {
+  def selfImpl(c: Context)(n: c.Expr[Int]): c.Expr[Int] = {
     import c.universe._
-    val q"${m : Int}" = n.tree
-    c.Expr[Int] (q"$m")
+    val q"${ m: Int }" = n.tree
+    c.Expr[Int](q"$m")
   }
   /*
   implicit class MacroTyp(typ: Typ[Term]){
     def ::(term : Term): Term = macro checkImpl
   }
-  */
-
+   */
 
   def checkTyp(term: Term, typ: Typ[Term]): Term = macro checkImpl
 
-  def checkImpl(c: Context)(term: c.Expr[Term], typ: c.Expr[Typ[Term]]) : c.Expr[Term] ={
+  def checkImpl(c: Context)(
+      term: c.Expr[Term], typ: c.Expr[Typ[Term]]): c.Expr[Term] = {
     import c.universe._
 
     val inp = term
@@ -33,7 +33,6 @@ object DSL {
 //    val ttyp = c.Expr[Typ[Term]](c.untypecheck(typ.tree.duplicate))
 
     val trm = c.eval(tterm)
-
 
 //    val tp = c.eval(ttyp)
 
@@ -57,5 +56,5 @@ object DSL {
       assert(term.typ == this," Expected "+typ.toString+"but found "+term.typ.toString)
       q"${term}"
   }
-  */
+ */
 }
