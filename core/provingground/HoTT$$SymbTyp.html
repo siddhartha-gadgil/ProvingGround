@@ -45,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SymbTyp</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SymbTyp</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="level">level: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -62,7 +62,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -75,7 +75,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -89,7 +89,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.HoTT.SymbTyp#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(name:provingground.HoTT.AnySym):provingground.HoTT.SymbTyp"></a>
+      <a id="&lt;init&gt;(name:provingground.HoTT.AnySym,level:Int):provingground.HoTT.SymbTyp"></a>
       <a id="&lt;init&gt;:SymbTyp"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -97,10 +97,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SymbTyp</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span>
+        <span class="name">SymbTyp</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="level">level: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$$SymbTyp@&lt;init&gt;(name:provingground.HoTT.AnySym):provingground.HoTT.SymbTyp" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$$SymbTyp@&lt;init&gt;(name:provingground.HoTT.AnySym,level:Int):provingground.HoTT.SymbTyp" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -480,6 +480,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT.SymbTyp#level" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="level:Int"></a>
+      <a id="level:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">level</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$$SymbTyp@level:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.HoTT.SymbTyp#name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="name:provingground.HoTT.AnySym"></a>
       <a id="name:AnySym"></a>
@@ -624,18 +641,18 @@ testing for types also done.
       <p class="shortcomment cmt"> substitute x by y.</p><div class="fullcomment"><div class="comment cmt"><p> substitute x by y.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SymbTyp">SymbTyp</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="provingground.HoTT.SymbTyp#symbObj" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.SymbObj[provingground.HoTT.Term]"></a>
-      <a id="symbObj(AnySym):SymbObj[Term]"></a>
+      <a id="symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]"></a>
+      <a id="symbObj(AnySym):TermwithSubs[Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">symbObj</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="HoTT$$SymbObj.html" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">symbObj</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$$SymbTyp@symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.SymbObj[provingground.HoTT.Term]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$$SymbTyp@symbObj(name:provingground.HoTT.AnySym):provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

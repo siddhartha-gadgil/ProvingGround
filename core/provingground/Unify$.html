@@ -62,7 +62,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -75,7 +75,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -145,6 +145,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Unify#appln" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="appln(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]"></a>
+      <a id="appln(Term,Term,Vector[Term]):Option[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appln</span><span class="params">(<span name="func">func: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="freeVars">freeVars: <span class="extype" name="scala.Vector">Vector</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol">Vector()</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@appln(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -186,18 +203,18 @@
               
         </dd></dl></div>
     </li><li name="provingground.Unify#dependsOn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dependsOn(term:provingground.HoTT.Term):List[provingground.HoTT.Term]=&gt;Boolean"></a>
-      <a id="dependsOn(Term):(List[Term])⇒Boolean"></a>
+      <a id="dependsOn(term:provingground.HoTT.Term):Vector[provingground.HoTT.Term]=&gt;Boolean"></a>
+      <a id="dependsOn(Term):(Vector[Term])⇒Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">dependsOn</span><span class="params">(<span name="term">term: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: (<span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">dependsOn</span><span class="params">(<span name="term">term: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: (<span class="extype" name="scala.Vector">Vector</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Unify$@dependsOn(term:provingground.HoTT.Term):List[provingground.HoTT.Term]=&gt;Boolean" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Unify$@dependsOn(term:provingground.HoTT.Term):Vector[provingground.HoTT.Term]=&gt;Boolean" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -310,6 +327,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.Unify#mergeAll" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mergeAll[U,V](xs:Option[Map[U,V]]*):Option[Map[U,V]]"></a>
+      <a id="mergeAll[U,V](Option[Map[U,V]]*):Option[Map[U,V]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mergeAll</span><span class="tparams">[<span name="U">U</span>, <span name="V">V</span>]</span><span class="params">(<span name="xs">xs: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.Unify.mergeAll.U">U</span>, <span class="extype" name="provingground.Unify.mergeAll.V">V</span>]]*</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.Unify.mergeAll.U">U</span>, <span class="extype" name="provingground.Unify.mergeAll.V">V</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@mergeAll[U,V](xs:Option[Map[U,V]]*):Option[Map[U,V]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.Unify#mergeMaps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="mergeMaps[U,V](x:Map[U,V],y:Map[U,V]):Option[Map[U,V]]"></a>
       <a id="mergeMaps[U,V](Map[U,V],Map[U,V]):Option[Map[U,V]]"></a>
@@ -340,40 +374,6 @@
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.Unify$@mergeOptMaps[U,V](x:Option[Map[U,V]],y:Option[Map[U,V]]):Option[Map[U,V]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.Unify#mkLambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="mkLambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]:provingground.HoTT.FuncLike[U,V]=&gt;provingground.HoTT.FuncLike[U,V]"></a>
-      <a id="mkLambda[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:(FuncLike[U,V])⇒FuncLike[U,V]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">mkLambda</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Unify.mkLambda.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Unify.mkLambda.V">V</span>]</span>]</span><span class="result">: (<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.Unify.mkLambda.U">U</span>, <span class="extype" name="provingground.Unify.mkLambda.V">V</span>]) ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.Unify.mkLambda.U">U</span>, <span class="extype" name="provingground.Unify.mkLambda.V">V</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.Unify$@mkLambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]:provingground.HoTT.FuncLike[U,V]=&gt;provingground.HoTT.FuncLike[U,V]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.Unify#mkLmbda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="mkLmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]:provingground.HoTT.Func[U,V]=&gt;provingground.HoTT.Func[U,V]"></a>
-      <a id="mkLmbda[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:(Func[U,V])⇒Func[U,V]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">mkLmbda</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Unify.mkLmbda.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Unify.mkLmbda.V">V</span>]</span>]</span><span class="result">: (<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.Unify.mkLmbda.U">U</span>, <span class="extype" name="provingground.Unify.mkLmbda.V">V</span>]) ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.Unify.mkLmbda.U">U</span>, <span class="extype" name="provingground.Unify.mkLmbda.V">V</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.Unify$@mkLmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]:provingground.HoTT.Func[U,V]=&gt;provingground.HoTT.Func[U,V]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -446,6 +446,114 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.Unify#purgeInv" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="purgeInv(r1:provingground.HoTT.Term,inv1:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],r2:provingground.HoTT.Term,inv2:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],freeVars:provingground.HoTT.Term=&gt;Boolean):scala.collection.immutable.Set[(provingground.HoTT.Term,provingground.HoTT.Term)]"></a>
+      <a id="purgeInv(Term,Set[(Term,Term)],Term,Set[(Term,Term)],(Term)⇒Boolean):Set[(Term,Term)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">purgeInv</span><span class="params">(<span name="r1">r1: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="inv1">inv1: <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>, <span name="r2">r2: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="inv2">inv2: <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>, <span name="freeVars">freeVars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@purgeInv(r1:provingground.HoTT.Term,inv1:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],r2:provingground.HoTT.Term,inv2:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],freeVars:provingground.HoTT.Term=&gt;Boolean):scala.collection.immutable.Set[(provingground.HoTT.Term,provingground.HoTT.Term)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#purgeVector" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="purgeVector(r2:provingground.HoTT.Term,inv2:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],invVector:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],freeVars:provingground.HoTT.Term=&gt;Boolean):(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])"></a>
+      <a id="purgeVector(Term,Set[(Term,Term)],Vector[(Term,Set[(Term,Term)])],(Term)⇒Boolean):(Term,Set[(Term,Term)])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">purgeVector</span><span class="params">(<span name="r2">r2: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="inv2">inv2: <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>, <span name="invVector">invVector: <span class="extype" name="scala.Vector">Vector</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)])]</span>, <span name="freeVars">freeVars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)])</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@purgeVector(r2:provingground.HoTT.Term,inv2:Set[(provingground.HoTT.Term,provingground.HoTT.Term)],invVector:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],freeVars:provingground.HoTT.Term=&gt;Boolean):(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#purgedInvVector" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="purgedInvVector(invVector:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],accum:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],freeVars:provingground.HoTT.Term=&gt;Boolean):Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])]"></a>
+      <a id="purgedInvVector(Vector[(Term,Set[(Term,Term)])],Vector[(Term,Set[(Term,Term)])],(Term)⇒Boolean):Vector[(Term,Set[(Term,Term)])]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">purgedInvVector</span><span class="params">(<span name="invVector">invVector: <span class="extype" name="scala.Vector">Vector</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)])]</span>, <span name="accum">accum: <span class="extype" name="scala.Vector">Vector</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)])] = <span class="symbol">Vector()</span></span>, <span name="freeVars">freeVars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol"><span class="name"><a href="HoTT$.html">HoTT.isVar</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)])]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@purgedInvVector(invVector:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],accum:Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])],freeVars:provingground.HoTT.Term=&gt;Boolean):Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.Unify#purgedPairs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="purgedPairs(fxs:Set[(provingground.HoTT.Term,provingground.HoTT.Term)]):scala.collection.immutable.Set[(provingground.HoTT.Term,provingground.HoTT.Term)]"></a>
+      <a id="purgedPairs(Set[(Term,Term)]):Set[(Term,Term)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">purgedPairs</span><span class="params">(<span name="fxs">fxs: <span class="extype" name="scala.Predef.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@purgedPairs(fxs:Set[(provingground.HoTT.Term,provingground.HoTT.Term)]):scala.collection.immutable.Set[(provingground.HoTT.Term,provingground.HoTT.Term)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#purgedPairsList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="purgedPairsList(fxs:List[(provingground.HoTT.Term,provingground.HoTT.Term)],accum:List[(provingground.HoTT.Term,provingground.HoTT.Term)]):List[(provingground.HoTT.Term,provingground.HoTT.Term)]"></a>
+      <a id="purgedPairsList(List[(Term,Term)],List[(Term,Term)]):List[(Term,Term)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">purgedPairsList</span><span class="params">(<span name="fxs">fxs: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>, <span name="accum">accum: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)] = <span class="symbol">List()</span></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@purgedPairsList(fxs:List[(provingground.HoTT.Term,provingground.HoTT.Term)],accum:List[(provingground.HoTT.Term,provingground.HoTT.Term)]):List[(provingground.HoTT.Term,provingground.HoTT.Term)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.Unify#subsApply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="subsApply(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,unifMap:Map[provingground.HoTT.Term,provingground.HoTT.Term],freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]"></a>
+      <a id="subsApply(Term,Term,Map[Term,Term],Vector[Term]):Option[Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subsApply</span><span class="params">(<span name="func">func: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="unifMap">unifMap: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="freeVars">freeVars: <span class="extype" name="scala.Vector">Vector</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@subsApply(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,unifMap:Map[provingground.HoTT.Term,provingground.HoTT.Term],freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -480,19 +588,70 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.Unify#unify" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="unify(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,freevars:List[provingground.HoTT.Term]):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
-      <a id="unify(Term,Term,List[Term]):Option[Map[Term,Term]]"></a>
+    </li><li name="provingground.Unify#unifApply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unifApply(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]"></a>
+      <a id="unifApply(Term,Term,Vector[Term]):Option[Term]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">unify</span><span class="params">(<span name="lhs">lhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="freevars">freevars: <span class="extype" name="scala.List">List</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+        <span class="name">unifApply</span><span class="params">(<span name="func">func: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="arg">arg: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="freeVars">freeVars: <span class="extype" name="scala.Vector">Vector</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Unify$@unify(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,freevars:List[provingground.HoTT.Term]):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Unify$@unifApply(func:provingground.HoTT.Term,arg:provingground.HoTT.Term,freeVars:Vector[provingground.HoTT.Term]):Option[provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#unify" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unify(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,freevars:provingground.HoTT.Term=&gt;Boolean):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
+      <a id="unify(Term,Term,(Term)⇒Boolean):Option[Map[Term,Term]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unify</span><span class="params">(<span name="lhs">lhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="rhs">rhs: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="freevars">freevars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@unify(lhs:provingground.HoTT.Term,rhs:provingground.HoTT.Term,freevars:provingground.HoTT.Term=&gt;Boolean):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#unifyAll" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unifyAll(freeVars:provingground.HoTT.Term=&gt;Boolean)(xys:(provingground.HoTT.Term,provingground.HoTT.Term)*):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
+      <a id="unifyAll((Term)⇒Boolean)((Term,Term)*):Option[Map[Term,Term]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unifyAll</span><span class="params">(<span name="freeVars">freeVars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span name="xys">xys: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)*</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@unifyAll(freeVars:provingground.HoTT.Term=&gt;Boolean)(xys:(provingground.HoTT.Term,provingground.HoTT.Term)*):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Unify#unifyVector" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unifyVector(xys:Vector[(provingground.HoTT.Term,provingground.HoTT.Term)],freeVars:provingground.HoTT.Term=&gt;Boolean):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
+      <a id="unifyVector(Vector[(Term,Term)],(Term)⇒Boolean):Option[Map[Term,Term]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unifyVector</span><span class="params">(<span name="xys">xys: <span class="extype" name="scala.Vector">Vector</span>[(<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>, <span name="freeVars">freeVars: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Unify$@unifyVector(xys:Vector[(provingground.HoTT.Term,provingground.HoTT.Term)],freeVars:provingground.HoTT.Term=&gt;Boolean):Option[Map[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

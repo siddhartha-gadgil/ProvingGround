@@ -55,12 +55,13 @@
 Typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
 May have Pi-types instead of function types
 Assumed to have fixed type for codomain  X.
-</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>scala type of objects in codomain for recursion and induction functions.
+The type of the codomain is needed as there are inner types for data for recursion and induction functions.</p></dd><dt class="tparam">CnstrctrType</dt><dd class="cmt"><p>scala type of a constructor corresponding to this pattern.</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>scala type of the terms of the inductive type.</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="CnstDepFuncPtn.html" class="extype" name="provingground.CnstDepFuncPtn">CnstDepFuncPtn</a>, <a href="CnstFncPtn.html" class="extype" name="provingground.CnstFncPtn">CnstFncPtn</a>, <a href="DepFuncPtn.html" class="extype" name="provingground.DepFuncPtn">DepFuncPtn</a>, <a href="FuncPtn.html" class="extype" name="provingground.FuncPtn">FuncPtn</a>, <a href="IdW$IdTarg.html" class="extype" name="provingground.IdW.IdTarg">IdTarg</a>, <a href="IdW.html" class="extype" name="provingground.IdW">IdW</a>, <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a></div>
+            <div class="subClasses hiddenContent"><a href="CnstDepFuncPtn.html" class="extype" name="provingground.CnstDepFuncPtn">CnstDepFuncPtn</a>, <a href="CnstFncPtn.html" class="extype" name="provingground.CnstFncPtn">CnstFncPtn</a>, <a href="DepFuncPtn.html" class="extype" name="provingground.DepFuncPtn">DepFuncPtn</a>, <a href="FuncPtn.html" class="extype" name="provingground.FuncPtn">FuncPtn</a>, <a href="IdTarg.html" class="extype" name="provingground.IdTarg">IdTarg</a>, <a href="IdW.html" class="extype" name="provingground.IdW">IdW</a>, <a href="RecursiveConstructorPattern.html" class="extype" name="provingground.RecursiveConstructorPattern">RecursiveConstructorPattern</a></div>
           </div></div>
         
 
@@ -71,7 +72,7 @@ Assumed to have fixed type for codomain  X.
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -84,7 +85,7 @@ Assumed to have fixed type for codomain  X.
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -149,7 +150,8 @@ Assumed to have fixed type for codomain  X.
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">(scala) type of data for recursion corresponding to the single constructor
+</p>
     </li><li name="provingground.ConstructorPattern.RecDataType" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.RecDataType]"></a>
       <a id="RecDataType:RecDataType"></a>
@@ -190,23 +192,24 @@ Assumed to have fixed type for codomain  X.
       </a>
     </span>
       <p class="shortcomment cmt">returns HoTT type corresponding to the pattern given the (inductive) type W (to be the head).</p>
-    </li><li name="provingground.ConstructorPattern#inducDef" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="inducDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.InducDataType,f:=&gt;provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.Term=&gt;Option[Cod]"></a>
-      <a id="inducDef(ConstructorType,InducDataType,⇒FuncLike[H,Cod]):(Term)⇒Option[Cod]"></a>
+    </li><li name="provingground.ConstructorPattern#inducDef" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="inducDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.InducDataType,f:=&gt;provingground.HoTT.FuncLike[H,Cod]):H=&gt;Option[Cod]"></a>
+      <a id="inducDef(ConstructorType,InducDataType,⇒FuncLike[H,Cod]):(H)⇒Option[Cod]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inducDef</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>, <span name="data">data: <a href="#InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.InducDataType]" class="extmbr" name="provingground.ConstructorPattern.InducDataType">InducDataType</a></span>, <span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
+        <span class="name">inducDef</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>, <span name="data">data: <a href="#InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.InducDataType]" class="extmbr" name="provingground.ConstructorPattern.InducDataType">InducDataType</a></span>, <span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: (<span class="extype" name="provingground.ConstructorPattern.H">H</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@inducDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.InducDataType,f:=&gt;provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.Term=&gt;Option[Cod]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@inducDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.InducDataType,f:=&gt;provingground.HoTT.FuncLike[H,Cod]):H=&gt;Option[Cod]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
+optionally returns simplification (if the term matches).</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined inductively, to be used recursively in definition.</p></dd></dl></div>
     </li><li name="provingground.ConstructorPattern#inducDom" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="inducDom(w:provingground.HoTT.Typ[H],xs:provingground.HoTT.Func[H,provingground.HoTT.Typ[Cod]])(cons:ConstructorPattern.this.ConstructorType):provingground.HoTT.Typ[ConstructorPattern.this.InducDataType]"></a>
       <a id="inducDom(Typ[H],Func[H,Typ[Cod]])(ConstructorType):Typ[InducDataType]"></a>
@@ -223,25 +226,25 @@ Assumed to have fixed type for codomain  X.
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.</p>
     </li><li name="provingground.ConstructorPattern#recDef" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="recDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):provingground.HoTT.Term=&gt;Option[Cod]"></a>
-      <a id="recDef(ConstructorType,RecDataType,⇒Func[H,Cod]):(Term)⇒Option[Cod]"></a>
+      <a id="recDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):H=&gt;Option[Cod]"></a>
+      <a id="recDef(ConstructorType,RecDataType,⇒Func[H,Cod]):(H)⇒Option[Cod]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recDef</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>, <span name="data">data: <a href="#RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.RecDataType]" class="extmbr" name="provingground.ConstructorPattern.RecDataType">RecDataType</a></span>, <span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
+        <span class="name">recDef</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>, <span name="data">data: <a href="#RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.RecDataType]" class="extmbr" name="provingground.ConstructorPattern.RecDataType">RecDataType</a></span>, <span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: (<span class="extype" name="provingground.ConstructorPattern.H">H</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@recDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):provingground.HoTT.Term=&gt;Option[Cod]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@recDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):H=&gt;Option[Cod]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor.
-returns simplification (wrapped in Some) if the term matches.</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined, to be applied recursively - not the function being modified.</p></dd></dl></div>
+      <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
+optionally returns simplification (if the term matches), determined by the recursion data.</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined recursively, to be used recursively in definition.</p></dd></dl></div>
     </li><li name="provingground.ConstructorPattern#recDom" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="recDom(w:provingground.HoTT.Typ[H],x:provingground.HoTT.Typ[Cod]):provingground.HoTT.Typ[ConstructorPattern.this.RecDataType]"></a>
       <a id="recDom(Typ[H],Typ[Cod]):Typ[RecDataType]"></a>
@@ -259,6 +262,23 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
       </a>
     </span>
       <p class="shortcomment cmt">domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.</p>
+    </li><li name="provingground.ConstructorPattern#subs" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.ConstructorPattern[Cod,CnstrctrType,H]"></a>
+      <a id="subs(Term,Term):ConstructorPattern[Cod,CnstrctrType,H]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ConstructorPattern@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.ConstructorPattern[Cod,CnstrctrType,H]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.ConstructorPattern#univLevel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="univLevel:Int"></a>
       <a id="univLevel:Int"></a>
@@ -277,18 +297,18 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
     </span>
       
     </li><li name="provingground.ConstructorPattern#withCod" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]]:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]"></a>
-      <a id="withCod[CC&lt;:TermwithSubs[CC]]:ConstructorPattern[CC,ConstructorType,H]"></a>
+      <a id="withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[H]):provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]"></a>
+      <a id="withCod[CC&lt;:TermwithSubs[CC]](Typ[H]):ConstructorPattern[CC,ConstructorType,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">withCod</span><span class="tparams">[<span name="CC">CC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.withCod.CC">CC</span>]</span>]</span><span class="result">: <a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.withCod.CC">CC</span>, <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
+        <span class="name">withCod</span><span class="tparams">[<span name="CC">CC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.withCod.CC">CC</span>]</span>]</span><span class="params">(<span name="w">w: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.withCod.CC">CC</span>, <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]]:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[H]):provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -333,22 +353,39 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.ConstructorPattern#--&gt;:" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="--&gt;:[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T],D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.Families.FmlyPtn[H,Cod,F]):provingground.FuncPtn[Cod,F,CnstrctrType,H]"></a>
-      <a id="--&gt;:[V&lt;:TermwithSubs[V],T&lt;:TermwithSubs[T],D&lt;:TermwithSubs[D],F&lt;:TermwithSubs[F]](FmlyPtn[H,Cod,F]):FuncPtn[Cod,F,CnstrctrType,H]"></a>
+      <a id="--&gt;:[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.IterFuncPattern.IterFuncPtn[H,Cod,F]):provingground.FuncPtn[Cod,F,CnstrctrType,H]"></a>
+      <a id="--&gt;:[F&lt;:TermwithSubs[F]](IterFuncPtn[H,Cod,F]):FuncPtn[Cod,F,CnstrctrType,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $minus$minus$greater$colon" class="name">--&gt;:</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.--&gt;:.V">V</span>]</span>, <span name="T">T &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.--&gt;:.T">T</span>]</span>, <span name="D">D &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.--&gt;:.D">D</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>]</span>]</span><span class="params">(<span name="that">that: <a href="Families$$FmlyPtn.html" class="extype" name="provingground.Families.FmlyPtn">FmlyPtn</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>]</span>)</span><span class="result">: <a href="FuncPtn.html" class="extype" name="provingground.FuncPtn">FuncPtn</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
+        <span title="gt4s: $minus$minus$greater$colon" class="name">--&gt;:</span><span class="tparams">[<span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>]</span>]</span><span class="params">(<span name="that">that: <a href="IterFuncPattern$$IterFuncPtn.html" class="extype" name="provingground.IterFuncPattern.IterFuncPtn">IterFuncPtn</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>]</span>)</span><span class="result">: <a href="FuncPtn.html" class="extype" name="provingground.FuncPtn">FuncPtn</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.--&gt;:.F">F</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@--&gt;:[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V],T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T],D&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[D],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.Families.FmlyPtn[H,Cod,F]):provingground.FuncPtn[Cod,F,CnstrctrType,H]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@--&gt;:[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.IterFuncPattern.IterFuncPtn[H,Cod,F]):provingground.FuncPtn[Cod,F,CnstrctrType,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <p class="shortcomment cmt">function pattern.</p>
+    </li><li name="provingground.ConstructorPattern#-&gt;:" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="-&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tail:provingground.HoTT.Typ[T]):provingground.CnstFncPtn[T,Cod,CnstrctrType,H]"></a>
+      <a id="-&gt;:[T&lt;:TermwithSubs[T]](Typ[T]):CnstFncPtn[T,Cod,CnstrctrType,H]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater$colon" class="name">-&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.-&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.-&gt;:.T">T</span>]</span>)</span><span class="result">: <a href="CnstFncPtn.html" class="extype" name="provingground.CnstFncPtn">CnstFncPtn</a>[<span class="extype" name="provingground.ConstructorPattern.-&gt;:.T">T</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ConstructorPattern@-&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tail:provingground.HoTT.Typ[T]):provingground.CnstFncPtn[T,Cod,CnstrctrType,H]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
@@ -424,35 +461,35 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
     </span>
       
     </li><li name="provingground.ConstructorPattern#cons" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cons(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.Constructor[Cod,H]#ConstructorType"></a>
-      <a id="cons(⇒Typ[H],AnySym):Constructor.ConstructorType"></a>
+      <a id="cons(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):CnstrctrType"></a>
+      <a id="cons(⇒Typ[H],AnySym):CnstrctrType"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">cons</span><span class="params">(<span name="tp">tp: ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>, <span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="Constructor.html#ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Constructor.this.ConstructorType]" class="extmbr" name="provingground.Constructor.ConstructorType">Constructor.ConstructorType</a></span>
+        <span class="name">cons</span><span class="params">(<span name="tp">tp: ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>, <span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@cons(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.Constructor[Cod,H]#ConstructorType" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@cons(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):CnstrctrType" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="provingground.ConstructorPattern#constructor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="constructor(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.Constructor[Cod,H]"></a>
-      <a id="constructor(⇒Typ[H],AnySym):Constructor[Cod,H]"></a>
+      <a id="constructor(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.ConstructorDefn[ConstructorPattern.this.ConstructorType,Cod,H]"></a>
+      <a id="constructor(⇒Typ[H],AnySym):ConstructorDefn[ConstructorType,Cod,H]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">constructor</span><span class="params">(<span name="tp">tp: ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>, <span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="Constructor.html" class="extype" name="provingground.Constructor">Constructor</a>[<span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
+        <span class="name">constructor</span><span class="params">(<span name="tp">tp: ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>, <span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="ConstructorDefn.html" class="extype" name="provingground.ConstructorDefn">ConstructorDefn</a>[<a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@constructor(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.Constructor[Cod,H]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@constructor(tp:=&gt;provingground.HoTT.Typ[H],name:provingground.HoTT.AnySym):provingground.ConstructorDefn[ConstructorPattern.this.ConstructorType,Cod,H]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -548,23 +585,6 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.ConstructorPattern#inducModify" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="inducModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.InducDataType)(f:=&gt;provingground.HoTT.FuncLike[H,Cod])(g:provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.FuncLike[H,Cod]"></a>
-      <a id="inducModify(ConstructorType)(InducDataType)(⇒FuncLike[H,Cod])(FuncLike[H,Cod]):FuncLike[H,Cod]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">inducModify</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>)</span><span class="params">(<span name="data">data: <a href="#InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.InducDataType]" class="extmbr" name="provingground.ConstructorPattern.InducDataType">InducDataType</a></span>)</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="params">(<span name="g">g: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@inducModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.InducDataType)(f:=&gt;provingground.HoTT.FuncLike[H,Cod])(g:provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.FuncLike[H,Cod]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -651,39 +671,22 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.ConstructorPattern#rec" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="rec[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]]:(CnstrctrType,newPtn.RecDataType,provingground.HoTT.Func[H,CC])=&gt;provingground.HoTT.Term=&gt;Option[CC]forSome{valnewPtn:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]}"></a>
-      <a id="rec[CC&lt;:TermwithSubs[CC]]:(CnstrctrType,rec.newPtn.type.RecDataType,Func[H,CC])⇒(Term)⇒Option[CC]forSome{valnewPtn:ConstructorPattern[CC,ConstructorType,H]}"></a>
+      <a id="rec[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[H]):(CnstrctrType,newPtn.RecDataType,provingground.HoTT.Func[H,CC])=&gt;H=&gt;Option[CC]forSome{valnewPtn:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]}"></a>
+      <a id="rec[CC&lt;:TermwithSubs[CC]](Typ[H]):(CnstrctrType,rec.newPtn.type.RecDataType,Func[H,CC])⇒(H)⇒Option[CC]forSome{valnewPtn:ConstructorPattern[CC,ConstructorType,H]}"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rec</span><span class="tparams">[<span name="CC">CC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>]</span>]</span><span class="result">: (<span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.RecDataType">rec.newPtn.type.RecDataType</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>]) ⇒ (<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>] forSome {val newPtn: <a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>, <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]}</span>
+        <span class="name">rec</span><span class="tparams">[<span name="CC">CC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>]</span>]</span><span class="params">(<span name="w">w: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>]</span>)</span><span class="result">: (<span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, <span class="extype" name="provingground.ConstructorPattern.RecDataType">rec.newPtn.type.RecDataType</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>]) ⇒ (<span class="extype" name="provingground.ConstructorPattern.H">H</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>] forSome {val newPtn: <a href="" class="extype" name="provingground.ConstructorPattern">ConstructorPattern</a>[<span class="extype" name="provingground.ConstructorPattern.rec.CC">CC</span>, <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a>, <span class="extype" name="provingground.ConstructorPattern.H">H</span>]}</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@rec[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]]:(CnstrctrType,newPtn.RecDataType,provingground.HoTT.Func[H,CC])=&gt;provingground.HoTT.Term=&gt;Option[CC]forSome{valnewPtn:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]}" title="Permalink" target="_top">
+      <a href="../index.html#provingground.ConstructorPattern@rec[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[H]):(CnstrctrType,newPtn.RecDataType,provingground.HoTT.Func[H,CC])=&gt;H=&gt;Option[CC]forSome{valnewPtn:provingground.ConstructorPattern[CC,ConstructorPattern.this.ConstructorType,H]}" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">invokes <a href="#recDom(w:provingground.HoTT.Typ[H],x:provingground.HoTT.Typ[Cod]):provingground.HoTT.Typ[ConstructorPattern.this.RecDataType]" class="extmbr" name="provingground.ConstructorPattern#recDom">recDom</a> after changing codomain type.</p>
-    </li><li name="provingground.ConstructorPattern#recModify" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.RecDataType)(f:=&gt;provingground.HoTT.Func[H,Cod])(g:provingground.HoTT.Func[H,Cod]):provingground.HoTT.Func[H,Cod]"></a>
-      <a id="recModify(ConstructorType)(RecDataType)(⇒Func[H,Cod])(Func[H,Cod]):Func[H,Cod]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">recModify</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>)</span><span class="params">(<span name="data">data: <a href="#RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.RecDataType]" class="extmbr" name="provingground.ConstructorPattern.RecDataType">RecDataType</a></span>)</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="params">(<span name="g">g: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ConstructorPattern@recModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.RecDataType)(f:=&gt;provingground.HoTT.Func[H,Cod])(g:provingground.HoTT.Func[H,Cod]):provingground.HoTT.Func[H,Cod]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
+      <p class="shortcomment cmt">invokes <a href="#recDef(cons:ConstructorPattern.this.ConstructorType,data:ConstructorPattern.this.RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):H=&gt;Option[Cod]" class="extmbr" name="provingground.ConstructorPattern#recDef">recDef</a> after changing codomain type.</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -787,12 +790,73 @@ returns simplification (wrapped in Some) if the term matches.</p></div><dl class
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.ConstructorPattern#~&gt;:" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="~&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tailVar:T):provingground.CnstDepFuncPtn[CnstrctrType,this.RecDataType,this.InducDataType,Cod,provingground.HoTT.Term]"></a>
+      <a id="~&gt;:[T&lt;:TermwithSubs[T]](T):CnstDepFuncPtn[CnstrctrType,(&lt;refinement&gt;.this)#RecDataType,(&lt;refinement&gt;.this)#InducDataType,Cod,Term]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.ConstructorPattern.~&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tailVar">tailVar: <span class="extype" name="provingground.ConstructorPattern.~&gt;:.T">T</span></span>)</span><span class="result">: <a href="CnstDepFuncPtn.html" class="extype" name="provingground.CnstDepFuncPtn">CnstDepFuncPtn</a>[<span class="extype" name="provingground.ConstructorPattern.CnstrctrType">CnstrctrType</span>, (<span class="extype" name="provingground.ConstructorPattern.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.ConstructorPattern.&lt;refinement&gt;.RecDataType">RecDataType</span>, (<span class="extype" name="provingground.ConstructorPattern.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.ConstructorPattern.&lt;refinement&gt;.InducDataType">InducDataType</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ConstructorPattern@~&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tailVar:T):provingground.CnstDepFuncPtn[CnstrctrType,this.RecDataType,this.InducDataType,Cod,provingground.HoTT.Term]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li></ol>
             </div>
 
         
 
-        
+        <div id="values" class="values members">
+              <h3>Deprecated Value Members</h3>
+              <ol><li name="provingground.ConstructorPattern#inducModify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="inducModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.InducDataType)(f:=&gt;provingground.HoTT.FuncLike[H,Cod])(g:provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.FuncLike[H,Cod]"></a>
+      <a id="inducModify(ConstructorType)(InducDataType)(⇒FuncLike[H,Cod])(FuncLike[H,Cod]):FuncLike[H,Cod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name deprecated" title="Deprecated: (Since version April 26, 2016) Use inducDef instead, with formal application outside for concrete method">inducModify</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>)</span><span class="params">(<span name="data">data: <a href="#InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.InducDataType]" class="extmbr" name="provingground.ConstructorPattern.InducDataType">InducDataType</a></span>)</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="params">(<span name="g">g: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ConstructorPattern@inducModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.InducDataType)(f:=&gt;provingground.HoTT.FuncLike[H,Cod])(g:provingground.HoTT.FuncLike[H,Cod]):provingground.HoTT.FuncLike[H,Cod]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version April 26, 2016)</i> Use inducDef instead, with formal application outside for concrete method</p></dd></dl></div>
+    </li><li name="provingground.ConstructorPattern#recModify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="recModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.RecDataType)(f:=&gt;provingground.HoTT.Func[H,Cod])(g:=&gt;provingground.HoTT.Func[H,Cod]):provingground.HoTT.Func[H,Cod]"></a>
+      <a id="recModify(ConstructorType)(RecDataType)(⇒Func[H,Cod])(⇒Func[H,Cod]):Func[H,Cod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name deprecated" title="Deprecated: (Since version April 22, 2016) Use recDef instead, with formal application outside for concrete method">recModify</span><span class="params">(<span name="cons">cons: <a href="#ConstructorType=CnstrctrType" class="extmbr" name="provingground.ConstructorPattern.ConstructorType">ConstructorType</a></span>)</span><span class="params">(<span name="data">data: <a href="#RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorPattern.this.RecDataType]" class="extmbr" name="provingground.ConstructorPattern.RecDataType">RecDataType</a></span>)</span><span class="params">(<span name="f">f: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="params">(<span name="g">g: ⇒ <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.ConstructorPattern.H">H</span>, <span class="extype" name="provingground.ConstructorPattern.Cod">Cod</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ConstructorPattern@recModify(cons:ConstructorPattern.this.ConstructorType)(data:ConstructorPattern.this.RecDataType)(f:=&gt;provingground.HoTT.Func[H,Cod])(g:=&gt;provingground.HoTT.Func[H,Cod]):provingground.HoTT.Func[H,Cod]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Mixin in this constructor in a recutrsive definition with many cases.</p><div class="fullcomment"><div class="comment cmt"><p>Mixin in this constructor in a recutrsive definition with many cases.</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>the final function being defined, to be called recursively.
+should not use this in new design, but use optional recDef directly.</p></dd><dt class="param">g</dt><dd class="cmt"><p>result of previous cases</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version April 22, 2016)</i> Use recDef instead, with formal application outside for concrete method</p></dd></dl></div>
+    </li></ol>
+            </div>
         </div>
 
         <div id="inheritedMembers">

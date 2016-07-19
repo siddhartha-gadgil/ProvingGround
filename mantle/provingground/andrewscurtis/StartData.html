@@ -65,7 +65,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -78,7 +78,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -437,35 +437,35 @@
     </span>
       
     </li><li name="provingground.andrewscurtis.StartData#run" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="run(sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[Unit]]):scala.concurrent.Future[akka.actor.ActorRef]"></a>
-      <a id="run(Sink[Snap,Future[Unit]]):Future[ActorRef]"></a>
+      <a id="run(sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[akka.Done]]):scala.concurrent.Future[akka.actor.ActorRef]"></a>
+      <a id="run(Sink[Snap,Future[Done]]):Future[ActorRef]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">run</span><span class="params">(<span name="sse">sse: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]] = <span class="symbol"><span class="name"><a href="../../akka/package.html">Sink.foreach((a: Snap) =&gt; {})</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>]</span>
+        <span class="name">run</span><span class="params">(<span name="sse">sse: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.Done">Done</span>]] = <span class="symbol"><span class="name"><a href="../../akka/package.html">Sink.foreach((a: Snap) =&gt; {})</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.actor.ActorRef">ActorRef</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.StartData@run(sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[Unit]]):scala.concurrent.Future[akka.actor.ActorRef]" title="Permalink" target="_top">
+      <a href="../../index.html#provingground.andrewscurtis.StartData@run(sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[akka.Done]]):scala.concurrent.Future[akka.actor.ActorRef]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <p class="shortcomment cmt">spawns and starts runner for data.</p>
     </li><li name="provingground.andrewscurtis.StartData#runner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="runner(init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[Unit]]):akka.actor.ActorRef"></a>
-      <a id="runner((FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),Sink[Snap,Future[Unit]]):ActorRef"></a>
+      <a id="runner(init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[akka.Done]]):akka.actor.ActorRef"></a>
+      <a id="runner((FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),Sink[Snap,Future[Done]]):ActorRef"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">runner</span><span class="params">(<span name="init">init: (<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>], <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>])</span>, <span name="sse">sse: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]] = <span class="symbol"><span class="name"><a href="../../akka/package.html">Sink.foreach((a: Snap) =&gt; {})</a></span></span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
+        <span class="name">runner</span><span class="params">(<span name="init">init: (<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>], <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>])</span>, <span name="sse">sse: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.Done">Done</span>]] = <span class="symbol"><span class="name"><a href="../../akka/package.html">Sink.foreach((a: Snap) =&gt; {})</a></span></span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#provingground.andrewscurtis.StartData@runner(init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[Unit]]):akka.actor.ActorRef" title="Permalink" target="_top">
+      <a href="../../index.html#provingground.andrewscurtis.StartData@runner(init:(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]),sse:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[akka.Done]]):akka.actor.ActorRef" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

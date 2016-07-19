@@ -66,24 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.LeanExportElem" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="LeanExportElemextendsAnyRef"></a>
-      <a id="LeanExportElem:LeanExportElem"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="LeanExportElem.html"><span class="name">LeanExportElem</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.package@LeanExportElemextendsAnyRef" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.OptMapLift" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.OptMapLift" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="OptMapLift[I,O,XI,XO]extendsAnyRef"></a>
       <a id="OptMapLift[I,O,XI,XO]:OptMapLift[I,O,XI,XO]"></a>
       <h4 class="signature">
@@ -99,28 +82,55 @@
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
-    </li><li name="provingground.Translator" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Translator[I,O]extendsI=&gt;Option[O]"></a>
-      <a id="Translator[I,O]:Translator[I,O]"></a>
+      <p class="shortcomment cmt">Gives lift from a map I =&gt; Option[O] to a map X =&gt; Option[Y].</p><div class="fullcomment"><div class="comment cmt"><p>Gives lift from a map I =&gt; Option[O] to a map X =&gt; Option[Y].
+Generally constructed using combinators, starting with the identity.
+</p></div></div>
+    </li><li name="provingground.TrnsLtr" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TrnsLtr[I,O]extendsI=&gt;Option[O]"></a>
+      <a id="TrnsLtr[I,O]:TrnsLtr[I,O]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Translator.html"><span class="name">Translator</span></a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="result"> extends (<span class="extype" name="provingground.Translator.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.O">O</span>]</span>
+        <a href="TrnsLtr.html"><span class="name">TrnsLtr</span></a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="result"> extends (<span class="extype" name="provingground.TrnsLtr.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.TrnsLtr.O">O</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.package@Translator[I,O]extendsI=&gt;Option[O]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.package@TrnsLtr[I,O]extendsI=&gt;Option[O]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Translator from an input I to an output O, designed to be built recursively.</p><div class="fullcomment"><div class="comment cmt"><p>Translator from an input I to an output O, designed to be built recursively.</p><h4>Translation by Splitting and joining</h4><p>The most import class of translators are constructed from</p><p>* a split map I =&gt; Option[X], where X is obtained from I by taking Tuples, Lists and sub-types</p><p>* a join map Y =&gt; Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I,
-e.g. X = (I, I) and Y = (O, O).</p><p>However X and Y may involve taking sub-types independently of each other.</p><p>Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).</p><h4>Combinations, Basic Translators</h4><p>Translators are built by combining others by OrElse, starting with basic translators specified by a function I =&gt; Option[O].
+      <p class="shortcomment cmt">TrnsLtr from an input I to an output O, designed to be built recursively.</p><div class="fullcomment"><div class="comment cmt"><p>TrnsLtr from an input I to an output O, designed to be built recursively.</p><h4>Translation by Splitting and joining</h4><p>The most import class of translators are constructed from</p><p>* a split map I =&gt; Option[X], where X is obtained from I by taking Tuples, Lists and sub-types</p><p>* a join map Y =&gt; Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I,
+e.g. X = (I, I) and Y = (O, O).</p><p>However X and Y may involve taking sub-types independently of each other.</p><p>Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).</p><h4>Combinations, Basic TrnsLtrs</h4><p>TrnsLtrs are built by combining others by OrElse, starting with basic translators specified by a function I =&gt; Option[O].
 One can instead start with an empty translator.</p><p>Note that we can restrict the domain or extend the codomain of a translator by
 just using it as a function I =&gt; Option[O]. However this should be done after making all OrElse combinations, as the
-wrapped translator does not combine recursively.</p></div></div>
+wrapped translator does not combine recursively.</p><p>A typical example of usage is as below</p><pre>scala&gt; <span class="kw">import</span> provingground._
+<span class="kw">import</span> provingground._
+
+scala&gt; <span class="kw">import</span> OptMapLift._
+<span class="kw">import</span> OptMapLift._
+
+scala&gt; <span class="kw">class</span> A
+defined <span class="kw">class</span> A
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> B(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> B
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> C(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> C
+
+scala&gt; <span class="kw">case</span> <span class="kw">object</span> D <span class="kw">extends</span> A
+defined <span class="kw">object</span> D
+
+scala&gt; <span class="kw">val</span> tt = TrnsLtr.Simple((x: A) <span class="kw">=&gt;</span> <span class="std">Some</span>(x))
+tt: provingground.TrnsLtr.Simple[A,A] = &lt;function1&gt;
+
+scala&gt; <span class="kw">val</span> t = tt.&lt;&lt;&gt;&gt;(B.unapply _ , (C.apply _).tupled)
+t: provingground.TrnsLtr.OrElse[A,A] = &lt;function1&gt;
+
+scala&gt; t (B(D, D))
+res1: <span class="std">Option</span>[A] = <span class="std">Some</span>(C(D,D))</pre></div></div>
     </li></ol>
             </div>
 
@@ -128,19 +138,19 @@ wrapped translator does not combine recursively.</p></div></div>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="provingground.LeanExportElem" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LeanExportElem"></a>
-      <a id="LeanExportElem:LeanExportElem"></a>
+              <ol><li name="provingground.LeanIO" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LeanIO"></a>
+      <a id="LeanIO:LeanIO"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="LeanExportElem$.html"><span class="name">LeanExportElem</span></a>
+        <a href="LeanIO$.html"><span class="name">LeanIO</span></a>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.package@LeanExportElem" title="Permalink" target="_top">
+      <a href="../index.html#provingground.package@LeanIO" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -162,19 +172,19 @@ wrapped translator does not combine recursively.</p></div></div>
       </a>
     </span>
       
-    </li><li name="provingground.Translator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Translator"></a>
-      <a id="Translator:Translator"></a>
+    </li><li name="provingground.TrnsLtr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TrnsLtr"></a>
+      <a id="TrnsLtr:TrnsLtr"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Translator$.html"><span class="name">Translator</span></a>
+        <a href="TrnsLtr$.html"><span class="name">TrnsLtr</span></a>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.package@Translator" title="Permalink" target="_top">
+      <a href="../index.html#provingground.package@TrnsLtr" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

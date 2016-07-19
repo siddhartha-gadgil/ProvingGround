@@ -47,11 +47,14 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">TermExpr</span>
+        <span class="name deprecated" title="Deprecated: (Since version April 2016) Use Expression language">TermExpr</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version April 2016)</i> Use Expression language</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -64,7 +67,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -77,7 +80,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -92,7 +95,217 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.TermExpr.expr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.TermExpr.Apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApplyextendsTermExprwithProductwithSerializable"></a>
+      <a id="Apply:Apply"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$Apply.html"><span class="name">Apply</span></a><span class="params">(<span name="func">func: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="arg">arg: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@ApplyextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression func(arg)
+</p>
+    </li><li name="provingground.TermExpr.Arrow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ArrowextendsTermExprwithProductwithSerializable"></a>
+      <a id="Arrow:Arrow"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$Arrow.html"><span class="name">Arrow</span></a><span class="params">(<span name="lhs">lhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="rhs">rhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@ArrowextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">expression for A -&gt; B
+</p>
+    </li><li name="provingground.TermExpr.Equality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EqualityextendsTermExprwithProductwithSerializable"></a>
+      <a id="Equality:Equality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$Equality.html"><span class="name">Equality</span></a><span class="params">(<span name="dom">dom: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="lhs">lhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="rhs">rhs: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@EqualityextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">TermExpr a = b
+</p>
+    </li><li name="provingground.TermExpr.LambdaExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LambdaExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="LambdaExpr:LambdaExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$LambdaExpr.html"><span class="name">LambdaExpr</span></a><span class="params">(<span name="x">x: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="y">y: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@LambdaExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">LambdaTermExpr maps to a lambda
+</p>
+    </li><li name="provingground.TermExpr.PairExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PairExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PairExpr:PairExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$PairExpr.html"><span class="name">PairExpr</span></a><span class="params">(<span name="first">first: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="second">second: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@PairExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.PiExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PiExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PiExpr:PiExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$PiExpr.html"><span class="name">PiExpr</span></a><span class="params">(<span name="fiber">fiber: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@PiExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.PlusTypExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PlusTypExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="PlusTypExpr:PlusTypExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$PlusTypExpr.html"><span class="name">PlusTypExpr</span></a><span class="params">(<span name="first">first: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>, <span name="second">second: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@PlusTypExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.SigmaExpr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SigmaExprextendsTermExprwithProductwithSerializable"></a>
+      <a id="SigmaExpr:SigmaExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$SigmaExpr.html"><span class="name">SigmaExpr</span></a><span class="params">(<span name="fiber">fiber: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@SigmaExprextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.TypedLiteral" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypedLiteralextendsTermExprwithProductwithSerializable"></a>
+      <a id="TypedLiteral:TypedLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$TypedLiteral.html"><span class="name">TypedLiteral</span></a><span class="params">(<span name="lit">lit: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@TypedLiteralextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.TypedVar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypedVarextendsTermExprwithProductwithSerializable"></a>
+      <a id="TypedVar:TypedVar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$TypedVar.html"><span class="name">TypedVar</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="typ">typ: <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@TypedVarextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Symbolic variable with given type
+</p>
+    </li><li name="provingground.TermExpr.UnivTerm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnivTermextendsTermExprwithProductwithSerializable"></a>
+      <a id="UnivTerm:UnivTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$UnivTerm.html"><span class="name">UnivTerm</span></a><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@UnivTermextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the first universe
+</p>
+    </li><li name="provingground.TermExpr.VarTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VarTypextendsTermExprwithProductwithSerializable"></a>
+      <a id="VarTyp:VarTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TermExpr$$VarTyp.html"><span class="name">VarTyp</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="TermExpr.html" class="extype" name="provingground.TermExpr">TermExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TermExpr$@VarTypextendsTermExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.TermExpr.expr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="exprextendsTermRec[provingground.TermExpr]withProductwithSerializable"></a>
       <a id="expr:expr"></a>
       <h4 class="signature">

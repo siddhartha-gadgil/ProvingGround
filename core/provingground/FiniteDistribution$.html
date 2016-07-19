@@ -64,7 +64,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -77,7 +77,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -92,7 +92,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.FiniteDistribution.Empty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.FiniteDistribution.Empty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Empty[T]extendsGenFiniteDistribution[T]withProductwithSerializable"></a>
       <a id="Empty[T]:Empty[T]"></a>
       <h4 class="signature">
@@ -101,14 +101,17 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="FiniteDistribution$$Empty.html"><span class="name">Empty</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">()</span><span class="result"> extends <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.Empty.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="FiniteDistribution$$Empty.html"><span class="name deprecated" title="Deprecated: (Since version to remove) use empty method">Empty</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">()</span><span class="result"> extends <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.Empty.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.FiniteDistribution$@Empty[T]extendsGenFiniteDistribution[T]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version to remove)</i> use empty method</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -185,7 +188,7 @@
     </span>
       
     </li><li name="provingground.FiniteDistribution#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](pmf:Traversable[provingground.Collections.Weighted[T]]):provingground.FiniteDistribution[T]"></a>
+      <a id="apply[T](pmf:Traversable[provingground.Weighted[T]]):provingground.FiniteDistribution[T]"></a>
       <a id="apply[T](Traversable[Weighted[T]]):FiniteDistribution[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -193,10 +196,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Traversable">Traversable</span>[<a href="Collections$$Weighted.html" class="extype" name="provingground.Collections.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.apply.T">T</span>]]</span>)</span><span class="result">: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <span class="extype" name="scala.Traversable">Traversable</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.apply.T">T</span>]]</span>)</span><span class="result">: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.apply.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.FiniteDistribution$@apply[T](pmf:Traversable[provingground.Collections.Weighted[T]]):provingground.FiniteDistribution[T]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.FiniteDistribution$@apply[T](pmf:Traversable[provingground.Weighted[T]]):provingground.FiniteDistribution[T]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -241,6 +244,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.FiniteDistribution#collect" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="collect[T](fd:provingground.FiniteDistribution[Option[T]]):provingground.FiniteDistribution[T]"></a>
+      <a id="collect[T](FiniteDistribution[Option[T]]):FiniteDistribution[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">collect</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="fd">fd: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.FiniteDistribution.collect.T">T</span>]]</span>)</span><span class="result">: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.collect.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FiniteDistribution$@collect[T](fd:provingground.FiniteDistribution[Option[T]]):provingground.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.FiniteDistribution#empty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="empty[T]:provingground.FiniteDistribution[T]"></a>
       <a id="empty[T]:FiniteDistribution[T]"></a>
@@ -254,6 +274,23 @@
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.FiniteDistribution$@empty[T]:provingground.FiniteDistribution[T]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FiniteDistribution#entropy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="entropy[T](fd:provingground.FiniteDistribution[T]):Double"></a>
+      <a id="entropy[T](FiniteDistribution[T]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">entropy</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="fd">fd: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.entropy.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FiniteDistribution$@entropy[T](fd:provingground.FiniteDistribution[T]):Double" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -468,6 +505,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.FiniteDistribution#rawUnif" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="rawUnif[A](s:Traversable[A]):provingground.FiniteDistribution[A]"></a>
+      <a id="rawUnif[A](Traversable[A]):FiniteDistribution[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rawUnif</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="provingground.FiniteDistribution.rawUnif.A">A</span>]</span>)</span><span class="result">: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.rawUnif.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FiniteDistribution$@rawUnif[A](s:Traversable[A]):provingground.FiniteDistribution[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

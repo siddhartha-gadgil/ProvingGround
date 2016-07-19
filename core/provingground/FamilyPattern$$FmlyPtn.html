@@ -1,0 +1,943 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>FmlyPtn - provingground.FamilyPattern.FmlyPtn</title>
+          <meta name="description" content="FmlyPtn - provingground.FamilyPattern.FmlyPtn" />
+          <meta name="keywords" content="FmlyPtn provingground.FamilyPattern.FmlyPtn" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.FamilyPattern$$FmlyPtn';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <a href="FamilyPattern$$FmlyPtn$.html" title="See companion object"><img alt="Trait/Object" src="../lib/trait_to_object_big.png" /></a>
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="FamilyPattern$.html" class="extype" name="provingground.FamilyPattern">FamilyPattern</a></p>
+        <h1><a href="FamilyPattern$$FmlyPtn$.html" title="See companion object">FmlyPtn</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="FamilyPattern$$FmlyPtn$.html" title="See companion object">object FmlyPtn</a>
+            | <a href="FamilyPattern$.html" class="extype" name="provingground.FamilyPattern">package FamilyPattern</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FmlyPtn</span><span class="tparams">[<span name="O">O &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>]</span>, <span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A pattern for families, e.g. of inductive types to be defined
+for instance A -&gt; B -&gt; W, where W is the type to be defined;
+ends with the type with members.</p><p>given a codomain C, or a family of codomains, we can lift functions W -&gt; C to functions on families.</p></div><dl class="paramcmts block"><dt class="tparam">O</dt><dd class="cmt"><p>scala type of objects of W, i.e., members of the family.</p></dd><dt class="tparam">C</dt><dd class="cmt"><p>scala type of the codomain, needed to deduce types for induced functions.
+This is used in more than one way, which perhaps should be separated: for constructor types and for inductive families.
+Hence we need two kinds of induced functions, e.g., (A -&gt; B -&gt; W) -&gt; (A -&gt; B -&gt; X) and (A -&gt; B -&gt; W -&gt; X).</p></dd><dt class="tparam">F</dt><dd class="cmt"><p>scala type of sections, e.g. A -&gt; B -&gt; W</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.FamilyPattern.FmlyPtn">FmlyPtn</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>]</dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="FamilyPattern$$DepFuncFmlyPtn.html" class="extype" name="provingground.FamilyPattern.DepFuncFmlyPtn">DepFuncFmlyPtn</a>, <a href="FamilyPattern$$FuncFmlyPtn.html" class="extype" name="provingground.FamilyPattern.FuncFmlyPtn">FuncFmlyPtn</a>, <a href="FamilyPattern$$IdFmlyPtn.html" class="extype" name="provingground.FamilyPattern.IdFmlyPtn">IdFmlyPtn</a>, <a href="FamilyPattern$$RecFmlyPtn.html" class="extype" name="provingground.FamilyPattern.RecFmlyPtn">RecFmlyPtn</a></div>
+          </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.FamilyPattern.FmlyPtn"><span>FmlyPtn</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.FamilyPattern.FmlyPtn.ArgType" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]"></a>
+      <a id="ArgType:ArgType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ArgType</span><span class="result"> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.ArgType">ArgType</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> type of total index
+</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn.Cod" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Cod=C"></a>
+      <a id="Cod:Cod"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Cod</span><span class="result"> = <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@Cod=C" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn.FamilyType" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FamilyType=F"></a>
+      <a id="FamilyType:FamilyType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FamilyType</span><span class="result"> = <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@FamilyType=F" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> type of  W, i.e., sections to a universe.</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn.IterDepFunc" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]"></a>
+      <a id="IterDepFunc:IterDepFunc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IterDepFunc</span><span class="result"> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn.IterFunc" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]"></a>
+      <a id="IterFunc:IterFunc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IterFunc</span><span class="result"> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Type of Curried function to X.</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn.IterTypFunc" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="IterTypFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterTypFunc]"></a>
+      <a id="IterTypFunc:IterTypFunc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IterTypFunc</span><span class="result"> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#IterTypFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterTypFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterTypFunc">IterTypFunc</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@IterTypFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterTypFunc]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Type of curried function to typ[X]
+</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn.Total" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]"></a>
+      <a id="Total:Total"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Total</span><span class="result"> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">type of the total space, i.e., all terms in some W.</p>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="provingground.FamilyPattern.FmlyPtn#contractType" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="contractType(w:FmlyPtn.this.FamilyType)(arg:FmlyPtn.this.ArgType):provingground.HoTT.Typ[O]"></a>
+      <a id="contractType(FamilyType)(ArgType):Typ[O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contractType</span><span class="params">(<span name="w">w: <a href="#FamilyType=F" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.FamilyType">FamilyType</a></span>)</span><span class="params">(<span name="arg">arg: <a href="#ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.ArgType">ArgType</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@contractType(w:FmlyPtn.this.FamilyType)(arg:FmlyPtn.this.ArgType):provingground.HoTT.Typ[O]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#curry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="curry(f:provingground.HoTT.Func[FmlyPtn.this.Total,FmlyPtn.this.Cod]):FmlyPtn.this.IterFunc"></a>
+      <a id="curry(Func[Total,Cod]):IterFunc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">curry</span><span class="params">(<span name="f">f: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>, <a href="#Cod=C" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Cod">Cod</a>]</span>)</span><span class="result">: <a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@curry(f:provingground.HoTT.Func[FmlyPtn.this.Total,FmlyPtn.this.Cod]):FmlyPtn.this.IterFunc" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#depCurry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="depCurry(f:provingground.HoTT.FuncLike[FmlyPtn.this.Total,FmlyPtn.this.Cod]):FmlyPtn.this.IterDepFunc"></a>
+      <a id="depCurry(FuncLike[Total,Cod]):IterDepFunc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">depCurry</span><span class="params">(<span name="f">f: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>, <a href="#Cod=C" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Cod">Cod</a>]</span>)</span><span class="result">: <a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@depCurry(f:provingground.HoTT.FuncLike[FmlyPtn.this.Total,FmlyPtn.this.Cod]):FmlyPtn.this.IterDepFunc" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#depFill" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="depFill(g:FmlyPtn.this.IterDepFunc)(arg:FmlyPtn.this.ArgType):provingground.HoTT.FuncLike[O,C]"></a>
+      <a id="depFill(IterDepFunc)(ArgType):FuncLike[O,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">depFill</span><span class="params">(<span name="g">g: <a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a></span>)</span><span class="params">(<span name="arg">arg: <a href="#ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.ArgType">ArgType</a></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@depFill(g:FmlyPtn.this.IterDepFunc)(arg:FmlyPtn.this.ArgType):provingground.HoTT.FuncLike[O,C]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#depTotalDomain" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="depTotalDomain(g:FmlyPtn.this.IterDepFunc):provingground.HoTT.Typ[FmlyPtn.this.Total]"></a>
+      <a id="depTotalDomain(IterDepFunc):Typ[Total]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">depTotalDomain</span><span class="params">(<span name="g">g: <a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@depTotalDomain(g:FmlyPtn.this.IterDepFunc):provingground.HoTT.Typ[FmlyPtn.this.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#depUncurry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="depUncurry(g:FmlyPtn.this.IterDepFunc):provingground.HoTT.FuncLike[FmlyPtn.this.Total,FmlyPtn.this.Cod]"></a>
+      <a id="depUncurry(IterDepFunc):FuncLike[Total,Cod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">depUncurry</span><span class="params">(<span name="g">g: <a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>, <a href="#Cod=C" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Cod">Cod</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@depUncurry(g:FmlyPtn.this.IterDepFunc):provingground.HoTT.FuncLike[FmlyPtn.this.Total,FmlyPtn.this.Cod]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#domTotal" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="domTotal(w:FmlyPtn.this.FamilyType):provingground.HoTT.Typ[FmlyPtn.this.Total]"></a>
+      <a id="domTotal(FamilyType):Typ[Total]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">domTotal</span><span class="params">(<span name="w">w: <a href="#FamilyType=F" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.FamilyType">FamilyType</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@domTotal(w:FmlyPtn.this.FamilyType):provingground.HoTT.Typ[FmlyPtn.this.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#fill" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="fill(g:FmlyPtn.this.IterFunc)(arg:FmlyPtn.this.ArgType):provingground.HoTT.Func[O,C]"></a>
+      <a id="fill(IterFunc)(ArgType):Func[O,C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fill</span><span class="params">(<span name="g">g: <a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a></span>)</span><span class="params">(<span name="arg">arg: <a href="#ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.ArgType]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.ArgType">ArgType</a></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@fill(g:FmlyPtn.this.IterFunc)(arg:FmlyPtn.this.ArgType):provingground.HoTT.Func[O,C]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#iterDepFuncTyp" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="iterDepFuncTyp(w:FmlyPtn.this.FamilyType,xs:FmlyPtn.this.IterTypFunc):provingground.HoTT.Typ[FmlyPtn.this.IterDepFunc]"></a>
+      <a id="iterDepFuncTyp(FamilyType,IterTypFunc):Typ[IterDepFunc]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">iterDepFuncTyp</span><span class="params">(<span name="w">w: <a href="#FamilyType=F" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.FamilyType">FamilyType</a></span>, <span name="xs">xs: <a href="#IterTypFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterTypFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterTypFunc">IterTypFunc</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#IterDepFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterDepFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterDepFunc">IterDepFunc</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@iterDepFuncTyp(w:FmlyPtn.this.FamilyType,xs:FmlyPtn.this.IterTypFunc):provingground.HoTT.Typ[FmlyPtn.this.IterDepFunc]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#iterFuncTyp" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="iterFuncTyp(w:FmlyPtn.this.FamilyType,x:provingground.HoTT.Typ[FmlyPtn.this.Cod]):provingground.HoTT.Typ[FmlyPtn.this.IterFunc]"></a>
+      <a id="iterFuncTyp(FamilyType,Typ[Cod]):Typ[IterFunc]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">iterFuncTyp</span><span class="params">(<span name="w">w: <a href="#FamilyType=F" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.FamilyType">FamilyType</a></span>, <span name="x">x: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#Cod=C" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Cod">Cod</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@iterFuncTyp(w:FmlyPtn.this.FamilyType,x:provingground.HoTT.Typ[FmlyPtn.this.Cod]):provingground.HoTT.Typ[FmlyPtn.this.IterFunc]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#subs" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.FamilyPattern.FmlyPtn[O,C,F]"></a>
+      <a id="subs(Term,Term):FmlyPtn[O,C,F]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.FamilyPattern.FmlyPtn">FmlyPtn</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.FamilyPattern.FmlyPtn[O,C,F]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#totalDomain" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="totalDomain(g:FmlyPtn.this.IterFunc):provingground.HoTT.Typ[FmlyPtn.this.Total]"></a>
+      <a id="totalDomain(IterFunc):Typ[Total]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">totalDomain</span><span class="params">(<span name="g">g: <a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@totalDomain(g:FmlyPtn.this.IterFunc):provingground.HoTT.Typ[FmlyPtn.this.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#uncurry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="uncurry(g:FmlyPtn.this.IterFunc):provingground.HoTT.Func[FmlyPtn.this.Total,FmlyPtn.this.Cod]"></a>
+      <a id="uncurry(IterFunc):Func[Total,Cod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">uncurry</span><span class="params">(<span name="g">g: <a href="#IterFunc&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.IterFunc]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.IterFunc">IterFunc</a></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a>, <a href="#Cod=C" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Cod">Cod</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@uncurry(g:FmlyPtn.this.IterFunc):provingground.HoTT.Func[FmlyPtn.this.Total,FmlyPtn.this.Cod]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.FamilyPattern.FmlyPtn#univLevel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="univLevel:Int"></a>
+      <a id="univLevel:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">univLevel</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@univLevel:Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the universe containing the type
+</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn#value" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="value(x:FmlyPtn.this.Total):O"></a>
+      <a id="value(Total):O"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">value</span><span class="params">(<span name="x">x: <a href="#Total&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[FmlyPtn.this.Total]" class="extmbr" name="provingground.FamilyPattern.FmlyPtn.Total">Total</a></span>)</span><span class="result">: <span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@value(x:FmlyPtn.this.Total):O" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">project an element of the total type to its value, i.e., drop arguments
+</p>
+    </li><li name="provingground.FamilyPattern.FmlyPtn#withCod" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[O]):provingground.FamilyPattern.FmlyPtn[O,CC,F]"></a>
+      <a id="withCod[CC&lt;:TermwithSubs[CC]](Typ[O]):FmlyPtn[O,CC,F]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withCod</span><span class="tparams">[<span name="CC">CC &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.withCod.CC">CC</span>]</span>]</span><span class="params">(<span name="w">w: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.FamilyPattern.FmlyPtn">FmlyPtn</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.withCod.CC">CC</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@withCod[CC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[CC]](w:provingground.HoTT.Typ[O]):provingground.FamilyPattern.FmlyPtn[O,CC,F]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.FamilyPattern.FmlyPtn#-&gt;:" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="-&gt;:[TT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[TT]](tail:provingground.HoTT.Typ[TT]):provingground.FamilyPattern.FuncFmlyPtn[TT,F,FmlyPtn.this.me.IterFunc,FmlyPtn.this.me.IterTypFunc,FmlyPtn.this.me.IterDepFunc,FmlyPtn.this.me.ArgType,O,C,FmlyPtn.this.me.Total]"></a>
+      <a id="-&gt;:[TT&lt;:TermwithSubs[TT]](Typ[TT]):FuncFmlyPtn[TT,F,(me)#IterFunc,(me)#IterTypFunc,(me)#IterDepFunc,(me)#ArgType,O,C,(me)#Total]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater$colon" class="name">-&gt;:</span><span class="tparams">[<span name="TT">TT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.-&gt;:.TT">TT</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.-&gt;:.TT">TT</span>]</span>)</span><span class="result">: <a href="FamilyPattern$$FuncFmlyPtn.html" class="extype" name="provingground.FamilyPattern.FuncFmlyPtn">FuncFmlyPtn</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.-&gt;:.TT">TT</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>, (<a href="#me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" class="extmbr" name="provingground.FamilyPattern.FmlyPtn#me">me</a>)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterFunc">IterFunc</span>, (<a href="#me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" class="extmbr" name="provingground.FamilyPattern.FmlyPtn#me">me</a>)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterTypFunc">IterTypFunc</span>, (<a href="#me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" class="extmbr" name="provingground.FamilyPattern.FmlyPtn#me">me</a>)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterDepFunc">IterDepFunc</span>, (<a href="#me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" class="extmbr" name="provingground.FamilyPattern.FmlyPtn#me">me</a>)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.ArgType">ArgType</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>, (<a href="#me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" class="extmbr" name="provingground.FamilyPattern.FmlyPtn#me">me</a>)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.Total">Total</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@-&gt;:[TT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[TT]](tail:provingground.HoTT.Typ[TT]):provingground.FamilyPattern.FuncFmlyPtn[TT,F,FmlyPtn.this.me.IterFunc,FmlyPtn.this.me.IterTypFunc,FmlyPtn.this.me.IterDepFunc,FmlyPtn.this.me.ArgType,O,C,FmlyPtn.this.me.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.FamilyPattern.FmlyPtn#me" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}"></a>
+      <a id="me:FmlyPtn[O,C,F]{.../*5definitionsintyperefinement*/}"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">me</span><span class="result">: <a href="" class="extype" name="provingground.FamilyPattern.FmlyPtn">FmlyPtn</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>] { ... /* 5 definitions in type refinement */ }</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@me:provingground.FamilyPattern.FmlyPtn[O,C,F]{typeIterFunc=FmlyPtn.this.IterFunc;typeIterTypFunc=FmlyPtn.this.IterTypFunc;typeIterDepFunc=FmlyPtn.this.IterDepFunc;typeArgType=FmlyPtn.this.ArgType;typeTotal=FmlyPtn.this.Total}" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.FamilyPattern.FmlyPtn#~&gt;:" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="~&gt;:[TT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[TT]](tailVar:TT):provingground.FamilyPattern.DepFuncFmlyPtn[provingground.HoTT.Term,F,this.IterFunc,this.IterTypFunc,this.IterDepFunc,this.ArgType,O,C,this.Total]"></a>
+      <a id="~&gt;:[TT&lt;:TermwithSubs[TT]](TT):DepFuncFmlyPtn[Term,F,(&lt;refinement&gt;.this)#IterFunc,(&lt;refinement&gt;.this)#IterTypFunc,(&lt;refinement&gt;.this)#IterDepFunc,(&lt;refinement&gt;.this)#ArgType,O,C,(&lt;refinement&gt;.this)#Total]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="TT">TT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.FamilyPattern.FmlyPtn.~&gt;:.TT">TT</span>]</span>]</span><span class="params">(<span name="tailVar">tailVar: <span class="extype" name="provingground.FamilyPattern.FmlyPtn.~&gt;:.TT">TT</span></span>)</span><span class="result">: <a href="FamilyPattern$$DepFuncFmlyPtn.html" class="extype" name="provingground.FamilyPattern.DepFuncFmlyPtn">DepFuncFmlyPtn</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.F">F</span>, (<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterFunc">IterFunc</span>, (<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterTypFunc">IterTypFunc</span>, (<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.IterDepFunc">IterDepFunc</span>, (<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.ArgType">ArgType</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.O">O</span>, <span class="extype" name="provingground.FamilyPattern.FmlyPtn.C">C</span>, (<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;">&lt;refinement&gt;</span>.this)#<span class="extype" name="provingground.FamilyPattern.FmlyPtn.&lt;refinement&gt;.Total">Total</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.FamilyPattern$$FmlyPtn@~&gt;:[TT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[TT]](tailVar:TT):provingground.FamilyPattern.DepFuncFmlyPtn[provingground.HoTT.Term,F,this.IterFunc,this.IterTypFunc,this.IterDepFunc,this.ArgType,O,C,this.Total]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

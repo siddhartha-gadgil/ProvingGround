@@ -64,7 +64,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -77,7 +77,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -350,18 +350,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.SvgPlot#graph" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="graph(points:List[provingground.SvgPlot.Point],radius:Double):Seq[scala.xml.Node]"></a>
-      <a id="graph(List[Point],Double):Seq[Node]"></a>
+      <a id="graph(points:Seq[(Double,Double)],colour:String):Seq[scala.xml.Elem]"></a>
+      <a id="graph(Seq[(Double,Double)],String):Seq[Elem]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">graph</span><span class="params">(<span name="points">points: <span class="extype" name="scala.List">List</span>[<a href="SvgPlot$$Point.html" class="extype" name="provingground.SvgPlot.Point">Point</a>]</span>, <span name="radius">radius: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">5</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.xml.Node">Node</span>]</span>
+        <span class="name">graph</span><span class="params">(<span name="points">points: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]</span>, <span name="colour">colour: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;blue&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Seq">Seq</span>[<span class="extype" name="scala.xml.Elem">Elem</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.SvgPlot@graph(points:List[provingground.SvgPlot.Point],radius:Double):Seq[scala.xml.Node]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.SvgPlot@graph(points:Seq[(Double,Double)],colour:String):Seq[scala.xml.Elem]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -485,6 +485,57 @@
       </a>
     </span>
       
+    </li><li name="provingground.SvgPlot#plotAll" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="plotAll(nodes:scala.xml.Node*):scala.xml.Elem"></a>
+      <a id="plotAll(Node*):Elem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plotAll</span><span class="params">(<span name="nodes">nodes: <span class="extype" name="scala.xml.Node">Node</span>*</span>)</span><span class="result">: <span class="extype" name="scala.xml.Elem">Elem</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SvgPlot@plotAll(nodes:scala.xml.Node*):scala.xml.Elem" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SvgPlot#polyline" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="polyline(pts:(Double,Double)*):scala.xml.Elem"></a>
+      <a id="polyline((Double,Double)*):Elem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">polyline</span><span class="params">(<span name="pts">pts: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)*</span>)</span><span class="result">: <span class="extype" name="scala.xml.Elem">Elem</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SvgPlot@polyline(pts:(Double,Double)*):scala.xml.Elem" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SvgPlot#scatter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="scatter(points:List[provingground.SvgPlot.Point],radius:Double):Seq[scala.xml.Node]"></a>
+      <a id="scatter(List[Point],Double):Seq[Node]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scatter</span><span class="params">(<span name="points">points: <span class="extype" name="scala.List">List</span>[<a href="SvgPlot$$Point.html" class="extype" name="provingground.SvgPlot.Point">Point</a>]</span>, <span name="radius">radius: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">5</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.xml.Node">Node</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SvgPlot@scatter(points:List[provingground.SvgPlot.Point],radius:Double):Seq[scala.xml.Node]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -589,18 +640,18 @@
               
         </dd></dl></div>
     </li><li name="provingground.SvgPlot#xmax" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="xmax:Int"></a>
-      <a id="xmax:Int"></a>
+      <a id="xmax:Double"></a>
+      <a id="xmax:Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">xmax</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">xmax</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.SvgPlot@xmax:Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.SvgPlot@xmax:Double" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -623,18 +674,18 @@
     </span>
       
     </li><li name="provingground.SvgPlot#ymax" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ymax:Int"></a>
-      <a id="ymax:Int"></a>
+      <a id="ymax:Double"></a>
+      <a id="ymax:Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">ymax</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">ymax</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.SvgPlot@ymax:Int" title="Permalink" target="_top">
+      <a href="../index.html#provingground.SvgPlot@ymax:Double" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
