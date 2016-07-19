@@ -13,7 +13,7 @@ import scala.io.StdIn
 object MonoidLearn {
   val dedSrc = new DeducerSource(ded, dist, 30, 30, smooth)
 
-  def shortRun = dedSrc.timedRun(5.minutes, 10.minutes, "monoid-quick")
+  def shortRun = dedSrc.timedRun(10.minutes, 20.minutes, "monoid-quick")
 
   import WebServer._
 
@@ -36,5 +36,5 @@ object MonoidLearnRun extends App {
   println("running")
 
 //  StdIn.readLine()
-  Await.result(MonoidLearn.shortRun, 30.minutes)
+  Await.result(MonoidLearn.shortRun, 60.minutes)
 }
