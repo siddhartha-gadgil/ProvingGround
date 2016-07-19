@@ -66,28 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-<<<<<<< HEAD
               <ol><li name="provingground.OptMapLift" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-=======
-              <ol><li name="provingground.LeanExportElem" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="LeanExportElemextendsAnyRef"></a>
-      <a id="LeanExportElem:LeanExportElem"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="LeanExportElem.html"><span class="name">LeanExportElem</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.package@LeanExportElemextendsAnyRef" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="provingground.OptMapLift" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
->>>>>>> d82e453222461103cc1333fc02d968b26d894c6d
       <a id="OptMapLift[I,O,XI,XO]extendsAnyRef"></a>
       <a id="OptMapLift[I,O,XI,XO]:OptMapLift[I,O,XI,XO]"></a>
       <h4 class="signature">
@@ -106,15 +85,9 @@
       <p class="shortcomment cmt">Gives lift from a map I =&gt; Option[O] to a map X =&gt; Option[Y].</p><div class="fullcomment"><div class="comment cmt"><p>Gives lift from a map I =&gt; Option[O] to a map X =&gt; Option[Y].
 Generally constructed using combinators, starting with the identity.
 </p></div></div>
-<<<<<<< HEAD
     </li><li name="provingground.TrnsLtr" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="TrnsLtr[I,O]extendsI=&gt;Option[O]"></a>
       <a id="TrnsLtr[I,O]:TrnsLtr[I,O]"></a>
-=======
-    </li><li name="provingground.Translator" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Translator[I,O]extendsI=&gt;Option[O]"></a>
-      <a id="Translator[I,O]:Translator[I,O]"></a>
->>>>>>> d82e453222461103cc1333fc02d968b26d894c6d
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
@@ -150,19 +123,11 @@ defined <span class="kw">class</span> C
 scala&gt; <span class="kw">case</span> <span class="kw">object</span> D <span class="kw">extends</span> A
 defined <span class="kw">object</span> D
 
-<<<<<<< HEAD
 scala&gt; <span class="kw">val</span> tt = TrnsLtr.Simple((x: A) <span class="kw">=&gt;</span> <span class="std">Some</span>(x))
 tt: provingground.TrnsLtr.Simple[A,A] = &lt;function1&gt;
 
 scala&gt; <span class="kw">val</span> t = tt.&lt;&lt;&gt;&gt;(B.unapply _ , (C.apply _).tupled)
 t: provingground.TrnsLtr.OrElse[A,A] = &lt;function1&gt;
-=======
-scala&gt; <span class="kw">val</span> tt = Translator.Simple((x: A) <span class="kw">=&gt;</span> <span class="std">Some</span>(x))
-tt: provingground.Translator.Simple[A,A] = &lt;function1&gt;
-
-scala&gt; <span class="kw">val</span> t = tt.&lt;&lt;&gt;&gt;(B.unapply _ , (C.apply _).tupled)
-t: provingground.Translator.OrElse[A,A] = &lt;function1&gt;
->>>>>>> d82e453222461103cc1333fc02d968b26d894c6d
 
 scala&gt; t (B(D, D))
 res1: <span class="std">Option</span>[A] = <span class="std">Some</span>(C(D,D))</pre></div></div>

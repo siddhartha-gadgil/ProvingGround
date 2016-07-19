@@ -182,7 +182,25 @@ Crucially, the shape X[_] is determined, so junctions can be built from this, af
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Simple translator given by a function.</p><div class="fullcomment"><div class="comment cmt"><p>Simple translator given by a function. Ignores sub-translator
+      <p class="shortcomment cmt">non-recursive translation determined by a given optional function
+</p>
+    </li><li name="provingground.Translator.VarWord" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="VarWord[X[_],S]extendsProductwithSerializable"></a>
+      <a id="VarWord[X[_],S]:VarWord[X,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Translator$$VarWord.html"><span class="name">VarWord</span></a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="S">S</span>]</span><span class="params">(<span name="word">word: <span class="extype" name="provingground.Translator.VarWord.X">X</span>[<span class="extype" name="provingground.Translator.VarWord.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$9">evidence$9: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>, <span name="evidence$10">evidence$10: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$@VarWord[X[_],S]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A word fixing the shape of patterns to which we match.</p><div class="fullcomment"><div class="comment cmt"><p>A word fixing the shape of patterns to which we match. Should work fine for tuples, but problematic with Lists returned.
 </p></div></div>
     </li></ol>
             </div>
@@ -242,6 +260,23 @@ Crucially, the shape X[_] is determined, so junctions can be built from this, af
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Pattern"></a>
+      <a id="Pattern:Pattern"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Translator$$Pattern$.html"><span class="name">Pattern</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$@Pattern" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
