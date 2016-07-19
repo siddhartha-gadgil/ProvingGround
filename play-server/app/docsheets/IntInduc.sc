@@ -169,7 +169,7 @@ object IntInduc {
 	
 	arg.typ
 	
-	arg.asInstanceOf[FuncSymb[Term, Term]].name
+	arg.asInstanceOf[SymbolicFunc[Term, Term]].name
 	
 	val argarg = applptnterm.unapply(arg).get._1
 	
@@ -323,13 +323,13 @@ object IntInduc {
 	
 	val toapply = recrep(ind)(N.rep(0))(N.sum)
 
-	toapply.asInstanceOf[FuncSymb[Term, Term]]
+	toapply.asInstanceOf[SymbolicFunc[Term, Term]]
 
 
 	// The correct sum to use
 	recrep(ind)(N.rep(0))(addrep(add))(three)
 
-	// toapply.asInstanceOf[FuncSymb[Term, Term]]
+	// toapply.asInstanceOf[SymbolicFunc[Term, Term]]
 
 	recrep(ind)(N.rep(0))(N.sum)(N.rep(5))
 

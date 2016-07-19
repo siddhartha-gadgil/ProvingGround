@@ -1,6 +1,6 @@
 import ammonite.ops._
 object Docgen extends App {
-  implicit val wd = cwd
+  val wd = cwd
   val projects = ls(wd) filter ((x) => x.isDir && (ls(x) exists (_.name == "target")))
   def api(p: Path) = ls.rec(p) find (_.name == "api")
   %sbt 'doc

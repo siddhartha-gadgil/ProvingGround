@@ -94,6 +94,10 @@ object HoTT {
           val typchange = replace(x.typ, y.typ)
           //      println((typchange, (y.typ).symbObj(xs.name).typ == y.typ))
           typchange replace ((y.typ).symbObj(xs.name), y)
+        case (FuncTyp(a, b), FuncTyp(c, d)) =>
+          replace(a, c) replace(b, d)
+        case (PiTyp(fib1), PiTyp(fib2)) =>
+          replace(fib1, fib2)
         case _ => subs(x, y)
       }
     }
@@ -592,7 +596,7 @@ object HoTT {
 
     lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
-    def symbObj(name: AnySym) : Func[W, U] = FuncSymb[W, U](name, dom, codom)
+    def symbObj(name: AnySym) : Func[W, U] = SymbolicFunc[W, U](name, dom, codom)
 
     override def toString = s"(${dom.toString}) $Arrow (${codom.toString})"
 
@@ -614,8 +618,6 @@ object HoTT {
     * Symbol for co-domain of a symbolic function
     */
   case class CodomSym(func: AnySym) extends AnySym
-
-  //    case class FnSym(func: AnySym) extends AnySym
 
   /**
     * Includes both functions and dependent functions
@@ -753,10 +755,9 @@ object HoTT {
   }
 
   /** Symbol containing function info */
-  case class FuncSymb[W <: Term with Subs[W], U <: Term with Subs[U]](
+  case class SymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym, dom: Typ[W], codom: Typ[U])
-      extends AnySym
-      with Func[W, U]
+      extends Func[W, U]
       with Subs[Func[W, U]]
       with Symbolic {
 
@@ -768,14 +769,14 @@ object HoTT {
 
     def act(arg: W): U = codom.symbObj(ApplnSym(this, arg))
 
-    def newobj = FuncSymb(new InnerSym(this), dom, codom)
+    def newobj = SymbolicFunc(new InnerSym(this), dom, codom)
 
     def subs(x: Term, y: Term) = (x, y) match {
-      //        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.replace(u, v), codom.replace(u, v))
+      //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: Func[W, U]) if (u == this) => v
       case _ => {
           def symbobj(sym: AnySym) =
-            FuncSymb(sym, dom.replace(x, y), codom.replace(x, y))
+            SymbolicFunc(sym, dom.replace(x, y), codom.replace(x, y))
           symSubs(symbobj)(x, y)(name)
         }
     }
@@ -1083,7 +1084,7 @@ object HoTT {
     lazy val typ = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
-    override def symbObj(name: AnySym) : FuncLike[W, U] = DepFuncSymb[W, U](name, fibers)
+    override def symbObj(name: AnySym) : FuncLike[W, U] = DepSymbolicFunc[W, U](name, fibers)
 
 //    override def equals(that: Any) = that match {
 //      case PiTyp(f) => f == fibers
@@ -1116,12 +1117,11 @@ object HoTT {
   /**
     * Symbolic dependent function
     */
-  case class DepFuncSymb[W <: Term with Subs[W], U <: Term with Subs[U]](
+  case class DepSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
       fibers: TypFamily[W, U]
   )
-      extends AnySym
-      with DepFunc[W, U]
+      extends DepFunc[W, U]
       with Symbolic {
     //	  // val domobjtpe = typeOf[W]
 
@@ -1139,11 +1139,11 @@ object HoTT {
 
     def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 
-    def newobj = DepFuncSymb(new InnerSym(this), fibers.newobj)
+    def newobj = DepSymbolicFunc(new InnerSym(this), fibers.newobj)
 
     /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
-        case (u: Typ[_], v: Typ[_], _) => DepFuncSymb(name, fibers.replace(u, v))
+        case (u: Typ[_], v: Typ[_], _) => DepSymbolicFunc(name, fibers.replace(u, v))
         case (u, v: FuncLike[W, U], _) if (u == this) => v
         case _ => this
       }
@@ -1151,10 +1151,10 @@ object HoTT {
      */
 
     def subs(x: Term, y: Term) = (x, y) match {
-      //        case (u: Typ[_], v: Typ[_]) => FuncSymb(name, dom.replace(u, v), codom.replace(u, v))
+      //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: FuncLike[W, U]) if (u == this) => v
       case _ => {
-          def symbobj(sym: AnySym) = DepFuncSymb(sym, fibers.replace(x, y))
+          def symbobj(sym: AnySym) = DepSymbolicFunc(sym, fibers.replace(x, y))
           symSubs(symbobj)(x, y)(name)
         }
     }
