@@ -71,6 +71,6 @@ object InductiveTypes {
 
 	  def subs(x : Term, y: Term) = this
 
-	  def symbObj(name: AnySym): Term = SymbObj(name, this)*/
+	  def variable(name: AnySym): Term = SymbObj(name, this)*/
   }
 }

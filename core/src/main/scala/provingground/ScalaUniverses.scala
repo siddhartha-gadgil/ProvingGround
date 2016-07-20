@@ -17,7 +17,7 @@ case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U])
 
   lazy val typ = HigherUniv[Typ[U]](this)
 
-  def symbObj(name: AnySym) = univ
+  def variable(name: AnySym) = univ
 
   def newobj = this
 
@@ -37,7 +37,7 @@ case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
 
   lazy val typ = HigherUniv(this)
 
-  def symbObj(name: AnySym) = {
+  def variable(name: AnySym) = {
     val dom = domuniv.symbObj(DomSym(name))
     val codom = codomuniv.symbObj(CodomSym(name))
     FuncTyp(dom, codom)
@@ -61,7 +61,7 @@ case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
 
   lazy val typ = HigherUniv(this)
 
-  def symbObj(name: AnySym) = {
+  def variable(name: AnySym) = {
     val dom = domuniv.symbObj(DomSym(name))
     val codom = codomuniv.symbObj(CodomSym(name))
     val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
@@ -87,7 +87,7 @@ case class FineSymbTyp[U <: Term with Subs[U]](
 
   type Obj = U
 
-  def symbObj(name: AnySym) = symobj(name)
+  def variable(name: AnySym) = symobj(name)
 
   def elem = this
 
@@ -107,7 +107,7 @@ case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
 
   lazy val typ = HigherUniv(this)
 
-  def symbObj(name: AnySym) = FineSymbTyp(name, symobj)
+  def variable(name: AnySym) = FineSymbTyp(name, symobj)
 
   def newobj = this
 

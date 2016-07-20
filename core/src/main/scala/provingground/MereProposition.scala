@@ -18,7 +18,7 @@ object MereProposition {
 
     def newobj = Truncation(base.newobj)
 
-    def symbObj(name: AnySym) = SymbObj(name, this)
+    def variable(name: AnySym) = SymbObj(name, this)
 
     type Obj = Term
 

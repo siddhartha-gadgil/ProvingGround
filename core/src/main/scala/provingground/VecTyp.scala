@@ -18,7 +18,7 @@ case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](
 
   val typ = Universe(0)
 
-  def symbObj(name: AnySym): RepTerm[Vector[X]] =
+  def variable(name: AnySym): RepTerm[Vector[X]] =
     RepSymbObj[Vector[X], RepTerm[Vector[X]]](name, this)
 
   def newobj = this

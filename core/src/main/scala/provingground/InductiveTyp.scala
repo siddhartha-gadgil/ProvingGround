@@ -46,7 +46,7 @@ case class InductiveTypDefinition[C <: Term with Subs[C]](
     *  *  For convenience, these are usable as stub implementations.  */
   type Obj = Term
 
-  def symbObj(name: provingground.HoTT.AnySym) =
+  def variable(name: provingground.HoTT.AnySym) =
     SymbObj(name, this)
 
   def withCod[CC <: Term with Subs[CC]] =

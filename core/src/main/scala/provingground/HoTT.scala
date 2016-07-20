@@ -129,7 +129,7 @@ object HoTT {
 
     def newobj = this
 
-    def symbObj(name: AnySym) = SymbObj(name, this)
+    def variable(name: AnySym) = SymbObj(name, this)
 
     val typ = Type
   }
@@ -179,7 +179,9 @@ object HoTT {
     lazy val typlevel: Int = univlevel(typ)
 
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
-    def symbObj(name: AnySym): U with Subs[U]
+    def variable(name: AnySym): U with Subs[U]
+
+    def symbObj(name: AnySym): U with Subs[U] = variable(name)
 
     /** Make symbolic object */
     def ::(name: String) = symbObj(name)
@@ -327,7 +329,7 @@ object HoTT {
 
     type Obj = Term
 
-    def symbObj(name: AnySym) =
+    def variable(name: AnySym) =
       if (level == 0) SymbObj(name, this) else SymbTyp(name, level - 1)
 
     override def toString = s"""${name.toString} : $UnivSym"""
@@ -353,7 +355,7 @@ object HoTT {
 
     val typ = Universe(0)
 
-    def symbObj(name: AnySym): Term = SymbObj(name, this)
+    def variable(name: AnySym): Term = SymbObj(name, this)
 
     def newobj = typ.obj
 
@@ -422,7 +424,7 @@ object HoTT {
 
     lazy val typ = Universe(level + 1)
 
-    def symbObj(name: AnySym) = SymbTyp(name, level)
+    def variable(name: AnySym) = SymbTyp(name, level)
 
     def newobj = this
 
@@ -482,7 +484,7 @@ object HoTT {
       else PairTyp(first.replace(x, y), second.replace(x, y))
 
     // The name is lost as `name', but can be recovered using pattern matching.
-    def symbObj(name: AnySym): Obj =
+    def variable(name: AnySym): Obj =
       PairObj(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
   }
 
@@ -598,7 +600,7 @@ object HoTT {
 
     lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
 
-    def symbObj(name: AnySym) : Func[W, U] = SymbolicFunc[W, U](name, dom, codom)
+    def variable(name: AnySym) : Func[W, U] = SymbolicFunc[W, U](name, dom, codom)
 
     override def toString = s"(${dom.toString}) $Arrow (${codom.toString})"
 
@@ -1094,7 +1096,7 @@ object HoTT {
     lazy val typ = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
-    override def symbObj(name: AnySym) : FuncLike[W, U] = DepSymbolicFunc[W, U](name, fibers)
+    override def variable(name: AnySym) : FuncLike[W, U] = DepSymbolicFunc[W, U](name, fibers)
 
 //    override def equals(that: Any) = that match {
 //      case PiTyp(f) => f == fibers
@@ -1254,7 +1256,7 @@ object HoTT {
 
     type Obj = DepPair[W, U]
 
-    def symbObj(name: AnySym) = {
+    def variable(name: AnySym) = {
       val a = fibers.dom.symbObj(LeftSym(name))
       val b = fibers(a).symbObj(RightSym(name))
       DepPair(a, b, fibers)
@@ -1326,7 +1328,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       IdentityTyp(dom.replace(x, y), lhs.replace(x, y), rhs.replace(x, y))
 
-    def symbObj(name: AnySym) = SymbObj(name, this)
+    def variable(name: AnySym) = SymbObj(name, this)
 
     override def toString = s"$lhs = $rhs"
   }
@@ -1750,7 +1752,7 @@ object HoTT {
 
       lazy val typ = MiniVerse[Typ[U]](this)
 
-      def symbObj(name: AnySym) = sample
+      def variable(name: AnySym) = sample
 
       def newobj = this
 

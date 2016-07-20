@@ -219,7 +219,7 @@ class ScalaTyp[A] extends Typ[RepTerm[A]] {
 
   val typ = ScalaTypUniv[A]
 
-  def symbObj(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
+  def variable(name: AnySym): RepTerm[A] = RepSymbObj[A, RepTerm[A]](name, this)
 
   def newobj = this
 
@@ -253,7 +253,7 @@ case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
 
   def newobj = this
 
-  def symbObj(name: AnySym) = SymbScalaTyp[A](name)
+  def variable(name: AnySym) = SymbScalaTyp[A](name)
 }
 
 object ScalaRep {
