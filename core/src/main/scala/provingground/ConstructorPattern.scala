@@ -803,16 +803,22 @@ trait Constructor[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] { self =>
   val W: Typ[H]
 
   def withCod[CC <: Term with Subs[CC]]: Constructor[CC, H]
+
+  def subs(x: Term, y: Term): Constructor[Cod, H]
 }
 
 object Constructor {
   case class RecSym[C <: Term with Subs[C], H <: Term with Subs[H]](
       cons: Constructor[C, H])
-      extends AtomicSym
+      extends AnySym{
+        def subs(x: Term, y: Term) = RecSym(cons.subs(x, y))
+      }
 
   case class InducSym[C <: Term with Subs[C], H <: Term with Subs[H]](
       cons: Constructor[C, H])
-      extends AtomicSym
+      extends AnySym{
+        def subs(x: Term, y: Term) = InducSym(cons.subs(x, y))
+      }
 
   def fromName[
       U <: Term with Subs[U], C <: Term with Subs[C], H <: Term with Subs[H]](
@@ -882,6 +888,8 @@ case class ConstructorDefn[
 )
     extends Constructor[C, H] {
   type ConstructorType = U
+
+  def subs(x: Term, y: Term) = ConstructorDefn(pattern.subs(x, y), cons.subs(x, y), W.subs(x, y))
 
   def withCod[CC <: Term with Subs[CC]] =
     ConstructorDefn(pattern.withCod[CC](W), cons, W)

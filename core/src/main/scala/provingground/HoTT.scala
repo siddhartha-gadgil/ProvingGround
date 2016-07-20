@@ -269,7 +269,7 @@ object HoTT {
     *  does not include, for instance, pairs each of whose instance is given by a name;
     *  most useful for pattern matching, where the name contains information about formal function applications etc.
     */
-  trait Symbolic {
+  trait Symbolic extends Term{
     val name: AnySym
     override def toString = name.toString
   }
@@ -299,6 +299,7 @@ object HoTT {
       else {
         def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
         symSubs(symbobj)(x, y)(name)
+      // typ.replace(x, y).symbObj(name.subs(x, y))
       }
   }
 
@@ -847,7 +848,7 @@ object HoTT {
 
     lazy val typ: Typ[FuncLike[X, Y]] =
       if (dep) {
-        val fibre = (t: X) => value.typ subs (variable, t)
+        val fibre = (t: X) => value.typ replace (variable, t)
 
         val family: Func[X, Typ[Y]] = LambdaFixed(
             variable, value.typ.asInstanceOf[Typ[Y]])

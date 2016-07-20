@@ -237,8 +237,9 @@ case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic {
     case (u: Typ[_], v: Typ[_]) if (u == this) =>
       v.asInstanceOf[Typ[RepTerm[A]]]
     case _ => {
-        def symbobj(name: AnySym) = SymbScalaTyp[A](name)
-        symSubs(symbobj)(x, y)(name)
+        // def symbobj(name: AnySym) = SymbScalaTyp[A](name)
+        // symSubs(symbobj)(x, y)(name)
+        SymbScalaTyp(name.subs(x, y))
       }
   }
 }
