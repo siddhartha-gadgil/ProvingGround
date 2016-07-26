@@ -2,11 +2,11 @@ package provingground
 
 import HoTT._
 import ScalaRep._
-import scala.language.{existentials, implicitConversions}
+//import scala.language.{existentials, implicitConversions}
 import scala.util._
 import spire.algebra._
 import spire.implicits._
-import spire.syntax._
+//import spire.syntax._
 
 /**
   * @author gadgil
