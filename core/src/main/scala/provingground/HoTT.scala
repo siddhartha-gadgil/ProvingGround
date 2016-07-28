@@ -125,6 +125,8 @@ object HoTT {
   }
 
   trait ConstantTyp extends Typ[Term] {
+    type Obj = Term
+    
     def subs(x: Term, y: Term) = this
 
     def newobj = this
@@ -179,7 +181,7 @@ object HoTT {
     lazy val typlevel: Int = univlevel(typ)
 
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
-    def variable(name: AnySym): U with Subs[U]
+    def variable(name: AnySym): Obj with Subs[Obj]
 
     def symbObj(name: AnySym): U with Subs[U] = variable(name)
 
