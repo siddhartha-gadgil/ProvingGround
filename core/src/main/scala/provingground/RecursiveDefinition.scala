@@ -50,7 +50,7 @@ trait RecursiveDefinition[C <: Term with Subs[C], H <: Term with Subs[H]] {
 //  import RecursiveDefinition.{recFn}
 
   def prepend(cons: Constructor[C, H], sym: AnySym) =
-    prependPair(cons)(cons.pattern.recDom(W, X).symbObj(sym))
+    prependPair(cons)(cons.pattern.recDataTyp(W, X).symbObj(sym))
 }
 
 /**
@@ -108,7 +108,7 @@ object RecursiveDefinition {
     val lambdaValue: Term = (namedConss :\ init)(addCons).func
 
     val variables: List[Term] = for ((c, name) <- namedConss) yield
-      c.pattern.recDom(W, X).symbObj(name)
+      c.pattern.recDataTyp(W, X).symbObj(name)
 
     (variables :\ lambdaValue)(lmbda(_)(_))
   }

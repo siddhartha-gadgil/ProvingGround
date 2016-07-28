@@ -24,8 +24,8 @@ class RecursionSpec extends FlatSpec {
   }
 
   it should "have constructor data for recursion to X with type X" in {
-    assert(W.recDom(SmallBool, SmallBool) == SmallBool)
-    assert(W.recDom(SmallBool, SmallNat) == SmallNat)
+    assert(W.recDataTyp(SmallBool, SmallBool) == SmallBool)
+    assert(W.recDataTyp(SmallBool, SmallNat) == SmallNat)
   }
 
 /*  val recBool = recFunction(BoolCons, SmallBool)

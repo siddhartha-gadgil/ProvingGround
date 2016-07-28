@@ -52,7 +52,7 @@ object ConstructorSeq {
     val W = tail.W
 
     def data(X: Typ[C]): cons.pattern.RecDataType =
-      cons.pattern.recDom(cons.W, X).symbObj(Constructor.RecSym(cons))
+      cons.pattern.recDataTyp(cons.W, X).symbObj(Constructor.RecSym(cons))
 
     val defn = (d: cons.pattern.RecDataType) =>
       (f: Func[H, C]) => cons.pattern.recDef(cons.cons, d, f)
@@ -69,7 +69,7 @@ object ConstructorSeq {
 
     def inducData(fibre: Func[H, Typ[C]]) =
       cons.pattern
-        .inducDom(W, fibre)(cons.cons)
+        .inducDataTyp(W, fibre)(cons.cons)
         .symbObj(Constructor.InducSym(cons))
 
     val inducDefn = (d: cons.pattern.InducDataType) =>

@@ -66,9 +66,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     /**
       * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
       */
-    def recDom(w: F, x: Typ[Cod]): Typ[RecDataType]
+    def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType]
 
-    def inducDom(w: F, xs: Func[H, Typ[Cod]])(
+    def inducDataTyp(w: F, xs: Func[H, Typ[Cod]])(
         cons: ConstructorType): Typ[InducDataType]
 
     /**
@@ -193,9 +193,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def apply(tps: F) = typFmlyPtn.contractType(tps)(index)
 
-    def recDom(w: F, x: Typ[Cod]): Typ[RecDataType] = x
+    def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType] = x
 
-    def inducDom(w: F, xs: Func[H, Typ[Cod]])(cons: H) = xs(cons)
+    def inducDataTyp(w: F, xs: Func[H, Typ[Cod]])(cons: H) = xs(cons)
 
     def recDef(cons: ConstructorType,
                data: RecDataType,
@@ -316,18 +316,18 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       FuncTyp[ArgType, head.ConstructorType](tail(w), head(tps))
     }
 
-    def recDom(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
+    def recDataTyp(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
       val w = typFmlyPtn.contractType(tps)(tailIndex)
-      tail(w) ->: tail.target(x) ->: head.recDom(tps, x)
+      tail(w) ->: tail.target(x) ->: head.recDataTyp(tps, x)
     }
 
-    def inducDom(tps: F, xs: Func[H, Typ[C]])(
+    def inducDataTyp(tps: F, xs: Func[H, Typ[C]])(
         cons: ConstructorType): Typ[InducDataType] = {
       val w = typFmlyPtn.contractType(tps)(tailIndex)
       val a = tail(w).Var
       val headcons = cons(a)
       val fibre =
-        lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDom(tps, xs)(headcons))
+        lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(tps, xs)(headcons))
       PiTyp(fibre)
     }
 
@@ -381,16 +381,16 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       FuncTyp[ArgType, head.ConstructorType](tail, head(tps))
     }
 
-    def recDom(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
+    def recDataTyp(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
       //      val w = typFmlyPtn.contractType(tps)(tailIndex)
-      tail ->: head.recDom(tps, x)
+      tail ->: head.recDataTyp(tps, x)
     }
 
-    def inducDom(tps: F, xs: Func[H, Typ[Cod]])(
+    def inducDataTyp(tps: F, xs: Func[H, Typ[Cod]])(
         cons: ConstructorType): Typ[InducDataType] = {
       val a = tail.Var
       val headcons = cons(a)
-      val fibre = lmbda(a)(head.inducDom(tps, xs)(headcons))
+      val fibre = lmbda(a)(head.inducDataTyp(tps, xs)(headcons))
       PiTyp(fibre)
     }
 
@@ -445,20 +445,20 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       PiTyp[ArgType, U](fiber)
     }
 
-    def recDom(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
+    def recDataTyp(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
       val w = typFmlyPtn.contractType(tps)(tailIndex)
       val a = tail(w).Var
-      val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDom(tps, x))
+      val fibre = lmbda(a)(tail.target(x) ->: headfibre(a).recDataTyp(tps, x))
       PiTyp(fibre)
     }
 
-    def inducDom(tps: F, xs: Func[H, Typ[Cod]])(
+    def inducDataTyp(tps: F, xs: Func[H, Typ[Cod]])(
         cons: ConstructorType): Typ[InducDataType] = {
       val w = typFmlyPtn.contractType(tps)(tailIndex)
       val a = tail(w).Var
       val headcons = cons(a)
       val fibre = lmbda(a)(
-          tail.depTarget(xs)(a) ->: headfibre(a).inducDom(tps, xs)(headcons))
+          tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(tps, xs)(headcons))
       PiTyp(fibre)
     }
 
@@ -534,17 +534,17 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       PiTyp[ArgType, U](fiber)
     }
 
-    def recDom(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
+    def recDataTyp(tps: F, x: Typ[Cod]): Typ[RecDataType] = {
       val a = tail.Var
-      val fibre = lmbda(a)(headfibre(a).recDom(tps, x))
+      val fibre = lmbda(a)(headfibre(a).recDataTyp(tps, x))
       PiTyp(fibre)
     }
 
-    def inducDom(tps: F, xs: Func[H, Typ[C]])(
+    def inducDataTyp(tps: F, xs: Func[H, Typ[C]])(
         cons: ConstructorType): Typ[InducDataType] = {
       val a = tail.Var
       val headcons = cons(a)
-      val fibre = lmbda(a)(headfibre(a).inducDom(tps, xs)(headcons))
+      val fibre = lmbda(a)(headfibre(a).inducDataTyp(tps, xs)(headcons))
       PiTyp(fibre)
     }
 
@@ -690,7 +690,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     val W = tail.W
 
     def data(X: Typ[C]): cons.pattern.RecDataType =
-      cons.pattern.recDom(cons.W, X).symbObj(Constructor.RecSym(cons))
+      cons.pattern.recDataTyp(cons.W, X).symbObj(Constructor.RecSym(cons))
 
     val defn = (d: cons.pattern.RecDataType) =>
       (f: Func[Total, C]) => cons.pattern.recDef(cons.cons, d, curry(f))
@@ -705,7 +705,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducData(fibre: Func[H, Typ[Cod]]) =
       cons.pattern
-        .inducDom(W, fibre)(cons.cons)
+        .inducDataTyp(W, fibre)(cons.cons)
         .symbObj(Constructor.InducSym(cons))
 
     type InducType = Func[cons.pattern.InducDataType, tail.InducType]

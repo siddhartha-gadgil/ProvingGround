@@ -57,7 +57,7 @@ trait RecFunction[C <: Term with Subs[C], H <: Term with Subs[H]] { self =>
     * prepend a constructor, passing on the function on offspring
     */
   def prepend[U <: Term with Subs[U]](cons: Constructor[C, H]) = {
-    val recdom = (x: Typ[C]) => cons.pattern.recDom(cons.W, x)
+    val recdom = (x: Typ[C]) => cons.pattern.recDataTyp(cons.W, x)
     type D = cons.pattern.RecDataType
     val caseFn: D => Func[H, C] => Func[H, C] => Func[H, C] = (d) =>
       (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)

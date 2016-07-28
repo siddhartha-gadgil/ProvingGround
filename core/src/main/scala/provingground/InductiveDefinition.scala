@@ -52,7 +52,7 @@ trait InductiveDefinition[C <: Term with Subs[C], H <: Term with Subs[H]] {
   import InductiveDefinition._
 
   def prepend(cons: Constructor[C, H], sym: AnySym) =
-    prependPair(cons)(cons.pattern.inducDom(W, Xs)(cons.cons).symbObj(sym))
+    prependPair(cons)(cons.pattern.inducDataTyp(W, Xs)(cons.cons).symbObj(sym))
 }
 
 /**
@@ -105,7 +105,7 @@ object InductiveDefinition {
     val lambdaValue: Term = (namedConss :\ init)(addCons).func
 
     val variables: List[Term] = for ((c, name) <- namedConss) yield
-      c.pattern.inducDom(W, Xs)(c.cons).symbObj(name)
+      c.pattern.inducDataTyp(W, Xs)(c.cons).symbObj(name)
 
     (variables :\ lambdaValue)(lmbda(_)(_))
   }
