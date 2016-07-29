@@ -183,11 +183,11 @@ lazy val translation = (project in file("translation")).
 
 lazy val deepwalk = (project in file("deepwalk")).
       settings(name := "DeepWalk4s",
+        classpathTypes += "maven-plugin",
       libraryDependencies ++= Seq(
-        "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.10",
-        "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.10",
-        "org.nd4j" % "nd4j-x86" % "0.4-rc3.8",
-        "org.nd4j" % "nd4s_2.11" % "0.4-rc3.8"
+        "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.9",
+        "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.9",
+        "org.nd4j" % "nd4j-native-platform" % "0.4.0"
       )).
       settings(baseSettings : _*)
 

@@ -77,7 +77,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
     * @param data definition data for the image of the constructor.
     * @param f the function being defined recursively, to be used recursively in definition.
     */
-  def recDef(cons: ConstructorType,
+  def recDefCase(cons: ConstructorType,
              data: RecDataType,
              f: => Func[H, Cod]): H => Option[Cod]
 
@@ -88,75 +88,10 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
     * @param data definition data for the image of the constructor.
     * @param f the function being defined inductively, to be used recursively in definition.
     */
-  def inducDef(cons: ConstructorType,
+  def inducDefCase(cons: ConstructorType,
                data: InducDataType,
                f: => FuncLike[H, Cod]): H => Option[Cod]
 
-  // Concrete methods implementing recursion
-
-  /**
-    * Mixin in this constructor in a recutrsive definition with many cases.
-    * @param g result of previous cases
-    * @param f the final function being defined, to be called recursively.
-    * should not use this in new design, but use optional recDef directly.
-    */
-  @deprecated(
-      "Use recDef instead, with formal application outside for concrete method",
-      "April 22, 2016")
-  def recModify(cons: ConstructorType)(data: RecDataType)(
-      f: => Func[H, Cod]
-  )(g: => Func[H, Cod]): Func[H, Cod] = new Func[H, Cod] {
-    lazy val dom = f.dom
-
-    lazy val codom = f.codom
-
-    lazy val typ = dom ->: codom
-
-    def newobj = this
-
-    def act(a: H) = (recDef(cons, data, f)(a)).getOrElse(g(a))
-
-    def subs(x: Term, y: Term) = this
-
-    override def toString = f.toString
-  }
-
-  @deprecated(
-      "Use inducDef instead, with formal application outside for concrete method",
-      "April 26, 2016")
-  def inducModify(cons: ConstructorType)(data: InducDataType)(
-      f: => FuncLike[H, Cod]
-  )(g: FuncLike[H, Cod]): FuncLike[H, Cod] = new FuncLike[H, Cod] {
-    lazy val dom = f.dom
-
-    lazy val a = "a" :: dom
-
-    lazy val depcodom = f.depcodom
-
-    lazy val fibre = lmbda(a)(depcodom(a))
-
-    lazy val typ = PiTyp(fibre)
-
-    def newobj = this
-
-    def act(a: H) = (inducDef(cons, data, f)(a)).getOrElse(g(a))
-
-    def subs(x: Term, y: Term) = this
-
-    override def toString = f.toString
-  }
-
-  /**
-    * invokes [[recDef]] after changing codomain type.
-    */
-  def rec[CC <: Term with Subs[CC]](w: Typ[H]) = {
-    val newPtn = withCod[CC](w)
-    val fn: (ConstructorType, newPtn.RecDataType,
-             Func[H, CC]) => H => Option[CC] = { (cons, data, f) => (t) =>
-      newPtn.recDef(cons, data, f)(t)
-    }
-    fn
-  }
 
   /**
     * function pattern.
@@ -331,14 +266,14 @@ case class IdW[H <: Term with Subs[H]]()
 
   def subs(x: Term, y: Term) = this
 
-  def recDef(cons: ConstructorType,
+  def recDefCase(cons: ConstructorType,
              data: RecDataType,
              f: => Func[H, Term]): H => Option[Term] = {
     case (t: Term) if t == cons => Some(data)
     case _ => None
   }
 
-  def inducDef(cons: ConstructorType,
+  def inducDefCase(cons: ConstructorType,
                data: InducDataType,
                f: => FuncLike[H, Term]): Term => Option[Term] = {
     case (t: Term) if t == cons => Some(data)
@@ -368,14 +303,14 @@ case class IdTarg[C <: Term with Subs[C], H <: Term with Subs[H]]()
 
   def subs(x: Term, y: Term) = this
 
-  def recDef(cons: ConstructorType,
+  def recDefCase(cons: ConstructorType,
              data: RecDataType,
              f: => Func[H, C]): Term => Option[C] = {
     case (t: Term) if t == cons => Some(data)
     case _ => None
   }
 
-  def inducDef(cons: ConstructorType,
+  def inducDefCase(cons: ConstructorType,
                data: InducDataType,
                f: => FuncLike[H, C]): Term => Option[C] = {
     case (t: Term) if t == cons => Some(data)
@@ -430,11 +365,11 @@ sealed trait RecursiveConstructorPattern[
   def headData(
       data: RecDataType, arg: ArgType, f: => Func[H, Cod]): HeadRecDataType
 
-  def recDef(cons: ConstructorType,
+  def recDefCase(cons: ConstructorType,
              data: RecDataType,
              f: => Func[H, Cod]): H => Option[Cod] = { t =>
     for (arg <- getArg(cons)(t);
-         term <- headfibre(arg).recDef(cons(arg), headData(data, arg, f), f)(
+         term <- headfibre(arg).recDefCase(cons(arg), headData(data, arg, f), f)(
                     t)) yield term
   }
 
@@ -442,11 +377,11 @@ sealed trait RecursiveConstructorPattern[
                     arg: ArgType,
                     f: => FuncLike[H, Cod]): HeadInducDataType
 
-  def inducDef(cons: ConstructorType,
+  def inducDefCase(cons: ConstructorType,
                data: InducDataType,
                f: => FuncLike[H, Cod]): H => Option[Cod] = { t =>
     for (arg <- getArg(cons)(t);
-         term <- headfibre(arg).inducDef(
+         term <- headfibre(arg).inducDefCase(
                     cons(arg), headInducData(data, arg, f), f)(t)) yield term
   }
 }

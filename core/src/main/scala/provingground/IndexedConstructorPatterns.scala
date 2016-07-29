@@ -78,11 +78,11 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       * @param data definition data for the image of the constructor.
       * @param f the function being defined, to be applied recursively.
       */
-    def recDef(cons: ConstructorType,
+    def recDefCase(cons: ConstructorType,
                data: RecDataType,
                f: => I): Total => Option[Cod]
 
-    def inducDef(cons: ConstructorType,
+    def inducDefCase(cons: ConstructorType,
                  data: InducDataType,
                  f: => DI): Total => Option[Cod]
 
@@ -197,14 +197,14 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducDataTyp(w: F, xs: Func[H, Typ[Cod]])(cons: H) = xs(cons)
 
-    def recDef(cons: ConstructorType,
+    def recDefCase(cons: ConstructorType,
                data: RecDataType,
                f: => I): Total => Option[Cod] = {
       case (t: Term) if t == cons => Some(data)
       case _ => None
     }
 
-    def inducDef(cons: ConstructorType,
+    def inducDefCase(cons: ConstructorType,
                  data: InducDataType,
                  f: => DI): Total => Option[Cod] = {
       case (t: Term) if t == cons => Some(data)
@@ -263,22 +263,22 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       */
     def headData(data: RecDataType, arg: ArgType, f: => I): HeadRecDataType
 
-    def recDef(cons: ConstructorType,
+    def recDefCase(cons: ConstructorType,
                data: RecDataType,
                f: => I): Total => Option[Cod] = { t =>
       for (arg <- getArg(cons)(t);
-           term <- headfibre(arg).recDef(cons(arg), headData(data, arg, f), f)(
+           term <- headfibre(arg).recDefCase(cons(arg), headData(data, arg, f), f)(
                       t)) yield term
     }
 
     def headInducData(
         data: InducDataType, arg: ArgType, f: => DI): HeadInducDataType
 
-    def inducDef(cons: ConstructorType,
+    def inducDefCase(cons: ConstructorType,
                  data: InducDataType,
                  f: => DI): Total => Option[Cod] = { t =>
       for (arg <- getArg(cons)(t);
-           term <- headfibre(arg).inducDef(
+           term <- headfibre(arg).inducDefCase(
                       cons(arg), headInducData(data, arg, f), f)(t)) yield term
     }
   }
@@ -693,7 +693,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       cons.pattern.recDataTyp(cons.W, X).symbObj(Constructor.RecSym(cons))
 
     val defn = (d: cons.pattern.RecDataType) =>
-      (f: Func[Total, C]) => cons.pattern.recDef(cons.cons, d, curry(f))
+      (f: Func[Total, C]) => cons.pattern.recDefCase(cons.cons, d, curry(f))
 
     def recCaseDefn(X: Typ[C]) =
       RecursiveCaseDefinition.DataCons(data(X), defn, tail.recCaseDefn(X))
@@ -712,7 +712,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     val inducDefn = (d: cons.pattern.InducDataType) =>
       (f: FuncLike[Total, C]) =>
-        cons.pattern.inducDef(cons.cons, d, depCurry(f))
+        cons.pattern.inducDefCase(cons.cons, d, depCurry(f))
 
     def inducCaseDefn(fibre: Func[H, Typ[C]]) = {
       InductiveCaseDefinition.DataCons(

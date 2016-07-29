@@ -55,7 +55,7 @@ object ConstructorSeq {
       cons.pattern.recDataTyp(cons.W, X).symbObj(Constructor.RecSym(cons))
 
     val defn = (d: cons.pattern.RecDataType) =>
-      (f: Func[H, C]) => cons.pattern.recDef(cons.cons, d, f)
+      (f: Func[H, C]) => cons.pattern.recDefCase(cons.cons, d, f)
 
     def recCaseDefn(X: Typ[C]) =
       RecursiveCaseDefinition.DataCons(data(X), defn, tail.recCaseDefn(X))
@@ -73,7 +73,7 @@ object ConstructorSeq {
         .symbObj(Constructor.InducSym(cons))
 
     val inducDefn = (d: cons.pattern.InducDataType) =>
-      (f: FuncLike[H, C]) => cons.pattern.inducDef(cons.cons, d, f)
+      (f: FuncLike[H, C]) => cons.pattern.inducDefCase(cons.cons, d, f)
 
     def inducCaseDefn(fibre: Func[H, Typ[C]]) =
       InductiveCaseDefinition.DataCons(

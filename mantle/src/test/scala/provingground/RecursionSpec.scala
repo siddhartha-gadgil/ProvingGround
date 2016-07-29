@@ -38,7 +38,7 @@ class RecursionSpec extends FlatSpec {
   }*/
 
   "Recursion defintion for a case" should "when applied to constructor give defining data, and other None" in {
-    val fn = W.recDef(tt, ff, (SmallBool ->: SmallBool).symbObj("dummy-function"))
+    val fn = W.recDefCase(tt, ff, (SmallBool ->: SmallBool).symbObj("dummy-function"))
 
     assert(fn(tt) == Some(ff))
 

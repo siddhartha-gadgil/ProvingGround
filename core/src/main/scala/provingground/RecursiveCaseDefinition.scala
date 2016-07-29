@@ -62,7 +62,7 @@ object RecursiveCaseDefinition {
     val data: cons.pattern.RecDataType =
       cons.pattern.recDataTyp(cons.W, X).symbObj(sym(cons))
     val defn = (d: cons.pattern.RecDataType) =>
-      (f: Func[H, C]) => cons.pattern.recDef(cons.cons, d, f)
+      (f: Func[H, C]) => cons.pattern.recDefCase(cons.cons, d, f)
     val fn: Func[H, C] = DataCons(data, defn, tail)
     lmbda(data)(fn)
   }

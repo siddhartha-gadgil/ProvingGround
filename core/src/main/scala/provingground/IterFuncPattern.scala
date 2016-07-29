@@ -35,7 +35,7 @@ object IterFuncPattern {
 
     /**
       * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
-      *  this is used mainly for constructor patterns, with the W being fixed, not for genuine families.
+      *  this is used mainly for constructor patterns, with the W being fixed.
       */
     def apply(tp: Typ[O]): Typ[Family]
 
