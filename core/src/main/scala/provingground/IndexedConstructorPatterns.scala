@@ -639,7 +639,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
   }
 
   sealed trait ConstructorSeq {
-    def recCaseDefn(X: Typ[Cod]): RecursiveCaseDefinition[Total, Cod]
+    def recDefn(X: Typ[Cod]): RecursiveDefinition[Total, Cod]
 
     val W: F
 
@@ -648,12 +648,12 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def recDataLambda(X: Typ[C]): I => RecType
 
     def rec(X: Typ[C]): RecType =
-      recDataLambda(X: Typ[C])(curry(recCaseDefn(X: Typ[C])))
+      recDataLambda(X: Typ[C])(curry(recDefn(X: Typ[C])))
 
     type InducType <: Term with Subs[InducType]
 
-    def inducCaseDefn(
-        fibre: Func[H, Typ[Cod]]): InductiveCaseDefinition[Total, Cod]
+    def inducDefn(
+        fibre: Func[H, Typ[Cod]]): InductiveDefinition[Total, Cod]
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]): DI => InducType
   }
@@ -665,8 +665,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
   object ConstructorSeq {
     case class Empty(W: F) extends ConstructorSeq {
-      def recCaseDefn(X: Typ[C]) =
-        RecursiveCaseDefinition.Empty(domTotal(W), X)
+      def recDefn(X: Typ[C]) =
+        RecursiveDefinition.Empty(domTotal(W), X)
 
       type RecType = I
 
@@ -674,8 +674,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
       type InducType = DI
 
-      def inducCaseDefn(fibre: Func[H, Typ[Cod]]) =
-        InductiveCaseDefinition.Empty(totalFibre(fibre, W))
+      def inducDefn(fibre: Func[H, Typ[Cod]]) =
+        InductiveDefinition.Empty(totalFibre(fibre, W))
 
       def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
     }
@@ -695,8 +695,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     val defn = (d: cons.pattern.RecDataType) =>
       (f: Func[Total, C]) => cons.pattern.recDefCase(cons.cons, d, curry(f))
 
-    def recCaseDefn(X: Typ[C]) =
-      RecursiveCaseDefinition.DataCons(data(X), defn, tail.recCaseDefn(X))
+    def recDefn(X: Typ[C]) =
+      RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
@@ -714,9 +714,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       (f: FuncLike[Total, C]) =>
         cons.pattern.inducDefCase(cons.cons, d, depCurry(f))
 
-    def inducCaseDefn(fibre: Func[H, Typ[C]]) = {
-      InductiveCaseDefinition.DataCons(
-          inducData(fibre), inducDefn, tail.inducCaseDefn(fibre))
+    def inducDefn(fibre: Func[H, Typ[C]]) = {
+      InductiveDefinition.DataCons(
+          inducData(fibre), inducDefn, tail.inducDefn(fibre))
     }
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =

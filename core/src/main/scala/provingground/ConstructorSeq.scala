@@ -3,7 +3,7 @@ package provingground
 import HoTT._
 
 trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
-  def recCaseDefn(X: Typ[C]): RecursiveCaseDefinition[H, C]
+  def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
 
   val W: Typ[H]
 
@@ -12,16 +12,16 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   def recDataLambda(X: Typ[C]): Func[H, C] => RecType
 
   def rec(X: Typ[C]): RecType =
-    recDataLambda(X: Typ[C])(recCaseDefn(X: Typ[C]))
+    recDataLambda(X: Typ[C])(recDefn(X: Typ[C]))
 
-  def inducCaseDefn(fibre: Func[H, Typ[C]]): InductiveCaseDefinition[H, C]
+  def inducDefn(fibre: Func[H, Typ[C]]): InductiveDefinition[H, C]
 
   type InducType <: Term with Subs[InducType]
 
   def inducDataLambda(fibre: Func[H, Typ[C]]): FuncLike[H, C] => InducType
 
   def induc(fibre: Func[H, Typ[C]]) =
-    inducDataLambda(fibre)(inducCaseDefn(fibre))
+    inducDataLambda(fibre)(inducDefn(fibre))
 
   def ::(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
 }
@@ -29,14 +29,14 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
 object ConstructorSeq {
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeq[C, H] {
-    def recCaseDefn(X: Typ[C]) = RecursiveCaseDefinition.Empty(W, X)
+    def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
     type RecType = Func[H, C]
 
     def recDataLambda(X: Typ[C]) = (f) => f
 
-    def inducCaseDefn(fibre: Func[H, Typ[C]]) =
-      InductiveCaseDefinition.Empty(fibre)
+    def inducDefn(fibre: Func[H, Typ[C]]) =
+      InductiveDefinition.Empty(fibre)
 
     type InducType = FuncLike[H, C]
 
@@ -57,8 +57,8 @@ object ConstructorSeq {
     val defn = (d: cons.pattern.RecDataType) =>
       (f: Func[H, C]) => cons.pattern.recDefCase(cons.cons, d, f)
 
-    def recCaseDefn(X: Typ[C]) =
-      RecursiveCaseDefinition.DataCons(data(X), defn, tail.recCaseDefn(X))
+    def recDefn(X: Typ[C]) =
+      RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
@@ -75,9 +75,9 @@ object ConstructorSeq {
     val inducDefn = (d: cons.pattern.InducDataType) =>
       (f: FuncLike[H, C]) => cons.pattern.inducDefCase(cons.cons, d, f)
 
-    def inducCaseDefn(fibre: Func[H, Typ[C]]) =
-      InductiveCaseDefinition.DataCons(
-          inducData(fibre), inducDefn, tail.inducCaseDefn(fibre))
+    def inducDefn(fibre: Func[H, Typ[C]]) =
+      InductiveDefinition.DataCons(
+          inducData(fibre), inducDefn, tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
