@@ -33,7 +33,7 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.6.0" % "test"  cross CrossVersion.full,
+    "com.lihaoyi" % "ammonite" % "0.7.0" % "test"  cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -48,8 +48,8 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http-experimental"               % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json-experimental"    % akkaV,
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
-    "com.lihaoyi" %% "ammonite-ops" % "0.6.0",
-//    "com.lihaoyi" %% "ammonite-shell" % "0.6.0",
+//    "com.lihaoyi" %% "ammonite-ops" % "0.7.0",
+//    "com.lihaoyi" %% "ammonite-shell" % "0.7.0",
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" %"1.7.16",
 //    "org.slf4j" % "slf4j-nop" %"1.7.16",
@@ -74,8 +74,8 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite-repl" % "0.6.0" % "test" cross CrossVersion.full,
-    "com.lihaoyi" %% "ammonite-ops" % "0.6.0",
+    "com.lihaoyi" % "ammonite" % "0.7.0" % "test" cross CrossVersion.full,
+    "com.lihaoyi" %% "ammonite-ops" % "0.7.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
     "com.google.protobuf" % "protobuf-java" % "2.6.1"
@@ -145,7 +145,7 @@ lazy val mizar = project.
   settings(name := "Mizar-Parser",
   libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.2.1")
 
-val initCommands = """import provingground._; import HoTT._; import ammonite.ops._; import ImplicitWd._;  import FansiShow._"""
+val initCommands = """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
 
 lazy val mantle = (project in file("mantle")).
         settings(name := "ProvingGround-mantle").
@@ -153,7 +153,7 @@ lazy val mantle = (project in file("mantle")).
         settings(jvmSettings : _*).
 //        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
-          s"""ammonite.repl.Main(predef = "$initCommands").run() """).
+          s"""ammonite.Main("$initCommands").run() """).
         dependsOn(coreJVM).dependsOn(functionfinder).
         dependsOn(translation).settings(tutSettings)
 //        dependsOn(deepwalk).
@@ -161,7 +161,7 @@ lazy val mantle = (project in file("mantle")).
 
 lazy val exploring = project.
               settings(name := "ProvingGround-exploring",
-              libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.6.0").
+              libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.0").
               dependsOn(coreJVM).
               dependsOn(mantle)
 
@@ -172,12 +172,12 @@ lazy val nlp = (project in file("nlp")).
 //        settings(jvmSettings : _*).
 //        settings(serverSettings : _*).
         settings(initialCommands in (Test, console) :=
-          s"""ammonite.repl.Main().run("import scala.collection.JavaConversions._") """).
+          s"""ammonite.Main("import scala.collection.JavaConversions._").run() """).
         dependsOn(coreJVM)
 
 lazy val translation = (project in file("translation")).
       settings(name := "ProvingGround-Translation",
-        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.6.0").
+        libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.0").
       settings(baseSettings : _*).
       dependsOn(coreJVM)
 
