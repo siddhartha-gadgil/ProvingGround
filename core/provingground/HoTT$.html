@@ -109,13 +109,13 @@ S
       </a>
     </span>
       <p class="shortcomment cmt">Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type.</p>
-    </li><li name="provingground.HoTT.AnySym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.HoTT.AnySym" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="AnySymextendsAnyRef"></a>
       <a id="AnySym:AnySym"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
         <a href="HoTT$$AnySym.html"><span class="name">AnySym</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
@@ -140,6 +140,23 @@ S
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.HoTT$@ApplnSym[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.HoTT.AtomicSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicSymextendsHoTT.AnySym"></a>
+      <a id="AtomicSym:AtomicSym"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HoTT$$AtomicSym.html"><span class="name">AtomicSym</span></a><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.HoTT$@AtomicSymextendsHoTT.AnySym" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -477,7 +494,7 @@ S
  This is the type lhs = rhs
 </p></div></div>
     </li><li name="provingground.HoTT.InnerSym" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InnerSym[U&lt;:provingground.HoTT.Term]extendsHoTT.AnySym"></a>
+      <a id="InnerSym[U&lt;:provingground.HoTT.Term]extendsHoTT.AtomicSym"></a>
       <a id="InnerSym[U&lt;:Term]:InnerSym[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -485,10 +502,10 @@ S
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="HoTT$$InnerSym.html"><span class="name">InnerSym</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+        <a href="HoTT$$InnerSym.html"><span class="name">InnerSym</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>]</span><span class="result"> extends <a href="HoTT$$AtomicSym.html" class="extype" name="provingground.HoTT.AtomicSym">AtomicSym</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$@InnerSym[U&lt;:provingground.HoTT.Term]extendsHoTT.AnySym" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$@InnerSym[U&lt;:provingground.HoTT.Term]extendsHoTT.AtomicSym" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -566,7 +583,7 @@ S
       <p class="shortcomment cmt"> symbol for left component in pair from a given symbol
 </p>
     </li><li name="provingground.HoTT.Name" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="NameextendsHoTT.AnySymwithProductwithSerializable"></a>
+      <a id="NameextendsHoTT.AtomicSymwithProductwithSerializable"></a>
       <a id="Name:Name"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -574,10 +591,10 @@ S
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="HoTT$$Name.html"><span class="name">Name</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="HoTT$$Name.html"><span class="name">Name</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="HoTT$$AtomicSym.html" class="extype" name="provingground.HoTT.AtomicSym">AtomicSym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$@NameextendsHoTT.AnySymwithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$@NameextendsHoTT.AtomicSymwithProductwithSerializable" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -810,23 +827,6 @@ S
       </a>
     </span>
       <p class="shortcomment cmt">specify result of substitution, typically so a class is closed under substitution.</p>
-    </li><li name="provingground.HoTT.SymSubs" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SymSubsextendsHoTT.AnySym"></a>
-      <a id="SymSubs:SymSubs"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="HoTT$$SymSubs.html"><span class="name">SymSubs</span></a><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$@SymSubsextendsHoTT.AnySym" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="provingground.HoTT.SymbObj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SymbObj[+U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.TermwithHoTT.SymbolicwithProductwithSerializable"></a>
       <a id="SymbObj[+U&lt;:TermwithSubs[U]]:SymbObj[U]"></a>
@@ -863,7 +863,7 @@ S
     </span>
       <p class="shortcomment cmt">Symbolic types, which the compiler knows are types.</p>
     </li><li name="provingground.HoTT.Symbolic" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SymbolicextendsAnyRef"></a>
+      <a id="SymbolicextendsHoTT.Term"></a>
       <a id="Symbolic:Symbolic"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -871,10 +871,10 @@ S
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="HoTT$$Symbolic.html"><span class="name">Symbolic</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="HoTT$$Symbolic.html"><span class="name">Symbolic</span></a><span class="result"> extends <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$@SymbolicextendsAnyRef" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$@SymbolicextendsHoTT.Term" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1541,18 +1541,18 @@ applying terms as long as the result is a function and the list is non-empty.</p
       <p class="shortcomment cmt">folds in as many terms of the list as possible,
 applying terms as long as the result is a function and the list is non-empty.</p>
     </li><li name="provingground.HoTT#fromZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,U]"></a>
-      <a id="fromZero[U&lt;:TermwithSubs[U]](Typ[U]):Func[Term,U]"></a>
+      <a id="fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,U]withprovingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,U]]"></a>
+      <a id="fromZero[U&lt;:TermwithSubs[U]](Typ[U]):Func[Term,U]withSubs[Func[Term,U]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">fromZero</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>]</span><span class="params">(<span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>
+        <span class="name">fromZero</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>]</span><span class="params">(<span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.fromZero.U">U</span>]</span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.fromZero.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.HoTT.fromZero.U">U</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$@fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,U]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$@fromZero[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,U]withprovingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,U]]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -2197,7 +2197,7 @@ applying terms as long as the result is a function and the list is non-empty.</p
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="HoTT$$vacuous$.html"><span class="name">vacuous</span></a><span class="result"> extends <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="HoTT$$vacuous$.html"><span class="name">vacuous</span></a><span class="result"> extends <a href="HoTT$$AtomicSym.html" class="extype" name="provingground.HoTT.AtomicSym">AtomicSym</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.HoTT$@vacuous" title="Permalink" target="_top">

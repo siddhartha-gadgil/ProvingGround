@@ -28,7 +28,7 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img alt="Class" src="../lib/class_big.png" />
+        <img alt="Trait" src="../lib/trait_big.png" />
         <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a></p>
         <h1>AnySym</h1><h3><span class="morelinks"><div>Related Doc:
             <a href="HoTT$.html" class="extype" name="provingground.HoTT">package HoTT</a>
@@ -42,7 +42,7 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
         <span class="name">AnySym</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
@@ -55,7 +55,7 @@
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="HoTT$$ApplnSym.html" class="extype" name="provingground.HoTT.ApplnSym">ApplnSym</a>, <a href="HoTT$$CodomSym.html" class="extype" name="provingground.HoTT.CodomSym">CodomSym</a>, <a href="HoTT$$DomSym.html" class="extype" name="provingground.HoTT.DomSym">DomSym</a>, <a href="HoTT$$IdentityTyp$$InducFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFunc">InducFunc</a>, <a href="IndexedConstructorPatterns$Constructor$$InducSym.html" class="extype" name="provingground.IndexedConstructorPatterns.Constructor.InducSym">InducSym</a>, <a href="Constructor$$InducSym.html" class="extype" name="provingground.Constructor.InducSym">InducSym</a>, <a href="HoTT$$InnerSym.html" class="extype" name="provingground.HoTT.InnerSym">InnerSym</a>, <a href="HoTT$$LeftSym.html" class="extype" name="provingground.HoTT.LeftSym">LeftSym</a>, <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>, <a href="HoTT$$IdentityTyp$$RecFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFunc">RecFunc</a>, <a href="Constructor$$RecSym.html" class="extype" name="provingground.Constructor.RecSym">RecSym</a>, <a href="IndexedConstructorPatterns$Constructor$$RecSym.html" class="extype" name="provingground.IndexedConstructorPatterns.Constructor.RecSym">RecSym</a>, <a href="HoTT$$RightSym.html" class="extype" name="provingground.HoTT.RightSym">RightSym</a>, <a href="ScalaRep$$ScalaSymbol.html" class="extype" name="provingground.ScalaRep.ScalaSymbol">ScalaSymbol</a>, <a href="HoTT$$SymSubs.html" class="extype" name="provingground.HoTT.SymSubs">SymSubs</a>, <a href="HoTT$$TermSymbol.html" class="extype" name="provingground.HoTT.TermSymbol">TermSymbol</a>, <a href="HoTT$$vacuous$.html" class="extype" name="provingground.HoTT.vacuous">vacuous</a></div>
+            <div class="subClasses hiddenContent"><a href="HoTT$$ApplnSym.html" class="extype" name="provingground.HoTT.ApplnSym">ApplnSym</a>, <a href="HoTT$$AtomicSym.html" class="extype" name="provingground.HoTT.AtomicSym">AtomicSym</a>, <a href="HoTT$$CodomSym.html" class="extype" name="provingground.HoTT.CodomSym">CodomSym</a>, <a href="HoTT$$DomSym.html" class="extype" name="provingground.HoTT.DomSym">DomSym</a>, <a href="HoTT$$IdentityTyp$$InducFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFunc">InducFunc</a>, <a href="Constructor$$InducSym.html" class="extype" name="provingground.Constructor.InducSym">InducSym</a>, <a href="IndexedConstructorPatterns$Constructor$$InducSym.html" class="extype" name="provingground.IndexedConstructorPatterns.Constructor.InducSym">InducSym</a>, <a href="HoTT$$InnerSym.html" class="extype" name="provingground.HoTT.InnerSym">InnerSym</a>, <a href="HoTT$$LeftSym.html" class="extype" name="provingground.HoTT.LeftSym">LeftSym</a>, <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>, <a href="HoTT$$IdentityTyp$$RecFunc.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFunc">RecFunc</a>, <a href="Constructor$$RecSym.html" class="extype" name="provingground.Constructor.RecSym">RecSym</a>, <a href="IndexedConstructorPatterns$Constructor$$RecSym.html" class="extype" name="provingground.IndexedConstructorPatterns.Constructor.RecSym">RecSym</a>, <a href="HoTT$$RightSym.html" class="extype" name="provingground.HoTT.RightSym">RightSym</a>, <a href="ScalaRep$$ScalaSymbol.html" class="extype" name="provingground.ScalaRep.ScalaSymbol">ScalaSymbol</a>, <a href="HoTT$$TermSymbol.html" class="extype" name="provingground.HoTT.TermSymbol">TermSymbol</a>, <a href="HoTT$$vacuous$.html" class="extype" name="provingground.HoTT.vacuous">vacuous</a></div>
           </div></div>
         
 
@@ -90,21 +90,25 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="provingground.HoTT.AnySym#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():provingground.HoTT.AnySym"></a>
-      <a id="&lt;init&gt;:AnySym"></a>
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="provingground.HoTT.AnySym#subs" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.AnySym"></a>
+      <a id="subs(Term,Term):AnySym"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">AnySym</span><span class="params">()</span>
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.HoTT$$AnySym@&lt;init&gt;():provingground.HoTT.AnySym" title="Permalink" target="_top">
+      <a href="../index.html#provingground.HoTT$$AnySym@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.AnySym" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -112,12 +116,8 @@
     </li></ol>
             </div>
 
-        
-
-        
-
         <div id="values" class="values members">
-              <h3>Value Members</h3>
+              <h3>Concrete Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
