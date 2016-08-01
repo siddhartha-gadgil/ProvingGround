@@ -202,7 +202,7 @@ case class ConstructorTyp[F <: Term with Subs[F], H <: Term with Subs[H]](
     pattern: ConstructorPattern[Term, F, H], typ: Typ[H]) {
   def :::(name: AnySym): Constructor[Term, H] = pattern.constructor(typ, name)
 
-  def -->:(that: Typ[H]) = {
+  def -->>:(that: Typ[H]) = {
     assert(
         that == typ,
         s"the method -->: is for extenidng by the same type but $that is not $typ")
@@ -211,10 +211,10 @@ case class ConstructorTyp[F <: Term with Subs[F], H <: Term with Subs[H]](
     ConstructorTyp(ptn, typ)
   }
 
-  def -->:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, Term, FF]) =
+  def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, Term, FF]) =
     ConstructorTyp(that.pattern -->: pattern, typ)
 
-  def ->:[T <: Term with Subs[T]](that: Typ[T]) = {
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
     assert(
         !(that.dependsOn(typ)),
         "the method ->: is for extension by constant types, maybe you mean _-->:_")
@@ -230,11 +230,11 @@ object ConstructorTyp {
     def pair = ConstructorTyp(IdW[H], typ)
     def :::(name: AnySym) = name ::: pair
 
-    def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->: pair
+    def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
 
-    def -->>:(that: Typ[H]) = that -->: pair
+    def -->>:(that: Typ[H]) = that -->>: pair
 
-    def ~>>[T <: Term with Subs[T]](thatVar: T) = thatVar ~>: pair
+    def ~>:[T <: Term with Subs[T]](thatVar: T) = thatVar ~>: pair
   }
 }
 

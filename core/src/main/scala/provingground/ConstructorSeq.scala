@@ -23,10 +23,16 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   def induc(fibre: Func[H, Typ[C]]) =
     inducDataLambda(fibre)(inducDefn(fibre))
 
-  def ::(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
+  def !:(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
+  
+  val intros: List[Term]
 }
 
 object ConstructorSeq {
+  implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]){
+    def !:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, Empty[Term, H](W))
+  }
+  
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeq[C, H] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
@@ -41,6 +47,8 @@ object ConstructorSeq {
     type InducType = FuncLike[H, C]
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
+    
+    val intros = List()
   }
 
   case class Cons[C <: Term with Subs[C], H <: Term with Subs[H]](
@@ -81,6 +89,8 @@ object ConstructorSeq {
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
+
+    val intros = cons.cons :: tail.intros
   }
 
   def fold[C <: Term with Subs[C], H <: Term with Subs[H]](
