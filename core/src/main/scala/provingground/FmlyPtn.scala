@@ -11,6 +11,7 @@ import scala.util.Try
   */
 object FamilyPattern {
 
+  
   /**
     * A pattern for families, e.g. of inductive types to be defined
     * for instance A -> B -> W, where W is the type to be defined;
@@ -101,6 +102,8 @@ object FamilyPattern {
       *  type of total index
       */
     type ArgType <: Term with Subs[ArgType]
+    
+    def argOpt(l: List[Term]) : Option[ArgType]
 
     //  def arg(x: Total): ArgType
 
@@ -215,6 +218,9 @@ object FamilyPattern {
 
     def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
 
+    def argOpt(l: List[Term]) : Option[ArgType] = 
+      if (l.isEmpty) Some(Star) else None
+    
     type ArgType = AtomicTerm
 
     def arg(x: Total): AtomicTerm = Star
@@ -338,6 +344,12 @@ object FamilyPattern {
     }
 
     type ArgType = PairObj[TT, S]
+    
+    def argOpt(l: List[Term]) : Option[ArgType] = l match {
+      case x :: ys =>
+        head.argOpt(ys) map ((t) => PairObj(x.asInstanceOf[TT], t))
+      case _ => None
+    }
 
     //  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
 
@@ -485,6 +497,13 @@ object FamilyPattern {
     }
 
     type ArgType = DepPair[TT, S]
+    
+    def argOpt(l: List[Term]) : Option[ArgType] = l match {
+      case x :: ys =>
+        val xt = x.asInstanceOf[TT]
+        headfibre(xt).argOpt(ys) map ((t) => DepPair(xt, t, lmbda(xt)(t.typ.asInstanceOf[Typ[S]])))
+      case _ => None
+    }
 
     //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
