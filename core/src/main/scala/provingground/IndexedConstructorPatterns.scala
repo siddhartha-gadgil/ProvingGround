@@ -20,9 +20,7 @@ import scala.util.Try
   */
 class IndexedConstructorPatterns[C <: Term with Subs[C],
     H <: Term with Subs[H], F <: Term with Subs[F]](
-    val typFmlyPtn: FmlyPtn[H, C, F] /*{
-    type FamilyType = F; type ArgType = Ind; type IterFunc = I; type IterTypFunc = IT; type IterDepFunc = DI }*/
-) { outer =>
+    val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
 
   def totalArg(typ: Term, fmly: F, accum: Term = Star): Term =
     typ match {

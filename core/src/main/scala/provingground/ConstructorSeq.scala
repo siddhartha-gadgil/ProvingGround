@@ -2,6 +2,21 @@ package provingground
 
 import HoTT._
 
+case class PartialConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]](
+    head: ConstructorTyp[C, H], tail: ConstructorSeq[Term, H]){
+  def :::(name: AnySym) = name ::: head !: tail
+  
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
+    
+  def -->>:(that: Typ[H]) = PartialConstructorSeq(that -->>: head,  tail)
+
+  def ~>>:[T <: Term with Subs[T]](thatVar: H) = 
+  {
+    val newHead = thatVar ~>>: head
+    PartialConstructorSeq(thatVar ~>>: head, tail)
+  }
+}
+
 trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
 
@@ -30,7 +45,9 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
 
 object ConstructorSeq {
   implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]){
-    def !:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, Empty[Term, H](W))
+    def seq = Empty[Term, H](W)
+    
+    def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
   }
   
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
