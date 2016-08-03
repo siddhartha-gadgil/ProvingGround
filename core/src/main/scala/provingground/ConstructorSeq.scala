@@ -2,9 +2,9 @@ package provingground
 
 import HoTT._
 
-case class PartialConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]](
-    head: ConstructorTyp[C, H], tail: ConstructorSeq[Term, H]){
-  def :::(name: AnySym) = name ::: head !: tail
+case class PartialConstructorSeq[C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
+    head: ConstructorTyp[C, F, H], tail: ConstructorSeq[C, H]){
+  def :::(name: AnySym) = (name ::: head) !: tail
   
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
     
@@ -39,6 +39,9 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
     inducDataLambda(fibre)(inducDefn(fibre))
 
   def !:(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
+  
+  def !!:(typ: Typ[H]) = 
+    PartialConstructorSeq(ConstructorTyp.head[H, C](typ) , this)
   
   val intros: List[Term]
 }

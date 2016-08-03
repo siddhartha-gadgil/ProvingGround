@@ -198,20 +198,20 @@ object ConstructorPattern {
 /**
   * Constructor pattern with type, for convenient building.
   */
-case class ConstructorTyp[F <: Term with Subs[F], H <: Term with Subs[H]](
-    pattern: ConstructorPattern[Term, F, H], typ: Typ[H]) {
-  def :::(name: AnySym): Constructor[Term, H] = pattern.constructor(typ, name)
+case class ConstructorTyp[C<: Term with Subs[C], F <: Term with Subs[F] , H <: Term with Subs[H]](
+    pattern: ConstructorPattern[C, F, H], typ: Typ[H]) {
+  def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
 
   def -->>:(that: Typ[H]) = {
     assert(
         that == typ,
         s"the method -->: is for extenidng by the same type but $that is not $typ")
-    val tail = IdFmlyPtn[H, Term]
+    val tail = IdFmlyPtn[H, C]
     val ptn = FuncPtn(tail, pattern)
     ConstructorTyp(ptn, typ)
   }
 
-  def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, Term, FF]) =
+  def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) =
     ConstructorTyp(that.pattern -->: pattern, typ)
 
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
@@ -236,6 +236,9 @@ object ConstructorTyp {
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
+  
+  def head[H <: Term with Subs[H], C <: Term with Subs[C]](typ: Typ[H]) = 
+    ConstructorTyp(IdTarg[C, H](), typ)
 }
 
 import ConstructorPattern._

@@ -32,6 +32,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
   def getTotalArg(typ: Typ[Term], fmly: F) =
     totalArg(typ, fmly).asInstanceOf[typFmlyPtn.ArgType]
 
+  
+  import typFmlyPtn.{Total, FamilyType, curry, depCurry, domTotal, value, ArgType, IterFunc, IterTypFunc, IterDepFunc,
+    fill, depFill}
   //    type F = typFmlyPtn.FamilyType
   type Ind = typFmlyPtn.ArgType
   type I = typFmlyPtn.IterFunc
@@ -39,7 +42,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
   type DI = typFmlyPtn.IterDepFunc
 
   type Cod = C
-  import typFmlyPtn._
+  
   sealed trait ConstructorPattern[Cnstr <: Term with Subs[Cnstr]] { self =>
 
     /**
