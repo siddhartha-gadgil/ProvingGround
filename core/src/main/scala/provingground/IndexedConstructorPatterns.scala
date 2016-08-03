@@ -146,25 +146,25 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def arg = getTotalArg(typ, fmly)
 
-    def -->:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) = {
+    def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) = {
       val arg = getTotalArg(that.typ, fmly)
       ConstructorTyp(FuncPtn(that.pattern, arg, pattern), typ, fmly)
     }
 
-    def -->:(that: Typ[H]) = {
+    def -->>:(that: Typ[H]) = {
       val tail = IdFmlyPtn[H, C]
       val ptn = FuncPtn(tail, arg, pattern)
       ConstructorTyp(ptn, typ, fmly)
     }
 
-    def ->:[T <: Term with Subs[T]](that: Typ[T]) = {
+    def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
       assert(
           !(that.dependsOn(typ)),
           "the method ->: is for extension by constant types, maybe you mean _-->:_")
       ConstructorTyp(pattern.funcFrom(that, fmly), typ, fmly)
     }
 
-    def ~>:[T <: Term with Subs[T]](thatVar: T) =
+    def ~>>:[T <: Term with Subs[T]](thatVar: T) =
       ConstructorTyp(pattern piOf (thatVar, fmly), typ, fmly)
   }
 
@@ -178,11 +178,11 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       def pair = ConstructorTyp(iW(arg), typ, fmly)
       def :::(name: AnySym): Constructor = name ::: pair
 
-      def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->: pair
+      def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
 
-      def -->>:(that: Typ[H]) = that -->: pair
+      def -->>:(that: Typ[H]) = that -->>: pair
 
-      def ~>>[T <: Term with Subs[T]](thatVar: T) = thatVar ~>: pair
+      def ~>>[T <: Term with Subs[T]](thatVar: T) = thatVar ~>>: pair
     }
   }
 
@@ -639,6 +639,27 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     type Cnstr = U
   }
 
+  
+ case class PartialConstructorSeq[F <: Term with Subs[F]](
+    head: ConstructorTyp[F], tail: ConstructorSeq){
+  def :::(name: AnySym) = {
+    val pc = (name ::: head) 
+    pc !: tail
+  }
+  
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
+    
+  def -->>:(that: Typ[H]) = PartialConstructorSeq(that -->>: head,  tail)
+
+  def ~>>:[T <: Term with Subs[T]](thatVar: H) = 
+  {
+    val newHead = thatVar ~>>: head
+    PartialConstructorSeq(thatVar ~>>: head, tail)
+  }
+}
+  
+  
+  
   sealed trait ConstructorSeq {
     def recDefn(X: Typ[Cod]): RecursiveDefinition[Total, Cod]
 
@@ -657,6 +678,11 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
         fibre: Func[H, Typ[Cod]]): InductiveDefinition[Total, Cod]
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]): DI => InducType
+    
+    def !:(head: Constructor) = ConstructorSeq.Cons(head, this)
+  
+    def !!:(typ: Typ[H]) = 
+      PartialConstructorSeq(ConstructorTyp(iW(getTotalArg(typ, W)), typ, W) , this)
   }
 
   def totalFibre(fibre: Func[H, Typ[Cod]], W: F): Func[Total, Typ[Cod]] = {
@@ -680,9 +706,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
       def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
     }
-  }
+  
 
-  case class Cons[Cnstr <: Term with Subs[Cnstr]](
+  case class Cons(
       cons: Constructor,
       tail: ConstructorSeq
   )
@@ -722,5 +748,15 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
       (f: DI) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
+  }
+  }
+}
+
+object IndexConstructorPatterns{
+  def emptySeq[C <: Term with Subs[C],
+    H <: Term with Subs[H], F <: Term with Subs[F]](
+        typFmlyPtn: FmlyPtn[H, C, F], fmly: F) = {
+    val cls = new IndexedConstructorPatterns(typFmlyPtn)
+    cls.ConstructorSeq.Empty(fmly) : cls.ConstructorSeq
   }
 }

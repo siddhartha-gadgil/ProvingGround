@@ -9,9 +9,7 @@ import scala.util.Try
 /**
   * @author gadgil
   */
-object FamilyPattern {
-
-  
+object FamilyPattern {  
   /**
     * A pattern for families, e.g. of inductive types to be defined
     * for instance A -> B -> W, where W is the type to be defined;
@@ -625,4 +623,9 @@ object FamilyPattern {
 
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
+  
+  def fmlyTyp[C <: Term with Subs[C], F <: Term with Subs[F]](
+      ptn: FmlyPtn[Term, C, F]): Typ[F] = ptn match{
+    case _ : IdFmlyPtn[_, _] => ???
+  } 
 }
