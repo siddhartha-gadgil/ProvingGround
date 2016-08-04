@@ -765,9 +765,11 @@ object IndexConstructorPatterns{
   implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
       ptn: FmlyPtn[Term, C, F]){
     import FamilyPattern.fmly
-    def :::(name: AnySym) = emptySeq(ptn, fmly(ptn)(name))
+    def :|:(name: AnySym) = emptySeq(ptn, fmly(ptn)(name))
     
-    def :::(fm: F) = emptySeq(ptn, fm)
+    def :::(name: AnySym) = fmly(ptn)(name)
+    
+    def :|:(fm: F) = emptySeq(ptn, fm)
   }
 
 }
