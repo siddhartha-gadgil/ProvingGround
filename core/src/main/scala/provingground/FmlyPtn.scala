@@ -626,6 +626,20 @@ object FamilyPattern {
   
   def fmlyTyp[C <: Term with Subs[C], F <: Term with Subs[F]](
       ptn: FmlyPtn[Term, C, F]): Typ[F] = ptn match{
-    case _ : IdFmlyPtn[_, _] => ???
+    case FuncFmlyPtn(tail : Typ[u], head : FmlyPtn[Term, _, w]) => 
+      val headCast  = head.asInstanceOf[FmlyPtn[Term, C, w]]
+      val headTyp = fmlyTyp[C , w](headCast)
+      (tail ->: headTyp).asInstanceOf[Typ[F]]
+    case DepFuncFmlyPtn(tail : Typ[u], headfibre : (Function1[v, FmlyPtn[Term, _, w]]), headlevel) =>
+      val x = tail.Var
+      val headCast = headfibre(x).asInstanceOf[FmlyPtn[Term, C, w]]
+      val headTyp = fmlyTyp[C , w](headCast)
+      (x ~>: headTyp).asInstanceOf[Typ[F]]
+    case IdFmlyPtn() => Type.asInstanceOf[Typ[F]]
   } 
+  
+  def fmly[C <: Term with Subs[C], F <: Term with Subs[F]](
+      ptn: FmlyPtn[Term, C, F])(name: AnySym) : F =
+        fmlyTyp(ptn).symbObj(name)
+        
 }

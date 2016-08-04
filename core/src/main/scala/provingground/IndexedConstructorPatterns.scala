@@ -695,6 +695,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       def recDefn(X: Typ[C]) =
         RecursiveDefinition.Empty(domTotal(W), X)
 
+      def =:(head: Constructor) = ConstructorSeq.Cons(head, this)
+        
       type RecType = I
 
       def recDataLambda(X: Typ[C]) = (f) => f
@@ -759,4 +761,13 @@ object IndexConstructorPatterns{
     val cls = new IndexedConstructorPatterns(typFmlyPtn)
     cls.ConstructorSeq.Empty(fmly) : cls.ConstructorSeq
   }
+  
+  implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
+      ptn: FmlyPtn[Term, C, F]){
+    import FamilyPattern.fmly
+    def :::(name: AnySym) = emptySeq(ptn, fmly(ptn)(name))
+    
+    def :::(fm: F) = emptySeq(ptn, fm)
+  }
+
 }
