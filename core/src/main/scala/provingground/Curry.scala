@@ -21,12 +21,24 @@ object Curry{
     Iter <: Term with Subs[Iter], 
     Total <: Term with Subs[Total], 
     Cod <: Term with Subs[Cod]](
-        implicit curr : Curry[Iter, Total, Cod]
+        implicit base : Curry[Iter, Total, Cod]
         ) : Curry[Func[Dom, Iter], PairObj[Dom, Total], Cod] = 
   new Curry[Func[Dom, Iter], PairObj[Dom, Total], Cod]{
             
-    def curry(fn: Func[PairObj[Dom, Total], Cod]) = ???
+    def curry(fn: Func[PairObj[Dom, Total], Cod]) = {
+      val xy = fn.dom.Var
+      val (x, y) = (xy.first, xy.second)
+      lmbda(x){
+        base.curry(lmbda(y) {fn(xy)})       
+        }
+      }
             
-    def unCurry(cfn: Func[Dom, Iter]) = ???
+    def unCurry(cfn: Func[Dom, Iter]) = {
+      val x = cfn.dom.Var
+      val z = base.unCurry(cfn(x))
+      val y = z.dom.Var
+      val xy = PairObj(x, y)
+      lmbda(xy)(z(y))
+    }
   }
 }
