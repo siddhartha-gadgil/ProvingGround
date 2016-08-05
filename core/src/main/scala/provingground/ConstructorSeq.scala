@@ -4,7 +4,7 @@ import HoTT._
 
 case class PartialConstructorSeq[C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
     head: ConstructorTyp[C, F, H], tail: ConstructorSeq[C, H]){
-  def :::(name: AnySym) = (name ::: head) !: tail
+  def :::(name: AnySym) = (name ::: head) |: tail
   
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
     
@@ -38,9 +38,9 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   def induc(fibre: Func[H, Typ[C]]) =
     inducDataLambda(fibre)(inducDefn(fibre))
 
-  def !:(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
+  def |:(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
   
-  def !!:(typ: Typ[H]) = 
+  def ||:(typ: Typ[H]) = 
     PartialConstructorSeq(ConstructorTyp.head[H, C](typ) , this)
   
   val intros: List[Term]

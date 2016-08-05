@@ -4,7 +4,7 @@ import HoTT._
 
 //import scala.language.implicitConversions
 //import scala.util._
-//import scala.language.existentials
+import scala.language.existentials
 import ConstructorPattern._
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
@@ -644,7 +644,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     head: ConstructorTyp[F], tail: ConstructorSeq){
   def :::(name: AnySym) = {
     val pc = (name ::: head) 
-    pc !: tail
+    pc |: tail
   }
   
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
@@ -679,9 +679,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]): DI => InducType
     
-    def !:(head: Constructor) = ConstructorSeq.Cons(head, this)
+    def |:(head: Constructor) = ConstructorSeq.Cons(head, this)
   
-    def !!:(typ: Typ[H]) = 
+    def ||:(typ: Typ[H]) = 
       PartialConstructorSeq(ConstructorTyp(iW(getTotalArg(typ, W)), typ, W) , this)
   }
 
@@ -754,12 +754,12 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
   }
 }
 
-object IndexConstructorPatterns{
+object IndexedConstructorPatterns{
   def emptySeq[C <: Term with Subs[C],
     H <: Term with Subs[H], F <: Term with Subs[F]](
-        typFmlyPtn: FmlyPtn[H, C, F], fmly: F) = {
+        typFmlyPtn: FmlyPtn[H, C, F], fmly: F)  = {
     val cls = new IndexedConstructorPatterns(typFmlyPtn)
-    cls.ConstructorSeq.Empty(fmly) : cls.ConstructorSeq
+    cls.ConstructorSeq.Empty(fmly) 
   }
   
   implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
