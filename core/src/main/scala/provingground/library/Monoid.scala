@@ -62,12 +62,11 @@ object Monoid {
           )
       )).Var
 
-  val names = Vector(//refl -> "id.reflexivity",
-   //                  sym -> "id.symmetry",
-   //                  trans -> "id.transitivity",
-  //                   extensionality -> "id.extendsionality",
-                     transfer -> "id.transfer"
-                     )
+  val names = Vector( //refl -> "id.reflexivity",
+      //                  sym -> "id.symmetry",
+      //                  trans -> "id.transitivity",
+      //                   extensionality -> "id.extendsionality",
+      transfer -> "id.transfer")
 
   val dist = FiniteDistribution.unif(M,
                                      a,

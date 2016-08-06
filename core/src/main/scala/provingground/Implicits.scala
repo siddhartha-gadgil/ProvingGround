@@ -13,26 +13,23 @@ object Implicits {
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
- 
-  
+
   implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
-      ptn: FmlyPtn[Term, C, F]){
+      ptn: FmlyPtn[Term, C, F]) {
     import FmlyPtn.fmly
-    
+
     import IndexedConstructorPatterns.emptySeq
-    
+
     def :|:(name: AnySym) = emptySeq(ptn, fmly(ptn)(name))
-    
+
     def :::(name: AnySym) = fmly(ptn)(name)
-    
+
     def :|:(fm: F) = emptySeq(ptn, fm)
   }
 
-  
-  implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]){
-    def seq =ConstructorSeq. Empty[Term, H](W)
-    
+  implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
+    def seq = ConstructorSeq.Empty[Term, H](W)
+
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
   }
-
 }

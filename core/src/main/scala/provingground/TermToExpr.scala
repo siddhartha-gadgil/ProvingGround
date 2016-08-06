@@ -68,16 +68,16 @@ object TermToExpr {
     val X = "X" :: Type
     val x = "x" :: X
     (HoTT.lambda(X)(HoTT.lambda(x)(Refl(X, x))),
-      "@refl" :: (
-        HoTT.pi(X)(HoTT.pi(x)(x =:= x))
-       ))
+     "@refl" :: (
+         HoTT.pi(X)(HoTT.pi(x)(x =:= x))
+     ))
   }
 
   val (idRec, formalIdRec) = {
     val X = "X" :: Type
     val Y = "Y" :: Type
-    val idRec = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y) : Term))
-    val formal =  HoTT.lambda(X)(HoTT.lambda(Y)("@id.rec" :: idRec(X)(Y).typ))
+    val idRec = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y): Term))
+    val formal = HoTT.lambda(X)(HoTT.lambda(Y)("@id.rec" :: idRec(X)(Y).typ))
     (idRec, formal)
   }
 
@@ -87,13 +87,13 @@ object TermToExpr {
     val b = X.Var
     val p = (a =:= b).Var
 
-    val Ys =
-      (
-          a ~>: (b ~>: (p ~>: Type))
-        ).Var
+    val Ys = (
+        a ~>: (b ~>: (p ~>: Type))
+    ).Var
 
-    val idInduc= HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
-    val formal =  HoTT.lambda(X)(HoTT.lambda(Ys)("@id.induc" :: idInduc(X)(Ys).typ))
+    val idInduc = HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
+    val formal =
+      HoTT.lambda(X)(HoTT.lambda(Ys)("@id.induc" :: idInduc(X)(Ys).typ))
     (idInduc, formal)
   }
 
@@ -113,49 +113,51 @@ object TermToExpr {
     val p = (a =:= b).Var
 
     val family = HoTT.lambda(a)(
-      HoTT.lambda(b)(
-        HoTT.lambda(p)(g(a)(b)(p).typ) : Term
-      )
-      )
+        HoTT.lambda(b)(
+            HoTT.lambda(p)(g(a)(b)(p).typ): Term
+        )
+    )
 
     (X, family)
   }
 
-
   def encode(names: Vector[(Term, String)]): Term => Term = {
     def formalDefs: Term => Option[Term] = {
-      case Refl(t : Typ[u], a: Term) =>
+      case Refl(t: Typ[u], a: Term) =>
         import Fold._
         val newTyp = encode(names)(t)
         val newPoint = encode(names)(a)
         Some(formalRefl(newTyp)(newPoint))
-      case sym: Symbolic => sym.name match {
-        case ind : InducFunc[u, v] =>
-          val newDom = encode(names)(ind.dom)
-          val newTgt = encode(names)(ind.targetFmly)
-          import Fold._
-          val newFormalIdInduc = encode(names)(formalIdInduc)
-          Some((newFormalIdInduc(newDom)(newTgt)))
-        case RecFunc(dom: Typ[u], codom: Typ[v]) =>
-          import Fold._
-          Some((formalIdRec(encode(names)(dom))(encode(names)(codom))))
-        case _ => None
-      }
+      case sym: Symbolic =>
+        sym.name match {
+          case ind: InducFunc[u, v] =>
+            val newDom = encode(names)(ind.dom)
+            val newTgt = encode(names)(ind.targetFmly)
+            import Fold._
+            val newFormalIdInduc = encode(names)(formalIdInduc)
+            Some((newFormalIdInduc(newDom)(newTgt)))
+          case RecFunc(dom: Typ[u], codom: Typ[v]) =>
+            import Fold._
+            Some((formalIdRec(encode(names)(dom))(encode(names)(codom))))
+          case _ => None
+        }
       case _ => None
     }
 
     def predefs(term: Term): Option[Term] = {
       val nameOpt = names find (_._1 == term) map (_._2)
-      nameOpt flatMap {(name) => {
-        def typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
-          case tp: Typ[u] => Some(tp)
-          case _ => None
+      nameOpt flatMap { (name) =>
+        {
+          def typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
+            case tp: Typ[u] => Some(tp)
+            case _ => None
+          }
+          typOpt map ((typ) => s"@$name" :: typ)
         }
-        typOpt map ((typ) => s"@$name" :: typ)
-      }
       }
     }
-    val rebuilder = new TermToExpr((n) => Universe(n), (term) => formalDefs(term) orElse predefs(term))
+    val rebuilder = new TermToExpr(
+        (n) => Universe(n), (term) => formalDefs(term) orElse predefs(term))
     (term: Term) =>
       rebuilder(term) getOrElse (term)
   }
@@ -170,8 +172,9 @@ object TermToExpr {
             val xD = decode(names)(x)
             val fmlyD = decode(names)(fmly)
             Some(fold(idInduc)(xD, fmlyD))
-          case _ =>formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
-      }
+          case _ =>
+            formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
+        }
       case _ => None
     }
     val rebuilder = new TermToExpr((n) => Universe(n), predefs)

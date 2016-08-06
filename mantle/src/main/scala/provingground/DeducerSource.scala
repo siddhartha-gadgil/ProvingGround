@@ -154,7 +154,7 @@ class DeducerSource(ded: Deducer,
       .alsoTo(Sink.foreach((fd) => println(s"Deducing: ${fd.supp.size}")))
       .via(learnFlow)
       .takeWithin(learnTime)
-   //   .alsoTo(display)
+      //   .alsoTo(display)
       .alsoTo(saveLearn(name, names))
       .alsoTo(Sink.foreach((fd) => println(s"Learning: ${fd.supp.size}")))
       .runWith(Sink.ignore)
@@ -170,7 +170,7 @@ class DeducerSource(ded: Deducer,
       .alsoTo(saveDeduc(name, names))
       .via(learnFlowConc(threads))
       .takeWithin(learnTime)
-   //   .alsoTo(display)
+      //   .alsoTo(display)
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
   }
@@ -197,7 +197,9 @@ object DeducerSource {
         Sink.foreach {
       case (fd, m) => {
           showDist(fd, names)
-          m.foreach { case (t, v) => showTimeSeries(t, v map (-math.log(_)), names) }
+          m.foreach {
+            case (t, v) => showTimeSeries(t, v map (-math.log(_)), names)
+          }
         }
     })
   }
@@ -205,14 +207,14 @@ object DeducerSource {
   import FreeExprLang._
 
   def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
-  //  println("saving")
+    //  println("saving")
     val file = cwd / 'data / s"${name}.deduc"
-  //  println(s"saving to: $file")
+    //  println(s"saving to: $file")
     Sink.foreach { (fd: FD[Term]) =>
-  //    println("Dummy save: see dist")
-  //    println(scala.util.Try(writeDist(fd, names)))
-  //    val distFut = Future(writeDist(fd, names))
-  //    distFut.foreach((p) => write.append(file, p + "\n"))
+      //    println("Dummy save: see dist")
+      //    println(scala.util.Try(writeDist(fd, names)))
+      //    val distFut = Future(writeDist(fd, names))
+      //    distFut.foreach((p) => write.append(file, p + "\n"))
       write.append(file, writeDist(fd, names) + "\n")
     }
   }
@@ -220,8 +222,8 @@ object DeducerSource {
   def saveLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = cwd / 'data / s"${name}.learn"
     Sink.foreach { (fd: FD[Term]) =>
-   //   val distFut = Future(writeDist(fd, names))
-  //    distFut.foreach((p) => write.append(file, p + "\n"))      
+      //   val distFut = Future(writeDist(fd, names))
+      //    distFut.foreach((p) => write.append(file, p + "\n"))      
       write.append(file, writeDist(fd, names) + "\n")
     }
   }
@@ -243,27 +245,25 @@ object DeducerSource {
   }
 }
 
-import scala.collection.mutable.{Map =>mMap}
+import scala.collection.mutable.{Map => mMap}
 
-class DeducerBuffer(terms: List[Term]){
+class DeducerBuffer(terms: List[Term]) {
   var loops: Int = 0
-  
+
   var dist: FD[Term] = FD.empty[Term]
-  
-  val timeSeries : mMap[Term, Vector[Double]] = {
+
+  val timeSeries: mMap[Term, Vector[Double]] = {
     val pairs = terms map (name => (name, Vector()))
-    mMap(pairs : _*)
+    mMap(pairs: _*)
   }
-  
+
   def save(fd: FD[Term]) = {
     dist = fd
-    terms.foreach{
-        (term) =>
-          timeSeries(term) = timeSeries(term) :+ fd(term)
+    terms.foreach { (term) =>
+      timeSeries(term) = timeSeries(term) :+ fd(term)
     }
     loops += 1
   }
-  
+
   def sink = Sink.foreach(save)
 }
-

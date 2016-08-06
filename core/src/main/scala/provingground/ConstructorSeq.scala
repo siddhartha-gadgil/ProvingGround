@@ -2,16 +2,17 @@ package provingground
 
 import HoTT._
 
-case class PartialConstructorSeq[C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
-    head: ConstructorTyp[C, F, H], tail: ConstructorSeq[C, H]){
+case class PartialConstructorSeq[
+    C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
+    head: ConstructorTyp[C, F, H], tail: ConstructorSeq[C, H]) {
   def :::(name: AnySym) = (name ::: head) |: tail
-  
-  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = PartialConstructorSeq(that ->>: head, tail)
-    
-  def -->>:(that: Typ[H]) = PartialConstructorSeq(that -->>: head,  tail)
 
-  def ~>>:[T <: Term with Subs[T]](thatVar: H) = 
-  {
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) =
+    PartialConstructorSeq(that ->>: head, tail)
+
+  def -->>:(that: Typ[H]) = PartialConstructorSeq(that -->>: head, tail)
+
+  def ~>>:[T <: Term with Subs[T]](thatVar: H) = {
     val newHead = thatVar ~>>: head
     PartialConstructorSeq(thatVar ~>>: head, tail)
   }
@@ -39,14 +40,14 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
     inducDataLambda(fibre)(inducDefn(fibre))
 
   def |:(head: Constructor[C, H]) = ConstructorSeq.Cons(head, this)
-  
-  def ||:(typ: Typ[H]) = 
-    PartialConstructorSeq(ConstructorTyp.head[H, C](typ) , this)
-  
+
+  def ||:(typ: Typ[H]) =
+    PartialConstructorSeq(ConstructorTyp.head[H, C](typ), this)
+
   val intros: List[Term]
 }
 
-object ConstructorSeq {  
+object ConstructorSeq {
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeq[C, H] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
@@ -61,7 +62,7 @@ object ConstructorSeq {
     type InducType = FuncLike[H, C]
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
-    
+
     val intros = List()
   }
 

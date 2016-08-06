@@ -75,7 +75,6 @@ sealed trait GenFiniteDistribution[T]
   /**
     * next instance of a random variable with the given distribution
     */
-
   def next = Weighted.pick(posmf(), random.nextDouble * postotal())
 
   /**
