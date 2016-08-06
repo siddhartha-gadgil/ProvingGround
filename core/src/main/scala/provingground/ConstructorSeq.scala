@@ -46,13 +46,7 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   val intros: List[Term]
 }
 
-object ConstructorSeq {
-  implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]){
-    def seq = Empty[Term, H](W)
-    
-    def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
-  }
-  
+object ConstructorSeq {  
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeq[C, H] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)

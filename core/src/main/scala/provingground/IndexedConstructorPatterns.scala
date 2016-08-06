@@ -9,7 +9,6 @@ import ConstructorPattern._
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
-import FamilyPattern.FmlyPtn
 
 import IterFuncPattern._
 
@@ -152,7 +151,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     }
 
     def -->>:(that: Typ[H]) = {
-      val tail = IdFmlyPtn[H, C]
+      val tail = IdIterPtn[H, C]()
       val ptn = FuncPtn(tail, arg, pattern)
       ConstructorTyp(ptn, typ, fmly)
     }
@@ -759,17 +758,8 @@ object IndexedConstructorPatterns{
     H <: Term with Subs[H], F <: Term with Subs[F]](
         typFmlyPtn: FmlyPtn[H, C, F], fmly: F)  = {
     val cls = new IndexedConstructorPatterns(typFmlyPtn)
-    cls.ConstructorSeq.Empty(fmly) 
+    cls.ConstructorSeq.Empty(fmly) : cls.ConstructorSeq
   }
   
-  implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
-      ptn: FmlyPtn[Term, C, F]){
-    import FamilyPattern.fmly
-    def :|:(name: AnySym) = emptySeq(ptn, fmly(ptn)(name))
-    
-    def :::(name: AnySym) = fmly(ptn)(name)
-    
-    def :|:(fm: F) = emptySeq(ptn, fm)
-  }
 
 }

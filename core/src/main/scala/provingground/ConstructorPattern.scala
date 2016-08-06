@@ -99,6 +99,10 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
   def -->:[F <: Term with Subs[F]](that: IterFuncPtn[H, Cod, F]) =
     FuncPtn(that, this)
 
+  def -->:(that: IdW[_]) = {
+    FuncPtn(IdIterPtn[H, Cod], this)
+  }
+    
   def ->:[T <: Term with Subs[T]](tail: Typ[T]) = CnstFncPtn(tail, this)
 
   def ~>:[T <: Term with Subs[T]](tailVar: T) = {
@@ -206,7 +210,7 @@ case class ConstructorTyp[C<: Term with Subs[C], F <: Term with Subs[F] , H <: T
     assert(
         that == typ,
         s"the method -->: is for extenidng by the same type but $that is not $typ")
-    val tail = IdFmlyPtn[H, C]
+    val tail = IdIterPtn[H, C]
     val ptn = FuncPtn(tail, pattern)
     ConstructorTyp(ptn, typ)
   }
@@ -226,16 +230,7 @@ case class ConstructorTyp[C<: Term with Subs[C], F <: Term with Subs[F] , H <: T
 }
 
 object ConstructorTyp {
-  implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
-    def pair = ConstructorTyp(IdW[H], typ)
-    def :::(name: AnySym) = name ::: pair
-
-    def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
-
-    def -->>:(that: Typ[H]) = that -->>: pair
-
-    def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
-  }
+  
   
   def head[H <: Term with Subs[H], C <: Term with Subs[C]](typ: Typ[H]) = 
     ConstructorTyp(IdTarg[C, H](), typ)

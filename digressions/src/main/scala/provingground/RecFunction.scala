@@ -8,7 +8,7 @@ import scala.language.existentials
 
 import scala.language.implicitConversions
 
-import RecFunction.recFn
+//import RecFunction.recFn
 
 case class RecFn[C <: Term with Subs[C], H <: Term with Subs[H]](
     W: Typ[H], X: Typ[C])
@@ -56,32 +56,32 @@ trait RecFunction[C <: Term with Subs[C], H <: Term with Subs[H]] { self =>
   /**
     * prepend a constructor, passing on the function on offspring
     */
-  def prepend[U <: Term with Subs[U]](cons: Constructor[C, H]) = {
-    val recdom = (x: Typ[C]) => cons.pattern.recDataTyp(cons.W, x)
-    type D = cons.pattern.RecDataType
-    val caseFn: D => Func[H, C] => Func[H, C] => Func[H, C] = (d) =>
-      (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
-    RecFunctionCons[D, C, H](recdom, caseFn, self)
-  }
-
-  @deprecated("recursion not implemented", "must remove")
-  def fn(x: Typ[C]): FullType = recursion(x)(fn(x))
+  // def prepend[U <: Term with Subs[U]](cons: Constructor[C, H]) = {
+  //   val recdom = (x: Typ[C]) => cons.pattern.recDataTyp(cons.W, x)
+  //   type D = cons.pattern.RecDataType
+  //   val caseFn: D => Func[H, C] => Func[H, C] => Func[H, C] = (d) =>
+  //     (f) => (g) => cons.pattern.recModify(cons.cons)(d)(f)(g)
+  //   RecFunctionCons[D, C, H](recdom, caseFn, self)
+  // }
+  //
+  // @deprecated("recursion not implemented", "must remove")
+  // def fn(x: Typ[C]): FullType = recursion(x)(fn(x))
 }
 
 object RecFunction {
 
-  def recFunction[
-      C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
-      conss: List[Constructor[C, H]], W: Typ[H]) = {
-    val init: RecFunction[C, H] = RecTail[C, H](W)
-    (init /: (conss.reverse))(_ prepend _)
-  }
-
-  @deprecated("recursion not implemented", "must remove")
-  def recFn[
-      C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
-      conss: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) =
-    recFunction(conss, W).fn(X)
+  // def recFunction[
+  //     C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
+  //     conss: List[Constructor[C, H]], W: Typ[H]) = {
+  //   val init: RecFunction[C, H] = RecTail[C, H](W)
+  //   (init /: (conss.reverse))(_ prepend _)
+  // }
+  //
+  // @deprecated("recursion not implemented", "must remove")
+  // def recFn[
+  //     C <: Term with Subs[C], U <: Term with Subs[U], H <: Term with Subs[H]](
+  //     conss: List[Constructor[C, H]], W: Typ[H], X: Typ[C]) =
+  //   recFunction(conss, W).fn(X)
 }
 /*
 case class RecProxy[C <: Term](W: Typ[Term], X : Typ[C]) extends AnySym{

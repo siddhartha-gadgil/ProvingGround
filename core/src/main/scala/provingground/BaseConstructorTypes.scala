@@ -11,6 +11,8 @@ import IterFuncPattern._
 
 //import RecFunction._
 
+import Implicits._
+
 object BaseConstructorTypes {
   implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
 
