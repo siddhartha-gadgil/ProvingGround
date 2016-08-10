@@ -103,7 +103,7 @@ scala> assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(
 ```
 
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
-The method on constructors corresponding to function types _with domain the inductive type being specified_ is `-->>:`.
+The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
 ```scala
 scala> val Nat ="Nat" :: Type
 Nat: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Nat : 𝒰
@@ -179,6 +179,18 @@ scala> add(two)(two) == four
 res19: Boolean = true
 ```
 
+Lists of elements of a type `A` form an inductive type `ListA`, again with two constructors:
+
+* `nil` of type `ListA`
+* `cons` of type `A ->: ListA ->: ListA`
+
+A recursively defined function `f` to a type `X` is specified by data:
+
+* `f(nil) : X`
+* `f(cons(a)(l))` as a function of `a`, `l` and 'f(l)', i.e., data has type `A ->: ListA ->: X ->: X`.
+
+Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used for such extensions.
+
 ```scala
 scala> val A ="A" :: Type
 A: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A : 𝒰
@@ -192,7 +204,10 @@ ListAInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provinggroun
 scala> val List(nil, cons) = ListAInd.intros
 nil: provingground.HoTT.Term = nil : (List(A) : 𝒰 )
 cons: provingground.HoTT.Term = cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 )))
+```
 
+We can define the size of a list as a natural number recursively.
+```scala
 scala> val recLN = ListAInd.rec(Nat)
 recLN: ListAInd.RecType = (RecSym(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 ),List(A) : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(CnstFncPtn(A : 𝒰 ,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 ))),List(A) : 𝒰 )) : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
 
@@ -211,18 +226,16 @@ n: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]
 scala> val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
 size: provingground.HoTT.Term = <function1>
 
-scala> import Fold._
-import Fold._
-
-scala> val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
-size: provingground.HoTT.Term = <function1>
-
 scala> size(nil)
 res21: provingground.HoTT.Term = 0 : (Nat : 𝒰 )
 
 scala> size(cons(a)(cons(a)(nil)))
 res22: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
+```
 
+Another interesting inductive type is a binary rooted tree. This is our first description.
+We define the number of vertices recursively on this.
+```scala
 scala> val T ="Tree" :: Type
 T: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Tree : 𝒰
 
@@ -263,6 +276,16 @@ nine: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((suc
 scala> vertices(t) == nine
 res25: Boolean = true
 
+scala> assert(vertices(t) == nine)
+```
+
+We can implement binary trees in another way, which generalizes to binary rooted trees with varying degree.
+Instead of a pair of trees, a node corresponds to functions from Booleans to binary rooted trees.
+
+This involves more complex constructors, with an additional method `-|>:`.
+The data for recursively defining `f` is also more complex.
+We define the number of leaves in such a tree recursively.
+```scala
 scala> val BT ="BinTree" :: Type
 BT: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = BinTree : 𝒰
 
@@ -277,7 +300,7 @@ scala> val recBTN = BTInd.rec(Nat)
 recBTN: BTInd.RecType = (RecSym(ConstructorDefn(IdW(),leaf : (BinTree : 𝒰 ),BinTree : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean : 𝒰 ,IdIterPtn()),IdW()),node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 )),BinTree : 𝒰 )) : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 )))) ↦ (<function1>))
 
 scala> recBTN.typ
-res26: provingground.HoTT.Typ[provingground.HoTT.Term] = (Nat : 𝒰 ) → ((((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 ))) → ((BinTree : 𝒰 ) → (Nat : 𝒰 )))
+res27: provingground.HoTT.Typ[provingground.HoTT.Term] = (Nat : 𝒰 ) → ((((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 ))) → ((BinTree : 𝒰 ) → (Nat : 𝒰 )))
 
 scala> val f = "f" :: Bool ->: BT
 f: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] = f : ((Boolean : 𝒰 ) → (BinTree : 𝒰 ))
@@ -289,7 +312,7 @@ scala> val leaves = recBTN(one)(f :-> (g :-> (add(g(ff))(g(tt))) ))
 leaves: provingground.HoTT.Term = <function1>
 
 scala> leaves(leaf)
-res27: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )
+res28: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )
 
 scala> val b = "b" :: Bool
 b: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b : (Boolean : 𝒰 )
@@ -301,7 +324,7 @@ scala> val recBBT = BoolInd.rec(BT)
 recBBT: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ (<function1>))
 
 scala> recBBT.typ
-res28: provingground.HoTT.Typ[provingground.HoTT.Term] = (BinTree : 𝒰 ) → ((BinTree : 𝒰 ) → ((Boolean : 𝒰 ) → (BinTree : 𝒰 )))
+res29: provingground.HoTT.Typ[provingground.HoTT.Term] = (BinTree : 𝒰 ) → ((BinTree : 𝒰 ) → ((Boolean : 𝒰 ) → (BinTree : 𝒰 )))
 
 scala> val ttn = recBBT(leaf)(t)
 ttn: provingground.HoTT.Term = <function1>
@@ -310,5 +333,5 @@ scala> val t2 = node(ttn)
 t2: provingground.HoTT.Term = (node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 ))) (<function1>) : (BinTree : 𝒰 )
 
 scala> leaves(t2)
-res29: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
+res30: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
 ```

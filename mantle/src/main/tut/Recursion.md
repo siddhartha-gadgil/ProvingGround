@@ -61,7 +61,7 @@ assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(ff)(ff)
 ```
 
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
-The method on constructors corresponding to function types _with domain the inductive type being specified_ is `-->>:`.
+The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
 ```tut
 val Nat ="Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -98,24 +98,40 @@ assert(add(two)(one) == three)
 add(two)(two) == four
 ```
 
+Lists of elements of a type `A` form an inductive type `ListA`, again with two constructors:
+
+* `nil` of type `ListA`
+* `cons` of type `A ->: ListA ->: ListA`
+
+A recursively defined function `f` to a type `X` is specified by data:
+
+* `f(nil) : X`
+* `f(cons(a)(l))` as a function of `a`, `l` and 'f(l)', i.e., data has type `A ->: ListA ->: X ->: X`.
+
+Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used for such extensions.
+
 ```tut
 val A ="A" :: Type
 val ListA = "List(A)" :: Type
 val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
 val List(nil, cons) = ListAInd.intros
+```
+
+We can define the size of a list as a natural number recursively.
+```tut
 val recLN = ListAInd.rec(Nat)
 recLN.typ
 val a = "a" :: A
 val l = "l" :: ListA
 val n = "n" :: Nat
 val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
-import Fold._
-val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
 size(nil)
 size(cons(a)(cons(a)(nil)))
+```
 
-
-
+Another interesting inductive type is a binary rooted tree. This is our first description.
+We define the number of vertices recursively on this.
+```tut
 val T ="Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
 val List(leaf, node) = TInd.intros
@@ -134,9 +150,16 @@ vertices(t)
 
 val nine = succ(add(four)(four))
 vertices(t) == nine
+assert(vertices(t) == nine)
+```
 
+We can implement binary trees in another way, which generalizes to binary rooted trees with varying degree.
+Instead of a pair of trees, a node corresponds to functions from Booleans to binary rooted trees.
 
-
+This involves more complex constructors, with an additional method `-|>:`.
+The data for recursively defining `f` is also more complex.
+We define the number of leaves in such a tree recursively.
+```tut
 val BT ="BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
 val List(leaf, node) = BTInd.intros
