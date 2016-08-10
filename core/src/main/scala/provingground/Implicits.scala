@@ -11,6 +11,9 @@ object Implicits {
 
     def -->>:(that: Typ[H]) = that -->>: pair
 
+    def -->>:[FF <: Term with Subs[FF]](that: IterFuncPattern.IterFuncTyp[H, Term, FF]) = 
+      that -->>: pair
+        
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
 
@@ -31,5 +34,20 @@ object Implicits {
     def seq = ConstructorSeq.Empty[Term, H](W)
 
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
+    
+    def =::(typ: Typ[H]) = typ ||: seq
+    
   }
+  
+  implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
+    import IterFuncPattern._
+    def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
+
+    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+      IterFuncTyp(tail ->: pair, typ)
+
+    def ~|>:[TT <: Term with Subs[TT]](tailVar: TT) =
+      IterFuncTyp(tailVar ~>: pair, typ)
+  }
+
 }

@@ -137,16 +137,6 @@ object IterFuncPattern {
     }
   }
 
-  implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
-    def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
-
-    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-      IterFuncTyp(tail ->: pair, typ)
-
-    def ~|>:[TT <: Term with Subs[TT]](tailVar: TT) =
-      IterFuncTyp(tailVar ~>: pair, typ)
-  }
-
   /**
     * The identity family
     */
