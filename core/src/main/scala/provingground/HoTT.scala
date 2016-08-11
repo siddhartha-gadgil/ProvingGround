@@ -979,7 +979,9 @@ object HoTT {
   /**
     * A symbol to be used to generate new variables of a type, with string matching given variable.
     */
-  class InnerSym[U <: Term with Subs[U]](var variable: U with Symbolic) extends AnySym {
+  class InnerSym[U <: Term with Subs[U]](variable: U with Symbolic) extends AnySym {
+    var outer = variable
+    
     override def toString = variable match {
       case sym: Symbolic => sym.name.toString
       case x => x.toString
@@ -987,17 +989,17 @@ object HoTT {
     
     def subs(x: Term, y: Term) = {
       val newvar = 
-        variable.replace(x, y) match {
+        outer.replace(x, y) match {
         case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
         case _ => variable
       }
-//      variable = newvar 
+//      outer = newvar 
       this
     }
   }
 
   def outerSym(sym: Symbolic): Symbolic = sym.name match {
-    case inn: InnerSym[_] => outerSym(inn.variable)
+    case inn: InnerSym[_] => outerSym(inn.outer)
     case _ => sym
   }
 
