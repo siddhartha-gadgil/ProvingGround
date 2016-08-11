@@ -83,7 +83,7 @@ case class FineSymbTyp[U <: Term with Subs[U]](
     with Symbolic {
   lazy val typ = FineUniv(symobj)
 
-  def newobj = FineSymbTyp(new InnerSym(this), symobj)
+  def newobj = FineSymbTyp(new InnerSym[Typ[U]](this), symobj)
 
   type Obj = U
 

@@ -287,7 +287,7 @@ object ScalaRep {
       with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
-    def newobj = RepSymbObj(new InnerSym(this), typ)
+    def newobj = RepSymbObj(new InnerSym[RepTerm[A]](this), typ)
 
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[RepTerm[A]]

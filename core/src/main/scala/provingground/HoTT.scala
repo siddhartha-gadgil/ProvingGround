@@ -295,7 +295,7 @@ object HoTT {
       with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
-    def newobj = SymbObj(new InnerSym(this), typ)
+    def newobj = SymbObj(new InnerSym[Term](this), typ)
 
     def subs(x: Term, y: Term) =
       if (x == this) y
@@ -326,7 +326,7 @@ object HoTT {
       with Symbolic {
     lazy val typ = Universe(level)
 
-    def newobj = SymbTyp(new InnerSym(this), level)
+    def newobj = SymbTyp(new InnerSym[Typ[Term]](this), level)
 
     type Obj = Term
 
@@ -783,7 +783,7 @@ object HoTT {
 
     def act(arg: W): U = codom.symbObj(ApplnSym(this, arg))
 
-    def newobj = SymbolicFunc(new InnerSym(this), dom, codom)
+    def newobj = SymbolicFunc(new InnerSym[Func[W, U]](this), dom, codom)
 
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
@@ -979,10 +979,20 @@ object HoTT {
   /**
     * A symbol to be used to generate new variables of a type, with string matching given variable.
     */
-  class InnerSym[U <: Term](val variable: U with Symbolic) extends AtomicSym {
+  class InnerSym[U <: Term with Subs[U]](var variable: U with Symbolic) extends AnySym {
     override def toString = variable match {
       case sym: Symbolic => sym.name.toString
       case x => x.toString
+    }
+    
+    def subs(x: Term, y: Term) = {
+      val newvar = 
+        variable.replace(x, y) match {
+        case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
+        case _ => variable
+      }
+//      variable = newvar 
+      this
     }
   }
 
@@ -1158,7 +1168,7 @@ object HoTT {
 
     def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 
-    def newobj = DepSymbolicFunc(new InnerSym(this), fibers.newobj)
+    def newobj = DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
 
     /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
