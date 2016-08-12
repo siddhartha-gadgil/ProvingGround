@@ -176,7 +176,105 @@ recBBT.typ
 val ttn = recBBT(leaf)(t)
 val t2 = node(ttn)
 leaves(t2)
+```
+
+As some expresssions are very long, we import a method "FansiShow" that prints in a more concise way.
+In the REPL, this gives coloured output using ANSI strings.
+```tut
+import FansiShow._
+```
+
+We define the double of a number recursively, mainly for use later. Observe the partial simplification.
+```tut
+val recNN = NatInd.rec(Nat)
+val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
+double(two) == four
+assert(double(two) == four)
+double(succ(n))
+```
+
+All our recursive definitions so far of functions `f` have ignored `n` in defining `f(succ(n))`,
+and are only in terms of `f(n)`. We see a more complex definition, the sum of numbers up to `n`.
+Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, so this is `add(succ(m))(n)`
+```tut
+val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
+sumTo(one)
+sumTo(three).fansi
+val ten = succ(nine)
+sumTo(four) == ten
+assert(sumTo(four) == ten)
+```
 
 
 
+## Inductive definitions
+
+In homotopy type theory, inductive definitions are the analogues of recursive definitions for dependent functions.
+We see an example of such a definition.
+
+The image is a family `V : Nat ->: Type` which we can think of as vectors of natural numbers indexed by length.
+Just like actual vectors, we have `nil` and `cons` introduction rules, but here they are purely formal.
+
+```tut
+val V = "Vec" :: Nat ->: Type
+val nil = "nil" :: V(zero)
+val cons = "cons" :: n ~>: (Nat ->: V(n) ->: V(succ(n)))
+```
+
+We have an induction function taking data for the cases and returning a dependent function.
+This is defined by giving data for cases corresponding to the constructors.
+Namely to define the dependent function `f`, we must specify
+
+* `f(zero)` of type `V(zero)`
+* `f(succ(m))` of type `V(succ(m))`, as a dependent function of `m` and of `f(m) : V(m)`.
+
+
+We define inductively a countdown function, giving the vector counting down from `n`.
+```tut
+val indNV = NatInd.induc(V)
+
+val v = "v_m" :: V(m)
+val countdown = indNV(nil)(m :~> (v :-> cons(m)(succ(m))(v)) )
+countdown(zero)
+countdown(one)
+countdown(one).fansi
+countdown(three).fansi
+assert(countdown(three) == cons(two)(three)(cons(one)(two)(cons(zero)(one)(nil))))
+countdown(zero) == nil
+countdown(nine).fansi
+```
+
+We now illustrate a simple instance of using _propositions as proofs_.
+The type family `isEven : Nat ->: Type` gives a type representing whether a natural number is even.
+This is an inductive type, but here we simply specify the type by  its introduction rules (constructors).
+
+```tut
+val isEven = "isEven" :: Nat ->: Type
+val zeroEven = "0even" :: isEven(zero)
+val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
+```
+
+One can directly see that two and four are even.
+```tut
+val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two)
+val FourEven = plusTwoEven(two)(TwoEven) !: isEven(four)
+```
+
+Here is a simple proof by induction. We prove the statement that the _double_ of every natural number is even.
+The `induc` method gives a dependent function, which takes the base case and the induction step as arguments.
+The _base case_ is inhabited by the constructor of type `isEven(zero)`.
+The _induction step_ for `n` is a term of type `isEven(double(succ(n)))` as a function of `n` and
+the _induction hypothesis_. Note that the induction hypothesis is a term of type `isEven(double(n))`.
+```tut
+val thmDoubleEven = n ~>: isEven(double(n))
+val hyp = "isEven(double(n))" :: isEven(double(n))
+val pfDoubleEven =
+  NatInd.induc(n :-> isEven(double(n))){
+    zeroEven}{
+      n :~> (
+        hyp :-> (
+          plusTwoEven(double(n))(hyp)
+          )
+          )
+    } !: thmDoubleEven
 ```

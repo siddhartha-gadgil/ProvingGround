@@ -4,7 +4,7 @@ import HoTT._
 import math.max
 //import ScalaUniverses._
 import scala.util.Try
-import scala.language.existentials
+//import scala.language.existentials
 
 //import IterFuncPattern.{IterFuncPtn => IterFuncPtn, _}
 

@@ -9,7 +9,7 @@ import scala.util.Try
 /**
   * @author gadgil
   */
-//object FamilyPattern {  
+//object FamilyPattern {
 /**
   * A pattern for families, e.g. of inductive types to be defined
   * for instance A -> B -> W, where W is the type to be defined;
@@ -160,8 +160,6 @@ object FmlyPtn {
   def fmly[C <: Term with Subs[C], F <: Term with Subs[F]](
       ptn: FmlyPtn[Term, C, F])(name: AnySym): F =
     fmlyTyp(ptn).symbObj(name)
-
-  val Types = IdFmlyPtn[Term, Term]()
 
   def getOpt[O <: Term with Subs[O], F <: Term with Subs[F]](
       typ: Typ[O], fmlyTyp: Typ[F]) =

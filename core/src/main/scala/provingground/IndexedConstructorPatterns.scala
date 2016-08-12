@@ -4,14 +4,14 @@ import HoTT._
 
 //import scala.language.implicitConversions
 //import scala.util._
-import scala.language.existentials
+//import scala.language.existentials
 import ConstructorPattern._
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
 import IterFuncPattern._
 
-import scala.util.Try
+//import scala.util.Try
 
 /**
   * @author gadgil
@@ -32,10 +32,10 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
   import typFmlyPtn.{Total, FamilyType, curry, depCurry, domTotal, value, ArgType, IterFunc, IterTypFunc, IterDepFunc, fill, depFill}
   //    type F = typFmlyPtn.FamilyType
-  type Ind = typFmlyPtn.ArgType
-  type I = typFmlyPtn.IterFunc
-  type IT = typFmlyPtn.IterTypFunc
-  type DI = typFmlyPtn.IterDepFunc
+  type Ind = ArgType
+  type I = IterFunc
+  type IT = IterTypFunc
+  type DI = IterDepFunc
 
   type Cod = C
 
@@ -339,13 +339,13 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       FuncPtn(tail.subs(x, y), tailIndex.subs(x, y), head.subs(x, y))
 
     def headData(data: RecDataType, arg: ArgType, f: => I): HeadRecDataType = {
-      val g = typFmlyPtn.fill(f)(tailIndex)
+      val g = fill(f)(tailIndex)
       data(arg)(tail.induced(g)(arg))
     }
 
     def headInducData(
         data: InducDataType, arg: ArgType, f: => DI): HeadInducDataType = {
-      val g = typFmlyPtn.depFill(f)(tailIndex)
+      val g = depFill(f)(tailIndex)
       data(arg)(tail.inducedDep(g)(arg))
     }
   }
@@ -400,13 +400,13 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       CnstFncPtn(tail.subs(x, y), head.subs(x, y))
 
     def headData(data: RecDataType, arg: ArgType, f: => I): HeadRecDataType = {
-      val g = typFmlyPtn.fill(f)(head.index)
+      val g = fill(f)(head.index)
       data(arg)
     }
 
     def headInducData(
         data: InducDataType, arg: ArgType, f: => DI): HeadInducDataType = {
-      val g = typFmlyPtn.depFill(f)(head.index)
+      val g = depFill(f)(head.index)
       data(arg)
     }
   }
@@ -491,13 +491,13 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     }
 
     def headData(data: RecDataType, arg: ArgType, f: => I): HeadRecDataType = {
-      val g = typFmlyPtn.fill(f)(tailIndex)
+      val g = fill(f)(tailIndex)
       data(arg)(tail.induced(g)(arg))
     }
 
     def headInducData(
         data: InducDataType, arg: ArgType, f: => DI): HeadInducDataType = {
-      val g = typFmlyPtn.depFill(f)(tailIndex)
+      val g = depFill(f)(tailIndex)
       data(arg)(tail.inducedDep(g)(arg))
     }
   }
@@ -635,8 +635,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     type Cnstr = U
   }
 
-  case class PartialConstructorSeq[F <: Term with Subs[F]](
-      head: ConstructorTyp[F], tail: ConstructorSeq) {
+  case class PartialConstructorSeq[FF <: Term with Subs[FF]](
+      head: ConstructorTyp[FF], tail: ConstructorSeq) {
     def :::(name: AnySym) = {
       val pc = (name ::: head)
       pc |: tail

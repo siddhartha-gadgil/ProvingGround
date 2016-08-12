@@ -335,3 +335,158 @@ t2: provingground.HoTT.Term = (node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 ))
 scala> leaves(t2)
 res30: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
 ```
+
+As some expresssions are very long, we import a method "FansiShow" that prints in a more concise way.
+In the REPL, this gives coloured output using ANSI strings.
+```scala
+scala> import FansiShow._
+import FansiShow._
+```
+
+We define the double of a number recursively, mainly for use later. Observe the partial simplification.
+```scala
+scala> val recNN = NatInd.rec(Nat)
+recNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) ↦ (<function1>))
+
+scala> val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
+double: provingground.HoTT.Term = <function1>
+
+scala> double(two) == four
+res31: Boolean = true
+
+scala> assert(double(two) == four)
+
+scala> double(succ(n))
+res33: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((<function1>) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
+```
+
+All our recursive definitions so far of functions `f` have ignored `n` in defining `f(succ(n))`,
+and are only in terms of `f(n)`. We see a more complex definition, the sum of numbers up to `n`.
+Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, so this is `add(succ(m))(n)`
+```scala
+scala> val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
+sumTo: provingground.HoTT.Term = <function1>
+
+scala> sumTo(one)
+res34: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )
+
+scala> sumTo(three).fansi
+res35: String = succ(succ(succ(succ(succ(succ(0))))))
+
+scala> val ten = succ(nine)
+ten: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
+
+scala> sumTo(four) == ten
+res36: Boolean = true
+
+scala> assert(sumTo(four) == ten)
+```
+
+
+
+## Inductive definitions
+
+In homotopy type theory, inductive definitions are the analogues of recursive definitions for dependent functions.
+We see an example of such a definition.
+
+The image is a family `V : Nat ->: Type` which we can think of as vectors of natural numbers indexed by length.
+Just like actual vectors, we have `nil` and `cons` introduction rules, but here they are purely formal.
+
+```scala
+scala> val V = "Vec" :: Nat ->: Type
+V: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = Vec : ((Nat : 𝒰 ) → (𝒰 _0))
+
+scala> val nil = "nil" :: V(zero)
+nil: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
+
+scala> val cons = "cons" :: n ~>: (Nat ->: V(n) ->: V(succ(n)))
+cons: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]] with provingground.HoTT.Subs[provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]]] = cons : (∏((n : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))
+```
+
+We have an induction function taking data for the cases and returning a dependent function.
+This is defined by giving data for cases corresponding to the constructors.
+Namely to define the dependent function `f`, we must specify
+
+* `f(zero)` of type `V(zero)`
+* `f(succ(m))` of type `V(succ(m))`, as a dependent function of `m` and of `f(m) : V(m)`.
+
+
+We define inductively a countdown function, giving the vector counting down from `n`.
+```scala
+scala> val indNV = NatInd.induc(V)
+indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : (∏(($m : (Nat : 𝒰 )) ↦ (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($m : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($m : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) ↦ (<function1>))
+
+scala> val v = "v_m" :: V(m)
+v: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_m : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (m : (Nat : 𝒰 )) : 𝒰 )
+
+scala> val countdown = indNV(nil)(m :~> (v :-> cons(m)(succ(m))(v)) )
+countdown: provingground.HoTT.Term = <function1>
+
+scala> countdown(zero)
+res38: provingground.HoTT.Term = nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
+
+scala> countdown(one)
+res39: provingground.HoTT.Term = (((cons : (∏((n : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))) (0 : (Nat : 𝒰 )) : ((Nat : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))) (nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) : ((Vec : ((Nat ...
+
+scala> countdown(one).fansi
+res40: String = cons(0)(succ(0))(nil)
+
+scala> countdown(three).fansi
+res41: String = cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))
+
+scala> assert(countdown(three) == cons(two)(three)(cons(one)(two)(cons(zero)(one)(nil))))
+
+scala> countdown(zero) == nil
+res43: Boolean = true
+
+scala> countdown(nine).fansi
+res44: String = cons(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(succ(succ(succ(succ(succ(succ(succ(succ(succ(0))))))))))(cons(succ(succ(succ(succ(succ(succ(succ(0))))))))(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(cons(succ(succ(succ(succ(succ(succ(0)))))))(succ(succ(succ(succ([3...
+```
+
+We now illustrate a simple instance of using _propositions as proofs_.
+The type family `isEven : Nat ->: Type` gives a type representing whether a natural number is even.
+This is an inductive type, but here we simply specify the type by  its introduction rules (constructors).
+
+```scala
+scala> val isEven = "isEven" :: Nat ->: Type
+isEven: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = isEven : ((Nat : 𝒰 ) → (𝒰 _0))
+
+scala> val zeroEven = "0even" :: isEven(zero)
+zeroEven: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = 0even : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
+
+scala> val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
+plusTwoEven: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]] = _+2even : (∏((n : (Nat : 𝒰 )) ↦ (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))
+```
+
+One can directly see that two and four are even.
+```scala
+scala> val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two)
+TwoEven: provingground.HoTT.Term = ((_+2even : (∏((n : (Nat : 𝒰 )) ↦ (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) (0 : (Nat : 𝒰 )) : (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))) (0even : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )
+
+scala> val FourEven = plusTwoEven(two)(TwoEven) !: isEven(four)
+FourEven: provingground.HoTT.Term = ((_+2even : (∏((n : (Nat : 𝒰 )) ↦ (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (N...
+```
+
+Here is a simple proof by induction. We prove the statement that the _double_ of every natural number is even.
+The `induc` method gives a dependent function, which takes the base case and the induction step as arguments.
+The _base case_ is inhabited by the constructor of type `isEven(zero)`.
+The _induction step_ for `n` is a term of type `isEven(double(succ(n)))` as a function of `n` and
+the _induction hypothesis_. Note that the induction hypothesis is a term of type `isEven(double(n))`.
+```scala
+scala> val thmDoubleEven = n ~>: isEven(double(n))
+thmDoubleEven: provingground.HoTT.PiTyp[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = ∏((n : (Nat : 𝒰 )) ↦ ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((<function1>) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))
+
+scala> val hyp = "isEven(double(n))" :: isEven(double(n))
+hyp: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = isEven(double(n)) : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((<function1>) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )
+
+scala> val pfDoubleEven =
+     |   NatInd.induc(n :-> isEven(double(n))){
+     |     zeroEven}{
+     |       n :~> (
+     |         hyp :-> (
+     |           plusTwoEven(double(n))(hyp)
+     |           )
+     |           )
+     |     } !: thmDoubleEven
+pfDoubleEven: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = <function1>
+```

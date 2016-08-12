@@ -3,6 +3,8 @@ package provingground
 import HoTT._
 
 object Implicits {
+  val Types = IdFmlyPtn[Term, Term]()
+
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair = ConstructorTyp(IdW[H], typ)
     def :::(name: AnySym) = name ::: pair
@@ -11,9 +13,9 @@ object Implicits {
 
     def -->>:(that: Typ[H]) = that -->>: pair
 
-    def -->>:[FF <: Term with Subs[FF]](that: IterFuncPattern.IterFuncTyp[H, Term, FF]) = 
+    def -->>:[FF <: Term with Subs[FF]](that: IterFuncPattern.IterFuncTyp[H, Term, FF]) =
       that -->>: pair
-        
+
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
 
@@ -34,11 +36,11 @@ object Implicits {
     def seq = ConstructorSeq.Empty[Term, H](W)
 
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
-    
+
     def =::(typ: Typ[H]) = typ ||: seq
-    
+
   }
-  
+
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
     import IterFuncPattern._
     def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
