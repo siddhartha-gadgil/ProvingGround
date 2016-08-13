@@ -351,13 +351,13 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   type IterDepFunc = FuncLike[TT, head.IterDepFunc]
 
   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
-    val headtyp = head.iterFuncTyp(w(w.dom.obj), x)
+    val headtyp = head.iterFuncTyp(w(w.dom.Var), x)
     tail ->: headtyp
   }
 
   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
     val a = tail.Var
-    val headtyp = lmbda(a)(head.iterDepFuncTyp(w(w.dom.obj), xs(a)))
+    val headtyp = lmbda(a)(head.iterDepFuncTyp(w(w.dom.Var), xs(a)))
     PiTyp(headtyp)
   }
 
@@ -394,10 +394,10 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   }
 
   def domTotal(w: FamilyType): Typ[Total] =
-    PairTyp(w.dom, head.domTotal(w(w.dom.obj)))
+    PairTyp(w.dom, head.domTotal(w(w.dom.Var)))
 
   def totalDomain(g: IterFunc) =
-    PairTyp(g.dom, head.totalDomain(g(g.dom.obj)))
+    PairTyp(g.dom, head.totalDomain(g(g.dom.Var)))
 
   def uncurry(g: IterFunc): Func[Total, Cod] = {
     val dom = totalDomain(g)
@@ -406,7 +406,7 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   }
 
   def depTotalDomain(g: IterDepFunc) =
-    PairTyp(g.dom, head.depTotalDomain(g(g.dom.obj)))
+    PairTyp(g.dom, head.depTotalDomain(g(g.dom.Var)))
 
   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
     val dom = depTotalDomain(g)
@@ -577,7 +577,7 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
   }
 
   def depTotalDomain(g: IterDepFunc) = {
-    val a = g.dom.obj
+    val a = g.dom.Var
     val fibre = lmbda(a)(headfibre(a).depTotalDomain(g(a)))
     SigmaTyp(fibre)
   }
