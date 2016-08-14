@@ -278,3 +278,15 @@ val pfDoubleEven =
           )
     } !: thmDoubleEven
 ```
+
+## Indexed Inductive types
+
+```tut
+val IndN = new IndexedConstructorPatterns(Nat ->: Types)
+val Vec = "Vec" :: Nat ->: Type
+val VecFmly = IndN.Family(Vec)
+val VecInd = ("nil" ::: VecFmly.head(Vec(zero))) |: ("cons" ::: n ~>>: (Vec(n) -->>: VecFmly.head(Vec(succ(n))))) =: VecFmly
+val List(vnil, vcons) = VecInd.intros
+vcons.typ.fansi
+VecInd.rec(A).typ.fansi
+```

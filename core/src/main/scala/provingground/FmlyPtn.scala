@@ -340,13 +340,13 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
 
 //   type FamilyType = Func[TT, FV]
 
-  type Total = PairObj[TT, HTot]
+  type Total = AbsPair[TT, HTot]
 
   def value(x: Total): O = head.value(x.second)
 
-  type IterFunc = Func[TT, head.IterFunc]
+  type IterFunc = FuncLike[TT, head.IterFunc]
 
-  type IterTypFunc = Func[TT, head.IterTypFunc]
+  type IterTypFunc = FuncLike[TT, head.IterTypFunc]
 
   type IterDepFunc = FuncLike[TT, head.IterDepFunc]
 
@@ -361,7 +361,7 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
     PiTyp(headtyp)
   }
 
-  type ArgType = PairObj[TT, S]
+  type ArgType = AbsPair[TT, S]
 
   def argOpt(l: List[Term]): Option[ArgType] = l match {
     case x :: ys =>
@@ -394,14 +394,23 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   }
 
   def domTotal(w: FamilyType): Typ[Total] =
-    PairTyp(w.dom, head.domTotal(w(w.dom.Var)))
-
+  {
+    val fstDom = w.dom
+    val x = fstDom.Var
+    val fibre = lmbda(x)(head.domTotal(w(x)))
+    SigmaTyp(fibre)
+  }
   def totalDomain(g: IterFunc) =
-    PairTyp(g.dom, head.totalDomain(g(g.dom.Var)))
+    {
+      val fstDom = g.dom
+      val x = fstDom.Var
+      val fibre = lmbda(x)(head.totalDomain(g(x)))
+      SigmaTyp(fibre)
+    }
 
   def uncurry(g: IterFunc): Func[Total, Cod] = {
     val dom = totalDomain(g)
-    val ab = dom.Var
+    val ab : Total = dom.Var
     lmbda(ab)(head.uncurry(g(ab.first))(ab.second))
   }
 
@@ -410,8 +419,10 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
 
   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
     val dom = depTotalDomain(g)
-    val ab = dom.Var
-    lambda(ab)(head.depUncurry(g(ab.first))(ab.second))
+    val ab : Total = dom.Var
+    lambda(ab)(
+      head.depUncurry(g(ab.first))
+      (ab.second))
   }
 
   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
@@ -492,7 +503,7 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
 
 //   type FamilyType = FuncLike[TT, FV]
 
-  type Total = DepPair[TT, HTot]
+  type Total = AbsPair[TT, HTot]
 
   def value(x: Total) = headfibre(x.first).value(x.second)
 
@@ -514,7 +525,7 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
     PiTyp(fibre)
   }
 
-  type ArgType = DepPair[TT, S]
+  type ArgType = AbsPair[TT, S]
 
   def argOpt(l: List[Term]): Option[ArgType] = l match {
     case x :: ys =>
@@ -560,7 +571,7 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
 
   def uncurry(g: IterFunc): Func[Total, Cod] = {
     val dom = totalDomain(g)
-    val ab = dom.Var
+    val ab : Total = dom.Var
     lmbda(ab)(headfibre(ab.first).uncurry(g(ab.first))(ab.second))
   }
 
@@ -584,7 +595,7 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
 
   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
     val dom = depTotalDomain(g)
-    val ab = dom.Var
+    val ab : Total = dom.Var
     lambda(ab)(headfibre(ab.first).depUncurry(g(ab.first))(ab.second))
   }
 
