@@ -199,9 +199,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def recDefCase(cons: iConstructorType,
                    data: RecDataType,
-                   f: => I): Total => Option[Cod] = {
-      case (t: Term) if t == cons => Some(data)
-      case _ => None
+                   f: => I): Total => Option[Cod] = (t) => {
+      if (typFmlyPtn.value(t) == cons) Some(data)
+      else None
     }
 
     def inducDefCase(cons: iConstructorType,
@@ -265,10 +265,11 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def recDefCase(cons: iConstructorType,
                    data: RecDataType,
-                   f: => I): Total => Option[Cod] = { t =>
+                   f: => I): Total => Option[Cod] = tt => {
+      val t = typFmlyPtn.value(tt)                                   
       for (arg <- getArg(cons)(t);
            term <- headfibre(arg).recDefCase(
-                      cons(arg), headData(data, arg, f), f)(t)) yield term
+                      cons(arg), headData(data, arg, f), f)(tt)) yield term
     }
 
     def headInducData(
