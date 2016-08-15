@@ -4,9 +4,9 @@ import HoTT._
 //import math._
 //import ScalaUniverses._
 //import scala.util._
-import scala.language.existentials
+//import scala.language.existentials
 
-import scala.language.implicitConversions
+//import scala.language.implicitConversions
 
 //import RecFunction.recFn
 

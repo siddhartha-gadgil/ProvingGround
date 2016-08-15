@@ -52,4 +52,9 @@ object Implicits {
       IterFuncTyp(tailVar ~>: pair, typ)
   }
 
+  implicit class IndTypFmly[C <: Term with Subs[C],
+      H <: Term with Subs[H], F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]){
+        def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
+      }
+
 }

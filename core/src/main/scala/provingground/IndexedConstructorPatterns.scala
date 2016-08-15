@@ -266,7 +266,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def recDefCase(cons: iConstructorType,
                    data: RecDataType,
                    f: => I): Total => Option[Cod] = tt => {
-      val t = typFmlyPtn.value(tt)                                   
+      val t = typFmlyPtn.value(tt)
       for (arg <- getArg(cons)(t);
            term <- headfibre(arg).recDefCase(
                       cons(arg), headData(data, arg, f), f)(tt)) yield term
@@ -697,6 +697,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def =:(head: iConstructor) = iConstructorSeq.Cons(head, empty)
 
     def head(typ: Typ[H]) = iConstructorTyp.iConstructorHead((typ, W))
+
+    def :|:(typ: Typ[H]) = head(typ)
   }
 
   object iConstructorSeq {

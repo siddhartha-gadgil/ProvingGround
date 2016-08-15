@@ -386,7 +386,7 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
     val z = fdom.Var
     val x = z.first
     val y = z.second
-    lmbda(x)(
+    lambda(x)(
         headfibre(x).curry(
             lmbda(y)(f(z))
         )
