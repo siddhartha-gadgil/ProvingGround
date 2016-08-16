@@ -34,6 +34,7 @@ assemblyMergeStrategy in assembly := {
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi" % "ammonite" % "0.7.0" % "test"  cross CrossVersion.full,
+    "com.lihaoyi" %% "ammonite-ops" % "0.7.0",
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -211,7 +212,7 @@ lazy val realfunctions = (project in file("realfunctions")).
         settings(commonSettings : _*).
         settings(jvmSettings : _ *).
         settings(
-          // libraryDependencies  ++= Seq(
+    //       libraryDependencies  ++= Seq(
           // // other dependencies here
           // //"org.scalanlp" %% "breeze" % "0.11.2",
           // // native libraries are not included by default. add this if you want them (as of 0.7)
