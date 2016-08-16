@@ -585,7 +585,7 @@ object HoTT {
   /** Function type (not dependent functions)*/
   case class FuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       dom: Typ[W], codom: Typ[U])
-      extends GenFuncTyp[W, U](lmbda("###" :: dom)(codom))
+      extends GenFuncTyp[W, U](LambdaFixed(dom.Var, codom))
       with Typ[Func[W, U]]
       with Subs[FuncTyp[W, U]] {
     type Obj = Func[W, U]
@@ -983,17 +983,14 @@ object HoTT {
       extends AnySym {
     var outer = variable
 
-    override def toString = variable match {
-      case sym: Symbolic => sym.name.toString
-      case x => x.toString
-    }
+    override def toString = variable.asInstanceOf[Symbolic].name.toString()
 
     def subs(x: Term, y: Term) = {
       val newvar = outer.replace(x, y) match {
         case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
         case _ => variable
       }
-//      outer = newvar 
+      outer = newvar
       this
     }
   }
