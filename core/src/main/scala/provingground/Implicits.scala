@@ -57,4 +57,8 @@ object Implicits {
         def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
       }
 
+  implicit class UnifAppln(func: Term){
+    def of(arg: Term) = Unify.appln(func, arg).get
+  }
+  
 }

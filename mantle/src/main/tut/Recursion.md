@@ -217,8 +217,8 @@ Just like actual vectors, we have `nil` and `cons` introduction rules, but here 
 
 ```tut
 val V = "Vec" :: Nat ->: Type
-val nil = "nil" :: V(zero)
-val cons = "cons" :: n ~>: (Nat ->: V(n) ->: V(succ(n)))
+val nilv = "nil" :: V(zero)
+val consv = "cons" :: n ~>: (Nat ->: V(n) ->: V(succ(n)))
 ```
 
 We have an induction function taking data for the cases and returning a dependent function.
@@ -234,19 +234,23 @@ We define inductively a countdown function, giving the vector counting down from
 val indNV = NatInd.induc(V)
 
 val v = "v_m" :: V(m)
-val countdown = indNV(nil)(m :~> (v :-> cons(m)(succ(m))(v)) )
+val countdown = indNV(nilv)(m :~> (v :-> consv(m)(succ(m))(v)) )
 countdown(zero)
 countdown(one)
 countdown(one).fansi
 countdown(three).fansi
-assert(countdown(three) == cons(two)(three)(cons(one)(two)(cons(zero)(one)(nil))))
-countdown(zero) == nil
+assert(countdown(three) ==
+  consv(two)(three)(
+    consv(one)(two)(
+      consv(zero)(one)(nilv))))
+countdown(zero) == nilv
 countdown(nine).fansi
 ```
 
 We now illustrate a simple instance of using _propositions as proofs_.
 The type family `isEven : Nat ->: Type` gives a type representing whether a natural number is even.
 This is an inductive type, but here we simply specify the type by  its introduction rules (constructors).
+Such terms introduced by specifying types are logically _axioms_.
 
 ```tut
 val isEven = "isEven" :: Nat ->: Type
@@ -281,12 +285,55 @@ val pfDoubleEven =
 
 ## Indexed Inductive types
 
+A generalization of inductive types are _inductive type families_, i.e., inductive types depending on an index.
+Unlike parametrized inductive types (such as lists), the constructors of an inductive type family involve in general several different indices.
+Further, the recursion and induction function only allow construction of (dependent) functions on the whole family.
+
+A typical example is vectors, defined as a family indexed by their length.
+
 ```tut
 val IndN = new IndexedConstructorPatterns(Nat ->: Types)
 val Vec = "Vec" :: Nat ->: Type
-val VecFmly = IndN.Family(Vec)
-val VecInd = ("nil" ::: VecFmly.head(Vec(zero))) |: ("cons" ::: n ~>>: (Vec(n) -->>: VecFmly.head(Vec(succ(n))))) =: VecFmly
+val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
+val VecFmly = VecPtn.Family(Vec)
+val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
 val List(vnil, vcons) = VecInd.intros
 vcons.typ.fansi
-VecInd.rec(A).typ.fansi
+```
+
+We can define function recursively on vectors of all indices. For instance, we can define the size.
+
+```tut
+val vn = "v_n" :: Vec(n)
+val recVN = VecInd.rec(Nat)
+val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
+size(zero)(vnil)
+val v1 = vcons(zero)(a)(vnil)
+size(one)(v1)
+assert(size(one)(v1) == one)
+```
+
+For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
+```tut
+val VecN = "Vec(Nat)" ::: Nat ->: Types
+val VecNFmly = VecPtn.Family(VecN)
+
+val vnn = "v_n" :: VecN(n)
+val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
+
+val recVNN = VecNInd.rec(Nat)
+val List(vnilN, vconsN) = VecNInd.intros
+
+val k ="k" :: Nat
+val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
+
+vsum(zero)(vnilN)
+val v2 = vconsN(zero)(two)(vnilN)
+vsum(one)(v2)
+assert(vsum(one)(v2) == two)
+
+val v3 = vconsN(one)(one)(v2)
+v3.fansi
+vsum(two)(v3)
+assert(vsum(two)(v3) == three)
 ```
