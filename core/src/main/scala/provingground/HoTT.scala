@@ -979,17 +979,17 @@ object HoTT {
   /**
     * A symbol to be used to generate new variables of a type, with string matching given variable.
     */
-  class InnerSym[U <: Term with Subs[U]](variable: U with Symbolic) extends AnySym {
+  class InnerSym[U <: Term with Subs[U]](variable: U with Symbolic)
+      extends AnySym {
     var outer = variable
-    
+
     override def toString = variable match {
       case sym: Symbolic => sym.name.toString
       case x => x.toString
     }
-    
+
     def subs(x: Term, y: Term) = {
-      val newvar = 
-        outer.replace(x, y) match {
+      val newvar = outer.replace(x, y) match {
         case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
         case _ => variable
       }
@@ -1170,7 +1170,8 @@ object HoTT {
 
     def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 
-    def newobj = DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
+    def newobj =
+      DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
 
     /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {

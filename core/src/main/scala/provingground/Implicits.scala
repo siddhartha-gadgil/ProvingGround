@@ -13,7 +13,8 @@ object Implicits {
 
     def -->>:(that: Typ[H]) = that -->>: pair
 
-    def -->>:[FF <: Term with Subs[FF]](that: IterFuncPattern.IterFuncTyp[H, Term, FF]) =
+    def -->>:[FF <: Term with Subs[FF]](
+        that: IterFuncPattern.IterFuncTyp[H, Term, FF]) =
       that -->>: pair
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
@@ -38,7 +39,6 @@ object Implicits {
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
 
     def =::(typ: Typ[H]) = typ ||: seq
-
   }
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
@@ -52,13 +52,12 @@ object Implicits {
       IterFuncTyp(tailVar ~>: pair, typ)
   }
 
-  implicit class IndTypFmly[C <: Term with Subs[C],
-      H <: Term with Subs[H], F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]){
-        def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
-      }
+  implicit class IndTypFmly[C <: Term with Subs[C], H <: Term with Subs[H],
+      F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]) {
+    def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
+  }
 
-  implicit class UnifAppln(func: Term){
+  implicit class UnifAppln(func: Term) {
     def of(arg: Term) = Unify.appln(func, arg).get
   }
-  
 }

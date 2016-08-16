@@ -30,9 +30,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
   def getTotalArg(typ: Typ[Term], fmly: F) =
     totalArg(typ, fmly).asInstanceOf[typFmlyPtn.ArgType]
 
-  import typFmlyPtn.{Total, FamilyType,
-        curry, depCurry, domTotal, value, ArgType, IterFunc, IterTypFunc, IterDepFunc, fill, depFill
-  }
+  import typFmlyPtn.{Total, FamilyType, curry, depCurry, domTotal, value, ArgType, IterFunc, IterTypFunc, IterDepFunc, fill, depFill}
   //    type F = typFmlyPtn.FamilyType
   type Ind = ArgType
   type I = IterFunc
@@ -146,21 +144,21 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) = {
       val arg = getTotalArg(that.typ, fmly)
-      iConstructorTyp(FuncPtn(that.pattern, arg, pattern),  fmly)
+      iConstructorTyp(FuncPtn(that.pattern, arg, pattern), fmly)
     }
 
     def -->>:(that: Typ[H]) = {
       val arg = getTotalArg(that, fmly)
       val tail = IdIterPtn[H, C]()
       val ptn = FuncPtn(tail, arg, pattern)
-      iConstructorTyp(ptn,  fmly)
+      iConstructorTyp(ptn, fmly)
     }
 
     def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
       assert(
           !(that.dependsOn(fmly)),
           "the method ->: is for extension by constant types, maybe you mean _-->:_")
-      iConstructorTyp(pattern.funcFrom(that, fmly),  fmly)
+      iConstructorTyp(pattern.funcFrom(that, fmly), fmly)
     }
 
     def ~>>:[T <: Term with Subs[T]](thatVar: T) =
@@ -206,9 +204,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducDefCase(cons: iConstructorType,
                      data: InducDataType,
-                     f: => DI): Total => Option[Cod] = {
-      case (t: Term) if t == cons => Some(data)
-      case _ => None
+                     f: => DI): Total => Option[Cod] = (t) => {
+      if (typFmlyPtn.value(t) == cons) Some(data)
+      else None
     }
 
     def inClass[CC <: Term with Subs[CC]](
@@ -277,10 +275,12 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def inducDefCase(cons: iConstructorType,
                      data: InducDataType,
-                     f: => DI): Total => Option[Cod] = { t =>
+                     f: => DI): Total => Option[Cod] = tt => {
+      val t = typFmlyPtn.value(tt)
       for (arg <- getArg(cons)(t);
            term <- headfibre(arg).inducDefCase(
-                      cons(arg), headInducData(data, arg, f), f)(t)) yield term
+                      cons(arg), headInducData(data, arg, f), f)(tt)) yield
+        term
     }
   }
 
@@ -678,11 +678,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def |:(head: iConstructor) = iConstructorSeq.Cons(head, this)
 
     def ||:(typ: Typ[H]) =
-      PartialiConstructorSeq(
-          iConstructorTyp(iW(getTotalArg(typ, W)), W), this)
+      PartialiConstructorSeq(iConstructorTyp(iW(getTotalArg(typ, W)), W), this)
 
     val intros: List[Term]
-
   }
 
   def totalFibre(fibre: Func[H, Typ[Cod]], W: F): Func[Total, Typ[Cod]] = {
@@ -690,8 +688,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     lmbda(x)(fibre(value(x)))
   }
 
-
-  case class Family(W: F){
+  case class Family(W: F) {
     def empty = iConstructorSeq.Empty(W)
 
     def =:(head: iConstructor) = iConstructorSeq.Cons(head, empty)
@@ -720,7 +717,6 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
 
       val intros: List[Term] = List()
-
     }
 
     case class Cons(
@@ -759,16 +755,13 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       def inducDefn(fibre: Func[H, Typ[C]]) = {
         InductiveDefinition.DataCons(
             inducData(fibre), inducDefn, tail.inducDefn(fibre))
-
       }
 
       def inducDataLambda(fibre: Func[H, Typ[C]]) =
         (f: DI) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
 
-        val intros: List[Term] = cons.cons :: tail.intros
-
+      val intros: List[Term] = cons.cons :: tail.intros
     }
-
   }
 }
 
