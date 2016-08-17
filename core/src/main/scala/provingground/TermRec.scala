@@ -61,7 +61,7 @@ trait TermRec[U] {
             def collapse(x: U, y: U) = appln(appln(op, x), y)
             terms.reduce(collapse)
           }
-        //    case _ => fromString(term.toString)
+        case t => fromString(t.toString)(t.typ)
       }
     }
 }
