@@ -86,7 +86,7 @@ object ConstructorSeq {
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
     def recDataLambda(X: Typ[C]) =
-      f => lmbda(data(X))(tail.recDataLambda(X)(f))
+      f => LambdaFixed(data(X), tail.recDataLambda(X)(f))
 
     type InducType = Func[cons.pattern.InducDataType, tail.InducType]
 
@@ -103,7 +103,7 @@ object ConstructorSeq {
           inducData(fibre), inducDefn, tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
-      (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
+      (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
 
     val intros = cons.cons :: tail.intros
   }
