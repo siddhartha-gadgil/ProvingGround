@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 ## Recursion for inductive types
 
 We illustrate construction of inductive types, and defining functions on them recursively.
