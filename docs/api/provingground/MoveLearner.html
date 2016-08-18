@@ -1,0 +1,876 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>MoveLearner - provingground.MoveLearner</title>
+          <meta name="description" content="MoveLearner - provingground.MoveLearner" />
+          <meta name="keywords" content="MoveLearner provingground.MoveLearner" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.MoveLearner';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <a href="MoveLearner$.html" title="Go to companion"><img src="../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1><a href="MoveLearner$.html" title="Go to companion">MoveLearner</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="MoveLearner$.html" title="See companion">object MoveLearner</a>
+            | <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">MoveLearner</span><span class="tparams">[<span name="V">V</span>, <span name="M">M</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Learning dynamical system where we only have moves, not combinations.
+Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains by making moves</p><p>A parameter deciding whether to continue a chain.</p><p>A move type chosen if a chain is to be continued.</p><p>A move of the type chosen with equal probability - warning: avoid 0/0</p><p>A chain is a sequence of moves.</p><p>We start with singleton chains and evolve according to the moves to get a distribution on chains.</p><p>This gives a distribution on vertices as well</p><p>This is used to determine feedback for learning.</p></div><dl class="paramcmts block"><dt class="tparam">V</dt><dd class="cmt"><p>vertices
+</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>move types (not moves)</p></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.MoveLearner"><span>MoveLearner</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="provingground.MoveLearner#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(movetypes:List[M],moves:(V,M)=&gt;Set[V]):provingground.MoveLearner[V,M]"></a>
+      <a id="&lt;init&gt;:MoveLearner[V,M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">MoveLearner</span><span class="params">(<span name="movetypes">movetypes: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.MoveLearner.M">M</span>]</span>, <span name="moves">moves: (<span class="extype" name="provingground.MoveLearner.V">V</span>, <span class="extype" name="provingground.MoveLearner.M">M</span>) ⇒ <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@&lt;init&gt;(movetypes:List[M],moves:(V,M)=&gt;Set[V]):provingground.MoveLearner[V,M]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">movetypes</dt><dd class="cmt"><p>Move types
+</p></dd><dt class="param">moves</dt><dd class="cmt"><p>Moves for a given object (vertex) and move type
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.MoveLearner.AtomicChain" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicChainextendsMoveLearner.this.ChainwithProductwithSerializable"></a>
+      <a id="AtomicChain:AtomicChain"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$AtomicChain.html"><span class="name">AtomicChain</span></a><span class="params">(<span name="head">head: <span class="extype" name="provingground.MoveLearner.V">V</span></span>)</span><span class="result"> extends <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@AtomicChainextendsMoveLearner.this.ChainwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An atomic chain
+</p>
+    </li><li name="provingground.MoveLearner.Chain" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ChainextendsAnyRef"></a>
+      <a id="Chain:Chain"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$Chain.html"><span class="name">Chain</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@ChainextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A chain, i.e.</p><div class="fullcomment"><div class="comment cmt"><p>A chain, i.e. a sequence of vertices related by moves.
+</p></div></div>
+    </li><li name="provingground.MoveLearner.DynDst" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DynDstextendsProductwithSerializable"></a>
+      <a id="DynDst:DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$DynDst.html"><span class="name">DynDst</span></a><span class="params">(<span name="vrtdst">vrtdst: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>, <span name="edgdst">edgdst: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.M">M</span>]</span>, <span name="cntn">cntn: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@DynDstextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The state of the learning system.</p><div class="fullcomment"><div class="comment cmt"><p>The state of the learning system.</p><p>This may also represent a change of state, so the total may not be 1
+</p></div><dl class="paramcmts block"><dt class="param">vrtdst</dt><dd class="cmt"><p>A distribution on vertices
+</p></dd><dt class="param">edgdst</dt><dd class="cmt"><p>A distribution on move types (edges)
+</p></dd><dt class="param">cntn</dt><dd class="cmt"><p>The probability of continuing.</p></dd></dl></div>
+    </li><li name="provingground.MoveLearner.Feedback" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]"></a>
+      <a id="Feedback:Feedback"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Feedback</span><span class="result"> = (<a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]) ⇒ <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">feedback for learning, generally given by an implicit object.</p><div class="fullcomment"><div class="comment cmt"><p>feedback for learning, generally given by an implicit object.
+can be constructed using the feedback method on a finite distribution, comparing to a base that need not be finite.
+</p></div></div>
+    </li><li name="provingground.MoveLearner.LearningLoop" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LearningLoopextendsProductwithSerializable"></a>
+      <a id="LearningLoop:LearningLoop"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$LearningLoop.html"><span class="name">LearningLoop</span></a><span class="params">(<span name="cutoffExp">cutoffExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="stableLevelExp">stableLevelExp: <span class="extype" name="scala.Double">Double</span></span>, <span name="innerSteps">innerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="outerSteps">outerSteps: <span class="extype" name="scala.Int">Int</span></span>, <span name="epsilonExp">epsilonExp: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="feedback">feedback: <a href="#Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]" class="extmbr" name="provingground.MoveLearner.Feedback">Feedback</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@LearningLoopextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">loop for learning, with an inner loop changing only the distribution and
+an outer one where chains are recomputed with the new purge.</p>
+    </li><li name="provingground.MoveLearner.RecChain" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RecChainextendsMoveLearner.this.ChainwithProductwithSerializable"></a>
+      <a id="RecChain:RecChain"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$RecChain.html"><span class="name">RecChain</span></a><span class="params">(<span name="head">head: <span class="extype" name="provingground.MoveLearner.V">V</span></span>, <span name="tail">tail: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>, <span name="mvtyp">mvtyp: <span class="extype" name="provingground.MoveLearner.M">M</span></span>)</span><span class="result"> extends <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@RecChainextendsMoveLearner.this.ChainwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A recursive chain, making a move from a previous chain
+</p><div class="fullcomment"><div class="comment cmt"><p>A recursive chain, making a move from a previous chain
+</p></div><dl class="paramcmts block"><dt class="param">head</dt><dd class="cmt"><p>head of the new chain. Not determined by move type and previous chain
+</p></dd><dt class="param">tail</dt><dd class="cmt"><p>tail of the new chain
+</p></dd><dt class="param">mvtyp</dt><dd class="cmt"><p>move type for extending the chain
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.MoveLearner.DynDst" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DynDst"></a>
+      <a id="DynDst:DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveLearner$DynDst$.html"><span class="name">DynDst</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">companion to state of dynamical system
+</p>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.MoveLearner#backprop" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="backprop(initdstbn:MoveLearner.this.DynDst,error:provingground.Collections.FiniteDistribution[V],chains:Set[MoveLearner.this.Chain]):MoveLearner.this.DynDst"></a>
+      <a id="backprop(DynDst,FiniteDistribution[V],Set[Chain]):DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">backprop</span><span class="params">(<span name="initdstbn">initdstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="error">error: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@backprop(initdstbn:MoveLearner.this.DynDst,error:provingground.Collections.FiniteDistribution[V],chains:Set[MoveLearner.this.Chain]):MoveLearner.this.DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">total back-propagation over a collection of chains
+</p>
+    </li><li name="provingground.MoveLearner#backpropchain" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="backpropchain(initdstbn:MoveLearner.this.DynDst,error:Double,accum:MoveLearner.this.DynDst,chain:MoveLearner.this.Chain):MoveLearner.this.DynDst"></a>
+      <a id="backpropchain(DynDst,Double,DynDst,Chain):DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">backpropchain</span><span class="params">(<span name="initdstbn">initdstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="error">error: <span class="extype" name="scala.Double">Double</span></span>, <span name="accum">accum: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a> = <span class="symbol"><span class="name"><a href="MoveLearner$DynDst$.html">DynDst.empty</a></span></span></span>, <span name="chain">chain: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@backpropchain(initdstbn:MoveLearner.this.DynDst,error:Double,accum:MoveLearner.this.DynDst,chain:MoveLearner.this.Chain):MoveLearner.this.DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Recursively back-propagate along a single chain.</p><div class="fullcomment"><div class="comment cmt"><p>Recursively back-propagate along a single chain.
+For an atomic chain, the probability of choosing the head is changed, as is the probability of continuing.
+If chain is not atomic, the error propagates to the tail of the chain.</p></div><dl class="paramcmts block"><dt class="param">initdstbn</dt><dd class="cmt"><p>- the initial distribution
+</p></dd><dt class="param">error</dt><dd class="cmt"><p>- the error to recursively propagate.
+</p></dd><dt class="param">accum</dt><dd class="cmt"><p>accumulator
+</p></dd><dt class="param">chain</dt><dd class="cmt"><p>along which to back-propagate.
+</p></dd><dt>returns</dt><dd class="cmt"><p>change in distribution
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.MoveLearner#finaldist" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finaldist(dstbn:MoveLearner.this.DynDst,chains:Set[MoveLearner.this.Chain]):provingground.Collections.FiniteDistribution[V]"></a>
+      <a id="finaldist(DynDst,Set[Chain]):FiniteDistribution[V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finaldist</span><span class="params">(<span name="dstbn">dstbn: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <a href="Collections$$FiniteDistribution.html" class="extype" name="provingground.Collections.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.MoveLearner.V">V</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@finaldist(dstbn:MoveLearner.this.DynDst,chains:Set[MoveLearner.this.Chain]):provingground.Collections.FiniteDistribution[V]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The distribution on vertices as heads of chains.</p><div class="fullcomment"><div class="comment cmt"><p>The distribution on vertices as heads of chains.
+</p></div><dl class="paramcmts block"><dt class="param">dstbn</dt><dd class="cmt"><p>dynamical distribution.
+</p></dd><dt class="param">chains</dt><dd class="cmt"><p>support for which probability is calculated and mapped to heads.
+</p></dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.MoveLearner#fullnextgen" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fullnextgen(chains:Set[MoveLearner.this.Chain]):scala.collection.immutable.Set[MoveLearner.this.Chain]"></a>
+      <a id="fullnextgen(Set[Chain]):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fullnextgen</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@fullnextgen(chains:Set[MoveLearner.this.Chain]):scala.collection.immutable.Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">offspring of chains as well as the chains themselves.</p>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.MoveLearner#learnstep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="learnstep(d:MoveLearner.this.DynDst,epsilon:Double,chains:Set[MoveLearner.this.Chain],cutoff:Double)(implicitcorrection:MoveLearner.this.Feedback):MoveLearner.this.DynDst"></a>
+      <a id="learnstep(DynDst,Double,Set[Chain],Double)(Feedback):DynDst"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">learnstep</span><span class="params">(<span name="d">d: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>, <span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="correction">correction: <a href="#Feedback=provingground.Collections.FiniteDistribution[V]=&gt;provingground.Collections.FiniteDistribution[V]" class="extmbr" name="provingground.MoveLearner.Feedback">Feedback</a></span>)</span><span class="result">: <a href="MoveLearner$DynDst.html" class="extype" name="provingground.MoveLearner.DynDst">DynDst</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@learnstep(d:MoveLearner.this.DynDst,epsilon:Double,chains:Set[MoveLearner.this.Chain],cutoff:Double)(implicitcorrection:MoveLearner.this.Feedback):MoveLearner.this.DynDst" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">change of dynamical distribution in a single learning step, not changing the chains.</p><div class="fullcomment"><div class="comment cmt"><p>change of dynamical distribution in a single learning step, not changing the chains.
+</p></div><dl class="paramcmts block"><dt class="param">d</dt><dd class="cmt"><p>initial distribution
+</p></dd><dt class="param">epsilon</dt><dd class="cmt"><p>scale for shifting
+</p></dd><dt class="param">chains</dt><dd class="cmt"><p>support for learning
+</p></dd><dt class="param">cutoff</dt><dd class="cmt"><p>purge support below cutoff
+</p></dd><dt class="param">correction</dt><dd class="cmt"><p>feedback given the final distribution.
+</p></dd></dl></div>
+    </li><li name="provingground.MoveLearner#multiplicity" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="multiplicity(vert:V,movetype:M):Int"></a>
+      <a id="multiplicity(V,M):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">multiplicity</span><span class="params">(<span name="vert">vert: <span class="extype" name="provingground.MoveLearner.V">V</span></span>, <span name="movetype">movetype: <span class="extype" name="provingground.MoveLearner.M">M</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@multiplicity(vert:V,movetype:M):Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The number of moves given move type and vertex
+</p>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.MoveLearner#offspring" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="offspring(chain:MoveLearner.this.Chain):List[MoveLearner.this.RecChain]"></a>
+      <a id="offspring(Chain):List[RecChain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">offspring</span><span class="params">(<span name="chain">chain: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="MoveLearner$RecChain.html" class="extype" name="provingground.MoveLearner.RecChain">RecChain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@offspring(chain:MoveLearner.this.Chain):List[MoveLearner.this.RecChain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">offspring of a chain, applying all possible moves to its head.</p>
+    </li><li name="provingground.MoveLearner#propagate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="propagate(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean,prev:Set[MoveLearner.this.Chain]):Set[MoveLearner.this.Chain]"></a>
+      <a id="propagate(Set[Chain],(Chain)⇒Boolean,Set[Chain]):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">propagate</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="prune">prune: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="prev">prev: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>] = <span class="symbol">Set.empty</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@propagate(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean,prev:Set[MoveLearner.this.Chain]):Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">forward propagate the dynamics while pruning until stable.</p><div class="fullcomment"><div class="comment cmt"><p>forward propagate the dynamics while pruning until stable.
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial set of chains
+</p></dd><dt class="param">prune</dt><dd class="cmt"><p>boolean function for pruning.
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.MoveLearner#propagateSteps" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="propagateSteps(chains:Set[MoveLearner.this.Chain],steps:Int):Set[MoveLearner.this.Chain]"></a>
+      <a id="propagateSteps(Set[Chain],Int):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">propagateSteps</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="steps">steps: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@propagateSteps(chains:Set[MoveLearner.this.Chain],steps:Int):Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">forward propagate the dynamics
+</p><div class="fullcomment"><div class="comment cmt"><p>forward propagate the dynamics
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial set of chains
+</p></dd><dt class="param">steps</dt><dd class="cmt"><p>number of steps
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.MoveLearner#prunednextgen" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="prunednextgen(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean):scala.collection.immutable.Set[MoveLearner.this.Chain]"></a>
+      <a id="prunednextgen(Set[Chain],(Chain)⇒Boolean):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">prunednextgen</span><span class="params">(<span name="chains">chains: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>, <span name="prune">prune: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@prunednextgen(chains:Set[MoveLearner.this.Chain],prune:MoveLearner.this.Chain=&gt;Boolean):scala.collection.immutable.Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">offspring of chains which are accepted by prune together with the chains.</p><div class="fullcomment"><div class="comment cmt"><p>offspring of chains which are accepted by prune together with the chains.
+Note that chains failing prune are not removed but only not propagatted.
+</p></div><dl class="paramcmts block"><dt class="param">chains</dt><dd class="cmt"><p>initial chains
+</p></dd><dt class="param">prune</dt><dd class="cmt"><p>boolean function determining chains allowed to propagate.
+</p></dd></dl></div>
+    </li><li name="provingground.MoveLearner#subChains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subChains(chn:MoveLearner.this.Chain,accum:Set[MoveLearner.this.Chain],append:MoveLearner.this.Chain=&gt;MoveLearner.this.Chain):Set[MoveLearner.this.Chain]"></a>
+      <a id="subChains(Chain,Set[Chain],(Chain)⇒Chain):Set[Chain]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subChains</span><span class="params">(<span name="chn">chn: <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a></span>, <span name="accum">accum: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>] = <span class="symbol">Set()</span></span>, <span name="append">append: (<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>) ⇒ <a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a> = <span class="symbol">(c) =&gt; c</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MoveLearner$Chain.html" class="extype" name="provingground.MoveLearner.Chain">Chain</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@subChains(chn:MoveLearner.this.Chain,accum:Set[MoveLearner.this.Chain],append:MoveLearner.this.Chain=&gt;MoveLearner.this.Chain):Set[MoveLearner.this.Chain]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">sub-chains of a chain, with the same head but starting at different stages.</p><div class="fullcomment"><div class="comment cmt"><p>sub-chains of a chain, with the same head but starting at different stages.
+Recursively defined.</p></div><dl class="paramcmts block"><dt class="param">chn</dt><dd class="cmt"><p>chain for which we find sub-chains
+</p></dd><dt class="param">accum</dt><dd class="cmt"><p>accumulator, should contain chains with given head
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.MoveLearner@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
