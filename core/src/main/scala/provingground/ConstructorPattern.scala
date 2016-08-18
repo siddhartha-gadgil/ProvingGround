@@ -206,6 +206,8 @@ case class ConstructorTyp[
     pattern: ConstructorPattern[C, F, H], typ: Typ[H]) {
   def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
 
+  def >::(cons: F) = ConstructorDefn(pattern, cons, typ)
+  
   def -->>:(that: Typ[H]) = {
     assert(
         that == typ,
