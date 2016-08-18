@@ -1,12 +1,15 @@
 ---
+title: Inductive Types - Recursion and induction
 layout: default
 ---
+
 
 ## Recursion for inductive types
 
 We illustrate construction of inductive types, and defining functions on them recursively.
 
 We begin with some imports. The import Implicits gives the operations to construct inductive types.
+
 ```scala
 scala> import provingground._
 import provingground._
@@ -22,6 +25,7 @@ We do not define inductive types, but instead define the _structure of an induct
 
 The inductive structure is defined using a DSL to specify constructors. The Boolean type has constants true and false as constructors.
 Constructors are obtained using the `:::` method on a _Constructor pattern_, which for constants is essentially the inductive type itself.
+
 ```scala
 scala> val Bool = "Boolean" :: Type
 Bool: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Boolean : 𝒰
@@ -31,6 +35,7 @@ BoolInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground
 ```
 
 From the inductive structure, we can obtain the introduction rules.
+
 ```scala
 scala> val List(tt, ff) = BoolInd.intros
 tt: provingground.HoTT.Term = true : (Boolean : 𝒰 )
@@ -45,6 +50,7 @@ res1: provingground.HoTT.Term = false : (Boolean : 𝒰 )
 
 The most important methods on an inductive structure are the `rec` method for making recursive definition on the inductive type,
 and the corresponding method for dependent functions. The rec method takes as arguments the data giving the definition for the various constructors.
+
 ```scala
 scala> BoolInd.rec(Bool)
 res2: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ (<function1>))
@@ -57,6 +63,7 @@ res3: provingground.HoTT.Typ[provingground.HoTT.Term] = (Boolean : 𝒰 ) → ((
 ```
 
 The compile time scala type of the recursion function is just `Term`. The `import Fold._` allows pattern matching and using the runtime type.
+
 ```scala
 scala> import Fold._
 import Fold._
@@ -64,6 +71,7 @@ import Fold._
 
 We can define functions recursively using terms obtained from the `rec` method.
 In the case of Booleans, the arguments are just the value of the function at true and false. The result is a function `f: Bool ->: X` for a type `X`
+
 ```scala
 scala> val not = recBoolBool(ff)(tt)
 not: provingground.HoTT.Term = <function1>
@@ -78,6 +86,7 @@ scala> assert(not(ff) == tt && not(tt) == ff)
 ```
 
 We can similarly define the _and_ function by observing that _and(true)_ is the identity and _and(false)_ is the constant false function.
+
 ```scala
 scala> val b= "b" :: Bool
 b: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b : (Boolean : 𝒰 )
@@ -108,6 +117,7 @@ scala> assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(
 
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
 The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
+
 ```scala
 scala> val Nat ="Nat" :: Type
 Nat: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Nat : 𝒰
@@ -158,6 +168,7 @@ res15: provingground.HoTT.Term = false : (Boolean : 𝒰 )
 ```
 
 A more complicated example is addition of natural numbers.
+
 ```scala
 scala> val recNNN = NatInd.rec(Nat ->: Nat)
 recNNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → (((Nat : 𝒰 ) → (Nat : 𝒰 )) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
@@ -211,6 +222,7 @@ cons: provingground.HoTT.Term = cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (
 ```
 
 We can define the size of a list as a natural number recursively.
+
 ```scala
 scala> val recLN = ListAInd.rec(Nat)
 recLN: ListAInd.RecType = (RecSym(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 ),List(A) : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(CnstFncPtn(A : 𝒰 ,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 ))),List(A) : 𝒰 )) : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
@@ -239,6 +251,7 @@ res22: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((su
 
 Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.
+
 ```scala
 scala> val T ="Tree" :: Type
 T: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Tree : 𝒰
@@ -289,6 +302,7 @@ Instead of a pair of trees, a node corresponds to functions from Booleans to bin
 This involves more complex constructors, with an additional method `-|>:`.
 The data for recursively defining `f` is also more complex.
 We define the number of leaves in such a tree recursively.
+
 ```scala
 scala> val BT ="BinTree" :: Type
 BT: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = BinTree : 𝒰
@@ -342,12 +356,14 @@ res30: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((su
 
 As some expresssions are very long, we import a method "FansiShow" that prints in a more concise way.
 In the REPL, this gives coloured output using ANSI strings.
+
 ```scala
 scala> import FansiShow._
 import FansiShow._
 ```
 
 We define the double of a number recursively, mainly for use later. Observe the partial simplification.
+
 ```scala
 scala> val recNN = NatInd.rec(Nat)
 recNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) ↦ (<function1>))
@@ -367,6 +383,7 @@ res33: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((su
 All our recursive definitions so far of functions `f` have ignored `n` in defining `f(succ(n))`,
 and are only in terms of `f(n)`. We see a more complex definition, the sum of numbers up to `n`.
 Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, so this is `add(succ(m))(n)`
+
 ```scala
 scala> val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
 sumTo: provingground.HoTT.Term = <function1>
@@ -416,6 +433,7 @@ Namely to define the dependent function `f`, we must specify
 
 
 We define inductively a countdown function, giving the vector counting down from `n`.
+
 ```scala
 scala> val indNV = NatInd.induc(V)
 indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : (∏(($m : (Nat : 𝒰 )) ↦ (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($m : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($m : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) ↦ (<function1>))
@@ -467,6 +485,7 @@ plusTwoEven: provingground.HoTT.FuncLike[provingground.HoTT.Term with provinggro
 ```
 
 One can directly see that two and four are even.
+
 ```scala
 scala> val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two)
 TwoEven: provingground.HoTT.Term = ((_+2even : (∏((n : (Nat : 𝒰 )) ↦ (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) (0 : (Nat : 𝒰 )) : (((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))) (0even : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) : ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )
@@ -480,6 +499,7 @@ The `induc` method gives a dependent function, which takes the base case and the
 The _base case_ is inhabited by the constructor of type `isEven(zero)`.
 The _induction step_ for `n` is a term of type `isEven(double(succ(n)))` as a function of `n` and
 the _induction hypothesis_. Note that the induction hypothesis is a term of type `isEven(double(n))`.
+
 ```scala
 scala> val thmDoubleEven = n ~>: isEven(double(n))
 thmDoubleEven: provingground.HoTT.PiTyp[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = ∏((n : (Nat : 𝒰 )) ↦ ((isEven : ((Nat : 𝒰 ) → (𝒰 _0))) ((<function1>) (n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))
@@ -509,13 +529,13 @@ A typical example is vectors, defined as a family indexed by their length.
 
 ```scala
 scala> val IndN = new IndexedConstructorPatterns(Nat ->: Types)
-IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@3e55cad6
+IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@70280c9f
 
 scala> val Vec = "Vec" :: Nat ->: Type
 Vec: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = Vec : ((Nat : 𝒰 ) → (𝒰 _0))
 
 scala> val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@52101fed
+VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@63544b75
 
 scala> val VecFmly = VecPtn.Family(Vec)
 VecFmly: VecPtn.Family = Family(Vec : ((Nat : 𝒰 ) → (𝒰 _0)))
@@ -556,6 +576,7 @@ scala> assert(size(one)(v1) == one)
 ```
 
 For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
+
 ```scala
 scala> val VecN = "Vec(Nat)" ::: Nat ->: Types
 VecN: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] = Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))

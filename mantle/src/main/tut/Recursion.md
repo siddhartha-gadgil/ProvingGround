@@ -1,8 +1,15 @@
+---
+title: Inductive Types - Recursion and induction
+layout: default
+---
+
+
 ## Recursion for inductive types
 
 We illustrate construction of inductive types, and defining functions on them recursively.
 
 We begin with some imports. The import Implicits gives the operations to construct inductive types.
+
 ```tut
 import provingground._
 import HoTT._
@@ -13,12 +20,14 @@ We do not define inductive types, but instead define the _structure of an induct
 
 The inductive structure is defined using a DSL to specify constructors. The Boolean type has constants true and false as constructors.
 Constructors are obtained using the `:::` method on a _Constructor pattern_, which for constants is essentially the inductive type itself.
+
 ```tut
 val Bool = "Boolean" :: Type
 val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 ```
 
 From the inductive structure, we can obtain the introduction rules.
+
 ```tut
 val List(tt, ff) = BoolInd.intros
 tt
@@ -27,6 +36,7 @@ ff
 
 The most important methods on an inductive structure are the `rec` method for making recursive definition on the inductive type,
 and the corresponding method for dependent functions. The rec method takes as arguments the data giving the definition for the various constructors.
+
 ```tut
 BoolInd.rec(Bool)
 val recBoolBool = BoolInd.rec(Bool)
@@ -34,12 +44,14 @@ recBoolBool.typ
 ```
 
 The compile time scala type of the recursion function is just `Term`. The `import Fold._` allows pattern matching and using the runtime type.
+
 ```tut
 import Fold._
 ```
 
 We can define functions recursively using terms obtained from the `rec` method.
 In the case of Booleans, the arguments are just the value of the function at true and false. The result is a function `f: Bool ->: X` for a type `X`
+
 ```tut
 val not = recBoolBool(ff)(tt)
 not(ff)
@@ -48,6 +60,7 @@ assert(not(ff) == tt && not(tt) == ff)
 ```
 
 We can similarly define the _and_ function by observing that _and(true)_ is the identity and _and(false)_ is the constant false function.
+
 ```tut
 val b= "b" :: Bool
 val recBBB = BoolInd.rec(Bool ->: Bool)
@@ -62,6 +75,7 @@ assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(ff)(ff)
 
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
 The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
+
 ```tut
 val Nat ="Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -87,6 +101,7 @@ isEven(three)
 ```
 
 A more complicated example is addition of natural numbers.
+
 ```tut
 val recNNN = NatInd.rec(Nat ->: Nat)
 recNNN.typ
@@ -118,6 +133,7 @@ val List(nil, cons) = ListAInd.intros
 ```
 
 We can define the size of a list as a natural number recursively.
+
 ```tut
 val recLN = ListAInd.rec(Nat)
 recLN.typ
@@ -131,6 +147,7 @@ size(cons(a)(cons(a)(nil)))
 
 Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.
+
 ```tut
 val T ="Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
@@ -159,6 +176,7 @@ Instead of a pair of trees, a node corresponds to functions from Booleans to bin
 This involves more complex constructors, with an additional method `-|>:`.
 The data for recursively defining `f` is also more complex.
 We define the number of leaves in such a tree recursively.
+
 ```tut
 val BT ="BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
@@ -180,11 +198,13 @@ leaves(t2)
 
 As some expresssions are very long, we import a method "FansiShow" that prints in a more concise way.
 In the REPL, this gives coloured output using ANSI strings.
+
 ```tut
 import FansiShow._
 ```
 
 We define the double of a number recursively, mainly for use later. Observe the partial simplification.
+
 ```tut
 val recNN = NatInd.rec(Nat)
 val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
@@ -196,6 +216,7 @@ double(succ(n))
 All our recursive definitions so far of functions `f` have ignored `n` in defining `f(succ(n))`,
 and are only in terms of `f(n)`. We see a more complex definition, the sum of numbers up to `n`.
 Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, so this is `add(succ(m))(n)`
+
 ```tut
 val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
 sumTo(one)
@@ -230,6 +251,7 @@ Namely to define the dependent function `f`, we must specify
 
 
 We define inductively a countdown function, giving the vector counting down from `n`.
+
 ```tut
 val indNV = NatInd.induc(V)
 
@@ -259,6 +281,7 @@ val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
 ```
 
 One can directly see that two and four are even.
+
 ```tut
 val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two)
 val FourEven = plusTwoEven(two)(TwoEven) !: isEven(four)
@@ -269,6 +292,7 @@ The `induc` method gives a dependent function, which takes the base case and the
 The _base case_ is inhabited by the constructor of type `isEven(zero)`.
 The _induction step_ for `n` is a term of type `isEven(double(succ(n)))` as a function of `n` and
 the _induction hypothesis_. Note that the induction hypothesis is a term of type `isEven(double(n))`.
+
 ```tut
 val thmDoubleEven = n ~>: isEven(double(n))
 val hyp = "isEven(double(n))" :: isEven(double(n))
@@ -314,6 +338,7 @@ assert(size(one)(v1) == one)
 ```
 
 For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
+
 ```tut
 val VecN = "Vec(Nat)" ::: Nat ->: Types
 val VecNFmly = VecPtn.Family(VecN)
