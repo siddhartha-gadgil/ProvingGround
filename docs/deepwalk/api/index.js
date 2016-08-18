@@ -1,0 +1,1 @@
+Index.PACKAGES = {"deepwalk4s" : [{"object" : "deepwalk4s\/Graph$.html", "name" : "deepwalk4s.Graph"}]};

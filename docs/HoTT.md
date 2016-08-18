@@ -1,7 +1,11 @@
+---
+title: HoTT
+layout: page
+---
 
-# Provingground - HoTT
+## Provingground - Basic Homotopy Type theory implementation
 
-These notes concern the object _HoTT_, which has the core implementation of homotopy type theory. Implementation details are (rather, will be) in the [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/).
+These notes concern the object _HoTT_, which has the core implementation of homotopy type theory.
 
 The major components of homotopy type theory implemented in the object HoTT are
 
@@ -94,6 +98,13 @@ scala> indep == dep
 res4: Boolean = true
 ```
 
+Note that we have alternative notation for lambdas, the maps to methods `:->` and `:~>`.
+For instance, we can define the identity using these.
+
+```scala
+scala> assert(id == A :~> (a :-> a))
+```
+
 ### Hygiene for λs
 
 A new variable object, which has the same toString, is created in making lambdas. This is to avoid name clashes.
@@ -104,10 +115,10 @@ scala> val l = dep.asInstanceOf[LambdaFixed[Term, Term]]
 l: provingground.HoTT.LambdaFixed[provingground.HoTT.Term,provingground.HoTT.Term] = (a : (A : 𝒰 )) ↦ (a : (A : 𝒰 ))
 
 scala> l.variable
-res5: provingground.HoTT.Term = a : (A : 𝒰 )
+res6: provingground.HoTT.Term = a : (A : 𝒰 )
 
 scala> l.variable == a
-res6: Boolean = false
+res7: Boolean = false
 ```
 
 ## Modus Ponens
@@ -131,7 +142,7 @@ The type of Modus Ponens is again a mixture of Pi-types and function types.
 
 ```scala
 scala> mp.typ
-res7: provingground.HoTT.Typ[provingground.HoTT.Term] = ∏((A : 𝒰 ) ↦ (∏((B : 𝒰 ) ↦ ((A : 𝒰 ) → (((A : 𝒰 ) → (B : 𝒰 )) → (B : 𝒰 ))))))
+res8: provingground.HoTT.Typ[provingground.HoTT.Term] = ∏((A : 𝒰 ) ↦ (∏((B : 𝒰 ) ↦ ((A : 𝒰 ) → (((A : 𝒰 ) → (B : 𝒰 )) → (B : 𝒰 ))))))
 ```
 
 
@@ -143,7 +154,7 @@ scala> val mpBA = mp(B)(A)
 mpBA: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]] = (a : (B : 𝒰 )) ↦ ((f : ((B : 𝒰 ) → (A : 𝒰 ))) ↦ ((f : ((B : 𝒰 ) → (A : 𝒰 ))) (a : (B : 𝒰 )) : (A : 𝒰 )))
 
 scala> mpBA.typ == B ->: (B ->: A) ->: A
-res8: Boolean = true
+res9: Boolean = true
 ```
 
 
@@ -157,10 +168,10 @@ scala> val aa = "aa" :: A
 aa: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = aa : (A : 𝒰 )
 
 scala> lmbda(aa)(aa) == lmbda(a)(a)
-res9: Boolean = true
+res10: Boolean = true
 
 scala> (lmbda(aa)(aa))(a) == a
-res10: Boolean = true
+res11: Boolean = true
 ```
 
 
@@ -195,14 +206,14 @@ There is also a convenience method for defining Sigma types using λs.
 
 ```scala
 scala> Sgma(a !: A, Bs(a))
-res11: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
+res12: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
 ```
 
 
 
 ```scala
 scala> Sgma(a !: A, Bs(a) ->: Bs(a) ->: A)
-res12: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]] = ∑((a : (A : 𝒰 )) ↦ (((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ) → (((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ) → (A : 𝒰 ))))
+res13: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]] = ∑((a : (A : 𝒰 )) ↦ (((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ) → (((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ) → (A : 𝒰 ))))
 ```
 
 
@@ -219,22 +230,22 @@ scala> val b = "b" :: B
 b: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b : (B : 𝒰 )
 
 scala> mkPair(A, B)
-res13: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
+res14: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
 
 scala> mkPair(a, b)
-res14: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((a : (A : 𝒰 )) , (b : (B : 𝒰 )))
+res15: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((a : (A : 𝒰 )) , (b : (B : 𝒰 )))
 
 scala> mkPair(a, b).typ
-res15: provingground.HoTT.Typ[provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
+res16: provingground.HoTT.Typ[provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
 
 scala> mkPair(a, ba).typ
-res16: provingground.HoTT.Typ[provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
+res17: provingground.HoTT.Typ[provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
 ```
 
 
 ```scala
 scala> mkPair(A, B).asInstanceOf[PairTyp[Term, Term]]
-res17: provingground.HoTT.PairTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
+res18: provingground.HoTT.PairTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
 ```
 
 
@@ -251,13 +262,13 @@ AplusB: provingground.HoTT.PlusTyp[provingground.HoTT.Term,provingground.HoTT.Te
 
 ```scala
 scala> AplusB.ifn(a)
-res18: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provingground.HoTT.Term] = FirstIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),a : (A : 𝒰 ))
+res19: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provingground.HoTT.Term] = FirstIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),a : (A : 𝒰 ))
 ```
 
 
 ```scala
 scala> AplusB.jfn
-res19: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($n : (B : 𝒰 )) ↦ (ScndIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),$n : (B : 𝒰 )))
+res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($t : (B : 𝒰 )) ↦ (ScndIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),$t : (B : 𝒰 )))
 ```
 
 In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.
@@ -278,7 +289,7 @@ ref: provingground.HoTT.Refl[provingground.HoTT.Term with provingground.HoTT.Sub
 
 ```scala
 scala> ref.typ == eqAa
-res20: Boolean = true
+res21: Boolean = true
 ```
 
 
@@ -289,15 +300,11 @@ Finally, we have the types corresponding to _True_ and _False_
 
 ```scala
 scala> Unit
-res21: provingground.HoTT.Unit.type = Unit
+res22: provingground.HoTT.Unit.type = Unit
 
 scala> Zero
-res22: provingground.HoTT.Zero.type = Zero
+res23: provingground.HoTT.Zero.type = Zero
 
 scala> Star !: Unit
-res23: provingground.HoTT.Term = Star
-```
-
-
-```scala
+res24: provingground.HoTT.Term = Star
 ```

@@ -1,0 +1,542 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>andrewscurtis - provingground.andrewscurtis</title>
+          <meta name="description" content="andrewscurtis - provingground.andrewscurtis" />
+          <meta name="keywords" content="andrewscurtis provingground.andrewscurtis" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'provingground.andrewscurtis.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="provingground">provingground</a></p>
+        <h1>andrewscurtis</h1><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andrewscurtis</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.andrewscurtis.ACElem" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACElemextendsProductwithSerializable"></a>
+      <a id="ACElem:ACElem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ACElem.html"><span class="name">ACElem</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="moves">moves: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>, <span name="rank">rank: <span class="extype" name="scala.Int">Int</span></span>, <span name="pres">pres: <a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACElemextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An element in the Andrews-Curtis evolution,
+namely:
+* actor name,
+* number of loops,
+* rank
+* associated presentation
+* weight in distribution
+</p>
+    </li><li name="provingground.andrewscurtis.ACPortableResults" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACPortableResultsextendsACresultswithProductwithSerializable"></a>
+      <a id="ACPortableResults:ACPortableResults"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ACPortableResults.html"><span class="name">ACPortableResults</span></a><span class="params">(<span name="paths">paths: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Stream">Stream</span>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>])]]</span>)</span><span class="result"> extends <a href="ACresults.html" class="extype" name="provingground.andrewscurtis.ACresults">ACresults</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACPortableResultsextendsACresultswithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.ACStates" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ACStatesextendsAnyRef"></a>
+      <a id="ACStates:ACStates"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ACStates.html"><span class="name">ACStates</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACStatesextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.ACThm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACThmextendsProductwithSerializable"></a>
+      <a id="ACThm:ACThm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ACThm.html"><span class="name">ACThm</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="pres">pres: <a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACThmextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An presentation (theorem) in the Andrews-Curtis evolution,
+namely:
+* actor name,
+* number of loops,
+* presentation
+* weight in distribution on presentations
+</p>
+    </li><li name="provingground.andrewscurtis.ACresults" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACresultsextendsACStates"></a>
+      <a id="ACresults:ACresults"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ACresults.html"><span class="name">ACresults</span></a><span class="result"> extends <a href="ACStates.html" class="extype" name="provingground.andrewscurtis.ACStates">ACStates</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACresultsextendsACStates" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.AtomicMove" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AtomicMoveextendsprovingground.andrewscurtis.Moves=&gt;Option[provingground.andrewscurtis.Moves]"></a>
+      <a id="AtomicMove:AtomicMove"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicMove.html"><span class="name">AtomicMove</span></a><span class="result"> extends (<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@AtomicMoveextendsprovingground.andrewscurtis.Moves=&gt;Option[provingground.andrewscurtis.Moves]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Conj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConjextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="Conj:Conj"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Conj.html"><span class="name">Conj</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ConjextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Inv" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InvextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="Inv:Inv"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Inv.html"><span class="name">Inv</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@InvextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.LftMult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LftMultextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="LftMult:LftMult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LftMult.html"><span class="name">LftMult</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@LftMultextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.LftMultInv" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LftMultInvextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="LftMultInv:LftMultInv"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LftMultInv.html"><span class="name">LftMultInv</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@LftMultInvextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Moves" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MovesextendsAnyValwithProductwithSerializable"></a>
+      <a id="Moves:Moves"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Moves.html"><span class="name">Moves</span></a><span class="params">(<span name="moves">moves: <span class="extype" name="scala.List">List</span>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@MovesextendsAnyValwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Param" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParamextendsProductwithSerializable"></a>
+      <a id="Param:Param"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Param.html"><span class="name">Param</span></a><span class="params">(<span name="rank">rank: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">2</span></span>, <span name="size">size: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1000</span></span>, <span name="wrdCntn">wrdCntn: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ParamextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.RtMult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RtMultextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="RtMult:RtMult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RtMult.html"><span class="name">RtMult</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@RtMultextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.RtMultInv" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RtMultInvextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="RtMultInv:RtMultInv"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RtMultInv.html"><span class="name">RtMultInv</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@RtMultInvextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Transpose" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TransposeextendsAtomicMovewithProductwithSerializable"></a>
+      <a id="Transpose:Transpose"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Transpose.html"><span class="name">Transpose</span></a><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="l">l: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@TransposeextendsAtomicMovewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="provingground.andrewscurtis.ACElem" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACElem"></a>
+      <a id="ACElem:ACElem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ACElem$.html"><span class="name">ACElem</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACElem" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.ACThm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACThm"></a>
+      <a id="ACThm:ACThm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ACThm$.html"><span class="name">ACThm</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACThm" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.ACresults" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ACresults"></a>
+      <a id="ACresults:ACresults"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ACresults$.html"><span class="name">ACresults</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@ACresults" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.AtomicMove" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicMove"></a>
+      <a id="AtomicMove:AtomicMove"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicMove$.html"><span class="name">AtomicMove</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@AtomicMove" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.DiffStructure" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DiffStructure"></a>
+      <a id="DiffStructure:DiffStructure"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DiffStructure$.html"><span class="name">DiffStructure</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@DiffStructure" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.FreeGroups" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FreeGroups"></a>
+      <a id="FreeGroups:FreeGroups"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FreeGroups$.html"><span class="name">FreeGroups</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@FreeGroups" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Id" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Id"></a>
+      <a id="Id:Id"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Id$.html"><span class="name">Id</span></a><span class="result"> extends <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@Id" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.MoveGenerator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MoveGenerator"></a>
+      <a id="MoveGenerator:MoveGenerator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MoveGenerator$.html"><span class="name">MoveGenerator</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@MoveGenerator" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.Moves" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Moves"></a>
+      <a id="Moves:Moves"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Moves$.html"><span class="name">Moves</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@Moves" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.andrewscurtis.SimpleAcEvolution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleAcEvolution"></a>
+      <a id="SimpleAcEvolution:SimpleAcEvolution"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleAcEvolution$.html"><span class="name">SimpleAcEvolution</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#provingground.andrewscurtis.package@SimpleAcEvolution" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

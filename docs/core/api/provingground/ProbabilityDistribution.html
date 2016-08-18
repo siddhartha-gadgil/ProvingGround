@@ -1,0 +1,451 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>ProbabilityDistribution - provingground.ProbabilityDistribution</title>
+          <meta name="description" content="ProbabilityDistribution - provingground.ProbabilityDistribution" />
+          <meta name="keywords" content="ProbabilityDistribution provingground.ProbabilityDistribution" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.ProbabilityDistribution';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <a href="ProbabilityDistribution$.html" title="See companion object"><img alt="Trait/Object" src="../lib/trait_to_object_big.png" /></a>
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1><a href="ProbabilityDistribution$.html" title="See companion object">ProbabilityDistribution</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="ProbabilityDistribution$.html" title="See companion object">object ProbabilityDistribution</a>
+            | <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ProbabilityDistribution</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A probability distribution, from which we can pick values at random (the only abstract method).
+We can obtain a random variable from this, which is an iterator.
+</p></div><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="FiniteDistribution$$Empty.html" class="extype" name="provingground.FiniteDistribution.Empty">Empty</a>, <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>, <a href="FiniteDistributionParVec.html" class="extype" name="provingground.FiniteDistributionParVec">FiniteDistributionParVec</a>, <a href="FiniteDistributionSet.html" class="extype" name="provingground.FiniteDistributionSet">FiniteDistributionSet</a>, <a href="ProbabilityDistribution$$FlatMapped.html" class="extype" name="provingground.ProbabilityDistribution.FlatMapped">FlatMapped</a>, <a href="GenFiniteDistribution.html" class="extype" name="provingground.GenFiniteDistribution">GenFiniteDistribution</a>, <a href="ProbabilityDistribution$$Mapped.html" class="extype" name="provingground.ProbabilityDistribution.Mapped">Mapped</a>, <a href="ProbabilityDistribution$$Mixin.html" class="extype" name="provingground.ProbabilityDistribution.Mixin">Mixin</a>, <a href="ProbabilityDistribution$$MixinOpt.html" class="extype" name="provingground.ProbabilityDistribution.MixinOpt">MixinOpt</a>, <a href="ProbabilityDistribution$$Mixture.html" class="extype" name="provingground.ProbabilityDistribution.Mixture">Mixture</a></div>
+          </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.ProbabilityDistribution"><span>ProbabilityDistribution</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="scala.Any#getClass" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.ProbabilityDistribution#next" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="next:A"></a>
+      <a id="next:A"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">next</span><span class="result">: <span class="extype" name="provingground.ProbabilityDistribution.A">A</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@next:A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the next random value
+</p>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.ProbabilityDistribution#&lt;++&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;++&gt;(components:=&gt;Vector[provingground.Weighted[provingground.ProbabilityDistribution[A]]]):provingground.ProbabilityDistribution.Mixture[A]"></a>
+      <a id="&lt;++&gt;(⇒Vector[Weighted[ProbabilityDistribution[A]]]):Mixture[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$plus$plus$greater" class="name">&lt;++&gt;</span><span class="params">(<span name="components">components: ⇒ <span class="extype" name="scala.Vector">Vector</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]]]</span>)</span><span class="result">: <a href="ProbabilityDistribution$$Mixture.html" class="extype" name="provingground.ProbabilityDistribution.Mixture">Mixture</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@&lt;++&gt;(components:=&gt;Vector[provingground.Weighted[provingground.ProbabilityDistribution[A]]]):provingground.ProbabilityDistribution.Mixture[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">mix in weighted distributions;
+the mixed in distributions are called by name, so can depend on this distribution.</p>
+    </li><li name="provingground.ProbabilityDistribution#&lt;+&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;+&gt;(mixin:=&gt;provingground.ProbabilityDistribution[A],weight:Double):provingground.ProbabilityDistribution.Mixin[A]"></a>
+      <a id="&lt;+&gt;(⇒ProbabilityDistribution[A],Double):Mixin[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$plus$greater" class="name">&lt;+&gt;</span><span class="params">(<span name="mixin">mixin: ⇒ <a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="ProbabilityDistribution$$Mixin.html" class="extype" name="provingground.ProbabilityDistribution.Mixin">Mixin</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@&lt;+&gt;(mixin:=&gt;provingground.ProbabilityDistribution[A],weight:Double):provingground.ProbabilityDistribution.Mixin[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">generates from the mixed in distribution with probability _weight_,
+otherwise defaults to this distribution;
+as the mixed in distribution is called by name, it may depend on the present one.</p>
+    </li><li name="provingground.ProbabilityDistribution#&lt;+?&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;+?&gt;(mixin:=&gt;provingground.ProbabilityDistribution[Option[A]],weight:Double):provingground.ProbabilityDistribution.MixinOpt[A]"></a>
+      <a id="&lt;+?&gt;(⇒ProbabilityDistribution[Option[A]],Double):MixinOpt[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$plus$qmark$greater" class="name">&lt;+?&gt;</span><span class="params">(<span name="mixin">mixin: ⇒ <a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]]</span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="ProbabilityDistribution$$MixinOpt.html" class="extype" name="provingground.ProbabilityDistribution.MixinOpt">MixinOpt</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@&lt;+?&gt;(mixin:=&gt;provingground.ProbabilityDistribution[Option[A]],weight:Double):provingground.ProbabilityDistribution.MixinOpt[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">generates from the mixed in optional valued distribution with probability <code>weight</code>,
+otherwise, or if the optional returns None, defaults to this distribution;
+the mixed in distribution is call by name, so may depend on this distribution.</p>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.ProbabilityDistribution#findFut" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="findFut(p:A=&gt;Boolean,maxloops:Long):scala.concurrent.Future[Option[A]]"></a>
+      <a id="findFut((A)⇒Boolean,Long):Future[Option[A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">findFut</span><span class="params">(<span name="p">p: (<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="maxloops">maxloops: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@findFut(p:A=&gt;Boolean,maxloops:Long):scala.concurrent.Future[Option[A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Find element satisfying predicate, runs concurrently, returning future
+</p>
+    </li><li name="provingground.ProbabilityDistribution#flatMap" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="flatMap[B](f:A=&gt;provingground.ProbabilityDistribution[B]):provingground.ProbabilityDistribution[B]"></a>
+      <a id="flatMap[B]((A)⇒ProbabilityDistribution[B]):ProbabilityDistribution[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flatMap</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>) ⇒ <a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.flatMap.B">B</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.flatMap.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@flatMap[B](f:A=&gt;provingground.ProbabilityDistribution[B]):provingground.ProbabilityDistribution[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.ProbabilityDistribution#map" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="map[B](f:A=&gt;B):provingground.ProbabilityDistribution[B]"></a>
+      <a id="map[B]((A)⇒B):ProbabilityDistribution[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>) ⇒ <span class="extype" name="provingground.ProbabilityDistribution.map.B">B</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.map.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@map[B](f:A=&gt;B):provingground.ProbabilityDistribution[B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ProbabilityDistribution#randomVariable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="randomVariable:Iterator[A]"></a>
+      <a id="randomVariable:Iterator[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randomVariable</span><span class="result">: <span class="extype" name="scala.Iterator">Iterator</span>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@randomVariable:Iterator[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.ProbabilityDistribution#sample" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sample(n:Int):provingground.FiniteDistribution[A]"></a>
+      <a id="sample(Int):FiniteDistribution[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sample</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.ProbabilityDistribution.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@sample(n:Int):provingground.FiniteDistribution[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns i.i.d.</p><div class="fullcomment"><div class="comment cmt"><p>returns i.i.d. sample
+</p></div></div>
+    </li><li name="scala.Any#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.ProbabilityDistribution@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

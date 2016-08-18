@@ -1,4 +1,7 @@
-
+---
+title: ScalaRep
+layout: page
+---
 ## Scala Representations
 
 Scala objects are integrated with HoTT by using wrappers, combinators and implicit based convenience methods. In this note we look at the basic representations. The main power of this is to provide automatically (through implicits) types and scala bindings for functions from the basic ones.
@@ -22,6 +25,7 @@ case object NatInt extends ScalaTyp[Int]
 ```
 
 **Warning:** This is an unsafe type, as Integers can overflow, and there is no checking for positivity.
+There is an alternative implementation using spire which is safe. We see this in the symbolic algebra notes.
 
 
 ```tut
@@ -78,9 +82,4 @@ val prod = ((n : Int) => (m: Int) => n * m).term
 
 ```tut
 prod(2.term)(4.term)
-```
-
-
-```tut
-
 ```

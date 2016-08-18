@@ -1,7 +1,11 @@
+---
+title: HoTT
+layout: page
+---
 
-# Provingground - HoTT
+## Provingground - Basic Homotopy Type theory implementation
 
-These notes concern the object _HoTT_, which has the core implementation of homotopy type theory. Implementation details are (rather, will be) in the [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/).
+These notes concern the object _HoTT_, which has the core implementation of homotopy type theory.
 
 The major components of homotopy type theory implemented in the object HoTT are
 
@@ -73,6 +77,13 @@ The result is either _LambdaFixed_ or _Lambda_ accordingly.
 val indep = lmbda(a)(a)
 val dep = lambda(a)(a)
 indep == dep
+```
+
+Note that we have alternative notation for lambdas, the maps to methods `:->` and `:~>`.
+For instance, we can define the identity using these.
+
+```tut
+assert(id == A :~> (a :-> a))
 ```
 
 ### Hygiene for λs
@@ -232,9 +243,4 @@ Finally, we have the types corresponding to _True_ and _False_
 Unit
 Zero
 Star !: Unit
-```
-
-
-```tut
-
 ```

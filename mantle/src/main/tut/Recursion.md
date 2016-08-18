@@ -1,8 +1,7 @@
 ---
-title: Inductive Types - Recursion and induction
-layout: default
+title: Inductive Types
+layout: page
 ---
-
 
 ## Recursion for inductive types
 

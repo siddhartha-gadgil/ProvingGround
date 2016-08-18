@@ -1,8 +1,7 @@
 ---
-title: Inductive Types - Recursion and induction
-layout: default
+title: Inductive Types
+layout: page
 ---
-
 
 ## Recursion for inductive types
 
@@ -529,13 +528,13 @@ A typical example is vectors, defined as a family indexed by their length.
 
 ```scala
 scala> val IndN = new IndexedConstructorPatterns(Nat ->: Types)
-IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@70280c9f
+IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@1da16570
 
 scala> val Vec = "Vec" :: Nat ->: Type
 Vec: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = Vec : ((Nat : 𝒰 ) → (𝒰 _0))
 
 scala> val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@63544b75
+VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@4f0fed78
 
 scala> val VecFmly = VecPtn.Family(Vec)
 VecFmly: VecPtn.Family = Family(Vec : ((Nat : 𝒰 ) → (𝒰 _0)))

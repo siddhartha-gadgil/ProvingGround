@@ -1,0 +1,1191 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>NatRing - provingground.NatRing</title>
+          <meta name="description" content="NatRing - provingground.NatRing" />
+          <meta name="keywords" content="NatRing provingground.NatRing" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.NatRing$';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Object" src="../lib/object_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
+        <h1>NatRing</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="provingground">package provingground</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.NatRing$" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">NatRing</span><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.NatRing"><span>NatRing</span></li><li class="in" name="provingground.SymbolicCRing"><span>SymbolicCRing</span></li><li class="in" name="provingground.SymbolicCRig"><span>SymbolicCRig</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.SymbolicCRig.AddLiteral" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AddLiteralextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="AddLiteral:AddLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$AddLiteral.html"><span class="name">AddLiteral</span></a><span class="params">(<span name="a">a: <span class="extype" name="provingground.SymbolicCRig.A">A</span></span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@AddLiteralextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.AddTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AddTermextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="AddTerm:AddTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$AddTerm.html"><span class="name">AddTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@AddTermextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns function x + _ where x is not a literal and is indecomposable under sum
+</p><div class="fullcomment"><div class="comment cmt"><p>returns function x + _ where x is not a literal and is indecomposable under sum
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.AdditiveMorphism" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AdditiveMorphism[U&lt;:SymbolicCRig.this.LocalTermwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="AdditiveMorphism[U&lt;:LocalTermwithSubs[U]]:AdditiveMorphism[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$AdditiveMorphism.html"><span class="name">AdditiveMorphism</span></a><span class="tparams">[<span name="U">U &lt;: <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.SymbolicCRig.AdditiveMorphism.U">U</span>]</span>]</span><span class="params">(<span name="base">base: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <span class="extype" name="provingground.SymbolicCRig.AdditiveMorphism.U">U</span>]</span>, <span name="op">op: (<span class="extype" name="provingground.SymbolicCRig.AdditiveMorphism.U">U</span>, <span class="extype" name="provingground.SymbolicCRig.AdditiveMorphism.U">U</span>) ⇒ <span class="extype" name="provingground.SymbolicCRig.AdditiveMorphism.U">U</span></span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@AdditiveMorphism[U&lt;:SymbolicCRig.this.LocalTermwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing.Induc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[provingground.NatRing.Nat,U]withProductwithSerializable"></a>
+      <a id="Induc[U&lt;:TermwithSubs[U]]:Induc[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NatRing$$Induc.html"><span class="name">Induc</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.NatRing.Induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a>, <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.NatRing.Induc.U">U</span>]]</span>, <span name="init">init: <span class="extype" name="provingground.NatRing.Induc.U">U</span></span>, <span name="g">g: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.NatRing.Induc.U">U</span>, <span class="extype" name="provingground.NatRing.Induc.U">U</span>]]</span>)</span><span class="result"> extends <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.NatRing.Induc.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[provingground.NatRing.Nat,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.LocalTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LocalTerm=provingground.RepTerm[A]"></a>
+      <a id="LocalTerm:LocalTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">LocalTerm</span><span class="result"> = <a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@LocalTerm=provingground.RepTerm[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing.Nat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Nat=provingground.NatRing.LocalTerm"></a>
+      <a id="Nat:Nat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Nat</span><span class="result"> = <a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@Nat=provingground.NatRing.LocalTerm" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.Op" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Op=provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]]"></a>
+      <a id="Op:Op"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Op</span><span class="result"> = <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>, <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@Op=provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.PiTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PiTermextendsSymbolicCRig.this.LocalTermwithFoldedTerm[SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="PiTerm:PiTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$PiTerm.html"><span class="name">PiTerm</span></a><span class="params">(<span name="multElems">multElems: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result"> extends <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a> with <a href="FoldedTerm.html" class="extype" name="provingground.FoldedTerm">FoldedTerm</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@PiTermextendsSymbolicCRig.this.LocalTermwithFoldedTerm[SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A product of terms in normal form, i.e.,
+* none of the terms is a sum
+* we have either at least two terms or a single term with exponent not 1,
+* no exponent is 0.</p><div class="fullcomment"><div class="comment cmt"><p>A product of terms in normal form, i.e.,
+* none of the terms is a sum
+* we have either at least two terms or a single term with exponent not 1,
+* no exponent is 0.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing.Rec" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[provingground.NatRing.Nat,U]withProductwithSerializable"></a>
+      <a id="Rec[U&lt;:TermwithSubs[U]]:Rec[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NatRing$$Rec.html"><span class="name">Rec</span></a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.NatRing.Rec.U">U</span>]</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.NatRing.Rec.U">U</span></span>, <span name="g">g: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.NatRing.Rec.U">U</span>, <span class="extype" name="provingground.NatRing.Rec.U">U</span>]]</span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.NatRing.Rec.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[provingground.NatRing.Nat,U]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.SigmaTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SigmaTermextendsSymbolicCRig.this.LocalTermwithFoldedTerm[SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="SigmaTerm:SigmaTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$SigmaTerm.html"><span class="name">SigmaTerm</span></a><span class="params">(<span name="elems">elems: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>]</span>)</span><span class="result"> extends <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a> with <a href="FoldedTerm.html" class="extype" name="provingground.FoldedTerm">FoldedTerm</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@SigmaTermextendsSymbolicCRig.this.LocalTermwithFoldedTerm[SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.multLiteral" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="multLiteralextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="multLiteral:multLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$multLiteral.html"><span class="name">multLiteral</span></a><span class="params">(<span name="b">b: <span class="extype" name="provingground.SymbolicCRig.A">A</span></span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@multLiteralextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.multTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="multTermextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable"></a>
+      <a id="multTerm:multTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$multTerm.html"><span class="name">multTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@multTermextendsHoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.Comb" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Comb"></a>
+      <a id="Comb:Comb"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$Comb$.html"><span class="name">Comb</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@Comb" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing.Induc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Induc"></a>
+      <a id="Induc:Induc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NatRing$$Induc$.html"><span class="name">Induc</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@Induc" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.LitProd" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LitProd"></a>
+      <a id="LitProd:LitProd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$LitProd$.html"><span class="name">LitProd</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@LitProd" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">matching, building for formal product with a literal
+</p><div class="fullcomment"><div class="comment cmt"><p>matching, building for formal product with a literal
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.Literal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Literal"></a>
+      <a id="Literal:Literal"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$Literal$.html"><span class="name">Literal</span></a><span class="result"> extends <a href="ScalaRep$$ScalaSym.html" class="extype" name="provingground.ScalaRep.ScalaSym">ScalaSym</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <span class="extype" name="provingground.SymbolicCRig.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@Literal" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.LiteralSum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LiteralSum"></a>
+      <a id="LiteralSum:LiteralSum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$LiteralSum$.html"><span class="name">LiteralSum</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@LiteralSum" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.LocalTyp" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LocalTyp"></a>
+      <a id="LocalTyp:LocalTyp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$LocalTyp$.html"><span class="name">LocalTyp</span></a><span class="result"> extends <a href="ScalaTyp.html" class="extype" name="provingground.ScalaTyp">ScalaTyp</a>[<span class="extype" name="provingground.SymbolicCRig.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@LocalTyp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing#NatTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NatTyp:provingground.NatRing.LocalTyp.type"></a>
+      <a id="NatTyp:LocalTyp.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">NatTyp</span><span class="result">: <a href="#LocalTyp" class="extmbr" name="provingground.SymbolicCRig.LocalTyp">LocalTyp</a>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@NatTyp:provingground.NatRing.LocalTyp.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.PiTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PiTerm"></a>
+      <a id="PiTerm:PiTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$PiTerm$.html"><span class="name">PiTerm</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@PiTerm" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.Reciprocal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Reciprocal"></a>
+      <a id="Reciprocal:Reciprocal"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$Reciprocal$.html"><span class="name">Reciprocal</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@Reciprocal" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.SigmaTerm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SigmaTerm"></a>
+      <a id="SigmaTerm:SigmaTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$SigmaTerm$.html"><span class="name">SigmaTerm</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@SigmaTerm" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#crigStructure" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="crigStructure:spire.algebra.CRig[SymbolicCRig.this.LocalTerm]"></a>
+      <a id="crigStructure:CRig[LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">crigStructure</span><span class="result">: <span class="extype" name="spire.algebra.CRig">CRig</span>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@crigStructure:spire.algebra.CRig[SymbolicCRig.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRing#cringStructure" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cringStructure:spire.algebra.CRing[SymbolicCRing.this.LocalTerm]"></a>
+      <a id="cringStructure:CRing[LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cringStructure</span><span class="result">: <span class="extype" name="spire.algebra.CRing">CRing</span>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@cringStructure:spire.algebra.CRing[SymbolicCRing.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#funcSum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="funcSum(f:SymbolicCRig.this.LocalTerm=&gt;SymbolicCRig.this.LocalTerm,g:SymbolicCRig.this.LocalTerm=&gt;SymbolicCRig.this.LocalTerm):provingground.HoTT.Func[provingground.RepTerm[A],SymbolicCRig.this.LocalTerm]"></a>
+      <a id="funcSum((LocalTerm)⇒LocalTerm,(LocalTerm)⇒LocalTerm):Func[RepTerm[SafeLong],LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">funcSum</span><span class="params">(<span name="f">f: (<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>, <span name="g">g: (<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@funcSum(f:SymbolicCRig.this.LocalTerm=&gt;SymbolicCRig.this.LocalTerm,g:SymbolicCRig.this.LocalTerm=&gt;SymbolicCRig.this.LocalTerm):provingground.HoTT.Func[provingground.RepTerm[A],SymbolicCRig.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.NatRing#intLiteral" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="intLiteral(n:Int):provingground.NatRing.Nat"></a>
+      <a id="intLiteral(Int):Nat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">intLiteral</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="#Nat=provingground.NatRing.LocalTerm" class="extmbr" name="provingground.NatRing.Nat">Nat</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@intLiteral(n:Int):provingground.NatRing.Nat" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.SymbolicCRing#minusone" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]"></a>
+      <a id="minusone:LocalTermwithSubs[LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minusone</span><span class="result">: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.SymbolicCRing#negate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="negate:provingground.HoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]"></a>
+      <a id="negate:Func[LocalTerm,LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">negate</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>, <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@negate:provingground.HoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#posPower" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="posPower(x:SymbolicCRig.this.LocalTerm,n:Int,accum:SymbolicCRig.this.LocalTerm):SymbolicCRig.this.LocalTerm"></a>
+      <a id="posPower(LocalTerm,Int,LocalTerm):LocalTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">posPower</span><span class="params">(<span name="x">x: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>, <span name="accum">accum: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a> = <span class="symbol"><span class="name"><a href="SymbolicCRig.html#rig:spire.algebra.Rig[A]">Literal(one)</a></span></span></span>)</span><span class="result">: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@posPower(x:SymbolicCRig.this.LocalTerm,n:Int,accum:SymbolicCRig.this.LocalTerm):SymbolicCRig.this.LocalTerm" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#power" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="power(x:SymbolicCRig.this.LocalTerm,n:Int):SymbolicCRig.this.LocalTerm"></a>
+      <a id="power(LocalTerm,Int):LocalTerm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">power</span><span class="params">(<span name="x">x: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@power(x:SymbolicCRig.this.LocalTerm,n:Int):SymbolicCRig.this.LocalTerm" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">returns power of x by n,
+in generality an error for negative n;
+should be overridden in fields, where negative powers are meaningful
+</p><div class="fullcomment"><div class="comment cmt"><p>returns power of x by n,
+in generality an error for negative n;
+should be overridden in fields, where negative powers are meaningful
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig.prod" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="prod"></a>
+      <a id="prod:prod"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$prod$.html"><span class="name">prod</span></a><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@prod" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.NatRing#recDefn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recDefn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](n:spire.math.SafeLong,formal:U,h:spire.math.SafeLong=&gt;(U=&gt;U)):U"></a>
+      <a id="recDefn[U&lt;:TermwithSubs[U]](SafeLong,U,(SafeLong)⇒(U)⇒U):U"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recDefn</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.NatRing.recDefn.U">U</span>]</span>]</span><span class="params">(<span name="n">n: <span class="extype" name="spire.math.SafeLong">SafeLong</span></span>, <span name="formal">formal: <span class="extype" name="provingground.NatRing.recDefn.U">U</span></span>, <span name="h">h: (<span class="extype" name="spire.math.SafeLong">SafeLong</span>) ⇒ (<span class="extype" name="provingground.NatRing.recDefn.U">U</span>) ⇒ <span class="extype" name="provingground.NatRing.recDefn.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.NatRing.recDefn.U">U</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@recDefn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](n:spire.math.SafeLong,formal:U,h:spire.math.SafeLong=&gt;(U=&gt;U)):U" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig#reciprocal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reciprocal:provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]"></a>
+      <a id="reciprocal:Func[LocalTerm,LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reciprocal</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>, <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@reciprocal:provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#reciprocalOpt" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reciprocalOpt:Option[provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]]"></a>
+      <a id="reciprocalOpt:Option[Func[LocalTerm,LocalTerm]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reciprocalOpt</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>, <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@reciprocalOpt:Option[provingground.HoTT.Func[SymbolicCRig.this.LocalTerm,SymbolicCRig.this.LocalTerm]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">override this in fields
+</p><div class="fullcomment"><div class="comment cmt"><p>override this in fields
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#rig" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="rig:spire.algebra.Rig[A]"></a>
+      <a id="rig:Rig[SafeLong]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rig</span><span class="result">: <span class="extype" name="spire.algebra.Rig">Rig</span>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@rig:spire.algebra.Rig[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="provingground.SymbolicCRing#ring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ring:spire.algebra.Ring[A]"></a>
+      <a id="ring:Ring[SafeLong]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ring</span><span class="result">: <span class="extype" name="spire.algebra.Ring">Ring</span>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@ring:spire.algebra.Ring[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="provingground.NatRing#succ" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="succ:provingground.HoTT.Func[provingground.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]],provingground.NatRing.LocalTerm]"></a>
+      <a id="succ:Func[RepTerm[SafeLong]withSubs[RepTerm[SafeLong]],LocalTerm]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">succ</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]], <a href="#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@succ:provingground.HoTT.Func[provingground.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]],provingground.NatRing.LocalTerm]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.SymbolicCRig.sum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sum"></a>
+      <a id="sum:sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SymbolicCRig$sum$.html"><span class="name">sum</span></a><span class="result"> extends <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.SymbolicCRig@sum" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.NatRing#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@toString():String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.NatRing">NatRing</a> → AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.SymbolicCRig#two" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="two:A"></a>
+      <a id="two:SafeLong"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">two</span><span class="result">: <span class="extype" name="spire.math.SafeLong">SafeLong</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@two:A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a></dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.NatRing#x" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="x:provingground.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]]"></a>
+      <a id="x:RepTerm[SafeLong]withSubs[RepTerm[SafeLong]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">x</span><span class="result">: <a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.NatRing$@x:provingground.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="provingground.SymbolicCRing">
+              <h3>Inherited from <a href="SymbolicCRing.html" class="extype" name="provingground.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</h3>
+            </div><div class="parent" name="provingground.SymbolicCRig">
+              <h3>Inherited from <a href="SymbolicCRig.html" class="extype" name="provingground.SymbolicCRig">SymbolicCRig</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
