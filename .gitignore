@@ -59,8 +59,6 @@ lib/*.jar
 
 *.orig
 
-index/
-
 activator*
 
 .classpath
