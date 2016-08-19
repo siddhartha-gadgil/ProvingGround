@@ -1464,9 +1464,9 @@ object HoTT {
         extends Term
         with Subs[FirstIncl[U, V]] {
 
-      def newobj = FirstIncl(typ, value.newobj)
+      def newobj = this//FirstIncl(typ, value.newobj)
 
-      def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
+      def subs(x: Term, y: Term) = FirstIncl(typ.replace(x, y), value.replace(x, y))
     }
 
     /**
@@ -1476,9 +1476,9 @@ object HoTT {
         typ: PlusTyp[U, V], value: V)
         extends Term
         with Subs[ScndIncl[U, V]] {
-      def newobj = ScndIncl(typ, value.newobj)
+      def newobj = this//ScndIncl(typ, value.newobj)
 
-      def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
+      def subs(x: Term, y: Term) = ScndIncl(typ.replace(x, y), value.replace(x, y))
     }
   }
 
@@ -1487,17 +1487,17 @@ object HoTT {
     */
   case class PlusTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: Typ[U], second: Typ[V])
-      extends Typ[Term] { plustyp =>
+      extends Typ[Term] with Subs[PlusTyp[U, V]] { plustyp =>
     def i(value: U) = PlusTyp.FirstIncl(this, value)
 
     def j(value: V) = PlusTyp.ScndIncl(this, value)
 
-    val ifn = {
+    lazy val ifn = {
       val a = first.Var
       lmbda(a)(i(a))
     }
 
-    val jfn = {
+    lazy val jfn = {
       val a = second.Var
       lmbda(a)(j(a))
     }
@@ -1541,21 +1541,18 @@ object HoTT {
 
       def subs(x: Term, y: Term) = this
 
-      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
+      lazy val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
       def newobj = this
     }
 
     def subs(x: Term, y: Term) = PlusTyp(first.replace(x, y), second.replace(x, y))
 
-    def newobj = {
-      val newfirst = first.newobj
-      PlusTyp(newfirst, second.replace(first, newfirst))
-    }
+    def newobj = this
 
     type Obj = Term
 
-    val typ = Type
+    lazy val typ = Type
 
     def variable(name: AnySym) = SymbObj(name, this)
   }
