@@ -244,8 +244,8 @@ res17: provingground.HoTT.Typ[provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) �
 
 
 ```scala
-scala> mkPair(A, B).asInstanceOf[PairTyp[Term, Term]]
-res18: provingground.HoTT.PairTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
+scala> mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
+res18: provingground.HoTT.ProdTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
 ```
 
 

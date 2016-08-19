@@ -55,9 +55,9 @@ object Tuples {
       head: U,
       tail: TermTuple[W, F, T]
   )
-      extends TermTuple[PairObj[U, W], FuncLike[U, F], T] {
+      extends TermTuple[PairTerm[U, W], FuncLike[U, F], T] {
 
-    lazy val term = PairObj(head, tail.term)
+    lazy val term = PairTerm(head, tail.term)
 
     def subs(x: Term, y: Term) = PairCons(head.subs(x, y), tail.subs(x, y))
 

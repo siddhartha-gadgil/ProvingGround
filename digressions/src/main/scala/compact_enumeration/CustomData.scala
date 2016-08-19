@@ -16,22 +16,22 @@ object CustomData {
   private def andTyp(first: Typ, second: Typ) = (first, second) match {
     case (FuncPositive(f, domleft), FuncPositive(g, domright)) if f == g =>
       FuncPositive(f, Interval(domleft.lower, domright.upper))
-    case _ => PairTyp(first, second)
+    case _ => ProdTyp(first, second)
   }
 
   /**
     * pair type
     */
-  case class PairTyp(first: Typ, second: Typ) extends Typ
+  case class ProdTyp(first: Typ, second: Typ) extends Typ
 
   /**
     * Local version of pair object.
     */
-  case class PairObj(first: Term, second: Term) extends Term {
-    lazy val typ = PairTyp(first.typ, second.typ)
+  case class PairTerm(first: Term, second: Term) extends Term {
+    lazy val typ = ProdTyp(first.typ, second.typ)
   }
 
-  private def and = PairObj.apply _
+  private def and = PairTerm.apply _
 
   /**
     * functions R -> R

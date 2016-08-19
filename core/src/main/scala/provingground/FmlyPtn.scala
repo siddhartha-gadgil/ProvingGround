@@ -94,7 +94,7 @@ sealed trait FmlyPtn[
 
   def contractType(w: FamilyType)(arg: ArgType): Typ[O]
 
-  //    def collapse(mem: PairObj[Family, ArgType]) = contract(mem.first)(mem.second)
+  //    def collapse(mem: PairTerm[Family, ArgType]) = contract(mem.first)(mem.second)
 
   /**
     *  type of total index
@@ -365,11 +365,11 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
 
   def argOpt(l: List[Term]): Option[ArgType] = l match {
     case x :: ys =>
-      head.argOpt(ys) map ((t) => PairObj(x.asInstanceOf[TT], t))
+      head.argOpt(ys) map ((t) => PairTerm(x.asInstanceOf[TT], t))
     case _ => None
   }
 
-  //  def arg(x: Total) = PairObj(x.first, head.arg(x.second))
+  //  def arg(x: Total) = PairTerm(x.first, head.arg(x.second))
 
   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
 
@@ -413,7 +413,7 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   }
 
   def depTotalDomain(g: IterDepFunc) =
-    PairTyp(g.dom, head.depTotalDomain(g(g.dom.Var)))
+    ProdTyp(g.dom, head.depTotalDomain(g(g.dom.Var)))
 
   def depUncurry(g: IterDepFunc): FuncLike[Total, Cod] = {
     val dom = depTotalDomain(g)

@@ -193,7 +193,7 @@ mkPair(a, ba).typ
 
 
 ```tut
-mkPair(A, B).asInstanceOf[PairTyp[Term, Term]]
+mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
 ```
 
 

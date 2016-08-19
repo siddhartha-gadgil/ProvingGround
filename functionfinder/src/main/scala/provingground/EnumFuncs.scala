@@ -37,17 +37,17 @@ object EnumFuncs {
 
   def pairs[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: List[U], second: List[V]) =
-    for (x <- first; y <- second) yield PairObj(x, y)
+    for (x <- first; y <- second) yield PairTerm(x, y)
 
   def allPairs[U <: Term with Subs[U], V <: Term with Subs[V]](
       dom: List[U], cods: U => Option[List[V]]): Option[List[AbsPair[U, V]]] =
     dom match {
       case List() => Some(List())
       case x :: List() =>
-        for (l <- cods(x)) yield (for (y <- l) yield PairObj(x, y))
+        for (l <- cods(x)) yield (for (y <- l) yield PairTerm(x, y))
       case x :: zs => {
           val heads = for (l <- cods(x)) yield
-            (for (y <- l) yield PairObj(x, y))
+            (for (y <- l) yield PairTerm(x, y))
           for (h <- heads; t <- allPairs(zs, cods)) yield (h ++ t)
         }
     }

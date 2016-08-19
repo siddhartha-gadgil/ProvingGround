@@ -214,7 +214,7 @@ object HoTT {
       */
     def &&[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         that: Typ[V]
-    ) = PairTyp[UU, V](this, that)
+    ) = ProdTyp[UU, V](this, that)
 
     /**
       * returns Sigma-Type, mainly to use as "such that", for example a group type is this with product etc. dependent on this.
@@ -451,61 +451,61 @@ object HoTT {
   val Type = Universe(0)
 
   /** Pair of types (A, B) */
-  case class PairTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
+  case class ProdTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: Typ[U],
       second: Typ[V]
   )
-      extends Typ[PairObj[U, V]]
+      extends Typ[PairTerm[U, V]]
       with AbsPair[Typ[U], Typ[V]]
-      with Subs[PairTyp[U, V]] {
+      with Subs[ProdTyp[U, V]] {
 
-    type Obj = PairObj[U, V]
+    type Obj = PairTerm[U, V]
 
     lazy val typ = Universe(Math.max(first.typlevel, second.typlevel))
 
     def newobj = {
       val newfirst = first.newobj
-      PairTyp(newfirst, second replace (first, newfirst))
+      ProdTyp(newfirst, second replace (first, newfirst))
     }
 
     lazy val paircons = {
       val a = first.Var
       val b = second.Var
-      lmbda(a)(lmbda(b)(PairObj(a, b)))
+      lmbda(a)(lmbda(b)(PairTerm(a, b)))
     }
 
-    def subs(x: Term, y: Term): PairTyp[U, V] =
+    def subs(x: Term, y: Term): ProdTyp[U, V] =
       if (x == this)
         Try(
-            y.asInstanceOf[PairTyp[U, V]]
+            y.asInstanceOf[ProdTyp[U, V]]
         ).getOrElse({
           println(y); println(x); println(y.typ);
-          PairTyp(first.replace(x, y), second.replace(x, y))
+          ProdTyp(first.replace(x, y), second.replace(x, y))
         })
-      else PairTyp(first.replace(x, y), second.replace(x, y))
+      else ProdTyp(first.replace(x, y), second.replace(x, y))
 
     // The name is lost as `name', but can be recovered using pattern matching.
     def variable(name: AnySym): Obj =
-      PairObj(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
+      PairTerm(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
   }
 
   /** Object (a, b) in (A, B) */
-  case class PairObj[U <: Term with Subs[U], V <: Term with Subs[V]](
+  case class PairTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: U,
       second: V
   )
       extends AbsPair[U, V]
-      with Subs[PairObj[U, V]] {
-    lazy val typ: PairTyp[Term, Term] = PairTyp(first.typ, second.typ)
+      with Subs[PairTerm[U, V]] {
+    lazy val typ: ProdTyp[Term, Term] = ProdTyp(first.typ, second.typ)
 
     def newobj = {
       val newfirst = first.newobj
-      PairObj(newfirst, second replace (first, newfirst))
+      PairTerm(newfirst, second replace (first, newfirst))
     }
 
     def subs(x: Term, y: Term) =
-      if (x == this) y.asInstanceOf[PairObj[U, V]]
-      else PairObj[U, V](first.replace(x, y), second.replace(x, y))
+      if (x == this) y.asInstanceOf[PairTerm[U, V]]
+      else PairTerm[U, V](first.replace(x, y), second.replace(x, y))
   }
 
   /** Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type. */
@@ -550,7 +550,7 @@ object HoTT {
   def pair[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: U,
       second: V
-  ) = PairObj(first, second)
+  ) = PairTerm(first, second)
 
   /**
     * overloaded method returning a pair object or a pair type.
@@ -558,18 +558,18 @@ object HoTT {
   def pair[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: Typ[U] with Subs[Typ[U]],
       second: Typ[V] with Subs[Typ[V]]
-  ) = PairTyp(first, second)
+  ) = ProdTyp(first, second)
 
   /**
     * makes a pair with the appropriate runtime type
     */
   lazy val mkPair: (Term, Term) => AbsPair[Term, Term] = {
-    case (a: Typ[u], b: Typ[v]) => PairTyp[Term, Term](a, b)
+    case (a: Typ[u], b: Typ[v]) => ProdTyp[Term, Term](a, b)
     case (a, b) if b.typ.dependsOn(a) => {
         val fiber = lmbda(a)(b.typ)
         DepPair(a, b, fiber)
       }
-    case (a, b) => PairObj(a, b)
+    case (a, b) => PairTerm(a, b)
   }
 
   class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
@@ -1010,11 +1010,11 @@ object HoTT {
     val typ = variable.typ.asInstanceOf[Typ[U]]
     val newvar = new InnerSym(variable)
     variable match {
-      case PairObj(a: Term, b: Term) => PairObj(
+      case PairTerm(a: Term, b: Term) => PairTerm(
         a.typ.symbObj(newvar),
         b.typ.symbObj(newvar)
       ).asInstanceOf[U]
-      case PairTyp(a: Term, b: Term) => PairTyp(
+      case ProdTyp(a: Term, b: Term) => ProdTyp(
         a.typ.symbObj(newvar),
         b.typ.symbObj(newvar)
       ).asInstanceOf[U]
@@ -1092,7 +1092,7 @@ object HoTT {
     if (value.dependsOn(variable)) {
       val fibre = lmbda(variable)(value)
       SigmaTyp(fibre)
-    } else PairTyp(variable.typ.asInstanceOf[Typ[U]], value)
+    } else ProdTyp(variable.typ.asInstanceOf[Typ[U]], value)
 
   /**
     * type family

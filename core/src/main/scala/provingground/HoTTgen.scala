@@ -67,18 +67,18 @@ object HoTTgen {
 
   val pairtyp: (Term, Term) => Option[Term] = {
     case (a: Typ[u], b: Typ[v]) if (a.typ == Type) && (b.typ == Type) =>
-      Some(PairTyp(a, b))
+      Some(ProdTyp(a, b))
     case _ => None
   }
 
-  val pairobj: (Term, Term) => Option[Term] = {
+  val PairTerm: (Term, Term) => Option[Term] = {
     case (_: Universe, _) => None
     case (_, _: Universe) => None
     case (a, b) => Some(pair(a, b))
   }
 
   val paircons: Term => Option[Term] = {
-    case p: PairTyp[_, _] => Some(p.paircons)
+    case p: ProdTyp[_, _] => Some(p.paircons)
     case p: SigmaTyp[_, _] => Some(p.paircons)
     case _ => None
   }
@@ -107,7 +107,7 @@ object HoTTgen {
          (Move.pi, MoveFn(pityp)),
          (Move.sigma, MoveFn(sigmatyp)),
          (Move.pairt, CombinationFn(pairtyp, isTyp)),
-         (Move.pair, CombinationFn(pairobj)),
+         (Move.pair, CombinationFn(PairTerm)),
          (Move.paircons, MoveFn(paircons)),
          (Move.icons, MoveFn(icons)),
          (Move.jcons, MoveFn(icons)),

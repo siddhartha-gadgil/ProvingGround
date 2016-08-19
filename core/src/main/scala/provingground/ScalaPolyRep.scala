@@ -99,9 +99,9 @@ case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
     firstrep: ScalaPolyRep[U, W], secondrep: ScalaPolyRep[X, Y])
     extends ScalaPolyRep[AbsPair[U, X], (W, Y)] {
   def apply(typ: Typ[Term])(elem: (W, Y)) = typ match {
-    case typ @ PairTyp(first: Typ[U], second: Typ[X]) =>
+    case typ @ ProdTyp(first: Typ[U], second: Typ[X]) =>
       for (a <- firstrep(first)(elem._1); b <- secondrep(second)(elem._2)) yield
-        PairObj(a, b)
+        PairTerm(a, b)
     case typ @ SigmaTyp(fibers) =>
       for (a <- firstrep(fibers.dom.asInstanceOf[Typ[Term]])(elem._1);
            b <- secondrep(fibers(a).asInstanceOf[Typ[Term]])(elem._2)) yield
@@ -110,7 +110,7 @@ case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
   }
 
   def unapply(term: AbsPair[U, X]) = term match {
-    case PairObj(first, second) =>
+    case PairTerm(first, second) =>
       for (a <- firstrep.unapply(first); b <- secondrep.unapply(second)) yield
         (a, b)
     //   case ExtendedDepFunction(dfn: Function1[W, Y], d, c, _) if d == domrep && c ==codrep => Some(dfn)

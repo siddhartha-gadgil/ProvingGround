@@ -145,7 +145,7 @@ case object TermLang
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
       Some((x, st.fibers(x)))
-    case st: PairTyp[u, v] =>
+    case st: ProdTyp[u, v] =>
       Some((st.first.Var, st.second))
     case _ => None
   }
