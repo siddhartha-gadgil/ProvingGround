@@ -23,11 +23,10 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Documentation:
 
-There is not much besides the source.
+In addition to the documentation on this site, the following is available.
 
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
-* The [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/) are available.
 
 ## Running
 

@@ -2,5 +2,7 @@ markdown: kramdown
 
 baseurl: /ProvingGround/
 
+urlprefix: /ProvingGround
+
 github:
   repo: https://github.com/siddhartha-gadgil/ProvingGround
