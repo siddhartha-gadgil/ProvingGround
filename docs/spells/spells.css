@@ -1,0 +1,28 @@
+
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button1 {background-color: #4CAF50; padding: 8px 16px;} /* Green */
+.button2 {background-color: #008CBA; padding: 8px 16px;} /* Blue */
+.button3 {background-color: #f44336; padding: 8px 16px;} /* Red */
+.button4 {background-color: #e7e7e; color: black; padding: 8px 16px;} /* Gray */
+.button5 {background-color: cyan; padding: 8px 16px;} /* Black */
+
+input[type="text"] {
+    line-height: 2em;
+    font-size: 18px;
+}
