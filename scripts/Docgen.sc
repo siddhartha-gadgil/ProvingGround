@@ -1,5 +1,6 @@
 import ammonite.ops._
 implicit val wd = cwd
+%sbt("doc")
 lazy val allProjects = ls(wd) filter ((x) => x.isDir
   && (ls(x) exists (_.name == "target"))
   && !(x.name.startsWith("."))
@@ -15,3 +16,4 @@ def cpApi = apiPairs.foreach{
     rm(apiTarg(dir.name))
     cp(api, apiTarg(dir.name))
   }
+cpApi
