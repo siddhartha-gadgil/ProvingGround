@@ -993,7 +993,7 @@ object HoTT {
         case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
         case _ => variable
       }
-//      outer = newvar 
+//      outer = newvar
       this
     }
   }
@@ -1464,7 +1464,7 @@ object HoTT {
         extends Term
         with Subs[FirstIncl[U, V]] {
 
-      def newobj = this
+      def newobj = FirstIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) = FirstIncl(typ, value.replace(x, y))
     }
@@ -1476,7 +1476,7 @@ object HoTT {
         typ: PlusTyp[U, V], value: V)
         extends Term
         with Subs[ScndIncl[U, V]] {
-      def newobj = this
+      def newobj = ScndIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) = ScndIncl(typ, value.replace(x, y))
     }
@@ -1487,7 +1487,7 @@ object HoTT {
     */
   case class PlusTyp[U <: Term with Subs[U], V <: Term with Subs[V]](
       first: Typ[U], second: Typ[V])
-      extends SmallTyp { plustyp =>
+      extends Typ[Term] { plustyp =>
     def i(value: U) = PlusTyp.FirstIncl(this, value)
 
     def j(value: V) = PlusTyp.ScndIncl(this, value)
@@ -1545,6 +1545,19 @@ object HoTT {
 
       def newobj = this
     }
+
+    def subs(x: Term, y: Term) = PlusTyp(first.replace(x, y), second.replace(x, y))
+
+    def newobj = {
+      val newfirst = first.newobj
+      PlusTyp(newfirst, second.replace(first, newfirst))
+    }
+
+    type Obj = Term
+
+    val typ = Type
+
+    def variable(name: AnySym) = SymbObj(name, this)
   }
 
   /**
