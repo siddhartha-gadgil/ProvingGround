@@ -1380,6 +1380,88 @@ object HoTT {
   }
 
   object IdentityTyp {
+    case class RecFn[U <: Term with Subs[U], V <: Term with Subs[V]](
+        domain: Typ[U], target: Typ[V], data: Func[U, V], start: U, end: U) extends Func[Term, V]{self =>
+      val dom = (start =:= end) 
+      
+      val codom = target
+      
+      val typ = dom ->: codom
+      
+      def newobj = this
+      
+      def subs(x: Term, y: Term) = 
+        RecFn(domain.replace(x, y), target.replace(x, y), data.replace(x, y), start.replace(x, y), end.replace(x, y))
+        
+      def act(t: Term) = 
+        if (start == end && t == Refl(dom, start)) data(start)
+        else target.symbObj(ApplnSym(self, t))
+    }
+    
+    def recc[U <: Term with Subs[U], V <: Term with Subs[V]](
+        dom: Typ[U], target: Typ[V]) = {
+      val dataVar = (dom ->: target).Var
+      val x = dom.Var
+      val y = dom.Var
+      val p = (x =:= y).Var
+      dataVar :-> (x :~> (y :~> (p :-> RecFn(dom, target, dataVar, x, y)(p))))
+    }
+    
+    case class InducFn[U <: Term with Subs[U], V <: Term with Subs[V]](
+        domain: Typ[U],
+        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]],
+        data: FuncLike[U, V], 
+        start: U, end: U
+        ) extends FuncLike[Term, V]{self =>
+      def newobj = this
+      
+      def subs(x: Term, y: Term) = 
+        InducFn(
+            domain.replace(x, y), 
+            targetFmly.replace(x, y),
+            data.replace(x, y),
+            start.replace(x, y),
+            end.replace(x, y)
+            )
+          
+//      val a = domain.Var
+      
+//      val dom = a ~>:(targetFmly(a)(a)(Refl(domain, a)))
+      
+      val dom = start =:= end
+      
+      val p = dom.Var
+      
+      val typ = p ~>: (targetFmly(start)(end)(p))
+      
+      val depcodom = (t: Term) => targetFmly(start)(end)(p)
+      
+      def act(t: Term) = 
+        if (start == end && t == Refl(domain, start)) data(start)
+        else targetFmly(start)(end)(t).symbObj(ApplnSym(self, t))
+    }
+    
+    def inducc[U <: Term with Subs[U], V <: Term with Subs[V]](
+        domain: Typ[U],
+        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]) = {
+      
+      val a = domain.Var
+      
+      val dataVar = (a ~>:(targetFmly(a)(a)(Refl(domain, a)))).Var
+      
+      val x = domain.Var
+      
+      val y = domain.Var
+      
+      val p = (x =:= y).Var
+      
+      dataVar :-> (x :~> (y :~> (p :-> InducFn(domain, targetFmly, dataVar, x, y)(p))))
+
+    }
+    
+    
+    
+    
     case class RecFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target: Typ[V])
         extends AnySym {
