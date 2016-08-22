@@ -130,15 +130,15 @@ object TermToExpr {
         Some(formalRefl(newTyp)(newPoint))
       case sym: Symbolic =>
         sym.name match {
-          case ind: InducFunc[u, v] =>
-            val newDom = encode(names)(ind.dom)
-            val newTgt = encode(names)(ind.targetFmly)
-            import Fold._
-            val newFormalIdInduc = encode(names)(formalIdInduc)
-            Some((newFormalIdInduc(newDom)(newTgt)))
-          case RecFunc(dom: Typ[u], codom: Typ[v]) =>
-            import Fold._
-            Some((formalIdRec(encode(names)(dom))(encode(names)(codom))))
+          // case ind: InducFunc[u, v] =>
+          //   val newDom = encode(names)(ind.dom)
+          //   val newTgt = encode(names)(ind.targetFmly)
+          //   import Fold._
+          //   val newFormalIdInduc = encode(names)(formalIdInduc)
+          //   Some((newFormalIdInduc(newDom)(newTgt)))
+          // case RecFunc(dom: Typ[u], codom: Typ[v]) =>
+          //   import Fold._
+          //   Some((formalIdRec(encode(names)(dom))(encode(names)(codom))))
           case _ => None
         }
       case _ => None
