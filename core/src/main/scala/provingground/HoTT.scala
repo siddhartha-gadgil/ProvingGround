@@ -576,7 +576,7 @@ object HoTT {
 
   class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](domain: Typ[W],
       val fib: W => Typ[U]) {
-    override def hashCode = fib(domain.symbObj(HashSym)).hashCode()
+    override def hashCode = fib(domain.symbObj(HashSym)).hashCode() * 41 + 7
 
     override def equals(that: Any) = that match {
       case g: GenFuncTyp[u, v] =>
