@@ -2,7 +2,7 @@ import ammonite.ops._
 implicit val wd = cwd
 %sbt("doc")
 lazy val allProjects = ls(wd) filter ((x) => x.isDir
-  && (ls(x) exists (_.name == "target"))
+  && (ls.rec(x) exists (_.name == "target"))
   && !(x.name.startsWith("."))
   && !(x.name.startsWith("."))
   && !(Set("gh-pages", "docs", "data", "project") contains (x.name))
