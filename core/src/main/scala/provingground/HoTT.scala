@@ -369,12 +369,59 @@ object HoTT {
   /**
     * Empty type
     */
-  case object Zero extends SmallTyp
+  case object Zero extends SmallTyp{
+    def rec[U <: Term with Subs[U]](codom: Typ[U]) =
+      (Zero ->: codom).symbObj(vacuous)
+
+    def induc[U <: Term with Subs[U]](depcodom: Func[AtomicTerm, Typ[U]]) =
+      PiTyp(depcodom).symbObj(vacuous)
+  }
 
   /**
     * Unit type.
     */
-  case object Unit extends SmallTyp
+  case object Unit extends SmallTyp{
+    case class RecFn[U <: Term with Subs[U]](codom: Typ[U], data: U) extends Func[Term, U]{self =>
+      val dom = Unit
+
+      val typ = dom ->: codom
+
+      def newobj = this
+
+      def subs(x: Term, y: Term) = RecFn(codom.replace(x, y), data.replace(x, y))
+
+      def act(t: Term) = t match {
+        case Star => data
+        case _ => codom.symbObj(ApplnSym(self, t))
+      }
+    }
+
+    def rec[U <: Term with Subs[U]](codom: Typ[U]) = {
+      val x = codom.Var
+      x :-> (RecFn(codom, x) : Func[Term, U])
+    }
+
+    case class InducFn[U <: Term with Subs[U]](depcodom: Func[Term, Typ[U]], data: U) extends FuncLike[Term, U]{self =>
+      val dom = Unit
+
+      val typ = PiTyp(depcodom)
+
+      def newobj = this
+
+      def subs(x: Term, y: Term) = InducFn(depcodom.replace(x, y), data.replace(x, y))
+
+      def act(t: Term) = t match {
+        case Star => data
+        case _ => depcodom(t).symbObj(ApplnSym(self, t))
+      }
+    }
+
+    def induc[U <: Term with Subs[U]](depcodom: Func[Term, Typ[U]]) = {
+      val x = depcodom(Star).Var
+      x :~> (InducFn(depcodom, x) : FuncLike[Term, U])
+    }
+
+  }
 
   /**
     *  the object in the Unit type
@@ -508,6 +555,34 @@ object HoTT {
     def rec[W<: Term with Subs[W]](target: Typ[W]) = {
       val d = (first ->: second ->: target).Var
       d :-> (RecFn(target, d) : Func[PairTerm[U, V], W])
+    }
+
+    case class InducFn[W <: Term with Subs[W]](
+      targetFmly: Func[U, Func[V, Typ[W]]], data: FuncLike[U, FuncLike[V, W]]) extends FuncLike[PairTerm[U, V], W]{self =>
+        lazy val dom = prod
+
+        val xy = prod.Var
+
+        lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
+
+        lazy val depcodom = (p: PairTerm[U, V]) => targetFmly(p.first)(p.second)
+
+        def newobj = self
+
+        def subs(x: Term, y: Term) =
+          ProdTyp(first.replace(x, y), second.replace(x, y)).InducFn(targetFmly.replace(x, y), data.replace(x, y))
+
+        def act(w: PairTerm[U, V]) = w match {
+          case PairTerm(a, b) if a.typ == first && b.typ == second => data(a)(b)
+          case _ => targetFmly(w.first)(w.second).symbObj(ApplnSym(self, w))
+        }
+    }
+
+    def induc[W<: Term with Subs[W]](targetFmly: Func[U, Func[V, Typ[W]]]) = {
+      val xy = prod.Var
+      val (x, y) = (xy.first, xy.second)
+      val d = (x ~>: (y ~>: targetFmly(x)(y))).Var
+      d :-> (InducFn(targetFmly, d) : FuncLike[PairTerm[U, V], W])
     }
   }
 
@@ -1296,7 +1371,7 @@ object HoTT {
   case class SigmaTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       fibers: TypFamily[W, U]
   )
-      extends Typ[DepPair[W, U]] {
+      extends Typ[DepPair[W, U]] {prod =>
     lazy val typ = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
@@ -1319,6 +1394,58 @@ object HoTT {
     def subs(x: Term, y: Term) = SigmaTyp[W, U](fibers.replace(x, y))
 
     override def toString = Sigma + "(" + fibers.toString + ")"
+
+    case class RecFn[V <: Term with Subs[V]](
+      codom: Typ[V], data: FuncLike[W, Func[U, V]]) extends Func[AbsPair[W, U],V]{self =>
+        lazy val dom = prod : Typ[AbsPair[W, U]]
+
+        lazy val typ = dom ->: codom
+
+        def newobj = self
+
+        def subs(x: Term, y: Term) =
+          SigmaTyp(fibers.replace(x, y)).RecFn(codom.replace(x, y), data.replace(x, y))
+
+        def act(w: AbsPair[W, U]) = w match {
+          case DepPair(a, b, f) if f == fibers => data(a)(b)
+          case _ => codom.symbObj(ApplnSym(self, w))
+        }
+    }
+
+    def rec[V<: Term with Subs[V]](target: Typ[V]) = {
+      val a = fibers.dom.Var
+      val d = (a ~>: (fibers(a) ->: target)).Var
+      d :-> (RecFn(target, d) : FuncLike[AbsPair[W, U], V])
+    }
+
+    case class InducFn[V <: Term with Subs[V]](
+      targetFmly: FuncLike[W, Func[U, Typ[V]]], data: FuncLike[W, FuncLike[U, V]]) extends FuncLike[AbsPair[W, U], V]{self =>
+        lazy val dom = prod
+
+        val xy = prod.Var
+
+        lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
+
+        lazy val depcodom = (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
+
+        def newobj = self
+
+        def subs(x: Term, y: Term) =
+          SigmaTyp(fibers.replace(x, y)).InducFn(targetFmly.replace(x, y), data.replace(x, y))
+
+        def act(w: AbsPair[W,U]) = w match {
+          case DepPair(a, b, f) if f == fibers => data(a)(b)
+          case _ => targetFmly(w.first)(w.second).symbObj(ApplnSym(self, w))
+        }
+    }
+
+    def induc[V<: Term with Subs[V]](targetFmly: FuncLike[W, Func[U, Typ[V]]]) = {
+      val xy = prod.Var
+      val (x, y) = (xy.first, xy.second)
+      val d = (x ~>: (y ~>: targetFmly(x)(y))).Var
+      d :-> (InducFn(targetFmly, d) : FuncLike[AbsPair[W, U], V])
+    }
+
   }
 
   object Sgma {
@@ -1614,7 +1741,7 @@ object HoTT {
       lmbda(a)(j(a))
     }
 
-    case class Rec[W <: Term with Subs[W]](codom: Typ[W],
+    case class RecFn[W <: Term with Subs[W]](codom: Typ[W],
                                            firstCase: Func[U, W],
                                            secondCase: Func[V, W])
         extends Func[Term, W] {
@@ -1629,14 +1756,22 @@ object HoTT {
 
       lazy val typ = dom ->: codom
 
-      def subs(x: Term, y: Term) = this
+      def subs(x: Term, y: Term) =
+        PlusTyp(first.replace(x,y), second.replace(x, y)).
+        RecFn(codom.replace(x, y), firstCase.replace(x, y), secondCase.replace(x, y))
 
       val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
       def newobj = this
     }
 
-    case class Induc[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]],
+    def rec[W <: Term with Subs[W]](codom: Typ[W]) = {
+      val firstData = (first ->: codom).Var
+      val secondData = (second ->: codom).Var
+      firstData :-> (secondData :-> (RecFn(codom, firstData, secondData) : Func[Term, W]))
+    }
+
+    case class InducFn[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]],
                                              firstCase: FuncLike[U, W],
                                              secondCase: FuncLike[V, W])
         extends FuncLike[Term, W] {
@@ -1651,12 +1786,23 @@ object HoTT {
 
       lazy val typ = PiTyp(depcodom)
 
-      def subs(x: Term, y: Term) = this
+      def subs(x: Term, y: Term) =
+        PlusTyp(first.replace(x,y), second.replace(x, y)).
+          InducFn(depcodom.replace(x, y), firstCase.replace(x, y), secondCase.replace(x, y))
 
       lazy val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
       def newobj = this
     }
+
+    def induc[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]]) = {
+      val (a, b) = (first.Var, second.Var)
+      val firstData = (a ~>: depcodom(a)).Var
+      val secondData = (b ~>: depcodom(b)).Var
+      firstData :~> (secondData :~> (InducFn(depcodom, firstData, secondData) : FuncLike[Term, W]))
+    }
+
+
 
     def subs(x: Term, y: Term) = PlusTyp(first.replace(x, y), second.replace(x, y))
 

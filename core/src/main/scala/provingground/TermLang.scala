@@ -119,7 +119,7 @@ case object TermLang
         if (fn1.codom == fn2raw.codom) =>
       val tp = PlusTyp(fn1.dom, fn2raw.dom)
       val fn2 = fn2raw.asInstanceOf[Func[v, w]]
-      Some(tp.Rec(fn1.codom, fn1, fn2))
+      Some(tp.RecFn(fn1.codom, fn1, fn2))
     case (fn1: FuncLike[u, w], fn2raw: FuncLike[v, ww])
         if (fn1.depcodom == fn2raw.depcodom) =>
       val tp = PlusTyp(fn1.dom, fn2raw.dom)
@@ -128,8 +128,8 @@ case object TermLang
       val x2 = fn2.dom.Var
       val fibre1 = lmbda(x1)(fn1(x1).typ.asInstanceOf[Typ[w]])
       val fibre2 = lmbda(x2)(fn2(x2).typ.asInstanceOf[Typ[w]])
-      val fibre = tp.Rec(Type, fibre1, fibre2)
-      Some(tp.Induc(fibre, fn1, fn2))
+      val fibre = tp.RecFn(Type, fibre1, fibre2)
+      Some(tp.InducFn(fibre, fn1, fn2))
     case _ => None
   }
 
