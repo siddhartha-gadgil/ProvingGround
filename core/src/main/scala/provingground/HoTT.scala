@@ -216,6 +216,10 @@ object HoTT {
         that: Typ[V]
     ) = ProdTyp[UU, V](this, that)
 
+    def ||[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+        that: Typ[V]
+    ) = PlusTyp(this: Typ[UU], that)
+
     /**
       * returns Sigma-Type, mainly to use as "such that", for example a group type is this with product etc. dependent on this.
       */
@@ -1504,6 +1508,14 @@ object HoTT {
     def variable(name: AnySym) = SymbObj(name, this)
 
     override def toString = s"$lhs = $rhs"
+
+    def rec[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](codom: Typ[V]) =
+      IdentityTyp.rec(dom: Typ[UU], codom)
+
+      def induc[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+          targetFmly: FuncLike[UU, FuncLike[UU, FuncLike[Term, Typ[V]]]]) =
+            IdentityTyp.induc(dom: Typ[UU], targetFmly)
+
   }
 
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U)
@@ -1530,6 +1542,8 @@ object HoTT {
     def :->[V <: Term with Subs[V]](that: V) = lmbda(term)(that)
 
     def :~>[V <: Term with Subs[V]](that: V) = lambda(term)(that)
+
+    def refl = Refl(term.typ.asInstanceOf[Typ[U]], term)
   }
 
   object IdentityTyp {
