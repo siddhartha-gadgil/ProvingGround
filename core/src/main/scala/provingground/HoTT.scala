@@ -457,7 +457,7 @@ object HoTT {
   )
       extends Typ[PairTerm[U, V]]
       with AbsPair[Typ[U], Typ[V]]
-      with Subs[ProdTyp[U, V]] {
+      with Subs[ProdTyp[U, V]] { prod =>
 
     type Obj = PairTerm[U, V]
 
@@ -487,6 +487,28 @@ object HoTT {
     // The name is lost as `name', but can be recovered using pattern matching.
     def variable(name: AnySym): Obj =
       PairTerm(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
+
+    case class RecFn[W <: Term with Subs[W]](
+      codom: Typ[W], data: Func[U, Func[V, W]]) extends Func[PairTerm[U, V], W]{self =>
+        lazy val dom = prod
+
+        lazy val typ = dom ->: codom
+
+        def newobj = self
+
+        def subs(x: Term, y: Term) =
+          ProdTyp(first.replace(x, y), second.replace(x, y)).RecFn(codom.replace(x, y), data.replace(x, y))
+
+        def act(w: PairTerm[U, V]) = w match {
+          case PairTerm(a, b) if a.typ == first && b.typ == second => data(a)(b)
+          case _ => codom.symbObj(ApplnSym(self, w))
+        }
+    }
+
+    def rec[W<: Term with Subs[W]](target: Typ[W]) = {
+      val d = (first ->: second ->: target).Var
+      d :-> (RecFn(target, d) : Func[PairTerm[U, V], W])
+    }
   }
 
   /** Object (a, b) in (A, B) */
