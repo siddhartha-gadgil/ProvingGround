@@ -48,8 +48,8 @@ object Translator {
     Simple((inp: I) => pattern(inp) flatMap literal)
 
   /**
-    * empty translator, matching nothing; 
-    * only information is the type parameters, so may be good starting point.  
+    * empty translator, matching nothing;
+    * only information is the type parameters, so may be good starting point.
     */
   case class Empty[I, O]() extends Translator[I, O] {
     def recTranslate(leafMap: => (I => Option[O])) = (_: I) => None
@@ -68,7 +68,7 @@ object Translator {
 
   /**
     * A junction given by splitting optionally to a given shape, and building from the same shape.
-    * 
+    *
     * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
     * These allow applying the recursive translator on the components.
     */
@@ -98,6 +98,10 @@ object Translator {
   }
 
   object Pattern {
+    def partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) = Pattern(split.lift)
+
+    def filter[I](p: I => Boolean) =
+      Pattern[I, Functor.Id]{(x: I) => if (p(x)) Some(x) else None}
 
     /**
       * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
