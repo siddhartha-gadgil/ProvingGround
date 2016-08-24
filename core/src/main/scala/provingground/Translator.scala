@@ -96,7 +96,11 @@ object Translator {
 
     def join[O](build: X[O] => Option[O]) = Junction(split, build)
 
+    def joinStrict[O](build: X[O] => O) = join((x: X[O]) => Some(build(x)))
+
     def >>[O](build: X[O] => Option[O]) = join(build)
+
+    def >>>[O](build: X[O] => O) = joinStrict(build)
   }
 
   object Pattern {

@@ -65,9 +65,8 @@ object TermPatterns{
 
   val zero = Pattern.filter[Term](_ == Unit)
 
-  val universe = Pattern.filter[Term]{
-    case Universe(n) => true
-    case _ => false
+  val universe = Pattern.partial[Term, N]{
+    case Universe(n) => n
   }
 
   val symbolic = Pattern.partial[Term, Named]{
@@ -79,7 +78,7 @@ object TermPatterns{
 
 
 
-  def termToExpr[E: ExprLang] = {
+  def termToExprRaw[E: ExprLang] = {
     import ExprLang._
     (formalAppln >> appln[E]) ||
     (lambdaAppln >> lambda[E]) ||
@@ -95,6 +94,9 @@ object TermPatterns{
    (firstIncl >> i1[E]) || (secondIncl >> i2[E])
   }
 
+  def termToExpr[E: ExprLang](univ: Int => Option[E]) = {
+    (universe >> univ) || termToExprRaw[E]
+  }
 
   // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }

@@ -19,7 +19,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
   "org.spire-math" %% "spire" % "0.11.0",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
-  "com.lihaoyi" %% "fansi" % "0.1.3",
+  "com.lihaoyi" %% "fansi" % "0.2.0",
   "com.lihaoyi" %% "upickle" % "0.4.0"
   ),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
