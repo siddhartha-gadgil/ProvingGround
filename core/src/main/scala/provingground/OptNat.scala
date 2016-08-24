@@ -104,6 +104,13 @@ object OptNat {
                     X5[_]: OptNat] =
     new T5[X1, X2, X3, X4, X5].OpN
 
+    import Functor.Named
+
+    implicit object NamedOptNat extends OptNat[Functor.Named]{
+      def optF[A](fo: Named[Option[A]]): Option[Named[A]] = 
+        fo._2 map ((fo._1, _))
+    }
+
   object Tests {
     val ii = implicitly[OptNat[Functor.II]]
 

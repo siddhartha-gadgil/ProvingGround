@@ -95,6 +95,8 @@ object Translator {
     }
 
     def join[O](build: X[O] => Option[O]) = Junction(split, build)
+
+    def >>[O](build: X[O] => Option[O]) = join(build)
   }
 
   object Pattern {

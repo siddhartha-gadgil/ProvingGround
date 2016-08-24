@@ -54,6 +54,13 @@ object Functor {
     def map[A, B](fa: (A, Double))(f: A => B) = (f(fa._1), fa._2)
   }
 
+  type Named[A] = (String, A)
+
+  implicit object NamedFunctor extends Functor[Named] {
+    def map[A, B](fa: (String, A))(f: A => B) = (fa._1, f(fa._2))
+  }
+
+
   class T2[X[_]: Functor, Y[_]: Functor] {
     type Z[A] = (X[A], Y[A])
     def Func: Functor[Z] = new Functor[Z] {

@@ -9,12 +9,18 @@ import Translator._
 object TermPatterns{
   val formalAppln = Pattern[Term, II](FormalAppln.unapply)
 
-  val lambaAppln = Pattern.partial[Term, II]{
+  val lambdaAppln = Pattern.partial[Term, II]{
     case l : LambdaLike[u, v] => (l.variable, l.value)
   }
 
   val piTyp = Pattern.partial[Term, Id]{
     case PiTyp(fibre) => fibre
+  }
+
+  val piLam = Pattern.partial[Term, II]{
+    case PiTyp(fibre : Func[u, _]) =>
+      val x : Term = fibre.dom.Var.asInstanceOf[Term]
+      (x, fibre(x))
   }
 
   val sigmaTyp = Pattern.partial[Term, Id]{
@@ -29,12 +35,20 @@ object TermPatterns{
     case p : AbsPair[u, v] => (p.first, p.second)
   }
 
+  val prodTyp = Pattern.partial[Term, II]{
+    case ProdTyp(first : Typ[u], second: Typ[v]) => (first, second)
+  }
+
   val funcTyp = Pattern.partial[Term, II]{
     case FuncTyp(dom: Typ[u], codom: Typ[v]) => (dom, codom)
   }
 
   val identityTyp = Pattern.partial[Term, III]{
     case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => (dom, lhs, rhs)
+  }
+
+  val equation = Pattern.partial[Term, II]{
+    case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => (lhs, rhs)
   }
 
   val firstIncl = Pattern.partial[Term, II]{
@@ -55,4 +69,32 @@ object TermPatterns{
     case Universe(n) => true
     case _ => false
   }
+
+  val symbolic = Pattern.partial[Term, Named]{
+    case sym: Symbolic with Term =>
+      outerSym(sym).name match {
+        case Name(name) => (name, sym.typ)
+  }
+}
+
+
+
+  def termToExpr[E: ExprLang] = {
+    import ExprLang._
+    (formalAppln >> appln[E]) ||
+    (lambdaAppln >> lambda[E]) ||
+    (prodTyp >> pairTyp[E]) ||
+    (absPair >> pair[E]) ||
+    (funcTyp >> func[E]) ||
+    (piLam >> pi[E]) ||
+    (equation >> equality[E]) ||
+    (symbolic >> variable[E]) ||
+    (unit >> {(e: E) => tt[E]}) ||
+    (zero >> {(e: E) => ff[E]}) ||
+    (star >> {(e: E) => qed[E]}) ||
+   (firstIncl >> i1[E]) || (secondIncl >> i2[E])
+  }
+
+
+  // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }

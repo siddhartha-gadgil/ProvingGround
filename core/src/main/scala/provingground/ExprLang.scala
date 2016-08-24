@@ -86,6 +86,12 @@ trait ExprLang[E] {
     */
   def pairTyp(first: E, second: E) =
     anonVar(first) flatMap ((x) => lambda(x, second) flatMap (sigma(x, _)))
+
+  def funcTyp(dom: E, codom: E) = anonVar(dom) flatMap ((x) => pi(x, codom))
+
+  def i1(typ: E, value: E) = incl1(typ) flatMap ((i) => appln(i, value))
+
+  def i2(typ: E, value: E) = incl2(typ) flatMap ((i) => appln(i, value))
 }
 
 object ExprLang {
@@ -111,11 +117,20 @@ object ExprLang {
   def pi[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].pi(fa._1, fa._2)
 
+  def func[E: ExprLang] =
+    (fa: (E, E)) => implicitly[ExprLang[E]].funcTyp(fa._1, fa._2)
+
   def sigma[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].sigma(fa._1, fa._2)
 
   def or[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].or(fa._1, fa._2)
+
+  def i1[E: ExprLang] =
+      (fa: (E, E)) => implicitly[ExprLang[E]].i1(fa._1, fa._2)
+
+  def i2[E: ExprLang] =
+      (fa: (E, E)) => implicitly[ExprLang[E]].i2(fa._1, fa._2)
 
   def incl1[E: ExprLang] = implicitly[ExprLang[E]].incl1 _
 
