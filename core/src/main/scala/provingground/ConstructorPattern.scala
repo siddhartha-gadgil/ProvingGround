@@ -142,23 +142,6 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
 object ConstructorPattern {
   val Head = IdW[Term]
 
-  /**
-    * returns Some(x) if the term is f(x) with f given, otherwise None
-    * @param func function f to match for f(x)
-    */
-  def getArg[D <: Term with Subs[D], U <: Term with Subs[U]](
-      func: FuncLike[D, U]): Term => Option[D] = {
-    case sym: Symbolic =>
-      sym.name match {
-        case fx: ApplnSym[u, w] =>
-          if (fx.func == func && fx.arg.typ == func.dom)
-            Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
-          else getArg(func)(fx.func)
-        case _ => None
-      }
-    case _ => None
-  }
-
   def get[H <: Term with Subs[H], Cnstr <: Term with Subs[Cnstr]](
       constype: Cnstr, w: Typ[H]): ConstructorPattern[Term, Cnstr, H] =
     constype match {
@@ -189,11 +172,11 @@ object ConstructorPattern {
                 tail, headfibre)
           tp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         } else {
-          val cp = ???
-//            CnstDepFuncPtn[v, egfib.RecDataType, egfib.InducDataType, Term, H](
-//                fibre.dom.asInstanceOf[Typ[H]], headfibre)
-//          cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
-          ???
+          val tail = fibre.dom
+          val cp =
+           CnstDepFuncPtn[u, egfib.RecDataType, egfib.InducDataType, Term, v,  H](
+               tail, headfibre)
+         cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         }
     }
 }
@@ -207,7 +190,7 @@ case class ConstructorTyp[
   def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
 
   def >::(cons: F) = ConstructorDefn(pattern, cons, typ)
-  
+
   def -->>:(that: Typ[H]) = {
     assert(
         that == typ,

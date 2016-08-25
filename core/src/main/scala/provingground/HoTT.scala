@@ -1978,6 +1978,24 @@ object HoTT {
     case _ => None
   }
 
+  /**
+    * returns Some(x) if the term is f(x) with f given, otherwise None
+    * @param func function f to match for f(x)
+    */
+  def getArg[D <: Term with Subs[D], U <: Term with Subs[U]](
+      func: FuncLike[D, U]): Term => Option[D] = {
+    case sym: Symbolic =>
+      sym.name match {
+        case fx: ApplnSym[u, w] =>
+          if (fx.func == func && fx.arg.typ == func.dom)
+            Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
+          else getArg(func)(fx.func)
+        case _ => None
+      }
+    case _ => None
+  }
+
+
   def getVariables(n: Int)(t: Term): List[Term] =
     if (n == 0) List()
     else

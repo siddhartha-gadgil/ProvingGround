@@ -88,13 +88,15 @@ object Translator {
     * The splitting part of a junction, pattern matching and splitting to a given shape.
     * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
     */
-  case class Pattern[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) {
+  class Pattern[I, X[_]: Functor: OptNat](split: I => Option[X[I]]){
+    def unapply(x: I): Option[X[I]] = split(x)
+
     def map[J](f: I => I) = {
       val lift = (xi: X[I]) => Functor.liftMap(xi, f)
-      Pattern((inp: I) => split(inp) map lift)
+      Pattern((inp: I) => unapply(inp) map lift)
     }
 
-    def join[O](build: X[O] => Option[O]) = Junction(split, build)
+    def join[O](build: X[O] => Option[O]) = Junction(unapply, build)
 
     def joinStrict[O](build: X[O] => O) = join((x: X[O]) => Some(build(x)))
 
@@ -104,7 +106,13 @@ object Translator {
   }
 
   object Pattern {
+    def apply[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) =
+      new Pattern(split)
+
     def partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) = Pattern(split.lift)
+
+    // To allow for inheritance so we can use case objects.
+    class Partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) extends Pattern(split.lift)
 
     def filter[I](p: I => Boolean) =
       Pattern[I, Functor.Id]{(x: I) => if (p(x)) Some(x) else None}

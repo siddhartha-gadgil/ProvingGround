@@ -5,7 +5,6 @@ import HoTT._
 //import scala.language.implicitConversions
 //import scala.util._
 //import scala.language.existentials
-import ConstructorPattern.getArg
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
