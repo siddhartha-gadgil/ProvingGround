@@ -185,6 +185,14 @@ object Functor {
 
   type N[A] = Int
 
+  type Coded[A] = (String, Id[A], List[A])
+
+  type Pickled = Coded[String]
+
+  type S[A] = String
+
+  implicit val cf : Functor[Coded] = t3[S, Id, List]
+
   // Tests:
   object Tests {
     val ll = implicitly[Functor[LL]]
@@ -194,6 +202,14 @@ object Functor {
     val ii = implicitly[Functor[II]]
 
   //  val iii  : Functor[III]= tuple3[Id, Id, Id]
+
+    val iii = implicitly[Functor[III]]
+
+
+
+
+
+    val cff = implicitly[Functor[Coded]]
 
     val nn = implicitly[Functor[N]]
 

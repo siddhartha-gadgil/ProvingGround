@@ -166,11 +166,16 @@ object OptNat {
         fo._2 map ((fo._1, _))
     }
 
+
+  implicit val co = t3ON[Functor.S, Functor.Id, List]
+
   object Tests {
     val ii = implicitly[OptNat[Functor.II]]
 
     val li = implicitly[OptNat[Functor.IL]]
 
     val ll = implicitly[OptNat[Functor.LL]]
+
+    val coo = implicitly[OptNat[Functor.Coded]]
   }
 }

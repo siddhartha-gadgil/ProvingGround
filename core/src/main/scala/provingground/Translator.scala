@@ -29,6 +29,8 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
     * Other translator must be preprended
     */
   def ||:(that: Translator[I, O]) = Translator.OrElse(that, self)
+
+  def map[X](fn: O => X, ufn: X => O) = Translator.Mapped(self, fn, ufn)
 }
 
 object Translator {
@@ -82,6 +84,11 @@ object Translator {
       (inp: I) =>
         split(inp) flatMap (connect) flatMap (build)
     }
+  }
+
+  case class Mapped[I, O, X](trans: Translator[I, O], fn: O => X, ufn: X => O) extends Translator[I, X]{
+    def recTranslate(leafMap: => (I => Option[X])): I => Option[X] =
+      (x) => trans.recTranslate((a: I) => leafMap(a) map (ufn))(x) map (fn)
   }
 
   /**
