@@ -313,13 +313,19 @@ object SpecialTerms{
       (Names.idInduc, ifn.typ: Typ[Term], List(domain, target, data, a, b))
   }  
   )
-  
+
   import Names._
   
-  val build : Coded[Term] => Option[Term] = {
-    case (`rfl`, _, List(dom: Typ[u], x: Term)) => Some(Refl(dom, x.asInstanceOf[u]))
-    case _ => None
+  val build : Coded[Term] => Term = {
+    case (`rfl`, _, List(dom: Typ[u], x: Term)) => Refl(dom, x.asInstanceOf[u])
   }
+
+  
+  
+  val termToFree = Decompose >>> (FreeExprPatterns.encode)
+  
+  val freeToTerm = FreeExprPatterns.decode >>> build
+  
   
   }
 
