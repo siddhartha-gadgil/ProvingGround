@@ -110,6 +110,8 @@ object Translator {
     def >>[O](build: X[O] => Option[O]) = join(build)
 
     def >>>[O](build: X[O] => O) = joinStrict(build)
+    
+    def ||(that: Pattern[I, X]) = Pattern.OrElse(this, that)
   }
 
   object Pattern {
@@ -121,6 +123,12 @@ object Translator {
     // To allow for inheritance so we can use case objects.
     class Partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) extends Pattern(split.lift)
 
+    case class OrElse[I, X[_]: Functor: OptNat](
+        first: Pattern[I, X], second : Pattern[I, X]) extends Pattern[I, X](
+        (x: I) => first.unapply(x) orElse second.unapply(x)
+        ) 
+    
+    
     def filter[I](p: I => Boolean) =
       Pattern[I, Functor.Id]{(x: I) => if (p(x)) Some(x) else None}
 

@@ -733,7 +733,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                      piWeight)
 
   def pickledPopulation = {
-    import FreeExprLang.writeTerm
+    import FreeExpr.writeTerm
     val termsByType = for ((typ, terms) <- this.termsByType) yield
       (writeTerm(typ),
        (terms map (writeTerm)).pmf map (PickledWeighted.pickle))
@@ -758,7 +758,7 @@ case class PickledTermPopulation(
     vars: Vector[PickledWeighted],
     lambdaWeight: Double,
     piWeight: Double) {
-  import FreeExprLang._
+  import FreeExpr._
   def unpickle = {
     val termsByType = for ((typ, termsPMF) <- this.termsByType) yield
       (readTyp(typ), FD(termsPMF map ((pw) => pw.map(readTerm))))

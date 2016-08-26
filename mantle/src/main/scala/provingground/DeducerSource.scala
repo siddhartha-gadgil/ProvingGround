@@ -204,7 +204,7 @@ object DeducerSource {
     })
   }
 
-  import FreeExprLang._
+  import FreeExpr._
 
   def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
     //  println("saving")
@@ -223,7 +223,7 @@ object DeducerSource {
     val file = cwd / 'data / s"${name}.learn"
     Sink.foreach { (fd: FD[Term]) =>
       //   val distFut = Future(writeDist(fd, names))
-      //    distFut.foreach((p) => write.append(file, p + "\n"))      
+      //    distFut.foreach((p) => write.append(file, p + "\n"))
       write.append(file, writeDist(fd, names) + "\n")
     }
   }

@@ -45,10 +45,10 @@ object DedGrad {
     write.over(hfile, "# 1 hour run with A, B\n")
 
     def save(fd: FD[Term]) =
-      write.append(file, FreeExprLang.writeDist(fd) + "\n")
+      write.append(file, FreeExpr.writeDist(fd) + "\n")
 
     def hsave(fd: FD[Term]) =
-      write.append(hfile, FreeExprLang.writeDist(fd) + "\n")
+      write.append(hfile, FreeExpr.writeDist(fd) + "\n")
 
     val ded = new Deducer(vars = Vector(Weighted(A, 0.3), Weighted(B, 0.3)))
 

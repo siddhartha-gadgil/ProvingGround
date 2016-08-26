@@ -42,7 +42,7 @@ object ABDeduc {
 
   val dir = cwd / "data" / "deduc-explore"
 
-  import FreeExprLang.writeDist
+  import FreeExpr.writeDist
 
   def save(t: FD[Term]) = write.append(dir / "AB.fds", writeDist(t) + "\n")
 
