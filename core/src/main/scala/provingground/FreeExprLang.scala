@@ -298,14 +298,17 @@ object FreeExprPatterns{
       case FreePi(a, b) => (a, b)
     } >> pi[E]) ||
     (Pattern.partial[FreeExpr, II]{
+      case FreeSigma(a, b) => (a, b)
+    } >> sigma[E]) ||
+    (Pattern.partial[FreeExpr, II]{
       case FreeEquality(a, b) => (a, b)
     } >> equality[E]) ||
     (Pattern.partial[FreeExpr, II]{
       case Or(a, b) => (a, b)
     } >> or[E]) ||
-    // (Pattern.partial[FreeExpr, II]{
-    //   case OrCases(a, b) => (a, b)
-    // } >> orCases[E]) ||
+     (Pattern.partial[FreeExpr, II]{
+       case OrCases(a, b) => (a, b)
+     } >> orCases[E]) ||
     (Pattern.partial[FreeExpr, Named]{
       case Variable(name, typ) => (name, typ)
     } >> variable[E]) ||
@@ -315,6 +318,12 @@ object FreeExprPatterns{
     (Pattern.partial[FreeExpr, Id]{
       case FreeIncl2(a) => a
     } >> incl2[E]) ||
+    (Pattern.partial[FreeExpr, Id]{
+      case FreeProj1(a) => a
+    } >> proj1[E]) ||
+    (Pattern.partial[FreeExpr, Id]{
+      case FreeProj2(a) => a
+    } >> proj2[E]) ||
     Translator.Simple((f: FreeExpr) => f.as[E])
 
   import FreeExpr._
@@ -329,26 +338,26 @@ object FreeExprPatterns{
 
   val termToFree = TermPatterns.termToExpr((n: Int) => Some(Univ(n)) : Option[FreeExpr])
 
-  val prefix = "`"
-
-  def writePair(nexp: (String, List[FreeExpr])) = write(nexp)
-
-  def readPair(s: String) = read[(String, List[FreeExpr])](s)
-
-  def encode(exp : Coded[FreeExpr]) : FreeExpr =
-    Variable(prefix + writePair((exp._1, exp._3)), exp._2)
-
-   val decode = Pattern.partial[FreeExpr, Coded]{
-    case Variable(name, typ) if name.startsWith(prefix) =>
-      val code = name.drop(prefix.length)
-      val (p, expr) = readPair(code)
-      (p, typ, expr)
-  }
+//  val prefix = "`"
+//
+//  def writePair(nexp: (String, List[FreeExpr])) = write(nexp)
+//
+//  def readPair(s: String) = read[(String, List[FreeExpr])](s)
+//
+//  def encode(exp : Coded[FreeExpr]) : FreeExpr =
+//    Variable(prefix + writePair((exp._1, exp._3)), exp._2)
+//
+//   val decode = Pattern.partial[FreeExpr, Coded]{
+//    case Variable(name, typ) if name.startsWith(prefix) =>
+//      val code = name.drop(prefix.length)
+//      val (p, expr) = readPair(code)
+//      (p, typ, expr)
+//  }
 }
 
 object SpecialTerms{
   object Names{
-    val rfl = "refexivity"
+    val rfl = "reflexivity"
 
     val idRec = "idRecFn"
 

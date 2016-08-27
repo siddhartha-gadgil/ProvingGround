@@ -126,6 +126,9 @@ object ExprLang {
   def or[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].or(fa._1, fa._2)
 
+  def orCases[E: ExprLang] =
+    (fa: (E, E)) => implicitly[ExprLang[E]].orCases(fa._1, fa._2)
+    
   def i1[E: ExprLang] =
       (fa: (E, E)) => implicitly[ExprLang[E]].i1(fa._1, fa._2)
 

@@ -26,6 +26,12 @@ object TermPatterns{
   val sigmaTyp = Pattern.partial[Term, Id]{
     case SigmaTyp(fibre) => fibre
   }
+  
+  val sigmaLam = Pattern.partial[Term, II]{
+    case SigmaTyp(fibre : Func[u, _]) =>
+      val x : Term = fibre.dom.Var.asInstanceOf[Term]
+      (x, fibre(x))
+  }
 
   val plusTyp = Pattern.partial[Term, II]{
     case PlusTyp(first: Typ[u], second: Typ[v]) => (first, second)
@@ -83,11 +89,15 @@ object TermPatterns{
     (formalAppln >> appln[E]) ||
     (lambdaAppln >> lambda[E]) ||
     (prodTyp >> pairTyp[E]) ||
-    (absPair >> pair[E]) ||
     (funcTyp >> func[E]) ||
     (piLam >> pi[E]) ||
+    (sigmaLam >> sigma[E]) ||
     (equation >> equality[E]) ||
     (symbolic >> variable[E]) ||
+    (plusTyp >> or[E]) ||
+    (funcTyp >> func[E]) ||
+    (prodTyp >> pairTyp[E]) ||
+    (absPair >> pair[E]) ||
     (unit >> {(e: E) => tt[E]}) ||
     (zero >> {(e: E) => ff[E]}) ||
     (star >> {(e: E) => qed[E]}) ||
