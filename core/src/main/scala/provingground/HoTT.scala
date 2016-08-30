@@ -680,14 +680,15 @@ object HoTT {
 
   case object HashSym extends AtomicSym
 
-  class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](domain: Typ[W],
+  class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](val domain: Typ[W],
       val fib: W => Typ[U]) {
     override def hashCode = fib(domain.symbObj(HashSym)).hashCode() * 41 + 7
 
     override def equals(that: Any) = that match {
       case g: GenFuncTyp[u, v] =>
-        val x = domain.Var
-        g.fib(x.asInstanceOf[u]) == fib(x)
+        g.domain == domain &&
+        {val x = domain.Var
+        g.fib(x.asInstanceOf[u]) == fib(x)}
       case _ => false
     }
   }
