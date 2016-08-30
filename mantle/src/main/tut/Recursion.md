@@ -323,6 +323,24 @@ val step = (succEven(n).rec(succEven(succ(n)))){hyp1 :-> (succEven(succ(n)).incl
 val pf = NatInd.induc(succEven)(base)(n :~> step) !: thmSuccEven
 ```
 
+We now prove a result that has been a goal, namely that for a function on Natural numbers if `f(n)=f(n+1)` for all n,
+`f` is constant.
+
+```tut
+val f = "f" :: Nat ->: A
+val ass = "assumption" :: n ~>: (f(n) =:= f(succ(n)))
+
+val claim = n :-> (f(zero) =:= f(n))
+
+val base = f(zero).refl
+
+val hyp = "hypothesis" :: (f(zero) =:= f(n))
+val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
+
+val pf = NatInd.induc(claim)(base)(n :~> step) !: (n ~>: (f(zero) =:= f(n)))
+
+```
+
 
 ## Indexed Inductive types
 
