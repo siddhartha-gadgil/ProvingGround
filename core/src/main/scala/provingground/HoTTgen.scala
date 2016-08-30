@@ -84,12 +84,12 @@ object HoTTgen {
   }
 
   val icons: Term => Option[Term] = {
-    case p: PlusTyp[u, v] => Some(p.ifn)
+    case p: PlusTyp[u, v] => Some(p.incl1)
     case _ => None
   }
 
   val jcons: Term => Option[Term] = {
-    case p: PlusTyp[u, v] => Some(p.jfn)
+    case p: PlusTyp[u, v] => Some(p.incl2)
     case _ => None
   }
 

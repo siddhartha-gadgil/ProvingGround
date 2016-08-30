@@ -525,6 +525,11 @@ object HoTT {
       lmbda(a)(lmbda(b)(PairTerm(a, b)))
     }
 
+    lazy val (proj1, proj2) = {
+      val x = this.Var
+      (x :-> x.first, x :-> x.second)
+    }
+    
     def subs(x: Term, y: Term): ProdTyp[U, V] =
       if (x == this)
         Try(
@@ -1392,6 +1397,12 @@ object HoTT {
       val b = (fibers(a)).Var
       lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
     }
+    
+    lazy val (proj1, proj2) = {
+      val x = this.Var
+      (x :-> x.first, x :~> x.second)
+    }
+
 
     def newobj = SigmaTyp(fibers.newobj)
 
@@ -1733,6 +1744,33 @@ object HoTT {
 
       def subs(x: Term, y: Term) = ScndIncl(typ.replace(x, y), value.replace(x, y))
     }
+    
+    case class RecFn[U <: Term with Subs[U], V<: Term with Subs[V], W <: Term with Subs[W]](
+            first: Typ[U],
+            second: Typ[V],
+            codom: Typ[W],
+                                           firstCase: Func[U, W],
+                                           secondCase: Func[V, W])
+        extends Func[Term, W] {
+      def act(x: Term) = x match {
+        case PlusTyp.FirstIncl(typ, y) if typ == (first || second) =>
+          firstCase(y.asInstanceOf[U])
+        case PlusTyp.ScndIncl(typ, y) if typ == (first || second) =>
+          secondCase(y.asInstanceOf[V])
+        case _ =>
+          codom.symbObj(ApplnSym(this, x))
+      }
+
+      lazy val typ = dom ->: codom
+
+      def subs(x: Term, y: Term) =
+        RecFn(first.replace(x,y), second.replace(x, y), codom.replace(x, y), firstCase.replace(x, y), secondCase.replace(x, y))
+
+      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = PlusTyp(first, second)
+
+      def newobj = this
+    }
+
   }
 
   /**
@@ -1745,44 +1783,20 @@ object HoTT {
 
     def j(value: V) = PlusTyp.ScndIncl(this, value)
 
-    lazy val ifn = {
+    lazy val incl1 = {
       val a = first.Var
       lmbda(a)(i(a))
     }
 
-    lazy val jfn = {
+    lazy val incl2 = {
       val a = second.Var
       lmbda(a)(j(a))
-    }
-
-    case class RecFn[W <: Term with Subs[W]](codom: Typ[W],
-                                           firstCase: Func[U, W],
-                                           secondCase: Func[V, W])
-        extends Func[Term, W] {
-      def act(x: Term) = x match {
-        case PlusTyp.FirstIncl(`first`, y) =>
-          firstCase(y.asInstanceOf[U])
-        case PlusTyp.ScndIncl(`second`, y) =>
-          secondCase(y.asInstanceOf[V])
-        case _ =>
-          codom.symbObj(ApplnSym(this, x))
-      }
-
-      lazy val typ = dom ->: codom
-
-      def subs(x: Term, y: Term) =
-        PlusTyp(first.replace(x,y), second.replace(x, y)).
-        RecFn(codom.replace(x, y), firstCase.replace(x, y), secondCase.replace(x, y))
-
-      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
-
-      def newobj = this
     }
 
     def rec[W <: Term with Subs[W]](codom: Typ[W]) = {
       val firstData = (first ->: codom).Var
       val secondData = (second ->: codom).Var
-      firstData :-> (secondData :-> (RecFn(codom, firstData, secondData) : Func[Term, W]))
+      firstData :-> (secondData :-> (PlusTyp.RecFn(first, second, codom, firstData, secondData) : Func[Term, W]))
     }
 
     case class InducFn[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]],
@@ -1790,9 +1804,9 @@ object HoTT {
                                              secondCase: FuncLike[V, W])
         extends FuncLike[Term, W] {
       def act(x: Term) = x match {
-        case PlusTyp.FirstIncl(`first`, y) =>
+        case PlusTyp.FirstIncl(typ, y) if typ == plustyp =>
           firstCase(y.asInstanceOf[U])
-        case PlusTyp.ScndIncl(`second`, y) =>
+        case PlusTyp.ScndIncl(typ, y) if typ == plustyp =>
           secondCase(y.asInstanceOf[V])
         case _ =>
           depcodom(x).symbObj(ApplnSym(this, x))

@@ -92,11 +92,11 @@ case object TermLang
   }
 
   def incl1(typ: Term): Option[Term] = typ match {
-    case pt: PlusTyp[u, v] => Some(pt.ifn)
+    case pt: PlusTyp[u, v] => Some(pt.incl1)
   }
 
   def incl2(typ: Term): Option[Term] = typ match {
-    case pt: PlusTyp[u, v] => Some(pt.jfn)
+    case pt: PlusTyp[u, v] => Some(pt.incl2)
   }
 
   /**
@@ -114,12 +114,12 @@ case object TermLang
     */
   def ff: Option[Term] = Some(Zero)
 
-  def orCases(first: Term, second: Term) = (first, second) match {
+  def orCases(first: Term, second: Term) : Option[Term] = (first, second) match {
     case (fn1: Func[u, w], fn2raw: Func[v, ww])
         if (fn1.codom == fn2raw.codom) =>
       val tp = PlusTyp(fn1.dom, fn2raw.dom)
       val fn2 = fn2raw.asInstanceOf[Func[v, w]]
-      Some(tp.RecFn(fn1.codom, fn1, fn2))
+      Some(PlusTyp.RecFn(fn1.dom, fn2.dom, fn1.codom, fn1, fn2))
     case (fn1: FuncLike[u, w], fn2raw: FuncLike[v, ww])
         if (fn1.depcodom == fn2raw.depcodom) =>
       val tp = PlusTyp(fn1.dom, fn2raw.dom)
@@ -128,7 +128,7 @@ case object TermLang
       val x2 = fn2.dom.Var
       val fibre1 = lmbda(x1)(fn1(x1).typ.asInstanceOf[Typ[w]])
       val fibre2 = lmbda(x2)(fn2(x2).typ.asInstanceOf[Typ[w]])
-      val fibre = tp.RecFn(Type, fibre1, fibre2)
+      val fibre = PlusTyp.RecFn(fn1.dom, fn2.dom, Type, fibre1, fibre2)
       Some(tp.InducFn(fibre, fn1, fn2))
     case _ => None
   }

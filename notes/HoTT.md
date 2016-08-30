@@ -250,13 +250,13 @@ AplusB: provingground.HoTT.PlusTyp[provingground.HoTT.Term,provingground.HoTT.Te
 
 
 ```scala
-scala> AplusB.ifn(a)
+scala> AplusB.incl1(a)
 res18: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provingground.HoTT.Term] = FirstIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),a : (A : 𝒰 ))
 ```
 
 
 ```scala
-scala> AplusB.jfn
+scala> AplusB.incl2
 res19: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($b : (B : 𝒰 )) ↦ (ScndIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),$b : (B : 𝒰 )))
 ```
 

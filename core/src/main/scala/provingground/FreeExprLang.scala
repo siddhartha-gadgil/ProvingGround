@@ -369,8 +369,8 @@ object SpecialTerms{
       (Names.rfl, rfl.typ : Typ[Term], List(dom, x))
     case rfn @ IdentityTyp.RecFn(domain: Typ[u], target: Typ[v], data: Func[x, y], a: Term, b: Term) =>
       (Names.idRec, rfn.typ: Typ[Term], List(domain, target, data, a, b))
-    case ifn @ IdentityTyp.InducFn(domain: Typ[u], target: Term, data: FuncLike[x, y], a: Term, b: Term) =>
-      (Names.idInduc, ifn.typ: Typ[Term], List(domain, target, data, a, b))
+    case incl1 @ IdentityTyp.InducFn(domain: Typ[u], target: Term, data: FuncLike[x, y], a: Term, b: Term) =>
+      (Names.idInduc, incl1.typ: Typ[Term], List(domain, target, data, a, b))
   }
   )
 
