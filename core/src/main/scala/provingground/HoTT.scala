@@ -680,14 +680,15 @@ object HoTT {
 
   case object HashSym extends AtomicSym
 
-  class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](domain: Typ[W],
+  class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](val domain: Typ[W],
       val fib: W => Typ[U]) {
     override def hashCode = fib(domain.symbObj(HashSym)).hashCode() * 41 + 7
 
     override def equals(that: Any) = that match {
       case g: GenFuncTyp[u, v] =>
-        val x = domain.Var
-        g.fib(x.asInstanceOf[u]) == fib(x)
+        g.domain == domain &&
+        {val x = domain.Var
+        g.fib(x.asInstanceOf[u]) == fib(x)}
       case _ => false
     }
   }
@@ -1689,7 +1690,7 @@ object HoTT {
       inducFn(baseCase)
     }
 
-    def trans[U <: Term with Subs[U]](dom: Typ[U]) = {
+    def preTrans[U <: Term with Subs[U]](dom: Typ[U]) = {
       val x = dom.Var
       val y = dom.Var
       val z = dom.Var
@@ -1699,6 +1700,13 @@ object HoTT {
       val q = (x =:= x).Var
       val baseCase = lambda(x)(id(x =:= z))
       lambda(z)(inducFn(baseCase))
+    }
+    
+    def trans[U <: Term with Subs[U]](dom: Typ[U]) = {
+      val x = dom.Var
+      val y = dom.Var
+      val z = dom.Var
+      x :~> (y :~> (z :~> (IdentityTyp.preTrans(dom)(z)(x)(y) )))
     }
 
     def extnslty[U <: Term with Subs[U], V <: Term with Subs[V]](
