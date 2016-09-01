@@ -90,13 +90,13 @@ To define recursively a function `f : Nat ->: X` for a type `X`, the data is
 val recNatBool = NatInd.rec(Bool)
 recNatBool.typ
 val n = "n" :: Nat
-val isEven = recNatBool(tt)(n :-> (b :-> not(b)))
+val even = recNatBool(tt)(n :-> (b :-> not(b)))
 val one = succ(zero)
 val two = succ(one)
 val three = succ(two)
 val four = succ(three)
-isEven(two)
-isEven(three)
+even(two)
+even(three)
 ```
 
 A more complicated example is addition of natural numbers.
@@ -305,6 +305,42 @@ val pfDoubleEven =
           )
     } !: thmDoubleEven
 ```
+
+We next prove a more interesting statement, namely that for any natural number `n`, one of `n` and `n+1` is even.
+
+```tut
+val succEven = n :-> (isEven(n) || isEven(succ(n)))
+
+val base = succEven(zero).incl1(zeroEven) !: succEven(zero)
+
+val thmSuccEven = n ~>: (succEven(n))
+
+val hyp1 = "n-is-Even" :: isEven(n)
+val hyp2 = "(n+1)-is-Even" :: isEven(succ(n))
+
+val step = (succEven(n).rec(succEven(succ(n)))){hyp1 :-> (succEven(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{hyp2 :-> (succEven(succ(n)).incl1((hyp2)))}
+
+val pf = NatInd.induc(succEven)(base)(n :~> step) !: thmSuccEven
+```
+
+We now prove a result that has been a goal, namely that for a function on Natural numbers if `f(n)=f(n+1)` for all n,
+`f` is constant.
+
+```tut
+val f = "f" :: Nat ->: A
+val ass = "assumption" :: n ~>: (f(n) =:= f(succ(n)))
+
+val claim = n :-> (f(zero) =:= f(n))
+
+val base = f(zero).refl
+
+val hyp = "hypothesis" :: (f(zero) =:= f(n))
+val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
+
+val pf = NatInd.induc(claim)(base)(n :~> step) !: (n ~>: (f(zero) =:= f(n)))
+
+```
+
 
 ## Indexed Inductive types
 

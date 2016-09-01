@@ -34,13 +34,13 @@ val List(zero, succ) = NatInd.intros
 val recNatBool = NatInd.rec(Bool)
 recNatBool.typ
 val n = "n" :: Nat
-val isEven = recNatBool(tt)(n :-> (b :-> not(b)))
+val even = recNatBool(tt)(n :-> (b :-> not(b)))
 val one = succ(zero)
 val two = succ(one)
 val three = succ(two)
 val four = succ(three)
-isEven(two)
-isEven(three)
+even(two)
+even(three)
 
 val recNNN = NatInd.rec(Nat ->: Nat)
 recNNN.typ
@@ -101,3 +101,34 @@ recBBT.typ
 val tn = recBBT(bleaf)(T1)
 val T2 = bnode(tn)
 leaves(T2)
+
+import FansiShow._
+
+val recNN = NatInd.rec(Nat)
+val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
+double(two) == four
+assert(double(two) == four)
+double(succ(n))
+
+val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
+sumTo(one)
+sumTo(three).fansi
+val ten = succ(nine)
+sumTo(four) == ten
+assert(sumTo(four) == ten)
+
+val isEven = "isEven" :: Nat ->: Type
+val zeroEven = "0even" :: isEven(zero)
+val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
+
+val thmDoubleEven = n ~>: isEven(double(n))
+val hyp = "isEven(double(n))" :: isEven(double(n))
+val pfDoubleEven =
+  NatInd.induc(n :-> isEven(double(n))){
+    zeroEven}{
+      n :~> (
+        hyp :-> (
+          plusTwoEven(double(n))(hyp)
+          )
+          )
+    } !: thmDoubleEven

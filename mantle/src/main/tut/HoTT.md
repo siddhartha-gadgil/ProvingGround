@@ -208,12 +208,12 @@ val AplusB = PlusTyp(A, B)
 
 
 ```tut
-AplusB.ifn(a)
+AplusB.incl1(a)
 ```
 
 
 ```tut
-AplusB.jfn
+AplusB.incl2
 ```
 
 In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.
