@@ -6,7 +6,11 @@ import Implicits._
 import Fold._
 
 class InductionSpec extends FlatSpec {
+  
+  // inductive types
 
+  // Example: Boolean
+  
   val Bool = "Boolean" :: Type
   val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 
@@ -24,7 +28,7 @@ class InductionSpec extends FlatSpec {
 
   val recBBB = BoolInd.rec(Bool ->: Bool)
 
-  "recBBB" should "be function with type Bool -> Bool -> Bool -> Bool" in {
+  "recBBB" should "be function with the properly defined type" in {
     assert(recBBB.typ == (Bool ->: Bool) ->: (Bool ->: Bool) ->: (Bool ->: Bool ->: Bool))
   }
 
@@ -37,9 +41,11 @@ class InductionSpec extends FlatSpec {
   val b = "b" :: Bool
   val and = recBBB(lmbda(b)(b))(lmbda(b)(ff))
 
-  "Recursion function recBBB and from Bool to Bool" should "when applied to constructors give defining data" in {
+  "Recursion function recBBB from Bool to Bool" should "when applied to constructors give defining data" in {
     assert(and(tt)(tt) == tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(ff)(ff) == ff)
   }
+  
+  // Example: natural numbers
 
   val Nat = "Nat" :: Type
   val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -78,6 +84,8 @@ class InductionSpec extends FlatSpec {
     assert(add(zero)(zero) == zero && add(zero)(one) == one && add(one)(zero) == one)
     assert(add(two)(one) == three && add(two)(two) == four)
   }
+  
+  // Example: Lists
 
   val A = "A" :: Type
   val a = "a" :: A
@@ -95,6 +103,8 @@ class InductionSpec extends FlatSpec {
 
     assert(size(nil) == zero && size(cons(a)(cons(a)(nil))) == two)
   }
+  
+  // Example: binary trees
 
   val T = "Tree" :: Type
   val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
@@ -110,25 +120,27 @@ class InductionSpec extends FlatSpec {
   "Recursion function vertices from Tree to Nat" should "be defined properly" in {
     assert(vertices(t) == nine)
   }
+  
+  // Example: binary trees in another way
 
-//  val BT = "BinTree" :: Type
-//  val BTInd = ("leafB" ::: BT) |: ("nodeB" ::: (Bool -|>: BT) -->>: BT) =: BT
-//  val List(leafB, nodeB) = BTInd.intros
-//
-//  val recBTN = BTInd.rec(Nat)
-//
-//  val f = "f" :: Bool ->: BT
-//  val g = "g" :: Bool ->: Nat
-//  val leaves = recBTN(one)(f :-> (g :-> (add(g(ff))(g(tt)))))
-//
-//  val bt = node(b :-> leafB)
-//  val recBBT = BoolInd.rec(BT)
-//  val ttn = recBBT(leafB)(bt)
-//  val bt2 = node(ttn)
-//
-//  "Recursion function leaves from BinTree to Nat" should "be defined properly" in {
-//    assert(leaves(bt2) == three)
-//  }
+  val BT = "BinTree" :: Type
+  val BTInd = ("leafB" ::: BT) |: ("nodeB" ::: (Bool -|>: BT) -->>: BT) =: BT
+  val List(leafB, nodeB) = BTInd.intros
+
+  val recBTN = BTInd.rec(Nat)
+
+  val f = "f" :: Bool ->: BT
+  val g = "g" :: Bool ->: Nat
+  val leaves = recBTN(one)(f :-> (g :-> (add(g(ff))(g(tt)))))
+
+  val bt = nodeB(b :-> leafB)
+  val recBBT = BoolInd.rec(BT)
+  val ttn = recBBT(leafB)(bt)
+  val bt2 = nodeB(ttn)
+
+  "Recursion function leaves from BinTree to Nat" should "be defined properly" in {
+    assert(leaves(bt2) == three)
+  }
 
   val recNN = NatInd.rec(Nat)
   val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
@@ -142,6 +154,11 @@ class InductionSpec extends FlatSpec {
   "Recursion function sumTo" should "be defined properly" in {
     assert(sumTo(zero) == zero && sumTo(one) == one && sumTo(four) == ten)
   }
+  
+  
+  // Inductive definitions
+  
+  // Example: Vectors
 
   val V = "Vec" :: Nat ->: Type
   val nilv = "nil" :: V(zero)
@@ -156,6 +173,8 @@ class InductionSpec extends FlatSpec {
     assert(countdown(zero) == nilv)
     assert(countdown(three) == consv(two)(three)(consv(one)(two)(consv(zero)(one)(nilv))))
   }
+  
+  // Indexed Inductive types
 
   val IndN = new IndexedConstructorPatterns(Nat ->: Types)
   val Vec = "Vec" :: Nat ->: Type
