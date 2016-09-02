@@ -103,6 +103,8 @@ sealed trait FmlyPtn[
 
   def argOpt(l: List[Term]): Option[ArgType]
 
+  def incl(term: O, arg: ArgType, w: FamilyType): Total
+  
   //  def arg(x: Total): ArgType
 
   def withCod[CC <: Term with Subs[CC]](w: Typ[O]): FmlyPtn[O, CC, F]
@@ -239,6 +241,8 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]()
   def argOpt(l: List[Term]): Option[ArgType] =
     if (l.isEmpty) Some(Star) else None
 
+  def incl(term: O, arg: ArgType, w: FamilyType): Total = term  
+    
   type ArgType = AtomicTerm
 
   def arg(x: Total): AtomicTerm = Star
@@ -369,6 +373,9 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
     case _ => None
   }
 
+  def incl(term: O, arg: ArgType, w: FamilyType): Total = 
+    PairTerm(arg.first, head.incl(term, arg.second, w(arg.first))) 
+  
   //  def arg(x: Total) = PairTerm(x.first, head.arg(x.second))
 
   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)
@@ -529,6 +536,13 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
       headfibre(xt).argOpt(ys) map ((t) =>
             DepPair(xt, t, lmbda(xt)(t.typ.asInstanceOf[Typ[S]])))
     case _ => None
+  }
+  
+  def incl(term: O, arg: ArgType, w: FamilyType): Total =
+  {
+    val x = arg.first.typ.asInstanceOf[Typ[TT]].Var
+    val fib = x :-> headfibre(x).domTotal(w(x))
+    DepPair(arg.first, headfibre(arg.first).incl(term,arg.second, w(arg.first)), fib)
   }
 
   //    def contract(f: Family)(arg: ArgType): O = headfibre(arg).contract(f(arg.first))(arg.second)

@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 
-import RefineTerms.refine
+import RefineTerms.{refine, refineTyp}
 
 //import scala.language.existentials
 
@@ -44,7 +44,7 @@ case object TermLang
     Try(refine(HoTT.lambda(variable)(value))).toOption
 
   def pi(variable: Term, typ: Term): Option[Term] = typ match {
-    case t: Typ[u] => Try(refine(HoTT.pi(variable)(t))).toOption
+    case t: Typ[u] => Try(refineTyp(HoTT.pi(variable)(t))).toOption
     case _ => None
   }
 
@@ -69,7 +69,7 @@ case object TermLang
     if (lhs.typ == rhs.typ) Try(lhs =:= rhs).toOption else None
 
   def sigma(variable: Term, typ: Term): Option[Term] = typ match {
-    case t: Typ[u] => Try(refine(HoTT.sigma(variable)(t))).toOption
+    case t: Typ[u] => Try(refineTyp(HoTT.sigma(variable)(t))).toOption
     case _ => None
   }
 
