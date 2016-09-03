@@ -682,6 +682,11 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def induc(fibre: Func[Total, Typ[Cod]]) : InducType =
       inducDataLambda(fibre)(depCurry(inducDefn(fibre)))
     
+    def inducCast(x: Term) = 
+      induc(
+        typFmlyPtn.uncurryTyp( x.asInstanceOf[typFmlyPtn.IterTypFunc])
+      )
+      
     def |:(head: iConstructor) = iConstructorSeq.Cons(head, this)
 
     def ||:(typ: Typ[H]) =

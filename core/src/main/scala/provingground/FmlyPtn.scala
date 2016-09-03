@@ -81,10 +81,16 @@ sealed trait FmlyPtn[
   def depFill(g: IterDepFunc)(arg: ArgType): FuncLike[O, C]
 
   def curry(f: Func[Total, Cod]): IterFunc
+  
+  def curryTyp(w: Func[Total, Typ[Cod]]): IterTypFunc
 
   def totalDomain(g: IterFunc): Typ[Total]
 
+  def totalTypDomain(g: IterTypFunc): Typ[Total]
+  
   def uncurry(g: IterFunc): Func[Total, Cod]
+  
+  def uncurryTyp(g: IterTypFunc): Func[Total, Typ[Cod]]
 
   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc
 
@@ -259,10 +265,16 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]()
 
   def curry(f: Func[Total, Cod]): IterFunc = f
 
+  def curryTyp(w: Func[Total, Typ[Cod]]): IterTypFunc = w
+  
   def totalDomain(g: IterFunc) = g.dom
 
+  def totalTypDomain(g: IterTypFunc): Typ[Total] = g.dom
+  
   def uncurry(g: IterFunc): Func[Total, Cod] = g
 
+  def uncurryTyp(g: IterTypFunc): Func[Total, Typ[Cod]] = g
+  
   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = f
 
   def depTotalDomain(g: IterDepFunc) = g.dom
@@ -400,6 +412,18 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
     )
   }
 
+  def curryTyp(w: Func[Total, Typ[Cod]]): IterTypFunc = {
+    val wdom = w.dom
+    val z = wdom.Var
+    val x = z.first
+    val y = z.second
+    lambda(x)(
+        headfibre(x).curryTyp(
+            lmbda(y)(w(z))
+        )
+    )
+  }
+  
   def domTotal(w: FamilyType): Typ[Total] = {
     val fstDom = w.dom
     val x = fstDom.Var
@@ -412,11 +436,23 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
     val fibre = lmbda(x)(head.totalDomain(g(x)))
     SigmaTyp(fibre)
   }
+  
+  def totalTypDomain(g: IterTypFunc): Typ[Total]  = {
+    val a = g.dom.Var
+    val fibre = lmbda(a)(headfibre(a).totalTypDomain(g(a)))
+    SigmaTyp(fibre)
+  }
 
   def uncurry(g: IterFunc): Func[Total, Cod] = {
     val dom = totalDomain(g)
     val ab: Total = dom.Var
     lmbda(ab)(head.uncurry(g(ab.first))(ab.second))
+  }
+  
+  def uncurryTyp(g: IterTypFunc): Func[Total, Typ[Cod]] = {
+    val dom = totalTypDomain(g)
+    val ab: Total = dom.Var
+    lmbda(ab)(head.uncurryTyp(g(ab.first))(ab.second))
   }
 
   def depTotalDomain(g: IterDepFunc) =
@@ -566,6 +602,18 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
         )
     )
   }
+  
+  def curryTyp(w: Func[Total, Typ[Cod]]): IterTypFunc = {
+    val wdom = w.dom
+    val z = wdom.Var
+    val x = z.first
+    val y = z.second
+    lmbda(x)(
+        headfibre(x).curryTyp(
+            lmbda(y)(w(z))
+        )
+    )
+  }
 
   def domTotal(w: FamilyType): Typ[Total] = {
     val a = w.dom.Var
@@ -578,6 +626,12 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
     val fibre = lmbda(a)(headfibre(a).totalDomain(g(a)))
     SigmaTyp(fibre)
   }
+  
+  def totalTypDomain(g: IterTypFunc): Typ[Total] = {
+    val a = g.dom.Var
+    val fibre = lmbda(a)(headfibre(a).totalTypDomain(g(a)))
+    SigmaTyp(fibre)
+  }
 
   def uncurry(g: IterFunc): Func[Total, Cod] = {
     val dom = totalDomain(g)
@@ -585,6 +639,12 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
     lmbda(ab)(headfibre(ab.first).uncurry(g(ab.first))(ab.second))
   }
 
+  def uncurryTyp(g: IterTypFunc): Func[Total, Typ[Cod]] = {
+    val dom = totalTypDomain(g)
+    val ab: Total = dom.Var
+    lmbda(ab)(headfibre(ab.first).uncurryTyp(g(ab.first))(ab.second))
+  }
+  
   def depCurry(f: FuncLike[Total, Cod]): IterDepFunc = {
     val fdom = f.dom
     val z = fdom.Var
