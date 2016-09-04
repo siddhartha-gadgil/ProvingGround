@@ -1,0 +1,5 @@
+
+
+trait type_name {
+  
+}
