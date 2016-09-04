@@ -121,3 +121,101 @@ object ConstructorSeq {
       cs: List[Constructor[C, H]], W: Typ[H], Xs: Func[H, Typ[C]]) =
     fold(W)(cs).induc(Xs)
 }
+
+trait ConstructorSeqMap[
+  C <: Term with Subs[C], H <: Term with Subs[H],
+  RecType <: Term with Subs[RecType], InducType <: Term with Subs[InducType]]{
+
+  def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
+
+  val W: Typ[H]
+
+  // type RecType <: Term with Subs[RecType]
+
+  def recDataLambda(X: Typ[C]): Func[H, C] => RecType
+
+  def rec(X: Typ[C]): RecType =
+    recDataLambda(X: Typ[C])(recDefn(X: Typ[C]))
+
+  def inducDefn(fibre: Func[H, Typ[C]]): InductiveDefinition[H, C]
+
+  // type InducType <: Term with Subs[InducType]
+
+  def inducDataLambda(fibre: Func[H, Typ[C]]): FuncLike[H, C] => InducType
+
+  def induc(fibre: Func[H, Typ[C]]) =
+    inducDataLambda(fibre)(inducDefn(fibre))
+
+}
+
+object ConstructorSeqMap{
+  case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
+      extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C]] {
+    def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
+
+    // type RecType = Func[H, C]
+
+    def recDataLambda(X: Typ[C]) = (f) => f
+
+    def inducDefn(fibre: Func[H, Typ[C]]) =
+      InductiveDefinition.Empty(fibre)
+
+    // type InducType = FuncLike[H, C]
+
+    def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
+
+    val intros = List()
+  }
+
+  case class RecSym[C<: Term with Subs[C]](cons: C) extends AnySym{
+    def subs(x: Term, y: Term) = RecSym(cons.replace(x, y))
+  }
+
+  case class InducSym[C<: Term with Subs[C]](cons: C) extends AnySym{
+    def subs(x: Term, y: Term) = InducSym(cons.replace(x, y))
+  }
+
+  case class Cons[
+    C <: Term with Subs[C], H <: Term with Subs[H],
+    Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
+    TR <: Term with Subs[TR], TI <: Term with Subs[TI]](
+      cons: C, pattern: ConstructorPatternMap[Cod, C, H, RD, ID],
+      tail: ConstructorSeqMap[Cod, H, TR, TI]
+  ) extends ConstructorSeqMap[Cod, H, Func[RD, TR], Func[ID, TI]] {
+
+    val W = tail.W
+
+    def data(X: Typ[Cod]): RD =
+      pattern.recDataTyp(W, X).symbObj(RecSym(cons))
+
+    val defn = (d: RD) =>
+      (f: Func[H, Cod]) => pattern.recDefCase(cons, d, f)
+
+    def recDefn(X: Typ[Cod]) =
+      RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+
+    // type RecType = Func[cons.pattern.RecDataType, tail.RecType]
+
+    def recDataLambda(X: Typ[Cod]) =
+      f => LambdaFixed(data(X), tail.recDataLambda(X)(f))
+
+    // type InducType = Func[cons.pattern.InducDataType, tail.InducType]
+
+    def inducData(fibre: Func[H, Typ[Cod]]) =
+      pattern
+        .inducDataTyp(W, fibre)(cons)
+        .symbObj(InducSym(cons))
+
+    val inducDefn = (d: ID) =>
+      (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)
+
+    def inducDefn(fibre: Func[H, Typ[Cod]]) =
+      InductiveDefinition.DataCons(
+          inducData(fibre), inducDefn, tail.inducDefn(fibre))
+
+    def inducDataLambda(fibre: Func[H, Typ[Cod]]) =
+      (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
+
+  }
+
+}

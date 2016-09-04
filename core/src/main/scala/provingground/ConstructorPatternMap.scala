@@ -36,6 +36,8 @@ sealed trait ConstructorPatternMap[Cod <: Term with Subs[Cod],
                                 ] { self =>
 
 
+//  val domain : ConstructorPattern[Cod, ConstructorType, H]
+
   def subs(x: Term, y: Term): ConstructorPatternMap[Cod, ConstructorType, H, RecDataType, InducDataType]
 
   /**
@@ -94,6 +96,9 @@ sealed trait ConstructorPatternMap[Cod <: Term with Subs[Cod],
   */
 case class IdWMap[H <: Term with Subs[H]]()
     extends ConstructorPatternMap[Term, H, H, Term, Term] {
+
+  val domain = IdW[H]
+
   def apply(W: Typ[H]) = W
 
   val univLevel = 0
@@ -129,6 +134,8 @@ case class IdWMap[H <: Term with Subs[H]]()
 }
 case class IdTargMap[C <: Term with Subs[C], H <: Term with Subs[H]]()
     extends ConstructorPatternMap[C, H, H, C, C] {
+  val domain = IdTarg[C, H]
+
   def apply(W: Typ[H]) = W
 
   val univLevel = 0
@@ -236,6 +243,8 @@ case class FuncPtnMap[C <: Term with Subs[C],
 
   //    type Cod = C
 
+  // val domain = FuncPtn(???, head.domain)
+
   def subs(x: Term, y: Term) =
     FuncPtnMap(tail.subs(x, y), head.subs(x, y))
 
@@ -294,6 +303,8 @@ case class CnstFncPtnMap[T <: Term with Subs[T],
   //   type HeadType = head.ConstructorType
 
   //  type Cod = head.Cod
+
+  // val domain = CnstFncPtn(tail, head.domain)
 
   def subs(x: Term, y: Term) =
     CnstFncPtnMap(tail.subs(x, y), head.subs(x, y))
