@@ -47,6 +47,8 @@ sealed trait ConstructorPatternMap[
     */
   def apply(tp: Typ[H]): Typ[ConstructorType]
 
+  def symbcons(name: AnySym, tp: Typ[H]): ConstructorType = apply(tp).variable(name)
+
   /**
     * (scala) type of data for recursion corresponding to the single constructor
     */
@@ -380,7 +382,8 @@ sealed trait ConstructorShape[S<: Term with Subs[S]]{
         type RecDataType <: Term with Subs[RecDataType];
         type InducDataType <: Term with Subs[InducDataType]
     }
-
+    def mapped[Cod <: Term with Subs[Cod], H <: Term with Subs[H]]=
+      mapper[Cod, H].mapper(this)
 }
 
 object ConstructorShape{

@@ -175,6 +175,21 @@ object ConstructorSeqMap{
     def subs(x: Term, y: Term) = InducSym(cons.replace(x, y))
   }
 
+
+  object Cons{
+    def sym[HS <: Term with Subs[HS],
+      C <: Term with Subs[C], H <: Term with Subs[H],
+      Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
+      TR <: Term with Subs[TR], TI <: Term with Subs[TI]](
+        name: AnySym, pattern: ConstructorPatternMap[HS, Cod, C, H, RD, ID],
+        tail: ConstructorSeqMap[Cod, H, TR, TI]
+    ) = {
+      val W = tail.W
+      val cons = pattern.symbcons(name, W)
+      Cons(cons, pattern, tail)
+    }
+  }
+
   case class Cons[HS <: Term with Subs[HS],
     C <: Term with Subs[C], H <: Term with Subs[H],
     Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
@@ -218,4 +233,39 @@ object ConstructorSeqMap{
 
   }
 
+}
+
+import scala.language.existentials
+
+trait ConstructorSeqDom{
+  def mapper[
+    C <: Term with Subs[C],
+    H <: Term with Subs[H]](W: Typ[H]) : ConstructorSeqMap[
+      C, H, RecType, InducType] forSome {
+      type RecType <: Term with Subs[RecType]; type InducType <: Term with Subs[InducType]}
+
+  def rec[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Typ[C]) =
+    mapper[C, H](W).rec(X)
+
+  def induc[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], Xs: Func[H, Typ[C]]) =
+    mapper[C, H](W).induc(Xs)
+}
+
+object ConstructorSeqDom{
+  case object Empty extends ConstructorSeqDom{
+    def mapper[
+      C <: Term with Subs[C],
+      H <: Term with Subs[H]](W: Typ[H]) = ConstructorSeqMap.Empty[C, H](W)
+  }
+
+  case class Cons[S <: Term with Subs[S]](
+    name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom){
+      def mapper[
+        C <: Term with Subs[C],
+        H <: Term with Subs[H]](W: Typ[H])  = {
+        val ptn = pattern.mapped[C, H]
+        val tl = tail.mapper[C, H](W)
+         ConstructorSeqMap.Cons.sym(name, ptn, tl)
+        }
+    }
 }
