@@ -175,11 +175,11 @@ object ConstructorSeqMap{
     def subs(x: Term, y: Term) = InducSym(cons.replace(x, y))
   }
 
-  case class Cons[
+  case class Cons[HS <: Term with Subs[HS],
     C <: Term with Subs[C], H <: Term with Subs[H],
     Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
     TR <: Term with Subs[TR], TI <: Term with Subs[TI]](
-      cons: C, pattern: ConstructorPatternMap[Cod, C, H, RD, ID],
+      cons: C, pattern: ConstructorPatternMap[HS, Cod, C, H, RD, ID],
       tail: ConstructorSeqMap[Cod, H, TR, TI]
   ) extends ConstructorSeqMap[Cod, H, Func[RD, TR], Func[ID, TI]] {
 

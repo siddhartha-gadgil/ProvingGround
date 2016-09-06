@@ -6,8 +6,11 @@ import math._
 
 //import scala.util.Try
 
+trait HeadTerm extends Term with Subs[HeadTerm]
+
 object IterFuncPatternMap {
   sealed trait IterFuncPtnMap[
+      S <: Term with Subs[S],
       O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F],
       TT <: Term with Subs[TT], DT <: Term with Subs[DT]] {
 
@@ -51,7 +54,7 @@ object IterFuncPatternMap {
     def depTarget(xs: Func[O, Typ[Cod]]): Family => Typ[DT]
 
 
-    def subs(x: Term, y: Term): IterFuncPtnMap[O, C, F, TT, DT]
+    def subs(x: Term, y: Term): IterFuncPtnMap[S, O, C, F, TT, DT]
 
     /**
       * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -80,7 +83,7 @@ object IterFuncPatternMap {
     * The identity family
     */
   case class IdIterPtnMap[O <: Term with Subs[O], C <: Term with Subs[C]]()
-      extends IterFuncPtnMap[O, C, O, C, C] {
+      extends IterFuncPtnMap[HeadTerm, O, C, O, C, C] {
 
     def apply(W: Typ[O]) = W
 
@@ -129,42 +132,20 @@ object IterFuncPatternMap {
     def inducedDep(f: FuncLike[O, C]) = f
   }
 
-  // trait RecIterPtnMap[TT <: Term with Subs[TT],
-  //                  V <: Term with Subs[V],
-  //                  T <: Term with Subs[T],
-  //                  D <: Term with Subs[D],
-  //                  O <: Term with Subs[O],
-  //                  C <: Term with Subs[C]]
-  //     extends IterFuncPtnMap[O, C, FuncLike[TT, V]] {
-  //
-  //   type TargetType <: FuncLike[TT, T] with Subs[TargetType]
-  //
-  //   type DepTargetType = FuncLike[TT, D]
-  //
-  //   val tail: Typ[TT]
-  //
-  //   val headfibre: TT => IterFuncPtnMap[O, C, V] {
-  //     type TargetType = T; type DepTargetType = D
-  //   }
-  //
-  //   def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) => {
-  //     val a = tail.Var
-  //     val b = fmly(a)
-  //     val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-  //     PiTyp(targfibre)
-  //   }
-  // }
 
-  case class FuncIterPtnMap[TT <: Term with Subs[TT],
+
+  case class FuncIterPtnMap[
+                        HS<: Term with Subs[HS],
+                        TT <: Term with Subs[TT],
                          V <: Term with Subs[V],
                          T <: Term with Subs[T],
                          D <: Term with Subs[D],
                          O <: Term with Subs[O],
                          C <: Term with Subs[C]](
       tail: Typ[TT],
-      head: IterFuncPtnMap[O, C, V, T, D]
+      head: IterFuncPtnMap[HS, O, C, V, T, D]
   )
-      extends IterFuncPtnMap[O, C, Func[TT, V], Func[TT, T], FuncLike[TT, D]] { self =>
+      extends IterFuncPtnMap[Func[TT, HS], O, C, Func[TT, V], Func[TT, T], FuncLike[TT, D]] { self =>
     def apply(W: Typ[O]) = FuncTyp[TT, V](tail, head(W))
 
     type DepTargetType = FuncLike[TT, D]
@@ -223,17 +204,19 @@ object IterFuncPatternMap {
     * Extending by a constant type A a family of type patterns depending on (a : A).
     *
     */
-  case class DepFuncIterPtnMap[TT <: Term with Subs[TT],
+  case class DepFuncIterPtnMap[
+    HS <: Term with Subs[HS],
+    TT <: Term with Subs[TT],
                             V <: Term with Subs[V],
                             T <: Term with Subs[T],
                             D <: Term with Subs[D],
                             O <: Term with Subs[O],
                             C <: Term with Subs[C]](
       tail: Typ[TT],
-      headfibre: TT => IterFuncPtnMap[O, C, V, T, D] ,
+      headfibre: TT => IterFuncPtnMap[HS, O, C, V, T, D] ,
       headlevel: Int = 0
   )
-      extends IterFuncPtnMap[O, C, FuncLike[TT, V], FuncLike[TT, T], FuncLike[TT, D]] {
+      extends IterFuncPtnMap[FuncLike[TT, HS],O, C, FuncLike[TT, V], FuncLike[TT, T], FuncLike[TT, D]] {
 
     //    type Family =  FuncLike[Term, V]
 
@@ -289,4 +272,114 @@ object IterFuncPatternMap {
 
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
+
+import scala.language.existentials
+
+  // sealed trait IterFuncMapper[
+  //   S <: Term with Subs[S],
+  //   O <: Term with Subs[O], C <: Term with Subs[C], F <: Term with Subs[F],
+  //       TT <: Term with Subs[TT], DT <: Term with Subs[DT]] {
+  //         def mapper(shape: IterFuncShape[S]) : IterFuncPtnMap[S, O, C, F,TT, DT]
+  //       }
+
+
+  sealed trait IterFuncMapper[
+    S <: Term with Subs[S], O<: Term with Subs[O], C <: Term with Subs[C],
+    F <: Term with Subs[F], TT <: Term with Subs[TT], DT <: Term with Subs[DT]]{
+    // need types to be  typelevel for the dependent case, so we pick a mapper and use it for all fibres.
+    def mapper: IterFuncShape[S] => IterFuncPtnMap[S, O, C, F,TT, DT]
+                            }
+
+
+   object IterFuncMapper{
+    implicit def idIterMapper[O <: Term with Subs[O], C <: Term with Subs[C]] =
+      new IterFuncMapper[HeadTerm, O, C, O, C, C]{
+      def mapper =
+        (shape: IterFuncShape[HeadTerm]) => IdIterPtnMap[O, C]
+    }
+
+    implicit def funcIterMapper[
+      Tail <: Term with Subs[Tail],
+      HS <: Term with Subs[HS],
+      O <: Term with Subs[O],
+      C <: Term with Subs[C],
+      HF <: Term with Subs[HF],
+      HTT <: Term with Subs[HTT],
+      HDT <: Term with Subs[HDT]](
+        implicit hm: IterFuncMapper[HS, O, C, HF, HTT, HDT]) =
+        new IterFuncMapper[Func[Tail, HS], O, C, Func[Tail, HF], Func[Tail, HTT], FuncLike[Tail, HDT]]{
+          def mapper = {
+              case FuncShape(t, h) => FuncIterPtnMap(t, hm.mapper(h))
+            }
+        }
+
+    implicit def depFuncIterMapper[
+      Tail <: Term with Subs[Tail],
+      HS <: Term with Subs[HS],
+      O <: Term with Subs[O],
+      C <: Term with Subs[C],
+      HF <: Term with Subs[HF],
+      HTT <: Term with Subs[HTT],
+      HDT <: Term with Subs[HDT]](
+        implicit hm: IterFuncMapper[HS, O, C, HF, HTT, HDT]) =
+        new IterFuncMapper[FuncLike[Tail, HS], O, C, FuncLike[Tail, HF], FuncLike[Tail, HTT], FuncLike[Tail, HDT]]{
+          def mapper = {
+              case DepFuncShape(t, hf) => DepFuncIterPtnMap(t, (tt: Tail) => hm.mapper(hf(tt)))
+            }
+        }
+
+}
+
+
+  sealed trait IterFuncShape[S <: Term with Subs[S]]{
+    // need types to be  typelevel for the dependent case, so we pick a mapper and use it for all fibres.
+    // def mapper[
+    //   O <: Term with Subs[O],
+    //   C <: Term with Subs[C]]: IterFuncShape[S] => IterFuncPtnMap[S, O, C, F,TT, DT] forSome {
+    //                             type F <: Term with Subs[F];
+    //                             type TT <: Term with Subs[TT];
+    //                             type DT <: Term with Subs[DT]
+    //                           }
+
+    def mapper[
+      O<: Term with Subs[O],
+      C <: Term with Subs[C]]: IterFuncMapper[S, O, C, F, TT, DT] forSome {
+                                type F <: Term with Subs[F];
+                                type TT <: Term with Subs[TT];
+                                type DT <: Term with Subs[DT]
+                              }
+
+    def mapPtn[O <: Term with Subs[O], C<: Term with Subs[C]] =
+      mapper[O, C].mapper(this)
+  }
+
+  case object IdIterShape extends IterFuncShape[HeadTerm]{
+    def mapper[O<: Term with Subs[O], C <: Term with Subs[C]] =
+      implicitly[IterFuncMapper[HeadTerm, O, C, O, C, C]]
+    //  (shape: IterFuncShape[HeadTerm]) => IdIterPtnMap[O, C]
+  }
+
+  case class FuncShape[
+    TT<: Term with Subs[TT],
+    HS <: Term with Subs[HS]](tail: Typ[TT], head: IterFuncShape[HS]
+    ) extends IterFuncShape[Func[TT, HS]]{
+      def mapper[
+        O <: Term with Subs[O],
+        C <: Term with Subs[C]]  = {
+          IterFuncMapper.funcIterMapper(head.mapper)
+          // case FuncShape(t, h) => FuncIterPtnMap(t, head.mapper(h))
+        }
+    }
+
+  case class DepFuncShape[
+    TT<: Term with Subs[TT],
+    HS <: Term with Subs[HS]](tail: Typ[TT], headfibre: TT => IterFuncShape[HS]
+    ) extends IterFuncShape[FuncLike[TT, HS]]{
+      def mapper[
+        O <: Term with Subs[O],
+        C <: Term with Subs[C]]  = {
+          IterFuncMapper.depFuncIterMapper(headfibre(tail.Var).mapper)
+        }
+    }
+
 }
