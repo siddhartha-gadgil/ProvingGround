@@ -124,7 +124,7 @@ object ConstructorSeq {
 
 trait ConstructorSeqMap[
   C <: Term with Subs[C], H <: Term with Subs[H],
-  RecType <: Term with Subs[RecType], InducType <: Term with Subs[InducType]]{
+  RecType <: Term with Subs[RecType], InducType <: Term with Subs[InducType], Intros]{
 
   def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
 
@@ -150,7 +150,7 @@ trait ConstructorSeqMap[
 
 object ConstructorSeqMap{
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
-      extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C]] {
+      extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C], Unit] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
     // type RecType = Func[H, C]
@@ -180,9 +180,9 @@ object ConstructorSeqMap{
     def sym[HS <: Term with Subs[HS],
       C <: Term with Subs[C], H <: Term with Subs[H],
       Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
-      TR <: Term with Subs[TR], TI <: Term with Subs[TI]](
+      TR <: Term with Subs[TR], TI <: Term with Subs[TI], TIntros](
         name: AnySym, pattern: ConstructorPatternMap[HS, Cod, C, H, RD, ID],
-        tail: ConstructorSeqMap[Cod, H, TR, TI]
+        tail: ConstructorSeqMap[Cod, H, TR, TI, TIntros]
     ) = {
       val W = tail.W
       val cons = pattern.symbcons(name, W)
@@ -193,10 +193,10 @@ object ConstructorSeqMap{
   case class Cons[HS <: Term with Subs[HS],
     C <: Term with Subs[C], H <: Term with Subs[H],
     Cod<: Term with Subs[Cod], RD <: Term with Subs[RD], ID <: Term with Subs[ID],
-    TR <: Term with Subs[TR], TI <: Term with Subs[TI]](
+    TR <: Term with Subs[TR], TI <: Term with Subs[TI], TIntros](
       cons: C, pattern: ConstructorPatternMap[HS, Cod, C, H, RD, ID],
-      tail: ConstructorSeqMap[Cod, H, TR, TI]
-  ) extends ConstructorSeqMap[Cod, H, Func[RD, TR], Func[ID, TI]] {
+      tail: ConstructorSeqMap[Cod, H, TR, TI, TIntros]
+  ) extends ConstructorSeqMap[Cod, H, Func[RD, TR], Func[ID, TI], (C, TIntros)] {
 
     val W = tail.W
 
@@ -241,8 +241,8 @@ trait ConstructorSeqDom{
   def mapper[
     C <: Term with Subs[C],
     H <: Term with Subs[H]](W: Typ[H]) : ConstructorSeqMap[
-      C, H, RecType, InducType] forSome {
-      type RecType <: Term with Subs[RecType]; type InducType <: Term with Subs[InducType]}
+      C, H, RecType, InducType, TIntros] forSome {
+      type RecType <: Term with Subs[RecType]; type InducType <: Term with Subs[InducType]; type TIntros}
 
   def rec[C<: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H], X: Typ[C]) =
     mapper[C, H](W).rec(X)
