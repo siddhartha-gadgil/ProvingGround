@@ -675,7 +675,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
   }
 
   def fromFD(fd: FD[Term]) = {
-    val termsByType = (fd.pmf groupBy (_.elem.typ)) mapValues (FD(_))
+    val termsByType = (fd.pmf groupBy (_.elem.typ : Typ[Term])) mapValues (FD(_))
     val types = (fd mapOpt {
           case tp: Typ[u] => Some(tp: Typ[Term])
           case _ => None

@@ -45,13 +45,15 @@ object HoTT {
   implicit def stringSym(name: String) = Name(name)
 
   /** Abstract object */
-  trait Term extends Subs[Term] {
+import scala.language.existentials
+
+  trait Term extends Subs[Term] {self =>
 
     /**
       * Gives limited information on types when the types are universes, so should not be used in this case.
       * So avoid making this judgement.
       */
-    def typ: Typ[Term]
+    def typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
 
     /**
       * returns whether this depends on that
@@ -1376,30 +1378,30 @@ object HoTT {
                       fibers.replace(x, y))
   }
 
-  case class OptDepFuncDefn[W <: Term with Subs[W]](
-      func: W => Option[Term],
-      dom: Typ[W]
-  )
-      extends DepFunc[W, Term]
-      with Subs[OptDepFuncDefn[W]] {
+    case class OptDepFuncDefn[W <: Term with Subs[W]](
+        func: W => Option[Term],
+        dom: Typ[W]
+    )
+        extends DepFunc[W, Term]
+        with Subs[OptDepFuncDefn[W]] {
 
-    lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
+      lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
 
-    lazy val fibers = {
-      val x = getVar(dom)
-      lmbda(x)(depcodom(x))
+      lazy val fibers = {
+        val x = getVar(dom)
+        lmbda(x)(depcodom(x))
+      }
+
+      lazy val typ : Typ[FuncLike[W, Term]] = PiTyp(fibers)
+
+      def act(arg: W) = func(arg).getOrElse(Star)
+
+      def newobj = this
+
+      def subs(x: Term, y: Term) =
+        OptDepFuncDefn(
+            (w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
     }
-
-    lazy val typ = PiTyp(fibers)
-
-    def act(arg: W) = func(arg).getOrElse(Star)
-
-    def newobj = this
-
-    def subs(x: Term, y: Term) =
-      OptDepFuncDefn(
-          (w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
-  }
 
   /**
     *  symbol for left component in pair from a given symbol

@@ -22,7 +22,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   "com.lihaoyi" %% "fansi" % "0.1.3",
   "com.lihaoyi" %% "upickle" % "0.4.0"
   ),
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:existentials")
   )
 
 val akkaV = "2.4.6"

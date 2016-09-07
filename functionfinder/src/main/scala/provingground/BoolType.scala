@@ -39,13 +39,13 @@ object BoolType {
     override def toString = "true"
   }
 
-  case object notnot extends ConstTerm[Boolean] {
-    val value = true
-
-    val typ = isTrueTyp(false) ->: Zero
-
-    override def toString = "true"
-  }
+  // case object notnot extends ConstTerm[Boolean] {
+  //   val value = true
+  //
+  //   val typ = isTrueTyp(false) ->: Zero
+  //
+  //   override def toString = "true"
+  // }
 
   def iteFunc[U <: Term with Subs[U]](u: Typ[U]) = {
     val rep = b -->: u -->: u -->: u
