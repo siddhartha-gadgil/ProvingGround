@@ -281,6 +281,33 @@ object HoTT {
     override def toString = name.toString
   }
 
+  trait Variable[U <: Term with Subs[U]]{
+    def typ(t: U) : Typ[U]
+  }
+
+  object Variable{
+    implicit object TermVar extends Variable[Term]{
+      def typ(t: Term) = t.typ
+    }
+
+    implicit object TypVar extends Variable[Typ[Term]]{
+      def typ(t: Typ[Term]) = t.typ
+    }
+
+    implicit def funcVar[U<: Term with Subs[U], V <: Term with Subs[V]] =
+      new Variable[Func[U, V]]{
+        def typ(t: Func[U, V]) = t.typ
+      }
+
+      implicit def funcLikeVar[U<: Term with Subs[U], V <: Term with Subs[V]] =
+        new Variable[FuncLike[U, V]]{
+          def typ(t: FuncLike[U, V]) = t.typ
+        }
+  }
+
+  def vartyp[U <: Term with  Subs[U]: Variable](t: U) =
+    implicitly[Variable[U]].typ(t)
+
   /**
     * checks if symbolic object has given name.
     */
@@ -766,6 +793,8 @@ object HoTT {
 
     //    // val codomobjtpe: Type
 
+    def typ: Typ[FuncLike[W, U]]
+
     val dom: Typ[W]
 
     val depcodom: W => Typ[U]
@@ -836,6 +865,8 @@ object HoTT {
 
     /** codomain */
     val codom: Typ[U]
+
+    def typ: Typ[Func[W, U]]
 
     val depcodom: W => Typ[U] = _ => codom
 
@@ -1045,6 +1076,8 @@ object HoTT {
     override val dom = variable.typ.asInstanceOf[Typ[X]]
 
     val codom = value.typ.asInstanceOf[Typ[Y]]
+
+    override lazy val typ = dom ->: codom
 
     val dep = false
 
@@ -1452,7 +1485,7 @@ object HoTT {
         extends FuncLike[AbsPair[W, U], V] { self =>
       lazy val dom = prod
 
-      val xy = prod.Var
+      val xy : AbsPair[W, U] = prod.Var
 
       lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
 
@@ -2098,6 +2131,8 @@ object HoTT {
 
     val codom = term.codom
 
+    override val typ = dom ->: codom
+
     override def newobj = this
 
     override def subs(x: Term, y: Term) = this
@@ -2112,6 +2147,8 @@ object HoTT {
     def act(x: U) = term(x)
 
     val dom = term.dom
+
+    override val typ : Typ[FuncLike[U, V]] = term.typ
 
     val depcodom = term.depcodom
 

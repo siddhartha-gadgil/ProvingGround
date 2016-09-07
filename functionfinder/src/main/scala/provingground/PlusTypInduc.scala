@@ -17,7 +17,7 @@ object PlusTypInduc {
 
     val dom = pair(first, second)
 
-    val typ = dom ->: codom
+    val typ = (dom: Typ[Term]) ->: codom
 
     def newobj = this
 
