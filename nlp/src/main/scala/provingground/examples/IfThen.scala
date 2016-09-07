@@ -10,7 +10,7 @@ import TreePatterns._
 
 object IfThen {
 
-import provingground._
+  import provingground._
   val sent = new Sentence(
       "if a prime number P divides MN, P divides one of M and N")
 

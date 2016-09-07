@@ -64,7 +64,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       */
     def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType]
 
-    def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])( // xs should have domain Total
+    def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])(
+        // xs should have domain Total
         cons: iConstructorType): Typ[InducDataType]
 
     /**
@@ -192,7 +193,8 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType] = x
 
-    def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])(cons: H) = xs(incl(cons, index, w)) //FIXME 
+    def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])(cons: H) =
+      xs(incl(cons, index, w)) //FIXME 
     // xs should have domain Total, we should take the total value of cons
 
     def recDefCase(cons: iConstructorType,
@@ -461,9 +463,9 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
       val a = tail(w).Var
       val headcons = cons(a)
       val x = w.Var
-      val xss = x :-> xs(incl(x, tailIndex, tps))      
-      val fibre = lmbda(a)(tail.depTarget(xss)(a) ->: headfibre(a).inducDataTyp(
-              tps, xs)(headcons))
+      val xss = x :-> xs(incl(x, tailIndex, tps))
+      val fibre = lmbda(a)(tail.depTarget(xss)(a) ->: headfibre(a)
+            .inducDataTyp(tps, xs)(headcons))
       PiTyp(fibre)
     }
 
@@ -675,18 +677,19 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
 
     type InducType <: Term with Subs[InducType]
 
-    def inducDefn(fibre: Func[Total, Typ[Cod]]): InductiveDefinition[Total, Cod]
+    def inducDefn(
+        fibre: Func[Total, Typ[Cod]]): InductiveDefinition[Total, Cod]
 
     def inducDataLambda(fibre: Func[Total, Typ[Cod]]): DI => InducType
 
-    def induc(fibre: Func[Total, Typ[Cod]]) : InducType =
+    def induc(fibre: Func[Total, Typ[Cod]]): InducType =
       inducDataLambda(fibre)(depCurry(inducDefn(fibre)))
-    
-    def inducCast(x: Term) = 
+
+    def inducCast(x: Term) =
       induc(
-        typFmlyPtn.uncurryTyp( x.asInstanceOf[typFmlyPtn.IterTypFunc])
+          typFmlyPtn.uncurryTyp(x.asInstanceOf[typFmlyPtn.IterTypFunc])
       )
-      
+
     def |:(head: iConstructor) = iConstructorSeq.Cons(head, this)
 
     def ||:(typ: Typ[H]) =

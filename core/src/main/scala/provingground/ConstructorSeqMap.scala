@@ -1,5 +1,1 @@
-
-
-trait type_name {
-  
-}
+trait type_name {}

@@ -128,12 +128,12 @@ object ExprLang {
 
   def orCases[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].orCases(fa._1, fa._2)
-    
+
   def i1[E: ExprLang] =
-      (fa: (E, E)) => implicitly[ExprLang[E]].i1(fa._1, fa._2)
+    (fa: (E, E)) => implicitly[ExprLang[E]].i1(fa._1, fa._2)
 
   def i2[E: ExprLang] =
-      (fa: (E, E)) => implicitly[ExprLang[E]].i2(fa._1, fa._2)
+    (fa: (E, E)) => implicitly[ExprLang[E]].i2(fa._1, fa._2)
 
   def incl1[E: ExprLang] = implicitly[ExprLang[E]].incl1 _
 

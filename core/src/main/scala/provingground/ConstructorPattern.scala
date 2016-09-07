@@ -173,10 +173,10 @@ object ConstructorPattern {
           tp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         } else {
           val tail = fibre.dom
-          val cp =
-           CnstDepFuncPtn[u, egfib.RecDataType, egfib.InducDataType, Term, v,  H](
-               tail, headfibre)
-         cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
+          val cp = CnstDepFuncPtn[
+              u, egfib.RecDataType, egfib.InducDataType, Term, v, H](
+              tail, headfibre)
+          cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         }
     }
 }

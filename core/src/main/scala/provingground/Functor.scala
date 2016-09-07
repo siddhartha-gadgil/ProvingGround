@@ -36,13 +36,13 @@ object Functor {
   // }
 
   implicit def composeFunctors[X[_]: Functor, Y[_]: Functor] =
-    new Functor[({type Z[A] = X[Y[A]]})#Z]{
+    new Functor[({ type Z[A] = X[Y[A]] })#Z] {
       def map[A, B](fa: X[Y[A]])(f: A => B) = {
         val inner = (y: Y[A]) => implicitly[Functor[Y]].map(y)(f)
         implicitly[Functor[X]].map(fa)(inner)
       }
     }
-    // new ComposeFunctors[X, Y].Func
+  // new ComposeFunctors[X, Y].Func
 
   // class ConstFunc[C] {
   //   type Z[A] = C
@@ -52,13 +52,13 @@ object Functor {
   // }
 
   implicit def constantFunctor[C] =
-    new Functor[({type Z[A] = C})#Z]{
+    new Functor[({ type Z[A] = C })#Z] {
       def map[A, B](fa: C)(f: A => B) = fa
     }
 //    new ConstFunc[C].Func
 
-  implicit def augmentedFunctor[C, X[_] : Functor] =
-    new Functor[({type Z[A] = (C, X[A])})#Z]{
+  implicit def augmentedFunctor[C, X[_]: Functor] =
+    new Functor[({ type Z[A] = (C, X[A]) })#Z] {
       def map[A, B](fa: (C, X[A]))(f: A => B) =
         (fa._1, implicitly[Functor[X]].map(fa._2)(f))
     }
@@ -75,7 +75,6 @@ object Functor {
   //   def map[A, B](fa: (String, A))(f: A => B) = (fa._1, f(fa._2))
   // }
 
-
   // class T2[X[_]: Functor, Y[_]: Functor] {
   //   type Z[A] = (X[A], Y[A])
   //   def Func: Functor[Z] = new Functor[Z] {
@@ -89,14 +88,14 @@ object Functor {
   //   new T2[X, Y].Func
 
   implicit def t2[X[_]: Functor, Y[_]: Functor] =
-    new Functor[({type Z[A] = (X[A], Y[A])})#Z]{
+    new Functor[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def map[A, B](fa: (X[A], Y[A]))(f: A => B) =
         (implicitly[Functor[X]].map(fa._1)(f),
          implicitly[Functor[Y]].map(fa._2)(f))
     }
 
   implicit def t3[X1[_]: Functor, X2[_]: Functor, X3[_]: Functor] =
-    new Functor[({type Z[A] = (X1[A], X2[A], X3[A])})#Z]{
+    new Functor[({ type Z[A] = (X1[A], X2[A], X3[A]) })#Z] {
       def map[A, B](fa: (X1[A], X2[A], X3[A]))(f: A => B) =
         (implicitly[Functor[X1]].map(fa._1)(f),
          implicitly[Functor[X2]].map(fa._2)(f),
@@ -117,7 +116,6 @@ object Functor {
   // implicit def tuple3[X1[_]: Functor, X2[_]: Functor, X3[_]: Functor] =
   //   new T3[X1, X2, X3].Func
 
-
   // class T4[X1[_]: Functor, X2[_]: Functor, X3[_]: Functor, X4[_]: Functor] {
   //   type Z[A] = (X1[A], X2[A], X3[A], X4[A])
   //   def Func: Functor[Z] = new Functor[Z] {
@@ -132,15 +130,14 @@ object Functor {
 
   implicit def tuple4[
       X1[_]: Functor, X2[_]: Functor, X3[_]: Functor, X4[_]: Functor] =
-        new Functor[({type Z[A] = (X1[A], X2[A], X3[A], X4[A])})#Z]{
-          def map[A, B](fa: (X1[A], X2[A], X3[A], X4[A]))(f: A => B) =
-            (implicitly[Functor[X1]].map(fa._1)(f),
-             implicitly[Functor[X2]].map(fa._2)(f),
-             implicitly[Functor[X3]].map(fa._3)(f),
-             implicitly[Functor[X4]].map(fa._4)(f))
-        }
+    new Functor[({ type Z[A] = (X1[A], X2[A], X3[A], X4[A]) })#Z] {
+      def map[A, B](fa: (X1[A], X2[A], X3[A], X4[A]))(f: A => B) =
+        (implicitly[Functor[X1]].map(fa._1)(f),
+         implicitly[Functor[X2]].map(fa._2)(f),
+         implicitly[Functor[X3]].map(fa._3)(f),
+         implicitly[Functor[X4]].map(fa._4)(f))
+    }
 //    new T4[X1, X2, X3, X4].Func
-
 
   class T5[X1[_]: Functor,
            X2[_]: Functor,
@@ -156,7 +153,6 @@ object Functor {
          implicitly[Functor[X4]].map(fa._4)(f),
          implicitly[Functor[X5]].map(fa._5)(f))
     }
-
   }
 
   implicit def tuple5[X1[_]: Functor,
@@ -164,16 +160,15 @@ object Functor {
                       X3[_]: Functor,
                       X4[_]: Functor,
                       X5[_]: Functor] =
-          new Functor[({type Z[A] = (X1[A], X2[A], X3[A], X4[A], X5[A])})#Z]{
-            def map[A, B](fa: (X1[A], X2[A], X3[A], X4[A], X5[A]))(f: A => B) =
-              (implicitly[Functor[X1]].map(fa._1)(f),
-               implicitly[Functor[X2]].map(fa._2)(f),
-               implicitly[Functor[X3]].map(fa._3)(f),
-               implicitly[Functor[X4]].map(fa._4)(f),
-               implicitly[Functor[X5]].map(fa._5)(f))
-          }
-    // new T5[X1, X2, X3, X4, X5].Func
-
+    new Functor[({ type Z[A] = (X1[A], X2[A], X3[A], X4[A], X5[A]) })#Z] {
+      def map[A, B](fa: (X1[A], X2[A], X3[A], X4[A], X5[A]))(f: A => B) =
+        (implicitly[Functor[X1]].map(fa._1)(f),
+         implicitly[Functor[X2]].map(fa._2)(f),
+         implicitly[Functor[X3]].map(fa._3)(f),
+         implicitly[Functor[X4]].map(fa._4)(f),
+         implicitly[Functor[X5]].map(fa._5)(f))
+    }
+  // new T5[X1, X2, X3, X4, X5].Func
 
   type LL[A] = (List[A], List[A]);
 
@@ -191,7 +186,7 @@ object Functor {
 
   type S[A] = String
 
-  implicit val cf : Functor[Coded] = t3[S, Id, List]
+  implicit val cf: Functor[Coded] = t3[S, Id, List]
 
   // Tests:
   object Tests {
@@ -201,13 +196,9 @@ object Functor {
 
     val ii = implicitly[Functor[II]]
 
-  //  val iii  : Functor[III]= tuple3[Id, Id, Id]
+    //  val iii  : Functor[III]= tuple3[Id, Id, Id]
 
     val iii = implicitly[Functor[III]]
-
-
-
-
 
     val cff = implicitly[Functor[Coded]]
 

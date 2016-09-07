@@ -54,7 +54,9 @@ object TreePatterns {
   object NP extends Pattern.Partial[Tree, List]({ case Node("NP", xs) => xs })
 
   object NPVP
-      extends Pattern.Partial[Tree, LL]({ case Node("S", List(NP(xs), VP(ys))) => (xs, ys) })
+      extends Pattern.Partial[Tree, LL]({
+        case Node("S", List(NP(xs), VP(ys))) => (xs, ys)
+      })
 
   object SimpleNPVP
       extends Pattern.Partial[Tree, II]({

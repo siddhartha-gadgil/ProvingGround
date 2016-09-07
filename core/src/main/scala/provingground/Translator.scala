@@ -86,7 +86,8 @@ object Translator {
     }
   }
 
-  case class Mapped[I, O, X](trans: Translator[I, O], fn: O => X, ufn: X => O) extends Translator[I, X]{
+  case class Mapped[I, O, X](trans: Translator[I, O], fn: O => X, ufn: X => O)
+      extends Translator[I, X] {
     def recTranslate(leafMap: => (I => Option[X])): I => Option[X] =
       (x) => trans.recTranslate((a: I) => leafMap(a) map (ufn))(x) map (fn)
   }
@@ -95,7 +96,7 @@ object Translator {
     * The splitting part of a junction, pattern matching and splitting to a given shape.
     * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
     */
-  class Pattern[I, X[_]: Functor: OptNat](split: I => Option[X[I]]){
+  class Pattern[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) {
     def unapply(x: I): Option[X[I]] = split(x)
 
     def map[J](f: I => I) = {
@@ -110,7 +111,7 @@ object Translator {
     def >>[O](build: X[O] => Option[O]) = join(build)
 
     def >>>[O](build: X[O] => O) = joinStrict(build)
-    
+
     def ||(that: Pattern[I, X]) = Pattern.OrElse(this, that)
   }
 
@@ -118,19 +119,23 @@ object Translator {
     def apply[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) =
       new Pattern(split)
 
-    def partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) = Pattern(split.lift)
+    def partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) =
+      Pattern(split.lift)
 
     // To allow for inheritance so we can use case objects.
-    class Partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) extends Pattern(split.lift)
+    class Partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]])
+        extends Pattern(split.lift)
 
     case class OrElse[I, X[_]: Functor: OptNat](
-        first: Pattern[I, X], second : Pattern[I, X]) extends Pattern[I, X](
-        (x: I) => first.unapply(x) orElse second.unapply(x)
-        ) 
-    
-    
+        first: Pattern[I, X], second: Pattern[I, X])
+        extends Pattern[I, X](
+            (x: I) => first.unapply(x) orElse second.unapply(x)
+        )
+
     def filter[I](p: I => Boolean) =
-      Pattern[I, Functor.Id]{(x: I) => if (p(x)) Some(x) else None}
+      Pattern[I, Functor.Id] { (x: I) =>
+        if (p(x)) Some(x) else None
+      }
 
     /**
       * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
