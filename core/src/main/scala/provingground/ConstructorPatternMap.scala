@@ -403,8 +403,30 @@ sealed trait ConstructorShape[S <: Term with Subs[S]] {
       type RecDataType <: Term with Subs[RecDataType];
       type InducDataType <: Term with Subs[InducDataType]
     }
+  
   def mapped[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
     mapper[Cod, H].mapper(this)
+
+  def subs(x: Term, y: Term) : ConstructorShape[S]
+    
+  import ConstructorShape._
+    
+  def -->:[S <: Term with Subs[S]](that: IterFuncShape[S]) =
+    FuncConsShape(that, this)
+
+  def -->:(that: IdShape.type) = {
+    FuncConsShape(IdIterShape, this)
+  }
+
+  def ->:[T <: Term with Subs[T]](tail: Typ[T]) = CnstFuncConsShape(tail, this)
+
+  def ~>:[T <: Term with Subs[T]](tailVar: T) = {
+    val fibre = (t: T) =>
+      this.subs(tailVar, t)
+        
+    CnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
+  }
+
 }
 
 object ConstructorShape {
@@ -413,6 +435,8 @@ object ConstructorShape {
   case object IdShape extends ConstructorShape[HeadTerm] {
     def mapper[C <: Term with Subs[C], H <: Term with Subs[H]] =
       ConstructorPatternMapper.idTargMapper[C, H]
+    
+    def subs(x: Term, y: Term) = this
   }
 
   case class FuncConsShape[TS <: Term with Subs[TS], HS <: Term with Subs[HS]](
@@ -432,6 +456,9 @@ object ConstructorShape {
         type RecDataType <: Term with Subs[RecDataType];
         type InducDataType <: Term with Subs[InducDataType]
       } = funcPtnMapper(tail.mapper[H, C], head.mapper[C, H])
+      
+    def subs(x: Term, y: Term) = FuncConsShape(tail.subs(x, y), head.subs(x, y))
+  
   }
 
   case class CnstFuncConsShape[
@@ -443,6 +470,9 @@ object ConstructorShape {
 
     def mapper[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
       cnstFncPtnMapper(head.mapper[Cod, H])
+
+  
+    def subs(x: Term, y: Term) = CnstFuncConsShape(tail.replace(x,y), head.subs(x, y))
   }
 
   case class CnstDepFuncConsShape[
@@ -454,6 +484,8 @@ object ConstructorShape {
 
     def mapper[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
       cnstDepFncPtnMapper(headfibre(tail.Var).mapper[Cod, H])
+      
+    def subs(x: Term, y: Term) = CnstDepFuncConsShape(tail.replace(x,y), (t: T) => headfibre(t).subs(x, y))
   }
 }
 
