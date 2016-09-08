@@ -61,3 +61,36 @@ object Implicits {
     def of(arg: Term) = Unify.appln(func, arg).get
   }
 }
+
+object TLImplicits{
+  import IterFuncPatternMap._
+  
+  import ConstructorShape._
+  
+  val Types = IdIterShape
+  
+  implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
+    def pair = ConstructorTypTL(IdShape, typ)
+    def :::(name: AnySym) = name ::: pair
+
+    def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
+
+    def -->>:(that: Typ[H]) = that -->>: pair
+
+    def -->>:[FF <: Term with Subs[FF]](
+        that: IterFuncShape[FF]) =
+      that -->>: pair
+
+    def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
+  }
+  
+    implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
+    def seq = ConstructorSeqTL.Empty(W)
+
+    def =:[S <: Term with Subs[S]](head: ConstructorTL[S, H]) = head |: seq
+
+  }
+
+  
+}
+

@@ -571,3 +571,41 @@ sealed trait ConstructorPatternMapper[
   def mapper: ConstructorShape[S] => ConstructorPatternMap[
       S, Cod, ConstructorType, H, RecDataType, InducDataType]
 }
+
+case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
+    shape: ConstructorShape[S], typ : Typ[H]){
+  
+  import ConstructorShape._
+  
+  def :::(name: AnySym) = ConstructorTL(name, shape, typ)
+  
+  def -->>:(that: Typ[H]) = {
+    assert(
+        that == typ,
+        s"the method -->: is for extenidng by the same type but $that is not $typ")
+    val tail = IdIterShape
+    val ptn = FuncConsShape(tail, shape)
+    ConstructorTypTL(ptn, typ)
+  }
+
+  def -->>:[FF <: Term with Subs[FF]](that: IterFuncShape[FF]) =
+    ConstructorTypTL(that-->: shape, typ)
+
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
+    assert(
+        !(that.dependsOn(typ)),
+        "the method ->: is for extension by constant types, maybe you mean _-->:_")
+    ConstructorTypTL(that ->: shape, typ)
+  }
+
+  def ~>>:[T <: Term with Subs[T]](thatVar: H) =
+    ConstructorTypTL(thatVar ~>: shape, typ)
+
+}
+
+case class ConstructorTL[S <: Term with Subs[S], H <: Term with Subs[H]](
+    name : AnySym, shape: ConstructorShape[S], W : Typ[H])
+
+
+    
+

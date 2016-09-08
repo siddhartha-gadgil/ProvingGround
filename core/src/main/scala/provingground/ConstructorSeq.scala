@@ -269,11 +269,23 @@ object ConstructorSeqDom {
   }
 
   case class Cons[S <: Term with Subs[S]](
-      name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom) {
-    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) = {
+      name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom) extends ConstructorSeqDom {
+    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
+      type RecType <: Term with Subs[RecType];
+      type InducType <: Term with Subs[InducType]; type TIntros
+    } = {
       val ptn = pattern.mapped[C, H]
       val tl = tail.mapper[C, H](W)
       ConstructorSeqMap.Cons.sym(name, ptn, tl)
     }
   }
+}
+
+case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom, typ: Typ[H]){
+  def |:[S <: Term with Subs[S], H <: Term with Subs[H]](head: ConstructorTL[S, H]) = 
+    ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
+}
+
+object ConstructorSeqTL{
+  def Empty[H <: Term with Subs[H]](W: Typ[H]) = ConstructorSeqTL(ConstructorSeqDom.Empty, W)
 }
