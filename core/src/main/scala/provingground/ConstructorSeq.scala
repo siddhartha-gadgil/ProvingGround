@@ -284,6 +284,15 @@ object ConstructorSeqDom {
 case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom, typ: Typ[H]){
   def |:[S <: Term with Subs[S], H <: Term with Subs[H]](head: ConstructorTL[S, H]) = 
     ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
+
+  def rec[C <: Term with Subs[C]](
+      X: Typ[C]) = seqDom.rec(typ, X)
+    
+
+  def induc[C <: Term with Subs[C]](
+      Xs: Func[H, Typ[C]]) =
+    seqDom.induc(typ, Xs)
+
 }
 
 object ConstructorSeqTL{
