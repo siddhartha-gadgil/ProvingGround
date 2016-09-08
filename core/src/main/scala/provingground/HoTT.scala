@@ -47,6 +47,8 @@ object HoTT {
   /** Abstract object */
 import scala.language.existentials
 
+  case class TT[U <: Term with Subs[U]](term: U, typ: Typ[U])
+
   trait Term extends Subs[Term] {self =>
 
     /**
@@ -55,6 +57,7 @@ import scala.language.existentials
       */
     def typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
 
+    def tt = TT(self: self.type , typ)
     /**
       * returns whether this depends on that
       */
@@ -751,7 +754,7 @@ import scala.language.existentials
 //      case _ => false
 //    }
 
-    lazy val typ = Universe(max(dom.typlevel, codom.typlevel))
+    lazy val typ : Typ[Typ[Term]] = Universe(max(dom.typlevel, codom.typlevel))
 
     def variable(name: AnySym): Func[W, U] =
       SymbolicFunc[W, U](name, dom, codom)
@@ -1268,7 +1271,7 @@ import scala.language.existentials
     //type Obj = DepFunc[W, U]
     type Obj = FuncLike[W, U]
 
-    lazy val typ = Universe(
+    lazy val typ : Typ[Typ[Term]] = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
     override def variable(name: AnySym): FuncLike[W, U] =
