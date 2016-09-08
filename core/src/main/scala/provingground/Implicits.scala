@@ -41,6 +41,8 @@ object Implicits {
     def =::(typ: Typ[H]) = typ ||: seq
   }
 
+
+
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
     import IterFuncPattern._
     def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
@@ -64,11 +66,11 @@ object Implicits {
 
 object TLImplicits{
   import IterFuncPatternMap._
-  
+
   import ConstructorShape._
-  
+
   val Types = IdIterShape
-  
+
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair = ConstructorTypTL(IdShape, typ)
     def :::(name: AnySym) = name ::: pair
@@ -83,7 +85,7 @@ object TLImplicits{
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
-  
+
     implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
     def seq = ConstructorSeqTL.Empty(W)
 
@@ -91,6 +93,14 @@ object TLImplicits{
 
   }
 
-  
-}
+  import IterFuncPatternMap._
 
+  implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
+
+    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+      FuncShape(tail , IdIterShape)
+
+  }
+
+
+}

@@ -1071,24 +1071,24 @@ import scala.language.existentials
     //   case _ => false
     // }
   }
-  
+
   case class LambdaTyped[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       tvar: TypedTerm[X], tvalue: TypedTerm[Y])
       extends LambdaLike[X, Y]{
     val variable = tvar.term
-    
+
     val value = tvalue.term
-    
+
     override  val dom = tvar.typ
-    
+
     val depcodom: X => Typ[Y] = (t: X) =>
       tvalue.typ.replace(variable, t)
-    
+
     val dep = true
-      
+
     override def subs(x: Term, y: Term): LambdaTyped[X, Y] =
       LambdaTyped(tvar replace (x, y), tvalue replace (x, y))
-    
+
     def newobj = {
       val newvar = variable.newobj
       LambdaTyped(tvar.replace(variable, newvar), tvalue.replace(variable, newvar))
@@ -1134,9 +1134,9 @@ import scala.language.existentials
       with Func[X, Y]
       with Subs[LambdaTypedFixed[X, Y]] {
     val variable = tvariable.term
-    
+
     val value = tvalue.term
-    
+
     override val dom = tvariable.typ
 
     val codom = tvalue.typ
@@ -1161,7 +1161,7 @@ import scala.language.existentials
     override def subs(x: Term, y: Term): LambdaTypedFixed[X, Y] =
       LambdaTypedFixed(tvariable replace (x, y), tvalue replace (x, y))
   }
-  
+
   /**
     * term as a symbol
     */
@@ -1268,7 +1268,7 @@ import scala.language.existentials
         s"lmbda returns function type but value $value has type ${value.typ} depending on variable $variable; you may wish to use lambda instead"
     )
     val newvar = variable.newobj
-    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed) 
+//    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
     LambdaFixed(newvar, value.replace(variable, newvar))
   }
 

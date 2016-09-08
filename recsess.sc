@@ -1,6 +1,6 @@
 import provingground._
 import HoTT._
-import Implicits._
+import TLImplicits._
 val Bool = "Boolean" :: Type
 val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 val List(tt, ff) = BoolInd.intros
