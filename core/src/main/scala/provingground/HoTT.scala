@@ -47,7 +47,9 @@ object HoTT {
   /** Abstract object */
 import scala.language.existentials
 
-  case class TT[U <: Term with Subs[U]](term: U, typ: Typ[U])
+  case class TypedTerm[U <: Term with Subs[U]](term: U, typ: Typ[U]){
+    def replace(x: Term, y: Term) = TypedTerm(term.replace(x, y), typ.replace(x, y))
+  }
 
   trait Term extends Subs[Term] {self =>
 
@@ -57,7 +59,7 @@ import scala.language.existentials
       */
     def typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
 
-    def tt = TT(self: self.type , typ)
+    def typed = TypedTerm(self: self.type , typ)
     /**
       * returns whether this depends on that
       */
@@ -1069,6 +1071,29 @@ import scala.language.existentials
     //   case _ => false
     // }
   }
+  
+  case class LambdaTyped[X <: Term with Subs[X], Y <: Term with Subs[Y]](
+      tvar: TypedTerm[X], tvalue: TypedTerm[Y])
+      extends LambdaLike[X, Y]{
+    val variable = tvar.term
+    
+    val value = tvalue.term
+    
+    override  val dom = tvar.typ
+    
+    val depcodom: X => Typ[Y] = (t: X) =>
+      tvalue.typ.replace(variable, t)
+    
+    val dep = true
+      
+    override def subs(x: Term, y: Term): LambdaTyped[X, Y] =
+      LambdaTyped(tvar replace (x, y), tvalue replace (x, y))
+    
+    def newobj = {
+      val newvar = variable.newobj
+      LambdaTyped(tvar.replace(variable, newvar), tvalue.replace(variable, newvar))
+      }
+  }
 
   /**
     * lambda which is known to have fixed codomain.
@@ -1103,6 +1128,40 @@ import scala.language.existentials
       LambdaFixed(variable replace (x, y), value replace (x, y))
   }
 
+  case class LambdaTypedFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](
+      tvariable: TypedTerm[X], tvalue: TypedTerm[Y])
+      extends LambdaLike[X, Y]
+      with Func[X, Y]
+      with Subs[LambdaTypedFixed[X, Y]] {
+    val variable = tvariable.term
+    
+    val value = tvalue.term
+    
+    override val dom = tvariable.typ
+
+    val codom = tvalue.typ
+
+    override lazy val typ = dom ->: codom
+
+    val dep = false
+
+    // override def equals(that: Any) = that match {
+    //   case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
+    //     y.replace(x, variable) == value
+    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //       y.replace(x, variable) == value
+    //   case _ => false
+    // }
+
+    def newobj = {
+      val newvar = variable.newobj
+      LambdaTypedFixed(tvariable.replace(variable, newvar), tvalue.replace(variable, newvar))
+    }
+
+    override def subs(x: Term, y: Term): LambdaTypedFixed[X, Y] =
+      LambdaTypedFixed(tvariable replace (x, y), tvalue replace (x, y))
+  }
+  
   /**
     * term as a symbol
     */
@@ -1209,6 +1268,7 @@ import scala.language.existentials
         s"lmbda returns function type but value $value has type ${value.typ} depending on variable $variable; you may wish to use lambda instead"
     )
     val newvar = variable.newobj
+    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed) 
     LambdaFixed(newvar, value.replace(variable, newvar))
   }
 
