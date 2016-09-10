@@ -47,7 +47,7 @@ object HoTT {
   /** Abstract object */
 import scala.language.existentials
 
-  case class TypedTerm[U <: Term with Subs[U]](term: U, typ: Typ[U]){
+  case class TypedTerm[+U <: Term with Subs[U]](term: U, typ: Typ[U]){
     def replace(x: Term, y: Term) = TypedTerm(term.replace(x, y), typ.replace(x, y))
   }
 
@@ -57,9 +57,9 @@ import scala.language.existentials
       * Gives limited information on types when the types are universes, so should not be used in this case.
       * So avoid making this judgement.
       */
-    def typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
+    val typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
 
-    def typed = TypedTerm(self: self.type , typ)
+    val typed = TypedTerm(self: self.type , typ)
     /**
       * returns whether this depends on that
       */
@@ -184,12 +184,16 @@ import scala.language.existentials
       */
     val typ: Univ
 
+    override val typed: TypedTerm[Typ[Term]] = TypedTerm(this: this.type, typ)
+
     lazy val typlevel: Int = univlevel(typ)
 
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
     def variable(name: AnySym): Obj with Subs[Obj]
 
     def symbObj(name: AnySym): U with Subs[U] = variable(name)
+
+    def typedVar(name: AnySym) = TypedTerm[U](variable(name), this)
 
     /** Make symbolic object */
     def ::(name: String) = symbObj(name)
@@ -198,6 +202,8 @@ import scala.language.existentials
       * new variable
       */
     def Var = getVar(this)
+
+    def typedVar : TypedTerm[U] = getTypedVar(this)
 
     /**
       * function type:  this -> that
@@ -800,7 +806,7 @@ import scala.language.existentials
 
     //    // val codomobjtpe: Type
 
-    def typ: Typ[FuncLike[W, U]]
+    val typ: Typ[FuncLike[W, U]]
 
     val dom: Typ[W]
 
@@ -873,7 +879,7 @@ import scala.language.existentials
     /** codomain */
     val codom: Typ[U]
 
-    def typ: Typ[Func[W, U]]
+    val typ: Typ[Func[W, U]]
 
     val depcodom: W => Typ[U] = _ => codom
 
@@ -898,7 +904,7 @@ import scala.language.existentials
 
     lazy val codom = func.codom
 
-    def typ = func.typ
+    lazy val typ = func.typ
 
     def newobj = NamedFunc(name, func.newobj)
 
@@ -919,7 +925,7 @@ import scala.language.existentials
 
     lazy val depcodom = func.depcodom
 
-    def typ = func.typ
+    lazy val typ = func.typ
 
     def newobj = NamedDepFunc(name, func.newobj)
 
@@ -1005,7 +1011,7 @@ import scala.language.existentials
 
     type Cod = Y
 
-    val dom = variable.typ.asInstanceOf[Typ[X]]
+    lazy val dom = variable.typ.asInstanceOf[Typ[X]]
 
     override def toString =
       s"""(${variable.toString}) $MapsTo (${value.toString})"""
@@ -1079,7 +1085,7 @@ import scala.language.existentials
 
     val value = tvalue.term
 
-    override  val dom = tvar.typ
+    override lazy val dom = tvar.typ
 
     val depcodom: X => Typ[Y] = (t: X) =>
       tvalue.typ.replace(variable, t)
@@ -1103,7 +1109,7 @@ import scala.language.existentials
       extends LambdaLike[X, Y]
       with Func[X, Y]
       with Subs[LambdaFixed[X, Y]] {
-    override val dom = variable.typ.asInstanceOf[Typ[X]]
+    override lazy val dom = variable.typ.asInstanceOf[Typ[X]]
 
     val codom = value.typ.asInstanceOf[Typ[Y]]
 
@@ -1137,9 +1143,9 @@ import scala.language.existentials
 
     val value = tvalue.term
 
-    override val dom = tvariable.typ
+    override lazy val dom = tvariable.typ
 
-    val codom = tvalue.typ
+    lazy val codom = tvalue.typ
 
     override lazy val typ = dom ->: codom
 
@@ -2095,6 +2101,9 @@ import scala.language.existentials
 
   def getVar[U <: Term with Subs[U]](typ: Typ[U]) =
     typ.symbObj(NameFactory.get)
+
+  def getTypedVar[U <: Term with Subs[U]](typ: Typ[U]) =
+    typ.typedVar(NameFactory.get)
 
   def isVar(t: Term) = t match {
     case sym: Symbolic if sym.name.toString.startsWith("$") => true

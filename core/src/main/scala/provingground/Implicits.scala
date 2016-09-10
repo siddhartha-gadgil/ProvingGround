@@ -69,7 +69,7 @@ object TLImplicits{
 
   import ConstructorShape._
 
-  val Types = IdIterShape
+//  val Types = IdIterShape
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair = ConstructorTypTL(IdShape, typ)
