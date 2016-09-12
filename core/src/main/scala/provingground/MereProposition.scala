@@ -51,7 +51,7 @@ object MereProposition {
 
     lazy val codom = (A ->: B) ->: (Truncation(A) ->: B)
 
-    lazy val typ = (dom : Typ[Term]) ->: codom
+    lazy val typ = (dom: Typ[Term]) ->: codom
 
     def subs(x: Term, y: Term) = Factorize(A.replace(x, y), B.replace(x, y))
 

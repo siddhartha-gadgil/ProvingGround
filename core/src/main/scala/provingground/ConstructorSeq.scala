@@ -261,7 +261,7 @@ trait ConstructorSeqDom {
       W: Typ[H], Xs: Func[H, Typ[C]]) =
     mapper[C, H](W).induc(Xs)
 
-    def intros[H <: Term with Subs[H]](typ: Typ[H]) : List[Term]
+  def intros[H <: Term with Subs[H]](typ: Typ[H]): List[Term]
 }
 
 object ConstructorSeqDom {
@@ -273,38 +273,39 @@ object ConstructorSeqDom {
   }
 
   case class Cons[S <: Term with Subs[S]](
-      name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom) extends ConstructorSeqDom {
-    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
-      type RecType <: Term with Subs[RecType];
-      type InducType <: Term with Subs[InducType]; type TIntros
-    } = {
+      name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom)
+      extends ConstructorSeqDom {
+    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
+      : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
+        type RecType <: Term with Subs[RecType];
+        type InducType <: Term with Subs[InducType]; type TIntros
+      } = {
       val ptn = pattern.mapped[C, H]
       val tl = tail.mapper[C, H](W)
       ConstructorSeqMap.Cons.sym(name, ptn, tl)
     }
 
     def intros[H <: Term with Subs[H]](typ: Typ[H]) =
-      pattern.symbcons(name, typ) ::  tail.intros(typ)
-
+      pattern.symbcons(name, typ) :: tail.intros(typ)
   }
-
 }
 
-case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom, typ: Typ[H]){
-  def |:[S <: Term with Subs[S], H <: Term with Subs[H]](head: ConstructorTL[S, H]) =
-    ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
+case class ConstructorSeqTL[H <: Term with Subs[H]](
+    seqDom: ConstructorSeqDom, typ: Typ[H]) {
+  def |:[S <: Term with Subs[S], H <: Term with Subs[H]](
+      head: ConstructorTL[S, H]) =
+    ConstructorSeqTL(
+        ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
 
-  def rec[C <: Term with Subs[C]](
-      X: Typ[C]) = seqDom.rec(typ, X)
+  def rec[C <: Term with Subs[C]](X: Typ[C]) = seqDom.rec(typ, X)
 
-
-  def induc[C <: Term with Subs[C]](
-      Xs: Func[H, Typ[C]]) =
+  def induc[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
     seqDom.induc(typ, Xs)
 
   val intros = seqDom.intros(typ)
 }
 
-object ConstructorSeqTL{
-  def Empty[H <: Term with Subs[H]](W: Typ[H]) = ConstructorSeqTL(ConstructorSeqDom.Empty, W)
+object ConstructorSeqTL {
+  def Empty[H <: Term with Subs[H]](W: Typ[H]) =
+    ConstructorSeqTL(ConstructorSeqDom.Empty, W)
 }

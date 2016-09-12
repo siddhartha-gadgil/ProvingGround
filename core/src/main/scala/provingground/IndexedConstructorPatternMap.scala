@@ -14,17 +14,25 @@ abstract class IndexedConstructorPatternMap[
     RecDataType <: Term with Subs[RecDataType],
     InducDataType <: Term with Subs[InducDataType],
     F <: Term with Subs[F],
-    Index : Subst,
+    Index: Subst,
     IF <: Term with Subs[IF],
     IDF <: Term with Subs[IDF],
     IDFT <: Term with Subs[IDFT]
 ] { self =>
 
-  val family : TypFamilyMap[H, F, Cod, Index, IF, IDF, IDFT]
+  val family: TypFamilyMap[H, F, Cod, Index, IF, IDF, IDFT]
 
-  def subs(x: Term, y: Term): IndexedConstructorPatternMap[
-      S, Cod, ConstructorType, H, RecDataType, InducDataType, F, Index, IF, IDF, IDFT]
-
+  def subs(x: Term, y: Term): IndexedConstructorPatternMap[S,
+                                                           Cod,
+                                                           ConstructorType,
+                                                           H,
+                                                           RecDataType,
+                                                           InducDataType,
+                                                           F,
+                                                           Index,
+                                                           IF,
+                                                           IDF,
+                                                           IDFT]
 
   /**
     * returns HoTT type corresponding to the pattern given the (inductive) type W (to be the head).
@@ -34,7 +42,6 @@ abstract class IndexedConstructorPatternMap[
 //  def symbcons(name: AnySym, tp: Typ[H]): ConstructorType =
 //    apply(tp).symbObj(name)
 
-
   /**
     * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
     */
@@ -43,8 +50,7 @@ abstract class IndexedConstructorPatternMap[
   /**
     * domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.
     */
-  def inducDataTyp(w: F, xs: IDFT)(
-      cons: ConstructorType): Typ[InducDataType]
+  def inducDataTyp(w: F, xs: IDFT)(cons: ConstructorType): Typ[InducDataType]
 
   /**
     * given a term, matches to see if this is the image of a given (quasi)-constructor, with `this` constructor pattern.
@@ -70,167 +76,183 @@ abstract class IndexedConstructorPatternMap[
   val univLevel: Int
 }
 
-object IndexedConstructorPatternMap{
-  case class IndexedIdMap[
-    C <: Term with Subs[C],
-    H <: Term with Subs[H],
-    F <: Term with Subs[F],
-    Index : Subst,
-    IF <: Term with Subs[IF],
-    IDF <: Term with Subs[IDF],
-    IDFT <: Term with Subs[IDFT]](
-        family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT],
-        index: Index)
-    extends IndexedConstructorPatternMap[
-      HeadTerm, C, H, H, C, C, F, Index, IF, IDF, IDFT] {
+object IndexedConstructorPatternMap {
+  case class IndexedIdMap[C <: Term with Subs[C],
+                          H <: Term with Subs[H],
+                          F <: Term with Subs[F],
+                          Index: Subst,
+                          IF <: Term with Subs[IF],
+                          IDF <: Term with Subs[IDF],
+                          IDFT <: Term with Subs[IDFT]](
+      family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT], index: Index)
+      extends IndexedConstructorPatternMap[
+          HeadTerm, C, H, H, C, C, F, Index, IF, IDF, IDFT] {
 
-  def apply(W: F) = family.pattern.typ(W, index)
+    def apply(W: F) = family.pattern.typ(W, index)
 
-  val univLevel = 0
+    val univLevel = 0
 
-  def recDataTyp(w: F, x: Typ[C]) = x
+    def recDataTyp(w: F, x: Typ[C]) = x
 
-  def inducDataTyp(w: F, xs: IDFT)(
-      cons: H) = family.typRestrict(xs, index)(cons)
+    def inducDataTyp(w: F, xs: IDFT)(cons: H) =
+      family.typRestrict(xs, index)(cons)
 
-  def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term) = this
 
-  def recDefCase(cons: H, data: C, f: => IF): H => Option[C] = {
-    case (t: Term) if t == cons => Some(data)
-    case _ => None
+    def recDefCase(cons: H, data: C, f: => IF): H => Option[C] = {
+      case (t: Term) if t == cons => Some(data)
+      case _ => None
+    }
+
+    def inducDefCase(cons: H, data: C, f: => IDF): Term => Option[C] = {
+      case (t: Term) if t == cons => Some(data)
+      case _ => None
+    }
   }
-
-  def inducDefCase(cons: H, data: C, f: => IDF): Term => Option[C] = {
-    case (t: Term) if t == cons => Some(data)
-    case _ => None
-  }
-}
 
   abstract class IndexedRecursiveConstructorPatternMap[
-    HS <: Term with Subs[HS],
-    S <: Term with Subs[S],
-    Cod <: Term with Subs[Cod],
-    ArgType <: Term with Subs[ArgType],
-    HeadConstructorType <: Term with Subs[HeadConstructorType],
-    CT <: FuncLike[ArgType, HeadConstructorType] with Subs[CT],
-    H <: Term with Subs[H],
-    RecDataType <: Term with Subs[RecDataType],
-    InducDataType <: Term with Subs[InducDataType],
-    HeadRecDataType <: Term with Subs[HeadRecDataType],
-    HeadInducDataType <: Term with Subs[HeadInducDataType],
-    F <: Term with Subs[F],
-    Index : Subst,
-    IF <: Term with Subs[IF],
-    IDF <: Term with Subs[IDF],
-    IDFT <: Term with Subs[IDFT]]
-    extends IndexedConstructorPatternMap[
-      S, Cod, CT, H, RecDataType, InducDataType, F, Index, IF, IDF, IDFT
-      ] {
-  self =>
+      HS <: Term with Subs[HS],
+      S <: Term with Subs[S],
+      Cod <: Term with Subs[Cod],
+      ArgType <: Term with Subs[ArgType],
+      HeadConstructorType <: Term with Subs[HeadConstructorType],
+      CT <: FuncLike[ArgType, HeadConstructorType] with Subs[CT],
+      H <: Term with Subs[H],
+      RecDataType <: Term with Subs[RecDataType],
+      InducDataType <: Term with Subs[InducDataType],
+      HeadRecDataType <: Term with Subs[HeadRecDataType],
+      HeadInducDataType <: Term with Subs[HeadInducDataType],
+      F <: Term with Subs[F],
+      Index: Subst,
+      IF <: Term with Subs[IF],
+      IDF <: Term with Subs[IDF],
+      IDFT <: Term with Subs[IDFT]]
+      extends IndexedConstructorPatternMap[
+          S,
+          Cod,
+          CT,
+          H,
+          RecDataType,
+          InducDataType,
+          F,
+          Index,
+          IF,
+          IDF,
+          IDFT
+      ] { self =>
 
-  /**
-    * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
-    */
-  val headfibre: ArgType => IndexedConstructorPatternMap[
-      HS, Cod, HeadConstructorType, H, HeadRecDataType, HeadInducDataType, F, Index, IF, IDF, IDFT]
+    /**
+      * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
+      */
+    val headfibre: ArgType => IndexedConstructorPatternMap[HS,
+                                                           Cod,
+                                                           HeadConstructorType,
+                                                           H,
+                                                           HeadRecDataType,
+                                                           HeadInducDataType,
+                                                           F,
+                                                           Index,
+                                                           IF,
+                                                           IDF,
+                                                           IDFT]
 
-  /**
-    * returns data for recursion to be passed on to the head given an argument (when matching with the constructor).
-    */
-  def headData(
-      data: RecDataType, arg: ArgType, f: => IF): HeadRecDataType
+    /**
+      * returns data for recursion to be passed on to the head given an argument (when matching with the constructor).
+      */
+    def headData(data: RecDataType, arg: ArgType, f: => IF): HeadRecDataType
 
-  def recDefCase(
-      cons: CT, data: RecDataType, f: => IF): H => Option[Cod] = {
-    t =>
+    def recDefCase(cons: CT, data: RecDataType, f: => IF): H => Option[Cod] = {
+      t =>
+        for (arg <- getArg(cons)(t);
+             term <- headfibre(arg).recDefCase(
+                        cons(arg), headData(data, arg, f), f)(t)) yield term
+    }
+
+    def headInducData(data: InducDataType,
+                      arg: ArgType,
+                      f: => IDF): HeadInducDataType
+
+    def inducDefCase(
+        cons: CT, data: InducDataType, f: => IDF): H => Option[Cod] = { t =>
       for (arg <- getArg(cons)(t);
-           term <- headfibre(arg).recDefCase(
-                      cons(arg), headData(data, arg, f), f)(t)) yield term
+           term <- headfibre(arg).inducDefCase(
+                      cons(arg), headInducData(data, arg, f), f)(t)) yield term
+    }
   }
-
-  def headInducData(data: InducDataType,
-                    arg: ArgType,
-                    f: => IDF): HeadInducDataType
-
-  def inducDefCase(cons: CT,
-                   data: InducDataType,
-                   f: => IDF): H => Option[Cod] = { t =>
-    for (arg <- getArg(cons)(t);
-         term <- headfibre(arg).inducDefCase(
-                    cons(arg), headInducData(data, arg, f), f)(t)) yield term
-  }
-}
 
   case class IndexedFuncPtnMap[HS <: Term with Subs[HS],
-                      TS <: Term with Subs[TS],
-                      C <: Term with Subs[C],
-                      F <: Term with Subs[F],
-                      HC <: Term with Subs[HC],
-                      H <: Term with Subs[H],
-                      HR <: Term with Subs[HR],
-                      HI <: Term with Subs[HI],
-                      TT <: Term with Subs[TT],
-                      DT <: Term with Subs[DT],
-                      Fb <: Term with Subs[Fb],
-    Index : Subst,
-    IF <: Term with Subs[IF],
-    IDF <: Term with Subs[IDF],
-    IDFT <: Term with Subs[IDFT]](
-    tail: IterFuncPtnMap[TS, H, C, F, TT, DT],
-    head: IndexedConstructorPatternMap[HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT],
-    ind: Index
-)
-    extends IndexedRecursiveConstructorPatternMap[HS,
-                                           Func[TS, HS],
-                                           C,
-                                           F,
-                                           HC,
-                                           Func[F, HC],
-                                           H,
-                                           Func[F, Func[TT, HR]],
-                                           FuncLike[F, Func[DT, HI]],
-                                           HR,
-                                           HI,
-                                           Fb, Index, IF, IDF, IDFT] { self =>
+                               TS <: Term with Subs[TS],
+                               C <: Term with Subs[C],
+                               F <: Term with Subs[F],
+                               HC <: Term with Subs[HC],
+                               H <: Term with Subs[H],
+                               HR <: Term with Subs[HR],
+                               HI <: Term with Subs[HI],
+                               TT <: Term with Subs[TT],
+                               DT <: Term with Subs[DT],
+                               Fb <: Term with Subs[Fb],
+                               Index: Subst,
+                               IF <: Term with Subs[IF],
+                               IDF <: Term with Subs[IDF],
+                               IDFT <: Term with Subs[IDFT]](
+      tail: IterFuncPtnMap[TS, H, C, F, TT, DT],
+      head: IndexedConstructorPatternMap[
+          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT],
+      ind: Index
+  )
+      extends IndexedRecursiveConstructorPatternMap[HS,
+                                                    Func[TS, HS],
+                                                    C,
+                                                    F,
+                                                    HC,
+                                                    Func[F, HC],
+                                                    H,
+                                                    Func[F, Func[TT, HR]],
+                                                    FuncLike[F, Func[DT, HI]],
+                                                    HR,
+                                                    HI,
+                                                    Fb,
+                                                    Index,
+                                                    IF,
+                                                    IDF,
+                                                    IDFT] { self =>
 
+    def subs(x: Term, y: Term) =
+      IndexedFuncPtnMap(tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
 
+    val family = head.family
 
+    val headfibre = (t: F) => head
 
- def subs(x: Term, y: Term) =
-   IndexedFuncPtnMap(tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
+    //    type ConstructorType = Func[ArgType, head.ConstructorType]
 
-  val family = head.family
+    def recDataTyp(w: Fb, x: Typ[C]) =
+      tail(family.pattern.typ(w, ind)) ->: tail.target(x) ->: head.recDataTyp(
+          w, x)
 
-  val headfibre = (t: F) => head
+    def inducDataTyp(w: Fb, xs: IDFT)(
+        cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
+      val a = tail(family.pattern.typ(w, ind)).Var
+      val headcons = cons(a)
+      val xss = family.typRestrict(xs, ind)
+      val fibre =
+        lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
+      PiTyp(fibre)
+    }
 
-  //    type ConstructorType = Func[ArgType, head.ConstructorType]
+    def headData(data: Func[F, Func[TT, HR]], arg: F, f: => IF): HR = {
+      data(arg)(tail.induced(family.restrict(f, ind))(arg))
+    }
 
-  def recDataTyp(w: Fb, x: Typ[C]) =
-    tail(family.pattern.typ(w,ind)) ->: tail.target(x) ->: head.recDataTyp(w, x)
+    def headInducData(data: FuncLike[F, Func[DT, HI]],
+                      arg: F,
+                      f: => IDF): HI = {
+      data(arg)(tail.inducedDep(family.depRestrict(f, ind))(arg))
+    }
 
-  def inducDataTyp(w: Fb, xs: IDFT)(
-      cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-    val a = tail(family.pattern.typ(w,ind)).Var
-    val headcons = cons(a)
-    val xss = family.typRestrict(xs, ind)
-    val fibre =
-      lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    def apply(W: Fb) =
+      tail(family.pattern.typ(W, ind)) ->: head(W)
+
+    val univLevel = math.max(head.univLevel, tail.univLevel)
   }
-
-  def headData(data: Func[F, Func[TT, HR]], arg: F, f: => IF): HR = {
-    data(arg)(tail.induced(family.restrict(f, ind))(arg))
-  }
-
-  def headInducData(data: FuncLike[F, Func[DT, HI]],
-                    arg: F,
-                    f: => IDF): HI = {
-    data(arg)(tail.inducedDep(family.depRestrict(f, ind))(arg))
-  }
-
-  def apply(W: Fb) =
-    tail(family.pattern.typ(W, ind)) ->:  head(W)
-
-  val univLevel = math.max(head.univLevel, tail.univLevel)
-}
 }

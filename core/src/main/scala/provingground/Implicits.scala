@@ -41,8 +41,6 @@ object Implicits {
     def =::(typ: Typ[H]) = typ ||: seq
   }
 
-
-
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
     import IterFuncPattern._
     def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
@@ -64,7 +62,7 @@ object Implicits {
   }
 }
 
-object TLImplicits{
+object TLImplicits {
   import IterFuncPatternMap._
 
   import ConstructorShape._
@@ -79,18 +77,16 @@ object TLImplicits{
 
     def -->>:(that: Typ[H]) = that -->>: pair
 
-    def -->>:[FF <: Term with Subs[FF]](
-        that: IterFuncShape[FF]) =
+    def -->>:[FF <: Term with Subs[FF]](that: IterFuncShape[FF]) =
       that -->>: pair
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
 
-    implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
+  implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
     def seq = ConstructorSeqTL.Empty(W)
 
     def =:[S <: Term with Subs[S]](head: ConstructorTL[S, H]) = head |: seq
-
   }
 
   import IterFuncPatternMap._
@@ -98,9 +94,6 @@ object TLImplicits{
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
 
     def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-      FuncShape(tail , IdIterShape)
-
+      FuncShape(tail, IdIterShape)
   }
-
-
 }

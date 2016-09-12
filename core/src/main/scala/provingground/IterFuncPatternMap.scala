@@ -357,15 +357,15 @@ object IterFuncPatternMap {
         type DT <: Term with Subs[DT]
       }
 
-    def subs(x: Term, y: Term) : IterFuncShape[S]
-    
+    def subs(x: Term, y: Term): IterFuncShape[S]
+
     def mapped[O <: Term with Subs[O], C <: Term with Subs[C]] =
       mapper[O, C].mapper(this)
   }
 
   case object IdIterShape extends IterFuncShape[HeadTerm] {
-    def subs(x: Term, y: Term)  = IdIterShape
-    
+    def subs(x: Term, y: Term) = IdIterShape
+
     def mapper[O <: Term with Subs[O], C <: Term with Subs[C]] =
       implicitly[IterFuncMapper[HeadTerm, O, C, O, C, C]]
     //  (shape: IterFuncShape[HeadTerm]) => IdIterPtnMap[O, C]
@@ -374,9 +374,9 @@ object IterFuncPatternMap {
   case class FuncShape[TT <: Term with Subs[TT], HS <: Term with Subs[HS]](
       tail: Typ[TT], head: IterFuncShape[HS])
       extends IterFuncShape[Func[TT, HS]] {
-    
-    def subs(x: Term, y: Term)  = FuncShape(tail.replace(x, y), head.subs(x, y))
-    
+
+    def subs(x: Term, y: Term) = FuncShape(tail.replace(x, y), head.subs(x, y))
+
     def mapper[O <: Term with Subs[O], C <: Term with Subs[C]] = {
       IterFuncMapper.funcIterMapper(head.mapper)
       // case FuncShape(t, h) => FuncIterPtnMap(t, head.mapper(h))
@@ -386,8 +386,9 @@ object IterFuncPatternMap {
   case class DepFuncShape[TT <: Term with Subs[TT], HS <: Term with Subs[HS]](
       tail: Typ[TT], headfibre: TT => IterFuncShape[HS])
       extends IterFuncShape[FuncLike[TT, HS]] {
-    def subs(x: Term, y: Term)  = DepFuncShape(tail.replace(x, y), (t: TT) => headfibre(t).subs(x, y))
-    
+    def subs(x: Term, y: Term) =
+      DepFuncShape(tail.replace(x, y), (t: TT) => headfibre(t).subs(x, y))
+
     def mapper[O <: Term with Subs[O], C <: Term with Subs[C]] = {
       IterFuncMapper.depFuncIterMapper(headfibre(tail.Var).mapper)
     }

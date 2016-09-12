@@ -45,21 +45,23 @@ object HoTT {
   implicit def stringSym(name: String) = Name(name)
 
   /** Abstract object */
-import scala.language.existentials
+  import scala.language.existentials
 
-  case class TypedTerm[+U <: Term with Subs[U]](term: U, typ: Typ[U]){
-    def replace(x: Term, y: Term) = TypedTerm(term.replace(x, y), typ.replace(x, y))
+  case class TypedTerm[+U <: Term with Subs[U]](term: U, typ: Typ[U]) {
+    def replace(x: Term, y: Term) =
+      TypedTerm(term.replace(x, y), typ.replace(x, y))
   }
 
-  trait Term extends Subs[Term] {self =>
+  trait Term extends Subs[Term] { self =>
 
     /**
       * Gives limited information on types when the types are universes, so should not be used in this case.
       * So avoid making this judgement.
       */
-    val typ: Typ[U] forSome {type U >: (self.type) <: Term with Subs[U] }
+    val typ: Typ[U] forSome { type U >: (self.type) <: Term with Subs[U] }
 
-    val typed = TypedTerm(self: self.type , typ)
+    val typed = TypedTerm(self: self.type, typ)
+
     /**
       * returns whether this depends on that
       */
@@ -203,7 +205,7 @@ import scala.language.existentials
       */
     def Var = getVar(this)
 
-    def typedVar : TypedTerm[U] = getTypedVar(this)
+    def typedVar: TypedTerm[U] = getTypedVar(this)
 
     /**
       * function type:  this -> that
@@ -294,31 +296,31 @@ import scala.language.existentials
     override def toString = name.toString
   }
 
-  trait Variable[U <: Term with Subs[U]]{
-    def typ(t: U) : Typ[U]
+  trait Variable[U <: Term with Subs[U]] {
+    def typ(t: U): Typ[U]
   }
 
-  object Variable{
-    implicit object TermVar extends Variable[Term]{
+  object Variable {
+    implicit object TermVar extends Variable[Term] {
       def typ(t: Term) = t.typ
     }
 
-    implicit object TypVar extends Variable[Typ[Term]]{
+    implicit object TypVar extends Variable[Typ[Term]] {
       def typ(t: Typ[Term]) = t.typ
     }
 
-    implicit def funcVar[U<: Term with Subs[U], V <: Term with Subs[V]] =
-      new Variable[Func[U, V]]{
+    implicit def funcVar[U <: Term with Subs[U], V <: Term with Subs[V]] =
+      new Variable[Func[U, V]] {
         def typ(t: Func[U, V]) = t.typ
       }
 
-      implicit def funcLikeVar[U<: Term with Subs[U], V <: Term with Subs[V]] =
-        new Variable[FuncLike[U, V]]{
-          def typ(t: FuncLike[U, V]) = t.typ
-        }
+    implicit def funcLikeVar[U <: Term with Subs[U], V <: Term with Subs[V]] =
+      new Variable[FuncLike[U, V]] {
+        def typ(t: FuncLike[U, V]) = t.typ
+      }
   }
 
-  def vartyp[U <: Term with  Subs[U]: Variable](t: U) =
+  def vartyp[U <: Term with Subs[U]: Variable](t: U) =
     implicitly[Variable[U]].typ(t)
 
   /**
@@ -762,7 +764,7 @@ import scala.language.existentials
 //      case _ => false
 //    }
 
-    lazy val typ : Typ[Typ[Term]] = Universe(max(dom.typlevel, codom.typlevel))
+    lazy val typ: Typ[Typ[Term]] = Universe(max(dom.typlevel, codom.typlevel))
 
     def variable(name: AnySym): Func[W, U] =
       SymbolicFunc[W, U](name, dom, codom)
@@ -1080,15 +1082,14 @@ import scala.language.existentials
 
   case class LambdaTyped[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       tvar: TypedTerm[X], tvalue: TypedTerm[Y])
-      extends LambdaLike[X, Y]{
+      extends LambdaLike[X, Y] {
     val variable = tvar.term
 
     val value = tvalue.term
 
     override lazy val dom = tvar.typ
 
-    val depcodom: X => Typ[Y] = (t: X) =>
-      tvalue.typ.replace(variable, t)
+    val depcodom: X => Typ[Y] = (t: X) => tvalue.typ.replace(variable, t)
 
     val dep = true
 
@@ -1097,8 +1098,9 @@ import scala.language.existentials
 
     def newobj = {
       val newvar = variable.newobj
-      LambdaTyped(tvar.replace(variable, newvar), tvalue.replace(variable, newvar))
-      }
+      LambdaTyped(
+          tvar.replace(variable, newvar), tvalue.replace(variable, newvar))
+    }
   }
 
   /**
@@ -1161,7 +1163,8 @@ import scala.language.existentials
 
     def newobj = {
       val newvar = variable.newobj
-      LambdaTypedFixed(tvariable.replace(variable, newvar), tvalue.replace(variable, newvar))
+      LambdaTypedFixed(tvariable.replace(variable, newvar),
+                       tvalue.replace(variable, newvar))
     }
 
     override def subs(x: Term, y: Term): LambdaTypedFixed[X, Y] =
@@ -1337,7 +1340,7 @@ import scala.language.existentials
     //type Obj = DepFunc[W, U]
     type Obj = FuncLike[W, U]
 
-    lazy val typ : Typ[Typ[Term]] = Universe(
+    lazy val typ: Typ[Typ[Term]] = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
     override def variable(name: AnySym): FuncLike[W, U] =
@@ -1447,30 +1450,30 @@ import scala.language.existentials
                       fibers.replace(x, y))
   }
 
-    case class OptDepFuncDefn[W <: Term with Subs[W]](
-        func: W => Option[Term],
-        dom: Typ[W]
-    )
-        extends DepFunc[W, Term]
-        with Subs[OptDepFuncDefn[W]] {
+  case class OptDepFuncDefn[W <: Term with Subs[W]](
+      func: W => Option[Term],
+      dom: Typ[W]
+  )
+      extends DepFunc[W, Term]
+      with Subs[OptDepFuncDefn[W]] {
 
-      lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
+    lazy val depcodom = (arg: W) => (func(arg) map (_.typ)).getOrElse(Unit)
 
-      lazy val fibers = {
-        val x = getVar(dom)
-        lmbda(x)(depcodom(x))
-      }
-
-      lazy val typ : Typ[FuncLike[W, Term]] = PiTyp(fibers)
-
-      def act(arg: W) = func(arg).getOrElse(Star)
-
-      def newobj = this
-
-      def subs(x: Term, y: Term) =
-        OptDepFuncDefn(
-            (w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
+    lazy val fibers = {
+      val x = getVar(dom)
+      lmbda(x)(depcodom(x))
     }
+
+    lazy val typ: Typ[FuncLike[W, Term]] = PiTyp(fibers)
+
+    def act(arg: W) = func(arg).getOrElse(Star)
+
+    def newobj = this
+
+    def subs(x: Term, y: Term) =
+      OptDepFuncDefn(
+          (w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
+  }
 
   /**
     *  symbol for left component in pair from a given symbol
@@ -1556,7 +1559,7 @@ import scala.language.existentials
         extends FuncLike[AbsPair[W, U], V] { self =>
       lazy val dom = prod
 
-      val xy : AbsPair[W, U] = prod.Var
+      val xy: AbsPair[W, U] = prod.Var
 
       lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
 
@@ -2222,7 +2225,7 @@ import scala.language.existentials
 
     val dom = term.dom
 
-    override val typ : Typ[FuncLike[U, V]] = term.typ
+    override val typ: Typ[FuncLike[U, V]] = term.typ
 
     val depcodom = term.depcodom
 

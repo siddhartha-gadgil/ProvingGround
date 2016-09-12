@@ -410,8 +410,7 @@ sealed trait ConstructorShape[S <: Term with Subs[S]] {
   def symbcons[H <: Term with Subs[H]](name: AnySym, tp: Typ[H]) =
     mapped[Term, H].symbcons(name, tp)
 
-
-  def subs(x: Term, y: Term) : ConstructorShape[S]
+  def subs(x: Term, y: Term): ConstructorShape[S]
 
   import ConstructorShape._
 
@@ -425,12 +424,10 @@ sealed trait ConstructorShape[S <: Term with Subs[S]] {
   def ->:[T <: Term with Subs[T]](tail: Typ[T]) = CnstFuncConsShape(tail, this)
 
   def ~>:[T <: Term with Subs[T]](tailVar: T) = {
-    val fibre = (t: T) =>
-      this.subs(tailVar, t)
+    val fibre = (t: T) => this.subs(tailVar, t)
 
     CnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
   }
-
 }
 
 object ConstructorShape {
@@ -461,8 +458,8 @@ object ConstructorShape {
         type InducDataType <: Term with Subs[InducDataType]
       } = funcPtnMapper(tail.mapper[H, C], head.mapper[C, H])
 
-    def subs(x: Term, y: Term) = FuncConsShape(tail.subs(x, y), head.subs(x, y))
-
+    def subs(x: Term, y: Term) =
+      FuncConsShape(tail.subs(x, y), head.subs(x, y))
   }
 
   case class CnstFuncConsShape[
@@ -475,8 +472,8 @@ object ConstructorShape {
     def mapper[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
       cnstFncPtnMapper(head.mapper[Cod, H])
 
-
-    def subs(x: Term, y: Term) = CnstFuncConsShape(tail.replace(x,y), head.subs(x, y))
+    def subs(x: Term, y: Term) =
+      CnstFuncConsShape(tail.replace(x, y), head.subs(x, y))
   }
 
   case class CnstDepFuncConsShape[
@@ -489,7 +486,9 @@ object ConstructorShape {
     def mapper[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
       cnstDepFncPtnMapper(headfibre(tail.Var).mapper[Cod, H])
 
-    def subs(x: Term, y: Term) = CnstDepFuncConsShape(tail.replace(x,y), (t: T) => headfibre(t).subs(x, y))
+    def subs(x: Term, y: Term) =
+      CnstDepFuncConsShape(
+          tail.replace(x, y), (t: T) => headfibre(t).subs(x, y))
   }
 }
 
@@ -577,7 +576,7 @@ sealed trait ConstructorPatternMapper[
 }
 
 case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
-    shape: ConstructorShape[S], typ : Typ[H]){
+    shape: ConstructorShape[S], typ: Typ[H]) {
 
   import ConstructorShape._
 
@@ -593,7 +592,7 @@ case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
   }
 
   def -->>:[FF <: Term with Subs[FF]](that: IterFuncShape[FF]) =
-    ConstructorTypTL(that-->: shape, typ)
+    ConstructorTypTL(that -->: shape, typ)
 
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
     assert(
@@ -604,8 +603,7 @@ case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
 
   def ~>>:[T <: Term with Subs[T]](thatVar: H) =
     ConstructorTypTL(thatVar ~>: shape, typ)
-
 }
 
 case class ConstructorTL[S <: Term with Subs[S], H <: Term with Subs[H]](
-    name : AnySym, shape: ConstructorShape[S], W : Typ[H])
+    name: AnySym, shape: ConstructorShape[S], W: Typ[H])
