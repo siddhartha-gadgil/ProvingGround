@@ -95,7 +95,7 @@ object IndexedConstructorPatternMap{
 
   def subs(x: Term, y: Term) = this
 
-  def recDefCase(cons: H, data: C, f: => IF): Term => Option[C] = {
+  def recDefCase(cons: H, data: C, f: => IF): H => Option[C] = {
     case (t: Term) if t == cons => Some(data)
     case _ => None
   }

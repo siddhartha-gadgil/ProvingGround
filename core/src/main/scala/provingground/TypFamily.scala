@@ -2,6 +2,8 @@ package provingground
 
 import HoTT._
 
+import scala.language.existentials
+
 trait Subst[A]{
   def subst(a: A)(x: Term, y: Term): A
 }
@@ -24,7 +26,7 @@ object Subst{
   }
 
   implicit class SubstOp[A: Subst](a: A){
-    def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y) 
+    def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
 }
 }
 
@@ -119,6 +121,8 @@ sealed trait TypFamilyMap[
 
     def iterDepFuncTyp(w: Typ[H], xs: IDFT) : Typ[IDF]
 
+    def iterFunc(funcs: Index => Func[H, C]): IF
+
     def restrict(f: IF, ind: Index) : Func[H, C]
 
     def depRestrict(f: IDF, ind: Index): FuncLike[H, C]
@@ -143,6 +147,8 @@ object TypFamilyMap{
     def iterFuncTyp(w: Typ[H], x: Typ[C]) = w ->: x
 
     def iterDepFuncTyp(w: Typ[H], xs: Func[H, Typ[C]]) = PiTyp(xs)
+
+    def iterFunc(funcs: Unit => Func[H, C]) = funcs(())
 
     def restrict(f: Func[H, C], ind: Unit) = f
 
@@ -174,6 +180,11 @@ object TypFamilyMap{
     def iterDepFuncTyp(w: Typ[H], xs: FuncLike[U, TIDFT]) = {
       val x = head.Var
       x ~>: (tail.iterDepFuncTyp(w, xs(x)))
+    }
+
+    def iterFunc(funcs: ((U, TIndex)) => Func[H, C]) = {
+      val x = head.Var
+      x :-> (tail.iterFunc((ti : TIndex) => funcs((x, ti))))
     }
 
     def restrict(f: Func[U, TIF], ind: (U, TIndex)) = tail.restrict(f(ind._1), ind._2)
@@ -212,6 +223,11 @@ object TypFamilyMap{
     def iterDepFuncTyp(w: Typ[H], xs: FuncLike[U, TIDFT]) = {
       val x = head.Var
       x ~>: (tailfibre(x).iterDepFuncTyp(w, xs(x)))
+    }
+
+    def iterFunc(funcs: ((U, TIndex)) => Func[H, C]) = {
+      val x = head.Var
+      x :~> (tailfibre(x).iterFunc((ti : TIndex) => funcs((x, ti))))
     }
 
     def restrict(f: FuncLike[U, TIF], ind: (U, TIndex)) =

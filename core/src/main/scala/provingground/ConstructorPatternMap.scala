@@ -121,7 +121,7 @@ case class IdTargMap[C <: Term with Subs[C], H <: Term with Subs[H]]()
 
   def subs(x: Term, y: Term) = this
 
-  def recDefCase(cons: H, data: C, f: => Func[H, C]): Term => Option[C] = {
+  def recDefCase(cons: H, data: C, f: => Func[H, C]): H => Option[C] = {
     case (t: Term) if t == cons => Some(data)
     case _ => None
   }
@@ -578,11 +578,11 @@ sealed trait ConstructorPatternMapper[
 
 case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
     shape: ConstructorShape[S], typ : Typ[H]){
-  
+
   import ConstructorShape._
-  
+
   def :::(name: AnySym) = ConstructorTL(name, shape, typ)
-  
+
   def -->>:(that: Typ[H]) = {
     assert(
         that == typ,
@@ -609,7 +609,3 @@ case class ConstructorTypTL[S <: Term with Subs[S], H <: Term with Subs[H]](
 
 case class ConstructorTL[S <: Term with Subs[S], H <: Term with Subs[H]](
     name : AnySym, shape: ConstructorShape[S], W : Typ[H])
-
-
-    
-
