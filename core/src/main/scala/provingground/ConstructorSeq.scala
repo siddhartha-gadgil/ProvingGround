@@ -273,8 +273,7 @@ object ConstructorSeqDom {
 
 case class ConstructorSeqTL[H <: Term with Subs[H]](
     seqDom: ConstructorSeqDom, typ: Typ[H]) {
-  def |:[S <: Term with Subs[S]](
-      head: ConstructorTL[S, H]) =
+  def |:[S <: Term with Subs[S]](head: ConstructorTL[S, H]) =
     ConstructorSeqTL(
         ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
 

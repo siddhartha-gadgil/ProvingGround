@@ -39,7 +39,6 @@ object Implicits {
     def seq = ConstructorSeq.Empty[Term, H](W)
 
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
-
   }
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {

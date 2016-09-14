@@ -38,7 +38,7 @@ sealed abstract class TypFamilyPtn[
 
   def typ(w: F, index: Index): Typ[H]
 
-  def subs(ind: Index)(x: Term, y: Term): Index // not needed, use `Subst`
+  def subs(x: Term, y: Term): TypFamilyPtn[H, F, Index]
 
   def mapper[C <: Term with Subs[C]]
     : TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT] forSome {
@@ -59,7 +59,7 @@ object TypFamilyPtn {
 
     def typ(w: Typ[H], index: Unit): Typ[H] = w
 
-    def subs(ind: Unit)(x: Term, y: Term) = ind
+    def subs(x: Term, y: Term) = this
 
     def mapper[C <: Term with Subs[C]] = idTypFamilyMapper[H, C]
   }
@@ -81,8 +81,8 @@ object TypFamilyPtn {
     def typ(w: Func[U, TF], index: (U, TI)): Typ[H] =
       tail.typ(w(index._1), index._2)
 
-    def subs(ind: (U, TI))(x: Term, y: Term) =
-      (ind._1.replace(x, y), tail.subs(ind._2)(x, y))
+    def subs(x: Term, y: Term) =
+      FuncTypFamily(head.replace(x, y), tail.subs(x, y))
 
     def mapper[C <: Term with Subs[C]] =
       funcTypFamilyMapper(tail.mapper[C], implicitly[Subst[TI]])
@@ -105,8 +105,8 @@ object TypFamilyPtn {
     def typ(w: Func[U, TF], index: (U, TI)): Typ[H] =
       tailfibre(index._1).typ(w(index._1), index._2)
 
-    def subs(ind: (U, TI))(x: Term, y: Term) =
-      (ind._1.replace(x, y), tailfibre(ind._1).subs(ind._2)(x, y))
+    def subs(x: Term, y: Term) =
+      DepFuncTypFamily(head.replace(x, y), (u: U) => tailfibre(u).subs(x, y))
 
     def mapper[C <: Term with Subs[C]] =
       depFuncTypFamilyMapper(

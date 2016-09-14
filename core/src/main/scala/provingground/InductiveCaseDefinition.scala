@@ -54,7 +54,6 @@ object InductiveDefinition {
   }
 }
 
-
 import Subst.SubstOp
 
 abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
@@ -67,7 +66,7 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
   self =>
   val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 
-  val W : F
+  val W: F
 
   val Xs: IDFT
 
@@ -85,7 +84,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
     def newobj = fself
 
     def act(arg: H) =
-      caseFn(iterDepFunc)(arg) getOrElse (depcodom(arg).symbObj(ApplnSym(fself, arg)))
+      caseFn(iterDepFunc)(arg) getOrElse (depcodom(arg).symbObj(
+              ApplnSym(fself, arg)))
 
     def subs(x: Term, y: Term) = self.subs(x, y).Funcs(ind.subst(x, y))
   }
