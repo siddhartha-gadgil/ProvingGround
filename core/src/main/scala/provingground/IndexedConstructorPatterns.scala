@@ -4,7 +4,7 @@ import HoTT._
 
 //import scala.language.implicitConversions
 //import scala.util._
-//import scala.language.existentials
+import scala.language.existentials
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
@@ -194,7 +194,7 @@ class IndexedConstructorPatterns[C <: Term with Subs[C],
     def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType] = x
 
     def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])(cons: H) =
-      xs(incl(cons, index, w)) //FIXME 
+      xs(incl(cons, index, w)) //FIXME
     // xs should have domain Total, we should take the total value of cons
 
     def recDefCase(cons: iConstructorType,

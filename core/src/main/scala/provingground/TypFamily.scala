@@ -130,6 +130,8 @@ sealed trait TypFamilyMap[H <: Term with Subs[H],
 
   def iterFunc(funcs: Index => Func[H, C]): IF
 
+  def iterDepFunc(funcs: Index => FuncLike[H, C]): IDF
+
   def restrict(f: IF, ind: Index): Func[H, C]
 
   def depRestrict(f: IDF, ind: Index): FuncLike[H, C]
@@ -154,6 +156,8 @@ object TypFamilyMap {
     def iterDepFuncTyp(w: Typ[H], xs: Func[H, Typ[C]]) = PiTyp(xs)
 
     def iterFunc(funcs: Unit => Func[H, C]) = funcs(())
+
+    def iterDepFunc(funcs: Unit => FuncLike[H, C]) = funcs(())
 
     def restrict(f: Func[H, C], ind: Unit) = f
 
@@ -193,6 +197,11 @@ object TypFamilyMap {
     def iterFunc(funcs: ((U, TIndex)) => Func[H, C]) = {
       val x = head.Var
       x :-> (tail.iterFunc((ti: TIndex) => funcs((x, ti))))
+    }
+
+    def iterDepFunc(funcs: ((U, TIndex)) => FuncLike[H, C]) = {
+      val x = head.Var
+      x :-> (tail.iterDepFunc((ti: TIndex) => funcs((x, ti))))
     }
 
     def restrict(f: Func[U, TIF], ind: (U, TIndex)) =
@@ -241,6 +250,11 @@ object TypFamilyMap {
     def iterFunc(funcs: ((U, TIndex)) => Func[H, C]) = {
       val x = head.Var
       x :~> (tailfibre(x).iterFunc((ti: TIndex) => funcs((x, ti))))
+    }
+
+    def iterDepFunc(funcs: ((U, TIndex)) => FuncLike[H, C]) = {
+      val x = head.Var
+      x :~> (tailfibre(x).iterDepFunc((ti: TIndex) => funcs((x, ti))))
     }
 
     def restrict(f: FuncLike[U, TIF], ind: (U, TIndex)) =

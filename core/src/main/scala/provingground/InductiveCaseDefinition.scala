@@ -53,3 +53,92 @@ object InductiveDefinition {
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
   }
 }
+
+
+import Subst.SubstOp
+
+abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
+                                          F <: Term with Subs[F],
+                                          C <: Term with Subs[C],
+                                          Index: Subst,
+                                          IF <: Term with Subs[IF],
+                                          IDF <: Term with Subs[IDF],
+                                          IDFT <: Term with Subs[IDFT]] {
+  self =>
+  val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
+
+  val W : F
+
+  val Xs: IDFT
+
+  def caseFn(f: => IDF)(arg: H): Option[C]
+
+  case class Funcs(ind: Index) extends FuncLike[H, C] { fself =>
+    val dom = family.pattern.typ(W, ind)
+
+    val fibre = family.typRestrict(Xs, ind)
+
+    val depcodom = fibre
+
+    val typ = PiTyp(fibre)
+
+    def newobj = fself
+
+    def act(arg: H) =
+      caseFn(iterDepFunc)(arg) getOrElse (depcodom(arg).symbObj(ApplnSym(fself, arg)))
+
+    def subs(x: Term, y: Term) = self.subs(x, y).Funcs(ind.subst(x, y))
+  }
+
+  lazy val iterDepFunc = family.iterDepFunc(Funcs)
+
+  def subs(x: Term,
+           y: Term): IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+}
+
+object IndexedInductiveDefinition {
+  case class Empty[H <: Term with Subs[H],
+                   F <: Term with Subs[F],
+                   C <: Term with Subs[C],
+                   Index: Subst,
+                   IF <: Term with Subs[IF],
+                   IDF <: Term with Subs[IDF],
+                   IDFT <: Term with Subs[IDFT]](
+      W: F,
+      Xs: IDFT,
+      family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
+  )
+      extends IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
+
+    def caseFn(f: => IDF)(arg: H): Option[C] = None
+
+    def subs(x: Term, y: Term) =
+      Empty(W.replace(x, y), Xs.replace(x, y), family.subs(x, y))
+  }
+
+  case class DataCons[H <: Term with Subs[H],
+                      F <: Term with Subs[F],
+                      C <: Term with Subs[C],
+                      Index: Subst,
+                      IF <: Term with Subs[IF],
+                      IDF <: Term with Subs[IDF],
+                      IDFT <: Term with Subs[IDFT],
+                      D <: Term with Subs[D]](
+      data: D,
+      defn: D => IDF => H => Option[C],
+      tail: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+  )
+      extends IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
+    val family = tail.family
+
+    val W = tail.W
+
+    val Xs = tail.Xs
+
+    def caseFn(f: => IDF)(arg: H): Option[C] =
+      defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
+
+    def subs(x: Term, y: Term) =
+      DataCons(data.replace(x, y), defn, tail.subs(x, y))
+  }
+}

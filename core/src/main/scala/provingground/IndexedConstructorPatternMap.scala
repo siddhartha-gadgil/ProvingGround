@@ -255,4 +255,131 @@ object IndexedConstructorPatternMap {
 
     val univLevel = math.max(head.univLevel, tail.univLevel)
   }
+
+  case class IndexedCnstFncPtnMap[HS <: Term with Subs[HS],
+                           T <: Term with Subs[T],
+                           Cod <: Term with Subs[Cod],
+                           HC <: Term with Subs[HC],
+                           H <: Term with Subs[H],
+                           HR <: Term with Subs[HR],
+                           HI <: Term with Subs[HI],
+                           Fb <: Term with Subs[Fb],
+                           Index: Subst,
+                           IF <: Term with Subs[IF],
+                           IDF <: Term with Subs[IDF],
+                           IDFT <: Term with Subs[IDFT]](
+      tail: Typ[T],
+      head: IndexedConstructorPatternMap[HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+  )
+      extends IndexedRecursiveConstructorPatternMap[HS,
+                                             Func[T, HS],
+                                             Cod,
+                                             T,
+                                             HC,
+                                             Func[T, HC],
+                                             H,
+                                             Func[T, HR],
+                                             FuncLike[T, HI],
+                                             HR,
+                                             HI, Fb, Index, IF, IDF, IDFT] { self =>
+
+
+    val family = head.family
+
+    def subs(x: Term, y: Term) =
+      IndexedCnstFncPtnMap(tail.subs(x, y), head.subs(x, y))
+
+    val headfibre = (t: T) => head
+
+    def recDataTyp(w: Fb, x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
+
+    def inducDataTyp(w: Fb, xs: IDFT)(
+        cons: Func[T, HC]) = {
+      val a = tail.Var
+      val headcons = cons(a)
+      val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
+      PiTyp(fibre)
+    }
+
+    //   type ConstructorType = Func[Term, head.ConstructorType]
+
+    def headData(data: Func[T, HR], arg: T, f: => IF): HR =
+      data(arg)
+
+    def headInducData(data: FuncLike[T, HI],
+                      arg: T,
+                      f: => IDF): HI = data(arg)
+
+    def apply(W: Fb) = FuncTyp(tail, head(W))
+
+    val univLevel = head.univLevel
+  }
+
+  case class IndexedCnstDepFncPtnMap[HS <: Term with Subs[HS],
+                           T <: Term with Subs[T],
+                           Cod <: Term with Subs[Cod],
+                           HC <: Term with Subs[HC],
+                           H <: Term with Subs[H],
+                           HR <: Term with Subs[HR],
+                           HI <: Term with Subs[HI],
+                           Fb <: Term with Subs[Fb],
+                           Index: Subst,
+                           IF <: Term with Subs[IF],
+                           IDF <: Term with Subs[IDF],
+                           IDFT <: Term with Subs[IDFT]](
+      tail: Typ[T],
+      headfibre: T => IndexedConstructorPatternMap[HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+  )
+      extends IndexedRecursiveConstructorPatternMap[HS,
+                                             Func[T, HS],
+                                             Cod,
+                                             T,
+                                             HC,
+                                             FuncLike[T, HC],
+                                             H,
+                                             FuncLike[T, HR],
+                                             FuncLike[T, HI],
+                                             HR,
+                                             HI, Fb, Index, IF, IDF, IDFT] { self =>
+
+
+    val family = headfibre(tail.Var).family
+
+    def subs(x: Term, y: Term) =
+      IndexedCnstDepFncPtnMap(tail.subs(x, y), (t: T) => headfibre(t).subs(x, y))
+
+
+    def recDataTyp(w: Fb, x: Typ[Cod]) = {
+      val a = tail.Var
+      val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
+      PiTyp(fibre)
+    }
+
+    def inducDataTyp(w: Fb, xs: IDFT)(
+        cons: FuncLike[T, HC]) = {
+      val a = tail.Var
+      val headcons = cons(a)
+      val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
+      PiTyp(fibre)
+    }
+
+    //   type ConstructorType = Func[Term, head.ConstructorType]
+
+    def headData(data: FuncLike[T, HR], arg: T, f: => IF): HR =
+      data(arg)
+
+    def headInducData(data: FuncLike[T, HI],
+                      arg: T,
+                      f: => IDF): HI = data(arg)
+
+    def apply(W: Fb) = {
+      val a = tail.Var
+      val fiber = lmbda(a)(headfibre(a)(W))
+      PiTyp(fiber)
+    }
+
+    val univLevel = headfibre(tail.Var).univLevel
+  }
+
+
 }
