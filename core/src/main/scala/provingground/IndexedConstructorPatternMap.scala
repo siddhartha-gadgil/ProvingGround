@@ -39,8 +39,8 @@ abstract class IndexedConstructorPatternMap[
     */
   def apply(tp: F): Typ[ConstructorType]
 
-//  def symbcons(name: AnySym, tp: Typ[H]): ConstructorType =
-//    apply(tp).symbObj(name)
+ def symbcons(name: AnySym, tp: F): ConstructorType =
+   apply(tp).symbObj(name)
 
   /**
     * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.

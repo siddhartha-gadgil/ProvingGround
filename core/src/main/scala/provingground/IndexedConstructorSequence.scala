@@ -39,3 +39,112 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
   def induc(fibre: IDFT) =
     inducDataLambda(fibre)(inducDefn(fibre).iterDepFunc)
 }
+
+object IndexedConstructorSeqMap{
+  case class Empty[C <: Term with Subs[C], H <: Term with Subs[H],
+    F <: Term with Subs[F],
+    Index: Subst,
+    IF <: Term with Subs[IF],
+    IDF <: Term with Subs[IDF],
+    IDFT <: Term with Subs[IDFT]](W: F, family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT])
+      extends IndexedConstructorSeqMap[C, H, IF, IDF, Unit, F, Index, IF, IDF, IDFT] {
+    def recDefn(X: Typ[C]) = IndexedRecursiveDefinition.Empty(W, X, family)
+
+    // type RecType = Func[H, C]
+
+    def recDataLambda(X: Typ[C]) = (f) => f
+
+    def inducDefn(Xs: IDFT) =
+      IndexedInductiveDefinition.Empty(W, Xs, family)
+
+    // type InducType = FuncLike[H, C]
+
+    def inducDataLambda(fibre: IDFT) = (f) => f
+
+    val intros = List()
+  }
+
+  import ConstructorSeqMap.{RecSym, InducSym}
+
+  object Cons {
+    def sym[HS <: Term with Subs[HS],
+            C <: Term with Subs[C],
+            H <: Term with Subs[H],
+            Cod <: Term with Subs[Cod],
+            RD <: Term with Subs[RD],
+            ID <: Term with Subs[ID],
+            TR <: Term with Subs[TR],
+            TI <: Term with Subs[TI],
+            TIntros,
+            F <: Term with Subs[F],
+            Index: Subst,
+            IF <: Term with Subs[IF],
+            IDF <: Term with Subs[IDF],
+            IDFT <: Term with Subs[IDFT]](
+        name: AnySym,
+        pattern: IndexedConstructorPatternMap[HS, Cod, C, H, RD, ID, F, Index, IF, IDF, IDFT],
+        tail: IndexedConstructorSeqMap[Cod, H, TR, TI, TIntros, F, Index, IF, IDF, IDFT]
+    ) = {
+      val W = tail.W
+      val cons = pattern.symbcons(name, W)
+      Cons(cons, pattern, tail)
+    }
+  }
+
+
+  case class Cons[HS <: Term with Subs[HS],
+                  C <: Term with Subs[C],
+                  H <: Term with Subs[H],
+                  Cod <: Term with Subs[Cod],
+                  RD <: Term with Subs[RD],
+                  ID <: Term with Subs[ID],
+                  TR <: Term with Subs[TR],
+                  TI <: Term with Subs[TI],
+                  TIntros,
+                  F <: Term with Subs[F],
+                  Index: Subst,
+                  IF <: Term with Subs[IF],
+                  IDF <: Term with Subs[IDF],
+                  IDFT <: Term with Subs[IDFT]](
+      cons: C,
+      pattern: IndexedConstructorPatternMap[HS, Cod, C, H, RD, ID, F, Index, IF, IDF, IDFT],
+      tail: IndexedConstructorSeqMap[Cod, H, TR, TI, TIntros, F, Index, IF, IDF, IDFT]
+  )
+      extends IndexedConstructorSeqMap[
+          Cod, H, Func[RD, TR], Func[ID, TI], (C, TIntros), F, Index, IF, IDF, IDFT] {
+
+    val W = tail.W
+
+    val family = tail.family
+
+    def data(X: Typ[Cod]): RD =
+      pattern.recDataTyp(W, X).symbObj(RecSym(cons))
+
+    val defn = (d: RD) => (f: IF) => pattern.recDefCase(cons, d, f)
+
+    def recDefn(X: Typ[Cod]) =
+      IndexedRecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+
+    // type RecType = Func[cons.pattern.RecDataType, tail.RecType]
+
+    def recDataLambda(X: Typ[Cod]) =
+      f => LambdaFixed(data(X), tail.recDataLambda(X)(f))
+
+    // type InducType = Func[cons.pattern.InducDataType, tail.InducType]
+
+    def inducData(fibre: IDFT) =
+      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducSym(cons))
+
+    val inducDefn = (d: ID) =>
+      (f: IDF) => pattern.inducDefCase(cons, d, f)
+
+    def inducDefn(fibre: IDFT) =
+      IndexedInductiveDefinition.DataCons(
+          inducData(fibre), inducDefn, tail.inducDefn(fibre))
+
+    def inducDataLambda(fibre: IDFT) =
+      (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
+  }
+
+
+}

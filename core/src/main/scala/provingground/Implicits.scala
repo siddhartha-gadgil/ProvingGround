@@ -2,6 +2,8 @@ package provingground
 
 import HoTT._
 
+import scala.language.existentials
+
 object Implicits {
   val Types = IdFmlyPtn[Term, Term]()
 
@@ -38,7 +40,6 @@ object Implicits {
 
     def =:(head: Constructor[Term, H]) = ConstructorSeq.Cons(head, seq)
 
-    def =::(typ: Typ[H]) = typ ||: seq
   }
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
