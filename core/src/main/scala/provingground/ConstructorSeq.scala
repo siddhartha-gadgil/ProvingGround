@@ -228,7 +228,7 @@ object ConstructorSeqMap {
 import scala.language.existentials
 
 trait ConstructorSeqDom {
-  def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
+  def mapped[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
     : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
       type RecType <: Term with Subs[RecType];
       type InducType <: Term with Subs[InducType]; type TIntros
@@ -236,18 +236,18 @@ trait ConstructorSeqDom {
 
   def rec[C <: Term with Subs[C], H <: Term with Subs[H]](
       W: Typ[H], X: Typ[C]) =
-    mapper[C, H](W).rec(X)
+    mapped[C, H](W).rec(X)
 
   def induc[C <: Term with Subs[C], H <: Term with Subs[H]](
       W: Typ[H], Xs: Func[H, Typ[C]]) =
-    mapper[C, H](W).induc(Xs)
+    mapped[C, H](W).induc(Xs)
 
   def intros[H <: Term with Subs[H]](typ: Typ[H]): List[Term]
 }
 
 object ConstructorSeqDom {
   case object Empty extends ConstructorSeqDom {
-    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) =
+    def mapped[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
 
     def intros[H <: Term with Subs[H]](typ: Typ[H]) = List()
@@ -256,13 +256,13 @@ object ConstructorSeqDom {
   case class Cons[S <: Term with Subs[S]](
       name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom)
       extends ConstructorSeqDom {
-    def mapper[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
+    def mapped[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
         type RecType <: Term with Subs[RecType];
         type InducType <: Term with Subs[InducType]; type TIntros
       } = {
       val ptn = pattern.mapped[C, H]
-      val tl = tail.mapper[C, H](W)
+      val tl = tail.mapped[C, H](W)
       ConstructorSeqMap.Cons.sym(name, ptn, tl)
     }
 
