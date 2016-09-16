@@ -60,7 +60,7 @@ object HoTT {
       */
     val typ: Typ[U] forSome { type U >: (self.type) <: Term with Subs[U] }
 
-    val typed = TypedTerm(self: self.type, typ)
+    lazy val typed = TypedTerm(self: self.type, typ)
 
     /**
       * returns whether this depends on that
@@ -186,7 +186,7 @@ object HoTT {
       */
     val typ: Univ
 
-    override val typed: TypedTerm[Typ[Term]] = TypedTerm(this: this.type, typ)
+    override lazy val typed: TypedTerm[Typ[Term]] = TypedTerm(this: this.type, typ)
 
     lazy val typlevel: Int = univlevel(typ)
 

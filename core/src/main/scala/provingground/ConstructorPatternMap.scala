@@ -404,12 +404,33 @@ sealed trait ConstructorShape[S <: Term with Subs[S]] {
       type InducDataType <: Term with Subs[InducDataType]
     }
 
-  def mapped[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] =
-    mapper[Cod, H].mapper(this)
+  
+  def lift[
+    Cod <: Term with Subs[Cod],
+    ConstructorType <: Term with Subs[ConstructorType],
+    H <: Term with Subs[H],
+    RecDataType <: Term with Subs[RecDataType],
+    InducDataType <: Term with Subs[InducDataType]
+      ](implicit mp:  ConstructorPatternMapper[S, Cod, ConstructorType, H, RecDataType, InducDataType]) =
+        mp.mapper(this)
+  
+  
+  def mapped[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] = lift(mapper[Cod, H])
+//    mapper[Cod, H].mapper(this)
 
   def symbcons[H <: Term with Subs[H]](name: AnySym, tp: Typ[H]) =
     mapped[Term, H].symbcons(name, tp)
 
+  def symbCons[
+    Cod <: Term with Subs[Cod],
+    ConstructorType <: Term with Subs[ConstructorType],
+    H <: Term with Subs[H],
+    RecDataType <: Term with Subs[RecDataType],
+    InducDataType <: Term with Subs[InducDataType]
+      ](name: AnySym, tp: Typ[H])(
+          implicit mp:  ConstructorPatternMapper[S, Cod, ConstructorType, H, RecDataType, InducDataType]) =
+            mp.mapper(this).symbcons(name, tp)
+    
   def subs(x: Term, y: Term): ConstructorShape[S]
 
   import ConstructorShape._
