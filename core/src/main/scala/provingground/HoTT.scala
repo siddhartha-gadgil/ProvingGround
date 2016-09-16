@@ -214,6 +214,9 @@ object HoTT {
     def ->:[W <: Term with Subs[W], UU >: U <: Term with Subs[UU]](
         that: Typ[W]) = FuncTyp[W, UU](that, this)
 
+    def ->:[W <: Term with Subs[W], UU >: U <: Term with Subs[UU]](
+            that: TypedTerm[Typ[W]]) = FuncTyp[W, UU](that.term, this)
+
     /**
       * dependent function type (Pi-Type) define by a lambda:
       *  `this` depends on a variable, which hence gives a type family.
@@ -1632,7 +1635,7 @@ object HoTT {
   case class SigmaTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       fibers: TypFamily[W, U]
   )
-      extends Typ[DepPair[W, U]] { prod =>
+      extends Typ[AbsPair[W, U]] { prod =>
     lazy val typ = Universe(
         max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))
 
@@ -1681,9 +1684,9 @@ object HoTT {
     }
 
     def rec[V <: Term with Subs[V]](target: Typ[V]) = {
-      val a = fibers.dom.Var
-      val d = (a ~>: (fibers(a) ->: target)).Var
-      d :-> (RecFn(target, d): FuncLike[AbsPair[W, U], V])
+      val a = fibers.dom.typedVar
+      val d = (a ~>: (fibers(a) ->: target)).typedVar
+      d :-> (RecFn(target, d.term): FuncLike[AbsPair[W, U], V])
     }
 
     case class InducFn[V <: Term with Subs[V]](
@@ -1692,9 +1695,9 @@ object HoTT {
         extends FuncLike[AbsPair[W, U], V] { self =>
       lazy val dom = prod
 
-      val xy: AbsPair[W, U] = prod.Var
+      val xy: TypedTerm[AbsPair[W, U]] = prod.typedVar
 
-      lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
+      lazy val typ = xy ~>: (targetFmly(xy.term.first)(xy.term.second))
 
       lazy val depcodom = (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
 
@@ -1813,6 +1816,19 @@ object HoTT {
     def refl = Refl(term.typ.asInstanceOf[Typ[U]], term)
   }
 
+  implicit class RichTypedTerm[U <: Term with Subs[U]](term: TypedTerm[U]) {
+
+    def :->[V <: Term with Subs[V]](that: V) = lmbda(term.term)(that)
+
+    def :~>[V <: Term with Subs[V]](that: V) = lambda(term.term)(that)
+
+    def :->[V <: Term with Subs[V]](that: TypedTerm[V]) = lmbda(term)(that)
+
+    def :~>[V <: Term with Subs[V]](that: TypedTerm[V]) = lambda(term)(that)
+
+  }
+
+
   object IdentityTyp {
     case class RecFn[U <: Term with Subs[U], V <: Term with Subs[V]](
         domain: Typ[U], target: Typ[V], data: Func[U, V], start: U, end: U)
@@ -1839,11 +1855,11 @@ object HoTT {
 
     def rec[U <: Term with Subs[U], V <: Term with Subs[V]](
         dom: Typ[U], target: Typ[V]) = {
-      val dataVar = (dom ->: target).Var
-      val x = dom.Var
-      val y = dom.Var
-      val p = (x =:= y).Var
-      dataVar :-> (x :~> (y :~> (p :-> RecFn(dom, target, dataVar, x, y)(p))))
+      val dataVar = (dom ->: target).typedVar
+      val x = dom.typedVar
+      val y = dom.typedVar
+      val p = (x.term =:= y.term).typedVar
+      dataVar :-> (x :~> (y :~> (p :-> RecFn(dom, target, dataVar.term, x.term, y.term)(p.term))))
     }
 
     case class InducFn[U <: Term with Subs[U], V <: Term with Subs[V]](
