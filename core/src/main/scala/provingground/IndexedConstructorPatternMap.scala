@@ -419,6 +419,8 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
       type InducDataType <: Term with Subs[InducDataType];
     }
 
+  def :::(name: AnySym) = IndexedConstructor(name, this)
+  
   def mapped[C <: Term with Subs[C],
              IF <: Term with Subs[IF],
              IDF <: Term with Subs[IDF],
@@ -426,8 +428,14 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
       implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
     mapper(fmlyMapper).mapper(fmlyMapper)(this)
 
+   def symbcons[H <: Term with Subs[H]](name: AnySym, tp: F) ={
+    implicit val mpr = family.mapper[Term]
+    val mp = mapped
+    mp.symbcons(name, tp)
+  }
+    
   import IndexedConstructorShape._
-
+  
   def -->:[SS <: Term with Subs[SS]](that: IterFuncShape[SS], ind: Index) =
     IndexedFuncConsShape(that, this, ind)
 
@@ -445,6 +453,18 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 }
 
 object IndexedConstructorShape {
+  def get[S <: Term with Subs[S],
+                                       H <: Term with Subs[H],
+                                       F <: Term with Subs[F],
+                                       Index: Subst](
+                                           w: F, typ: Typ[H]
+                                           )(implicit g: TypFamilyPtnGetter[H, F, Index]) = {
+    val family = g.get(w)
+    val index = family.getIndex(w, typ).get
+    IndexedIdShape(family, index)
+  }
+  
+  
   import IndexedConstructorPatternMapper._
 
   case class IndexedIdShape[
@@ -736,4 +756,15 @@ object IndexedConstructorPatternMapper {
           IndexedCnstDepFncPtnMap(t, (x: T) => head.mapper(fmlyMapper)(hf(x)))
       }
     }
+}
+
+case class IndexedConstructor[S <: Term with Subs[S],
+                                       H <: Term with Subs[H],
+                                       F <: Term with Subs[F],
+                                       Index: Subst](
+                                           name: AnySym, 
+                                           shape: IndexedConstructorShape[S, H, F, Index])
+                                         
+object IndexedConstructor{
+  
 }
