@@ -100,6 +100,11 @@ object TLImplicits {
   implicit class IndexedFamily[
      F <: Term with Subs[F], H<: Term with Subs[H]](W: F)(
         implicit val g: TypFamilyPtnGetter[F, H]){
+
+    def fmly = this // to ensure g.Index is stable
+
+    def ::>(typ: Typ[H]) = IndexedPair(W -> typ)
+
     def emptySeq =
       IndexedConstructorSeqDom.get(W)(g.subst, g)
 
