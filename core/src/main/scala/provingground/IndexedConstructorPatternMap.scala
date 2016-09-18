@@ -420,7 +420,7 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
     }
 
   def :::(name: AnySym) = IndexedConstructor(name, this)
-  
+
   def mapped[C <: Term with Subs[C],
              IF <: Term with Subs[IF],
              IDF <: Term with Subs[IDF],
@@ -433,9 +433,9 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
     val mp = mapped
     mp.symbcons(name, tp)
   }
-    
+
   import IndexedConstructorShape._
-  
+
   def -->:[SS <: Term with Subs[SS]](that: IterFuncShape[SS], ind: Index) =
     IndexedFuncConsShape(that, this, ind)
 
@@ -455,16 +455,18 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 object IndexedConstructorShape {
   def get[S <: Term with Subs[S],
                                        H <: Term with Subs[H],
-                                       F <: Term with Subs[F],
-                                       Index: Subst](
+                                       F <: Term with Subs[F]](
                                            w: F, typ: Typ[H]
-                                           )(implicit g: TypFamilyPtnGetter[H, F, Index]) = {
+                                         )(implicit g: TypFamilyPtnGetter[F, H]) = {
     val family = g.get(w)
     val index = family.getIndex(w, typ).get
+
+    implicit val ts: Subst[g.Index] =  g.subst
+
     IndexedIdShape(family, index)
   }
-  
-  
+
+
   import IndexedConstructorPatternMapper._
 
   case class IndexedIdShape[
@@ -762,9 +764,9 @@ case class IndexedConstructor[S <: Term with Subs[S],
                                        H <: Term with Subs[H],
                                        F <: Term with Subs[F],
                                        Index: Subst](
-                                           name: AnySym, 
+                                           name: AnySym,
                                            shape: IndexedConstructorShape[S, H, F, Index])
-                                         
+
 object IndexedConstructor{
-  
+
 }
