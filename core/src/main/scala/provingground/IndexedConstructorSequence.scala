@@ -180,12 +180,11 @@ abstract class IndexedConstructorSeqDom[
       type Intros;
     }
 
-  def rec[C <: Term with Subs[C]](x: Typ[C]) =
-    {
+  def rec[C <: Term with Subs[C]](x: Typ[C]) = {
     implicit val mp = family.mapper[C]
     val mpd = mapped
     mpd.rec(x)
-    }
+  }
 
   def |:[S <: Term with Subs[S]](head: IndexedConstructor[S, H, F, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
@@ -193,21 +192,18 @@ abstract class IndexedConstructorSeqDom[
 
 object IndexedConstructorSeqDom {
   def get[S <: Term with Subs[S],
-                                       H <: Term with Subs[H],
-                                       F <: Term with Subs[F],
-                                       Index: Subst](
-                                           w: F)(
-                                               implicit g: TypFamilyPtnGetter[F, H]) = {
+          H <: Term with Subs[H],
+          F <: Term with Subs[F],
+          Index](w: F)(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
     val family = g.get(w)
 
-    implicit val gs: Subst[g.Index] = g.subst
+    implicit val gs: Subst[Index] = g.subst
     Empty(w, family)
   }
 
   case class Empty[
-                   H <: Term with Subs[H],
-                   F <: Term with Subs[F],
-                   Index: Subst](W: F, family: TypFamilyPtn[H, F, Index])
+      H <: Term with Subs[H], F <: Term with Subs[F], Index: Subst](
+      W: F, family: TypFamilyPtn[H, F, Index])
       extends IndexedConstructorSeqDom[H, F, Index] {
     def mapped[C <: Term with Subs[C],
                IF <: Term with Subs[IF],
@@ -223,7 +219,7 @@ object IndexedConstructorSeqDom {
       IndexedConstructorSeqMap.Empty[C, H, F, Index, IF, IDF, IDFT](
           W, fmlyMapper.mapper(family))
 
-      val intros = List()
+    val intros = List()
   }
 
   case class Cons[S <: Term with Subs[S],
@@ -252,9 +248,6 @@ object IndexedConstructorSeqDom {
       IndexedConstructorSeqMap.Cons.sym(
           name, pattern.mapped(fmlyMapper), tail.mapped(fmlyMapper))
 
-
-  val intros = pattern.symbcons(name, W) ::  tail.intros
+    val intros = pattern.symbcons(name, W) :: tail.intros
   }
-
-
 }

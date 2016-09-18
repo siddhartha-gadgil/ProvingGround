@@ -428,7 +428,7 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
       implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
     mapper(fmlyMapper).mapper(fmlyMapper)(this)
 
-   def symbcons[H <: Term with Subs[H]](name: AnySym, tp: F) ={
+  def symbcons[H <: Term with Subs[H]](name: AnySym, tp: F) = {
     implicit val mpr = family.mapper[Term]
     val mp = mapped
     mp.symbcons(name, tp)
@@ -453,19 +453,18 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 }
 
 object IndexedConstructorShape {
-  def get[S <: Term with Subs[S],
-                                       H <: Term with Subs[H],
-                                       F <: Term with Subs[F]](
-                                           w: F, typ: Typ[H]
-                                         )(implicit g: TypFamilyPtnGetter[F, H]) = {
+  def get[
+      S <: Term with Subs[S], H <: Term with Subs[H], F <: Term with Subs[F], Index](
+      w: F,
+      typ: Typ[H]
+  )(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
     val family = g.get(w)
     val index = family.getIndex(w, typ).get
 
-    implicit val ts: Subst[g.Index] =  g.subst
+    implicit val ts: Subst[Index] = g.subst
 
     IndexedIdShape(family, index)
   }
-
 
   import IndexedConstructorPatternMapper._
 
@@ -761,12 +760,10 @@ object IndexedConstructorPatternMapper {
 }
 
 case class IndexedConstructor[S <: Term with Subs[S],
-                                       H <: Term with Subs[H],
-                                       F <: Term with Subs[F],
-                                       Index: Subst](
-                                           name: AnySym,
-                                           shape: IndexedConstructorShape[S, H, F, Index])
+                              H <: Term with Subs[H],
+                              F <: Term with Subs[F],
+                              Index: Subst](
+    name: AnySym,
+    shape: IndexedConstructorShape[S, H, F, Index])
 
-object IndexedConstructor{
-
-}
+object IndexedConstructor {}

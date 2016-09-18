@@ -51,9 +51,9 @@ sealed abstract class TypFamilyPtn[
 }
 
 object TypFamilyPtn {
-  def apply[H <: Term with Subs[H], F <: Term with Subs[F]](
-      w: F)(implicit  g : TypFamilyPtnGetter[F, H]) =
-        g.get(w)
+  def apply[H <: Term with Subs[H], F <: Term with Subs[F], Index](w: F)(
+      implicit g: TypFamilyPtnGetter[F, H, Index]) =
+    g.get(w)
 
   import TypFamilyMapper._
 
@@ -363,55 +363,57 @@ object TypFamilyMapper {
     }
 }
 
-trait TypFamilyPtnGetter[
-   F <: Term with Subs[F],   H <: Term with Subs[H]]{
+trait TypFamilyPtnGetter[F <: Term with Subs[F], H <: Term with Subs[H], Index] {
 
-  type Index
+//  type Index
 
   def get(w: F): TypFamilyPtn[H, F, Index]
 
   implicit val subst: Subst[Index]
 }
 
-object TypFamilyPtnGetter{
-  implicit def idGetter[H <: Term with Subs[H]] : TypFamilyPtnGetter[Typ[H], H] =
-    new TypFamilyPtnGetter[Typ[H], H]{
-      type Index = Unit
+object TypFamilyPtnGetter {
+  implicit def idGetter[H <: Term with Subs[H]]
+    : TypFamilyPtnGetter[Typ[H], H, Unit] =
+    new TypFamilyPtnGetter[Typ[H], H, Unit] {
+//      type Index = Unit
 
       def get(w: Typ[H]) = TypFamilyPtn.IdTypFamily[H]
 
-    val subst = Subst.UnitSubst
-  }
+      val subst = Subst.UnitSubst
+    }
 
   implicit def funcTypFamilyGetter[TF <: Term with Subs[TF],
-                            U <: Term with Subs[U],
-                           H <: Term with Subs[H]](
-      implicit tail: TypFamilyPtnGetter[TF, H]): TypFamilyPtnGetter[Func[U, TF], H]
-      = new TypFamilyPtnGetter[Func[U, TF], H]{
+                                   U <: Term with Subs[U],
+                                   H <: Term with Subs[H],
+                                   TI](
+      implicit tail: TypFamilyPtnGetter[TF, H, TI])
+    : TypFamilyPtnGetter[Func[U, TF], H, (U, TI)] =
+    new TypFamilyPtnGetter[Func[U, TF], H, (U, TI)] {
 
+      def get(w: Func[U, TF]) =
+        TypFamilyPtn.FuncTypFamily(w.dom, tail.get(w(w.dom.Var)))
 
-    def get(w: Func[U, TF]) = TypFamilyPtn.FuncTypFamily(w.dom, tail.get(w(w.dom.Var)))
+      // type Index = (U, TI)
 
-    type Index = (U, tail.Index)
+      implicit val ts: Subst[TI] = tail.subst
 
-    implicit val ts: Subst[tail.Index] =  tail.subst
+      val subst = Subst.pairSubst[U, TI]
+    }
 
-    val subst = Subst.pairSubst[U, tail.Index]
-  }
+  implicit def depFuncTypFamilyGetter[TF <: Term with Subs[TF],
+                                      U <: Term with Subs[U],
+                                      H <: Term with Subs[H], TI](
+      implicit tail: TypFamilyPtnGetter[TF, H, TI])
+    : TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] =
+    new TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] {
+      def get(w: FuncLike[U, TF]) =
+        TypFamilyPtn.DepFuncTypFamily(w.dom, (u: U) => tail.get(w(u)))
 
-  implicit def depFuncTypFamilyGetter[
-   TF <: Term with Subs[TF], U <: Term with Subs[U],
-                           H <: Term with Subs[H]](
-      implicit tail: TypFamilyPtnGetter[TF, H]) : TypFamilyPtnGetter[FuncLike[U, TF], H]
-      = new TypFamilyPtnGetter[FuncLike[U, TF], H]{
-    def get(w: FuncLike[U, TF]) =
-      TypFamilyPtn.DepFuncTypFamily(w.dom, (u: U) => tail.get(w(u)))
+      // type Index = (U, tail.Index)
 
-    type Index = (U, tail.Index)
+      implicit val ts: Subst[TI] = tail.subst
 
-    implicit val ts: Subst[tail.Index] =  tail.subst
-
-
-    val subst = Subst.pairSubst[U, tail.Index]
-  }
+      val subst = Subst.pairSubst[U, TI]
+    }
 }
