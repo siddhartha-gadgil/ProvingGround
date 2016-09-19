@@ -124,6 +124,8 @@ object TLImplicits {
       wt: (F, Typ[H]))(implicit val g: TypFamilyPtnGetter[F, H, Index]) {
     def W = wt._1
 
+    implicit val gs = g.subst
+
     def typ = wt._2
 
     def fmly = g.get(W)
@@ -140,13 +142,19 @@ object TLImplicits {
     def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
       (iterHead).->>:(tail)
 
+    import IndexedConstructorShape._
 
     def -->>:(tail: Typ[H]) = {
       val fmly = g.get(W)
       val ind = fmly.getIndex(W, typ).get
-      implicit val gs = g.subst
+
 
       (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
     }
+
+    def -->>:(that: IndexedIdShape[H, F, Index]) = {
+      IndexedFuncConsShape(IdIterShape, iterHead, that.index)
+    }
+
   }
 }

@@ -185,7 +185,7 @@ object TypFamilyMap {
                            Func[U, TF],
                            C,
                            (U, TIndex),
-                           Func[U, TIF],
+                           FuncLike[U, TIF],
                            FuncLike[U, TIDF],
                            FuncLike[U, TIDFT]] {
 
@@ -200,7 +200,7 @@ object TypFamilyMap {
 
     def iterFunc(funcs: ((U, TIndex)) => Func[H, C]) = {
       val x = head.Var
-      x :-> (tail.iterFunc((ti: TIndex) => funcs((x, ti))))
+      x :~> (tail.iterFunc((ti: TIndex) => funcs((x, ti))))
     }
 
     def iterDepFunc(funcs: ((U, TIndex)) => FuncLike[H, C]) = {
@@ -208,7 +208,7 @@ object TypFamilyMap {
       x :-> (tail.iterDepFunc((ti: TIndex) => funcs((x, ti))))
     }
 
-    def restrict(f: Func[U, TIF], ind: (U, TIndex)) =
+    def restrict(f: FuncLike[U, TIF], ind: (U, TIndex)) =
       tail.restrict(f(ind._1), ind._2)
 
     def depRestrict(f: FuncLike[U, TIDF], ind: (U, TIndex)) =
@@ -314,7 +314,7 @@ object TypFamilyMapper {
                         Func[U, TF],
                         C,
                         (U, TIndex),
-                        Func[U, TIF],
+                        FuncLike[U, TIF],
                         FuncLike[U, TIDF],
                         FuncLike[U, TIDFT]] {
 
@@ -323,7 +323,7 @@ object TypFamilyMapper {
           Func[U, TF],
           C,
           (U, TIndex),
-          Func[U, TIF],
+          FuncLike[U, TIF],
           FuncLike[U, TIDF],
           FuncLike[U, TIDFT]] = {
         case FuncTypFamily(h, t) =>
