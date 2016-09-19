@@ -436,17 +436,17 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 
   import IndexedConstructorShape._
 
-  def -->:[SS <: Term with Subs[SS]](that: IterFuncShape[SS], ind: Index) =
+  def -->>:[SS <: Term with Subs[SS]](that: IterFuncShape[SS], ind: Index) =
     IndexedFuncConsShape(that, this, ind)
 
-  def -->:(that: IndexedIdShape[H, F, Index], ind: Index) = {
-    IndexedFuncConsShape(IdIterShape, this, ind)
+  def -->>:(that: IndexedIdShape[H, F, Index]) = {
+    IndexedFuncConsShape(IdIterShape, this, that.index)
   }
 
-  def ->:[T <: Term with Subs[T]](tail: Typ[T]) =
+  def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
     IndexedCnstFuncConsShape(tail, this)
 
-  def ~>:[T <: Term with Subs[T]](tailVar: T) = {
+  def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
     val fibre = (t: T) => this.subs(tailVar, t)
     IndexedCnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
   }

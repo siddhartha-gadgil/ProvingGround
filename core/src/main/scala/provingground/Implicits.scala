@@ -100,10 +100,6 @@ object TLImplicits {
   implicit class IndexedFamily[F <: Term with Subs[F], H <: Term with Subs[H], Index](
       W: F)(implicit val g: TypFamilyPtnGetter[F, H, Index]) {
 
-    def fmly = this // to ensure g.Index is stable
-
-    def ::>(typ: Typ[H]) = IndexedPair(W -> typ)
-
     def emptySeq =
       IndexedConstructorSeqDom.get(W)(g)
 
@@ -112,6 +108,15 @@ object TLImplicits {
     ) = {
       val seq = emptySeq
       head |: seq
+    }
+
+    def :>(typ : Typ[H]) = {
+      val fmly = g.get(W)
+      val ind = fmly.getIndex(W, typ).get
+      implicit val gs = g.subst
+
+      IndexedConstructorShape.IndexedIdShape(fmly, ind)
+
     }
   }
 
@@ -126,17 +131,22 @@ object TLImplicits {
     def iterHead =
       IndexedConstructorShape.get(W, typ)
 
-    def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
-      val ind = fmly.getIndex(W, typ).get
-      (iterHead).~>:(tailVar)
-    }
+    def ~>>:[T <: Term with Subs[T]](tailVar: T) =
+      (iterHead).~>>:(tailVar)
+
 
     def :::(name: AnySym) = name ::: iterHead
 
-    def ->>:[T <: Term with Subs[T]](tail: Typ[T]) = {
+    def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
+      (iterHead).->>:(tail)
+
+
+    def -->>:(tail: Typ[H]) = {
       val fmly = g.get(W)
       val ind = fmly.getIndex(W, typ).get
-      (iterHead).->:(tail, ind)
+      implicit val gs = g.subst
+
+      (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
     }
   }
 }
