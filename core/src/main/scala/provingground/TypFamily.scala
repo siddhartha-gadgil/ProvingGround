@@ -403,7 +403,8 @@ object TypFamilyPtnGetter {
 
   implicit def depFuncTypFamilyGetter[TF <: Term with Subs[TF],
                                       U <: Term with Subs[U],
-                                      H <: Term with Subs[H], TI](
+                                      H <: Term with Subs[H],
+                                      TI](
       implicit tail: TypFamilyPtnGetter[TF, H, TI])
     : TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] =
     new TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] {

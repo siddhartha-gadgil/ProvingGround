@@ -2,10 +2,12 @@ package provingground
 
 import HoTT._
 import org.scalatest.FlatSpec
-import Implicits._
+import TLImplicits._
 import Fold._
 
-class InductionSpec extends FlatSpec {
+/* Cloned and modified from Tomoaki's tests
+*/
+class InductionSpecTL extends FlatSpec {
 
   // inductive types
 
@@ -177,13 +179,10 @@ class InductionSpec extends FlatSpec {
   // Indexed Inductive types
 
   // TypeLeveL:
-  // val VecInd = ("nil" ::: (Vec -> Vec(zero))) |:   {"cons" ::: n ~>>: ( A ->>: (Vec :> Vec(n)) -->>:  (Vec -> Vec(succ(n))))} =:: Vec
-
-  val IndN = new IndexedConstructorPatterns(Nat ->: Types)
   val Vec = "Vec" :: Nat ->: Type
-  val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-  val VecFmly = VecPtn.Family(Vec)
-  val VecInd = { "nil" ::: VecFmly.head(Vec(zero)) } |: { "cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n)))) } =: VecFmly
+
+  val VecInd = ("nil" ::: (Vec -> Vec(zero))) |:   {"cons" ::: n ~>>: ( A ->>: (Vec :> Vec(n)) -->>:  (Vec -> Vec(succ(n))))} =:: Vec
+
   val List(vnil, vcons) = VecInd.intros
 
   val vn = "v_n" :: Vec(n)
@@ -197,10 +196,11 @@ class InductionSpec extends FlatSpec {
     assert(size(one)(v1) == one)
   }
 
-  val VecN = "Vec(Nat)" ::: Nat ->: Types
-  val VecNFmly = VecPtn.Family(VecN)
+  val VecN = "Vec(Nat)" :: Nat ->: Type
   val vnn = "v_n" :: VecN(n)
-  val VecNInd = { "nil" ::: VecNFmly.head(VecN(zero)) } |: { "cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n)))) } =: VecNFmly
+  val VecNInd =
+    ("nil" ::: (VecN -> VecN(zero))) |:   {"cons" ::: n ~>>: ( Nat ->>: (VecN :> VecN(n)) -->>:  (VecN -> VecN(succ(n))))} =:: VecN
+
   val recVNN = VecNInd.rec(Nat)
   val List(vnilN, vconsN) = VecNInd.intros
   val k = "k" :: Nat

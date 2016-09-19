@@ -453,8 +453,10 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 }
 
 object IndexedConstructorShape {
-  def get[
-      S <: Term with Subs[S], H <: Term with Subs[H], F <: Term with Subs[F], Index](
+  def get[S <: Term with Subs[S],
+          H <: Term with Subs[H],
+          F <: Term with Subs[F],
+          Index](
       w: F,
       typ: Typ[H]
   )(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
@@ -763,7 +765,6 @@ case class IndexedConstructor[S <: Term with Subs[S],
                               H <: Term with Subs[H],
                               F <: Term with Subs[F],
                               Index: Subst](
-    name: AnySym,
-    shape: IndexedConstructorShape[S, H, F, Index])
+    name: AnySym, shape: IndexedConstructorShape[S, H, F, Index])
 
 object IndexedConstructor {}

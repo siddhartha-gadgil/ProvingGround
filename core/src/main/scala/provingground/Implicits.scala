@@ -97,8 +97,9 @@ object TLImplicits {
       FuncShape(tail, IdIterShape)
   }
 
-  implicit class IndexedFamily[F <: Term with Subs[F], H <: Term with Subs[H], Index](
-      W: F)(implicit val g: TypFamilyPtnGetter[F, H, Index]) {
+  implicit class IndexedFamily[
+      F <: Term with Subs[F], H <: Term with Subs[H], Index](W: F)(
+      implicit val g: TypFamilyPtnGetter[F, H, Index]) {
 
     def emptySeq =
       IndexedConstructorSeqDom.get(W)(g)
@@ -110,18 +111,18 @@ object TLImplicits {
       head |: seq
     }
 
-    def :>(typ : Typ[H]) = {
+    def :>(typ: Typ[H]) = {
       val fmly = g.get(W)
       val ind = fmly.getIndex(W, typ).get
       implicit val gs = g.subst
 
       IndexedConstructorShape.IndexedIdShape(fmly, ind)
-
     }
   }
 
-  implicit class IndexedPair[F <: Term with Subs[F], H <: Term with Subs[H], Index](
-      wt: (F, Typ[H]))(implicit val g: TypFamilyPtnGetter[F, H, Index]) {
+  implicit class IndexedPair[
+      F <: Term with Subs[F], H <: Term with Subs[H], Index](wt: (F, Typ[H]))(
+      implicit val g: TypFamilyPtnGetter[F, H, Index]) {
     def W = wt._1
 
     implicit val gs = g.subst
@@ -136,7 +137,6 @@ object TLImplicits {
     def ~>>:[T <: Term with Subs[T]](tailVar: T) =
       (iterHead).~>>:(tailVar)
 
-
     def :::(name: AnySym) = name ::: iterHead
 
     def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
@@ -148,13 +148,11 @@ object TLImplicits {
       val fmly = g.get(W)
       val ind = fmly.getIndex(W, typ).get
 
-
       (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
     }
 
     def -->>:(that: IndexedIdShape[H, F, Index]) = {
       IndexedFuncConsShape(IdIterShape, iterHead, that.index)
     }
-
   }
 }
