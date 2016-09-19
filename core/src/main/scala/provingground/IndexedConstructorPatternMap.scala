@@ -443,7 +443,7 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
     IndexedFuncConsShape(IdIterShape, this, ind)
   }
 
-  def ->:[T <: Term with Subs[T]](tail: Typ[T], ind: Index) =
+  def ->:[T <: Term with Subs[T]](tail: Typ[T]) =
     IndexedCnstFuncConsShape(tail, this)
 
   def ~>:[T <: Term with Subs[T]](tailVar: T) = {

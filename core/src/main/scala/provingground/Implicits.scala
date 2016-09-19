@@ -126,14 +126,14 @@ object TLImplicits {
     def iterHead =
       IndexedConstructorShape.get(W, typ)
 
-    def ~>:[T <: Term with Subs[T]](tailVar: T) = {
+    def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
       val ind = fmly.getIndex(W, typ).get
       (iterHead).~>:(tailVar)
     }
 
     def :::(name: AnySym) = name ::: iterHead
 
-    def ->:[T <: Term with Subs[T]](tail: Typ[T]) = {
+    def ->>:[T <: Term with Subs[T]](tail: Typ[T]) = {
       val fmly = g.get(W)
       val ind = fmly.getIndex(W, typ).get
       (iterHead).->:(tail, ind)
