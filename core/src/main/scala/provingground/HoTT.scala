@@ -228,8 +228,9 @@ object HoTT {
       PiTyp(fib)
     }
 
-    def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](variable: TypedTerm[V]) = {
-      piDefn(variable)(this : Typ[UU])
+    def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+        variable: TypedTerm[V]) = {
+      piDefn(variable)(this: Typ[UU])
     }
 
     /**
@@ -1317,9 +1318,8 @@ object HoTT {
       variable: TypedTerm[U])(value: Typ[V]) = {
     val newvar = variable.term.newobj
     PiDefn(variable.replace(variable.term, newvar),
-                     value.replace(variable.term, newvar))
+           value.replace(variable.term, newvar))
   }
-
 
   /**
     * lambda constructor for fixed codomain
@@ -1383,17 +1383,16 @@ object HoTT {
   type TypFamily[W <: Term with Subs[W], +U <: Term with Subs[U]] =
     Func[W, Typ[U]]
 
-
   case class PiDefn[W <: Term with Subs[W], U <: Term with Subs[U]](
-      variable : TypedTerm[W], value: Typ[U])
-      extends GenFuncTyp(variable.typ, (w: W) => value.replace(variable.term, w))
+      variable: TypedTerm[W], value: Typ[U])
+      extends GenFuncTyp(
+          variable.typ, (w: W) => value.replace(variable.term, w))
       with Typ[FuncLike[W, U]]
       with Subs[PiDefn[W, U]] {
     //type Obj = DepFunc[W, U]
     type Obj = FuncLike[W, U]
 
-    lazy val typ: Typ[Typ[Term]] =
-      Universe(univlevel(value.typ))
+    lazy val typ: Typ[Typ[Term]] = Universe(univlevel(value.typ))
 
     lazy val fibers = variable.term :-> value
 
@@ -1405,10 +1404,12 @@ object HoTT {
 
     def newobj = {
       val newvar = variable.term.newobj
-      PiDefn(variable.replace(variable.term, newvar), value.replace(variable.term, newvar))
+      PiDefn(variable.replace(variable.term, newvar),
+             value.replace(variable.term, newvar))
     }
 
-    def subs(x: Term, y: Term) = PiDefn(variable.replace(x, y), value.replace(x, y))
+    def subs(x: Term, y: Term) =
+      PiDefn(variable.replace(x, y), value.replace(x, y))
 
     override def toString = s"${variable.term} ~> $value"
   }
@@ -1461,10 +1462,10 @@ object HoTT {
     def act(arg: W): U
   }
 
-
   case class PiSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
-      variable: TypedTerm[W], value: Typ[U]
+      variable: TypedTerm[W],
+      value: Typ[U]
   )
       extends FuncLike[W, U]
       with Symbolic {
@@ -1484,9 +1485,12 @@ object HoTT {
 
     def act(arg: W) = depcodom(arg).symbObj(ApplnSym(this, arg))
 
-    def newobj =
-      {val newvar = variable.term.newobj
-      PiSymbolicFunc(name, variable.replace(variable.term, newvar), value.replace(variable.term, newvar))}
+    def newobj = {
+      val newvar = variable.term.newobj
+      PiSymbolicFunc(name,
+                     variable.replace(variable.term, newvar),
+                     value.replace(variable.term, newvar))
+    }
 
     /*
 	  def subs(x: Term, y: Term) = (x, y, name) match {
@@ -1501,14 +1505,14 @@ object HoTT {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: FuncLike[W, U]) if (u == this) => v
       case _ => {
-          def symbobj(sym: AnySym) = PiSymbolicFunc(sym, variable.replace(x, y), value.replace(x, y))
+          def symbobj(sym: AnySym) =
+            PiSymbolicFunc(sym, variable.replace(x, y), value.replace(x, y))
           symSubs(symbobj)(x, y)(name)
         }
     }
 
     override def toString = s"""${name.toString} : (${typ.toString})"""
   }
-
 
   /**
     * Symbolic dependent function

@@ -51,6 +51,10 @@ sealed abstract class TypFamilyPtn[
 }
 
 object TypFamilyPtn {
+  def apply[H <: Term with Subs[H], F <: Term with Subs[F], Index](w: F)(
+      implicit g: TypFamilyPtnGetter[F, H, Index]) =
+    g.get(w)
+
   import TypFamilyMapper._
 
   case class IdTypFamily[H <: Term with Subs[H]]()
@@ -93,16 +97,16 @@ object TypFamilyPtn {
                               TF <: Term with Subs[TF],
                               TI: Subst](
       head: Typ[U], tailfibre: U => TypFamilyPtn[H, TF, TI])
-      extends TypFamilyPtn[H, Func[U, TF], (U, TI)] {
+      extends TypFamilyPtn[H, FuncLike[U, TF], (U, TI)] {
 
-    def getIndex(w: Func[U, TF], typ: Typ[H]) = {
+    def getIndex(w: FuncLike[U, TF], typ: Typ[H]) = {
       val argOpt = getArg(w)(typ)
       argOpt flatMap { (arg) =>
         tailfibre(arg).getIndex(w(arg), typ).map((arg, _))
       }
     }
 
-    def typ(w: Func[U, TF], index: (U, TI)): Typ[H] =
+    def typ(w: FuncLike[U, TF], index: (U, TI)): Typ[H] =
       tailfibre(index._1).typ(w(index._1), index._2)
 
     def subs(x: Term, y: Term) =
@@ -228,7 +232,7 @@ object TypFamilyMap {
       head: Typ[U],
       tailfibre: U => TypFamilyMap[H, TF, C, TIndex, TIF, TIDF, TIDFT])
       extends TypFamilyMap[H,
-                           Func[U, TF],
+                           FuncLike[U, TF],
                            C,
                            (U, TIndex),
                            FuncLike[U, TIF],
@@ -338,16 +342,16 @@ object TypFamilyMapper {
       implicit tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
       subst: Subst[TIndex]) =
     new TypFamilyMapper[H,
-                        Func[U, TF],
+                        FuncLike[U, TF],
                         C,
                         (U, TIndex),
                         FuncLike[U, TIF],
                         FuncLike[U, TIDF],
                         FuncLike[U, TIDFT]] {
 
-      val mapper: TypFamilyPtn[H, Func[U, TF], (U, TIndex)] => TypFamilyMap[
+      val mapper: TypFamilyPtn[H, FuncLike[U, TF], (U, TIndex)] => TypFamilyMap[
           H,
-          Func[U, TF],
+          FuncLike[U, TF],
           C,
           (U, TIndex),
           FuncLike[U, TIF],
@@ -356,5 +360,60 @@ object TypFamilyMapper {
         case DepFuncTypFamily(h, tf) =>
           DepFuncTypFamilyMap(h, (u: U) => tail.mapper(tf(u)))
       }
+    }
+}
+
+trait TypFamilyPtnGetter[F <: Term with Subs[F], H <: Term with Subs[H], Index] {
+
+//  type Index
+
+  def get(w: F): TypFamilyPtn[H, F, Index]
+
+  implicit val subst: Subst[Index]
+}
+
+object TypFamilyPtnGetter {
+  implicit def idGetter[H <: Term with Subs[H]]
+    : TypFamilyPtnGetter[Typ[H], H, Unit] =
+    new TypFamilyPtnGetter[Typ[H], H, Unit] {
+//      type Index = Unit
+
+      def get(w: Typ[H]) = TypFamilyPtn.IdTypFamily[H]
+
+      val subst = Subst.UnitSubst
+    }
+
+  implicit def funcTypFamilyGetter[TF <: Term with Subs[TF],
+                                   U <: Term with Subs[U],
+                                   H <: Term with Subs[H],
+                                   TI](
+      implicit tail: TypFamilyPtnGetter[TF, H, TI])
+    : TypFamilyPtnGetter[Func[U, TF], H, (U, TI)] =
+    new TypFamilyPtnGetter[Func[U, TF], H, (U, TI)] {
+
+      def get(w: Func[U, TF]) =
+        TypFamilyPtn.FuncTypFamily(w.dom, tail.get(w(w.dom.Var)))
+
+      // type Index = (U, TI)
+
+      implicit val ts: Subst[TI] = tail.subst
+
+      val subst = Subst.pairSubst[U, TI]
+    }
+
+  implicit def depFuncTypFamilyGetter[TF <: Term with Subs[TF],
+                                      U <: Term with Subs[U],
+                                      H <: Term with Subs[H], TI](
+      implicit tail: TypFamilyPtnGetter[TF, H, TI])
+    : TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] =
+    new TypFamilyPtnGetter[FuncLike[U, TF], H, (U, TI)] {
+      def get(w: FuncLike[U, TF]) =
+        TypFamilyPtn.DepFuncTypFamily(w.dom, (u: U) => tail.get(w(u)))
+
+      // type Index = (U, tail.Index)
+
+      implicit val ts: Subst[TI] = tail.subst
+
+      val subst = Subst.pairSubst[U, TI]
     }
 }

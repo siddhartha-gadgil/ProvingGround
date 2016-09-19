@@ -16,8 +16,8 @@ import provingground._
 scala> import HoTT._
 import HoTT._
 
-scala> import Implicits._
-import Implicits._
+scala> import TLImplicits._
+import TLImplicits._
 ```
 
 We do not define inductive types, but instead define the _structure of an inductive type_ on a given, typically symbolic type.
@@ -30,7 +30,7 @@ scala> val Bool = "Boolean" :: Type
 Bool: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Boolean : 𝒰
 
 scala> val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
-BoolInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 ),Cons(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 ),Empty(Boolean : 𝒰 )))
+BoolInd: provingground.ConstructorSeqTL[provingground.HoTT.Term] = ConstructorSeqTL(Cons(true,IdShape,Cons(false,IdShape,Empty)),Boolean : 𝒰 )
 ```
 
 From the inductive structure, we can obtain the introduction rules.
@@ -52,13 +52,13 @@ and the corresponding method for dependent functions. The rec method takes as ar
 
 ```scala
 scala> BoolInd.rec(Bool)
-res2: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ (<function1>))
+res2: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(true : (Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(false : (Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ (<function1>))
 
 scala> val recBoolBool = BoolInd.rec(Bool)
-recBoolBool: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ (<function1>))
+recBoolBool: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(true : (Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(false : (Boolean : 𝒰 )) : (Boolean : 𝒰 )) ↦ (<function1>))
 
 scala> recBoolBool.typ
-res3: provingground.HoTT.Typ[provingground.HoTT.Func[BoolInd.cons.pattern.RecDataType,BoolInd.tail.RecType]] = (Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 )))
+res3: provingground.HoTT.Typ[U] forSome { type U >: recBoolBool.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 )))
 ```
 
 The compile time scala type of the recursion function is just `Term`. The `import Fold._` allows pattern matching and using the runtime type.
@@ -91,10 +91,10 @@ scala> val b= "b" :: Bool
 b: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b : (Boolean : 𝒰 )
 
 scala> val recBBB = BoolInd.rec(Bool ->: Bool)
-recBBB: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) ↦ (<function1>))
+recBBB: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(true : (Boolean : 𝒰 )) : ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) ↦ ((RecSym(false : (Boolean : 𝒰 )) : ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) ↦ (<function1>))
 
 scala> recBBB.typ
-res7: provingground.HoTT.Typ[provingground.HoTT.Func[BoolInd.cons.pattern.RecDataType,BoolInd.tail.RecType]] = ((Boolean : 𝒰 ) → (Boolean : 𝒰 )) → (((Boolean : 𝒰 ) → (Boolean : 𝒰 )) → ((Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))))
+res7: provingground.HoTT.Typ[U] forSome { type U >: recBBB.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = ((Boolean : 𝒰 ) → (Boolean : 𝒰 )) → (((Boolean : 𝒰 ) → (Boolean : 𝒰 )) → ((Boolean : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))))
 
 scala> val and = recBBB(lmbda(b)(b))(lmbda(b)(ff))
 and: provingground.HoTT.Term = <function1>
@@ -122,7 +122,7 @@ scala> val Nat ="Nat" :: Type
 Nat: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Nat : 𝒰
 
 scala> val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
-NatInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 ),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 ),Empty(Nat : 𝒰 )))
+NatInd: provingground.ConstructorSeqTL[provingground.HoTT.Term] = ConstructorSeqTL(Cons(0,IdShape,Cons(succ,FuncConsShape(IdIterShape,IdShape),Empty)),Nat : 𝒰 )
 
 scala> val List(zero, succ) = NatInd.intros
 zero: provingground.HoTT.Term = 0 : (Nat : 𝒰 )
@@ -136,10 +136,10 @@ To define recursively a function `f : Nat ->: X` for a type `X`, the data is
 
 ```scala
 scala> val recNatBool = NatInd.rec(Bool)
-recNatBool: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 )))) ↦ (<function1>))
+recNatBool: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(0 : (Nat : 𝒰 )) : (Boolean : 𝒰 )) ↦ ((RecSym(succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) : ((Nat : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 )))) ↦ (<function1>))
 
 scala> recNatBool.typ
-res13: provingground.HoTT.Typ[provingground.HoTT.Func[NatInd.cons.pattern.RecDataType,NatInd.tail.RecType]] = (Boolean : 𝒰 ) → (((Nat : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) → ((Nat : 𝒰 ) → (Boolean : 𝒰 )))
+res13: provingground.HoTT.Typ[U] forSome { type U >: recNatBool.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (Boolean : 𝒰 ) → (((Nat : 𝒰 ) → ((Boolean : 𝒰 ) → (Boolean : 𝒰 ))) → ((Nat : 𝒰 ) → (Boolean : 𝒰 )))
 
 scala> val n = "n" :: Nat
 n: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = n : (Nat : 𝒰 )
@@ -170,10 +170,10 @@ A more complicated example is addition of natural numbers.
 
 ```scala
 scala> val recNNN = NatInd.rec(Nat ->: Nat)
-recNNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → (((Nat : 𝒰 ) → (Nat : 𝒰 )) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
+recNNN: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(0 : (Nat : 𝒰 )) : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ↦ ((RecSym(succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) : ((Nat : 𝒰 ) → (((Nat : 𝒰 ) → (Nat : 𝒰 )) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
 
 scala> recNNN.typ
-res16: provingground.HoTT.Typ[provingground.HoTT.Func[NatInd.cons.pattern.RecDataType,NatInd.tail.RecType]] = ((Nat : 𝒰 ) → (Nat : 𝒰 )) → (((Nat : 𝒰 ) → (((Nat : 𝒰 ) → (Nat : 𝒰 )) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) → ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))
+res16: provingground.HoTT.Typ[U] forSome { type U >: recNNN.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = ((Nat : 𝒰 ) → (Nat : 𝒰 )) → (((Nat : 𝒰 ) → (((Nat : 𝒰 ) → (Nat : 𝒰 )) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) → ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))
 
 scala> val m = "m" :: Nat
 m: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = m : (Nat : 𝒰 )
@@ -213,7 +213,7 @@ scala> val ListA = "List(A)" :: Type
 ListA: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = List(A) : 𝒰
 
 scala> val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
-ListAInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 ),List(A) : 𝒰 ),Cons(ConstructorDefn(CnstFncPtn(A : 𝒰 ,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 ))),List(A) : 𝒰 ),Empty(List(A) : 𝒰 )))
+ListAInd: provingground.ConstructorSeqTL[provingground.HoTT.Term] = ConstructorSeqTL(Cons(nil,IdShape,Cons(cons,CnstFuncConsShape(A : 𝒰 ,FuncConsShape(IdIterShape,IdShape)),Empty)),List(A) : 𝒰 )
 
 scala> val List(nil, cons) = ListAInd.intros
 nil: provingground.HoTT.Term = nil : (List(A) : 𝒰 )
@@ -224,10 +224,10 @@ We can define the size of a list as a natural number recursively.
 
 ```scala
 scala> val recLN = ListAInd.rec(Nat)
-recLN: ListAInd.RecType = (RecSym(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 ),List(A) : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(CnstFncPtn(A : 𝒰 ,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 ))),List(A) : 𝒰 )) : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
+recLN: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(nil : (List(A) : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(cons : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → (List(A) : 𝒰 )))) : ((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) ↦ (<function1>))
 
 scala> recLN.typ
-res20: provingground.HoTT.Typ[provingground.HoTT.Func[ListAInd.cons.pattern.RecDataType,ListAInd.tail.RecType]] = (Nat : 𝒰 ) → (((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) → ((List(A) : 𝒰 ) → (Nat : 𝒰 )))
+res20: provingground.HoTT.Typ[U] forSome { type U >: recLN.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (Nat : 𝒰 ) → (((A : 𝒰 ) → ((List(A) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) → ((List(A) : 𝒰 ) → (Nat : 𝒰 )))
 
 scala> val a = "a" :: A
 a: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = a : (A : 𝒰 )
@@ -256,7 +256,7 @@ scala> val T ="Tree" :: Type
 T: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Tree : 𝒰
 
 scala> val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
-TInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (Tree : 𝒰 ),Tree : 𝒰 ),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 ))),Tree : 𝒰 ),Empty(Tree : 𝒰 )))
+TInd: provingground.ConstructorSeqTL[provingground.HoTT.Term] = ConstructorSeqTL(Cons(leaf,IdShape,Cons(node,FuncConsShape(IdIterShape,FuncConsShape(IdIterShape,IdShape)),Empty)),Tree : 𝒰 )
 
 scala> val List(leaf, node) = TInd.intros
 leaf: provingground.HoTT.Term = leaf : (Tree : 𝒰 )
@@ -269,10 +269,10 @@ scala> val t = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf))
 t: provingground.HoTT.Term = ((node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 )))) (((node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 )))) (leaf : (Tree : 𝒰 )) : ((Tree : 𝒰 ) → (Tree : 𝒰 ))) (((node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 )))) (leaf : (Tree : 𝒰 )) : ((Tree : 𝒰 ) → (Tree : 𝒰 ))) (leaf : (Tree : 𝒰 )) : (Tree : 𝒰 )) : (Tree : 𝒰 )) : ((Tree : 𝒰 ) → (Tree : 𝒰 ))) (((node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 )))) (leaf : (Tree : 𝒰 )) : ((Tree : 𝒰 ) → (Tree : 𝒰 ))) (leaf : (Tree : 𝒰 )) : (Tree : 𝒰 )) : (Tree : 𝒰 )
 
 scala> val recTN = TInd.rec(Nat)
-recTN: TInd.RecType = (RecSym(ConstructorDefn(IdW(),leaf : (Tree : 𝒰 ),Tree : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 ))),Tree : 𝒰 )) : ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))))) ↦ (<function1>))
+recTN: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(leaf : (Tree : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(node : ((Tree : 𝒰 ) → ((Tree : 𝒰 ) → (Tree : 𝒰 )))) : ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))))) ↦ (<function1>))
 
 scala> recTN.typ
-res23: provingground.HoTT.Typ[provingground.HoTT.Func[TInd.cons.pattern.RecDataType,TInd.tail.RecType]] = (Nat : 𝒰 ) → (((Tree : 𝒰 ) → ((Nat : 𝒰 ) → ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) → ((Tree : 𝒰 ) → (Nat : 𝒰 )))
+res23: provingground.HoTT.Typ[U] forSome { type U >: recTN.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (Nat : 𝒰 ) → (((Tree : 𝒰 ) → ((Nat : 𝒰 ) → ((Tree : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))) → ((Tree : 𝒰 ) → (Nat : 𝒰 )))
 
 scala> val t1 = "t1" :: T
 t1: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = t1 : (Tree : 𝒰 )
@@ -307,17 +307,17 @@ scala> val BT ="BinTree" :: Type
 BT: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = BinTree : 𝒰
 
 scala> val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
-BTInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (BinTree : 𝒰 ),BinTree : 𝒰 ),Cons(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean : 𝒰 ,IdIterPtn()),IdW()),node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 )),BinTree : 𝒰 ),Empty(BinTree : 𝒰 )))
+BTInd: provingground.ConstructorSeqTL[provingground.HoTT.Term] = ConstructorSeqTL(Cons(leaf,IdShape,Cons(node,FuncConsShape(FuncShape(Boolean : 𝒰 ,IdIterShape),IdShape),Empty)),BinTree : 𝒰 )
 
 scala> val List(leaf, node) = BTInd.intros
 leaf: provingground.HoTT.Term = leaf : (BinTree : 𝒰 )
 node: provingground.HoTT.Term = node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 ))
 
 scala> val recBTN = BTInd.rec(Nat)
-recBTN: BTInd.RecType = (RecSym(ConstructorDefn(IdW(),leaf : (BinTree : 𝒰 ),BinTree : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean : 𝒰 ,IdIterPtn()),IdW()),node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 )),BinTree : 𝒰 )) : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 )))) ↦ (<function1>))
+recBTN: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(leaf : (BinTree : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 ))) : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 )))) ↦ (<function1>))
 
 scala> recBTN.typ
-res27: provingground.HoTT.Typ[provingground.HoTT.Func[BTInd.cons.pattern.RecDataType,BTInd.tail.RecType]] = (Nat : 𝒰 ) → ((((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 ))) → ((BinTree : 𝒰 ) → (Nat : 𝒰 )))
+res27: provingground.HoTT.Typ[U] forSome { type U >: recBTN.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (Nat : 𝒰 ) → ((((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (((Boolean : 𝒰 ) → (Nat : 𝒰 )) → (Nat : 𝒰 ))) → ((BinTree : 𝒰 ) → (Nat : 𝒰 )))
 
 scala> val f = "f" :: Bool ->: BT
 f: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] = f : ((Boolean : 𝒰 ) → (BinTree : 𝒰 ))
@@ -338,10 +338,10 @@ scala> val t = node(b :-> leaf)
 t: provingground.HoTT.Term = (node : (((Boolean : 𝒰 ) → (BinTree : 𝒰 )) → (BinTree : 𝒰 ))) ((b : (Boolean : 𝒰 )) ↦ (leaf : (BinTree : 𝒰 ))) : (BinTree : 𝒰 )
 
 scala> val recBBT = BoolInd.rec(BT)
-recBBT: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ ((RecSym(ConstructorDefn(IdW(),false : (Boolean : 𝒰 ),Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ (<function1>))
+recBBT: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(true : (Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ ((RecSym(false : (Boolean : 𝒰 )) : (BinTree : 𝒰 )) ↦ (<function1>))
 
 scala> recBBT.typ
-res29: provingground.HoTT.Typ[provingground.HoTT.Func[BoolInd.cons.pattern.RecDataType,BoolInd.tail.RecType]] = (BinTree : 𝒰 ) → ((BinTree : 𝒰 ) → ((Boolean : 𝒰 ) → (BinTree : 𝒰 )))
+res29: provingground.HoTT.Typ[U] forSome { type U >: recBBT.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U] } = (BinTree : 𝒰 ) → ((BinTree : 𝒰 ) → ((Boolean : 𝒰 ) → (BinTree : 𝒰 )))
 
 scala> val ttn = recBBT(leaf)(t)
 ttn: provingground.HoTT.Term = <function1>
@@ -365,7 +365,7 @@ We define the double of a number recursively, mainly for use later. Observe the 
 
 ```scala
 scala> val recNN = NatInd.rec(Nat)
-recNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) ↦ (<function1>))
+recNN: RecType forSome { type RecType <: provingground.HoTT.Term with provingground.HoTT.Subs[RecType] } = (RecSym(0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) ↦ ((RecSym(succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) : ((Nat : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 )))) ↦ (<function1>))
 
 scala> val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
 double: provingground.HoTT.Term = <function1>
@@ -435,7 +435,7 @@ We define inductively a countdown function, giving the vector counting down from
 
 ```scala
 scala> val indNV = NatInd.induc(V)
-indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0 : (Nat : 𝒰 ),Nat : 𝒰 )) : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 ) → (Nat : 𝒰 )),Nat : 𝒰 )) : (∏(($v : (Nat : 𝒰 )) ↦ (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($v : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($v : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) ↦ (<function1>))
+indNV: InducType forSome { type InducType <: provingground.HoTT.Term with provingground.HoTT.Subs[InducType] } = (InducSym(0 : (Nat : 𝒰 )) : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((InducSym(succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) : (∏(($n : (Nat : 𝒰 )) ↦ (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($n : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($n : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))) ↦ (<function1>))
 
 scala> val v = "v_m" :: V(m)
 v: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_m : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (m : (Nat : 𝒰 )) : 𝒰 )
@@ -579,100 +579,49 @@ Further, the recursion and induction function only allow construction of (depend
 A typical example is vectors, defined as a family indexed by their length.
 
 ```scala
-scala> val IndN = new IndexedConstructorPatterns(Nat ->: Types)
-IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@44e06ffe
-
-scala> val Vec = "Vec" :: Nat ->: Type
-Vec: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = Vec : ((Nat : 𝒰 ) → (𝒰 _0))
-
-scala> val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@402c36f9
-
-scala> val VecFmly = VecPtn.Family(Vec)
-VecFmly: VecPtn.Family = Family(Vec : ((Nat : 𝒰 ) → (𝒰 _0)))
-
-scala> val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
-VecInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 )) , (Star))),nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ),Vec : ((Nat : 𝒰 ) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 ,<function1>),cons : (∏(($v : (Nat : 𝒰 )) ↦ ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($v : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($v : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))),Vec : ((Nat : 𝒰 ) → (𝒰 _0))),Empty(Vec : ((Nat : 𝒰 ) → (𝒰 _0)))))
-
-scala> val List(vnil, vcons) = VecInd.intros
-vnil: provingground.HoTT.Term = nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
-vcons: provingground.HoTT.Term = cons : (∏(($v : (Nat : 𝒰 )) ↦ ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($v : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($v : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))
-
-scala> vcons.typ.fansi
-res45: String = ∏(($v : Nat) ↦ A → Vec($v) → Vec(succ($v)))
+val IndN = new IndexedConstructorPatterns(Nat ->: Types)
+val Vec = "Vec" :: Nat ->: Type
+val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
+val VecFmly = VecPtn.Family(Vec)
+val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
+val List(vnil, vcons) = VecInd.intros
+vcons.typ.fansi
 ```
 
 We can define function recursively on vectors of all indices. For instance, we can define the size.
 
 ```scala
-scala> val vn = "v_n" :: Vec(n)
-vn: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_n : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 )
-
-scala> val recVN = VecInd.rec(Nat)
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 )) , (Star))),nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ),Vec : ((Nat : 𝒰 ) → (𝒰 _0)))) : (Nat : 𝒰 )) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 ,<function1>),cons : (∏(($v : (Nat : 𝒰 )) ↦ ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($v : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($v : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))),Vec : ((Nat : 𝒰 ) → (𝒰 _0)))) : (∏(($z : (Nat : 𝒰 )) ↦ ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($z : (Nat : 𝒰 )) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))))) ↦ (($y_1 : (Nat : 𝒰 )) ↦ (($y_2 : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($y_1 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((<function1>) ((($y_1 : (Nat : 𝒰 )) , ($y_2 : ((V...
-
-scala> val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
-size: provingground.HoTT.Term = ($y_1 : (Nat : 𝒰 )) ↦ (($y_2 : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($y_1 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((<function1>) ((($y_1 : (Nat : 𝒰 )) , ($y_2 : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($y_1 : (Nat : 𝒰 )) : 𝒰 )))) : (Nat : 𝒰 )))
-
-scala> size(zero)(vnil)
-res46: provingground.HoTT.Term = 0 : (Nat : 𝒰 )
-
-scala> val v1 = vcons(zero)(a)(vnil)
-v1: provingground.HoTT.Term = (((cons : (∏(($v : (Nat : 𝒰 )) ↦ ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ($v : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($v : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))) (0 : (Nat : 𝒰 )) : ((A : 𝒰 ) → (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))) (a : (A : 𝒰 )) : (((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))) (nil : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )) : ((Vec : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0...
-
-scala> size(one)(v1)
-res47: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )
-
-scala> assert(size(one)(v1) == one)
+val vn = "v_n" :: Vec(n)
+val recVN = VecInd.rec(Nat)
+val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
+size(zero)(vnil)
+val v1 = vcons(zero)(a)(vnil)
+size(one)(v1)
+assert(size(one)(v1) == one)
 ```
 
 For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
 
 ```scala
-scala> val VecN = "Vec(Nat)" ::: Nat ->: Types
-VecN: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] = Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))
+val VecN = "Vec(Nat)" ::: Nat ->: Types
+val VecNFmly = VecPtn.Family(VecN)
 
-scala> val VecNFmly = VecPtn.Family(VecN)
-VecNFmly: VecPtn.Family = Family(Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0)))
+val vnn = "v_n" :: VecN(n)
+val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
 
-scala> val vnn = "v_n" :: VecN(n)
-vnn: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_n : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (n : (Nat : 𝒰 )) : 𝒰 )
+val recVNN = VecNInd.rec(Nat)
+val List(vnilN, vconsN) = VecNInd.intros
 
-scala> val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
-VecNInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 )) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ),Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 ,<function1>),cons : (∏(($h : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($h : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($h : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))),Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))),Empty(Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0)))))
+val k ="k" :: Nat
+val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
 
-scala> val recVNN = VecNInd.rec(Nat)
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 )) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ),Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0)))) : (Nat : 𝒰 )) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 ,<function1>),cons : (∏(($h : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($h : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($h : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ))))),Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0)))) : (∏(($l : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($l : (Nat : 𝒰 )) : 𝒰 ) → ((Nat : 𝒰 ) → (Nat : 𝒰 ))))))) ↦ (($k_1 : (Nat : 𝒰 )) ↦ (($k_2 : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($k_1 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((<functio...
+vsum(zero)(vnilN)
+val v2 = vconsN(zero)(two)(vnilN)
+vsum(one)(v2)
+assert(vsum(one)(v2) == two)
 
-scala> val List(vnilN, vconsN) = VecNInd.intros
-vnilN: provingground.HoTT.Term = nil : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
-vconsN: provingground.HoTT.Term = cons : (∏(($h : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($h : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($h : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))
-
-scala> val k ="k" :: Nat
-k: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = k : (Nat : 𝒰 )
-
-scala> val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
-vsum: provingground.HoTT.Term = ($k_1 : (Nat : 𝒰 )) ↦ (($k_2 : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($k_1 : (Nat : 𝒰 )) : 𝒰 )) ↦ ((<function1>) ((($k_1 : (Nat : 𝒰 )) , ($k_2 : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($k_1 : (Nat : 𝒰 )) : 𝒰 )))) : (Nat : 𝒰 )))
-
-scala> vsum(zero)(vnilN)
-res49: provingground.HoTT.Term = 0 : (Nat : 𝒰 )
-
-scala> val v2 = vconsN(zero)(two)(vnilN)
-v2: provingground.HoTT.Term = (((cons : (∏(($h : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($h : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($h : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))) (0 : (Nat : 𝒰 )) : ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))...
-
-scala> vsum(one)(v2)
-res50: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
-
-scala> assert(vsum(one)(v2) == two)
-
-scala> val v3 = vconsN(one)(one)(v2)
-v3: provingground.HoTT.Term = (((cons : (∏(($h : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($h : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($h : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ...
-
-scala> v3.fansi
-res52: String = cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))
-
-scala> vsum(two)(v3)
-res53: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) (0 : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )) : (Nat : 𝒰 )
-
-scala> assert(vsum(two)(v3) == three)
+val v3 = vconsN(one)(one)(v2)
+v3.fansi
+vsum(two)(v3)
+assert(vsum(two)(v3) == three)
 ```

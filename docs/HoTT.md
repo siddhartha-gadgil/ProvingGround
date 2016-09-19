@@ -73,10 +73,10 @@ The type of the identity function is a mixture of Pi-types and function types. W
 
 ```scala
 scala> id.typ
-res1: provingground.HoTT.Typ[provingground.HoTT.Term] = ∏((A : 𝒰 ) ↦ ((A : 𝒰 ) → (A : 𝒰 )))
+res1: provingground.HoTT.Typ[provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]]] = ∏((A : 𝒰 ) ↦ ((A : 𝒰 ) → (A : 𝒰 )))
 
 scala> lmbda(a)(a).typ
-res2: provingground.HoTT.Typ[provingground.HoTT.Term] = (A : 𝒰 ) → (A : 𝒰 )
+res2: provingground.HoTT.Typ[provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]] = (A : 𝒰 ) → (A : 𝒰 )
 
 scala> lmbda(a)(a).typ.dependsOn(A)
 res3: Boolean = true
@@ -142,7 +142,7 @@ The type of Modus Ponens is again a mixture of Pi-types and function types.
 
 ```scala
 scala> mp.typ
-res8: provingground.HoTT.Typ[provingground.HoTT.Term] = ∏((A : 𝒰 ) ↦ (∏((B : 𝒰 ) ↦ ((A : 𝒰 ) → (((A : 𝒰 ) → (B : 𝒰 )) → (B : 𝒰 ))))))
+res8: provingground.HoTT.Typ[provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]] = ∏((A : 𝒰 ) ↦ (∏((B : 𝒰 ) ↦ ((A : 𝒰 ) → (((A : 𝒰 ) → (B : 𝒰 )) → (B : 𝒰 ))))))
 ```
 
 
@@ -236,10 +236,10 @@ scala> mkPair(a, b)
 res15: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((a : (A : 𝒰 )) , (b : (B : 𝒰 )))
 
 scala> mkPair(a, b).typ
-res16: provingground.HoTT.Typ[provingground.HoTT.Term] = ((A : 𝒰 ) , (B : 𝒰 ))
+res16: provingground.HoTT.Typ[U] forSome { type U >: _1.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U]; val _1: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] } = ((A : 𝒰 ) , (B : 𝒰 ))
 
 scala> mkPair(a, ba).typ
-res17: provingground.HoTT.Typ[provingground.HoTT.Term] = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
+res17: provingground.HoTT.Typ[U] forSome { type U >: _2.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U]; val _2: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] } = ∑((a : (A : 𝒰 )) ↦ ((B(_ : A) : ((A : 𝒰 ) → (𝒰 _0))) (a : (A : 𝒰 )) : 𝒰 ))
 ```
 
 
@@ -268,7 +268,7 @@ res19: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provinggroun
 
 ```scala
 scala> AplusB.incl2
-res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($t : (B : 𝒰 )) ↦ (ScndIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),$t : (B : 𝒰 )))
+res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($b : (B : 𝒰 )) ↦ (ScndIncl(PlusTyp(A : 𝒰 ,B : 𝒰 ),$b : (B : 𝒰 )))
 ```
 
 In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.
