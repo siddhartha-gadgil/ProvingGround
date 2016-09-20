@@ -249,6 +249,7 @@ object IndexedConstructorPatternMap {
     def headInducData(data: FuncLike[F, Func[DT, HI]],
                       arg: F,
                       f: => IDF): HI = {
+                        val induced = tail.inducedDep(family.depRestrict(f, ind))
       data(arg)(tail.inducedDep(family.depRestrict(f, ind))(arg))
     }
 
@@ -257,6 +258,83 @@ object IndexedConstructorPatternMap {
 
     val univLevel = math.max(head.univLevel, tail.univLevel)
   }
+
+  case class IndexedIndexedFuncPtnMap[HS <: Term with Subs[HS],
+                               TS <: Term with Subs[TS],
+                               C <: Term with Subs[C],
+                               F <: Term with Subs[F],
+                               HC <: Term with Subs[HC],
+                               H <: Term with Subs[H],
+                               HR <: Term with Subs[HR],
+                               HI <: Term with Subs[HI],
+                               TT <: Term with Subs[TT],
+                               DT <: Term with Subs[DT],
+                               Fb <: Term with Subs[Fb],
+                               Index: Subst,
+                               IF <: Term with Subs[IF],
+                               IDF <: Term with Subs[IDF],
+                               IDFT <: Term with Subs[IDFT]](
+      tail: IndexedIterFuncPtnMap[TS, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT],
+      head: IndexedConstructorPatternMap[
+          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT],
+      ind: Index
+  )
+      extends IndexedRecursiveConstructorPatternMap[HS,
+                                                    Func[TS, HS],
+                                                    C,
+                                                    F,
+                                                    HC,
+                                                    Func[F, HC],
+                                                    H,
+                                                    Func[F, Func[TT, HR]],
+                                                    FuncLike[F, Func[DT, HI]],
+                                                    HR,
+                                                    HI,
+                                                    Fb,
+                                                    Index,
+                                                    IF,
+                                                    IDF,
+                                                    IDFT] { self =>
+
+    def subs(x: Term, y: Term) =
+      IndexedIndexedFuncPtnMap(tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
+
+    val family = head.family
+
+    val headfibre = (t: F) => head
+
+    //    type ConstructorType = Func[ArgType, head.ConstructorType]
+
+    def recDataTyp(w: Fb, x: Typ[C]) =
+      tail(w) ->: tail.target(x) ->: head.recDataTyp(
+          w, x)
+
+    def inducDataTyp(w: Fb, xs: IDFT)(
+        cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
+      val a = tail(w).Var
+      val headcons = cons(a)
+      // val xss = family.typRestrict(xs, ind)
+      val fibre =
+        lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+      PiTyp(fibre)
+    }
+
+    def headData(data: Func[F, Func[TT, HR]], arg: F, f: => IF): HR = {
+      data(arg)(tail.induced(f)(arg))
+    }
+
+    def headInducData(data: FuncLike[F, Func[DT, HI]],
+                      arg: F,
+                      f: => IDF): HI = {
+      data(arg)(tail.inducedDep(f)(arg))
+    }
+
+    def apply(W: Fb) =
+      tail(W) ->: head(W)
+
+    val univLevel = math.max(head.univLevel, tail.univLevel)
+  }
+
 
   case class IndexedCnstFncPtnMap[HS <: Term with Subs[HS],
                                   T <: Term with Subs[T],
