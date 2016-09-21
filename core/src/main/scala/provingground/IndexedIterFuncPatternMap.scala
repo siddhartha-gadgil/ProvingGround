@@ -4,16 +4,16 @@ import HoTT._
 import math._
 
 abstract class IndexedIterFuncPtnMap[S <: Term with Subs[S],
-                            H <: Term with Subs[H],
-                            Fb <: Term with Subs[Fb],
-                            Index: Subst,
-                            C <: Term with Subs[C],
-                            F <: Term with Subs[F],
-                            TT <: Term with Subs[TT],
-                            DT <: Term with Subs[DT],
-                            IF <: Term with Subs[IF],
-                            IDF <: Term with Subs[IDF],
-                            IDFT <: Term with Subs[IDFT]] {
+                                     H <: Term with Subs[H],
+                                     Fb <: Term with Subs[Fb],
+                                     Index: Subst,
+                                     C <: Term with Subs[C],
+                                     F <: Term with Subs[F],
+                                     TT <: Term with Subs[TT],
+                                     DT <: Term with Subs[DT],
+                                     IF <: Term with Subs[IF],
+                                     IDF <: Term with Subs[IDF],
+                                     IDFT <: Term with Subs[IDFT]] {
 
   /**
     * the universe containing the type
@@ -21,7 +21,6 @@ abstract class IndexedIterFuncPtnMap[S <: Term with Subs[S],
   val univLevel: Int
 
   val family: TypFamilyMap[H, Fb, C, Index, IF, IDF, IDFT]
-
 
   // /**
   //   * scala type of target for induced functions
@@ -50,7 +49,8 @@ abstract class IndexedIterFuncPtnMap[S <: Term with Subs[S],
     */
   def depTarget(xs: IDFT): F => Typ[DT]
 
-  def subs(x: Term, y: Term): IndexedIterFuncPtnMap[S, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT]
+  def subs(x: Term, y: Term)
+    : IndexedIterFuncPtnMap[S, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT]
 
   /**
     * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -75,27 +75,28 @@ abstract class IndexedIterFuncPtnMap[S <: Term with Subs[S],
   def inducedDep(f: IDF): F => DT
 }
 
-object IndexedIterFuncPtnMap{
+object IndexedIterFuncPtnMap {
+
   /**
     * The identity family
     */
-  case class IdIterPtnMap[
-    H <: Term with Subs[H],
-    Fb <: Term with Subs[Fb],
-    Index: Subst,
-    C <: Term with Subs[C],
-    F <: Term with Subs[F],
-    IF <: Term with Subs[IF],
-    IDF <: Term with Subs[IDF],
-    IDFT <: Term with Subs[IDFT]](family: TypFamilyMap[H, Fb, C, Index, IF, IDF, IDFT], index: Index)
-      extends IndexedIterFuncPtnMap[HeadTerm, H, Fb, Index, C, H, C, C, IF, IDF, IDFT] {
+  case class IdIterPtnMap[H <: Term with Subs[H],
+                          Fb <: Term with Subs[Fb],
+                          Index: Subst,
+                          C <: Term with Subs[C],
+                          F <: Term with Subs[F],
+                          IF <: Term with Subs[IF],
+                          IDF <: Term with Subs[IDF],
+                          IDFT <: Term with Subs[IDFT]](
+      family: TypFamilyMap[H, Fb, C, Index, IF, IDF, IDFT], index: Index)
+      extends IndexedIterFuncPtnMap[
+          HeadTerm, H, Fb, Index, C, H, C, C, IF, IDF, IDFT] {
 
     def apply(W: Fb) = family.pattern.typ(W, index)
 
     //    type Family =  O
 
     type FamilyType = Typ[H]
-
 
     def target(x: Typ[C]) = x
 
@@ -120,26 +121,33 @@ object IndexedIterFuncPtnMap{
     def inducedDep(f: IDF) = family.depRestrict(f, index)
   }
 
-
   case class IndexedFuncIterPtnMap[HS <: Term with Subs[HS],
-                            TT <: Term with Subs[TT],
-                            V <: Term with Subs[V],
-                            T <: Term with Subs[T],
-                            D <: Term with Subs[D],
-                            H <: Term with Subs[H],
-                            Fb <: Term with Subs[Fb],
-                            Index: Subst,
-                            C <: Term with Subs[C],
-                            F <: Term with Subs[F],
-                            IF <: Term with Subs[IF],
-                            IDF <: Term with Subs[IDF],
-                            IDFT <: Term with Subs[IDFT]](
+                                   TT <: Term with Subs[TT],
+                                   V <: Term with Subs[V],
+                                   T <: Term with Subs[T],
+                                   D <: Term with Subs[D],
+                                   H <: Term with Subs[H],
+                                   Fb <: Term with Subs[Fb],
+                                   Index: Subst,
+                                   C <: Term with Subs[C],
+                                   F <: Term with Subs[F],
+                                   IF <: Term with Subs[IF],
+                                   IDF <: Term with Subs[IDF],
+                                   IDFT <: Term with Subs[IDFT]](
       tail: Typ[TT],
       head: IndexedIterFuncPtnMap[HS, H, Fb, Index, C, V, T, D, IF, IDF, IDFT]
   )
-      extends IndexedIterFuncPtnMap[
-          Func[TT, HS], H, Fb, Index, C, Func[TT, V], Func[TT, T], FuncLike[TT, D], IF, IDF, IDFT] {
-    self =>
+      extends IndexedIterFuncPtnMap[Func[TT, HS],
+                                    H,
+                                    Fb,
+                                    Index,
+                                    C,
+                                    Func[TT, V],
+                                    Func[TT, T],
+                                    FuncLike[TT, D],
+                                    IF,
+                                    IDF,
+                                    IDFT] { self =>
     def apply(W: Fb) = FuncTyp[TT, V](tail, head(W))
 
     val family = head.family
@@ -152,11 +160,11 @@ object IndexedIterFuncPtnMap{
 
     def depTarget(xs: IDFT) =
       (fmly: Func[TT, V]) => {
-      val a = tail.Var
-      val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      PiTyp(targfibre)
-    }
+        val a = tail.Var
+        val b = fmly(a)
+        val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+        PiTyp(targfibre)
+      }
 
     //    type Cod = head.Cod
 
@@ -174,13 +182,13 @@ object IndexedIterFuncPtnMap{
       */
     def induced(f: IF): Func[TT, V] => TargetType =
       (g: Func[TT, V]) => {
-      val x = tail.Var
-      // val g = apply(f).Var
-      // lmbda(g)(
-          lmbda(x)(head.induced(f)(g(x)))
-      // )
-      // ???
-    }
+        val x = tail.Var
+        // val g = apply(f).Var
+        // lmbda(g)(
+        lmbda(x)(head.induced(f)(g(x)))
+        // )
+        // ???
+      }
 
     /**
       * inductively defining the induced function.
@@ -189,34 +197,43 @@ object IndexedIterFuncPtnMap{
       */
     def inducedDep(f: IDF): Func[TT, V] => DepTargetType =
       (g: Func[TT, V]) => {
-      val x = tail.Var
-      // val g = apply(f.dom).Var
-      // lambda(g)(
-          lambda(x)(head.inducedDep(f)(g(x)))
-      // )
-      // ???
-    }
+        val x = tail.Var
+        // val g = apply(f.dom).Var
+        // lambda(g)(
+        lambda(x)(head.inducedDep(f)(g(x)))
+        // )
+        // ???
+      }
   }
 
   case class IndexedDepFuncIterPtnMap[HS <: Term with Subs[HS],
-                            TT <: Term with Subs[TT],
-                            V <: Term with Subs[V],
-                            T <: Term with Subs[T],
-                            D <: Term with Subs[D],
-                            H <: Term with Subs[H],
-                            Fb <: Term with Subs[Fb],
-                            Index: Subst,
-                            C <: Term with Subs[C],
-                            F <: Term with Subs[F],
-                            IF <: Term with Subs[IF],
-                            IDF <: Term with Subs[IDF],
-                            IDFT <: Term with Subs[IDFT]](
+                                      TT <: Term with Subs[TT],
+                                      V <: Term with Subs[V],
+                                      T <: Term with Subs[T],
+                                      D <: Term with Subs[D],
+                                      H <: Term with Subs[H],
+                                      Fb <: Term with Subs[Fb],
+                                      Index: Subst,
+                                      C <: Term with Subs[C],
+                                      F <: Term with Subs[F],
+                                      IF <: Term with Subs[IF],
+                                      IDF <: Term with Subs[IDF],
+                                      IDFT <: Term with Subs[IDFT]](
       tail: Typ[TT],
-      headfibre: TT => IndexedIterFuncPtnMap[HS, H, Fb, Index, C, V, T, D, IF, IDF, IDFT]
+      headfibre: TT => IndexedIterFuncPtnMap[
+          HS, H, Fb, Index, C, V, T, D, IF, IDF, IDFT]
   )
-      extends IndexedIterFuncPtnMap[
-          Func[TT, HS], H, Fb, Index, C, FuncLike[TT, V], FuncLike[TT, T], FuncLike[TT, D], IF, IDF, IDFT] {
-    self =>
+      extends IndexedIterFuncPtnMap[Func[TT, HS],
+                                    H,
+                                    Fb,
+                                    Index,
+                                    C,
+                                    FuncLike[TT, V],
+                                    FuncLike[TT, T],
+                                    FuncLike[TT, D],
+                                    IF,
+                                    IDF,
+                                    IDFT] { self =>
     def apply(W: Fb) = {
       val x = tail.Var
       x ~>: headfibre(x)(W)
@@ -235,11 +252,11 @@ object IndexedIterFuncPtnMap{
 
     def depTarget(xs: IDFT) =
       (fmly: FuncLike[TT, V]) => {
-      val a = tail.Var
-      val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      PiTyp(targfibre)
-    }
+        val a = tail.Var
+        val b = fmly(a)
+        val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+        PiTyp(targfibre)
+      }
 
     //    type Cod = head.Cod
 
@@ -257,13 +274,13 @@ object IndexedIterFuncPtnMap{
       */
     def induced(f: IF): FuncLike[TT, V] => TargetType =
       (g: FuncLike[TT, V]) => {
-      val x = tail.Var
-      // val g = apply(f).Var
-      // lmbda(g)(
-          lmbda(x)(headfibre(x).induced(f)(g(x)))
-      // )
-      // ???
-    }
+        val x = tail.Var
+        // val g = apply(f).Var
+        // lmbda(g)(
+        lmbda(x)(headfibre(x).induced(f)(g(x)))
+        // )
+        // ???
+      }
 
     /**
       * inductively defining the induced function.
@@ -272,13 +289,46 @@ object IndexedIterFuncPtnMap{
       */
     def inducedDep(f: IDF): FuncLike[TT, V] => DepTargetType =
       (g: FuncLike[TT, V]) => {
-      val x = tail.Var
-      // val g = apply(f.dom).Var
-      // lambda(g)(
-          lambda(x)(headfibre(x).inducedDep(f)(g(x)))
-      // )
-      // ???
-    }
+        val x = tail.Var
+        // val g = apply(f.dom).Var
+        // lambda(g)(
+        lambda(x)(headfibre(x).inducedDep(f)(g(x)))
+        // )
+        // ???
+      }
   }
+}
 
+abstract class IndexedIterFuncShape[S <: Term with Subs[S],
+                                    H <: Term with Subs[H],
+                                    Fb <: Term with Subs[Fb],
+                                    Index: Subst] {
+  def subs(x: Term, y: Term): IndexedIterFuncShape[S, H, Fb, Index]
+
+  def mapper[C <: Term with Subs[C],
+             IF <: Term with Subs[IF],
+             IDF <: Term with Subs[IDF],
+             IDFT <: Term with Subs[IDFT]](
+      implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT])
+    : IndexedIterFuncPtnMapper[S, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT] forSome {
+      type F <: Term with Subs[F]; type TT <: Term with Subs[TT];
+      type DT <: Term with Subs[DT]
+    } = ???
+}
+
+abstract class IndexedIterFuncPtnMapper[S <: Term with Subs[S],
+                                        H <: Term with Subs[H],
+                                        Fb <: Term with Subs[Fb],
+                                        Index: Subst,
+                                        C <: Term with Subs[C],
+                                        F <: Term with Subs[F],
+                                        TT <: Term with Subs[TT],
+                                        DT <: Term with Subs[DT],
+                                        IF <: Term with Subs[IF],
+                                        IDF <: Term with Subs[IDF],
+                                        IDFT <: Term with Subs[IDFT]] {
+  def mapper(
+      implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT])
+    : IndexedIterFuncShape[S, H, F, Index] => IndexedIterFuncPtnMap[
+        S, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT]
 }
