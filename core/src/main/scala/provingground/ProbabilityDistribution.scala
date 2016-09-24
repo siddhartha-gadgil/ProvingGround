@@ -99,7 +99,7 @@ object ProbabilityDistribution {
 
     lazy val rest = components
 
-    lazy val dists = first +: rest
+    lazy val dists = first +: (rest map (_.elem))
 
     lazy val qs = rest map (_.weight)
 
@@ -127,6 +127,13 @@ object ProbabilityDistribution {
                     mixin: => ProbabilityDistribution[Option[A]],
                     weight: Double)
       extends ProbabilityDistribution[A] {
+
+        lazy val first = base
+
+        lazy val second = mixin
+
+        lazy val q = weight
+
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
       else base.next
