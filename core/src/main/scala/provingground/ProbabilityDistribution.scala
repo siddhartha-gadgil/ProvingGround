@@ -53,14 +53,14 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     FiniteDistribution.uniform((1 to n).toVector map ((_) => next)).flatten
 
   /**
-    * mix in weighted distributions; 
-    * the mixed in distributions are called by name, so can depend on this distribution.      
+    * mix in weighted distributions;
+    * the mixed in distributions are called by name, so can depend on this distribution.
     */
   def <++>(components: => Vector[Weighted[ProbabilityDistribution[A]]]) =
     new ProbabilityDistribution.Mixture(this, components)
 
   /**
-    * generates from the mixed in distribution with probability _weight_, 
+    * generates from the mixed in distribution with probability _weight_,
     * otherwise defaults to this distribution;
     * as the mixed in distribution is called by name, it may depend on the present one.
     */
@@ -68,9 +68,9 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     new ProbabilityDistribution.Mixin(this, mixin, weight)
 
   /**
-    * generates from the mixed in optional valued distribution with probability `weight`, 
+    * generates from the mixed in optional valued distribution with probability `weight`,
     * otherwise, or if the optional returns None, defaults to this distribution;
-    * the mixed in distribution is call by name, so may depend on this distribution. 
+    * the mixed in distribution is call by name, so may depend on this distribution.
     */
   def <+?>(mixin: => ProbabilityDistribution[Option[A]], weight: Double) =
     new ProbabilityDistribution.MixinOpt(this, mixin, weight)
@@ -94,6 +94,17 @@ object ProbabilityDistribution {
   class Mixture[A](base: ProbabilityDistribution[A],
                    components: => Vector[Weighted[ProbabilityDistribution[A]]])
       extends ProbabilityDistribution[A] {
+
+    lazy val first = base
+
+    lazy val rest = components
+
+    lazy val dists = first +: rest
+
+    lazy val qs = rest map (_.weight)
+
+    lazy val ps = (1.0 - qs.sum) +: qs
+
     def next =
       chooseOpt(rand.nextDouble, components) map (_.next) getOrElse (base.next)
   }
@@ -102,6 +113,12 @@ object ProbabilityDistribution {
                  mixin: => ProbabilityDistribution[A],
                  weight: Double)
       extends ProbabilityDistribution[A] {
+    lazy val first = base
+
+    lazy val second = mixin
+
+    lazy val q = weight
+
     def next =
       if (rand.nextDouble < weight) mixin.next else base.next
   }
