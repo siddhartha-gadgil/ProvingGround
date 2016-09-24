@@ -30,7 +30,9 @@ object Sampler{
 
 import ProbabilityDistribution._
 
-  def sample[A](pd: ProbabilityDistribution[A], n: Int) : Map[A, Int] = pd match {
+  def sample[A](pd: ProbabilityDistribution[A], n: Int) : Map[A, Int] =
+    if (n < 1) Map ()
+    else pd match {
     case FiniteDistribution(pmf) => fromPMF(pmf, n)
 
     case mx: Mixin[u] =>
@@ -41,7 +43,7 @@ import ProbabilityDistribution._
         val m = Binomial(n, mx.q).draw
         val optSample = sample(mx.second, m)
         val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
-        combine(sample(mx.first, n -m), secondSample)
+        combine(sample(mx.first, n - total(secondSample)), secondSample)
 
     case mx: Mixture[u] =>
       val mult = Multinomial(DenseVector(mx.ps.toArray))
@@ -56,6 +58,9 @@ import ProbabilityDistribution._
       val baseSamp = sample(base, n)
       val sampsVec = (for ((a, m) <- baseSamp) yield sample(f(a), m)).toVector
       combineAll(sampsVec)
+
+    case genFD : GenFiniteDistribution[u] =>
+      fromPMF(genFD.pmf.toVector, n)
   }
 
 
