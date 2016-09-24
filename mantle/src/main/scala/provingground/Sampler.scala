@@ -8,7 +8,7 @@ object Sampler{
 
   def combine[A](x : Map[A, Int], y: Map[A, Int]) = {
     val supp =x.keySet union (y.keySet)
-    (supp map ((a) => (a, x(a) + y(a)))).toMap
+    (supp map ((a) => (a, x.getOrElse(a, 0) + y.getOrElse(a, 0)))).toMap
   }
 
   def collapse[A](ps: Vector[(A, Int)]) =
@@ -20,10 +20,14 @@ object Sampler{
 
   def fromPMF[A](pmf: Vector[Weighted[A]], size: Int) : Map[A, Int] = {
     val vec = pmf map (_.elem)
-    val probDenseVector = DenseVector((pmf map (_.weight)).toArray)
-    val mult = Multinomial(probDenseVector)
-    val nums = mult.sample(size).zipWithIndex
-    (for ((n, j) <- nums) yield (vec(j) -> n)).toMap
+    val ps = pmf map (_.weight)
+    getMultinomial(vec, ps, size)
+  }
+
+  def getMultinomial[A](xs: Vector[A], ps: Vector[Double], size: Int) = {
+    val mult = Multinomial(DenseVector(ps.toArray))
+    val samp = mult.sample(size).groupBy(identity).mapValues(_.size)
+    samp map {case (j, m) => (xs(j), m)}
   }
 
 
@@ -46,9 +50,8 @@ import ProbabilityDistribution._
         combine(sample(mx.first, n - total(secondSample)), secondSample)
 
     case mx: Mixture[u] =>
-      val mult = Multinomial(DenseVector(mx.ps.toArray))
-      val sampSizes = (mult.sample(n)).zipWithIndex
-      val polySamp = (for ((m, j) <- sampSizes) yield sample(mx.dists(j), m))
+      val sampSizes = getMultinomial(mx.dists, mx.ps, n)
+      val polySamp = (for ((d, m) <- sampSizes) yield sample(d, m))
       combineAll(polySamp.toVector)
 
     case Mapped(base, f) =>
