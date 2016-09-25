@@ -4,7 +4,7 @@ import breeze.linalg.{Vector => BVector, _}
 import breeze.stats.distributions._
 
 object Sampler{
-  def total[A](x: Map[A, Int]) = x.values.sum
+  def total[A](x: Vector[(A, Int)]) = (x map (_._2)).sum
 
   def combine[A](x : Map[A, Int], y: Map[A, Int]) = {
     val supp =x.keySet union (y.keySet)
@@ -12,7 +12,7 @@ object Sampler{
   }
 
   def collapse[A](ps: Vector[(A, Int)]) =
-    (ps.groupBy(_._1) mapValues((x) => total(x.toMap))).toMap
+    (ps.groupBy(_._1) mapValues((x) => total(x))).toMap
 
   def combineAll[A](xs: Vector[Map[A, Int]]) = {
     collapse((xs map (_.toVector)).flatten)
@@ -47,7 +47,7 @@ import ProbabilityDistribution._
         val m = Binomial(n, mx.q).draw
         val optSample = sample(mx.second, m)
         val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
-        combine(sample(mx.first, n - total(secondSample)), secondSample)
+        combine(sample(mx.first, n - total(secondSample.toVector)), secondSample)
 
     case mx: Mixture[u] =>
       val sampSizes = getMultinomial(mx.dists, mx.ps, n)
