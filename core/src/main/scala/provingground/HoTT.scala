@@ -1821,11 +1821,11 @@ object HoTT {
     case class RecFn[U <: Term with Subs[U], V <: Term with Subs[V]](
         domain: Typ[U], target: Typ[V], data: Func[U, V], start: U, end: U)
         extends Func[Term, V] { self =>
-      val dom = (start =:= end)
+      lazy val dom = (start =:= end)
 
-      val codom = target
+      lazy val codom = target
 
-      val typ = dom ->: codom
+      lazy val typ = dom ->: codom
 
       def newobj = this
 
@@ -1873,13 +1873,13 @@ object HoTT {
 
 //      val dom = a ~>:(targetFmly(a)(a)(Refl(domain, a)))
 
-      val dom = start =:= end
+      lazy val dom = start =:= end
 
-      val p = dom.Var
+      lazy val p = dom.Var
 
-      val typ = p ~>: (targetFmly(start)(end)(p))
+      lazy val typ = p ~>: (targetFmly(start)(end)(p))
 
-      val depcodom = (t: Term) => targetFmly(start)(end)(p)
+      lazy val depcodom = (t: Term) => targetFmly(start)(end)(p)
 
       def act(t: Term) =
         if (start == end && t == Refl(domain, start)) data(start)
