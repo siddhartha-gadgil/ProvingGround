@@ -176,6 +176,19 @@ object Deducer {
   }
 }
 
+class BasicDeducer(applnWeight: Double = 0.2,
+                   lambdaWeight: Double = 0.2,
+                   piWeight: Double = 0.2,
+                   varWeight: Double = 0.3){
+  import Deducer._
+
+  def func(pd: PD[Term]): PD[Term] =
+    pd.<+?>(appln(func)(pd), applnWeight)
+      .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
+      .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
+
+                   }
+
 case class Deducer(applnWeight: Double = 0.2,
                    lambdaWeight: Double = 0.2,
                    piWeight: Double = 0.2,
