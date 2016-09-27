@@ -511,7 +511,7 @@ object HoTT {
   type Univ = Typ[Typ[Term]]
 
   trait BaseUniv {
-    override def hashCode = Type.hashCode
+    override lazy val hashCode = Type.hashCode
 
     override def equals(a: Any) = a match {
       case _: BaseUniv => true
@@ -748,7 +748,7 @@ object HoTT {
 
   class GenFuncTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       val domain: Typ[W], val fib: W => Typ[U]) {
-    override def hashCode = fib(domain.symbObj(HashSym)).hashCode() * 41 + 7
+    override lazy val hashCode = fib(domain.symbObj(HashSym)).hashCode() * 41 + 7
 
     override def equals(that: Any) = that match {
       case g: GenFuncTyp[u, v] =>
@@ -770,7 +770,7 @@ object HoTT {
 
     def asPi = PiTyp(lmbda("###" :: dom)(codom))
 
-//    override def hashCode = asPi.hashCode
+//    override lazy val hashCode = asPi.hashCode
 //
 //    override def equals(that: Any)=  that match {
 //      case FuncTyp(d, c) => (d == dom) && (c == codom)
@@ -1055,7 +1055,7 @@ object HoTT {
 
     def act(arg: X) = value.replace(variable, arg)
 
-    override def hashCode = {
+    override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
       val newval = value.replace(variable, newvar)
       41 * (variable.typ.hashCode + 41) + newval.hashCode

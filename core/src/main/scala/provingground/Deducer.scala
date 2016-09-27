@@ -187,6 +187,96 @@ class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
 
+
+    case class Derivative(base: FD[Term]){
+      def applnArg(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
+        (base : PD[Term]) flatMap ((f) =>
+        if (isFunc(f))
+          rec(p) map (Unify.appln(f, _))
+          else
+          FD.unif(None: Option[Term]))
+
+    def applnFunc(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
+      rec(p) flatMap ((f) =>
+            if (isFunc(f))
+              base map (Unify.appln(f, _))
+            else
+              FD.unif(None: Option[Term]))
+
+              /**
+            * generating optionally as lambdas, with function and argument generated recursively;
+            * to be mixed in using `<+?>`
+            */
+          def lambdaVal(varweight: Double)(
+              rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+            (base : PD[Term]) flatMap ({
+              case tp: Typ[u] =>
+                val x = tp.Var
+                val newp = p <+> (FD.unif(x), varweight)
+                (rec(newp)) map ((y: Term) => TL.lambda(x, y))
+              case _ => FD.unif(None)
+            })
+
+          /**
+            * generating optionally as pi's, with function and argument generated recursively;
+            * to be mixed in using `<+?>`
+            */
+          def piVal(varweight: Double)(
+              rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+            (base: PD[Term]) flatMap ({
+              case tp: Typ[u] =>
+                val x = tp.Var
+                val newp = p <+> (FD.unif(x), varweight)
+                (rec(newp)) map ((y: Term) => TL.pi(x, y))
+              case _ => FD.unif(None)
+            })
+
+
+            def lambdaDist(x: Term) = {
+              base.pmf collect {
+                case Weighted(LambdaFixed(variable: Term, value: Term), p)  =>
+                  value.replace(variable, x)
+                  case Weighted(Lambda(variable: Term, value: Term), p)  => 
+                    value.replace(variable, x)
+
+
+              }
+
+
+            }
+
+            /**
+              * generating optionally as lambdas, with function and argument generated recursively;
+              * to be mixed in using `<+?>`
+              */
+            def lambdaVar(varweight: Double)(
+                rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+              rec(p) flatMap ({
+                case tp: Typ[u] =>
+                  val x = tp.Var
+                  val newp = p <+> (FD.unif(x), varweight)
+                  (rec(newp)) map ((y: Term) => TL.lambda(x, y))
+                case _ => FD.unif(None)
+              })
+
+            /**
+              * generating optionally as pi's, with function and argument generated recursively;
+              * to be mixed in using `<+?>`
+              */
+            def piVar(varweight: Double)(
+                rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+              rec(p) flatMap ({
+                case tp: Typ[u] =>
+                  val x = tp.Var
+                  val newp = p <+> (FD.unif(x), varweight)
+                  (rec(newp)) map ((y: Term) => TL.pi(x, y))
+                case _ => FD.unif(None)
+              })
+
+
+
+    }
+
                    }
 
 case class Deducer(applnWeight: Double = 0.2,
