@@ -188,16 +188,16 @@ class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
 
 
-    case class Derivative(base: FD[Term]){
-      def applnArg(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
+
+      def derApplnArg(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) = (base: FD[Term]) =>
         (base : PD[Term]) flatMap ((f) =>
         if (isFunc(f))
-          rec(p) map (Unify.appln(f, _))
+          rec(base)(p) map (Unify.appln(f, _))
           else
           FD.unif(None: Option[Term]))
 
-    def applnFunc(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
-      rec(p) flatMap ((f) =>
+    def derApplnFunc(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) =  (base: FD[Term]) =>
+      rec(base)(p) flatMap ((f) =>
             if (isFunc(f))
               base map (Unify.appln(f, _))
             else
@@ -207,75 +207,89 @@ class BasicDeducer(applnWeight: Double = 0.2,
             * generating optionally as lambdas, with function and argument generated recursively;
             * to be mixed in using `<+?>`
             */
-          def lambdaVal(varweight: Double)(
-              rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+          def derLambdaVal(varweight: Double)(
+              rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]): FD[Term] => PD[Option[Term]] =  (base: FD[Term]) =>
             (base : PD[Term]) flatMap ({
               case tp: Typ[u] =>
                 val x = tp.Var
                 val newp = p <+> (FD.unif(x), varweight)
-                (rec(newp)) map ((y: Term) => TL.lambda(x, y))
-              case _ => FD.unif(None)
+                val innerbase = lambdaDist(base)(x)
+                (rec(innerbase)(newp)) map ((y: Term) => TL.lambda(x, y)) : PD[Option[Term]]
+              case _ => FD.unif(None) : PD[Option[Term]]
             })
 
           /**
             * generating optionally as pi's, with function and argument generated recursively;
             * to be mixed in using `<+?>`
             */
-          def piVal(varweight: Double)(
-              rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+          def derPiVal(varweight: Double)(
+              rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]): FD[Term] => PD[Option[Term]] =  (base: FD[Term]) =>
             (base: PD[Term]) flatMap ({
               case tp: Typ[u] =>
                 val x = tp.Var
                 val newp = p <+> (FD.unif(x), varweight)
-                (rec(newp)) map ((y: Term) => TL.pi(x, y))
-              case _ => FD.unif(None)
+                val innerbase = piDist(base)(x)
+                (rec(innerbase)(newp)) map ((y: Term) => TL.pi(x, y)) :PD[Option[Term]]
+              case _ => FD.unif(None) : PD[Option[Term]]
             })
 
 
-            def lambdaDist(x: Term) = {
-              base.pmf collect {
-                case Weighted(LambdaFixed(variable: Term, value: Term), p)  =>
-                  value.replace(variable, x)
-                  case Weighted(Lambda(variable: Term, value: Term), p)  => 
-                    value.replace(variable, x)
-
-
+            def lambdaDist(base: FD[Term])(x: Term) = {
+                val pmf = base.pmf collect {
+                case Weighted(LambdaFixed(variable: Term, value: Term), p) if variable.typ == x.typ =>
+                  Weighted(value.replace(variable, x), p)
+                  case Weighted(Lambda(variable: Term, value: Term), p) if variable.typ == x.typ  =>
+                    Weighted(value.replace(variable, x), p)
               }
 
+              if (pmf.isEmpty) FD.unif(x) else FD(pmf).normalized()
+            }
 
+            def piDist(base: FD[Term])(x: Term) : FD[Term] = {
+              val pmf = base.pmf collect {
+                case Weighted(PiTyp(fibre: Func[u, Typ[v]]), p) => Weighted[Term](fibre(x.asInstanceOf[u]), p)
+              }
+
+              if (pmf.isEmpty) FD.unif[Term](x.typ) else FD[Term](pmf).normalized()
             }
 
             /**
               * generating optionally as lambdas, with function and argument generated recursively;
               * to be mixed in using `<+?>`
               */
-            def lambdaVar(varweight: Double)(
-                rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
-              rec(p) flatMap ({
+            def derLambdaVar(varweight: Double)(
+                rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]): FD[Term] => PD[Option[Term]] =  (base: FD[Term]) =>
+              rec(base)(p) flatMap ({
                 case tp: Typ[u] =>
                   val x = tp.Var
-                  val newp = p <+> (FD.unif(x), varweight)
-                  (rec(newp)) map ((y: Term) => TL.lambda(x, y))
-                case _ => FD.unif(None)
+                  val innerp = lambdaDist(base)(x)
+                  innerp map ((y: Term) => TL.lambda(x, y)) :PD[Option[Term]]
+                case _ => FD.unif(None) : PD[Option[Term]]
               })
 
             /**
               * generating optionally as pi's, with function and argument generated recursively;
               * to be mixed in using `<+?>`
               */
-            def piVar(varweight: Double)(
-                rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
-              rec(p) flatMap ({
+            def derPiVar(varweight: Double)(
+                rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]): FD[Term] => PD[Option[Term]] =  (base: FD[Term]) =>
+              rec(base)(p) flatMap ({
                 case tp: Typ[u] =>
                   val x = tp.Var
-                  val newp = p <+> (FD.unif(x), varweight)
-                  (rec(newp)) map ((y: Term) => TL.pi(x, y))
-                case _ => FD.unif(None)
+                  val innerp = piDist(base)(x)
+                  (innerp) map ((y: Term) => TL.pi(x, y)) :PD[Option[Term]]
+                case _ => FD.unif(None) : PD[Option[Term]]
               })
 
+              def derFunc(base: FD[Term])(pd: PD[Term]): PD[Term] =
+                  pd.<+?>(derApplnArg(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derApplnFunc(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derLambdaVal(varWeight)(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derLambdaVal(varWeight)(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derPiVar(varWeight)(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derPiVal(varWeight)(derFunc)(pd)(base), applnWeight)
 
 
-    }
 
                    }
 
