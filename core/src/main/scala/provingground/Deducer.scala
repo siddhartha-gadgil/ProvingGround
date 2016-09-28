@@ -260,7 +260,8 @@ class BasicDeducer(applnWeight: Double = 0.2,
 
             def piDist(base: FD[Term])(x: Term) : FD[Term] = {
               val pmf = base.pmf collect {
-                case Weighted(PiTyp(fibre: Func[u, Typ[v]]), p) => Weighted[Term](fibre(x.asInstanceOf[u]), p)
+                case Weighted(PiTyp(fibre: Func[u, Typ[v]]), p) if (x.typ == fibre.dom) =>
+                  Weighted[Term](fibre(x.asInstanceOf[u]), p)
               }
 
               if (pmf.isEmpty) FD.unif[Term](x.typ) else FD[Term](pmf).normalized()
@@ -295,9 +296,9 @@ class BasicDeducer(applnWeight: Double = 0.2,
               })
 
               def derFunc(base: FD[Term])(pd: PD[Term]): PD[Term] =
-                  pd.<+?>(derApplnArg(derFunc)(pd)(base), applnWeight)
+                  base.<+?>(derApplnArg(derFunc)(pd)(base), applnWeight)
                   .<+?>(derApplnFunc(derFunc)(pd)(base), applnWeight)
-                  .<+?>(derLambdaVal(varWeight)(derFunc)(pd)(base), applnWeight)
+                  .<+?>(derLambdaVar(varWeight)(derFunc)(pd)(base), applnWeight)
                   .<+?>(derLambdaVal(varWeight)(derFunc)(pd)(base), applnWeight)
                   .<+?>(derPiVar(varWeight)(derFunc)(pd)(base), applnWeight)
                   .<+?>(derPiVal(varWeight)(derFunc)(pd)(base), applnWeight)
