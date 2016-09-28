@@ -75,7 +75,7 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   def <+?>(mixin: => ProbabilityDistribution[Option[A]], weight: Double) =
     new ProbabilityDistribution.MixinOpt(this, mixin, weight)
 
-/*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
+  /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))*/
 }
 
@@ -128,11 +128,11 @@ object ProbabilityDistribution {
                     weight: Double)
       extends ProbabilityDistribution[A] {
 
-        lazy val first = base
+    lazy val first = base
 
-        lazy val second = mixin
+    lazy val second = mixin
 
-        lazy val q = weight
+    lazy val q = weight
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
@@ -144,8 +144,8 @@ object ProbabilityDistribution {
     def next = f(base.next)
   }
 
-  case class FlatMapped[A, B](
-      base: ProbabilityDistribution[A], f: A => ProbabilityDistribution[B])
+  case class FlatMapped[A, B](base: ProbabilityDistribution[A],
+                              f: A => ProbabilityDistribution[B])
       extends ProbabilityDistribution[B] {
     def next = f(base.next).next
   }

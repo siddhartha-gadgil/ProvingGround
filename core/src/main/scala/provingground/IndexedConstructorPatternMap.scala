@@ -86,9 +86,19 @@ object IndexedConstructorPatternMap {
                           IF <: Term with Subs[IF],
                           IDF <: Term with Subs[IDF],
                           IDFT <: Term with Subs[IDFT]](
-      family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT], index: Index)
-      extends IndexedConstructorPatternMap[
-          HeadTerm, C, H, H, C, C, F, Index, IF, IDF, IDFT] {
+      family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT],
+      index: Index)
+      extends IndexedConstructorPatternMap[HeadTerm,
+                                           C,
+                                           H,
+                                           H,
+                                           C,
+                                           C,
+                                           F,
+                                           Index,
+                                           IF,
+                                           IDF,
+                                           IDFT] {
 
     def apply(W: F) = family.pattern.typ(W, index)
 
@@ -130,17 +140,17 @@ object IndexedConstructorPatternMap {
       IDF <: Term with Subs[IDF],
       IDFT <: Term with Subs[IDFT]]
       extends IndexedConstructorPatternMap[
-          S,
-          Cod,
-          CT,
-          H,
-          RecDataType,
-          InducDataType,
-          F,
-          Index,
-          IF,
-          IDF,
-          IDFT
+        S,
+        Cod,
+        CT,
+        H,
+        RecDataType,
+        InducDataType,
+        F,
+        Index,
+        IF,
+        IDF,
+        IDFT
       ] { self =>
 
     /**
@@ -166,19 +176,21 @@ object IndexedConstructorPatternMap {
     def recDefCase(cons: CT, data: RecDataType, f: => IF): H => Option[Cod] = {
       t =>
         for (arg <- getArg(cons)(t);
-             term <- headfibre(arg).recDefCase(
-                        cons(arg), headData(data, arg, f), f)(t)) yield term
+             term <- headfibre(arg)
+               .recDefCase(cons(arg), headData(data, arg, f), f)(t)) yield term
     }
 
     def headInducData(data: InducDataType,
                       arg: ArgType,
                       f: => IDF): HeadInducDataType
 
-    def inducDefCase(
-        cons: CT, data: InducDataType, f: => IDF): H => Option[Cod] = { t =>
+    def inducDefCase(cons: CT,
+                     data: InducDataType,
+                     f: => IDF): H => Option[Cod] = { t =>
       for (arg <- getArg(cons)(t);
-           term <- headfibre(arg).inducDefCase(
-                      cons(arg), headInducData(data, arg, f), f)(t)) yield term
+           term <- headfibre(arg)
+             .inducDefCase(cons(arg), headInducData(data, arg, f), f)(t))
+        yield term
     }
   }
 
@@ -198,11 +210,19 @@ object IndexedConstructorPatternMap {
                                IDF <: Term with Subs[IDF],
                                IDFT <: Term with Subs[IDFT]](
       tail: IterFuncPtnMap[TS, H, C, F, TT, DT],
-      head: IndexedConstructorPatternMap[
-          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT],
+      head: IndexedConstructorPatternMap[HS,
+                                         C,
+                                         HC,
+                                         H,
+                                         HR,
+                                         HI,
+                                         Fb,
+                                         Index,
+                                         IF,
+                                         IDF,
+                                         IDFT],
       ind: Index
-  )
-      extends IndexedRecursiveConstructorPatternMap[HS,
+  ) extends IndexedRecursiveConstructorPatternMap[HS,
                                                     Func[TS, HS],
                                                     C,
                                                     F,
@@ -229,8 +249,8 @@ object IndexedConstructorPatternMap {
     //    type ConstructorType = Func[ArgType, head.ConstructorType]
 
     def recDataTyp(w: Fb, x: Typ[C]) =
-      tail(family.pattern.typ(w, ind)) ->: tail.target(x) ->: head.recDataTyp(
-          w, x)
+      tail(family.pattern.typ(w, ind)) ->: tail.target(x) ->: head
+        .recDataTyp(w, x)
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
@@ -246,9 +266,7 @@ object IndexedConstructorPatternMap {
       data(arg)(tail.induced(family.restrict(f, ind))(arg))
     }
 
-    def headInducData(data: FuncLike[F, Func[DT, HI]],
-                      arg: F,
-                      f: => IDF): HI = {
+    def headInducData(data: FuncLike[F, Func[DT, HI]], arg: F, f: => IDF): HI = {
       val induced = tail.inducedDep(family.depRestrict(f, ind))
       data(arg)(tail.inducedDep(family.depRestrict(f, ind))(arg))
     }
@@ -274,13 +292,30 @@ object IndexedConstructorPatternMap {
                                       IF <: Term with Subs[IF],
                                       IDF <: Term with Subs[IDF],
                                       IDFT <: Term with Subs[IDFT]](
-      tail: IndexedIterFuncPtnMap[
-          TS, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT],
-      head: IndexedConstructorPatternMap[
-          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT],
+      tail: IndexedIterFuncPtnMap[TS,
+                                  H,
+                                  Fb,
+                                  Index,
+                                  C,
+                                  F,
+                                  TT,
+                                  DT,
+                                  IF,
+                                  IDF,
+                                  IDFT],
+      head: IndexedConstructorPatternMap[HS,
+                                         C,
+                                         HC,
+                                         H,
+                                         HR,
+                                         HI,
+                                         Fb,
+                                         Index,
+                                         IF,
+                                         IDF,
+                                         IDFT],
       ind: Index
-  )
-      extends IndexedRecursiveConstructorPatternMap[HS,
+  ) extends IndexedRecursiveConstructorPatternMap[HS,
                                                     Func[TS, HS],
                                                     C,
                                                     F,
@@ -298,8 +333,9 @@ object IndexedConstructorPatternMap {
                                                     IDFT] { self =>
 
     def subs(x: Term, y: Term) =
-      IndexedIndexedFuncPtnMap(
-          tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
+      IndexedIndexedFuncPtnMap(tail.subs(x, y),
+                               head.subs(x, y),
+                               ind.subst(x, y))
 
     val family = head.family
 
@@ -324,9 +360,7 @@ object IndexedConstructorPatternMap {
       data(arg)(tail.induced(f)(arg))
     }
 
-    def headInducData(data: FuncLike[F, Func[DT, HI]],
-                      arg: F,
-                      f: => IDF): HI = {
+    def headInducData(data: FuncLike[F, Func[DT, HI]], arg: F, f: => IDF): HI = {
       data(arg)(tail.inducedDep(f)(arg))
     }
 
@@ -349,10 +383,18 @@ object IndexedConstructorPatternMap {
                                   IDF <: Term with Subs[IDF],
                                   IDFT <: Term with Subs[IDFT]](
       tail: Typ[T],
-      head: IndexedConstructorPatternMap[
-          HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
-  )
-      extends IndexedRecursiveConstructorPatternMap[HS,
+      head: IndexedConstructorPatternMap[HS,
+                                         Cod,
+                                         HC,
+                                         H,
+                                         HR,
+                                         HI,
+                                         Fb,
+                                         Index,
+                                         IF,
+                                         IDF,
+                                         IDFT]
+  ) extends IndexedRecursiveConstructorPatternMap[HS,
                                                     Func[T, HS],
                                                     Cod,
                                                     T,
@@ -390,9 +432,7 @@ object IndexedConstructorPatternMap {
     def headData(data: Func[T, HR], arg: T, f: => IF): HR =
       data(arg)
 
-    def headInducData(data: FuncLike[T, HI],
-                      arg: T,
-                      f: => IDF): HI = data(arg)
+    def headInducData(data: FuncLike[T, HI], arg: T, f: => IDF): HI = data(arg)
 
     def apply(W: Fb) = FuncTyp(tail, head(W))
 
@@ -412,10 +452,18 @@ object IndexedConstructorPatternMap {
                                      IDF <: Term with Subs[IDF],
                                      IDFT <: Term with Subs[IDFT]](
       tail: Typ[T],
-      headfibre: T => IndexedConstructorPatternMap[
-          HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
-  )
-      extends IndexedRecursiveConstructorPatternMap[HS,
+      headfibre: T => IndexedConstructorPatternMap[HS,
+                                                   Cod,
+                                                   HC,
+                                                   H,
+                                                   HR,
+                                                   HI,
+                                                   Fb,
+                                                   Index,
+                                                   IF,
+                                                   IDF,
+                                                   IDFT]
+  ) extends IndexedRecursiveConstructorPatternMap[HS,
                                                     FuncLike[T, HS],
                                                     Cod,
                                                     T,
@@ -435,8 +483,8 @@ object IndexedConstructorPatternMap {
     val family = headfibre(tail.Var).family
 
     def subs(x: Term, y: Term) =
-      IndexedCnstDepFncPtnMap(
-          tail.subs(x, y), (t: T) => headfibre(t).subs(x, y))
+      IndexedCnstDepFncPtnMap(tail.subs(x, y),
+                              (t: T) => headfibre(t).subs(x, y))
 
     def recDataTyp(w: Fb, x: Typ[Cod]) = {
       val a = tail.Var
@@ -456,9 +504,7 @@ object IndexedConstructorPatternMap {
     def headData(data: FuncLike[T, HR], arg: T, f: => IF): HR =
       data(arg)
 
-    def headInducData(data: FuncLike[T, HI],
-                      arg: T,
-                      f: => IDF): HI = data(arg)
+    def headInducData(data: FuncLike[T, HI], arg: T, f: => IDF): HI = data(arg)
 
     def apply(W: Fb) = {
       val a = tail.Var
@@ -479,7 +525,7 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
   def subs(x: Term, y: Term): IndexedConstructorShape[S, H, F, Index]
 
   def mapper[C <: Term with Subs[C], IF <: Term with Subs[IF],
-      IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](
+  IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](
       implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT])
     : IndexedConstructorPatternMapper[S,
                                       C,
@@ -548,9 +594,10 @@ object IndexedConstructorShape {
 
   import IndexedConstructorPatternMapper._
 
-  case class IndexedIdShape[
-      H <: Term with Subs[H], F <: Term with Subs[F], Index: Subst](
-      family: TypFamilyPtn[H, F, Index], index: Index)
+  case class IndexedIdShape[H <: Term with Subs[H],
+                            F <: Term with Subs[F],
+                            Index: Subst](family: TypFamilyPtn[H, F, Index],
+                                          index: Index)
       extends IndexedConstructorShape[HeadTerm, H, F, Index] {
     def subs(x: Term, y: Term) =
       IndexedIdShape(family.subs(x, y), index.subst(x, y))
@@ -588,8 +635,7 @@ object IndexedConstructorShape {
       tail: IterFuncShape[TS],
       head: IndexedConstructorShape[HS, H, F, Index],
       ind: Index
-  )
-      extends IndexedConstructorShape[Func[TS, HS], H, F, Index] {
+  ) extends IndexedConstructorShape[Func[TS, HS], H, F, Index] {
 
     val family = head.family
 
@@ -613,8 +659,9 @@ object IndexedConstructorShape {
         type RecDataType <: Term with Subs[RecDataType];
         type InducDataType <: Term with Subs[InducDataType];
       } =
-      indexedFuncPtnMap(
-          implicitly[Subst[Index]], tail.mapper[H, C], head.mapper(fmlyMapper))
+      indexedFuncPtnMap(implicitly[Subst[Index]],
+                        tail.mapper[H, C],
+                        head.mapper(fmlyMapper))
 
     def subs(x: Term, y: Term) =
       IndexedFuncConsShape(tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
@@ -628,8 +675,7 @@ object IndexedConstructorShape {
       tail: IndexedIterFuncShape[TS, H, F, Index],
       head: IndexedConstructorShape[HS, H, F, Index],
       ind: Index
-  )
-      extends IndexedConstructorShape[Func[TS, HS], H, F, Index] {
+  ) extends IndexedConstructorShape[Func[TS, HS], H, F, Index] {
 
     val family = head.family
 
@@ -658,8 +704,9 @@ object IndexedConstructorShape {
                                head.mapper(fmlyMapper))
 
     def subs(x: Term, y: Term) =
-      IndexedIndexedFuncConsShape(
-          tail.subs(x, y), head.subs(x, y), ind.subst(x, y))
+      IndexedIndexedFuncConsShape(tail.subs(x, y),
+                                  head.subs(x, y),
+                                  ind.subst(x, y))
   }
 
   case class IndexedCnstFuncConsShape[T <: Term with Subs[T],
@@ -669,8 +716,7 @@ object IndexedConstructorShape {
                                       Index: Subst](
       tail: Typ[T],
       head: IndexedConstructorShape[HS, H, F, Index]
-  )
-      extends IndexedConstructorShape[Func[T, HS], H, F, Index] {
+  ) extends IndexedConstructorShape[Func[T, HS], H, F, Index] {
 
     val family = head.family
 
@@ -694,8 +740,8 @@ object IndexedConstructorShape {
         type RecDataType <: Term with Subs[RecDataType];
         type InducDataType <: Term with Subs[InducDataType];
       } =
-      indexedCnstFncPtnMapper(
-          implicitly[Subst[Index]], head.mapper(fmlyMapper))
+      indexedCnstFncPtnMapper(implicitly[Subst[Index]],
+                              head.mapper(fmlyMapper))
 
     def subs(x: Term, y: Term) =
       IndexedCnstFuncConsShape(tail.replace(x, y), head.subs(x, y))
@@ -708,8 +754,7 @@ object IndexedConstructorShape {
                                          Index: Subst](
       tail: Typ[T],
       headfibre: T => IndexedConstructorShape[HS, H, F, Index]
-  )
-      extends IndexedConstructorShape[FuncLike[T, HS], H, F, Index] {
+  ) extends IndexedConstructorShape[FuncLike[T, HS], H, F, Index] {
 
     val family = headfibre(tail.Var).family
 
@@ -718,12 +763,12 @@ object IndexedConstructorShape {
                IDF <: Term with Subs[IDF],
                IDFT <: Term with Subs[IDFT]](
         implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
-      indexedCnstDepFncPtnMapper(
-          implicitly[Subst[Index]], headfibre(tail.Var).mapper(fmlyMapper))
+      indexedCnstDepFncPtnMapper(implicitly[Subst[Index]],
+                                 headfibre(tail.Var).mapper(fmlyMapper))
 
     def subs(x: Term, y: Term) =
-      IndexedCnstDepFuncConsShape(
-          tail.replace(x, y), (t: T) => headfibre(t).subs(x, y))
+      IndexedCnstDepFuncConsShape(tail.replace(x, y),
+                                  (t: T) => headfibre(t).subs(x, y))
   }
 }
 
@@ -743,17 +788,17 @@ abstract class IndexedConstructorPatternMapper[
   def mapper(
       implicit fmlyMapper: TypFamilyMapper[H, F, Cod, Index, IF, IDF, IDFT])
     : IndexedConstructorShape[S, H, F, Index] => IndexedConstructorPatternMap[
-        S,
-        Cod,
-        ConstructorType,
-        H,
-        RecDataType,
-        InducDataType,
-        F,
-        Index,
-        IF,
-        IDF,
-        IDFT]
+      S,
+      Cod,
+      ConstructorType,
+      H,
+      RecDataType,
+      InducDataType,
+      F,
+      Index,
+      IF,
+      IDF,
+      IDFT]
 }
 
 object IndexedConstructorPatternMapper {
@@ -768,10 +813,24 @@ object IndexedConstructorPatternMapper {
                                IDF <: Term with Subs[IDF],
                                IDFT <: Term with Subs[IDFT]](
       implicit family: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
-    new IndexedConstructorPatternMapper[
-        HeadTerm, C, H, H, C, C, F, Index, IF, IDF, IDFT] {
-      def mapper(implicit fmlyMapper: TypFamilyMapper[
-              H, F, C, Index, IF, IDF, IDFT]) = {
+    new IndexedConstructorPatternMapper[HeadTerm,
+                                        C,
+                                        H,
+                                        H,
+                                        C,
+                                        C,
+                                        F,
+                                        Index,
+                                        IF,
+                                        IDF,
+                                        IDFT] {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      F,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case IndexedIdShape(fam, ind) =>
           IndexedIdMap(fmlyMapper.mapper(fam), ind)
       }
@@ -793,8 +852,17 @@ object IndexedConstructorPatternMapper {
                                  IDF <: Term with Subs[IDF],
                                  IDFT <: Term with Subs[IDFT]](
       implicit tail: IterFuncMapper[TS, H, C, F, TT, DT],
-      head: IndexedConstructorPatternMapper[
-          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+      head: IndexedConstructorPatternMapper[HS,
+                                            C,
+                                            HC,
+                                            H,
+                                            HR,
+                                            HI,
+                                            Fb,
+                                            Index,
+                                            IF,
+                                            IDF,
+                                            IDFT]
   ) =
     new IndexedConstructorPatternMapper[Func[TS, HS],
                                         C,
@@ -807,8 +875,13 @@ object IndexedConstructorPatternMapper {
                                         IF,
                                         IDF,
                                         IDFT] {
-      def mapper(implicit fmlyMapper: TypFamilyMapper[
-              H, Fb, C, Index, IF, IDF, IDFT]) = {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      Fb,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case IndexedFuncConsShape(t, h, ind) =>
           IndexedFuncPtnMap(tail.mapper(t), head.mapper(fmlyMapper)(h), ind)
       }
@@ -829,10 +902,28 @@ object IndexedConstructorPatternMapper {
                                         IF <: Term with Subs[IF],
                                         IDF <: Term with Subs[IDF],
                                         IDFT <: Term with Subs[IDFT]](
-      implicit tail: IndexedIterFuncPtnMapper[
-          TS, H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT],
-      head: IndexedConstructorPatternMapper[
-          HS, C, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+      implicit tail: IndexedIterFuncPtnMapper[TS,
+                                              H,
+                                              Fb,
+                                              Index,
+                                              C,
+                                              F,
+                                              TT,
+                                              DT,
+                                              IF,
+                                              IDF,
+                                              IDFT],
+      head: IndexedConstructorPatternMapper[HS,
+                                            C,
+                                            HC,
+                                            H,
+                                            HR,
+                                            HI,
+                                            Fb,
+                                            Index,
+                                            IF,
+                                            IDF,
+                                            IDFT]
   ) =
     new IndexedConstructorPatternMapper[Func[TS, HS],
                                         C,
@@ -845,11 +936,17 @@ object IndexedConstructorPatternMapper {
                                         IF,
                                         IDF,
                                         IDFT] {
-      def mapper(implicit fmlyMapper: TypFamilyMapper[
-              H, Fb, C, Index, IF, IDF, IDFT]) = {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      Fb,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case IndexedIndexedFuncConsShape(t, h, ind) =>
-          IndexedIndexedFuncPtnMap(
-              tail.mapper(fmlyMapper)(t), head.mapper(fmlyMapper)(h), ind)
+          IndexedIndexedFuncPtnMap(tail.mapper(fmlyMapper)(t),
+                                   head.mapper(fmlyMapper)(h),
+                                   ind)
       }
     }
 
@@ -865,8 +962,17 @@ object IndexedConstructorPatternMapper {
                                        IF <: Term with Subs[IF],
                                        IDF <: Term with Subs[IDF],
                                        IDFT <: Term with Subs[IDFT]](
-      implicit head: IndexedConstructorPatternMapper[
-          HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+      implicit head: IndexedConstructorPatternMapper[HS,
+                                                     Cod,
+                                                     HC,
+                                                     H,
+                                                     HR,
+                                                     HI,
+                                                     Fb,
+                                                     Index,
+                                                     IF,
+                                                     IDF,
+                                                     IDFT]
   ) =
     new IndexedConstructorPatternMapper[Func[T, HS],
                                         Cod,
@@ -879,8 +985,14 @@ object IndexedConstructorPatternMapper {
                                         IF,
                                         IDF,
                                         IDFT] {
-      def mapper(implicit fmlyMapper: TypFamilyMapper[
-              H, Fb, Cod, Index, IF, IDF, IDFT]) = {
+      def mapper(
+          implicit fmlyMapper: TypFamilyMapper[H,
+                                               Fb,
+                                               Cod,
+                                               Index,
+                                               IF,
+                                               IDF,
+                                               IDFT]) = {
         case IndexedCnstFuncConsShape(t, h) =>
           IndexedCnstFncPtnMap(t, head.mapper(fmlyMapper)(h))
       }
@@ -898,8 +1010,17 @@ object IndexedConstructorPatternMapper {
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]](
-      implicit head: IndexedConstructorPatternMapper[
-          HS, Cod, HC, H, HR, HI, Fb, Index, IF, IDF, IDFT]
+      implicit head: IndexedConstructorPatternMapper[HS,
+                                                     Cod,
+                                                     HC,
+                                                     H,
+                                                     HR,
+                                                     HI,
+                                                     Fb,
+                                                     Index,
+                                                     IF,
+                                                     IDF,
+                                                     IDFT]
   ) =
     new IndexedConstructorPatternMapper[FuncLike[T, HS],
                                         Cod,
@@ -912,8 +1033,14 @@ object IndexedConstructorPatternMapper {
                                         IF,
                                         IDF,
                                         IDFT] {
-      def mapper(implicit fmlyMapper: TypFamilyMapper[
-              H, Fb, Cod, Index, IF, IDF, IDFT]) = {
+      def mapper(
+          implicit fmlyMapper: TypFamilyMapper[H,
+                                               Fb,
+                                               Cod,
+                                               Index,
+                                               IF,
+                                               IDF,
+                                               IDFT]) = {
         case IndexedCnstDepFuncConsShape(t, hf) =>
           IndexedCnstDepFncPtnMap(t, (x: T) => head.mapper(fmlyMapper)(hf(x)))
       }
@@ -924,6 +1051,7 @@ case class IndexedConstructor[S <: Term with Subs[S],
                               H <: Term with Subs[H],
                               F <: Term with Subs[F],
                               Index: Subst](
-    name: AnySym, shape: IndexedConstructorShape[S, H, F, Index])
+    name: AnySym,
+    shape: IndexedConstructorShape[S, H, F, Index])
 
 object IndexedConstructor {}
