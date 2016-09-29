@@ -227,9 +227,10 @@ class BasicDeducer(applnWeight: Double = 0.2,
       (base: PD[Term]) flatMap ({
         case tp: Typ[u] =>
           val x = tp.Var
-          val innerbase = lambdaDist(base)(x)
-          (rec(innerbase)(p)) map ((y: Term) =>
-                                     TL.lambda(x, y)): PD[Option[Term]]
+          lambdaDistOpt(base)(x) map { (innerbase) =>
+            (rec(innerbase)(p)) map ((y: Term) =>
+                                       TL.lambda(x, y)): PD[Option[Term]]
+          } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
 
@@ -243,12 +244,14 @@ class BasicDeducer(applnWeight: Double = 0.2,
       (base: PD[Term]) flatMap ({
         case tp: Typ[u] =>
           val x = tp.Var
-          val innerbase = piDist(base)(x)
-          (rec(innerbase)(p)) map ((y: Term) => TL.pi(x, y)): PD[Option[Term]]
+          piDistOpt(base)(x) map { innerbase =>
+            (rec(innerbase)(p)) map ((y: Term) =>
+                                       TL.pi(x, y)): PD[Option[Term]]
+          } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
 
-  def lambdaDist(base: FD[Term])(x: Term) = {
+  def lambdaDistOpt(base: FD[Term])(x: Term) = {
     val pmf = base.pmf collect {
       case Weighted(LambdaFixed(variable: Term, value: Term), p)
           if variable.typ == x.typ =>
@@ -258,17 +261,17 @@ class BasicDeducer(applnWeight: Double = 0.2,
         Weighted(value.replace(variable, x), p)
     }
 
-    if (pmf.isEmpty) FD.unif(x) else FD(pmf).normalized()
+    if (pmf.isEmpty) None else Some(FD(pmf).normalized())
   }
 
-  def piDist(base: FD[Term])(x: Term): FD[Term] = {
+  def piDistOpt(base: FD[Term])(x: Term): Option[FD[Term]] = {
     val pmf = base.pmf collect {
       case Weighted(PiTyp(fibre: Func[u, Typ[v]]), p)
           if (x.typ == fibre.dom) =>
         Weighted[Term](fibre(x.asInstanceOf[u]), p)
     }
 
-    if (pmf.isEmpty) FD.unif[Term](x.typ) else FD[Term](pmf).normalized()
+    if (pmf.isEmpty) None else Some(FD[Term](pmf).normalized())
   }
 
   /**
@@ -282,8 +285,9 @@ class BasicDeducer(applnWeight: Double = 0.2,
       rec(base)(p) flatMap ({
         case tp: Typ[u] =>
           val x = tp.Var
-          val innerBase = lambdaDist(base)(x)
-          innerBase map ((y: Term) => TL.lambda(x, y)): PD[Option[Term]]
+          lambdaDistOpt(base)(x) map { (innerBase) =>
+            innerBase map ((y: Term) => TL.lambda(x, y)): PD[Option[Term]]
+          } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
 
@@ -297,8 +301,9 @@ class BasicDeducer(applnWeight: Double = 0.2,
       rec(base)(p) flatMap ({
         case tp: Typ[u] =>
           val x = tp.Var
-          val innerp = piDist(base)(x)
-          (innerp) map ((y: Term) => TL.pi(x, y)): PD[Option[Term]]
+          piDistOpt(base)(x) map { (innerBase) =>
+            (innerBase) map ((y: Term) => TL.pi(x, y)): PD[Option[Term]]
+          } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
 
