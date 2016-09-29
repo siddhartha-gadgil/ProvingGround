@@ -116,6 +116,36 @@ object Deducer {
     case _ => None
   }
 
+  def proofEntropies(fd: FD[Term]) = (fd map (_.typ)).normalized().entropyVec
+
+import math.log
+
+
+  case class ThmEntropies(fd: FD[Term], varNames: Vector[Term] = Vector(), scale: Double = 1.0) {
+    import TermBucket._
+
+    val vars = varNames map ((x) => Weighted(x, fd(x)))
+
+    val lfd = lambdaDist(vars, scale)(fd)
+
+    val tfd = FiniteDistribution{
+      fd.pmf map {case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)}
+    }
+
+    val pfd = piDist(vars, scale)(tfd)
+
+    lazy val byProof = (lfd map (_.typ: Typ[Term])).flatten.normalized()
+
+    lazy val byStatement  = FD(byProof.pmf map {case Weighted(x, _) => Weighted(x : Typ[Term], pfd(x))}).flatten.normalized()
+
+    lazy val entropyPairs = byProof.pmf collect {case Weighted(x, _)  if byStatement(x) > 0  => x -> ((-log(byStatement(x)), -log(byProof(x))) )}
+
+    lazy val feedback = entropyPairs map {case (x, (a, b)) => (x, b - a)} sortBy {case (x, e) => -e}
+  }
+
+
+
+
   def feedback(absTheorems: FD[Typ[Term]],
                absThmsByProofs: FD[Typ[Term]],
                proofs: Map[Typ[Term], FD[Term]],
@@ -187,12 +217,17 @@ object Deducer {
       yield Weighted(x, p * math.exp(shifts(x)))
     FD(newpmf).flatten.normalized()
   }
+
+
+
+
 }
 
 class BasicDeducer(applnWeight: Double = 0.2,
-                   lambdaWeight: Double = 0.2,
+                   val lambdaWeight: Double = 0.2,
                    piWeight: Double = 0.2,
-                   varWeight: Double = 0.3) {
+                   varWeight: Double = 0.3,
+                   val vars: Vector[Term]) {
   import Deducer._
 
   def func(pd: PD[Term]): PD[Term] =

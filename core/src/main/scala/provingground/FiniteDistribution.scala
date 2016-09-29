@@ -165,6 +165,9 @@ sealed trait GenFiniteDistribution[T]
   def entropyView =
     supp.toList.map((x) => Weighted(x.toString, entropy(x))).sortBy(_.weight)
 
+  def entropyVec =
+    supp.toVector.map((x) => Weighted(x.toString, entropy(x))).sortBy(_.weight)
+
   def split(groups: Int) = {
     val rand = new scala.util.Random
 

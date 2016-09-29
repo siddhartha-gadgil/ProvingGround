@@ -1,7 +1,11 @@
 package provingground
 
+import HoTT._
+
 import breeze.linalg.{Vector => BVector, _}
 import breeze.stats.distributions._
+
+import breeze.plot._
 
 object Sampler {
   def total[A](x: Vector[(A, Int)]) = (x map (_._2)).sum
@@ -36,6 +40,30 @@ object Sampler {
       case (x, n) => Weighted(x, n.toDouble / tot)
     })
   }
+
+  lazy val fig = Figure("Term Sample")
+
+  import FansiShow._
+
+  lazy val entPlot = fig.subplot(0)
+
+  def plotEntsThms(thms: Deducer.ThmEntropies) = {
+    val  X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
+    val Y =  DenseVector((thms.entropyPairs map (_._2._2)).toArray)
+    val names = (n: Int) => thms.entropyPairs(n)._1.toString
+    entPlot += scatter(X, Y, (_) => 0.1, tips = names)
+    entPlot.xlabel ="statement entropy"
+    entPlot.ylabel ="proof entropy"
+  }
+
+  def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
+
+  def plotEnts(fd: FiniteDistribution[Term]) = plotEntsThms(Deducer.ThmEntropies(fd))
+
+  def thmEntropies(sample: Map[Term, Int]) = Deducer.ThmEntropies(toFD(sample))
+
+  def thmEntropies(sample: Map[Term, Int], d: BasicDeducer) = Deducer.ThmEntropies(toFD(sample), d.vars, d.lambdaWeight)
+
   import ProbabilityDistribution._
 
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
