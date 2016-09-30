@@ -40,7 +40,7 @@ object ABDeduc {
 
   val dedFine = Deducer(cutoff = 0.001)
 
-  val dir = cwd / "data" / "deduc-explore"
+  val dir = pwd / "data" / "deduc-explore"
 
   import FreeExpr.writeDist
 

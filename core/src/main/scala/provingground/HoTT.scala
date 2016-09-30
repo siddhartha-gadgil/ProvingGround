@@ -386,7 +386,7 @@ object HoTT {
     def variable(name: AnySym) =
       if (level == 0) SymbObj(name, this) else SymbTyp(name, level - 1)
 
-    override def toString = s"""${name.toString} : $UnivSym"""
+    override def toString = s"""${name.toString} : ${UnivSym}_$level"""
 
     def elem = this
 
@@ -754,7 +754,18 @@ object HoTT {
       case g: GenFuncTyp[u, v] =>
         g.domain == domain && {
           val x = domain.Var
-          g.fib(x.asInstanceOf[u]) == fib(x)
+          // Try(
+            g.fib(x.asInstanceOf[u]) == fib(x)
+        //   ).toOption.getOrElse{
+        //   ammonite.Main(
+        //     predef = "The function application error"
+        //   ).run(
+        //     "thisFunc" -> this,
+        //     "thatFunc" -> g,
+        //     "x" -> x
+        //   )
+        //     false
+        //   }
         }
       case _ => false
     }
@@ -1292,13 +1303,15 @@ object HoTT {
     */
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
       value: V): FuncLike[U, V] =
-    if (isVar(variable)) Lambda(variable, value)
-    else {
+        {
+    // if (isVar(variable)) Lambda(variable, value)
+    // else {
       val newvar = variable.newobj
       if (value.typ dependsOn variable)
         Lambda(newvar, value.replace(variable, newvar))
       else LambdaFixed(newvar, value.replace(variable, newvar))
-    }
+    // }
+  }
 
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](
       variable: TypedTerm[U])(value: TypedTerm[V]): FuncLike[U, V] = {
@@ -1338,12 +1351,12 @@ object HoTT {
       value.typ.indepOf(variable),
       s"lmbda returns function type but value $value has type ${value.typ} depending on variable $variable; you may wish to use lambda instead"
     )
-    if (isVar(variable)) LambdaFixed(variable, value)
-    else {
+    // if (isVar(variable)) LambdaFixed(variable, value)
+    // else {
       val newvar = variable.newobj
 //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
       LambdaFixed(newvar, value.replace(variable, newvar))
-    }
+    // }
   }
 
   def id[U <: Term with Subs[U]](typ: Typ[U]) = {

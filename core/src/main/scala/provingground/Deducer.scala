@@ -206,7 +206,7 @@ case class ThmEntropies(fd: FD[Term], varNames: Vector[Term] = Vector(), scale: 
   lazy val lfd = lambdaDist(vars, scale)(fd)
 
   lazy val tfd = FiniteDistribution{
-    fd.pmf map {case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)}
+    fd.pmf collect {case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)}
   }
 
   lazy val pfd = piDist(vars, scale)(tfd)

@@ -31,7 +31,7 @@ object MianChowla {
   }
 
   def run(n: Int, file: String) = {
-    val wd = cwd / "data"
+    val wd = pwd / "data"
     val iter = seq.zipWithIndex.take(n).toIterator
     for ((x, y) <- iter) write.append(
         wd / file, s"$x, ${y + 1}, ${log(x.toDouble) / log(y.toDouble + 1)}\n")

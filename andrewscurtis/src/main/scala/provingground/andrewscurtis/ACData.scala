@@ -398,7 +398,7 @@ object ACData {
     (FiniteDistribution(pmfM), FiniteDistribution(pmfV))
   }
 
-  val wd = cwd / "data"
+  val wd = pwd / "data"
   def fileSave(name: String, dir: String = "acDev", rank: Int = 2)(
       fdM: FiniteDistribution[AtomicMove], fdV: FiniteDistribution[Moves]) = {
     val file = wd / dir / (name + ".acrun")

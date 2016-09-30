@@ -386,7 +386,7 @@ object ACMongo extends ACWriter {
   def thmSaveCSV(thms: Vector[ACThm])(
       name: String, loops: Int, dir: String = "ac-data") = {
     import ammonite.ops._
-    val wd = cwd / 'data / dir
+    val wd = pwd / 'data / dir
     val file = wd / s"$name-thms.csv"
     def supp = (thms map (_.pres)).toSet.toVector
     rm(file)

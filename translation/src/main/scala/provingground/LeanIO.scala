@@ -29,8 +29,8 @@ object LeanIO {
   def futPickleDefs(file: Path, outputDir: Path) =
     Future(pickleDefs(file, outputDir))
 
-  def makeDefs(inDir: Path = cwd / 'data / 'leanlibrary,
-               outDir: Path = cwd / 'data / 'leandefs) = {
+  def makeDefs(inDir: Path = pwd / 'data / 'leanlibrary,
+               outDir: Path = pwd / 'data / 'leandefs) = {
     val files = ls(inDir) filter (_.ext == "export")
     (files map ((f) => (f.name + ".defs", futPickleDefs(f, outDir)))).toMap
   }
@@ -38,7 +38,7 @@ object LeanIO {
   def snapshot(fd: Map[String, Future[Vector[String]]]) =
     ((fd.values map (_.value)).flatten map (_.toOption)).flatten.toVector.flatten
 
-  def recallDefs(defDir: Path = cwd / 'data / 'leandefs) = {
+  def recallDefs(defDir: Path = pwd / 'data / 'leandefs) = {
     ls(defDir).toVector flatMap ((f) =>
           read.lines(f) map (_.split("\t").toList))
   }

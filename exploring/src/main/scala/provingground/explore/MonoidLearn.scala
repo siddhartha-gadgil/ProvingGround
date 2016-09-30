@@ -23,7 +23,7 @@ object MonoidLearn {
 object MonoidLearnRun extends App {
   import ammonite.ops._
 
-  val file = cwd / "tmp" / "blah"
+  val file = pwd / "tmp" / "blah"
 
   write.append(file, "reached here")
 

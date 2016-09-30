@@ -208,7 +208,7 @@ object DeducerSource {
 
   def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
     //  println("saving")
-    val file = cwd / 'data / s"${name}.deduc"
+    val file = pwd / 'data / s"${name}.deduc"
     //  println(s"saving to: $file")
     Sink.foreach { (fd: FD[Term]) =>
       //    println("Dummy save: see dist")
@@ -220,7 +220,7 @@ object DeducerSource {
   }
 
   def saveLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = cwd / 'data / s"${name}.learn"
+    val file = pwd / 'data / s"${name}.learn"
     Sink.foreach { (fd: FD[Term]) =>
       //   val distFut = Future(writeDist(fd, names))
       //    distFut.foreach((p) => write.append(file, p + "\n"))
@@ -229,7 +229,7 @@ object DeducerSource {
   }
 
   def loadDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = cwd / 'data / s"${name}.deduc"
+    val file = pwd / 'data / s"${name}.deduc"
     val it = read.lines.iter(file) map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
@@ -237,7 +237,7 @@ object DeducerSource {
   }
 
   def loadLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = cwd / 'data / s"${name}.learn"
+    val file = pwd / 'data / s"${name}.learn"
     val it = read.lines.iter(file) map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it

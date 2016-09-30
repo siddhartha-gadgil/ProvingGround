@@ -24,13 +24,13 @@ object QDI {
   def writeFD(fd: FiniteDistribution[String],
               filename: String,
               dir: String = "data") = {
-    val file = ops.cwd / dir / filename
+    val file = ops.pwd / dir / filename
     ops.rm(file)
     fd.pmf.foreach { case Weighted(s, p) => ops.write(file, s"$s\t$p\n") }
   }
 
   def readFD(filename: String, dir: String = "data") = {
-    val file = ops.cwd / dir / filename
+    val file = ops.pwd / dir / filename
     val pmf =
       ops.read.lines(file) map ((l) => {
             val Array(s, p) = l.split("\t")

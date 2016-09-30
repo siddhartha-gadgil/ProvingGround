@@ -96,11 +96,15 @@ object TermSampler{
 
   lazy val entPlot = fig.subplot(0)
 
+
+  import java.awt.Color
+
   def plotEntsThms(thms: ThmEntropies) = {
     val  X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
     val Y =  DenseVector((thms.entropyPairs map (_._2._2)).toArray)
     val names = (n: Int) => thms.entropyPairs(n)._1.toString
-    entPlot += scatter(X, Y, (_) => 0.1, tips = names)
+    val colours = (n: Int) => if (X(n) < Y(n)) Color.RED else Color.BLUE
+    entPlot += scatter(X, Y, (_) => 0.1, colors = colours, tips = names)
     entPlot.xlabel ="statement entropy"
     entPlot.ylabel ="proof entropy"
   }
