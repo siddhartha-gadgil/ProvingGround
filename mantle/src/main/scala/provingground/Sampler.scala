@@ -1,8 +1,11 @@
 package provingground
 
-import HoTT._
+import provingground.{
+  FiniteDistribution => FD,
+  ProbabilityDistribution => PD
+}
 
-import breeze.linalg.{Vector => BVector, _}
+import breeze.linalg.{Vector => _, _}
 import breeze.stats.distributions._
 
 import breeze.plot._
@@ -41,30 +44,8 @@ object Sampler {
     })
   }
 
-  lazy val fig = Figure("Term Sample")
-
-  import FansiShow._
-
-  lazy val entPlot = fig.subplot(0)
-
-  def plotEntsThms(thms: Deducer.ThmEntropies) = {
-    val  X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
-    val Y =  DenseVector((thms.entropyPairs map (_._2._2)).toArray)
-    val names = (n: Int) => thms.entropyPairs(n)._1.toString
-    entPlot += scatter(X, Y, (_) => 0.1, tips = names)
-    entPlot.xlabel ="statement entropy"
-    entPlot.ylabel ="proof entropy"
-  }
-
-  def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
-
-  def plotEnts(fd: FiniteDistribution[Term]) = plotEntsThms(Deducer.ThmEntropies(fd))
-
-  def thmEntropies(sample: Map[Term, Int]) = Deducer.ThmEntropies(toFD(sample))
-
-  def thmEntropies(sample: Map[Term, Int], d: BasicDeducer) = Deducer.ThmEntropies(toFD(sample), d.vars, d.lambdaWeight)
-
   import ProbabilityDistribution._
+
 
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()
@@ -100,5 +81,87 @@ object Sampler {
         case genFD: GenFiniteDistribution[u] =>
           fromPMF(genFD.pmf.toVector, n)
       }
+
+
+
+
+}
+
+  import HoTT._
+
+object TermSampler{
+    import Sampler._
+
+  lazy val fig = Figure("Term Sample")
+
+  lazy val entPlot = fig.subplot(0)
+
+  def plotEntsThms(thms: ThmEntropies) = {
+    val  X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
+    val Y =  DenseVector((thms.entropyPairs map (_._2._2)).toArray)
+    val names = (n: Int) => thms.entropyPairs(n)._1.toString
+    entPlot += scatter(X, Y, (_) => 0.1, tips = names)
+    entPlot.xlabel ="statement entropy"
+    entPlot.ylabel ="proof entropy"
+  }
+
+  def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
+
+  def plotEnts(fd: FiniteDistribution[Term]) = plotEntsThms(ThmEntropies(fd))
+
+  def thmEntropies(sample: Map[Term, Int]) = ThmEntropies(toFD(sample))
+
+  def thmEntropies(sample: Map[Term, Int], d: BasicDeducer) = ThmEntropies(toFD(sample), d.vars, d.lambdaWeight)
+
+}
+
+class TermSampler(d: BasicDeducer){
+  import Sampler._
+  import TermSampler._
+
+  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double) : FD[Term] => FD[Term] =
+    (p: FD[Term]) => NextSample(p, sampleSize).shiftedFD(derSampleSize, epsilon)
+
+  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double)=
+    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon))
+
+  case class NextSample(p: FD[Term], size: Int) {
+    lazy val init = d.func(p)
+
+    lazy val nextSamp = sample(init, size)
+
+    lazy val nextFD = toFD(nextSamp)
+
+    def plotEntropies = plotEnts(nextFD)
+
+    lazy val thmEntropies = ThmEntropies(nextFD, d.vars, d.lambdaWeight)
+
+    def derivativePD(p: PD[Term]) : PD[Term] = d.derFunc(nextFD)(p)
+
+    def derivativeFD(p: PD[Term], n: Int) = toFD(sample(derivativePD(p), n))
+
+    def vecFlow(vec: PD[Term], n: Int) = thmEntropies.feedbackTermDist(derivativeFD(p, n))
+
+    def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
+
+    def totalFlow(totalSize: Int) =
+      (nextFD.supp map {(x) =>
+        val n = (nextFD(x) * totalSize).toInt
+        val flow = termFlow(x, n)
+        x -> flow
+      }
+    ).toMap
+
+    def shiftedFD(totalSize: Int, epsilon: Double) ={
+      val shift = totalFlow(totalSize)
+
+      val pmf = nextFD.pmf map {
+        case Weighted(x, p) =>
+          Weighted(x, p * math.exp(shift(x) * epsilon))
+      }
+
+      FD(pmf)
+    }
+  }
 
 }

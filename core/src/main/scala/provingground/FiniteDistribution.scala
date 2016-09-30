@@ -149,6 +149,9 @@ sealed trait GenFiniteDistribution[T]
     (wtdelems :\ ls.zero)(ls.sum)
   }
 
+  def integral(f: T => Double) =
+    (pmf map {case Weighted(x, p) => p * f(x)}).sum
+
 //  @deprecated("should move to concrete implementation", "now")
 
   def purge(epsilon: Double) = filter((t: T) => (apply(t) > epsilon))
