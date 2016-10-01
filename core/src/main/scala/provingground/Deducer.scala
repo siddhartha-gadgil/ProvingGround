@@ -225,22 +225,29 @@ case class ThmEntropies(fd: FD[Term], varNames: Vector[Term] = Vector(), scale: 
 
   def feedbackTypDist(fd: FD[Typ[Term]]) = fd.integral(feedbackFunction)
 
-  def feedbackTermDist(fd: FD[Term]) = feedbackTypDist(fd map (_.typ: Typ[Term]))
+  def feedbackTermDist(fd: FD[Term]) = feedbackTypDist(piDist(vars, scale)(fd map (_.typ: Typ[Term])))
 }
 
 
 
-class BasicDeducer(applnWeight: Double = 0.2,
+case class BasicDeducer(applnWeight: Double = 0.2,
                    val lambdaWeight: Double = 0.2,
                    piWeight: Double = 0.2,
                    varWeight: Double = 0.3,
-                   val vars: Vector[Term]) {
+                   val vars: Vector[Term] = Vector()) { ded =>
   import Deducer._
 
   def func(pd: PD[Term]): PD[Term] =
     pd.<+?>(appln(func)(pd), applnWeight)
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
-      .<+?>(pi(varWeight)(func)(pd), lambdaWeight)
+      .<+?>(pi(varWeight)(func)(pd), piWeight)
+
+  def hSc(sc: Double) = ded.copy(lambdaWeight = ded.lambdaWeight * sc, piWeight = ded.piWeight * sc)
+
+  def hFunc(sc: Double)(pd: PD[Term]): PD[Term] =
+    pd.<+?>(appln(hFunc(sc))(pd), applnWeight)
+      .<+?>(lambda(varWeight)(hSc(sc).hFunc(sc))(pd), lambdaWeight)
+      .<+?>(pi(varWeight)(hSc(sc).hFunc(sc))(pd), piWeight)
 
   def derApplnArg(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) =
     (base: FD[Term]) =>
@@ -356,6 +363,14 @@ class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(derLambdaVal(varWeight)(derFunc)(pd)(base), applnWeight)
       .<+?>(derPiVar(varWeight)(derFunc)(pd)(base), applnWeight)
       .<+?>(derPiVal(varWeight)(derFunc)(pd)(base), applnWeight)
+
+  def hDerFunc(sc: Double)(base: FD[Term])(pd: PD[Term]): PD[Term] =
+    pd.<+?>(derApplnArg(hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derApplnFunc(hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derLambdaVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derLambdaVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derPiVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derPiVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
 
 }
 

@@ -21,19 +21,19 @@ object Monoid {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = (a ~>: (op(l)(a) =:= a)).Var
-  val rightId = (a ~>: (op(a)(r) =:= a)).Var
+  val leftId = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
+  val rightId = "rightIdAx" :: (a ~>: (op(a)(r) =:= a))
 
   val refl = lambda(a)(Refl(M, a))
 
   val idUnique =
     b ~>: (
-        (a ~>: (op(l)(a) =:= a)) ~>: (l =:= b)
+        (a ~>: (op(b)(a) =:= a)) ->: (l =:= b)
     )
 
-  val assoc = (a ~>: (b ~>: (c ~>: (
+  val assoc = "assoc" :: (a ~>: (b ~>: (c ~>: (
                   op(a)(op(b)(c)) =:= op(op(a)(b))(c)
-              )))).Var
+              ))))
 
   val MVars = Vector[Term](a, b, c) map (Weighted(_, 1.0 / 3.0))
 
@@ -68,6 +68,12 @@ object Monoid {
       //                   extensionality -> "id.extendsionality",
       transfer -> "id.transfer")
 
+      val elTyps = a :-> (b :-> (a =:= b))
+
+      val vars = Vector(M, a, b, c)
+
+
+
   val dist = FiniteDistribution.unif(M,
                                      a,
                                      b,
@@ -83,6 +89,23 @@ object Monoid {
                                      assoc,
                                      extensionality,
                                      transfer)
+
+  val elemDist = (FiniteDistribution.unif(
+                                     a,
+                                     b,
+                                     c,
+                                     l,
+                                     r,
+                                     op,
+                                     leftId,
+                                     rightId,
+                                     refl,
+                                     sym,
+                                     trans,
+                                     assoc)  *
+                                     0.5) ++ (FiniteDistribution.unif[Term](elTyps) * 0.5)
+
+  val smallDist = (elemDist filter (_ != assoc)).normalized()
 
   val ded = Deducer(vars = MVars, cutoff = 0.01)
 
@@ -100,6 +123,61 @@ object Monoid {
       .replace(bb, c)
       .replace(cc, a)
   }
+}
+
+object MonoidSimple{
+  val M = "M" :: Type
+
+  val eqM = "eqM" :: M ->: M ->: Type
+
+  // val sym = IdentityTyp.symm(M)
+  //
+  // val trans = IdentityTyp.trans(M)
+
+  val a = "a" :: M
+  val b = "b" :: M
+  val c = "c" :: M
+
+  val sym = "sym" :: a ~>: (b ~>: (eqM(a)(b) ->: eqM(b)(a)))
+
+  val trans = "trans" :: a ~>: (b ~>: (c ~>: ((eqM(a)(b)) ->: (eqM(b)(c)) ->: (eqM(a)(c)) )))
+
+  val l = "e_l" :: M
+
+  val r = "e_r" :: M
+
+  val op = "_*_" :: M ->: M ->: M
+
+  val leftId = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
+  val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
+
+  val refl = "refl" :: a ~>: (eqM(a)(a))
+
+  // val idUnique =
+  //   b ~>: (
+  //       (a ~>: (eqM(op(l)(a))(a))) ~>: (eqM(l)(b))
+  //   )
+
+  val assoc = "assoc" :: (a ~>: (b ~>: (c ~>: (
+                  eqM(op(a)(op(b)(c)))
+                  (op(op(a)(b))(c))
+              ))))
+
+
+  val elemDist = FiniteDistribution.unif(M,
+                                     a,
+                                     b,
+                                     c,
+                                     l,
+                                     r,
+                                     op,
+                                     leftId,
+                                     rightId,
+                                     refl,
+                                     sym,
+                                     trans,
+                                     assoc)
+
 }
 
 object Group {
