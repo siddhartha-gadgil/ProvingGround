@@ -45,7 +45,7 @@ class TermBucket {
   def append(t: Term) = {
     tot += 1
 
-    val typ = t.typ
+    val typ : Typ[Term] = t.typ
 
     terms(typ) = t +: (terms.getOrElse(typ, Vector()))
 
