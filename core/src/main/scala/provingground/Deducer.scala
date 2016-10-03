@@ -242,7 +242,8 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), piWeight)
 
-  def hSc(sc: Double) = ded.copy(lambdaWeight = ded.lambdaWeight * sc, piWeight = ded.piWeight * sc)
+  def hSc(sc: Double) = ded.copy(lambdaWeight = ded.lambdaWeight * sc, piWeight = ded.piWeight * sc,
+    varWeight = ded.varWeight/(ded.varWeight + 1))
 
   def hFunc(sc: Double)(pd: PD[Term]): PD[Term] =
     pd.<+?>(appln(hFunc(sc))(pd), applnWeight)
