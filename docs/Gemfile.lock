@@ -135,6 +135,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages (= 96)
+  jekyll-paginate
   json
   rake
 

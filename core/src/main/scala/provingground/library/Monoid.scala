@@ -99,7 +99,7 @@ object Monoid {
                                      op,
                                      leftId,
                                      rightId,
-                                     refl,
+                                    //  refl,
                                      sym,
                                      trans,
                                      assoc)  *
