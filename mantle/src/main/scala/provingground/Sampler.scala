@@ -123,14 +123,14 @@ class TermSampler(d: BasicDeducer){
   import Sampler._
   import TermSampler._
 
-  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double) : FD[Term] => FD[Term] =
-    (p: FD[Term]) => NextSample(p, sampleSize).shiftedFD(derSampleSize, epsilon)
+  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double) : FD[Term] => FD[Term] =
+    (p: FD[Term]) => NextSample(p, sampleSize, sc).shiftedFD(derSampleSize, epsilon)
 
-  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double)=
-    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon))
+  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double)=
+    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon, sc))
 
-  case class NextSample(p: FD[Term], size: Int) {
-    lazy val init = d.func(p)
+  case class NextSample(p: FD[Term], size: Int, sc: Double) {
+    lazy val init = d.hFunc(sc)(p)
 
     lazy val nextSamp = sample(init, size)
 
@@ -140,7 +140,7 @@ class TermSampler(d: BasicDeducer){
 
     lazy val thmEntropies = ThmEntropies(nextFD, d.vars, d.lambdaWeight)
 
-    def derivativePD(p: PD[Term]) : PD[Term] = d.derFunc(nextFD)(p)
+    def derivativePD(p: PD[Term]) : PD[Term] = d.hDerFunc(sc)(nextFD)(p)
 
     def derivativeFD(p: PD[Term], n: Int) = toFD(sample(derivativePD(p), n))
 
