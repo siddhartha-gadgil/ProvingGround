@@ -123,18 +123,18 @@ class TermSampler(d: BasicDeducer){
   import Sampler._
   import TermSampler._
 
-  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double) : FD[Term] => FD[Term] =
-    (p: FD[Term]) => NextSample(p, sampleSize, sc).shiftedFD(derSampleSize, epsilon)
+  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double) : FD[Term] => FD[Term] =
+    (p: FD[Term]) => NextSample(p, sampleSize, sc, inertia).shiftedFD(derSampleSize, epsilon)
 
-  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double)=
-    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon, sc))
+  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double)=
+    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
-  case class NextSample(p: FD[Term], size: Int, sc: Double) {
+  case class NextSample(p: FD[Term], size: Int, sc: Double, inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
 
     lazy val nextSamp = sample(init, size)
 
-    lazy val nextFD = toFD(nextSamp)
+    lazy val nextFD = toFD(nextSamp) * (1.0 - inertia) ++ (p * inertia)
 
     def plotEntropies = plotEnts(nextFD)
 
