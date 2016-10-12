@@ -55,11 +55,11 @@ object MoveGenerator {
 
   val E = Weighted(Moves.empty, 1)
 
-  lazy val eSet = FiniteDistributionSet(Set(E))
+//  lazy val eSet = FiniteDistributionSet(Set(E))
 
   lazy val eVec = FiniteDistribution(Vector(E))
 
-  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
+//  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
 
   def allMoves(rank: Int) = genAllMoves(rank, rank)
 

@@ -9,7 +9,7 @@ import Weighted._
 
 trait FiniteDistributionBehaviours { this : FlatSpec =>
 
-  def intFiniteDistribution(finDist: Traversable[Weighted[Int]] => GenFiniteDistribution[Int]) = {
+  def intFiniteDistribution(finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
     val x = finDist(weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
 
     val y = finDist(weights(0 -> 0.3, 1 -> 0.4, 5 -> 0.3))
@@ -101,9 +101,9 @@ trait FiniteDistributionBehaviours { this : FlatSpec =>
 
       val addL : FiniteDistribution[Int] = FiniteDistribution.empty[Int] ++ x
 
-      val empty : GenFiniteDistribution[Int] = FiniteDistribution.empty[Int]
+      val empty : FiniteDistribution[Int] = FiniteDistribution.empty[Int]
 
-      val addR : GenFiniteDistribution[Int] = x ++ empty
+      val addR : FiniteDistribution[Int] = x ++ empty
 
       for (j <- -5 to 5) assert(addL(j) == x(j))
 

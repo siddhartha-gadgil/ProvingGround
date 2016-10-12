@@ -78,8 +78,8 @@ object Sampler {
             (for ((a, m) <- baseSamp) yield sample(f(a), m)).toVector
           combineAll(sampsVec)
 
-        case genFD: GenFiniteDistribution[u] =>
-          fromPMF(genFD.pmf.toVector, n)
+        // case genFD: GenFiniteDistribution[u] =>
+        //   fromPMF(genFD.pmf.toVector, n)
       }
 
 
