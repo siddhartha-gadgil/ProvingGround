@@ -105,6 +105,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     val sc = 1.0 / postotal(t)
     FiniteDistribution(posmf(t) map (_.scale(sc)))
   }
+  
   def prunedPMF(epsilon: Double) =
     flatten.pmf filter ((x) => math.abs(x.weight) > epsilon)
 
@@ -178,7 +179,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def memo: Map[T, Double] = flatten.preMemo
 
-  def total = (supp map (getsum)).sum
+  def total = (pmf map {case Weighted(x, p) => p}).sum
 
   /**
     * next instance of a random variable with the given distribution

@@ -1,3 +1,4 @@
+
 import sbt.Project.projectToRef
 
 val scalaV = "2.11.8"
@@ -18,7 +19,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
       "org.spire-math" %% "spire" % "0.11.0",
       "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
-      "com.lihaoyi" %% "fansi" % "0.1.3",
+      "com.lihaoyi" %% "fansi" % "0.2.1",
       "com.lihaoyi" %% "upickle" % "0.4.0",
       "com.chuusai" %% "shapeless" % "2.3.2",
       "com.lihaoyi" % "ammonite" % "0.7.7" cross CrossVersion.full
@@ -154,7 +155,7 @@ lazy val mizar = project
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
   .settings(name := "Mizar-Parser",
-            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.2.1")
+            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.0")
 
 val initCommands =
   """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""

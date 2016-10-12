@@ -153,9 +153,9 @@ class TermSampler(d: BasicDeducer) {
 
     def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
 
-    def totalFlow(totalSize: Int) =
-      (nextFD.supp map { (x) =>
-        val n = (nextFD(x) * totalSize).toInt
+    def totalFlow(totalSize: Int) : Map[Term, Double] =
+      (nextFD.pmf map { case Weighted(x, p) =>
+        val n = (p * totalSize).toInt
         val flow = termFlow(x, n)
         x -> flow
       }).toMap
@@ -168,7 +168,7 @@ class TermSampler(d: BasicDeducer) {
           Weighted(x, p * math.exp(shift(x) * epsilon))
       }
 
-      FD(pmf)
+      FD(pmf).normalized()
     }
   }
 
