@@ -45,13 +45,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">NPVP</span><span class="result"> extends <a href="TreePatterns$$Pattern.html" class="extype" name="provingground.TreePatterns.Pattern">Pattern</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>], <span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>])]</span>
+        <span class="name">NPVP</span><span class="result"> extends <span class="extype" name="provingground.Translator.Pattern.Partial">Partial</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="TreePatterns$$Pattern.html" class="extype" name="provingground.TreePatterns.Pattern">Pattern</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>], <span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>])], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="provingground.Translator.Pattern.Partial">Partial</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>], <span class="extype" name="provingground.Translator.Pattern">Pattern</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -69,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.TreePatterns.NPVP"><span>NPVP</span></li><li class="in" name="provingground.TreePatterns.Pattern"><span>Pattern</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.TreePatterns.NPVP"><span>NPVP</span></li><li class="in" name="provingground.Translator.Pattern.Partial"><span>Partial</span></li><li class="in" name="provingground.Translator.Pattern"><span>Pattern</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -145,6 +145,40 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#&gt;&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;&gt;[O](build:X[O]=&gt;Option[O]):provingground.Translator.Junction[I,O,X]"></a>
+      <a id="&gt;&gt;[O]((LL[O])⇒Option[O]):Junction[Tree,O,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$greater" class="name">&gt;&gt;</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="build">build: (<span class="extype" name="provingground.Functor.LL">LL</span>[<span class="extype" name="provingground.Translator.Pattern.&gt;&gt;.O">O</span>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Pattern.&gt;&gt;.O">O</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Junction">Junction</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Translator.Pattern.&gt;&gt;.O">O</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@&gt;&gt;[O](build:X[O]=&gt;Option[O]):provingground.Translator.Junction[I,O,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#&gt;&gt;&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;&gt;&gt;[O](build:X[O]=&gt;O):provingground.Translator.Junction[I,O,X]"></a>
+      <a id="&gt;&gt;&gt;[O]((LL[O])⇒O):Junction[Tree,O,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$greater$greater" class="name">&gt;&gt;&gt;</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="build">build: (<span class="extype" name="provingground.Functor.LL">LL</span>[<span class="extype" name="provingground.Translator.Pattern.&gt;&gt;&gt;.O">O</span>]) ⇒ <span class="extype" name="provingground.Translator.Pattern.&gt;&gt;&gt;.O">O</span></span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Junction">Junction</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Translator.Pattern.&gt;&gt;&gt;.O">O</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@&gt;&gt;&gt;[O](build:X[O]=&gt;O):provingground.Translator.Junction[I,O,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -293,6 +327,57 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#join" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="join[O](build:X[O]=&gt;Option[O]):provingground.Translator.Junction[I,O,X]"></a>
+      <a id="join[O]((LL[O])⇒Option[O]):Junction[Tree,O,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">join</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="build">build: (<span class="extype" name="provingground.Functor.LL">LL</span>[<span class="extype" name="provingground.Translator.Pattern.join.O">O</span>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Pattern.join.O">O</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Junction">Junction</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Translator.Pattern.join.O">O</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@join[O](build:X[O]=&gt;Option[O]):provingground.Translator.Junction[I,O,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#joinStrict" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="joinStrict[O](build:X[O]=&gt;O):provingground.Translator.Junction[I,O,X]"></a>
+      <a id="joinStrict[O]((LL[O])⇒O):Junction[Tree,O,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">joinStrict</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="build">build: (<span class="extype" name="provingground.Functor.LL">LL</span>[<span class="extype" name="provingground.Translator.Pattern.joinStrict.O">O</span>]) ⇒ <span class="extype" name="provingground.Translator.Pattern.joinStrict.O">O</span></span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Junction">Junction</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Translator.Pattern.joinStrict.O">O</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@joinStrict[O](build:X[O]=&gt;O):provingground.Translator.Junction[I,O,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="map[J](f:I=&gt;I):provingground.Translator.Pattern[I,X]"></a>
+      <a id="map[J]((Tree)⇒Tree):Pattern[Tree,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="J">J</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>) ⇒ <span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span></span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Pattern">Pattern</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@map[J](f:I=&gt;I):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -378,23 +463,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.TreePatterns.Pattern#unapply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unapply(t:edu.stanford.nlp.trees.Tree):Option[Z]"></a>
-      <a id="unapply(Tree):Option[(List[Tree],List[Tree])]"></a>
+    </li><li name="provingground.Translator.Pattern#unapply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unapply(x:I):Option[X[I]]"></a>
+      <a id="unapply(Tree):Option[LL[Tree]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">unapply</span><span class="params">(<span name="t">t: <span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>], <span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>])]</span>
+        <span class="name">unapply</span><span class="params">(<span name="x">x: <span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Functor.LL">LL</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.TreePatterns$$NPVP$@unapply(t:edu.stanford.nlp.trees.Tree):Option[Z]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@unapply(x:I):Option[X[I]]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TreePatterns$$Pattern.html" class="extype" name="provingground.TreePatterns.Pattern">Pattern</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -464,6 +549,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#||" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="||(that:provingground.Translator.Pattern[I,X]):provingground.Translator.Pattern.OrElse[I,X]"></a>
+      <a id="||(Pattern[Tree,LL]):Translator.Pattern.OrElse[Tree,LL]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.Translator.Pattern">Pattern</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.Translator.Pattern.OrElse">Translator.Pattern.OrElse</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.TreePatterns$$NPVP$@||(that:provingground.Translator.Pattern[I,X]):provingground.Translator.Pattern.OrElse[I,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Pattern</dd></dl></div>
     </li></ol>
             </div>
 
@@ -473,8 +575,10 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="provingground.TreePatterns.Pattern">
-              <h3>Inherited from <a href="TreePatterns$$Pattern.html" class="extype" name="provingground.TreePatterns.Pattern">Pattern</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>], <span class="extype" name="scala.List">List</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>])]</h3>
+        <div class="parent" name="provingground.Translator.Pattern.Partial">
+              <h3>Inherited from <span class="extype" name="provingground.Translator.Pattern.Partial">Partial</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</h3>
+            </div><div class="parent" name="provingground.Translator.Pattern">
+              <h3>Inherited from <span class="extype" name="provingground.Translator.Pattern">Pattern</span>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>, <span class="extype" name="provingground.Functor.LL">LL</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

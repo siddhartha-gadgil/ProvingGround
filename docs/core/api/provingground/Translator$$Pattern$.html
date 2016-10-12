@@ -47,13 +47,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">Pattern</span><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Pattern</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -71,7 +71,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="provingground.Translator.Pattern"><span>Pattern</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="provingground.Translator.Pattern"><span>Pattern</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -90,7 +90,44 @@
         <div id="allMembers">
         
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.Translator.Pattern.OrElse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OrElse[I,X[_]]extendsTranslator.Pattern[I,X]withProductwithSerializable"></a>
+      <a id="OrElse[I,X[_]]:OrElse[I,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Translator$$Pattern$$OrElse.html"><span class="name">OrElse</span></a><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="first">first: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.OrElse.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.OrElse.X">X</span>]</span>, <span name="second">second: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.OrElse.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.OrElse.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$11">evidence$11: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.OrElse.X">X</span>]</span>, <span name="evidence$12">evidence$12: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.OrElse.X">X</span>]</span>)</span><span class="result"> extends <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.OrElse.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.OrElse.X">X</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Pattern$@OrElse[I,X[_]]extendsTranslator.Pattern[I,X]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.Translator.Pattern.Partial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Partial[I,X[_]]extendsTranslator.Pattern[I,X]"></a>
+      <a id="Partial[I,X[_]]:Partial[I,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Translator$$Pattern$$Partial.html"><span class="name">Partial</span></a><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.Partial.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.Partial.X">X</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Pattern$@Partial[I,X[_]]extendsTranslator.Pattern[I,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -147,6 +184,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[I,X[_]](split:I=&gt;Option[X[I]])(implicitevidence$5:provingground.Functor[X],implicitevidence$6:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
+      <a id="apply[I,X[_]]((I)⇒Option[X[I]])(Functor[X],OptNat[X]):Pattern[I,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Pattern.apply.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Pattern.apply.X">X</span>[<span class="extype" name="provingground.Translator.Pattern.apply.I">I</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.apply.X">X</span>]</span>, <span name="arg1">arg1: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.apply.X">X</span>]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.apply.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.apply.X">X</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Pattern$@apply[I,X[_]](split:I=&gt;Option[X[I]])(implicitevidence$5:provingground.Functor[X],implicitevidence$6:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -165,7 +219,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.Translator.Pattern#cast" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="cast[I,X[_]](split:I=&gt;Option[Any])(implicitevidence$7:provingground.Functor[X],implicitevidence$8:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
+      <a id="cast[I,X[_]](split:I=&gt;Option[Any])(implicitevidence$15:provingground.Functor[X],implicitevidence$16:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
       <a id="cast[I,X[_]]((I)⇒Option[Any])(Functor[X],OptNat[X]):Pattern[I,X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -176,7 +230,7 @@
         <span class="name">cast</span><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Pattern.cast.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.cast.X">X</span>]</span>, <span name="arg1">arg1: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.cast.X">X</span>]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.cast.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.cast.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Pattern$@cast[I,X[_]](split:I=&gt;Option[Any])(implicitevidence$7:provingground.Functor[X],implicitevidence$8:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Pattern$@cast[I,X[_]](split:I=&gt;Option[Any])(implicitevidence$15:provingground.Functor[X],implicitevidence$16:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -240,6 +294,23 @@ The shape X[_] must be specified.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#filter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="filter[I](p:I=&gt;Boolean):provingground.Translator.Pattern[I,provingground.Functor.Id]"></a>
+      <a id="filter[I]((I)⇒Boolean):Pattern[I,Id]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="tparams">[<span name="I">I</span>]</span><span class="params">(<span name="p">p: (<span class="extype" name="provingground.Translator.Pattern.filter.I">I</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.filter.I">I</span>, <a href="Functor$.html#Id[A]=A" class="extmbr" name="provingground.Functor.Id">Id</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Pattern$@filter[I](p:I=&gt;Boolean):provingground.Translator.Pattern[I,provingground.Functor.Id]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -264,7 +335,7 @@ The shape X[_] must be specified.
               
         </dd></dl></div>
     </li><li name="provingground.Translator.Pattern#fromMatcher" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="fromMatcher[I,X[_],S](matcher:I=&gt;Option[Map[S,I]],varword:X[S])(implicitevidence$5:provingground.Functor[X],implicitevidence$6:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
+      <a id="fromMatcher[I,X[_],S](matcher:I=&gt;Option[Map[S,I]],varword:X[S])(implicitevidence$13:provingground.Functor[X],implicitevidence$14:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
       <a id="fromMatcher[I,X[_],S]((I)⇒Option[Map[S,I]],X[S])(Functor[X],OptNat[X]):Pattern[I,X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -275,7 +346,7 @@ The shape X[_] must be specified.
         <span class="name">fromMatcher</span><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="S">S</span>]</span><span class="params">(<span name="matcher">matcher: (<span class="extype" name="provingground.Translator.Pattern.fromMatcher.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.Translator.Pattern.fromMatcher.S">S</span>, <span class="extype" name="provingground.Translator.Pattern.fromMatcher.I">I</span>]]</span>, <span name="varword">varword: <span class="extype" name="provingground.Translator.Pattern.fromMatcher.X">X</span>[<span class="extype" name="provingground.Translator.Pattern.fromMatcher.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.fromMatcher.X">X</span>]</span>, <span name="arg1">arg1: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.fromMatcher.X">X</span>]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.fromMatcher.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.fromMatcher.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$$Pattern$@fromMatcher[I,X[_],S](matcher:I=&gt;Option[Map[S,I]],varword:X[S])(implicitevidence$5:provingground.Functor[X],implicitevidence$6:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$$Pattern$@fromMatcher[I,X[_],S](matcher:I=&gt;Option[Map[S,I]],varword:X[S])(implicitevidence$13:provingground.Functor[X],implicitevidence$14:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -384,6 +455,23 @@ This is problematic if lists should be returned.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.Translator.Pattern#partial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="partial[I,X[_]](split:PartialFunction[I,X[I]])(implicitevidence$7:provingground.Functor[X],implicitevidence$8:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]"></a>
+      <a id="partial[I,X[_]](PartialFunction[I,X[I]])(Functor[X],OptNat[X]):Pattern[I,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">partial</span><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="split">split: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="provingground.Translator.Pattern.partial.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.partial.X">X</span>[<span class="extype" name="provingground.Translator.Pattern.partial.I">I</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.partial.X">X</span>]</span>, <span name="arg1">arg1: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.partial.X">X</span>]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.Translator.Pattern">Pattern</a>[<span class="extype" name="provingground.Translator.Pattern.partial.I">I</span>, <span class="extype" name="provingground.Translator.Pattern.partial.X">X</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$$Pattern$@partial[I,X[_]](split:PartialFunction[I,X[I]])(implicitevidence$7:provingground.Functor[X],implicitevidence$8:provingground.OptNat[X]):provingground.Translator.Pattern[I,X]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -496,11 +584,7 @@ This is problematic if lists should be returned.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

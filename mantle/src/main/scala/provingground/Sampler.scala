@@ -1,9 +1,6 @@
 package provingground
 
-import provingground.{
-  FiniteDistribution => FD,
-  ProbabilityDistribution => PD
-}
+import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import breeze.linalg.{Vector => _, _}
 import breeze.stats.distributions._
@@ -46,7 +43,6 @@ object Sampler {
 
   import ProbabilityDistribution._
 
-
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()
     else
@@ -82,31 +78,27 @@ object Sampler {
         //   fromPMF(genFD.pmf.toVector, n)
       }
 
-
-
-
 }
 
-  import HoTT._
+import HoTT._
 
-object TermSampler{
-    import Sampler._
+object TermSampler {
+  import Sampler._
 
   lazy val fig = Figure("Term Sample")
 
   lazy val entPlot = fig.subplot(0)
 
-
   import java.awt.Color
 
   def plotEntsThms(thms: ThmEntropies) = {
-    val  X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
-    val Y =  DenseVector((thms.entropyPairs map (_._2._2)).toArray)
+    val X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
+    val Y = DenseVector((thms.entropyPairs map (_._2._2)).toArray)
     val names = (n: Int) => thms.entropyPairs(n)._1.toString
     val colours = (n: Int) => if (X(n) < Y(n)) Color.RED else Color.BLUE
     entPlot += scatter(X, Y, (_) => 0.1, colors = colours, tips = names)
-    entPlot.xlabel ="statement entropy"
-    entPlot.ylabel ="proof entropy"
+    entPlot.xlabel = "statement entropy"
+    entPlot.ylabel = "proof entropy"
   }
 
   def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
@@ -115,19 +107,31 @@ object TermSampler{
 
   def thmEntropies(sample: Map[Term, Int]) = ThmEntropies(toFD(sample))
 
-  def thmEntropies(sample: Map[Term, Int], d: BasicDeducer) = ThmEntropies(toFD(sample), d.vars, d.lambdaWeight)
+  def thmEntropies(sample: Map[Term, Int], d: BasicDeducer) =
+    ThmEntropies(toFD(sample), d.vars, d.lambdaWeight)
 
 }
 
-class TermSampler(d: BasicDeducer){
+class TermSampler(d: BasicDeducer) {
   import Sampler._
   import TermSampler._
 
-  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double) : FD[Term] => FD[Term] =
-    (p: FD[Term]) => NextSample(p, sampleSize, sc, inertia).shiftedFD(derSampleSize, epsilon)
+  def flow(sampleSize: Int,
+           derSampleSize: Int,
+           epsilon: Double,
+           sc: Double,
+           inertia: Double): FD[Term] => FD[Term] =
+    (p: FD[Term]) =>
+      NextSample(p, sampleSize, sc, inertia).shiftedFD(derSampleSize, epsilon)
 
-  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double)=
-    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon, sc, inertia))
+  def iterator(init: FD[Term],
+               sampleSize: Int,
+               derSampleSize: Int,
+               epsilon: Double,
+               sc: Double,
+               inertia: Double) =
+    Iterator.iterate(init)(
+      flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
   case class NextSample(p: FD[Term], size: Int, sc: Double, inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
@@ -140,23 +144,23 @@ class TermSampler(d: BasicDeducer){
 
     lazy val thmEntropies = ThmEntropies(nextFD, d.vars, d.lambdaWeight)
 
-    def derivativePD(p: PD[Term]) : PD[Term] = d.hDerFunc(sc)(nextFD)(p)
+    def derivativePD(p: PD[Term]): PD[Term] = d.hDerFunc(sc)(nextFD)(p)
 
     def derivativeFD(p: PD[Term], n: Int) = toFD(sample(derivativePD(p), n))
 
-    def vecFlow(vec: PD[Term], n: Int) = thmEntropies.feedbackTermDist(derivativeFD(p, n))
+    def vecFlow(vec: PD[Term], n: Int) =
+      thmEntropies.feedbackTermDist(derivativeFD(p, n))
 
     def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
 
     def totalFlow(totalSize: Int) =
-      (nextFD.supp map {(x) =>
+      (nextFD.supp map { (x) =>
         val n = (nextFD(x) * totalSize).toInt
         val flow = termFlow(x, n)
         x -> flow
-      }
-    ).toMap
+      }).toMap
 
-    def shiftedFD(totalSize: Int, epsilon: Double) ={
+    def shiftedFD(totalSize: Int, epsilon: Double) = {
       val shift = totalFlow(totalSize)
 
       val pmf = nextFD.pmf map {

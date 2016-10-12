@@ -57,23 +57,22 @@ case class ACData(paths: Map[String,
     val tVec = thmVec(name, rank)
     def pVec(p: FreeGroups.Presentation) =
       tVec map ((fd) => fd(p))
-    supp.foreach(
-        (p) => {
+    supp.foreach((p) => {
       write.append(file, s""""$p",${pVec(p).mkString(",")}\n""")
     })
   }
 }
 
 case class ACStateData(
-    states: Map[
-        String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
+    states: Map[String,
+                (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
     dir: String)
     extends ACStates {
   def revive(name: String, p: Param = Param())(implicit hub: ActorRef) = {
     import p._
     val state = states(name)
-    val ref = ACLooper.spawn(
-        name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
+    val ref = ACLooper
+      .spawn(name, rank, size, wrdCntn, state, ACData.srcRef(dir, rank), p)
 //    FDHub.start(ref)
     ref
   }
@@ -85,8 +84,8 @@ case class ACStateData(
 
   def spawn(name: String, p: Param = Param()) = {
     import p._
-    ACLooper.spawn(
-        name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
+    ACLooper
+      .spawn(name, rank, size, wrdCntn, blended, ACData.srcRef(dir, rank), p)
   }
 
   def spawns(name: String, mult: Int = 4, p: Param = Param()) = {
@@ -97,8 +96,8 @@ case class ACStateData(
 import FDLooper._
 
 class ACFileSaver(dir: String = "acDev", rank: Int = 2)
-    extends FDSrc[
-        (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
+    extends FDSrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                  Param] {
   def save =
     (snap: Snap) =>
       fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
@@ -148,7 +147,7 @@ object ACFlowSaver {
     (ls(wd / date).toStream map (_.name))
       .sortBy(_.toInt)
       .flatMap((filename: String) =>
-            (read.lines.iter(snapd / date / filename)).toStream)
+        (read.lines.iter(snapd / date / filename)).toStream)
       .map(uread[Snap])
 
   def snapSource(date: String) = Src(snapStream(date))
@@ -221,7 +220,8 @@ object ACFlowSaver {
     val update = $set("loops" -> loops)
     val exists = !(actorData.findOne(query).isEmpty)
     if (exists)
-      actorData.update(query, update) // updat number of loops, leaving other actor data unchanged.
+      actorData
+        .update(query, update) // updat number of loops, leaving other actor data unchanged.
     else
       actorData.insert(MongoDBObject("name" -> name, "loops" -> loops)) // if no actor data, add number of loops.
   }
@@ -280,7 +280,7 @@ object ACFlowSaver {
     val pmf = (for (c <- cursor) yield {
       for (mvs <- c.getAs[String]("moves"); // pickled Moves
            wt <- c.getAs[Double]("weight")) // associate weight
-      yield Weighted(uread[Moves](mvs), wt) // Weighted Moves
+        yield Weighted(uread[Moves](mvs), wt) // Weighted Moves
     }).toVector.flatten // vector, flattened as options are returned.
     FiniteDistribution(pmf)
   }
@@ -293,13 +293,14 @@ object ACFlowSaver {
       for (mvs <- c.getAs[String]("moves"); // pickled Moves
            wt <- c.getAs[Double]("weight"); // associate weight
            pres <- c.getAs[String]("presentation");
-           rank <- c.getAs[Int]("rank")) yield
-        ACElem(name,
-               uread[Moves](mvs),
-               rank,
-               uread[Presentation](pres),
-               wt,
-               loops) // Weighted Moves
+           rank <- c.getAs[Int]("rank"))
+        yield
+          ACElem(name,
+                 uread[Moves](mvs),
+                 rank,
+                 uread[Presentation](pres),
+                 wt,
+                 loops) // Weighted Moves
     }).toVector.flatten // vector, flattened as options are returned.
     list
   }
@@ -335,7 +336,7 @@ object ACFlowSaver {
   def FDM(name: String) = {
     val query = MongoDBObject("name" -> name)
     (fdMdb.findOne(query).flatMap(_.getAs[String]("fdM"))) map (uread[
-            FiniteDistribution[AtomicMove]])
+      FiniteDistribution[AtomicMove]])
   }
 
   def getState(name: String) = {
@@ -359,29 +360,28 @@ object ACData {
     val tVec =
       pmfs map ((pmf =>
                    FiniteDistribution(
-                       pmf map ((xp) => Weighted(xp._1, xp._2)))))
+                     pmf map ((xp) => Weighted(xp._1, xp._2)))))
     val supp = (tVec map (_.supp.toSet) reduce (_ union _)).toVector
     def pVec(p: String) =
       tVec map ((fd) => fd(p))
-    supp.foreach(
-        (p) => {
+    supp.foreach((p) => {
       write.append(target, s""""$p",${pVec(p).mkString(",")}\n""")
     })
   }
 
   def thmFiles(dir: String = "acDev", s: String => Boolean = (x) => true) = {
     ls(wd / dir) filter ((file) =>
-          file.ext == "acthms" && s(file.name.dropRight(7)))
+                           file.ext == "acthms" && s(file.name.dropRight(7)))
   }
 
   def pickle(
       state: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
     val fdM = state._1
     val fdV = state._2
-    val pmfM = for (Weighted(m, p) <- fdM.pmf) yield
-      (PickledWeighted(uwrite(m), p))
-    val pmfV = for (Weighted(v, p) <- fdV.pmf) yield
-      (PickledWeighted(uwrite(v), p))
+    val pmfM = for (Weighted(m, p) <- fdM.pmf)
+      yield (PickledWeighted(uwrite(m), p))
+    val pmfV = for (Weighted(v, p) <- fdV.pmf)
+      yield (PickledWeighted(uwrite(v), p))
     val s = uwrite((pmfM, pmfV))
 //    println(unpickle(s)) // a test
     s
@@ -392,7 +392,7 @@ object ACData {
       uread[(Vector[PickledWeighted], Vector[PickledWeighted])](str)
     val pmfM =
       fdStrings._1 map ((w: PickledWeighted) =>
-            w map ((x) => uread[AtomicMove](x)))
+                          w map ((x) => uread[AtomicMove](x)))
     val pmfV =
       fdStrings._2 map ((w: PickledWeighted) => w map ((x) => uread[Moves](x)))
     (FiniteDistribution(pmfM), FiniteDistribution(pmfV))
@@ -400,7 +400,8 @@ object ACData {
 
   val wd = pwd / "data"
   def fileSave(name: String, dir: String = "acDev", rank: Int = 2)(
-      fdM: FiniteDistribution[AtomicMove], fdV: FiniteDistribution[Moves]) = {
+      fdM: FiniteDistribution[AtomicMove],
+      fdV: FiniteDistribution[Moves]) = {
     val file = wd / dir / (name + ".acrun")
     val statefile = wd / dir / (name + ".acstate")
     val thmfile = wd / dir / (name + ".acthms")
@@ -433,8 +434,8 @@ object ACData {
   def loadAllFinal(name: String, dir: String = "acDev") = {
     val fileNames =
       ls(wd / dir) filter (_.ext == "acstate") map (_.name.dropRight(8))
-    val states = (for (name <- fileNames) yield
-      (name, loadFinal(name, dir))).toMap
+    val states =
+      (for (name <- fileNames) yield (name, loadFinal(name, dir))).toMap
     ACStateData(states, dir)
   }
 
@@ -450,8 +451,9 @@ object ACData {
 
   def loadData(dir: String = "acDev") = ACData(loadAll(dir), dir)
 
-  def saveFD[T](
-      file: String, dir: String = "0.5-output", fd: FiniteDistribution[T]) = {
+  def saveFD[T](file: String,
+                dir: String = "0.5-output",
+                fd: FiniteDistribution[T]) = {
     for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
   }
 

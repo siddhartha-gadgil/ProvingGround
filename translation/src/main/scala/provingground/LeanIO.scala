@@ -40,6 +40,6 @@ object LeanIO {
 
   def recallDefs(defDir: Path = pwd / 'data / 'leandefs) = {
     ls(defDir).toVector flatMap ((f) =>
-          read.lines(f) map (_.split("\t").toList))
+                                   read.lines(f) map (_.split("\t").toList))
   }
 }

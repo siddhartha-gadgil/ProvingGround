@@ -190,34 +190,41 @@ object Deducer {
     FD(newpmf).flatten.normalized()
   }
 
-
-
-
 }
-
 
 import math.{log, max}
 
-case class ThmEntropies(fd: FD[Term], varNames: Vector[Term] = Vector(), scale: Double = 1.0) {
+case class ThmEntropies(fd: FD[Term],
+                        varNames: Vector[Term] = Vector(),
+                        scale: Double = 1.0) {
   import TermBucket._
 
   val vars = varNames map ((x) => Weighted(x, fd(x)))
 
   lazy val lfd = lambdaDist(vars, scale)(fd)
 
-  lazy val tfd = FiniteDistribution{
-    fd.pmf collect {case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)}
+  lazy val tfd = FiniteDistribution {
+    fd.pmf collect {
+      case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
+    }
   }
 
   lazy val pfd = piDist(vars, scale)(tfd)
 
   lazy val byProof = (lfd map (_.typ: Typ[Term])).flatten.normalized()
 
-  lazy val byStatement  = FD(byProof.pmf map {case Weighted(x, _) => Weighted(x : Typ[Term], pfd(x))}).flatten.normalized()
+  lazy val byStatement = FD(byProof.pmf map {
+    case Weighted(x, _) => Weighted(x: Typ[Term], pfd(x))
+  }).flatten.normalized()
 
-  lazy val entropyPairs = byProof.pmf collect {case Weighted(x, _)  if byStatement(x) > 0  => x -> ((-log(byStatement(x)), -log(byProof(x))) )}
+  lazy val entropyPairs = byProof.pmf collect {
+    case Weighted(x, _) if byStatement(x) > 0 =>
+      x -> ((-log(byStatement(x)), -log(byProof(x))))
+  }
 
-  lazy val feedbackVec = entropyPairs map {case (x, (a, b)) => (x, b - a)} sortBy {case (x, e) => -e}
+  lazy val feedbackVec = entropyPairs map { case (x, (a, b)) => (x, b - a) } sortBy {
+    case (x, e) => -e
+  }
 
   lazy val feedbackMap = feedbackVec.toMap
 
@@ -225,16 +232,15 @@ case class ThmEntropies(fd: FD[Term], varNames: Vector[Term] = Vector(), scale: 
 
   def feedbackTypDist(fd: FD[Typ[Term]]) = fd.integral(feedbackFunction)
 
-  def feedbackTermDist(fd: FD[Term]) = feedbackTypDist(piDist(vars, scale)(fd map (_.typ: Typ[Term])))
+  def feedbackTermDist(fd: FD[Term]) =
+    feedbackTypDist(piDist(vars, scale)(fd map (_.typ: Typ[Term])))
 }
 
-
-
 case class BasicDeducer(applnWeight: Double = 0.2,
-                   val lambdaWeight: Double = 0.2,
-                   piWeight: Double = 0.2,
-                   varWeight: Double = 0.3,
-                   val vars: Vector[Term] = Vector()) { ded =>
+                        val lambdaWeight: Double = 0.2,
+                        piWeight: Double = 0.2,
+                        varWeight: Double = 0.3,
+                        val vars: Vector[Term] = Vector()) { ded =>
   import Deducer._
 
   def func(pd: PD[Term]): PD[Term] =
@@ -242,8 +248,10 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(lambda(varWeight)(func)(pd), lambdaWeight)
       .<+?>(pi(varWeight)(func)(pd), piWeight)
 
-  def hSc(sc: Double) = ded.copy(lambdaWeight = ded.lambdaWeight * sc, piWeight = ded.piWeight * sc,
-    varWeight = ded.varWeight/(ded.varWeight + 1))
+  def hSc(sc: Double) =
+    ded.copy(lambdaWeight = ded.lambdaWeight * sc,
+             piWeight = ded.piWeight * sc,
+             varWeight = ded.varWeight / (ded.varWeight + 1))
 
   def hFunc(sc: Double)(pd: PD[Term]): PD[Term] =
     pd.<+?>(appln(hFunc(sc))(pd), applnWeight)
@@ -368,8 +376,10 @@ case class BasicDeducer(applnWeight: Double = 0.2,
   def hDerFunc(sc: Double)(base: FD[Term])(pd: PD[Term]): PD[Term] =
     pd.<+?>(derApplnArg(hDerFunc(sc))(pd)(base), applnWeight)
       .<+?>(derApplnFunc(hDerFunc(sc))(pd)(base), applnWeight)
-      .<+?>(derLambdaVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
-      .<+?>(derLambdaVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
+      .<+?>(derLambdaVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base),
+            applnWeight)
+      .<+?>(derLambdaVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base),
+            applnWeight)
       .<+?>(derPiVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
       .<+?>(derPiVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
 

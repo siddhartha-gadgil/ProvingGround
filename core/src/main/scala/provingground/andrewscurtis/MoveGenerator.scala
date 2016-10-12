@@ -14,13 +14,13 @@ object MoveGenerator {
   }
 
   def genLftMult(sz: Int): List[AtomicMove] = {
-    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield
-      LftMult(j, k)).toList
+    (for (j <- 0 until sz; k <- 0 until sz if j != k)
+      yield LftMult(j, k)).toList
   }
 
   def genRtMult(sz: Int): List[AtomicMove] = {
-    (for (j <- 0 until sz; k <- 0 until sz if j != k) yield
-      RtMult(j, k)).toList
+    (for (j <- 0 until sz; k <- 0 until sz if j != k)
+      yield RtMult(j, k)).toList
   }
 
   def genConj(rank: Int, sz: Int): List[AtomicMove] = {
@@ -30,18 +30,18 @@ object MoveGenerator {
   }
 
   def genLftInvMult(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield
-      LftMultInv(j, k)).toList
+    (for (j <- 0 until rank; k <- 0 until rank if j != k)
+      yield LftMultInv(j, k)).toList
   }
 
   def genRtInvMult(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield
-      RtMultInv(j, k)).toList
+    (for (j <- 0 until rank; k <- 0 until rank if j != k)
+      yield RtMultInv(j, k)).toList
   }
 
   def genTranspose(rank: Int): List[AtomicMove] = {
-    (for (j <- 0 until rank; k <- 0 until rank if j != k) yield
-      Transpose(j, k)).toList
+    (for (j <- 0 until rank; k <- 0 until rank if j != k)
+      yield Transpose(j, k)).toList
   }
 
   def genAllMoves(rank: Int, sz: Int): List[AtomicMove] = {

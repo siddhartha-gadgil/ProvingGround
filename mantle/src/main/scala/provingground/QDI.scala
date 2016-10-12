@@ -33,9 +33,9 @@ object QDI {
     val file = ops.pwd / dir / filename
     val pmf =
       ops.read.lines(file) map ((l) => {
-            val Array(s, p) = l.split("\t")
-            Weighted(s, p.toDouble)
-          })
+                                  val Array(s, p) = l.split("\t")
+                                  Weighted(s, p.toDouble)
+                                })
     FiniteDistribution(pmf)
   }
 
@@ -64,8 +64,10 @@ object QDI {
     state
   }
 
-  def runForFut[A](
-      f: A => A, init: A, duration: Long, save: (A, Int) => Unit) =
+  def runForFut[A](f: A => A,
+                   init: A,
+                   duration: Long,
+                   save: (A, Int) => Unit) =
     Future(runFor(f, init, duration, save))
 
   def runForFut[A](f: A => A, init: A, duration: Long) =
@@ -140,7 +142,7 @@ object QDI {
         <span class ="entropy"> entropy </span>
 				<span class="element"> element </span>
         </div>
-    val nodeList = for ((Weighted(a, x), j) <- lst) yield ( <div class="atom">
+    val nodeList = for ((Weighted(a, x), j) <- lst) yield (<div class="atom">
 				<span class="index"> {j} </span>
 				<span class ="probability"> {x} </span>
 				<span class ="entropy"> {-math.log(x)/math.log(2)} </span>
@@ -152,10 +154,10 @@ object QDI {
   implicit def fdListDiv[A](fds: List[FiniteDistribution[A]]): Node = {
     val lst = fds.last.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
     def entropies(a: A) =
-      for (fd <- fds) yield
-        ( <span class="entropy">{-math.log(fd(a))/math.log(2)}</span>)
-    val nodeList = for ((Weighted(a, x), j) <- lst) yield
-      ( <div class="atom-list">
+      for (fd <- fds)
+        yield (<span class="entropy">{-math.log(fd(a))/math.log(2)}</span>)
+    val nodeList = for ((Weighted(a, x), j) <- lst)
+      yield (<div class="atom-list">
         <span class="index"> {j} </span>
         <span class="element"> {a} </span>
 				NodeSeq.fromSeq(entropies(a))

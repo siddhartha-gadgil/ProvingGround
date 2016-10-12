@@ -129,6 +129,23 @@ only information is the type parameters, so may be good starting point.</p>
       <p class="shortcomment cmt">A junction given by splitting optionally to a given shape, and building from the same shape.</p><div class="fullcomment"><div class="comment cmt"><p>A junction given by splitting optionally to a given shape, and building from the same shape.</p><p>The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
 These allow applying the recursive translator on the components.
 </p></div></div>
+    </li><li name="provingground.Translator.Mapped" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Mapped[I,O,X]extendsTranslator[I,X]withProductwithSerializable"></a>
+      <a id="Mapped[I,O,X]:Mapped[I,O,X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Translator$$Mapped.html"><span class="name">Mapped</span></a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="X">X</span>]</span><span class="params">(<span name="trans">trans: <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a>[<span class="extype" name="provingground.Translator.Mapped.I">I</span>, <span class="extype" name="provingground.Translator.Mapped.O">O</span>]</span>, <span name="fn">fn: (<span class="extype" name="provingground.Translator.Mapped.O">O</span>) ⇒ <span class="extype" name="provingground.Translator.Mapped.X">X</span></span>, <span name="ufn">ufn: (<span class="extype" name="provingground.Translator.Mapped.X">X</span>) ⇒ <span class="extype" name="provingground.Translator.Mapped.O">O</span></span>)</span><span class="result"> extends <a href="Translator.html" class="extype" name="provingground.Translator">Translator</a>[<span class="extype" name="provingground.Translator.Mapped.I">I</span>, <span class="extype" name="provingground.Translator.Mapped.X">X</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.Translator$@Mapped[I,O,X]extendsTranslator[I,X]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="provingground.Translator.OrElse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="OrElse[I,O]extendsTranslator[I,O]withProductwithSerializable"></a>
       <a id="OrElse[I,O]:OrElse[I,O]"></a>
@@ -148,18 +165,18 @@ These allow applying the recursive translator on the components.
       <p class="shortcomment cmt">Tries the first translator at top level, then the second.</p><div class="fullcomment"><div class="comment cmt"><p>Tries the first translator at top level, then the second. Is recursive.
 </p></div></div>
     </li><li name="provingground.Translator.Pattern" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Pattern[I,X[_]]extendsProductwithSerializable"></a>
+      <a id="Pattern[I,X[_]]extendsAnyRef"></a>
       <a id="Pattern[I,X[_]]:Pattern[I,X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Translator$$Pattern.html"><span class="name">Pattern</span></a><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="split">split: (<span class="extype" name="provingground.Translator.Pattern.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Translator.Pattern.X">X</span>[<span class="extype" name="provingground.Translator.Pattern.I">I</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$3">evidence$3: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.Pattern.X">X</span>]</span>, <span name="evidence$4">evidence$4: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.Pattern.X">X</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Translator$$Pattern.html"><span class="name">Pattern</span></a><span class="tparams">[<span name="I">I</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../index.html#provingground.Translator$@Pattern[I,X[_]]extendsProductwithSerializable" title="Permalink" target="_top">
+      <a href="../index.html#provingground.Translator$@Pattern[I,X[_]]extendsAnyRef" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -193,7 +210,7 @@ Crucially, the shape X[_] is determined, so junctions can be built from this, af
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Translator$$VarWord.html"><span class="name">VarWord</span></a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="S">S</span>]</span><span class="params">(<span name="word">word: <span class="extype" name="provingground.Translator.VarWord.X">X</span>[<span class="extype" name="provingground.Translator.VarWord.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$9">evidence$9: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>, <span name="evidence$10">evidence$10: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Translator$$VarWord.html"><span class="name">VarWord</span></a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="S">S</span>]</span><span class="params">(<span name="word">word: <span class="extype" name="provingground.Translator.VarWord.X">X</span>[<span class="extype" name="provingground.Translator.VarWord.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$17">evidence$17: <a href="Functor.html" class="extype" name="provingground.Functor">Functor</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>, <span name="evidence$18">evidence$18: <a href="OptNat.html" class="extype" name="provingground.OptNat">OptNat</a>[<span class="extype" name="provingground.Translator.VarWord.X">X</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.Translator$@VarWord[X[_],S]extendsProductwithSerializable" title="Permalink" target="_top">
@@ -269,7 +286,7 @@ Crucially, the shape X[_] is determined, so junctions can be built from this, af
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Translator$$Pattern$.html"><span class="name">Pattern</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Translator$$Pattern$.html"><span class="name">Pattern</span></a>
       </span>
       </h4><span class="permalink">
       <a href="../index.html#provingground.Translator$@Pattern" title="Permalink" target="_top">

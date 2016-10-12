@@ -58,11 +58,17 @@ object DedGrad {
 
     val hour = 1000.toLong * 3600
 
-    val hbuf = new dedh.BufferedRun(
-        distAB, 100000, 5000, _.getElapsedTime > hour, hsave)
+    val hbuf = new dedh.BufferedRun(distAB,
+                                    100000,
+                                    5000,
+                                    _.getElapsedTime > hour,
+                                    hsave)
 
-    val buf = new ded.BufferedRun(
-        distAB, 10000000, 10000, _.getElapsedTime > longtime, save)
+    val buf = new ded.BufferedRun(distAB,
+                                  10000000,
+                                  10000,
+                                  _.getElapsedTime > longtime,
+                                  save)
   }
 
   object SimpleGrad {
@@ -88,8 +94,14 @@ object DedGrad {
 
     val x = A.Var
 
-    val terms = Vector(
-        f, a, f(a), f(x), A ->: A, lmbda(a)(a), lmbda(x)(a), lmbda(a)(f(a)))
+    val terms = Vector(f,
+                       a,
+                       f(a),
+                       f(x),
+                       A ->: A,
+                       lmbda(a)(a),
+                       lmbda(x)(a),
+                       lmbda(a)(f(a)))
 
     type Prop =
       (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[Term]
@@ -120,8 +132,11 @@ object DedGrad {
   }
 
   object ABU {
-    val deduc = new Deducer(
-        0.2, 0.2, 0.2, 0.3, Vector(Weighted(A, 0.4), Weighted(B, 0.4)))
+    val deduc = new Deducer(0.2,
+                            0.2,
+                            0.2,
+                            0.3,
+                            Vector(Weighted(A, 0.4), Weighted(B, 0.4)))
 
     // val ev = deduc.memFunc(FD.unif(A, B, Type))
     //

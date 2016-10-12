@@ -755,17 +755,17 @@ object HoTT {
         g.domain == domain && {
           val x = domain.Var
           // Try(
-            g.fib(x.asInstanceOf[u]) == fib(x)
-        //   ).toOption.getOrElse{
-        //   ammonite.Main(
-        //     predef = "The function application error"
-        //   ).run(
-        //     "thisFunc" -> this,
-        //     "thatFunc" -> g,
-        //     "x" -> x
-        //   )
-        //     false
-        //   }
+          g.fib(x.asInstanceOf[u]) == fib(x)
+          //   ).toOption.getOrElse{
+          //   ammonite.Main(
+          //     predef = "The function application error"
+          //   ).run(
+          //     "thisFunc" -> this,
+          //     "thatFunc" -> g,
+          //     "x" -> x
+          //   )
+          //     false
+          //   }
         }
       case _ => false
     }
@@ -1302,14 +1302,13 @@ object HoTT {
     *
     */
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
-      value: V): FuncLike[U, V] =
-        {
+      value: V): FuncLike[U, V] = {
     // if (isVar(variable)) Lambda(variable, value)
     // else {
-      val newvar = variable.newobj
-      if (value.typ dependsOn variable)
-        Lambda(newvar, value.replace(variable, newvar))
-      else LambdaFixed(newvar, value.replace(variable, newvar))
+    val newvar = variable.newobj
+    if (value.typ dependsOn variable)
+      Lambda(newvar, value.replace(variable, newvar))
+    else LambdaFixed(newvar, value.replace(variable, newvar))
     // }
   }
 
@@ -1353,9 +1352,9 @@ object HoTT {
     )
     // if (isVar(variable)) LambdaFixed(variable, value)
     // else {
-      val newvar = variable.newobj
+    val newvar = variable.newobj
 //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
-      LambdaFixed(newvar, value.replace(variable, newvar))
+    LambdaFixed(newvar, value.replace(variable, newvar))
     // }
   }
 

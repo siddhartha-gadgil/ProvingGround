@@ -38,13 +38,18 @@ class DeducerSource(ded: Deducer,
   def firstBatchConc(threads: Int) =
     Future.sequence {
       (1 to threads) map ((_) =>
-            Future {
-              nextDistribution(initDist, initBatch, false, Vector(), smooth)
-          })
-    }.map((fdsInvMap) =>
-          fdsInvMap.fold((FD.empty[Term], Vector()))(
-              (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-        ))
+                            Future {
+                              nextDistribution(initDist,
+                                               initBatch,
+                                               false,
+                                               Vector(),
+                                               smooth)
+                            })
+    }.map(
+      (fdsInvMap) =>
+        fdsInvMap.fold((FD.empty[Term], Vector()))(
+          (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+      ))
 
   def initSource = Source.fromFuture(firstBatchFut)
 
@@ -62,11 +67,18 @@ class DeducerSource(ded: Deducer,
       case (fd, invM) =>
         val nextFut = Future.sequence {
           (1 to threads) map ((_) =>
-                Future { nextDistribution(fd, batchSize, true, invM, smooth) })
-        }.map((fdsInvMap) =>
-              fdsInvMap.fold((FD.empty[Term], Vector()))(
-                  (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-            ))
+                                Future {
+                                  nextDistribution(fd,
+                                                   batchSize,
+                                                   true,
+                                                   invM,
+                                                   smooth)
+                                })
+        }.map(
+          (fdsInvMap) =>
+            fdsInvMap.fold((FD.empty[Term], Vector()))(
+              (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+          ))
         nextFut map ((x) => Some(x -> fd))
     }
 
@@ -75,13 +87,16 @@ class DeducerSource(ded: Deducer,
 
   def deducConc(threads: Int) =
     (initSourceConc(threads)) flatMapConcat ((pair) =>
-          deducBatchesConc(threads)(pair._1, pair._2))
+                                               deducBatchesConc(threads)(
+                                                 pair._1,
+                                                 pair._2))
 
   def deducResult = deduc.fold(FD.empty[Term]) { case (_, result) => result }
 
   def learnBatches(fdInit: FD[Term], invMap: InvMap) = {
     val theorems =
-      (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
+      (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten
+        .normalized()
     Source.unfold(fdInit -> (invMap)) {
       case (fd, invM) =>
         val next =
@@ -92,19 +107,25 @@ class DeducerSource(ded: Deducer,
 
   def learnBatchesConc(threads: Int)(fdInit: FD[Term], invMap: InvMap) = {
     val theorems =
-      (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten.normalized()
+      (fdInit filter (isTyp) map { case tp: Typ[u] => tp }).flatten
+        .normalized()
     Source.unfoldAsync(fdInit -> (invMap)) {
       case (fd, invM) =>
         val nextFut = Future.sequence {
           (1 to threads) map ((_) =>
-                Future {
-                  learnerNextDistribution(
-                      fd, theorems, batchSize, true, invM, smooth)
-              })
-        }.map((fdsInvMap) =>
-              fdsInvMap.fold((FD.empty[Term], Vector()))(
-                  (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-            ))
+                                Future {
+                                  learnerNextDistribution(fd,
+                                                          theorems,
+                                                          batchSize,
+                                                          true,
+                                                          invM,
+                                                          smooth)
+                                })
+        }.map(
+          (fdsInvMap) =>
+            fdsInvMap.fold((FD.empty[Term], Vector()))(
+              (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+          ))
         nextFut map ((x) => Some(x -> fd))
     }
   }
@@ -145,8 +166,9 @@ class DeducerSource(ded: Deducer,
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
 
-  def timedRun(
-      dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
+  def timedRun(dedTime: FiniteDuration,
+               learnTime: FiniteDuration,
+               name: String) = {
     deduc
       .takeWithin(dedTime)
       .alsoTo(display())
@@ -185,22 +207,21 @@ object DeducerSource {
     Flow[FD[Term]].scan(FD.empty[Term] -> (Map(): Map[Term, Vector[Double]])) {
       case ((_, m), fd) =>
         (
-            fd,
-            (terms map ((t) => (t, m.getOrElse(t, Vector()) :+ fd(t)))).toMap
+          fd,
+          (terms map ((t) => (t, m.getOrElse(t, Vector()) :+ fd(t)))).toMap
         )
     }
   }
 
   def display(names: Vector[(Term, String)] = Vector()) = {
     import WebServer._
-    withTimeSeries(viewTerms).to(
-        Sink.foreach {
+    withTimeSeries(viewTerms).to(Sink.foreach {
       case (fd, m) => {
-          showDist(fd, names)
-          m.foreach {
-            case (t, v) => showTimeSeries(t, v map (-math.log(_)), names)
-          }
+        showDist(fd, names)
+        m.foreach {
+          case (t, v) => showTimeSeries(t, v map (-math.log(_)), names)
         }
+      }
     })
   }
 
