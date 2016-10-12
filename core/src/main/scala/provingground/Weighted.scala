@@ -20,7 +20,13 @@ object Weighted {
   private def gather[T](seq: Seq[Weighted[T]]) =
     Weighted(seq.head.elem, Weighted.sumWeigths(seq))
 
+  private def gather[T](seq: Vector[Weighted[T]]) =
+    Weighted(seq.head.elem, Weighted.sumWeigths(seq))
+
   def flatten[T](seq: Seq[Weighted[T]]) =
+    (seq groupBy (_.elem) map (_._2) map (gather(_))).filter(_.weight != 0)
+
+  def flatten[T](seq: Vector[Weighted[T]]) =
     (seq groupBy (_.elem) map (_._2) map (gather(_))).filter(_.weight != 0)
 
   def combine[T](seqs: Seq[Weighted[T]]*) = flatten(seqs.flatten)

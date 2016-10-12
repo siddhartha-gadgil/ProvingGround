@@ -211,7 +211,7 @@ case class ThmEntropies(fd: FD[Term],
 
   lazy val pfd = piDist(vars, scale)(tfd)
 
-  lazy val byProof = (lfd map (_.typ: Typ[Term])).flatten.normalized()
+  lazy val byProof = (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten.normalized()
 
   lazy val byStatement = FD(byProof.pmf map {
     case Weighted(x, _) => Weighted(x: Typ[Term], pfd(x))

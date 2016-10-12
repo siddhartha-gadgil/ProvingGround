@@ -88,7 +88,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def norm: Double = (pmf map (_.weight.abs)).sum
 
   def flatten: FiniteDistribution[T] =
-    FiniteDistribution(Weighted.flatten(pmf).toVector)
+    FiniteDistribution(Weighted.flatten(pmf))
 
   def sort: FiniteDistribution[T] =
     FiniteDistribution(pmf.sortBy((wt) => 1 - wt.weight))

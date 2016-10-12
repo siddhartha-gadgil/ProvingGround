@@ -1,0 +1,682 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>IndexedFuncConsShape - provingground.IndexedConstructorShape.IndexedFuncConsShape</title>
+          <meta name="description" content="IndexedFuncConsShape - provingground.IndexedConstructorShape.IndexedFuncConsShape" />
+          <meta name="keywords" content="IndexedFuncConsShape provingground.IndexedConstructorShape.IndexedFuncConsShape" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'provingground.IndexedConstructorShape$$IndexedFuncConsShape';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img alt="Class" src="../lib/class_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a>.<a href="IndexedConstructorShape$.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></p>
+        <h1>IndexedFuncConsShape</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="IndexedConstructorShape$.html" class="extype" name="provingground.IndexedConstructorShape">package IndexedConstructorShape</a>
+          </div></span></h3><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IndexedFuncConsShape</span><span class="tparams">[<span name="TS">TS &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>]</span>, <span name="HS">HS &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>]</span>, <span name="Index">Index</span>]</span><span class="params">(<span name="tail">tail: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>]</span>, <span name="head">head: <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>, <span name="ind">ind: <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$10">evidence$10: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>)</span><span class="result"> extends <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="provingground.IndexedConstructorShape.IndexedFuncConsShape"><span>IndexedFuncConsShape</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.IndexedConstructorShape"><span>IndexedConstructorShape</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(tail:provingground.IterFuncPatternMap.IterFuncShape[TS],head:provingground.IndexedConstructorShape[HS,H,F,Index],ind:Index)(implicitevidence$10:provingground.Subst[Index]):provingground.IndexedConstructorShape.IndexedFuncConsShape[TS,HS,H,F,Index]"></a>
+      <a id="&lt;init&gt;:IndexedFuncConsShape[TS,HS,H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">IndexedFuncConsShape</span><span class="params">(<span name="tail">tail: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>]</span>, <span name="head">head: <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>, <span name="ind">ind: <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@&lt;init&gt;(tail:provingground.IterFuncPatternMap.IterFuncShape[TS],head:provingground.IndexedConstructorShape[HS,H,F,Index],ind:Index)(implicitevidence$10:provingground.Subst[Index]):provingground.IndexedConstructorShape.IndexedFuncConsShape[TS,HS,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@##():Int" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#--&gt;&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="--&gt;&gt;:(that:provingground.IndexedConstructorShape.IndexedIdShape[H,F,Index]):provingground.IndexedConstructorShape.IndexedFuncConsShape[provingground.HeadTerm,S,H,F,Index]"></a>
+      <a id="--&gt;&gt;:(IndexedIdShape[H,F,Index]):IndexedFuncConsShape[HeadTerm,Func[TS,HS],H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$minus$greater$greater$colon" class="name">--&gt;&gt;:</span><span class="params">(<span name="that">that: <a href="IndexedConstructorShape$$IndexedIdShape.html" class="extype" name="provingground.IndexedConstructorShape.IndexedIdShape">IndexedIdShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a>[<a href="HeadTerm.html" class="extype" name="provingground.HeadTerm">HeadTerm</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@--&gt;&gt;:(that:provingground.IndexedConstructorShape.IndexedIdShape[H,F,Index]):provingground.IndexedConstructorShape.IndexedFuncConsShape[provingground.HeadTerm,S,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#--&gt;&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="--&gt;&gt;:[SS&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[SS]](that:provingground.IterFuncPatternMap.IterFuncShape[SS],ind:Index):provingground.IndexedConstructorShape.IndexedFuncConsShape[SS,S,H,F,Index]"></a>
+      <a id="--&gt;&gt;:[SS&lt;:TermwithSubs[SS]](IterFuncShape[SS],Index):IndexedFuncConsShape[SS,Func[TS,HS],H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$minus$greater$greater$colon" class="name">--&gt;&gt;:</span><span class="tparams">[<span name="SS">SS &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.--&gt;&gt;:.SS">SS</span>]</span>]</span><span class="params">(<span name="that">that: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.--&gt;&gt;:.SS">SS</span>]</span>, <span name="ind">ind: <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.--&gt;&gt;:.SS">SS</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@--&gt;&gt;:[SS&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[SS]](that:provingground.IterFuncPatternMap.IterFuncShape[SS],ind:Index):provingground.IndexedConstructorShape.IndexedFuncConsShape[SS,S,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#-&gt;&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tail:provingground.HoTT.Typ[T]):provingground.IndexedConstructorShape.IndexedCnstFuncConsShape[T,S,H,F,Index]"></a>
+      <a id="-&gt;&gt;:[T&lt;:TermwithSubs[T]](Typ[T]):IndexedCnstFuncConsShape[T,Func[TS,HS],H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater$greater$colon" class="name">-&gt;&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.-&gt;&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorShape.-&gt;&gt;:.T">T</span>]</span>)</span><span class="result">: <a href="IndexedConstructorShape$$IndexedCnstFuncConsShape.html" class="extype" name="provingground.IndexedConstructorShape.IndexedCnstFuncConsShape">IndexedCnstFuncConsShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.-&gt;&gt;:.T">T</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@-&gt;&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tail:provingground.HoTT.Typ[T]):provingground.IndexedConstructorShape.IndexedCnstFuncConsShape[T,S,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#:::" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":::(name:provingground.HoTT.AnySym):provingground.IndexedConstructor[S,H,F,Index]"></a>
+      <a id=":::(AnySym):IndexedConstructor[Func[TS,HS],H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$colon$colon" class="name">:::</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="IndexedConstructor.html" class="extype" name="provingground.IndexedConstructor">IndexedConstructor</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@:::(name:provingground.HoTT.AnySym):provingground.IndexedConstructor[S,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@clone():Object" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#family" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="family:provingground.TypFamilyPtn[H,F,Index]"></a>
+      <a id="family:TypFamilyPtn[H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">family</span><span class="result">: <a href="TypFamilyPtn.html" class="extype" name="provingground.TypFamilyPtn">TypFamilyPtn</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@family:provingground.TypFamilyPtn[H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a> → <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@finalize():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#head" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="head:provingground.IndexedConstructorShape[HS,H,F,Index]"></a>
+      <a id="head:IndexedConstructorShape[HS,H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">head</span><span class="result">: <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@head:provingground.IndexedConstructorShape[HS,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#ind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ind:Index"></a>
+      <a id="ind:Index"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ind</span><span class="result">: <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@ind:Index" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#mapped" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="mapped[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],IF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IF],IDF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDF],IDFT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDFT]](implicitfmlyMapper:provingground.TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):provingground.IndexedConstructorPatternMap[S,C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType];typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}"></a>
+      <a id="mapped[C&lt;:TermwithSubs[C],IF&lt;:TermwithSubs[IF],IDF&lt;:TermwithSubs[IDF],IDFT&lt;:TermwithSubs[IDFT]](TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):IndexedConstructorPatternMap[Func[TS,HS],C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:TermwithSubs[ConstructorType],typeRecDataType&lt;:TermwithSubs[RecDataType],typeInducDataType&lt;:TermwithSubs[InducDataType]}"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapped</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.C">C</span>]</span>, <span name="IF">IF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.IF">IF</span>]</span>, <span name="IDF">IDF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.IDF">IDF</span>]</span>, <span name="IDFT">IDFT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.IDFT">IDFT</span>]</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="fmlyMapper">fmlyMapper: <a href="TypFamilyMapper.html" class="extype" name="provingground.TypFamilyMapper">TypFamilyMapper</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.C">C</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IDFT">IDFT</span>]</span>)</span><span class="result">: <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.mapped.C">C</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.RecDataType">RecDataType</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.InducDataType">InducDataType</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorShape.mapped.IDFT">IDFT</span>] forSome {type ConstructorType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.ConstructorType">ConstructorType</span>], type RecDataType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.RecDataType">RecDataType</span>], type InducDataType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.mapped.InducDataType">InducDataType</span>]}</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@mapped[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],IF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IF],IDF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDF],IDFT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDFT]](implicitfmlyMapper:provingground.TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):provingground.IndexedConstructorPatternMap[S,C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType];typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#mapper" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="mapper[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],IF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IF],IDF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDF],IDFT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDFT]](implicitfmlyMapper:provingground.TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):provingground.IndexedConstructorPatternMapper[provingground.HoTT.Func[TS,HS],C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType];typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}"></a>
+      <a id="mapper[C&lt;:TermwithSubs[C],IF&lt;:TermwithSubs[IF],IDF&lt;:TermwithSubs[IDF],IDFT&lt;:TermwithSubs[IDFT]](TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):IndexedConstructorPatternMapper[Func[TS,HS],C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:TermwithSubs[ConstructorType],typeRecDataType&lt;:TermwithSubs[RecDataType],typeInducDataType&lt;:TermwithSubs[InducDataType]}"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapper</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.C">C</span>]</span>, <span name="IF">IF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IF">IF</span>]</span>, <span name="IDF">IDF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDF">IDF</span>]</span>, <span name="IDFT">IDFT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDFT">IDFT</span>]</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="fmlyMapper">fmlyMapper: <a href="TypFamilyMapper.html" class="extype" name="provingground.TypFamilyMapper">TypFamilyMapper</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.C">C</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDFT">IDFT</span>]</span>)</span><span class="result">: <a href="IndexedConstructorPatternMapper.html" class="extype" name="provingground.IndexedConstructorPatternMapper">IndexedConstructorPatternMapper</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.C">C</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.RecDataType">RecDataType</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.InducDataType">InducDataType</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.IDFT">IDFT</span>] forSome {type ConstructorType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.ConstructorType">ConstructorType</span>], type RecDataType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.RecDataType">RecDataType</span>], type InducDataType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.mapper.InducDataType">InducDataType</span>]}</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@mapper[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C],IF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IF],IDF&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDF],IDFT&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[IDFT]](implicitfmlyMapper:provingground.TypFamilyMapper[H,F,C,Index,IF,IDF,IDFT]):provingground.IndexedConstructorPatternMapper[provingground.HoTT.Func[TS,HS],C,ConstructorType,H,RecDataType,InducDataType,F,Index,IF,IDF,IDFT]forSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType];typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a> → <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@notify():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#subs" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorShape.IndexedFuncConsShape[TS,HS,H,F,Index]"></a>
+      <a id="subs(Term,Term):IndexedFuncConsShape[TS,HS,H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorShape.IndexedFuncConsShape[TS,HS,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape">IndexedFuncConsShape</a> → <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#symbcons" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="symbcons[H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H]](name:provingground.HoTT.AnySym,tp:F):ConstructorTypeforSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType]}"></a>
+      <a id="symbcons[H&lt;:TermwithSubs[H]](AnySym,F):ConstructorTypeforSome{typeConstructorType&lt;:TermwithSubs[ConstructorType]}"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbcons</span><span class="tparams">[<span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.symbcons.H">H</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span></span>)</span><span class="result">: <span class="extype" name="provingground.IndexedConstructorShape.symbcons.mp.ConstructorType">ConstructorType</span> forSome {type ConstructorType &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.symbcons.mp.ConstructorType">ConstructorType</span>]}</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@symbcons[H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H]](name:provingground.HoTT.AnySym,tp:F):ConstructorTypeforSome{typeConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType]}" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape.IndexedFuncConsShape#tail" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tail:provingground.IterFuncPatternMap.IterFuncShape[TS]"></a>
+      <a id="tail:IterFuncShape[TS]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tail</span><span class="result">: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@tail:provingground.IterFuncPatternMap.IterFuncShape[TS]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@wait():Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.IndexedConstructorShape#~&gt;&gt;:" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="~&gt;&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tailVar:T):provingground.IndexedConstructorShape.IndexedCnstDepFuncConsShape[T,S,H,F,Index]"></a>
+      <a id="~&gt;&gt;:[T&lt;:TermwithSubs[T]](T):IndexedCnstDepFuncConsShape[T,Func[TS,HS],H,F,Index]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $tilde$greater$greater$colon" class="name">~&gt;&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorShape.~&gt;&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tailVar">tailVar: <span class="extype" name="provingground.IndexedConstructorShape.~&gt;&gt;:.T">T</span></span>)</span><span class="result">: <a href="IndexedConstructorShape$$IndexedCnstDepFuncConsShape.html" class="extype" name="provingground.IndexedConstructorShape.IndexedCnstDepFuncConsShape">IndexedCnstDepFuncConsShape</a>[<span class="extype" name="provingground.IndexedConstructorShape.~&gt;&gt;:.T">T</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#provingground.IndexedConstructorShape$$IndexedFuncConsShape@~&gt;&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](tailVar:T):provingground.IndexedConstructorShape.IndexedCnstDepFuncConsShape[T,S,H,F,Index]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.IndexedConstructorShape">
+              <h3>Inherited from <a href="IndexedConstructorShape.html" class="extype" name="provingground.IndexedConstructorShape">IndexedConstructorShape</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.TS">TS</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.HS">HS</span>], <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.H">H</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.F">F</span>, <span class="extype" name="provingground.IndexedConstructorShape.IndexedFuncConsShape.Index">Index</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
