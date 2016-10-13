@@ -68,9 +68,15 @@ object Deducer {
     }
   }
 
+  def isUniv(x: Term) = x match {
+    case tp: Typ[u] => isTyp(tp.obj)
+    case _ => false
+  }
+
   /**
     * generating optionally as lambdas, with function and argument generated recursively;
     * to be mixed in using `<+?>`
+    * avoid having value a universe
     */
   def lambda(varweight: Double)(rec: => (PD[Term] => PD[Term]))(
       p: PD[Term]): PD[Option[Term]] =
@@ -78,7 +84,7 @@ object Deducer {
       case tp: Typ[u] =>
         val x = tp.Var
         val newp = p <+> (FD.unif(x), varweight)
-        (rec(newp)) map ((y: Term) => TL.lambda(x, y))
+        (rec(newp)) map ((y: Term) => if (!isUniv(y)) TL.lambda(x, y) else None)
       case _ => FD.unif(None)
     })
 
