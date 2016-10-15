@@ -161,7 +161,8 @@ class TermSampler(d: BasicDeducer) {
       }).toMap
 
     def shiftedFD(totalSize: Int, epsilon: Double) = {
-      val shift = totalFlow(totalSize)
+      val tf = totalFlow(totalSize)
+      val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
       val pmf = nextFD.pmf map {
         case Weighted(x, p) =>
