@@ -153,9 +153,9 @@ class TermSampler(d: BasicDeducer) {
 
     def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
 
+// FIXME we should sample to separate sizes, at present rounding down gives bad results.
     def totalFlow(totalSize: Int) : Map[Term, Double] =
-      (nextFD.pmf map { case Weighted(x, p) =>
-        val n = (p * totalSize).toInt
+      (sample(nextFD, totalSize) map { case (x, n) =>
         val flow = termFlow(x, n)
         x -> flow
       }).toMap
@@ -168,7 +168,7 @@ class TermSampler(d: BasicDeducer) {
           Weighted(x, p * math.exp(shift(x) * epsilon))
       }
 
-      FD(pmf).normalized()
+      FD(pmf).flatten.normalized()
     }
   }
 
