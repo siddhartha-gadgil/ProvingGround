@@ -7,6 +7,10 @@ import breeze.stats.distributions._
 
 import breeze.plot._
 
+import scala.concurrent._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 object Sampler {
   def total[A](x: Vector[(A, Int)]) = (x map (_._2)).sum
 
@@ -133,6 +137,30 @@ class TermSampler(d: BasicDeducer) {
     Iterator.iterate(init)(
       flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
+  def loggedIterator(init: FD[Term],
+               sampleSize: Int,
+               derSampleSize: Int,
+               epsilon: Double,
+               sc: Double,
+               inertia: Double) =
+                 Iterator.iterate(
+                   NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
+                 )((ns) => ns.succ)
+
+  def loggedBuffer(init: FD[Term],
+               sampleSize: Int,
+               derSampleSize: Int,
+               epsilon: Double,
+               sc: Double,
+               inertia: Double) = {
+                 val it = loggedIterator(init, sampleSize: scala.Int, derSampleSize: scala.Int, epsilon: scala.Double, sc: scala.Double, inertia: scala.Double)
+                 val buf = scala.collection.mutable.ArrayBuffer[NextSample]()
+                 Future{
+                   it.foreach((ns) => buf.append(ns))
+                 }
+                 buf
+               }
+
   case class NextSample(p: FD[Term], size: Int, derTotalSize: Int, sc: Double, epsilon: Double, inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
 
@@ -144,7 +172,28 @@ class TermSampler(d: BasicDeducer) {
 
     lazy val thmEntropies = ThmEntropies(nextFD, d.vars, d.lambdaWeight)
 
-    def derivativePD(p: PD[Term]): PD[Term] = d.hDerFunc(sc)(nextFD)(p)
+    def derivativePD(tang: PD[Term]): PD[Term] = d.hDerFunc(sc)(nextFD)(tang)
+
+    /**
+     * Sample sizes for tangents at atomic vectors
+     */
+    lazy val derSamplesSizes = sample(nextFD, derTotalSize)
+
+    /**
+     * Finite distributions as derivatives at nextFD of the atomic tangent vectors with chosen sample sizes.
+     */
+    lazy val derFDs = derSamplesSizes map {
+      case (x, n) =>
+        val tang = FD.unif(x) //tangent vecror, atom at `x`
+        val dPD = d.hDerFunc(sc)(nextFD)(tang) //recursive distribution based on derivative for sampling
+        val samp = sample(dPD, n)
+        x -> toFD(samp)
+    }
+
+    lazy val feedBacks = derFDs map {
+      case (x, tfd) =>
+        x -> thmEntropies.feedbackTermDist(tfd)
+    }
 
     def derivativeFD(p: PD[Term], n: Int) = toFD(sample(derivativePD(p), n))
 
@@ -160,7 +209,7 @@ class TermSampler(d: BasicDeducer) {
       }).toMap
 
     def shiftedFD(totalSize: Int, epsilon: Double) = {
-      val tf = totalFlow(totalSize)
+      val tf = feedBacks// totalFlow(totalSize)
       val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
       val pmf = nextFD.pmf map {
@@ -170,6 +219,10 @@ class TermSampler(d: BasicDeducer) {
 
       FD(pmf).flatten.normalized()
     }
+
+    lazy val succFD = shiftedFD(derTotalSize, epsilon)
+
+    lazy val succ = this.copy(p = succFD)
   }
 
 }
