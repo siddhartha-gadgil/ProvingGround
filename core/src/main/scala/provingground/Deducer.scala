@@ -239,7 +239,7 @@ case class ThmEntropies(fd: FD[Term],
   def feedbackTypDist(fd: FD[Typ[Term]]) = fd.integral(feedbackFunction)
 
   def feedbackTermDist(fd: FD[Term]) =
-    feedbackTypDist(piDist(vars, scale)(fd map (_.typ: Typ[Term])))
+    feedbackTypDist(piDist(vars, scale)((lambdaDist(vars, scale)(fd)) map (_.typ: Typ[Term])))
 }
 
 case class BasicDeducer(applnWeight: Double = 0.2,
