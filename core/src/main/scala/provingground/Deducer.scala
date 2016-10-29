@@ -84,7 +84,8 @@ object Deducer {
       case tp: Typ[u] =>
         val x = tp.Var
         val newp = p <+> (FD.unif(x), varweight)
-        (rec(newp)) map ((y: Term) => if (!isUniv(y)) TL.lambda(x, y) else None)
+        (rec(newp)) map ((y: Term) =>
+                           if (!isUniv(y)) TL.lambda(x, y) else None)
       case _ => FD.unif(None)
     })
 
@@ -202,7 +203,8 @@ import math.{log, max}
 
 case class ThmEntropies(fd: FD[Term],
                         varNames: Vector[Term] = Vector(),
-                        scale: Double = 1.0) {
+                        scale: Double = 1.0,
+                        thmScale: Double = 1.0) {
   import TermBucket._
 
   val vars = varNames map ((x) => Weighted(x, fd(x)))
@@ -217,11 +219,18 @@ case class ThmEntropies(fd: FD[Term],
 
   lazy val pfd = piDist(vars, scale)(tfd)
 
-  lazy val byProof = (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten.normalized()
+  lazy val byProof =
+    (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten.normalized()
 
-  lazy val byStatement = FD(byProof.pmf map {
+  lazy val byStatementUnscaled = FD(byProof.pmf map {
     case Weighted(x, _) => Weighted(x: Typ[Term], pfd(x))
-  }).flatten.normalized()
+  }).flatten
+
+  lazy val thmTotal = byStatementUnscaled.total
+
+  lazy val byStatement =
+    if (thmTotal > 0) byStatementUnscaled * (1.0 / thmTotal)
+    else FD.empty[Typ[Term]]
 
   lazy val entropyPairs = byProof.pmf collect {
     case Weighted(x, _) if byStatement(x) > 0 =>
@@ -238,9 +247,16 @@ case class ThmEntropies(fd: FD[Term],
 
   def feedbackTypDist(fd: FD[Typ[Term]]) = fd.integral(feedbackFunction)
 
+  def thmFeedbackFunction(x: Term) = x match {
+    case tp: Typ[u] =>
+      if (byStatement(tp) > 0) -math.log(byStatement(tp)) * thmScale else 0.0
+    case _ => 0.0
+  }
+
   def feedbackTermDist(fd: FD[Term]) = {
     val ltang = lambdaDist(vars, scale)(fd).normalized()
-    feedbackTypDist(piDist(vars, scale)((ltang) map (_.typ: Typ[Term])))
+    feedbackTypDist(piDist(vars, scale)((ltang) map (_.typ: Typ[Term]))) +
+      ltang.integral(thmFeedbackFunction)
   }
 }
 
