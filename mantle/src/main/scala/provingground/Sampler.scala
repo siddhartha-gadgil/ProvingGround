@@ -161,7 +161,7 @@ class TermSampler(d: BasicDeducer) {
                  buf
                }
 
-  case class NextSample(p: FD[Term], size: Int, derTotalSize: Int, sc: Double, epsilon: Double, inertia: Double, typWeight: Double = 0.2) {
+  case class NextSample(p: FD[Term], size: Int, derTotalSize: Int, sc: Double, epsilon: Double, inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
 
     lazy val nextSamp = sample(init, size)
@@ -217,17 +217,7 @@ class TermSampler(d: BasicDeducer) {
           Weighted(x, p * math.exp(shift(x) * epsilon))
       }
 
-      val newFD = FD(pmf).flatten.normalized()
-
-      val typDist = newFD filter(isTyp)
-
-      val typTotal = (typDist).total
-
-      if (typTotal > typWeight || typTotal == 0)  newFD else {
-        val a = (1.0 - typWeight) / (1.0 - typTotal)
-        val b = (1 - a)/typTotal
-        newFD * a ++ (typDist * b)
-      }
+      FD(pmf).flatten.normalized()
     }
 
     lazy val succFD = shiftedFD(derTotalSize, epsilon)
