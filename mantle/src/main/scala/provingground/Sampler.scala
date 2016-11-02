@@ -126,7 +126,8 @@ class TermSampler(d: BasicDeducer) {
            sc: Double,
            inertia: Double): FD[Term] => FD[Term] =
     (p: FD[Term]) =>
-      NextSample(p, sampleSize, derSampleSize, sc, epsilon, inertia).shiftedFD(derSampleSize, epsilon)
+      NextSample(p, sampleSize, derSampleSize, sc, epsilon, inertia)
+        .shiftedFD(derSampleSize, epsilon)
 
   def iterator(init: FD[Term],
                sampleSize: Int,
@@ -138,14 +139,14 @@ class TermSampler(d: BasicDeducer) {
       flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
   def loggedIterator(init: FD[Term],
-               sampleSize: Int,
-               derSampleSize: Int,
-               epsilon: Double,
-               sc: Double,
-               inertia: Double) =
-                 Iterator.iterate(
-                   NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
-                 )((ns) => ns.succ)
+                     sampleSize: Int,
+                     derSampleSize: Int,
+                     epsilon: Double,
+                     sc: Double,
+                     inertia: Double) =
+    Iterator.iterate(
+      NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
+    )((ns) => ns.succ)
 
   def loggedBuffer(init: FD[Term],
                sampleSize: Int,
@@ -163,7 +164,12 @@ class TermSampler(d: BasicDeducer) {
                  buf
                }
 
-  case class NextSample(p: FD[Term], size: Int, derTotalSize: Int, sc: Double, epsilon: Double, inertia: Double, typWeight: Double = 0.2) {
+  case class NextSample(p: FD[Term],
+                        size: Int,
+                        derTotalSize: Int,
+                        sc: Double,
+                        epsilon: Double,
+                        inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
 
     lazy val nextSamp = sample(init, size)
@@ -177,13 +183,13 @@ class TermSampler(d: BasicDeducer) {
     def derivativePD(tang: PD[Term]): PD[Term] = d.hDerFunc(sc)(nextFD)(tang)
 
     /**
-     * Sample sizes for tangents at atomic vectors
-     */
+      * Sample sizes for tangents at atomic vectors
+      */
     lazy val derSamplesSizes = sample(nextFD, derTotalSize)
 
     /**
-     * Finite distributions as derivatives at nextFD of the atomic tangent vectors with chosen sample sizes.
-     */
+      * Finite distributions as derivatives at nextFD of the atomic tangent vectors with chosen sample sizes.
+      */
     lazy val derFDs = derSamplesSizes map {
       case (x, n) =>
         val tang = FD.unif(x) //tangent vecror, atom at `x`
@@ -204,14 +210,15 @@ class TermSampler(d: BasicDeducer) {
 
     def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
 
-    def totalFlow(totalSize: Int) : Map[Term, Double] =
-      (sample(nextFD, totalSize) map { case (x, n) =>
-        val flow = termFlow(x, n)
-        x -> flow
+    def totalFlow(totalSize: Int): Map[Term, Double] =
+      (sample(nextFD, totalSize) map {
+        case (x, n) =>
+          val flow = termFlow(x, n)
+          x -> flow
       }).toMap
 
     def shiftedFD(totalSize: Int, epsilon: Double) = {
-      val tf = feedBacks// totalFlow(totalSize)
+      val tf = feedBacks // totalFlow(totalSize)
       val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
       val pmf = nextFD.pmf map {
@@ -219,17 +226,7 @@ class TermSampler(d: BasicDeducer) {
           Weighted(x, p * math.exp(shift(x) * epsilon))
       }
 
-      val newFD = FD(pmf).flatten.normalized()
-
-      val typDist = newFD filter(isTyp)
-
-      val typTotal = (typDist).total
-
-      if (typTotal > typWeight || typTotal == 0)  newFD else {
-        val a = (1.0 - typWeight) / (1.0 - typTotal)
-        val b = (1 - a)/typTotal
-        newFD * a ++ (typDist * b)
-      }
+      FD(pmf).flatten.normalized()
     }
 
     lazy val succFD = shiftedFD(derTotalSize, epsilon)
