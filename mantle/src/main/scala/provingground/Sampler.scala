@@ -153,7 +153,9 @@ class TermSampler(d: BasicDeducer) {
                epsilon: Double,
                sc: Double,
                inertia: Double) = {
-                 val it = loggedIterator(init, sampleSize: scala.Int, derSampleSize: scala.Int, epsilon: scala.Double, sc: scala.Double, inertia: scala.Double)
+                 var live: Boolean = true
+                 def stop() = {live = false}
+                 val it = loggedIterator(init, sampleSize: scala.Int, derSampleSize: scala.Int, epsilon: scala.Double, sc: scala.Double, inertia: scala.Double).takeWhile((_) => live)
                  val buf = scala.collection.mutable.ArrayBuffer[NextSample]()
                  Future{
                    it.foreach((ns) => buf.append(ns))
