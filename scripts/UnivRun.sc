@@ -19,7 +19,7 @@ val sampAB = sample(initAB, 100000000)
 val bufAB = TSAB.loggedBuffer(toFD(sampAB).flatten, 25000, 50000, 0.5, 0.5, 0.9)
 println("A, B buffer started")
 import library.Monoid._
-val distM = smallDist*0.5 ++ (FD.unif[Term](M, refl, refl.typ, sym.typ, trans.typ, leftIdAx.typ, rightIdAx.typ) * 0.5)
+val distM = smallDist*0.5 ++ (FD.unif[Term](M, refl, refl.typ, sym.typ, trans.typ, leftId.typ, rightId.typ) * 0.5)
 val dMon = new BasicDeducer(vars = Vector(a, b, c))
 val initM = dMon.hFunc(0.3)(distM)
 val sampM = sample(initM, 100000)
