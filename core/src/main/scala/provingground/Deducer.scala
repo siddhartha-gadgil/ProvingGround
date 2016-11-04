@@ -204,7 +204,8 @@ import math.{log, max}
 case class ThmEntropies(fd: FD[Term],
                         varNames: Vector[Term] = Vector(),
                         scale: Double = 1.0,
-                        thmScale: Double = 1.0) {
+                        thmScale: Double = 0.3,
+                        thmTarget: Double = 0.2) {
   import TermBucket._
 
   val vars = varNames map ((x) => Weighted(x, fd(x)))
@@ -228,6 +229,10 @@ case class ThmEntropies(fd: FD[Term],
 
   lazy val thmTotal = byStatementUnscaled.total
 
+  lazy val thmShift = if (thmTotal >0 && thmTotal < thmTarget) log(thmTarget/thmTotal) * thmScale else 0
+
+  lazy val thmSet = byStatement.supp.toSet
+
   lazy val byStatement =
     if (thmTotal > 0) byStatementUnscaled * (1.0 / thmTotal)
     else FD.empty[Typ[Term]]
@@ -249,7 +254,7 @@ case class ThmEntropies(fd: FD[Term],
 
   def thmFeedbackFunction(x: Term) = x match {
     case tp: Typ[u] =>
-      if (byStatement(tp) > 0) -math.log(byStatement(tp)) * thmScale else 0.0
+      if (thmSet contains(tp)) thmShift else 0.0
     case _ => 0.0
   }
 
