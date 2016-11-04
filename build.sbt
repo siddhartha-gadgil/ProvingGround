@@ -14,12 +14,12 @@ lazy val commonSettings = baseSettings ++ Seq(
     resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
+//      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+//      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.spire-math" %% "spire" % "0.11.0",
-      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
-      "com.lihaoyi" %% "fansi" % "0.2.1",
-      "com.lihaoyi" %% "upickle" % "0.4.0",
+      "org.scalatest" % "scalatest_2.11" % "3.0.0" % "test",
+      "com.lihaoyi" %% "fansi" % "0.2.3",
+      "com.lihaoyi" %% "upickle" % "0.4.3",
       "com.chuusai" %% "shapeless" % "2.3.2",
       "com.lihaoyi" % "ammonite" % "0.7.7" cross CrossVersion.full
     ),
@@ -58,7 +58,7 @@ lazy val jvmSettings = Seq(
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" % "1.7.16",
 //    "org.slf4j" % "slf4j-nop" %"1.7.16",
-    "com.lihaoyi" %% "pprint" % "0.4.1",
+    "com.lihaoyi" %% "pprint" % "0.4.3",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.12",
     // Native libraries are not included by default. add this if you want them (as of 0.7)
@@ -128,7 +128,7 @@ lazy val client = project
             libraryDependencies ++= Seq(
               "org.scala-js" %%% "scalajs-dom" % "0.8.0",
               "com.lihaoyi" %%% "scalatags" % "0.4.6",
-              "com.lihaoyi" %%% "upickle" % "0.4.0"
+              "com.lihaoyi" %%% "upickle" % "0.4.3"
             ))
   .enablePlugins(ScalaJSPlugin, ScalaJSPlay)
   .dependsOn(coreJS)
@@ -154,7 +154,7 @@ lazy val mizar = project
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
   .settings(name := "Mizar-Parser",
-            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.0")
+            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.1")
 
 val initCommands =
   """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
