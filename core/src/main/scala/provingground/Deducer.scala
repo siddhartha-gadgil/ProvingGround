@@ -260,8 +260,13 @@ case class ThmEntropies(fd: FD[Term],
 
   def feedbackTermDist(fd: FD[Term]) = {
     val ltang = lambdaDist(vars, scale)(fd).normalized()
+    val tpfd = FiniteDistribution {
+    fd.pmf collect {
+      case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
+    }}
+    val ptang = piDist(vars, scale)(tpfd).normalized()
     feedbackTypDist(piDist(vars, scale)((ltang) map (_.typ: Typ[Term]))) +
-      ltang.integral(thmFeedbackFunction)
+      ptang.integral(thmFeedbackFunction)
   }
 }
 
