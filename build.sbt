@@ -203,11 +203,15 @@ lazy val deepwalk = (project in file("deepwalk"))
   .settings(name := "DeepWalk4s",
             classpathTypes += "maven-plugin",
             libraryDependencies ++= Seq(
-              "org.deeplearning4j" % "deeplearning4j-core" % "0.4-rc3.9",
-              "org.deeplearning4j" % "deeplearning4j-graph" % "0.4-rc3.9",
-              "org.nd4j" % "nd4j-native-platform" % "0.4.0"
+              "org.deeplearning4j" % "deeplearning4j-core" % "0.6.0",
+              "org.deeplearning4j" % "deeplearning4j-graph" % "0.6.0",
+              "org.nd4j" % "nd4j-native-platform" % "0.6.0",
+              "com.lihaoyi" % "ammonite" % "0.7.7" % "test" cross CrossVersion.full,
+              "com.lihaoyi" %% "ammonite-ops" % "0.7.7"
             ))
-  .settings(baseSettings: _*)
+  .settings(baseSettings: _*).
+  settings(initialCommands in (Test, console) :=
+    s"""ammonite.Main("import scala.collection.JavaConversions._").run() """)
 
 lazy val playServer = (project in file("play-server"))
   .enablePlugins(PlayScala)
