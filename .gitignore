@@ -109,3 +109,5 @@ project/sbt-ui.sbt
 
 wiki/
 gh-pages/
+
+data/*.tsv
