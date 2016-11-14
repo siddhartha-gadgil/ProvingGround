@@ -206,6 +206,9 @@ lazy val deepwalk = (project in file("deepwalk"))
               "org.deeplearning4j" % "deeplearning4j-core" % "0.6.0",
               "org.deeplearning4j" % "deeplearning4j-graph" % "0.6.0",
               "org.nd4j" % "nd4j-native-platform" % "0.6.0",
+              "org.deeplearning4j" % "deeplearning4j-nlp" % "0.6.0",
+//              "org.deeplearning4j" % "deeplearning4j-ui" % "0.6.0",
+              "org.nd4j" % "nd4j-native" % "0.6.0",
               "com.lihaoyi" % "ammonite" % "0.7.7" % "test" cross CrossVersion.full,
               "com.lihaoyi" %% "ammonite-ops" % "0.7.7"
             ))
