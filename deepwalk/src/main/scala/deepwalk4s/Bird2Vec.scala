@@ -15,8 +15,20 @@ import org.deeplearning4j.text.tokenization.tokenizer.preprocessor._
 object Bird2Vec{
   val data = cwd / "data"
 
+  val freqF = data / "frequencies.tsv"
+
+  val birdFreqs = read.lines(freqF).map(_.split("\t")).map {case Array(name, n) => (name, n.toInt)}
+
+  val commonBirds = {for ((name, f) <- birdFreqs if f > 100) yield name}.toSet
+
   val checklists =
-    read.lines(data / "checklists.tsv") map (_.split("\t").toVector.tail)
+    read.lines(data / "checklists.tsv") map (_.split("\t").toVector.tail.filter(commonBirds.contains(_)))
+
+
+  lazy val commonPairs = {for (x <- commonBirds; y <- commonBirds if x != y) yield (x, y)}.toVector
+
+  val commonNames = read.lines("common-names.tsv").map(_.split("\t")).map {case Array(sci, comm) => (sci, comm)}.toMap
+
 
   val rnd = new scala.util.Random()
 
@@ -29,7 +41,7 @@ object Bird2Vec{
 
   def writeSentences(numSentences: Int = 10000000, length: Int = 10) =
     (1 to numSentences).foreach{(_) =>
-      write.append(bs, randSentence(length).map(_.replace(" ", "@")).mkString("", " ", "\n"))
+      write.append(bs, randSentence(length).map(_.replace(" ", "@")).mkString("", " ", " . \n"))
     }
 
   lazy val iter = new BasicLineIterator(new File("/home/gadgil/code/ProvingGround/data/bird-sentences.txt"))
@@ -53,6 +65,6 @@ object Bird2Vec{
   def save(vec: Word2Vec)=
     WordVectorSerializer.writeWordVectors(vec, new File("/home/gadgil/code/ProvingGround/data/bird2vec.txt"))
 
-
+  def nearest(vec: Word2Vec) = commonPairs.sortBy((ab) =>  -vec.similarity(ab._1.replace(" ", "@"), ab._2.replace(" ", "@"))).map {case (a, b) => (commonNames(a), commonNames(b))}
 
 }
