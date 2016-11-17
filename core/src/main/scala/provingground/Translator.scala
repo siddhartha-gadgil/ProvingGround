@@ -81,8 +81,7 @@ object Translator {
   case class Junction[I, O, X[_]: Traverse](
       split: I => Option[X[I]], build: X[O] => Option[O])
       extends Translator[I, O] {
-    def flip : X[Option[O]] => Option[X[O]] = ???
-
+    def flip : X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
     def recTranslate(leafMap: => (I => Option[O])) = {
       def connect(xi: X[I]) = flip(implicitly[Functor[X]].map(xi)(leafMap))
       (inp: I) =>
