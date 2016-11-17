@@ -2,12 +2,12 @@ package provingground
 
 import scala.language.higherKinds
 
-import Functor.Id
+//import Functor.Id
 
 trait OptNat[F[_]] {
   def optF[A](fo: F[Option[A]]): Option[F[A]]
 }
-
+/*
 object OptNat {
   def mkOpt[A, F[_]: OptNat](fo: F[Option[A]]) =
     implicitly[OptNat[F]].optF(fo)
@@ -181,3 +181,4 @@ object OptNat {
     val coo = implicitly[OptNat[Functor.Coded]]
   }
 }
+*/

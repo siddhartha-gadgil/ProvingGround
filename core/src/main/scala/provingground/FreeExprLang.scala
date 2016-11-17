@@ -2,6 +2,12 @@ package provingground
 
 import upickle.default._
 
+import cats.implicits._
+
+import cats._
+
+import cats.data.Prod
+
 sealed trait FreeExpr {
   def as[E](implicit l: ExprLang[E]): Option[E]
 }
@@ -118,15 +124,14 @@ object FreeExpr {
   }
 
   object Special {
-    import Functor._
-    import OptNat._
+    import Functors._
     import Translator._
 
     val pattern = Pattern.partial[FreeExpr, Coded] {
-      case Special(name, typ, args) => (name, typ, args)
+      case Special(name, typ, args) => (name, (typ, args))
     }
 
-    val build = (c: Coded[FreeExpr]) => (Special(c._1, c._2, c._3): FreeExpr)
+    val build = (c: Coded[FreeExpr]) => (Special(c._1, c._2._1, c._2._2): FreeExpr)
   }
 
   case object Univ {
@@ -266,8 +271,8 @@ object FreeExpr {
 }
 
 import Translator._
-import Functor._
-import OptNat._
+import Functors._
+
 
 import HoTT._
 
@@ -344,34 +349,34 @@ object SpecialTerms {
   object Decompose
       extends Pattern.Partial[Term, Coded]({
         case rfl @ Refl(dom: Typ[u], x: Term) =>
-          (Names.rfl, rfl.typ: Typ[Term], List(dom, x))
+          (Names.rfl, (rfl.typ: Typ[Term], List(dom, x)))
         case rfn @ IdentityTyp.RecFn(domain: Typ[u],
                                      target: Typ[v],
                                      data: Func[x, y],
                                      a: Term,
                                      b: Term) =>
-          (Names.idRec, rfn.typ: Typ[Term], List(domain, target, data, a, b))
+          (Names.idRec, (rfn.typ: Typ[Term], List(domain, target, data, a, b)))
         case incl1 @ IdentityTyp.InducFn(domain: Typ[u],
                                          target: Term,
                                          data: FuncLike[x, y],
                                          a: Term,
                                          b: Term) =>
           (Names.idInduc,
-           incl1.typ: Typ[Term],
-           List(domain, target, data, a, b))
+           (incl1.typ: Typ[Term],
+           List(domain, target, data, a, b)))
       })
 
   import Names._
 
   val build: Coded[Term] => Term = {
-    case (`rfl`, _, List(dom: Typ[u], x: Term)) => Refl(dom, x.asInstanceOf[u])
+    case (`rfl`,( _, List(dom: Typ[u], x: Term))) => Refl(dom, x.asInstanceOf[u])
     case (`idInduc`,
-          _,
+          (_,
           List(domain: Typ[u],
                target: Term,
                data: FuncLike[x, v],
                a: Term,
-               b: Term)) =>
+               b: Term))) =>
       IdentityTyp.InducFn(
           domain,
           target

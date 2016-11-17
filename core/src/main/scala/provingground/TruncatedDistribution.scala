@@ -7,6 +7,8 @@ import scala.language.implicitConversions
 import FiniteDistribution.FiniteDistVec
 import LinearStructure._
 
+import cats._
+
 case class TruncDistVal[A](getFD: Double => Option[FiniteDistribution[A]])
     extends AnyVal {
 
@@ -121,8 +123,7 @@ sealed trait TruncatedDistribution[A] {
 }
 
 object TruncatedDistribution
-    extends OptNat[TruncatedDistribution]
-    with Functor[TruncatedDistribution] {
+    extends Functor[TruncatedDistribution] {
   case class Empty[A]() extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = None
 

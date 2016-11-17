@@ -1,6 +1,10 @@
 package provingground
 
-import Functor._
+import Functors._
+
+import cats.implicits._
+
+import cats._
 
 import HoTT._
 
@@ -23,7 +27,7 @@ object TermPatterns {
       (x, fibre(x))
   }
 
-  val sigmaTyp = Pattern.partial[Term, Id] {
+  val sigmaTyp = Pattern.partial[Term, cats.Id] {
     case SigmaTyp(fibre) => fibre
   }
 
@@ -50,7 +54,7 @@ object TermPatterns {
   }
 
   val identityTyp = Pattern.partial[Term, III] {
-    case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => (dom, lhs, rhs)
+    case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => ((dom, lhs), rhs)
   }
 
   val equation = Pattern.partial[Term, II] {

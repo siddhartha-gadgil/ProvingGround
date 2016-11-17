@@ -27,7 +27,7 @@ object Bird2Vec{
 
   lazy val commonPairs = {for (x <- commonBirds; y <- commonBirds if x != y) yield (x, y)}.toVector
 
-  val commonNames = read.lines("common-names.tsv").map(_.split("\t")).map {case Array(sci, comm) => (sci, comm)}.toMap
+  val commonNames = read.lines(data /"common-names.tsv").map(_.split("\t")).map {case Array(sci, comm) => (sci, comm)}.toMap
 
 
   val rnd = new scala.util.Random()

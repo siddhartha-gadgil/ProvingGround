@@ -4,9 +4,13 @@ import edu.stanford.nlp.trees.Tree
 
 import PennTrees._
 
-import Functor._
+import Functors._
 
 import Translator.Pattern
+
+import cats._
+
+import cats.implicits._
 
 object TreePatterns {
   object word {
@@ -62,12 +66,12 @@ object TreePatterns {
       extends Pattern.Partial[Tree, II]({
         case Node("S", List(NP(List(x)), VP(List(y)))) => (x, y)
       }) {
-    val pattern = Translator.Pattern[Tree, Functor.II](unapply)
+    val pattern = Translator.Pattern[Tree, Functors.II](unapply)
 
     def translate[E: ExprLang] = {
       pattern.join(ExprLang.appln[E])
     }
   }
 
-  val npvpPattern = Translator.Pattern[Tree, Functor.LL](NPVP.unapply)
+  val npvpPattern = Translator.Pattern[Tree, Functors.LL](NPVP.unapply)
 }

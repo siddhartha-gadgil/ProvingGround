@@ -3,6 +3,10 @@ package provingground
 import scala.language.higherKinds
 import scala.util.Try
 
+import cats.implicits._
+
+import cats._
+
 trait Translator[I, O] extends (I => Option[O]) { self =>
   def apply(inp: I) = recTranslate(self)(inp)
 
@@ -74,10 +78,10 @@ object Translator {
     * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
     * These allow applying the recursive translator on the components.
     */
-  case class Junction[I, O, X[_]: Functor: OptNat](
+  case class Junction[I, O, X[_]: Traverse](
       split: I => Option[X[I]], build: X[O] => Option[O])
       extends Translator[I, O] {
-    def flip = implicitly[OptNat[X]].optF[O](_)
+    def flip : X[Option[O]] => Option[X[O]] = ???
 
     def recTranslate(leafMap: => (I => Option[O])) = {
       def connect(xi: X[I]) = flip(implicitly[Functor[X]].map(xi)(leafMap))
@@ -96,11 +100,11 @@ object Translator {
     * The splitting part of a junction, pattern matching and splitting to a given shape.
     * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
     */
-  class Pattern[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) {
+  class Pattern[I, X[_]: Traverse](split: I => Option[X[I]]) {
     def unapply(x: I): Option[X[I]] = split(x)
 
     def map[J](f: I => I) = {
-      val lift = (xi: X[I]) => Functor.liftMap(xi, f)
+      val lift = implicitly[Functor[X]].lift(f)
       Pattern((inp: I) => unapply(inp) map lift)
     }
 
@@ -116,24 +120,24 @@ object Translator {
   }
 
   object Pattern {
-    def apply[I, X[_]: Functor: OptNat](split: I => Option[X[I]]) =
+    def apply[I, X[_]: Traverse](split: I => Option[X[I]]) =
       new Pattern(split)
 
-    def partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]]) =
+    def partial[I, X[_]: Traverse](split: PartialFunction[I, X[I]]) =
       Pattern(split.lift)
 
     // To allow for inheritance so we can use case objects.
-    class Partial[I, X[_]: Functor: OptNat](split: PartialFunction[I, X[I]])
+    class Partial[I, X[_]: Traverse](split: PartialFunction[I, X[I]])
         extends Pattern(split.lift)
 
-    case class OrElse[I, X[_]: Functor: OptNat](
+    case class OrElse[I, X[_]: Traverse](
         first: Pattern[I, X], second: Pattern[I, X])
         extends Pattern[I, X](
             (x: I) => first.unapply(x) orElse second.unapply(x)
         )
 
     def filter[I](p: I => Boolean) =
-      Pattern[I, Functor.Id] { (x: I) =>
+      Pattern[I, Id] { (x: I) =>
         if (p(x)) Some(x) else None
       }
 
@@ -141,10 +145,10 @@ object Translator {
       * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
       * This is problematic if lists should be returned.
       */
-    def fromMatcher[I, X[_]: Functor: OptNat, S](
+    def fromMatcher[I, X[_]: Traverse, S](
         matcher: I => Option[Map[S, I]], varword: X[S]) = {
       Pattern(
-          (inp: I) => matcher(inp) map (Functor.liftMap(varword, _))
+          (inp: I) => matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
       )
     }
 
@@ -152,7 +156,7 @@ object Translator {
       * Given shape and Input type, builds a junction from a split whose output is _a priori_ of the wrong type.
       * The shape X[_] must be specified.
       */
-    def cast[I, X[_]: Functor: OptNat](split: I => Option[Any]) =
+    def cast[I, X[_]: Traverse](split: I => Option[Any]) =
       Pattern[I, X]((inp: I) =>
             split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption))
   }
@@ -160,7 +164,7 @@ object Translator {
   /**
     * A word fixing the shape of patterns to which we match. Should work fine for tuples, but problematic with Lists returned.
     */
-  case class VarWord[X[_]: Functor: OptNat, S](word: X[S]) {
+  case class VarWord[X[_]: Traverse, S](word: X[S]) {
     def apply[I](matcher: I => Option[Map[S, I]]) =
       Pattern.fromMatcher(matcher, word)
   }

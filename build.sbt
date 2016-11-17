@@ -21,6 +21,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       "com.lihaoyi" %% "fansi" % "0.2.3",
       "com.lihaoyi" %% "upickle" % "0.4.3",
       "com.chuusai" %% "shapeless" % "2.3.2",
+      "org.typelevel" %% "cats" % "0.8.1",
       "com.lihaoyi" % "ammonite" % "0.7.7" cross CrossVersion.full
     ),
     scalacOptions ++= Seq("-unchecked",
