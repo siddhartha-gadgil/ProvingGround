@@ -193,6 +193,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     "[" + terms.dropRight(2) + "]"
   }
 
+  override def conditioned(p: T => Boolean) : FiniteDistribution[T] = {
+    val filtered = filter(p)
+    if (filtered.total > 0) filtered.normalized() else FiniteDistribution.empty[T]
+  }
+
   def entropy(elem: T) = -math.log(apply(elem)) / math.log(2)
 
   def entropyView =

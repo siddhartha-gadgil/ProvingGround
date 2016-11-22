@@ -2294,6 +2294,11 @@ object HoTT {
     case _ => false
   }
 
+  def isUniv(x: Term) = x match {
+    case tp: Typ[u] => isTyp(tp.obj)
+    case _ => false
+  }
+
   def funcToLambda[U <: Term with Subs[U], V <: Term with Subs[V]](
       fn: FuncLike[U, V]) = fn match {
     case l: LambdaLike[U, V] => l

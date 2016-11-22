@@ -78,9 +78,17 @@ object Sampler {
             (for ((a, m) <- baseSamp) yield sample(f(a), m)).toVector
           combineAll(sampsVec)
 
-        // case genFD: GenFiniteDistribution[u] =>
-        //   fromPMF(genFD.pmf.toVector, n)
-      }
+        case Conditioned(base, p) =>
+          val firstSamp = sample(base, n) filter {case (a, n) => p(a)}
+          val tot = firstSamp.values.sum
+          if (tot ==0) Map()
+          else
+          if (tot == n) firstSamp
+          else {
+            val xs = firstSamp.keys.toVector
+            val ps = xs map ((a) => firstSamp(a).toDouble/tot)
+            getMultinomial(xs, ps, n)}
+        }
 
 }
 

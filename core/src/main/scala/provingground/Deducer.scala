@@ -16,6 +16,14 @@ import scala.concurrent._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.language.existentials
+
+
+object RefinedDeducer{
+}
+
+
+
 /**
   * Generating terms from given ones using the main HoTT operations, and the adjoint of this generation.
   * This is viewed as deduction.
@@ -24,6 +32,37 @@ import scala.concurrent.ExecutionContext.Implicits.global
   *
   */
 object Deducer {
+  def applnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]), argEvolve: => (SomeFunc => FD[Term] => PD[Term]))(p: FD[Term]) =
+    funcEvolve(p) flatMap ((f) =>
+                        argEvolve(f)(p) map (Unify.appln(f, _)))
+
+  type SomeFunc = FuncLike[u, v] forSome{type u <: Term with Subs[u]; type v <: Term with Subs[v]}
+
+  def lambdaEv(varweight: Double)(typEvolve: => (FD[Term] => PD[Term]), valueEvolve: => (Term => FD[Term] => PD[Term]))(
+      p: FD[Term]): PD[Option[Term]]=
+        typEvolve(p) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (p * (1 - varweight)) ++ (FD.unif[Term](x) * varweight)
+        (valueEvolve(x)(newp)) map ((y: Term) =>
+                           if (!isUniv(y)) TL.lambda(x, y) else None)
+      case _ => FD.unif(None)
+    })
+
+  def piEv(varweight: Double)(typEvolve: => (FD[Term] => PD[Term]), valueEvolve: => (Term => FD[Term] => PD[Term]))(
+      p: FD[Term]): PD[Option[Term]]=
+        typEvolve(p) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (p * (1 - varweight)) ++ (FD.unif[Term](x) * varweight)
+        (valueEvolve(x)(newp)) map ((y: Term) =>
+                           TL.pi(x, y))
+      case _ => FD.unif(None)
+    })
+
+  def asFuncs(pd: PD[Term]): PD[SomeFunc] = pd map {case fn: FuncLike[u, v] => fn}
+
+
   type InvMap = Vector[(Term, Set[(Term, Term)])]
 
   /**
@@ -68,10 +107,6 @@ object Deducer {
     }
   }
 
-  def isUniv(x: Term) = x match {
-    case tp: Typ[u] => isTyp(tp.obj)
-    case _ => false
-  }
 
   /**
     * generating optionally as lambdas, with function and argument generated recursively;
@@ -269,6 +304,34 @@ case class ThmEntropies(fd: FD[Term],
       ptang.integral(thmFeedbackFunction)
   }
 }
+
+
+case class FineDeducer(applnWeight: Double = 0.2,
+                        val lambdaWeight: Double = 0.2,
+                        piWeight: Double = 0.2,
+                        varWeight: Double = 0.3,
+                        unifyWeight: Double = 0.5,
+                        val vars: Vector[Term] = Vector()){
+    import Deducer._
+
+    lazy val varScaled = this.copy(varWeight = this.varWeight/(1 + this.varWeight))
+
+    def evolve(fd: FD[Term]) : PD[Term] =
+      fd.
+        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
+        <+?>(lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.evolve)(fd), lambdaWeight).
+        <+?>(piEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.evolveWithTyp(Type))(fd), piWeight)
+
+
+    def domTerms(f: SomeFunc) : FD[Term] => PD[Term] = (fd: FD[Term]) =>  evolve(fd) <+>  (evolveWithTyp(f.dom)(fd), 1 -unifyWeight)
+
+    def evolvFuncs(fd: FD[Term]): PD[FuncLike[u, v] forSome{type u<: Term with Subs[u]; type v <: Term with Subs[v]}] =
+      asFuncs{
+        ???
+      }
+
+    def evolveWithTyp(tp: Typ[Term])(fd: FD[Term]) : PD[Term] = ???
+                        }
 
 case class BasicDeducer(applnWeight: Double = 0.2,
                         val lambdaWeight: Double = 0.2,

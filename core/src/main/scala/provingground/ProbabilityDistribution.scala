@@ -49,8 +49,8 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   /**
     * returns i.i.d. sample
     */
-  def sample(n: Int) =
-    FiniteDistribution.uniform((1 to n).toVector map ((_) => next)).flatten
+  // def sample(n: Int) =
+  //   FiniteDistribution.uniform((1 to n).toVector map ((_) => next)).flatten
 
   /**
     * mix in weighted distributions;
@@ -74,6 +74,8 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     */
   def <+?>(mixin: => ProbabilityDistribution[Option[A]], weight: Double) =
     new ProbabilityDistribution.MixinOpt(this, mixin, weight)
+
+  def conditioned(p: A => Boolean) : ProbabilityDistribution[A] = ProbabilityDistribution.Conditioned(this, p)
 
   /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))*/
@@ -148,5 +150,12 @@ object ProbabilityDistribution {
                               f: A => ProbabilityDistribution[B])
       extends ProbabilityDistribution[B] {
     def next = f(base.next).next
+  }
+
+  case class Conditioned[A](base: ProbabilityDistribution[A], p: A => Boolean) extends ProbabilityDistribution[A]{
+    def next : A = {
+      val x = base.next
+      if (p(x)) x else next // Warning: unsafe
+    }
   }
 }
