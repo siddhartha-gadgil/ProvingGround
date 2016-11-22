@@ -93,12 +93,12 @@ object TermPatterns {
     (sigmaLam >> sigma[E]) || (equation >> equality[E]) ||
     (symbolic >> variable[E]) || (plusTyp >> or[E]) || (funcTyp >> func[E]) ||
     (prodTyp >> pairTyp[E]) || (absPair >> pair[E]) || (unit >> { (e: E) =>
-          tt[E]
-        }) || (zero >> { (e: E) =>
-          ff[E]
-        }) || (star >> { (e: E) =>
-          qed[E]
-        }) || (firstIncl >> i1[E]) || (secondIncl >> i2[E])
+      tt[E]
+    }) || (zero >> { (e: E) =>
+      ff[E]
+    }) || (star >> { (e: E) =>
+      qed[E]
+    }) || (firstIncl >> i1[E]) || (secondIncl >> i2[E])
   }
 
   def termToExpr[E: ExprLang](univ: Int => Option[E]) = {

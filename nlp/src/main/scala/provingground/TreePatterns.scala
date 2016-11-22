@@ -32,11 +32,12 @@ object TreePatterns {
 
   object Then
       extends Pattern.Partial[Tree, IL]({
-        case Node(
-            "S",
-            x :: Node("ADVP", List(Node("RB", List(Leaf(word("then")))))) :: ys) =>
-          (x, ys)
-      })
+          case Node("S",
+                    x :: Node(
+                    "ADVP",
+                    List(Node("RB", List(Leaf(word("then")))))) :: ys) =>
+            (x, ys)
+        })
 
   object IfTree
       extends Pattern.Partial[Tree, IL]({
@@ -50,7 +51,7 @@ object TreePatterns {
 
   object Test {
     val ifTrans = ifPattern.join((xl: (Int, List[Int])) =>
-          xl._2.headOption map (_ + xl._1))
+      xl._2.headOption map (_ + xl._1))
   }
 
   object VP extends Pattern.Partial[Tree, List]({ case Node("VP", xs) => xs })

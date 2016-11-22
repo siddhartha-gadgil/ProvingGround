@@ -75,7 +75,8 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   def <+?>(mixin: => ProbabilityDistribution[Option[A]], weight: Double) =
     new ProbabilityDistribution.MixinOpt(this, mixin, weight)
 
-  def conditioned(p: A => Boolean) : ProbabilityDistribution[A] = ProbabilityDistribution.Conditioned(this, p)
+  def conditioned(p: A => Boolean): ProbabilityDistribution[A] =
+    ProbabilityDistribution.Conditioned(this, p)
 
   /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))*/
@@ -107,6 +108,11 @@ object ProbabilityDistribution {
 
     lazy val ps = (1.0 - qs.sum) +: qs
 
+    override def conditioned(p: A => Boolean) =
+      new Mixture(base.conditioned(p), components map {
+        case Weighted(d, w) => Weighted(d.conditioned(p), w)
+      })
+
     def next =
       chooseOpt(rand.nextDouble, components) map (_.next) getOrElse (base.next)
   }
@@ -120,6 +126,9 @@ object ProbabilityDistribution {
     lazy val second = mixin
 
     lazy val q = weight
+
+    override def conditioned(p: A => Boolean) =
+      base.conditioned(p) <+> (mixin.conditioned(p), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next else base.next
@@ -135,6 +144,10 @@ object ProbabilityDistribution {
     lazy val second = mixin
 
     lazy val q = weight
+
+    override def conditioned(p: A => Boolean) =
+      base.conditioned(p) <+?> (mixin.conditioned((oa) =>
+        oa.map(p).getOrElse(false)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
@@ -152,10 +165,11 @@ object ProbabilityDistribution {
     def next = f(base.next).next
   }
 
-  case class Conditioned[A](base: ProbabilityDistribution[A], p: A => Boolean) extends ProbabilityDistribution[A]{
-    def next : A = {
+  case class Conditioned[A](base: ProbabilityDistribution[A], p: A => Boolean)
+      extends ProbabilityDistribution[A] {
+    def next: A = {
       val x = base.next
-      if (p(x)) x else next // Warning: unsafe
+      if (p(x)) x else next // Warning: unsafe, if there are no elements satisfying the condition this hangs.
     }
   }
 }

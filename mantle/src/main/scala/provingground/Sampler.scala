@@ -79,16 +79,16 @@ object Sampler {
           combineAll(sampsVec)
 
         case Conditioned(base, p) =>
-          val firstSamp = sample(base, n) filter {case (a, n) => p(a)}
+          val firstSamp = sample(base, n) filter { case (a, n) => p(a) }
           val tot = firstSamp.values.sum
-          if (tot ==0) Map()
-          else
-          if (tot == n) firstSamp
+          if (tot == 0) Map()
+          else if (tot == n) firstSamp
           else {
             val xs = firstSamp.keys.toVector
-            val ps = xs map ((a) => firstSamp(a).toDouble/tot)
-            getMultinomial(xs, ps, n)}
-        }
+            val ps = xs map ((a) => firstSamp(a).toDouble / tot)
+            getMultinomial(xs, ps, n)
+          }
+      }
 
 }
 
@@ -156,22 +156,27 @@ class TermSampler(d: BasicDeducer) {
       NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
     )((ns) => ns.succ)
 
-    var live: Boolean = true
-    def stop() = {live = false}
+  var live: Boolean = true
+  def stop() = { live = false }
 
   def loggedBuffer(init: FD[Term],
-               sampleSize: Int,
-               derSampleSize: Int,
-               epsilon: Double,
-               sc: Double,
-               inertia: Double) = {
-                 val it = loggedIterator(init, sampleSize: scala.Int, derSampleSize: scala.Int, epsilon: scala.Double, sc: scala.Double, inertia: scala.Double).takeWhile((_) => live)
-                 val buf = scala.collection.mutable.ArrayBuffer[NextSample]()
-                 Future{
-                   it.foreach((ns) => buf.append(ns))
-                 }
-                 buf
-               }
+                   sampleSize: Int,
+                   derSampleSize: Int,
+                   epsilon: Double,
+                   sc: Double,
+                   inertia: Double) = {
+    val it = loggedIterator(init,
+                            sampleSize: scala.Int,
+                            derSampleSize: scala.Int,
+                            epsilon: scala.Double,
+                            sc: scala.Double,
+                            inertia: scala.Double).takeWhile((_) => live)
+    val buf = scala.collection.mutable.ArrayBuffer[NextSample]()
+    Future {
+      it.foreach((ns) => buf.append(ns))
+    }
+    buf
+  }
 
   case class NextSample(p: FD[Term],
                         size: Int,

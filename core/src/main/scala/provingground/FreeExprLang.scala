@@ -56,50 +56,50 @@ object FreeExpr {
 
   case class FreeLambda(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- variable.as[E]; y <- value.as[E]; result <- l.lambda(x, y)) yield
-        result
+      for (x <- variable.as[E]; y <- value.as[E]; result <- l.lambda(x, y))
+        yield result
   }
 
   case class FreePi(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- variable.as[E]; y <- value.as[E]; result <- l.pi(x, y)) yield
-        result
+      for (x <- variable.as[E]; y <- value.as[E]; result <- l.pi(x, y))
+        yield result
   }
 
   case class FreeAppln(func: FreeExpr, arg: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- func.as[E]; y <- arg.as[E]; result <- l.appln(x, y)) yield
-        result
+      for (x <- func.as[E]; y <- arg.as[E]; result <- l.appln(x, y))
+        yield result
   }
 
   case class FreeEquality(lhs: FreeExpr, rhs: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- lhs.as[E]; y <- rhs.as[E]; result <- l.equality(x, y)) yield
-        result
+      for (x <- lhs.as[E]; y <- rhs.as[E]; result <- l.equality(x, y))
+        yield result
   }
 
   case class FreeSigma(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- variable.as[E]; y <- value.as[E]; result <- l.sigma(x, y)) yield
-        result
+      for (x <- variable.as[E]; y <- value.as[E]; result <- l.sigma(x, y))
+        yield result
   }
 
   case class FreePair(first: FreeExpr, second: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- first.as[E]; y <- second.as[E]; result <- l.pair(x, y)) yield
-        result
+      for (x <- first.as[E]; y <- second.as[E]; result <- l.pair(x, y))
+        yield result
   }
 
   case class OrCases(first: FreeExpr, second: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- first.as[E]; y <- second.as[E]; result <- l.orCases(x, y)) yield
-        result
+      for (x <- first.as[E]; y <- second.as[E]; result <- l.orCases(x, y))
+        yield result
   }
 
   case class Or(first: FreeExpr, second: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
-      for (x <- first.as[E]; y <- second.as[E]; result <- l.or(x, y)) yield
-        result
+      for (x <- first.as[E]; y <- second.as[E]; result <- l.or(x, y))
+        yield result
   }
 
   case object TT extends FreeExpr {
@@ -131,7 +131,8 @@ object FreeExpr {
       case Special(name, typ, args) => (name, (typ, args))
     }
 
-    val build = (c: Coded[FreeExpr]) => (Special(c._1, c._2._1, c._2._2): FreeExpr)
+    val build = (c: Coded[FreeExpr]) =>
+      (Special(c._1, c._2._1, c._2._2): FreeExpr)
   }
 
   case object Univ {
@@ -230,8 +231,8 @@ object FreeExpr {
   }
 
   object FromTerm
-      extends TermToExpr[FreeExpr](
-          univ = (n) => Univ(n), predef = (t) => None)(FreeLang)
+      extends TermToExpr[FreeExpr](univ = (n) => Univ(n),
+                                   predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
 
@@ -248,19 +249,17 @@ object FreeExpr {
 
   def writeDist(fd: FiniteDistribution[HoTT.Term],
                 names: Vector[(Term, String)] = Vector()) =
-    write(
-        fd.pmf map {
+    write(fd.pmf map {
       case Weighted(t, w) =>
         PickledWeighted(writeTerm(encode(names)(t)), w)
     })
 
-  def readDist(s: String,
-               names: Vector[(Term, String)] =
-                 Vector()): FiniteDistribution[HoTT.Term] =
+  def readDist(s: String, names: Vector[(Term, String)] = Vector())
+    : FiniteDistribution[HoTT.Term] =
     FiniteDistribution(
-        read[Vector[PickledWeighted]](s) map {
-          case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)
-        }
+      read[Vector[PickledWeighted]](s) map {
+        case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)
+      }
     ).flatten
 
   def readTyp(s: String): HoTT.Typ[HoTT.Term] =
@@ -273,7 +272,6 @@ object FreeExpr {
 import Translator._
 import Functors._
 
-
 import HoTT._
 
 object FreeExprPatterns {
@@ -281,32 +279,32 @@ object FreeExprPatterns {
   import ExprLang._
   def freeToExpr[E: ExprLang] =
     (Pattern.partial[FreeExpr, II] {
-          case FreeAppln(a, b) => (a, b)
-        } >> appln[E]) || (Pattern.partial[FreeExpr, II] {
-          case FreeLambda(a, b) => (a, b)
-        } >> lambda[E]) || (Pattern.partial[FreeExpr, II] {
-          case FreePair(a, b) => (a, b)
-        } >> pair[E]) || (Pattern.partial[FreeExpr, II] {
-          case FreePi(a, b) => (a, b)
-        } >> pi[E]) || (Pattern.partial[FreeExpr, II] {
-          case FreeSigma(a, b) => (a, b)
-        } >> sigma[E]) || (Pattern.partial[FreeExpr, II] {
-          case FreeEquality(a, b) => (a, b)
-        } >> equality[E]) || (Pattern.partial[FreeExpr, II] {
-          case Or(a, b) => (a, b)
-        } >> or[E]) || (Pattern.partial[FreeExpr, II] {
-          case OrCases(a, b) => (a, b)
-        } >> orCases[E]) || (Pattern.partial[FreeExpr, Named] {
-          case Variable(name, typ) => (name, typ)
-        } >> variable[E]) || (Pattern.partial[FreeExpr, Id] {
-          case FreeIncl1(a) => a
-        } >> incl1[E]) || (Pattern.partial[FreeExpr, Id] {
-          case FreeIncl2(a) => a
-        } >> incl2[E]) || (Pattern.partial[FreeExpr, Id] {
-          case FreeProj1(a) => a
-        } >> proj1[E]) || (Pattern.partial[FreeExpr, Id] {
-          case FreeProj2(a) => a
-        } >> proj2[E]) || Translator.Simple((f: FreeExpr) => f.as[E])
+      case FreeAppln(a, b) => (a, b)
+    } >> appln[E]) || (Pattern.partial[FreeExpr, II] {
+      case FreeLambda(a, b) => (a, b)
+    } >> lambda[E]) || (Pattern.partial[FreeExpr, II] {
+      case FreePair(a, b) => (a, b)
+    } >> pair[E]) || (Pattern.partial[FreeExpr, II] {
+      case FreePi(a, b) => (a, b)
+    } >> pi[E]) || (Pattern.partial[FreeExpr, II] {
+      case FreeSigma(a, b) => (a, b)
+    } >> sigma[E]) || (Pattern.partial[FreeExpr, II] {
+      case FreeEquality(a, b) => (a, b)
+    } >> equality[E]) || (Pattern.partial[FreeExpr, II] {
+      case Or(a, b) => (a, b)
+    } >> or[E]) || (Pattern.partial[FreeExpr, II] {
+      case OrCases(a, b) => (a, b)
+    } >> orCases[E]) || (Pattern.partial[FreeExpr, Named] {
+      case Variable(name, typ) => (name, typ)
+    } >> variable[E]) || (Pattern.partial[FreeExpr, Id] {
+      case FreeIncl1(a) => a
+    } >> incl1[E]) || (Pattern.partial[FreeExpr, Id] {
+      case FreeIncl2(a) => a
+    } >> incl2[E]) || (Pattern.partial[FreeExpr, Id] {
+      case FreeProj1(a) => a
+    } >> proj1[E]) || (Pattern.partial[FreeExpr, Id] {
+      case FreeProj2(a) => a
+    } >> proj2[E]) || Translator.Simple((f: FreeExpr) => f.as[E])
 
   import FreeExpr._
 
@@ -362,28 +360,27 @@ object SpecialTerms {
                                          a: Term,
                                          b: Term) =>
           (Names.idInduc,
-           (incl1.typ: Typ[Term],
-           List(domain, target, data, a, b)))
+           (incl1.typ: Typ[Term], List(domain, target, data, a, b)))
       })
 
   import Names._
 
   val build: Coded[Term] => Term = {
-    case (`rfl`,( _, List(dom: Typ[u], x: Term))) => Refl(dom, x.asInstanceOf[u])
+    case (`rfl`, (_, List(dom: Typ[u], x: Term))) =>
+      Refl(dom, x.asInstanceOf[u])
     case (`idInduc`,
           (_,
-          List(domain: Typ[u],
-               target: Term,
-               data: FuncLike[x, v],
-               a: Term,
-               b: Term))) =>
+           List(domain: Typ[u],
+                target: Term,
+                data: FuncLike[x, v],
+                a: Term,
+                b: Term))) =>
       IdentityTyp.InducFn(
-          domain,
-          target
-            .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[v]]]]],
-          data.asInstanceOf[FuncLike[u, v]],
-          a.asInstanceOf[u],
-          b.asInstanceOf[u])
+        domain,
+        target.asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[v]]]]],
+        data.asInstanceOf[FuncLike[u, v]],
+        a.asInstanceOf[u],
+        b.asInstanceOf[u])
   }
 
   import FreeExpr.Special

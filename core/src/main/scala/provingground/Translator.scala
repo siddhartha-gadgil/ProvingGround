@@ -69,7 +69,7 @@ object Translator {
     def recTranslate(leafMap: => (I => Option[O])) =
       (inp: I) =>
         first.recTranslate(leafMap)(inp) orElse second.recTranslate(leafMap)(
-            inp)
+          inp)
   }
 
   /**
@@ -78,10 +78,10 @@ object Translator {
     * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
     * These allow applying the recursive translator on the components.
     */
-  case class Junction[I, O, X[_]: Traverse](
-      split: I => Option[X[I]], build: X[O] => Option[O])
+  case class Junction[I, O, X[_]: Traverse](split: I => Option[X[I]],
+                                            build: X[O] => Option[O])
       extends Translator[I, O] {
-    def flip : X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
+    def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
     def recTranslate(leafMap: => (I => Option[O])) = {
       def connect(xi: X[I]) = flip(implicitly[Functor[X]].map(xi)(leafMap))
       (inp: I) =>
@@ -129,10 +129,10 @@ object Translator {
     class Partial[I, X[_]: Traverse](split: PartialFunction[I, X[I]])
         extends Pattern(split.lift)
 
-    case class OrElse[I, X[_]: Traverse](
-        first: Pattern[I, X], second: Pattern[I, X])
+    case class OrElse[I, X[_]: Traverse](first: Pattern[I, X],
+                                         second: Pattern[I, X])
         extends Pattern[I, X](
-            (x: I) => first.unapply(x) orElse second.unapply(x)
+          (x: I) => first.unapply(x) orElse second.unapply(x)
         )
 
     def filter[I](p: I => Boolean) =
@@ -144,10 +144,10 @@ object Translator {
       * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
       * This is problematic if lists should be returned.
       */
-    def fromMatcher[I, X[_]: Traverse, S](
-        matcher: I => Option[Map[S, I]], varword: X[S]) = {
+    def fromMatcher[I, X[_]: Traverse, S](matcher: I => Option[Map[S, I]],
+                                          varword: X[S]) = {
       Pattern(
-          (inp: I) => matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
+        (inp: I) => matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
       )
     }
 
@@ -157,7 +157,7 @@ object Translator {
       */
     def cast[I, X[_]: Traverse](split: I => Option[Any]) =
       Pattern[I, X]((inp: I) =>
-            split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption))
+        split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption))
   }
 
   /**

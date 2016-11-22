@@ -181,4 +181,4 @@ object OptNat {
     val coo = implicitly[OptNat[Functor.Coded]]
   }
 }
-*/
+ */
