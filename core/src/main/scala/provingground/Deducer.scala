@@ -313,7 +313,7 @@ case class FineDeducer(applnWeight: Double = 0.2,
                        piWeight: Double = 0.2,
                        varWeight: Double = 0.3,
                        unifyWeight: Double = 0.5,
-                       val vars: Vector[Term] = Vector()) {
+                       val vars: Vector[Term] = Vector()) { fine =>
   import Deducer._
 
   lazy val varScaled =
@@ -345,9 +345,7 @@ case class FineDeducer(applnWeight: Double = 0.2,
   def evolveWithTyp(tp: Typ[Term])(fd: FD[Term]): PD[Term] = {
     val p = (t: Term) => t.typ == tp
     val rawBase =
-      fd.<+?>(
-        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.evolve)(fd),
-        lambdaWeight)
+      fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
     val base = rawBase.conditioned(p)
     tp match {
       case FuncTyp(dom: Typ[u], codom : Typ[v]) =>
@@ -365,6 +363,74 @@ case class FineDeducer(applnWeight: Double = 0.2,
             piWeight).conditioned(p)
       case _ => base
     }
+  }
+
+
+  case class Derivative(evolved: PD[Term], evolvedFuncs: PD[SomeFunc], evolvedWithTyp: Typ[Term] => PD[Term]){
+    def evolve(fd: FD[Term]) : PD[Term] =
+      fd.
+        <+?>(applnEv((_) => evolvedFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
+        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => baseDomTerms(f))(fd), applnWeight).
+        <+?>(
+        lambdaEv(varWeight)((_) => evolvedWithTyp(Type), (t) => evolve)(fd),
+        lambdaWeight).
+        <+?>(
+        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => (_) => evolved)(fd),
+        lambdaWeight).
+        <+?>(piEv(varWeight)((_) => evolvedWithTyp(Type),
+                            (t) => varScaled.evolveWithTyp(Type))(fd),
+            piWeight).
+        <+?>(piEv(varWeight)(evolveWithTyp(Type),
+                            (t) => (_) => evolvedWithTyp(Type))(fd),
+            piWeight)
+
+    def baseDomTerms(f: SomeFunc): FD[Term] => PD[Term] =
+            (_) =>
+              evolved <+> (evolvedWithTyp(f.dom), 1 - unifyWeight)
+
+    def evolvFuncs(fd: FD[Term]) : PD[SomeFunc] = asFuncs {
+      fd.
+        <+?>(applnEv((_) => evolvedFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
+        conditioned(isFunc).
+        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => baseDomTerms(f))(fd), applnWeight).
+        conditioned(isFunc).
+        <+?>(
+        lambdaEv(varWeight)((_) => evolvedWithTyp(Type), (t) => varScaled.evolve)(fd),
+        lambdaWeight).
+        <+?>(
+        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => (_) => evolved)(fd),
+        lambdaWeight)
+    }
+
+    def evolveWithTyp(tp: Typ[Term])(fd: FD[Term]): PD[Term] =
+      {
+    val p = (t: Term) => t.typ == tp
+    val rawBase =
+      fd.
+        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => baseDomTerms(f))(fd), applnWeight).
+        <+?>(applnEv((_) => evolvedFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
+    val base = rawBase.conditioned(p)
+    tp match {
+      case FuncTyp(dom: Typ[u], codom : Typ[v]) =>
+        base.<+?>(
+        lambdaEv(varWeight)((fd) => FD.unif[Term](dom), (t) => (_) => evolvedWithTyp(codom))(fd),
+        lambdaWeight)
+      case gf: GenFuncTyp[u, v] =>
+        base.<+?>(
+          lambdaEv(varWeight)((fd) => FD.unif[Term](gf.domain),
+          (t) => (_) => evolvedWithTyp(gf.fib(t.asInstanceOf[u])))(fd),
+          lambdaWeight)
+      case Universe(_) =>
+        rawBase.<+?>(piEv(varWeight)((_) => evolvedWithTyp(Type),
+                            (t) => varScaled.evolveWithTyp(Type))(fd),
+            piWeight).
+            <+?>(piEv(varWeight)(evolveWithTyp(Type),
+                            (t) =>  (_) => evolvedWithTyp(Type))(fd),
+            piWeight).
+            conditioned(p)
+      case _ => base
+    }
+  }
   }
 
 }
