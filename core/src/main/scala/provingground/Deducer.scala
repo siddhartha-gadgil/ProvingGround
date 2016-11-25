@@ -34,6 +34,11 @@ object Deducer {
     type u <: Term with Subs[u]; type v <: Term with Subs[v]
   }
 
+  // def DapplnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
+  //             argEvolve: => (SomeFunc => FD[Term] => PD[Term]))(p: FD[Term], tang: FD[Term]) =
+  //   (funcEvolve(p) flatMap ((f) => argEvolve(f)(t) map (Unify.appln(f, _)))) <+>
+  //   (funcEvolve(tang) flatMap ((f) => argEvolve(f)(p) map (Unify.appln(f, _))))
+
   def lambdaEv(varweight: Double)(
       typEvolve: => (FD[Term] => PD[Term]),
       valueEvolve: => (Term => FD[Term] => PD[Term]))(
@@ -47,6 +52,8 @@ object Deducer {
                                       else None)
       case _ => FD.unif(None)
     })
+
+
 
   def piEv(varweight: Double)(typEvolve: => (FD[Term] => PD[Term]),
                               valueEvolve: => (Term => FD[Term] => PD[Term]))(
@@ -365,11 +372,6 @@ case class FineDeducer(applnWeight: Double = 0.2,
     }
   }
 
-  def evolveTyp(fd: FD[Term]): PD[Term] = {
-  fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).conditioned(isTyp)
-  .<+?>(piEv(varWeight)(evolveTyp,
-                          (t) => varScaled.evolveTyp)(fd),
-          piWeight)
 
 }
 
@@ -381,81 +383,117 @@ case class FineDeducer(applnWeight: Double = 0.2,
         <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
         <+?>(applnEv(evolvFuncs, (f: SomeFunc) => DdomTerms(f))(fd), applnWeight).
         <+?>(
-        lambdaEv(varWeight)(DevolveTyp, (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(DevolveWithTyp(Type), (t) => varScaled.evolve)(fd),
         lambdaWeight).
         <+?>(
-        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.Devolve)(fd),
+        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.Devolve)(fd),
         lambdaWeight).
-        <+?>(piEv(varWeight)(DevolveTyp,
-                            (t) => varScaled.evolveTyp)(fd),
+        <+?>(piEv(varWeight)(DevolveWithTyp(Type),
+                            (t) => varScaled.evolveWithTyp(Type))(fd),
             piWeight).
-        <+?>(piEv(varWeight)(evolveTyp,
-                            (t) => varScaled.DevolveTyp)(fd),
+        <+?>(piEv(varWeight)(evolveWithTyp(Type),
+                            (t) => varScaled.DevolveWithTyp(Type))(fd),
             piWeight)
 
 
+    def DapplnArg(fd: FD[Term], tang: FD[Term]) : PD[Option[Term]] =
+        evolvFuncs(fd) flatMap ((f) => DdomTerms(f)(fd, tang) map (Unify.appln(f, _)))
+
+    def DdomTerms(f: SomeFunc)(fd: FD[Term], tang: FD[Term]): PD[Term] =
+      Devolve(fd, tang) <+> (DevolveWithType(f.dom)(fd, tang), 1 - unifyWeight)
+
+    def DlambdaVar(fd: FD[Term], tang: FD[Term]) : PD[Option[Term]] =
+      DevolveWithType(Type)(fd, tang) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+        (varScaled.evolve(newp)) map ((y: Term) =>
+                                      if (!isUniv(y)) TL.lambda(x, y)
+                                      else None)
+      case _ => FD.unif(None)
+    })
+
+    def DlambdaVal(fd: FD[Term], tang: FD[Term]) : PD[Option[Term]] =
+      evolveWithTyp(Type)(fd) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+        (varScaled.Devolve(newp, tang * (1 - varWeight))) map ((y: Term) =>
+                                      if (!isUniv(y)) TL.lambda(x, y)
+                                      else None)
+      case _ => FD.unif(None)
+    })
+
+    def DpiVar(fd: FD[Term], tang: FD[Term]) : PD[Option[Term]] =
+      DevolveWithType(Type)(fd, tang) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+        (varScaled.evolveWithTyp(Type)(newp)) map ((y: Term) =>
+                                      if (!isUniv(y)) TL.pi(x, y)
+                                      else None)
+      case _ => FD.unif(None)
+    })
+
+    def DpiVal(fd: FD[Term], tang: FD[Term]) : PD[Option[Term]] =
+      evolveWithTyp(Type)(fd) flatMap ({
+      case tp: Typ[u] =>
+        val x = tp.Var
+        val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+        (varScaled.DevolveWithType(Type)(newp, tang * (1 - varWeight))) map ((y: Term) =>
+                                      if (!isUniv(y)) TL.pi(x, y)
+                                      else None)
+      case _ => FD.unif(None)
+    })
 
 
 
-    def DdomTerms(f: SomeFunc): FD[Term] => PD[Term] =
-    (fd: FD[Term]) =>
-      Devolve(fd) <+> (DevolveWithTyp(f.dom)(fd), 1 - unifyWeight)
-
-    def DevolvFuncs(fd: FD[Term]) : PD[SomeFunc] = asFuncs {
-      fd.
-        <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
+    def DevolvFuncs(fd: FD[Term], tang: FD[Term]) : PD[SomeFunc] =
+      asFuncs{
+        tang.
+        <+?>(DapplnFunc(fd, tang), applnWeight).
+        <+?>(DapplnArg(fd, tang), applnWeight).
         conditioned(isFunc).
         <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
         conditioned(isFunc).
         <+?>(
-        lambdaEv(varWeight)(DevolveTyp, (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(DevolveWithTyp(Type), (t) => varScaled.evolve)(fd),
         lambdaWeight).
         <+?>(
-        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.Devolve)(fd),
+        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.Devolve)(fd),
         lambdaWeight)
     }
 
-    def DevolveWithTyp(tp: Typ[Term])(fd: FD[Term]): PD[Term] =
+    def DevolveWithType(tp: Typ[Term])(fd: FD[Term], tang: FD[Term]): PD[Term] =
       {
     val p = (t: Term) => t.typ == tp
     val rawBase =
-      fd.
-        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
-        <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
+      tang.
+      <+?>(DapplnFunc(fd, tang), applnWeight).
+      <+?>(DapplnArg(fd, tang), applnWeight)
     val base = rawBase.conditioned(p)
     tp match {
       case FuncTyp(dom: Typ[u], codom : Typ[v]) =>
-        base.<+?>(
-        lambdaEv(varWeight)((fd) => FD.unif[Term](dom), (t) => varScaled.DevolveWithTyp(codom))(fd),
+        val x = dom.Var
+        base.<+>(
+        DevolveWithType(codom)(fd, tang) map ((y) => x :-> y),
         lambdaWeight)
       case gf: GenFuncTyp[u, v] =>
-        base.<+?>(
-          lambdaEv(varWeight)((fd) => FD.unif[Term](gf.domain),
-          (t) => varScaled.DevolveWithTyp(gf.fib(t.asInstanceOf[u])))(fd),
+        val x = gf.domain.Var
+        base.<+>(
+          DevolveWithType(gf.fib(x))(fd, tang) map ((y) => x :-> y),
           lambdaWeight)
       case Universe(_) =>
-        rawBase.<+?>(piEv(varWeight)(DevolveTyp,
-                            (t) => varScaled.evolveTyp)(fd),
+        rawBase.<+?>(piEv(varWeight)(DevolveWithTyp(Type),
+                            (t) => varScaled.evolveWithTyp(Type))(fd),
             piWeight).
-            <+?>(piEv(varWeight)(evolveTyp,
-                            (t) =>  varScaled.DevolveTyp)(fd),
+            <+?>(piEv(varWeight)(evolveWithTyp(Type),
+                            (t) =>  varScaled.DevolveWithTyp(Type))(fd),
             piWeight).
             conditioned(p)
       case _ => base
     }
   }
-
-
-  def DevolveTyp(fd: FD[Term]): PD[Term] =
-    fd.
-        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
-        <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).conditioned(isTyp).
-        <+?>(piEv(varWeight)(DevolveTyp,
-                            (t) => varScaled.evolveTyp)(fd),
-            piWeight).
-            <+?>(piEv(varWeight)(evolveTyp,
-                            (t) =>  varScaled.DevolveTyp)(fd),
-            piWeight)
   }
 
 
