@@ -322,10 +322,10 @@ case class FineDeducer(applnWeight: Double = 0.2,
   def evolve(fd: FD[Term]): PD[Term] =
     fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
       .<+?>(
-        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
         lambdaWeight)
-      .<+?>(piEv(varWeight)(evolveWithTyp(Type),
-                            (t) => varScaled.evolveWithTyp(Type))(fd),
+      .<+?>(piEv(varWeight)(evolveTyp,
+                            (t) => varScaled.evolveTyp)(fd),
             piWeight)
 
   def domTerms(f: SomeFunc): FD[Term] => PD[Term] =
@@ -338,7 +338,7 @@ case class FineDeducer(applnWeight: Double = 0.2,
         <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
         conditioned(isFunc).
         <+?>(
-        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
         lambdaWeight)
     }
 
@@ -358,12 +358,20 @@ case class FineDeducer(applnWeight: Double = 0.2,
           (t) => varScaled.evolveWithTyp(gf.fib(t.asInstanceOf[u])))(fd),
           lambdaWeight)
       case Universe(_) =>
-        rawBase.<+?>(piEv(varWeight)(evolveWithTyp(Type),
-                            (t) => varScaled.evolveWithTyp(Type))(fd),
+        rawBase.<+?>(piEv(varWeight)(evolveTyp,
+                            (t) => varScaled.evolveTyp)(fd),
             piWeight).conditioned(p)
       case _ => base
     }
   }
+
+  def evolveTyp(fd: FD[Term]): PD[Term] = {
+  fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).conditioned(isTyp)
+  .<+?>(piEv(varWeight)(evolveTyp,
+                          (t) => varScaled.evolveTyp)(fd),
+          piWeight)
+
+}
 
 
 //  case class Derivative(evolved: FD[Term], evolvedFuncs: FD[SomeFunc], evolvedWithTyp: Typ[Term] => FD[Term])
@@ -373,16 +381,16 @@ case class FineDeducer(applnWeight: Double = 0.2,
         <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
         <+?>(applnEv(evolvFuncs, (f: SomeFunc) => DdomTerms(f))(fd), applnWeight).
         <+?>(
-        lambdaEv(varWeight)(DevolveWithTyp(Type), (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(DevolveTyp, (t) => varScaled.evolve)(fd),
         lambdaWeight).
         <+?>(
-        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.Devolve)(fd),
+        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.Devolve)(fd),
         lambdaWeight).
-        <+?>(piEv(varWeight)(DevolveWithTyp(Type),
-                            (t) => varScaled.evolveWithTyp(Type))(fd),
+        <+?>(piEv(varWeight)(DevolveTyp,
+                            (t) => varScaled.evolveTyp)(fd),
             piWeight).
-        <+?>(piEv(varWeight)(evolveWithTyp(Type),
-                            (t) => varScaled.DevolveWithTyp(Type))(fd),
+        <+?>(piEv(varWeight)(evolveTyp,
+                            (t) => varScaled.DevolveTyp)(fd),
             piWeight)
 
 
@@ -400,10 +408,10 @@ case class FineDeducer(applnWeight: Double = 0.2,
         <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
         conditioned(isFunc).
         <+?>(
-        lambdaEv(varWeight)(DevolveWithTyp(Type), (t) => varScaled.evolve)(fd),
+        lambdaEv(varWeight)(DevolveTyp, (t) => varScaled.evolve)(fd),
         lambdaWeight).
         <+?>(
-        lambdaEv(varWeight)(evolveWithTyp(Type), (t) => varScaled.Devolve)(fd),
+        lambdaEv(varWeight)(evolveTyp, (t) => varScaled.Devolve)(fd),
         lambdaWeight)
     }
 
@@ -426,16 +434,28 @@ case class FineDeducer(applnWeight: Double = 0.2,
           (t) => varScaled.DevolveWithTyp(gf.fib(t.asInstanceOf[u])))(fd),
           lambdaWeight)
       case Universe(_) =>
-        rawBase.<+?>(piEv(varWeight)(DevolveWithTyp(Type),
-                            (t) => varScaled.evolveWithTyp(Type))(fd),
+        rawBase.<+?>(piEv(varWeight)(DevolveTyp,
+                            (t) => varScaled.evolveTyp)(fd),
             piWeight).
-            <+?>(piEv(varWeight)(evolveWithTyp(Type),
-                            (t) =>  varScaled.DevolveWithTyp(Type))(fd),
+            <+?>(piEv(varWeight)(evolveTyp,
+                            (t) =>  varScaled.DevolveTyp)(fd),
             piWeight).
             conditioned(p)
       case _ => base
     }
   }
+
+
+  def DevolveTyp(fd: FD[Term]): PD[Term] =
+    fd.
+        <+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).
+        <+?>(applnEv(DevolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight).conditioned(isTyp).
+        <+?>(piEv(varWeight)(DevolveTyp,
+                            (t) => varScaled.evolveTyp)(fd),
+            piWeight).
+            <+?>(piEv(varWeight)(evolveTyp,
+                            (t) =>  varScaled.DevolveTyp)(fd),
+            piWeight)
   }
 
 
