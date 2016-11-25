@@ -272,8 +272,6 @@ case class ThmEntropies(fd: FD[Term],
   }
 }
 
-
-
 case class BasicDeducer(applnWeight: Double = 0.2,
                         val lambdaWeight: Double = 0.2,
                         piWeight: Double = 0.2,
