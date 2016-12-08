@@ -141,13 +141,13 @@ object ACFlowSaver {
   val snapSink = Sink.foreach(snapSave)
 
   def snapSource(date: String, batch: String) =
-    Src(read.lines.iter(snapd / date / batch.toString) toStream)
+    Src(read.lines(snapd / date / batch.toString). toStream)
 
   def snapStream(date: String) =
     (ls(wd / date).toStream map (_.name))
       .sortBy(_.toInt)
       .flatMap((filename: String) =>
-        (read.lines.iter(snapd / date / filename)).toStream)
+        (read.lines(snapd / date / filename)).toStream)
       .map(uread[Snap])
 
   def snapSource(date: String) = Src(snapStream(date))
@@ -421,7 +421,7 @@ object ACData {
 
   def load(name: String, dir: String = "acDev") = {
     val file = wd / dir / (name + ".acrun")
-    val lines = (read.lines.iter(file)).toStream
+    val lines = (read.lines(file)).toStream
     lines map (unpickle)
   }
 

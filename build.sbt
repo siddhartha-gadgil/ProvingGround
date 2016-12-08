@@ -2,6 +2,9 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.11.8"
 
+val ammV = "0.8.0"
+
+
 scalaVersion in ThisBuild := scalaV
 
 lazy val jsProjects = Seq(client)
@@ -17,12 +20,12 @@ lazy val commonSettings = baseSettings ++ Seq(
 //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.spire-math" %% "spire" % "0.11.0",
-      "org.scalatest" % "scalatest_2.11" % "3.0.0" % "test",
+      "org.scalatest" % "scalatest_2.11" % "3.0.1" % "test",
       "com.lihaoyi" %% "fansi" % "0.2.3",
       "com.lihaoyi" %% "upickle" % "0.4.3",
       "com.chuusai" %% "shapeless" % "2.3.2",
       "org.typelevel" %% "cats" % "0.8.1",
-      "com.lihaoyi" % "ammonite" % "0.7.7" cross CrossVersion.full
+      "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
     ),
     scalacOptions ++= Seq("-unchecked",
                           "-deprecation",
@@ -30,7 +33,7 @@ lazy val commonSettings = baseSettings ++ Seq(
                           "-language:existentials")
   )
 
-val akkaV = "2.4.6"
+val akkaV = "2.4.14"
 
 assemblyMergeStrategy in assembly := {
   case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
@@ -38,8 +41,8 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite" % "0.7.7" % "test" cross CrossVersion.full,
-    "com.lihaoyi" %% "ammonite-ops" % "0.7.7",
+    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi" %% "ammonite-ops" % ammV,
     "com.github.nscala-time" %% "nscala-time" % "2.0.0",
     "org.reactivemongo" %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -50,12 +53,12 @@ lazy val jvmSettings = Seq(
     "org.mongodb" %% "casbah" % "3.0.0",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "com.typesafe.akka" %% "akka-http-core" % akkaV,
-    "com.typesafe.akka" %% "akka-http-experimental" % akkaV,
-    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaV,
+    "com.typesafe.akka" %% "akka-http" % "10.0.0",
+    // "com.typesafe.akka" %% "akka-http" % akkaV,
+    "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.0",
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
-//    "com.lihaoyi" %% "ammonite-ops" % "0.7.7",
-//    "com.lihaoyi" %% "ammonite-shell" % "0.7.7",
+//    "com.lihaoyi" %% "ammonite-ops" % ammV,
+//    "com.lihaoyi" %% "ammonite-shell" % ammV,
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j" % "slf4j-api" % "1.7.16",
 //    "org.slf4j" % "slf4j-nop" %"1.7.16",
@@ -78,9 +81,9 @@ lazy val jvmSettings = Seq(
 lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-    ws,
+    // ws,
     "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
-    "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
+    // "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
     "org.webjars" % "jquery" % "1.11.1"
   ),
   scalaJSProjects := jsProjects,
@@ -90,8 +93,8 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite" % "0.7.7" % "test" cross CrossVersion.full,
-    "com.lihaoyi" %% "ammonite-ops" % "0.7.7",
+    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi" %% "ammonite-ops" % ammV,
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
     "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
     "com.google.protobuf" % "protobuf-java" % "2.6.1"
@@ -123,15 +126,15 @@ lazy val client = project
             scalaVersion := scalaV,
             persistLauncher := true,
             persistLauncher in Test := false,
-            sourceMapsDirectories += coreJS.base / "..",
+            // sourceMapsDirectories += coreJS.base / "..",
             unmanagedSourceDirectories in Compile := Seq(
               (scalaSource in Compile).value),
             libraryDependencies ++= Seq(
               "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-              "com.lihaoyi" %%% "scalatags" % "0.4.6",
+              "com.lihaoyi" %%% "scalatags" % "0.6.1",
               "com.lihaoyi" %%% "upickle" % "0.4.3"
             ))
-  .enablePlugins(ScalaJSPlugin, ScalaJSPlay)
+  .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
   .dependsOn(coreJS)
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
@@ -140,8 +143,8 @@ lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
   .settings(libraryDependencies ++= Seq(
 //      "com.lihaoyi" %%% "upickle" % "0.3.4"
   ))
-  .jsConfigure(_ enablePlugins ScalaJSPlay)
-  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
+  .jsConfigure(_ enablePlugins ScalaJSWeb)
+//  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
 
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
@@ -161,8 +164,10 @@ val initCommands =
   """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
 
 lazy val mantle = (project in file("mantle"))
-  .settings(name := "ProvingGround-mantle"
-  //  libraryDependencies += "com.lihaoyi" % "ammonite" % "0.7.7" cross CrossVersion.full
+  .settings(name := "ProvingGround-mantle",
+    scalaJSProjects := Seq(client),
+    pipelineStages in Assets := Seq(scalaJSPipeline)
+  //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   )
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
@@ -172,14 +177,15 @@ lazy val mantle = (project in file("mantle"))
     s"""ammonite.Main("$initCommands").run() """)
   .dependsOn(coreJVM)
   .dependsOn(functionfinder)
-  .dependsOn(translation)
+  // .dependsOn(translation)
   .settings(tutSettings)
+  .enablePlugins(SbtWeb)
 //        dependsOn(deepwalk).
 //        dependsOn(exploring)
 
 lazy val exploring = project
   .settings(name := "ProvingGround-exploring",
-            libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.7")
+            libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
 
@@ -194,11 +200,11 @@ lazy val nlp = (project in file("nlp"))
     s"""ammonite.Main("import scala.collection.JavaConversions._").run() """)
   .dependsOn(coreJVM)
 
-lazy val translation = (project in file("translation"))
-  .settings(name := "ProvingGround-Translation",
-            libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.7")
-  .settings(baseSettings: _*)
-  .dependsOn(coreJVM)
+// lazy val translation = (project in file("translation"))
+//   .settings(name := "ProvingGround-Translation",
+//             libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
+//   .settings(baseSettings: _*)
+//   .dependsOn(coreJVM)
 
 lazy val deepwalk = (project in file("deepwalk"))
   .settings(
@@ -211,29 +217,30 @@ lazy val deepwalk = (project in file("deepwalk"))
       "org.deeplearning4j" % "deeplearning4j-nlp" % "0.6.0",
 //              "org.deeplearning4j" % "deeplearning4j-ui" % "0.6.0",
       "org.nd4j" % "nd4j-native" % "0.6.0",
-      "com.lihaoyi" % "ammonite" % "0.7.7" % "test" cross CrossVersion.full,
-      "com.lihaoyi" %% "ammonite-ops" % "0.7.7"
+      "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+      "com.lihaoyi" %% "ammonite-ops" % ammV
     ))
   .settings(baseSettings: _*)
   .settings(initialCommands in (Test, console) :=
     s"""ammonite.Main("import scala.collection.JavaConversions._").run() """)
 
-lazy val playServer = (project in file("play-server"))
-  .enablePlugins(PlayScala)
-  .settings(name := "ProvingGround-Play-Server")
-  .settings(commonSettings: _*)
-  .settings(jvmSettings: _*)
-  .settings(serverSettings: _*)
-  .settings(
-    libraryDependencies += specs2 % Test,
-    resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
-    TwirlKeys.templateImports += "controllers._")
-  .aggregate(jsProjects.map(projectToRef): _*)
-  .dependsOn(coreJVM)
-  .dependsOn(functionfinder)
-  .dependsOn(andrewscurtis)
-  .dependsOn(mantle)
-  .dependsOn(nlp)
+// lazy val playServer = (project in file("play-server"))
+//   .enablePlugins(PlayScala)
+//   .settings(name := "ProvingGround-Play-Server")
+//   .settings(commonSettings: _*)
+//   .settings(jvmSettings: _*)
+//   .settings(serverSettings: _*)
+//   .settings(
+//     libraryDependencies += specs2 % Test,
+//     resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
+//     TwirlKeys.templateImports += "controllers._")
+//   .aggregate(jsProjects.map(projectToRef): _*)
+//   .dependsOn(coreJVM)
+//   .dependsOn(functionfinder)
+//   .dependsOn(andrewscurtis)
+//   .dependsOn(mantle)
+//   .dependsOn(nlp)
+//   .enablePlugins(SbtWeb)
 
 lazy val realfunctions = (project in file("realfunctions"))
   .settings(commonSettings: _*)
@@ -254,12 +261,12 @@ lazy val realfunctions = (project in file("realfunctions"))
     //   ),
     name := "RealFunctions")
 
-lazy val digressions = (project in file("digressions"))
-  .settings(commonSettings: _*)
-  .settings(digressionSettings: _*)
-  .dependsOn(coreJVM)
-  .dependsOn(playServer)
-  .dependsOn(functionfinder)
+// lazy val digressions = (project in file("digressions"))
+//   .settings(commonSettings: _*)
+//   .settings(digressionSettings: _*)
+//   .dependsOn(coreJVM)
+//   .dependsOn(playServer)
+//   .dependsOn(functionfinder)
 
 EclipseKeys.skipParents in ThisBuild := false
 

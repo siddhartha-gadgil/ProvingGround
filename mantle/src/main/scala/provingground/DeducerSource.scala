@@ -251,7 +251,7 @@ object DeducerSource {
 
   def loadDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = pwd / 'data / s"${name}.deduc"
-    val it = read.lines.iter(file) map ((t) => readDist(t, names))
+    val it = read.lines(file).toIterator. map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }
@@ -259,7 +259,7 @@ object DeducerSource {
 
   def loadLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = pwd / 'data / s"${name}.learn"
-    val it = read.lines.iter(file) map ((t) => readDist(t, names))
+    val it = read.lines(file).toIterator map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }
