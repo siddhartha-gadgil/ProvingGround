@@ -20,9 +20,9 @@ object HoTTSpec{
 
   val Bs = "B(_ : A)" :: (A ->: Type)
 
-  val fdep = "f" :: PiTyp(Bs)
+  val fdep = "f" :: PiDefn(Bs)
 
-  val gdep = "g" :: PiTyp(Bs)
+  val gdep = "g" :: PiDefn(Bs)
 
   val AimplB = "_:A->B" :: (A ->: B)
 
