@@ -51,6 +51,7 @@ case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
 /**
   * Universe with objects Pi-Types
   */
+@deprecated("Use PiDefn", "14/12/2016")
 case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
     domuniv: Typ[Typ[W]],
     codomuniv: Typ[Typ[U]]
@@ -146,6 +147,7 @@ object ScalaUniverses {
   /**
     * builds scala universe for pi-types given ones for domain and codomain types.
     */
+  @deprecated("Use PiDefn", "14/12/2016")
   implicit def piUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
       implicit domsc: ScalaUniv[W],
       codomsc: ScalaUniv[U]): ScalaUniv[FuncLike[W, U]] = {
