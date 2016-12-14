@@ -219,16 +219,17 @@ object HoTT {
       *  `this` depends on a variable, which hence gives a type family.
       */
     def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
-        variable: V) = {
+        variable: V)  = {
       val fiber = LambdaFixed[V, Typ[UU]](variable, this)
       val fib = lmbda(variable)(this: Typ[UU])
       PiTyp(fib)
+      // piDefn(variable)(this : Typ[UU])
     }
 
-    def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
-        variable: TypedTerm[V]) = {
-      piDefn(variable)(this: Typ[UU])
-    }
+    // def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+    //     variable: TypedTerm[V]) = {
+    //   piDefn(variable)(this: Typ[UU])
+    // }
 
     /**
       * returns pair type, mainly to use for "and" for structures
@@ -1335,10 +1336,10 @@ object HoTT {
   }
 
   def piDefn[U <: Term with Subs[U], V <: Term with Subs[V]](
-      variable: TypedTerm[U])(value: Typ[V]) = {
-    val newvar = variable.term.newobj
-    PiDefn(variable.replace(variable.term, newvar),
-           value.replace(variable.term, newvar))
+      variable: U)(value: Typ[V]) = {
+    val newvar = variable.newobj
+    PiDefn(variable.replace(variable, newvar),
+           value.replace(variable, newvar))
   }
 
   /**
@@ -1407,10 +1408,10 @@ object HoTT {
     Func[W, Typ[U]]
 
   case class PiDefn[W <: Term with Subs[W], U <: Term with Subs[U]](
-      variable: TypedTerm[W],
+      variable: W,
       value: Typ[U])
-      extends GenFuncTyp(variable.typ,
-                         (w: W) => value.replace(variable.term, w))
+      extends GenFuncTyp(variable.typ.asInstanceOf[Typ[W]],
+                         (w: W) => value.replace(variable, w))
       with Typ[FuncLike[W, U]]
       with Subs[PiDefn[W, U]] {
     //type Obj = DepFunc[W, U]
@@ -1418,7 +1419,7 @@ object HoTT {
 
     lazy val typ: Typ[Typ[Term]] = Universe(univlevel(value.typ))
 
-    lazy val fibers = variable.term :-> value
+    lazy val fibers = variable :-> value
 
     override lazy val typed: TypedTerm[Typ[Term]] =
       TypedTerm(this: this.type, typ)
@@ -1427,15 +1428,15 @@ object HoTT {
       PiSymbolicFunc[W, U](name, variable, value)
 
     def newobj = {
-      val newvar = variable.term.newobj
-      PiDefn(variable.replace(variable.term, newvar),
-             value.replace(variable.term, newvar))
+      val newvar = variable.newobj
+      PiDefn(variable.replace(variable, newvar),
+             value.replace(variable, newvar))
     }
 
     def subs(x: Term, y: Term) =
       PiDefn(variable.replace(x, y), value.replace(x, y))
 
-    override def toString = s"${variable.term} ~> $value"
+    override def toString = s"${variable} ~> $value"
   }
 
   /**
@@ -1488,7 +1489,7 @@ object HoTT {
 
   case class PiSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
-      variable: TypedTerm[W],
+      variable: W,
       value: Typ[U]
   ) extends FuncLike[W, U]
       with Symbolic {
@@ -1500,19 +1501,19 @@ object HoTT {
 
     // type Cod = U
 
-    val dom = variable.typ
+    val dom = variable.typ.asInstanceOf[Typ[W]]
 
-    val depcodom: W => Typ[U] = (arg: W) => value.replace(variable.term, value)
+    val depcodom: W => Typ[U] = (arg: W) => value.replace(variable, value)
 
     lazy val typ = PiDefn(variable, value)
 
     def act(arg: W) = depcodom(arg).symbObj(ApplnSym(this, arg))
 
     def newobj = {
-      val newvar = variable.term.newobj
+      val newvar = variable.newobj
       PiSymbolicFunc(name,
-                     variable.replace(variable.term, newvar),
-                     value.replace(variable.term, newvar))
+                     variable.replace(variable, newvar),
+                     value.replace(variable, newvar))
     }
 
     /*

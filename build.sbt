@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.11.8"
 
-val ammV = "0.8.0"
+val ammV = "0.8.1"
 
 
 scalaVersion in ThisBuild := scalaV
