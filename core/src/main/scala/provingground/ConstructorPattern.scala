@@ -416,10 +416,10 @@ case class FuncPtn[C <: Term with Subs[C],
       cons: ConstructorType): Typ[InducDataType] = {
     val a = tail(w).Var
     val headcons = cons(a)
-    val fibre =
-      lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
-    // piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+    // val fibre =
+    //   lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+    // PiTyp(fibre)
+    piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
   def headData(
