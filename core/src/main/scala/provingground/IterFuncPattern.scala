@@ -97,9 +97,9 @@ object IterFuncPattern {
           } = head
           val funcIterPtn = FuncIterPtn(tail, headCast)
           funcIterPtn.asInstanceOf[IterFuncPtn[O, C, F]]
-        case tp: PiTyp[u, v] =>
-          val fibre = tp.fibers
-          val tail = fibre.dom
+        case tp: GenFuncTyp[u, v] =>
+          val fibre = tp.fib
+          val tail = tp.domain
           val a = tail.Var
           val headfibre = (x: u) => get[O, C, v](typ)(fibre(x))
           val newHead = headfibre(tail.Var)
@@ -160,7 +160,7 @@ object IterFuncPattern {
 
     def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = w ->: x
 
-    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
+    def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiDefn(xs)
 
     type TargetType = C
 
@@ -212,8 +212,10 @@ object IterFuncPattern {
     def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) => {
       val a = tail.Var
       val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      PiTyp(targfibre)
+      // val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+      // PiTyp(targfibre)
+      piDefn(a)(headfibre(a).depTarget(xs)(b))
+
     }
   }
 
@@ -240,8 +242,9 @@ object IterFuncPattern {
     def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) => {
       val a = tail.Var
       val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      PiTyp(targfibre)
+      // val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+      // PiTyp(targfibre)
+      piDefn(a)(headfibre(a).depTarget(xs)(b))
     }
 
     //    type Cod = head.Cod
@@ -323,7 +326,8 @@ object IterFuncPattern {
       val x = tail.Var
       val fiber = lmbda(x)(headfibre(x)(W))
       //   val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))
-      PiTyp[TT, V](fiber)
+      // PiTyp[TT, V](fiber)
+      piDefn(x)(headfibre(x)(W))
     }
 
     //  type Cod = C

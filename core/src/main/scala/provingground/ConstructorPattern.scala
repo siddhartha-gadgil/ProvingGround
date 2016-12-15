@@ -156,23 +156,23 @@ object ConstructorPattern {
         } else
           CnstFncPtn(codom, head)
             .asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
-      case PiTyp(fib: Func[u, Typ[v]]) =>
-        val fibre = fib.asInstanceOf[Func[u, Typ[v]]]
-        val egfib = get(fibre(fibre.dom.obj), w)
+      case pt : GenFuncTyp[u, v] =>
+        val fibre = pt.fib
+        val egfib = get(fibre(pt.domain.obj), w)
         val headfibre = (t: Term) =>
           get(fibre(t.asInstanceOf[u]), w)
             .asInstanceOf[ConstructorPattern[HoTT.Term, v, H] {
                 type RecDataType = egfib.RecDataType;
                 type InducDataType = egfib.InducDataType
               }]
-        if (fibre.dom.dependsOn(w)) {
-          val tail = IterFuncPtn.get[H, Term, u](w)(fibre.dom)
+        if (pt.domain.dependsOn(w)) {
+          val tail = IterFuncPtn.get[H, Term, u](w)(pt.domain)
           val tp =
             DepFuncPtn[v, egfib.RecDataType, egfib.InducDataType, Term, u, H](
                 tail, headfibre)
           tp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         } else {
-          val tail = fibre.dom
+          val tail = pt.domain
           val cp = CnstDepFuncPtn[
               u, egfib.RecDataType, egfib.InducDataType, Term, v, H](
               tail, headfibre)
@@ -416,10 +416,10 @@ case class FuncPtn[C <: Term with Subs[C],
       cons: ConstructorType): Typ[InducDataType] = {
     val a = tail(w).Var
     val headcons = cons(a)
-    // val fibre =
-    //   lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
-    // PiTyp(fibre)
-    piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+    val fibre =
+      lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+    PiTyp(fibre)
+    // piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
   def headData(
@@ -764,24 +764,24 @@ object Constructor {
             val fp = FuncPtn(tail, head.pattern)
             fp.constructor(typ, name)
           } else CnstFncPtn(codom, head.pattern).constructor(typ, name)
-        case PiTyp(fib: Func[u, Typ[v]]) =>
-          val fibre = fib.asInstanceOf[Func[u, Typ[v]]]
-          val egfib = get(fibre(fibre.dom.obj), w)
+        case pt: GenFuncTyp[u, v] =>
+          val fibre = pt.fib
+          val egfib = get(fibre(pt.domain.obj), w)
           val headfibrePtn = (t: Term) =>
             fromFormal(fibre(t.asInstanceOf[u]), w)(typ).pattern
               .asInstanceOf[ConstructorPattern[HoTT.Term, v, Term] {
                   type RecDataType = egfib.RecDataType;
                   type InducDataType = egfib.InducDataType
                 }]
-          if (fibre.dom.dependsOn(w)) {
-            val tail = IterFuncPtn.get[Term, Term, u](w)(fibre.dom)
+          if (pt.domain.dependsOn(w)) {
+            val tail = IterFuncPtn.get[Term, Term, u](w)(pt.domain)
             val tp = DepFuncPtn[
                 v, egfib.RecDataType, egfib.InducDataType, Term, u, Term](
                 tail, headfibrePtn)
             tp.constructor(typ, name)
           } else {
             val cp = CnstDepFuncPtn(
-                fibre.dom.asInstanceOf[Typ[Term]],
+                pt.domain.asInstanceOf[Typ[Term]],
                 headfibrePtn
             )
             cp.constructor(typ, name)

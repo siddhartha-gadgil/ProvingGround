@@ -190,9 +190,9 @@ object FmlyPtn {
         } = head
         val funcFmlyPtn = FuncFmlyPtn(tail, headCast)
         funcFmlyPtn.asInstanceOf[FmlyPtn[O, Term, F]]
-      case tp: PiTyp[u, v] =>
-        val fibre = tp.fibers
-        val tail = fibre.dom
+      case tp: GenFuncTyp[u, v] =>
+        val fibre = tp.fib
+        val tail = tp.domain
         val a = tail.Var
         val headfibre = (x: u) => get[O, v](typ, fibre(x))
         val newHead = headfibre(tail.Var)

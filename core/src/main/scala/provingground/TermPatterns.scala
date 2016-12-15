@@ -18,13 +18,15 @@ object TermPatterns {
   }
 
   val piTyp = Pattern.partial[Term, Id] {
+    case PiDefn(x : Term, y: Typ[v]) => HoTT.lmbda(x)(y)
     case PiTyp(fibre) => fibre
   }
 
   val piLam = Pattern.partial[Term, II] {
-    case PiTyp(fibre: Func[u, _]) =>
-      val x: Term = fibre.dom.Var.asInstanceOf[Term]
-      (x, fibre(x))
+    case PiDefn(x : Term, y: Typ[u]) => (x, y)
+    // case PiTyp(fibre: Func[u, _]) =>
+    //   val x: Term = fibre.dom.Var.asInstanceOf[Term]
+    //   (x, fibre(x))
   }
 
   val sigmaTyp = Pattern.partial[Term, cats.Id] {

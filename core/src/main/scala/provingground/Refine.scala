@@ -29,6 +29,8 @@ object RefineTerms {
       val newcod = refineTyp(codom)
       FuncTyp[newdom.Obj, newcod.Obj](newdom.asInstanceOf[Typ[newdom.Obj]],
                                       newcod.asInstanceOf[Typ[newcod.Obj]])
+    case PiDefn(variable : Term, value : Typ[v]) =>
+      PiDefn(refine(variable), refineTyp(value))
     case PiTyp(fibre) =>
       refine(fibre) match {
         case newFibre: Func[u, _] =>

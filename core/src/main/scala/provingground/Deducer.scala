@@ -112,9 +112,9 @@ object Deducer {
   }
 
   def piValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
-    case pt: PiTyp[u, v] if pt.fibers.dom == variable.typ =>
+    case pt: GenFuncTyp[u, v] if pt.domain == variable.typ =>
       val x = variable.asInstanceOf[u]
-      val codom = pt.fibers(x)
+      val codom = pt.fib(x)
       Some(codom)
     case FuncTyp(dom: Typ[u], codom: Typ[v]) if dom == variable.typ =>
       Some(codom)
@@ -360,9 +360,9 @@ case class BasicDeducer(applnWeight: Double = 0.2,
 
   def piDistOpt(base: FD[Term])(x: Term): Option[FD[Term]] = {
     val pmf = base.pmf collect {
-      case Weighted(PiTyp(fibre: Func[u, Typ[v]]), p)
-          if (x.typ == fibre.dom) =>
-        Weighted[Term](fibre(x.asInstanceOf[u]), p)
+      case Weighted(pt: GenFuncTyp[u, v], p)
+          if (x.typ == pt.domain) =>
+        Weighted[Term](pt.fib(x.asInstanceOf[u]), p)
     }
 
     if (pmf.isEmpty) None else Some(FD[Term](pmf).normalized())
@@ -804,16 +804,16 @@ case class Deducer(applnWeight: Double = 0.2,
 
   def piPropVarTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
       fd: Prob): Term => TD[Term] = {
-    case pt: PiTyp[u, v] =>
-      val x = pt.fibers.dom.Var
-      val codom = pt.fibers(x)
-      val scale = piWeight * fd(pt.fibers.dom) * piFD(fd)(x)(codom) / fd(pt)
-      val atom = TD.atom(pt.fibers.dom: Term) <*> scale
-      backProp(fd)(atom)
-    case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
-      val atom = TD.atom(dom: Term)
-      val x = dom.Var
-      val scale = piWeight * fd(dom) * piFD(fd)(x)(codom) / fd(ft)
+        case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+          val atom = TD.atom(dom: Term)
+          val x = dom.Var
+          val scale = piWeight * fd(dom) * piFD(fd)(x)(codom) / fd(ft)
+          backProp(fd)(atom)
+    case pt: GenFuncTyp[u, v] =>
+      val x = pt.domain.Var
+      val codom = pt.fib(x)
+      val scale = piWeight * fd(pt.domain) * piFD(fd)(x)(codom) / fd(pt)
+      val atom = TD.atom(pt.domain: Term) <*> scale
       backProp(fd)(atom)
     case _ => TD.Empty[Term]
   }
@@ -824,19 +824,20 @@ case class Deducer(applnWeight: Double = 0.2,
 
   def piPropValuesTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
       fd: Prob): Term => TD[Term] = {
-    case pt: PiTyp[u, v] =>
-      val x = pt.fibers.dom.Var
-      val codom = pt.fibers(x)
-      val pfd = piFD(fd)(x)
-      val scale = piWeight * fd(pt.fibers.dom) * pfd(codom) / fd(pt)
-      val atom = TD.atom(codom: Term) <*> scale
-      backProp(pfd)(atom) filter ((z) => !(z.dependsOn(x)))
     case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
       val atom = TD.atom(codom: Term)
-      val x = dom.Var
+                val x = dom.Var
+          val pfd = piFD(fd)(x)
+          val scale = piWeight * fd(dom) * pfd(codom) / fd(ft)
+          backProp(pfd)(atom)
+
+    case pt: GenFuncTyp[u, v] =>
+      val x = pt.domain.Var
+      val codom = pt.fib(x)
       val pfd = piFD(fd)(x)
-      val scale = piWeight * fd(dom) * pfd(codom) / fd(ft)
-      backProp(pfd)(atom)
+      val scale = piWeight * fd(pt.domain) * pfd(codom) / fd(pt)
+      val atom = TD.atom(codom: Term) <*> scale
+      backProp(pfd)(atom) filter ((z) => !(z.dependsOn(x)))
     case _ => TD.Empty[Term]
   }
 

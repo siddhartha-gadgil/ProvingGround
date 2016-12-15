@@ -26,12 +26,12 @@ object RecEnum {
                           m,
                           dom.asInstanceOf[Typ[Term]],
                           codom.asInstanceOf[Typ[Term]])).toOption) yield (f))
-    case PiTyp(fiber) =>
-      val dom = fiber.dom.asInstanceOf[Typ[Term]]
+    case pt: GenFuncTyp[u, v] =>
+      val dom : Typ[Term] = pt.domain
       val domlistopt = recEnumList(dom)
       domlistopt flatMap ((domlist) => {
             val codoms =
-              (x: Term) => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
+              (x: Term) => recEnumList(pt.fib(x.asInstanceOf[u]).asInstanceOf[Typ[Term]])
             val maps = allSecMapsOpt(domlist, codoms)
             for (l <- maps) yield
               (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
