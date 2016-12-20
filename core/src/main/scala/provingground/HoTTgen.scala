@@ -43,7 +43,7 @@ object HoTTgen {
             val x = fmly.dom.Var
             val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
             val fibre = lmbda(x)(y)
-            PiTyp[u, w](fibre)
+            PiDefn[u, w](fibre)
           }.toOption
         case _ => None
       }

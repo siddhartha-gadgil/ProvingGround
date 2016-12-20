@@ -359,7 +359,7 @@ object AgdaExpressions {
     case tp: Typ[Term] =>
       val fibre = (t: Term) => tp subs (x, t)
       val family: Func[Term, Typ[Term]] = LambdaFixed(x, tp)
-      Some(PiTyp(family))
+      Some(PiDefn(family))
     case _ => None
   }
 

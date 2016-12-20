@@ -152,11 +152,11 @@ case object TermLang
   }
 
   def isPi: Term => Option[(Term, Term)] = {
-    case st: PiTyp[u, v] =>
-      val x = st.fibers.dom.Var
-      Some((x, st.fibers(x)))
     case st: FuncTyp[u, v] =>
       Some((st.dom.Var, st.codom))
+      case st: GenFuncTyp[u, v] =>
+        val x = st.domain.Var
+        Some((x, st.fib(x)))
     case _ => None
   }
 

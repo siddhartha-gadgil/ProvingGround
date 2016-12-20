@@ -18,7 +18,7 @@ object InductiveDefinition {
       fibre: Func[H, Typ[C]]
   )
       extends InductiveDefinition[H, C] {
-    val typ = PiTyp(fibre)
+    val typ = PiDefn(fibre)
 
     val depcodom = fibre
 
@@ -79,7 +79,7 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
     val depcodom = fibre
 
-    val typ = PiTyp(fibre)
+    val typ = PiDefn(fibre)
 
     def newobj = fself
 

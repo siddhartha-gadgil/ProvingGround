@@ -48,6 +48,13 @@ case class DepFuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
       Try(
           ExtendedFunction(
               elem, domrep, codrep, typ.asInstanceOf[FuncTyp[U, X]])).toOption
+    case typ @ PiDefn(x : Term, y : Typ[v]) =>
+      Try(
+          ExtendedDepFunction(elem,
+                              domrep,
+                              codrep,
+                              (x :-> y).asInstanceOf[Func[U, Typ[X]]])).toOption
+
     case typ @ PiTyp(fibers) =>
       Try(
           ExtendedDepFunction(elem,
@@ -79,7 +86,6 @@ case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
       Try(
           ExtendedFunction(
               elem, domrep, codrep, typ.asInstanceOf[FuncTyp[U, X]])).toOption
-//    case typ @ PiTyp(fibers) => Some(ExtendedDepFunction(elem, domrep, codrep, fibers))
     case _ => None
   }
 
@@ -198,9 +204,9 @@ object ScalaPolyRep {
 
     lazy val depcodom = (a: U) => fibers(a)
 
-    lazy val typ = PiTyp(fibers)
+    lazy val typ = PiDefn(fibers)
 
-    def newobj = PiTyp(fibers).obj
+    def newobj = PiDefn(fibers).obj
 
     def act(u: U) = u match {
       case domrep(v) =>

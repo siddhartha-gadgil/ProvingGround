@@ -1,10 +1,11 @@
 package provingground
 import provingground.HoTT._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv}
+// import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv}
 
 import scala.util._
 
 import scala.language.implicitConversions
+import scala.language.existentials
 //import provingground.ScalaUniverses._
 
 /**
@@ -192,7 +193,7 @@ case class DepFuncRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
     fibers: TypFamily[U, X]
 )
     extends ScalaRep[FuncLike[U, X], V => Y] {
-  val typ = PiTyp(fibers)
+  val typ = PiDefn(fibers)
 
   def apply(f: V => Y): FuncLike[U, X] =
     ExtendedDepFunction(f, domrep, codomreps, fibers)
@@ -507,7 +508,7 @@ object ScalaRep {
 
     val depcodom: U => Typ[X] = (arg: U) => fibers(arg)
 
-    val typ = PiTyp(fibers)
+    val typ = PiDefn(fibers)
 
     def newobj = typ.obj
 

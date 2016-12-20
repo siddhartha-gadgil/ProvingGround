@@ -173,7 +173,7 @@ object IndexedIterFuncPtnMap {
         val a = tail.Var
         val b = fmly(a)
         val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-        PiTyp(targfibre)
+        piDefn(a)(headfibre(a).depTarget(xs)(b))
       }
 
     //    type Cod = head.Cod
@@ -273,7 +273,7 @@ object IndexedIterFuncPtnMap {
         val a = tail.Var
         val b = fmly(a)
         val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-        PiTyp(targfibre)
+        piDefn(a)(headfibre(a).depTarget(xs)(b))
       }
 
     //    type Cod = head.Cod

@@ -76,7 +76,7 @@ object EnumFuncs {
       for (f <- allSecMaps(domenum.value, (u: U) => codomenums(u).value)) yield
         depFunc(domenum.elemTyp, f)
     val fibre = typFamily(domenum.elemTyp, (u: U) => codomenums(u).elemTyp)
-    EnumTerm(maps, PiTyp(fibre))
+    EnumTerm(maps, PiDefn(fibre))
   }
 
   def EnumSec[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -85,7 +85,7 @@ object EnumFuncs {
     val fibre = typFamily(dom, codoms)
     val rep =
       EnumRep(dom) -->: (dom ~~>: ((u: U) => EnumRep(codoms(u)))) -->: EnumRep(
-          PiTyp(fibre))
+          PiDefn(fibre))
     rep(allSec)
   }
 

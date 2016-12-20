@@ -157,7 +157,7 @@ object TypFamilyMap {
 
     def iterFuncTyp(w: Typ[H], x: Typ[C]) = w ->: x
 
-    def iterDepFuncTyp(w: Typ[H], xs: Func[H, Typ[C]]) = PiTyp(xs)
+    def iterDepFuncTyp(w: Typ[H], xs: Func[H, Typ[C]]) = PiDefn(xs)
 
     def iterFunc(funcs: Unit => Func[H, C]) = funcs(())
 

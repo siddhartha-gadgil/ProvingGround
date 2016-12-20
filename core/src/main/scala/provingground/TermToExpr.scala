@@ -15,9 +15,9 @@ class TermToExpr[E](
     case Lambda(x: Term, y: Term) =>
       for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye)) yield
         result
-    case pt: PiTyp[u, v] =>
-      val x = pt.fibers.dom.Var
-      for (xe <- expr(x); ye <- expr(pt.fibers(x)); result <- l.pi(xe, ye)) yield
+    case pt: GenFuncTyp[u, v] =>
+      val x = pt.domain.Var
+      for (xe <- expr(x); ye <- expr(pt.fib(x)); result <- l.pi(xe, ye)) yield
         result
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var

@@ -29,7 +29,7 @@ object InducPairs {
 
   val Bs = "B" :: A ->: Type
 
-  val Btype = PiTyp(Bs)
+  val Btype = PiDefn(Bs)
 
   val bs = "b" :: Btype
 

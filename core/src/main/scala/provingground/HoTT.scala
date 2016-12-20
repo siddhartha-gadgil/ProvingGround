@@ -1423,9 +1423,8 @@ object HoTT {
       TypedTerm(this: this.type, typ)
 
     override def variable(name: AnySym): FuncLike[W, U] =
-      PiSymbolicFunc(name, variable, value)
-
-//      PiSymbolicFunc[W, U](name, variable, value)
+      DepSymbolicFunc(name, fibers)
+    //  PiSymbolicFunc(name, variable, value)
 
     def newobj = {
       val newvar = variable.newobj
@@ -1499,14 +1498,15 @@ object HoTT {
 
     def newobj = {
       val newvar = variable.newobj
-      PiSymbolicFunc(name,
-                     variable.replace(variable, newvar),
+      PiSymbolicFunc(new InnerSym[FuncLike[W, U]](this),
+                     newvar,
                      value.replace(variable, newvar))
+      // val fibers = LambdaFixed(variable, value)
+      // DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
     }
 
 
     def subs(x: Term, y: Term) = (x, y) match {
-      //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: FuncLike[W, U]) if (u == this) => v
       case _ => {
         def symbobj(sym: AnySym) =
@@ -1524,7 +1524,7 @@ object HoTT {
   case class DepSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
       fibers: TypFamily[W, U]
-  ) extends DepFunc[W, U]
+  ) extends FuncLike[W, U]
       with Symbolic {
 
     val dom = fibers.dom

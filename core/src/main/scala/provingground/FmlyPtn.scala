@@ -242,7 +242,7 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]()
 
   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = w ->: x
 
-  def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiTyp(xs)
+  def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc) = PiDefn(xs)
 
   def argOpt(l: List[Term]): Option[ArgType] =
     if (l.isEmpty) Some(Star) else None
@@ -374,7 +374,7 @@ case class FuncFmlyPtn[TT <: Term with Subs[TT],
   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
     val a = tail.Var
     val headtyp = lmbda(a)(head.iterDepFuncTyp(w(w.dom.Var), xs(a)))
-    PiTyp(headtyp)
+    PiDefn(headtyp)
   }
 
   type ArgType = AbsPair[TT, S]
@@ -555,13 +555,13 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
   def iterFuncTyp(w: FamilyType, x: Typ[Cod]): Typ[IterFunc] = {
     val a = tail.Var
     val fibre = lmbda(a)(headfibre(a).iterFuncTyp(w(a), x))
-    PiTyp(fibre)
+    piDefn(a)(headfibre(a).iterFuncTyp(w(a), x))
   }
 
   def iterDepFuncTyp(w: FamilyType, xs: IterTypFunc): Typ[IterDepFunc] = {
     val a = tail.Var
     val fibre = lmbda(a)(headfibre(a).iterDepFuncTyp(w(a), xs(a)))
-    PiTyp(fibre)
+    piDefn(a)(headfibre(a).iterDepFuncTyp(w(a), xs(a)))
   }
 
   type ArgType = AbsPair[TT, S]

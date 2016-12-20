@@ -53,7 +53,7 @@ object NatRing extends SymbolicCRing[SafeLong] {
 
     val dom = NatTyp
 
-    val typ = PiTyp(typFamily)
+    val typ = PiDefn(typFamily)
 
     val depcodom = typFamily
 

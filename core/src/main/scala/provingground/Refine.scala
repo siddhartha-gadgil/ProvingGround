@@ -1,6 +1,7 @@
 package provingground
 
 import HoTT._
+import scala.language.existentials
 
 object RefineTerms {
   def refine(term: Term): Term = term match {

@@ -213,7 +213,6 @@ object IterFuncPattern {
       val a = tail.Var
       val b = fmly(a)
       // val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      // PiTyp(targfibre)
       piDefn(a)(headfibre(a).depTarget(xs)(b))
 
     }
@@ -243,7 +242,6 @@ object IterFuncPattern {
       val a = tail.Var
       val b = fmly(a)
       // val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      // PiTyp(targfibre)
       piDefn(a)(headfibre(a).depTarget(xs)(b))
     }
 
@@ -326,7 +324,6 @@ object IterFuncPattern {
       val x = tail.Var
       val fiber = lmbda(x)(headfibre(x)(W))
       //   val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))
-      // PiTyp[TT, V](fiber)
       piDefn(x)(headfibre(x)(W))
     }
 
@@ -335,7 +332,7 @@ object IterFuncPattern {
     def target(x: Typ[Cod]) = {
       val a = tail.Var
       val targfibre = lmbda(a)(headfibre(a).target(x))
-      PiTyp(targfibre)
+      PiDefn(targfibre)
     }
 
     def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = {

@@ -24,9 +24,9 @@ object TermPatterns {
 
   val piLam = Pattern.partial[Term, II] {
     case PiDefn(x : Term, y: Typ[u]) => (x, y)
-    // case PiTyp(fibre: Func[u, _]) =>
-    //   val x: Term = fibre.dom.Var.asInstanceOf[Term]
-    //   (x, fibre(x))
+    case PiTyp(fibre: Func[u, _]) =>
+      val x: Term = fibre.dom.Var.asInstanceOf[Term]
+      (x, fibre(x))
   }
 
   val sigmaTyp = Pattern.partial[Term, cats.Id] {

@@ -24,7 +24,7 @@ object SigmaPiEnum {
 
   private def fn(en: EnumTerm[Term]) = {
     val l = en.value map (B(_))
-    (l :\ (PiTyp(B): Typ[Term]))(_ ->: _)
+    (l :\ (PiDefn(B): Typ[Term]))(_ ->: _)
   }
 
   private val rep = EnumRep(A) -->: Type

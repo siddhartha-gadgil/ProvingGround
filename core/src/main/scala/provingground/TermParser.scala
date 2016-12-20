@@ -34,7 +34,7 @@ class TermParser extends JavaTokenParsers {
     }
 
   def piTyp: Parser[Typ[Term]] = prod ~ "(" ~> term <~ ")" ^^ {
-    case fmly: Func[u, _] => PiTyp(fmly.asInstanceOf[Func[u, Typ[Term]]])
+    case fmly: Func[u, _] => PiDefn(fmly.asInstanceOf[Func[u, Typ[Term]]])
   }
 
   def sigmaTyp: Parser[Typ[Term]] = sigma ~ "(" ~> term <~ ")" ^^ {

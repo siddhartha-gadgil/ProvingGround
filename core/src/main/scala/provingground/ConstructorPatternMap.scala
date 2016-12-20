@@ -234,7 +234,7 @@ case class FuncPtnMap[HS <: Term with Subs[HS],
     val headcons = cons(a)
     val fibre =
       lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
   def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
@@ -297,7 +297,7 @@ case class CnstFncPtnMap[HS <: Term with Subs[HS],
     val a = tail.Var
     val headcons = cons(a)
     val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(head.inducDataTyp(w, xs)(headcons))
   }
 
   //   type ConstructorType = Func[Term, head.ConstructorType]
@@ -358,15 +358,15 @@ case class CnstDepFuncPtnMap[HS <: Term with Subs[HS],
   def recDataTyp(w: Typ[H], x: Typ[C]) = {
     val a = tail.Var
     val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
-    PiTyp(fibre)
-  }
+    piDefn(a)(headfibre(a).recDataTyp(w, x))
+    }
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
       cons: FuncLike[T, HC]): Typ[InducDataType] = {
     val a = tail.Var
     val headcons = cons(a)
     val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
   }
 
   type HeadRecDataType = V
@@ -385,7 +385,7 @@ case class CnstDepFuncPtnMap[HS <: Term with Subs[HS],
     //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
     val a = tail.Var
     val fiber = lmbda(a)(headfibre(a)(W))
-    PiTyp[T, HC](fiber)
+    piDefn[T, HC](a)(headfibre(a)(W))
   }
 
   //    type ConstructorType = Term

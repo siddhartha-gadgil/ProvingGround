@@ -268,7 +268,7 @@ object Contexts {
       val fibre = (t : Term) => tail.typ subs (x, t)
 
 	    val family = typFamilyDefn[Term, tail.ConstructorType](variable.typ, MiniVerse(tail.typ), fibre)
-	    PiTyp(family)
+	    PiDefn(family)
     }
     else FuncTyp(variable.typ, tail.typ)
      */
@@ -279,7 +279,7 @@ object Contexts {
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
             variable.typ, MiniVerse(tail(tp)), fibre)
-        PiTyp(family)
+        PiDefn(family)
       } else FuncTyp(variable.typ, tail(tp))
   }
 
@@ -351,7 +351,7 @@ object Contexts {
       val fibre = (t : Term) => tail.typ subs (x, t)
 
 	    val family = typFamilyDefn[Term, tail.ConstructorType](dfn.lhs.typ, MiniVerse(tail.typ), fibre)
-	    PiTyp[Term, tail.ConstructorType](family)
+	    PiDefn[Term, tail.ConstructorType](family)
     }
     else FuncTyp(dfn.lhs.typ, tail.typ)
      */
@@ -362,7 +362,7 @@ object Contexts {
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
             dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
-        PiTyp[Term, tail.ConstructorType](family)
+        PiDefn[Term, tail.ConstructorType](family)
       } else FuncTyp(dfn.lhs.typ, tail(tp))
   }
 
@@ -467,7 +467,7 @@ object Contexts {
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
             eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
-        PiTyp(family)
+        PiDefn(family)
       } else FuncTyp(eqlty.lhs.typ, tail(tp))
   }
 

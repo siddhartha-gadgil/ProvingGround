@@ -123,7 +123,7 @@ object TermExpr {
         {
           val x = fib.dom.Var
           val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
-          PiTyp(fibre)
+          piDefn(x)(fib(x).asInstanceOf[Typ[Term]])
         }
       case _ =>
         throw (new IllegalArgumentException(

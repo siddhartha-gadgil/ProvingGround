@@ -259,7 +259,7 @@ object IndexedConstructorPatternMap {
       val xss = family.typRestrict(xs, ind)
       val fibre =
         lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
-      PiTyp(fibre)
+      piDefn(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
     }
 
     def headData(data: Func[F, Func[TT, HR]], arg: F, f: => IF): HR = {
@@ -353,7 +353,7 @@ object IndexedConstructorPatternMap {
       // val xss = family.typRestrict(xs, ind)
       val fibre =
         lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
-      PiTyp(fibre)
+      piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
     }
 
     def headData(data: Func[F, Func[TT, HR]], arg: F, f: => IF): HR = {
@@ -424,7 +424,7 @@ object IndexedConstructorPatternMap {
       val a = tail.Var
       val headcons = cons(a)
       val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
-      PiTyp(fibre)
+      piDefn(a)(head.inducDataTyp(w, xs)(headcons))
     }
 
     //   type ConstructorType = Func[Term, head.ConstructorType]
@@ -489,14 +489,14 @@ object IndexedConstructorPatternMap {
     def recDataTyp(w: Fb, x: Typ[Cod]) = {
       val a = tail.Var
       val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
-      PiTyp(fibre)
+      piDefn(a)(headfibre(a).recDataTyp(w, x))
     }
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: FuncLike[T, HC]) = {
       val a = tail.Var
       val headcons = cons(a)
       val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
-      PiTyp(fibre)
+      piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
     }
 
     //   type ConstructorType = Func[Term, head.ConstructorType]
@@ -509,7 +509,7 @@ object IndexedConstructorPatternMap {
     def apply(W: Fb) = {
       val a = tail.Var
       val fiber = lmbda(a)(headfibre(a)(W))
-      PiTyp(fiber)
+      piDefn(a)(headfibre(a)(W))
     }
 
     val univLevel = headfibre(tail.Var).univLevel

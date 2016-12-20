@@ -69,6 +69,7 @@ object Unify {
           Some(Map(variable -> value))
         // case (value, variable) if (freevars(variable)) =>
         //   Some(Map(variable -> value))
+        case (PiDefn(a: Term, b: Typ[v]), PiDefn(c: Term, d: Typ[w])) => unifyAll(freevars)(a ->c, b-> d)
         case (PiTyp(f), PiTyp(g)) => unify(f, g, freevars)
         case (SigmaTyp(f), SigmaTyp(g)) => unify(f, g, freevars)
         case (FuncTyp(a: Typ[u], b: Typ[v]), FuncTyp(c: Typ[w], d: Typ[x])) =>

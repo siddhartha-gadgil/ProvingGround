@@ -50,7 +50,7 @@ object PlusTypInduc {
 
     val dom = pair(first, second)
 
-    val typ = PiTyp(depcodom)
+    val typ = PiDefn(depcodom)
 
     def newobj = this
 

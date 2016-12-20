@@ -133,7 +133,7 @@ class IndexedInductiveTypes[I <: Term] {
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]]   = {
 	    val head = headfibre(Type.Var)
 	    val fiber = typFamily[Term, U](tail(W), (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, U](fiber)
+	    PiDefn[Term, U](fiber)
 	  }
 
 
@@ -148,7 +148,7 @@ class IndexedInductiveTypes[I <: Term] {
 	  def apply(W : I => Typ[Term]) : Typ[FuncLike[Term, U]] = {
 	    val head = headfibre(tail.Var)
 	    val fiber = typFamily[Term, U](tail, (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, U](fiber)
+	    PiDefn[Term, U](fiber)
 	  }
 
 //	  type ConstructorType = Term
@@ -164,12 +164,12 @@ class IndexedInductiveTypes[I <: Term] {
 	    headfibre : Term => FmlyPtn[V] with FmlyPtn[V], headlevel: Int = 0)(implicit su: ScalaUniv[V]) extends FmlyPtn[FuncLike[Term,V]]{
 	  def apply(W : I => Typ[Term]) = {
 	    val fiber = typFamily[Term, head.ConstructorType](tail, (t : Term) => headfibre(t)(W))
-	    PiTyp[Term, head.ConstructorType](fiber)
+	    PiDefn[Term, head.ConstructorType](fiber)
 	  }
 
 	  def at(X: Typ[Term]) = {
 	    val fiber = typFamily[Term, head.ConstructorType](tail, (t : Term) => headfibre(t).at(X))
-	    PiTyp[Term, head.ConstructorType](fiber)
+	    PiDefn[Term, head.ConstructorType](fiber)
 	  }
 
 	  val head = headfibre(tail.Var)

@@ -28,8 +28,8 @@ object Norm {
         case tp.rep(value) => Some(value.toDouble.abs)
         case _ => None
       }
-    case p: AbsPair[Term, Term] =>
-      for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
+    // case p: AbsPair[Term, Term] =>
+    //   for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
     case (fn: FuncLike[u, _], _) => {
         val domopt =
           Try(fn.dom.asInstanceOf[Typ[Term]]).toOption flatMap (recEnumList(_))
@@ -41,6 +41,7 @@ object Norm {
               maxopt(normoptlist)
             })
       }
+    case (PiDefn(x: Term, y: Typ[v]), _) => supnorm(x :-> y)
     case (PiTyp(section), _) => supnorm(section)
     case (SigmaTyp(fn), _) => {
         val domopt = recEnumList(fn.dom.asInstanceOf[Typ[Term]])

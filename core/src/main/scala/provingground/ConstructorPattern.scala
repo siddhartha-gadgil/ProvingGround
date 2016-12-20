@@ -3,7 +3,7 @@ import HoTT._
 //import IterFuncPtn._
 import math.max
 //import ScalaUniverses._
-import scala.util.Try
+// import scala.util.Try
 //import scala.language.existentials
 
 //import IterFuncPattern.{IterFuncPtn => IterFuncPtn, _}
@@ -418,7 +418,7 @@ case class FuncPtn[C <: Term with Subs[C],
     val headcons = cons(a)
     val fibre =
       lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    PiDefn(fibre)
     // piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
@@ -481,7 +481,7 @@ case class CnstFncPtn[T <: Term with Subs[T],
     val a = tail.Var
     val headcons = cons(a)
     val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(head.inducDataTyp(w, xs)(headcons))
   }
 
   type HeadRecDataType = head.RecDataType
@@ -557,7 +557,7 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
   def recDataTyp(w: Typ[H], x: Typ[C]) = {
     val a = tail.Var
     val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
-    PiTyp(fibre)
+    piDefn(a)(headfibre(a).recDataTyp(w, x))
   }
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
@@ -565,7 +565,7 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
     val a = tail.Var
     val headcons = cons(a)
     val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
   }
 
   type HeadRecDataType = V
@@ -585,7 +585,7 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
     //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
     val a = tail.Var
     val fiber = lmbda(a)(headfibre(a)(W))
-    PiTyp[T, HC](fiber)
+    piDefn[T, HC](a)(headfibre(a)(W))
   }
 
   //    type ConstructorType = Term
@@ -645,7 +645,7 @@ case class DepFuncPtn[U <: Term with Subs[U],
   def recDataTyp(w: Typ[H], x: Typ[C]) = {
     val a = tail(w).Var
     val fibre = lmbda(a)(tail.target(x) ->: (headfibre(a).recDataTyp(w, x)))
-    PiTyp(fibre)
+    piDefn(a)(tail.target(x) ->: (headfibre(a).recDataTyp(w, x)))
   }
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
@@ -654,7 +654,8 @@ case class DepFuncPtn[U <: Term with Subs[U],
     val headcons = cons(a)
     val fibre = lmbda(a)(
         tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
-    PiTyp(fibre)
+    piDefn(a)(
+        tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
   }
 
   type HeadRecDataType = V
@@ -681,7 +682,7 @@ case class DepFuncPtn[U <: Term with Subs[U],
   def apply(W: Typ[H]): Typ[FuncLike[ArgType, U]] = {
     val a = tail(W).Var
     val fiber = lmbda(a)(headfibre(a)(W))
-    PiTyp[ArgType, U](fiber)
+    PiDefn[ArgType, U](fiber)
   }
 
   //    type ConstructorType = Term

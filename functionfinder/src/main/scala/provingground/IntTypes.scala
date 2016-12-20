@@ -64,7 +64,7 @@ object IntTypes {
     val P = "P" :: N ->: Type
     val k = "k" :: N
     val init = "a" :: P(N.zero)
-    val steptyp = PiTyp(lmbda(k)(P(k) ->: P(N.succ(k))))
+    val steptyp = PiDefn(lmbda(k)(P(k) ->: P(N.succ(k))))
     val step = "step" :: steptyp
 
     lambda(P)(
