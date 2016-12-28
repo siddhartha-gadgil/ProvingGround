@@ -9,7 +9,7 @@ object Stub {
   /**
     * local version of Types, Terms etc.
     * should not be imported if HoTT is to be used.
-    * 
+    *
     */
   trait Typ
 

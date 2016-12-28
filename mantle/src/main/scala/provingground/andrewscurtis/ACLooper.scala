@@ -26,8 +26,8 @@ class ACLooper(
     srcRef: ActorRef,
     param: Param)
     extends FDLooper[
-        (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-        Param
+      (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+      Param
     ](ACLooper.dyn(rank, size),
       ACLooper.padFeedback(rank, wrdCntn),
       normalize,
@@ -43,8 +43,8 @@ class ACsmoothLooper(
     srcRef: ActorRef,
     param: Param)
     extends FDLooper[
-        (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-        Param
+      (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+      Param
     ](ACLooper.dyn(rank, size),
       ACLooper.padFeedback(rank, wrdCntn),
       normalize,
@@ -68,7 +68,7 @@ object ACLooper {
   def feedback(rank: Int, wrdCntn: Double, strictness: Double) = {
     val projPresFn =
       projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(
-          rank)
+        rank)
     val fb = (d: FiniteDistribution[Presentation]) => {
       val res =
         d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
@@ -81,7 +81,7 @@ object ACLooper {
   def smoothFeedback(rank: Int, wrdCntn: Double, strictness: Double) = {
     val projPresFn =
       projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(
-          rank)
+        rank)
     val fb = (d: FiniteDistribution[Presentation]) => {
       d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
     }
@@ -107,13 +107,13 @@ object ACLooper {
             srcRef: ActorRef,
             param: Param): Props =
     Props(
-        new ACLooper(
-            rank: Int,
-            size: Int,
-            wrdCntn: Double,
-            init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-            srcRef,
-            param))
+      new ACLooper(
+        rank: Int,
+        size: Int,
+        wrdCntn: Double,
+        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+        srcRef,
+        param))
 
   def smoothProps(
       rank: Int,
@@ -123,13 +123,13 @@ object ACLooper {
       srcRef: ActorRef,
       param: Param): Props =
     Props(
-        new ACsmoothLooper(
-            rank: Int,
-            size: Int,
-            wrdCntn: Double,
-            init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-            srcRef,
-            param))
+      new ACsmoothLooper(
+        rank: Int,
+        size: Int,
+        wrdCntn: Double,
+        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+        srcRef,
+        param))
 
   def spawn(name: String,
             rank: Int,
@@ -139,14 +139,13 @@ object ACLooper {
             srcRef: ActorRef,
             param: Param) = {
     val runner = Hub.system.actorOf(
-        props(
-            rank: Int,
+      props(rank: Int,
             size: Int,
             wrdCntn: Double,
             init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
             srcRef,
             param),
-        name)
+      name)
     runner
   }
 
@@ -159,20 +158,20 @@ object ACLooper {
       srcRef: ActorRef,
       param: Param) = {
     val runner = Hub.system.actorOf(
-        smoothProps(
-            rank: Int,
-            size: Int,
-            wrdCntn: Double,
-            init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-            srcRef,
-            param),
-        name)
+      smoothProps(
+        rank: Int,
+        size: Int,
+        wrdCntn: Double,
+        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+        srcRef,
+        param),
+      name)
     runner
   }
 
   def initState(rank: Int) = (learnerMoves(rank), eVec)
 
-/*
+  /*
   def spawnRaw(name: String, p: Param = Param(), init: Int => FiniteDistribution[AtomicMove] = learnerMoves) = {
     import p._
   //  import ACData.fileSave

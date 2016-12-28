@@ -20,7 +20,6 @@ import NatRing._
 
 object NatRingSpec {
 
-
   val x = "x " :: NatRing.LocalTyp
 
   val y = "y" :: NatRing.LocalTyp
@@ -37,13 +36,12 @@ object NatRingSpec {
 
   lazy val xPyPzl = (x + y) + z
 
-
 }
 
-class NatRingSpec extends FlatSpec{
+class NatRingSpec extends FlatSpec {
   import NatRingSpec._
 
-  "Addition" should "be commutative and associative" in{
+  "Addition" should "be commutative and associative" in {
     assert(x + y == y + x)
 
     assert((x + y) + z == x + (y + z))

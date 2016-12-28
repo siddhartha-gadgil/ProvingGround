@@ -49,8 +49,7 @@ object DiffbleFunction {
   case class Composition[A, B, C](
       f: DiffbleFunction[A, B],
       g: DiffbleFunction[B, C]
-  )
-      extends DiffbleFunction[A, C] {
+  ) extends DiffbleFunction[A, C] {
     val func = (a: A) => g.func(f.func(a))
 
     val grad = (a: A) => (c: C) => f.grad(a)(g.grad(f.func(a))(c))
@@ -59,8 +58,7 @@ object DiffbleFunction {
   case class Oplus[A, B, C, D](
       first: DiffbleFunction[A, B],
       second: DiffbleFunction[C, D]
-  )
-      extends DiffbleFunction[(A, C), (B, D)] {
+  ) extends DiffbleFunction[(A, C), (B, D)] {
     val func = (ac: (A, C)) => (first.func(ac._1), second.func(ac._2))
 
     val grad = (ac: (A, C)) =>
@@ -117,8 +115,8 @@ object DiffbleFunction {
   def block[A: LinearStructure,
             B: LinearStructure,
             C: LinearStructure,
-            D: LinearStructure](
-      f: DiffbleFunction[A, C], g: DiffbleFunction[B, D]) = {
+            D: LinearStructure](f: DiffbleFunction[A, C],
+                                g: DiffbleFunction[B, D]) = {
     val add = vsum[DiffbleFunction[(A, B), (C, D)]]
 
     val p1 = Proj1[A, B]
@@ -150,21 +148,20 @@ object DiffbleFunction {
     case 1 => f
     case n if n < 0 =>
       vzero[DiffbleFunction[A, A]]
-    case n =>
-      {
-        val rs = repsquare(f)
-        rs(n - 1) andthen (rs(n - 1))
-      }
+    case n => {
+      val rs = repsquare(f)
+      rs(n - 1) andthen (rs(n - 1))
+    }
   }
 
   /**
     * Iterate a differentiable function.
     */
   @tailrec
-  def recIterateDiffble[X](fn: DiffbleFunction[X, X],
-                           n: Int,
-                           accum: DiffbleFunction[X, X] =
-                             id[X]): DiffbleFunction[X, X] = {
+  def recIterateDiffble[X](
+      fn: DiffbleFunction[X, X],
+      n: Int,
+      accum: DiffbleFunction[X, X] = id[X]): DiffbleFunction[X, X] = {
     if (n < 1) accum
     else
       recIterateDiffble(fn, n - 1, accum andthen (fn: DiffbleFunction[X, X]))
@@ -182,8 +179,8 @@ object DiffbleFunction {
   }
 
   def consIterateDiffble[X](fn: DiffbleFunction[X, X], n: Int) = n match {
-    case 0 => Id[X]
-    case 1 => fn
+    case 0          => Id[X]
+    case 1          => fn
     case k if k > 1 => IteratedDiffble(fn, k)
   }
 
@@ -214,8 +211,7 @@ object DiffbleFunction {
     */
   case class BigSum[A: LinearStructure, B: LinearStructure](
       fns: A => Traversable[DiffbleFunction[A, B]]
-  )
-      extends DiffbleFunction[A, B] {
+  ) extends DiffbleFunction[A, B] {
     val func = (a: A) => {
       val terms = for (f <- fns(a)) yield f.func(a)
 
@@ -223,10 +219,10 @@ object DiffbleFunction {
     }
 
     private val zeroB = vzero[B]
-    private val sumB = vsum[B]
+    private val sumB  = vsum[B]
 
     private val zeroA = vzero[A]
-    private val sumA = vsum[A]
+    private val sumA  = vsum[A]
 
     val grad = (a: A) =>
       (b: B) => {
@@ -245,7 +241,8 @@ object DiffbleFunction {
   }
 
   case class DotProd[A: LinearStructure, B: LinearStructure](
-      sc: Double, vect: DiffbleFunction[A, B])
+      sc: Double,
+      vect: DiffbleFunction[A, B])
       extends DiffbleFunction[A, B] {
     val prodB = vprod[B]
 
@@ -257,7 +254,8 @@ object DiffbleFunction {
   }
 
   case class Sum[A: LinearStructure, B: LinearStructure](
-      first: DiffbleFunction[A, B], second: DiffbleFunction[A, B])
+      first: DiffbleFunction[A, B],
+      second: DiffbleFunction[A, B])
       extends DiffbleFunction[A, B] {
     val sumB = vsum[B]
 

@@ -1,7 +1,8 @@
 package provingground
 
-case class LinearStructure[A](
-    zero: A, sum: (A, A) => A, mult: (Double, A) => A) {
+case class LinearStructure[A](zero: A,
+                              sum: (A, A) => A,
+                              mult: (Double, A) => A) {
   def diff(frm: A, remove: A) = sum(frm, mult(-1.0, remove))
 }
 
@@ -25,9 +26,9 @@ object LinearStructure {
 
   def nrec[X](base: X, ind: Int => X => X)(
       implicit ls: LinearStructure[X]): Int => X = {
-    case 0 => base
+    case 0          => base
     case n if n < 0 => ls.zero
-    case n => nrec(base, ind)(ls)(n - 1)
+    case n          => nrec(base, ind)(ls)(n - 1)
   }
 
   implicit class VectorOps[A: LinearStructure](a: A) {

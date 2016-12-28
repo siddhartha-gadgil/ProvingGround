@@ -53,7 +53,7 @@ object CoreNLP {
       sentence.get(classOf[CollapsedCCProcessedDependenciesAnnotation]);
     val dependencyIterable = dependencies.edgeIterable().asScala
     dependencyIterable map ((e: SemanticGraphEdge) =>
-          DepRel(gov(e), dep(e), depType(e)))
+                              DepRel(gov(e), dep(e), depType(e)))
   }
 
   def proseTrees(text: String)(implicit pipe: StanfordCoreNLP) = {
@@ -107,7 +107,7 @@ object CoreNLPTest extends App {
     // this is the POS tag of the token
 //        String pos = token.get(PartOfSpeechAnnotation.class);
     // this is the NER label of the token
-//       String ne = token.get(NamedEntityTagAnnotation.class);       
+//       String ne = token.get(NamedEntityTagAnnotation.class);
 //      }
 
     // this is the parse tree of the current sentence
@@ -118,7 +118,7 @@ object CoreNLPTest extends App {
       sentence.get(classOf[CollapsedCCProcessedDependenciesAnnotation]);
     val dependencyIterable = dependencies.edgeIterable().asScala
     dependencyIterable map ((e: SemanticGraphEdge) =>
-          DepRel(gov(e), dep(e), depType(e)))
+                              DepRel(gov(e), dep(e), depType(e)))
   }
   for (t <- depTrees; e <- t) println(e)
 
@@ -126,10 +126,10 @@ object CoreNLPTest extends App {
   // Each chain stores a set of mentions that link to each other,
   // along with a method for getting the most representative mention
   // Both sentence and token offsets start at 1!
-//    Map<Integer, CorefChain> graph = 
+//    Map<Integer, CorefChain> graph =
 //      document.get(CorefChainAnnotation.class);
 
   val tree = proseTrees(
-      "if a prime number p divides mn, p divides one of m and n").head
+    "if a prime number p divides mn, p divides one of m and n").head
 //		println(toFormula(tree, Global))
 }

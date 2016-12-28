@@ -163,11 +163,12 @@ object ExprLang {
     (func, arg) match {
       case (_, All(x)) =>
         Try(
-            applnQ(func, x.asInstanceOf[E]) flatMap (lang.lambda(
-                    x.asInstanceOf[E], _))).toOption.flatten
+          applnQ(func, x.asInstanceOf[E]) flatMap (lang
+            .lambda(x.asInstanceOf[E], _))).toOption.flatten
       case (_, Exists(x)) =>
-        Try(applnQ(func, x.asInstanceOf[E]) flatMap (lang.sigma(
-                    x.asInstanceOf[E], _))).toOption.flatten
+        Try(
+          applnQ(func, x.asInstanceOf[E]) flatMap (lang
+            .sigma(x.asInstanceOf[E], _))).toOption.flatten
       case (All(x), _) =>
         Try(lang.lambda(x.asInstanceOf[E], arg)).toOption.flatten
       case (Exists(x), _) =>

@@ -113,12 +113,12 @@ object IndexedConstructorPatternMap {
 
     def recDefCase(cons: H, data: C, f: => IF): H => Option[C] = {
       case (t: Term) if t == cons => Some(data)
-      case _ => None
+      case _                      => None
     }
 
     def inducDefCase(cons: H, data: C, f: => IDF): Term => Option[C] = {
       case (t: Term) if t == cons => Some(data)
-      case _ => None
+      case _                      => None
     }
   }
 
@@ -254,9 +254,9 @@ object IndexedConstructorPatternMap {
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-      val a = tail(family.pattern.typ(w, ind)).Var
+      val a        = tail(family.pattern.typ(w, ind)).Var
       val headcons = cons(a)
-      val xss = family.typRestrict(xs, ind)
+      val xss      = family.typRestrict(xs, ind)
       val fibre =
         lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
@@ -348,7 +348,7 @@ object IndexedConstructorPatternMap {
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-      val a = tail(w).Var
+      val a        = tail(w).Var
       val headcons = cons(a)
       // val xss = family.typRestrict(xs, ind)
       val fibre =
@@ -421,9 +421,9 @@ object IndexedConstructorPatternMap {
     def recDataTyp(w: Fb, x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: Func[T, HC]) = {
-      val a = tail.Var
+      val a        = tail.Var
       val headcons = cons(a)
-      val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
+      val fibre    = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(head.inducDataTyp(w, xs)(headcons))
     }
 
@@ -487,15 +487,15 @@ object IndexedConstructorPatternMap {
                               (t: T) => headfibre(t).subs(x, y))
 
     def recDataTyp(w: Fb, x: Typ[Cod]) = {
-      val a = tail.Var
+      val a     = tail.Var
       val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
       piDefn(a)(headfibre(a).recDataTyp(w, x))
     }
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: FuncLike[T, HC]) = {
-      val a = tail.Var
+      val a        = tail.Var
       val headcons = cons(a)
-      val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
+      val fibre    = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
       piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
     }
 
@@ -507,7 +507,7 @@ object IndexedConstructorPatternMap {
     def headInducData(data: FuncLike[T, HI], arg: T, f: => IDF): HI = data(arg)
 
     def apply(W: Fb) = {
-      val a = tail.Var
+      val a     = tail.Var
       val fiber = lmbda(a)(headfibre(a)(W))
       piDefn(a)(headfibre(a)(W))
     }
@@ -554,7 +554,7 @@ abstract class IndexedConstructorShape[S <: Term with Subs[S],
 
   def symbcons[H <: Term with Subs[H]](name: AnySym, tp: F) = {
     implicit val mpr = family.mapper[Term]
-    val mp = mapped
+    val mp           = mapped
     mp.symbcons(name, tp)
   }
 
@@ -585,7 +585,7 @@ object IndexedConstructorShape {
       typ: Typ[H]
   )(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
     val family = g.get(w)
-    val index = family.getIndex(w, typ).get
+    val index  = family.getIndex(w, typ).get
 
     implicit val ts: Subst[Index] = g.subst
 

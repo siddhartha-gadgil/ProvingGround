@@ -29,7 +29,7 @@ object PennTrees {
   }
 
   def model(t: Tree): TreeModel = t match {
-    case Leaf(s) => LeafModel(s)
+    case Leaf(s)           => LeafModel(s)
     case Node(s, children) => NodeModel(s, children map model)
   }
 }

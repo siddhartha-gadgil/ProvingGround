@@ -30,15 +30,14 @@ case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U])
 case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
     domuniv: Typ[Typ[W]],
     codomuniv: Typ[Typ[U]]
-)
-    extends Typ[FuncTyp[W, U]] {
+) extends Typ[FuncTyp[W, U]] {
 
   type Obj = FuncTyp[W, U]
 
   lazy val typ = HigherUniv(this)
 
   def variable(name: AnySym) = {
-    val dom = domuniv.symbObj(DomSym(name))
+    val dom   = domuniv.symbObj(DomSym(name))
     val codom = codomuniv.symbObj(CodomSym(name))
     FuncTyp(dom, codom)
   }
@@ -55,16 +54,15 @@ case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
 case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
     domuniv: Typ[Typ[W]],
     codomuniv: Typ[Typ[U]]
-)
-    extends Typ[PiTyp[W, U]] {
+) extends Typ[PiTyp[W, U]] {
 
   type Obj = PiTyp[W, U]
 
   lazy val typ = HigherUniv(this)
 
   def variable(name: AnySym) = {
-    val dom = domuniv.symbObj(DomSym(name))
-    val codom = codomuniv.symbObj(CodomSym(name))
+    val dom     = domuniv.symbObj(DomSym(name))
+    val codom   = codomuniv.symbObj(CodomSym(name))
     val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
     PiTyp(typFmly)
   }
@@ -78,8 +76,8 @@ case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
   * Symbolic types, which the compiler knows are types.
   *
   */
-case class FineSymbTyp[U <: Term with Subs[U]](
-    name: AnySym, symobj: AnySym => U)
+case class FineSymbTyp[U <: Term with Subs[U]](name: AnySym,
+                                               symobj: AnySym => U)
     extends Typ[U]
     with Symbolic {
   lazy val typ = FineUniv(symobj)
@@ -95,9 +93,9 @@ case class FineSymbTyp[U <: Term with Subs[U]](
   def subs(x: Term, y: Term) = (x, y) match {
     case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[U]]
     case _ => {
-        def symbobj(name: AnySym) = FineSymbTyp(name, symobj)
-        symSubs(symbobj)(x, y)(name)
-      }
+      def symbobj(name: AnySym) = FineSymbTyp(name, symobj)
+      symSubs(symbobj)(x, y)(name)
+    }
   }
 }
 
@@ -157,8 +155,8 @@ object ScalaUniverses {
   /**
     * returns dependent function inferring type fiber.
     */
-  def depFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
-      dom: Typ[W], func: W => U)(
+  def depFunc[W <: Term with Subs[W], U <: Term with Subs[U]](dom: Typ[W],
+                                                              func: W => U)(
       implicit su: ScalaUniv[U]
   ): FuncLike[W, U] = {
     val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])
@@ -185,8 +183,9 @@ object ScalaUniverses {
   object DepFunc {
 
     def apply[W <: Term with Subs[W], U <: Term with Subs[U]](
-        func: Term => U, dom: Typ[W])(implicit su: ScalaUniv[U]) = {
-      def section(arg: Term) = func(arg).typ.asInstanceOf[Typ[U]]
+        func: Term => U,
+        dom: Typ[W])(implicit su: ScalaUniv[U]) = {
+      def section(arg: Term)      = func(arg).typ.asInstanceOf[Typ[U]]
       val fibers: TypFamily[W, U] = typFamily[W, U](dom, section)
       new DepFuncDefn(func, dom, fibers)
     }
@@ -196,7 +195,8 @@ object ScalaUniverses {
     * create type family, implicitly using a scala-universe object to build the codomain.
     */
   def typFamily[W <: Term with Subs[W], U <: Term with Subs[U]](
-      dom: Typ[W], f: W => Typ[U])(implicit su: ScalaUniv[U]) = {
+      dom: Typ[W],
+      f: W => Typ[U])(implicit su: ScalaUniv[U]) = {
     val codom = su.univ
     new FuncDefn[W, Typ[U]](f, dom, codom)
   }

@@ -79,7 +79,7 @@ class TermBucket {
     */
   def getTheorems = {
     val typDist = getTypDist
-    val pmf = getThmsByProofs.supp map ((t) => Weighted(t, typDist(t)))
+    val pmf     = getThmsByProofs.supp map ((t) => Weighted(t, typDist(t)))
     FiniteDistribution(pmf).normalized()
   }
 }
@@ -183,8 +183,9 @@ object WeightedTermBucket {
   def fdMap[A](m: mMap[A, Vector[Weighted[Term]]], tot: Double) = {
     //  val tot = (m.values.flatten map (_.weight)).sum
     (m mapValues ((l) =>
-                    FiniteDistribution(
-                      (l map ((wt) =>
-                                Weighted(wt.elem, wt.weight / tot))).toVector))).toMap
+                    FiniteDistribution((l map ((wt) =>
+                                                 Weighted(
+                                                   wt.elem,
+                                                   wt.weight / tot))).toVector))).toMap
   }
 }

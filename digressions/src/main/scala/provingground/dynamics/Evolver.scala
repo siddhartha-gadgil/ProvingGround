@@ -178,12 +178,12 @@ object GeneticEvolver {
   }
 
   @tailrec
-  def sampleMaxSize[A](l: List[A],
-                       weight: A => Int,
-                       size: A => Long,
-                       n: Long,
-                       soFar: Set[A] = Set.empty)(
-      implicit rand: Random): Set[A] = {
+  def sampleMaxSize[A](
+      l: List[A],
+      weight: A => Int,
+      size: A => Long,
+      n: Long,
+      soFar: Set[A] = Set.empty)(implicit rand: Random): Set[A] = {
     if (n < 0) soFar
     else {
       val newElem = pickRandByWeight(l, weight)
@@ -213,7 +213,7 @@ object GeneticEvolver {
 
     def prodSet[A](prodSet: (A, A) => Set[A]) = {
       Markov[A]((s: Set[A]) =>
-            (for (x <- s; y <- s) yield prodSet(x, y)).flatten)
+        (for (x <- s; y <- s) yield prodSet(x, y)).flatten)
     }
 
     def prod[A](prod: (A, A) => A) = {
@@ -236,7 +236,7 @@ object GeneticEvolver {
       }
 
       Markov((s: Set[A]) =>
-            pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
+        pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
     }
 
     def pruneTotalSize[A](weight: A => Int, number: Int, size: A => Int) = {
@@ -247,12 +247,13 @@ object GeneticEvolver {
       }
 
       Markov((s: Set[A]) =>
-            pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
+        pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
     }
   }
 
-  class MarkovEvolver[A](
-      val base: Set[A], dynaBase: Markov[A], core: Set[A] = Set.empty)
+  class MarkovEvolver[A](val base: Set[A],
+                         dynaBase: Markov[A],
+                         core: Set[A] = Set.empty)
       extends provingground.Aware.Seeker[A, Set[A]] {
 
     def dyn(s: Set[A]) = dynaBase.dyn(s) union s
@@ -268,8 +269,9 @@ object GeneticEvolver {
       else evolution(dyn(init), n - 1)
     }
 
-    @tailrec final def findEvolve(
-        init: Set[A], p: A => Boolean, n: Long): Option[A] = {
+    @tailrec final def findEvolve(init: Set[A],
+                                  p: A => Boolean,
+                                  n: Long): Option[A] = {
       if (n < 0) None
       else if (init exists p) init find p
       else findEvolve(dyn(init), p, n - 1)
@@ -277,8 +279,9 @@ object GeneticEvolver {
 
     def find(p: A => Boolean, n: Int) = findEvolve(base, p, n)
 
-    @tailrec final def seek(
-        p: A => Boolean, n: Long, init: Set[A] = base): Either[Set[A], A] = {
+    @tailrec final def seek(p: A => Boolean,
+                            n: Long,
+                            init: Set[A] = base): Either[Set[A], A] = {
       if (n < 0) Left(init)
       else if (init exists p) Right(init find p get)
       else seek(p, n - 1, dyn(init))
@@ -287,12 +290,14 @@ object GeneticEvolver {
     def apply(n: Int) = evolution(base, n)
 
     def pruneByWeight(weight: A => Int, cutoff: Int) =
-      new MarkovEvolver(
-          base, dynaBase andThen Markov.prune(weight, cutoff), core)
+      new MarkovEvolver(base,
+                        dynaBase andThen Markov.prune(weight, cutoff),
+                        core)
 
     def pruneByNumber(weight: A => Int, number: Int) =
-      new MarkovEvolver(
-          base, dynaBase andThen Markov.pruneNumber(weight, number), core)
+      new MarkovEvolver(base,
+                        dynaBase andThen Markov.pruneNumber(weight, number),
+                        core)
   }
 }
 
@@ -307,7 +312,7 @@ object Evolver {
 
   class ListInbox[A] extends Inbox[A] {
     private var mem: List[A] = List()
-    def get(n: Int) = (mem take n).toSet
+    def get(n: Int)          = (mem take n).toSet
     def pull(n: Int) = {
       val (head, tail) = mem splitAt n
       mem = tail
@@ -316,7 +321,7 @@ object Evolver {
 
     def push = (a: A) => { mem = a :: mem; }
 
-    def getAll = mem.toSet
+    def getAll  = mem.toSet
     def pullAll = { val head = mem; mem = List(); head.toSet }
   }
 
@@ -336,17 +341,17 @@ object Evolver {
 
   case class VanishBox[A]() extends Outbox[A] {
     def push: A => Unit = { _ =>
-    }
+      }
   }
 
   case class EmptyBox[A]() extends Inbox[A] {
-    def get(n: Int): Set[A] = Set.empty
+    def get(n: Int): Set[A]  = Set.empty
     def pull(n: Int): Set[A] = Set.empty
 
     def push: A => Unit = { _ =>
-    }
+      }
 
-    def getAll: Set[A] = Set.empty
+    def getAll: Set[A]  = Set.empty
     def pullAll: Set[A] = Set.empty
   }
 
@@ -363,7 +368,7 @@ object Evolver {
     object typ extends SmallTyp
 
     def nextState = dyn(state)
-    def nextGen = new Gen(dyn, nextState, mapping, outbox)
+    def nextGen   = new Gen(dyn, nextState, mapping, outbox)
     def nextSet = {
 //         println(state)
 //         println(nextChar(usedChars(state)))
@@ -392,8 +397,9 @@ object Evolver {
 
     def get(S: Set[A], n: Int) = Future(getNow(S, n))
 
-    @tailrec final def seekNowWithState(
-        S: Set[A], p: A => Boolean, n: Int): (Option[A], Set[A]) = {
+    @tailrec final def seekNowWithState(S: Set[A],
+                                        p: A => Boolean,
+                                        n: Int): (Option[A], Set[A]) = {
       if (!(S find p).isEmpty) (S find p, S)
       else if (n < 1) (None, S)
       else seekNowWithState(step(S), p, n - 1)
@@ -408,8 +414,7 @@ object Evolver {
   class BasicEvolver[A](gen: Set[A] => Set[A], val pur: Set[A] => Set[A] = {
     (s: Set[A]) =>
       s
-  })
-      extends Evolver[A] {
+  }) extends Evolver[A] {
     def generate(s: Set[A]) = gen(s)
 
     def purge(s: Set[A]) = pur(s)
@@ -459,7 +464,7 @@ object Evolver {
       new Dyn((s: Set[A]) => (s collect pf))
 
     def pairs[A](pairing: PartialFunction[(A, A), A]) = Dyn(
-        (s: Set[A]) => (for (x <- s; y <- s) yield (x, y)) collect pairing
+      (s: Set[A]) => (for (x <- s; y <- s) yield (x, y)) collect pairing
     )
 
     def triples[A](tripling: PartialFunction[(A, A, A), A]) = { (s: Set[A]) =>
@@ -482,8 +487,9 @@ object Evolver {
       case (dom: Typ[Term], codom: Typ[_]) => FuncTyp[Term, Term](dom, codom)
     }
 
-    def lambdaGen(
-        x: Term, dynam: => (Set[Term] => Set[Term]), state: Set[Term]) = {
+    def lambdaGen(x: Term,
+                  dynam: => (Set[Term] => Set[Term]),
+                  state: Set[Term]) = {
       new Gen(dynam, state, lambda(x) _)
     }
 

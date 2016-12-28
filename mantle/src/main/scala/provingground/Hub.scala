@@ -33,20 +33,20 @@ object Hub {
                ConfigValueFactory.fromAnyRef("INFO"))
 
   println(
-      cnf
-        .getConfig("mongo-async-driver")
-        .getConfig("akka")
-        .getString("loglevel"))
+    cnf
+      .getConfig("mongo-async-driver")
+      .getConfig("akka")
+      .getString("loglevel"))
   println(cnf.getConfig("mongo-async-driver").getString("loglevel"))
   println(
-      cnf
-        .getConfig("mongo-async-driver")
-        .getConfig("akka")
-        .getString("stdout-loglevel"))
+    cnf
+      .getConfig("mongo-async-driver")
+      .getConfig("akka")
+      .getString("stdout-loglevel"))
   println(cnf.getConfig("mongo-async-driver").getString("stdout-loglevel"))
 
   object ReactiveMongo {
-    lazy val driver = new MongoDriver(Some(cnf))
+    lazy val driver     = new MongoDriver(Some(cnf))
     lazy val connection = driver.connection(List("localhost"))
 
     // Gets a reference to the database "plugin"
@@ -55,7 +55,7 @@ object Hub {
 
   object Casbah {
     lazy val mongoClient = MongoClient()
-    lazy val db = mongoClient("provingground")
+    lazy val db          = mongoClient("provingground")
   }
 
   implicit val system = ActorSystem("provingground")

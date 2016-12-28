@@ -141,7 +141,7 @@ object FreeExpr {
 
     def unapply(e: FreeExpr) = e match {
       case TypVariable("Type", n) => Some(n)
-      case _ => None
+      case _                      => None
     }
   }
 
@@ -216,17 +216,17 @@ object FreeExpr {
 
     def isPair: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreePair(first, second) => Some((first, second))
-      case _ => None
+      case _                       => None
     }
 
     def isSigma: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreeSigma(first, second) => Some((first, second))
-      case _ => None
+      case _                        => None
     }
 
     def isPi: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreePi(first, second) => Some((first, second))
-      case _ => None
+      case _                     => None
     }
   }
 

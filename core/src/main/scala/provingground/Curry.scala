@@ -28,7 +28,7 @@ object Curry {
     new Curry[Func[Dom, Iter], PairTerm[Dom, Total], Cod] {
 
       def curry(fn: Func[PairTerm[Dom, Total], Cod]) = {
-        val xy = fn.dom.Var
+        val xy     = fn.dom.Var
         val (x, y) = (xy.first, xy.second)
         lmbda(x) {
           base.curry(lmbda(y) { fn(xy) })
@@ -36,9 +36,9 @@ object Curry {
       }
 
       def unCurry(cfn: Func[Dom, Iter]) = {
-        val x = cfn.dom.Var
-        val z = base.unCurry(cfn(x))
-        val y = z.dom.Var
+        val x  = cfn.dom.Var
+        val z  = base.unCurry(cfn(x))
+        val y  = z.dom.Var
         val xy = PairTerm(x, y)
         lmbda(xy)(z(y))
       }

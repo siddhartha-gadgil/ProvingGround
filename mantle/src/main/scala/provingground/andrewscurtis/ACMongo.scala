@@ -72,12 +72,13 @@ object ACMongo extends ACWriter {
   implicit object ElemsWriter extends BSONDocumentWriter[ACElem] {
     def write(elem: ACElem) =
       BSONDocument(
-        "name" -> elem.name,
-        "moves" -> uwrite(elem.moves), // pickled form of moves
-        "rank" -> elem.rank,
+        "name"         -> elem.name,
+        "moves"        -> uwrite(elem.moves), // pickled form of moves
+        "rank"         -> elem.rank,
         "presentation" -> uwrite(elem.pres), // pickled form of presentation
-        "loops" -> elem.loops,
-        "weight" -> elem.weight)
+        "loops"        -> elem.loops,
+        "weight"       -> elem.weight
+      )
   }
 
   /**
@@ -87,9 +88,9 @@ object ACMongo extends ACWriter {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
                      pmoves <- doc.getAs[String]("moves"); // pickled form of  moves
-                     rank <- doc.getAs[Int]("rank");
-                     ppres <- doc.getAs[String]("presentation"); // picked form of presentation
-                     loops <- doc.getAs[Int]("loops");
+                     rank   <- doc.getAs[Int]("rank");
+                     ppres  <- doc.getAs[String]("presentation"); // picked form of presentation
+                     loops  <- doc.getAs[Int]("loops");
                      weight <- doc.getAs[Double]("weight"))
         yield
           ACElem(name,
@@ -107,10 +108,10 @@ object ACMongo extends ACWriter {
     */
   implicit object ThmWriter extends BSONDocumentWriter[ACThm] {
     def write(elem: ACThm) =
-      BSONDocument("name" -> elem.name,
+      BSONDocument("name"         -> elem.name,
                    "presentation" -> uwrite(elem.pres), // pickled presentation
-                   "loops" -> elem.loops,
-                   "weight" -> elem.weight)
+                   "loops"        -> elem.loops,
+                   "weight"       -> elem.weight)
   }
 
   /**
@@ -119,8 +120,8 @@ object ACMongo extends ACWriter {
   implicit object ThmReader extends BSONDocumentReader[ACThm] {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
-                     ppres <- doc.getAs[String]("presentation"); // pickle presentation
-                     loops <- doc.getAs[Int]("loops");
+                     ppres  <- doc.getAs[String]("presentation"); // pickle presentation
+                     loops  <- doc.getAs[Int]("loops");
                      weight <- doc.getAs[Double]("weight"))
         yield
           ACThm(name,
@@ -137,8 +138,8 @@ object ACMongo extends ACWriter {
   implicit object MoveWeightWriter extends BSONDocumentWriter[ACMoveWeights] {
     def write(elem: ACMoveWeights) =
       BSONDocument(
-        "name" -> elem.name,
-        "fdM" -> uwrite(elem.fdM),
+        "name"  -> elem.name,
+        "fdM"   -> uwrite(elem.fdM),
         "loops" -> elem.loops
       )
   }
@@ -149,7 +150,7 @@ object ACMongo extends ACWriter {
   implicit object MoveWeightReader extends BSONDocumentReader[ACMoveWeights] {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
-                     pfdM <- doc.getAs[String]("fdM");
+                     pfdM  <- doc.getAs[String]("fdM");
                      loops <- doc.getAs[Int]("loops"))
         yield
           ACMoveWeights(name,
@@ -248,7 +249,7 @@ object ACMongo extends ACWriter {
     */
   def getFutOptLoops(name: String) = {
     val selector = BSONDocument("name" -> name)
-    val futOpt = actorsDB.find(selector).cursor[BSONDocument]().headOption
+    val futOpt   = actorsDB.find(selector).cursor[BSONDocument]().headOption
     futOpt map ((opt) => (opt) flatMap ((doc) => doc.getAs[Int]("loops")))
   }
 
@@ -278,7 +279,7 @@ object ACMongo extends ACWriter {
   def getFutOptFDM(name: String) =
     getFutOptLoops(name) flatMap ({
       case Some(loops) => getFutOptFDMStep(name, loops - 1)
-      case None => Future.successful(None)
+      case None        => Future.successful(None)
     })
 
   /**
@@ -298,7 +299,7 @@ object ACMongo extends ACWriter {
     def flatMapp[B](fn: A => Future[Option[B]]) = {
       futOpt flatMap {
         case Some(b) => fn(b)
-        case None => Future.successful(None)
+        case None    => Future.successful(None)
       }
     }
   }
@@ -374,13 +375,13 @@ object ACMongo extends ACWriter {
   }
 
   def allThmWeights(name: String) = {
-    val query = BSONDocument("name" -> name) // matches against pickled theorem
+    val query  = BSONDocument("name" -> name) // matches against pickled theorem
     val cursor = thmsDB.find(query).cursor[ACThm]()
     cursor.collect[Vector]()
   }
 
   def thmSupp(name: String) = {
-    val query = BSONDocument("name" -> name) // matches against pickled theorem
+    val query  = BSONDocument("name" -> name) // matches against pickled theorem
     val cursor = thmsDB.find(query).cursor[ACThm]()
     cursor.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector)
   }
@@ -394,7 +395,7 @@ object ACMongo extends ACWriter {
                                       loops: Int,
                                       dir: String = "ac-data") = {
     import ammonite.ops._
-    val wd = pwd / 'data / dir
+    val wd   = pwd / 'data / dir
     val file = wd / s"$name-thms.csv"
     def supp = (thms map (_.pres)).toSet.toVector
     rm(file)

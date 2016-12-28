@@ -32,9 +32,9 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
           prod(reciprocal(u))(reciprocal(v))
         case Reciprocal(a) => a
         case PiTerm(elems) => {
-            val flipElems = for ((a, p) <- elems) yield (a, -p)
-            PiTerm(flipElems)
-          }
+          val flipElems = for ((a, p) <- elems) yield (a, -p)
+          PiTerm(flipElems)
+        }
         case a => Reciprocal(a)
       }
 
@@ -59,7 +59,7 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
 
     def negate(x: LocalTerm) = self.negate(x)
 
-    // Members declared in spire.algebra.EuclideanRing 
+    // Members declared in spire.algebra.EuclideanRing
     def gcd(a: SymbolicField.this.LocalTerm,
             b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
       Literal(field.one)
@@ -72,7 +72,7 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
              b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
       div(a, b)
 
-    // Members declared in spire.algebra.MultiplicativeGroup 
+    // Members declared in spire.algebra.MultiplicativeGroup
     def div(x: SymbolicField.this.LocalTerm,
             y: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
       self.prod(x)(reciprocal(y))

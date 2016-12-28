@@ -31,7 +31,7 @@ case object TermLang
     */
   def anonVar(typ: Term): Option[Term] = typ match {
     case t: Typ[_] => Some(t.Var)
-    case _ => None
+    case _         => None
   }
 
   /**
@@ -45,7 +45,7 @@ case object TermLang
 
   def pi(variable: Term, typ: Term): Option[Term] = typ match {
     case t: Typ[u] => Try(refineTyp(HoTT.pi(variable)(t))).toOption
-    case _ => None
+    case _         => None
   }
 
   def appln(func: Term, arg: Term) = func match {
@@ -70,7 +70,7 @@ case object TermLang
 
   def sigma(variable: Term, typ: Term): Option[Term] = typ match {
     case t: Typ[u] => Try(refineTyp(HoTT.sigma(variable)(t))).toOption
-    case _ => None
+    case _         => None
   }
 
   def pair(x: Term, y: Term): Option[Term] =
@@ -78,17 +78,17 @@ case object TermLang
 
   def proj1(xy: Term): Option[Term] = xy match {
     case p: AbsPair[u, v] => Some(p.first)
-    case _ => None
+    case _                => None
   }
 
   def proj2(xy: Term): Option[Term] = xy match {
     case p: AbsPair[u, v] => Some(p.second)
-    case _ => None
+    case _                => None
   }
 
   def or(first: Term, second: Term): Option[Term] = (first, second) match {
     case (f: Typ[u], s: Typ[v]) => Some(PlusTyp(f, s))
-    case _ => None
+    case _                      => None
   }
 
   def incl1(typ: Term): Option[Term] = typ match {
@@ -118,18 +118,18 @@ case object TermLang
     (first, second) match {
       case (fn1: Func[u, w], fn2raw: Func[v, ww])
           if (fn1.codom == fn2raw.codom) =>
-        val tp = PlusTyp(fn1.dom, fn2raw.dom)
+        val tp  = PlusTyp(fn1.dom, fn2raw.dom)
         val fn2 = fn2raw.asInstanceOf[Func[v, w]]
         Some(PlusTyp.RecFn(fn1.dom, fn2.dom, fn1.codom, fn1, fn2))
       case (fn1: FuncLike[u, w], fn2raw: FuncLike[v, ww])
           if (fn1.depcodom == fn2raw.depcodom) =>
-        val tp = PlusTyp(fn1.dom, fn2raw.dom)
-        val fn2 = fn2raw.asInstanceOf[FuncLike[v, w]]
-        val x1 = fn1.dom.Var
-        val x2 = fn2.dom.Var
+        val tp     = PlusTyp(fn1.dom, fn2raw.dom)
+        val fn2    = fn2raw.asInstanceOf[FuncLike[v, w]]
+        val x1     = fn1.dom.Var
+        val x2     = fn2.dom.Var
         val fibre1 = lmbda(x1)(fn1(x1).typ.asInstanceOf[Typ[w]])
         val fibre2 = lmbda(x2)(fn2(x2).typ.asInstanceOf[Typ[w]])
-        val fibre = PlusTyp.RecFn(fn1.dom, fn2.dom, Type, fibre1, fibre2)
+        val fibre  = PlusTyp.RecFn(fn1.dom, fn2.dom, Type, fibre1, fibre2)
         Some(tp.InducFn(fibre, fn1, fn2))
       case _ => None
     }
@@ -139,7 +139,7 @@ case object TermLang
 
   def isPair: Term => Option[(Term, Term)] = {
     case xy: AbsPair[u, v] => Some((xy.first, xy.second))
-    case _ => None
+    case _                 => None
   }
 
   def isSigma: Term => Option[(Term, Term)] = {
@@ -154,15 +154,15 @@ case object TermLang
   def isPi: Term => Option[(Term, Term)] = {
     case st: FuncTyp[u, v] =>
       Some((st.dom.Var, st.codom))
-      case st: GenFuncTyp[u, v] =>
-        val x = st.domain.Var
-        Some((x, st.fib(x)))
+    case st: GenFuncTyp[u, v] =>
+      val x = st.domain.Var
+      Some((x, st.fib(x)))
     case _ => None
   }
 
   def domain: Term => Option[Term] = {
     case fn: FuncLike[u, v] => Some(fn.dom)
-    case _ => None
+    case _                  => None
   }
 
   implicit def termLang: ExprLang[Term] = this

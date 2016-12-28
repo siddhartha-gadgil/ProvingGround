@@ -142,10 +142,12 @@ object IterFuncPatternMap {
                             C <: Term with Subs[C]](
       tail: Typ[TT],
       head: IterFuncPtnMap[HS, O, C, V, T, D]
-  )
-      extends IterFuncPtnMap[
-          Func[TT, HS], O, C, Func[TT, V], Func[TT, T], FuncLike[TT, D]] {
-    self =>
+  ) extends IterFuncPtnMap[Func[TT, HS],
+                             O,
+                             C,
+                             Func[TT, V],
+                             Func[TT, T],
+                             FuncLike[TT, D]] { self =>
     def apply(W: Typ[O]) = FuncTyp[TT, V](tail, head(W))
 
     type DepTargetType = FuncLike[TT, D]
@@ -155,8 +157,8 @@ object IterFuncPatternMap {
     def target(x: Typ[Cod]) = tail ->: head.target(x)
 
     def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) => {
-      val a = tail.Var
-      val b = fmly(a)
+      val a         = tail.Var
+      val b         = fmly(a)
       val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
       piDefn(a)(headfibre(a).depTarget(xs)(b))
     }
@@ -179,7 +181,7 @@ object IterFuncPatternMap {
       val x = tail.Var
       val g = apply(f.dom).Var
       lmbda(g)(
-          lmbda(x)(head.induced(f)(g(x)))
+        lmbda(x)(head.induced(f)(g(x)))
       )
     }
 
@@ -192,7 +194,7 @@ object IterFuncPatternMap {
       val x = tail.Var
       val g = apply(f.dom).Var
       lambda(g)(
-          lambda(x)(head.inducedDep(f)(g(x)))
+        lambda(x)(head.inducedDep(f)(g(x)))
       )
     }
   }
@@ -211,8 +213,7 @@ object IterFuncPatternMap {
       tail: Typ[TT],
       headfibre: TT => IterFuncPtnMap[HS, O, C, V, T, D],
       headlevel: Int = 0
-  )
-      extends IterFuncPtnMap[FuncLike[TT, HS],
+  ) extends IterFuncPtnMap[FuncLike[TT, HS],
                              O,
                              C,
                              FuncLike[TT, V],
@@ -226,7 +227,7 @@ object IterFuncPatternMap {
     // type DepTargetType = FuncLike[Term, D]
 
     def apply(W: Typ[O]) = {
-      val x = tail.Var
+      val x     = tail.Var
       val fiber = lmbda(x)(headfibre(x)(W))
       //   val fiber = typFamily(tail,  (t : Term) => headfibre(t)(W))
       piDefn[TT, V](x)(headfibre(x)(W))
@@ -235,21 +236,21 @@ object IterFuncPatternMap {
     //  type Cod = C
 
     def target(x: Typ[C]) = {
-      val a = tail.Var
+      val a         = tail.Var
       val targfibre = lmbda(a)(headfibre(a).target(x))
       piDefn(a)(headfibre(a).target(x))
     }
 
     def depTarget(xs: Func[O, Typ[C]]) = (fmly: FuncLike[TT, V]) => {
-      val a = tail.Var
-      val b = fmly(a)
+      val a         = tail.Var
+      val b         = fmly(a)
       val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
       piDefn(a)(headfibre(a).depTarget(xs)(b))
     }
 
     def subs(x: Term, y: Term) =
-      DepFuncIterPtnMap(
-          tail.replace(x, y), (tt: TT) => headfibre(tt).subs(x, y))
+      DepFuncIterPtnMap(tail.replace(x, y),
+                        (tt: TT) => headfibre(tt).subs(x, y))
 
     //    val head = headfibre(tail.Var)
 
@@ -259,7 +260,7 @@ object IterFuncPatternMap {
       val x = tail.Var
       val g = apply(f.dom).Var
       lambda(g)(
-          lambda(x)(headfibre(x).induced(f)(g(x)))
+        lambda(x)(headfibre(x).induced(f)(g(x)))
       )
     }
 
@@ -267,7 +268,7 @@ object IterFuncPatternMap {
       val x = tail.Var
       val g = apply(f.dom).Var
       lambda(g)(
-          lambda(x)(headfibre(x).inducedDep(f)(g(x)))
+        lambda(x)(headfibre(x).inducedDep(f)(g(x)))
       )
     }
 
@@ -372,7 +373,8 @@ object IterFuncPatternMap {
   }
 
   case class FuncShape[TT <: Term with Subs[TT], HS <: Term with Subs[HS]](
-      tail: Typ[TT], head: IterFuncShape[HS])
+      tail: Typ[TT],
+      head: IterFuncShape[HS])
       extends IterFuncShape[Func[TT, HS]] {
 
     def subs(x: Term, y: Term) = FuncShape(tail.replace(x, y), head.subs(x, y))
@@ -384,7 +386,8 @@ object IterFuncPatternMap {
   }
 
   case class DepFuncShape[TT <: Term with Subs[TT], HS <: Term with Subs[HS]](
-      tail: Typ[TT], headfibre: TT => IterFuncShape[HS])
+      tail: Typ[TT],
+      headfibre: TT => IterFuncShape[HS])
       extends IterFuncShape[FuncLike[TT, HS]] {
     def subs(x: Term, y: Term) =
       DepFuncShape(tail.replace(x, y), (t: TT) => headfibre(t).subs(x, y))

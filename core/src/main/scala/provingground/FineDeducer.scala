@@ -33,7 +33,7 @@ object FineDeducer {
       p: FD[Term]): PD[Option[Term]] =
     typEvolve(p) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (p * (1 - varweight)) ++ (FD.unif[Term](x) * varweight)
         (valueEvolve(x)(newp)) map ((y: Term) =>
                                       if (!isUniv(y)) TL.lambda(x, y)
@@ -46,7 +46,7 @@ object FineDeducer {
       p: FD[Term]): PD[Option[Term]] =
     typEvolve(p) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (p * (1 - varweight)) ++ (FD.unif[Term](x) * varweight)
         (valueEvolve(x)(newp)) map ((y: Term) => TL.pi(x, y))
       case _ => FD.unif(None)
@@ -146,7 +146,7 @@ case class FineDeducer(applnWeight: Double = 0.2,
   def DlambdaVar(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     DevolveTyp(fd, tang) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
         (varScaled.evolve(newp)) map ((y: Term) =>
                                         if (!isUniv(y)) TL.lambda(x, y)
@@ -157,7 +157,7 @@ case class FineDeducer(applnWeight: Double = 0.2,
   def DlambdaVal(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     evolveTyp(fd) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
         (varScaled
           .Devolve(newp, tang * (1 - varWeight))) map ((y: Term) =>
@@ -170,24 +170,20 @@ case class FineDeducer(applnWeight: Double = 0.2,
   def DpiVar(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     DevolveTyp(fd, tang) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
-        (varScaled.evolveTyp(newp)) map ((y: Term) =>
-                                           TL.pi(x, y)
-                                           )
+        (varScaled.evolveTyp(newp)) map ((y: Term) => TL.pi(x, y))
       case _ => FD.unif(None)
     })
 
   def DpiVal(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     evolveTyp(fd) flatMap ({
       case tp: Typ[u] =>
-        val x = tp.Var
+        val x    = tp.Var
         val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
         (varScaled
           .DevolveTyp(newp, tang * (1 - varWeight))) map ((y: Term) =>
-                                                            
-                                                              TL.pi(x, y)
-                                                            )
+                                                            TL.pi(x, y))
       case _ => FD.unif(None)
     })
 

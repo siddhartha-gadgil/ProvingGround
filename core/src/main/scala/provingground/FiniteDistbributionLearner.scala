@@ -111,14 +111,16 @@ object FiniteDistributionLearner {
     val grad = (d: FiniteDistribution[V]) =>
       (w: FiniteDistribution[V]) => {
         val fstsum = invFlatMap(
-            (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a),
-            d.filter(firstFilter).supp)
+          (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a),
+          d.filter(firstFilter).supp)
 
         val scndDists =
           d.filter(firstFilter).supp map ((a: V) =>
-                (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a))
+                                            (w.invmapOpt((b: V) => f(a, b),
+                                                         d.supp)) * d(a))
         val scndsum = invFlatMap(
-            (a: V) => (w.invmapOpt((b: V) => f(b, a), d.supp)) * d(a), d.supp)
+          (a: V) => (w.invmapOpt((b: V) => f(b, a), d.supp)) * d(a),
+          d.supp)
 
         fstsum ++ scndsum
     }
@@ -128,8 +130,8 @@ object FiniteDistributionLearner {
     * Add a new vertex, mainly for lambdas
     */
   case class NewVertex[V](v: V)
-      extends DiffbleFunction[
-          (Double, FiniteDistribution[V]), FiniteDistribution[V]] {
+      extends DiffbleFunction[(Double, FiniteDistribution[V]),
+                              FiniteDistribution[V]] {
     val func = (wp: (Double, FiniteDistribution[V])) =>
       wp._2 * (1 - wp._1) + (v, wp._1)
 
@@ -146,20 +148,20 @@ object FiniteDistributionLearner {
     * the smooth function being defined is p(m)f.
     */
   def weightedDyn[M, X: LinearStructure: InnerProduct]
-    : (M, DiffbleFunction[X, X]) => DiffbleFunction[
-        (FiniteDistribution[M], X), X] = (m, fn) => {
-    val pm = Proj1[FiniteDistribution[M], X]
-    val scm = Evaluate(m)
-    val atM = pm andthen scm andthen Incl1[Double, X]
-    val pv = Proj2[FiniteDistribution[M], X]
-    val fv = pv andthen fn andthen Incl2[Double, X]
+    : (M, DiffbleFunction[X, X]) => DiffbleFunction[(FiniteDistribution[M], X),
+                                                    X] = (m, fn) => {
+    val pm    = Proj1[FiniteDistribution[M], X]
+    val scm   = Evaluate(m)
+    val atM   = pm andthen scm andthen Incl1[Double, X]
+    val pv    = Proj2[FiniteDistribution[M], X]
+    val fv    = pv andthen fn andthen Incl2[Double, X]
     val fnsum = vsum[DiffbleFunction[(FiniteDistribution[M], X), (Double, X)]]
     fnsum(atM, fv) andthen ScProd[X]
   }
 
   case class ExtendM[M, X](fn: DiffbleFunction[(FiniteDistribution[M], X), X])
-      extends DiffbleFunction[
-          (FiniteDistribution[M], X), (FiniteDistribution[M], X)] {
+      extends DiffbleFunction[(FiniteDistribution[M], X),
+                              (FiniteDistribution[M], X)] {
     val func = (mv: (FiniteDistribution[M], X)) => (mv._1, fn.func(mv))
 
     val grad = (mv: (FiniteDistribution[M], X)) =>
@@ -172,7 +174,8 @@ object FiniteDistributionLearner {
     */
   def extendM[M, X](
       fn: DiffbleFunction[(FiniteDistribution[M], X), X]): DiffbleFunction[
-      (FiniteDistribution[M], X), (FiniteDistribution[M], X)] = {
+    (FiniteDistribution[M], X),
+    (FiniteDistribution[M], X)] = {
     ExtendM(fn)
   }
 

@@ -208,7 +208,7 @@ object Div {
     : Option[(FormalElemFunction, FormalElemFunction)] = q match {
     case Times(x, Reciprocal(y)) => Some(x, y)
     case Times(Reciprocal(y), x) => Some(x, y)
-    case _ => None
+    case _                       => None
   }
 }
 
@@ -291,12 +291,12 @@ object FormalElemFunction {
 
     def one: FormalElemFunction = One
 
-    def plus(
-        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def plus(x: FormalElemFunction,
+             y: FormalElemFunction): FormalElemFunction =
       Plus(x, y)
 
-    def times(
-        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def times(x: FormalElemFunction,
+              y: FormalElemFunction): FormalElemFunction =
       Times(x, y)
 
     def div(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
@@ -304,8 +304,8 @@ object FormalElemFunction {
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction] {
-    def circ(
-        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def circ(x: FormalElemFunction,
+             y: FormalElemFunction): FormalElemFunction =
       Compose(x, y)
   }
 
@@ -316,13 +316,13 @@ object FormalElemFunction {
   import Circ._
 
   def multiVar: FormalElemFunction => Boolean = {
-    case Proj(_) => true
-    case Negate(f) => multiVar(f)
+    case Proj(_)       => true
+    case Negate(f)     => multiVar(f)
     case Reciprocal(f) => multiVar(f)
-    case Plus(x, y) => multiVar(x) && multiVar(y)
-    case Times(x, y) => multiVar(x) && multiVar(y)
+    case Plus(x, y)    => multiVar(x) && multiVar(y)
+    case Times(x, y)   => multiVar(x) && multiVar(y)
     case Compose(x, y) => multiVar(y)
-    case _: ConstFunc => true
-    case _: OneVar => false
+    case _: ConstFunc  => true
+    case _: OneVar     => false
   }
 }

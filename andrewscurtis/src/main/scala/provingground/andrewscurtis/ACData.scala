@@ -141,7 +141,7 @@ object ACFlowSaver {
   val snapSink = Sink.foreach(snapSave)
 
   def snapSource(date: String, batch: String) =
-    Src(read.lines(snapd / date / batch.toString). toStream)
+    Src(read.lines(snapd / date / batch.toString).toStream)
 
   def snapStream(date: String) =
     (ls(wd / date).toStream map (_.name))
@@ -181,10 +181,10 @@ object ACFlowSaver {
   def addElem(elem: ACElem) = {
     import elem._
     val obj = MongoDBObject("name" -> name,
-                            "moves" -> uwrite(moves),
+                            "moves"        -> uwrite(moves),
                             "presentation" -> uwrite(pres),
-                            "loops" -> loops,
-                            "weight" -> weight)
+                            "loops"        -> loops,
+                            "weight"       -> weight)
     elems.insert(obj)
   }
 
@@ -195,8 +195,8 @@ object ACFlowSaver {
     import thm._
     val obj = MongoDBObject("name" -> name,
                             "presentation" -> uwrite(pres),
-                            "loops" -> loops,
-                            "weight" -> weight)
+                            "loops"        -> loops,
+                            "weight"       -> weight)
     thmsdb.insert(obj)
   }
 
@@ -216,7 +216,7 @@ object ACFlowSaver {
     * update number of loops from snapshot
     */
   def updateLoops(name: String, loops: Int) = {
-    val query = MongoDBObject("name" -> name)
+    val query  = MongoDBObject("name" -> name)
     val update = $set("loops" -> loops)
     val exists = !(actorData.findOne(query).isEmpty)
     if (exists)
@@ -264,7 +264,7 @@ object ACFlowSaver {
     * returns iterator of weights of a given presentation for a given actor at all stages, ordered by loops/
     */
   def presWeights(name: String, pres: Presentation) = {
-    val query = MongoDBObject("presentation" -> uwrite(pres), "name" -> name)
+    val query  = MongoDBObject("presentation" -> uwrite(pres), "name" -> name)
     val sorter = MongoDBObject("loops" -> 1)
     val cursor = thmsdb.find(query)
     for (e <- cursor) yield e.as[Double]("weight")
@@ -278,8 +278,8 @@ object ACFlowSaver {
       MongoDBObject("loops" -> loops, "name" -> name) // query by given name, stage
     val cursor = elems.find(query)
     val pmf = (for (c <- cursor) yield {
-      for (mvs <- c.getAs[String]("moves"); // pickled Moves
-           wt <- c.getAs[Double]("weight")) // associate weight
+      for (mvs <- c.getAs[String]("moves");  // pickled Moves
+           wt  <- c.getAs[Double]("weight")) // associate weight
         yield Weighted(uread[Moves](mvs), wt) // Weighted Moves
     }).toVector.flatten // vector, flattened as options are returned.
     FiniteDistribution(pmf)
@@ -290,8 +290,8 @@ object ACFlowSaver {
       MongoDBObject("loops" -> loops, "name" -> name) // query by given name, stage
     val cursor = elems.find(query)
     val list = (for (c <- cursor) yield {
-      for (mvs <- c.getAs[String]("moves"); // pickled Moves
-           wt <- c.getAs[Double]("weight"); // associate weight
+      for (mvs  <- c.getAs[String]("moves"); // pickled Moves
+           wt   <- c.getAs[Double]("weight"); // associate weight
            pres <- c.getAs[String]("presentation");
            rank <- c.getAs[Int]("rank"))
         yield
@@ -319,7 +319,7 @@ object ACFlowSaver {
     * (optional) number of loops of an actor in database
     */
   def actorLoops(name: String) = {
-    val query = MongoDBObject("name" -> name)
+    val query  = MongoDBObject("name" -> name)
     val cursor = actorData.findOne(query)
     (for (c <- cursor) yield c.getAs[Int]("loops")).flatten
   }
@@ -402,9 +402,9 @@ object ACData {
   def fileSave(name: String, dir: String = "acDev", rank: Int = 2)(
       fdM: FiniteDistribution[AtomicMove],
       fdV: FiniteDistribution[Moves]) = {
-    val file = wd / dir / (name + ".acrun")
+    val file      = wd / dir / (name + ".acrun")
     val statefile = wd / dir / (name + ".acstate")
-    val thmfile = wd / dir / (name + ".acthms")
+    val thmfile   = wd / dir / (name + ".acthms")
     write.append(file, s"${pickle((fdM, fdV))}\n")
     write.over(statefile, s"${pickle((fdM, fdV))}\n")
     def writethms = {
@@ -420,7 +420,7 @@ object ACData {
   }
 
   def load(name: String, dir: String = "acDev") = {
-    val file = wd / dir / (name + ".acrun")
+    val file  = wd / dir / (name + ".acrun")
     val lines = (read.lines(file)).toStream
     lines map (unpickle)
   }

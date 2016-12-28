@@ -80,10 +80,10 @@ object NestedDoc {
 
     def contexts =
       init.contexts ++
-      (last.contexts map {
-            case (x, l) =>
-              (export(x), (l map export) ++ init.read)
-          })
+        (last.contexts map {
+          case (x, l) =>
+            (export(x), (l map export) ++ init.read)
+        })
   }
 
   case class Append[T](init: NestedDoc[T], last: T)

@@ -28,7 +28,7 @@ object Sampler {
 
   def fromPMF[A](pmf: Vector[Weighted[A]], size: Int): Map[A, Int] = {
     val vec = pmf map (_.elem)
-    val ps = pmf map (_.weight)
+    val ps  = pmf map (_.weight)
     getMultinomial(vec, ps, size)
   }
 
@@ -58,15 +58,15 @@ object Sampler {
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
         case mx: MixinOpt[u] =>
-          val m = Binomial(n, mx.q).draw
-          val optSample = sample(mx.second, m)
+          val m            = Binomial(n, mx.q).draw
+          val optSample    = sample(mx.second, m)
           val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
           combine(sample(mx.first, n - total(secondSample.toVector)),
                   secondSample)
 
         case mx: Mixture[u] =>
           val sampSizes = getMultinomial(mx.dists, mx.ps, n)
-          val polySamp = (for ((d, m) <- sampSizes) yield sample(d, m))
+          val polySamp  = (for ((d, m) <- sampSizes) yield sample(d, m))
           combineAll(polySamp.toVector)
 
         case Mapped(base, f) =>
@@ -80,7 +80,7 @@ object Sampler {
 
         case Conditioned(base, p) =>
           val firstSamp = sample(base, n) filter { case (a, n) => p(a) }
-          val tot = firstSamp.values.sum
+          val tot       = firstSamp.values.sum
           if (tot == 0) Map()
           else if (tot == n) firstSamp
           else {
@@ -104,9 +104,9 @@ object TermSampler {
   import java.awt.Color
 
   def plotEntsThms(thms: ThmEntropies) = {
-    val X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
-    val Y = DenseVector((thms.entropyPairs map (_._2._2)).toArray)
-    val names = (n: Int) => thms.entropyPairs(n)._1.toString
+    val X       = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
+    val Y       = DenseVector((thms.entropyPairs map (_._2._2)).toArray)
+    val names   = (n: Int) => thms.entropyPairs(n)._1.toString
     val colours = (n: Int) => if (X(n) < Y(n)) Color.RED else Color.BLUE
     entPlot += scatter(X, Y, (_) => 0.1, colors = colours, tips = names)
     entPlot.xlabel = "statement entropy"
@@ -157,7 +157,7 @@ class TermSampler(d: BasicDeducer) {
     )((ns) => ns.succ)
 
   var live: Boolean = true
-  def stop() = { live = false }
+  def stop()        = { live = false }
 
   def loggedBuffer(init: FD[Term],
                    sampleSize: Int,
@@ -207,7 +207,7 @@ class TermSampler(d: BasicDeducer) {
     lazy val derFDs = derSamplesSizes map {
       case (x, n) =>
         val tang = FD.unif(x) //tangent vecror, atom at `x`
-        val dPD = d.hDerFunc(sc)(nextFD)(tang) //recursive distribution based on derivative for sampling
+        val dPD  = d.hDerFunc(sc)(nextFD)(tang) //recursive distribution based on derivative for sampling
         val samp = sample(dPD, n)
         x -> toFD(samp)
     }
@@ -232,7 +232,7 @@ class TermSampler(d: BasicDeducer) {
       }).toMap
 
     def shiftedFD(totalSize: Int, epsilon: Double) = {
-      val tf = feedBacks // totalFlow(totalSize)
+      val tf    = feedBacks // totalFlow(totalSize)
       val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
       val pmf = nextFD.pmf map {

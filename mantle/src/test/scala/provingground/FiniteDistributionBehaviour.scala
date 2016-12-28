@@ -6,11 +6,12 @@ import FiniteDistribution._
 import LinearStructure._
 import Weighted._
 
+trait FiniteDistributionBehaviours { this: FlatSpec =>
 
-trait FiniteDistributionBehaviours { this : FlatSpec =>
-
-  def intFiniteDistribution(finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
-    val x = finDist(weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
+  def intFiniteDistribution(
+      finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
+    val x = finDist(
+      weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
 
     val y = finDist(weights(0 -> 0.3, 1 -> 0.4, 5 -> 0.3))
 
@@ -64,7 +65,7 @@ trait FiniteDistributionBehaviours { this : FlatSpec =>
 
     it should "map correctly under optional functions" in {
 
-      val image = x mapOpt ((x: Int) =>  if (x <0) None else Some(x % 2))
+      val image = x mapOpt ((x: Int) => if (x < 0) None else Some(x % 2))
 
       assert(image(1) == 0.55)
 
@@ -72,11 +73,11 @@ trait FiniteDistributionBehaviours { this : FlatSpec =>
     }
 
     it should "filter correctly" in {
-      val fd = x filter ((x: Int) => x >1)
+      val fd = x filter ((x: Int) => x > 1)
 
       assert(fd(1) == 0)
 
-      assert( fd(3) == 0.25)
+      assert(fd(3) == 0.25)
     }
 
     it should "correctly add elements even if in support" in {
@@ -90,20 +91,20 @@ trait FiniteDistributionBehaviours { this : FlatSpec =>
     it should "correctly normalize with pruning" in {
       val fd = x.normalized(0.15)
 
-      eqls(fd(1), 0.2/0.9)
+      eqls(fd(1), 0.2 / 0.9)
 
-      eqls(fd(3), 0.25/ 0.9)
+      eqls(fd(3), 0.25 / 0.9)
 
       assert(fd(7) == 0)
     }
 
     it should "have empty distribution as identity" in {
 
-      val addL : FiniteDistribution[Int] = FiniteDistribution.empty[Int] ++ x
+      val addL: FiniteDistribution[Int] = FiniteDistribution.empty[Int] ++ x
 
-      val empty : FiniteDistribution[Int] = FiniteDistribution.empty[Int]
+      val empty: FiniteDistribution[Int] = FiniteDistribution.empty[Int]
 
-      val addR : FiniteDistribution[Int] = x ++ empty
+      val addR: FiniteDistribution[Int] = x ++ empty
 
       for (j <- -5 to 5) assert(addL(j) == x(j))
 

@@ -30,8 +30,9 @@ object Goals {
     def apply(solns: PartialFunction[Goal[U], U]) = solution(solns.lift)
   }
 
-  case class SimpleReduction[U](
-      target: Goal[U], newGoal: Goal[U], reduction: U => U)
+  case class SimpleReduction[U](target: Goal[U],
+                                newGoal: Goal[U],
+                                reduction: U => U)
       extends Reduction[U] {
     val newGoals = Set(newGoal)
 
@@ -39,7 +40,7 @@ object Goals {
 
     def reduce: U => Option[U] = {
       case soln if newGoal.achieves(soln) => Some(reduction(soln))
-      case _ => None
+      case _                              => None
     }
 
     def apply(soln: U) = reduce(soln)
@@ -75,20 +76,23 @@ object Entropy {
 
     private def sum(a: Double, b: Double) = a + b
 
-    private def entSum(
-        l: List[S], bound: Double, withBase: S => Option[Double]): Double =
+    private def entSum(l: List[S],
+                       bound: Double,
+                       withBase: S => Option[Double]): Double =
       l map ((s) => recEntropy(s, bound)) reduce (sum)
 
-    def recEntropy(
-        s: S, bound: Double, withBase: S => Option[Double] = base): Double = {
+    def recEntropy(s: S,
+                   bound: Double,
+                   withBase: S => Option[Double] = base): Double = {
       if (bound < 0) 0
       else {
         base(s) match {
           case Some(ent) if ent < bound =>
             math.min(ent, recEntropy(s, ent, withBase))
           case _ =>
-            val offspring = for (res <- resolvers; l <- res(s)) yield
-              (entSum(l, bound - resolverWeight(res), withBase) +
+            val offspring = for (res <- resolvers; l <- res(s))
+              yield
+                (entSum(l, bound - resolverWeight(res), withBase) +
                   resolverWeight(res))
             (offspring + (bound + 1)).min
         }
@@ -107,9 +111,10 @@ object Entropy {
       addBase(newBase)(s)
     }
 
-    @tailrec final def cumulEntropy(
-        ss: List[S], bound: Double, accum: Double = 0): Double = ss match {
-      case List() => 0
+    @tailrec final def cumulEntropy(ss: List[S],
+                                    bound: Double,
+                                    accum: Double = 0): Double = ss match {
+      case List()  => 0
       case List(s) => recEntropy(s, bound)
       case s :: l =>
         cumulEntropy(l, bound, accum + recEntropy(s, bound, addGens(l.toSet)))
@@ -122,9 +127,10 @@ object Entropy {
           case Some(ent) if ent < bound =>
             math.min(ent, cmpndRecEntropy(s, ent))
           case _ =>
-            val offspring = for (res <- resolvers; l <- res(s)) yield
-              (cumulEntropy(l, bound - resolverWeight(res)) + resolverWeight(
-                      res))
+            val offspring = for (res <- resolvers; l <- res(s))
+              yield
+                (cumulEntropy(l, bound - resolverWeight(res)) + resolverWeight(
+                  res))
             (offspring + (bound + 1)).min
         }
       }
@@ -133,7 +139,7 @@ object Entropy {
 
   object Rec {
     def unionBase[S](bs: List[S => Option[Double]])(s: S) =
-      bs.map(_ (s)).foldLeft(None: Option[Double])(_ orElse _)
+      bs.map(_(s)).foldLeft(None: Option[Double])(_ orElse _)
   }
 
   case class SimpleRecData[S](gen: Set[S], resolvers: Set[Resolver[S]])
@@ -153,8 +159,8 @@ object Dynamics {
     def feedback(value: O, trueVal: O, arg: I, epsilon: Double): I
   }
 
-  case class FeedbackFunction[I, O](
-      forward: I => O, back: (O, O, I, Double) => I)
+  case class FeedbackFunction[I, O](forward: I => O,
+                                    back: (O, O, I, Double) => I)
       extends Feedback[I, O]
       with (I => O) {
     def feedback(value: O, trueVal: O, arg: I, epsilon: Double) =
@@ -192,15 +198,13 @@ object Dynamics {
     def act: Set[A] => DynState[A]
 
     def mixin[B](isle: => DynIsle[A, B]): DynSys[A] =
-      DynDynSys(
-          (s: Set[A]) => {
+      DynDynSys((s: Set[A]) => {
         val nextIsle = isle.next
         DynState(s union (nextIsle.state map (isle.mapBy)), mixin(nextIsle))
       })
 
     def mixinSet[B](isles: => Set[DynIsle[A, B]]): DynSys[A] =
-      DynDynSys(
-          (s: Set[A]) => {
+      DynDynSys((s: Set[A]) => {
         val nextIsles = isles map (_.next)
         val export =
           for (isle <- nextIsles; b <- isle.state) yield (isle.mapBy(b))
@@ -208,14 +212,12 @@ object Dynamics {
       })
 
     def spawn[B](isle: => DynIsle[A, B]) =
-      DynDynSys(
-          (s: Set[A]) => {
+      DynDynSys((s: Set[A]) => {
         DynState(act(s).state, act(s).dyn mixin isle)
       })
 
     def spawnSet[B](isles: Set[A] => Set[DynIsle[A, B]]) =
-      DynDynSys(
-          (s: Set[A]) => {
+      DynDynSys((s: Set[A]) => {
         DynState(act(s).state, act(s).dyn mixinSet isles(s))
       })
   }
@@ -229,20 +231,20 @@ object Dynamics {
       StatDynSys((s: Set[A]) => (s collect pf))
 
     def pairs[A](pairing: PartialFunction[(A, A), A]) = StatDynSys(
-        (s: Set[A]) => (for (x <- s; y <- s) yield (x, y)) collect pairing
+      (s: Set[A]) => (for (x <- s; y <- s) yield (x, y)) collect pairing
     )
 
     def chPairs[A](pairing: PartialFunction[A, PartialFunction[A, A]]) =
       StatDynSys(
-          (s: Set[A]) => {
-            val fns = s collect pairing
-            fns flatMap (fn => s collect fn)
-          }
+        (s: Set[A]) => {
+          val fns = s collect pairing
+          fns flatMap (fn => s collect fn)
+        }
       )
 
     def triples[A](tripling: PartialFunction[(A, A, A), A]) = StatDynSys(
-        (s: Set[A]) =>
-          (for (x <- s; y <- s; z <- s) yield (x, y, z)) collect tripling
+      (s: Set[A]) =>
+        (for (x <- s; y <- s; z <- s) yield (x, y, z)) collect tripling
     )
 
     def apply[A](pf: PartialFunction[A, A]) =
@@ -252,8 +254,8 @@ object Dynamics {
   case class DynState[A](state: Set[A], dyn: DynSys[A]) {
     def next = dyn.act(state)
 
-    @tailrec final def recSteps(
-        n: Int, sofar: DynState[A] = this): DynState[A] = {
+    @tailrec final def recSteps(n: Int,
+                                sofar: DynState[A] = this): DynState[A] = {
       if (n < 1) sofar else recSteps(n - 1, sofar.next)
     }
 
@@ -284,7 +286,7 @@ object Dynamics {
   }
 
   case class DynIsle[A, B](isleState: DynState[B], mapBy: B => A) {
-    def next = DynIsle(isleState.next, mapBy)
+    def next  = DynIsle(isleState.next, mapBy)
     def state = isleState.state
   }
 
@@ -323,7 +325,7 @@ object Dynamics {
 
     val inferenceDyn: DynSys[Term] =
       DynSys.id[Term] ++ DynSys.pairs(logicalArrows) spawnSet (lambdaIsles(
-              inferenceDyn) _)
+        inferenceDyn) _)
 
 //	val InferenceDyn = Dyn.id[Term] ++ Dyn.pairs(LogicalArrows) andThen (expandGens _) mixin (lambdaGens _)
   }

@@ -36,20 +36,22 @@ class DeducerSource(ded: Deducer,
   }
 
   def firstBatchConc(threads: Int) =
-    Future.sequence {
-      (1 to threads) map ((_) =>
-                            Future {
-                              nextDistribution(initDist,
-                                               initBatch,
-                                               false,
-                                               Vector(),
-                                               smooth)
-                            })
-    }.map(
-      (fdsInvMap) =>
-        fdsInvMap.fold((FD.empty[Term], Vector()))(
-          (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-      ))
+    Future
+      .sequence {
+        (1 to threads) map ((_) =>
+                              Future {
+                                nextDistribution(initDist,
+                                                 initBatch,
+                                                 false,
+                                                 Vector(),
+                                                 smooth)
+                              })
+      }
+      .map(
+        (fdsInvMap) =>
+          fdsInvMap.fold((FD.empty[Term], Vector()))(
+            (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+        ))
 
   def initSource = Source.fromFuture(firstBatchFut)
 
@@ -65,20 +67,22 @@ class DeducerSource(ded: Deducer,
   def deducBatchesConc(threads: Int)(fdInit: FD[Term], invMap: InvMap) =
     Source.unfoldAsync(fdInit -> (invMap)) {
       case (fd, invM) =>
-        val nextFut = Future.sequence {
-          (1 to threads) map ((_) =>
-                                Future {
-                                  nextDistribution(fd,
-                                                   batchSize,
-                                                   true,
-                                                   invM,
-                                                   smooth)
-                                })
-        }.map(
-          (fdsInvMap) =>
-            fdsInvMap.fold((FD.empty[Term], Vector()))(
-              (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-          ))
+        val nextFut = Future
+          .sequence {
+            (1 to threads) map ((_) =>
+                                  Future {
+                                    nextDistribution(fd,
+                                                     batchSize,
+                                                     true,
+                                                     invM,
+                                                     smooth)
+                                  })
+          }
+          .map(
+            (fdsInvMap) =>
+              fdsInvMap.fold((FD.empty[Term], Vector()))(
+                (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+            ))
         nextFut map ((x) => Some(x -> fd))
     }
 
@@ -111,21 +115,23 @@ class DeducerSource(ded: Deducer,
         .normalized()
     Source.unfoldAsync(fdInit -> (invMap)) {
       case (fd, invM) =>
-        val nextFut = Future.sequence {
-          (1 to threads) map ((_) =>
-                                Future {
-                                  learnerNextDistribution(fd,
-                                                          theorems,
-                                                          batchSize,
-                                                          true,
-                                                          invM,
-                                                          smooth)
-                                })
-        }.map(
-          (fdsInvMap) =>
-            fdsInvMap.fold((FD.empty[Term], Vector()))(
-              (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-          ))
+        val nextFut = Future
+          .sequence {
+            (1 to threads) map ((_) =>
+                                  Future {
+                                    learnerNextDistribution(fd,
+                                                            theorems,
+                                                            batchSize,
+                                                            true,
+                                                            invM,
+                                                            smooth)
+                                  })
+          }
+          .map(
+            (fdsInvMap) =>
+              fdsInvMap.fold((FD.empty[Term], Vector()))(
+                (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
+            ))
         nextFut map ((x) => Some(x -> fd))
     }
   }
@@ -251,7 +257,7 @@ object DeducerSource {
 
   def loadDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = pwd / 'data / s"${name}.deduc"
-    val it = read.lines(file).toIterator. map ((t) => readDist(t, names))
+    val it   = read.lines(file).toIterator.map((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }
@@ -259,7 +265,7 @@ object DeducerSource {
 
   def loadLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
     val file = pwd / 'data / s"${name}.learn"
-    val it = read.lines(file).toIterator map ((t) => readDist(t, names))
+    val it   = read.lines(file).toIterator map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }

@@ -170,8 +170,8 @@ object IndexedIterFuncPtnMap {
 
     def depTarget(xs: IDFT) =
       (fmly: Func[TT, V]) => {
-        val a = tail.Var
-        val b = fmly(a)
+        val a         = tail.Var
+        val b         = fmly(a)
         val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
         piDefn(a)(headfibre(a).depTarget(xs)(b))
       }
@@ -270,8 +270,8 @@ object IndexedIterFuncPtnMap {
 
     def depTarget(xs: IDFT) =
       (fmly: FuncLike[TT, V]) => {
-        val a = tail.Var
-        val b = fmly(a)
+        val a         = tail.Var
+        val b         = fmly(a)
         val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
         piDefn(a)(headfibre(a).depTarget(xs)(b))
       }

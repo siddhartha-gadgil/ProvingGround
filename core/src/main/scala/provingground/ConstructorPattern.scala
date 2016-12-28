@@ -109,9 +109,9 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
       this
         .subs(tailVar, t)
         .asInstanceOf[ConstructorPattern[Cod, CnstrctrType, H] {
-              type RecDataType = self.RecDataType;
-              type InducDataType = self.InducDataType
-            }]
+          type RecDataType   = self.RecDataType;
+          type InducDataType = self.InducDataType
+        }]
     CnstDepFuncPtn(tailVar.typ.asInstanceOf[Typ[T]], fibre)
   }
 
@@ -143,7 +143,8 @@ object ConstructorPattern {
   val Head = IdW[Term]
 
   def get[H <: Term with Subs[H], Cnstr <: Term with Subs[Cnstr]](
-      constype: Cnstr, w: Typ[H]): ConstructorPattern[Term, Cnstr, H] =
+      constype: Cnstr,
+      w: Typ[H]): ConstructorPattern[Term, Cnstr, H] =
     constype match {
       case `w` =>
         IdW[H].asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
@@ -151,31 +152,35 @@ object ConstructorPattern {
         val head = get(codom, w)
         if (dom.dependsOn(w)) {
           val tail = IterFuncPtn.get[H, Term, u](w)(dom)
-          val fp = FuncPtn(tail, head)
+          val fp   = FuncPtn(tail, head)
           fp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         } else
           CnstFncPtn(codom, head)
             .asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
-      case pt : GenFuncTyp[u, v] =>
+      case pt: GenFuncTyp[u, v] =>
         val fibre = pt.fib
         val egfib = get(fibre(pt.domain.obj), w)
         val headfibre = (t: Term) =>
           get(fibre(t.asInstanceOf[u]), w)
             .asInstanceOf[ConstructorPattern[HoTT.Term, v, H] {
-                type RecDataType = egfib.RecDataType;
-                type InducDataType = egfib.InducDataType
-              }]
+              type RecDataType   = egfib.RecDataType;
+              type InducDataType = egfib.InducDataType
+            }]
         if (pt.domain.dependsOn(w)) {
           val tail = IterFuncPtn.get[H, Term, u](w)(pt.domain)
           val tp =
             DepFuncPtn[v, egfib.RecDataType, egfib.InducDataType, Term, u, H](
-                tail, headfibre)
+              tail,
+              headfibre)
           tp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         } else {
           val tail = pt.domain
-          val cp = CnstDepFuncPtn[
-              u, egfib.RecDataType, egfib.InducDataType, Term, v, H](
-              tail, headfibre)
+          val cp = CnstDepFuncPtn[u,
+                                  egfib.RecDataType,
+                                  egfib.InducDataType,
+                                  Term,
+                                  v,
+                                  H](tail, headfibre)
           cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         }
     }
@@ -184,19 +189,21 @@ object ConstructorPattern {
 /**
   * Constructor pattern with type, for convenient building.
   */
-case class ConstructorTyp[
-    C <: Term with Subs[C], F <: Term with Subs[F], H <: Term with Subs[H]](
-    pattern: ConstructorPattern[C, F, H], typ: Typ[H]) {
+case class ConstructorTyp[C <: Term with Subs[C],
+                          F <: Term with Subs[F],
+                          H <: Term with Subs[H]](
+    pattern: ConstructorPattern[C, F, H],
+    typ: Typ[H]) {
   def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
 
   def >::(cons: F) = ConstructorDefn(pattern, cons, typ)
 
   def -->>:(that: Typ[H]) = {
     assert(
-        that == typ,
-        s"the method -->: is for extenidng by the same type but $that is not $typ")
+      that == typ,
+      s"the method -->: is for extenidng by the same type but $that is not $typ")
     val tail = IdIterPtn[H, C]
-    val ptn = FuncPtn(tail, pattern)
+    val ptn  = FuncPtn(tail, pattern)
     ConstructorTyp(ptn, typ)
   }
 
@@ -205,8 +212,8 @@ case class ConstructorTyp[
 
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
     assert(
-        !(that.dependsOn(typ)),
-        "the method ->: is for extension by constant types, maybe you mean _-->:_")
+      !(that.dependsOn(typ)),
+      "the method ->: is for extension by constant types, maybe you mean _-->:_")
     ConstructorTyp(that ->: pattern, typ)
   }
 
@@ -252,14 +259,14 @@ case class IdW[H <: Term with Subs[H]]()
                  data: RecDataType,
                  f: => Func[H, Term]): H => Option[Term] = {
     case (t: Term) if t == cons => Some(data)
-    case _ => None
+    case _                      => None
   }
 
   def inducDefCase(cons: ConstructorType,
                    data: InducDataType,
                    f: => FuncLike[H, Term]): Term => Option[Term] = {
     case (t: Term) if t == cons => Some(data)
-    case _ => None
+    case _                      => None
   }
 }
 case class IdTarg[C <: Term with Subs[C], H <: Term with Subs[H]]()
@@ -289,26 +296,26 @@ case class IdTarg[C <: Term with Subs[C], H <: Term with Subs[H]]()
                  data: RecDataType,
                  f: => Func[H, C]): Term => Option[C] = {
     case (t: Term) if t == cons => Some(data)
-    case _ => None
+    case _                      => None
   }
 
   def inducDefCase(cons: ConstructorType,
                    data: InducDataType,
                    f: => FuncLike[H, C]): Term => Option[C] = {
     case (t: Term) if t == cons => Some(data)
-    case _ => None
+    case _                      => None
   }
 }
 
 /**
   * Functional extension of a type pattern
   */
-sealed trait RecursiveConstructorPattern[
-    Cod <: Term with Subs[Cod],
-    ArgT <: Term with Subs[ArgT],
-    HeadT <: Term with Subs[HeadT],
-    CT <: FuncLike[ArgT, HeadT] with Subs[CT],
-    H <: Term with Subs[H]]
+sealed trait RecursiveConstructorPattern[Cod <: Term with Subs[Cod],
+                                         ArgT <: Term with Subs[ArgT],
+                                         HeadT <: Term with Subs[HeadT],
+                                         CT <: FuncLike[ArgT, HeadT] with Subs[
+                                           CT],
+                                         H <: Term with Subs[H]]
     extends ConstructorPattern[Cod, CT, H] { self =>
 
   /**
@@ -337,22 +344,24 @@ sealed trait RecursiveConstructorPattern[
     * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
     */
   val headfibre: ArgType => ConstructorPattern[Cod, HeadType, H] {
-    type RecDataType = HeadRecDataType;
+    type RecDataType   = HeadRecDataType;
     type InducDataType = HeadInducDataType
   }
 
   /**
     * returns data for recursion to be passed on to the head given an argument (when matching with the constructor).
     */
-  def headData(
-      data: RecDataType, arg: ArgType, f: => Func[H, Cod]): HeadRecDataType
+  def headData(data: RecDataType,
+               arg: ArgType,
+               f: => Func[H, Cod]): HeadRecDataType
 
   def recDefCase(cons: ConstructorType,
                  data: RecDataType,
                  f: => Func[H, Cod]): H => Option[Cod] = { t =>
     for (arg <- getArg(cons)(t);
-         term <- headfibre(arg).recDefCase(
-                    cons(arg), headData(data, arg, f), f)(t)) yield term
+         term <- headfibre(arg).recDefCase(cons(arg),
+                                           headData(data, arg, f),
+                                           f)(t)) yield term
   }
 
   def headInducData(data: InducDataType,
@@ -363,8 +372,9 @@ sealed trait RecursiveConstructorPattern[
                    data: InducDataType,
                    f: => FuncLike[H, Cod]): H => Option[Cod] = { t =>
     for (arg <- getArg(cons)(t);
-         term <- headfibre(arg).inducDefCase(
-                    cons(arg), headInducData(data, arg, f), f)(t)) yield term
+         term <- headfibre(arg).inducDefCase(cons(arg),
+                                             headInducData(data, arg, f),
+                                             f)(t)) yield term
   }
 }
 
@@ -377,8 +387,7 @@ case class FuncPtn[C <: Term with Subs[C],
                    H <: Term with Subs[H]](
     tail: IterFuncPtn[H, C, F],
     head: ConstructorPattern[C, HC, H]
-)
-    extends RecursiveConstructorPattern[C, F, HC, Func[F, HC], H] { self =>
+) extends RecursiveConstructorPattern[C, F, HC, Func[F, HC], H] { self =>
   //    type ArgType = F
 
   //    type HeadType = head.ConstructorType
@@ -414,7 +423,7 @@ case class FuncPtn[C <: Term with Subs[C],
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
       cons: ConstructorType): Typ[InducDataType] = {
-    val a = tail(w).Var
+    val a        = tail(w).Var
     val headcons = cons(a)
     val fibre =
       lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
@@ -422,8 +431,9 @@ case class FuncPtn[C <: Term with Subs[C],
     // piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
-  def headData(
-      data: RecDataType, arg: ArgType, f: => Func[H, C]): HeadRecDataType = {
+  def headData(data: RecDataType,
+               arg: ArgType,
+               f: => Func[H, C]): HeadRecDataType = {
     data(arg)(tail.induced(f)(arg))
   }
 
@@ -448,8 +458,7 @@ case class CnstFncPtn[T <: Term with Subs[T],
                       H <: Term with Subs[H]](
     tail: Typ[T],
     head: ConstructorPattern[Cod, HC, H]
-)
-    extends RecursiveConstructorPattern[Cod, T, HC, Func[T, HC], H] { self =>
+) extends RecursiveConstructorPattern[Cod, T, HC, Func[T, HC], H] { self =>
   //   type ArgType = Term
 
   //   type HeadType = head.ConstructorType
@@ -464,7 +473,7 @@ case class CnstFncPtn[T <: Term with Subs[T],
     CnstFncPtn(tail.subs(x, y), head.subs(x, y))
 
   val _head: ConstructorPattern[Cod, HC, H] {
-    type RecDataType = HeadRecDataType;
+    type RecDataType   = HeadRecDataType;
     type InducDataType = HeadInducDataType;
   } = head
 
@@ -478,9 +487,9 @@ case class CnstFncPtn[T <: Term with Subs[T],
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[Cod]])(
       cons: ConstructorType): Typ[InducDataType] = {
-    val a = tail.Var
+    val a        = tail.Var
     val headcons = cons(a)
-    val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
+    val fibre    = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
     piDefn(a)(head.inducDataTyp(w, xs)(headcons))
   }
 
@@ -490,8 +499,9 @@ case class CnstFncPtn[T <: Term with Subs[T],
 
   //   type ConstructorType = Func[Term, head.ConstructorType]
 
-  def headData(
-      data: RecDataType, arg: ArgType, f: => Func[H, Cod]): HeadRecDataType =
+  def headData(data: RecDataType,
+               arg: ArgType,
+               f: => Func[H, Cod]): HeadRecDataType =
     data(arg)
 
   def headInducData(data: InducDataType,
@@ -514,8 +524,7 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
       type RecDataType = V; type InducDataType = VV
     }),
     headlevel: Int = 0
-)
-    extends RecursiveConstructorPattern[C, T, HC, FuncLike[T, HC], H] { self =>
+) extends RecursiveConstructorPattern[C, T, HC, FuncLike[T, HC], H] { self =>
 
   //    type ArgType = Term
 
@@ -529,9 +538,9 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
       headfibre(tail.Var)
         .withCod[CC](w)
         .asInstanceOf[ConstructorPattern[CC, HC, H] {
-              type RecDataType = eg.RecDataType;
-              type InducDataType = eg.InducDataType
-            }]
+          type RecDataType   = eg.RecDataType;
+          type InducDataType = eg.InducDataType
+        }]
 
     CnstDepFuncPtn(tail, fibre)
   }
@@ -542,9 +551,9 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
       headfibre(t)
         .subs(x, y)
         .asInstanceOf[ConstructorPattern[C, HC, H] {
-              type RecDataType = eg.RecDataType;
-              type InducDataType = eg.InducDataType
-            }]
+          type RecDataType   = eg.RecDataType;
+          type InducDataType = eg.InducDataType
+        }]
 
     CnstDepFuncPtn(tail.subs(x, y), fibre)
   }
@@ -555,16 +564,16 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
   type InducDataType = FuncLike[T, VV]
 
   def recDataTyp(w: Typ[H], x: Typ[C]) = {
-    val a = tail.Var
+    val a     = tail.Var
     val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
     piDefn(a)(headfibre(a).recDataTyp(w, x))
   }
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
       cons: ConstructorType): Typ[InducDataType] = {
-    val a = tail.Var
+    val a        = tail.Var
     val headcons = cons(a)
-    val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
+    val fibre    = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
     piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
   }
 
@@ -572,8 +581,9 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
 
   type HeadInducDataType = VV
 
-  def headData(
-      data: RecDataType, arg: ArgType, f: => Func[H, C]): HeadRecDataType = {
+  def headData(data: RecDataType,
+               arg: ArgType,
+               f: => Func[H, C]): HeadRecDataType = {
     data(arg)
   }
 
@@ -583,7 +593,7 @@ case class CnstDepFuncPtn[T <: Term with Subs[T],
 
   def apply(W: Typ[H]): Typ[FuncLike[T, HC]] = {
     //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
-    val a = tail.Var
+    val a     = tail.Var
     val fiber = lmbda(a)(headfibre(a)(W))
     piDefn[T, HC](a)(headfibre(a)(W))
   }
@@ -621,9 +631,9 @@ case class DepFuncPtn[U <: Term with Subs[U],
       headfibre(t)
         .withCod[CC](w)
         .asInstanceOf[ConstructorPattern[CC, U, H] {
-              type RecDataType = eg.RecDataType;
-              type InducDataType = eg.InducDataType
-            }]
+          type RecDataType   = eg.RecDataType;
+          type InducDataType = eg.InducDataType
+        }]
     DepFuncPtn(tail.withCod[CC](w), fibre)
   }
 
@@ -632,9 +642,9 @@ case class DepFuncPtn[U <: Term with Subs[U],
       headfibre(t)
         .subs(x, y)
         .asInstanceOf[ConstructorPattern[C, U, H] {
-              type RecDataType = self.RecDataType;
-              type InducDataType = self.InducDataType
-            }]
+          type RecDataType   = self.RecDataType;
+          type InducDataType = self.InducDataType
+        }]
     DepFuncPtn(tail.subs(x, y), fibre)
   }
 
@@ -643,27 +653,28 @@ case class DepFuncPtn[U <: Term with Subs[U],
   type InducDataType = FuncLike[tail.Family, Func[tail.DepTargetType, VV]]
 
   def recDataTyp(w: Typ[H], x: Typ[C]) = {
-    val a = tail(w).Var
+    val a     = tail(w).Var
     val fibre = lmbda(a)(tail.target(x) ->: (headfibre(a).recDataTyp(w, x)))
     piDefn(a)(tail.target(x) ->: (headfibre(a).recDataTyp(w, x)))
   }
 
   def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
       cons: ConstructorType): Typ[InducDataType] = {
-    val a = tail(w).Var
+    val a        = tail(w).Var
     val headcons = cons(a)
     val fibre = lmbda(a)(
-        tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
+      tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
     piDefn(a)(
-        tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
+      tail.depTarget(xs)(a) ->: headfibre(a).inducDataTyp(w, xs)(headcons))
   }
 
   type HeadRecDataType = V
 
   type HeadInducDataType = VV
 
-  def headData(
-      data: RecDataType, arg: ArgType, f: => Func[H, C]): HeadRecDataType = {
+  def headData(data: RecDataType,
+               arg: ArgType,
+               f: => Func[H, C]): HeadRecDataType = {
     val W = f.dom
     val X = f.codom
     val d = tail.induced(f)(arg)
@@ -673,14 +684,14 @@ case class DepFuncPtn[U <: Term with Subs[U],
   def headInducData(data: InducDataType,
                     arg: ArgType,
                     f: => FuncLike[H, C]): HeadInducDataType = {
-    val W = f.dom
+    val W  = f.dom
     val Xs = f.depcodom
-    val d = tail.inducedDep(f)(arg)
+    val d  = tail.inducedDep(f)(arg)
     data(arg)(d)
   }
 
   def apply(W: Typ[H]): Typ[FuncLike[ArgType, U]] = {
-    val a = tail(W).Var
+    val a     = tail(W).Var
     val fiber = lmbda(a)(headfibre(a)(W))
     PiDefn[ArgType, U](fiber)
   }
@@ -741,8 +752,9 @@ object Constructor {
     def subs(x: Term, y: Term) = InducSym(cons.subs(x, y))
   }
 
-  def fromName[
-      U <: Term with Subs[U], C <: Term with Subs[C], H <: Term with Subs[H]](
+  def fromName[U <: Term with Subs[U],
+               C <: Term with Subs[C],
+               H <: Term with Subs[H]](
       pattern: ConstructorPattern[C, U, H],
       name: String
   ) =
@@ -751,8 +763,8 @@ object Constructor {
       ConstructorDefn[U, C, H](pattern, cons, w)
     }
 
-  def fromFormal(
-      consType: Term, w: Typ[Term]): Typ[Term] => Constructor[Term, Term] =
+  def fromFormal(consType: Term,
+                 w: Typ[Term]): Typ[Term] => Constructor[Term, Term] =
     (typ: Typ[Term]) => {
       val name = consType.asInstanceOf[Symbolic].name
       consType match {
@@ -762,7 +774,7 @@ object Constructor {
           val head = fromFormal(codom, w)(typ)
           if (dom.dependsOn(w)) {
             val tail = IterFuncPtn.get[Term, Term, u](w)(dom)
-            val fp = FuncPtn(tail, head.pattern)
+            val fp   = FuncPtn(tail, head.pattern)
             fp.constructor(typ, name)
           } else CnstFncPtn(codom, head.pattern).constructor(typ, name)
         case pt: GenFuncTyp[u, v] =>
@@ -771,19 +783,22 @@ object Constructor {
           val headfibrePtn = (t: Term) =>
             fromFormal(fibre(t.asInstanceOf[u]), w)(typ).pattern
               .asInstanceOf[ConstructorPattern[HoTT.Term, v, Term] {
-                  type RecDataType = egfib.RecDataType;
-                  type InducDataType = egfib.InducDataType
-                }]
+                type RecDataType   = egfib.RecDataType;
+                type InducDataType = egfib.InducDataType
+              }]
           if (pt.domain.dependsOn(w)) {
             val tail = IterFuncPtn.get[Term, Term, u](w)(pt.domain)
-            val tp = DepFuncPtn[
-                v, egfib.RecDataType, egfib.InducDataType, Term, u, Term](
-                tail, headfibrePtn)
+            val tp = DepFuncPtn[v,
+                                egfib.RecDataType,
+                                egfib.InducDataType,
+                                Term,
+                                u,
+                                Term](tail, headfibrePtn)
             tp.constructor(typ, name)
           } else {
             val cp = CnstDepFuncPtn(
-                pt.domain.asInstanceOf[Typ[Term]],
-                headfibrePtn
+              pt.domain.asInstanceOf[Typ[Term]],
+              headfibrePtn
             )
             cp.constructor(typ, name)
           }
@@ -800,13 +815,13 @@ object Constructor {
   *
   * @tparam U scala type of polypattern.
   */
-case class ConstructorDefn[
-    U <: Term with Subs[U], C <: Term with Subs[C], H <: Term with Subs[H]](
+case class ConstructorDefn[U <: Term with Subs[U],
+                           C <: Term with Subs[C],
+                           H <: Term with Subs[H]](
     pattern: ConstructorPattern[C, U, H],
     cons: U,
     W: Typ[H]
-)
-    extends Constructor[C, H] {
+) extends Constructor[C, H] {
   type ConstructorType = U
 
   def subs(x: Term, y: Term) =

@@ -70,7 +70,7 @@ object Collections {
   object ApproxSeq {
     case class Const[T](t: T) extends ApproxSeq[T] {
       lazy val head = t
-      val stable = true
+      val stable    = true
 
       lazy val tail = this
     }
@@ -139,8 +139,8 @@ object Collections {
 
   implicit val realInnerProd = InnerProduct[Double](_ * _)
 
-  implicit def InnerProductPairs[A, B](
-      implicit ipA: InnerProduct[A], ipB: InnerProduct[B]) = {
+  implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
+                                       ipB: InnerProduct[B]) = {
     InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
   }
 
@@ -157,7 +157,7 @@ object Collections {
 
     def proj(label: L)(arr: ArrayMap[L, T])(implicit zero: T) =
       arr(label)(zero)
-/*
+    /*
       def inclusion(label: L)(implicit zero: T) = {
         require (!((support find (_ == label)).isEmpty))
 
@@ -169,14 +169,14 @@ object Collections {
     def sum = (for (l <- support; value <- get(l)) yield value).sum
 
     def innerProduct(that: LabelledVector[L]) =
-      (for (l <- support; fst <- get(l); scnd <- that.get(l)) yield
-        fst * scnd).sum
+      (for (l <- support; fst <- get(l); scnd <- that.get(l))
+        yield fst * scnd).sum
 
     def dot(that: LabelledVector[L]) = innerProduct(that)
   }
 
-  case class ArrayMap[L, T](
-      coords: Map[L, T], supp: Option[Traversable[L]] = None)
+  case class ArrayMap[L, T](coords: Map[L, T],
+                            supp: Option[Traversable[L]] = None)
       extends LabelledArray[L, T] {
     lazy val support = supp getOrElse (coords.keys)
 
@@ -191,8 +191,8 @@ object Collections {
       coords.values.foldLeft(zero)(ls.sum(_, _))
 
     def ++(that: ArrayMap[L, T])(implicit zero: T, ls: LinearStructure[T]) = {
-      val unionmap = (for (k <- coords.keySet.union(that.coords.keySet)) yield
-        (k -> ls.sum(this(k), that(k)))).toMap
+      val unionmap = (for (k <- coords.keySet.union(that.coords.keySet))
+        yield (k -> ls.sum(this(k), that(k)))).toMap
 
       ArrayMap(unionmap, supp)
     }
@@ -206,8 +206,9 @@ object Collections {
     def mult(sc: Double, arr: ArrayMap[L, T]) =
       arr map ((t: T) => ls.mult(sc, t))
 
-    LinearStructure[ArrayMap[L, T]](
-        ArrayMap(Map(), Some(List())), _ ++ _, mult)
+    LinearStructure[ArrayMap[L, T]](ArrayMap(Map(), Some(List())),
+                                    _ ++ _,
+                                    mult)
   }
 
   implicit class Shift[B](shift: (B, B, Double) => B) {
@@ -231,8 +232,11 @@ object Collections {
     //       	  f(k)))
 
     def ++(that: MultiSet[A]) = {
-      val newmap = ((wts.keySet union that.wts.keySet) map ((k: A) =>
-                (k, weight(k) + that.weight(k)))).toMap
+      val newmap =
+        ((wts.keySet union that.wts.keySet) map ((k: A) =>
+                                                   (k,
+                                                    weight(k) + that.weight(
+                                                      k)))).toMap
       MultiSet(newmap)
     }
 

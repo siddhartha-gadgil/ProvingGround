@@ -21,7 +21,7 @@ object Monoid {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
+  val leftId  = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
   val rightId = "rightIdAx" :: (a ~>: (op(a)(r) =:= a))
 
   val refl = lambda(a)(Refl(M, a))
@@ -146,7 +146,7 @@ object MonoidSimple {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
+  val leftId  = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
   val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
 
   val refl = "refl" :: a ~>: (eqM(a)(a))

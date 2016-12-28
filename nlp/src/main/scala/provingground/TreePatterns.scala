@@ -34,15 +34,15 @@ object TreePatterns {
       extends Pattern.Partial[Tree, IL]({
           case Node("S",
                     x :: Node(
-                    "ADVP",
-                    List(Node("RB", List(Leaf(word("then")))))) :: ys) =>
+                      "ADVP",
+                      List(Node("RB", List(Leaf(word("then")))))) :: ys) =>
             (x, ys)
         })
 
   object IfTree
       extends Pattern.Partial[Tree, IL]({
         case Node("S", IfClause(x) :: ys) => (x, ys)
-        case IfClause(Then(x, ys)) => (x, ys)
+        case IfClause(Then(x, ys))        => (x, ys)
       })
 
 //  import Translator._

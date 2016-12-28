@@ -130,14 +130,14 @@ object AgdaExpressions {
       token ~ spc ~ colon ~ spc ~ expr ^^ {
         case x ~ _ ~ _ ~ _ ~ t => TypedVar(x.name, t)
       } |
-      "(" ~ opt(wspc) ~> token ~ spc ~ colon ~ spc ~ expr <~ opt(wspc) ~ ")" ^^ {
-        case x ~ _ ~ _ ~ _ ~ t => TypedVar(x.name, t)
-      }
+        "(" ~ opt(wspc) ~> token ~ spc ~ colon ~ spc ~ expr <~ opt(wspc) ~ ")" ^^ {
+          case x ~ _ ~ _ ~ _ ~ t => TypedVar(x.name, t)
+        }
 
-    private def recptnmatch(
-        ptn: List[String], sp: Parser[Unit]): Parser[List[Expression]] =
+    private def recptnmatch(ptn: List[String],
+                            sp: Parser[Unit]): Parser[List[Expression]] =
       ptn match {
-        case List("_") => term ^^ { List(_) }
+        case List("_")       => term ^^ { List(_) }
         case List("_", word) => term <~ sp ~ word ^^ { case x => List(x) }
         case "_" :: word :: tail =>
           term ~ sp ~ word ~ sp ~ recptnmatch(tail, sp) ^^ {
@@ -147,8 +147,8 @@ object AgdaExpressions {
           word ~ sp ~> recptnmatch(tail, sp)
       }
 
-    private def ptnmatchlist(
-        ptn: List[String], sp: Parser[Unit]): Parser[List[Expression]] =
+    private def ptnmatchlist(ptn: List[String],
+                             sp: Parser[Unit]): Parser[List[Expression]] =
       ptn match {
         case List("_") => term ^^ { List(_) }
         case List(word) =>
@@ -181,10 +181,9 @@ object AgdaExpressions {
       */
     def expr: Parser[Expression] =
       (((arrow() | lambda() |
-                  deparrow() | univ | typedvar) /: patterns.map(
-                  ptnmatch(_, spc)))(_ | _) |
-          ((arrow(wspc) | lambda(wspc) | deparrow(wspc)) /: patterns.map(
-                  ptnmatch(_, wspc)))(_ | _) | appl() | term)
+        deparrow() | univ | typedvar) /: patterns.map(ptnmatch(_, spc)))(_ | _) |
+        ((arrow(wspc) | lambda(wspc) | deparrow(wspc)) /: patterns.map(
+          ptnmatch(_, wspc)))(_ | _) | appl() | term)
 
     def asTerm(e: String, names: String => Option[Term] = (_) => None) = {
       Try(parseAll(expr, e.trim).get).toOption flatMap (_.asTerm(names))
@@ -258,7 +257,7 @@ object AgdaExpressions {
 
     def asTyp(names: String => Option[Term]) = asTerm(names) flatMap {
       case tp: Typ[Term] => Some(tp)
-      case _ => None
+      case _             => None
     }
   }
 
@@ -279,7 +278,7 @@ object AgdaExpressions {
     */
   def symbterm(name: String, tp: Term): Option[Term] = tp match {
     case t: Typ[_] => Some(t.symbObj(name))
-    case _ => None
+    case _         => None
   }
 
   /**
@@ -298,7 +297,7 @@ object AgdaExpressions {
       val symb = x.name
       val newnames: String => Option[Term] = {
         case `symb` => x.typ.asTyp(names) map (_.symbObj(symb))
-        case y => names(y)
+        case y      => names(y)
       }
       for (a <- x.asTerm(names); b <- y.asTerm(newnames)) yield lambda(a)(b)
     }
@@ -316,7 +315,7 @@ object AgdaExpressions {
     */
   def applyterm(f: Term, arg: Term): Option[Term] = f match {
     case f: FuncLike[u, v] => Try(f(arg.asInstanceOf[u])).toOption
-    case _ => None
+    case _                 => None
   }
 
   /**
@@ -340,7 +339,7 @@ object AgdaExpressions {
     */
   def arrowtyp(x: Term, y: Term): Option[Typ[Term]] = (x, y) match {
     case (a: Typ[Term], b: Typ[Term]) => Some(a ->: b)
-    case _ => None
+    case _                            => None
   }
 
   /**
@@ -348,8 +347,8 @@ object AgdaExpressions {
     */
   case class Arrow(lhs: Expression, rhs: Expression) extends TypExpression {
     def asTerm(names: String => Option[Term]): Option[Typ[Term]] =
-      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- arrowtyp(a, b)) yield
-        z
+      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- arrowtyp(a, b))
+        yield z
   }
 
   /**
@@ -357,7 +356,7 @@ object AgdaExpressions {
     */
   def pityp(x: Term, y: Term) = y match {
     case tp: Typ[Term] =>
-      val fibre = (t: Term) => tp subs (x, t)
+      val fibre                         = (t: Term) => tp subs (x, t)
       val family: Func[Term, Typ[Term]] = LambdaFixed(x, tp)
       Some(PiDefn(family))
     case _ => None
@@ -368,7 +367,7 @@ object AgdaExpressions {
     */
   case class DepArrow(lhs: TypedVar, rhs: Expression) extends TypExpression {
     def asTerm(names: String => Option[Term]): Option[Typ[Term]] =
-      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- pityp(a, b)) yield
-        z
+      for (a <- lhs.asTerm(names); b <- rhs.asTerm(names); z <- pityp(a, b))
+        yield z
   }
 }

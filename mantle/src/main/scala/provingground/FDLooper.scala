@@ -9,8 +9,9 @@ import Hub.system
 import FDLooper._
 
 object FDLooper {
-  case class Continue(
-      steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class Continue(steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
   case object RunnerStop
 }
@@ -34,8 +35,7 @@ class FDLooper[X: LinearStructure, P](
     init: X,
     srcRef: ActorRef,
     val param: P
-)
-    extends Actor {
+) extends Actor {
   import LinearStructure._
 
   /**
@@ -57,8 +57,8 @@ class FDLooper[X: LinearStructure, P](
     * change to make for next step: evolve, compute feedback, pullback feedback
     */
   def shift(start: X, strictness: Double, steps: Int, epsilon: Double = 1.0) = {
-    val dynLoop = DiffbleFunction.iterateDiffble(dyn, steps)
-    val result = dynLoop(start)
+    val dynLoop     = DiffbleFunction.iterateDiffble(dyn, steps)
+    val result      = dynLoop(start)
     val imageChange = feedback(strictness)(start)(result)
     dynLoop.grad(init)(imageChange) |*| (epsilon)
   }
@@ -69,7 +69,7 @@ class FDLooper[X: LinearStructure, P](
     case Continue(steps, strictness, epsilon) => // another loop
       {
         val newState = normalize(
-            state |+| (shift(state, strictness, steps, epsilon)))
+          state |+| (shift(state, strictness, steps, epsilon)))
         state = newState
         loops += 1
         srcRef ! snapShot(newState)

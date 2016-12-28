@@ -24,8 +24,10 @@ class FDHub extends Actor {
   def states = (for ((r, x) <- loopers) yield (r.path.name -> x))
 
   def receive = {
-    case Start(
-        runner: ActorRef, steps: Int, strictness: Double, epsilon: Double) =>
+    case Start(runner: ActorRef,
+               steps: Int,
+               strictness: Double,
+               epsilon: Double) =>
       // start a looper
       {
         loopers = loopers + (runner -> State(true, steps, strictness, epsilon))
@@ -102,8 +104,9 @@ object FDHub {
                    strictness: Double = 1.0,
                    epsilon: Double = 1.0)
 
-  case class StartAll(
-      steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class StartAll(steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
   case class State(running: Boolean,
                    steps: Int,
@@ -156,18 +159,23 @@ object FDHub {
             steps: Int = 3,
             strictness: Double = 1,
             epsilon: Double = 0.1)(implicit hub: ActorRef) =
-    hub ! Start(
-        runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)
+    hub ! Start(runner: ActorRef,
+                steps: Int,
+                strictness: Double,
+                epsilon: Double)
 
   def pause(runner: ActorRef)(implicit hub: ActorRef) = hub ! Pause(runner)
 
   def resume(runner: ActorRef)(implicit hub: ActorRef) = hub ! Resume(runner)
 
-  def setParam(
-      runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)(
-      implicit hub: ActorRef) =
-    hub ! SetParam(
-        runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)
+  def setParam(runner: ActorRef,
+               steps: Int,
+               strictness: Double,
+               epsilon: Double)(implicit hub: ActorRef) =
+    hub ! SetParam(runner: ActorRef,
+                   steps: Int,
+                   strictness: Double,
+                   epsilon: Double)
 
   def setSteps(runner: ActorRef, steps: Int)(implicit hub: ActorRef) =
     hub ! SetSteps(runner: ActorRef, steps: Int)

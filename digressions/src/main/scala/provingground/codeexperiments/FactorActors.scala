@@ -28,18 +28,20 @@ object FactorActors {
 
   case class Factorise(target: BigInt) extends ActorTask
 
-  case class PartialFactorisation(
-      target: BigInt, factors: List[BigInt], unfactored: BigInt)
+  case class PartialFactorisation(target: BigInt,
+                                  factors: List[BigInt],
+                                  unfactored: BigInt)
 
   case class Factorisation(target: BigInt, factors: List[BigInt])
       extends ActorMessage {
     def show: String =
       target.toString + " = " +
-      ((factors map (_.toString)) reduce (_ + " * " + _))
+        ((factors map (_.toString)) reduce (_ + " * " + _))
   }
 
-  case class FindPrimeFactor(
-      target: BigInt, lower: BigInt = BigInt(2), upper: Option[BigInt] = None)
+  case class FindPrimeFactor(target: BigInt,
+                             lower: BigInt = BigInt(2),
+                             upper: Option[BigInt] = None)
       extends ActorTask
 
   case class PrimeFactor(target: BigInt, prime: BigInt) extends ActorMessage
@@ -61,22 +63,24 @@ object FactorActors {
   def bigInt(s: String) = Try(BigInt(s))
 
   def tooBig(n: BigInt)(implicit bound: Option[BigInt]) = bound match {
-    case None => false
+    case None                       => false
     case Some(b: BigInt) if (n > b) => true
-    case _ => false
+    case _                          => false
   }
 
   @tailrec private def findPrimeFactor(
-      n: BigInt, m: BigInt = 2, bound: Option[BigInt] = None): BigInt = {
+      n: BigInt,
+      m: BigInt = 2,
+      bound: Option[BigInt] = None): BigInt = {
     if (m * m > n || tooBig(m)(bound)) n
     else if (n % m == 0) m
     else findPrimeFactor(n, m + 1)
   }
 
-  @tailrec private def findPrimeFactorOpt(n: BigInt,
-                                          m: BigInt = 2,
-                                          bound: Option[BigInt] =
-                                            None): Option[BigInt] = {
+  @tailrec private def findPrimeFactorOpt(
+      n: BigInt,
+      m: BigInt = 2,
+      bound: Option[BigInt] = None): Option[BigInt] = {
     if (m * m > n) Some(n)
     else if (tooBig(m)(bound)) None
     else if (n % m == 0) Some(m)
@@ -88,12 +92,12 @@ object FactorActors {
   class Factoriser(implicit val system: ActorSystem) {
 
     class FactorActor extends Actor {
-      var tasks: Set[Query] = Set.empty
-      var timedout: Set[ActorTask] = Set.empty
+      var tasks: Set[Query]           = Set.empty
+      var timedout: Set[ActorTask]    = Set.empty
       var messages: Set[ActorMessage] = Set.empty
 
       var partialFactors: Set[PartialFactorisation] = Set.empty
-      var factorisations: Set[Factorisation] = Set.empty
+      var factorisations: Set[Factorisation]        = Set.empty
       def receive = {
         case Factorise(n: BigInt) =>
           tasks += Query(Factorise(n), sender)
@@ -128,24 +132,25 @@ object FactorActors {
         case TimedOut(task: ActorTask) => timedout += task
         case Updates =>
           for (Factorisation(n, l) <- factorisations
-               if (timedout contains Factorise(n))) sender ! Factorisation(
-              n, l)
+               if (timedout contains Factorise(n)))
+            sender ! Factorisation(n, l)
       }
     }
 
     class PrimeFactorFinder extends Actor {
       var tasks: Set[Query] = Set.empty
-      val increment = 1000
-      val primeInInterval = context.actorOf(Props[PrimeInInterval])
-      val knownPrime = context.actorOf(Props[KnownPrime])
+      val increment         = 1000
+      val primeInInterval   = context.actorOf(Props[PrimeInInterval])
+      val knownPrime        = context.actorOf(Props[KnownPrime])
       def receive = {
         case FindPrimeFactor(n: BigInt, _, _) =>
           tasks += Query(FindPrimeFactor(n), sender)
           primeInInterval ! FindPrimeFactor(n, 2, Some(increment))
           knownPrime ! FindPrimeFactor(n)
         case NoPrimeFactor(n: BigInt, lower: BigInt, upper: BigInt) =>
-          sender ! FindPrimeFactor(
-              n, lower + increment, Some(upper + increment))
+          sender ! FindPrimeFactor(n,
+                                   lower + increment,
+                                   Some(upper + increment))
         case PrimeFactor(prime: BigInt, n: BigInt) =>
           for (Query(FindPrimeFactor(m, _, _), asker) <- tasks
                if m == n) (asker ! PrimeFactor(prime, n))
@@ -159,9 +164,9 @@ object FactorActors {
       def receive = {
         case FindPrimeFactor(n: BigInt, lower: BigInt, Some(upper: BigInt)) =>
           findPrimeFactorOpt(n, lower, Some(upper)) match {
-            case None => sender ! NoPrimeFactor(n, lower, upper)
+            case None                       => sender ! NoPrimeFactor(n, lower, upper)
             case Some(m: BigInt) if (m < n) => sender ! PrimeFactor(m, n)
-            case _ => IsPrime(n)
+            case _                          => IsPrime(n)
           }
       }
     }

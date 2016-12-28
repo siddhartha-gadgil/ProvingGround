@@ -19,9 +19,9 @@ object LeanIO {
   }
 
   def pickleDefs(file: Path, outputDir: Path) = {
-    val defs = readDefs(file)
+    val defs  = readDefs(file)
     val lines = defs map (_.depPickle)
-    val out = outputDir / file.name
+    val out   = outputDir / file.name
     rm(out)
     lines map ((l) => { write.append(out, l + "\n"); l })
   }

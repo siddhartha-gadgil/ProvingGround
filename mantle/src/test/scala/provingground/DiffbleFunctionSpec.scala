@@ -1,19 +1,22 @@
 package provingground
 
 import provingground._
-import Collections._ ; import FiniteDistribution._; import provingground._
+import Collections._; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import DiffbleFunction._
 import LinearStructure._
 
-class DiffbleFunctionSpec extends FlatSpec{
-    val double = DiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 *y)
+class DiffbleFunctionSpec extends FlatSpec {
+  val double =
+    DiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 * y)
 
-    val square = DiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
+  val square =
+    DiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
 
   "A Differentiable function" should "evaluate by apply" in {
-    val fn = DiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 *y)
+    val fn = DiffbleFunction((x: Double) => 2 * x)((x: Double) =>
+      (y: Double) => 2 * y)
 
     assert(double.func(2) == 4)
 
@@ -21,7 +24,8 @@ class DiffbleFunctionSpec extends FlatSpec{
   }
 
   it should "apply gradient" in {
-    val fn = DiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
+    val fn = DiffbleFunction((x: Double) => x * x)((x: Double) =>
+      (y: Double) => x * y)
 
     assert(square.grad(2)(3) == 6)
 

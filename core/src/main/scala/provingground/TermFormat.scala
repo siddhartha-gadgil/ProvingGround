@@ -99,7 +99,7 @@ object FansiFormat extends TermRec[fansi.Str] {
 
   def lambda(variable: Str, typ: Str, value: Str): Str =
     Str("(") ++ variable ++ Yellow(" : ") ++ typ ++ ") " ++ LightRed(
-        syms.MapsTo) ++ " " ++ value
+      syms.MapsTo) ++ " " ++ value
 
   def equality(dom: Str, lhs: Str, rhs: Str) =
     lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")"
@@ -165,9 +165,10 @@ object FansiShow {
         (tup._1.fansi, tup._2.fansi, tup._3.fansi).toString
     }
 
-  implicit def tuple4[
-      U1: FansiShow, U2: FansiShow, U3: FansiShow, U4: FansiShow]
-    : FansiShow[(U1, U2, U3, U4)] =
+  implicit def tuple4[U1: FansiShow,
+                      U2: FansiShow,
+                      U3: FansiShow,
+                      U4: FansiShow]: FansiShow[(U1, U2, U3, U4)] =
     new FansiShow[(U1, U2, U3, U4)] {
       def show(tup: (U1, U2, U3, U4)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi, tup._4.fansi).toString

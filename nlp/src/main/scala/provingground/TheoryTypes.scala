@@ -71,8 +71,9 @@ object TheoryTypes {
 
   case class RealSym(value: Double) extends Term
 
-  class ExpressionParser(
-      binOps: List[String], binRels: List[String], bigOps: List[String])
+  class ExpressionParser(binOps: List[String],
+                         binRels: List[String],
+                         bigOps: List[String])
       extends JavaTokenParsers {
     def varSym: Parser[Term] = ("[a-zA-Z]".r | """\\(\w)+""".r) ^^ {
       case s: String => TermSym(s)
@@ -152,7 +153,7 @@ object TheoryTypes {
     def term: Parser[Term] = equality | binRelParse | lambda | noRelTerm
 
     def simpleTerm: Parser[Term] =
-      typedTerm | parenTerm | texBraces | braces | underscore | subScript | supScript | sym // without operations, relations, bigOps, 	  	  
+      typedTerm | parenTerm | texBraces | braces | underscore | subScript | supScript | sym // without operations, relations, bigOps, 	  	
 
     def noOpTerm: Parser[Term] = bigOpParse | simpleTerm
 

@@ -16,8 +16,7 @@ class ACresults(
     paths: Map[String,
                Stream[(FiniteDistribution[AtomicMove],
                        FiniteDistribution[Moves])]]
-)
-    extends ACStates {
+) extends ACStates {
 
   override def names = (paths map (_._1)).toList
 
@@ -34,14 +33,14 @@ class ACresults(
 
   def sizes = for ((name, data) <- paths) yield (name -> data.size)
 
-  lazy val states = for ((name, data) <- paths) yield
-    (name -> data.toVector.last)
+  lazy val states = for ((name, data) <- paths)
+    yield (name -> data.toVector.last)
 //  def upickle = uwrite(ACPortableResults(paths))
 }
 
 trait ACStates {
-  val states: Map[
-      String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]
+  val states: Map[String,
+                  (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]
 
   def names = (states map (_._1)).toList
 
@@ -64,5 +63,4 @@ case class ACPortableResults(
     paths: Map[String,
                Stream[(FiniteDistribution[AtomicMove],
                        FiniteDistribution[Moves])]]
-)
-    extends ACresults(paths)
+) extends ACresults(paths)

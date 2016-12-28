@@ -15,10 +15,9 @@ object HoTTgen {
   def isTyp(t: Term) = t.isInstanceOf[Typ[_]]
 
   def inDomain: Term => Term => Boolean = {
-    case (func: FuncLike[u, v]) =>
-      { (arg: Term) =>
-        arg.typ == func.dom
-      }
+    case (func: FuncLike[u, v]) => { (arg: Term) =>
+      arg.typ == func.dom
+    }
     case _ =>
       (_) =>
         false
@@ -32,7 +31,7 @@ object HoTTgen {
 
   val functyp: (Term, Term) => Option[Term] = {
     case (u: Typ[Term], v: Typ[Term]) if (u.typ == Type) => Some(FuncTyp(u, v))
-    case _ => None
+    case _                                               => None
   }
 
   val pityp: Term => Option[Term] = {
@@ -40,8 +39,8 @@ object HoTTgen {
       fmly.codom.typ match {
         case _: Typ[w] =>
           Try {
-            val x = fmly.dom.Var
-            val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+            val x     = fmly.dom.Var
+            val y     = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
             val fibre = lmbda(x)(y)
             PiDefn[u, w](fibre)
           }.toOption
@@ -55,8 +54,8 @@ object HoTTgen {
       fmly.codom.typ match {
         case _: Typ[w] =>
           Try {
-            val x = fmly.dom.Var
-            val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+            val x     = fmly.dom.Var
+            val y     = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
             val fibre = lmbda(x)(y)
             SigmaTyp[u, w](fibre)
           }.toOption
@@ -74,23 +73,23 @@ object HoTTgen {
   val PairTerm: (Term, Term) => Option[Term] = {
     case (_: Universe, _) => None
     case (_, _: Universe) => None
-    case (a, b) => Some(pair(a, b))
+    case (a, b)           => Some(pair(a, b))
   }
 
   val paircons: Term => Option[Term] = {
-    case p: ProdTyp[_, _] => Some(p.paircons)
+    case p: ProdTyp[_, _]  => Some(p.paircons)
     case p: SigmaTyp[_, _] => Some(p.paircons)
-    case _ => None
+    case _                 => None
   }
 
   val icons: Term => Option[Term] = {
     case p: PlusTyp[u, v] => Some(p.incl1)
-    case _ => None
+    case _                => None
   }
 
   val jcons: Term => Option[Term] = {
     case p: PlusTyp[u, v] => Some(p.incl2)
-    case _ => None
+    case _                => None
   }
 
   /*
@@ -99,19 +98,21 @@ object HoTTgen {
 	}
    */
 
-  lazy val moves: List[
-      (Move,
-       DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
-    List((Move.appl, CombinationFn(funcappl, isFunc)),
-         (Move.arrow, CombinationFn(functyp, isTyp)),
-         (Move.pi, MoveFn(pityp)),
-         (Move.sigma, MoveFn(sigmatyp)),
-         (Move.pairt, CombinationFn(pairtyp, isTyp)),
-         (Move.pair, CombinationFn(PairTerm)),
-         (Move.paircons, MoveFn(paircons)),
-         (Move.icons, MoveFn(icons)),
-         (Move.jcons, MoveFn(icons)),
-         (Move.id, Id[FiniteDistribution[Term]]))
+  lazy val moves: List[(Move,
+                        DiffbleFunction[FiniteDistribution[Term],
+                                        FiniteDistribution[Term]])] =
+    List(
+      (Move.appl, CombinationFn(funcappl, isFunc)),
+      (Move.arrow, CombinationFn(functyp, isTyp)),
+      (Move.pi, MoveFn(pityp)),
+      (Move.sigma, MoveFn(sigmatyp)),
+      (Move.pairt, CombinationFn(pairtyp, isTyp)),
+      (Move.pair, CombinationFn(PairTerm)),
+      (Move.paircons, MoveFn(paircons)),
+      (Move.icons, MoveFn(icons)),
+      (Move.jcons, MoveFn(icons)),
+      (Move.id, Id[FiniteDistribution[Term]])
+    )
 
   object Move {
     case object lambda extends Move
@@ -152,11 +153,11 @@ object HoTTgen {
                          (FiniteDistribution[M], FiniteDistribution[Term])])(
       typ: Typ[Term]) = {
     import DiffbleFunction._
-    val x = typ.Var
+    val x    = typ.Var
     val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
     val init = NewVertex(x)
     val export = MoveFn(
-        (t: Term) => if (t != Type) Some(lambda(x)(t): Term) else None)
+      (t: Term) => if (t != Type) Some(lambda(x)(t): Term) else None)
     val head = incl andthen init
     extendM(head) andthen f andthen block(Id[FiniteDistribution[M]], export)
   }
@@ -192,11 +193,11 @@ object HoTTgen {
       block(NormalizeFD[Move], NormalizeFD[Term]))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
-        if (t.typ.typ == Type) Some(t.typ) else None)
+    if (t.typ.typ == Type) Some(t.typ) else None)
 
   private def ifTyp: Term => Option[Typ[Term]] = {
     case typ: Typ[Term] if typ.typ == Type => Some(typ)
-    case _ => None
+    case _                                 => None
   }
 
   def getTyps(d: FiniteDistribution[Term]) = d.mapOpt(ifTyp)
@@ -206,8 +207,8 @@ object HoTTgen {
     mapTyp.grad(d)(shift)
   }
 
-  def dynTypFlow(dyn: DiffbleFunction[
-          FiniteDistribution[Term], FiniteDistribution[Term]]) = {
+  def dynTypFlow(dyn: DiffbleFunction[FiniteDistribution[Term],
+                                      FiniteDistribution[Term]]) = {
     typFlow ^: dyn
   }
 }

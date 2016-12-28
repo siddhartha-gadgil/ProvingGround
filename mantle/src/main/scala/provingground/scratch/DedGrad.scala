@@ -163,8 +163,8 @@ case class UnifInv(target: Term,
                    arg: Term) {
   import Unify.{multisub}
   val newResult = multisub(result, unif)
-  val newArg = multisub(arg, unif)
-  val newFunc = multisub(func, unif)
+  val newArg    = multisub(arg, unif)
+  val newFunc   = multisub(func, unif)
 
   def origProd = {
     Unify.appln(func, arg) == Some(result)

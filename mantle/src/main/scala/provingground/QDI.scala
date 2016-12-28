@@ -84,7 +84,7 @@ object QDI {
   def gc = runTime.gc
 
   def timed[A](result: => A) = {
-    val start = DateTime.now
+    val start       = DateTime.now
     val computation = result
     println((start to (DateTime.now)).millis)
     computation
@@ -109,7 +109,7 @@ object QDI {
 
   def view(ps: Node*) = {
     val fileName = "tmp/qdi.html"
-    val page = <html>{head}<body>{NodeSeq.fromSeq(ps)}</body></html>
+    val page     = <html>{head}<body>{NodeSeq.fromSeq(ps)}</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
     desktop.browse(file.toURI)
@@ -135,8 +135,8 @@ object QDI {
   import Collections._; import FiniteDistribution._; import LinearStructure._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]): Node = {
-    val lst = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
-    val title = <div class="atom">
+    val lst      = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
+    val title    = <div class="atom">
         <span class="index"> index </span>
         <span class ="probability"> probability </span>
         <span class ="entropy"> entropy </span>

@@ -32,7 +32,7 @@ object ACBatch {
     * Load start data, start actors, return references to these.
     */
   def quickStart(dir: String = "acDev", file: String = "acbatch.json") = {
-    val ds = loadStartData(dir, file)
+    val ds      = loadStartData(dir, file)
     val loopers = ds map (_.run())
     loopers
   }

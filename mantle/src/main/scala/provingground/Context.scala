@@ -49,16 +49,18 @@ object Contexts {
       if (dfn.freevars.isEmpty) Some(dfn)
       else
         for (headvar <- dfn.freevars.headOption;
-             value <- substitutions(headvar);
+             value   <- substitutions(headvar);
              recval <- instantiate(substitutions)(
-                          DefnEqual(dfn.lhs.subs(headvar, value),
-                                    dfn.rhs.subs(headvar, value),
-                                    dfn.freevars.tail))) yield recval
+               DefnEqual(dfn.lhs.subs(headvar, value),
+                         dfn.rhs.subs(headvar, value),
+                         dfn.freevars.tail))) yield recval
     }
   }
 
-  case class Defn(
-      lhsname: AnySym, typ: Typ[Term], rhs: Term, freevars: List[Term])
+  case class Defn(lhsname: AnySym,
+                  typ: Typ[Term],
+                  rhs: Term,
+                  freevars: List[Term])
       extends DefnEquality {
     val lhs = typ.symbObj(lhsname)
 
@@ -221,7 +223,9 @@ object Contexts {
   }
 
   case class LambdaMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      variable: Term, tail: Context[U, V], dep: Boolean = false)
+      variable: Term,
+      tail: Context[U, V],
+      dep: Boolean = false)
       extends Context[FuncLike[Term, U], V] {
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
@@ -257,8 +261,8 @@ object Contexts {
     val instantiate: ArgType => Term => Term = (fstrest) =>
       (t) => {
         val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
-        val func = Lambda(variable, tail.instantiate(rest)(t))
+        val fst                = fstrest._1
+        val func               = Lambda(variable, tail.instantiate(rest)(t))
         func(fst)
     }
 
@@ -278,13 +282,16 @@ object Contexts {
         val fibre = (t: Term) => tail(tp) subs (variable, t)
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
-            variable.typ, MiniVerse(tail(tp)), fibre)
+          variable.typ,
+          MiniVerse(tail(tp)),
+          fibre)
         PiDefn(family)
       } else FuncTyp(variable.typ, tail(tp))
   }
 
   case class KappaMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      const: Term, tail: Context[U, V])
+      const: Term,
+      tail: Context[U, V])
       extends Context[U, V] {
     type ConstructorType = tail.ConstructorType
 
@@ -315,7 +322,9 @@ object Contexts {
   }
 
   case class DefnMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      dfn: Defn, tail: Context[U, V], dep: Boolean = false)
+      dfn: Defn,
+      tail: Context[U, V],
+      dep: Boolean = false)
       extends Context[FuncLike[Term, U], V] {
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
@@ -342,7 +351,7 @@ object Contexts {
     val instantiate: ArgType => Term => Term = (fstrest) =>
       (t) => {
         val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
+        val fst                = fstrest._1
         (tail.instantiate(rest)(t)).subs(dfn.lhs, dfn.rhs)
     }
 
@@ -361,13 +370,16 @@ object Contexts {
         val fibre = (t: Term) => tail(tp) subs (dfn.lhs, t)
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
-            dfn.lhs.typ, MiniVerse(tail(tp)), fibre)
+          dfn.lhs.typ,
+          MiniVerse(tail(tp)),
+          fibre)
         PiDefn[Term, tail.ConstructorType](family)
       } else FuncTyp(dfn.lhs.typ, tail(tp))
   }
 
   case class GlobalDefnMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      dfn: Defn, tail: Context[U, V])
+      dfn: Defn,
+      tail: Context[U, V])
       extends Context[U, V] {
     type ConstructorType = tail.ConstructorType
 
@@ -398,7 +410,8 @@ object Contexts {
   }
 
   case class DefnEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      eqlty: DefnEquality, tail: Context[U, V])
+      eqlty: DefnEquality,
+      tail: Context[U, V])
       extends Context[U, V] {
     type ConstructorType = tail.ConstructorType
 
@@ -429,7 +442,9 @@ object Contexts {
   }
 
   case class SimpEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
-      eqlty: DefnEquality, tail: Context[U, V], dep: Boolean = false)
+      eqlty: DefnEquality,
+      tail: Context[U, V],
+      dep: Boolean = false)
       extends Context[FuncLike[Term, U], V] {
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
 
@@ -457,7 +472,7 @@ object Contexts {
     val instantiate: ArgType => Term => Term = (fstrest) =>
       (t) => {
         val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
+        val fst                = fstrest._1
         (tail.instantiate(rest)(t)).subs(eqlty.lhs, eqlty.rhs)
     }
 
@@ -466,7 +481,9 @@ object Contexts {
         val fibre = (t: Term) => tail(tp) subs (eqlty.lhs, t)
 
         val family = typFamilyDefn[Term, tail.ConstructorType](
-            eqlty.lhs.typ, MiniVerse(tail(tp)), fibre)
+          eqlty.lhs.typ,
+          MiniVerse(tail(tp)),
+          fibre)
         PiDefn(family)
       } else FuncTyp(eqlty.lhs.typ, tail(tp))
   }
@@ -482,6 +499,6 @@ object Contexts {
   def immerse[V <: Term with Subs[V]](
       inner: Context[Term, V]): Context[Term, V] => Context[Term, V] = {
     case _: Context.empty[_] => inner
-    case outer => inner.withNewTail(immerse(inner)(outer.tail))
+    case outer               => inner.withNewTail(immerse(inner)(outer.tail))
   }
 }

@@ -36,7 +36,7 @@ trait TermRec[U] {
 
   def univ(n: Int): U
 
-  def apply(term: Term) : U =
+  def apply(term: Term): U =
     specialTerms.lift(term) getOrElse {
       term match {
         case FormalAppln(func, arg) => appln(apply(func), apply(arg))
@@ -44,24 +44,25 @@ trait TermRec[U] {
           lambda(apply(x), apply(x.typ), apply(y))
         case Lambda(x: Term, y: Term) =>
           lambda(apply(x), apply(x.typ), apply(y))
-        case PiDefn(x: Term, y: Typ[v]) => pi(lambda(apply(x), apply(x.typ), apply(y)))
-        case PiTyp(fibre) => pi(apply(fibre))
-        case SigmaTyp(fibre) => sigma(apply(fibre))
+        case PiDefn(x: Term, y: Typ[v]) =>
+          pi(lambda(apply(x), apply(x.typ), apply(y)))
+        case PiTyp(fibre)         => pi(apply(fibre))
+        case SigmaTyp(fibre)      => sigma(apply(fibre))
         case PlusTyp(first, scnd) => plus(apply(first), apply(scnd))
-        case p: AbsPair[_, _] => pair(this(p.first), this(p.second))
-        case fn: FuncTyp[_, _] => arrow(apply(fn.dom), apply(fn.codom))
-        case sym: SymbObj[_] => symbobj(sym)
-        case sym: SymbTyp => symbtyp(sym)
-        case sym: Symbolic => symbolic(sym.name, term.typ)
+        case p: AbsPair[_, _]     => pair(this(p.first), this(p.second))
+        case fn: FuncTyp[_, _]    => arrow(apply(fn.dom), apply(fn.codom))
+        case sym: SymbObj[_]      => symbobj(sym)
+        case sym: SymbTyp         => symbtyp(sym)
+        case sym: Symbolic        => symbolic(sym.name, term.typ)
         case IdentityTyp(dom, lhs: Term, rhs: Term) =>
           equality(apply(dom), apply(lhs), apply(rhs))
         case Universe(n) => univ(n)
         case fld: FoldedTerm[v] => {
-            val terms = fld.elems map (apply)
-            val op = apply(fld.op)
-            def collapse(x: U, y: U) = appln(appln(op, x), y)
-            terms.reduce(collapse)
-          }
+          val terms                = fld.elems map (apply)
+          val op                   = apply(fld.op)
+          def collapse(x: U, y: U) = appln(appln(op, x), y)
+          terms.reduce(collapse)
+        }
         case t => fromString(t.toString)(t.typ)
       }
     }

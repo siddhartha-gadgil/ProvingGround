@@ -25,7 +25,7 @@ object Graph {
                  weight: Double = 1.0,
                  oriented: Boolean = false) = {
     val vertices = map.keys.toList ++ map.values.toList.flatten
-    val edges = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
+    val edges    = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
     Graph(vertices.toSet, edges.toList)
   }
 
