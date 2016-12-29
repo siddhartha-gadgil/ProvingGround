@@ -16,7 +16,7 @@ package provingground
   * ```
   X[A] => G[Y[A]]
   ```
-  * with `Y[A]` having an inclusion into `Z[X[A]]` for a traversable functor `Z`. 
+  * with `Y[A]` having an inclusion into `Z[X[A]]` for a traversable functor `Z`.
   */
 sealed trait MathExpr[T]
 
@@ -160,9 +160,77 @@ object MathExpr {
   case class Core[T](optNoun: Option[NounPhrase[T]],
                      quantterms: List[QuantTerm[T]] = List())
 
-  case class QuantifiedNoun[T](np: NounPhrase[T])
+  // case class QuantifiedNoun[T](np: NounPhrase[T])
 
+  /**
+   * A transitive verb and adjective.
+   */
   case class VerbAdj[T](vp: VerbPhrase[T], AdjectivalPhrase: AP[T])
-      extends MathExpr[T]
+      extends VerbPhrase[T]
+
+  /**
+   * is ... property given by a noun.
+   */
+  case class IsNoun[T](property: NounPhrase[T]) extends VerbPhrase[T]
+
+  /**
+   * is ... property given by an intransitive adjective.
+   */
+  case class IsAdj[T](coProperty: AdjectivalPhrase[T]) extends VerbPhrase[T]
+
+  /**
+   * are ... property given by a transitive adjective, e.e., independent.
+   */
+  case class AreAdj[T](coProperty: AdjectivalPhrase[T]) extends VerbPhrase[T]
+
+  /**
+   * is ... prep ... property given by a transitive adjective
+   */
+  case class IsAdjPrep[T](adj: AdjectivalPhrase[T], pp: PP[T])
+      extends VerbPhrase[T]
+
+  /**
+   * is such that ... property
+   */
+  case class IsSuchThat[T](st: SuchThat[T]) extends VerbPhrase[T]
+
+  /**
+   * is ... property given by a prespositional phrase
+   */
+  case class IsPrep[T](pp: PP[T]) extends VerbPhrase[T]
+
+  /**
+   * Universally quantified sentence.
+   */
+  case class ForAllSP[T](sentence: SententialPhrase[T])
+      extends SententialPhrase[T]
+
+  /**
+   * Existential-style quantified sentence, but also allowing at most one and precisely one.
+   */
+  case class ExistentialSP[T](sentence: SententialPhrase[T],
+                              exists: Boolean = true,
+                              unique: Boolean = false)
+      extends SententialPhrase[T]
+
+  /**
+   * Negation of a sentence.
+   */
+  case class NegSP[T](sentence: SententialPhrase[T]) extends SententialPhrase[T]
+
+  /**
+   * Conjunction of sentential phrases.
+   */
+  case class ConjSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
+
+  /**
+   * Disjunction of sentential phrases.
+   */
+  case class DisjSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
+
+  /**
+   * Sentential phrases connected by "i.e., " or "so, ".
+   */
+  case class ThatIsSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
 
 }
