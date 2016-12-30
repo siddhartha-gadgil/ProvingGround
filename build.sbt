@@ -6,6 +6,8 @@ val ammV = "0.8.1"
 
 scalaVersion in ThisBuild := scalaV
 
+classpathTypes += "maven-plugin"
+
 lazy val jsProjects = Seq(client)
 
 lazy val baseSettings = Seq(version := "0.8",
@@ -60,7 +62,7 @@ lazy val jvmSettings = Seq(
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j"              % "slf4j-api"       % "1.7.16",
-//    "org.slf4j" % "slf4j-nop" %"1.7.16",
+    "org.slf4j"   % "slf4j-simple"  %   "1.7.16",
     "com.lihaoyi" %% "pprint" % "0.4.3",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.12",
