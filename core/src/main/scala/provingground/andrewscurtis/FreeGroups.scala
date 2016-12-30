@@ -33,12 +33,9 @@ object FreeGroups {
       * to add further checks later.
       */
     def isParsable(s: List[Char]): Boolean = {
-      if (s.isEmpty)
-        true
-      else if ((s.head == '\u0305') || (s.head == '!'))
-        false
-      else
-        true
+      if (s.isEmpty) true
+      else if ((s.head == '\u0305') || (s.head == '!')) false
+      else true
     }
 
     /**
@@ -46,8 +43,8 @@ object FreeGroups {
       */
     def listFromChars(s: List[Char]): List[Int] = {
       require(
-        isParsable(s),
-        "The list of characters is not well formed and should not be parsed.")
+          isParsable(s),
+          "The list of characters is not well formed and should not be parsed.")
       s match {
         case Nil => List()
         case x :: '\u0305' :: tail =>
@@ -66,11 +63,11 @@ object FreeGroups {
       if (s == "1") Word(List())
       else
         Word(
-          listFromChars(
-            s.replace("!", "\u0305")
-              .replace(" ", "")
-              .replace(".", "")
-              .toList))
+            listFromChars(s
+                  .replace("!", "\u0305")
+                  .replace(" ", "")
+                  .replace(".", "")
+                  .toList))
 
     /**
       * word from a string.
@@ -96,8 +93,7 @@ object FreeGroups {
       ls match {
         case x :: y :: zs if x == -y => Word(zs).reduce
         case x :: ys =>
-          if (Word(ys).isReduced)
-            x :: Word(ys).reduce
+          if (Word(ys).isReduced) x :: Word(ys).reduce
           else (x :: Word(ys).reduce).reduce
         case _ => this
       }
@@ -109,14 +105,14 @@ object FreeGroups {
       * string representation
       */
     def toPlainString =
-      ((ls map (letterString(_))).foldLeft("")(_ + _)).dropRight(1)
+      ( (ls map (letterString(_))).foldLeft("")(_ + _)).dropRight(1)
 
     override def toString = if (ls.isEmpty) "1" else toUnicode
 
     /**
       * unicode representation.
       */
-    def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_ + _))
+    def toUnicode = ( (ls map (letterUnic(_))).foldLeft("")(_ + _))
 
     /**
       * letter prepended to word
@@ -137,7 +133,7 @@ object FreeGroups {
       * returns this to kth power.
       */
     def pow: Int => Word = {
-      case 0          => Word(List())
+      case 0 => Word(List())
       case k if k > 0 => Word(List.fill(k)(ls).flatten)
       case k if k < 0 => this.inv.pow(-k)
     }
@@ -177,10 +173,8 @@ object FreeGroups {
       * largest generator in the free group.
       */
     def maxgen: Int = {
-      if (ls.isEmpty)
-        0
-      else
-        (ls map ((x: Int) => x.abs)).max
+      if (ls.isEmpty) 0
+      else (ls map ((x: Int) => x.abs)).max
     }
 
     /**
@@ -217,10 +211,10 @@ object FreeGroups {
       * string without  unicode.
       */
     def toPlainString = {
-      val gens = (for (j <- 0 to rank - 1)
-        yield ('a' + j).toChar.toString).toList.mkString(",")
-      val relstring =
-        (for (rel <- rels) yield rel.toPlainString).toList.mkString(",")
+      val gens = (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toList
+        .mkString(",")
+      val relstring = (for (rel <- rels) yield
+        rel.toPlainString).toList.mkString(",")
       s"<$gens; $relstring>"
     }
 
@@ -228,10 +222,10 @@ object FreeGroups {
       * unicode string
       */
     def toUnicode = {
-      val gens = (for (j <- 0 to rank - 1)
-        yield ('a' + j).toChar.toString).toList.mkString(",")
-      val relstring =
-        (for (rel <- rels) yield rel.toUnicode).toList.mkString(",")
+      val gens = (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toList
+        .mkString(",")
+      val relstring = (for (rel <- rels) yield
+        rel.toUnicode).toList.mkString(",")
       s"<$gens; $relstring>"
     }
 
@@ -249,10 +243,8 @@ object FreeGroups {
       * largest generator appearing in relation.
       */
     def maxgen: Int = {
-      if (rels.isEmpty)
-        0
-      else
-        (rels map ((x: Word) => x.maxgen)).max
+      if (rels.isEmpty) 0
+      else (rels map ((x: Word) => x.maxgen)).max
     }
 
     /**
@@ -308,7 +300,7 @@ object FreeGroups {
       def flipped: Int => Word = {
         case `k` => rels(l)
         case `l` => rels(k)
-        case j   => rels(j)
+        case j => rels(j)
       }
 
       val result = (0 to sz - 1) map (flipped)
@@ -357,8 +349,8 @@ object FreeGroups {
       */
     def ACdestab = {
       val newrels =
-        rels filter ((w: Word) => w != Word(List(rank + 1))) map (_.rmvtop(
-          rank))
+        rels filter ((w: Word) => w != Word(List(rank + 1))) map
+        (_.rmvtop(rank))
       Presentation(newrels, rank - 1)
     }
   }
@@ -369,10 +361,10 @@ object FreeGroups {
       *  parses string to a presentation.
       */
     def fromString(s: String) = {
-      val ss                      = s.replaceAll("[ <>]", "")
+      val ss = s.replaceAll("[ <>]", "")
       val genWord :: relWord :: _ = ss.split(";").toList
-      val rank                    = genWord.split(",").length
-      val rels                    = relWord.split(",") map (Word.fromString(_))
+      val rank = genWord.split(",").length
+      val rels = relWord.split(",") map (Word.fromString(_))
       Presentation(rels.toList, rank)
     }
 
@@ -395,24 +387,25 @@ object FreeGroups {
     /**
       * moves implemented as functions
       */
-    def id(pres: Presentation)                      = pres
-    def inv(pres: Presentation, k: Int)             = pres.inv(k)
-    def rtmult(pres: Presentation, k: Int, l: Int)  = pres.rtmult(k, l)
+    def id(pres: Presentation) = pres
+    def inv(pres: Presentation, k: Int) = pres.inv(k)
+    def rtmult(pres: Presentation, k: Int, l: Int) = pres.rtmult(k, l)
     def lftmult(pres: Presentation, k: Int, l: Int) = pres.lftmult(k, l)
-    def conj(pres: Presentation, k: Int, l: Int)    = pres.conj(k, l)
+    def conj(pres: Presentation, k: Int, l: Int) = pres.conj(k, l)
     def conjRelators(pres: Presentation, k: Int, l: Int) =
       pres.conjRelators(k, l)
-    def ACstab(pres: Presentation)   = pres.ACstab
-    def ttzStab(pres: Presentation)  = pres.ttzStab
+    def ACstab(pres: Presentation) = pres.ACstab
+    def ttzStab(pres: Presentation) = pres.ttzStab
     def ACdestab(pres: Presentation) = pres.ACdestab
 
     /**
       * weight where number of relations is fixed.
       */
     def weight(wrdCntn: Double): Presentation => Double =
-      (pres: Presentation) => {
-        val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
-        ((wordwts :\ 1.0)(_ * _))
+      (pres: Presentation) =>
+        {
+          val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
+          ( (wordwts :\ 1.0)(_ * _))
       }
   }
 

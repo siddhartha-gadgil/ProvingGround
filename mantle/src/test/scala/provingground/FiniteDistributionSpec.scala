@@ -44,7 +44,6 @@ class FiniteDistributionSpec extends FlatSpec {
     assert(mean(5) > 0.149)
 
     assert(mean(5) < 0.151)
-
   }
 
   it should "map correctly under (not necessarily injective) functions" in {
@@ -59,7 +58,6 @@ class FiniteDistributionSpec extends FlatSpec {
     eqls(image(4), 0)
 
     eqls(image(9), 0.25)
-
   }
 
   it should "map correctly under optional functions" in {

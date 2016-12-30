@@ -2,7 +2,7 @@ package provingground
 
 import provingground.{TruncatedDistribution => TD}
 
-class TruncatedDistributionLang[E: ExprLang]
+class TruncatedDistributionLang[E : ExprLang]
     extends ExprLang[TruncatedDistribution[E]] {
   val l = implicitly[ExprLang[E]]
 
@@ -85,7 +85,7 @@ class TruncatedDistributionLang[E: ExprLang]
     l.numeral(n) map ((e: E) => TD.atom(e))
 }
 
-class TruncatedDistributionDomain[E: Domain]
+class TruncatedDistributionDomain[E : Domain]
     extends Domain[TruncatedDistribution[E]] {
   val l = implicitly[Domain[E]]
 
@@ -93,25 +93,31 @@ class TruncatedDistributionDomain[E: Domain]
     (f: TruncatedDistribution[E]) => TD.optF(TD.map(f)(l.domain))
 }
 
-class TruncatedDistributionExprPatterns[E: ExprPatterns]
+class TruncatedDistributionExprPatterns[E : ExprPatterns]
     extends ExprPatterns[TruncatedDistribution[E]] {
   val l = implicitly[ExprPatterns[E]]
 
   def isPair: TD[E] => Option[(TD[E], TD[E])] =
-    (td: TD[E]) => {
-      val tdPairOpt = TD.optF(td map (l.isPair))
-      tdPairOpt map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isPair))
+        tdPairOpt map
+        ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
     }
 
   def isSigma: TD[E] => Option[(TD[E], TD[E])] =
-    (td: TD[E]) => {
-      val tdPairOpt = TD.optF(td map (l.isSigma))
-      tdPairOpt map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isSigma))
+        tdPairOpt map
+        ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
     }
 
   def isPi: TD[E] => Option[(TD[E], TD[E])] =
-    (td: TD[E]) => {
-      val tdPairOpt = TD.optF(td map (l.isPi))
-      tdPairOpt map ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
+    (td: TD[E]) =>
+      {
+        val tdPairOpt = TD.optF(td map (l.isPi))
+        tdPairOpt map
+        ((td) => (td.map(xy => (xy._1)), td map ((xy) => (xy._2))))
     }
 }

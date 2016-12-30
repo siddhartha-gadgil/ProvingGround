@@ -236,7 +236,6 @@ object MathExpr {
     */
   case class ThatIsSP[T](sentences: List[SententialPhrase[T]])
       extends SententialPhrase[T]
-
 }
 
 sealed trait MathText[T]
@@ -273,14 +272,14 @@ object MathText {
                                    definiens: NounPhrase[T])
       extends SententialPhrase[T]
 
-  case class BiEquationalDefinition[T](
-      definiendum: BiEquationalDefinition[T],
-      definiens: SententialPhrase[T])
+  case class BiEquationalDefinition[T](definiendum: BiEquationalDefinition[T],
+                                       definiens: SententialPhrase[T])
       extends SententialPhrase[T]
 
   case class CopulaDefinition[T](definiendum: CopulaDefiniendum[T],
                                  definiens: NounPhrase[T])
       extends SententialPhrase[T]
 
-  case class VariableType[T](variables: List[NounPhrase[T]], typ : NounPhrase[T])
+  case class VariableType[T](
+      variables: List[NounPhrase[T]], typ: NounPhrase[T])
 }

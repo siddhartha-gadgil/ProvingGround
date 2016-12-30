@@ -15,15 +15,15 @@ object AtomicMove {
       fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] =
     mf(fdVertices)
   def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
-  def apply(w: String): AtomicMove                       = fromString(w).get
+  def apply(w: String): AtomicMove = fromString(w).get
   def fromString(w: String): Option[AtomicMove] = {
     // Regular expressions to match to various case classes
     // Won't work in conj if there are more than 26 generators
-    val id      = """^id$""".r
-    val inv     = """^[0-9]+!$""".r
+    val id = """^id$""".r
+    val inv = """^[0-9]+!$""".r
     val lftmult = """^[0-9]+->[0-9]+$""".r
-    val rtmult  = """^[0-9]+<-[0-9]+$""".r
-    val conj    = """^[0-9]+\^[a-z]!?$""".r
+    val rtmult = """^[0-9]+<-[0-9]+$""".r
+    val conj = """^[0-9]+\^[a-z]!?$""".r
     val numbers = """[0-9]+""".r
     val letters = """[a-z]!?$""".r
 
@@ -34,26 +34,23 @@ object AtomicMove {
       Some(Inv(rel))
     } else if (lftmult.findFirstIn(w).isDefined) {
       val nums = numbers.findAllMatchIn(w).toList
-      val l    = nums(0).toString.toInt
-      val k    = nums(1).toString.toInt
+      val l = nums(0).toString.toInt
+      val k = nums(1).toString.toInt
       Some(LftMult(k, l))
     } else if (rtmult.findFirstIn(w).isDefined) {
       val nums = numbers.findAllMatchIn(w).toList
-      val k    = nums(0).toString.toInt
-      val l    = nums(1).toString.toInt
+      val k = nums(0).toString.toInt
+      val l = nums(1).toString.toInt
       Some(RtMult(k, l))
     } else if (conj.findFirstIn(w).isDefined) {
       val letter = letters.findFirstIn(w).toList(0).toString.apply(0)
       val multiplier =
-        if (w.contains('!'))
-          -1
-        else
-          1
+        if (w.contains('!')) -1
+        else 1
       val generator = (letter.toInt - 'a'.toInt + 1) * multiplier
-      val relation  = numbers.findAllMatchIn(w).toList(0).toString.toInt
+      val relation = numbers.findAllMatchIn(w).toList(0).toString.toInt
       Some(Conj(relation, generator))
-    } else
-      None
+    } else None
   }
 }
 
@@ -63,7 +60,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   def apply(opPres: Option[Presentation]): Option[Presentation] = {
     opPres match {
       case Some(pres) => this.apply(pres)
-      case None       => None
+      case None => None
     }
   }
 
@@ -76,8 +73,8 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   def actOnMoves(moves: Moves): Option[Moves] =
     Some(toMoves(this) compose moves)
 
-  def movesDF: DiffbleFunction[FiniteDistribution[Moves],
-                               FiniteDistribution[Moves]] =
+  def movesDF: DiffbleFunction[
+      FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     MoveFn(actOnMoves)
 
   def actOnPres(fdPres: FiniteDistribution[Presentation])
@@ -94,9 +91,9 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
 
   def toPlainString: String = {
     this match {
-      case Id            => "id"
-      case Inv(k)        => s"$k!"
-      case RtMult(k, l)  => s"$k<-$l"
+      case Id => "id"
+      case Inv(k) => s"$k!"
+      case RtMult(k, l) => s"$k<-$l"
       case LftMult(k, l) => s"$l->$k"
       case Conj(k, l) =>
         if (l > 0) {
@@ -112,19 +109,15 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
 
   def toLatex = {
     this match {
-      case Id     => s"$$r \\mapsto r$$"
+      case Id => s"$$r \\mapsto r$$"
       case Inv(k) => s"$$r_{$k} \\mapsto \\bar{r_$k}$$"
       case RtMult(k, l) =>
-        if (k < l)
-          s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$k}r_{$l}, r_{$l})$$"
-        else
-          s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$k}r_{$l})$$"
+        if (k < l) s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$k}r_{$l}, r_{$l})$$"
+        else s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$k}r_{$l})$$"
 
       case LftMult(k, l) =>
-        if (k < l)
-          s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$l}r_{$k}, r_{$l})$$"
-        else
-          s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$l}r_{$k})$$"
+        if (k < l) s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$l}r_{$k}, r_{$l})$$"
+        else s"$$(r_{$l}, r_{$k}) \\mapsto (r_{$l}, r_{$l}r_{$k})$$"
       case Conj(k, l) =>
         s"$$r_{$k} \\mapsto \\bar{\\alpha_{$l}}r_{$k}\\alpha_{$l}$$"
       case _ => "function1"
@@ -155,26 +148,22 @@ case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
 //  override def actOnMoves(moves: Moves) = Some(moves)
 
-  override def movesDF: DiffbleFunction[FiniteDistribution[Moves],
-                                        FiniteDistribution[Moves]] =
+  override def movesDF: DiffbleFunction[
+      FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     DiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 
 case class Inv(k: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
-    if (k >= 0 && k < pres.sz)
-      Some(pres.inv(k))
-    else
-      None
+    if (k >= 0 && k < pres.sz) Some(pres.inv(k))
+    else None
   }
 }
 
 case class RtMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
-    if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
-      Some(pres.rtmult(k, l))
-    else
-      None
+    if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz) Some(pres.rtmult(k, l))
+    else None
   }
 }
 
@@ -182,8 +171,7 @@ case class RtMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
       Some(pres.rtmultinv(k, l))
-    else
-      None
+    else None
   }
 }
 
@@ -191,8 +179,7 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
       Some(pres.lftmult(k, l))
-    else
-      None
+    else None
   }
 }
 
@@ -200,8 +187,7 @@ case class LftMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
       Some(pres.lftmult(k, l))
-    else
-      None
+    else None
   }
 }
 
@@ -209,8 +195,7 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && math.abs(l) > 0 && k < pres.sz && math.abs(l) <= pres.rank)
       Some(pres.conj(k, l))
-    else
-      None
+    else None
   }
 }
 
@@ -218,8 +203,7 @@ case class Transpose(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && math.abs(l) > 0 && k < pres.sz && math.abs(l) <= pres.rank)
       Some(pres.transpose(k, l))
-    else
-      None
+    else None
   }
 }
 
@@ -234,15 +218,17 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal {
     }
   }
    */
-  def reduce: Presentation => Option[Presentation] = (pres) => {
-    def act(mv: AtomicMove, op: Option[Presentation]) = {
-      op flatMap ((p) => mv(p))
+  def reduce: Presentation => Option[Presentation] =
+    (pres) =>
+      {
+        def act(mv: AtomicMove, op: Option[Presentation]) = {
+          op flatMap ((p) => mv(p))
+        }
+        (moves :\ (Some(pres): Option[Presentation]))(act)
     }
-    (moves :\ (Some(pres): Option[Presentation]))(act)
-  }
 
   def apply(pres: Presentation) = this.reduce(pres)
-  def apply(that: Moves)        = this compose that
+  def apply(that: Moves) = this compose that
   def apply(that: Presentation => Option[Presentation]) =
     liftOption(this.reduce) compose that
   def apply(that: AtomicMove) = this compose that
@@ -266,20 +252,16 @@ object Moves {
 
   def fromString(ws: Seq[String]): Option[Moves] = {
     val atomic_moves = ws.toList map (AtomicMove.fromString(_))
-    if (atomic_moves.contains(None))
-      None
-    else
-      Some(Moves(for { Some(i) <- atomic_moves } yield i))
+    if (atomic_moves.contains(None)) None
+    else Some(Moves(for { Some(i) <- atomic_moves } yield i))
   }
 
   implicit def toMoves(move: AtomicMove): Moves = Moves(List(move))
 
   def liftOption[A](f: A => Option[A]): Option[A] => Option[A] = {
     def lifted_f(a: Option[A]): Option[A] = {
-      if (a.isDefined)
-        f(a.get)
-      else
-        None
+      if (a.isDefined) f(a.get)
+      else None
     }
     lifted_f
   }

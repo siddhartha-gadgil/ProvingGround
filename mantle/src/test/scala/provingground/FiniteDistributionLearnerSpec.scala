@@ -26,20 +26,15 @@ class FiniteDistributionLearnerSpec extends FlatSpec {
     assert(double.func(at12)(2.0) == 0.5)
     assert(double.func(at12)(4.0) == 0.5)
     assert(double.func(at12)(1.0) == 0)
-
   }
 
   it should "map non-uniform distributions correctly" in {
 
-    val d =
-      FiniteDistribution((1 to 10).toSet map ((i: Int) =>
-                                                Weighted(i.toDouble,
-                                                         i.toDouble))).flatten
+    val d = FiniteDistribution((1 to 10).toSet map
+        ((i: Int) => Weighted(i.toDouble, i.toDouble))).flatten
 
-    val dd =
-      FiniteDistribution(
-        (1 to 10).toSet map ((i: Int) =>
-                               Weighted(i.toDouble * 2.0, i.toDouble))).flatten
+    val dd = FiniteDistribution((1 to 10).toSet map
+        ((i: Int) => Weighted(i.toDouble * 2.0, i.toDouble))).flatten
 
     for (i <- 1 to 20) yield assert(double.func(d)(i) == dd(i))
   }
@@ -49,7 +44,6 @@ class FiniteDistributionLearnerSpec extends FlatSpec {
     assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(1.0) == 0.5)
     assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(4.0) == 0.5)
     assert(square.func(unif(1.0, 2.0, -1.0, -2.0))(2.0) == 0)
-
   }
 
   it should "ignore elements that are not acted on" in {

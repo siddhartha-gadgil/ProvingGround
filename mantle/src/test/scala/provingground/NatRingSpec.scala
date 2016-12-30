@@ -35,7 +35,6 @@ object NatRingSpec {
   lazy val xPyPz = x + (y + z)
 
   lazy val xPyPzl = (x + y) + z
-
 }
 
 class NatRingSpec extends FlatSpec {

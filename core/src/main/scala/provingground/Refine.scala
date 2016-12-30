@@ -18,7 +18,7 @@ object RefineTerms {
       val vartyp = newvar.typ
       val valtyp = newval.typ
       LambdaTerm[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj],
-                                     newval.asInstanceOf[valtyp.Obj])
+                                         newval.asInstanceOf[valtyp.Obj])
     case sym: Symbolic =>
       refineTyp(sym.typ).symbObj(sym.name)
     case _ => term

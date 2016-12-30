@@ -27,10 +27,10 @@ import StartData._
 object ACRoutes {
   val thmEvolve = path("theorem-evolution" / Segment / Segment) {
     case (name, ppress) => {
-      val pres = uread[Presentation](ppress)
-      val thms = thmWeights(pres, name) map ((x: Stream[ACThm]) => uwrite(x))
-      complete(thms)
-    }
+        val pres = uread[Presentation](ppress)
+        val thms = thmWeights(pres, name) map ((x: Stream[ACThm]) => uwrite(x))
+        complete(thms)
+      }
   }
 
   val thms = path("theorems" / Segment) { name =>
@@ -42,7 +42,7 @@ object ACRoutes {
 
   val terms = path("terms" / Segment) { name =>
     val thmsOptFDV = getFutOptFDV(name)
-    val thms       = thmsOptFDV mapp ((m: FiniteDistribution[Moves]) => uwrite(m))
+    val thms = thmsOptFDV mapp ((m: FiniteDistribution[Moves]) => uwrite(m))
     complete(thms)
   }
 
@@ -66,7 +66,7 @@ object ACRoutes {
     path("start") {
       entity(as[String]) { d =>
         val startData = uread[StartData](d)
-        val ref       = startData.run()
+        val ref = startData.run()
         complete(startData.name)
       }
     }

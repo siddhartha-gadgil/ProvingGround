@@ -16,7 +16,7 @@ object ReflPickle {
 
   def unpickle(str: String) = {
     val module = mirror.staticModule(str)
-    val obj    = mirror.reflectModule(module)
+    val obj = mirror.reflectModule(module)
     obj.instance.asInstanceOf[Term]
   }
 }

@@ -11,7 +11,7 @@ object HoTTSpec {
   val b = "b" :: B
   val f = "f" :: (A ->: B)
 
-  val g  = "g" :: (A ->: B)
+  val g = "g" :: (A ->: B)
   val hA = "h_A" :: (A ->: A)
   val hB = "h_B" :: (B ->: B)
 
@@ -25,23 +25,21 @@ object HoTTSpec {
 
   val AimplB = "_:A->B" :: (A ->: B)
 
-  val mp =
-    lambda(A)(
+  val mp = lambda(A)(
       lambda(B)(
-        lambda(a !: A)(
-          lambda(AimplB !: (A ->: B))(
-            AimplB(a) !: B
+          lambda(a !: A)(
+              lambda(AimplB !: (A ->: B))(
+                  AimplB(a) !: B
+              )
           )
-        )
       )
-    )
+  )
 
   val fmly = (a !: A) ~>: (Bs(a) ->: A)
 
-  val switch =
-    lambda(pair(a, b))(
+  val switch = lambda(pair(a, b))(
       pair(b, a)
-    )
+  )
 }
 
 class HoTTSpec extends FlatSpec {
@@ -133,7 +131,7 @@ class HoTTSpec extends FlatSpec {
 
   "Type family defined using lambdas" should "have terms appropriate dependent functions" in {
     val fn = "f" :: fmly
-    val x  = "x" :: A
+    val x = "x" :: A
     assert(fn(x).typ == Bs(x) ->: A)
   }
 
@@ -146,7 +144,7 @@ class HoTTSpec extends FlatSpec {
   it should "be a sigma type or pair type depending on whether the second component depends on the first" in {
     val bdep = "b" :: Bs(a)
     val pdep = mkPair(a, bdep)
-    val p    = mkPair(a, b)
+    val p = mkPair(a, b)
     assert(p.typ == pair(A, B))
     assert(pdep.typ == Sgma(a !: A, Bs(a)))
   }

@@ -79,7 +79,7 @@ class TermBucket {
     */
   def getTheorems = {
     val typDist = getTypDist
-    val pmf     = getThmsByProofs.supp map ((t) => Weighted(t, typDist(t)))
+    val pmf = getThmsByProofs.supp map ((t) => Weighted(t, typDist(t)))
     FiniteDistribution(pmf).normalized()
   }
 }
@@ -87,9 +87,9 @@ class TermBucket {
 object TermBucket {
   def fdMap[A](m: mMap[A, Vector[Term]], tot: Long) = {
 //    val tot = m.values.flatten.size
-    (m mapValues ((l) =>
-                    FiniteDistribution(
-                      (l map (Weighted(_, 1.0 / tot))).toVector))).toMap
+    (m mapValues
+        ((l) =>
+              FiniteDistribution((l map (Weighted(_, 1.0 / tot))).toVector))).toMap
   }
 
   def fd(m: mMap[Typ[Term], Long], tot: Long) = {
@@ -114,12 +114,12 @@ object TermBucket {
   def lambdaDist(vars: Vector[Weighted[Term]], scale: Double)(
       fd: FiniteDistribution[Term]) = {
     FiniteDistribution(
-      fd.pmf map (mkLambda(vars, scale)(_))
+        fd.pmf map (mkLambda(vars, scale)(_))
     )
   }
 
-  def toPi(x: Term,
-           scale: Double): Weighted[Typ[Term]] => Weighted[Typ[Term]] = {
+  def toPi(
+      x: Term, scale: Double): Weighted[Typ[Term]] => Weighted[Typ[Term]] = {
     case Weighted(y, p) =>
       if (y dependsOn (x)) Weighted(pi(x)(y), p * scale) else Weighted(y, p)
   }
@@ -134,7 +134,7 @@ object TermBucket {
   def piDist(vars: Vector[Weighted[Term]], scale: Double)(
       fd: FiniteDistribution[Typ[Term]]) = {
     FiniteDistribution(
-      fd.pmf map (mkPi(vars, scale)(_))
+        fd.pmf map (mkPi(vars, scale)(_))
     )
   }
 }
@@ -182,10 +182,12 @@ object WeightedTermBucket {
 
   def fdMap[A](m: mMap[A, Vector[Weighted[Term]]], tot: Double) = {
     //  val tot = (m.values.flatten map (_.weight)).sum
-    (m mapValues ((l) =>
-                    FiniteDistribution((l map ((wt) =>
-                                                 Weighted(
-                                                   wt.elem,
-                                                   wt.weight / tot))).toVector))).toMap
+    (m mapValues
+        ((l) =>
+              FiniteDistribution(
+                  (l map
+                      ((wt) =>
+                            Weighted(wt.elem,
+                                     wt.weight / tot))).toVector))).toMap
   }
 }

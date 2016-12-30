@@ -11,7 +11,7 @@ object DSL {
 
   def selfImpl(c: Context)(n: c.Expr[Int]): c.Expr[Int] = {
     import c.universe._
-    val q"${m: Int}" = n.tree
+    val q"${ m: Int }" = n.tree
     c.Expr[Int](q"$m")
   }
   /*
@@ -22,8 +22,8 @@ object DSL {
 
   def checkTyp(term: Term, typ: Typ[Term]): Term = macro checkImpl
 
-  def checkImpl(c: Context)(term: c.Expr[Term],
-                            typ: c.Expr[Typ[Term]]): c.Expr[Term] = {
+  def checkImpl(c: Context)(
+      term: c.Expr[Term], typ: c.Expr[Typ[Term]]): c.Expr[Term] = {
     import c.universe._
 
     val inp = term

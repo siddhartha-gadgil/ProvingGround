@@ -99,7 +99,7 @@ object FansiFormat extends TermRec[fansi.Str] {
 
   def lambda(variable: Str, typ: Str, value: Str): Str =
     Str("(") ++ variable ++ Yellow(" : ") ++ typ ++ ") " ++ LightRed(
-      syms.MapsTo) ++ " " ++ value
+        syms.MapsTo) ++ " " ++ value
 
   def equality(dom: Str, lhs: Str, rhs: Str) =
     lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")"
@@ -131,7 +131,7 @@ trait FansiShow[-U] {
 }
 
 object FansiShow {
-  implicit class View[U: FansiShow](x: U) {
+  implicit class View[U : FansiShow](x: U) {
     def fansi = implicitly[FansiShow[U]].show(x)
   }
 
@@ -139,36 +139,37 @@ object FansiShow {
     def show(x: U) = FansiFormat(x).toString
   }
 
-  implicit def list[U: FansiShow]: FansiShow[List[U]] =
+  implicit def list[U : FansiShow]: FansiShow[List[U]] =
     new FansiShow[List[U]] {
       def show(x: List[U]) = (x map (_.fansi)).mkString("[", "\n", "]")
     }
 
-  implicit def vec[U: FansiShow]: FansiShow[Vector[U]] =
+  implicit def vec[U : FansiShow]: FansiShow[Vector[U]] =
     new FansiShow[Vector[U]] {
       def show(x: Vector[U]) = (x map (_.fansi)).mkString("[", "\n", "]")
     }
 
-  implicit def set[U: FansiShow]: FansiShow[Set[U]] = new FansiShow[Set[U]] {
+  implicit def set[U : FansiShow]: FansiShow[Set[U]] = new FansiShow[Set[U]] {
     def show(x: Set[U]) = (x map (_.fansi)).toString
   }
 
-  implicit def tuple2[U1: FansiShow, U2: FansiShow]: FansiShow[(U1, U2)] =
+  implicit def tuple2[U1 : FansiShow, U2 : FansiShow]: FansiShow[(U1, U2)] =
     new FansiShow[(U1, U2)] {
       def show(tup: (U1, U2)): String = (tup._1.fansi, tup._2.fansi).toString
     }
 
-  implicit def tuple3[U1: FansiShow, U2: FansiShow, U3: FansiShow]
-    : FansiShow[(U1, U2, U3)] =
+  implicit def tuple3[U1 : FansiShow,
+                      U2 : FansiShow,
+                      U3 : FansiShow]: FansiShow[(U1, U2, U3)] =
     new FansiShow[(U1, U2, U3)] {
       def show(tup: (U1, U2, U3)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi).toString
     }
 
-  implicit def tuple4[U1: FansiShow,
-                      U2: FansiShow,
-                      U3: FansiShow,
-                      U4: FansiShow]: FansiShow[(U1, U2, U3, U4)] =
+  implicit def tuple4[U1 : FansiShow,
+                      U2 : FansiShow,
+                      U3 : FansiShow,
+                      U4 : FansiShow]: FansiShow[(U1, U2, U3, U4)] =
     new FansiShow[(U1, U2, U3, U4)] {
       def show(tup: (U1, U2, U3, U4)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi, tup._4.fansi).toString
@@ -178,23 +179,23 @@ object FansiShow {
     def show(x: String) = x
   }
 
-  implicit def num[U: Numeric]: FansiShow[U] = new FansiShow[U] {
+  implicit def num[U : Numeric]: FansiShow[U] = new FansiShow[U] {
     def show(x: U) = x.toString
   }
 
-  implicit def mapp[U: FansiShow, V: FansiShow]: FansiShow[Map[U, V]] =
+  implicit def mapp[U : FansiShow, V : FansiShow]: FansiShow[Map[U, V]] =
     new FansiShow[Map[U, V]] {
       def show(m: Map[U, V]) =
         (for ((x, y) <- m) yield (x.fansi, y.fansi)).toMap.toString
     }
 
-  implicit def weighted[U: FansiShow]: FansiShow[Weighted[U]] =
+  implicit def weighted[U : FansiShow]: FansiShow[Weighted[U]] =
     new FansiShow[Weighted[U]] {
       def show(x: Weighted[U]) =
         s"${x.elem.fansi} -> ${x.weight}"
     }
 
-  implicit def fd[U: FansiShow]: FansiShow[FiniteDistribution[U]] =
+  implicit def fd[U : FansiShow]: FansiShow[FiniteDistribution[U]] =
     new FansiShow[FiniteDistribution[U]] {
       def show(x: FiniteDistribution[U]) =
         (x.flatten.sort map (_.fansi)).pmf.fansi

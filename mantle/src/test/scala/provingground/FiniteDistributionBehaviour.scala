@@ -6,12 +6,13 @@ import FiniteDistribution._
 import LinearStructure._
 import Weighted._
 
-trait FiniteDistributionBehaviours { this: FlatSpec =>
+trait FiniteDistributionBehaviours {
+  this: FlatSpec =>
 
   def intFiniteDistribution(
       finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
     val x = finDist(
-      weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
+        weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
 
     val y = finDist(weights(0 -> 0.3, 1 -> 0.4, 5 -> 0.3))
 
@@ -45,7 +46,6 @@ trait FiniteDistributionBehaviours { this: FlatSpec =>
       assert(mean(5) > 0.149)
 
       assert(mean(5) < 0.151)
-
     }
 
     it should "map correctly under (not necessarily injective) functions" in {
@@ -60,7 +60,6 @@ trait FiniteDistributionBehaviours { this: FlatSpec =>
       eqls(image(4), 0)
 
       eqls(image(9), 0.25)
-
     }
 
     it should "map correctly under optional functions" in {

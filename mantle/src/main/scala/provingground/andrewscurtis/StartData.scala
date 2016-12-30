@@ -60,18 +60,20 @@ case class StartData(name: String,
       .cursor[BSONDocument]()
       .headOption
       .map((docOpt) =>
-        (docOpt flatMap (_.getAs[String]("start-data") map (uread[
-          List[StartData]]))).getOrElse(List()))
+            (docOpt flatMap
+                (_.getAs[String]("start-data") map (uread[List[StartData]])))
+              .getOrElse(List()))
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =
-      updatedStartsFut map ((us: List[StartData]) =>
-                              BSONDocument("name"       -> name,
-                                           "loops"      -> 0,
-                                           "start-data" -> uwrite(us)))
+      updatedStartsFut map
+      ((us: List[StartData]) =>
+            BSONDocument("name" -> name,
+                         "loops" -> 0,
+                         "start-data" -> uwrite(us)))
     val res = futDoc.map(
-      (doc) =>
-        //println(doc)
-        actorsDB.insert(doc)
+        (doc) =>
+          //println(doc)
+          actorsDB.insert(doc)
     )
     (futDoc, res)
   }
@@ -99,11 +101,11 @@ object StartData {
     * reads with defaults start paratmeters from JSON.
     */
   def fromJson(st: String) = {
-    val map  = st.parseJson.asJsObject.fields
+    val map = st.parseJson.asJsObject.fields
     val name = map("name").convertTo[String]
 //      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
-    val rank  = (map.get("rank") map (_.convertTo[Int])) getOrElse (2)
-    val size  = (map.get("size") map (_.convertTo[Int])) getOrElse (1000)
+    val rank = (map.get("rank") map (_.convertTo[Int])) getOrElse (2)
+    val size = (map.get("size") map (_.convertTo[Int])) getOrElse (1000)
     val steps = (map.get("steps") map (_.convertTo[Int])) getOrElse (3)
     val wrdCntn =
       (map.get("wrdCntn") map (_.convertTo[Double])) getOrElse (0.1)

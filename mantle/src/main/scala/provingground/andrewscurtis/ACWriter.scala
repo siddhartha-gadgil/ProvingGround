@@ -38,11 +38,7 @@ trait ACWriter {
     })
 
   val writerFlow =
-    fl alsoTo
-      elemsSink alsoTo
-      thmsSink alsoTo
-      moveWeightsSink alsoTo
-      loopsSink
+    fl alsoTo elemsSink alsoTo thmsSink alsoTo moveWeightsSink alsoTo loopsSink
 
   /**
     *  ActorRef from materialized flow saving various things in

@@ -26,14 +26,14 @@ object FiniteDistribution {
 
   def collect[T](fd: FiniteDistribution[Option[T]]) =
     FiniteDistribution(
-      fd.pmf.filter(wo => !(wo.elem.isEmpty)).map((wo) => wo.map(_.get)))
+        fd.pmf.filter(wo => !(wo.elem.isEmpty)).map((wo) => wo.map(_.get)))
 
   implicit def finiteDistInnerProd[X] =
     InnerProduct[FiniteDistribution[X]](_ dot _)
 
   def uniform[A](s: Traversable[A]): FiniteDistribution[A] = {
     val prob = 1.0 / s.size
-    val pmf  = (s map (Weighted(_, prob)))
+    val pmf = (s map (Weighted(_, prob)))
     FiniteDistribution(pmf)
   }
 
@@ -50,8 +50,8 @@ object FiniteDistribution {
     (scaled :\ (empty[T]))(_ ++ _)
   }
 
-  def invFlatMap[S, T](f: S => FiniteDistribution[T],
-                       support: Traversable[S]) = {
+  def invFlatMap[S, T](
+      f: S => FiniteDistribution[T], support: Traversable[S]) = {
     val dists = support map ((s: S) => f(s))
     (dists :\ FiniteDistribution.empty[T])(_ ++ _)
   }
@@ -63,8 +63,7 @@ object FiniteDistribution {
 }
 
 case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
-    extends AnyVal
-    with ProbabilityDistribution[T] {
+    extends AnyVal with ProbabilityDistribution[T] {
 
   /**
     * objects with positive probability (or bounded below by a threshhold)
@@ -138,30 +137,30 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def mapOpt[S](f: T => Option[S]): FiniteDistribution[S] = {
     val newpmf = for (Weighted(elem, wt) <- pmf;
-                      felem <- f(elem)) yield Weighted(felem, wt)
+    felem <- f(elem)) yield Weighted(felem, wt)
     FiniteDistribution(newpmf)
   }
 
   def invmap[S](f: S => T, support: Traversable[S]): FiniteDistribution[S] = {
-    val mem   = memo
+    val mem = memo
     def memFn = (x: T) => mem.get(x).getOrElse(0.0)
-    val pmf   = support.toVector map ((s: S) => Weighted(s, memFn(f(s))))
+    val pmf = support.toVector map ((s: S) => Weighted(s, memFn(f(s))))
     FiniteDistribution(pmf)
   }
 
-  def invmapOpt[S](f: S => Option[T],
-                   support: Traversable[S]): FiniteDistribution[S] = {
-    val mem   = memo
+  def invmapOpt[S](
+      f: S => Option[T], support: Traversable[S]): FiniteDistribution[S] = {
+    val mem = memo
     def memFn = (x: T) => mem.get(x).getOrElse(0.0)
     val pmf =
-      support.toVector map ((s: S) =>
-                              Weighted(s, f(s).map(memFn).getOrElse(0)))
+      support.toVector map
+      ((s: S) => Weighted(s, f(s).map(memFn).getOrElse(0)))
     FiniteDistribution(pmf)
   }
 
   def flatMap[S](f: T => FiniteDistribution[S]) = {
     implicit val ls = FiniteDistribution.FiniteDistVec[S]
-    val distdist    = map(f)
+    val distdist = map(f)
     distdist.expectation
   }
 
@@ -188,8 +187,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   override def toString = {
     val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
-    val terms = (for (Weighted(elem, wt) <- sortedpmf)
-      yield (elem.toString + " : " + wt.toString + ", ")).foldLeft("")(_ + _)
+    val terms = (for (Weighted(elem, wt) <- sortedpmf) yield
+    (elem.toString + " : " + wt.toString + ", ")).foldLeft("")(_ + _)
     "[" + terms.dropRight(2) + "]"
   }
 
@@ -234,12 +233,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
                   damp: Double = 0.1,
                   strictness: Double = 1.0) = {
     val weights = (t: T) => math.pow(baseweights(t), strictness)
-    val rawdiff = for (elem <- supp)
-      yield
-        (Weighted(elem, weights(elem) / (weights(elem) * damp + apply(elem))))
+    val rawdiff = for (elem <- supp) yield
+      (Weighted(elem, weights(elem) / (weights(elem) * damp + apply(elem))))
     val shift = rawdiff.map(_.weight).sum / (rawdiff.size)
-    val normaldiff = for (Weighted(pres, prob) <- rawdiff)
-      yield Weighted(pres, prob - shift)
+    val normaldiff = for (Weighted(pres, prob) <- rawdiff) yield
+      Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff)
   }
 
@@ -255,14 +253,13 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
                        damp: Double = 0.1,
                        strictness: Double = 1.0) = {
     val weights = (t: T) => math.pow(baseweights(t), strictness)
-    val rawdiff = for (elem <- supp)
-      yield
-        (Weighted(elem,
-                  weights(elem) * weights(elem) / (weights(elem) * damp +
-                    apply(elem))))
+    val rawdiff = for (elem <- supp) yield
+      (Weighted(elem,
+                weights(elem) * weights(elem) /
+                (weights(elem) * damp + apply(elem))))
     val shift = rawdiff.map(_.weight).sum / (rawdiff.size)
-    val normaldiff = for (Weighted(pres, prob) <- rawdiff)
-      yield Weighted(pres, prob - shift)
+    val normaldiff = for (Weighted(pres, prob) <- rawdiff) yield
+      Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff)
   }
 
@@ -271,12 +268,12 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     * perpendicular to the gradient (w.r.t. same inner product) of the "total weight" function.
     */
   def KLfeedback(baseweights: T => Double, strictness: Double = 1.0) = {
-    val weights   = (t: T) => math.pow(baseweights(t), strictness)
-    val rawdiff   = for (elem <- supp) yield (Weighted(elem, 1.0 / apply(elem)))
+    val weights = (t: T) => math.pow(baseweights(t), strictness)
+    val rawdiff = for (elem <- supp) yield (Weighted(elem, 1.0 / apply(elem)))
     val innerprod = rawdiff.map((x) => 1.0 / x.weight).sum // Sum(1/q))
-    val normsq    = rawdiff.map((x) => 1.0 / weights(x.elem)).sum // Sum (1/p)
-    val normaldiff = for (Weighted(pres, prob) <- rawdiff)
-      yield Weighted(pres, prob - ((1 / weights(pres)) * innerprod / normsq))
+    val normsq = rawdiff.map((x) => 1.0 / weights(x.elem)).sum // Sum (1/p)
+    val normaldiff = for (Weighted(pres, prob) <- rawdiff) yield
+      Weighted(pres, prob - ((1 / weights(pres)) * innerprod / normsq))
     FiniteDistribution(normaldiff)
   }
 }

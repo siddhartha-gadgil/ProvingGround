@@ -3,55 +3,55 @@ package provingground
 import HoTT._
 
 class TermToExpr[E](
-    univ: Int => E,
-    predef: Term => Option[E] = (t: Term) => None)(implicit l: ExprLang[E]) {
+    univ: Int => E, predef: Term => Option[E] = (t: Term) => None)(
+    implicit l: ExprLang[E]) {
   def expr: Term => Option[E] = {
     case term if !predef(term).isEmpty => predef(term)
     case FormalAppln(func, arg) =>
       for (f <- expr(func); x <- expr(arg); fx <- l.appln(f, x)) yield fx
     case LambdaFixed(x: Term, y: Term) =>
-      for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye))
-        yield result
+      for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye)) yield
+        result
     case LambdaTerm(x: Term, y: Term) =>
-      for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye))
-        yield result
+      for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye)) yield
+        result
     case fn: FuncTyp[_, _] =>
-        for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye))
-          yield result
+      for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye)) yield
+        result
 
     case pt: GenFuncTyp[u, v] =>
       val x = pt.domain.Var
-      for (xe <- expr(x); ye <- expr(pt.fib(x)); result <- l.pi(xe, ye))
-        yield result
+      for (xe <- expr(x); ye <- expr(pt.fib(x)); result <- l.pi(xe, ye)) yield
+        result
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
-      for (xe <- expr(x); ye <- expr(st.fibers(x)); result <- l.sigma(xe, ye))
-        yield result
+      for (xe <- expr(x); ye <- expr(st.fibers(x)); result <- l.sigma(xe, ye)) yield
+        result
     case PlusTyp(first: Typ[u], scnd: Typ[v]) =>
-      for (xe <- expr(first.Var); ye <- expr(scnd); result <- l.or(xe, ye))
-        yield result
+      for (xe <- expr(first.Var); ye <- expr(scnd); result <- l.or(xe, ye)) yield
+        result
     case p: AbsPair[_, _] =>
-      for (xe <- expr(p.first); ye <- expr(p.second); result <- l.pair(xe, ye))
-        yield result
+      for (xe <- expr(p.first); ye <- expr(p.second); result <- l.pair(xe, ye)) yield
+        result
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
         case Name(name) =>
-          for (typ <- expr(sym.typ); result <- l.variable(name, typ))
-            yield result
+          for (typ <- expr(sym.typ); result <- l.variable(name, typ)) yield
+            result
 //        case inn: InnerSym[_] => expr(inn.variable)
         case _ => None
       }
     case IdentityTyp(dom, lhs: Term, rhs: Term) =>
-      for (xe <- expr(lhs); ye <- expr(rhs); result <- l.equality(xe, ye))
-        yield result
+      for (xe <- expr(lhs); ye <- expr(rhs); result <- l.equality(xe, ye)) yield
+        result
     case Universe(n) =>
       Some(univ(n))
     case PlusTyp.FirstIncl(typ, value: Term) =>
-      for (tp     <- expr(typ); x <- expr(value); i <- l.incl1(tp);
-           result <- l.appln(i, x)) yield result
+      for (tp <- expr(typ); x <- expr(value); i <- l.incl1(tp);
+      result <- l.appln(i, x)) yield result
     case PlusTyp.ScndIncl(typ, value: Term) =>
-      for (tp     <- expr(typ); x <- expr(value); i <- l.incl2(tp);
-           result <- l.appln(i, x)) yield result
+      for (tp <- expr(typ); x <- expr(value); i <- l.incl2(tp);
+      result <- l.appln(i, x)) yield result
     case Unit => l.tt
     case Star => l.qed
     case Zero => l.ff
@@ -69,15 +69,13 @@ object TermToExpr {
     val X = "X" :: Type
     val x = "x" :: X
     (HoTT.lambda(X)(HoTT.lambda(x)(Refl(X, x))),
-     "@refl" :: (
-       HoTT.pi(X)(HoTT.pi(x)(x =:= x))
-     ))
+     "@refl" :: (HoTT.pi(X)(HoTT.pi(x)(x =:= x))))
   }
 
   val (idRec, formalIdRec) = {
-    val X      = "X" :: Type
-    val Y      = "Y" :: Type
-    val idRec  = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y): Term))
+    val X = "X" :: Type
+    val Y = "Y" :: Type
+    val idRec = HoTT.lambda(X)(HoTT.lambda(Y)(rec(X, Y): Term))
     val formal = HoTT.lambda(X)(HoTT.lambda(Y)("@id.rec" :: idRec(X)(Y).typ))
     (idRec, formal)
   }
@@ -88,9 +86,7 @@ object TermToExpr {
     val b = X.Var
     val p = (a =:= b).Var
 
-    val Ys = (
-      a ~>: (b ~>: (p ~>: Type))
-    ).Var
+    val Ys = (a ~>: (b ~>: (p ~>: Type))).Var
 
     val idInduc = HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
     val formal =
@@ -114,9 +110,9 @@ object TermToExpr {
     val p = (a =:= b).Var
 
     val family = HoTT.lambda(a)(
-      HoTT.lambda(b)(
-        HoTT.lambda(p)(g(a)(b)(p).typ): Term
-      )
+        HoTT.lambda(b)(
+            HoTT.lambda(p)(g(a)(b)(p).typ): Term
+        )
     )
 
     (X, family)
@@ -126,7 +122,7 @@ object TermToExpr {
     def formalDefs: Term => Option[Term] = {
       case Refl(t: Typ[u], a: Term) =>
         import Fold._
-        val newTyp   = encode(names)(t)
+        val newTyp = encode(names)(t)
         val newPoint = encode(names)(a)
         Some(formalRefl(newTyp)(newPoint))
       case sym: Symbolic =>
@@ -151,15 +147,14 @@ object TermToExpr {
         {
           def typOpt: Option[Typ[Term]] = encode(names)(term.typ) match {
             case tp: Typ[u] => Some(tp)
-            case _          => None
+            case _ => None
           }
           typOpt map ((typ) => s"@$name" :: typ)
         }
       }
     }
     val rebuilder = new TermToExpr(
-      (n) => Universe(n),
-      (term) => formalDefs(term) orElse predefs(term))
+        (n) => Universe(n), (term) => formalDefs(term) orElse predefs(term))
     (term: Term) =>
       rebuilder(term) getOrElse (term)
   }
@@ -171,8 +166,8 @@ object TermToExpr {
         sym.name match {
           case Name("@id.induc") =>
             val (x, fmly) = fromFormalInduc(term)
-            val xD        = decode(names)(x)
-            val fmlyD     = decode(names)(fmly)
+            val xD = decode(names)(x)
+            val fmlyD = decode(names)(fmly)
             Some(fold(idInduc)(xD, fmlyD))
           case _ =>
             formalNames find ("@" + _._2 == sym.name.toString) map (_._1)
@@ -248,7 +243,7 @@ object TermToExpr {
             if (isVar(t)) Some(myNames.getTerm(rebuildTyp(t.typ, prefix)))
             else None
           val rebuilder = new TermToExpr[Term]((n) => Universe(n), predefs)
-          val xx        = rebuilder(x).get
+          val xx = rebuilder(x).get
           val ss =
             s map {
               case (x, y) =>

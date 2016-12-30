@@ -26,12 +26,12 @@ object LinearStructure {
 
   def nrec[X](base: X, ind: Int => X => X)(
       implicit ls: LinearStructure[X]): Int => X = {
-    case 0          => base
+    case 0 => base
     case n if n < 0 => ls.zero
-    case n          => nrec(base, ind)(ls)(n - 1)
+    case n => nrec(base, ind)(ls)(n - 1)
   }
 
-  implicit class VectorOps[A: LinearStructure](a: A) {
+  implicit class VectorOps[A : LinearStructure](a: A) {
     val vs = implicitly[LinearStructure[A]]
 
     def |+|(b: A) = vs.sum(a, b)

@@ -146,8 +146,8 @@ object ProbabilityDistribution {
     lazy val q = weight
 
     override def conditioned(p: A => Boolean) =
-      base.conditioned(p) <+?> (mixin.conditioned((oa) =>
-        oa.map(p).getOrElse(false)), weight)
+      base.conditioned(p) <+?>
+      (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
