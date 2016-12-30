@@ -163,74 +163,124 @@ object MathExpr {
   // case class QuantifiedNoun[T](np: NounPhrase[T])
 
   /**
-   * A transitive verb and adjective.
-   */
+    * A transitive verb and adjective.
+    */
   case class VerbAdj[T](vp: VerbPhrase[T], AdjectivalPhrase: AP[T])
       extends VerbPhrase[T]
 
   /**
-   * is ... property given by a noun.
-   */
+    * is ... property given by a noun.
+    */
   case class IsNoun[T](property: NounPhrase[T]) extends VerbPhrase[T]
 
   /**
-   * is ... property given by an intransitive adjective.
-   */
+    * is ... property given by an intransitive adjective.
+    */
   case class IsAdj[T](coProperty: AdjectivalPhrase[T]) extends VerbPhrase[T]
 
   /**
-   * are ... property given by a transitive adjective, e.e., independent.
-   */
+    * are ... property given by a transitive adjective, e.e., independent.
+    */
   case class AreAdj[T](coProperty: AdjectivalPhrase[T]) extends VerbPhrase[T]
 
   /**
-   * is ... prep ... property given by a transitive adjective
-   */
+    * is ... prep ... property given by a transitive adjective
+    */
   case class IsAdjPrep[T](adj: AdjectivalPhrase[T], pp: PP[T])
       extends VerbPhrase[T]
 
   /**
-   * is such that ... property
-   */
+    * is such that ... property
+    */
   case class IsSuchThat[T](st: SuchThat[T]) extends VerbPhrase[T]
 
   /**
-   * is ... property given by a prespositional phrase
-   */
+    * is ... property given by a prespositional phrase
+    */
   case class IsPrep[T](pp: PP[T]) extends VerbPhrase[T]
 
   /**
-   * Universally quantified sentence.
-   */
+    * Universally quantified sentence.
+    */
   case class ForAllSP[T](sentence: SententialPhrase[T])
       extends SententialPhrase[T]
 
   /**
-   * Existential-style quantified sentence, but also allowing at most one and precisely one.
-   */
+    * Existential-style quantified sentence, but also allowing at most one and precisely one.
+    */
   case class ExistentialSP[T](sentence: SententialPhrase[T],
                               exists: Boolean = true,
                               unique: Boolean = false)
       extends SententialPhrase[T]
 
   /**
-   * Negation of a sentence.
-   */
-  case class NegSP[T](sentence: SententialPhrase[T]) extends SententialPhrase[T]
+    * Negation of a sentence.
+    */
+  case class NegSP[T](sentence: SententialPhrase[T])
+      extends SententialPhrase[T]
 
   /**
-   * Conjunction of sentential phrases.
-   */
-  case class ConjSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
+    * Conjunction of sentential phrases.
+    */
+  case class ConjSP[T](sentences: List[SententialPhrase[T]])
+      extends SententialPhrase[T]
 
   /**
-   * Disjunction of sentential phrases.
-   */
-  case class DisjSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
+    * Disjunction of sentential phrases.
+    */
+  case class DisjSP[T](sentences: List[SententialPhrase[T]])
+      extends SententialPhrase[T]
 
   /**
-   * Sentential phrases connected by "i.e., " or "so, ".
-   */
-  case class ThatIsSP[T](sentences: List[SententialPhrase[T]]) extends SententialPhrase[T]
+    * Sentential phrases connected by "i.e., " or "so, ".
+    */
+  case class ThatIsSP[T](sentences: List[SententialPhrase[T]])
+      extends SententialPhrase[T]
 
+}
+
+sealed trait MathText[T]
+
+object MathText {
+  import MathExpr._
+
+  case class Assert[T](assertion: SententialPhrase[T]) extends MathText[T]
+
+  case class Assume[T](assumption: SententialPhrase[T]) extends MathText[T]
+
+  case class BiImplicationDefiniendumSP[T](definiendum: SententialPhrase[T])
+      extends SententialPhrase[T]
+
+  case class BiImplicationDefiniendum[T](name: String,
+                                         variables: List[T],
+                                         formula: SententialPhrase[T])
+      extends MathExpr[T]
+
+  case class CopulaDefiniendumNP[T](definiendum: NounPhrase[T])
+      extends NounPhrase[T]
+
+  case class CopulaDefiniendum[T](name: String,
+                                  variables: List[T],
+                                  lhs: NounPhrase[T])
+      extends MathExpr[T]
+
+  case class BiEquationalDefinitionSP[T](
+      definiendum: BiEquationalDefinitionSP[T],
+      definiens: SententialPhrase[T])
+      extends SententialPhrase[T]
+
+  case class CopulaDefinitionSP[T](definiendum: CopulaDefiniendumNP[T],
+                                   definiens: NounPhrase[T])
+      extends SententialPhrase[T]
+
+  case class BiEquationalDefinition[T](
+      definiendum: BiEquationalDefinition[T],
+      definiens: SententialPhrase[T])
+      extends SententialPhrase[T]
+
+  case class CopulaDefinition[T](definiendum: CopulaDefiniendum[T],
+                                 definiens: NounPhrase[T])
+      extends SententialPhrase[T]
+
+  case class VariableType[T](variables: List[NounPhrase[T]], typ : NounPhrase[T])
 }
