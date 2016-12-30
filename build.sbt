@@ -4,9 +4,17 @@ val scalaV = "2.11.8"
 
 val ammV = "0.8.1"
 
+scalaOrganization in ThisBuild := "org.typelevel"
+
 scalaVersion in ThisBuild := scalaV
 
 classpathTypes += "maven-plugin"
+
+resolvers += Resolver.sonatypeRepo("releases")
+
+// addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
+
+addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
 lazy val jsProjects = Seq(client)
 
@@ -17,7 +25,7 @@ lazy val baseSettings = Seq(version := "0.8",
 lazy val commonSettings = baseSettings ++ Seq(
     resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
 //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.spire-math" %% "spire"         % "0.11.0",

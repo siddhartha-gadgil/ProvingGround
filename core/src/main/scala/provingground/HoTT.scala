@@ -1073,17 +1073,17 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
-      Lambda(variable replace (x, y), value replace (x, y))
+      LambdaTerm(variable replace (x, y), value replace (x, y))
 
 //    private lazy val myv = variable.newobj
 
-    def andthen[Z <: Term with Subs[Z]](f: Y => Z) = Lambda(variable, f(value))
+    def andthen[Z <: Term with Subs[Z]](f: Y => Z) = LambdaTerm(variable, f(value))
   }
 
   /**
     * functions given by lambda, which may be dependent - this is checked by making a substitution.
     */
-  case class Lambda[X <: Term with Subs[X], Y <: Term with Subs[Y]](
+  case class LambdaTerm[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       variable: X,
       value: Y)
       extends LambdaLike[X, Y] {
@@ -1095,11 +1095,11 @@ object HoTT {
 
     def newobj = {
       val newvar = variable.newobj
-      Lambda(newvar, value.replace(variable, newvar))
+      LambdaTerm(newvar, value.replace(variable, newvar))
     }
 
     // override def equals(that: Any) = that match {
-    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //   case LambdaTerm(x: Term, y: Term) if x.typ == variable.typ =>
     //     y.replace(x, variable) == value
     //   case LambdaFixed(x: Term, y: Term) if x.typ == variable.typ =>
     //       y.replace(x, variable) == value
@@ -1151,7 +1151,7 @@ object HoTT {
     // override def equals(that: Any) = that match {
     //   case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
     //     y.replace(x, variable) == value
-    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //   case LambdaTerm(x: Term, y: Term) if x.typ == variable.typ =>
     //       y.replace(x, variable) == value
     //   case _ => false
     // }
@@ -1186,7 +1186,7 @@ object HoTT {
     // override def equals(that: Any) = that match {
     //   case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
     //     y.replace(x, variable) == value
-    //   case Lambda(x: Term, y: Term) if x.typ == variable.typ =>
+    //   case LambdaTerm(x: Term, y: Term) if x.typ == variable.typ =>
     //       y.replace(x, variable) == value
     //   case _ => false
     // }
@@ -1226,7 +1226,7 @@ object HoTT {
   def instantiate(substitutions: Term => Option[Term],
                   target: Typ[Term]): Term => Option[Term] = {
     case t: Term if t.typ == target => Some(t)
-    case Lambda(variable: Term, value: Term) =>
+    case LambdaTerm(variable: Term, value: Term) =>
       substitutions(variable) flatMap ((cnst) => {
                                          val reduced =
                                            (value.replace(variable, cnst))
@@ -1288,16 +1288,16 @@ object HoTT {
   }*/
 
   /**
-    * Lambda constructor
+    * LambdaTerm constructor
     *
     */
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
       value: V): FuncLike[U, V] = {
-    // if (isVar(variable)) Lambda(variable, value)
+    // if (isVar(variable)) LambdaTerm(variable, value)
     // else {
     val newvar = variable.newobj
     if (value.typ dependsOn variable)
-      Lambda(newvar, value.replace(variable, newvar))
+      LambdaTerm(newvar, value.replace(variable, newvar))
     else LambdaFixed(newvar, value.replace(variable, newvar))
     // }
   }
@@ -2231,14 +2231,14 @@ object HoTT {
       LambdaFixed(x, f(x))
     case f: FuncLike[U, V] =>
       val x = f.dom.Var
-      Lambda(x, f(x))
+      LambdaTerm(x, f(x))
   }
 
   def asLambdas[U <: Term with Subs[U]](term: U): Option[U] = term match {
     case LambdaFixed(x: Term, y: Term) =>
       for (z <- asLambdas(y); w <- Try(lmbda(x)(z).asInstanceOf[U]).toOption)
         yield w
-    case Lambda(x: Term, y: Term) =>
+    case LambdaTerm(x: Term, y: Term) =>
       for (z <- asLambdas(y); w <- Try(lambda(x)(z).asInstanceOf[U]).toOption)
         yield w
     case fn: Func[u, v] => {

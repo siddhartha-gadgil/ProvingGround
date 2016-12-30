@@ -12,9 +12,13 @@ class TermToExpr[E](
     case LambdaFixed(x: Term, y: Term) =>
       for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye))
         yield result
-    case Lambda(x: Term, y: Term) =>
+    case LambdaTerm(x: Term, y: Term) =>
       for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye))
         yield result
+    case fn: FuncTyp[_, _] =>
+        for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye))
+          yield result
+
     case pt: GenFuncTyp[u, v] =>
       val x = pt.domain.Var
       for (xe <- expr(x); ye <- expr(pt.fib(x)); result <- l.pi(xe, ye))
@@ -28,9 +32,6 @@ class TermToExpr[E](
         yield result
     case p: AbsPair[_, _] =>
       for (xe <- expr(p.first); ye <- expr(p.second); result <- l.pair(xe, ye))
-        yield result
-    case fn: FuncTyp[_, _] =>
-      for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye))
         yield result
     case sym: Symbolic with Term =>
       outerSym(sym).name match {

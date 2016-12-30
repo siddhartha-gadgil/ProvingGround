@@ -57,7 +57,7 @@ object IntTypes {
   val recN = {
     val init = "a" :: A
     val f    = "f" :: (N ->: A ->: A)
-    Lambda(A, LambdaFixed(init, LambdaFixed(f, {
+    LambdaTerm(A, LambdaFixed(init, LambdaFixed(f, {
       val dfn    = (n: Long) => inducFn(init, (k: Long) => f(N.rep(k)), n)
       val codrep = N.rep :--> A
       codrep(dfn)

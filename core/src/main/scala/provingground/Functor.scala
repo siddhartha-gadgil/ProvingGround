@@ -15,6 +15,8 @@ trait Equiv[X[_], Y[_]] {
 }
 
 object Functors {
+  // type T = List[?]
+
   def liftMap[A, B, F[_]: Functor](fa: F[A], f: A => B) = {
     implicitly[Functor[F]].map(fa)(f)
   }

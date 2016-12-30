@@ -152,7 +152,7 @@ object Contexts {
     /**
       * export term,
       * XXX check if this can be upgraded to Term => PtnTyp (or U)
-      * the issue seems to be the subs bound for Lambda case class.
+      * the issue seems to be the subs bound for LambdaTerm case class.
       */
     val elim: Term => Term
 
@@ -240,7 +240,7 @@ object Contexts {
 
     def constants = variable +: tail.constants
 
-    def eliminator(y: Term) = Lambda(variable, y)
+    def eliminator(y: Term) = LambdaTerm(variable, y)
 
     def defns: Seq[Defn] =
       tail.defns map ((dfn) => dfn.map(optlambda(variable)))
@@ -250,11 +250,11 @@ object Contexts {
 
     def eliminate(isVar: Term => Boolean): Term => Term =
       (y) =>
-        if (isVar(variable)) Lambda(variable, tail.eliminate(isVar)(y))
+        if (isVar(variable)) LambdaTerm(variable, tail.eliminate(isVar)(y))
         else tail.eliminate(isVar)(y)
 
     //XXX refine the type of this so that it is recursively a pattern type.
-    val elim = (y: Term) => Lambda(variable, tail.elim(y))
+    val elim = (y: Term) => LambdaTerm(variable, tail.elim(y))
 
     type ArgType = (Term, tail.ArgType)
 
@@ -262,7 +262,7 @@ object Contexts {
       (t) => {
         val rest: tail.ArgType = fstrest._2
         val fst                = fstrest._1
-        val func               = Lambda(variable, tail.instantiate(rest)(t))
+        val func               = LambdaTerm(variable, tail.instantiate(rest)(t))
         func(fst)
     }
 

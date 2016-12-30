@@ -350,7 +350,7 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       case Weighted(LambdaFixed(variable: Term, value: Term), p)
           if variable.typ == x.typ =>
         Weighted(value.replace(variable, x), p)
-      case Weighted(Lambda(variable: Term, value: Term), p)
+      case Weighted(LambdaTerm(variable: Term, value: Term), p)
           if variable.typ == x.typ =>
         Weighted(value.replace(variable, x), p)
     }

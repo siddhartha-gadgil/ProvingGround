@@ -70,7 +70,7 @@ object LeanExportElem {
           for (a <- getName(nid.toLong);
                b <- getExpr(eid1.toLong);
                c <- getExpr(eid2.toLong))
-            yield (Expr.Lambda(Info.get(info), a, b, c))
+            yield (Expr.LambdaTerm(Info.get(info), a, b, c))
         case Data(_, "#EP", List(info, nid, eid1, eid2)) =>
           for (a <- getName(nid.toLong);
                b <- getExpr(eid1.toLong);
@@ -273,7 +273,7 @@ object LeanExportElem {
           for (a <- Name.get(ds, nid.toLong);
                b <- get(ds, eid1.toLong);
                c <- get(ds, eid2.toLong))
-            yield (Lambda(Info.get(info), a, b, c))
+            yield (LambdaTerm(Info.get(info), a, b, c))
 
         case Data(_, "#EP", List(info, nid, eid1, eid2)) =>
           for (a <- Name.get(ds, nid.toLong);
@@ -297,7 +297,7 @@ object LeanExportElem {
       val constants = func.constants ++ arg.constants
     }
 
-    case class Lambda(info: Info, varName: Name, varTyp: Expr, value: Expr)
+    case class LambdaTerm(info: Info, varName: Name, varTyp: Expr, value: Expr)
         extends Expr {
       val constants = value.constants
     }
@@ -421,7 +421,7 @@ class LeanToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
                                                   Try(fn(x.asInstanceOf[u])).toOption)
           case _ => None
         }
-      case Expr.Lambda(_, name, typExpr, valueExpr) =>
+      case Expr.LambdaTerm(_, name, typExpr, valueExpr) =>
         val typOpt = exprToTerm(typExpr, variables)
         typOpt match {
           case Some(typ: Typ[u]) =>

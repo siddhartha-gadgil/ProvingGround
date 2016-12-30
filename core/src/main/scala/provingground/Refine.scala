@@ -12,12 +12,12 @@ object RefineTerms {
       val valtyp = newval.typ
       LambdaFixed[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj],
                                           newval.asInstanceOf[valtyp.Obj])
-    case Lambda(variable: Term, value: Term) =>
+    case LambdaTerm(variable: Term, value: Term) =>
       val newvar = refine(variable)
       val newval = refine(value)
       val vartyp = newvar.typ
       val valtyp = newval.typ
-      Lambda[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj],
+      LambdaTerm[vartyp.Obj, valtyp.Obj](newvar.asInstanceOf[vartyp.Obj],
                                      newval.asInstanceOf[valtyp.Obj])
     case sym: Symbolic =>
       refineTyp(sym.typ).symbObj(sym.name)

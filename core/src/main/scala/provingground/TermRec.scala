@@ -42,7 +42,7 @@ trait TermRec[U] {
         case FormalAppln(func, arg) => appln(apply(func), apply(arg))
         case LambdaFixed(x: Term, y: Term) =>
           lambda(apply(x), apply(x.typ), apply(y))
-        case Lambda(x: Term, y: Term) =>
+        case LambdaTerm(x: Term, y: Term) =>
           lambda(apply(x), apply(x.typ), apply(y))
         case PiDefn(x: Term, y: Typ[v]) =>
           pi(lambda(apply(x), apply(x.typ), apply(y)))
