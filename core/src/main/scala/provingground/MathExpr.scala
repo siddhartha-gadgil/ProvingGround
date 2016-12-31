@@ -96,10 +96,60 @@ object MathExpr {
   case class NPVP[T](np: NounPhrase[T], vp: VerbPhrase[T])
       extends SententialPhrase[T]
 
+  object NPVP{
+    type W[T] = (MathExpr[T], MathExpr[T])
+    implicit val incl = new SubType[NPVP, W]{
+      def incl[T] = {case NPVP(np, vp) => (np, vp)}
+
+      def restrict[T] = {
+        case Some((np :NounPhrase[T], vp : VerbPhrase[T])) => Some(NPVP(np, vp))
+        case _ => None}
+    }
+  }
+
+  object Preposition{
+    case object Of extends Preposition
+
+    case object Over extends Preposition
+
+    case object Under extends Preposition
+
+    case object By extends Preposition
+
+    case object With extends Preposition
+
+    case object From extends Preposition
+
+    case object To extends Preposition
+
+    case object Into extends Preposition
+
+    case object In extends Preposition
+
+    case object Modulo extends Preposition
+
+    case class Prep(word: String) extends Preposition
+
+  }
+
+
   /**
     * Preposition - this is a closed class.
     */
   sealed trait Preposition
+
+  object Determiner{
+    case object A extends Determiner
+
+    case object The extends Determiner
+
+    case object Some extends Determiner
+
+    case object Every extends Determiner
+
+    case object Zero extends Determiner
+
+  }
 
   /**
     * Determiner - this is a closed class.

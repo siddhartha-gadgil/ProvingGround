@@ -214,12 +214,37 @@ object OptRestriction {
     }
 }
 
+  trait SubType[X[_], Y[_]] extends Inclusion[X, Y] with OptRestriction[X, Y]
+
+
+
 trait ContextTranslator[I, O, X[_], Ctx[_, _]]
     extends (Ctx[I, O] => X[I] => Option[X[O]]) { self =>
   def apply(ctx: Ctx[I, O]) = (inp: X[I]) => recTranslate(self)(ctx)(inp)
 
   def recTranslate(leafMap: => (Ctx[I, O] => X[I] => Option[X[O]]))
     : Ctx[I, O] => X[I] => Option[X[O]]
+
+  import ContextTranslator._
+
+  def ||(that: ContextTranslator[I, O, X, Ctx]) = OrElse(this, that)
+
+  def addJunction[Y[_], Z[_]: Traverse](
+      split: Ctx[I, O] => X[I] => Option[Y[I]],
+      build: Ctx[I, O] => Y[O] => Option[X[O]])(
+      implicit incl: Inclusion[Y, ({ type W[A] = Z[X[A]] })#W],
+      rest: OptRestriction[Y, ({ type W[A] = Z[X[A]] })#W]) = {
+        val that = Junction[I, O, X, Ctx, Y, Z](split, build)
+        this || that
+      }
+
+  def addJunction1[Y[_], Z[_]: Traverse](
+      split: PartialFunction[X[I], Y[I]],
+      build: PartialFunction[Y[O], X[O]])(
+      implicit incl: Inclusion[Y, ({ type W[A] = Z[X[A]] })#W],
+      rest: OptRestriction[Y, ({ type W[A] = Z[X[A]] })#W]) = {
+      addJunction[Y, Z]((_) => split.lift, (_) => build.lift)
+      }
 }
 
 object ContextTranslator {
