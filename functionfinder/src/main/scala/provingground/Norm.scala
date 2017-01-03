@@ -4,7 +4,7 @@ import provingground.HoTT._
 import RecEnum._
 import IntTypes._
 import Math._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+//import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import scala.util._
 
 object Norm {
