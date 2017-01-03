@@ -37,17 +37,20 @@ object ACElem {
   def toPresentation(rank: Int, fdV: FiniteDistribution[Moves]) =
     fdV map ((v: Moves) => Moves.actOnTriv(rank)(v).get)
 
-  val fromSnap = (snap: Snap) => {
-    val d = snap.state._2
-    d.supp map ((x) => {
-          val rank = snap.param.rank
-          ACElem(snap.name,
-                 x,
-                 rank,
-                 Moves.actOnTriv(rank)(x).get,
-                 d(x),
-                 snap.loops)
-        })
+  val fromSnap = (snap: Snap) =>
+    {
+      val d = snap.state._2
+      d.supp map
+      ((x) =>
+            {
+              val rank = snap.param.rank
+              ACElem(snap.name,
+                     x,
+                     rank,
+                     Moves.actOnTriv(rank)(x).get,
+                     d(x),
+                     snap.loops)
+          })
   }
 }
 
@@ -62,18 +65,20 @@ object ACElem {
 case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
 
 object ACThm {
-  val fromSnap = (snap: Snap) => {
-    val rank = snap.param.rank
-    val d = toPresentation(rank, snap.state._2)
-    d.supp map ((x) => {
-          ACThm(snap.name, x, d(x), snap.loops)
-        })
+  val fromSnap = (snap: Snap) =>
+    {
+      val rank = snap.param.rank
+      val d = toPresentation(rank, snap.state._2)
+      d.supp map
+      ((x) =>
+            {
+              ACThm(snap.name, x, d(x), snap.loops)
+          })
   }
 
   def weight(thms: Vector[ACThm], pres: Presentation, step: Int) = {
-    (thms filter ((thm) =>
-              thm.pres == pres &&
-              thm.loops == step)).headOption map (_.weight) getOrElse (0.0)
+    (thms filter ((thm) => thm.pres == pres && thm.loops == step)).headOption map
+    (_.weight) getOrElse (0.0)
   }
 
   def weightVector(thms: Vector[ACThm], loops: Int) =

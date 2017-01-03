@@ -4,6 +4,7 @@ import HoTT._
 import org.scalatest.FlatSpec
 import Implicits._
 import Fold._
+import scala.language.existentials
 
 class InductionSpec extends FlatSpec {
 
@@ -29,7 +30,8 @@ class InductionSpec extends FlatSpec {
   val recBBB = BoolInd.rec(Bool ->: Bool)
 
   "recBBB" should "be function with the properly defined type" in {
-    assert(recBBB.typ == (Bool ->: Bool) ->: (Bool ->: Bool) ->: (Bool ->: Bool ->: Bool))
+    assert(recBBB.typ == (Bool ->: Bool) ->: (Bool ->: Bool) ->:
+        (Bool ->: Bool ->: Bool))
   }
 
   val not = recBoolBool(ff)(tt)
@@ -42,7 +44,8 @@ class InductionSpec extends FlatSpec {
   val and = recBBB(lmbda(b)(b))(lmbda(b)(ff))
 
   "Recursion function recBBB from Bool to Bool" should "when applied to constructors give defining data" in {
-    assert(and(tt)(tt) == tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(ff)(ff) == ff)
+    assert(and(tt)(tt) == tt && and(tt)(ff) == ff && and(ff)(tt) == ff &&
+        and(ff)(ff) == ff)
   }
 
   // Example: natural numbers
@@ -67,13 +70,15 @@ class InductionSpec extends FlatSpec {
   val isEven = recNatBool(tt)(n :-> (b :-> not(b)))
 
   "Recursion function isEven from Nat to Bool" should "be defined properly" in {
-    assert(isEven(zero) == tt && isEven(one) == ff && isEven(two) == tt && isEven(three) == ff)
+    assert(isEven(zero) == tt && isEven(one) == ff && isEven(two) == tt &&
+        isEven(three) == ff)
   }
 
   val recNNN = NatInd.rec(Nat ->: Nat)
 
   "recNNN" should "have the propely defined type" in {
-    assert(recNNN.typ == (Nat ->: Nat) ->: (Nat ->: (Nat ->: Nat) ->: (Nat ->: Nat)) ->: (Nat ->: (Nat ->: Nat)))
+    assert(recNNN.typ == (Nat ->: Nat) ->:
+        (Nat ->: (Nat ->: Nat) ->: (Nat ->: Nat)) ->: (Nat ->: (Nat ->: Nat)))
   }
 
   val m = "m" :: Nat
@@ -81,7 +86,8 @@ class InductionSpec extends FlatSpec {
   val add = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))))))
 
   "Recursion function add" should "be defined properly" in {
-    assert(add(zero)(zero) == zero && add(zero)(one) == one && add(one)(zero) == one)
+    assert(add(zero)(zero) == zero && add(zero)(one) == one &&
+        add(one)(zero) == one)
     assert(add(two)(one) == three && add(two)(two) == four)
   }
 
@@ -93,7 +99,8 @@ class InductionSpec extends FlatSpec {
   "Recursion function size from List(A) to Nat" should "be defined properly" in {
 
     val ListA = "List(A)" :: Type
-    val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
+    val ListAInd =
+      ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
     val List(nil, cons) = ListAInd.intros
 
     val recLN = ListAInd.rec(Nat)
@@ -155,7 +162,6 @@ class InductionSpec extends FlatSpec {
     assert(sumTo(zero) == zero && sumTo(one) == one && sumTo(four) == ten)
   }
 
-
   // Inductive definitions
 
   // Example: Vectors
@@ -171,7 +177,8 @@ class InductionSpec extends FlatSpec {
 
   "Induction function countdown" should "be defined properly" in {
     assert(countdown(zero) == nilv)
-    assert(countdown(three) == consv(two)(three)(consv(one)(two)(consv(zero)(one)(nilv))))
+    assert(countdown(three) == consv(two)(three)(
+            consv(one)(two)(consv(zero)(one)(nilv))))
   }
 
   // Indexed Inductive types
@@ -183,7 +190,9 @@ class InductionSpec extends FlatSpec {
   val Vec = "Vec" :: Nat ->: Type
   val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
   val VecFmly = VecPtn.Family(Vec)
-  val VecInd = { "nil" ::: VecFmly.head(Vec(zero)) } |: { "cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n)))) } =: VecFmly
+  val VecInd = { "nil" ::: VecFmly.head(Vec(zero)) } |: {
+    "cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))
+  } =: VecFmly
   val List(vnil, vcons) = VecInd.intros
 
   val vn = "v_n" :: Vec(n)
@@ -200,7 +209,9 @@ class InductionSpec extends FlatSpec {
   val VecN = "Vec(Nat)" ::: Nat ->: Types
   val VecNFmly = VecPtn.Family(VecN)
   val vnn = "v_n" :: VecN(n)
-  val VecNInd = { "nil" ::: VecNFmly.head(VecN(zero)) } |: { "cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n)))) } =: VecNFmly
+  val VecNInd = { "nil" ::: VecNFmly.head(VecN(zero)) } |: {
+    "cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))
+  } =: VecNFmly
   val recVNN = VecNInd.rec(Nat)
   val List(vnilN, vconsN) = VecNInd.intros
   val k = "k" :: Nat

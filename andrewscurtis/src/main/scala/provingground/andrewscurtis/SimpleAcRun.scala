@@ -45,8 +45,8 @@ object SimpleAcRun {
     implicit def mongoRead: Future[List[Path]] =
       Future {
         val doclist = collection.find().toList
-        for (bd <- doclist; p <- bd.getAs[String]("path")) yield
-          read[PickledPath](p).unpickle
+        for (bd <- doclist; p <- bd.getAs[String]("path"))
+          yield read[PickledPath](p).unpickle
       }
 
     implicit def mongoUpdate: Path => Unit = (p) => {
@@ -74,8 +74,8 @@ object SimpleAcRun {
         .collect[List]()
       val ps =
         futureList map ((doclist) =>
-              for (bd <- doclist; p <- bd.getAs[String]("path")) yield
-                read[PickledPath](p).unpickle)
+                          for (bd <- doclist; p <- bd.getAs[String]("path"))
+                            yield read[PickledPath](p).unpickle)
       ps
     }
   }
@@ -95,8 +95,10 @@ object SimpleAcRun {
 
     def load(filename: String) = {
       val list =
-        Source.fromFile(filename).getLines.toList map ((x) =>
-              read[(String, String)](x))
+        Source
+          .fromFile(filename)
+          .getLines
+          .toList map ((x) => read[(String, String)](x))
 
       dict = list.toMap
     }
@@ -127,10 +129,10 @@ object SimpleAcRun {
   def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) =
     ps map ((p) => Future(iter(p, loops, true)(update)))
 
-  def resume(loops: Int)(
-      implicit dbread: Future[List[Path]], update: Path => Unit) =
+  def resume(loops: Int)(implicit dbread: Future[List[Path]],
+                         update: Path => Unit) =
     dbread flatMap ((ps: List[Path]) =>
-          Future.sequence(continue(ps, loops)(update)))
+                      Future.sequence(continue(ps, loops)(update)))
 
   def restart(rank: Int,
               steps: Int,
@@ -138,19 +140,20 @@ object SimpleAcRun {
               threads: Int = 6,
               wordCntn: Double = 0.5,
               size: Double = 1000,
-              scale: Double = 1.0)(
-      implicit dbread: Future[List[Path]], update: Path => Unit) = {
+              scale: Double = 1.0)(implicit dbread: Future[List[Path]],
+                                   update: Path => Unit) = {
     val p = new PathView()(dbread)
 
-    val ps = for (j <- 0 to threads - 1) yield
-      Path(rank,
-           steps,
-           wordCntn,
-           size,
-           scale,
-           List(State(rank, p.Mdist, p.mkFDV(threads, rank)(j))),
-           List(),
-           getId(j))
+    val ps = for (j <- 0 to threads - 1)
+      yield
+        Path(rank,
+             steps,
+             wordCntn,
+             size,
+             scale,
+             List(State(rank, p.Mdist, p.mkFDV(threads, rank)(j))),
+             List(),
+             getId(j))
 
     continue(ps.toList, loops: Int)
   }
@@ -164,7 +167,12 @@ object SimpleAcRun {
             scale: Double = 1.0)(implicit update: Path => Unit) = {
     val ps =
       (1 to threads) map ((t: Int) =>
-            Path.init(rank, steps, wordCntn, size, scale, getId(t)))
+                            Path.init(rank,
+                                      steps,
+                                      wordCntn,
+                                      size,
+                                      scale,
+                                      getId(t)))
     continue(ps.toList, loops: Int)
   }
 
@@ -196,8 +204,7 @@ object SimpleAcRun {
     def pickProof(thm: Presentation) = proofsOf(thm).next
 
     def mkFDV(groups: Int, rank: Int) =
-      thms filter ((thm: Presentation) =>
-            thm.rank == rank) normalized () split (groups) mapValues {
+      thms filter ((thm: Presentation) => thm.rank == rank) normalized () split (groups) mapValues {
         _ map (pickProof(_))
       }
   }

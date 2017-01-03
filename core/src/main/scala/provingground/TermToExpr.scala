@@ -12,9 +12,13 @@ class TermToExpr[E](
     case LambdaFixed(x: Term, y: Term) =>
       for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye)) yield
         result
-    case Lambda(x: Term, y: Term) =>
+    case LambdaTerm(x: Term, y: Term) =>
       for (xe <- expr(x); ye <- expr(y); result <- l.lambda(xe, ye)) yield
         result
+    case fn: FuncTyp[_, _] =>
+      for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye)) yield
+        result
+
     case pt: GenFuncTyp[u, v] =>
       val x = pt.domain.Var
       for (xe <- expr(x); ye <- expr(pt.fib(x)); result <- l.pi(xe, ye)) yield
@@ -28,9 +32,6 @@ class TermToExpr[E](
         result
     case p: AbsPair[_, _] =>
       for (xe <- expr(p.first); ye <- expr(p.second); result <- l.pair(xe, ye)) yield
-        result
-    case fn: FuncTyp[_, _] =>
-      for (xe <- expr(fn.dom.Var); ye <- expr(fn.codom); result <- l.pi(xe, ye)) yield
         result
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
@@ -47,10 +48,10 @@ class TermToExpr[E](
       Some(univ(n))
     case PlusTyp.FirstIncl(typ, value: Term) =>
       for (tp <- expr(typ); x <- expr(value); i <- l.incl1(tp);
-           result <- l.appln(i, x)) yield result
+      result <- l.appln(i, x)) yield result
     case PlusTyp.ScndIncl(typ, value: Term) =>
       for (tp <- expr(typ); x <- expr(value); i <- l.incl2(tp);
-           result <- l.appln(i, x)) yield result
+      result <- l.appln(i, x)) yield result
     case Unit => l.tt
     case Star => l.qed
     case Zero => l.ff
@@ -68,9 +69,7 @@ object TermToExpr {
     val X = "X" :: Type
     val x = "x" :: X
     (HoTT.lambda(X)(HoTT.lambda(x)(Refl(X, x))),
-     "@refl" :: (
-         HoTT.pi(X)(HoTT.pi(x)(x =:= x))
-     ))
+     "@refl" :: (HoTT.pi(X)(HoTT.pi(x)(x =:= x))))
   }
 
   val (idRec, formalIdRec) = {
@@ -87,9 +86,7 @@ object TermToExpr {
     val b = X.Var
     val p = (a =:= b).Var
 
-    val Ys = (
-        a ~>: (b ~>: (p ~>: Type))
-    ).Var
+    val Ys = (a ~>: (b ~>: (p ~>: Type))).Var
 
     val idInduc = HoTT.lambda(X)(HoTT.lambda(Ys)(induc(X, Ys)))
     val formal =
@@ -236,8 +233,8 @@ object TermToExpr {
     recc(ts)
   }
 
-  def rebuildMap[U <: Term with Subs[U]](
-      m: Map[Term, Set[(U, Term)]], prefix: String = ".") = {
+  def rebuildMap[U <: Term with Subs[U]](m: Map[Term, Set[(U, Term)]],
+                                         prefix: String = ".") = {
     val list =
       m.toList map {
         case (x, s) =>

@@ -40,8 +40,9 @@ object RandomWords {
     def apply(a: Word[E]) = UnOpWord(this, a)
   }
 
-  case class BinOpWord[E, N](
-      op: BinOpSym[E, N], first: Word[E], second: Word[E])
+  case class BinOpWord[E, N](op: BinOpSym[E, N],
+                             first: Word[E],
+                             second: Word[E])
       extends Word[E] {
     def value = op(first.value, second.value)
   }
@@ -60,12 +61,13 @@ object RandomWords {
 
     def simplify = elems match {
       case List(e) => e
-      case _ => this
+      case _       => this
     }
 
     def terms =
-      (for (n <- 1 to elems.length - 1) yield
-        List(AssocWord(op, elems take n), AssocWord(op, elems drop n))).flatten
+      (for (n <- 1 to elems.length - 1)
+        yield
+          List(AssocWord(op, elems take n), AssocWord(op, elems drop n))).flatten
         .map(_.simplify)
   }
 
@@ -75,24 +77,25 @@ object RandomWords {
       case word @ BinOpWord(op, first, second) =>
         m(op) * m(first) * m(second) + m(word)
       case word @ UnOpWord(op, elem) => m(op) * m(elem) + m(word)
-      case agg: AggregateWord[_] => (agg.terms map (recprob(m)(_))).sum
+      case agg: AggregateWord[_]     => (agg.terms map (recprob(m)(_))).sum
     }
 
-  def partial[E](m: FiniteDistribution[Symbol[E]])(
-      w: Word[E], x: Symbol[E]): Double = (x, w) match {
-    case (a, b) if a == b => 1
-    case (UnOpWord(`x`, elem), _) => m(x) * partial(m)(elem, x) + m(elem)
-    case (UnOpWord(op, elem), _) => m(op) * partial(m)(elem, x)
-    case (BinOpWord(`x`, first, second), _) =>
-      m(x) * partial(m)(first, x) * m(second) +
-      m(x) * partial(m)(second, x) * m(first) + m(first) * m(second)
-    case (BinOpWord(op, first, second), _) =>
-      m(op) * partial(m)(first, x) * m(second) +
-      m(op) * partial(m)(second, x) * m(first)
-    case agg: AggregateWord[_] =>
-      (agg.asInstanceOf[AggregateWord[E]].terms map (partial(m)(_, x))).sum
-    case _ => 0.0
-  }
+  def partial[E](m: FiniteDistribution[Symbol[E]])(w: Word[E],
+                                                   x: Symbol[E]): Double =
+    (x, w) match {
+      case (a, b) if a == b         => 1
+      case (UnOpWord(`x`, elem), _) => m(x) * partial(m)(elem, x) + m(elem)
+      case (UnOpWord(op, elem), _)  => m(op) * partial(m)(elem, x)
+      case (BinOpWord(`x`, first, second), _) =>
+        m(x) * partial(m)(first, x) * m(second) +
+          m(x) * partial(m)(second, x) * m(first) + m(first) * m(second)
+      case (BinOpWord(op, first, second), _) =>
+        m(op) * partial(m)(first, x) * m(second) +
+          m(op) * partial(m)(second, x) * m(first)
+      case agg: AggregateWord[_] =>
+        (agg.asInstanceOf[AggregateWord[E]].terms map (partial(m)(_, x))).sum
+      case _ => 0.0
+    }
 
   def evolution[E](supp: Set[Word[E]]) = {
     def pushforward(m: FiniteDistribution[Symbol[E]]) =
@@ -126,14 +129,13 @@ object RandomWords {
   }
 
   def relEntropy[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) = {
-    (for (Weighted(x, w) <- bg.pmf if d(x) > 0) yield
-      (w * math.log(1 / d(x)))).sum
+    (for (Weighted(x, w) <- bg.pmf if d(x) > 0)
+      yield (w * math.log(1 / d(x)))).sum
   }
 
   def entropyFeedback[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) = {
     FiniteDistribution(
-        for (Weighted(x, w) <- bg.pmf if d(x) > 0) yield
-          (Weighted(x, w / d(x))))
+      for (Weighted(x, w) <- bg.pmf if d(x) > 0) yield (Weighted(x, w / d(x))))
   }
 
   def simpleLearn[E](supp: Set[Word[E]],
@@ -141,6 +143,6 @@ object RandomWords {
                      epsilon: Double)(init: FiniteDistribution[Symbol[E]]) = {
     val estimate = evolution(supp).func(init)
     (init ++ evolution(supp).grad(init)(
-            entropyFeedback(target, estimate) * epsilon)).normalized()
+      entropyFeedback(target, estimate) * epsilon)).normalized()
   }
 }

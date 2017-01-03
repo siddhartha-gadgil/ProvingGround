@@ -26,11 +26,11 @@ object StringParse {
     }
   }
 
-  def write[A: WriteString](a: A) = {
+  def write[A : WriteString](a: A) = {
     implicitly[WriteString[A]].writer(a)
   }
 
-  def read[A: ReadString](str: String) = {
+  def read[A : ReadString](str: String) = {
     implicitly[ReadString[A]].reader(str)
   }
 

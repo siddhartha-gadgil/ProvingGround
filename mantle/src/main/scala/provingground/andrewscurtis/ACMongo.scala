@@ -39,7 +39,7 @@ object ACMongo extends ACWriter {
   val elemsInd = elemsDB.indexesManager
 
   val index = new Index(
-    Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending))
+      Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending))
 
   elemsInd.ensure(index) // index elements by actor name and loops (descending).
 
@@ -72,12 +72,13 @@ object ACMongo extends ACWriter {
   implicit object ElemsWriter extends BSONDocumentWriter[ACElem] {
     def write(elem: ACElem) =
       BSONDocument(
-        "name" -> elem.name,
-        "moves" -> uwrite(elem.moves), // pickled form of moves
-        "rank" -> elem.rank,
-        "presentation" -> uwrite(elem.pres), // pickled form of presentation
-        "loops" -> elem.loops,
-        "weight" -> elem.weight)
+          "name" -> elem.name,
+          "moves" -> uwrite(elem.moves), // pickled form of moves
+          "rank" -> elem.rank,
+          "presentation" -> uwrite(elem.pres), // pickled form of presentation
+          "loops" -> elem.loops,
+          "weight" -> elem.weight
+      )
   }
 
   /**
@@ -86,18 +87,17 @@ object ACMongo extends ACWriter {
   implicit object ElemsReader extends BSONDocumentReader[ACElem] {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
-                     pmoves <- doc.getAs[String]("moves"); // pickled form of  moves
-                     rank <- doc.getAs[Int]("rank");
-                     ppres <- doc.getAs[String]("presentation"); // picked form of presentation
-                     loops <- doc.getAs[Int]("loops");
-                     weight <- doc.getAs[Double]("weight"))
-        yield
-          ACElem(name,
-                 uread[Moves](pmoves), //unpickle moves
-                 rank,
-                 uread[Presentation](ppres), //unpickle presentation
-                 weight,
-                 loops)
+      pmoves <- doc.getAs[String]("moves"); // pickled form of  moves
+      rank <- doc.getAs[Int]("rank");
+      ppres <- doc.getAs[String]("presentation"); // picked form of presentation
+      loops <- doc.getAs[Int]("loops");
+      weight <- doc.getAs[Double]("weight")) yield
+        ACElem(name,
+               uread[Moves](pmoves), //unpickle moves
+               rank,
+               uread[Presentation](ppres), //unpickle presentation
+               weight,
+               loops)
       opt.get
     }
   }
@@ -119,14 +119,13 @@ object ACMongo extends ACWriter {
   implicit object ThmReader extends BSONDocumentReader[ACThm] {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
-                     ppres <- doc.getAs[String]("presentation"); // pickle presentation
-                     loops <- doc.getAs[Int]("loops");
-                     weight <- doc.getAs[Double]("weight"))
-        yield
-          ACThm(name,
-                uread[Presentation](ppres), // unpickle presentation
-                weight,
-                loops)
+      ppres <- doc.getAs[String]("presentation"); // pickle presentation
+      loops <- doc.getAs[Int]("loops");
+      weight <- doc.getAs[Double]("weight")) yield
+        ACThm(name,
+              uread[Presentation](ppres), // unpickle presentation
+              weight,
+              loops)
       opt.get
     }
   }
@@ -137,9 +136,9 @@ object ACMongo extends ACWriter {
   implicit object MoveWeightWriter extends BSONDocumentWriter[ACMoveWeights] {
     def write(elem: ACMoveWeights) =
       BSONDocument(
-        "name" -> elem.name,
-        "fdM" -> uwrite(elem.fdM),
-        "loops" -> elem.loops
+          "name" -> elem.name,
+          "fdM" -> uwrite(elem.fdM),
+          "loops" -> elem.loops
       )
   }
 
@@ -149,12 +148,11 @@ object ACMongo extends ACWriter {
   implicit object MoveWeightReader extends BSONDocumentReader[ACMoveWeights] {
     def read(doc: BSONDocument) = {
       val opt = for (name <- doc.getAs[String]("name");
-                     pfdM <- doc.getAs[String]("fdM");
-                     loops <- doc.getAs[Int]("loops"))
-        yield
-          ACMoveWeights(name,
-                        uread[FiniteDistribution[AtomicMove]](pfdM),
-                        loops)
+      pfdM <- doc.getAs[String]("fdM");
+      loops <- doc.getAs[Int]("loops")) yield
+        ACMoveWeights(name,
+                      uread[FiniteDistribution[AtomicMove]](pfdM),
+                      loops)
       opt.get
     }
   }
@@ -195,9 +193,10 @@ object ACMongo extends ACWriter {
     val emptyFut =
       checkCursor.headOption map (_.isEmpty) // check if entry for actor exists.
 
-    emptyFut map ((check) =>
-                    if (check) actorsDB.insert(init)
-                    else actorsDB.update(selector, modifier))
+    emptyFut map
+    ((check) =>
+          if (check) actorsDB.insert(init)
+          else actorsDB.update(selector, modifier))
   }
 
   /**
@@ -221,10 +220,8 @@ object ACMongo extends ACWriter {
     */
   def getFutOptFDMStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    moveWeightsDB
-      .find(selector)
-      .cursor[ACMoveWeights]()
-      .headOption map ((opt) => opt map (_.fdM))
+    moveWeightsDB.find(selector).cursor[ACMoveWeights]().headOption map
+    ((opt) => opt map (_.fdM))
   }
 
   def getFutActors() = {
@@ -236,11 +233,11 @@ object ACMongo extends ACWriter {
   def getFutStartData() = {
     val entries =
       actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
-    entries map ((vec) =>
-                   (vec map (_.getAs[String]("start-data") flatMap ((d) =>
-                                                                      uread[
-                                                                        List[StartData]](
-                                                                        d).headOption))).flatten)
+    entries map
+    ((vec) =>
+          (vec map
+              (_.getAs[String]("start-data") flatMap
+                  ((d) => uread[List[StartData]](d).headOption))).flatten)
   }
 
   /**
@@ -256,7 +253,8 @@ object ACMongo extends ACWriter {
     * get elements given only actor name (as future, option)
     */
   def getFutOptElems(name: String) =
-    getFutOptLoops(name) flatMap ({
+    getFutOptLoops(name) flatMap
+    ({
       case Some(loops) =>
         getFutElemsStep(name, loops - 1) map ((vec) => Some(vec))
       case None => Future.successful(None)
@@ -266,7 +264,8 @@ object ACMongo extends ACWriter {
     * get theorems given only actor name (as future, option)
     */
   def getFutOptThmElems(name: String) =
-    getFutOptLoops(name) flatMap ({
+    getFutOptLoops(name) flatMap
+    ({
       case Some(loops) =>
         getFutThmElemsStep(name, loops - 1) map ((vec) => Some(vec))
       case None => Future.successful(None)
@@ -276,7 +275,8 @@ object ACMongo extends ACWriter {
     * get weights of atomic moves given actor name (as future, option)
     */
   def getFutOptFDM(name: String) =
-    getFutOptLoops(name) flatMap ({
+    getFutOptLoops(name) flatMap
+    ({
       case Some(loops) => getFutOptFDMStep(name, loops - 1)
       case None => Future.successful(None)
     })
@@ -313,23 +313,21 @@ object ACMongo extends ACWriter {
     * returns finite distribution on Moves given actor name, as future option.
     */
   def getFutOptFDV(name: String) =
-    (getFutOptElems(name)) mapp ((vec: Vector[ACElem]) =>
-                                   FiniteDistribution(
-                                     vec map ((elem) =>
-                                                Weighted(elem.moves,
-                                                         elem.weight))
-                                   ))
+    (getFutOptElems(name)) mapp
+    ((vec: Vector[ACElem]) =>
+          FiniteDistribution(
+              vec map ((elem) => Weighted(elem.moves, elem.weight))
+        ))
 
   /**
     * returns finite distribution on theorems, given actor name, as future option.
     */
   def getFutOptThms(name: String) =
-    getFutOptThmElems(name) mapp ((vec: Vector[ACThm]) =>
-                                    FiniteDistribution(
-                                      vec map ((elem) =>
-                                                 Weighted(elem.pres,
-                                                          elem.weight))
-                                    ))
+    getFutOptThmElems(name) mapp
+    ((vec: Vector[ACThm]) =>
+          FiniteDistribution(
+              vec map ((elem) => Weighted(elem.pres, elem.weight))
+        ))
 
 //  def getFutOptState(name: String) =
 //    for (optFDM <- getFutOptFDM(name); optFDV <- getFutOptFDV(name))
@@ -343,9 +341,8 @@ object ACMongo extends ACWriter {
     * returns state (fdM, fdV) give name of actor, as future option
     */
   def getFutOptState(name: String) =
-    getFutOptFDM(name) flatMapp ((fdM) =>
-                                   getFutOptFDV(name) mapp ((fdV) =>
-                                                              (fdM, fdV)))
+    getFutOptFDM(name) flatMapp
+    ((fdM) => getFutOptFDV(name) mapp ((fdV) => (fdM, fdV)))
 
   /**
     * returns state (fdM, fdV) given name as actor as future, with default for option,
@@ -385,8 +382,8 @@ object ACMongo extends ACWriter {
     cursor.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector)
   }
 
-  def thmView(
-      thms: Vector[ACThm])(thm: Presentation, name: String, loops: Int) =
+  def thmView(thms: Vector[ACThm])(
+      thm: Presentation, name: String, loops: Int) =
     ((thm.toString) +: (ACThm.weightVector(thms, loops)(thm) map (_.toString)))
       .mkString(",")
 
@@ -398,13 +395,13 @@ object ACMongo extends ACWriter {
     val file = wd / s"$name-thms.csv"
     def supp = (thms map (_.pres)).toSet.toVector
     rm(file)
-    supp.foreach((thm) =>
-      write.append(file, thmView(thms)(thm, name, loops) + "\n"))
+    supp.foreach(
+        (thm) => write.append(file, thmView(thms)(thm, name, loops) + "\n"))
   }
 
   def thmsCSV(name: String, dir: String = "ac-data") = {
-    for (thms <- allThmWeights(name); optLoops <- getFutOptLoops(name))
-      yield optLoops.foreach((loops) => thmSaveCSV(thms)(name, loops, dir))
+    for (thms <- allThmWeights(name); optLoops <- getFutOptLoops(name)) yield
+      optLoops.foreach((loops) => thmSaveCSV(thms)(name, loops, dir))
   }
 }
 

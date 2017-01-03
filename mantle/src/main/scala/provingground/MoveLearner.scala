@@ -223,14 +223,14 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
     */
   @tailrec final def subChains(chn: Chain,
                                accum: Set[Chain] = Set(),
-                               append: Chain => Chain = (c) =>
-                                 c): Set[Chain] = chn match {
-    case chain: AtomicChain => accum + (append(chain))
-    case RecChain(head, tail, mvTyp) =>
-      val newAppend = (c: Chain) => RecChain(head, append(c), mvTyp): Chain
-      val newAccum = accum + append(chn)
-      subChains(tail, newAccum, newAppend)
-  }
+                               append: Chain => Chain = (c) => c): Set[Chain] =
+    chn match {
+      case chain: AtomicChain => accum + (append(chain))
+      case RecChain(head, tail, mvTyp) =>
+        val newAppend = (c: Chain) => RecChain(head, append(c), mvTyp): Chain
+        val newAccum = accum + append(chn)
+        subChains(tail, newAccum, newAppend)
+    }
 
   /**
     * offspring of a chain, applying all possible moves to its head.
@@ -330,12 +330,16 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
   /**
     * total back-propagation over a collection of chains
     */
-  def backprop(
-      initdstbn: DynDst, error: FiniteDistribution[V], chains: Set[Chain]) =
-    (DynDst.empty /: (chains map ((chain) =>
-                  backpropchain(
-                      initdstbn, error(chain.head), DynDst.empty, chain))))(
-        _ ++ _)
+  def backprop(initdstbn: DynDst,
+               error: FiniteDistribution[V],
+               chains: Set[Chain]) =
+    (DynDst.empty /:
+        (chains map
+            ((chain) =>
+                  backpropchain(initdstbn,
+                                error(chain.head),
+                                DynDst.empty,
+                                chain))))(_ ++ _)
 
   /**
     * feedback for learning, generally given by an implicit object.
@@ -356,9 +360,10 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
     *
     * @param correction feedback given the final distribution.
     */
-  def learnstep(
-      d: DynDst, epsilon: Double, chains: Set[Chain], cutoff: Double = 0.0)(
-      implicit correction: Feedback) = {
+  def learnstep(d: DynDst,
+                epsilon: Double,
+                chains: Set[Chain],
+                cutoff: Double = 0.0)(implicit correction: Feedback) = {
     val error = correction(finaldist(d, chains)) * epsilon
     (d ++ backprop(d, error, chains)).normalized(cutoff)
   }
@@ -403,8 +408,10 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
       if (steps < 1 || isStable) d
       else {
         val nxt = learnstep(d, epsilon, chains, cutoff)(feedback)
-        innerlearn(
-            nxt, steps - 1, (d -- nxt).norm < (stableLevel * epsilon), chains)
+        innerlearn(nxt,
+                   steps - 1,
+                   (d -- nxt).norm < (stableLevel * epsilon),
+                   chains)
       }
 
     /**

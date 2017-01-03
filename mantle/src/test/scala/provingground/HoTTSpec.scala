@@ -3,8 +3,7 @@ package provingground
 import HoTT._
 import org.scalatest.FlatSpec
 
-
-object HoTTSpec{
+object HoTTSpec {
   val A = "A" :: Type
   val a = "a" :: A
 
@@ -26,36 +25,34 @@ object HoTTSpec{
 
   val AimplB = "_:A->B" :: (A ->: B)
 
-  val mp =
-    lambda(A)(
+  val mp = lambda(A)(
       lambda(B)(
-        lambda(a !: A)(
-          lambda(AimplB !: (A ->: B))(
-            AimplB(a) !: B
+          lambda(a !: A)(
+              lambda(AimplB !: (A ->: B))(
+                  AimplB(a) !: B
+              )
           )
-        )
       )
-    )
+  )
 
   val fmly = (a !: A) ~>: (Bs(a) ->: A)
 
-  val switch =
-    lambda(pair(a, b))(
+  val switch = lambda(pair(a, b))(
       pair(b, a)
-    )
+  )
 }
 
-class HoTTSpec extends FlatSpec{
+class HoTTSpec extends FlatSpec {
   import HoTTSpec._
 
-  "A symbolic object" should "have the correct type" in{
+  "A symbolic object" should "have the correct type" in {
     assert(a.typ == A)
     assert(A.typ == Type)
     assert(f.typ == (A ->: B))
   }
 
   it should "substitute correctly" in {
-    val x ="x" :: A
+    val x = "x" :: A
     val y = "y" :: A
     assert(a.replace(a, x) == x)
     assert(a.replace(x, y) == a)
@@ -63,7 +60,7 @@ class HoTTSpec extends FlatSpec{
 
   it should "be determined by symbol and type" in {
     assert(a == "a" :: A)
-    assert(!(a == "a":: B))
+    assert(!(a == "a" :: B))
     assert(!(a == "b" :: A))
     assert(A == "A" :: Type)
     assert(!(A == "B" :: Type))
@@ -75,7 +72,7 @@ class HoTTSpec extends FlatSpec{
   }
 
   it should "throw IllegalArgument exception if argument type is wrong" in {
-    intercept[IllegalArgumentException]{
+    intercept[IllegalArgumentException] {
       f("a" :: B)
     }
   }
@@ -109,7 +106,7 @@ class HoTTSpec extends FlatSpec{
   }
 
   it should "throw IllegalArgument exception if argument type is wrong" in {
-    intercept[IllegalArgumentException]{
+    intercept[IllegalArgumentException] {
       fdep("a" :: B)
     }
   }
@@ -134,14 +131,14 @@ class HoTTSpec extends FlatSpec{
 
   "Type family defined using lambdas" should "have terms appropriate dependent functions" in {
     val fn = "f" :: fmly
-    val x ="x" :: A
-    assert(fn(x).typ  == Bs(x) ->: A)
+    val x = "x" :: A
+    assert(fn(x).typ == Bs(x) ->: A)
   }
 
   "A Pair type" should "have variables substituted separately in lambdas" in {
     val x = "x" :: A
     val y = "y" :: B
-    assert(switch(pair(x, y))== pair(y, x))
+    assert(switch(pair(x, y)) == pair(y, x))
   }
 
   it should "be a sigma type or pair type depending on whether the second component depends on the first" in {
@@ -152,7 +149,7 @@ class HoTTSpec extends FlatSpec{
     assert(pdep.typ == Sgma(a !: A, Bs(a)))
   }
 
-  val mpt : Term = mp
+  val mpt: Term = mp
 
   "fold function" should "act using function terms" in {
     assert(fold(mpt)(A, B).typ == A ->: ((A ->: B) ->: B))

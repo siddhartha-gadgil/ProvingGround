@@ -49,18 +49,20 @@ class ScalaVec[X](val basetyp: Typ[Term])(
   private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
 
   private val vsize = (n: Long) =>
-    (v: Vector[X]) => {
-      assert(v.size == n, "domain mismatch in Pi-type")
-      n
+    (v: Vector[X]) =>
+      {
+        assert(v.size == n, "domain mismatch in Pi-type")
+        n
   }
 
   val size = vsize.hott(ltyp)
 
   private val vcons = (n: Long) =>
     (a: X) =>
-      (v: Vector[X]) => {
-        assert(v.size == n, "domain mismatch in Pi-type")
-        a +: v
+      (v: Vector[X]) =>
+        {
+          assert(v.size == n, "domain mismatch in Pi-type")
+          a +: v
   }
 
   val m: RepTerm[Long] = NatTypLong.succ(n)
@@ -75,10 +77,11 @@ class ScalaVec[X](val basetyp: Typ[Term])(
 
   implicit val r = depFuncPolyRep(
       implicitly[ScalaPolyRep[RepTerm[Long], Long]],
-      implicitly[ScalaPolyRep[FuncLike[RepTerm[X],
-                                       FuncLike[RepTerm[Vector[X]],
-                                                RepTerm[Vector[X]]]],
-                              X => Vector[X] => Vector[X]]])
+      implicitly[ScalaPolyRep[
+              FuncLike[RepTerm[X],
+                       FuncLike[RepTerm[Vector[X]], RepTerm[Vector[X]]]],
+              X => Vector[X] => Vector[X]]]
+  )
 
   val succ = ScalaPolyTerm(vcons)(r).hott(constyp).get
 

@@ -39,7 +39,7 @@ object SpecialFunctions {
 
     def unapply(fn: Fn): Option[(Fn, Fn)] = fn match {
       case Mult(num, Reciprocal(den)) => Some((num, den))
-      case _ => None
+      case _                          => None
     }
   }
 
@@ -48,7 +48,7 @@ object SpecialFunctions {
   }
 
   case class Compose(first: Fn, second: Fn) extends Fn {
-    def apply(x: Double) = first(second(x))
+    def apply(x: Double)  = first(second(x))
     override def toString = s"${first} \u2218 ${second}"
   }
 
@@ -94,6 +94,6 @@ object SpecialFunctions {
 
   def derivativeTable =
     Const.derivative orElse
-    Pow.derivative orElse
-    Map(sin -> cos, cos -> -sin, exp -> exp, log -> 1 / id)
+      Pow.derivative orElse
+      Map(sin -> cos, cos -> -sin, exp -> exp, log -> 1 / id)
 }

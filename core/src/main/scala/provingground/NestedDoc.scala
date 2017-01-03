@@ -87,20 +87,17 @@ object NestedDoc {
   }
 
   case class Append[T](init: NestedDoc[T], last: T)
-      extends ClosedDoc[T]
-      with RecDoc[T] {
+      extends ClosedDoc[T] with RecDoc[T] {
     def read = init.read.+:(export(Scoped.Outer(last)))
 
     def contexts = init.contexts.+(export(Scoped.Outer(last)) -> init.read)
   }
 
   case class AppendBlock[T](init: NestedDoc[T], last: NestedDoc[T])
-      extends ClosedDoc[T]
-      with RecBlockDoc[T]
+      extends ClosedDoc[T] with RecBlockDoc[T]
 
   case class AppendOpenBlock[T](init: NestedDoc[T], last: NestedDoc[T])
-      extends NestedDoc[T]
-      with RecBlockDoc[T] {
+      extends NestedDoc[T] with RecBlockDoc[T] {
     def append(t: T) = AppendOpenBlock(init, last.append(t))
 
     def close = AppendBlock(init, last)

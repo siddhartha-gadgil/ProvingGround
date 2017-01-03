@@ -2,7 +2,11 @@ package provingground
 
 import provingground.HoTT._
 import ScalaRep._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.reflect.runtime.universe.{
+  Try => UnivTry,
+  Function => FunctionUniv,
+  _
+}
 import ListType._
 //import provingground.ScalaUniverses._
 

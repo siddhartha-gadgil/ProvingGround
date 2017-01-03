@@ -14,8 +14,8 @@ object ACBatch {
   def loadRawStartData(dir: String = "acDev", file: String = "acbatch.json") = {
     val jsFile = if (file.endsWith(".json")) file else file + ".json"
     val js =
-      ammonite.ops.read
-        .lines(wd / dir / jsFile) filter ((l) => !(l.startsWith("#")))
+      ammonite.ops.read.lines(wd / dir / jsFile) filter
+      ((l) => !(l.startsWith("#")))
     println(js)
     js
   }

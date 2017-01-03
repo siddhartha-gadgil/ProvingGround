@@ -109,9 +109,9 @@ object NlpProse {
     /** Find all heirs with dependency the given type */
     def findAll(typ: String): List[DepRel] = heirs filter (depstart(_, typ))
 
-// Not clear what this method does  
-//  def intyps(e: DepRel) = {tree exists ((e.deptype).startsWith(_))    
-//    heirs filter intyps 
+// Not clear what this method does
+//  def intyps(e: DepRel) = {tree exists ((e.deptype).startsWith(_))
+//    heirs filter intyps
 //    }
   }
 
@@ -181,31 +181,33 @@ object NlpProse {
   /** Fallback for all modifiers */
   object Modifier
       extends TypeListMatch(
-          List("abbrev",
-               "amod",
-               "appos",
-               "advcl",
-               "purpcl",
-               "det",
-               "predet",
-               "preconj",
-               "infmod",
-               "partmod",
-               "advmod",
-               "mwe",
-               "neg",
-               "rcmod",
-               "quantmod",
-               "nn",
-               "npadvmod",
-               "tmod",
-               "num",
-               "number",
-               "prep",
-               "possesive",
-               "prt",
-               "aux",
-               "auxpass")) // These are not technically modifiers but behave the same way
+          List(
+              "abbrev",
+              "amod",
+              "appos",
+              "advcl",
+              "purpcl",
+              "det",
+              "predet",
+              "preconj",
+              "infmod",
+              "partmod",
+              "advmod",
+              "mwe",
+              "neg",
+              "rcmod",
+              "quantmod",
+              "nn",
+              "npadvmod",
+              "tmod",
+              "num",
+              "number",
+              "prep",
+              "possesive",
+              "prt",
+              "aux",
+              "auxpass"
+          )) // These are not technically modifiers but behave the same way
 
   /** Fallback for all arguments */
   object Argument

@@ -15,6 +15,8 @@ trait Equiv[X[_], Y[_]] {
 }
 
 object Functors {
+  // type T = List[?]
+
   def liftMap[A, B, F[_]: Functor](fa: F[A], f: A => B) = {
     implicitly[Functor[F]].map(fa)(f)
   }
@@ -54,8 +56,8 @@ object Functors {
 
   type II[A] = (Id[A], Id[A]);
 
-  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]
-    : Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] =
+  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]: Traverse[
+      ({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] {
       val XT = implicitly[Traverse[X]]
       val YT = implicitly[Traverse[Y]]
@@ -115,7 +117,6 @@ object Functors {
       def traverse[G[_], A, B](fa: X)(f: A => G[B])(
           implicit evidence$1: cats.Applicative[G]): G[X] =
         implicitly[Applicative[G]].pure(fa)
-
     }
 
   implicit def trCod: Traverse[Coded] = traversePair[S, IL]
@@ -137,6 +138,8 @@ object Functors {
 //    val cff = implicitly[Functor[Coded]]
 
     val nn = implicitly[Functor[N]]
+
+    val ss = implicitly[Functor[S]]
 
     val xx: IL[Int] = (1, List(1, 2))
 

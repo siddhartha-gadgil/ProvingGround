@@ -21,7 +21,8 @@ object Tuples {
 
   implicit def getTerm[
       U <: Term with Subs[U], F <: Term with Subs[F], T <: Term with Subs[T]](
-      tuple: TermTuple[U, F, T]): U = tuple.term
+      tuple: TermTuple[U, F, T]): U =
+    tuple.term
 
   trait MapsTo[F, T] {
     type Func = F

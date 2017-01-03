@@ -4,8 +4,8 @@ import scala.util.parsing.combinator._
 import provingground.fol.Logic._
 
 object LogicParser extends JavaTokenParsers {
-  def sym: Parser[String] = "[a-zA-Z]".r | """\\(\w)+""".r
-  def conj: Parser[String] = "&" | "|" | "=>" | "<=>"
+  def sym: Parser[String]          = "[a-zA-Z]".r | """\\(\w)+""".r
+  def conj: Parser[String]         = "&" | "|" | "=>" | "<=>"
   def baseFormula: Parser[Formula] = "(" ~> formula <~ ")" | atomFormula
   def atomFormula: Parser[Formula] = sym ~ "(" ~ repsep(term, ",") ~ ")" ^^ {
     case p ~ "(" ~ ts ~ ")" => PredSym(p, ts.length)(ts)
@@ -31,5 +31,5 @@ object LogicParser extends JavaTokenParsers {
   }
 
   def isWord(word: String): Parser[String] = literal(word)
-  def isSomeWord(words: List[String]) = words map (literal(_)) reduce (_ | _)
+  def isSomeWord(words: List[String])      = words map (literal(_)) reduce (_ | _)
 }

@@ -36,15 +36,16 @@ trait TermRec[U] {
 
   def univ(n: Int): U
 
-  def apply(term: Term) : U =
+  def apply(term: Term): U =
     specialTerms.lift(term) getOrElse {
       term match {
         case FormalAppln(func, arg) => appln(apply(func), apply(arg))
         case LambdaFixed(x: Term, y: Term) =>
           lambda(apply(x), apply(x.typ), apply(y))
-        case Lambda(x: Term, y: Term) =>
+        case LambdaTerm(x: Term, y: Term) =>
           lambda(apply(x), apply(x.typ), apply(y))
-        case PiDefn(x: Term, y: Typ[v]) => pi(lambda(apply(x), apply(x.typ), apply(y)))
+        case PiDefn(x: Term, y: Typ[v]) =>
+          pi(lambda(apply(x), apply(x.typ), apply(y)))
         case PiTyp(fibre) => pi(apply(fibre))
         case SigmaTyp(fibre) => sigma(apply(fibre))
         case PlusTyp(first, scnd) => plus(apply(first), apply(scnd))

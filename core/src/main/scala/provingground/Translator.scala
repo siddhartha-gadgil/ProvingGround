@@ -69,7 +69,7 @@ object Translator {
     def recTranslate(leafMap: => (I => Option[O])) =
       (inp: I) =>
         first.recTranslate(leafMap)(inp) orElse second.recTranslate(leafMap)(
-          inp)
+            inp)
   }
 
   /**
@@ -132,7 +132,7 @@ object Translator {
     case class OrElse[I, X[_]: Traverse](first: Pattern[I, X],
                                          second: Pattern[I, X])
         extends Pattern[I, X](
-          (x: I) => first.unapply(x) orElse second.unapply(x)
+            (x: I) => first.unapply(x) orElse second.unapply(x)
         )
 
     def filter[I](p: I => Boolean) =
@@ -147,7 +147,8 @@ object Translator {
     def fromMatcher[I, X[_]: Traverse, S](matcher: I => Option[Map[S, I]],
                                           varword: X[S]) = {
       Pattern(
-        (inp: I) => matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
+          (inp: I) =>
+            matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
       )
     }
 
@@ -157,7 +158,7 @@ object Translator {
       */
     def cast[I, X[_]: Traverse](split: I => Option[Any]) =
       Pattern[I, X]((inp: I) =>
-        split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption))
+            split(inp) flatMap ((xi) => Try(xi.asInstanceOf[X[I]]).toOption))
   }
 
   /**
@@ -166,5 +167,131 @@ object Translator {
   case class VarWord[X[_]: Traverse, S](word: X[S]) {
     def apply[I](matcher: I => Option[Map[S, I]]) =
       Pattern.fromMatcher(matcher, word)
+  }
+}
+
+trait Inclusion[X[_], Y[_]] {
+  def incl[I]: X[I] => Y[I]
+}
+
+object Inclusion {
+  implicit def subtypIncl[X[_], Y[_] >: X[_]]: Inclusion[X, Y] =
+    new Inclusion[X, Y] {
+      def incl[I] = x => x
+    }
+
+  implicit def pairInclusion[X1[_], Y1[_], X2[_], Y2[_]](
+      implicit incl1: Inclusion[X1, Y1], incl2: Inclusion[X2, Y2]) =
+    new Inclusion[({ type X[A] = (X1[A], X2[A]) })#X,
+                  ({ type Y[A] = (Y1[A], Y2[A]) })#Y] {
+      def incl[I] = { case (x1, x2) => (incl1.incl(x1), incl2.incl(x2)) }
+    }
+}
+
+trait ConeRestriction[X[_], Y[_], G[_]] {
+  def restrict[I]: G[Y[I]] => G[X[I]]
+}
+
+trait OptRestriction[X[_], Y[_]] extends ConeRestriction[X, Y, Option]
+
+import scala.util.Try
+
+object OptRestriction {
+  implicit def subtypRestriction[X[_], Y[_] >: X[_]]: OptRestriction[X, Y] =
+    new OptRestriction[X, Y] {
+      def restrict[I] = y => Try(y.asInstanceOf[X[I]]).toOption
+    }
+
+  implicit def pairRestriction[X1[_], Y1[_], X2[_], Y2[_], G[_]](
+      implicit rest1: OptRestriction[X1, Y1], rest2: OptRestriction[X2, Y2]) =
+    new OptRestriction[({ type X[A] = (X1[A], X2[A]) })#X,
+                       ({ type Y[A] = (Y1[A], Y2[A]) })#Y] {
+      def restrict[I] = _.flatMap {
+        case (y1, y2) =>
+          for (x1 <- rest1.restrict(Some(y1)); x2 <- rest2.restrict(Some(y2))) yield
+            (x1, x2)
+      }
+    }
+}
+
+  trait SubType[X[_], Y[_]] extends Inclusion[X, Y] with OptRestriction[X, Y]
+
+
+
+trait ContextTranslator[I, O, X[_], Ctx[_, _]]
+    extends (Ctx[I, O] => X[I] => Option[X[O]]) { self =>
+  def apply(ctx: Ctx[I, O]) = (inp: X[I]) => recTranslate(self)(ctx)(inp)
+
+  def recTranslate(leafMap: => (Ctx[I, O] => X[I] => Option[X[O]]))
+    : Ctx[I, O] => X[I] => Option[X[O]]
+
+  import ContextTranslator._
+
+  def ||(that: ContextTranslator[I, O, X, Ctx]) = OrElse(this, that)
+
+  def addJunction[Y[_], Z[_]: Traverse](
+      split: Ctx[I, O] => X[I] => Option[Y[I]],
+      build: Ctx[I, O] => Y[O] => Option[X[O]])(
+      implicit incl: Inclusion[Y, ({ type W[A] = Z[X[A]] })#W],
+      rest: OptRestriction[Y, ({ type W[A] = Z[X[A]] })#W]) = {
+        val that = Junction[I, O, X, Ctx, Y, Z](split, build)
+        this || that
+      }
+
+  def addJunction1[Y[_], Z[_]: Traverse](
+      split: PartialFunction[X[I], Y[I]],
+      build: PartialFunction[Y[O], X[O]])(
+      implicit incl: Inclusion[Y, ({ type W[A] = Z[X[A]] })#W],
+      rest: OptRestriction[Y, ({ type W[A] = Z[X[A]] })#W]) = {
+      addJunction[Y, Z]((_) => split.lift, (_) => build.lift)
+      }
+}
+
+object ContextTranslator {
+
+  /**
+    * empty translator, matching nothing;
+    * only information is the type parameters, so may be good starting point.
+    */
+  case class Empty[I, O, X[_], Ctx[_, _]]()
+      extends ContextTranslator[I, O, X, Ctx] {
+    def recTranslate(leafMap: => (Ctx[I, O] => X[I] => Option[X[O]])) =
+      (ctx: Ctx[I, O]) => (x: X[I]) => None
+  }
+
+  /**
+    * Tries the first translator at top level, then the second. Is recursive.
+    */
+  case class OrElse[I, O, X[_], Ctx[_, _]](
+      first: ContextTranslator[I, O, X, Ctx],
+      second: ContextTranslator[I, O, X, Ctx])
+      extends ContextTranslator[I, O, X, Ctx] {
+    def recTranslate(leafMap: => (Ctx[I, O] => X[I] => Option[X[O]])) =
+      (ctx: Ctx[I, O]) =>
+        (inp: X[I]) =>
+          first.recTranslate(leafMap)(ctx)(inp) orElse second.recTranslate(
+              leafMap)(ctx)(inp)
+  }
+
+  /**
+    * A junction given by splitting optionally to a given shape, and building from the same shape.
+    *
+    * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
+    * These allow applying the recursive translator on the components.
+    */
+  case class Junction[I, O, X[_], Ctx[_, _], Y[_], Z[_]: Traverse](
+      split: Ctx[I, O] => X[I] => Option[Y[I]],
+      build: Ctx[I, O] => Y[O] => Option[X[O]])(
+      implicit incl: Inclusion[Y, ({ type W[A] = Z[X[A]] })#W],
+      rest: OptRestriction[Y, ({ type W[A] = Z[X[A]] })#W])
+      extends ContextTranslator[I, O, X, Ctx] {
+    def flip: Z[Option[X[O]]] => Option[Z[X[O]]] = (zo) => zo.sequence
+    def recTranslate(leafMap: => (Ctx[I, O] => X[I] => Option[X[O]])) = {
+      def connect(ctx: Ctx[I, O])(zi: Z[X[I]]) =
+        flip(implicitly[Functor[Z]].map(zi)(leafMap(ctx)))
+      (ctx: Ctx[I, O]) => (inp: X[I]) =>
+        rest.restrict(split(ctx)(inp) map (incl.incl) flatMap (connect(ctx))) flatMap
+        (build(ctx))
+    }
   }
 }

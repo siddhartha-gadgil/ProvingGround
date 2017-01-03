@@ -68,7 +68,7 @@ object ACevolution {
     val v = mv._2.pickle
     val presdist =
       mv._2 map ((v: V) => Moves.actOnTriv(r)(v).get.toPlainString)
-    val triple = (m, v, presdist.pickle)
+    val triple  = (m, v, presdist.pickle)
     val pickled = write(triple)
     write((Header.fdMVP, pickled))
   }

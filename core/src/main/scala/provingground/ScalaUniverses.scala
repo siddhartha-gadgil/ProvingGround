@@ -80,8 +80,7 @@ case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
   */
 case class FineSymbTyp[U <: Term with Subs[U]](
     name: AnySym, symobj: AnySym => U)
-    extends Typ[U]
-    with Symbolic {
+    extends Typ[U] with Symbolic {
   lazy val typ = FineUniv(symobj)
 
   def newobj = FineSymbTyp(new InnerSym[Typ[U]](this), symobj)
@@ -102,8 +101,7 @@ case class FineSymbTyp[U <: Term with Subs[U]](
 }
 
 case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
-    extends Typ[Typ[U]]
-    with BaseUniv {
+    extends Typ[Typ[U]] with BaseUniv {
   type Obj = Typ[U]
 
   lazy val typ = HigherUniv(this)
@@ -157,8 +155,8 @@ object ScalaUniverses {
   /**
     * returns dependent function inferring type fiber.
     */
-  def depFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
-      dom: Typ[W], func: W => U)(
+  def depFunc[W <: Term with Subs[W], U <: Term with Subs[U]](dom: Typ[W],
+                                                              func: W => U)(
       implicit su: ScalaUniv[U]
   ): FuncLike[W, U] = {
     val fibers = typFamily(dom, (w: W) => func(w).typ.asInstanceOf[Typ[U]])

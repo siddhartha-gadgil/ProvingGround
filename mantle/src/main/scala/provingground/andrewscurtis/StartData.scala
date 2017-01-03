@@ -60,13 +60,16 @@ case class StartData(name: String,
       .cursor[BSONDocument]()
       .headOption
       .map((docOpt) =>
-            (docOpt flatMap (_.getAs[String]("start-data") map (uread[
-                            List[StartData]]))).getOrElse(List()))
+            (docOpt flatMap
+                (_.getAs[String]("start-data") map (uread[List[StartData]])))
+              .getOrElse(List()))
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =
-      updatedStartsFut map ((us: List[StartData]) =>
-            BSONDocument(
-                "name" -> name, "loops" -> 0, "start-data" -> uwrite(us)))
+      updatedStartsFut map
+      ((us: List[StartData]) =>
+            BSONDocument("name" -> name,
+                         "loops" -> 0,
+                         "start-data" -> uwrite(us)))
     val res = futDoc.map(
         (doc) =>
           //println(doc)

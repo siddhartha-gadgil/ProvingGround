@@ -6,18 +6,18 @@ import Verify._
 
 /**
   * @author gadgil
-  * 
+  *
   * Seeks proof that function is positive on a given domain.
-  * 
+  *
   * @param func function to be proved positive.
   * @param bounds returns proofs concerning given domain.
-  * 
+  *
   */
 class IntervalEnumerator(func: RealFunc, givenBounds: Interval => Set[Typ]) {
 
   def restrictedBounds(domain: Interval) =
     for (fb @ FuncBound(`func`, _, _, _) <- givenBounds(domain);
-         rfb <- optRestricedFuncBound(domain, fb)) yield rfb
+         rfb                             <- optRestricedFuncBound(domain, fb)) yield rfb
 
   def bounds(dom: Interval) =
     givenBounds(dom) union (restrictedBounds(dom) map (_.typ))
@@ -29,9 +29,9 @@ class IntervalEnumerator(func: RealFunc, givenBounds: Interval => Set[Typ]) {
     for (db @ DerBound(`func`, `domain`, b, sign) <- bounds(domain)) yield db
 
   def inferredDerBounds(domain: Interval) =
-    for (isDer @ IsDerivative(_, `func`) <- bounds(domain);
+    for (isDer @ IsDerivative(_, `func`)   <- bounds(domain);
          fb @ FuncBound(_, `domain`, _, _) <- bounds(domain);
-         inferred <- optInferredDerivativeBound(isDer, fb)) yield inferred
+         inferred                          <- optInferredDerivativeBound(isDer, fb)) yield inferred
 
   def derBound(domain: Interval) =
     givenDerBound(domain) union (inferredDerBounds(domain) map (_.typ))
@@ -52,15 +52,15 @@ class IntervalEnumerator(func: RealFunc, givenBounds: Interval => Set[Typ]) {
     * proofs using midpoint and MVT of positivity.
     */
   def midProve(domain: Interval) =
-    for (low <- derLower(domain);
-         high <- derUpper(domain);
+    for (low   <- derLower(domain);
+         high  <- derUpper(domain);
          proof <- optMVTMidPositive(func, domain, low, high)) yield proof
 
   /**
     * proofs using end-point. derivative bound and MVT of positivity.
     */
   def mvtProve(domain: Interval) =
-    for (db <- derBound(domain);
+    for (db    <- derBound(domain);
          proof <- optMVTPositive(func, domain, db)) yield proof
 
   /**

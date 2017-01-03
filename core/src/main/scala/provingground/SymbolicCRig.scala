@@ -33,7 +33,7 @@ import spire.implicits._
   *
   * Using type Rig, not CRig as CRing does not extend CRig
   */
-class SymbolicCRig[A: Rig] { self =>
+class SymbolicCRig[A : Rig] { self =>
   val rig = implicitly[Rig[A]]
 
   import rig.{sumn, zero, one}
@@ -71,8 +71,7 @@ class SymbolicCRig[A: Rig] { self =>
   }
 
   case class SigmaTerm(elems: Set[LocalTerm])
-      extends LocalTerm
-      with FoldedTerm[LocalTerm] {
+      extends LocalTerm with FoldedTerm[LocalTerm] {
     require(
         elems.size > 1,
         s"Cannot create Sigma term of set $elems with less than 2 elements")
@@ -161,8 +160,7 @@ class SymbolicCRig[A: Rig] { self =>
     * * no exponent is 0.
     */
   case class PiTerm(multElems: Map[LocalTerm, Int])
-      extends LocalTerm
-      with FoldedTerm[LocalTerm] {
+      extends LocalTerm with FoldedTerm[LocalTerm] {
     val typ = LocalTyp
 
     def subs(x: Term, y: Term) =
@@ -295,8 +293,7 @@ class SymbolicCRig[A: Rig] { self =>
         if (a == zero) {
           val x = LocalTyp.Var
           lmbda(x)(x)
-        } else
-          AddLiteral(a)
+        } else AddLiteral(a)
       case Comb(op, u, v) if op == sum =>
         composition(sum(u), sum(v))
       case s @ SigmaTerm(terms) =>
@@ -355,8 +352,9 @@ class SymbolicCRig[A: Rig] { self =>
         case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
         case s: SigmaTerm => x +: s
         case _ =>
-          LitProd.addReduce(x, y) getOrElse (if (y == x) LitProd(two, x)
-                                             else SigmaTerm(Set(x, y)))
+          LitProd.addReduce(x, y) getOrElse
+          (if (y == x) LitProd(two, x)
+           else SigmaTerm(Set(x, y)))
       }
     }
   }
@@ -387,14 +385,13 @@ class SymbolicCRig[A: Rig] { self =>
   }
 
   @annotation.tailrec
-  final def posPower(
-      x: LocalTerm, n: Int, accum: LocalTerm = Literal(one)): LocalTerm = {
+  final def posPower(x: LocalTerm,
+                     n: Int,
+                     accum: LocalTerm = Literal(one)): LocalTerm = {
     require(
         n >= 0, s"attempted to compute negative power $n of $x recursively")
-    if (n == 0)
-      accum
-    else
-      posPower(x, n - 1, prod(x)(accum))
+    if (n == 0) accum
+    else posPower(x, n - 1, prod(x)(accum))
   }
 
   /**
@@ -422,8 +419,8 @@ class SymbolicCRig[A: Rig] { self =>
           val x = LocalTyp.obj
           lmbda(x)(x)
         } else
-          AdditiveMorphism(
-              multLiteral(a), (x: LocalTerm, y: LocalTerm) => sum(x)(y))
+          AdditiveMorphism(multLiteral(a),
+                           (x: LocalTerm, y: LocalTerm) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
       case Comb(op, u, v) if op == sum =>
@@ -461,8 +458,8 @@ class SymbolicCRig[A: Rig] { self =>
       case Comb(f, Literal(a), v) if f == prod => prod(Literal(b * a))(v)
       case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
       case SigmaTerm(elems) =>
-        (elems map ((u) => prod(x)(u))).reduce((a: LocalTerm, b: LocalTerm) =>
-              sum(a)(b))
+        (elems map ((u) => prod(x)(u)))
+          .reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
       case p => Comb(prod, x, p)
     }
   }
@@ -485,8 +482,8 @@ class SymbolicCRig[A: Rig] { self =>
       case Comb(f, Literal(a), v) if f == prod => prod(Literal(a))(prod(x)(v))
       case Comb(f, u, v) if f == sum => sum(prod(x)(u))(prod(x)(v))
       case SigmaTerm(elems) =>
-        (elems map ((u) => prod(x)(u))).reduce((a: LocalTerm, b: LocalTerm) =>
-              sum(a)(b))
+        (elems map ((u) => prod(x)(u)))
+          .reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
       case p: PiTerm => x *: p
       case `x` => PiTerm(Map(base(x) -> 2 * expo(x)))
       case _ => PiTerm(Map(base(x) -> expo(x), base(y) -> expo(y)))

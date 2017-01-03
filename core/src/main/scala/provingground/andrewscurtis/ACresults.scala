@@ -14,8 +14,8 @@ import SimpleAcEvolution._
 
 class ACresults(
     paths: Map[String,
-               Stream[(FiniteDistribution[AtomicMove],
-                       FiniteDistribution[Moves])]]
+               Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[
+                       Moves])]]
 )
     extends ACStates {
 
@@ -35,7 +35,7 @@ class ACresults(
   def sizes = for ((name, data) <- paths) yield (name -> data.size)
 
   lazy val states = for ((name, data) <- paths) yield
-    (name -> data.toVector.last)
+  (name -> data.toVector.last)
 //  def upickle = uwrite(ACPortableResults(paths))
 }
 
@@ -62,7 +62,7 @@ object ACresults {
 
 case class ACPortableResults(
     paths: Map[String,
-               Stream[(FiniteDistribution[AtomicMove],
-                       FiniteDistribution[Moves])]]
+               Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[
+                       Moves])]]
 )
     extends ACresults(paths)

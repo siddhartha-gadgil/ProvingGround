@@ -11,18 +11,16 @@ trait Curry[Iter <: Term with Subs[Term],
 }
 
 object Curry {
-  implicit def idCurry[D <: Term with Subs[D], C <: Term with Subs[C]]
-    : Curry[Func[D, C], D, C] =
+  implicit def idCurry[D <: Term with Subs[D], C <: Term with Subs[C]]: Curry[
+      Func[D, C], D, C] =
     new Curry[Func[D, C], D, C] {
       def curry(fn: Func[D, C]) = fn
 
       def unCurry(cfn: Func[D, C]) = cfn
     }
 
-  implicit def funcCurry[Dom <: Term with Subs[Dom],
-                         Iter <: Term with Subs[Iter],
-                         Total <: Term with Subs[Total],
-                         Cod <: Term with Subs[Cod]](
+  implicit def funcCurry[Dom <: Term with Subs[Dom], Iter <: Term with Subs[
+          Iter], Total <: Term with Subs[Total], Cod <: Term with Subs[Cod]](
       implicit base: Curry[Iter, Total, Cod]
   ): Curry[Func[Dom, Iter], PairTerm[Dom, Total], Cod] =
     new Curry[Func[Dom, Iter], PairTerm[Dom, Total], Cod] {

@@ -33,9 +33,11 @@ object WikiRead {
 
   def nextgen(pgsfut: Future[Seq[MathPage]]) =
     pgsfut map (_ filter (_.isList)) flatMap ((pgs) =>
-          Future.sequence(pgs map ((pg) =>
-                    getXML(pg.url) map ((xml) =>
-                          mathPages(xml))))) map (_.flatten)
+                                                Future.sequence(
+                                                  pgs map ((pg) =>
+                                                             getXML(pg.url) map ((xml) =>
+                                                                                   mathPages(
+                                                                                     xml))))) map (_.flatten)
 
   def saveAll(pgsfut: Future[Seq[MathPage]])(implicit save: MathPage => Unit) = {
     pgsfut.onSuccess {
@@ -48,8 +50,8 @@ object WikiRead {
   val otherPagesFut = nextgen(topPagesFut)
 
   val masterlist =
-    for (nodeseq <- getXML(baseUrl + "/wiki/Lists_of_mathematics_topics")) yield
-      (nodeseq \\ "li")
+    for (nodeseq <- getXML(baseUrl + "/wiki/Lists_of_mathematics_topics"))
+      yield (nodeseq \\ "li")
 
   def savePages(implicit save: MathPage => Unit) = {
     saveAll(topPagesFut)

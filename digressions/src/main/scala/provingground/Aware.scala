@@ -6,9 +6,9 @@ object Aware {
 
   trait Task {
     val goal: Task = this match {
-      case TaskUsing(task, _) => task.goal
+      case TaskUsing(task, _)   => task.goal
       case BoundedTask(task, _) => task.goal
-      case t: Task => t
+      case t: Task              => t
     }
   }
 
@@ -21,7 +21,7 @@ object Aware {
   }
 
   /** Checks if a task can be translated to a form applicable to a resource; if so returns it.
-	 *  
+	 *
 	 */
   trait PreResource {
     def apply(task: Task): Option[Task]
@@ -59,8 +59,9 @@ object Aware {
       extends Response
       with Result[A]
 
-  case class Reduction[A, B](
-      reduction: Task, goal: Task, solver: Solution[A] => Solution[B])
+  case class Reduction[A, B](reduction: Task,
+                             goal: Task,
+                             solver: Solution[A] => Solution[B])
       extends Response
       with Result[(Task, Solution[A] => Solution[B])] {
     val result = (reduction, solver)
@@ -143,8 +144,7 @@ object Aware {
               case Right(a) => Right(Solution(a, task))
               case Left(state) =>
                 Left(
-                    SeekerResponse(
-                        s.noluck(task)(state), fromSeeker(s, state)))
+                  SeekerResponse(s.noluck(task)(state), fromSeeker(s, state)))
             }
         }
       }
@@ -181,11 +181,11 @@ object Aware {
 
   class SeekerResourceRouter(iter: SeekerResource, cycle: Long = 1000)
       extends Actor {
-    var tasks: Set[Query] = Set.empty
+    var tasks: Set[Query]                                = Set.empty
     var partialSolutions: Set[PartialSolution[Any, Any]] = Set.empty
-    var solutions: Set[Solution[Any]] = Set.empty
-    var taskActors: Map[Task, ActorRef] = Map.empty
-    var Cycles: Map[ActorRef, Long] = Map.empty
+    var solutions: Set[Solution[Any]]                    = Set.empty
+    var taskActors: Map[Task, ActorRef]                  = Map.empty
+    var Cycles: Map[ActorRef, Long]                      = Map.empty
 
     def receive = {
       case Seek(it, p, n) =>
@@ -193,7 +193,7 @@ object Aware {
         tasks += Query(task, sender)
         val actorRef = (new SeekerResourceSeeker(iter)).self
         taskActors = taskActors ++ Map(task -> actorRef)
-        Cycles = Cycles ++ Map(actorRef -> n)
+        Cycles = Cycles ++ Map(actorRef     -> n)
         actorRef ! Seek(it, p, cycle)
       case _: Task =>
       case Solution(a, task) =>
@@ -205,8 +205,8 @@ object Aware {
           Cycles = Cycles ++ Map(sender -> cycles)
           sender ! Seek(it, p, Math.min(cycle, cycles))
         } else
-          for (Query(Seek(`it`, `p`, n), asker) <- tasks) asker ! NotFound(
-              Seek(it, p, n))
+          for (Query(Seek(`it`, `p`, n), asker) <- tasks)
+            asker ! NotFound(Seek(it, p, n))
     }
   }
 
@@ -217,8 +217,8 @@ object Aware {
   trait Generator[A, B] {
     def apply(n: Long, b: B): GeneratorOut[A, B]
 
-    def receiver(
-        asker: ActorRef, cntx: ActorContext): PartialFunction[Any, Unit] = {
+    def receiver(asker: ActorRef,
+                 cntx: ActorContext): PartialFunction[Any, Unit] = {
       case Generate(genn, n, b) if this == genn =>
         val out = genn(n, b)
         asker ! Solution(out.out, Generate(genn, n, b))
@@ -236,7 +236,7 @@ object Aware {
   }
 
   class GeneratorRouter[A, B](gen: Generator[A, B]) extends Actor {
-    var tasks: Set[Query] = Set.empty
+    var tasks: Set[Query]               = Set.empty
     var taskActors: Map[Task, ActorRef] = Map.empty
 
     def receive = {

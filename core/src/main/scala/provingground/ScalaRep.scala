@@ -274,7 +274,7 @@ object ScalaRep {
 
   implicit class TermScala[U <: Term with Subs[U]](term: U) {
     type Rep[W] = ScalaRep[U, W]
-    def as[W: Rep] = implicitly[ScalaRep[U, W]].unapply(term)
+    def as[W : Rep] = implicitly[ScalaRep[U, W]].unapply(term)
   }
 
   implicit def funcRep[U <: Term with Subs[U], V, X <: Term with Subs[X], Y](
@@ -282,10 +282,9 @@ object ScalaRep {
       codomrep: ScalaRep[X, Y]): ScalaRep[Func[U, X], V => Y] =
     FuncRep(domrep, codomrep)
 
-  case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](
-      name: AnySym, typ: Typ[U])
-      extends RepTerm[A]
-      with Symbolic {
+  case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](name: AnySym,
+                                                          typ: Typ[U])
+      extends RepTerm[A] with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj = RepSymbObj(new InnerSym[RepTerm[A]](this), typ)
@@ -305,19 +304,18 @@ object ScalaRep {
   implicit val boolRep: ScalaRep[Term, Boolean] = SimpleRep(
       BaseConstructorTypes.SmallBool)
 
-  def incl[U <: Term with Subs[U], V, W]
-    : (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {
+  def incl[U <: Term with Subs[U], V, W]: (ScalaRep[U, V],
+  ScalaRep[U, W]) => Option[V => W] = {
     case (x, y) if x == y => Some((v: V) => v.asInstanceOf[W])
     case (rep: ScalaRep[U, V], IdRep(typ)) if rep.typ == typ =>
       Some((v: V) => rep(v).asInstanceOf[W])
-    case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) =>
-      {
+    case (fst: FuncRep[_, a, _, b], scnd: FuncRep[_, c, _, d]) => {
         val dmap = incl(scnd.domrep, fst.domrep)
         val cmap = incl(fst.codomrep, scnd.codomrep)
         val m = for (dm <- dmap; cm <- cmap) yield
           ((f: a => b) => (x: c) => cm(f(dm(x))))
-        m flatMap ((x: (a => b) => (c => d)) =>
-              Try(x.asInstanceOf[V => W]).toOption)
+        m flatMap
+        ((x: (a => b) => (c => d)) => Try(x.asInstanceOf[V => W]).toOption)
       }
 
     case _ => None
@@ -340,8 +338,9 @@ object ScalaRep {
     * formal extension of a function.
     * XXX must check type.
     */
-  def extend[T, U <: Term with Subs[U]](
-      fn: T => U, FuncLike: FuncLike[Term, U], codom: Typ[U]): Term => U = {
+  def extend[T, U <: Term with Subs[U]](fn: T => U,
+                                        FuncLike: FuncLike[Term, U],
+                                        codom: Typ[U]): Term => U = {
     case c: ConstTerm[_] =>
       Try(fn(c.value.asInstanceOf[T]))
         .getOrElse(codom.symbObj(ApplnSym(FuncLike, c)))
@@ -419,8 +418,9 @@ object ScalaRep {
       (x, y) match {
         case (u, v: Func[U, X]) if u == this => v
         case _ =>
-          ExtendedFunction(
-              (v: V) => dfn(v), domrep.subs(x, y), codomrep.subs(x, y))
+          ExtendedFunction((v: V) => dfn(v),
+                           domrep.subs(x, y),
+                           codomrep.subs(x, y))
       }
   }
 
@@ -433,8 +433,7 @@ object ScalaRep {
       domrep: ScalaRep[U, V],
       codom: Typ[X]
   )
-      extends Func[U, X]
-      with Subs[SimpleExtendedFunction[U, V, X]] {
+      extends Func[U, X] with Subs[SimpleExtendedFunction[U, V, X]] {
 
     val dom = domrep.typ
 
@@ -456,8 +455,9 @@ object ScalaRep {
       (x, y) match {
         case (u, v: SimpleExtendedFunction[U, V, X]) if u == this => v
         case _ =>
-          SimpleExtendedFunction(
-              (v: V) => dfn(v).subs(x, y), domrep.subs(x, y), codom.subs(x, y))
+          SimpleExtendedFunction((v: V) => dfn(v).subs(x, y),
+                                 domrep.subs(x, y),
+                                 codom.subs(x, y))
       }
   }
 

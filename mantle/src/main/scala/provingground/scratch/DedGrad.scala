@@ -103,8 +103,8 @@ object DedGrad {
                        lmbda(x)(a),
                        lmbda(a)(f(a)))
 
-    type Prop =
-      (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[Term]
+    type Prop = (=> Prob => TD[Term] => TD[Term]) => Prob => TD[Term] => TD[
+        Term]
 
     // lazy val backEg = deduc.backProp(0.5, deduc.applnInvImage)((x: Term) =>
     //       samp(x))(TD.atom(lmbda(x)(f(x))))

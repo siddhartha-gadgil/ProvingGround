@@ -3,7 +3,7 @@ import compact_enumeration.FieldOps._
 
 /**
   * @author gadgil
-  * 
+  *
   * Elementary functions of type  A (e.g. A = Real => Real).
   * this is not quite correct for multi-variable functions.
   */

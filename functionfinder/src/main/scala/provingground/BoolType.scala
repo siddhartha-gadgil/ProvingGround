@@ -1,7 +1,11 @@
 package provingground
 import provingground.HoTT._
 import ScalaRep._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.reflect.runtime.universe.{
+  Try => UnivTry,
+  Function => FunctionUniv,
+  _
+}
 // import provingground.ScalaUniverses._
 
 object BoolType {
@@ -57,8 +61,8 @@ object BoolType {
 
   private type FnFn = Func[Term, Func[Term, Term]]
 
-  def iteDepFunc(
-      u: Typ[Term], v: Typ[Term]) /*(implicit fnfn : ScalaUniv[FnFn])*/ = {
+  def iteDepFunc(u: Typ[Term],
+                 v: Typ[Term]) /*(implicit fnfn : ScalaUniv[FnFn])*/ = {
 
     val x = "x" :: u
 

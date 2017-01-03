@@ -52,8 +52,9 @@ object Implicits {
       IterFuncTyp(tailVar ~>: pair, typ)
   }
 
-  implicit class IndTypFmly[C <: Term with Subs[C], H <: Term with Subs[H],
-      F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]) {
+  implicit class IndTypFmly[
+      C <: Term with Subs[C], H <: Term with Subs[H], F <: Term with Subs[F]](
+      typFmlyPtn: FmlyPtn[H, C, F]) {
     def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
   }
 
@@ -146,9 +147,11 @@ object TLImplicits {
 
     def -->>:(tail: Typ[H]) = {
       val fmly = g.get(W)
-      val ind = fmly.getIndex(W, typ).get
+      val ind = fmly
+        .getIndex(W, typ)
+        .get
 
-      (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
+        (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
     }
 
     def -->>:(that: IndexedIdShape[H, F, Index]) = {

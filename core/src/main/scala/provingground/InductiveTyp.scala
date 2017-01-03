@@ -25,7 +25,8 @@ trait InductiveTyp[C <: Term with Subs[C], H <: Term with Subs[H]]
 object InductiveTyp {
   def fromFormal(formalCons: List[Term], formalTyp: Typ[Term]) = {
     val constructorDefs =
-      formalCons map ((cons) =>
+      formalCons map
+      ((cons) =>
             (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
     InductiveTypDefinition(constructorDefs)
   }

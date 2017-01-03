@@ -59,7 +59,7 @@ import Subst.SubstOp
 abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
-                                          Index: Subst,
+                                          Index : Subst,
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]] {
@@ -84,8 +84,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
     def newobj = fself
 
     def act(arg: H) =
-      caseFn(iterDepFunc)(arg) getOrElse (depcodom(arg).symbObj(
-              ApplnSym(fself, arg)))
+      caseFn(iterDepFunc)(arg) getOrElse
+      (depcodom(arg).symbObj(ApplnSym(fself, arg)))
 
     def subs(x: Term, y: Term) = self.subs(x, y).Funcs(ind.subst(x, y))
   }
@@ -100,7 +100,7 @@ object IndexedInductiveDefinition {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    C <: Term with Subs[C],
-                   Index: Subst,
+                   Index : Subst,
                    IF <: Term with Subs[IF],
                    IDF <: Term with Subs[IDF],
                    IDFT <: Term with Subs[IDFT]](
@@ -119,7 +119,7 @@ object IndexedInductiveDefinition {
   case class DataCons[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       C <: Term with Subs[C],
-                      Index: Subst,
+                      Index : Subst,
                       IF <: Term with Subs[IF],
                       IDF <: Term with Subs[IDF],
                       IDFT <: Term with Subs[IDFT],

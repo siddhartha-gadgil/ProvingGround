@@ -15,8 +15,7 @@ object HoTTgen {
   def isTyp(t: Term) = t.isInstanceOf[Typ[_]]
 
   def inDomain: Term => Term => Boolean = {
-    case (func: FuncLike[u, v]) =>
-      { (arg: Term) =>
+    case (func: FuncLike[u, v]) => { (arg: Term) =>
         arg.typ == func.dom
       }
     case _ =>
@@ -99,19 +98,19 @@ object HoTTgen {
 	}
    */
 
-  lazy val moves: List[
-      (Move,
-       DiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
-    List((Move.appl, CombinationFn(funcappl, isFunc)),
-         (Move.arrow, CombinationFn(functyp, isTyp)),
-         (Move.pi, MoveFn(pityp)),
-         (Move.sigma, MoveFn(sigmatyp)),
-         (Move.pairt, CombinationFn(pairtyp, isTyp)),
-         (Move.pair, CombinationFn(PairTerm)),
-         (Move.paircons, MoveFn(paircons)),
-         (Move.icons, MoveFn(icons)),
-         (Move.jcons, MoveFn(icons)),
-         (Move.id, Id[FiniteDistribution[Term]]))
+  lazy val moves: List[(Move, DiffbleFunction[
+          FiniteDistribution[Term], FiniteDistribution[Term]])] = List(
+      (Move.appl, CombinationFn(funcappl, isFunc)),
+      (Move.arrow, CombinationFn(functyp, isTyp)),
+      (Move.pi, MoveFn(pityp)),
+      (Move.sigma, MoveFn(sigmatyp)),
+      (Move.pairt, CombinationFn(pairtyp, isTyp)),
+      (Move.pair, CombinationFn(PairTerm)),
+      (Move.paircons, MoveFn(paircons)),
+      (Move.icons, MoveFn(icons)),
+      (Move.jcons, MoveFn(icons)),
+      (Move.id, Id[FiniteDistribution[Term]])
+  )
 
   object Move {
     case object lambda extends Move
@@ -165,13 +164,14 @@ object HoTTgen {
       f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]),
                          (FiniteDistribution[M], FiniteDistribution[Term])]
   ) = {
-    val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
-      val terms = fd._2.supp
-      val gettyps: PartialFunction[Term, Typ[Term]] = {
-        case typ: Typ[_] => typ
-      }
-      val typs = terms collect gettyps
-      typs map ((typ) => lambdaFn(l, f)(typ))
+    val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) =>
+      {
+        val terms = fd._2.supp
+        val gettyps: PartialFunction[Term, Typ[Term]] = {
+          case typ: Typ[_] => typ
+        }
+        val typs = terms collect gettyps
+        typs map ((typ) => lambdaFn(l, f)(typ))
     }
     DiffbleFunction.BigSum(lambdas)
   }
@@ -191,8 +191,8 @@ object HoTTgen {
       lambdaSum(Move.lambda),
       block(NormalizeFD[Move], NormalizeFD[Term]))
 
-  val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
-        if (t.typ.typ == Type) Some(t.typ) else None)
+  val mapTyp = MoveFn[Term, Typ[Term]](
+      (t: Term) => if (t.typ.typ == Type) Some(t.typ) else None)
 
   private def ifTyp: Term => Option[Typ[Term]] = {
     case typ: Typ[Term] if typ.typ == Type => Some(typ)
@@ -201,9 +201,10 @@ object HoTTgen {
 
   def getTyps(d: FiniteDistribution[Term]) = d.mapOpt(ifTyp)
 
-  val typFlow = (d: FiniteDistribution[Term]) => {
-    val shift = mapTyp.func(d) rawfeedback (getTyps(d).getsum(_))
-    mapTyp.grad(d)(shift)
+  val typFlow = (d: FiniteDistribution[Term]) =>
+    {
+      val shift = mapTyp.func(d) rawfeedback (getTyps(d).getsum(_))
+      mapTyp.grad(d)(shift)
   }
 
   def dynTypFlow(dyn: DiffbleFunction[

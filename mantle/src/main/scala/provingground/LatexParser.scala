@@ -6,7 +6,7 @@ import scala.util._
 
 object LatexParser {
   /*
-   * Parse latex expressions. 
+   * Parse latex expressions.
    * Should include latex commands: ^ _ \frac \limits etc
    * Should also extend the various kinds of symbols.
    */

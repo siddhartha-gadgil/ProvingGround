@@ -1,10 +1,5 @@
 package provingground
-import provingground.{
-  FiniteDistribution => FD,
-  TruncatedDistribution => TD,
-  ProbabilityDistribution => PD,
-  TermLang => TL
-}
+import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, ProbabilityDistribution => PD, TermLang => TL}
 
 import HoTT._
 
@@ -34,38 +29,41 @@ object Deducer {
     * to be mixed in using `<+?>`
     */
   def appln(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
-    rec(p) flatMap ((f) =>
-                      if (isFunc(f))
-                        rec(p) map (Unify.appln(f, _))
-                      else
-                        FD.unif(None: Option[Term]))
+    rec(p) flatMap
+    ((f) =>
+          if (isFunc(f)) rec(p) map (Unify.appln(f, _))
+          else FD.unif(None: Option[Term]))
 
-  def memAppln(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(
-      save: (Term, Term, Term) => Unit) = {
-    rec(p) flatMap ((f) =>
-                      if (isFunc(f))
-                        rec(p) map ((x) =>
-                                      Unify.appln(f, x) map ((y) => {
-                                                               save(f, x, y); y
-                                                             }))
-                      else
-                        FD.unif(None: Option[Term]))
+  def memAppln(rec: => (PD[Term] => PD[Term]))(
+      p: PD[Term])(save: (Term, Term, Term) => Unit) = {
+    rec(p) flatMap
+    ((f) =>
+          if (isFunc(f))
+            rec(p) map
+            ((x) =>
+                  Unify.appln(f, x) map
+                  ((y) =>
+                        {
+                          save(f, x, y); y
+                      }))
+          else FD.unif(None: Option[Term]))
   }
 
-  def eqSubs(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(
-      save: (Term, IdentityTyp[Term], Term) => Unit) = {
+  def eqSubs(rec: => (PD[Term] => PD[Term]))(
+      p: PD[Term])(save: (Term, IdentityTyp[Term], Term) => Unit) = {
     rec(p) flatMap {
       case eq @ IdentityTyp(dom, lhs: Term, rhs: Term) =>
-        rec(p) map ((x) =>
-                      if (x.typ == dom)
-                        Some(x.subs(lhs, rhs)) map ((y) => {
-                                                      save(
-                                                        x,
-                                                        eq.asInstanceOf[
-                                                          IdentityTyp[Term]],
-                                                        y); y
-                                                    })
-                      else None)
+        rec(p) map
+        ((x) =>
+              if (x.typ == dom)
+                Some(x.subs(lhs, rhs)) map
+                ((y) =>
+                      {
+                        save(x,
+                             eq.asInstanceOf[IdentityTyp[Term]],
+                             y); y
+                    })
+              else None)
       case _ =>
         FD.unif(None: Option[Term])
     }
@@ -78,12 +76,13 @@ object Deducer {
     */
   def lambda(varweight: Double)(rec: => (PD[Term] => PD[Term]))(
       p: PD[Term]): PD[Option[Term]] =
-    rec(p) flatMap ({
+    rec(p) flatMap
+    ({
       case tp: Typ[u] =>
         val x = tp.Var
         val newp = p <+> (FD.unif(x), varweight)
-        (rec(newp)) map ((y: Term) =>
-                           if (!isUniv(y)) TL.lambda(x, y) else None)
+        (rec(newp)) map
+        ((y: Term) => if (!isUniv(y)) TL.lambda(x, y) else None)
       case _ => FD.unif(None)
     })
 
@@ -91,9 +90,10 @@ object Deducer {
     * generating optionally as pi's, with function and argument generated recursively;
     * to be mixed in using `<+?>`
     */
-  def pi(varweight: Double)(rec: => (PD[Term] => PD[Term]))(
-      p: PD[Term]): PD[Option[Term]] =
-    rec(p) flatMap ({
+  def pi(varweight: Double)(
+      rec: => (PD[Term] => PD[Term]))(p: PD[Term]): PD[Option[Term]] =
+    rec(p) flatMap
+    ({
       case tp: Typ[u] =>
         val x = tp.Var
         val newp = p <+> (FD.unif(x), varweight)
@@ -137,7 +137,7 @@ object Deducer {
       val entDiff = -log(absThmsByProofs(absTyp)) + log(absTheorems(absTyp))
       def termWeight(wt: Weighted[Term]) =
         entDiff * mkLambda(vars, lambdaWeight)(wt).weight / absThmsByProofs(
-          absTyp)
+            absTyp)
       val typPMF =
         weightedTerms map ((wt) => Weighted(wt.elem, termWeight(wt)))
       FD(typPMF)
@@ -150,33 +150,30 @@ object Deducer {
   import Unify._
 
   def unifInv[U <: Term with Subs[U]](
-      term: Term,
-      invMap: Vector[(Term, Set[(U, Term)])]) = {
+      term: Term, invMap: Vector[(Term, Set[(U, Term)])]) = {
     val optInverses =
       invMap flatMap {
         case (result, fxs) => {
-          val uniMapOpt = unify(result, term, isVar)
-          val newInvOpt =
-            uniMapOpt map { (uniMap) =>
-              fxs map {
-                case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
+            val uniMapOpt = unify(result, term, isVar)
+            val newInvOpt =
+              uniMapOpt map { (uniMap) =>
+                fxs map {
+                  case (f, x) => (multisub(f, uniMap), multisub(x, uniMap))
+                }
               }
-            }
-          newInvOpt
-        }
+            newInvOpt
+          }
       }
-    optInverses.flatten.toSet filter ((fx) =>
-                                        Unify.appln(fx._1, fx._2) == Some(
-                                          term))
+    optInverses.flatten.toSet filter
+    ((fx) => Unify.appln(fx._1, fx._2) == Some(term))
   }
 
   def hashedUnifInv[U <: Term with Subs[U]](
       term: Term,
       hashedInvMap: Map[ShapeTree, Vector[(Term, Set[(U, Term)])]]) = {
     val invMapSet =
-      (TermShapeTree(term).subTrees map ((shape) =>
-                                           hashedInvMap.getOrElse(shape,
-                                                                  Vector())))
+      (TermShapeTree(term).subTrees map
+          ((shape) => hashedInvMap.getOrElse(shape, Vector())))
     val invMap = invMapSet.fold(Vector())(_ ++ _)
     unifInv(term, invMap)
   }
@@ -190,11 +187,10 @@ object Deducer {
   }
 
   def flow(fd: FD[Term], shifts: FD[Term]) = {
-    val newpmf = for (Weighted(x, p) <- fd.pmf)
-      yield Weighted(x, p * math.exp(shifts(x)))
+    val newpmf = for (Weighted(x, p) <- fd.pmf) yield
+      Weighted(x, p * math.exp(shifts(x)))
     FD(newpmf).flatten.normalized()
   }
-
 }
 
 import math.{log, max}
@@ -218,10 +214,11 @@ case class ThmEntropies(fd: FD[Term],
 
   lazy val pfd = piDist(vars, scale)(tfd)
 
-  lazy val byProof =
-    (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten.normalized()
+  lazy val byProof = (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten
+    .normalized()
 
-  lazy val byStatementUnscaled = FD(byProof.pmf map {
+  lazy val byStatementUnscaled = FD(
+      byProof.pmf map {
     case Weighted(x, _) => Weighted(x: Typ[Term], pfd(x))
   }).flatten
 
@@ -238,14 +235,16 @@ case class ThmEntropies(fd: FD[Term],
     if (thmTotal > 0) byStatementUnscaled * (1.0 / thmTotal)
     else FD.empty[Typ[Term]]
 
-  lazy val entropyPairs = byProof.pmf collect {
-    case Weighted(x, _) if byStatement(x) > 0 =>
-      x -> ((-log(byStatement(x)), -log(byProof(x))))
-  }
+  lazy val entropyPairs =
+    byProof.pmf collect {
+      case Weighted(x, _) if byStatement(x) > 0 =>
+        x -> ((-log(byStatement(x)), -log(byProof(x))))
+    }
 
-  lazy val feedbackVec = entropyPairs map { case (x, (a, b)) => (x, b - a) } sortBy {
-    case (x, e) => -e
-  }
+  lazy val feedbackVec =
+    entropyPairs map { case (x, (a, b)) => (x, b - a) } sortBy {
+      case (x, e) => -e
+    }
 
   lazy val feedbackMap = feedbackVec.toMap
 
@@ -268,7 +267,7 @@ case class ThmEntropies(fd: FD[Term],
     }
     val ptang = piDist(vars, scale)(tpfd).normalized()
     feedbackTypDist(piDist(vars, scale)((ltang) map (_.typ: Typ[Term]))) +
-      ptang.integral(thmFeedbackFunction)
+    ptang.integral(thmFeedbackFunction)
   }
 }
 
@@ -296,19 +295,17 @@ case class BasicDeducer(applnWeight: Double = 0.2,
 
   def derApplnArg(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) =
     (base: FD[Term]) =>
-      (base: PD[Term]) flatMap ((f) =>
-                                  if (isFunc(f))
-                                    rec(base)(p) map (Unify.appln(f, _))
-                                  else
-                                    FD.unif(None: Option[Term]))
+      (base: PD[Term]) flatMap
+      ((f) =>
+            if (isFunc(f)) rec(base)(p) map (Unify.appln(f, _))
+            else FD.unif(None: Option[Term]))
 
   def derApplnFunc(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) =
     (base: FD[Term]) =>
-      rec(base)(p) flatMap ((f) =>
-                              if (isFunc(f))
-                                base map (Unify.appln(f, _))
-                              else
-                                FD.unif(None: Option[Term]))
+      rec(base)(p) flatMap
+      ((f) =>
+            if (isFunc(f)) base map (Unify.appln(f, _))
+            else FD.unif(None: Option[Term]))
 
   /**
     * generating optionally as lambdas, with function and argument generated recursively;
@@ -318,12 +315,13 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       rec: => (FD[Term] => PD[Term] => PD[Term]))(
       p: PD[Term]): FD[Term] => PD[Option[Term]] =
     (base: FD[Term]) =>
-      (base: PD[Term]) flatMap ({
+      (base: PD[Term]) flatMap
+      ({
         case tp: Typ[u] =>
           val x = tp.Var
           lambdaDistOpt(base)(x) map { (innerbase) =>
-            (rec(innerbase)(p)) map ((y: Term) =>
-                                       TL.lambda(x, y)): PD[Option[Term]]
+            (rec(innerbase)(p)) map ((y: Term) => TL.lambda(x, y)): PD[Option[
+                    Term]]
           } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
@@ -335,35 +333,37 @@ case class BasicDeducer(applnWeight: Double = 0.2,
   def derPiVal(varweight: Double)(rec: => (FD[Term] => PD[Term] => PD[Term]))(
       p: PD[Term]): FD[Term] => PD[Option[Term]] =
     (base: FD[Term]) =>
-      (base: PD[Term]) flatMap ({
+      (base: PD[Term]) flatMap
+      ({
         case tp: Typ[u] =>
           val x = tp.Var
           piDistOpt(base)(x) map { innerbase =>
-            (rec(innerbase)(p)) map ((y: Term) =>
-                                       TL.pi(x, y)): PD[Option[Term]]
+            (rec(innerbase)(p)) map ((y: Term) => TL.pi(x, y)): PD[
+                Option[Term]]
           } getOrElse (FD.unif(None))
         case _ => FD.unif(None): PD[Option[Term]]
       })
 
   def lambdaDistOpt(base: FD[Term])(x: Term) = {
-    val pmf = base.pmf collect {
-      case Weighted(LambdaFixed(variable: Term, value: Term), p)
-          if variable.typ == x.typ =>
-        Weighted(value.replace(variable, x), p)
-      case Weighted(Lambda(variable: Term, value: Term), p)
-          if variable.typ == x.typ =>
-        Weighted(value.replace(variable, x), p)
-    }
+    val pmf =
+      base.pmf collect {
+        case Weighted(LambdaFixed(variable: Term, value: Term), p)
+            if variable.typ == x.typ =>
+          Weighted(value.replace(variable, x), p)
+        case Weighted(LambdaTerm(variable: Term, value: Term), p)
+            if variable.typ == x.typ =>
+          Weighted(value.replace(variable, x), p)
+      }
 
     if (pmf.isEmpty) None else Some(FD(pmf).normalized())
   }
 
   def piDistOpt(base: FD[Term])(x: Term): Option[FD[Term]] = {
-    val pmf = base.pmf collect {
-      case Weighted(pt: GenFuncTyp[u, v], p)
-          if (x.typ == pt.domain) =>
-        Weighted[Term](pt.fib(x.asInstanceOf[u]), p)
-    }
+    val pmf =
+      base.pmf collect {
+        case Weighted(pt: GenFuncTyp[u, v], p) if (x.typ == pt.domain) =>
+          Weighted[Term](pt.fib(x.asInstanceOf[u]), p)
+      }
 
     if (pmf.isEmpty) None else Some(FD[Term](pmf).normalized())
   }
@@ -376,7 +376,8 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       rec: => (FD[Term] => PD[Term] => PD[Term]))(
       p: PD[Term]): FD[Term] => PD[Option[Term]] =
     (base: FD[Term]) =>
-      rec(base)(p) flatMap ({
+      rec(base)(p) flatMap
+      ({
         case tp: Typ[u] =>
           val x = tp.Var
           lambdaDistOpt(base)(x) map { (innerBase) =>
@@ -392,7 +393,8 @@ case class BasicDeducer(applnWeight: Double = 0.2,
   def derPiVar(varweight: Double)(rec: => (FD[Term] => PD[Term] => PD[Term]))(
       p: PD[Term]): FD[Term] => PD[Option[Term]] =
     (base: FD[Term]) =>
-      rec(base)(p) flatMap ({
+      rec(base)(p) flatMap
+      ({
         case tp: Typ[u] =>
           val x = tp.Var
           piDistOpt(base)(x) map { (innerBase) =>
@@ -414,11 +416,10 @@ case class BasicDeducer(applnWeight: Double = 0.2,
       .<+?>(derApplnFunc(hDerFunc(sc))(pd)(base), applnWeight)
       .<+?>(derLambdaVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base),
             applnWeight)
-      .<+?>(derLambdaVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base),
-            applnWeight)
+      .<+?>(
+          derLambdaVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
       .<+?>(derPiVar(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
       .<+?>(derPiVal(varWeight)(hSc(sc).hDerFunc(sc))(pd)(base), applnWeight)
-
 }
 
 case class Deducer(applnWeight: Double = 0.2,
@@ -445,8 +446,8 @@ case class Deducer(applnWeight: Double = 0.2,
 
   def shifted(fd: FD[Term], td: TD[Term]) = {
     val shifts = td.getFD(cutoff) getOrElse (FD.empty[Term])
-    val newpmf = for (Weighted(x, p) <- fd.pmf)
-      yield Weighted(x, p * math.exp(shifts(x)))
+    val newpmf = for (Weighted(x, p) <- fd.pmf) yield
+      Weighted(x, p * math.exp(shifts(x)))
     FD(newpmf)
   }
 
@@ -568,9 +569,8 @@ case class Deducer(applnWeight: Double = 0.2,
   def absFD(fd: FD[Term]) = {
     val tfd = fd filter (isTyp) map { case tp: Typ[u] => tp }
     (fd ++
-      ((lambdaDist(vars, lambdaWeight)(fd) ++
-        piDist(vars, piWeight)(tfd).map((t) => t: Term)) * abstractionWeight))
-      .normalized()
+        ((lambdaDist(vars, lambdaWeight)(fd) ++ piDist(vars, piWeight)(tfd)
+                  .map((t) => t: Term)) * abstractionWeight)).normalized()
   }
 
   def shiftFD(popln: TermPopulation, cumApplnInv: InvMap = Vector()) = {
@@ -596,8 +596,7 @@ case class Deducer(applnWeight: Double = 0.2,
     val newPop = absFD(pop.terms)
 
     val mixedPop =
-      if (memory)
-        ((fd * genMemory ++ (newPop * (1 - genMemory)))).flatten
+      if (memory) ((fd * genMemory ++ (newPop * (1 - genMemory)))).flatten
       else newPop.flatten
 
     (smooth(flow(mixedPop, shift)).flatten, pop.applnInvMap)
@@ -626,16 +625,15 @@ case class Deducer(applnWeight: Double = 0.2,
                     initBatch: Int,
                     batchSize: Int,
                     halt: => (BufferedRun => Boolean) = (bfr) =>
-                      bfr.getElapsedTime > (1000 * 5 * 60),
+                        bfr.getElapsedTime > (1000 * 5 * 60),
                     save: FD[Term] => Unit = (_) => (),
                     smooth: FD[Term] => FD[Term] = identity) { self =>
 
     import scala.collection.mutable.ArrayBuffer
     private val distBuffer: ArrayBuffer[FD[Term]] = ArrayBuffer()
 
-    val theorems =
-      (initDist filter (isTyp) map { case tp: Typ[u] => tp }).flatten
-        .normalized()
+    val theorems = (initDist filter (isTyp) map { case tp: Typ[u] => tp }).flatten
+      .normalized()
 
     def saveMem(fd: FD[Term]) = {
       distBuffer.append(fd);
@@ -669,8 +667,8 @@ case class Deducer(applnWeight: Double = 0.2,
     def learn = Future(learnAwait)
 
     def iteratorPair = {
-      val start =
-        nextDistribution(initDist, initBatch, false, Vector(), smooth)
+      val start = nextDistribution(
+          initDist, initBatch, false, Vector(), smooth)
       def func(pair: (FD[Term], InvMap)): (FD[Term], InvMap) =
         nextDistribution(pair._1, batchSize, true, pair._2, smooth)
 
@@ -691,8 +689,8 @@ case class Deducer(applnWeight: Double = 0.2,
     def awaitIterate = iteratorWhile().foreach(saveMem)
 
     def await = {
-      var mutDistAccum =
-        nextDistribution(initDist, initBatch, false, Vector(), smooth)
+      var mutDistAccum = nextDistribution(
+          initDist, initBatch, false, Vector(), smooth)
       saveMem(mutDistAccum._1)
       while (runHook && !halt(self)) {
         loops += 1
@@ -735,21 +733,20 @@ case class Deducer(applnWeight: Double = 0.2,
   }
 
   def funcUniPropTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
-      fd: Prob,
-      invImage: Term => Set[(Term, Term)]): Term => TD[Term] =
-    (result) => {
-      val tds =
-        invImage(result).toVector map {
-          case (f, x) =>
-            val scale = applnWeight * fd(f) * fd(x) / fd(result)
-            backProp(fd)(TD.FD(FD.unif(f, x)) <*> scale)
-        }
-      TD.bigSum(tds)
+      fd: Prob, invImage: Term => Set[(Term, Term)]): Term => TD[Term] =
+    (result) =>
+      {
+        val tds =
+          invImage(result).toVector map {
+            case (f, x) =>
+              val scale = applnWeight * fd(f) * fd(x) / fd(result)
+              backProp(fd)(TD.FD(FD.unif(f, x)) <*> scale)
+          }
+        TD.bigSum(tds)
     }
 
   def funcUniProp(backProp: => (Prob => TD[Term] => TD[Term]))(
-      fd: Prob,
-      invImage: Term => Set[(Term, Term)])(td: TD[Term]) =
+      fd: Prob, invImage: Term => Set[(Term, Term)])(td: TD[Term]) =
     td flatMap (funcUniPropTerm(backProp)(fd, invImage))
 
   // def eqSubsPropTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
@@ -804,11 +801,11 @@ case class Deducer(applnWeight: Double = 0.2,
 
   def piPropVarTerm(backProp: => (Prob => TD[Term] => TD[Term]))(
       fd: Prob): Term => TD[Term] = {
-        case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
-          val atom = TD.atom(dom: Term)
-          val x = dom.Var
-          val scale = piWeight * fd(dom) * piFD(fd)(x)(codom) / fd(ft)
-          backProp(fd)(atom)
+    case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
+      val atom = TD.atom(dom: Term)
+      val x = dom.Var
+      val scale = piWeight * fd(dom) * piFD(fd)(x)(codom) / fd(ft)
+      backProp(fd)(atom)
     case pt: GenFuncTyp[u, v] =>
       val x = pt.domain.Var
       val codom = pt.fib(x)
@@ -826,10 +823,10 @@ case class Deducer(applnWeight: Double = 0.2,
       fd: Prob): Term => TD[Term] = {
     case ft @ FuncTyp(dom: Typ[u], codom: Typ[v]) =>
       val atom = TD.atom(codom: Term)
-                val x = dom.Var
-          val pfd = piFD(fd)(x)
-          val scale = piWeight * fd(dom) * pfd(codom) / fd(ft)
-          backProp(pfd)(atom)
+      val x = dom.Var
+      val pfd = piFD(fd)(x)
+      val scale = piWeight * fd(dom) * pfd(codom) / fd(ft)
+      backProp(pfd)(atom)
 
     case pt: GenFuncTyp[u, v] =>
       val x = pt.domain.Var
@@ -849,11 +846,11 @@ case class Deducer(applnWeight: Double = 0.2,
       fd: Prob): TD[Term] => TD[Term] =
     (td) =>
       td <*> (1 - epsilon) <+>
-        (funcUniProp(backProp(epsilon, invImage))(fd, invImage)(td) <*> epsilon) <+>
-        (lambdaPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
-        (lambdaPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
-        (piPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
-        (piPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon)
+      (funcUniProp(backProp(epsilon, invImage))(fd, invImage)(td) <*> epsilon) <+>
+      (lambdaPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
+      (lambdaPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
+      (piPropVar(backProp(epsilon, invImage))(fd)(td) <*> epsilon) <+>
+      (piPropValues(backProp(epsilon, invImage))(fd)(td) <*> epsilon)
 
   def getAbstractTheorems =
     piDist(vars, piWeight)(bucket.getTheorems)
@@ -875,10 +872,8 @@ case class Deducer(applnWeight: Double = 0.2,
     val typs = bucket.getThmsByProofs
 //    val vars = vars map ((t) => Weighted(t, 1))
     val origTyps =
-      typs.supp filter ((tp) =>
-                          (TermBucket
-                            .mkPi(vars, 1)(Weighted(tp, 1)))
-                            .elem == absTyp)
+      typs.supp filter
+      ((tp) => (TermBucket.mkPi(vars, 1)(Weighted(tp, 1))).elem == absTyp)
     val termMap = bucket.getTermDistMap
     val vec: Vector[FD[Term]] =
       origTyps map ((tp) => termMap.getOrElse(tp, FD.empty[Term]))
@@ -916,16 +911,14 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
 
   def ++(that: TermPopulation) = {
     val termsByType =
-      ((this.termsByType.keySet union that.termsByType.keySet) map ((typ: Typ[
-                                                                      Term]) =>
-                                                                      (typ,
-                                                                       this.termsByType
-                                                                         .getOrElse(
-                                                                           typ,
-                                                                           FD.empty[Term]) ++ that.termsByType
-                                                                         .getOrElse(
-                                                                           typ,
-                                                                           FD.empty[Term])))).toMap
+      ((this.termsByType.keySet union that.termsByType.keySet) map
+          ((typ: Typ[Term]) =>
+                (typ,
+                 this.termsByType.getOrElse(
+                     typ,
+                     FD.empty[Term]) ++ that.termsByType.getOrElse(
+                     typ,
+                     FD.empty[Term])))).toMap
     TermPopulation(termsByType,
                    this.types ++ that.types,
                    this.thmsByProofs ++ that.thmsByProofs,
@@ -939,9 +932,9 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
     val termsByType =
       (fd.pmf groupBy (_.elem.typ: Typ[Term])) mapValues (FD(_))
     val types = (fd mapOpt {
-      case tp: Typ[u] => Some(tp: Typ[Term])
-      case _ => None
-    }).normalized()
+          case tp: Typ[u] => Some(tp: Typ[Term])
+          case _ => None
+        }).normalized()
     val thmsByProofs = fd map (_.typ)
     TermPopulation(termsByType,
                    types,
@@ -996,18 +989,17 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
 
   def pickledPopulation = {
     import FreeExpr.writeTerm
-    val termsByType = for ((typ, terms) <- this.termsByType)
-      yield
-        (writeTerm(typ),
-         (terms map (writeTerm)).pmf map (PickledWeighted.pickle))
+    val termsByType = for ((typ, terms) <- this.termsByType) yield
+      (writeTerm(typ),
+       (terms map (writeTerm)).pmf map (PickledWeighted.pickle))
 
     PickledTermPopulation(
-      termsByType,
-      (types map (writeTerm)).pmf map (PickledWeighted.pickle),
-      (thmsByProofs map (writeTerm)).pmf map (PickledWeighted.pickle),
-      vars map { case Weighted(t, w) => PickledWeighted(writeTerm(t), w) },
-      lambdaWeight,
-      piWeight
+        termsByType,
+        (types map (writeTerm)).pmf map (PickledWeighted.pickle),
+        (thmsByProofs map (writeTerm)).pmf map (PickledWeighted.pickle),
+        vars map { case Weighted(t, w) => PickledWeighted(writeTerm(t), w) },
+        lambdaWeight,
+        piWeight
     )
   }
 
@@ -1023,15 +1015,15 @@ case class PickledTermPopulation(
     piWeight: Double) {
   import FreeExpr._
   def unpickle = {
-    val termsByType = for ((typ, termsPMF) <- this.termsByType)
-      yield (readTyp(typ), FD(termsPMF map ((pw) => pw.map(readTerm))))
+    val termsByType = for ((typ, termsPMF) <- this.termsByType) yield
+      (readTyp(typ), FD(termsPMF map ((pw) => pw.map(readTerm))))
     TermPopulation(
-      termsByType,
-      FD(types map ((pw) => pw map (readTyp))),
-      FD(types map ((pw) => pw map (readTyp))),
-      vars map ((pw) => pw.map(readTerm)),
-      lambdaWeight,
-      piWeight
+        termsByType,
+        FD(types map ((pw) => pw map (readTyp))),
+        FD(types map ((pw) => pw map (readTyp))),
+        vars map ((pw) => pw.map(readTerm)),
+        lambdaWeight,
+        piWeight
     )
   }
 }

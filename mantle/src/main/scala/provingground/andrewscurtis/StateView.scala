@@ -10,8 +10,9 @@ import ACMongo._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class StateView(
-    name: String, elems: Vector[ACElem], fdM: FiniteDistribution[AtomicMove]) {
+class StateView(name: String,
+                elems: Vector[ACElem],
+                fdM: FiniteDistribution[AtomicMove]) {
   lazy val fdV = FiniteDistribution(
       elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
 
@@ -29,12 +30,12 @@ class StateView(
   }
 
   lazy val thmWeights =
-    proofElems mapValues ((elemVec) =>
-          (elemVec map ((elem) => elem.weight)).sum)
+    proofElems mapValues
+    ((elemVec) => (elemVec map ((elem) => elem.weight)).sum)
 
   lazy val proofWeightMap =
-    proofElems mapValues ((elemVec) =>
-          (elemVec map ((elem) => proofWeight(elem.moves))).sum)
+    proofElems mapValues
+    ((elemVec) => (elemVec map ((elem) => proofWeight(elem.moves))).sum)
 
   def totalProofWeight(thm: Presentation) =
     proofWeightMap.getOrElse(thm, 0.0)
@@ -62,6 +63,10 @@ object StateView {
   }
    */
   def fromMongo(name: String) =
-    (getFutOptElems(name) flatMapp ((vec) =>
-              getFutOptFDM(name) mapp (new StateView(name, vec, _)))) map (_.get)
+    (getFutOptElems(name) flatMapp
+        ((vec) =>
+              getFutOptFDM(name) mapp
+              (new StateView(name,
+                             vec,
+                             _)))) map (_.get)
 }

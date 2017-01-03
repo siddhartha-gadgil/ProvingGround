@@ -80,7 +80,7 @@ object DiffbleFunction {
 
   def id[A]: DiffbleFunction[A, A] = Id[A]
 
-  case class Incl1[A, B: LinearStructure]()
+  case class Incl1[A, B : LinearStructure]()
       extends DiffbleFunction[A, (A, B)] {
     val lsB = implicitly[LinearStructure[B]]
 
@@ -88,7 +88,7 @@ object DiffbleFunction {
     val grad = (a: A) => (x: (A, B)) => x._1
   }
 
-  case class Incl2[A: LinearStructure, B]()
+  case class Incl2[A : LinearStructure, B]()
       extends DiffbleFunction[B, (A, B)] {
     val lsA = implicitly[LinearStructure[A]]
 
@@ -96,7 +96,7 @@ object DiffbleFunction {
     val grad = (b: B) => (x: (A, B)) => x._2
   }
 
-  case class Proj1[A, B: LinearStructure]()
+  case class Proj1[A, B : LinearStructure]()
       extends DiffbleFunction[(A, B), A] {
     val lsB = implicitly[LinearStructure[B]]
 
@@ -104,7 +104,7 @@ object DiffbleFunction {
     val grad = (x: (A, B)) => (a: A) => (a, lsB.zero)
   }
 
-  case class Proj2[A: LinearStructure, B]()
+  case class Proj2[A : LinearStructure, B]()
       extends DiffbleFunction[(A, B), B] {
     val lsA = implicitly[LinearStructure[A]]
 
@@ -114,10 +114,10 @@ object DiffbleFunction {
 
 //      def Proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
 
-  def block[A: LinearStructure,
-            B: LinearStructure,
-            C: LinearStructure,
-            D: LinearStructure](
+  def block[A : LinearStructure,
+            B : LinearStructure,
+            C : LinearStructure,
+            D : LinearStructure](
       f: DiffbleFunction[A, C], g: DiffbleFunction[B, D]) = {
     val add = vsum[DiffbleFunction[(A, B), (C, D)]]
 
@@ -130,7 +130,7 @@ object DiffbleFunction {
     add(p1 andthen f andthen i1, p2 andthen g andthen i2)
   }
 
-  case class ScProd[V: LinearStructure: InnerProduct]()
+  case class ScProd[V : LinearStructure : InnerProduct]()
       extends DiffbleFunction[(Double, V), V] {
     val ls = implicitly[LinearStructure[V]]
     val ip = implicitly[InnerProduct[V]]
@@ -144,14 +144,13 @@ object DiffbleFunction {
   /**
     * raise a function to 2^(n -1) wrt composition, so for n = 0 we get identity and n = 1 gives f.
     */
-  def repsquare[A: LinearStructure](
+  def repsquare[A : LinearStructure](
       f: DiffbleFunction[A, A]): Int => DiffbleFunction[A, A] = {
     case 0 => id[A]
     case 1 => f
     case n if n < 0 =>
       vzero[DiffbleFunction[A, A]]
-    case n =>
-      {
+    case n => {
         val rs = repsquare(f)
         rs(n - 1) andthen (rs(n - 1))
       }
@@ -161,10 +160,10 @@ object DiffbleFunction {
     * Iterate a differentiable function.
     */
   @tailrec
-  def recIterateDiffble[X](fn: DiffbleFunction[X, X],
-                           n: Int,
-                           accum: DiffbleFunction[X, X] =
-                             id[X]): DiffbleFunction[X, X] = {
+  def recIterateDiffble[X](
+      fn: DiffbleFunction[X, X],
+      n: Int,
+      accum: DiffbleFunction[X, X] = id[X]): DiffbleFunction[X, X] = {
     if (n < 1) accum
     else
       recIterateDiffble(fn, n - 1, accum andthen (fn: DiffbleFunction[X, X]))
@@ -193,7 +192,7 @@ object DiffbleFunction {
   def iterate[A](f: DiffbleFunction[A, A]): Int => DiffbleFunction[A, A] =
     (n) => iterateDiffble(f, n)
 
-  def mixinIsle[A: LinearStructure](
+  def mixinIsle[A : LinearStructure](
       f: DiffbleFunction[A, A],
       isle: DiffbleFunction[A, A] => DiffbleFunction[A, A],
       normalize: DiffbleFunction[A, A] = id[A]) = {
@@ -212,14 +211,15 @@ object DiffbleFunction {
   /**
     * Big sum, with terms (via support) in general depending on the argument.
     */
-  case class BigSum[A: LinearStructure, B: LinearStructure](
+  case class BigSum[A : LinearStructure, B : LinearStructure](
       fns: A => Traversable[DiffbleFunction[A, B]]
   )
       extends DiffbleFunction[A, B] {
-    val func = (a: A) => {
-      val terms = for (f <- fns(a)) yield f.func(a)
+    val func = (a: A) =>
+      {
+        val terms = for (f <- fns(a)) yield f.func(a)
 
-      (terms :\ zeroB)(sumB)
+        (terms :\ zeroB)(sumB)
     }
 
     private val zeroB = vzero[B]
@@ -229,13 +229,14 @@ object DiffbleFunction {
     private val sumA = vsum[A]
 
     val grad = (a: A) =>
-      (b: B) => {
-        val terms = for (f <- fns(a)) yield f.grad(a)(b)
-        (terms :\ zeroA)(sumA)
+      (b: B) =>
+        {
+          val terms = for (f <- fns(a)) yield f.grad(a)(b)
+          (terms :\ zeroA)(sumA)
     }
   }
 
-  case class Diagonal[A: LinearStructure]()
+  case class Diagonal[A : LinearStructure]()
       extends DiffbleFunction[A, (A, A)] {
     val lsA = implicitly[LinearStructure[A]]
 
@@ -244,7 +245,7 @@ object DiffbleFunction {
     val grad = (a: A) => (v: (A, A)) => lsA.sum(v._1, v._2)
   }
 
-  case class DotProd[A: LinearStructure, B: LinearStructure](
+  case class DotProd[A : LinearStructure, B : LinearStructure](
       sc: Double, vect: DiffbleFunction[A, B])
       extends DiffbleFunction[A, B] {
     val prodB = vprod[B]
@@ -256,7 +257,7 @@ object DiffbleFunction {
     val grad = (a: A) => (b: B) => prodA(sc, vect.grad(a)(b))
   }
 
-  case class Sum[A: LinearStructure, B: LinearStructure](
+  case class Sum[A : LinearStructure, B : LinearStructure](
       first: DiffbleFunction[A, B], second: DiffbleFunction[A, B])
       extends DiffbleFunction[A, B] {
     val sumB = vsum[B]
@@ -268,7 +269,7 @@ object DiffbleFunction {
     val grad = (a: A) => (b: B) => sumA(first.grad(a)(b), second.grad(a)(b))
   }
 
-  case class Zero[A: LinearStructure, B: LinearStructure]()
+  case class Zero[A : LinearStructure, B : LinearStructure]()
       extends DiffbleFunction[A, B] {
     val zeroA = vzero[A]
 
@@ -279,8 +280,9 @@ object DiffbleFunction {
     val grad = (a: A) => (b: B) => zeroA
   }
 
-  implicit def diffFnLS[A: LinearStructure, B: LinearStructure]
-    : LinearStructure[DiffbleFunction[A, B]] = {
+  implicit def diffFnLS[
+      A : LinearStructure, B : LinearStructure]: LinearStructure[
+      DiffbleFunction[A, B]] = {
 
     val sum = (f: DiffbleFunction[A, B], g: DiffbleFunction[A, B]) =>
       Sum[A, B](f, g)

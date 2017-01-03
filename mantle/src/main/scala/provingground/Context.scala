@@ -49,16 +49,18 @@ object Contexts {
       if (dfn.freevars.isEmpty) Some(dfn)
       else
         for (headvar <- dfn.freevars.headOption;
-             value <- substitutions(headvar);
-             recval <- instantiate(substitutions)(
-                          DefnEqual(dfn.lhs.subs(headvar, value),
-                                    dfn.rhs.subs(headvar, value),
-                                    dfn.freevars.tail))) yield recval
+        value <- substitutions(headvar);
+        recval <- instantiate(substitutions)(
+            DefnEqual(dfn.lhs.subs(headvar, value),
+                      dfn.rhs.subs(headvar, value),
+                      dfn.freevars.tail))) yield recval
     }
   }
 
-  case class Defn(
-      lhsname: AnySym, typ: Typ[Term], rhs: Term, freevars: List[Term])
+  case class Defn(lhsname: AnySym,
+                  typ: Typ[Term],
+                  rhs: Term,
+                  freevars: List[Term])
       extends DefnEquality {
     val lhs = typ.symbObj(lhsname)
 
@@ -150,7 +152,7 @@ object Contexts {
     /**
       * export term,
       * XXX check if this can be upgraded to Term => PtnTyp (or U)
-      * the issue seems to be the subs bound for Lambda case class.
+      * the issue seems to be the subs bound for LambdaTerm case class.
       */
     val elim: Term => Term
 
@@ -236,7 +238,7 @@ object Contexts {
 
     def constants = variable +: tail.constants
 
-    def eliminator(y: Term) = Lambda(variable, y)
+    def eliminator(y: Term) = LambdaTerm(variable, y)
 
     def defns: Seq[Defn] =
       tail.defns map ((dfn) => dfn.map(optlambda(variable)))
@@ -246,20 +248,21 @@ object Contexts {
 
     def eliminate(isVar: Term => Boolean): Term => Term =
       (y) =>
-        if (isVar(variable)) Lambda(variable, tail.eliminate(isVar)(y))
+        if (isVar(variable)) LambdaTerm(variable, tail.eliminate(isVar)(y))
         else tail.eliminate(isVar)(y)
 
     //XXX refine the type of this so that it is recursively a pattern type.
-    val elim = (y: Term) => Lambda(variable, tail.elim(y))
+    val elim = (y: Term) => LambdaTerm(variable, tail.elim(y))
 
     type ArgType = (Term, tail.ArgType)
 
     val instantiate: ArgType => Term => Term = (fstrest) =>
-      (t) => {
-        val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
-        val func = Lambda(variable, tail.instantiate(rest)(t))
-        func(fst)
+      (t) =>
+        {
+          val rest: tail.ArgType = fstrest._2
+          val fst = fstrest._1
+          val func = LambdaTerm(variable, tail.instantiate(rest)(t))
+          func(fst)
     }
 
     // If tail.typ is a function of variable, we get a Pi-type instead.
@@ -340,10 +343,11 @@ object Contexts {
     type ArgType = (Term, tail.ArgType)
 
     val instantiate: ArgType => Term => Term = (fstrest) =>
-      (t) => {
-        val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
-        (tail.instantiate(rest)(t)).subs(dfn.lhs, dfn.rhs)
+      (t) =>
+        {
+          val rest: tail.ArgType = fstrest._2
+          val fst = fstrest._1
+          (tail.instantiate(rest)(t)).subs(dfn.lhs, dfn.rhs)
     }
 
     /*
@@ -397,7 +401,8 @@ object Contexts {
     def apply(tp: Typ[V]): Typ[ConstructorType] = tail(tp)
   }
 
-  case class DefnEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
+  case class DefnEqualityMixin[
+      +U <: Term with Subs[U], V <: Term with Subs[V]](
       eqlty: DefnEquality, tail: Context[U, V])
       extends Context[U, V] {
     type ConstructorType = tail.ConstructorType
@@ -428,7 +433,8 @@ object Contexts {
 //    val typ = tail.typ
   }
 
-  case class SimpEqualityMixin[+U <: Term with Subs[U], V <: Term with Subs[V]](
+  case class SimpEqualityMixin[
+      +U <: Term with Subs[U], V <: Term with Subs[V]](
       eqlty: DefnEquality, tail: Context[U, V], dep: Boolean = false)
       extends Context[FuncLike[Term, U], V] {
     type ConstructorType = FuncLike[Term, tail.ConstructorType]
@@ -455,10 +461,11 @@ object Contexts {
     type ArgType = (Term, tail.ArgType)
 
     val instantiate: ArgType => Term => Term = (fstrest) =>
-      (t) => {
-        val rest: tail.ArgType = fstrest._2
-        val fst = fstrest._1
-        (tail.instantiate(rest)(t)).subs(eqlty.lhs, eqlty.rhs)
+      (t) =>
+        {
+          val rest: tail.ArgType = fstrest._2
+          val fst = fstrest._1
+          (tail.instantiate(rest)(t)).subs(eqlty.lhs, eqlty.rhs)
     }
 
     def apply(tp: Typ[V]): Typ[ConstructorType] =

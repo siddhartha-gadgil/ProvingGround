@@ -9,9 +9,7 @@ import RefineTerms.{refine, refineTyp}
 import scala.util.Try
 
 case object TermLang
-    extends ExprLang[Term]
-    with Domain[Term]
-    with ExprPatterns[Term] {
+    extends ExprLang[Term] with Domain[Term] with ExprPatterns[Term] {
   def variable[S](name: S, typ: Term): Option[Term] = (name, typ) match {
     case (s: String, t: Typ[u]) =>
       Some(t.symbObj(s))
@@ -154,9 +152,9 @@ case object TermLang
   def isPi: Term => Option[(Term, Term)] = {
     case st: FuncTyp[u, v] =>
       Some((st.dom.Var, st.codom))
-      case st: GenFuncTyp[u, v] =>
-        val x = st.domain.Var
-        Some((x, st.fib(x)))
+    case st: GenFuncTyp[u, v] =>
+      val x = st.domain.Var
+      Some((x, st.fib(x)))
     case _ => None
   }
 

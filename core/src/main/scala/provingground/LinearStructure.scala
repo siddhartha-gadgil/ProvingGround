@@ -1,7 +1,8 @@
 package provingground
 
-case class LinearStructure[A](
-    zero: A, sum: (A, A) => A, mult: (Double, A) => A) {
+case class LinearStructure[A](zero: A,
+                              sum: (A, A) => A,
+                              mult: (Double, A) => A) {
   def diff(frm: A, remove: A) = sum(frm, mult(-1.0, remove))
 }
 
@@ -30,7 +31,7 @@ object LinearStructure {
     case n => nrec(base, ind)(ls)(n - 1)
   }
 
-  implicit class VectorOps[A: LinearStructure](a: A) {
+  implicit class VectorOps[A : LinearStructure](a: A) {
     val vs = implicitly[LinearStructure[A]]
 
     def |+|(b: A) = vs.sum(a, b)

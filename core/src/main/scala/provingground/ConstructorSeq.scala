@@ -80,8 +80,9 @@ object ConstructorSeq {
       (f: FuncLike[H, C]) => cons.pattern.inducDefCase(cons.cons, d, f)
 
     def inducDefn(fibre: Func[H, Typ[C]]) =
-      InductiveDefinition.DataCons(
-          inducData(fibre), inducDefn, tail.inducDefn(fibre))
+      InductiveDefinition.DataCons(inducData(fibre),
+                                   inducDefn,
+                                   tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
       (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
@@ -217,8 +218,9 @@ object ConstructorSeqMap {
       (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)
 
     def inducDefn(fibre: Func[H, Typ[Cod]]) =
-      InductiveDefinition.DataCons(
-          inducData(fibre), inducDefn, tail.inducDefn(fibre))
+      InductiveDefinition.DataCons(inducData(fibre),
+                                   inducDefn,
+                                   tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]) =
       (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
@@ -253,8 +255,9 @@ object ConstructorSeqDom {
     def intros[H <: Term with Subs[H]](typ: Typ[H]) = List()
   }
 
-  case class Cons[S <: Term with Subs[S]](
-      name: AnySym, pattern: ConstructorShape[S], tail: ConstructorSeqDom)
+  case class Cons[S <: Term with Subs[S]](name: AnySym,
+                                          pattern: ConstructorShape[S],
+                                          tail: ConstructorSeqDom)
       extends ConstructorSeqDom {
     def mapped[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
@@ -271,8 +274,8 @@ object ConstructorSeqDom {
   }
 }
 
-case class ConstructorSeqTL[H <: Term with Subs[H]](
-    seqDom: ConstructorSeqDom, typ: Typ[H]) {
+case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom,
+                                                    typ: Typ[H]) {
   def |:[S <: Term with Subs[S]](head: ConstructorTL[S, H]) =
     ConstructorSeqTL(
         ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)

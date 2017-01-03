@@ -45,18 +45,16 @@ object ShapeTree {
       extends ShapeTree {
     def recSubTrees =
       for (domTree <- dom.subTrees;
-           varTree <- variable.subTrees;
-           valTree <- value.subTrees) yield
-        LambdaNode(varTree, domTree, valTree)
+      varTree <- variable.subTrees;
+      valTree <- value.subTrees) yield LambdaNode(varTree, domTree, valTree)
   }
 
   case class EqualityNode(dom: ShapeTree, lhs: ShapeTree, rhs: ShapeTree)
       extends ShapeTree {
     def recSubTrees =
       for (domTree <- dom.subTrees;
-           lhsTree <- lhs.subTrees;
-           rhsTree <- rhs.subTrees) yield
-        EqualityNode(domTree, lhsTree, rhsTree)
+      lhsTree <- lhs.subTrees;
+      rhsTree <- rhs.subTrees) yield EqualityNode(domTree, lhsTree, rhsTree)
   }
 
   case class PairNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {

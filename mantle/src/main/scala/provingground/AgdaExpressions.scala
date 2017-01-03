@@ -129,8 +129,7 @@ object AgdaExpressions {
     def typdefn: Parser[TypedVar] =
       token ~ spc ~ colon ~ spc ~ expr ^^ {
         case x ~ _ ~ _ ~ _ ~ t => TypedVar(x.name, t)
-      } |
-      "(" ~ opt(wspc) ~> token ~ spc ~ colon ~ spc ~ expr <~ opt(wspc) ~ ")" ^^ {
+      } | "(" ~ opt(wspc) ~> token ~ spc ~ colon ~ spc ~ expr <~ opt(wspc) ~ ")" ^^ {
         case x ~ _ ~ _ ~ _ ~ t => TypedVar(x.name, t)
       }
 
@@ -180,8 +179,7 @@ object AgdaExpressions {
       * An expression, to parse to an agda term.
       */
     def expr: Parser[Expression] =
-      (((arrow() | lambda() |
-                  deparrow() | univ | typedvar) /: patterns.map(
+      (((arrow() | lambda() | deparrow() | univ | typedvar) /: patterns.map(
                   ptnmatch(_, spc)))(_ | _) |
           ((arrow(wspc) | lambda(wspc) | deparrow(wspc)) /: patterns.map(
                   ptnmatch(_, wspc)))(_ | _) | appl() | term)
@@ -325,7 +323,7 @@ object AgdaExpressions {
   case class Apply(func: Expression, arg: Expression) extends Expression {
     def asTerm(names: String => Option[Term]): Option[Term] =
       for (a <- func.asTerm(names); b <- arg.asTerm(names);
-           z <- applyterm(a, b)) yield z
+      z <- applyterm(a, b)) yield z
   }
 
   /**

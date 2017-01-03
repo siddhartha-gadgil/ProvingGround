@@ -22,7 +22,7 @@ object BigTree {
 
   class LazyNode[A](_left: => BigTree[A], _right: => BigTree[A])
       extends BigNode[A] {
-    lazy val left = _left
+    lazy val left  = _left
     lazy val right = _right
   }
 

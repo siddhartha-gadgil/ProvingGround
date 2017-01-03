@@ -4,8 +4,17 @@ val scalaV = "2.11.8"
 
 val ammV = "0.8.1"
 
+scalaOrganization in ThisBuild := "org.typelevel"
 
 scalaVersion in ThisBuild := scalaV
+
+classpathTypes += "maven-plugin"
+
+resolvers += Resolver.sonatypeRepo("releases")
+
+// addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
+
+addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
 lazy val jsProjects = Seq(client)
 
@@ -16,16 +25,16 @@ lazy val baseSettings = Seq(version := "0.8",
 lazy val commonSettings = baseSettings ++ Seq(
     resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
 //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.spire-math" %% "spire" % "0.11.0",
-      "org.scalatest" % "scalatest_2.11" % "3.0.1" % "test",
-      "com.lihaoyi" %% "fansi" % "0.2.3",
-      "com.lihaoyi" %% "upickle" % "0.4.3",
-      "com.chuusai" %% "shapeless" % "2.3.2",
-      "org.typelevel" %% "cats" % "0.8.1",
-      "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
+      "org.spire-math" %% "spire"         % "0.11.0",
+      "org.scalatest"  % "scalatest_2.11" % "3.0.1" % "test",
+      "com.lihaoyi"    %% "fansi"         % "0.2.3",
+      "com.lihaoyi"    %% "upickle"       % "0.4.3",
+      "com.chuusai"    %% "shapeless"     % "2.3.2",
+      "org.typelevel"  %% "cats"          % "0.8.1",
+      "com.lihaoyi"    % "ammonite"       % ammV cross CrossVersion.full
     ),
     scalacOptions ++= Seq("-unchecked",
                           "-deprecation",
@@ -41,27 +50,27 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
-    "com.lihaoyi" %% "ammonite-ops" % ammV,
-    "com.github.nscala-time" %% "nscala-time" % "2.0.0",
-    "org.reactivemongo" %% "reactivemongo" % "0.11.13",
-    "com.typesafe.akka" %% "akka-actor" % akkaV,
-    "com.typesafe.akka" %% "akka-slf4j" % akkaV,
-    "de.heikoseeberger" %% "akka-sse" % "1.8.1",
+    "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi"            %% "ammonite-ops"  % ammV,
+    "com.github.nscala-time" %% "nscala-time"   % "2.0.0",
+    "org.reactivemongo"      %% "reactivemongo" % "0.11.13",
+    "com.typesafe.akka"      %% "akka-actor"    % akkaV,
+    "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
+    "de.heikoseeberger"      %% "akka-sse"      % "1.8.1",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
-    "com.typesafe" % "config" % "1.3.0",
-    "org.mongodb" %% "casbah" % "3.0.0",
+    "com.typesafe" % "config"  % "1.3.0",
+    "org.mongodb"  %% "casbah" % "3.0.0",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "com.typesafe.akka" %% "akka-http" % "10.0.0",
+    "com.typesafe.akka" %% "akka-http"   % "10.0.0",
     // "com.typesafe.akka" %% "akka-http" % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.0",
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-    "org.slf4j" % "slf4j-api" % "1.7.16",
-//    "org.slf4j" % "slf4j-nop" %"1.7.16",
+    "org.slf4j"              % "slf4j-api"       % "1.7.16",
+    "org.slf4j"   % "slf4j-simple"  %   "1.7.16",
     "com.lihaoyi" %% "pprint" % "0.4.3",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.12",
@@ -72,7 +81,8 @@ lazy val jvmSettings = Seq(
     "org.scalanlp" %% "breeze-natives" % "0.12",
     // The visualization library is distributed separately as well.
     // It depends on LGPL code
-    "org.scalanlp" %% "breeze-viz" % "0.12"),
+    "org.scalanlp" %% "breeze-viz" % "0.12"
+  ),
   resources in Compile += (fastOptJS in (client, Compile)).value.data
 )
 
@@ -93,11 +103,11 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
-    "com.lihaoyi" %% "ammonite-ops" % ammV,
-    "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0",
-    "edu.stanford.nlp" % "stanford-corenlp" % "3.6.0" classifier "models",
-    "com.google.protobuf" % "protobuf-java" % "2.6.1"
+    "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi"         %% "ammonite-ops"    % ammV,
+    "edu.stanford.nlp"    % "stanford-corenlp" % "3.6.0",
+    "edu.stanford.nlp"    % "stanford-corenlp" % "3.6.0" classifier "models",
+    "com.google.protobuf" % "protobuf-java"    % "2.6.1"
   )
 )
 
@@ -122,32 +132,35 @@ lazy val nfSettings = Seq(
 )
 
 lazy val client = project
-  .settings(name := "ProvingGround-JS",
-            scalaVersion := scalaV,
-            persistLauncher := true,
-            persistLauncher in Test := false,
-            // sourceMapsDirectories += coreJS.base / "..",
-            unmanagedSourceDirectories in Compile := Seq(
-              (scalaSource in Compile).value),
-            libraryDependencies ++= Seq(
-              "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-              "com.lihaoyi" %%% "scalatags" % "0.6.1",
-              "com.lihaoyi" %%% "upickle" % "0.4.3"
-            ))
+  .settings(
+    name := "ProvingGround-JS",
+    scalaVersion := scalaV,
+    persistLauncher := true,
+    persistLauncher in Test := false,
+    // sourceMapsDirectories += coreJS.base / "..",
+    unmanagedSourceDirectories in Compile := Seq(
+      (scalaSource in Compile).value),
+    libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "0.8.0",
+      "com.lihaoyi"  %%% "scalatags"   % "0.6.1",
+      "com.lihaoyi"  %%% "upickle"     % "0.4.3"
+    )
+  )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
   .dependsOn(coreJS)
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
   .settings(commonSettings: _*)
   .settings(name := "ProvingGround-Core")
-  .settings(libraryDependencies ++= Seq(
+  .settings(
+    libraryDependencies ++= Seq(
 //      "com.lihaoyi" %%% "upickle" % "0.3.4"
-  ))
+    ))
   .jsConfigure(_ enablePlugins ScalaJSWeb)
 //  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
 
 lazy val coreJVM = core.jvm
-lazy val coreJS = core.js
+lazy val coreJS  = core.js
 
 lazy val functionfinder = project
   .settings(commonSettings: _*)
@@ -164,10 +177,11 @@ val initCommands =
   """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
 
 lazy val mantle = (project in file("mantle"))
-  .settings(name := "ProvingGround-mantle",
+  .settings(
+    name := "ProvingGround-mantle",
     scalaJSProjects := Seq(client),
     pipelineStages in Assets := Seq(scalaJSPipeline)
-  //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
+    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   )
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
@@ -211,15 +225,16 @@ lazy val deepwalk = (project in file("deepwalk"))
     name := "DeepWalk4s",
     classpathTypes += "maven-plugin",
     libraryDependencies ++= Seq(
-      "org.deeplearning4j" % "deeplearning4j-core" % "0.6.0",
+      "org.deeplearning4j" % "deeplearning4j-core"  % "0.6.0",
       "org.deeplearning4j" % "deeplearning4j-graph" % "0.6.0",
-      "org.nd4j" % "nd4j-native-platform" % "0.6.0",
-      "org.deeplearning4j" % "deeplearning4j-nlp" % "0.6.0",
+      "org.nd4j"           % "nd4j-native-platform" % "0.6.0",
+      "org.deeplearning4j" % "deeplearning4j-nlp"   % "0.6.0",
 //              "org.deeplearning4j" % "deeplearning4j-ui" % "0.6.0",
-      "org.nd4j" % "nd4j-native" % "0.6.0",
-      "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+      "org.nd4j"    % "nd4j-native"   % "0.6.0",
+      "com.lihaoyi" % "ammonite"      % ammV % "test" cross CrossVersion.full,
       "com.lihaoyi" %% "ammonite-ops" % ammV
-    ))
+    )
+  )
   .settings(baseSettings: _*)
   .settings(initialCommands in (Test, console) :=
     s"""ammonite.Main("import scala.collection.JavaConversions._").run() """)

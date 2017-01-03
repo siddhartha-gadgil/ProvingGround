@@ -21,8 +21,7 @@ object LeanExportElem {
   }
 
   class DataBase(dat: Vector[Data], lines: Vector[String]) {
-    val map =
-      (dat map ((data) => ((data.index, data.tpe.take(2)), data))).toMap
+    val map = (dat map ((data) => ((data.index, data.tpe.take(2)), data))).toMap
 
     def find(index: Long, tpe: String) = map.get((index, tpe))
 
@@ -62,21 +61,19 @@ object LeanExportElem {
         case Data(_, "#EA", List(eid1, eid2)) =>
           for (a <- getExpr(eid1.toLong); b <- getExpr(eid2.toLong)) yield
             (Expr.Appln(a, b))
-        case Data(_, "#EC", nid :: uids) =>
-          {
+        case Data(_, "#EC", nid :: uids) => {
             val univs = (uids map ((x) => getUniv(x.toLong))).flatten
             getName(nid.toLong) map (Expr.Const(_, univs))
           }
         case Data(_, "#EL", List(info, nid, eid1, eid2)) =>
           for (a <- getName(nid.toLong);
-               b <- getExpr(eid1.toLong);
-               c <- getExpr(eid2.toLong)) yield
-            (Expr.Lambda(Info.get(info), a, b, c))
+          b <- getExpr(eid1.toLong);
+          c <- getExpr(eid2.toLong)) yield
+            (Expr.LambdaTerm(Info.get(info), a, b, c))
         case Data(_, "#EP", List(info, nid, eid1, eid2)) =>
           for (a <- getName(nid.toLong);
-               b <- getExpr(eid1.toLong);
-               c <- getExpr(eid2.toLong)) yield
-            (Expr.Pi(Info.get(info), a, b, c))
+          b <- getExpr(eid1.toLong);
+          c <- getExpr(eid2.toLong)) yield (Expr.Pi(Info.get(info), a, b, c))
       }
 
     def readGlobalUniv(command: String): Option[GlobalUniv] =
@@ -94,8 +91,8 @@ object LeanExportElem {
         val (eid1, eid2) = (tailArgs(1).toLong, tailArgs(2).toLong)
         val univParams = (nids map ((x) => getName(x.toLong))).flatten
         for (a <- getName(nid.toLong);
-             b <- getExpr(eid1.toLong);
-             c <- getExpr(eid2.toLong)) yield (Definition(a, univParams, b, c))
+        b <- getExpr(eid1.toLong);
+        c <- getExpr(eid2.toLong)) yield (Definition(a, univParams, b, c))
       } else None
     }
 
@@ -114,7 +111,7 @@ object LeanExportElem {
         val eid = tailArgs(1).toLong
         val univParams = (nids map ((x) => getName(x.toLong))).flatten
         for (a <- getName(nid.toLong);
-             b <- getExpr(eid.toLong)) yield (Axiom(a, univParams, b))
+        b <- getExpr(eid.toLong)) yield (Axiom(a, univParams, b))
       } else None
     }
 
@@ -131,7 +128,7 @@ object LeanExportElem {
           (tailArgs(1).toLong, tailArgs(2).toLong, tailArgs(3).toInt)
         val univParams = (uids map ((x) => getUniv(x.toLong))).flatten
         for (a <- getName(nid.toLong);
-             b <- getExpr(eid.toLong)) yield
+        b <- getExpr(eid.toLong)) yield
           (Ind(numParams, univParams, a, b, numConstructors))
       } else None
 
@@ -158,12 +155,13 @@ object LeanExportElem {
       else Some(readInducDefnFrom(start))
     }
 
-    def readAllInducDefns(lines: Vector[String],
-                          accum: Vector[InducDefn] =
-                            Vector()): Vector[InducDefn] = {
-      (readNextInducDefn(lines) map ((dfn) =>
-                readAllInducDefns(lines drop (dfn.size), dfn +: accum)))
-        .getOrElse(accum)
+    def readAllInducDefns(
+        lines: Vector[String],
+        accum: Vector[InducDefn] = Vector()): Vector[InducDefn] = {
+      (readNextInducDefn(lines) map
+          ((dfn) =>
+                readAllInducDefns(lines drop (dfn.size),
+                                  dfn +: accum))).getOrElse(accum)
     }
 
     lazy val getAllInducDefns = readAllInducDefns(lines)
@@ -265,21 +263,20 @@ object LeanExportElem {
         case Data(_, "#EA", List(eid1, eid2)) =>
           for (a <- get(ds, eid1.toLong); b <- get(ds, eid2.toLong)) yield
             (Appln(a, b))
-        case Data(_, "#EC", nid :: uids) =>
-          {
+        case Data(_, "#EC", nid :: uids) => {
             val univs = (uids map ((x) => Univ.get(ds, x.toLong))).flatten
             Name.get(ds, nid.toLong) map (Const(_, univs))
           }
         case Data(_, "#EL", List(info, nid, eid1, eid2)) =>
           for (a <- Name.get(ds, nid.toLong);
-               b <- get(ds, eid1.toLong);
-               c <- get(ds, eid2.toLong)) yield
-            (Lambda(Info.get(info), a, b, c))
+          b <- get(ds, eid1.toLong);
+          c <- get(ds, eid2.toLong)) yield
+            (LambdaTerm(Info.get(info), a, b, c))
 
         case Data(_, "#EP", List(info, nid, eid1, eid2)) =>
           for (a <- Name.get(ds, nid.toLong);
-               b <- get(ds, eid1.toLong);
-               c <- get(ds, eid2.toLong)) yield (Pi(Info.get(info), a, b, c))
+          b <- get(ds, eid1.toLong);
+          c <- get(ds, eid2.toLong)) yield (Pi(Info.get(info), a, b, c))
       }
 
     case class Var(index: Int) extends Expr {
@@ -298,7 +295,7 @@ object LeanExportElem {
       val constants = func.constants ++ arg.constants
     }
 
-    case class Lambda(info: Info, varName: Name, varTyp: Expr, value: Expr)
+    case class LambdaTerm(info: Info, varName: Name, varTyp: Expr, value: Expr)
         extends Expr {
       val constants = value.constants
     }
@@ -319,8 +316,10 @@ object LeanExportElem {
 
   case class GlobalUniv(name: Name) extends LeanExportElem
 
-  case class Definition(
-      name: Name, univParams: List[Name] = List(), tpe: Expr, value: Expr)
+  case class Definition(name: Name,
+                        univParams: List[Name] = List(),
+                        tpe: Expr,
+                        value: Expr)
       extends LeanExportElem {
     def dependents = tpe.constants ++ value.constants
 
@@ -416,11 +415,11 @@ class LeanToTerm(
       case Appln(func, arg) =>
         exprToTerm(func, variables) match {
           case Some(fn: FuncLike[u, v]) =>
-            exprToTerm(arg, variables) flatMap ((x) =>
-                  Try(fn(x.asInstanceOf[u])).toOption)
+            exprToTerm(arg, variables) flatMap
+            ((x) => Try(fn(x.asInstanceOf[u])).toOption)
           case _ => None
         }
-      case Expr.Lambda(_, name, typExpr, valueExpr) =>
+      case Expr.LambdaTerm(_, name, typExpr, valueExpr) =>
         val typOpt = exprToTerm(typExpr, variables)
         typOpt match {
           case Some(typ: Typ[u]) =>
@@ -460,8 +459,7 @@ class LeanToTerm(
     val paramsOpt =
       fullTypOpt flatMap ((typ) => Try(getVariables(induc.size)(typ)).toOption)
 
-    val fullConstructorList =
-      (induc.cons map ((c) => exprToTerm(c.tpe))).flatten
+    val fullConstructorList = (induc.cons map ((c) => exprToTerm(c.tpe))).flatten
 
     val formalConsOpt =
       paramsOpt map { (params) =>
@@ -471,13 +469,14 @@ class LeanToTerm(
     val formalTyp = induc.ind.name.toString :: Type
 
     val valueOpt =
-      formalConsOpt map ((formalCons) =>
-            InductiveTyp.fromFormal(formalCons.toList, formalTyp))
+      formalConsOpt map
+      ((formalCons) => InductiveTyp.fromFormal(formalCons.toList, formalTyp))
 
     val checkTyp =
       fullTypOpt flatMap ((typ) => Try(foldterms(typ, paramsOpt.get)).toOption)
 
     for (params <- paramsOpt; value <- valueOpt
-         if checkTyp == Some(Type)) yield polyLambda(params, value)
+                                          if checkTyp == Some(Type)) yield
+      polyLambda(params, value)
   }
 }

@@ -49,7 +49,7 @@ class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
   val n = "n" :: NatTyp
 
   val Vec = ((n: SafeLong) =>
-               IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
+    IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
 
   val NilVec = (Vector(): Vector[X]).getTerm(Vec(Literal(0)))
 

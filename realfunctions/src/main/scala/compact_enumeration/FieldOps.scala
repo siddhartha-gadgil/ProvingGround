@@ -54,9 +54,9 @@ object FieldOps {
     implicit def natField[A: FieldOps](n: Int): A = {
       val fl = implicitly[FieldOps[A]]
       n match {
-        case 0 => fl.zero
+        case 0          => fl.zero
         case k if k < 0 => -natField[A](-k)
-        case _ => natField[A](n - 1) + fl.one
+        case _          => natField[A](n - 1) + fl.one
       }
     }
   }

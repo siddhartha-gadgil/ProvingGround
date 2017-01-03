@@ -43,13 +43,12 @@ object AndrewsCurtisController extends Controller {
   def acQuery = Action(parse.text) { implicit request =>
     val (header, message) = read[(String, String)](request.body)
     header match {
-      case Header.evolve =>
-        {
-          val (rank, steps) = read[(Int, Int)](message)
-          acPost(pickleInit(rank))
-          evolvePost(rank, steps)
-          Ok("evolution started")
-        }
+      case Header.evolve => {
+        val (rank, steps) = read[(Int, Int)](message)
+        acPost(pickleInit(rank))
+        evolvePost(rank, steps)
+        Ok("evolution started")
+      }
       case _ => Ok("TODO")
     }
   }
@@ -63,10 +62,10 @@ object AndrewsCurtisController extends Controller {
     val resultFut = Future(evolve(rank, steps))
     resultFut onSuccess {
       case result => {
-          println(result)
-          val pickled = pickleTriple(result, rank)
-          acPost(pickled)
-        }
+        println(result)
+        val pickled = pickleTriple(result, rank)
+        acPost(pickled)
+      }
     }
   }
 }

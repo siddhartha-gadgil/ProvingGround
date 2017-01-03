@@ -6,7 +6,7 @@ import annotation._
 
 /** Tangles defined and various constructions
   *
-  * Example: (Cup | Cup) * (Cap | Cap) gives the two component unlink 
+  * Example: (Cup | Cup) * (Cap | Cap) gives the two component unlink
   */
 object Tangle {
 
@@ -35,8 +35,8 @@ object Tangle {
 
     /** Number of base tangles in a tangle */
     val weight: Int = this match {
-      case b: BaseTangle => 1
-      case PureTangle(bts) => bts.length
+      case b: BaseTangle         => 1
+      case PureTangle(bts)       => bts.length
       case ConTangle(head, tail) => head.weight + tail.weight
     }
 
@@ -47,8 +47,9 @@ object Tangle {
 
     val symmarcs = arcs ++ (for ((x, y) <- arcs) yield (y, x))
 
-    @tailrec private def recSameCmp(
-        ab: (Int, Int), cd: (Int, Int), cursor: (Int, Int)): Boolean = {
+    @tailrec private def recSameCmp(ab: (Int, Int),
+                                    cd: (Int, Int),
+                                    cursor: (Int, Int)): Boolean = {
       if (cursor == ab) false
       else if (cursor == cd) true
       else recSameCmp(ab, cd, symmarcs(cursor))
@@ -57,8 +58,9 @@ object Tangle {
     def sameCmp(ab: (Int, Int), cd: (Int, Int)) =
       recSameCmp(ab, cd, symmarcs(ab))
 
-    @tailrec final def firstReached(
-        start: (Int, Int), ab: (Int, Int), cd: (Int, Int)): Boolean = {
+    @tailrec final def firstReached(start: (Int, Int),
+                                    ab: (Int, Int),
+                                    cd: (Int, Int)): Boolean = {
       if (start == ab) true
       else if (start == cd) false
       else firstReached(symmarcs(start), ab, cd)
@@ -69,28 +71,29 @@ object Tangle {
   case class PureTangle(bts: List[BaseTangle]) extends Tangle {
     def concat(that: Tangle): Tangle = that match {
       case ThinTangle(_) => this
-      case t: Tangle => ConTangle(this, t)
+      case t: Tangle     => ConTangle(this, t)
     }
     val height = 1
 //    lazy val head = this
-    lazy val pts = List(this)
-    val dom: Int = (bts map (_.dom)).sum
-    val codom: Int = (bts map (_.codom)).sum
+    lazy val pts            = List(this)
+    val dom: Int            = (bts map (_.dom)).sum
+    val codom: Int          = (bts map (_.codom)).sum
     def |(that: PureTangle) = PureTangle(bts ::: that.bts)
 
-    def cumdom(k: Int) = (bts take k map (_.dom)).sum
+    def cumdom(k: Int)   = (bts take k map (_.dom)).sum
     def cumcodom(k: Int) = (bts take k map (_.codom)).sum
 
     val arcs =
-      (for (j <- 0 to bts.length - 1; ((a, b), (c, d)) <- bts(j).arcs) yield
-        ((a + cumdom(j), b + cumcodom(j)), (c + cumdom(j), d + cumcodom(j)))).toMap
+      (for (j <- 0 to bts.length - 1; ((a, b), (c, d)) <- bts(j).arcs)
+        yield
+          ((a + cumdom(j), b + cumcodom(j)), (c + cumdom(j), d + cumcodom(j)))).toMap
   }
 
   /** A tangle with no rows (in particular an identity) */
   case class ThinTangle(dom: Int) extends Tangle {
-    val codom = dom
-    val height = 0
-    lazy val pts = List()
+    val codom                = dom
+    val height               = 0
+    lazy val pts             = List()
     def concat(that: Tangle) = that
 
     val arcs: Map[(Int, Int), (Int, Int)] = Map.empty
@@ -99,10 +102,10 @@ object Tangle {
   /** Base tangle */
   trait BaseTangle extends Tangle {
     def concat(that: Tangle): Tangle = PureTangle(List(this)) concat that
-    val bts = List(this)
-    val height = 1
-    lazy val head = PureTangle(List(this))
-    lazy val pts = List(head)
+    val bts                          = List(this)
+    val height                       = 1
+    lazy val head                    = PureTangle(List(this))
+    lazy val pts                     = List(head)
   }
 
   /** A base tangle is implicitly converted to a puretangle */
@@ -110,7 +113,7 @@ object Tangle {
 
   /** Cup tangle*/
   case object Cup extends BaseTangle {
-    val dom = 0
+    val dom   = 0
     val codom = 2
 
     val arcs = Map((2, 1) -> (2, 2))
@@ -118,7 +121,7 @@ object Tangle {
 
   /** Cap tangle */
   case object Cap extends BaseTangle {
-    val dom = 2
+    val dom   = 2
     val codom = 0
 
     val arcs = Map((1, 1) -> (1, 2))
@@ -126,7 +129,7 @@ object Tangle {
 
   /** OverCrossing */
   case object Over extends BaseTangle {
-    val dom = 2
+    val dom   = 2
     val codom = 2
 
     val arcs = Map((1, 1) -> (2, 2), (1, 2) -> (2, 1))
@@ -134,7 +137,7 @@ object Tangle {
 
   /** UnderCrossing */
   case object Under extends BaseTangle {
-    val dom = 2
+    val dom   = 2
     val codom = 2
 
     val arcs = Map((1, 1) -> (2, 2), (1, 2) -> (2, 1))
@@ -142,7 +145,7 @@ object Tangle {
 
   /** Vetical Tangle */
   case object Vert extends BaseTangle {
-    val dom = 1
+    val dom   = 1
     val codom = 1
 
     val arcs = Map((1, 1) -> (1, 2))
@@ -150,16 +153,16 @@ object Tangle {
 
   /** Composite tangle */
   case class ConTangle(head: PureTangle, tail: Tangle) extends Tangle {
-    val dom = head.dom
-    val codom = head.codom
+    val dom         = head.dom
+    val codom       = head.codom
     val height: Int = 1 + tail.height
 
     def concat(that: Tangle): Tangle = ConTangle(head, tail concat that)
-    lazy val pts: List[PureTangle] = head :: tail.pts
+    lazy val pts: List[PureTangle]   = head :: tail.pts
 
     val arcs =
-      head.arcs ++ (for (((a, b), (c, d)) <- tail.arcs) yield
-        ((a + 1, b) -> (c + 1, d))).toMap
+      head.arcs ++ (for (((a, b), (c, d)) <- tail.arcs)
+        yield ((a + 1, b) -> (c + 1, d))).toMap
   }
 
   /** Parametrized Pure Tangle - avoid this, use HoTT instead*/
@@ -174,7 +177,7 @@ object Tangle {
 
   /** Tangle Evolver */
   lazy val TangleEvolver = new GroupoidEvolver(
-      pureTangleStream: Stream[Tangle])
+    pureTangleStream: Stream[Tangle])
 
   /** Stream of all tangles */
   lazy val TangleStream = TangleEvolver.flow

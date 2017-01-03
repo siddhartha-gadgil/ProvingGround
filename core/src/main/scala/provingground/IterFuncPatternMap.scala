@@ -154,12 +154,14 @@ object IterFuncPatternMap {
 
     def target(x: Typ[Cod]) = tail ->: head.target(x)
 
-    def depTarget(xs: Func[O, Typ[Cod]]) = (fmly: Family) => {
-      val a = tail.Var
-      val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      piDefn(a)(headfibre(a).depTarget(xs)(b))
-    }
+    def depTarget(xs: Func[O, Typ[Cod]]) =
+      (fmly: Family) =>
+        {
+          val a = tail.Var
+          val b = fmly(a)
+          val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+          piDefn(a)(headfibre(a).depTarget(xs)(b))
+      }
 
     //    type Cod = head.Cod
 
@@ -240,12 +242,14 @@ object IterFuncPatternMap {
       piDefn(a)(headfibre(a).target(x))
     }
 
-    def depTarget(xs: Func[O, Typ[C]]) = (fmly: FuncLike[TT, V]) => {
-      val a = tail.Var
-      val b = fmly(a)
-      val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
-      piDefn(a)(headfibre(a).depTarget(xs)(b))
-    }
+    def depTarget(xs: Func[O, Typ[C]]) =
+      (fmly: FuncLike[TT, V]) =>
+        {
+          val a = tail.Var
+          val b = fmly(a)
+          val targfibre = lmbda(a)(headfibre(a).depTarget(xs)(b))
+          piDefn(a)(headfibre(a).depTarget(xs)(b))
+      }
 
     def subs(x: Term, y: Term) =
       DepFuncIterPtnMap(
@@ -300,13 +304,9 @@ object IterFuncPatternMap {
           (shape: IterFuncShape[HeadTerm]) => IdIterPtnMap[O, C]
       }
 
-    implicit def funcIterMapper[Tail <: Term with Subs[Tail],
-                                HS <: Term with Subs[HS],
-                                O <: Term with Subs[O],
-                                C <: Term with Subs[C],
-                                HF <: Term with Subs[HF],
-                                HTT <: Term with Subs[HTT],
-                                HDT <: Term with Subs[HDT]](
+    implicit def funcIterMapper[Tail <: Term with Subs[Tail], HS <: Term with Subs[
+            HS], O <: Term with Subs[O], C <: Term with Subs[C], HF <: Term with Subs[
+            HF], HTT <: Term with Subs[HTT], HDT <: Term with Subs[HDT]](
         implicit hm: IterFuncMapper[HS, O, C, HF, HTT, HDT]) =
       new IterFuncMapper[Func[Tail, HS],
                          O,
@@ -319,13 +319,10 @@ object IterFuncPatternMap {
         }
       }
 
-    implicit def depFuncIterMapper[Tail <: Term with Subs[Tail],
-                                   HS <: Term with Subs[HS],
-                                   O <: Term with Subs[O],
-                                   C <: Term with Subs[C],
-                                   HF <: Term with Subs[HF],
-                                   HTT <: Term with Subs[HTT],
-                                   HDT <: Term with Subs[HDT]](
+    implicit def depFuncIterMapper[
+        Tail <: Term with Subs[Tail], HS <: Term with Subs[HS], O <: Term with Subs[
+            O], C <: Term with Subs[C], HF <: Term with Subs[HF], HTT <: Term with Subs[
+            HTT], HDT <: Term with Subs[HDT]](
         implicit hm: IterFuncMapper[HS, O, C, HF, HTT, HDT]) =
       new IterFuncMapper[FuncLike[Tail, HS],
                          O,
@@ -350,12 +347,12 @@ object IterFuncPatternMap {
     //                             type DT <: Term with Subs[DT]
     //                           }
 
-    def mapper[O <: Term with Subs[O], C <: Term with Subs[C]]
-      : IterFuncMapper[S, O, C, F, TT, DT] forSome {
-        type F <: Term with Subs[F];
-        type TT <: Term with Subs[TT];
-        type DT <: Term with Subs[DT]
-      }
+    def mapper[O <: Term with Subs[O], C <: Term with Subs[C]]: IterFuncMapper[
+        S, O, C, F, TT, DT] forSome {
+      type F <: Term with Subs[F];
+      type TT <: Term with Subs[TT];
+      type DT <: Term with Subs[DT]
+    }
 
     def subs(x: Term, y: Term): IterFuncShape[S]
 

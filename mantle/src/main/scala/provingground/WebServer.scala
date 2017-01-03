@@ -123,17 +123,18 @@ object WebServer {
 
   val typTimeSeries: MutMap[String, Vector[Double]] = MutMap()
 
-  def showDist[U <: Term with Subs[U]](
-      fd: FiniteDistribution[U], names: Vector[(Term, String)]) = {
-    fdVec =
-      fd.pmf map ((wt) =>
-            (latex(encode(names)(wt.elem)),
-             latex(encode(names)(wt.elem.typ)),
-             wt.weight))
+  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U],
+                                       names: Vector[(Term, String)]) = {
+    fdVec = fd.pmf map
+    ((wt) =>
+          (latex(encode(names)(wt.elem)),
+           latex(encode(names)(wt.elem.typ)),
+           wt.weight))
   }
 
-  def showTimeSeries[U <: Term with Subs[U]](
-      term: U, ts: Vector[Double], names: Vector[(Term, String)]) = {
+  def showTimeSeries[U <: Term with Subs[U]](term: U,
+                                             ts: Vector[Double],
+                                             names: Vector[(Term, String)]) = {
     timeSeries(latex(encode(names)(term))) = ts
   }
 

@@ -72,18 +72,20 @@ object VecTyp {
   private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
 
   private val vsize = (n: Long) =>
-    (v: Vector[Long]) => {
-      assert(v.size == n, "domain mismatch in Pi-type")
-      n
+    (v: Vector[Long]) =>
+      {
+        assert(v.size == n, "domain mismatch in Pi-type")
+        n
   }
 
   val nsize = vsize.hott(ltyp)
 
   private val nvsucc = (n: Long) =>
     (a: Long) =>
-      (v: Vector[Long]) => {
-        assert(v.size == n, "domain mismatch in Pi-type")
-        a +: v
+      (v: Vector[Long]) =>
+        {
+          assert(v.size == n, "domain mismatch in Pi-type")
+          a +: v
   }
 
   private val nsucctyp =

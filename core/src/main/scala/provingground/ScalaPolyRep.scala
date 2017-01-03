@@ -40,20 +40,24 @@ case class OrScalaPolyRep[U <: Term with Subs[U], W](
     OrScalaPolyRep(first.subs(x, y), second.subs(x, y))
 }
 
-case class DepFuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
+case class DepFuncPolyRep[
+    U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
     domrep: ScalaPolyRep[U, W], codrep: ScalaPolyRep[X, Y])
     extends ScalaPolyRep[FuncLike[U, X], W => Y] {
   def apply(typ: Typ[Term])(elem: W => Y) = typ match {
     case typ @ FuncTyp(dom: Typ[U], codom: Typ[X]) =>
       Try(
-          ExtendedFunction(
-              elem, domrep, codrep, typ.asInstanceOf[FuncTyp[U, X]])).toOption
-    case typ @ PiDefn(x : Term, y : Typ[v]) =>
+          ExtendedFunction(elem,
+                           domrep,
+                           codrep,
+                           typ.asInstanceOf[FuncTyp[U, X]])).toOption
+    case typ @ PiDefn(x: Term, y: Typ[v]) =>
       Try(
-          ExtendedDepFunction(elem,
-                              domrep,
-                              codrep,
-                              (x :-> y).asInstanceOf[Func[U, Typ[X]]])).toOption
+          ExtendedDepFunction(
+              elem,
+              domrep,
+              codrep,
+              (x :-> y).asInstanceOf[Func[U, Typ[X]]])).toOption
 
     case typ @ PiTyp(fibers) =>
       Try(
@@ -84,8 +88,10 @@ case class FuncPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
   def apply(typ: Typ[Term])(elem: W => Y) = typ match {
     case typ @ FuncTyp(dom: Typ[U], codom: Typ[X]) =>
       Try(
-          ExtendedFunction(
-              elem, domrep, codrep, typ.asInstanceOf[FuncTyp[U, X]])).toOption
+          ExtendedFunction(elem,
+                           domrep,
+                           codrep,
+                           typ.asInstanceOf[FuncTyp[U, X]])).toOption
     case _ => None
   }
 
@@ -110,7 +116,7 @@ case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
         PairTerm(a, b)
     case typ @ SigmaTyp(fibers) =>
       for (a <- firstrep(fibers.dom.asInstanceOf[Typ[Term]])(elem._1);
-           b <- secondrep(fibers(a).asInstanceOf[Typ[Term]])(elem._2)) yield
+      b <- secondrep(fibers(a).asInstanceOf[Typ[Term]])(elem._2)) yield
         DepPair(a, b, fibers.asInstanceOf[Func[U, Typ[X]]])
     case _ => None
   }
@@ -138,7 +144,7 @@ object ScalaPolyRep {
 
   implicit class PolyTermScala[U <: Term with Subs[U]](term: U) {
     type Rep[W] = ScalaPolyRep[U, W]
-    def scala[W: Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
+    def scala[W : Rep] = implicitly[ScalaPolyRep[U, W]].unapply(term)
   }
 
   implicit def depFuncPolyRep[

@@ -12,11 +12,12 @@ object Verify {
     * Attempts to prove positivity on domain by gluing
     * @param func given function
     * @param domain (full) interval
-    * 
+    *
     * @param pfs given proofs, only those giving positivity on half intervals are considered.
     */
-  def optGlueFuncPositive(
-      func: RealFunc, domain: Interval, pfs: Set[Term]): Option[Term] = {
+  def optGlueFuncPositive(func: RealFunc,
+                          domain: Interval,
+                          pfs: Set[Term]): Option[Term] = {
     Try(GlueFuncPositive(func, domain, pfs)).toOption
   }
 
@@ -43,11 +44,12 @@ object Verify {
     * Attempts to prove positivity on domain by gluing
     * @param func given function
     * @param domain (full) cube
-    * 
+    *
     * @param pfs given proofs, only those giving positivity on cubelets are considered.
     */
-  def optGlueCubeFuncPositive(
-      func: RealMultiFunc, domain: Cube, pfs: Set[Term]): Option[Term] = {
+  def optGlueCubeFuncPositive(func: RealMultiFunc,
+                              domain: Cube,
+                              pfs: Set[Term]): Option[Term] = {
     Try(GlueCubeFuncPositive(func, domain, pfs)).toOption
   }
 
@@ -57,8 +59,10 @@ object Verify {
       faceBoundPf: FaceBound,
       partialDerivativeBounds: Traversable[PartialDerBound]): Option[Term] =
     Try(
-        MVTfaceBoundFuncPositive(
-            func, domain, faceBoundPf, partialDerivativeBounds)).toOption
+      MVTfaceBoundFuncPositive(func,
+                               domain,
+                               faceBoundPf,
+                               partialDerivativeBounds)).toOption
 
   def optDeducedFaceBoundProof(func: RealMultiFunc,
                                domain: Cube,
@@ -75,9 +79,9 @@ object Verify {
   def optInferredDerivativeBound(der: IsDerivative, funcBound: FuncBound) =
     Try(InferredDerivativeBound(der: IsDerivative, funcBound: FuncBound)).toOption
 
-  def optInferredPartialDerivativeBound(
-      der: IsPartialDerivative, funcBound: MultiFuncBound) =
+  def optInferredPartialDerivativeBound(der: IsPartialDerivative,
+                                        funcBound: MultiFuncBound) =
     Try(
-        InferredPartialDerivativeBound(
-            der: IsPartialDerivative, funcBound: MultiFuncBound)).toOption
+      InferredPartialDerivativeBound(der: IsPartialDerivative,
+                                     funcBound: MultiFuncBound)).toOption
 }

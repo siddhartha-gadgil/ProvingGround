@@ -103,8 +103,7 @@ object TermExpr {
 
   case class SigmaExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
-      case fib: Func[_, _] =>
-        {
+      case fib: Func[_, _] => {
           val x = fib.dom.Var
           val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
           SigmaTyp(fibre)
@@ -119,8 +118,7 @@ object TermExpr {
 
   case class PiExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
-      case fib: Func[_, _] =>
-        {
+      case fib: Func[_, _] => {
           val x = fib.dom.Var
           val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
           piDefn(x)(fib(x).asInstanceOf[Typ[Term]])

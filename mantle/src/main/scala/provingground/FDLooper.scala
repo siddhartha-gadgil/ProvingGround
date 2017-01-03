@@ -9,8 +9,9 @@ import Hub.system
 import FDLooper._
 
 object FDLooper {
-  case class Continue(
-      steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class Continue(steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
   case object RunnerStop
 }
@@ -27,7 +28,7 @@ object FDLooper {
   * @tparam P parameter type
   * @param param parameters for the system that can be changed while running.
   */
-class FDLooper[X: LinearStructure, P](
+class FDLooper[X : LinearStructure, P](
     dyn: DiffbleFunction[X, X], //includes purging
     feedback: Double => X => X => X,
     normalize: X => X,

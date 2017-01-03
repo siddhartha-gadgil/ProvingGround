@@ -2,7 +2,7 @@ package provingground
 
 import provingground.{TruncatedDistribution => TD, TruncatedDistributionLang => TDL}
 
-class StochasticLang[E: ExprLang: Domain: ExprPatterns](
+class StochasticLang[E : ExprLang : Domain : ExprPatterns](
     baseWeight: Double = 1.0,
     flipWeight: Double = 0.0,
     argShiftWeight: Double = 0.0,
@@ -15,13 +15,9 @@ class StochasticLang[E: ExprLang: Domain: ExprPatterns](
     val be = new TruncatedDistributionExprPatterns
     val oc = new ExprApplnOps(self.appln)(base, bd, be)
     val withOps = for (b <- oc.base(func, arg);
-                       f <- oc.flip(func, arg);
-                       s <- oc.shiftArg(func, arg)) yield
-      (
-          b <*> baseWeight <+>
-          (f <*> flipWeight) <+>
-          (s <*> argShiftWeight)
-      )
+    f <- oc.flip(func, arg);
+    s <- oc.shiftArg(func, arg)) yield
+    (b <*> baseWeight <+> (f <*> flipWeight) <+> (s <*> argShiftWeight))
     val tdConversions =
       conversions map ((cnv) => (td: TD[E]) => TD.optF(td map (cnv)))
     val convertedTDTD = oc.convert(tdConversions)(func, arg)

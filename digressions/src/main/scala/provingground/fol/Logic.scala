@@ -11,7 +11,7 @@ import scala.language.implicitConversions
 object Logic {
 
   private def stringFn(name: String, params: List[String]) = {
-    val head = name + "(" + params.head
+    val head  = name + "(" + params.head
     val terms = for (t <- params.tail) yield (", " + t)
     (head /: terms)(_ + _) + ")"
   }
@@ -62,12 +62,12 @@ object Logic {
 
   @deprecated("Use instead formal relations", "8/2/2012")
   object Pred {
-    val Eql = BinRel("=")
+    val Eql                    = BinRel("=")
     def eqls(s: Term, t: Term) = AtomFormula(Eql, List(s, t))
 
-    val Gt = BinRel(">")
+    val Gt                   = BinRel(">")
     def gt(s: Term, t: Term) = AtomFormula(Gt, List(s, t))
-    val Lt = BinRel("<")
+    val Lt                   = BinRel("<")
     def lt(s: Term, t: Term) = AtomFormula(Lt, List(s, t))
   }
 
@@ -159,7 +159,7 @@ object Logic {
 
   /** Logical Variable */
   class Var extends Term {
-    val freeVars = Set(this)
+    val freeVars                    = Set(this)
     def subs(xt: Var => Term): Term = xt(this)
   }
 
@@ -174,7 +174,7 @@ object Logic {
 
   /** Logical constants */
   trait Const extends Term with LanguageParam {
-    override val freeVars: Set[Var] = Set()
+    override val freeVars: Set[Var]    = Set()
     override def subs(xt: Var => Term) = this
   }
 
@@ -188,8 +188,8 @@ object Logic {
 
   /** Unparsed term formally wrapped */
   case class TermFmla(name: String) extends Term {
-    override def toString = name
-    val freeVars: Set[Var] = Set()
+    override def toString           = name
+    val freeVars: Set[Var]          = Set()
     def subs(xt: Var => Term): Term = this
   }
 
@@ -199,15 +199,15 @@ object Logic {
 
     override def toString = f match {
       case FuncSym(name, _) => stringFn(name, params map (_.toString))
-      case BinOp(name) => params.head.toString + name + params.last.toString
-      case _ => super.toString
+      case BinOp(name)      => params.head.toString + name + params.last.toString
+      case _                => super.toString
     }
-    val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
+    val freeVars: Set[Var]          = (params map (_.freeVars)) reduce (_ union _)
     def subs(xt: Var => Term): Term = RecTerm(f, params map (_.subs(xt)))
   }
 
   type Condition = Formula => Formula
-  type Propt = Var => Formula
+  type Propt     = Var => Formula
   type CondPropt = (Var, Formula) => Formula
 
   /** Logical Formulas */
@@ -248,7 +248,7 @@ object Logic {
   object Formula {
     object empty extends Formula {
       def subs(xt: Var => Term): Formula = this
-      val freeVars: Set[Var] = Set.empty
+      val freeVars: Set[Var]             = Set.empty
     }
   }
 
@@ -263,20 +263,20 @@ object Logic {
     override def subs(xt: Var => Term): Formula =
       ConjFormula(p subs xt, conj, q subs xt)
     val freeVars: Set[Var] = p.freeVars union q.freeVars
-    override def toString = p.toString + conj + q.toString
+    override def toString  = p.toString + conj + q.toString
   }
 
   /** Formulas built by Negation */
   case class NegFormula(p: Formula) extends RecFormula {
     def subs(xt: Var => Term): Formula = NegFormula(p subs xt)
-    val freeVars: Set[Var] = p.freeVars
-    override def toString = "!" + p.toString
+    val freeVars: Set[Var]             = p.freeVars
+    override def toString              = "!" + p.toString
   }
 
   /** Exists(x) Formula */
   case class ExQuantFormula(v: Var, p: Formula) extends Formula {
     def subs(xt: Var => Term): Formula = ExQuantFormula(v, p subs xt)
-    val freeVars: Set[Var] = p.freeVars - v
+    val freeVars: Set[Var]             = p.freeVars - v
 
     override def toString = "Ex. " + v.toString + " " + p.toString
   }
@@ -284,7 +284,7 @@ object Logic {
   /** ForAll(x) Formula */
   case class UnivQuantFormula(v: Var, p: Formula) extends Formula {
     def subs(xt: Var => Term): Formula = UnivQuantFormula(v, p subs xt)
-    val freeVars: Set[Var] = p.freeVars - v
+    val freeVars: Set[Var]             = p.freeVars - v
 
     override def toString = "ForAll " + v.toString + " " + p.toString
   }
@@ -312,10 +312,10 @@ object Logic {
   /** Equality formula; equality may also be given by conjunction formula */
   case class Eq(p: Term, q: Term) extends AtomicFormula {
     def subs(xt: Var => Term): Formula = Eq(p subs xt, q subs xt)
-    val freeVars: Set[Var] = p.freeVars union q.freeVars
-    val pred: Pred = BinRel("=")
-    val params = List(p, q)
-    override def toString = p.toString + "=" + q.toString
+    val freeVars: Set[Var]             = p.freeVars union q.freeVars
+    val pred: Pred                     = BinRel("=")
+    val params                         = List(p, q)
+    override def toString              = p.toString + "=" + q.toString
   }
 
   implicit def eqFmla(pq: Eq): AtomFormula =
@@ -324,18 +324,18 @@ object Logic {
   /** Boolean True as Formula */
   case object True extends Formula {
     def subs(xt: Var => Term): Formula = this
-    val freeVars: Set[Var] = Set()
+    val freeVars: Set[Var]             = Set()
   }
 
   /** Boolean False as Formula */
   case object False extends Formula {
     def subs(xt: Var => Term): Formula = this
-    val freeVars: Set[Var] = Set()
+    val freeVars: Set[Var]             = Set()
   }
 
   /** Treat Boolean as Formula */
   implicit def trueFalse(b: Boolean): Formula = b match {
-    case true => True
+    case true  => True
     case false => False
   }
 
@@ -355,14 +355,14 @@ object Logic {
   private def evalF(c: Formula => Formula, p: Formula) = c(p)
 
   def subs(baseFmla: Formula, vars: List[Var], props: List[Propt]): Formula = {
-    val pairs = vars zip props
+    val pairs    = vars zip props
     val fmlaList = for ((x, p) <- pairs) yield p(x)
     (baseFmla /: fmlaList)(_ & _)
   }
 
   def subs(baseFmla: Formula, x: Var, props: List[Propt]): Formula = {
     def evalx(p: Var => Formula): Formula = p(x)
-    val fmlaList: List[Formula] = props map (evalx)
+    val fmlaList: List[Formula]           = props map (evalx)
     (baseFmla /: fmlaList)(_ & _)
   }
 
@@ -370,8 +370,9 @@ object Logic {
   def fmlaZip(c: List[Formula => Formula], base: Formula) = (c :\ base)(evalF)
 
   /** Substitutes variables in (Var, Formula)=> Formula to get Formula=> Formula, and then zips with base. */
-  def zipSubs(
-      c: List[(Var, Formula) => Formula], xs: List[Var], base: Formula) = {
+  def zipSubs(c: List[(Var, Formula) => Formula],
+              xs: List[Var],
+              base: Formula) = {
     def evalx(p: (Var, Formula) => Formula, x: Var): Formula => Formula =
       p(x, _)
     val fmlaChain: List[Formula => Formula] = (c, xs).zipped.map(evalx)
@@ -403,7 +404,8 @@ object Logic {
   val exprProdSet: PartialFunction[(Expression, Expression), Set[Expression]] = {
     case (p: Formula, y: Var) if (p.freeVars contains y) =>
       (for (x <- p.freeVars) yield p.subs(x, y)).toSet union Set(
-          ExQuantFormula(y, p), UnivQuantFormula(y, p))
+        ExQuantFormula(y, p),
+        UnivQuantFormula(y, p))
     case (p: Formula, t: Term) =>
       (for (x <- p.freeVars) yield p.subs(x, t)).toSet
     case (p: Term, t: Term) =>
@@ -425,14 +427,14 @@ object Logic {
     * 2. Formula Variables for verifying tautologies.
     */
   def recValue(f: Formula, r: Formula => Boolean): Boolean = f match {
-    case NegFormula(p) => !(recValue(p, r))
-    case ConjFormula(p, "&", q) => recValue(p, r) && recValue(q, r)
-    case ConjFormula(p, "|", q) => recValue(p, r) || recValue(q, r)
+    case NegFormula(p)           => !(recValue(p, r))
+    case ConjFormula(p, "&", q)  => recValue(p, r) && recValue(q, r)
+    case ConjFormula(p, "|", q)  => recValue(p, r) || recValue(q, r)
     case ConjFormula(p, "=>", q) => (!recValue(p, r)) || recValue(q, r)
     case ConjFormula(p, "<=>", q) =>
       (recValue(p, r) && recValue(q, r)) ||
-      (!recValue(p, r) && !recValue(q, r))
-    case Eq(p, q) => p == q
+        (!recValue(p, r) && !recValue(q, r))
+    case Eq(p, q)   => p == q
     case p: Formula => r(p)
   }
 
@@ -442,10 +444,10 @@ object Logic {
   def recLogicFormula(r: PartialFunction[Formula, Formula])
     : PartialFunction[Formula, Formula] = {
     case ConjFormula(p, conj, q) => ConjFormula(r(p), conj, r(q))
-    case NegFormula(p) => NegFormula(r(p))
-    case ExQuantFormula(v, p) => ExQuantFormula(v, r(p))
-    case UnivQuantFormula(v, p) => UnivQuantFormula(v, r(p))
-    case Eq(p, q) => Eq(p, q)
+    case NegFormula(p)           => NegFormula(r(p))
+    case ExQuantFormula(v, p)    => ExQuantFormula(v, r(p))
+    case UnivQuantFormula(v, p)  => UnivQuantFormula(v, r(p))
+    case Eq(p, q)                => Eq(p, q)
   }
 
   /** Given a map on base formulas, recursively extends to Conjunctions and Negations and default to Identity */
@@ -480,11 +482,11 @@ object Logic {
 
   /** Offsping of Recursive formulas */
   def offspring(f: Formula): Set[Formula] = f match {
-    case NegFormula(p) => Set(p)
-    case ConjFormula(p, _, q) => Set(p, q)
-    case ExQuantFormula(x, p) => Set(p)
+    case NegFormula(p)          => Set(p)
+    case ConjFormula(p, _, q)   => Set(p, q)
+    case ExQuantFormula(x, p)   => Set(p)
     case UnivQuantFormula(x, p) => Set(p)
-    case _ => Set()
+    case _                      => Set()
   }
 
   /* Descendants of (recursive) formulas */
@@ -511,8 +513,8 @@ object Logic {
 
     /** Secondary map on terms */
     def sec(t: Term, z: Mbar): A = t match {
-      case x: Var => z(x)
-      case c: Const => primConst(c)
+      case x: Var             => z(x)
+      case c: Const           => primConst(c)
       case RecTerm(f, params) => primFunc(f)(params map (sec(_, z)))
     }
 
@@ -528,13 +530,13 @@ object Logic {
     /** Secondary map for formulas, depending of parameters for variables */
     def sec(phi: Formula, z: Mbar): Boolean = phi match {
       case AtomFormula(f, params) => primPred(f)(params map (sec(_, z)))
-      case f: RecFormula => recValue(phi, (p: Formula) => sec(p, z))
+      case f: RecFormula          => recValue(phi, (p: Formula) => sec(p, z))
 //    case NegFormula(p) => !(sec(p,z))
 //    case ConjFormula(p, "&", q) => sec(p,z) && sec(q,z)
 //    case ConjFormula(p, "|", q) => sec(p,z) || sec(q,z)
 //    case ConjFormula(p, "=>", q) => (!sec(p,z)) || sec(q,z)
 //    case ConjFormula(p, "<=>", q) => (sec(p,z) && sec(q,z)) || (!sec(p,z) && !sec(q,z))
-      case ExQuantFormula(x, p) => bigOr(varFormula(x, z, p))
+      case ExQuantFormula(x, p)   => bigOr(varFormula(x, z, p))
       case UnivQuantFormula(x, p) => bigAnd(varFormula(x, z, p))
     }
 
