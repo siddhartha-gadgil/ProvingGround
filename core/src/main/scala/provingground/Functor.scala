@@ -82,6 +82,32 @@ object Functors {
       }
     }
 
+  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]: Traverse[
+      ({ type Z[A] = X[Y[A]] })#Z] =
+    new Traverse[({ type Z[A] = X[Y[A]] })#Z]{
+      type F[A] = X[Y[A]]
+
+      val ty = implicitly[Traverse[Y]]
+
+      val tx = implicitly[Traverse[X]]
+
+      def traverse[G[_]: Applicative, A, B](fa: F[A])(
+          f: A => G[B]): G[F[B]] = {
+            def g(y: Y[A]) = ty.traverse(y)(f)
+            tx.traverse(fa)(g)
+          }
+
+      def foldLeft[A, B](fa: X[Y[A]],b: B)(f: (B, A) => B): B = {
+        val g: (B, Y[A]) => B = {case (b, ya) => ty.foldLeft(ya, b)(f)}
+        tx.foldLeft(fa, b)(g)
+      }
+
+      def foldRight[A, B](fa: X[Y[A]],lb: cats.Eval[B])(f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
+        val g: (Y[A], Eval[B]) => Eval[B] = {case (ya, b) => ty.foldRight(ya, b)(f)}
+        tx.foldRight(fa, lb)(g)
+      }
+     }
+
   implicit def traverseEquiv[F[_], Y[_]](implicit equiv: Equiv[F, Y],
                                          TY: Traverse[Y]): Traverse[F] =
     new Traverse[F] {
@@ -95,6 +121,8 @@ object Functors {
           f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] =
         TY.foldRight(equiv.map(fa), lb)(f)
     }
+
+
 
   type III[A] = (II[A], Id[A])
 
