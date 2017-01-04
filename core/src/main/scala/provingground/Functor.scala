@@ -82,6 +82,34 @@ object Functors {
       }
     }
 
+  import shapeless._
+  import HList._
+
+  implicit def traverseHCons[X[_]: Traverse, Y[_] <: HList : Traverse]: Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
+    new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
+      val XT = implicitly[Traverse[X]]
+      val YT = implicitly[Traverse[Y]]
+
+      type F[A] = X[A] :: Y[A]
+      def traverse[G[_]: Applicative, A, B](fa: F[A])(
+          f: A => G[B]): G[X[B] :: Y[B]] = {
+        val GA = implicitly[Applicative[G]]
+        val gy = YT.traverse(fa.tail)(f)
+        val gx = XT.traverse(fa.head)(f)
+        val gf = gy.map((y: Y[B]) => ((x: X[B]) => x :: y))
+        GA.ap(gf)(gx)
+      }
+      def foldLeft[A, B](fa: X[A] :: Y[A], b: B)(f: (B, A) => B): B = {
+        val fy = YT.foldLeft(fa.tail, b)(f)
+        XT.foldLeft(fa.head, fy)(f)
+      }
+      def foldRight[A, B](fa: X[A] :: Y[A], lb: cats.Eval[B])(
+          f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
+        val fxe = XT.foldRight(fa.head, lb)(f)
+        YT.foldRight(fa.tail, fxe)(f)
+      }
+    }
+
   implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
     : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
     new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
