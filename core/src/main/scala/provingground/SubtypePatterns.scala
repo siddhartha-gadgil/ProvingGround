@@ -21,7 +21,7 @@ trait QuasiInclusion[X, Y] {
 
   implicit val traverse: Traverse[F]
 
-  val incl: Y => F[X]
+  def incl(y: Y) : F[X]
 }
 
 object QuasiInclusion {
@@ -31,7 +31,7 @@ object QuasiInclusion {
 
       val traverse = implicitly[Traverse[F]]
 
-      val incl = (y: Y) => y: Id[X]
+      def incl(y: Y) =  y: Id[X]
     }
 
   implicit def pair[X, Y1, Y2](
@@ -42,9 +42,9 @@ object QuasiInclusion {
 
       val traverse = traversePair(qi1.traverse, qi2.traverse)
 
-      val incl = { p: (Y1, Y2) =>
+      def incl(p: (Y1, Y2)) =
         (qi1.incl(p._1), qi2.incl(p._2))
-      }
+
     }
 
   def constQI[X, Cnst]: QuasiInclusion[X, Cnst] =
@@ -53,7 +53,7 @@ object QuasiInclusion {
 
       val traverse = implicitly[Traverse[F]]
 
-      val incl = (c: Cnst) => c
+      def incl(c: Cnst) = c
     }
 
   implicit def stringQI[X] = constQI[X, String]
@@ -62,7 +62,7 @@ object QuasiInclusion {
 
   implicit def hnilIncl[X]: QuasiInclusion[X, HNil] = constQI[X, HNil]
 
-  implicit def hConsIncl[X, Y1 <: HList, Y2 <: HList](
+  implicit def hConsIncl[X, Y1, Y2 <: HList](
       implicit qi1: QuasiInclusion[X, Y1],
       qi2: QuasiInclusion[X, Y2]): QuasiInclusion[X, Y1 :: Y2] =
     new QuasiInclusion[X, Y1 :: Y2] {
@@ -70,9 +70,9 @@ object QuasiInclusion {
 
       val traverse = traversePair(qi1.traverse, qi2.traverse)
 
-      val incl = { p: Y1 :: Y2 =>
+      def incl(p: Y1 :: Y2) =
         (qi1.incl(p.head), qi2.incl(p.tail))
-      }
+
 
     }
 
@@ -84,7 +84,7 @@ object QuasiInclusion {
 
       val traverse = qi.traverse
 
-      val incl = (y: Y) => qi.incl(gen.to(y))
+      def incl(y: Y) = qi.incl(gen.to(y))
     }
 
   implicit def travQI[X, Y, G[_]: Traverse](
@@ -95,20 +95,20 @@ object QuasiInclusion {
       val traverse =
         traverseCompose[G, qi.F](implicitly[Traverse[G]], qi.traverse)
 
-      val incl = (gy: G[Y]) => gy map (qi.incl)
+      def incl(gy: G[Y]) = gy map ((x) => qi.incl(x))
     }
 }
 
 trait QuasiProjection[X, Y] {
-  val proj: X => Option[Y]
+  def proj (x: X) : Option[Y]
 }
 
 object QuasiProjection {
   def apply[X, Y](p: X => Option[Y]) = new QuasiProjection[X, Y] {
-    val proj = (x: X) => p(x)
+    def proj(x: X) = p(x)
   }
 
-  def constQuasiprojection[X, Cnst] = QuasiProjection((x: X) => None)
+  def constQuasiprojection[X, Cnst] = QuasiProjection((c: Cnst) => None)
 
   implicit def nilProjection[X] = constQuasiprojection[X, CNil]
 
@@ -130,8 +130,9 @@ object QuasiProjection {
     }
 
   implicit def genericProjection[X, Y, R](
-      implicit qp: QuasiProjection[R, Y],
-      gen: Generic.Aux[X, R]): QuasiProjection[X, Y] =
+      implicit gen: Generic.Aux[X, R],
+       qp: QuasiProjection[R, Y]
+      ): QuasiProjection[X, Y] =
     QuasiProjection((x: X) => qp.proj(gen.to(x)))
 
 }
