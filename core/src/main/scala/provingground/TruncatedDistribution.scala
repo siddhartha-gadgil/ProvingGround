@@ -68,7 +68,7 @@ object TruncDistVal {
       if (fds.isEmpty) None
       else
         Some(
-            vBigSum(fds)
+          vBigSum(fds)
         )
     }
     TruncDistVal(getFD)
@@ -160,9 +160,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
   case class OptAtom[A](opt: Option[A]) extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) =
       opt flatMap
-      ((value) =>
-            pruneFD(FiniteDistribution(Vector(Weighted(value, 1.0))),
-                    cutoff))
+        ((value) =>
+           pruneFD(FiniteDistribution(Vector(Weighted(value, 1.0))), cutoff))
   }
 
   def atom[A](a: A) = OptAtom(Some(a))
@@ -222,16 +221,15 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
       extends TruncatedDistribution[B] {
     def getFD(cutoff: Double) =
       base.getFD(cutoff) flatMap
-      ((fd) =>
-            {
-              val dists = fd.supp map (f)
+        ((fd) => {
+           val dists = fd.supp map (f)
 
-              val empty: TruncatedDistribution[B] =
-                TruncatedDistribution.Empty[B]
+           val empty: TruncatedDistribution[B] =
+             TruncatedDistribution.Empty[B]
 
-              val trunc = (dists :\ empty)(sum[B](_, _))
-              trunc.getFD(cutoff)
-          })
+           val trunc = (dists :\ empty)(sum[B](_, _))
+           trunc.getFD(cutoff)
+         })
   }
 
   class MapFD[A, B](base: => TruncatedDistribution[A],
@@ -245,9 +243,10 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
     def getFD(cutoff: Double) = {
       base
         .getFD(cutoff)
-        .map((fd) =>
-              fd.filter((oa: Option[A]) => !(oa.isEmpty))
-                .map((oa: Option[A]) => oa.get))
+        .map(
+          (fd) =>
+            fd.filter((oa: Option[A]) => !(oa.isEmpty))
+              .map((oa: Option[A]) => oa.get))
     }
   }
 
@@ -257,14 +256,13 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
       base
         .getFD(cutoff)
         .flatMap(
-            (fdtd) =>
-              {
-                val fdfd = fdtd mapOpt ((td) => td.getFD(cutoff))
-                val pmf = for (Weighted(fd, p) <- fdfd.pmf;
-                Weighted(a, q) <- fd.pmf) yield Weighted(a, p * q)
-                val fd = FiniteDistribution(pmf)
-                pruneFD(fd, cutoff)
-            }
+          (fdtd) => {
+            val fdfd = fdtd mapOpt ((td) => td.getFD(cutoff))
+            val pmf = for (Weighted(fd, p) <- fdfd.pmf;
+                           Weighted(a, q) <- fd.pmf) yield Weighted(a, p * q)
+            val fd = FiniteDistribution(pmf)
+            pruneFD(fd, cutoff)
+          }
         )
   }
 
@@ -279,11 +277,12 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
   def bigSum[A](tds: => Vector[TruncatedDistribution[A]]) =
     new BigSum(tds)
 
-  case class Coeffs[A](
-      support: Vector[A], coeffs: Double => A => Option[Double])
+  case class Coeffs[A](support: Vector[A],
+                       coeffs: Double => A => Option[Double])
       extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = {
-      val pmf = (support map ((a) => coeffs(cutoff)(a) map (Weighted(a, _)))).flatten
+      val pmf =
+        (support map ((a) => coeffs(cutoff)(a) map (Weighted(a, _)))).flatten
       if (pmf.isEmpty) None else Some(FiniteDistribution(pmf))
     }
   }
@@ -305,9 +304,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
   def mapOpt[A, B](base: TruncatedDistribution[A])(f: A => Option[B]) =
     (base mapOpt (f))
 
-  def mapOp[A, B, C](
-      xd: TruncatedDistribution[A], yd: TruncatedDistribution[B])(
-      op: (A, B) => C) = {
+  def mapOp[A, B, C](xd: TruncatedDistribution[A],
+                     yd: TruncatedDistribution[B])(op: (A, B) => C) = {
     (for (x <- xd; y <- yd) yield op(x, y))
   }
 
@@ -319,8 +317,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
 
   def liftOpFlatten[A, B, C](op: (A, B) => Option[C]) = {
     def lop(xd: TruncatedDistribution[A], yd: TruncatedDistribution[B]) = {
-      val tdOpt = (for (x <- xd; y <- yd) yield
-        op(x, y)): TruncatedDistribution[Option[C]]
+      val tdOpt = (for (x <- xd; y <- yd)
+        yield op(x, y)): TruncatedDistribution[Option[C]]
       new FlattenOpt(tdOpt): TruncatedDistribution[C]
     }
     lop _

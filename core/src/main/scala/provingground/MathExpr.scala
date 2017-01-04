@@ -96,18 +96,19 @@ object MathExpr {
   case class NPVP[T](np: NounPhrase[T], vp: VerbPhrase[T])
       extends SententialPhrase[T]
 
-  object NPVP{
+  object NPVP {
     type W[T] = (MathExpr[T], MathExpr[T])
-    implicit val incl = new SubType[NPVP, W]{
-      def incl[T] = {case NPVP(np, vp) => (np, vp)}
+    implicit val incl = new SubType[NPVP, W] {
+      def incl[T] = { case NPVP(np, vp) => (np, vp) }
 
       def restrict[T] = {
-        case Some((np :NounPhrase[T], vp : VerbPhrase[T])) => Some(NPVP(np, vp))
-        case _ => None}
+        case Some((np: NounPhrase[T], vp: VerbPhrase[T])) => Some(NPVP(np, vp))
+        case _                                            => None
+      }
     }
   }
 
-  object Preposition{
+  object Preposition {
     case object Of extends Preposition
 
     case object Over extends Preposition
@@ -132,13 +133,12 @@ object MathExpr {
 
   }
 
-
   /**
     * Preposition - this is a closed class.
     */
   sealed trait Preposition
 
-  object Determiner{
+  object Determiner {
     case object A extends Determiner
 
     case object The extends Determiner
@@ -330,6 +330,6 @@ object MathText {
                                  definiens: NounPhrase[T])
       extends SententialPhrase[T]
 
-  case class VariableType[T](
-      variables: List[NounPhrase[T]], typ: NounPhrase[T])
+  case class VariableType[T](variables: List[NounPhrase[T]],
+                             typ: NounPhrase[T])
 }

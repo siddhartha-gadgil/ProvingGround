@@ -23,14 +23,14 @@ object ShapeTree {
 
   case class ApplnNode(func: ShapeTree, arg: ShapeTree) extends ShapeTree {
     def recSubTrees =
-      for (funcTree <- func.subTrees; argTree <- arg.subTrees) yield
-        ApplnNode(funcTree, argTree)
+      for (funcTree <- func.subTrees; argTree <- arg.subTrees)
+        yield ApplnNode(funcTree, argTree)
   }
 
   case class ArrowNode(dom: ShapeTree, codom: ShapeTree) extends ShapeTree {
     def recSubTrees =
-      for (domTree <- dom.subTrees; codomTree <- codom.subTrees) yield
-        ArrowNode(domTree, codomTree)
+      for (domTree <- dom.subTrees; codomTree <- codom.subTrees)
+        yield ArrowNode(domTree, codomTree)
   }
 
   case class PiNode(fibre: ShapeTree) extends ShapeTree {
@@ -45,28 +45,30 @@ object ShapeTree {
       extends ShapeTree {
     def recSubTrees =
       for (domTree <- dom.subTrees;
-      varTree <- variable.subTrees;
-      valTree <- value.subTrees) yield LambdaNode(varTree, domTree, valTree)
+           varTree <- variable.subTrees;
+           valTree <- value.subTrees)
+        yield LambdaNode(varTree, domTree, valTree)
   }
 
   case class EqualityNode(dom: ShapeTree, lhs: ShapeTree, rhs: ShapeTree)
       extends ShapeTree {
     def recSubTrees =
       for (domTree <- dom.subTrees;
-      lhsTree <- lhs.subTrees;
-      rhsTree <- rhs.subTrees) yield EqualityNode(domTree, lhsTree, rhsTree)
+           lhsTree <- lhs.subTrees;
+           rhsTree <- rhs.subTrees)
+        yield EqualityNode(domTree, lhsTree, rhsTree)
   }
 
   case class PairNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {
     def recSubTrees =
-      for (firstTree <- first.subTrees; secondTree <- second.subTrees) yield
-        PairNode(firstTree, secondTree)
+      for (firstTree <- first.subTrees; secondTree <- second.subTrees)
+        yield PairNode(firstTree, secondTree)
   }
 
   case class PlusNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {
     def recSubTrees =
-      for (firstTree <- first.subTrees; secondTree <- second.subTrees) yield
-        PlusNode(firstTree, secondTree)
+      for (firstTree <- first.subTrees; secondTree <- second.subTrees)
+        yield PlusNode(firstTree, secondTree)
   }
 }
 
@@ -85,8 +87,9 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
   def arrow(dom: ShapeTree, codom: ShapeTree): ShapeTree =
     ArrowNode(dom, codom)
 
-  def lambda(
-      variable: ShapeTree, typ: ShapeTree, value: ShapeTree): ShapeTree =
+  def lambda(variable: ShapeTree,
+             typ: ShapeTree,
+             value: ShapeTree): ShapeTree =
     LambdaNode(variable, typ, value)
 
   def pi(fibre: ShapeTree): ShapeTree = PiNode(fibre)

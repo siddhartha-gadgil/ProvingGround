@@ -17,11 +17,11 @@ object TermPatterns {
     case l: LambdaLike[u, v] => (l.variable, l.value)
   }
 
-  val lambdaTriple = Pattern.partial[Term, III]{
-    case l : LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
+  val lambdaTriple = Pattern.partial[Term, III] {
+    case l: LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
   }
 
-  val piTriple = Pattern.partial[Term, III]{
+  val piTriple = Pattern.partial[Term, III] {
     case PiDefn(x: Term, y: Typ[u]) => ((x, x.typ), y)
     case PiTyp(fibre: Func[u, _]) =>
       val x: Term = fibre.dom.Var.asInstanceOf[Term]
@@ -29,18 +29,19 @@ object TermPatterns {
 
   }
 
-  val sigmaTriple = Pattern.partial[Term, III]{
-    case SigmaTyp(fibre : Func[u, _]) => fibre match {
-      case l : LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
-      case _ =>
-        val x : Term = fibre.dom.Var.asInstanceOf[Term]
-        ((x, x.typ.asInstanceOf[Typ[Term]]), fibre(x))
-    }
+  val sigmaTriple = Pattern.partial[Term, III] {
+    case SigmaTyp(fibre: Func[u, _]) =>
+      fibre match {
+        case l: LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
+        case _ =>
+          val x: Term = fibre.dom.Var.asInstanceOf[Term]
+          ((x, x.typ.asInstanceOf[Typ[Term]]), fibre(x))
+      }
   }
 
   val piTyp = Pattern.partial[Term, Id] {
     case PiDefn(x: Term, y: Typ[v]) => HoTT.lmbda(x)(y)
-    case PiTyp(fibre) => fibre
+    case PiTyp(fibre)               => fibre
   }
 
   val piLam = Pattern.partial[Term, II] {
@@ -116,7 +117,7 @@ object TermPatterns {
       }
   }
 
-  def termToExprRaw[E : ExprLang] = {
+  def termToExprRaw[E: ExprLang] = {
     import ExprLang._
     (formalAppln >> appln[E]) || (lambdaAppln >> lambda[E]) ||
     (prodTyp >> pairTyp[E]) || (funcTyp >> func[E]) || (piLam >> pi[E]) ||
@@ -124,17 +125,17 @@ object TermPatterns {
     (symbolic >> variable[E]) || (plusTyp >> or[E]) || (funcTyp >> func[E]) ||
     (prodTyp >> pairTyp[E]) || (absPair >> pair[E]) ||
     (unit >> { (e: E) =>
-          tt[E]
-        }) ||
+      tt[E]
+    }) ||
     (zero >> { (e: E) =>
-          ff[E]
-        }) ||
+      ff[E]
+    }) ||
     (star >> { (e: E) =>
-          qed[E]
-        }) || (firstIncl >> i1[E]) || (secondIncl >> i2[E])
+      qed[E]
+    }) || (firstIncl >> i1[E]) || (secondIncl >> i2[E])
   }
 
-  def termToExpr[E : ExprLang](univ: Int => Option[E]) = {
+  def termToExpr[E: ExprLang](univ: Int => Option[E]) = {
     (universe >> univ) || termToExprRaw[E]
   }
 

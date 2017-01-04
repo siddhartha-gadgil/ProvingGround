@@ -25,10 +25,10 @@ object NlpProse {
   def findroot(t: List[DepRel]): Token = {
     val roots = t filter (_.deptype == "root")
     (roots.headOption map ((d: DepRel) => d.gov)).getOrElse {
-      val govs = t map (_.gov)
-      val deps = t map (_.dep)
+      val govs             = t map (_.gov)
+      val deps             = t map (_.dep)
       def notdep(g: Token) = !(deps contains g)
-      val top = govs filter (notdep _)
+      val top              = govs filter (notdep _)
       top.head
     }
   }
@@ -70,8 +70,8 @@ object NlpProse {
     /** Deletes in the sense of method {{-}} a list of trees*/
     def --(ss: List[ProseTree]): ProseTree = ss match {
       case s :: List() => this - s
-      case s :: sss => (this - s) -- sss
-      case Nil => this
+      case s :: sss    => (this - s) -- sss
+      case Nil         => this
     }
 
     /** The tree of all descendants of a node */
@@ -119,7 +119,7 @@ object NlpProse {
   def mweTail(t: ProseTree, node: Token): Token = {
     val nxt = t.offspring(node) find (_.deptype == "mwe")
     nxt match {
-      case None => node
+      case None    => node
       case Some(x) => mweTail(t, x.dep) + node
     }
   }
@@ -181,55 +181,55 @@ object NlpProse {
   /** Fallback for all modifiers */
   object Modifier
       extends TypeListMatch(
-          List(
-              "abbrev",
-              "amod",
-              "appos",
-              "advcl",
-              "purpcl",
-              "det",
-              "predet",
-              "preconj",
-              "infmod",
-              "partmod",
-              "advmod",
-              "mwe",
-              "neg",
-              "rcmod",
-              "quantmod",
-              "nn",
-              "npadvmod",
-              "tmod",
-              "num",
-              "number",
-              "prep",
-              "possesive",
-              "prt",
-              "aux",
-              "auxpass"
-          )) // These are not technically modifiers but behave the same way
+        List(
+          "abbrev",
+          "amod",
+          "appos",
+          "advcl",
+          "purpcl",
+          "det",
+          "predet",
+          "preconj",
+          "infmod",
+          "partmod",
+          "advmod",
+          "mwe",
+          "neg",
+          "rcmod",
+          "quantmod",
+          "nn",
+          "npadvmod",
+          "tmod",
+          "num",
+          "number",
+          "prep",
+          "possesive",
+          "prt",
+          "aux",
+          "auxpass"
+        )) // These are not technically modifiers but behave the same way
 
   /** Fallback for all arguments */
   object Argument
       extends TypeListMatch(
-          List("agent",
-               "comp",
-               "acomp",
-               "attr",
-               "ccomp",
-               "xcomp",
-               "complm",
-               "obj",
-               "dobj",
-               "iobj",
-               "pobj",
-               "mark",
-               "rel",
-               "subj",
-               "nsubj",
-               "nsubjpass",
-               "csubj",
-               "csubjpass"))
+        List("agent",
+             "comp",
+             "acomp",
+             "attr",
+             "ccomp",
+             "xcomp",
+             "complm",
+             "obj",
+             "dobj",
+             "iobj",
+             "pobj",
+             "mark",
+             "rel",
+             "subj",
+             "nsubj",
+             "nsubjpass",
+             "csubj",
+             "csubjpass"))
 
   object Advcl extends TypeMatch("advcl")
 

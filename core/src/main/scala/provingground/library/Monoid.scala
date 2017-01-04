@@ -21,7 +21,7 @@ object Monoid {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
+  val leftId  = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
   val rightId = "rightIdAx" :: (a ~>: (op(a)(r) =:= a))
 
   val refl = lambda(a)(Refl(M, a))
@@ -44,18 +44,18 @@ object Monoid {
   val x = "x" :: X
 
   val extensionality = lambda(X)(
-      lambda(Y)(
-          lambda(f)(IdentityTyp.extnslty(f))
-      ))
+    lambda(Y)(
+      lambda(f)(IdentityTyp.extnslty(f))
+    ))
 
   val transfer = (X ~>:
-      (Y ~>: (f ~>: (g ~>: (x ~>: ((f =:= g) ->: (f(x) =:= g(x)))))))).Var
+    (Y ~>: (f ~>: (g ~>: (x ~>: ((f =:= g) ->: (f(x) =:= g(x)))))))).Var
 
   val names = Vector( //refl -> "id.reflexivity",
-      //                  sym -> "id.symmetry",
-      //                  trans -> "id.transitivity",
-      //                   extensionality -> "id.extendsionality",
-      transfer -> "id.transfer")
+    //                  sym -> "id.symmetry",
+    //                  trans -> "id.transitivity",
+    //                   extensionality -> "id.extendsionality",
+    transfer -> "id.transfer")
 
   val elTyps = a :-> (b :-> (a =:= b))
 
@@ -90,7 +90,7 @@ object Monoid {
                              sym,
                              trans,
                              assoc) * 0.5) ++
-    (FiniteDistribution.unif[Term](elTyps) * 0.5)
+      (FiniteDistribution.unif[Term](elTyps) * 0.5)
 
   val smallDist = (elemDist filter (_ != assoc)).normalized()
 
@@ -129,7 +129,7 @@ object MonoidSimple {
 
   val trans =
     "trans" :: a ~>:
-    (b ~>: (c ~>: ((eqM(a)(b)) ->:(eqM(b)(c)) ->: (eqM(a)(c)))))
+      (b ~>: (c ~>: ((eqM(a)(b)) ->: (eqM(b)(c)) ->: (eqM(a)(c)))))
 
   val l = "e_l" :: M
 
@@ -137,7 +137,7 @@ object MonoidSimple {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
+  val leftId  = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
   val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
 
   val refl = "refl" :: a ~>: (eqM(a)(a))
@@ -150,8 +150,19 @@ object MonoidSimple {
   val assoc =
     "assoc" :: (a ~>: (b ~>: (c ~>: (eqM(op(a)(op(b)(c)))(op(op(a)(b))(c))))))
 
-  val elemDist = FiniteDistribution.unif(
-      M, a, b, c, l, r, op, leftId, rightId, refl, sym, trans, assoc)
+  val elemDist = FiniteDistribution.unif(M,
+                                         a,
+                                         b,
+                                         c,
+                                         l,
+                                         r,
+                                         op,
+                                         leftId,
+                                         rightId,
+                                         refl,
+                                         sym,
+                                         trans,
+                                         assoc)
 }
 
 object Group {

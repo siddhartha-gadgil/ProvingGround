@@ -147,7 +147,7 @@ object ProbabilityDistribution {
 
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+?>
-      (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
+        (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)

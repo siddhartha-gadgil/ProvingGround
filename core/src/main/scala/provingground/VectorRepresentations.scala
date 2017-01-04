@@ -31,7 +31,8 @@ object VectorRepresentations {
 
   def randomVec(length: Int, damp: Double = 0.0) = {
     val rnd = new Random
-    val raw = ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble)).toVector
+    val raw =
+      ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble)).toVector
     val total = raw.sum
     raw map (_ * (1 / total))
   }
@@ -78,26 +79,28 @@ object VectorRepresentations {
     }
 
     def map[S](f: T => S) = {
-      val newrep = for (WeightVect(elem, vec) <- rep) yield
-        WeightVect(f(elem), vec)
+      val newrep = for (WeightVect(elem, vec) <- rep)
+        yield WeightVect(f(elem), vec)
 //        val newpmf = for (Weighted(elem, wt) <- pmf) yield Weighted(f(elem), wt)
 //        FiniteDistribution(newpmf).flatten
       Representation(newrep)
     }
 
     def feedback(baseweights: T => Double, damp: Double = 0.1) = {
-      val rawdiff = for (Weighted(pres, prob) <- pmf) yield
-        (Weighted(pres, baseweights(pres) / (baseweights(pres) * damp + prob)))
+      val rawdiff = for (Weighted(pres, prob) <- pmf)
+        yield
+          (Weighted(pres,
+                    baseweights(pres) / (baseweights(pres) * damp + prob)))
       val shift = rawdiff.map(_.weight).sum / (support.size)
-      val normaldiff = for (Weighted(pres, prob) <- rawdiff) yield
-        Weighted(pres, prob - shift)
+      val normaldiff = for (Weighted(pres, prob) <- rawdiff)
+        yield Weighted(pres, prob - shift)
       FiniteDistribution(normaldiff)
     }
 
     override def toString = {
       val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
-      val terms = (for (Weighted(elem, wt) <- sortedpmf) yield
-      (elem.toString + " : " + wt.toString + ", ")).foldLeft("")(_ + _)
+      val terms = (for (Weighted(elem, wt) <- sortedpmf)
+        yield (elem.toString + " : " + wt.toString + ", ")).foldLeft("")(_ + _)
       "[" + terms.dropRight(2) + "]"
     }
   }
