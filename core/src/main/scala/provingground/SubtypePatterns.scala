@@ -62,16 +62,16 @@ object QuasiInclusion {
 
   implicit def hnilIncl[X]: QuasiInclusion[X, HNil] = constQI[X, HNil]
 
-  implicit def hConsIncl[X, Y1, Y2 <: HList](
+  implicit def hConsIncl[X, Y1, Y2 <: HList, tF[_] <: HList](
       implicit qi1: QuasiInclusion[X, Y1],
-      qi2: QuasiInclusion[X, Y2]): QuasiInclusion[X, Y1 :: Y2] =
+      qi2: QuasiInclusion[X, Y2]{type F[A] = tF[A]}): QuasiInclusion[X, Y1 :: Y2] =
     new QuasiInclusion[X, Y1 :: Y2] {
-      type F[A] = (qi1.F[A], qi2.F[A])
+      type F[A] = qi1.F[A] :: tF[A]
 
-      val traverse = traversePair(qi1.traverse, qi2.traverse)
+      val traverse = traverseHCons(qi1.traverse, qi2.traverse)
 
       def incl(p: Y1 :: Y2) =
-        (qi1.incl(p.head), qi2.incl(p.tail))
+        qi1.incl(p.head) :: qi2.incl(p.tail)
 
 
     }
@@ -97,6 +97,7 @@ object QuasiInclusion {
 
       def incl(gy: G[Y]) = gy map ((x) => qi.incl(x))
     }
+
 }
 
 trait QuasiProjection[X, Y] {
@@ -108,9 +109,9 @@ object QuasiProjection {
     def proj(x: X) = p(x)
   }
 
-  def constQuasiprojection[X, Cnst] = QuasiProjection((c: Cnst) => None)
+  def constQuasiprojection[Cnst, Y] = QuasiProjection((c: Cnst) => None : Option[Y])
 
-  implicit def nilProjection[X] = constQuasiprojection[X, CNil]
+  // implicit def nilProjection[Y] : QuasiProjection[CNil, Y] = constQuasiprojection[CNil, Y]
 
   implicit def idProj[X]: QuasiProjection[X, X] =
     QuasiProjection[X, X]((x) => Some(x))
@@ -148,7 +149,35 @@ class SubTypePattern[X, Y](implicit val qi: QuasiInclusion[X, Y],
   def >>>[O](build: qi.F[O] => O) = pattern >>> build
 }
 
+object TestTrait{
+  sealed trait A
+
+  case object C extends A
+
+  case class B(x: A, y: A) extends A
+}
+
 object SubTypePattern {
   def pattern[X, Y](implicit qi: QuasiInclusion[X, Y],
                     qp: QuasiProjection[X, Y]) = new SubTypePattern[X, Y]
+
+
+  object Test{
+        import TestTrait._
+
+
+        val qi = implicitly[QuasiInclusion[A, B]]
+
+
+        // val qp1 = implicitly[QuasiProjection[CNil, B]]
+
+        val qp2 = implicitly[QuasiProjection[B, B]]
+
+        val qp3 = implicitly[QuasiProjection[B :+: CNil, B]]
+
+        val qp = implicitly[QuasiProjection[A, B]]
+
+        val pat = pattern[A, B]
+      }
+
 }
