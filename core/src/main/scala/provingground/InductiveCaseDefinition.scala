@@ -2,6 +2,8 @@ package provingground
 
 import HoTT._
 
+import shapeless._
+
 trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends FuncLike[H, C] { self =>
   def caseFn(f: => FuncLike[H, C])(arg: H): Option[C]
@@ -58,7 +60,7 @@ import Subst.SubstOp
 abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
-                                          Index: Subst,
+                                          Index<: HList : Subst,
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]] {
@@ -99,7 +101,7 @@ object IndexedInductiveDefinition {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    C <: Term with Subs[C],
-                   Index: Subst,
+                   Index<: HList : Subst,
                    IF <: Term with Subs[IF],
                    IDF <: Term with Subs[IDF],
                    IDFT <: Term with Subs[IDFT]](
@@ -117,7 +119,7 @@ object IndexedInductiveDefinition {
   case class DataCons[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       C <: Term with Subs[C],
-                      Index: Subst,
+                      Index<: HList : Subst,
                       IF <: Term with Subs[IF],
                       IDF <: Term with Subs[IDF],
                       IDFT <: Term with Subs[IDFT],

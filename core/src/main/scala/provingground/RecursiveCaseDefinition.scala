@@ -1,5 +1,9 @@
 package provingground
 
+import shapeless._
+
+import HList._
+
 import HoTT._
 
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
@@ -55,7 +59,7 @@ import Subst.SubstOp
 abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
-                                          Index: Subst,
+                                          Index <: HList : Subst,
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]] {
@@ -93,7 +97,7 @@ object IndexedRecursiveDefinition {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    C <: Term with Subs[C],
-                   Index: Subst,
+                   Index<: HList : Subst,
                    IF <: Term with Subs[IF],
                    IDF <: Term with Subs[IDF],
                    IDFT <: Term with Subs[IDFT]](
@@ -111,7 +115,7 @@ object IndexedRecursiveDefinition {
   case class DataCons[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       C <: Term with Subs[C],
-                      Index: Subst,
+                      Index<: HList : Subst,
                       IF <: Term with Subs[IF],
                       IDF <: Term with Subs[IDF],
                       IDFT <: Term with Subs[IDFT],

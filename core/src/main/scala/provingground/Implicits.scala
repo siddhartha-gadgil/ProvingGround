@@ -4,6 +4,8 @@ import HoTT._
 
 import scala.language.existentials
 
+import shapeless._
+
 object Implicits {
   val Types = IdFmlyPtn[Term, Term]()
 
@@ -67,8 +69,6 @@ object TLImplicits {
 
   import ConstructorShape._
 
-//  val Types = IdIterShape
-
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair              = ConstructorTypTL(IdShape, typ)
     def :::(name: AnySym) = name ::: pair
@@ -99,7 +99,7 @@ object TLImplicits {
 
   implicit class IndexedFamily[F <: Term with Subs[F],
                                H <: Term with Subs[H],
-                               Index](W: F)(
+                               Index <: HList](W: F)(
       implicit val g: TypFamilyPtnGetter[F, H, Index]) {
 
     def emptySeq =
@@ -123,7 +123,7 @@ object TLImplicits {
 
   implicit class IndexedPair[F <: Term with Subs[F],
                              H <: Term with Subs[H],
-                             Index](wt: (F, Typ[H]))(
+                             Index <: HList](wt: (F, Typ[H]))(
       implicit val g: TypFamilyPtnGetter[F, H, Index]) {
     def W = wt._1
 

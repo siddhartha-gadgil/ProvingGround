@@ -301,7 +301,7 @@ object TypFamilyMap {
 sealed trait TypFamilyMapper[H <: Term with Subs[H],
                              F <: Term with Subs[F],
                              C <: Term with Subs[C],
-                             Index,
+                             Index <: HList,
                              IF <: Term with Subs[IF],
                              IDF <: Term with Subs[IDF],
                              IDFT <: Term with Subs[IDFT]] {
@@ -336,7 +336,7 @@ object TypFamilyMapper {
                                    H <: Term with Subs[H],
                                    TF <: Term with Subs[TF],
                                    C <: Term with Subs[C],
-                                   TIndex,
+                                   TIndex <: HList,
                                    TIF <: Term with Subs[TIF],
                                    TIDF <: Term with Subs[TIDF],
                                    TIDFT <: Term with Subs[TIDFT]](
@@ -367,7 +367,7 @@ object TypFamilyMapper {
                                       H <: Term with Subs[H],
                                       TF <: Term with Subs[TF],
                                       C <: Term with Subs[C],
-                                      TIndex,
+                                      TIndex <: HList,
                                       TIF <: Term with Subs[TIF],
                                       TIDF <: Term with Subs[TIDF],
                                       TIDFT <: Term with Subs[TIDFT]](
@@ -395,7 +395,7 @@ object TypFamilyMapper {
     }
 }
 
-trait TypFamilyPtnGetter[F <: Term with Subs[F], H <: Term with Subs[H], Index] {
+trait TypFamilyPtnGetter[F <: Term with Subs[F], H <: Term with Subs[H], Index <: HList] {
 
 //  type Index
 
