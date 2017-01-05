@@ -16,59 +16,73 @@ import HList._
 
 import Coproduct._
 
-trait QuasiInclusion[X, Y] {
-  type F[_]
+abstract class QuasiInclusion[X, Y, F[_]: Traverse] {
 
-  implicit val traverse: Traverse[F]
+  // implicit val traverse: Traverse[F]
 
   def incl(y: Y) : F[X]
 }
 
+abstract class QuasiInclHList[X, Y, F[_] <: HList : Traverse] extends QuasiInclusion[X, Y, F]{
+
+  // implicit val traverse: Traverse[F]
+
+  def incl(y: Y) : F[X]
+
+}
+
 object QuasiInclusion {
-  implicit def subtype[X, Y <: X]: QuasiInclusion[X, Y] =
-    new QuasiInclusion[X, Y] {
-      type F[A] = Id[A]
+  implicit def idIncl[X]: QuasiInclusion[X, X, Id] =
+    new QuasiInclusion[X, X, Id] {
+      // type F[A] = Id[A]
 
-      val traverse = implicitly[Traverse[F]]
+      val traverse = implicitly[Traverse[Id]]
 
-      def incl(y: Y) =  y: Id[X]
+      def incl(y: X) =  y: Id[X]
     }
 
-  implicit def pair[X, Y1, Y2](
-      implicit qi1: QuasiInclusion[X, Y1],
-      qi2: QuasiInclusion[X, Y2]): QuasiInclusion[X, (Y1, Y2)] =
-    new QuasiInclusion[X, (Y1, Y2)] {
-      type F[A] = (qi1.F[A], qi2.F[A])
+  implicit def pair[X, Y1, Y2, F1[_] : Traverse, F2[_]: Traverse](
+      implicit qi1: QuasiInclusion[X, Y1, F1],
+      qi2: QuasiInclusion[X, Y2, F2]): QuasiInclusion[X, (Y1, Y2), ({type F[A] = (F1[A], F2[A])})#F] =
+    new QuasiInclusion[X, (Y1, Y2),  ({type F[A] = (F1[A], F2[A])})#F] {
+      // type F[A] = (qi1.F[A], qi2.F[A])
 
-      val traverse = traversePair(qi1.traverse, qi2.traverse)
+      // val traverse = traversePair(qi1.traverse, qi2.traverse)
 
       def incl(p: (Y1, Y2)) =
         (qi1.incl(p._1), qi2.incl(p._2))
 
     }
 
-  def constQI[X, Cnst]: QuasiInclusion[X, Cnst] =
-    new QuasiInclusion[X, Cnst] {
-      type F[A] = Cnst
+  // def constQI[X, Cnst]: QuasiInclusion[X, Cnst] =
+  //   new QuasiInclusion[X, Cnst] {
+  //     type F[A] = Cnst
+  //
+  //     val traverse = implicitly[Traverse[F]]
+  //
+  //     def incl(c: Cnst) = c
+  //   }
+  //
+  // implicit def stringQI[X] = constQI[X, String]
+  //
+  // implicit def numQI[X, NT: Numeric] = constQI[X, NT]
+
+  implicit def hnilIncl[X]: QuasiInclHList[X, HNil, HN] =
+    new QuasiInclHList[X, HNil, HN] {
+      type F[A] = HNil
 
       val traverse = implicitly[Traverse[F]]
 
-      def incl(c: Cnst) = c
+      def incl(c: HNil) = c
     }
 
-  implicit def stringQI[X] = constQI[X, String]
+  implicit def hConsIncl[X, Y1, Y2 <: HList, F1[_] : Traverse, F2[_] <: HList : Traverse](
+      implicit qi1: QuasiInclusion[X, Y1, F1],
+      qi2: QuasiInclHList[X, Y2, F2]): QuasiInclHList[X, Y1 :: Y2, ({type F[A] = F1[A] :: F2[A]})#F] =
+    new QuasiInclHList[X, Y1 :: Y2, ({type F[A] = F1[A] :: F2[A]})#F] {
 
-  implicit def numQI[X, NT: Numeric] = constQI[X, NT]
 
-  implicit def hnilIncl[X]: QuasiInclusion[X, HNil] = constQI[X, HNil]
-
-  implicit def hConsIncl[X, Y1, Y2 <: HList, tF[_] <: HList](
-      implicit qi1: QuasiInclusion[X, Y1],
-      qi2: QuasiInclusion[X, Y2]{type F[A] = tF[A]}): QuasiInclusion[X, Y1 :: Y2] =
-    new QuasiInclusion[X, Y1 :: Y2] {
-      type F[A] = qi1.F[A] :: tF[A]
-
-      val traverse = traverseHCons(qi1.traverse, qi2.traverse)
+      // val traverse = traverseHCons(qi1.traverse, qi2.traverse)
 
       def incl(p: Y1 :: Y2) =
         qi1.incl(p.head) :: qi2.incl(p.tail)
@@ -76,24 +90,24 @@ object QuasiInclusion {
 
     }
 
-  implicit def genericIncl[X, Y, R](
+  implicit def genericIncl[X, Y, R, F1[_]: Traverse](
       implicit gen: Generic.Aux[Y, R],
-      qi: QuasiInclusion[X, R]): QuasiInclusion[X, Y] =
-    new QuasiInclusion[X, Y] {
-      type F[A] = qi.F[A]
-
-      val traverse = qi.traverse
+      qi: QuasiInclusion[X, R, F1]): QuasiInclusion[X, Y, F1] =
+    new QuasiInclusion[X, Y, F1] {
+      // type F[A] = qi.F[A]
+      //
+      // val traverse = qi.traverse
 
       def incl(y: Y) = qi.incl(gen.to(y))
     }
 
-  implicit def travQI[X, Y, G[_]: Traverse](
-      implicit qi: QuasiInclusion[X, Y]): QuasiInclusion[X, G[Y]] =
-    new QuasiInclusion[X, G[Y]] {
-      type F[A] = G[qi.F[A]]
+  implicit def travQI[X, Y, F[_]: Traverse, G[_]: Traverse](
+      implicit qi: QuasiInclusion[X, Y, F]): QuasiInclusion[X, G[Y], ({type Z[A] = G[F[A]]})#Z] =
+    new QuasiInclusion[X, G[Y],  ({type Z[A] = G[F[A]]})#Z] {
 
-      val traverse =
-        traverseCompose[G, qi.F](implicitly[Traverse[G]], qi.traverse)
+
+      // val traverse =
+      //   traverseCompose[G, qi.F](implicitly[Traverse[G]], qi.traverse)
 
       def incl(gy: G[Y]) = gy map ((x) => qi.incl(x))
     }
@@ -138,15 +152,15 @@ object QuasiProjection {
 
 }
 
-class SubTypePattern[X, Y](implicit val qi: QuasiInclusion[X, Y],
+class SubTypePattern[X, Y, F[_]: Traverse](implicit val qi: QuasiInclusion[X, Y, F],
                            val qp: QuasiProjection[X, Y]) {
-  val split: X => Option[qi.F[X]] = (x) => qp.proj(x) map (qi.incl)
+  val split: X => Option[F[X]] = (x) => qp.proj(x) map (qi.incl)
 
-  val pattern = new Pattern(split)(qi.traverse)
+  val pattern = new Pattern(split)
 
-  def >>[O](build: qi.F[O] => Option[O]) = pattern >> build
+  def >>[O](build: F[O] => Option[O]) = pattern >> build
 
-  def >>>[O](build: qi.F[O] => O) = pattern >>> build
+  def >>>[O](build: F[O] => O) = pattern >>> build
 }
 
 object TestTrait{
@@ -158,18 +172,36 @@ object TestTrait{
 }
 
 object SubTypePattern {
-  def pattern[X, Y](implicit qi: QuasiInclusion[X, Y],
-                    qp: QuasiProjection[X, Y]) = new SubTypePattern[X, Y]
+  def pattern[X, Y, F[_]: Traverse](implicit qi: QuasiInclusion[X, Y, F],
+                    qp: QuasiProjection[X, Y]) = new SubTypePattern[X, Y, F]
 
 
   object Test{
         import TestTrait._
 
 
-        val qi = implicitly[QuasiInclusion[A, B]]
+        val qi1 = implicitly[QuasiInclusion[A, A, Id]]
+
+        val qi2 = implicitly[QuasiInclHList[A, HNil, HN]]
+
+        import QuasiInclusion._
+
+        val qi3 = hConsIncl(implicitly[Traverse[Id]],implicitly[Traverse[HN]], qi1, qi2 )
+
+        val qi4 = implicitly[QuasiInclusion[A, A :: HNil, IdHN]]
+
+        val qi41 = implicitly[QuasiInclHList[A, A :: HNil, IdHN]]
 
 
-        // val qp1 = implicitly[QuasiProjection[CNil, B]]
+        val qi42 = hConsIncl(implicitly[Traverse[Id]],implicitly[Traverse[IdHN]], qi1, qi41 )
+
+        implicit val qi43: QuasiInclusion[A, A :: A :: HNil, IdIdHN] = qi42
+
+        val qi5 = implicitly[QuasiInclusion[A, A :: A :: HNil, IdIdHN]]
+
+        val qii = genericIncl[A, B, A :: A :: HNil, IdIdHN]
+
+        val qi = implicitly[QuasiInclusion[A, B, IdIdHN]]
 
         val qp2 = implicitly[QuasiProjection[B, B]]
 
@@ -177,7 +209,9 @@ object SubTypePattern {
 
         val qp = implicitly[QuasiProjection[A, B]]
 
-        val pat = pattern[A, B]
+        // val pat = pattern[A, B]
+
+        // pat >>> ((xy : Int :: Int :: HNil) => xy.head + xy.tail.head)
       }
 
 }

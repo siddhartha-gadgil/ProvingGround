@@ -56,6 +56,7 @@ object Functors {
 
   type II[A] = (Id[A], Id[A]);
 
+
   implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]
     : Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] {
@@ -84,6 +85,18 @@ object Functors {
 
   import shapeless._
   import HList._
+
+  type HN[A] = HNil
+
+  type IdHN[A] = Id[A] :: HN[A]
+
+  type IdIdHN[A] = Id[A] :: Id[A] :: HN[A]
+
+  type IdIdIdHN[A] = Id[A] :: Id[A] :: Id[A] :: HN[A]
+
+  implicit val trav2 = traverseHCons[Id, IdHN]
+
+  implicit val trav3 = traverseHCons[Id, IdIdHN]
 
   implicit def traverseHCons[X[_]: Traverse, Y[_] <: HList : Traverse]: Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
     new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
