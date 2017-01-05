@@ -90,18 +90,14 @@ object Functors {
 
   type IdHN[A] = Id[A] :: HN[A]
 
-  type IdIdHN[A] = Id[A] :: Id[A] :: HN[A]
+  type IdIdHN[A] = Id[A] :: IdHN[A]
 
-  type IdIdIdHN[A] = Id[A] :: Id[A] :: Id[A] :: HN[A]
+  type IdIdIdHN[A] = Id[A] :: IdIdHN[A]
 
-  implicit val trav2 = traverseHCons[Id, IdHN]
-
-  implicit val trav3 = traverseHCons[Id, IdIdHN]
-
-  implicit def traverseHCons[X[_]: Traverse, Y[_] <: HList : Traverse]: Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
+  implicit def traverseHCons[X[_], Y[_] <: HList](implicit tx: Lazy[Traverse[X]], YT : Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
     new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
-      val XT = implicitly[Traverse[X]]
-      val YT = implicitly[Traverse[Y]]
+      val XT = tx.value
+      // val YT = implicitly[Traverse[Y]]
 
       type F[A] = X[A] :: Y[A]
       def traverse[G[_]: Applicative, A, B](fa: F[A])(
@@ -122,6 +118,7 @@ object Functors {
         YT.foldRight(fa.tail, fxe)(f)
       }
     }
+
 
   implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
     : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
