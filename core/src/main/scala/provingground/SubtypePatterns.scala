@@ -49,9 +49,9 @@ object QuasiInclusion {
       def incl(c: Cnst) = c
     }
 
-  implicit def stringQI[X] = constQI[X, String]
+  implicit def stringQI[X] : QuasiInclusion[X, String, St] = constQI[X, String]
 
-  implicit def numQI[X, NT: Numeric] = constQI[X, NT]
+  implicit def intQI[X] : QuasiInclusion[X, Int, In] = constQI[X, Int]
 
   implicit def hnilIncl[X]: QuasiInclHList[X, HNil, HN] =
     new QuasiInclHList[X, HNil, HN] {
@@ -143,6 +143,8 @@ object TestTrait{
   case object C extends A
 
   case class B(x: A, y: A) extends A
+
+  case class D(x: B, y: A) extends A
 }
 
 object SubTypePattern {
@@ -185,11 +187,15 @@ object SubTypePattern {
 
         val qp = implicitly[QuasiProjection[A, B]]
 
+        val tv= implicitly[Traverse[StIntHN]]
+
         val pat = pattern[A, B, IdIdHN]
 
         pat >>> ((xy : Int :: Int :: HNil) => xy.head + xy.tail.head)
 
         pat >>>[Int] {case x :: y :: HNil => x + y}
+
+        val pat2 = pattern[A, D, IdIdHN]
       }
 
 }

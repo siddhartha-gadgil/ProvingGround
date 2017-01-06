@@ -8,9 +8,14 @@ import cats._
 
 import cats.data.Prod
 
+import Functors._
+
+import SubTypePattern.pattern
+
 sealed trait FreeExpr {
   def as[E](implicit l: ExprLang[E]): Option[E]
 }
+
 
 object FreeExpr {
 
@@ -402,4 +407,19 @@ object SpecialTerms {
     (Decompose >>> (Special.build)) || (FreeExprPatterns.termToFree)
 
   val freeToTerm = (Special.pattern >>> build) || (FreeExprPatterns.freeToTerm)
+}
+
+
+object FreeExprHLPatterns{
+  import FreeExpr._
+
+  import shapeless._
+
+  import HList._
+
+  val variable = pattern[FreeExpr, Variable, StIdHN]
+
+  // val anonVar = pattern[FreeExpr, AnonVar, StHN]
+
+  // val typVariable = pattern[FreeExpr, TypVariable, StIntHN]
 }
