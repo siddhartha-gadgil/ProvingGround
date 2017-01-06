@@ -8,7 +8,7 @@ import cats.syntax._
 
 import scala.language.higherKinds
 
-import Translator.Pattern
+import Translator.{Pattern, Builder}
 
 import Functors._
 
@@ -152,11 +152,17 @@ class SubTypePattern[X, Y, F[_]: Traverse](implicit val qi: QuasiInclusion[X, Y,
                            val qp: QuasiProjection[X, Y]) {
   val split: X => Option[F[X]] = (x) => qp.proj(x) map (qi.incl)
 
+  val build: F[X] => Option[X] = (x) => qi.proj(x) map (qp.incl)
+
   val pattern = new Pattern(split)
+
+  val builder = new Builder(build)
 
   def >>[O](build: F[O] => Option[O]) = pattern >> build
 
   def >>>[O](build: F[O] => O) = pattern >>> build
+
+  def >>:[I](split: PartialFunction[I, F[I]]) = split >>: builder
 }
 
 object TestTrait{

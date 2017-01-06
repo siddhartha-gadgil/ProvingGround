@@ -95,6 +95,12 @@ object Translator {
       (x) => trans.recTranslate((a: I) => leafMap(a) map (ufn))(x) map (fn)
   }
 
+  case class Builder[O, X[_] : Traverse](build: X[O] => Option[O]){
+    def join[I](split: I => Option[X[I]]) = Junction(split, build)
+
+    def >>:[I](sp: PartialFunction[I, X[I]]) = join(sp.lift)
+  }
+
   /**
     * The splitting part of a junction, pattern matching and splitting to a given shape.
     * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
