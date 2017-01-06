@@ -2,6 +2,10 @@ package provingground
 
 import scala.language.higherKinds
 
+import shapeless.{Id => IdS, _}
+import HList._
+
+
 import cats._
 
 //import cats.data.Prod
@@ -14,7 +18,65 @@ trait Equiv[X[_], Y[_]] {
   def inv[A]: Y[A] => X[A]
 }
 
-object Functors {
+trait CompositeFunctors{
+  implicit def traverseHCons[X[_], Y[_] <: HList](implicit tx: Lazy[Traverse[X]], YT : Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
+    new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
+      val XT = tx.value
+      // val YT = implicitly[Traverse[Y]]
+
+      type F[A] = X[A] :: Y[A]
+      def traverse[G[_]: Applicative, A, B](fa: F[A])(
+          f: A => G[B]): G[X[B] :: Y[B]] = {
+        val GA = implicitly[Applicative[G]]
+        val gy = YT.traverse(fa.tail)(f)
+        val gx = XT.traverse(fa.head)(f)
+        val gf = gy.map((y: Y[B]) => ((x: X[B]) => x :: y))
+        GA.ap(gf)(gx)
+      }
+      def foldLeft[A, B](fa: X[A] :: Y[A], b: B)(f: (B, A) => B): B = {
+        val fy = YT.foldLeft(fa.tail, b)(f)
+        XT.foldLeft(fa.head, fy)(f)
+      }
+      def foldRight[A, B](fa: X[A] :: Y[A], lb: cats.Eval[B])(
+          f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
+        val fxe = XT.foldRight(fa.head, lb)(f)
+        YT.foldRight(fa.tail, fxe)(f)
+      }
+    }
+
+
+  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
+    : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
+    new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
+      type F[A] = X[Y[A]]
+
+      val ty = implicitly[Traverse[Y]]
+
+      val tx = implicitly[Traverse[X]]
+
+      def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] = {
+        def g(y: Y[A]) = ty.traverse(y)(f)
+        tx.traverse(fa)(g)
+      }
+
+      def foldLeft[A, B](fa: X[Y[A]], b: B)(f: (B, A) => B): B = {
+        val g: (B, Y[A]) => B = { case (b, ya) => ty.foldLeft(ya, b)(f) }
+        tx.foldLeft(fa, b)(g)
+      }
+
+      def foldRight[A, B](fa: X[Y[A]], lb: cats.Eval[B])(
+          f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
+        val g: (Y[A], Eval[B]) => Eval[B] = {
+          case (ya, b) => ty.foldRight(ya, b)(f)
+        }
+        tx.foldRight(fa, lb)(g)
+      }
+    }
+
+
+}
+
+object Functors extends CompositeFunctors{
   // type T = List[?]
 
   def liftMap[A, B, F[_]: Functor](fa: F[A], f: A => B) = {
@@ -83,8 +145,6 @@ object Functors {
       }
     }
 
-  import shapeless._
-  import HList._
 
   type HN[A] = HNil
 
@@ -106,62 +166,9 @@ object Functors {
 
   type StIntHN[A] = St[A] :: InHN[A]
 
-  
 
 
-  implicit def traverseHCons[X[_], Y[_] <: HList](implicit tx: Lazy[Traverse[X]], YT : Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
-    new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
-      val XT = tx.value
-      // val YT = implicitly[Traverse[Y]]
 
-      type F[A] = X[A] :: Y[A]
-      def traverse[G[_]: Applicative, A, B](fa: F[A])(
-          f: A => G[B]): G[X[B] :: Y[B]] = {
-        val GA = implicitly[Applicative[G]]
-        val gy = YT.traverse(fa.tail)(f)
-        val gx = XT.traverse(fa.head)(f)
-        val gf = gy.map((y: Y[B]) => ((x: X[B]) => x :: y))
-        GA.ap(gf)(gx)
-      }
-      def foldLeft[A, B](fa: X[A] :: Y[A], b: B)(f: (B, A) => B): B = {
-        val fy = YT.foldLeft(fa.tail, b)(f)
-        XT.foldLeft(fa.head, fy)(f)
-      }
-      def foldRight[A, B](fa: X[A] :: Y[A], lb: cats.Eval[B])(
-          f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
-        val fxe = XT.foldRight(fa.head, lb)(f)
-        YT.foldRight(fa.tail, fxe)(f)
-      }
-    }
-
-
-  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
-    : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
-    new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
-      type F[A] = X[Y[A]]
-
-      val ty = implicitly[Traverse[Y]]
-
-      val tx = implicitly[Traverse[X]]
-
-      def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] = {
-        def g(y: Y[A]) = ty.traverse(y)(f)
-        tx.traverse(fa)(g)
-      }
-
-      def foldLeft[A, B](fa: X[Y[A]], b: B)(f: (B, A) => B): B = {
-        val g: (B, Y[A]) => B = { case (b, ya) => ty.foldLeft(ya, b)(f) }
-        tx.foldLeft(fa, b)(g)
-      }
-
-      def foldRight[A, B](fa: X[Y[A]], lb: cats.Eval[B])(
-          f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = {
-        val g: (Y[A], Eval[B]) => Eval[B] = {
-          case (ya, b) => ty.foldRight(ya, b)(f)
-        }
-        tx.foldRight(fa, lb)(g)
-      }
-    }
 
   implicit def traverseEquiv[F[_], Y[_]](implicit equiv: Equiv[F, Y],
                                          TY: Traverse[Y]): Traverse[F] =

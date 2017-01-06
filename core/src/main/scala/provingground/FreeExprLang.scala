@@ -419,7 +419,41 @@ object FreeExprHLPatterns{
 
   val variable = pattern[FreeExpr, Variable, StIdHN]
 
-  // val anonVar = pattern[FreeExpr, AnonVar, StHN]
+  implicitly[QuasiInclHList[FreeExpr, String :: HNil, StHN]]
 
-  // val typVariable = pattern[FreeExpr, TypVariable, StIntHN]
+  val anonVar = pattern[FreeExpr, AnonVar, IdHN]
+
+  val typVariable = pattern[FreeExpr, TypVariable, StIntHN]
+
+  val metaVar = pattern[FreeExpr, MetaVar, IdHN]
+
+  val inL = pattern[FreeExpr, FreeIncl1, IdHN]
+
+  val inR = pattern[FreeExpr, FreeIncl2, IdHN]
+
+  val proj1 = pattern[FreeExpr, FreeProj1, IdHN]
+
+  val proj2 = pattern[FreeExpr, FreeProj2, IdHN]
+
+  val lambdaPat = pattern[FreeExpr, FreeLambda, IdIdHN]
+
+  val piPat = pattern[FreeExpr, FreePi, IdIdHN]
+
+  val sigmaPat = pattern[FreeExpr, FreeSigma, IdIdHN]
+
+  val applnPat = pattern[FreeExpr, FreeAppln, IdIdHN]
+
+  val pair = pattern[FreeExpr, FreePair, IdIdHN]
+
+  val coprod = pattern[FreeExpr, Or, IdIdHN]
+
+  val coprodElim = pattern[FreeExpr, OrCases, IdIdHN]
+
+  val equality = pattern[FreeExpr, FreeEquality, IdIdHN]
+
+  val tt = pattern[FreeExpr, TT.type, HN]
+
+  val ff = pattern[FreeExpr, FF.type, HN]
+
+  val qed = pattern[FreeExpr, QED.type, HN]
 }

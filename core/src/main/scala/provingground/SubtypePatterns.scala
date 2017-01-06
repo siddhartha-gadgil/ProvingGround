@@ -28,9 +28,11 @@ abstract class QuasiInclHList[X, Y, F[_] <: HList : Traverse] extends QuasiInclu
 }
 
 object QuasiInclusion {
-  implicit def subtypeIncl[X, Y <: X]: QuasiInclusion[X, Y, Id] =
-    new QuasiInclusion[X, Y, Id] {
-      def incl(y: Y) =  y: Id[X]
+  implicit def idIncl[X]: QuasiInclusion[X, X, Id] =
+    new QuasiInclusion[X, X, Id] {
+      val traverse = implicitly[Traverse[Id]]
+
+      def incl(y: X) =  y: Id[X]
     }
 
   implicit def pair[X, Y1, Y2, F1[_] : Traverse, F2[_]: Traverse](
@@ -49,9 +51,9 @@ object QuasiInclusion {
       def incl(c: Cnst) = c
     }
 
-  implicit def stringQI[X] : QuasiInclusion[X, String, St] = constQI[X, String]
+  implicit def stringQI[X] = constQI[X, String]
 
-  implicit def intQI[X] : QuasiInclusion[X, Int, In] = constQI[X, Int]
+  implicit def numQI[X, NT: Numeric] = constQI[X, NT]
 
   implicit def hnilIncl[X]: QuasiInclHList[X, HNil, HN] =
     new QuasiInclHList[X, HNil, HN] {
@@ -143,8 +145,6 @@ object TestTrait{
   case object C extends A
 
   case class B(x: A, y: A) extends A
-
-  case class D(x: B, y: A) extends A
 }
 
 object SubTypePattern {
@@ -173,13 +173,15 @@ object SubTypePattern {
 
         val qi44 = hConsIncl[A , A , A :: HNil, Id, IdHN]
 
+        implicitly[Traverse[StHN]]
+
         // implicit val qi43: QuasiInclusion[A, A :: A :: HNil, IdIdHN] = qi44
 
         val qi5 = implicitly[QuasiInclusion[A, A :: A :: HNil, IdIdHN]]
 
         val qii = genericIncl[A, B, A :: A :: HNil, IdIdHN]
 
-        val qi = implicitly[QuasiInclHList[A, B, IdIdHN]]
+        val qi = implicitly[QuasiInclusion[A, B, IdIdHN]]
 
         val qp2 = implicitly[QuasiProjection[B, B]]
 
@@ -187,15 +189,11 @@ object SubTypePattern {
 
         val qp = implicitly[QuasiProjection[A, B]]
 
-        val tv= implicitly[Traverse[StIntHN]]
-
         val pat = pattern[A, B, IdIdHN]
 
         pat >>> ((xy : Int :: Int :: HNil) => xy.head + xy.tail.head)
 
         pat >>>[Int] {case x :: y :: HNil => x + y}
-
-        val pat2 = pattern[A, D, IdIdHN]
       }
 
 }
