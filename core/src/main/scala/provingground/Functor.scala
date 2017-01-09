@@ -18,6 +18,14 @@ trait Equiv[X[_], Y[_]] {
   def inv[A]: Y[A] => X[A]
 }
 
+object Equiv{
+  def idEquiv[X[_]] : Equiv[X, X] = new Equiv[X, X]{
+    def map[A] = (xa) => xa
+
+    def inv[A] = (xa) => xa
+  }
+}
+
 trait CompositeFunctors{
   implicit def traverseHCons[X[_], Y[_] <: HList](implicit tx: Lazy[Traverse[X]], YT : Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
     new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {

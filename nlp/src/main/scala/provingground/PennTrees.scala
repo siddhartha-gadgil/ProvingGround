@@ -17,19 +17,33 @@ object PennTrees {
     }
   }
 
-  sealed trait TreeModel
-
-  case class LeafModel(value: String) extends TreeModel {
-    override def toString = s"""Leaf("$value")"""
-  }
-
-  case class NodeModel(value: String, children: List[TreeModel])
-      extends TreeModel {
-    override def toString = s"""Node("$value", ${children})"""
-  }
-
   def model(t: Tree): TreeModel = t match {
-    case Leaf(s)           => LeafModel(s)
-    case Node(s, children) => NodeModel(s, children map model)
+    case Leaf(s)           => TreeModel.Leaf(s)
+    case Node(s, children) => TreeModel.Node(s, children map model)
   }
+
+  implicit class ShowModel(sent: Sentence){
+    def show = model(sent.parse)
+  }
+
+  implicit class ShowString(st: String){
+    def show = model(new Sentence(st).parse)
+
+    def sentence = new Sentence(st)
+  }
+
+}
+
+sealed trait TreeModel
+
+object TreeModel{
+case class Leaf(value: String) extends TreeModel {
+  override def toString = s"""Leaf("$value")"""
+}
+
+case class Node(value: String, children: List[TreeModel])
+    extends TreeModel {
+  // override def toString = s"""Node("$value", ${children})"""
+}
+
 }

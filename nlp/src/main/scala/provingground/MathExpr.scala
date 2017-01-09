@@ -1,5 +1,7 @@
 package provingground
 
+import edu.stanford.nlp.trees.Tree
+
 /**
   * Expression in a language to represent terms in HoTT and
   trees representing them in prose, including partially collapsed trees.
@@ -17,12 +19,14 @@ sealed trait MathExpr
 
 object MathExpr {
 
-  type T = NlpProse.ProseTree
+  type T = Tree
 
   /**
     * An abstract sentential phrase, representing a term.
     */
-  sealed trait SententialPhrase extends MathExpr
+  // sealed trait SententialPhrase extends MathExpr
+
+  type SententialPhrase = MathExpr
 
   /**
     * A single tree for a sentential phrase
@@ -49,7 +53,8 @@ object MathExpr {
   /**
     * Abstract Noun phrase
     */
-  sealed trait NounPhrase extends MathExpr
+  // sealed trait NounPhrase extends MathExpr
+  type NounPhrase = MathExpr
 
   /**
     * A Noun phrase as a single tree.
@@ -69,7 +74,8 @@ object MathExpr {
   /**
     * Abstract verb phrase
     */
-  sealed trait VerbPhrase extends MathExpr
+  // sealed trait VerbPhrase extends MathExpr
+  type VerbPhrase = MathExpr
 
   /**
     * A Verb phrase as a single tree
@@ -133,7 +139,9 @@ object MathExpr {
   /**
     * Preposition - this is a closed class.
     */
-  sealed trait Preposition
+  // sealed trait Preposition
+
+  type Preposition = MathExpr
 
   object Determiner {
     case object A extends Determiner
@@ -151,12 +159,15 @@ object MathExpr {
   /**
     * Determiner - this is a closed class.
     */
-  sealed trait Determiner
+  // sealed trait Determiner
+
+  type Determiner = MathExpr
 
   /**
     * Abstract adjectival phrase
     */
-  sealed trait AdjectivalPhrase extends MathExpr
+  // sealed trait AdjectivalPhrase extends MathExpr
+  type AdjectivalPhrase = MathExpr
 
   /**
     * Adjectival phrase as a singl tree - usually just an adjective
@@ -174,7 +185,9 @@ object MathExpr {
     * A quantterm (in the Naproche sense) - a variable or something more complex such as `n_k`.
    Unlike Naproche, we may also have pronouns.
     */
-  sealed trait QuantTerm extends MathExpr
+  // sealed trait QuantTerm extends MathExpr
+  type QuantTerm = MathExpr
+
 
   /**
     * A variable, the simplest form of QuantTerm
@@ -184,7 +197,8 @@ object MathExpr {
   /**
     * Post-modifier in a determiner phrase.
     */
-  sealed trait PostModifier extends MathExpr
+  // sealed trait PostModifier extends MathExpr
+  type PostModifier = MathExpr
 
   /**
     * A such that clause
@@ -283,6 +297,27 @@ object MathExpr {
     */
   case class ThatIsSP(sentences: List[SententialPhrase])
       extends SententialPhrase
+
+}
+
+import MathExpr._
+
+/**
+ * An unparsed tree, the default parse for iterative debugging.
+ */
+case class Raw(model: TreeModel) extends MathText
+          with MathExpr
+          // with NounPhrase
+          // with VerbPhrase
+          // with SententialPhrase
+          // with Preposition
+          // with AdjectivalPhrase
+          // with Determiner
+          // with PostModifier
+          // with QuantTerm
+
+object Raw{
+  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) => Some(Raw(PennTrees.model(t))))
 }
 
 sealed trait MathText

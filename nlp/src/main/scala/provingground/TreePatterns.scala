@@ -12,18 +12,14 @@ import cats._
 
 import cats.implicits._
 
+import shapeless.{:: => :::, Id => IdS, _}
+
+import HList._
+
 object TreePatterns {
   object word {
     def unapply(s: String): Option[String] = Some(s.toLowerCase)
   }
-
-  // class Pattern[Z](pf: PartialFunction[Tree, Z]) {
-  //   def unapply(t: Tree) = pf.lift(t)
-  // }
-  //
-  // object Pattern{
-  //   class Partial[Z](pf: PartialFunction[Tree, Z]) extends Pattern(pf)
-  // }
 
   object IfClause
       extends Pattern.Partial[Tree, Id]({
