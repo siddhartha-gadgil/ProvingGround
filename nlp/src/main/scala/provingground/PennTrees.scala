@@ -30,6 +30,8 @@ object PennTrees {
     def show = model(new Sentence(st).parse)
 
     def sentence = new Sentence(st)
+
+    def parse = sentence.parse
   }
 
 }
