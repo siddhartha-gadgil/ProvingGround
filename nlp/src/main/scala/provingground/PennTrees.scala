@@ -27,11 +27,11 @@ object PennTrees {
   }
 
   implicit class ShowString(st: String){
-    def show = model(new Sentence(st).parse)
+    def show = model(parsed)
 
     def sentence = new Sentence(st)
 
-    def parse = sentence.parse
+    def parsed = StanfordParser.parse(st)
   }
 
 }

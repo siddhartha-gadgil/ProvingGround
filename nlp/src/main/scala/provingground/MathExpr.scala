@@ -302,6 +302,30 @@ object MathExpr {
 
 import MathExpr._
 
+object FormalExpr{
+  case class Leaf(s: String) extends MathExpr
+
+  case class Node(s: String, children: List[MathExpr]) extends MathExpr
+
+  import Translator.Pattern
+
+  import Functors._
+
+  import cats._
+
+  import cats.implicits._
+
+  type SL[A] = (S[A], List[A])
+
+  // implicit val travSL = traversePair[S, List]
+
+  def translator =
+    Translator.Empty[Tree, MathExpr] ||
+    Pattern.partial[Tree, S]{case PennTrees.Leaf(s) => s} >>> {case s => Leaf(s)} ||
+    Pattern.partial[Tree, SL]{case PennTrees.Node(s, l) => (s, l)} >>> {case (s, l) => Node(s, l)}
+  }
+
+
 /**
  * An unparsed tree, the default parse for iterative debugging.
  */

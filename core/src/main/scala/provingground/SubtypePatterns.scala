@@ -162,7 +162,7 @@ class SubTypePattern[X, Y, F[_]: Traverse](implicit val qi: QuasiInclusion[X, Y,
 
   def >>>[O](build: F[O] => O) = pattern >>> build
 
-  def >>:[I](split: PartialFunction[I, F[I]]) = split >>: builder
+  def on[I](split: PartialFunction[I, F[I]]) =  builder on split
 }
 
 object TestTrait{

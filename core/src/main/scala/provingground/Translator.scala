@@ -98,9 +98,9 @@ object Translator {
   case class Builder[O, X[_] : Traverse](build: X[O] => Option[O]){
     def join[I](split: I => Option[X[I]]) = Junction(split, build)
 
-    def build[I](sp: PartialFunction[I, X[I]]) = join(sp.lift)
+    def on[I](sp: PartialFunction[I, X[I]]) = Junction(sp.lift, build)
 
-    def on[I, Y[_]](spl : I => Option[Y[I]])(implicit eq: Equiv[X, Y]) = join((a: I) => spl(a) map (eq.inv))
+    def onOpt[I, Y[_]](spl : I => Option[Y[I]])(implicit eq: Equiv[X, Y]) = join((a: I) => spl(a) map (eq.inv))
   }
 
   /**
