@@ -122,6 +122,16 @@ object Functors extends CompositeFunctors{
 
   type LL[A] = (List[A], List[A]);
 
+  type VV[A] = (Vector[A], Vector[A])
+
+  type IV[A] = (Id[A], Vector[A])
+
+  type VI[A] = (Vector[A], Id[A])
+
+  type IVI[A] = (Id[A], VI[A])
+
+  type SVI[A] = (S[A], VI[A])
+
   type IL[A] = (Id[A], List[A]);
 
   type II[A] = (Id[A], Id[A]);

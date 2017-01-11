@@ -31,7 +31,7 @@ object MathExpr {
   /**
     * A single tree for a sentential phrase
     */
-  case class SP(sp: T) extends SententialPhrase
+  case class SP(spv: Vector[MathExpr]) extends SententialPhrase
 
   /**
     * A conjunction of  sentential phrases forming a sentential phrase.
@@ -59,17 +59,19 @@ object MathExpr {
   /**
     * A Noun phrase as a single tree.
     */
-  case class NP(np: T) extends NounPhrase
+  case class NP(npv: Vector[MathExpr]) extends NounPhrase
+
+  case class NN(word: String) extends NounPhrase
 
   /**
     * A noun phrase that is a conjuction (and) of noun phrases.
     */
-  case class ConjuntNP(nps: List[NounPhrase]) extends NounPhrase
+  case class ConjuntNP(nps: Vector[NounPhrase]) extends NounPhrase
 
   /**
     * A noun phrase  that is a disjunction (or) of noun phrases.
     */
-  case class DisjuntNP(nps: List[NounPhrase]) extends NounPhrase
+  case class DisjuntNP(nps: Vector[NounPhrase]) extends NounPhrase
 
   /**
     * Abstract verb phrase
@@ -80,7 +82,9 @@ object MathExpr {
   /**
     * A Verb phrase as a single tree
     */
-  case class VP(vp: T) extends VerbPhrase
+  case class VP(vpv: Vector[MathExpr]) extends VerbPhrase
+
+  case class VB(wrod: String) extends VerbPhrase
 
   /**
     * Negated verb phrase
@@ -154,6 +158,14 @@ object MathExpr {
 
     case object Zero extends Determiner
 
+    def apply(s: String) = s.toLowerCase match {
+      case "a" => A
+      case "an" => A
+      case "the" => The
+      case "some" => Some
+      case "every" => Every
+      case "all" => Every
+    }
   }
 
   /**
@@ -173,6 +185,8 @@ object MathExpr {
     * Adjectival phrase as a singl tree - usually just an adjective
     */
   case class AP(ap: T) extends AdjectivalPhrase
+
+  case class JJ(word: String) extends AdjectivalPhrase
 
   /**
     * Prepositional phrase, usually translates to an argument, sometimes to a property.
@@ -209,9 +223,9 @@ object MathExpr {
     * Determiner phrase: this is the main composite tree.
     */
   case class DP(det: Determiner,
-                   adjectives: List[AdjectivalPhrase] = List(),
+                   adjectives: Vector[AdjectivalPhrase] = Vector(),
                    core: Core,
-                   post: List[PostModifier])
+                   post: Vector[PostModifier] = Vector())
       extends MathExpr
 
   /**
@@ -219,7 +233,7 @@ object MathExpr {
    or a noun followed by a list of quant-terms
     */
   case class Core(optNoun: Option[NounPhrase],
-                     quantterms: List[QuantTerm] = List())
+                     quantterms: Vector[QuantTerm] = Vector()) extends MathExpr
 
   // case class QuantifiedNoun(np: NounPhrase)
 
@@ -283,41 +297,41 @@ object MathExpr {
   /**
     * Conjunction of sentential phrases.
     */
-  case class ConjSP(sentences: List[SententialPhrase])
+  case class ConjSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
   /**
     * Disjunction of sentential phrases.
     */
-  case class DisjSP(sentences: List[SententialPhrase])
+  case class DisjSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
   /**
     * Sentential phrases connected by "i.e., " or "so, ".
     */
-  case class ThatIsSP(sentences: List[SententialPhrase])
+  case class ThatIsSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
 }
 
-import MathExpr._
+// import MathExpr._
 
 object FormalExpr{
   case class Leaf(s: String) extends MathExpr
 
-  case class Node(s: String, children: List[MathExpr]) extends MathExpr
+  case class Node(s: String, children: Vector[MathExpr]) extends MathExpr
 
   import Translator.Pattern
 
   import Functors._
 
-  import cats._
+  // import cats._
 
   import cats.implicits._
 
-  type SL[A] = (S[A], List[A])
+  type SL[A] = (S[A], Vector[A])
 
-  // implicit val travSL = traversePair[S, List]
+  // implicit val travSL = traversePair[S, Vector]
 
   def translator =
     Translator.Empty[Tree, MathExpr] ||
@@ -358,7 +372,7 @@ object MathText {
       extends SententialPhrase
 
   case class BiImplicationDefiniendum(name: String,
-                                         variables: List[T],
+                                         variables: Vector[T],
                                          formula: SententialPhrase)
       extends MathExpr
 
@@ -366,7 +380,7 @@ object MathText {
       extends NounPhrase
 
   case class CopulaDefiniendum(name: String,
-                                  variables: List[T],
+                                  variables: Vector[T],
                                   lhs: NounPhrase)
       extends MathExpr
 
@@ -387,6 +401,6 @@ object MathText {
                                  definiens: NounPhrase)
       extends SententialPhrase
 
-  case class VariableType(variables: List[NounPhrase],
+  case class VariableType(variables: Vector[NounPhrase],
                              typ: NounPhrase)
 }

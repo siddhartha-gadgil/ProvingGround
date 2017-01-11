@@ -13,7 +13,7 @@ object PennTrees {
 
   object Node {
     def unapply(t: Tree) = {
-      if (t.isLeaf) None else Some((t.value, t.children().toList))
+      if (t.isLeaf) None else Some((t.value, t.children().toVector))
     }
   }
 
@@ -43,7 +43,7 @@ case class Leaf(value: String) extends TreeModel {
   override def toString = s"""Leaf("$value")"""
 }
 
-case class Node(value: String, children: List[TreeModel])
+case class Node(value: String, children: Vector[TreeModel])
     extends TreeModel {
   // override def toString = s"""Node("$value", ${children})"""
 }
