@@ -129,7 +129,7 @@ object TreePatterns {
     ) => init.filter(_.value != ",") :+ last
   })
 
-  object ConunctNP extends Pattern.Partial[Tree, Vector]({
+  object ConjunctNP extends Pattern.Partial[Tree, Vector]({
     case Node(
       "NP",
       init :+
@@ -195,7 +195,7 @@ object TreeToMathExpr{
 
   val or = TreePatterns.DisjunctNP >>> [MathExpr](MathExpr.DisjunctNP(_))
 
-  val and = TreePatterns.DisjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
+  val and = TreePatterns.ConjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
 
   val ifThen = TreePatterns.IfTree >>[MathExpr]{
     case (x, Vector(y)) =>
