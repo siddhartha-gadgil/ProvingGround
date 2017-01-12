@@ -32,7 +32,7 @@ object TreePatterns {
                     x +: Node(
                       "ADVP",
                       Vector(Node("RB", Vector(Leaf(word("then")))))) +: ys) =>
-            (x, ys filter (_.value != ","))
+            (x, ys filter ((y) => Set(",", "RB") contains (y.value)))
         })
 
   object IfTree

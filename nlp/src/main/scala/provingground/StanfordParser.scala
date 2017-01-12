@@ -27,4 +27,26 @@ object StanfordParser{
   def words(s: String) = coreLabels(s) map ((c) => new Word(c.word))
 
   def parse(s: String) = lp(tagger(words(s)))
+
+  def texInline(s: String) = """\$[^\$]+\$""".r.findAllIn(s)
+
+  def texDisplay(s: String) = """\$\$[^\$]+\$\$""".r.findAllIn(s)
+
+  case class TeXParsed(raw: String){
+    lazy val texMap = (texInline(raw).zipWithIndex map {case (w, n) => (s"TeXInline$n", w)}).toMap
+
+    lazy val deTeXed = (texMap :\ raw){case ((l, w), s) => s.replace(w, l)}
+
+    lazy val deTeXWords = words(deTeXed)
+
+    lazy val deTeXTagged = tagger(deTeXWords)
+
+    lazy val tagged = deTeXTagged map {
+      (tw) =>
+      if (tw.word.startsWith("TeXInline"))  new TaggedWord(texMap(tw.word), "NNP") else tw}
+
+    lazy val parsed = lp(tagged)
+  }
+
+  def texParse(s: String) = TeXParsed(s).parsed
 }
