@@ -59,6 +59,16 @@ object TreePatterns {
         case Node("S", Vector(x @ NP(_), y @ VP(_))) => (x, y)
       })
 
+  object PP extends Pattern.Partial[Tree, II]({
+          case Node("PP",
+            Vector(
+              jj @ Node("IN", Vector(Leaf(_))),
+              np @ Node("NP", _)
+            )
+          ) => (jj, np)
+      })
+
+
   object SimpleNPVP
       extends Pattern.Partial[Tree, II]({
         case Node("S", Vector(NP(Vector(x)), VP(Vector(y)))) => (x, y)
@@ -72,21 +82,31 @@ object TreePatterns {
 
   val npvpPattern = Translator.Pattern[Tree, Functors.II](NPVP.unapply)
 
-  object DPBase extends Pattern.Partial[Tree, SVI]({
-    case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ nn) if adjs.forall(_.value == "JJ")
-        => (det, (adjs, nn))
+  object DPBase extends Pattern.Partial[Tree, SVO]({
+    case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ nn)
+      if (adjs.forall(_.value == "JJ") && (nn.value == "NN"))
+        => (det, (adjs, Some(nn)))
+    case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs)
+        if (adjs.forall(_.value == "JJ"))
+            => (det, (adjs, None))
+
   })
 
   object NN extends Pattern.Partial[Tree, S]({
-    case Node("NN", Vector(Leaf(nn))) => nn
+    case Node(tag, Vector(Leaf(nn))) if tag.startsWith("NN") => nn
   })
 
+
   object VB extends Pattern.Partial[Tree, S]({
-    case Node("VB", Vector(Leaf(nn))) => nn
+    case Node(tag, Vector(Leaf(vb))) if tag.startsWith("VB") => vb
   })
 
   object JJ extends Pattern.Partial[Tree, S]({
     case Node("JJ", Vector(Leaf(nn))) => nn
+  })
+
+  object IN extends Pattern.Partial[Tree, S]({
+    case Node("IN", Vector(Leaf(nn))) => nn
   })
 }
 
@@ -94,15 +114,30 @@ object TreeToMathExpr{
   val npvp = TreePatterns.NPVP >>>[MathExpr]
     {case (np, vp) => MathExpr.NPVP(np, vp)}
 
+  val pp = TreePatterns.PP >>> [MathExpr]{
+    case (pp, np) => MathExpr.PP(false, pp, np)
+  }
+
   val nn = TreePatterns.NN >>>[MathExpr](MathExpr.NN(_))
 
   val vb = TreePatterns.VB >>>[MathExpr](MathExpr.VB(_))
 
   val jj = TreePatterns.JJ >>>[MathExpr](MathExpr.JJ(_))
 
+  val prep = TreePatterns.IN >>>[MathExpr](MathExpr.Prep(_))
+
   val dpBase =
     TreePatterns.DPBase >>>[MathExpr] {
-      case (det, (adjs, nn)) => MathExpr.DP(MathExpr.Determiner(det), adjs, MathExpr.Core(Some(nn)))}
+      case (det, (adjs, nnOpt)) =>
+      MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)}
 
-  val trans = nn || vb || jj || npvp || dpBase || FormalExpr.translator
+  val trans =
+    nn ||
+    vb ||
+    jj ||
+    pp ||
+    prep ||
+    npvp ||
+    dpBase ||
+    FormalExpr.translator
 }

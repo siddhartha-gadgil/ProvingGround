@@ -128,9 +128,15 @@ object Functors extends CompositeFunctors{
 
   type VI[A] = (Vector[A], Id[A])
 
+  type VO[A] = (Vector[A], Option[A])
+
   type IVI[A] = (Id[A], VI[A])
 
   type SVI[A] = (S[A], VI[A])
+
+  type SVO[A] = (S[A], VO[A])
+
+  type SV[A] = (S[A], Vector[A])
 
   type IL[A] = (Id[A], List[A]);
 

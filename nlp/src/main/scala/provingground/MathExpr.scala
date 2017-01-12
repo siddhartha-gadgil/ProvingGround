@@ -136,9 +136,11 @@ object MathExpr {
 
     case object Modulo extends Preposition
 
-    case class Prep(word: String) extends Preposition
 
   }
+
+  case class Prep(word: String) extends Preposition
+
 
   /**
     * Preposition - this is a closed class.
@@ -192,7 +194,7 @@ object MathExpr {
     * Prepositional phrase, usually translates to an argument, sometimes to a property.
     Can be a Post-modifier in a determiner phrase, where it acts as an argument.
     */
-  case class PP(negated: Boolean = false, prep: Preposition, np: NP)
+  case class PP(negated: Boolean = false, prep: Preposition, np: NounPhrase)
       extends PostModifier
 
   /**
@@ -224,7 +226,8 @@ object MathExpr {
     */
   case class DP(det: Determiner,
                    adjectives: Vector[AdjectivalPhrase] = Vector(),
-                   core: Core,
+                   optNoun: Option[NounPhrase] = None,
+                   quantTerms : Option[NounPhrase] = None,
                    post: Vector[PostModifier] = Vector())
       extends MathExpr
 

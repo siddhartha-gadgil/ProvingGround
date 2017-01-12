@@ -1,13 +1,13 @@
 package provingground
 
-import edu.stanford.nlp.io._
+// import edu.stanford.nlp.io._
 import edu.stanford.nlp.ling._
 import edu.stanford.nlp.process._
-import edu.stanford.nlp.trees._
-import edu.stanford.nlp.util._
-import edu.stanford.nlp.ling.CoreAnnotations._
-import edu.stanford.nlp.semgraph._
-import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
+// import edu.stanford.nlp.trees._
+// import edu.stanford.nlp.util._
+// import edu.stanford.nlp.ling.CoreAnnotations._
+// import edu.stanford.nlp.semgraph._
+// import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
 import edu.stanford.nlp.parser.lexparser._
 import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
