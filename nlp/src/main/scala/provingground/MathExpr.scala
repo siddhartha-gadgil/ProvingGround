@@ -63,15 +63,19 @@ object MathExpr {
 
   case class NN(word: String) extends NounPhrase
 
+  case class Formula(text: String) extends NounPhrase{
+    def dp = DP(Determiner.Zero, Vector(), Some(this))
+  }
+
   /**
     * A noun phrase that is a conjuction (and) of noun phrases.
     */
-  case class ConjuntNP(nps: Vector[NounPhrase]) extends NounPhrase
+  case class ConjunctNP(nps: Vector[NounPhrase]) extends NounPhrase
 
   /**
     * A noun phrase  that is a disjunction (or) of noun phrases.
     */
-  case class DisjuntNP(nps: Vector[NounPhrase]) extends NounPhrase
+  case class DisjunctNP(nps: Vector[NounPhrase]) extends NounPhrase
 
   /**
     * Abstract verb phrase
@@ -229,7 +233,10 @@ object MathExpr {
                    optNoun: Option[NounPhrase] = None,
                    quantTerms : Option[NounPhrase] = None,
                    post: Vector[PostModifier] = Vector())
-      extends MathExpr
+      extends MathExpr{
+        def add(pp: PostModifier) =
+          this.copy(post = this.post :+ pp)
+      }
 
   /**
     * The core of a determiner phrase, which is a noun, a list of quant-terms
