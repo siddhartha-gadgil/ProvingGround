@@ -104,6 +104,13 @@ object TreePatterns {
         => (det, (adjs, np))
   })
 
+  object DPBaseQuant extends Pattern.Partial[Tree, SVII]({
+    case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np :+ npp)
+      if (adjs.forall(_.value == "JJ")  &&
+      (np.value == "NN") && npp.value.startsWith("N"))
+        => (det, (adjs, (np, npp)))
+  })
+
   object NN extends Pattern.Partial[Tree, S]({
     case Node(tag, Vector(Leaf(nn))) if tag.startsWith("N") & tag != "NNP" => nn
   })
@@ -173,6 +180,13 @@ object TreeToMathExpr{
       case (det, (adjs, np)) =>
       MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))}
 
+  val dpBaseQuant = TreePatterns.DPBaseQuant >>>[MathExpr] {
+    case (det, (adjs, (np, npp))) =>
+      MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
+  }
+
+
+
   val addPP = TreePatterns.NPPP >>[MathExpr] {
     case (dp: MathExpr.DP, pp) => Some(dp.add(pp))
     case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
@@ -186,14 +200,19 @@ object TreeToMathExpr{
   val ifThen = TreePatterns.IfTree >>[MathExpr]{
     case (x, Vector(y)) =>
       Some(MathExpr.IfThen(x, y))
-    case (x, Vector(np @ TreePatterns.NP(_), vp @ TreePatterns.VP(_))) =>
+    case (x, Vector(np, vp)) =>
       Some(MathExpr.IfThen(x, MathExpr.NPVP(np, vp)))
-    case _ => None
+    case (x, ys) =>
+      println("Build failed")
+      println(x)
+      println(ys)
+      None
   }
 
   val trans =
     fmla ||
     ifThen ||
+    and ||
     or ||
     addPP ||
     nn ||
@@ -204,5 +223,6 @@ object TreeToMathExpr{
     npvp ||
     dpBase ||
     dpQuant ||
+    dpBaseQuant ||
     FormalExpr.translator
 }
