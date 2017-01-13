@@ -15,14 +15,17 @@ import edu.stanford.nlp.tagger.maxent._
 import java.io._
 import scala.collection.JavaConversions._
 
-object StanfordParser{
-  val lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
+object StanfordParser {
+  val lp = LexicalizedParser.loadModel(
+    "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
 
-  val tagger = new MaxentTagger("edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
+  val tagger = new MaxentTagger(
+    "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
 
   val tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "")
 
-  def coreLabels(s: String) = tokenizerFactory.getTokenizer(new StringReader(s)).tokenize
+  def coreLabels(s: String) =
+    tokenizerFactory.getTokenizer(new StringReader(s)).tokenize
 
   def words(s: String) = coreLabels(s) map ((c) => new Word(c.word))
 
@@ -32,18 +35,22 @@ object StanfordParser{
 
   def texDisplay(s: String) = """\$\$[^\$]+\$\$""".r.findAllIn(s)
 
-  case class TeXParsed(raw: String){
-    lazy val texMap = (texInline(raw).zipWithIndex map {case (w, n) => (s"TeXInline$n", w)}).toMap
+  case class TeXParsed(raw: String) {
+    lazy val texMap = (texInline(raw).zipWithIndex map {
+      case (w, n) => (s"TeXInline$n", w)
+    }).toMap
 
-    lazy val deTeXed = (texMap :\ raw){case ((l, w), s) => s.replace(w, l)}
+    lazy val deTeXed = (texMap :\ raw) { case ((l, w), s) => s.replace(w, l) }
 
     lazy val deTeXWords = words(deTeXed)
 
     lazy val deTeXTagged = tagger(deTeXWords)
 
-    lazy val tagged = deTeXTagged map {
-      (tw) =>
-      if (tw.word.startsWith("TeXInline"))  new TaggedWord(texMap(tw.word), "NNP") else tw}
+    lazy val tagged = deTeXTagged map { (tw) =>
+      if (tw.word.startsWith("TeXInline"))
+        new TaggedWord(texMap(tw.word), "NNP")
+      else tw
+    }
 
     lazy val parsed = lp(tagged)
   }

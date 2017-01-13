@@ -46,8 +46,7 @@ object MathExpr {
   /**
     * An if_then_ sentential phrase, translating to implies.
     */
-  case class IfThen(premise: SententialPhrase,
-                       consequence: SententialPhrase)
+  case class IfThen(premise: SententialPhrase, consequence: SententialPhrase)
       extends SententialPhrase
 
   /**
@@ -63,7 +62,7 @@ object MathExpr {
 
   case class NN(word: String) extends NounPhrase
 
-  case class Formula(text: String) extends NounPhrase{
+  case class Formula(text: String) extends NounPhrase {
     def dp = DP(Determiner.Zero, Vector(), Some(this))
   }
 
@@ -98,14 +97,12 @@ object MathExpr {
   /**
     * A verb phrase formed by a transitive  verb applied to its object.
     */
-  case class VerbObj(vp: VerbPhrase, obj: NounPhrase)
-      extends VerbPhrase
+  case class VerbObj(vp: VerbPhrase, obj: NounPhrase) extends VerbPhrase
 
   /**
     * A NP-VP decomposed sentential phrase
     */
-  case class NPVP(np: NounPhrase, vp: VerbPhrase)
-      extends SententialPhrase
+  case class NPVP(np: NounPhrase, vp: VerbPhrase) extends SententialPhrase
 
   // object NPVP {
   //   type W = (MathExpr[T], MathExpr[T])
@@ -140,11 +137,9 @@ object MathExpr {
 
     case object Modulo extends Preposition
 
-
   }
 
   case class Prep(word: String) extends Preposition
-
 
   /**
     * Preposition - this is a closed class.
@@ -165,12 +160,12 @@ object MathExpr {
     case object Zero extends Determiner
 
     def apply(s: String) = s.toLowerCase match {
-      case "a" => A
-      case "an" => A
-      case "the" => The
-      case "some" => Some
+      case "a"     => A
+      case "an"    => A
+      case "the"   => The
+      case "some"  => Some
       case "every" => Every
-      case "all" => Every
+      case "all"   => Every
     }
   }
 
@@ -208,7 +203,6 @@ object MathExpr {
   // sealed trait QuantTerm extends MathExpr
   type QuantTerm = MathExpr
 
-
   /**
     * A variable, the simplest form of QuantTerm
     */
@@ -229,29 +223,29 @@ object MathExpr {
     * Determiner phrase: this is the main composite tree.
     */
   case class DP(det: Determiner,
-                   adjectives: Vector[AdjectivalPhrase] = Vector(),
-                   optNoun: Option[NounPhrase] = None,
-                   quantTerms : Option[NounPhrase] = None,
-                   post: Vector[PostModifier] = Vector())
-      extends MathExpr{
-        def add(pp: PostModifier) =
-          this.copy(post = this.post :+ pp)
-      }
+                adjectives: Vector[AdjectivalPhrase] = Vector(),
+                optNoun: Option[NounPhrase] = None,
+                quantTerms: Option[NounPhrase] = None,
+                post: Vector[PostModifier] = Vector())
+      extends MathExpr {
+    def add(pp: PostModifier) =
+      this.copy(post = this.post :+ pp)
+  }
 
   /**
     * The core of a determiner phrase, which is a noun, a list of quant-terms
    or a noun followed by a list of quant-terms
     */
   case class Core(optNoun: Option[NounPhrase],
-                     quantterms: Vector[QuantTerm] = Vector()) extends MathExpr
+                  quantterms: Vector[QuantTerm] = Vector())
+      extends MathExpr
 
   // case class QuantifiedNoun(np: NounPhrase)
 
   /**
     * A transitive verb and adjective.
     */
-  case class VerbAdj(vp: VerbPhrase, AdjectivalPhrase: AP)
-      extends VerbPhrase
+  case class VerbAdj(vp: VerbPhrase, AdjectivalPhrase: AP) extends VerbPhrase
 
   /**
     * is ... property given by a noun.
@@ -271,8 +265,7 @@ object MathExpr {
   /**
     * is ... prep ... property given by a transitive adjective
     */
-  case class IsAdjPrep(adj: AdjectivalPhrase, pp: PP)
-      extends VerbPhrase
+  case class IsAdjPrep(adj: AdjectivalPhrase, pp: PP) extends VerbPhrase
 
   /**
     * is such that ... property
@@ -287,22 +280,20 @@ object MathExpr {
   /**
     * Universally quantified sentence.
     */
-  case class ForAllSP(sentence: SententialPhrase)
-      extends SententialPhrase
+  case class ForAllSP(sentence: SententialPhrase) extends SententialPhrase
 
   /**
     * Existential-style quantified sentence, but also allowing at most one and precisely one.
     */
   case class ExistentialSP(sentence: SententialPhrase,
-                              exists: Boolean = true,
-                              unique: Boolean = false)
+                           exists: Boolean = true,
+                           unique: Boolean = false)
       extends SententialPhrase
 
   /**
     * Negation of a sentence.
     */
-  case class NegSP(sentence: SententialPhrase)
-      extends SententialPhrase
+  case class NegSP(sentence: SententialPhrase) extends SententialPhrase
 
   /**
     * Conjunction of sentential phrases.
@@ -326,7 +317,7 @@ object MathExpr {
 
 // import MathExpr._
 
-object FormalExpr{
+object FormalExpr {
   case class Leaf(s: String) extends MathExpr
 
   case class Node(s: String, children: Vector[MathExpr]) extends MathExpr
@@ -345,27 +336,30 @@ object FormalExpr{
 
   def translator =
     Translator.Empty[Tree, MathExpr] ||
-    Pattern.partial[Tree, S]{case PennTrees.Leaf(s) => s} >>> {case s => Leaf(s)} ||
-    Pattern.partial[Tree, SL]{case PennTrees.Node(s, l) => (s, l)} >>> {case (s, l) => Node(s, l)}
-  }
-
+      Pattern.partial[Tree, S] { case PennTrees.Leaf(s) => s } >>> {
+        case s => Leaf(s)
+      } ||
+      Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
+        case (s, l) => Node(s, l)
+      }
+}
 
 /**
- * An unparsed tree, the default parse for iterative debugging.
- */
-case class Raw(model: TreeModel) extends MathText
-          with MathExpr
-          // with NounPhrase
-          // with VerbPhrase
-          // with SententialPhrase
-          // with Preposition
-          // with AdjectivalPhrase
-          // with Determiner
-          // with PostModifier
-          // with QuantTerm
+  * An unparsed tree, the default parse for iterative debugging.
+  */
+case class Raw(model: TreeModel) extends MathText with MathExpr
+// with NounPhrase
+// with VerbPhrase
+// with SententialPhrase
+// with Preposition
+// with AdjectivalPhrase
+// with Determiner
+// with PostModifier
+// with QuantTerm
 
-object Raw{
-  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) => Some(Raw(PennTrees.model(t))))
+object Raw {
+  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) =>
+    Some(Raw(PennTrees.model(t))))
 }
 
 sealed trait MathText
@@ -382,35 +376,32 @@ object MathText {
       extends SententialPhrase
 
   case class BiImplicationDefiniendum(name: String,
-                                         variables: Vector[T],
-                                         formula: SententialPhrase)
+                                      variables: Vector[T],
+                                      formula: SententialPhrase)
       extends MathExpr
 
-  case class CopulaDefiniendumNP(definiendum: NounPhrase)
-      extends NounPhrase
+  case class CopulaDefiniendumNP(definiendum: NounPhrase) extends NounPhrase
 
   case class CopulaDefiniendum(name: String,
-                                  variables: Vector[T],
-                                  lhs: NounPhrase)
+                               variables: Vector[T],
+                               lhs: NounPhrase)
       extends MathExpr
 
-  case class BiEquationalDefinitionSP(
-      definiendum: BiEquationalDefinitionSP,
-      definiens: SententialPhrase)
+  case class BiEquationalDefinitionSP(definiendum: BiEquationalDefinitionSP,
+                                      definiens: SententialPhrase)
       extends SententialPhrase
 
   case class CopulaDefinitionSP(definiendum: CopulaDefiniendumNP,
-                                   definiens: NounPhrase)
+                                definiens: NounPhrase)
       extends SententialPhrase
 
   case class BiEquationalDefinition(definiendum: BiEquationalDefinition,
-                                       definiens: SententialPhrase)
+                                    definiens: SententialPhrase)
       extends SententialPhrase
 
   case class CopulaDefinition(definiendum: CopulaDefiniendum,
-                                 definiens: NounPhrase)
+                              definiens: NounPhrase)
       extends SententialPhrase
 
-  case class VariableType(variables: Vector[NounPhrase],
-                             typ: NounPhrase)
+  case class VariableType(variables: Vector[NounPhrase], typ: NounPhrase)
 }

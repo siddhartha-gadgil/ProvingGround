@@ -23,11 +23,11 @@ object PennTrees {
     case Node(s, children) => TreeModel.Node(s, children map model)
   }
 
-  implicit class ShowModel(sent: Sentence){
+  implicit class ShowModel(sent: Sentence) {
     def show = model(sent.parse)
   }
 
-  implicit class ShowString(st: String){
+  implicit class ShowString(st: String) {
     def show = model(parsed)
 
     def sentence = new Sentence(st)
@@ -35,22 +35,23 @@ object PennTrees {
     def parsed = StanfordParser.parse(st)
   }
 
-  def sentence(children: Vector[Tree]) = 
-    children.head.treeFactory().
-      newTreeNode("S", children : java.util.List[Tree])
+  def sentence(children: Vector[Tree]) =
+    children.head
+      .treeFactory()
+      .newTreeNode("S", children: java.util.List[Tree])
 
 }
 
 sealed trait TreeModel
 
-object TreeModel{
-case class Leaf(value: String) extends TreeModel {
-  override def toString = s"""Leaf("$value")"""
-}
+object TreeModel {
+  case class Leaf(value: String) extends TreeModel {
+    override def toString = s"""Leaf("$value")"""
+  }
 
-case class Node(value: String, children: Vector[TreeModel])
-    extends TreeModel {
-  // override def toString = s"""Node("$value", ${children})"""
-}
+  case class Node(value: String, children: Vector[TreeModel])
+      extends TreeModel {
+    // override def toString = s"""Node("$value", ${children})"""
+  }
 
 }
