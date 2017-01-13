@@ -3,6 +3,7 @@ package provingground
 import edu.stanford.nlp._
 import simple._
 import edu.stanford.nlp.trees.Tree
+import scala.collection.JavaConversions._
 
 object PennTrees {
   object Leaf {
@@ -33,6 +34,10 @@ object PennTrees {
 
     def parsed = StanfordParser.parse(st)
   }
+
+  def sentence(children: Vector[Tree]) = 
+    children.head.treeFactory().
+      newTreeNode("S", children : java.util.List[Tree])
 
 }
 

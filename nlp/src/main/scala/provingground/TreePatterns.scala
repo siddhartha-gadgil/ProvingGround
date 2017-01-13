@@ -35,11 +35,23 @@ object TreePatterns {
             (x, ys filter ((y) => Set(",", "RB") contains (y.value)))
         })
 
+  object ThenSent extends Pattern.Partial[Tree, II]({
+    case Then(x, Vector(y)) => (x, y)
+    case Then(x, ys) if ys.size >1 =>
+      (x, PennTrees.sentence(ys))
+  })
+
   object IfTree
       extends Pattern.Partial[Tree, IV]({
         case Node("S", IfClause(x) +: ys) => (x, ys filter (_.value != ","))
         case IfClause(Then(x, ys))        => (x, ys)
       })
+
+  object IfTreeSent extends Pattern.Partial[Tree, II]({
+    case Node("S", IfClause(x) +: ys) =>
+      (x, PennTrees.sentence(ys filter (_.value != ",")))
+      case IfClause(ThenSent(x, y)) => (x, y)
+  })
 
 //  import Translator._
 
@@ -197,16 +209,17 @@ object TreeToMathExpr{
 
   val and = TreePatterns.ConjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
 
-  val ifThen = TreePatterns.IfTree >>[MathExpr]{
-    case (x, Vector(y)) =>
-      Some(MathExpr.IfThen(x, y))
-    case (x, Vector(np, vp)) =>
-      Some(MathExpr.IfThen(x, MathExpr.NPVP(np, vp)))
-    case (x, ys) =>
-      println("Build failed")
-      println(x)
-      println(ys)
-      None
+  // val ifThen = TreePatterns.IfTree >>[MathExpr]{
+  //   case (x, Vector(y)) =>
+  //     Some(MathExpr.IfThen(x, y))
+  //   case (x, Vector(np, vp)) =>
+  //     Some(MathExpr.IfThen(x, MathExpr.NPVP(np, vp)))
+  //   case _ =>
+  //     None
+  // }
+
+  val ifThen = TreePatterns.IfTreeSent >>>[MathExpr]{
+    case (x, y) => MathExpr.IfThen(x, y)
   }
 
   val trans =
