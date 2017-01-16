@@ -75,6 +75,13 @@ object TreePatterns {
         case Node("S", Vector(x @ NP(_), y @ VP(_))) => (x, y)
       })
 
+  object VerbObj extends Pattern.Partial[Tree, II]({
+        case Node("VP", Vector(
+          x @ Node(vb, _),
+          y @ Node(nn, _))) if (vb.startsWith("V") && nn.startsWith("N")) => (x, y)
+      })
+
+
   object PP
       extends Pattern.Partial[Tree, II]({
         case Node("PP",
@@ -128,6 +135,13 @@ object TreePatterns {
             if (adjs.forall(_.value == "JJ") &&
               (np.value == "NN") && npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
+        case Node ("NP",
+            Vector(
+              Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np),
+              Node("NP", Vector(npp))
+            )) if (adjs.forall(_.value == "JJ") &&
+              (np.value == "NN") && npp.value.startsWith("N")) =>
+          (det, (adjs, (np, npp)))
       })
 
   object NN
@@ -179,11 +193,23 @@ object TreePatterns {
       extends Pattern.Partial[Tree, S]({
         case Node("IN", Vector(Leaf(nn))) => nn
       })
+
+  object DropRoot extends Pattern.Partial[Tree, Id]({
+    case Node("ROOT", Vector(x)) => x
+  })
+
+  object DropNP extends Pattern.Partial[Tree, Vector]({
+    case Node("NP", x) => x
+  })
 }
 
-object TreeToMathExpr {
+object TreeToMath {
   val npvp = TreePatterns.NPVP >>> [MathExpr] {
     case (np, vp) => MathExpr.NPVP(np, vp)
+  }
+
+  val verbObj = TreePatterns.VerbObj >>> [MathExpr] {
+    case (vp, np) => MathExpr.VerbObj(vp, np)
   }
 
   val pp = TreePatterns.PP >>> [MathExpr] {
@@ -226,6 +252,19 @@ object TreeToMathExpr {
 
   val and = TreePatterns.ConjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
 
+  val dropRoot = TreePatterns.DropRoot >>> [MathExpr] {
+    (x) => x
+    }
+
+  val dropNP = TreePatterns.DropNP >> [MathExpr] {
+    case Vector(x : MathExpr.DP) => Some(x)
+    case Vector(x: MathExpr.Formula) => Some(x)
+    case v =>
+      println(v)
+      println(v.size)
+      None
+  }
+
   // val ifThen = TreePatterns.IfTree >>[MathExpr]{
   //   case (x, Vector(y)) =>
   //     Some(MathExpr.IfThen(x, y))
@@ -239,7 +278,7 @@ object TreeToMathExpr {
     case (x, y) => MathExpr.IfThen(x, y)
   }
 
-  val trans =
+  val mathExpr =
     fmla ||
       ifThen ||
       and ||
@@ -251,8 +290,13 @@ object TreeToMathExpr {
       pp ||
       prep ||
       npvp ||
+      verbObj ||
       dpBase ||
       dpQuant ||
       dpBaseQuant ||
+      dropRoot ||
+      dropNP
+
+    val mathExprTree = mathExpr ||
       FormalExpr.translator
 }

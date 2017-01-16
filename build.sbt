@@ -211,7 +211,7 @@ lazy val nlp = (project in file("nlp"))
 //        settings(jvmSettings : _*).
 //        settings(serverSettings : _*).
   settings(initialCommands in (Test, console) :=
-    s"""ammonite.Main("import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, Functors._, SubTypePattern._").run() """)
+    s"""ammonite.Main("import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, Functors._, SubTypePattern._, TreeToMath._").run() """)
   .dependsOn(coreJVM)
 
 // lazy val translation = (project in file("translation"))
