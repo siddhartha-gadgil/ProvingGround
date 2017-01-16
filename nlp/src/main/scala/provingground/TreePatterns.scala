@@ -81,6 +81,21 @@ object TreePatterns {
           y @ Node(nn, _))) if (vb.startsWith("V") && nn.startsWith("N")) => (x, y)
       })
 
+    object VerbAdj extends Pattern.Partial[Tree, II]({
+        case Node("VP", Vector(
+          x @ Node(vb, _),
+          y @ Node("ADJP", _))) if vb.startsWith("V") => (x, y)
+      })
+
+    object JJPP extends Pattern.Partial[Tree, IV]({
+        case Node("ADJP", x +: ys)
+        if x.value.startsWith("JJ") && ys.forall(_.value.startsWith("PP")) => (x, ys)
+      })
+
+    object VerbPP extends Pattern.Partial[Tree, IV]({
+        case Node("VP", x +: ys)
+        if x.value.startsWith("V") && ys.forall(_.value.startsWith("PP")) => (x, ys)
+      })
 
   object PP
       extends Pattern.Partial[Tree, II]({
@@ -212,6 +227,10 @@ object TreeToMath {
     case (vp, np) => MathExpr.VerbObj(vp, np)
   }
 
+  val verbAdj = TreePatterns.VerbAdj >>> [MathExpr] {
+    case (vp, adj) => MathExpr.VerbAdj(vp, adj)
+  }
+
   val pp = TreePatterns.PP >>> [MathExpr] {
     case (pp, np) => MathExpr.PP(false, pp, np)
   }
@@ -247,6 +266,15 @@ object TreeToMath {
     case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
     case _                            => None
   }
+
+  val jjpp = TreePatterns.JJPP >>> [MathExpr] {
+    case (adj, pps) => MathExpr.JJPP(adj, pps)
+  }
+
+  val verbpp = TreePatterns.VerbPP >>> [MathExpr] {
+    case (verb, pps) => MathExpr.VerbPP(verb, pps)
+  }
+
 
   val or = TreePatterns.DisjunctNP >>> [MathExpr](MathExpr.DisjunctNP(_))
 
@@ -291,6 +319,9 @@ object TreeToMath {
       prep ||
       npvp ||
       verbObj ||
+      verbAdj ||
+      jjpp ||
+      verbpp ||
       dpBase ||
       dpQuant ||
       dpBaseQuant ||

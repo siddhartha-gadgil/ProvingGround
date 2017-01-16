@@ -189,6 +189,8 @@ object MathExpr {
 
   case class JJ(word: String) extends AdjectivalPhrase
 
+  case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
+
   /**
     * Prepositional phrase, usually translates to an argument, sometimes to a property.
     Can be a Post-modifier in a determiner phrase, where it acts as an argument.
@@ -245,12 +247,12 @@ object MathExpr {
   /**
     * A transitive verb and adjective.
     */
-  case class VerbAdj(vp: VerbPhrase, AdjectivalPhrase: AP) extends VerbPhrase
+  case class VerbAdj(vp: VerbPhrase, ap: AdjectivalPhrase) extends VerbPhrase
 
   /**
     * is ... property given by a noun.
     */
-  case class IsNoun(property: NounPhrase) extends VerbPhrase
+  case class IsNoun(property: NounPhrase) extends VerbPhrase // case of VerbObj
 
   /**
     * is ... property given by an intransitive adjective.
@@ -261,6 +263,8 @@ object MathExpr {
     * are ... property given by a transitive adjective, e.e., independent.
     */
   case class AreAdj(coProperty: AdjectivalPhrase) extends VerbPhrase
+
+  // case class VerbAdj(verb: MathExpr, adjs : Vector[MathExpr]) extends VerbPhrase
 
   /**
     * is ... prep ... property given by a transitive adjective
@@ -276,6 +280,8 @@ object MathExpr {
     * is ... property given by a prespositional phrase
     */
   case class IsPrep(pp: PP) extends VerbPhrase
+
+  case class VerbPP(verb: MathExpr, pps: Vector[MathExpr]) extends VerbPhrase
 
   /**
     * Universally quantified sentence.
