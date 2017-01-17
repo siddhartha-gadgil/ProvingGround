@@ -2,7 +2,7 @@ package provingground
 
 import scala.language.higherKinds
 
-import shapeless.{Id => IdS, _}
+import shapeless.{Id => _, _}
 import HList._
 
 
