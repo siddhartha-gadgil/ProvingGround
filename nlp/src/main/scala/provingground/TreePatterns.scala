@@ -82,9 +82,24 @@ object TreePatterns {
           (x, y)
       })
 
+  object VerbNotObj extends Pattern.Partial[Tree, II]({
+        case Node("VP", Vector(x @ Node(vb, _), Node(_ , Vector(Leaf("not"))), y @ Node(nn, _)))
+            if (vb.startsWith("V") && nn.startsWith("N")) =>
+          (x, y)
+      })
+
   object VerbAdj
       extends Pattern.Partial[Tree, II]({
-        case Node("VP", Vector(x @ Node(vb, _), y @ Node("ADJP", _)))
+        case Node("VP", Vector(x @ Node(vb, _),  y @ Node("ADJP", _)))
+            if vb.startsWith("V") =>
+          (x, y)
+      })
+
+  object VerbNotAdj extends Pattern.Partial[Tree, II]({
+        case Node("VP", Vector(
+            x @ Node(vb, _),
+            Node(_ , Vector(Leaf("not"))),
+            y @ Node("ADJP", _)))
             if vb.startsWith("V") =>
           (x, y)
       })
@@ -192,6 +207,17 @@ object TreePatterns {
           (adjs, (np, npp))
       })
 
+  val isModalDo : Tree => Boolean = {
+    case Node("MD", _) => true
+    case Node(_, Vector(Leaf(v))) => Set("do", "does") contains (v)
+    case _ => false
+  }
+
+  object NotVP extends Pattern.Partial[Tree, Id]({
+    case Node("VP",
+        head +: Node("RB", Vector(Leaf("not"))) +: Vector(vp @ Node("VP", _))) if isModalDo(head) => vp
+  })
+
   object NN
       extends Pattern.Partial[Tree, S]({
         case Node(tag, Vector(Leaf(nn)))
@@ -265,6 +291,17 @@ object TreeToMath {
   val verbAdj = TreePatterns.VerbAdj >>> [MathExpr] {
     case (vp, adj) => MathExpr.VerbAdj(vp, adj)
   }
+
+  val verbNotObj = TreePatterns.VerbNotObj >>> [MathExpr] {
+      case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
+    }
+
+    val verbNotAdj = TreePatterns.VerbNotAdj >>> [MathExpr] {
+      case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
+    }
+
+
+
 
   val pp = TreePatterns.PP >>> [MathExpr] {
     case (pp, np) => MathExpr.PP(false, pp, np)
@@ -355,6 +392,8 @@ object TreeToMath {
     case (x, y) => MathExpr.IfThen(x, y)
   }
 
+  val notvp = TreePatterns.NotVP >>> [MathExpr] (MathExpr.NegVP(_))
+
   val mathExpr =
     fmla ||
       ifThen ||
@@ -369,8 +408,11 @@ object TreeToMath {
       npvp ||
       verbObj ||
       verbAdj ||
+      verbNotObj ||
+      verbNotAdj ||
       jjpp ||
       verbpp ||
+      notvp ||
       dpBase ||
       dpQuant ||
       dpBaseQuant ||

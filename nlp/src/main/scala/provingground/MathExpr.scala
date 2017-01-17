@@ -159,6 +159,8 @@ object MathExpr {
 
     case object Zero extends Determiner
 
+    case object No extends Determiner
+
     def apply(s: String) = s.toLowerCase match {
       case "a"     => A
       case "an"    => A
@@ -166,6 +168,8 @@ object MathExpr {
       case "some"  => Some
       case "every" => Every
       case "all"   => Every
+      case "no"    => No
+      case "any"   => Every
     }
   }
 
