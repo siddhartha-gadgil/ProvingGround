@@ -89,6 +89,20 @@ object Translator {
     }
   }
 
+  case class PolyJunction[I, O, X[_]: Traverse](polySplit: I => Option[Vector[X[I]]],
+                                            build: X[O] => Option[O])
+      extends Translator[I, O] {
+    def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
+    def recTranslate(leafMap: => (I => Option[O])) = {
+      def connect(xi: X[I]) = flip(implicitly[Functor[X]].map(xi)(leafMap))
+      (inp: I) =>
+        (polySplit(inp) flatMap {
+          (v) =>
+             (v flatMap (xi => (connect(xi)) flatMap (build))).headOption
+           })
+    }
+  }
+
   case class Mapped[I, O, X](trans: Translator[I, O], fn: O => X, ufn: X => O)
       extends Translator[I, X] {
     def recTranslate(leafMap: => (I => Option[X])): I => Option[X] =
@@ -158,6 +172,33 @@ object Translator {
         (inp: I) => matcher(inp) map (implicitly[Functor[X]].lift(_)(varword))
       )
     }
+
+    class PolyPattern[I, X[_]: Traverse](split: I => Option[Vector[X[I]]]) {
+      def unapply(x: I): Option[Vector[X[I]]] = split(x)
+
+      def join[O](build: X[O] => Option[O]) = PolyJunction(unapply, build)
+
+      def joinStrict[O](build: X[O] => O) = join((x: X[O]) => Some(build(x)))
+
+      def >>[O](build: X[O] => Option[O]) = join(build)
+
+      def >>>[O](build: X[O] => O) = joinStrict(build)
+
+  }
+
+    object PolyPattern{
+      def apply[I, X[_]: Traverse](split: I => Option[Vector[X[I]]]) =
+        new PolyPattern(split)
+
+      def partial[I, X[_]: Traverse](split: PartialFunction[I, Vector[X[I]]]) =
+        PolyPattern(split.lift)
+
+// To allow for inheritance so we can use case objects.
+    class Partial[I, X[_]: Traverse](split: PartialFunction[I, Vector[X[I]]])
+      extends PolyPattern(split.lift)
+
+    }
+
 
     /**
       * Given shape and Input type, builds a junction from a split whose output is _a priori_ of the wrong type.

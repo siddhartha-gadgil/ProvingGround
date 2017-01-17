@@ -148,14 +148,14 @@ object TreePatterns {
       extends Pattern.Partial[Tree, SVII]({
         case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np :+ npp)
             if (adjs.forall(_.value == "JJ") &&
-              (np.value == "NN") && npp.value.startsWith("N")) =>
+              (np.value.startsWith("NN")) && npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
         case Node ("NP",
             Vector(
               Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np),
               Node("NP", Vector(npp))
             )) if (adjs.forall(_.value == "JJ") &&
-              (np.value == "NN") && npp.value.startsWith("N")) =>
+              (np.value.startsWith("NN")) && npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
       })
 
