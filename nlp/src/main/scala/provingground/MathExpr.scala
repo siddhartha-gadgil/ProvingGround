@@ -224,7 +224,7 @@ object MathExpr {
   /**
     * A such that clause
     */
-  case class SuchThat(condition: SP) extends PostModifier
+  case class SuchThat(condition: MathExpr) extends PostModifier
 
   /**
     * Determiner phrase: this is the main composite tree.
@@ -235,6 +235,8 @@ object MathExpr {
                 quantTerms: Option[NounPhrase] = None,
                 post: Vector[PostModifier] = Vector())
       extends MathExpr {
+    def st(wh: MathExpr) = this.copy(post = post :+ SuchThat(wh))
+
     def add(pp: PostModifier) =
       this.copy(post = this.post :+ pp)
   }

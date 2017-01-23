@@ -35,6 +35,12 @@ object PennTrees {
     def parsed = StanfordParser.parse(st)
   }
 
+  def mkTree(children: Vector[Tree], tag: String, parent: Tree) =
+    parent
+      .treeFactory()
+      .newTreeNode(tag, children: java.util.List[Tree])
+
+
   def sentence(children: Vector[Tree]) =
     children.head
       .treeFactory()

@@ -132,8 +132,24 @@ object TreePatterns {
 
   object NPPP
       extends Pattern.Partial[Tree, II]({
-        case Node("NP", Vector(x @ NP(_), y @ PP(_, _))) => (x, y)
-      })
+      case Node("NP", Vector(x @ NP(_), y @ PP(_, _))) => (x, y)
+          })
+
+  object NPWH
+  extends Pattern.Partial[Tree, II]({
+    case
+      Node("NP",
+        Vector(
+          x @ NP(_),
+          Node("SBAR",
+            Vector(
+              Node("WHADVP", _),
+              y))
+      )
+      ) => (x, y)
+  })
+
+
 
   object SimpleNPVP
       extends Pattern.Partial[Tree, II]({
@@ -145,6 +161,11 @@ object TreePatterns {
       pattern.join(ExprLang.appln[E])
     }
   }
+
+  object Purge extends Pattern.Partial[Tree, Id]({
+    case parent @ Node(tag, v) if v.exists (_.value == ",") =>
+      PennTrees.mkTree(v filter (_.value != ","), tag, parent)
+  })
 
   val npvpPattern = Translator.Pattern[Tree, Functors.II](NPVP.unapply)
 
@@ -346,11 +367,13 @@ object TreeToMath {
 
   val addPP = TreePatterns.NPPP >> [MathExpr] {
     case (dp: MathExpr.DP, pp) => Some(dp.add(pp))
-    // case (
-    //   FormalExpr.Node("NP", Vector(nn)),
-    //   pp) =>
-    //     Some(MathExpr.DP(MathExpr.Determiner.Zero, Vector(), Some(nn)).add(pp))
     case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
+    case _                            => None
+  }
+
+  val addST = TreePatterns.NPWH >> [MathExpr] {
+    case (dp: MathExpr.DP, wh) => Some(dp.st(wh))
+    case (fmla: MathExpr.Formula, wh) => Some(fmla.dp.st(wh))
     case _                            => None
   }
 
@@ -379,6 +402,8 @@ object TreeToMath {
       None
   }
 
+  val purge = TreePatterns.Purge >>> [MathExpr]((x) => x)
+
   // val ifThen = TreePatterns.IfTree >>[MathExpr]{
   //   case (x, Vector(y)) =>
   //     Some(MathExpr.IfThen(x, y))
@@ -400,6 +425,7 @@ object TreeToMath {
       and ||
       or ||
       addPP ||
+      addST ||
       nn ||
       vb ||
       jj ||
@@ -419,7 +445,8 @@ object TreeToMath {
       dpBaseZero ||
       dpBaseQuantZero ||
       dropRoot ||
-      dropNP
+      dropNP ||
+      purge
 
   val mathExprTree = mathExpr ||
       FormalExpr.translator
