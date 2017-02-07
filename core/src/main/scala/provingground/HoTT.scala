@@ -2223,6 +2223,13 @@ object HoTT {
     case _         => false
   }
 
+  def isTypFamily: Term => Boolean = {
+    case _ : Typ[_] => true
+    case f : Func[u, v] => isTypFamily(f.codom)
+    case f : FuncLike[u, v] => isTypFamily(f.depcodom(f.dom.Var))
+    case _ => false
+  }
+
   def isUniv(x: Term) = x match {
     case tp: Typ[u] => isTyp(tp.obj)
     case _          => false

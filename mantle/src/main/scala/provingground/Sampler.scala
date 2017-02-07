@@ -81,6 +81,11 @@ object Sampler {
             sample(f(a), m)).toVector
           combineAll(sampsVec)
 
+        case FlatQuotMapped(base, q, f) =>
+          val baseSamp = sample(base, n)
+          val baseGroups = baseSamp groupBy {case (a, m) => q(a)}
+          ???
+
         case Conditioned(base, p) =>
           val firstSamp = sample(base, n) filter { case (a, n) => p(a) }
           val tot = firstSamp.values.sum
