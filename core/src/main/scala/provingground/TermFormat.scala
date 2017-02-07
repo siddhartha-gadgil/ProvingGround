@@ -171,7 +171,7 @@ object FansiTranslate {
       } ||
       prodTyp >>> { case (first, second) => (first ++ syms.Prod ++ second) } ||
       // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
-      equation >>> { case (lhs, rhs) => (lhs ++ LightRed(" = ")) } ||
+      equation >>> { case (lhs, rhs) => (lhs ++ LightRed(" = "))  ++ rhs} ||
       plusTyp >>> {
         case (first, scnd) => (first ++ LightRed(Str(" + ")) ++ scnd)
       }

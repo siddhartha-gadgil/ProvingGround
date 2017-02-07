@@ -110,11 +110,13 @@ object TermPatterns {
       }
   }
 
-  val symName = Pattern.partial[Term, S] {
+  val symName = Pattern[Term, S] {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
-        case Name(name) => name
+        case Name(name) => Some(name)
+        case _ => None
       }
+    case _ => None
   }
 
   def termToExprRaw[E: ExprLang] = {

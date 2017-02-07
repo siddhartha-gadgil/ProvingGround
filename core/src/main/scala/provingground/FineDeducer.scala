@@ -56,9 +56,9 @@ object FineDeducer {
       })
 }
 
-case class FineDeducer(applnWeight: Double = 0.2,
-                       val lambdaWeight: Double = 0.2,
-                       piWeight: Double = 0.2,
+case class FineDeducer(applnWeight: Double = 0.1,
+                       val lambdaWeight: Double = 0.1,
+                       piWeight: Double = 0.1,
                        varWeight: Double = 0.3,
                        unifyWeight: Double = 0.5,
                        val vars: Vector[Term] = Vector()) { fine =>

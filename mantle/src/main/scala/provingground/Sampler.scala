@@ -9,6 +9,8 @@ import breeze.plot._
 
 import scala.concurrent._
 
+import scala.util.Try
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Sampler {
@@ -60,7 +62,7 @@ object Sampler {
 
         case mx: MixinOpt[u] =>
           val m = Binomial(n, mx.q).draw
-          val optSample = sample(mx.second, m)
+          val optSample = Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
           combine(
               sample(mx.first, n - total(secondSample.toVector)), secondSample)
