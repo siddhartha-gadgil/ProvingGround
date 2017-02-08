@@ -24,9 +24,11 @@ trait ProbabilityDistribution[A] extends Any { pd =>
       f: A => ProbabilityDistribution[B]): ProbabilityDistribution[B] =
     ProbabilityDistribution.FlatMapped(this, f)
 
-  def flatQuotMap[Q, B](
-      f: Q => ProbabilityDistribution[B], q: A => Q): ProbabilityDistribution[B] =
-    ProbabilityDistribution.FlatQuotMapped(this, q, f)
+  def product[B](that: ProbabilityDistribution[B]) =
+    ProbabilityDistribution.Product(this, that)
+
+  def fibProduct[Q, B](quot: A => Q, fibers: Q => ProbabilityDistribution[B]) =
+    ProbabilityDistribution.FiberProduct(this, quot, fibers)
 
   def randomVariable: Iterator[A] = new Iterator[A] {
     def hasNext = true
@@ -169,12 +171,19 @@ object ProbabilityDistribution {
     def next = f(base.next).next
   }
 
-  case class FlatQuotMapped[A, Q, B](
+  case class FiberProduct[A, Q, B](
     base: ProbabilityDistribution[A],
     quotient : A => Q,
-    f: Q => ProbabilityDistribution[B])
-      extends ProbabilityDistribution[B] {
-    def next = f(quotient(base.next)).next
+    fibers: Q => ProbabilityDistribution[B])
+      extends ProbabilityDistribution[(A, B)] {
+    def next = {
+      val a = base.next
+      (a, fibers(quotient(a)).next)
+    }
+  }
+
+  case class Product[A, B](first: ProbabilityDistribution[A], second: ProbabilityDistribution[B]) extends ProbabilityDistribution[(A, B)]{
+    def next = (first.next, second.next)
   }
 
   case class Conditioned[A](base: ProbabilityDistribution[A], p: A => Boolean)

@@ -48,6 +48,14 @@ object Sampler {
     })
   }
 
+  def linear[A](m: Map[A, Int]) =
+    m.toVector flatMap{
+      case (a, n) => Vector.fill(n)(a)
+    }
+
+  def grouped[A](vec: Vector[A]) =
+    vec.groupBy(identity) mapValues (_.size)
+
   import ProbabilityDistribution._
 
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
@@ -81,10 +89,24 @@ object Sampler {
             sample(f(a), m)).toVector
           combineAll(sampsVec)
 
-        case FlatQuotMapped(base, q, f) =>
+        case Product(first, second) =>
+          val firstSamp = sample(first, n)
+          val secondSamp = sample(second, n)
+          grouped(linear(firstSamp).zip(linear(secondSamp)))
+
+        case fp: FiberProduct[u, q, v] =>
+          import fp._
           val baseSamp = sample(base, n)
-          val baseGroups = baseSamp groupBy {case (a, m) => q(a)}
-          ???
+          val groups = baseSamp groupBy { case (x, n) => quotient(x)}
+          val sampVec =
+            groups.keys.toVector.flatMap {
+              (a) =>
+                val size = groups(a).values.sum
+                val fiberSamp = sample(fibers(a), size)
+                linear(groups(a)).zip(linear(fiberSamp))
+              }
+          grouped(sampVec)
+
 
         case Conditioned(base, p) =>
           val firstSamp = sample(base, n) filter { case (a, n) => p(a) }
