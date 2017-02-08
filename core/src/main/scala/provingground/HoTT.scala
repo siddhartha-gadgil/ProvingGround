@@ -2224,7 +2224,6 @@ object HoTT {
   }
 
   def isTypFamily: Term => Boolean = {
-    case _ : Typ[_] => true
     case f : Func[u, v] => isTypFamily(f.codom)
     case f : FuncLike[u, v] => isTypFamily(f.depcodom(f.dom.Var))
     case _ => false
