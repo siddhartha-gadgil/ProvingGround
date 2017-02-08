@@ -23,9 +23,18 @@ object FineDeducer {
     case fn: FuncLike[u, v] => fn
   }
 
+  @deprecated("use products", "8/2/2017")
   def applnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
               argEvolve: => (SomeFunc => FD[Term] => PD[Term]))(p: FD[Term]) =
     funcEvolve(p) flatMap ((f) => argEvolve(f)(p) map (Unify.appln(f, _)))
+
+  def unifApplnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
+              argEvolve: => (FD[Term] => PD[Term]))(p: FD[Term]) =
+    (funcEvolve(p) product argEvolve(p)) map {case (func, arg) => Unify.appln(func, arg)}
+
+  def simpleApplnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
+              argEvolve: => (Typ[Term] => FD[Term] => PD[Term]))(p: FD[Term]) =
+    (funcEvolve(p) fibProduct (_.typ, (tp : Typ[Term]) => argEvolve(tp)(p))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
   def lambdaEv(varweight: Double)(
       typEvolve: => (FD[Term] => PD[Term]),
@@ -70,8 +79,9 @@ case class FineDeducer(applnWeight: Double = 0.1,
     this.copy(varWeight = this.varWeight / (1 + this.varWeight))
 
   def evolve(fd: FD[Term]): PD[Term] =
-    fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
-      .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
+    fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
+    .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
             lambdaWeight)
       .<+?>(piEv(varWeight)(evolveTyp, (t) => varScaled.evolveTyp)(fd),
             piWeight)
@@ -82,8 +92,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolvFuncs(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
-      fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd),
-              applnWeight)
+      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
         .conditioned(isFunc)
         .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
               lambdaWeight)
@@ -91,9 +101,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolveWithTyp(tp: Typ[Term])(fd: FD[Term]): PD[Term] = {
     val p = (t: Term) => t.typ == tp
-    val rawBase = fd.<+?>(
-      applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd),
-      applnWeight)
+    val rawBase = fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
     val base = rawBase.conditioned(p)
     tp match {
       case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
@@ -117,7 +126,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
   }
 
   def evolveTyp(fd: FD[Term]): PD[Term] = {
-    fd.<+?>(applnEv(evolvFuncs, (f: SomeFunc) => domTerms(f))(fd), applnWeight)
+    fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
       .conditioned(isTyp)
       .<+?>(piEv(varWeight)(evolveTyp, (t) => varScaled.evolveTyp)(fd),
             piWeight)
@@ -136,6 +146,19 @@ case class FineDeducer(applnWeight: Double = 0.1,
   def DapplnFunc(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     DevolvFuncs(fd, tang) flatMap
       ((f) => domTerms(f)(fd) map (Unify.appln(f, _)))
+
+  def DunifApplnFunc(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
+    DevolvFuncs(fd, tang) product evolve(fd) map {case(f, arg) => Unify.appln(f, arg)}
+
+  def DunifApplnArg(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
+      evolvFuncs(fd) product Devolve(fd, tang) map {case(f, arg) => Unify.appln(f, arg)}
+
+  def DsimpleApplnFunc(fd: FD[Term], tang: FD[Term]): PD[Term] =
+    (DevolvFuncs(fd, tang) fibProduct (_.typ, (tp : Typ[Term]) => evolveWithTyp(tp)(fd))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+
+  def DsimpleApplnArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
+    (evolvFuncs(fd) fibProduct (_.typ, (tp : Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+
 
   def DapplnArg(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     evolvFuncs(fd) flatMap
