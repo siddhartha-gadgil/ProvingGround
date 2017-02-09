@@ -17,13 +17,14 @@ import HoTT._
 
 import FineDeducer._
 
-case class NextSample(ded : FineDeducer,
-              p: FD[Term],
-              vars: Vector[Term],
-                      size: Int,
-                      derTotalSize: Int,
-                      epsilon: Double,
-                      inertia: Double) {
+case class NextSample(
+                p: FD[Term],
+                ded : FineDeducer = FineDeducer(),
+                vars: Vector[Term] = Vector(),
+                size: Int = 1000,
+                derTotalSize: Int = 1000,
+                      epsilon: Double = 0.2,
+                      inertia: Double = 0.3) {
   lazy val init = ded.evolve(p)
 
   import Sampler._
@@ -92,4 +93,6 @@ case class NextSample(ded : FineDeducer,
   lazy val succFD = shiftedFD(derTotalSize, epsilon)
 
   lazy val succ = this.copy(p = succFD)
+
+  def iter = Iterator.iterate(this)(_.succ)
 }

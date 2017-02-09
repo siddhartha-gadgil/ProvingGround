@@ -31,7 +31,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       "org.spire-math" %% "spire"         % "0.13.0",
       "org.scalatest"  % "scalatest_2.11" % "3.0.1" % "test",
       "com.lihaoyi"    %% "fansi"         % "0.2.3",
-      "com.lihaoyi"    %% "upickle"       % "0.4.3",
+      "com.lihaoyi"    %% "upickle"       % "0.4.4",
       "com.chuusai"    %% "shapeless"     % "2.3.2",
       "org.typelevel"  %% "cats"          % "0.8.1",
       "com.lihaoyi"    % "ammonite"       % ammV cross CrossVersion.full
@@ -52,7 +52,7 @@ lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"            %% "ammonite-ops"  % ammV,
-    "com.github.nscala-time" %% "nscala-time"   % "2.0.0",
+    "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.11.13",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
@@ -68,10 +68,10 @@ lazy val jvmSettings = Seq(
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
-    "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
+    // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j"              % "slf4j-api"       % "1.7.16",
     "org.slf4j"   % "slf4j-simple"  %   "1.7.16",
-    "com.lihaoyi" %% "pprint" % "0.4.3",
+    "com.lihaoyi" %% "pprint" % "0.4.4",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.12",
     // Native libraries are not included by default. add this if you want them (as of 0.7)
@@ -90,7 +90,7 @@ lazy val jvmSettings = Seq(
 
 lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-compiler" % scalaVersion.value,
+    // "org.scala-lang" % "scala-compiler" % scalaVersion.value,
     // ws,
     "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
     // "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
@@ -143,7 +143,7 @@ lazy val client = project
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.8.0",
       "com.lihaoyi"  %%% "scalatags"   % "0.6.1",
-      "com.lihaoyi"  %%% "upickle"     % "0.4.3"
+      "com.lihaoyi"  %%% "upickle"     % "0.4.4"
     )
   )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
