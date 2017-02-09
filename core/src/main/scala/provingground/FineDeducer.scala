@@ -79,8 +79,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
     this.copy(varWeight = this.varWeight / (1 + this.varWeight))
 
   def evolve(fd: FD[Term]): PD[Term] =
-    fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
-    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
+    fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* unifyWeight)
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
     .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
             lambdaWeight)
       .<+?>(piEv(varWeight)(evolveTyp, (t) => varScaled.evolveTyp)(fd),
@@ -92,8 +92,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolvFuncs(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
-      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
-    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
+      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* unifyWeight)
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
         .conditioned(isFunc)
         .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
               lambdaWeight)
@@ -101,8 +101,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolvTypFamilies(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
-      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
-    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
+      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* unifyWeight)
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
         .conditioned(isTypFamily)
         .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
               lambdaWeight)
@@ -110,8 +110,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolveWithTyp(tp: Typ[Term])(fd: FD[Term]): PD[Term] = {
     val p = (t: Term) => t.typ == tp
-    val rawBase = fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* (1- unifyWeight))
-    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* unifyWeight)
+    val rawBase = fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight*  unifyWeight)
+    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
     val base = rawBase.conditioned(p)
     tp match {
       case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
@@ -135,8 +135,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
   }
 
   def evolveTyp(fd: FD[Term]): PD[Term] = {
-    fd.<+?>(unifApplnEv(evolvTypFamilies, evolve)(fd), applnWeight* (1- unifyWeight))
-    .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd), applnWeight* unifyWeight)
+    fd.<+?>(unifApplnEv(evolvTypFamilies, evolve)(fd), applnWeight* unifyWeight)
+    .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
       .conditioned(isTyp)
       .<+?>(piEv(varWeight)(evolveTyp, (t) => varScaled.evolveTyp)(fd),
             piWeight)
