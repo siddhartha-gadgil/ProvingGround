@@ -166,7 +166,7 @@ object MonoidSimple {
 }
 
 object Group {
-  import Monoid.{M => G, l => e, _}
+  import Monoid.{M => G,  _}
 
   val i = "inv" :: G ->: G
 

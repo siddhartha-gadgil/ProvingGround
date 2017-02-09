@@ -145,7 +145,7 @@ object FansiTranslate {
       formalAppln >>> { case (func, arg) => func ++ "(" ++ arg ++ ")" } ||
       funcTyp >>> {
         case (dom, codom) =>
-          dom ++ " " ++ Color.LightRed(syms.Arrow) ++ " " ++ codom
+          Str("(") ++ dom ++ " " ++ Color.LightRed(syms.Arrow) ++ " " ++ codom ++ ")"
       } ||
       lambdaTriple >>> {
         case ((variable, typ), value) =>

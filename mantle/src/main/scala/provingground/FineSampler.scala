@@ -2,14 +2,14 @@ package provingground
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
-import breeze.linalg.{Vector => _, _}
-import breeze.stats.distributions._
-
-import breeze.plot._
-
+// import breeze.linalg.{Vector => _, _}
+// import breeze.stats.distributions._
+//
+// import breeze.plot._
+//
 import scala.concurrent._
-
-import scala.util.Try
+//
+// import scala.util.Try
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -95,4 +95,21 @@ case class NextSample(
   lazy val succ = this.copy(p = succFD)
 
   def iter = Iterator.iterate(this)(_.succ)
+
+  def buf = BufferedRun(iter)
+}
+
+case class BufferedRun[A](iter: Iterator[A]){
+  var live: Boolean = true
+  def stop() = {
+    println(s"Sending halt signal to $this")
+     live = false }
+  val it = iter.takeWhile(
+    (_) => {
+      if (!live) println(s"Halted $this")
+      live})
+  val timeseries = scala.collection.mutable.ArrayBuffer[A]()
+  Future {
+    it.foreach((ns) => timeseries.append(ns))
+  }
 }
