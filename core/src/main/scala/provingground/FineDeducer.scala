@@ -19,6 +19,17 @@ object FineDeducer {
     type u <: Term with Subs[u]; type v <: Term with Subs[v]
   }
 
+  def lambdaClosure(vars: Vector[Term])(t: Term) =
+    vars.foldRight(t){case (v, t) => if (t.dependsOn(v)) v :-> t else t}
+
+  def piClosure(vars: Vector[Term])(t: Typ[Term]): Typ[Term] =
+    vars.foldRight(t){case (v, t) => if (t.dependsOn(v)) v ~>: t else t}
+
+  def termClosure(vars: Vector[Term])(fd: FD[Term]) = fd map (lambdaClosure(vars))
+
+  def typClosure(vars: Vector[Term])(fd: FD[Typ[Term]]) = fd map (piClosure(vars))
+
+
   def asFuncs(pd: PD[Term]): PD[SomeFunc] = pd map {
     case fn: FuncLike[u, v] => fn
   }
@@ -301,4 +312,79 @@ def DsimpleApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
       .conditioned(isTyp)
       .<+?>(DpiVar(fd, tang), piWeight)
       .<+?>(DpiVal(fd, tang), piWeight)
+}
+
+
+case class TheoremFeedback(fd: FD[Term],
+                        vars: Vector[Term] = Vector(),
+                        scale: Double = 1.0,
+                        thmScale: Double = 0.3,
+                        thmTarget: Double = 0.2) {
+  import FineDeducer._, math._
+
+  lazy val lfd = termClosure(vars)(fd)
+
+  lazy val tfd = FiniteDistribution {
+    fd.pmf collect {
+      case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
+    }
+  }
+
+  lazy val pfd = typClosure(vars)(tfd)
+
+  lazy val byProof =
+    (lfd filter ((t) => !isTyp(t)) map (_.typ: Typ[Term])).flatten
+      .normalized()
+
+  lazy val byStatementUnscaled = FD(byProof.pmf map {
+    case Weighted(x, _) => Weighted(x: Typ[Term], pfd(x))
+  }).flatten
+
+  lazy val thmTotal = byStatementUnscaled.total
+
+  lazy val thmShift =
+    if (thmTotal > 0 && thmTotal < thmTarget)
+      log(thmTarget / thmTotal) * thmScale
+    else 0
+
+  lazy val thmSet = byStatement.supp.toSet
+
+  lazy val byStatement =
+    if (thmTotal > 0) byStatementUnscaled * (1.0 / thmTotal)
+    else FD.empty[Typ[Term]]
+
+  lazy val entropyPairs =
+    byProof.pmf collect {
+      case Weighted(x, _) if byStatement(x) > 0 =>
+        x -> ((-log(byStatement(x)), -log(byProof(x))))
+    }
+
+  lazy val feedbackVec =
+    entropyPairs map { case (x, (a, b)) => (x, b - a) } sortBy {
+      case (x, e)                       => -e
+    }
+
+  lazy val feedbackMap = feedbackVec.toMap
+
+  def feedbackFunction(x: Typ[Term]) = max(0.0, feedbackMap.getOrElse(x, 0.0))
+
+  def feedbackTypDist(fd: FD[Typ[Term]]) = fd.integral(feedbackFunction)
+
+  def thmFeedbackFunction(x: Term) = x match {
+    case tp: Typ[u] =>
+      if (thmSet contains (tp)) thmShift else 0.0
+    case _ => 0.0
+  }
+
+  def feedbackTermDist(fd: FD[Term]) = {
+    val ltang = termClosure(vars)(fd).normalized()
+    val tpfd = FiniteDistribution {
+      fd.pmf collect {
+        case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
+      }
+    }
+    val ptang = typClosure(vars)(tpfd).normalized()
+    feedbackTypDist(typClosure(vars)((ltang) map (_.typ: Typ[Term]))) +
+      ptang.integral(thmFeedbackFunction)
+  }
 }
