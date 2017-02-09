@@ -34,7 +34,7 @@ object FineDeducer {
 
   def simpleApplnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
               argEvolve: => (Typ[Term] => FD[Term] => PD[Term]))(p: FD[Term]) =
-    (funcEvolve(p) fibProduct (_.typ, (tp : Typ[Term]) => argEvolve(tp)(p))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+    (funcEvolve(p) fibProduct (_.dom, (tp : Typ[Term]) => argEvolve(tp)(p))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
   def lambdaEv(varweight: Double)(
       typEvolve: => (FD[Term] => PD[Term]),
@@ -165,7 +165,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
       evolvFuncs(fd) product Devolve(fd, tang) map {case(f, arg) => Unify.appln(f, arg)}
 
   def DsimpleApplnFunc(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (DevolvFuncs(fd, tang) fibProduct (_.typ, (tp : Typ[Term]) => evolveWithTyp(tp)(fd))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+    (DevolvFuncs(fd, tang) fibProduct (_.dom, (tp : Typ[Term]) => evolveWithTyp(tp)(fd))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
 
 
@@ -176,16 +176,16 @@ def DunifApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     evolvTypFamilies(fd) product Devolve(fd, tang) map {case(f, arg) => Unify.appln(f, arg)}
 
 def DsimpleApplnTypFamilies(fd: FD[Term], tang: FD[Term]): PD[Term] =
-  (DevolvTypFamilies(fd, tang) fibProduct (_.typ, (tp : Typ[Term]) => evolveWithTyp(tp)(fd))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+  (DevolvTypFamilies(fd, tang) fibProduct (_.dom, (tp : Typ[Term]) => evolveWithTyp(tp)(fd))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
 def DsimpleApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (evolvTypFamilies(fd) fibProduct (_.typ, (tp : Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+    (evolvTypFamilies(fd) fibProduct (_.dom, (tp : Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
 
 
 
   def DsimpleApplnArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (evolvFuncs(fd) fibProduct (_.typ, (tp : Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
+    (evolvFuncs(fd) fibProduct (_.dom, (tp : Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])}
 
 
   // def DapplnArg(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =

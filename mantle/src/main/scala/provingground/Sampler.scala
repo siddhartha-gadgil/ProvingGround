@@ -28,11 +28,14 @@ object Sampler {
     collapse((xs map (_.toVector)).flatten)
   }
 
-  def fromPMF[A](pmf: Vector[Weighted[A]], size: Int): Map[A, Int] = {
+  def fromPMF[A](pmf: Vector[Weighted[A]], size: Int): Map[A, Int] =
+    if ((pmf map (_.weight)).sum >0)
+    {
     val vec = pmf map (_.elem)
     val ps = pmf map (_.weight)
     getMultinomial(vec, ps, size)
   }
+  else Map()
 
   def getMultinomial[A](xs: Vector[A], ps: Vector[Double], size: Int) = {
     val mult = Multinomial(DenseVector(ps.toArray))
