@@ -84,8 +84,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
                        val lambdaWeight: Double = 0.1,
                        piWeight: Double = 0.1,
                        varWeight: Double = 0.3,
-                       unifyWeight: Double = 0.5,
-                       val vars: Vector[Term] = Vector()) { fine =>
+                       unifyWeight: Double = 0.5) { fine =>
   // import Deducer.{asFuncs}
 
   import FineDeducer._
