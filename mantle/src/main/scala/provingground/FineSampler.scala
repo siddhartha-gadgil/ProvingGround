@@ -54,28 +54,31 @@ case class NextSample(
         val dPD =
           ded.Devolve(nextFD, tang) //recursive distribution based on derivative for sampling
         val samp = sample(dPD, n)
-        x -> toFD(samp)
+        val DdPd =
+          ded.DevolveTyp(nextFD, tang)
+        val Dsamp = sample(DdPd, n)
+        x -> (toFD(samp), toFD(Dsamp))
     }
 
   lazy val feedBacks =
     derFDs map {
-      case (x, tfd) =>
-        x -> thmFeedback.feedbackTermDist(tfd)
+      case (x, (tfd, typfd)) =>
+        x -> thmFeedback.feedbackTermDist(tfd, typfd)
     }
 
   def derivativeFD(p: FD[Term], n: Int) = toFD(sample(derivativePD(p), n))
 
-  def vecFlow(vec: FD[Term], n: Int) =
-    thmFeedback.feedbackTermDist(derivativeFD(p, n))
-
-  def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
-
-  def totalFlow(totalSize: Int): Map[Term, Double] =
-    (sample(nextFD, totalSize) map {
-          case (x, n) =>
-            val flow = termFlow(x, n)
-            x -> flow
-        }).toMap
+  // def vecFlow(vec: FD[Term], n: Int) =
+  //   thmFeedback.feedbackTermDist(derivativeFD(p, n))
+  //
+  // def termFlow(x: Term, n: Int) = vecFlow(FD.unif(x), n)
+  //
+  // def totalFlow(totalSize: Int): Map[Term, Double] =
+  //   (sample(nextFD, totalSize) map {
+  //         case (x, n) =>
+  //           val flow = termFlow(x, n)
+  //           x -> flow
+  //       }).toMap
 
   def shiftedFD(totalSize: Int, epsilon: Double) = {
     val tf = feedBacks // totalFlow(totalSize)
