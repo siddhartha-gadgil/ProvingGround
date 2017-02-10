@@ -33,9 +33,11 @@ case class NextSample(
 
   lazy val nextFD = toFD(nextSamp) * (1.0 - inertia) ++ (p * inertia)
 
-  // def plotEntropies = plotEnts(nextFD)
+  lazy val nextTypSamp = sample(ded.evolveTyp(p), size)
 
-  lazy val thmFeedback = TheoremFeedback(nextFD, vars)
+  lazy val nextTypFD = toFD(nextTypSamp)
+
+  lazy val thmFeedback = TheoremFeedback(nextFD, nextTypFD, vars)
 
   def derivativePD(tang: FD[Term]): PD[Term] = ded.Devolve(nextFD, tang)
 
@@ -62,8 +64,8 @@ case class NextSample(
 
   lazy val feedBacks =
     derFDs map {
-      case (x, (tfd, typfd)) =>
-        x -> thmFeedback.feedbackTermDist(tfd, typfd)
+      case (x, (tfd, tpfd)) =>
+        x -> thmFeedback.feedbackTermDist(tfd, tpfd)
     }
 
   def derivativeFD(p: FD[Term], n: Int) = toFD(sample(derivativePD(p), n))

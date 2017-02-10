@@ -34,6 +34,10 @@ object FineDeducer {
     case fn: FuncLike[u, v] => fn
   }
 
+  def asTyps(pd: PD[Term]): PD[Typ[Term]] = pd map {
+    case tp: Typ[u] => tp
+  }
+
   // @deprecated("use products", "8/2/2017")
   // def applnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
   //             argEvolve: => (SomeFunc => FD[Term] => PD[Term]))(p: FD[Term]) =
@@ -316,6 +320,7 @@ def DsimpleApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
 
 
 case class TheoremFeedback(fd: FD[Term],
+                        typfd: FD[Term],
                         vars: Vector[Term] = Vector(),
                         scale: Double = 1.0,
                         thmScale: Double = 0.3,
@@ -325,7 +330,7 @@ case class TheoremFeedback(fd: FD[Term],
   lazy val lfd = termClosure(vars)(fd)
 
   lazy val tfd = FiniteDistribution {
-    fd.pmf collect {
+    typfd.pmf collect {
       case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
     }
   }
