@@ -9,11 +9,13 @@ import breeze.plot._
 
 import scala.concurrent._
 
-import scala.util.Try
+import scala.util.{Try, Random}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Sampler {
+  val rand = new Random
+
   def total[A](x: Vector[(A, Int)]) = (x map (_._2)).sum
 
   def combine[A](x: Map[A, Int], y: Map[A, Int]) = {
@@ -95,7 +97,7 @@ object Sampler {
         case Product(first, second) =>
           val firstSamp = sample(first, n)
           val secondSamp = sample(second, n)
-          grouped(linear(firstSamp).zip(linear(secondSamp)))
+          grouped(rand.shuffle(linear(firstSamp)).zip(linear(secondSamp)))
 
         case fp: FiberProduct[u, q, v] =>
           import fp._
@@ -106,7 +108,7 @@ object Sampler {
               (a) =>
                 val size = groups(a).values.sum
                 val fiberSamp = sample(fibers(a), size)
-                linear(groups(a)).zip(linear(fiberSamp))
+                rand.shuffle(linear(groups(a))).zip(linear(fiberSamp))
               }
           grouped(sampVec)
 
