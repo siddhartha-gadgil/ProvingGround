@@ -5,7 +5,7 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import breeze.linalg.{Vector => _, _}
 import breeze.stats.distributions._
 
-import breeze.plot._
+// import breeze.plot._
 
 import scala.concurrent._
 
@@ -131,25 +131,25 @@ import HoTT._
 object TermSampler {
   import Sampler._
 
-  lazy val fig = Figure("Term Sample")
-
-  lazy val entPlot = fig.subplot(0)
-
-  import java.awt.Color
-
-  def plotEntsThms(thms: ThmEntropies) = {
-    val X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
-    val Y = DenseVector((thms.entropyPairs map (_._2._2)).toArray)
-    val names = (n: Int) => thms.entropyPairs(n)._1.toString
-    val colours = (n: Int) => if (X(n) < Y(n)) Color.RED else Color.BLUE
-    entPlot += scatter(X, Y, (_) => 0.1, colors = colours, tips = names)
-    entPlot.xlabel = "statement entropy"
-    entPlot.ylabel = "proof entropy"
-  }
-
-  def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
-
-  def plotEnts(fd: FiniteDistribution[Term]) = plotEntsThms(ThmEntropies(fd))
+  // lazy val fig = Figure("Term Sample")
+  //
+  // lazy val entPlot = fig.subplot(0)
+  //
+  // import java.awt.Color
+  //
+  // def plotEntsThms(thms: ThmEntropies) = {
+  //   val X = DenseVector((thms.entropyPairs map (_._2._1)).toArray)
+  //   val Y = DenseVector((thms.entropyPairs map (_._2._2)).toArray)
+  //   val names = (n: Int) => thms.entropyPairs(n)._1.toString
+  //   val colours = (n: Int) => if (X(n) < Y(n)) Color.RED else Color.BLUE
+  //   entPlot += scatter(X, Y, (_) => 0.1, colors = colours, tips = names)
+  //   entPlot.xlabel = "statement entropy"
+  //   entPlot.ylabel = "proof entropy"
+  // }
+  //
+  // def plotEnts(sample: Map[Term, Int]) = plotEntsThms(thmEntropies(sample))
+  //
+  // def plotEnts(fd: FiniteDistribution[Term]) = plotEntsThms(ThmEntropies(fd))
 
   def thmEntropies(sample: Map[Term, Int]) = ThmEntropies(toFD(sample))
 
@@ -223,7 +223,7 @@ class TermSampler(d: BasicDeducer) {
 
     lazy val nextFD = toFD(nextSamp) * (1.0 - inertia) ++ (p * inertia)
 
-    def plotEntropies = plotEnts(nextFD)
+    // def plotEntropies = plotEnts(nextFD)
 
     lazy val thmEntropies = ThmEntropies(nextFD, d.vars, d.lambdaWeight)
 

@@ -1,6 +1,6 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.11.8"
+val scalaV = "2.12.1"
 
 val ammV = "0.8.1"
 
@@ -26,7 +26,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
     libraryDependencies ++= Seq(
       // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-//      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.spire-math" %% "spire"         % "0.13.0",
       "com.lihaoyi"    %% "fansi"         % "0.2.3",
@@ -52,10 +52,10 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"            %% "ammonite-ops"  % ammV,
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
-    "org.reactivemongo"      %% "reactivemongo" % "0.11.13",
+    "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
-    "de.heikoseeberger"      %% "akka-sse"      % "1.8.1",
+    "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.0.1",
     "org.scalatest" %% "scalatest" % "3.0.1" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
@@ -74,15 +74,15 @@ lazy val jvmSettings = Seq(
     "org.slf4j"   % "slf4j-simple"  %   "1.7.16",
     "com.lihaoyi" %% "pprint" % "0.4.4",
     // Last stable release
-    "org.scalanlp" %% "breeze" % "0.12",
+    "org.scalanlp" %% "breeze" % "latest.integration"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
     // Native libraries greatly improve performance, but increase jar sizes.
     // It also packages various blas implementations, which have licenses that may or may not
     // be compatible with the Apache License. No GPL code, as best I know.
-    "org.scalanlp" %% "breeze-natives" % "0.12",
+    // "org.scalanlp" %% "breeze-natives" % "0.12",
     // The visualization library is distributed separately as well.
     // It depends on LGPL code
-    "org.scalanlp" %% "breeze-viz" % "0.12"
+    // "org.scalanlp" %% "breeze-viz" % "0.12"
   ),
   resources in Compile += (fastOptJS in (client, Compile)).value.data
 )
@@ -93,7 +93,7 @@ lazy val serverSettings = Seq(
   libraryDependencies ++= Seq(
     // "org.scala-lang" % "scala-compiler" % scalaVersion.value,
     // ws,
-    "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
+    // "org.reactivemongo" %% "play2-reactivemongo" % "0.11.2.play24",
     // "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
     "org.webjars" % "jquery" % "1.11.1"
   ),
@@ -142,8 +142,8 @@ lazy val client = project
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-      "com.lihaoyi"  %%% "scalatags"   % "0.6.1",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
+      "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
       "com.lihaoyi"  %%% "upickle"     % "0.4.4"
     )
   )
@@ -226,12 +226,12 @@ lazy val deepwalk = (project in file("deepwalk"))
     name := "DeepWalk4s",
     classpathTypes += "maven-plugin",
     libraryDependencies ++= Seq(
-      "org.deeplearning4j" % "deeplearning4j-core"  % "0.6.0",
-      "org.deeplearning4j" % "deeplearning4j-graph" % "0.6.0",
-      "org.nd4j"           % "nd4j-native-platform" % "0.6.0",
-      "org.deeplearning4j" % "deeplearning4j-nlp"   % "0.6.0",
-//              "org.deeplearning4j" % "deeplearning4j-ui" % "0.6.0",
-      "org.nd4j"    % "nd4j-native"   % "0.6.0",
+      "org.deeplearning4j" % "deeplearning4j-core"  % "0.7.2",
+      "org.deeplearning4j" % "deeplearning4j-graph" % "0.7.2",
+      "org.nd4j"           % "nd4j-native-platform" % "0.7.2",
+      "org.deeplearning4j" % "deeplearning4j-nlp"   % "0.7.2",
+//              "org.deeplearning4j" % "deeplearning4j-ui" % "0.7.2",
+      "org.nd4j"    % "nd4j-native"   % "0.7.2",
       "com.lihaoyi" % "ammonite"      % ammV % "test" cross CrossVersion.full,
       "com.lihaoyi" %% "ammonite-ops" % ammV
     )
