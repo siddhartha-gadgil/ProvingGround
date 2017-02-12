@@ -14,7 +14,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 // addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
 
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
+// addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
 lazy val jsProjects = Seq(client)
 
@@ -29,11 +29,10 @@ lazy val commonSettings = baseSettings ++ Seq(
 //      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.spire-math" %% "spire"         % "0.13.0",
-      "org.scalatest"  % "scalatest_2.11" % "3.0.1" % "test",
       "com.lihaoyi"    %% "fansi"         % "0.2.3",
       "com.lihaoyi"    %% "upickle"       % "0.4.4",
       "com.chuusai"    %% "shapeless"     % "2.3.2",
-      "org.typelevel"  %% "cats"          % "0.8.1",
+      "org.typelevel"  %% "cats"          % "0.9.0",
       "com.lihaoyi"    % "ammonite"       % ammV cross CrossVersion.full
     ),
     scalacOptions ++= Seq("-unchecked",
@@ -57,9 +56,11 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     "de.heikoseeberger"      %% "akka-sse"      % "1.8.1",
+    "org.scalactic" %% "scalactic" % "3.0.1",
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config"  % "1.3.0",
-    "org.mongodb"  %% "casbah" % "3.0.0",
+    "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
     "com.typesafe.akka" %% "akka-http"   % "10.0.0",
