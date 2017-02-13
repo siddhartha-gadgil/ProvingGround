@@ -1,42 +1,193 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>ListType - provingground.ListType</title>
-          <meta name="description" content="ListType - provingground.ListType" />
-          <meta name="keywords" content="ListType provingground.ListType" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
+      <link href="../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
-      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
-      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/jquery.js"></script>
+      <script type="text/javascript" src="../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../lib/index.js"></script>
+      <script type="text/javascript" src="../index.js"></script>
+      <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
       
       <script type="text/javascript">
-         if(top === self) {
-            var url = '../index.html';
-            var hash = 'provingground.ListType$';
-            var anchor = window.location.hash;
-            var anchor_opt = '';
-            if (anchor.length >= 1)
-              anchor_opt = '@' + anchor.substring(1);
-            window.location.href = url + '#' + hash + anchor_opt;
-         }
-   	  </script>
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../';
+      </script>
     
         </head>
-        <body class="value">
-      <div id="definition">
-        <img alt="Object" src="../lib/object_big.png" />
-        <p id="owner"><a href="package.html" class="extype" name="provingground">provingground</a></p>
-        <h1>ListType</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="package.html" class="extype" name="provingground">package provingground</a>
-          </div></span></h3><span class="permalink">
-      <a href="../index.html#provingground.ListType$" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../index.html">
+              <span class="name">root</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="index.html#provingground" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="index.html">
+              <span class="name">provingground</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="BigOps$.html" title=""></a>
+                        <a href="BigOps$.html" title="">
+                          BigOps
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="BoolType$.html" title=""></a>
+                        <a href="BoolType$.html" title="">
+                          BoolType
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumFin$.html" title=""></a>
+                        <a href="EnumFin$.html" title="">
+                          EnumFin
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumFuncs$.html" title=""></a>
+                        <a href="EnumFuncs$.html" title="">
+                          EnumFuncs
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumType$.html" title=""></a>
+                        <a href="EnumType$.html" title="">
+                          EnumType
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="FunctionFeedback$.html" title=""></a>
+                        <a href="FunctionFeedback$.html" title="">
+                          FunctionFeedback
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="InducPairs$.html" title="Recursion and induction for (dependent) pairs."></a>
+                        <a href="InducPairs$.html" title="Recursion and induction for (dependent) pairs.">
+                          InducPairs
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="IntTypes$.html" title=""></a>
+                        <a href="IntTypes$.html" title="">
+                          IntTypes
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="" title=""></a>
+                        <a href="" title="">
+                          ListType
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="MatrixTypes$.html" title=""></a>
+                        <a href="MatrixTypes$.html" title="">
+                          MatrixTypes
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="Norm$.html" title=""></a>
+                        <a href="Norm$.html" title="">
+                          Norm
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="PlusTypInduc$.html" title=""></a>
+                        <a href="PlusTypInduc$.html" title="">
+                          PlusTypInduc
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="RecEnum$.html" title=""></a>
+                        <a href="RecEnum$.html" title="">
+                          RecEnum
+                        </a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="SigmaPiEnum$.html" title=""></a>
+                        <a href="SigmaPiEnum$.html" title="">
+                          SigmaPiEnum
+                        </a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="object value">
+      <div id="definition">
+        <div class="big-circle object">o</div>
+        <p id="owner"><a href="index.html" class="extype" name="provingground">provingground</a></p>
+        <h1>ListType<span class="permalink">
+      <a href="../provingground/ListType$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -48,40 +199,52 @@
         <span class="name">ListType</span>
       </span>
       </h4>
+
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
-          <span class="toggle">Linear Supertypes</span>
+          <span class="toggle">
+            Linear Supertypes
+          </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
       <div id="mbrsel">
-        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
-        <div id="order">
-              <span class="filtertype">Ordering</span>
-              <ol>
-                
-                <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By Inheritance</span></li>
-              </ol>
-            </div>
-        <div id="ancestors">
-                <span class="filtertype">Inherited<br />
-                </span>
-                <ol id="linearization">
-                  <li class="in" name="provingground.ListType"><span>ListType</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
-                </ol>
-              </div><div id="ancestors">
-            <span class="filtertype"></span>
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
             <ol>
-              <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show All</span></li>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
             </ol>
           </div>
-        <div id="visbl">
-            <span class="filtertype">Visibility</span>
-            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
-          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.ListType"><span>ListType</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
       </div>
 
       <div id="template">
@@ -90,68 +253,75 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.ListType.ListRep" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ListRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[provingground.HoTT.Term,List[U]]withProductwithSerializable"></a>
-      <a id="ListRep[U&lt;:TermwithSubs[U]]:ListRep[U]"></a>
-      <h4 class="signature">
+              <ol><li name="provingground.ListType.ListRep" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[provingground.HoTT.Term,List[U]]withProductwithSerializable"></a><a id="ListRep[U&lt;:TermwithSubs[U]]:ListRep[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#ListRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[provingground.HoTT.Term,List[U]]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ListType$$ListRep.html"><span class="name">ListRep</span></a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]</span>]</span><span class="params">(<span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.ScalaRep">ScalaRep</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="ListType$$ListRep.html">
+              <span class="name">ListRep</span>
+            </a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]</span>]</span><span class="params">(<span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.ScalaRep">ScalaRep</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListRep.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@ListRep[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep[provingground.HoTT.Term,List[U]]withProductwithSerializable" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
       
-    </li><li name="provingground.ListType.ListTerm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ListTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep.ConstTerm[List[U]]withProductwithSerializable"></a>
-      <a id="ListTerm[U&lt;:TermwithSubs[U]]:ListTerm[U]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="ListType$$ListTerm.html"><span class="name">ListTerm</span></a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>, <span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.ScalaRep.ConstTerm">ConstTerm</span>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@ListTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep.ConstTerm[List[U]]withProductwithSerializable" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
       
-    </li><li name="provingground.ListType.ListTyp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.SmallTypwithProductwithSerializable"></a>
-      <a id="ListTyp[U&lt;:TermwithSubs[U]]:ListTyp[U]"></a>
-      <h4 class="signature">
+    </li><li name="provingground.ListType.ListTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep.ConstTerm[List[U]]withProductwithSerializable"></a><a id="ListTerm[U&lt;:TermwithSubs[U]]:ListTerm[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#ListTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsScalaRep.ConstTerm[List[U]]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ListType$$ListTyp.html"><span class="name">ListTyp</span></a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListTyp.U">U</span>]</span>]</span><span class="params">(<span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListTyp.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="ListType$$ListTerm.html">
+              <span class="name">ListTerm</span>
+            </a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>, <span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.ScalaRep.ConstTerm">ConstTerm</span>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="provingground.ListType.ListTerm.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.SmallTypwithProductwithSerializable" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="provingground.ListType.ListTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.SmallTypwithProductwithSerializable"></a><a id="ListTyp[U&lt;:TermwithSubs[U]]:ListTyp[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#ListTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.SmallTypwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ListType$$ListTyp.html">
+              <span class="name">ListTyp</span>
+            </a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.ListTyp.U">U</span>]</span>]</span><span class="params">(<span name="elemTyp">elemTyp: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.ListTyp.U">U</span>]</span>)</span><span class="result"> extends <span class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
       
     </li></ol>
             </div>
 
         
 
-        <div id="values" class="values members">
+        <div class="values members">
               <h3>Value Members</h3>
-              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:Any):Boolean"></a>
-      <a id="!=(Any):Boolean"></a>
-      <h4 class="signature">
+              <ol>
+                <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#!=(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -159,16 +329,15 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html###():Int" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="##():Int"></a>
-      <a id="##():Int"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -176,16 +345,15 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@##():Int" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#==(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:Any):Boolean"></a>
-      <a id="==(Any):Boolean"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -193,16 +361,15 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@==(x$1:Any):Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#asInstanceOf[T0]:T0" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asInstanceOf[T0]:T0"></a>
-      <a id="asInstanceOf[T0]:T0"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -210,16 +377,15 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a><a id="clone():AnyRef"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#clone():Object" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="clone():Object"></a>
-      <a id="clone():AnyRef"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -227,11 +393,7 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@clone():Object" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
+      
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -239,10 +401,13 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="eq(x$1:AnyRef):Boolean"></a>
-      <a id="eq(AnyRef):Boolean"></a>
-      <h4 class="signature">
+    </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -250,16 +415,15 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a>
-      <a id="equals(Any):Boolean"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -267,16 +431,15 @@
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#finalize():Unit" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="finalize():Unit"></a>
-      <a id="finalize():Unit"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -284,11 +447,7 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@finalize():Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
+      
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -296,10 +455,13 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.ListType#foldFunction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="foldFunction[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[V,provingground.HoTT.Func[provingground.HoTT.Func[U,provingground.HoTT.Func[V,V]],V]]]"></a>
-      <a id="foldFunction[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](Typ[U],Typ[V]):Func[Term,Func[V,Func[Func[U,Func[V,V]],V]]]"></a>
-      <h4 class="signature">
+    </li><li name="provingground.ListType#foldFunction" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="foldFunction[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[V,provingground.HoTT.Func[provingground.HoTT.Func[U,provingground.HoTT.Func[V,V]],V]]]"></a><a id="foldFunction[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](Typ[U],Typ[V]):Func[Term,Func[V,Func[Func[U,Func[V,V]],V]]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#foldFunction[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[V,provingground.HoTT.Func[provingground.HoTT.Func[U,provingground.HoTT.Func[V,V]],V]]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -307,16 +469,15 @@
       <span class="symbol">
         <span class="name">foldFunction</span><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.foldFunction.U">U</span>]</span>, <span name="V">V &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.foldFunction.V">V</span>]</span>]</span><span class="params">(<span name="u">u: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.foldFunction.U">U</span>]</span>, <span name="v">v: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.foldFunction.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.ListType.foldFunction.V">V</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.ListType.foldFunction.U">U</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.ListType.foldFunction.V">V</span>, <span class="extype" name="provingground.ListType.foldFunction.V">V</span>]], <span class="extype" name="provingground.ListType.foldFunction.V">V</span>]]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@foldFunction[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[V,provingground.HoTT.Func[provingground.HoTT.Func[U,provingground.HoTT.Func[V,V]],V]]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="provingground.ListType#foldLeft" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="foldLeft:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]]"></a><a id="foldLeft:FuncLike[Typ[Term]withSubs[Typ[Term]],FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Term,Func[Term,Func[Func[Term,Func[Term,Term]],Term]]]]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#foldLeft:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="provingground.ListType#foldLeft" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="foldLeft:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]]"></a>
-      <a id="foldLeft:FuncLike[Typ[Term]withSubs[Typ[Term]],FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Term,Func[Term,Func[Func[Term,Func[Term,Term]],Term]]]]]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">lazy val</span>
@@ -324,16 +485,15 @@
       <span class="symbol">
         <span class="name">foldLeft</span><span class="result">: <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.Term">Term</span>]]]]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@foldLeft:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#getClass():Class[_]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getClass():Class[_]"></a>
-      <a id="getClass():Class[_]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -341,16 +501,15 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@getClass():Class[_]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <a id="hashCode():Int"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -358,16 +517,15 @@
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@hashCode():Int" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.ListType#headOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="headOpt:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]]"></a><a id="headOpt:FuncLike[Typ[Term]withSubs[Typ[Term]],OptDepFuncDefn[Term]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#headOpt:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.ListType#headOpt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="headOpt:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]]"></a>
-      <a id="headOpt:FuncLike[Typ[Term]withSubs[Typ[Term]],OptDepFuncDefn[Term]]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">lazy val</span>
@@ -375,16 +533,15 @@
       <span class="symbol">
         <span class="name">headOpt</span><span class="result">: <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@headOpt:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="provingground.ListType#headOptFn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="headOptFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]"></a><a id="headOptFn[U&lt;:TermwithSubs[U]](Typ[U]):OptDepFuncDefn[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#headOptFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="provingground.ListType#headOptFn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="headOptFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]"></a>
-      <a id="headOptFn[U&lt;:TermwithSubs[U]](Typ[U]):OptDepFuncDefn[Term]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -392,16 +549,15 @@
       <span class="symbol">
         <span class="name">headOptFn</span><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.headOptFn.U">U</span>]</span>]</span><span class="params">(<span name="typ">typ: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.headOptFn.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@headOptFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.OptDepFuncDefn[provingground.HoTT.Term]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#isInstanceOf[T0]:Boolean" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="isInstanceOf[T0]:Boolean"></a>
-      <a id="isInstanceOf[T0]:Boolean"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -409,16 +565,15 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.ListType#lmap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lmap:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]]]"></a><a id="lmap:FuncLike[Typ[Term]withSubs[Typ[Term]],FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Func[Term,Term],Func[Term,Term]]]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#lmap:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]]]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.ListType#lmap" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lmap:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]]]"></a>
-      <a id="lmap:FuncLike[Typ[Term]withSubs[Typ[Term]],FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Func[Term,Term],Func[Term,Term]]]]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">lazy val</span>
@@ -426,16 +581,15 @@
       <span class="symbol">
         <span class="name">lmap</span><span class="result">: <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>], <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]]]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@lmap:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="provingground.ListType#lmapFunc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lmapFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Func[U,V],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]"></a><a id="lmapFunc[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](Typ[U],Typ[V]):Func[Func[U,V],Func[Term,Term]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#lmapFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Func[U,V],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="provingground.ListType#lmapFunc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lmapFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Func[U,V],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
-      <a id="lmapFunc[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](Typ[U],Typ[V]):Func[Func[U,V],Func[Term,Term]]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -443,16 +597,15 @@
       <span class="symbol">
         <span class="name">lmapFunc</span><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.lmapFunc.U">U</span>]</span>, <span name="V">V &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.lmapFunc.V">V</span>]</span>]</span><span class="params">(<span name="u">u: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.lmapFunc.U">U</span>]</span>, <span name="v">v: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.lmapFunc.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.ListType.lmapFunc.U">U</span>, <span class="extype" name="provingground.ListType.lmapFunc.V">V</span>], <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@lmapFunc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](u:provingground.HoTT.Typ[U],v:provingground.HoTT.Typ[V]):provingground.HoTT.Func[provingground.HoTT.Func[U,V],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ne(x$1:AnyRef):Boolean"></a>
-      <a id="ne(AnyRef):Boolean"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -460,16 +613,15 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#notify():Unit" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="notify():Unit"></a>
-      <a id="notify():Unit"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -477,16 +629,15 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@notify():Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#notifyAll():Unit" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="notifyAll():Unit"></a>
-      <a id="notifyAll():Unit"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -494,16 +645,15 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@notifyAll():Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
-      <a id="synchronized[T0](⇒T0):T0"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -511,16 +661,15 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.ListType#tail" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tail:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]"></a><a id="tail:FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Term,Term]]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#tail:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.ListType#tail" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="tail:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]"></a>
-      <a id="tail:FuncLike[Typ[Term]withSubs[Typ[Term]],Func[Term,Term]]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">lazy val</span>
@@ -528,16 +677,15 @@
       <span class="symbol">
         <span class="name">tail</span><span class="result">: <span class="extype" name="provingground.HoTT.FuncLike">FuncLike</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>] with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>]], <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@tail:provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="provingground.ListType#tailFn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tailFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="tailFn[U&lt;:TermwithSubs[U]](Typ[U]):Func[Term,Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#tailFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="provingground.ListType#tailFn" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="tailFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]"></a>
-      <a id="tailFn[U&lt;:TermwithSubs[U]](Typ[U]):Func[Term,Term]"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -545,16 +693,15 @@
       <span class="symbol">
         <span class="name">tailFn</span><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="provingground.HoTT.Term">Term</span> with <span class="extype" name="provingground.HoTT.Subs">Subs</span>[<span class="extype" name="provingground.ListType.tailFn.U">U</span>]</span>]</span><span class="params">(<span name="typ">typ: <span class="extype" name="provingground.HoTT.Typ">Typ</span>[<span class="extype" name="provingground.ListType.tailFn.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.Func">Func</span>[<span class="extype" name="provingground.HoTT.Term">Term</span>, <span class="extype" name="provingground.HoTT.Term">Term</span>]</span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@tailFn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typ:provingground.HoTT.Typ[U]):provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#toString():String" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <a id="toString():String"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
@@ -562,16 +709,15 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@toString():String" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#wait():Unit" title="Permalink">
+        <i class="material-icons"></i>
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="wait():Unit"></a>
-      <a id="wait():Unit"></a>
-      <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -579,11 +725,7 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@wait():Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
+      
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -591,10 +733,13 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
-      <a id="wait(Long,Int):Unit"></a>
-      <h4 class="signature">
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -602,11 +747,7 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
+      
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -614,10 +755,13 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="wait(x$1:Long):Unit"></a>
-      <a id="wait(Long):Unit"></a>
-      <h4 class="signature">
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
+      <span class="permalink">
+      <a href="../provingground/ListType$.html#wait(x$1:Long):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
@@ -625,11 +769,7 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4><span class="permalink">
-      <a href="../index.html#provingground.ListType$@wait(x$1:Long):Unit" title="Permalink" target="_top">
-        <img src="../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
+      
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -637,7 +777,8 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li></ol>
+    </li>
+              </ol>
             </div>
 
         
@@ -666,7 +807,9 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-
-
+    </body>
+          </div>
+        </div>
+      </div>
     </body>
       </html>

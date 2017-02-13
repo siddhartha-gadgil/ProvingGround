@@ -1,56 +1,196 @@
 <!DOCTYPE html >
 <html>
         <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <title></title>
           <meta name="description" content="" />
           <meta name="keywords" content="" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
       <script type="text/javascript" src="lib/jquery.js"></script>
-      <script type="text/javascript" src="lib/jquery-ui.js"></script>
-      <script type="text/javascript" src="lib/jquery.layout.js"></script>
+      <script type="text/javascript" src="lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="lib/jquery.mousewheel.min.js"></script>
       <script type="text/javascript" src="lib/index.js"></script>
+      <script type="text/javascript" src="index.js"></script>
       <script type="text/javascript" src="lib/scheduler.js"></script>
+      <script type="text/javascript" src="lib/template.js"></script>
+      <script type="text/javascript" src="lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '';
+      </script>
     
         </head>
         <body>
-      <div id="library">
-        <img class="class icon" alt="class icon" src="lib/class.png" />
-        <img class="trait icon" alt="trait icon" src="lib/trait.png" />
-        <img class="object icon" alt="trait icon" src="lib/object.png" />
-        <img class="package icon" alt="trait icon" src="lib/package.png" />
-      </div>
-      <div id="browser" class="ui-layout-west">
-      <div class="ui-west-center">
-      <div id="filter">
-          <div id="textfilter"></div>
-          <div id="letters"><a target="template" href="index/index-_.html">#</a><a target="template" href="index/index-a.html">A</a><a target="template" href="index/index-b.html">B</a><a target="template" href="index/index-c.html">C</a><a target="template" href="index/index-d.html">D</a><a target="template" href="index/index-e.html">E</a><a target="template" href="index/index-f.html">F</a><a target="template" href="index/index-g.html">G</a><a target="template" href="index/index-h.html">H</a><a target="template" href="index/index-i.html">I</a><a target="template" href="index/index-j.html">J</a><span>K</span><a target="template" href="index/index-l.html">L</a><a target="template" href="index/index-m.html">M</a><a target="template" href="index/index-n.html">N</a><a target="template" href="index/index-o.html">O</a><a target="template" href="index/index-p.html">P</a><span>Q</span><a target="template" href="index/index-r.html">R</a><a target="template" href="index/index-s.html">S</a><a target="template" href="index/index-t.html">T</a><a target="template" href="index/index-u.html">U</a><a target="template" href="index/index-v.html">V</a><a target="template" href="index/index-w.html">W</a><a target="template" href="index/index-x.html">X</a><a target="template" href="index/index-y.html">Y</a><a target="template" href="index/index-z.html">Z</a> – <a target="template" href="deprecated-list.html">deprecated</a></div>
-      </div>
-      <div class="pack" id="tpl">
-            
-            <ol class="templates"></ol>
-            <ol class="packages"> <li class="pack" title="ammonite">
-            <a class="tplshow" href="ammonite/package.html" target="template">ammonite</a>
-            <ol class="templates"></ol>
-            <ol class="packages"> <li class="pack" title="ammonite.ops">
-            <a class="tplshow" href="ammonite/ops/package.html" target="template">ammonite.ops</a>
-            <ol class="templates"></ol>
-            <ol class="packages"> </ol>
-          </li></ol>
-          </li><li class="pack" title="compact_enumeration">
-            <a class="tplshow" href="compact_enumeration/package.html" target="template">compact_enumeration</a>
-            <ol class="templates"><li title="compact_enumeration.ApproxTrig"><a class="tplshow" href="compact_enumeration/ApproxTrig$.html" target="template"><span class="object">(object)</span></a><a class="tplshow" href="compact_enumeration/ApproxTrig.html" target="template"><span class="class">(class)</span><span class="tplLink">ApproxTrig</span></a></li><li title="compact_enumeration.BidyutFunction"><a class="tplshow" href="compact_enumeration/BidyutFunction$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">BidyutFunction</span></a></li><li title="compact_enumeration.Circ"><a class="tplshow" href="compact_enumeration/Circ$.html" target="template"><span class="object">(object)</span></a><a class="tplshow" href="compact_enumeration/Circ.html" target="template"><span class="trait">(trait)</span><span class="tplLink">Circ</span></a></li><li title="compact_enumeration.Compose"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Compose.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Compose</span></a></li><li title="compact_enumeration.ConstFunc"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/ConstFunc.html" target="template"><span class="trait">(trait)</span><span class="tplLink">ConstFunc</span></a></li><li title="compact_enumeration.Cos"><a class="tplshow" href="compact_enumeration/Cos$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Cos</span></a></li><li title="compact_enumeration.Div"><a class="tplshow" href="compact_enumeration/Div$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Div</span></a></li><li title="compact_enumeration.ElementaryFunctions"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/ElementaryFunctions.html" target="template"><span class="trait">(trait)</span><span class="tplLink">ElementaryFunctions</span></a></li><li title="compact_enumeration.Exp"><a class="tplshow" href="compact_enumeration/Exp$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Exp</span></a></li><li title="compact_enumeration.FieldOps"><a class="tplshow" href="compact_enumeration/FieldOps$.html" target="template"><span class="object">(object)</span></a><a class="tplshow" href="compact_enumeration/FieldOps.html" target="template"><span class="trait">(trait)</span><span class="tplLink">FieldOps</span></a></li><li title="compact_enumeration.FormalElemFunction"><a class="tplshow" href="compact_enumeration/FormalElemFunction$.html" target="template"><span class="object">(object)</span></a><a class="tplshow" href="compact_enumeration/FormalElemFunction.html" target="template"><span class="trait">(trait)</span><span class="tplLink">FormalElemFunction</span></a></li><li title="compact_enumeration.Log"><a class="tplshow" href="compact_enumeration/Log$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Log</span></a></li><li title="compact_enumeration.Negate"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Negate.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Negate</span></a></li><li title="compact_enumeration.One"><a class="tplshow" href="compact_enumeration/One$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">One</span></a></li><li title="compact_enumeration.OneVar"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/OneVar.html" target="template"><span class="trait">(trait)</span><span class="tplLink">OneVar</span></a></li><li title="compact_enumeration.Pi"><a class="tplshow" href="compact_enumeration/Pi$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Pi</span></a></li><li title="compact_enumeration.Plus"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Plus.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Plus</span></a></li><li title="compact_enumeration.Proj"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Proj.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Proj</span></a></li><li title="compact_enumeration.Reciprocal"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Reciprocal.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Reciprocal</span></a></li><li title="compact_enumeration.Sin"><a class="tplshow" href="compact_enumeration/Sin$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Sin</span></a></li><li title="compact_enumeration.Sqrt"><a class="tplshow" href="compact_enumeration/Sqrt$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Sqrt</span></a></li><li title="compact_enumeration.Times"><div class="placeholder"></div><a class="tplshow" href="compact_enumeration/Times.html" target="template"><span class="case class">(case class)</span><span class="tplLink">Times</span></a></li><li title="compact_enumeration.Zero"><a class="tplshow" href="compact_enumeration/Zero$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">Zero</span></a></li></ol>
-            <ol class="packages"> </ol>
-          </li><li class="pack" title="misc">
-            <a class="tplshow" href="misc/package.html" target="template">misc</a>
-            <ol class="templates"><li title="misc.MianChowla"><a class="tplshow" href="misc/MianChowla$.html" target="template"><span class="object">(object)</span><div class="placeholder"></div><span class="tplLink">MianChowla</span></a></li></ol>
-            <ol class="packages"> </ol>
-          </li></ol>
-          </div></div><script src="index.js"></script>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
     </div>
-      <div id="content" class="ui-layout-center">
-        <iframe id="template" name="template" src="package.html"></iframe>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 current" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">root</span>
+      </span>
+      
+      
+    </li><li name="_root_.ammonite" visbl="pub" class="indented1 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ammonite"></a><a id="ammonite:ammonite"></a>
+      <span class="permalink">
+      <a href="index.html#ammonite" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ammonite/index.html">
+              <span class="name">ammonite</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="_root_.compact_enumeration" visbl="pub" class="indented1 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="compact_enumeration"></a><a id="compact_enumeration:compact_enumeration"></a>
+      <span class="permalink">
+      <a href="index.html#compact_enumeration" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="compact_enumeration/index.html">
+              <span class="name">compact_enumeration</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="_root_.misc" visbl="pub" class="indented1 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="misc"></a><a id="misc:misc"></a>
+      <span class="permalink">
+      <a href="index.html#misc" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="misc/index.html">
+              <span class="name">misc</span>
+            </a>
+      </span>
+      
+      
+    </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="package value">
+      <div id="definition">
+        <div class="big-circle package">p</div>
+        
+        <h1>root package<span class="permalink">
+      <a href="index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">root</span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
       </div>
     </body>
       </html>
