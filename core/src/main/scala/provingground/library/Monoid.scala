@@ -112,6 +112,43 @@ object Monoid {
   }
 }
 
+object SimpleGroup{
+  val G = "G" :: Type
+
+  val eqG = "_=_" :: G ->: G ->: Type
+
+  val a = "a" :: G
+  val b = "b" :: G
+  val c = "c" :: G
+
+
+  val e = "e" :: G
+
+
+  val op = "_*_" :: G ->: G ->: G
+
+  import FineDeducer.unif
+
+  val f = "f" :: G ->: G
+
+  val hyp = "hyp" :: eqG(op(a)(a))(a)
+
+  val dist =
+    unif(
+      a, b, c, hyp)(
+        e, op, eqG, f)(
+          eqG(a)(a),
+          eqG(a)(b) ->: eqG(b)(a),
+          eqG(a)(b) ->: eqG(b)(c) ->: eqG(a)(c),
+          eqG(op(e)(a))(a),
+          eqG(op(a)(e))(a),
+          eqG{op(a)(op(b)(c))}{op(op(a)(b))(c)},
+          eqG(a)(b) ->: eqG(f(a))(f(b))
+)
+
+
+}
+
 object MonoidSimple {
   val M = "M" :: Type
 
