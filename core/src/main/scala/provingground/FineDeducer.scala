@@ -38,6 +38,15 @@ object FineDeducer {
     case tp: Typ[u] => tp
   }
 
+  def unif(vars: Term*)(terms: Term*)(axioms: Typ[Term]*) =
+    FD.uniform(
+      vars.toVector ++
+      terms ++
+      // axioms.map(lambdaClosure(vars.toVector)) ++
+      axioms.map ("axiom" :: _).map(lambdaClosure(vars.toVector))
+    )
+
+
   // @deprecated("use products", "8/2/2017")
   // def applnEv(funcEvolve: => (FD[Term] => PD[SomeFunc]),
   //             argEvolve: => (SomeFunc => FD[Term] => PD[Term]))(p: FD[Term]) =
@@ -115,8 +124,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
   def evolvTypFamilies(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
-      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight* unifyWeight)
-    .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
+      fd.<+?>(unifApplnEv(evolvTypFamilies, evolve)(fd), applnWeight* unifyWeight)
+    .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd), applnWeight* (1 - unifyWeight))
         .conditioned(isTypFamily)
         .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
               lambdaWeight)
@@ -271,10 +280,10 @@ def DsimpleApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
   def DevolvTypFamilies(fd: FD[Term], tang: FD[Term]): PD[SomeFunc] =
     asFuncs {
       tang
-      .<+?>(DunifApplnFunc(fd, tang), applnWeight * unifyWeight)
-            .<+>(DsimpleApplnFunc(fd, tang), applnWeight * (1 -unifyWeight))
-            .<+?>(DunifApplnArg(fd, tang), applnWeight * unifyWeight)
-            .<+>(DsimpleApplnArg(fd, tang), applnWeight * (1 -unifyWeight))
+      .<+?>(DunifApplnTypFamilies(fd, tang), applnWeight * unifyWeight)
+            .<+>(DsimpleApplnTypFamilies(fd, tang), applnWeight * (1 -unifyWeight))
+            .<+?>(DunifApplnTypArg(fd, tang), applnWeight * unifyWeight)
+            .<+>(DsimpleApplnTypArg(fd, tang), applnWeight * (1 -unifyWeight))
         .conditioned(isTypFamily)
         .<+?>(DlambdaVar(fd, tang), lambdaWeight)
         .<+?>(DlambdaVal(fd, tang), lambdaWeight)

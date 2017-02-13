@@ -137,10 +137,26 @@ object MonoidSimple {
 
   val op = "_*_" :: M ->: M ->: M
 
+
+  import FineDeducer.unif
+
+
   val leftId  = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
   val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
 
   val refl = "refl" :: a ~>: (eqM(a)(a))
+
+  val dist =
+    unif(
+      a, b, c)(
+        l, r, op, eqM)(
+          eqM(a)(a),
+          eqM(a)(b) ->: eqM(b)(a),
+          eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),
+          eqM(op(l)(a))(a),
+          eqM(op(a)(r))(a)//, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
+  )
+
 
   // val idUnique =
   //   b ~>: (
