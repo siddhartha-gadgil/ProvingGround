@@ -127,6 +127,8 @@ object SimpleGroup{
 
   val op = "_*_" :: G ->: G ->: G
 
+  val i = "i" :: G ->: G
+
   import FineDeducer.unif
 
   val f = "f" :: G ->: G
@@ -135,13 +137,15 @@ object SimpleGroup{
 
   val dist =
     unif(
-      a, b, c, hyp)(
-        e, op, eqG, f)(
+      a, b, c, hyp, f)(
+        e, op, eqG, i)(
           eqG(a)(a),
           eqG(a)(b) ->: eqG(b)(a),
           eqG(a)(b) ->: eqG(b)(c) ->: eqG(a)(c),
           eqG(op(e)(a))(a),
           eqG(op(a)(e))(a),
+          eqG(op(a)(i(a)))(a),
+          eqG(op(i(a))(a))(a),
           eqG{op(a)(op(b)(c))}{op(op(a)(b))(c)},
           eqG(a)(b) ->: eqG(f(a))(f(b))
 )
