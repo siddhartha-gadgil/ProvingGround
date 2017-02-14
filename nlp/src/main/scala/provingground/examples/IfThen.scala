@@ -3,7 +3,7 @@ package provingground.examples
 import edu.stanford.nlp._
 import trees.Tree
 import simple._
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 import provingground._
 import TreePatterns._
@@ -16,7 +16,7 @@ object IfThen {
 
   val tree = sent.parse
 
-  val st = tree.subTrees.toList
+  val st = tree.subTrees.asScala.toList
 
   val matches = st.map(IfTree.unapply).flatten
 
@@ -25,7 +25,7 @@ object IfThen {
 
   val tree2 = sent2.parse
 
-  val st2 = tree2.subTrees.toList
+  val st2 = tree2.subTrees.asScala.toList
 
   val matches2 = st2.map(IfTree.unapply).flatten
 }

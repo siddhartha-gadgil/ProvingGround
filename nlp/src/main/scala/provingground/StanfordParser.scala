@@ -13,7 +13,7 @@ import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
 import edu.stanford.nlp.tagger.maxent._
 import java.io._
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 object StanfordParser {
   val lp = LexicalizedParser.loadModel(
@@ -27,9 +27,9 @@ object StanfordParser {
   def coreLabels(s: String) =
     tokenizerFactory.getTokenizer(new StringReader(s)).tokenize
 
-  def words(s: String) = coreLabels(s) map ((c) => new Word(c.word))
+  def words(s: String) = coreLabels(s).asScala map ((c) => new Word(c.word))
 
-  def parse(s: String) = lp(tagger(words(s)))
+  def parse(s: String) = lp(tagger(words(s).asJava))
 
   def texInline(s: String) = """\$[^\$]+\$""".r.findAllIn(s)
 
@@ -44,15 +44,15 @@ object StanfordParser {
 
     lazy val deTeXWords = words(deTeXed)
 
-    lazy val deTeXTagged = tagger(deTeXWords)
+    lazy val deTeXTagged = tagger(deTeXWords.asJava)
 
-    lazy val tagged = deTeXTagged map { (tw) =>
+    lazy val tagged = deTeXTagged.asScala map { (tw) =>
       if (tw.word.startsWith("TeXInline"))
         new TaggedWord(texMap(tw.word), "NNP")
       else tw
     }
 
-    lazy val parsed = lp(tagged)
+    lazy val parsed = lp(tagged.asJava)
   }
 
   def texParse(s: String) = TeXParsed(s).parsed
