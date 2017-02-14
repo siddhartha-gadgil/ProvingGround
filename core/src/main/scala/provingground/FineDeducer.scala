@@ -19,11 +19,6 @@ object FineDeducer {
     type u <: Term with Subs[u]; type v <: Term with Subs[v]
   }
 
-  def lambdaClosure(vars: Vector[Term])(t: Term) =
-    vars.foldRight(t){case (v, t) => if (t.dependsOn(v)) v :~> t else t}
-
-  def piClosure(vars: Vector[Term])(t: Typ[Term]): Typ[Term] =
-    vars.foldRight(t){case (v, t) => if (t.dependsOn(v)) v ~>: t else t}
 
   def termClosure(vars: Vector[Term])(fd: FD[Term]) = fd map (lambdaClosure(vars))
 
