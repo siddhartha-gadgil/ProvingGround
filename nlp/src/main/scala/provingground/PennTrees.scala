@@ -3,7 +3,7 @@ package provingground
 import edu.stanford.nlp._
 import simple._
 import edu.stanford.nlp.trees.Tree
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 object PennTrees {
   object Leaf {
@@ -15,6 +15,59 @@ object PennTrees {
   object Node {
     def unapply(t: Tree) = {
       if (t.isLeaf) None else Some((t.value, t.children().toVector))
+    }
+  }
+
+  object Twig{
+    def unapply(t: Tree): Option[String] = t match{
+      case Leaf(w) => Some(w.toLowerCase)
+      case Node(_, Vector(t)) => unapply(t)
+      case _ => None
+    }
+  }
+
+  object LeftBinTree{
+    def unapply(t: Tree): Option[(Tree, Tree)] = t match {
+      case Node(_, Vector(x, y)) => Some((x, y))
+      case parent @ Node(tag, x +: ys) if ys.size > 0 => Some((x, mkTree(ys, tag, parent)))
+      case _ => None
+    }
+  }
+
+  object RightBinTree{
+    def unapply(t: Tree): Option[(Tree, Tree)] = t match {
+      case Node(_, Vector(x, y)) => Some((x, y))
+      case parent @ Node(tag,  ys :+ x) if ys.size > 0 => Some((x, mkTree(ys, tag, parent)))
+      case _ => None
+    }
+  }
+
+  object WordDash{
+    def unapply(t: Tree): Option[(String, Tree)] = t match {
+      case LeftBinTree(Twig(w), y) => Some((w, y))
+      case _ => None
+    }
+  }
+
+  object WordDashDash{
+    def unapply(t: Tree): Option[(String, Tree, Tree)] = t match {
+      case LeftBinTree(WordDash(w, y), z) => Some((w, y, z))
+      case _ => None
+    }
+  }
+
+  object DashWord{
+    def unapply(t: Tree): Option[(Tree, String)] = t match {
+      case RightBinTree(y, Twig(w)) => Some((y, w))
+      case _ => None
+    }
+  }
+
+  object DashWordDash{
+    def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
+      case LeftBinTree(DashWord(y, w), z) => Some((y, w, z))
+      case RightBinTree(y, WordDash(w, z)) => Some((y, w, z))
+      case _ => None
     }
   }
 
@@ -38,13 +91,13 @@ object PennTrees {
   def mkTree(children: Vector[Tree], tag: String, parent: Tree) =
     parent
       .treeFactory()
-      .newTreeNode(tag, children: java.util.List[Tree])
+      .newTreeNode(tag, children.asJava: java.util.List[Tree])
 
 
   def sentence(children: Vector[Tree]) =
     children.head
       .treeFactory()
-      .newTreeNode("S", children: java.util.List[Tree])
+      .newTreeNode("S", children.asJava: java.util.List[Tree])
 
 }
 
