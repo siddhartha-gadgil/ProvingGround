@@ -155,28 +155,34 @@ object LeanExportElem {
         for (a <- getName(nid); b <- getExpr(eid)) yield (Intro(a, b))
       } else None
 
-    def readInducDefn(lines: Vector[String]) = {
-      val ind    = readInd(lines.head).get
-      val intros = lines.tail take (ind.numConstructors) map (readIntro(_).get)
+    def readInducDefn(inp: Vector[String]) = {
+      val ind    = readInd(inp.head).get
+      val intros = inp.tail take (ind.numConstructors) map (readIntro(_).get)
       InducDefn(ind, intros)
     }
 
-    def readInducDefnFrom(lines: Vector[String]) = {
-      val ls = lines.head +: (lines.tail.takeWhile(_.startsWith("#INTRO")))
+    def readInducDefnFrom(inp: Vector[String]) = {
+      val ls = inp.head +: (inp.tail.takeWhile(_.startsWith("#INTRO")))
       readInducDefn(ls)
     }
 
-    def readNextInducDefn(lines: Vector[String]): Option[InducDefn] = {
-      val start = lines dropWhile ((x) => !(x.startsWith("#IND")))
+    def readNextInducDefn(inp: Vector[String]): Option[(InducDefn, Vector[String])] = {
+      val start = inp dropWhile ((x) => !(x.startsWith("#IND")))
       if (start.isEmpty) None
-      else Some(readInducDefnFrom(start))
+      else Some((readInducDefnFrom(start), start))
     }
 
     def readAllInducDefns(
-        lines: Vector[String],
+        inp: Vector[String],
         accum: Vector[InducDefn] = Vector()): Vector[InducDefn] = {
-      (readNextInducDefn(lines) map
-        ((dfn) => readAllInducDefns(lines drop (dfn.size), dfn +: accum)))
+          println(s"Input Lines: ${inp.size}")
+      (readNextInducDefn(inp) map
+        {case (dfn, start) =>
+         
+          readAllInducDefns(start drop (dfn.size), dfn +: accum)
+
+      }
+        )
         .getOrElse(accum)
     }
 
@@ -199,11 +205,12 @@ object LeanExportElem {
     }
 
     case object anonymous extends Name {
-      override def toString = "@"
+      override def toString = ""
     }
 
     case class NameString(env: Name, name: String) extends Name {
-      override def toString = env.toString() + "." + name
+      override def toString =
+        if (env.toString == "") name else env.toString() + "." + name
     }
 
     case class NameLong(env: Name, number: Long) extends Name {
@@ -298,6 +305,8 @@ object LeanExportElem {
     //            c <- get(ds, eid2.toLong)) yield (Pi(Info.get(info), a, b, c))
     //   }
 
+    import HoTT.UnicodeSyms._
+
     case class Var(index: Int) extends Expr {
       val constants = List()
     }
@@ -310,6 +319,8 @@ object LeanExportElem {
 
     case class Sort(univ: Univ) extends Expr {
       val constants = List()
+
+      override def toString = UnivSym
     }
 
     case class Const(name: Name, univs: List[Univ]) extends Expr {
@@ -324,7 +335,6 @@ object LeanExportElem {
       override def toString = s"$func($arg)"
     }
 
-    import HoTT.UnicodeSyms._
 
     case class LambdaTerm(info: Info, varName: Name, varTyp: Expr, value: Expr)
         extends Expr {
@@ -336,6 +346,8 @@ object LeanExportElem {
     case class Pi(info: Info, varName: Name, varTyp: Expr, value: Expr)
         extends Expr {
       val constants = value.constants
+
+      override def toString = s"($varName: $varTyp) $Arrow $value"
     }
   }
 
