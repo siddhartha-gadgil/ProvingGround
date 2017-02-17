@@ -63,6 +63,13 @@ object PennTrees {
     }
   }
 
+  object DashDashWord{
+    def unapply(t: Tree): Option[(Tree, Tree, String)] = t match {
+      case RightBinTree(x, DashWord(y, w)) => Some((x, y, w))
+      case _ => None
+    }
+  }
+
   object DashWordDash{
     def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
       case LeftBinTree(DashWord(y, w), z) => Some((y, w, z))
