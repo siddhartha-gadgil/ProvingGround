@@ -70,7 +70,7 @@ object TLImplicits {
   import ConstructorShape._
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
-    def pair              = ConstructorTypTL(IdShape, typ)
+    def pair              = ConstructorTypTL(IdShape[H], typ)
     def :::(name: AnySym) = name ::: pair
 
     def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair

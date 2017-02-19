@@ -62,6 +62,10 @@ sealed abstract class TypFamilyPtn[
       type IDFT <: Term with Subs[IDFT]
     }
 
+  def getMapper[C <: Term with Subs[C], IF <: Term with Subs[IF],
+      IDF <: Term with Subs[IDF],
+      IDFT <: Term with Subs[IDFT]](cod: Typ[C])(implicit mpr : TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) = mpr
+
   def mapped[C <: Term with Subs[C]] = mapper[C].mapper(this)
 }
 
