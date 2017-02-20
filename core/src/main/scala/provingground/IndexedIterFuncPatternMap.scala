@@ -324,7 +324,7 @@ abstract class IndexedIterFuncShape[S <: Term with Subs[S],
                                     F <: Term with Subs[F],
                                     Fb <: Term with Subs[Fb],
                                     Index<: HList : Subst] {
-  def subs(x: Term, y: Term): IndexedIterFuncShape[S, H, Fb, Index]
+  def subs(x: Term, y: Term): IndexedIterFuncShape[S, H, F, Fb, Index]
 
   val family: TypFamilyPtn[H, Fb, Index]
 
@@ -370,7 +370,7 @@ object IndexedIterFuncShape {
                          Index<: HList : Subst](
       family: TypFamilyPtn[H, Fb, Index],
       index: Index
-  ) extends IndexedIterFuncShape[HeadTerm, H, Fb, H, Index] {
+  ) extends IndexedIterFuncShape[HeadTerm, H, H, Fb, Index] {
     def subs(x: Term, y: Term) =
       IdIterShape(family.subs(x, y), index.subst(x, y))
 
@@ -384,13 +384,13 @@ object IndexedIterFuncShape {
                                  Fb,
                                  Index,
                                  C,
-                                 F,
+                                 H,
                                  TT,
                                  DT,
                                  IF,
                                  IDF,
                                  IDFT] forSome {
-        type F <: Term with Subs[F]; type TT <: Term with Subs[TT];
+        type TT <: Term with Subs[TT];
         type DT <: Term with Subs[DT]
       } = idIterPtnMapper
   }
@@ -402,8 +402,8 @@ object IndexedIterFuncShape {
                        Fb <: Term with Subs[Fb],
                        Index<: HList : Subst](
       head: Typ[TT],
-      tail: IndexedIterFuncShape[HS, H, Fb, TF, Index])
-      extends IndexedIterFuncShape[Func[TT, HS], H, Fb, Func[TT, TF], Index] {
+      tail: IndexedIterFuncShape[HS, H, TF, Fb,  Index])
+      extends IndexedIterFuncShape[Func[TT, HS], H, Func[TT, TF], Fb, Index] {
     val family = tail.family
 
     def subs(x: Term, y: Term) = FuncShape(head.subs(x, y), tail.subs(x, y))
@@ -430,14 +430,14 @@ object IndexedIterFuncShape {
                           H <: Term with Subs[H],
                           TF <: Term with Subs[TF],
                           Fb <: Term with Subs[Fb],
-                          Index<: HList : Subst](
+                          Index <: HList](
       head: Typ[TT],
-      tailfibre: TT => IndexedIterFuncShape[HS, H, Fb, TF, Index])
+      tailfibre: TT => IndexedIterFuncShape[HS, H, TF, Fb,  Index])(implicit subst: Subst[Index])
       extends IndexedIterFuncShape[FuncLike[TT, HS], H, FuncLike[TT, TF],  Fb, Index] {
     val family = tailfibre(head.Var).family
 
     def subs(x: Term, y: Term) =
-      DepFuncShape(head.subs(x, y), (t: TT) => tailfibre(t).subs(x, y))
+      DepFuncShape(head.subs(x, y), (t: TT) => tailfibre(t).subs(x, y))(subst)
 
     def mapper[
         C <: Term with Subs[C],
@@ -470,7 +470,7 @@ abstract class IndexedIterFuncPtnMapper[S <: Term with Subs[S],
                                         IDFT <: Term with Subs[IDFT]] {
   def mapper(
       implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT])
-    : IndexedIterFuncShape[S, H, Fb, Index] => IndexedIterFuncPtnMap[S,
+    : IndexedIterFuncShape[S, H, F, Fb, Index] => IndexedIterFuncPtnMap[S,
                                                                      H,
                                                                      Fb,
                                                                      Index,
