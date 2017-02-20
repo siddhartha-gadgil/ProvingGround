@@ -239,7 +239,7 @@ object ConstructorSeqMap {
 
 import scala.language.existentials
 
-trait ConstructorSeqDom[H <: Term with Subs[H]] {
+trait ConstructorSeqDom[H <: Term with Subs[H], Intros <: HList] {
 
   def mapped[C <: Term with Subs[C]](W: Typ[H])
     : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
@@ -260,17 +260,20 @@ trait ConstructorSeqDom[H <: Term with Subs[H]] {
 }
 
 object ConstructorSeqDom {
-  case class Empty[H <: Term with Subs[H]]() extends ConstructorSeqDom[H] {
+  import shapeless._
+
+  case class Empty[H <: Term with Subs[H]]() extends ConstructorSeqDom[H, HNil] {
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
 
     def intros(typ: Typ[H]) = List()
   }
 
-  case class Cons[S <: Term with Subs[S], H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](name: AnySym,
+  case class Cons[S <: Term with Subs[S], H <: Term with Subs[H],
+    ConstructorType <: Term with Subs[ConstructorType], TIntros <: HList](name: AnySym,
                                           pattern: ConstructorShape[S, H, ConstructorType],
-                                          tail: ConstructorSeqDom[H])
-      extends ConstructorSeqDom[H] {
+                                          tail: ConstructorSeqDom[H, TIntros])
+      extends ConstructorSeqDom[H, ConstructorType :: TIntros] {
     def mapped[C <: Term with Subs[C]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
         type RecType <: Term with Subs[RecType];
@@ -286,7 +289,7 @@ object ConstructorSeqDom {
   }
 }
 
-case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom[H],
+case class ConstructorSeqTL[H <: Term with Subs[H], Intros <: HList](seqDom: ConstructorSeqDom[H, Intros],
                                                     typ: Typ[H]) {
   def |:[S <: Term with Subs[S], ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[S, H, ConstructorType]) =
     ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom),

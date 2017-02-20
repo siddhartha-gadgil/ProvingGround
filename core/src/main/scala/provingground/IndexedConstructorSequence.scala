@@ -12,7 +12,7 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
                                         H <: Term with Subs[H],
                                         RecType <: Term with Subs[RecType],
                                         InducType <: Term with Subs[InducType],
-                                        Intros,
+                                        Intros <: HList,
                                         F <: Term with Subs[F],
                                         Index<: HList : Subst,
                                         IF <: Term with Subs[IF],
@@ -58,7 +58,7 @@ object IndexedConstructorSeqMap {
                                        H,
                                        IF,
                                        IDF,
-                                       Unit,
+                                       HNil,
                                        F,
                                        Index,
                                        IF,
@@ -91,7 +91,7 @@ object IndexedConstructorSeqMap {
             ID <: Term with Subs[ID],
             TR <: Term with Subs[TR],
             TI <: Term with Subs[TI],
-            TIntros,
+            TIntros <: HList,
             F <: Term with Subs[F],
             Index<: HList : Subst,
             IF <: Term with Subs[IF],
@@ -134,7 +134,7 @@ object IndexedConstructorSeqMap {
                   ID <: Term with Subs[ID],
                   TR <: Term with Subs[TR],
                   TI <: Term with Subs[TI],
-                  TIntros,
+                  TIntros <: HList,
                   F <: Term with Subs[F],
                   Index<: HList : Subst,
                   IF <: Term with Subs[IF],
@@ -166,7 +166,7 @@ object IndexedConstructorSeqMap {
                                        H,
                                        Func[RD, TR],
                                        Func[ID, TI],
-                                       (C, TIntros),
+                                       C :: TIntros,
                                        F,
                                        Index,
                                        IF,
@@ -208,7 +208,7 @@ object IndexedConstructorSeqMap {
 }
 
 abstract class IndexedConstructorSeqDom[
-    H <: Term with Subs[H], F <: Term with Subs[F], Index<: HList : Subst] {
+    H <: Term with Subs[H], F <: Term with Subs[F], Index<: HList : Subst, Intros <: HList] {
   val family: TypFamilyPtn[H, F, Index]
 
   val W: F
@@ -230,7 +230,6 @@ abstract class IndexedConstructorSeqDom[
                                IDFT] forSome {
       type RecType <: Term with Subs[RecType];
       type InducType <: Term with Subs[InducType];
-      type Intros;
     }
 
   def rec[C <: Term with Subs[C]](x: Typ[C]) = {
@@ -257,26 +256,26 @@ object IndexedConstructorSeqDom {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    Index<: HList : Subst](W: F, family: TypFamilyPtn[H, F, Index])
-      extends IndexedConstructorSeqDom[H, F, Index] {
+      extends IndexedConstructorSeqDom[H, F, Index, HNil] {
     def mapped[C <: Term with Subs[C],
                IF <: Term with Subs[IF],
                IDF <: Term with Subs[IDF],
                IDFT <: Term with Subs[IDFT]](
         implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT])
-      : IndexedConstructorSeqMap[C,
-                                 H,
-                                 RecType,
-                                 InducType,
-                                 Intros,
-                                 F,
-                                 Index,
-                                 IF,
-                                 IDF,
-                                 IDFT] forSome {
-        type RecType <: Term with Subs[RecType];
-        type InducType <: Term with Subs[InducType];
-        type Intros;
-      } =
+      // : IndexedConstructorSeqMap[C,
+      //                            H,
+      //                            RecType,
+      //                            InducType,
+      //                            HNil,
+      //                            F,
+      //                            Index,
+      //                            IF,
+      //                            IDF,
+      //                            IDFT] forSome {
+      //   type RecType <: Term with Subs[RecType];
+      //   type InducType <: Term with Subs[InducType];
+      // }
+      =
       IndexedConstructorSeqMap.Empty[C, H, F, Index, IF, IDF, IDFT](
         W,
         fmlyMapper.mapper(family))
@@ -288,11 +287,12 @@ object IndexedConstructorSeqDom {
                   H <: Term with Subs[H],
                   F <: Term with Subs[F],
                   HC <: Term with Subs[HC],
-                  Index<: HList : Subst](
+                  Index<: HList : Subst,
+                  TIntro <: HList](
       name: AnySym,
       pattern: IndexedConstructorShape[S, H, F, HC, Index],
-      tail: IndexedConstructorSeqDom[H, F, Index])
-      extends IndexedConstructorSeqDom[H, F, Index] {
+      tail: IndexedConstructorSeqDom[H, F, Index, TIntro])
+      extends IndexedConstructorSeqDom[H, F, Index, HC :: TIntro] {
     val W = tail.W
 
     val family = tail.family
@@ -302,11 +302,12 @@ object IndexedConstructorSeqDom {
                IDF <: Term with Subs[IDF],
                IDFT <: Term with Subs[IDFT]](
         implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]
-    ): IndexedConstructorSeqMap[C,
+    )
+    : IndexedConstructorSeqMap[C,
                                 H,
                                 RecType,
                                 InducType,
-                                Intros,
+                                HC :: TIntro,
                                 F,
                                 Index,
                                 IF,
@@ -314,8 +315,8 @@ object IndexedConstructorSeqDom {
                                 IDFT] forSome {
       type RecType <: Term with Subs[RecType];
       type InducType <: Term with Subs[InducType];
-      type Intros;
-    } =
+    }
+    =
       IndexedConstructorSeqMap.Cons.sym(name,
                                         pattern.mapped(fmlyMapper),
                                         tail.mapped(fmlyMapper))
