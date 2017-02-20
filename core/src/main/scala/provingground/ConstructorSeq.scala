@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import shapeless.HList
-import HList._
+// import HList._
 
 trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
   def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
@@ -267,8 +267,8 @@ object ConstructorSeqDom {
     def intros(typ: Typ[H]) = List()
   }
 
-  case class Cons[S <: Term with Subs[S], H <: Term with Subs[H]](name: AnySym,
-                                          pattern: ConstructorShape[S, H],
+  case class Cons[S <: Term with Subs[S], H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](name: AnySym,
+                                          pattern: ConstructorShape[S, H, ConstructorType],
                                           tail: ConstructorSeqDom[H])
       extends ConstructorSeqDom[H] {
     def mapped[C <: Term with Subs[C]](W: Typ[H])
@@ -288,7 +288,7 @@ object ConstructorSeqDom {
 
 case class ConstructorSeqTL[H <: Term with Subs[H]](seqDom: ConstructorSeqDom[H],
                                                     typ: Typ[H]) {
-  def |:[S <: Term with Subs[S]](head: ConstructorTL[S, H]) =
+  def |:[S <: Term with Subs[S], ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[S, H, ConstructorType]) =
     ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom),
                      typ)
 

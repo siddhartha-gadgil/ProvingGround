@@ -239,7 +239,7 @@ abstract class IndexedConstructorSeqDom[
     mpd.rec(x)
   }
 
-  def |:[S <: Term with Subs[S]](head: IndexedConstructor[S, H, F, Index]) =
+  def |:[S <: Term with Subs[S], HC <: Term with Subs[HC]](head: IndexedConstructor[S, H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
 }
 
@@ -287,9 +287,10 @@ object IndexedConstructorSeqDom {
   case class Cons[S <: Term with Subs[S],
                   H <: Term with Subs[H],
                   F <: Term with Subs[F],
+                  HC <: Term with Subs[HC],
                   Index<: HList : Subst](
       name: AnySym,
-      pattern: IndexedConstructorShape[S, H, F, Index],
+      pattern: IndexedConstructorShape[S, H, F, HC, Index],
       tail: IndexedConstructorSeqDom[H, F, Index])
       extends IndexedConstructorSeqDom[H, F, Index] {
     val W = tail.W
