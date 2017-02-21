@@ -83,7 +83,7 @@ object IndexedConstructorSeqMap {
   import ConstructorSeqMap.{RecSym, InducSym}
 
   object Cons {
-    def sym[HS <: Term with Subs[HS],
+    def sym[
             C <: Term with Subs[C],
             H <: Term with Subs[H],
             Cod <: Term with Subs[Cod],
@@ -98,7 +98,7 @@ object IndexedConstructorSeqMap {
             IDF <: Term with Subs[IDF],
             IDFT <: Term with Subs[IDFT]](
         name: AnySym,
-        pattern: IndexedConstructorPatternMap[HS,
+        pattern: IndexedConstructorPatternMap[
                                               Cod,
                                               C,
                                               H,
@@ -126,7 +126,7 @@ object IndexedConstructorSeqMap {
     }
   }
 
-  case class Cons[HS <: Term with Subs[HS],
+  case class Cons[
                   C <: Term with Subs[C],
                   H <: Term with Subs[H],
                   Cod <: Term with Subs[Cod],
@@ -141,7 +141,7 @@ object IndexedConstructorSeqMap {
                   IDF <: Term with Subs[IDF],
                   IDFT <: Term with Subs[IDFT]](
       cons: C,
-      pattern: IndexedConstructorPatternMap[HS,
+      pattern: IndexedConstructorPatternMap[
                                             Cod,
                                             C,
                                             H,
@@ -238,12 +238,12 @@ abstract class IndexedConstructorSeqDom[
     mpd.rec(x)
   }
 
-  def |:[S <: Term with Subs[S], HC <: Term with Subs[HC]](head: IndexedConstructor[S, H, F, HC, Index]) =
+  def |:[HC <: Term with Subs[HC]](head: IndexedConstructor[H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
 }
 
 object IndexedConstructorSeqDom {
-  def get[S <: Term with Subs[S],
+  def get[
           H <: Term with Subs[H],
           F <: Term with Subs[F],
           Index <: HList](w: F)(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
@@ -283,14 +283,14 @@ object IndexedConstructorSeqDom {
     val intros = List()
   }
 
-  case class Cons[S <: Term with Subs[S],
+  case class Cons[
                   H <: Term with Subs[H],
                   F <: Term with Subs[F],
                   HC <: Term with Subs[HC],
                   Index<: HList : Subst,
                   TIntro <: HList](
       name: AnySym,
-      pattern: IndexedConstructorShape[S, H, F, HC, Index],
+      pattern: IndexedConstructorShape[H, F, HC, Index],
       tail: IndexedConstructorSeqDom[H, F, Index, TIntro])
       extends IndexedConstructorSeqDom[H, F, Index, HC :: TIntro] {
     val W = tail.W

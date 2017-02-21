@@ -77,7 +77,7 @@ object TLImplicits {
 
     def -->>:(that: Typ[H]) = that -->>: pair
 
-    def -->>:[FF <: Term with Subs[FF], F <: Term with Subs[F]](that: IterFuncShape[FF, H, F]) =
+    def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F]) =
       that -->>: pair
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
@@ -86,7 +86,7 @@ object TLImplicits {
   implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
     def seq = ConstructorSeqTL.Empty(W)
 
-    def =:[S <: Term with Subs[S], ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[S, H, ConstructorType]) = head |: seq
+    def =:[ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[H, ConstructorType]) = head |: seq
   }
 
   import IterFuncPatternMap._
@@ -105,8 +105,8 @@ object TLImplicits {
     def emptySeq =
       IndexedConstructorSeqDom.get(W)(g)
 
-    def =::[S <: Term with Subs[S], HC <: Term with Subs[HC]](
-        head: IndexedConstructor[S, H, F, HC, Index]
+    def =::[HC <: Term with Subs[HC]](
+        head: IndexedConstructor[H, F, HC, Index]
     ) = {
       val seq = emptySeq
       head |: seq
