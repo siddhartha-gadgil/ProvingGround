@@ -345,8 +345,18 @@ case class ConstructorSeqTL[H <: Term with Subs[H], Intros <: HList](seqDom: Con
 
   def rec[C <: Term with Subs[C]](X: Typ[C]) = seqDom.rec(typ, X)
 
+  def recTL[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
+            InducType <: Term with Subs[InducType]](X : Typ[C])(
+              implicit mapper: ConstructorSeqMapper[C, H, RecType, InducType, Intros]
+            ) =  mapper.mapped(seqDom)(typ).rec(X)
+
   def induc[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
     seqDom.induc(typ, Xs)
+
+  def inducTL[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
+            InducType <: Term with Subs[InducType]](Xs: Func[H, Typ[C]])(
+              implicit mapper: ConstructorSeqMapper[C, H, RecType, InducType, Intros]
+            ) =  mapper.mapped(seqDom)(typ).induc(Xs)
 
   val intros = seqDom.intros(typ)
 }

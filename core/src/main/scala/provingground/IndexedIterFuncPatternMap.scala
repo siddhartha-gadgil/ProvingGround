@@ -492,7 +492,7 @@ object IndexedIterFuncPtnMapper {
                                Fb <: Term with Subs[Fb],
                                Index<: HList : Subst,
                                C <: Term with Subs[C],
-                               F <: Term with Subs[F],
+                              //  F <: Term with Subs[F],
                                IF <: Term with Subs[IF],
                                IDF <: Term with Subs[IDF],
                                IDFT <: Term with Subs[IDFT]] =
