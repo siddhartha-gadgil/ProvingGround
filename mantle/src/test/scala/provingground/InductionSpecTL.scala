@@ -5,6 +5,8 @@ import org.scalatest.FlatSpec
 import TLImplicits._
 import Fold._
 
+import shapeless._
+
 /* Cloned and modified from Tomoaki's tests
  */
 class InductionSpecTL extends FlatSpec {
@@ -16,7 +18,7 @@ class InductionSpecTL extends FlatSpec {
   val Bool = "Boolean" :: Type
   val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 
-  val List(tt, ff) = BoolInd.intros
+  val tt :: ff :: HNil = BoolInd.intros
   val recBoolBool = BoolInd.rec(Bool)
 
   "Boolean type" should "have constructors of type Bool" in {
@@ -53,7 +55,7 @@ class InductionSpecTL extends FlatSpec {
 
   val Nat = "Nat" :: Type
   val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
-  val List(zero, succ) = NatInd.intros
+  val zero :: succ :: HNil = NatInd.intros
 
   val one = succ(zero)
   val two = succ(one)
@@ -102,7 +104,7 @@ class InductionSpecTL extends FlatSpec {
     val ListA = "List(A)" :: Type
     val ListAInd =
       ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
-    val List(nil, cons) = ListAInd.intros
+    val nil :: cons :: HNil = ListAInd.intros
 
     val recLN = ListAInd.rec(Nat)
 
@@ -116,7 +118,7 @@ class InductionSpecTL extends FlatSpec {
 
   val T = "Tree" :: Type
   val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
-  val List(leaf, node) = TInd.intros
+  val leaf :: node :: HNil = TInd.intros
 
   val t = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf))
   val recTN = TInd.rec(Nat)
@@ -133,7 +135,7 @@ class InductionSpecTL extends FlatSpec {
 
   val BT = "BinTree" :: Type
   val BTInd = ("leafB" ::: BT) |: ("nodeB" ::: (Bool -|>: BT) -->>: BT) =: BT
-  val List(leafB, nodeB) = BTInd.intros
+  val leafB :: nodeB :: HNil = BTInd.intros
 
   val recBTN = BTInd.rec(Nat)
 
@@ -192,7 +194,7 @@ class InductionSpecTL extends FlatSpec {
       "cons" ::: n ~>>: (A ->>: (Vec :> Vec(n)) -->>: (Vec -> Vec(succ(n))))
     } =:: Vec
 
-  val List(vnil, vcons) = VecInd.intros
+  val vnil :: vcons :: HNil = VecInd.intros
 
   val vn = "v_n" :: Vec(n)
   val recVN = VecInd.rec(Nat)
@@ -214,7 +216,7 @@ class InductionSpecTL extends FlatSpec {
     } =:: VecN
 
   val recVNN = VecNInd.rec(Nat)
-  val List(vnilN, vconsN) = VecNInd.intros
+  val vnilN :: vconsN :: HNil = VecNInd.intros
   val k = "k" :: Nat
   val vsum = recVNN(zero)(n :~> (k :-> (vnn :-> (m :-> (add(m)(k))))))
 

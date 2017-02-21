@@ -263,7 +263,7 @@ object ConstructorSeqMapper{
                     RD <: Term with Subs[RD],
                   ID <: Term with Subs[ID],
                   TR <: Term with Subs[TR],
-                  TI <: Term with Subs[TI]](
+                  TI <: Term with Subs[TI]](implicit
                     patternMapper: ConstructorPatternMapper[ Cod, ConstructorType, H, RD, ID],
                     tailMapper: ConstructorSeqMapper[Cod, H, TR, TI, TIntros]
                   ) : ConstructorSeqMapper[Cod,
@@ -280,7 +280,8 @@ object ConstructorSeqMapper{
                             seqdom match {
                               case ConstructorSeqDom.Cons(name, pattern, tail) =>
                                 val patternMap = patternMapper.mapper(pattern)
-                                ???
+                                val tailMap = tailMapper.mapped(tail)(W)
+                                ConstructorSeqMap.Cons.sym(name, patternMap, tailMap)
                                 }
                                 }
 }
@@ -303,7 +304,7 @@ trait ConstructorSeqDom[H <: Term with Subs[H], Intros <: HList] {
       Xs: Func[H, Typ[C]]) =
     mapped[C](W).induc(Xs)
 
-  def intros(typ: Typ[H]): List[Term]
+  def intros(typ: Typ[H]): Intros
 }
 
 object ConstructorSeqDom {
@@ -313,7 +314,7 @@ object ConstructorSeqDom {
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
 
-    def intros(typ: Typ[H]) = List()
+    def intros(typ: Typ[H]) = HNil
   }
 
   case class Cons[H <: Term with Subs[H],
