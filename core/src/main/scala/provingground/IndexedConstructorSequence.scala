@@ -373,6 +373,22 @@ abstract class IndexedConstructorSeqDom[
                                IDFT]
             ) =  mapper.mapped(this)(W, family).rec(X)
 
+    def inducTL[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
+            InducType <: Term with Subs[InducType], IF <: Term with Subs[IF],
+  IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](Xs : IDFT)(
+              implicit mapper: IndexedConstructorSeqMapper[C,
+                               H,
+                               RecType,
+                               InducType,
+                               Intros,
+                               F,
+                               Index,
+                               IF,
+                               IDF,
+                               IDFT]
+            ) =  mapper.mapped(this)(W, family).induc(Xs)
+
+
   def |:[HC <: Term with Subs[HC]](head: IndexedConstructor[H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
 }
