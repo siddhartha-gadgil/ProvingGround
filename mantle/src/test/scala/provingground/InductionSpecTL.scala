@@ -228,4 +228,15 @@ class InductionSpecTL extends FlatSpec {
     assert(vsum(one)(v2) == two)
     assert(vsum(two)(v3) == three)
   }
+
+  "Prepending to vectors using indexed induction" should "behave as expected" in {
+    val fmly = n :~> (("v" :: VecN(n)) :-> VecN(succ(n)))
+    val ind = VecNInd.induc(fmly)
+    val v1 = vconsN(zero)(one)(vnilN)
+    val iv = ind(v1)
+    val tail = "tail" :: VecN(n)
+    val result = "result" :: VecN(succ(n))
+    val step = n :~> ( m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result) )  ) )
+    assert(vsum(three)(iv(step)(two)(iv(step)(one)(v1))) == five)
+  }
 }
