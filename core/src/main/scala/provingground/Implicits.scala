@@ -86,7 +86,7 @@ object TLImplicits {
   implicit class TypAsSeqHead[H <: Term with Subs[H]](W: Typ[H]) {
     def seq = ConstructorSeqTL.Empty(W)
 
-    def =:[ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[H, ConstructorType]) = head |: seq
+    def =:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[S, H, ConstructorType]) = head |: seq
   }
 
   import IterFuncPatternMap._

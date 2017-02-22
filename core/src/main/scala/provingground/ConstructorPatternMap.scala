@@ -10,6 +10,8 @@ import HoTT._
 
 import IterFuncPatternMap._
 
+import shapeless._
+
 //import RecFunction._
 
 /**
@@ -396,9 +398,9 @@ case class CnstDepFuncPtnMap[
 
 import scala.language.existentials
 
-sealed trait ConstructorShape[H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]] {
+sealed trait ConstructorShape[S <: HList, H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]] {
   def mapper[Cod <: Term with Subs[Cod]]
-    : ConstructorPatternMapper[
+    : ConstructorPatternMapper[S,
                                Cod,
                                ConstructorType,
                                H,
@@ -413,7 +415,7 @@ sealed trait ConstructorShape[H <: Term with Subs[H], ConstructorType <: Term wi
       RecDataType <: Term with Subs[RecDataType],
       InducDataType <: Term with Subs[InducDataType]
   ](
-      implicit mp: ConstructorPatternMapper[
+      implicit mp: ConstructorPatternMapper[S,
                                             Cod,
                                             ConstructorType,
                                             H,
@@ -433,7 +435,7 @@ sealed trait ConstructorShape[H <: Term with Subs[H], ConstructorType <: Term wi
       RecDataType <: Term with Subs[RecDataType],
       InducDataType <: Term with Subs[InducDataType]
   ](name: AnySym, tp: Typ[H])(
-      implicit mp: ConstructorPatternMapper[
+      implicit mp: ConstructorPatternMapper[S,
                                             Cod,
                                             ConstructorType,
                                             H,
@@ -441,7 +443,7 @@ sealed trait ConstructorShape[H <: Term with Subs[H], ConstructorType <: Term wi
                                             InducDataType]) =
     mp.mapper(this).symbcons(name, tp)
 
-  def subs(x: Term, y: Term): ConstructorShape[H, ConstructorType]
+  def subs(x: Term, y: Term): ConstructorShape[S, H, ConstructorType]
 
   import ConstructorShape._
 
@@ -464,20 +466,22 @@ sealed trait ConstructorShape[H <: Term with Subs[H], ConstructorType <: Term wi
 object ConstructorShape {
   import ConstructorPatternMapper._
 
-  case class IdShape[H <: Term with Subs[H]]() extends ConstructorShape[H, H] {
+  case class IdShape[H <: Term with Subs[H]]() extends ConstructorShape[HNil, H, H] {
     def mapper[C <: Term with Subs[C]] =
       ConstructorPatternMapper.idTargMapper[C, H]
 
     def subs(x: Term, y: Term) = this
   }
 
-  case class FuncConsShape[H <: Term with Subs[H], HC <: Term with Subs[HC], F <: Term with Subs[F]](
+  object FuncConsShape
+
+  case class FuncConsShape[HS <: HList, H <: Term with Subs[H], HC <: Term with Subs[HC], F <: Term with Subs[F]](
       tail: IterFuncShape[ H, F],
-      head: ConstructorShape[ H, HC]
-  ) extends ConstructorShape[H, Func[F, HC]] {
+      head: ConstructorShape[HS, H, HC]
+  ) extends ConstructorShape[FuncConsShape.type :: HS,  H, Func[F, HC]] {
 
     def mapper[C <: Term with Subs[C]]
-      : ConstructorPatternMapper[
+      : ConstructorPatternMapper[ FuncConsShape.type :: HS,
                                  C,
                                  Func[F, HC],
                                  H,
@@ -491,12 +495,14 @@ object ConstructorShape {
       FuncConsShape(tail.subs(x, y), head.subs(x, y))
   }
 
-  case class CnstFuncConsShape[
+  object CnstFuncConsShape
+
+  case class CnstFuncConsShape[HShape <: HList,
     H <: Term with Subs[H], HC <: Term with Subs[HC], T <: Term with Subs[T],
                                HS <: Term with Subs[HS]](
       tail: Typ[T],
-      head: ConstructorShape[H, HC]
-  ) extends ConstructorShape[H, Func[T, HC]] {
+      head: ConstructorShape[HShape, H, HC]
+  ) extends ConstructorShape[CnstFuncConsShape.type :: HShape,  H, Func[T, HC]] {
 
     def mapper[Cod <: Term with Subs[Cod]] =
       cnstFncPtnMapper(head.mapper[Cod])
@@ -505,11 +511,13 @@ object ConstructorShape {
       CnstFuncConsShape(tail.replace(x, y), head.subs(x, y))
   }
 
-  case class CnstDepFuncConsShape[H <: Term with Subs[H], HC <: Term with Subs[HC], T <: Term with Subs[T],
+  object CnstDepFuncConsShape
+
+  case class CnstDepFuncConsShape[HShape <: HList, H <: Term with Subs[H], HC <: Term with Subs[HC], T <: Term with Subs[T],
                                   HS <: Term with Subs[HS]](
       tail: Typ[T],
-      headfibre: T => ConstructorShape[H, HC]
-  ) extends ConstructorShape[H, FuncLike[T, HC]] {
+      headfibre: T => ConstructorShape[HShape, H, HC]
+  ) extends ConstructorShape[CnstDepFuncConsShape.type :: HShape, H, FuncLike[T, HC]] {
 
     def mapper[Cod <: Term with Subs[Cod]] =
       cnstDepFncPtnMapper(headfibre(tail.Var).mapper[Cod])
@@ -524,11 +532,12 @@ import ConstructorShape._
 
 object ConstructorPatternMapper {
   implicit def idTargMapper[C <: Term with Subs[C], H <: Term with Subs[H]] =
-    new ConstructorPatternMapper[C, H, H, C, C] {
+    new ConstructorPatternMapper[HNil, C, H, H, C, C] {
       def mapper = (_) => IdTargMap[C, H]
     }
 
   implicit def funcPtnMapper[
+                            HShape <: HList,
                              C <: Term with Subs[C],
                              F <: Term with Subs[F],
                              HC <: Term with Subs[HC],
@@ -538,8 +547,9 @@ object ConstructorPatternMapper {
                              TT <: Term with Subs[TT],
                              DT <: Term with Subs[DT]](
       implicit tail: IterFuncMapper[H, C, F, TT, DT],
-      head: ConstructorPatternMapper[C, HC, H, HR, HI]) =
+      head: ConstructorPatternMapper[HShape, C, HC, H, HR, HI]) =
     new ConstructorPatternMapper[
+                                FuncConsShape.type :: HShape,
                                  C,
                                  Func[F, HC],
                                  H,
@@ -551,16 +561,16 @@ object ConstructorPatternMapper {
       }
     }
 
-  implicit def cnstFncPtnMapper[
+  implicit def cnstFncPtnMapper[HShape <: HList,
                                 T <: Term with Subs[T],
                                 Cod <: Term with Subs[Cod],
                                 HC <: Term with Subs[HC],
                                 H <: Term with Subs[H],
                                 HR <: Term with Subs[HR],
                                 HI <: Term with Subs[HI]](
-      implicit head: ConstructorPatternMapper[Cod, HC, H, HR, HI]
+      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI]
   ) =
-    new ConstructorPatternMapper[
+    new ConstructorPatternMapper[CnstFuncConsShape.type :: HShape,
                                  Cod,
                                  Func[T, HC],
                                  H,
@@ -572,16 +582,16 @@ object ConstructorPatternMapper {
       }
     }
 
-  implicit def cnstDepFncPtnMapper[
+  implicit def cnstDepFncPtnMapper[HShape <: HList,
                                    T <: Term with Subs[T],
                                    Cod <: Term with Subs[Cod],
                                    HC <: Term with Subs[HC],
                                    H <: Term with Subs[H],
                                    HR <: Term with Subs[HR],
                                    HI <: Term with Subs[HI]](
-      implicit head: ConstructorPatternMapper[Cod, HC, H, HR, HI]
+      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI]
   ) =
-    new ConstructorPatternMapper[
+    new ConstructorPatternMapper[CnstDepFuncConsShape.type :: HShape,
                                  Cod,
                                  FuncLike[T, HC],
                                  H,
@@ -595,13 +605,14 @@ object ConstructorPatternMapper {
 }
 
 sealed trait ConstructorPatternMapper[
+    Shape <: HList,
     Cod <: Term with Subs[Cod],
     ConstructorType <: Term with Subs[ConstructorType],
     H <: Term with Subs[H],
     RecDataType <: Term with Subs[RecDataType],
     InducDataType <: Term with Subs[InducDataType]
 ] {
-  def mapper: ConstructorShape[H, ConstructorType] => ConstructorPatternMap[
+  def mapper: ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
                                                            Cod,
                                                            ConstructorType,
                                                            H,
@@ -609,8 +620,8 @@ sealed trait ConstructorPatternMapper[
                                                            InducDataType]
 }
 
-case class ConstructorTypTL[ H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](
-    shape: ConstructorShape[ H, ConstructorType],
+case class ConstructorTypTL[S <: HList, H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](
+    shape: ConstructorShape[S, H, ConstructorType],
     typ: Typ[H]) {
 
   import ConstructorShape._
@@ -640,7 +651,7 @@ case class ConstructorTypTL[ H <: Term with Subs[H], ConstructorType <: Term wit
     ConstructorTypTL(thatVar ~>: shape, typ)
 }
 
-case class ConstructorTL[H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](
+case class ConstructorTL[S <: HList, H <: Term with Subs[H], ConstructorType <: Term with Subs[ConstructorType]](
     name: AnySym,
-    shape: ConstructorShape[H, ConstructorType],
+    shape: ConstructorShape[S, H, ConstructorType],
     W: Typ[H])

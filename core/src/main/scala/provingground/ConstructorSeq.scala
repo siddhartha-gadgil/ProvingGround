@@ -240,23 +240,23 @@ object ConstructorSeqMap {
 import scala.language.existentials
 
 
-trait ConstructorSeqMapper[C <: Term with Subs[C],
+trait ConstructorSeqMapper[SS <: HList, C <: Term with Subs[C],
                         H <: Term with Subs[H],
                         RecType <: Term with Subs[RecType],
                         InducType <: Term with Subs[InducType],
                         Intros <: HList]{
-                          def mapped(seqdom: ConstructorSeqDom[H, Intros])(W: Typ[H]) : ConstructorSeqMap[C, H, RecType, InducType, Intros]
+                          def mapped(seqdom: ConstructorSeqDom[SS, H, Intros])(W: Typ[H]) : ConstructorSeqMap[C, H, RecType, InducType, Intros]
                         }
 
 object ConstructorSeqMapper{
   import shapeless._
 
-  implicit def empty[H <: Term with Subs[H], C <: Term with Subs[C]]: ConstructorSeqMapper[C, H, Func[H, C], FuncLike[H, C], HNil] =
-    new ConstructorSeqMapper[C, H, Func[H, C], FuncLike[H, C], HNil]{
-      def mapped (seqdom: ConstructorSeqDom[H, HNil])(W: Typ[H]) = ConstructorSeqMap.Empty[C, H](W)
+  implicit def empty[H <: Term with Subs[H], C <: Term with Subs[C]]: ConstructorSeqMapper[HNil, C, H, Func[H, C], FuncLike[H, C], HNil] =
+    new ConstructorSeqMapper[HNil, C, H, Func[H, C], FuncLike[H, C], HNil]{
+      def mapped (seqdom: ConstructorSeqDom[HNil, H, HNil])(W: Typ[H]) = ConstructorSeqMap.Empty[C, H](W)
     }
 
-  implicit def cons[H <: Term with Subs[H],
+  implicit def cons[TSS <: HList, HShape <: HList, H <: Term with Subs[H],
                     Cod <: Term with Subs[Cod],
                     ConstructorType <: Term with Subs[ConstructorType],
                     TIntros <: HList,
@@ -264,19 +264,19 @@ object ConstructorSeqMapper{
                   ID <: Term with Subs[ID],
                   TR <: Term with Subs[TR],
                   TI <: Term with Subs[TI]](implicit
-                    patternMapper: ConstructorPatternMapper[ Cod, ConstructorType, H, RD, ID],
-                    tailMapper: ConstructorSeqMapper[Cod, H, TR, TI, TIntros]
-                  ) : ConstructorSeqMapper[Cod,
+                    patternMapper: ConstructorPatternMapper[HShape, Cod, ConstructorType, H, RD, ID],
+                    tailMapper: ConstructorSeqMapper[TSS, Cod, H, TR, TI, TIntros]
+                  ) : ConstructorSeqMapper[HShape :: TSS, Cod,
                                 H,
                                 Func[RD, TR],
                                 Func[ID, TI],
                                 ConstructorType :: TIntros] =
-                      new ConstructorSeqMapper[Cod,
+                      new ConstructorSeqMapper[HShape :: TSS, Cod,
                                 H,
                                 Func[RD, TR],
                                 Func[ID, TI],
                                 ConstructorType :: TIntros]{
-                          def mapped(seqdom: ConstructorSeqDom[H, ConstructorType :: TIntros])(W: Typ[H]) =
+                          def mapped(seqdom: ConstructorSeqDom[HShape :: TSS,  H, ConstructorType :: TIntros])(W: Typ[H]) =
                             seqdom match {
                               case ConstructorSeqDom.Cons(name, pattern, tail) =>
                                 val patternMap = patternMapper.mapper(pattern)
@@ -287,7 +287,7 @@ object ConstructorSeqMapper{
 }
 
 
-trait ConstructorSeqDom[H <: Term with Subs[H], Intros <: HList] {
+trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
 
   def mapped[C <: Term with Subs[C]](W: Typ[H])
     : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
@@ -310,18 +310,18 @@ trait ConstructorSeqDom[H <: Term with Subs[H], Intros <: HList] {
 object ConstructorSeqDom {
   import shapeless._
 
-  case class Empty[H <: Term with Subs[H]]() extends ConstructorSeqDom[H, HNil] {
+  case class Empty[H <: Term with Subs[H]]() extends ConstructorSeqDom[HNil, H, HNil] {
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
 
     def intros(typ: Typ[H]) = HNil
   }
 
-  case class Cons[H <: Term with Subs[H],
+  case class Cons[TSS <: HList, HShape <: HList,  H <: Term with Subs[H],
     ConstructorType <: Term with Subs[ConstructorType], TIntros <: HList](name: AnySym,
-                                          pattern: ConstructorShape[H, ConstructorType],
-                                          tail: ConstructorSeqDom[H, TIntros])
-      extends ConstructorSeqDom[H, ConstructorType :: TIntros] {
+                                          pattern: ConstructorShape[HShape, H, ConstructorType],
+                                          tail: ConstructorSeqDom[TSS, H, TIntros])
+      extends ConstructorSeqDom[HShape :: TSS,  H, ConstructorType :: TIntros] {
     def mapped[C <: Term with Subs[C]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
         type RecType <: Term with Subs[RecType];
@@ -337,25 +337,25 @@ object ConstructorSeqDom {
   }
 }
 
-case class ConstructorSeqTL[H <: Term with Subs[H], Intros <: HList](seqDom: ConstructorSeqDom[H, Intros],
+case class ConstructorSeqTL[SS <: HList, H <: Term with Subs[H], Intros <: HList](seqDom: ConstructorSeqDom[SS, H, Intros],
                                                     typ: Typ[H]) {
-  def |:[ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[H, ConstructorType]) =
+  def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](head: ConstructorTL[S, H, ConstructorType]) =
     ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom),
                      typ)
 
-  def rec[C <: Term with Subs[C]](X: Typ[C]) = seqDom.rec(typ, X)
+  def recE[C <: Term with Subs[C]](X: Typ[C]) = seqDom.rec(typ, X)
 
-  def recTL[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
+  def rec[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
             InducType <: Term with Subs[InducType]](X : Typ[C])(
-              implicit mapper: ConstructorSeqMapper[C, H, RecType, InducType, Intros]
+              implicit mapper: ConstructorSeqMapper[SS, C, H, RecType, InducType, Intros]
             ) =  mapper.mapped(seqDom)(typ).rec(X)
 
-  def induc[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
+  def inducE[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
     seqDom.induc(typ, Xs)
 
-  def inducTL[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
+  def induc[C <: Term with Subs[C], RecType <: Term with Subs[RecType],
             InducType <: Term with Subs[InducType]](Xs: Func[H, Typ[C]])(
-              implicit mapper: ConstructorSeqMapper[C, H, RecType, InducType, Intros]
+              implicit mapper: ConstructorSeqMapper[SS, C, H, RecType, InducType, Intros]
             ) =  mapper.mapped(seqDom)(typ).induc(Xs)
 
   val intros = seqDom.intros(typ)
