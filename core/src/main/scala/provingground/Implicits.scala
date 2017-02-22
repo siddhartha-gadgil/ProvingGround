@@ -105,8 +105,8 @@ object TLImplicits {
     def emptySeq =
       IndexedConstructorSeqDom.get(W)(g)
 
-    def =::[HC <: Term with Subs[HC]](
-        head: IndexedConstructor[H, F, HC, Index]
+    def =::[HShape <: HList, HC <: Term with Subs[HC]](
+        head: IndexedConstructor[HShape, H, F, HC, Index]
     ) = {
       val seq = emptySeq
       head |: seq
