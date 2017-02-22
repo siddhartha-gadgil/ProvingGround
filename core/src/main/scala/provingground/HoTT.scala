@@ -854,7 +854,7 @@ object HoTT {
       act(arg)
     }
 
-    def apply(arg: TypedTerm[W]) = TypedTerm(act(arg.term), depcodom(arg.term))
+    // def apply(arg: TypedTerm[W]) = TypedTerm(act(arg.term), depcodom(arg.term))
     //      def andThen[WW >: U <: Term, UU <: Term](fn: WW => UU): FuncLike[WW, UU]
 
     def subs(x: Term, y: Term): FuncLike[W, U]

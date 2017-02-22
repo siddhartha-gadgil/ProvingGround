@@ -231,7 +231,7 @@ object TypFamilyMap {
 
     def iterDepFunc(funcs: ((U :: TIndex)) => FuncLike[H, C]) = {
       val x = head.Var
-      x :-> (tail.iterDepFunc((ti: TIndex) => funcs(x :: ti)))
+      x :~> (tail.iterDepFunc((ti: TIndex) => funcs(x :: ti)))
     }
 
     def restrict(f: FuncLike[U, TIF], ind: (U :: TIndex)) =
