@@ -131,7 +131,7 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 
 ```scala
 scala> val m = lmbda(n)(prod(n + 1))
-m: provingground.HoTT.Func[provingground.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.NatRing.LocalTerm,provingground.NatRing.LocalTerm]] = (n : (Nat.Typ)) ↦ ((provingground.HoTT$Typ$newname$2$@686a2573 : (Nat.Typ)) ↦ (SigmaTerm(Set(provingground.HoTT$Typ$newname$2$@686a2573 : (Nat.Typ), PiTerm(Map(n : (Nat.Typ) -> 1, provingground.HoTT$Typ$newname$2$@686a2573 : (Nat.Typ) -> 1))))))
+m: provingground.HoTT.Func[provingground.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.NatRing.LocalTerm,provingground.NatRing.LocalTerm]] = (n : (Nat.Typ)) ↦ ((provingground.HoTT$Typ$newname$2$@175da938 : (Nat.Typ)) ↦ (SigmaTerm(Set(provingground.HoTT$Typ$newname$2$@175da938 : (Nat.Typ), PiTerm(Map(n : (Nat.Typ) -> 1, provingground.HoTT$Typ$newname$2$@175da938 : (Nat.Typ) -> 1))))))
 
 scala> val factorial = Rec(1: Nat, m)
 factorial: provingground.NatRing.Rec[provingground.NatRing.LocalTerm] = <function1>

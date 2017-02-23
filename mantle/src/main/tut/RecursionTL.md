@@ -13,6 +13,7 @@ We begin with some imports. The import Implicits gives the operations to constru
 import provingground._
 import HoTT._
 import TLImplicits._
+import shapeless._
 ```
 
 We do not define inductive types, but instead define the _structure of an inductive type_ on a given, typically symbolic type.
@@ -28,7 +29,7 @@ val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 From the inductive structure, we can obtain the introduction rules.
 
 ```tut
-val List(tt, ff) = BoolInd.intros
+val tt :: ff :: HNil = BoolInd.intros
 tt
 ff
 ```
@@ -78,7 +79,7 @@ The method on constructors corresponding to function types we use if `-->>:`, wh
 ```tut
 val Nat ="Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
-val List(zero, succ) = NatInd.intros
+val zero :: succ :: HNil = NatInd.intros
 ```
 
 To define recursively a function `f : Nat ->: X` for a type `X`, the data is
@@ -128,7 +129,7 @@ Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used 
 val A ="A" :: Type
 val ListA = "List(A)" :: Type
 val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
-val List(nil, cons) = ListAInd.intros
+val nil :: cons :: HNil = ListAInd.intros
 ```
 
 We can define the size of a list as a natural number recursively.
@@ -150,7 +151,7 @@ We define the number of vertices recursively on this.
 ```tut
 val T ="Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
-val List(leaf, node) = TInd.intros
+val leaf :: node :: HNil = TInd.intros
 import Fold._
 val t = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf))
 
@@ -179,7 +180,7 @@ We define the number of leaves in such a tree recursively.
 ```tut
 val BT ="BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
-val List(leaf, node) = BTInd.intros
+val leaf :: node :: HNil = BTInd.intros
 val recBTN = BTInd.rec(Nat)
 recBTN.typ
 val f = "f" :: Bool ->: BT
@@ -295,15 +296,16 @@ the _induction hypothesis_. Note that the induction hypothesis is a term of type
 ```tut
 val thmDoubleEven = n ~>: isEven(double(n))
 val hyp = "isEven(double(n))" :: isEven(double(n))
+val inducDoubleEven = NatInd.induc(n :-> isEven(double(n)))
 val pfDoubleEven =
-  NatInd.induc(n :-> isEven(double(n))){
-    zeroEven}{
+  inducDoubleEven(
+    zeroEven){
       n :~> (
         hyp :-> (
           plusTwoEven(double(n))(hyp)
           )
           )
-    } !: thmDoubleEven
+    }  !: thmDoubleEven
 ```
 
 We next prove a more interesting statement, namely that for any natural number `n`, one of `n` and `n+1` is even.
@@ -320,7 +322,9 @@ val hyp2 = "(n+1)-is-Even" :: isEven(succ(n))
 
 val step = (succEven(n).rec(succEven(succ(n)))){hyp1 :-> (succEven(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{hyp2 :-> (succEven(succ(n)).incl1((hyp2)))}
 
-val pf = NatInd.induc(succEven)(base)(n :~> step) !: thmSuccEven
+val inducSuccEven = NatInd.induc(succEven)
+
+val pf = inducSuccEven(base)(n :~> step) !: thmSuccEven
 ```
 
 We now prove a result that has been a goal, namely that for a function on Natural numbers if `f(n)=f(n+1)` for all n,
@@ -337,7 +341,9 @@ val base = f(zero).refl
 val hyp = "hypothesis" :: (f(zero) =:= f(n))
 val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
 
-val pf = NatInd.induc(claim)(base)(n :~> step) !: (n ~>: (f(zero) =:= f(n)))
+val inducClaim = NatInd.induc(claim)
+
+val pf = inducClaim(base)(n :~> step) !: (n ~>: (f(zero) =:= f(n)))
 
 ```
 
@@ -356,7 +362,7 @@ val Vec = "Vec" :: Nat ->: Type
 val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
 val VecFmly = VecPtn.Family(Vec)
 val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
-val List(vnil, vcons) = VecInd.intros
+val vnil :: vcons :: HNil = VecInd.intros
 vcons.typ.fansi
 ```
 
@@ -382,7 +388,7 @@ val vnn = "v_n" :: VecN(n)
 val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
 
 val recVNN = VecNInd.rec(Nat)
-val List(vnilN, vconsN) = VecNInd.intros
+val vnilN :: vconsN :: Hnil = VecNInd.intros
 
 val k ="k" :: Nat
 val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
