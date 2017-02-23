@@ -197,6 +197,36 @@ object TypFamilyMap {
     def subs(x: Term, y: Term) = this
   }
 
+    case class IdSubTypFamilyMap[H <: Term with Subs[H], C <: Term with Subs[C], TC <: Typ[C] with Subs[TC]]()
+      extends TypFamilyMap[H,
+                           Typ[H],
+                           C,
+                           HNil,
+                           Func[H, C],
+                           FuncLike[H, C],
+                           Func[H, TC]] {
+
+    val pattern = IdTypFamily[H]
+
+    def iterFuncTyp(w: Typ[H], x: Typ[C]) = w ->: x
+
+    def iterDepFuncTyp(w: Typ[H], xs: Func[H, TC]) = PiDefn(xs)
+
+    def iterFunc(funcs: HNil => Func[H, C]) = funcs(HNil)
+
+    def iterDepFunc(funcs: HNil => FuncLike[H, C]) = funcs(HNil)
+
+    def restrict(f: Func[H, C], ind: HNil) = f
+
+    def depRestrict(f: FuncLike[H, C], ind: HNil) = f
+
+    def typRestrict(xs: Func[H, TC], ind: HNil) = xs
+
+    def subs(x: Term, y: Term) = this
+  }
+
+
+
   case class FuncTypFamilyMap[U <: Term with Subs[U],
                               H <: Term with Subs[H],
                               TF <: Term with Subs[TF],
@@ -319,7 +349,22 @@ sealed trait TypFamilyMapper[H <: Term with Subs[H],
                                                         IDFT]
 }
 
-object TypFamilyMapper {
+trait WeakImplicit{
+  implicit def idSubTypFamilyMapper[H <: Term with Subs[H],
+                                 C <: Term with Subs[C],
+                                 TC <: Typ[C] with Subs[TC]] =
+    new TypFamilyMapper[H,
+                        Typ[H],
+                        C,
+                        HNil,
+                        Func[H, C],
+                        FuncLike[H, C],
+                        Func[H, TC]] {
+      val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) => TypFamilyMap.IdSubTypFamilyMap[H, C, TC]
+    }
+}
+
+object TypFamilyMapper extends WeakImplicit {
   import TypFamilyMap._
 
   import TypFamilyPtn._
