@@ -98,6 +98,7 @@ class InductionSpecTL extends FlatSpec {
 
   val A = "A" :: Type
   val a = "a" :: A
+  val a1 = "a1" :: A
 
   "Recursion function size from List(A) to Nat" should "be defined properly" in {
 
@@ -197,14 +198,25 @@ class InductionSpecTL extends FlatSpec {
   val vnil :: vcons :: HNil = VecInd.intros
 
   val vn = "v_n" :: Vec(n)
+  val vm = "v_m" :: Vec(m)
   val recVN = VecInd.rec(Nat)
 
   val size = recVN(zero)(n :~> (a :-> (vn :-> (m :-> (succ(m))))))
   val v1 = vcons(zero)(a)(vnil)
+  val v2 = vcons(one)(a1)(v1)
 
   "Function with an indexed inductive type size" should "be defined properly" in {
     assert(size(zero)(vnil) == zero)
     assert(size(one)(v1) == one)
+  }
+
+  "Concatenating vectors using indexed induction" should "behave as expected" in {
+    val indVVnm = VecInd.induc(n :~> (vn :-> Vec(add(n)(m)) ))
+    val vnm = "v_(n+m)" :: Vec(add(n)(m))
+    val concatVm = indVVnm(vm)(n :~> (a :-> (vn :-> (vnm :-> vcons(add(n)(m))(a)(vnm) ))))
+    val concatFlip = m :~> (vm :-> concatVm)
+    val vconcat = n :~> (vn :-> (m :~> (vm :-> concatFlip(m)(vm)(n)(vn) )))
+    assert(vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
   val VecN = "Vec(Nat)" :: Nat ->: Type
