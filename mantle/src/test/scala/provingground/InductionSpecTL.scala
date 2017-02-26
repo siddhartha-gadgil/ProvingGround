@@ -232,12 +232,12 @@ class InductionSpecTL extends FlatSpec {
   val k = "k" :: Nat
   val vsum = recVNN(zero)(n :~> (k :-> (vnn :-> (m :-> (add(m)(k))))))
 
-  val v2 = vconsN(zero)(two)(vnilN)
-  val v3 = vconsN(one)(one)(v2)
+  val w2 = vconsN(zero)(two)(vnilN)
+  val v3 = vconsN(one)(one)(w2)
 
   "Function with an indexed inductive type vsum" should "be defined properly" in {
     assert(vsum(zero)(vnilN) == zero)
-    assert(vsum(one)(v2) == two)
+    assert(vsum(one)(w2) == two)
     assert(vsum(two)(v3) == three)
   }
 
