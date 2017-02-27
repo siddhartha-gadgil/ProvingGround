@@ -26,7 +26,10 @@ object RecursiveDefinition {
 
     def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
 
-    def newobj = Empty(dom.newobj, codom.newobj)
+    def newobj = {
+      val newdom = dom.newobj
+      Empty(newdom, codom.replace(dom, newdom))
+    }
 
     def caseFn(f: => Func[H, C])(arg: H): Option[C] = None
   }
