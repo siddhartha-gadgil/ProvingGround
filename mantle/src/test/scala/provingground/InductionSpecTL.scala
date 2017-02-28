@@ -211,11 +211,10 @@ class InductionSpecTL extends FlatSpec {
   }
 
   "Concatenating vectors using indexed induction" should "behave as expected" in {
-    val indVVnm = VecInd.induc(n :~> (vn :-> Vec(add(n)(m)) ))
-    val vnm = "v_(n+m)" :: Vec(add(n)(m))
-    val concatVm = indVVnm(vm)(n :~> (a :-> (vn :-> (vnm :-> vcons(add(n)(m))(a)(vnm) ))))
-    val concatFlip = m :~> (vm :-> concatVm)
-    val vconcat = n :~> (vn :-> (m :~> (vm :-> concatFlip(m)(vm)(n)(vn) )))
+    val indVVV = VecInd.induc(n :~> (vn :-> (m ~>: (Vec(m) ->: Vec(add(n)(m)) ))))
+    val concatVn = "concat(v_n)" :: (m ~>: (Vec(m) ->: Vec(add(n)(m)) ))
+    val vconcat = indVVV(m :~> (vm :-> vm))(n :~> (a :-> (vn :-> (concatVn :-> (m :~> (vm :->
+      vcons(add(n)(m))(a)(concatVn(m)(vm)) ))))))
     assert(vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
