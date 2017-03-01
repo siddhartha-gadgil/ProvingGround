@@ -34,8 +34,7 @@ object Structures {
   def allMaps[A, B](S: Set[A], T: Set[B]): Set[PartialFunction[A, B]] = {
     if (S.isEmpty) Set((Map.empty: PartialFunction[A, B]))
     else {
-      (for (t <- T; f <- allMaps(S.tail, T))
-        yield (Map(S.head -> t) orElse f)).toSet
+      (for (t <- T; f <- allMaps(S.tail, T)) yield (Map(S.head -> t) orElse f)).toSet
     }
   }
 
@@ -59,13 +58,13 @@ object Structures {
   def partitionSet[A](relSet: Set[(A, A)]): Set[Set[A]] =
     if (relSet.isEmpty) Set.empty
     else {
-      val dom  = relSet map (_._1)
+      val dom = relSet map (_._1)
       val head = dom.head
       val tailSet =
         relSet filter ((ab: (A, A)) => (ab._1 != head) && (ab._2 != head))
-      val tailPartition    = partitionSet(tailSet)
+      val tailPartition = partitionSet(tailSet)
       val (withHead, rest) = tailPartition partition (_ contains head)
-      val headClass        = Set(head) union (withHead reduce (_ union _))
+      val headClass = Set(head) union (withHead reduce (_ union _))
       rest union Set(headClass)
     }
 
@@ -104,12 +103,12 @@ object Structures {
 
     /** Pairs of vertices bounding an ege */
     lazy val edgesSet: Set[(V, V)] =
-      (edges map ((e: E) => (i(e), t(e)))) union (edges map ((e: E) =>
-                                                               (t(e), i(e))))
+      (edges map ((e: E) => (i(e), t(e)))) union
+      (edges map ((e: E) => (t(e), i(e))))
 
     /** Adjacency as an equivalence relation */
     lazy val adj = new EquivRelation(
-      edgesSet union (vertices map ((v: V) => (v, v))))
+        edgesSet union (vertices map ((v: V) => (v, v))))
   }
 
   /** Edge with endpoints in V*/
@@ -129,7 +128,7 @@ object Structures {
 
     /**Lift of a sequence of edges starting at v */
     def lift(v: V, es: List[E]): List[E] = es match {
-      case List()  => List()
+      case List() => List()
       case List(x) => List(liftEdge(v, x))
       case xs: List[E] =>
         liftEdge(v, xs.head) :: lift(total.t(liftEdge(v, xs.head)), xs.tail)
@@ -139,9 +138,9 @@ object Structures {
   /** Simple graph given by vertex set and set of adjacent pairs of vertices */
   case class SimpleGraph[V](val vertices: Set[V], edgeSet: Set[(V, V)])
       extends Graph[V, (V, V)] {
-    val edges                  = edgeSet union (edgeSet map (bar))
-    def i(e: (V, V))           = e._1
-    def t(e: (V, V))           = e._2
+    val edges = edgeSet union (edgeSet map (bar))
+    def i(e: (V, V)) = e._1
+    def t(e: (V, V)) = e._2
     def bar(e: (V, V)): (V, V) = (e._2, e._1)
     override lazy val edgesSet = edgeSet
   }
@@ -306,7 +305,7 @@ object Structures {
     case class Element[A](elem: A, g: Struct[A]) extends Elem {
       def *(a: Elem): Elem = a match {
         case Element(x, g) => Element(g.prod(this.elem, x), g)
-        case _             => Broken
+        case _ => Broken
       }
     }
   }
@@ -326,13 +325,13 @@ object Structures {
 
     case object Broken extends Elem {
       def *(a: Monoid.Elem) = this
-      def inv               = this
+      def inv = this
     }
 
     case class Element[A](elem: A, g: Struct[A]) extends Elem {
       def *(a: Monoid.Elem): Elem = a match {
         case Element(x, g) => Element(g.prod(this.elem, x), g)
-        case _             => Broken
+        case _ => Broken
       }
       def inv = Element(g.inv(this.elem), g)
     }

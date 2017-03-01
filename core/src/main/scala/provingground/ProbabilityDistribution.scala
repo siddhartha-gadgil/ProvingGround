@@ -153,7 +153,7 @@ object ProbabilityDistribution {
 
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+?>
-        (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
+      (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
@@ -171,10 +171,9 @@ object ProbabilityDistribution {
     def next = f(base.next).next
   }
 
-  case class FiberProduct[A, Q, B](
-    base: ProbabilityDistribution[A],
-    quotient : A => Q,
-    fibers: Q => ProbabilityDistribution[B])
+  case class FiberProduct[A, Q, B](base: ProbabilityDistribution[A],
+                                   quotient: A => Q,
+                                   fibers: Q => ProbabilityDistribution[B])
       extends ProbabilityDistribution[(A, B)] {
     def next = {
       val a = base.next
@@ -182,7 +181,9 @@ object ProbabilityDistribution {
     }
   }
 
-  case class Product[A, B](first: ProbabilityDistribution[A], second: ProbabilityDistribution[B]) extends ProbabilityDistribution[(A, B)]{
+  case class Product[A, B](
+      first: ProbabilityDistribution[A], second: ProbabilityDistribution[B])
+      extends ProbabilityDistribution[(A, B)] {
     def next = (first.next, second.next)
   }
 

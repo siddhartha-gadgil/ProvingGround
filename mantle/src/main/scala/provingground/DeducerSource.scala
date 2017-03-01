@@ -87,9 +87,7 @@ class DeducerSource(ded: Deducer,
 
   def deducConc(threads: Int) =
     (initSourceConc(threads)) flatMapConcat
-    ((pair) =>
-          deducBatchesConc(threads)(pair._1,
-                                    pair._2))
+    ((pair) => deducBatchesConc(threads)(pair._1, pair._2))
 
   def deducResult = deduc.fold(FD.empty[Term]) { case (_, result) => result }
 

@@ -171,9 +171,9 @@ trait TrnsLtr[I, O] extends (I => Option[O]) { self =>
       join: XO => Option[O]
   )(implicit oml: OptMapLift[II, OO, XI, XO]) =
     |:(
-      TrnsLtr.Simple(
-        TrnsLtr.HybridJunction(split, subTranslate, join)
-      ))
+        TrnsLtr.Simple(
+            TrnsLtr.HybridJunction(split, subTranslate, join)
+        ))
 
   /**
     * mixin translator after splitting and joining with _different_ input and output  types;
@@ -255,10 +255,8 @@ object TrnsLtr {
 
     def recTranslate(rec: => TrnsLtr[I, O]) = { (inp: I) =>
       Try(
-        split(inp.asInstanceOf[J]) flatMap ((x: XI) =>
-                                              oml
-                                                .lift(rec.apply)(x)
-                                                .flatMap(join(_)))
+          split(inp.asInstanceOf[J]) flatMap
+          ((x: XI) => oml.lift(rec.apply)(x).flatMap(join(_)))
       ).toOption.flatten
     }
   }
@@ -272,10 +270,8 @@ object TrnsLtr {
 
     def apply(inp: I) =
       Try(
-        split(inp.asInstanceOf[J]) flatMap ((x: XI) =>
-                                              oml
-                                                .lift(subTranslate)(x)
-                                                .flatMap(join(_)))
+          split(inp.asInstanceOf[J]) flatMap
+          ((x: XI) => oml.lift(subTranslate)(x).flatMap(join(_)))
       ).toOption.flatten
   }
 }
@@ -340,8 +336,8 @@ object OptMapLift {
     new OptMapLift[I, O, (XI1, XI2), (XO1, XO2)] {
       def lift(optMap: I => Option[O]) = {
         case (x, y) =>
-          for (a <- lft1.lift(optMap)(x); b <- lft2.lift(optMap)(y))
-            yield (a, b)
+          for (a <- lft1.lift(optMap)(x); b <- lft2.lift(optMap)(y)) yield
+            (a, b)
       }
     }
 
@@ -357,7 +353,7 @@ object OptMapLift {
       def lift(optMap: I => Option[O]) = {
         case (x, y, z) =>
           for (a <- lft1.lift(optMap)(x); b <- lft2.lift(optMap)(y);
-               c <- lft3.lift(optMap)(z)) yield (a, b, c)
+          c <- lft3.lift(optMap)(z)) yield (a, b, c)
       }
     }
 
@@ -374,8 +370,8 @@ object OptMapLift {
       def lift(optMap: I => Option[O]) = {
         case (x, y, z, w) =>
           for (a <- lft1.lift(optMap)(x); b <- lft2.lift(optMap)(y);
-               c <- lft3.lift(optMap)(z); d <- lft4.lift(optMap)(w))
-            yield (a, b, c, d)
+          c <- lft3.lift(optMap)(z); d <- lft4.lift(optMap)(w)) yield
+            (a, b, c, d)
       }
     }
 }

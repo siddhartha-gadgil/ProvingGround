@@ -1,11 +1,7 @@
 package provingground
 
 import provingground.HoTT._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import ScalaRep._
 import BoolType._
 //import provingground.ScalaUniverses._
@@ -56,25 +52,26 @@ object IntTypes {
 
   val recN = {
     val init = "a" :: A
-    val f    = "f" :: (N ->: A ->: A)
+    val f = "f" :: (N ->: A ->: A)
     LambdaTerm(A, LambdaFixed(init, LambdaFixed(f, {
-      val dfn    = (n: Long) => inducFn(init, (k: Long) => f(N.rep(k)), n)
+      val dfn = (n: Long) => inducFn(init, (k: Long) => f(N.rep(k)), n)
       val codrep = N.rep :--> A
       codrep(dfn)
     })))
   }
 
   val inducN = {
-    val P       = "P" :: N ->: Type
-    val k       = "k" :: N
-    val init    = "a" :: P(N.zero)
+    val P = "P" :: N ->: Type
+    val k = "k" :: N
+    val init = "a" :: P(N.zero)
     val steptyp = PiDefn(lmbda(k)(P(k) ->: P(N.succ(k))))
-    val step    = "step" :: steptyp
+    val step = "step" :: steptyp
 
-    lambda(P)(lmbda(init)(lmbda(step)({
+    lambda(P)(
+        lmbda(init)(lmbda(step)({
       val resultrep = N.rep ~~>: P
-      val recfn     = (m: Long) => (t: Term) => step(N.rep(m))(t)
-      val dfn       = (n: Long) => inducFn(init, recfn, n)
+      val recfn = (m: Long) => (t: Term) => step(N.rep(m))(t)
+      val dfn = (n: Long) => inducFn(init, recfn, n)
       resultrep(dfn)
     })))
   }
@@ -92,11 +89,11 @@ object IntTypes {
   def induction[U <: Term with Subs[U]](
       us: Func[Term, Typ[U]]) /*(implicit suu: ScalaUniv[U])*/ = {
     val stepfmlyrep = (n -->: Type)
-    val stepfmly    = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k + 1)))
-    val steprep     = n ~~>: stepfmly
-    val stpfm       = (k: Long) => us(n(k)) -->: us(n(k + 1))
-    val steprp      = n ~~>: stpfm
-    val rep         = us(n(0)) -->: steprp -->: (n ~~>: us)
+    val stepfmly = stepfmlyrep((k: Long) => us(n(k)) ->: us(n(k + 1)))
+    val steprep = n ~~>: stepfmly
+    val stpfm = (k: Long) => us(n(k)) -->: us(n(k + 1))
+    val steprp = n ~~>: stpfm
+    val rep = us(n(0)) -->: steprp -->: (n ~~>: us)
     rep(induccurry)
   }
 

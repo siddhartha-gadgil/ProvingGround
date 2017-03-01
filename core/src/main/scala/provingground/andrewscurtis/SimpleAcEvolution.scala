@@ -31,10 +31,10 @@ object SimpleAcEvolution {
     def pair = (fdM, fdV)
 
     def pickle = {
-      val pmfM = (for (Weighted(m, p) <- fdM.pmf)
-        yield PickledWeighted(write(m), p)).toVector
-      val pmfV = (for (Weighted(v, p) <- fdV.pmf)
-        yield (PickledWeighted(write(v), p))).toVector
+      val pmfM = (for (Weighted(m, p) <- fdM.pmf) yield
+        PickledWeighted(write(m), p)).toVector
+      val pmfV = (for (Weighted(v, p) <- fdV.pmf) yield
+        (PickledWeighted(write(v), p))).toVector
       PickledState(rank, pmfM, pmfV)
     }
   }
@@ -49,8 +49,8 @@ object SimpleAcEvolution {
       }
 
       val fdV = {
-        val pmf = for (PickledWeighted(x, p) <- pmfV)
-          yield Weighted(read[Moves](x), p)
+        val pmf = for (PickledWeighted(x, p) <- pmfV) yield
+          Weighted(read[Moves](x), p)
         FiniteDistribution(pmf)
       }
 

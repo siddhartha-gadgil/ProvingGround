@@ -1,11 +1,7 @@
 package provingground
 import provingground.HoTT._
 import ScalaRep._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 //import provingground.ScalaUniverses._
 
 object ListType {
@@ -24,21 +20,21 @@ object ListType {
 
     def unapply(u: Term) = u match {
       case ListTerm(l, `elemTyp`) => Some(l.asInstanceOf[List[U]])
-      case _                      => None
+      case _ => None
     }
 
     def subs(x: Term, y: Term) = ListRep(elemTyp.subs(x, y))
   }
 
   def foldFunction[U <: Term with Subs[U], V <: Term with Subs[V]](
-      u: Typ[U],
-      v: Typ[V]) = {
+      u: Typ[U], v: Typ[V]) = {
     val rep = ListRep(u) -->: v -->: (u -->: v -->: v) -->: v
     val fld = (l: List[U]) =>
       (init: V) =>
-        (op: U => V => V) => {
-          def cop(u: U, v: V) = op(u)(v)
-          (l :\ init)(cop)
+        (op: U => V => V) =>
+          {
+            def cop(u: U, v: V) = op(u)(v)
+            (l :\ init)(cop)
     }
     rep(fld)
   }

@@ -22,12 +22,12 @@ object LearningSystem {
       def fwd(inp: I, pq: (P, Q)) = that(this(inp, pq._1), pq._2)
 
       def bck(inp: I, pq: (P, Q))(x: X) = {
-        val p         = pq._1
-        val q         = pq._2
+        val p = pq._1
+        val q = pq._2
         val midval: O = this(inp, p)
-        val thatdiff  = that.grad((midval, q))(x)
-        val odiff     = thatdiff._1
-        val thisdiff  = grad((inp, p))(odiff)
+        val thatdiff = that.grad((midval, q))(x)
+        val odiff = thatdiff._1
+        val thisdiff = grad((inp, p))(odiff)
         (thisdiff._1, (thisdiff._2, thatdiff._2))
       }
 
@@ -37,22 +37,20 @@ object LearningSystem {
 
   object LearningSystem {
     def aggregate[L, I, P, O](
-        edge: LearningSystem[I, P, O],
-        base: Traversable[L])(implicit zero: O, ls: LinearStructure[O]) = {
+        edge: LearningSystem[I, P, O], base: Traversable[L])(
+        implicit zero: O, ls: LinearStructure[O]) = {
       def fwd(inps: ArrayMap[L, I], params: ArrayMap[L, P]) = {
         val terms = for (k <- inps.coords.keys; in <- inps.get(k);
-                         p <- params.get(k)) yield edge(in, p)
+        p <- params.get(k)) yield edge(in, p)
         terms.foldLeft(zero)(ls.sum(_, _))
       }
 
       def bck(inps: ArrayMap[L, I], params: ArrayMap[L, P])(o: O) = {
         val inpmap = (for (k <- inps.coords.keys; in <- inps.get(k);
-                           p <- params.get(k))
-          yield (k -> edge.grad(in, p)(o)._1)).toMap
+        p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._1)).toMap
 
         val parammap = (for (k <- inps.coords.keys; in <- inps.get(k);
-                             p <- params.get(k))
-          yield (k -> edge.grad(in, p)(o)._2)).toMap
+        p <- params.get(k)) yield (k -> edge.grad(in, p)(o)._2)).toMap
 
         (ArrayMap(inpmap, inps.supp), ArrayMap(parammap, params.supp))
       }
@@ -88,13 +86,15 @@ object LearningSystem {
         ArrayMap((exits map ((k) => (k -> comps(k)(inp, param(k))))).toMap)
 
       def bck(inp: I, param: ArrayMap[E, P])(out: ArrayMap[E, O]) = {
-        val parammap = (for (e <- exits)
-          yield (e -> comps(e).grad(inp, param(e))(out(e))._2)).toMap
+        val parammap = (for (e <- exits) yield
+        (e -> comps(e).grad(inp, param(e))(out(e))._2)).toMap
 
-        val inpterms = for (e <- exits)
-          yield comps(e).grad(inp, param(e))(out(e))._1
+        val inpterms = for (e <- exits) yield
+          comps(e)
+            .grad(inp, param(e))(out(e))
+            ._1
 
-        ((zi /: inpterms)(ls.sum(_, _)), ArrayMap(parammap))
+          ((zi /: inpterms)(ls.sum(_, _)), ArrayMap(parammap))
       }
 
       LearningSystem[I, ArrayMap[E, P], ArrayMap[E, O]](fwd, bck)

@@ -10,7 +10,7 @@ class AtomicMoveSpec extends FlatSpec {
   val id: AtomicMove = Id
 
   "AtomicMove" should "act on Moves" in {
-    val moves  = Moves(List(Inv(1), LftMult(1, 0)))
+    val moves = Moves(List(Inv(1), LftMult(1, 0)))
     val result = Some(Moves(List(Inv(0), Inv(1), LftMult(1, 0))))
     assert(Inv(0)(moves) === result)
   }
@@ -29,19 +29,19 @@ class AtomicMoveSpec extends FlatSpec {
   }*/
 
   it should "compose with other AtomicMove" in {
-    val that   = Inv(1)
+    val that = Inv(1)
     val result = Moves(List(Inv(0), Inv(1)))
     assert((Inv(0) compose that) === result)
   }
 
   it should "convert to a function of the type Presentation => Option[Presentation]" in {
-    val pres    = Presentation(2, "a", "b")
+    val pres = Presentation(2, "a", "b")
     val result1 = Some(Presentation(2, "a!", "b"))
     val result2 = Some(Presentation(2, "a", "b!"))
     val result3 = None
-    val func1   = Inv(0).toFunc
-    val func2   = Inv(1).toFunc
-    val func3   = Inv(2).toFunc
+    val func1 = Inv(0).toFunc
+    val func2 = Inv(1).toFunc
+    val func3 = Inv(2).toFunc
     assert(func1(pres) === result1)
     assert(func2(pres) === result2)
     assert(func3(pres) === result3)
@@ -49,7 +49,7 @@ class AtomicMoveSpec extends FlatSpec {
 
   "Id" should "act on a Presentation to give back the same" in {
 
-    val pres   = Presentation(3, "a", "aabaa!", "caba!a!b!")
+    val pres = Presentation(3, "a", "aabaa!", "caba!a!b!")
     val OpPres = Some(pres)
     val result = Some(pres)
     assert(id(pres) === result)
@@ -57,14 +57,14 @@ class AtomicMoveSpec extends FlatSpec {
   }
 
   it should "act on Moves to return the same Moves" in {
-    val moves  = Moves(List(Inv(0), RtMult(0, 1), LftMult(1, 0)))
+    val moves = Moves(List(Inv(0), RtMult(0, 1), LftMult(1, 0)))
     val result = Some(moves)
     assert(id(moves) === result)
   }
 
   "Inv" should "act on a Presentation and invert a relator" in {
-    val pres    = Presentation(2, "a", "aba!b!", "bab!a")
-    val OpPres  = Some(pres)
+    val pres = Presentation(2, "a", "aba!b!", "bab!a")
+    val OpPres = Some(pres)
     val result1 = Some(Presentation(2, "a", "aba!b!", "a!ba!b!"))
     val result2 = None
     assert(Inv(2)(pres) === result1)
@@ -74,8 +74,8 @@ class AtomicMoveSpec extends FlatSpec {
   }
 
   "RtMult" should "right multiply two relators of a Presentation" in {
-    val pres    = Presentation(2, "a", "b")
-    val OpPres  = Some(pres)
+    val pres = Presentation(2, "a", "b")
+    val OpPres = Some(pres)
     val result1 = Some(Presentation(2, "ab", "b"))
     val result2 = Some(Presentation(2, "a", "ba"))
     val result3 = None
@@ -90,8 +90,8 @@ class AtomicMoveSpec extends FlatSpec {
   }
 
   "LftMult" should "left multiply two relators of a Presentation" in {
-    val pres    = Presentation(2, "a", "b")
-    val OpPres  = Some(pres)
+    val pres = Presentation(2, "a", "b")
+    val OpPres = Some(pres)
     val result1 = Some(Presentation(2, "ba", "b"))
     val result2 = Some(Presentation(2, "a", "ab"))
     val result3 = None
@@ -106,8 +106,8 @@ class AtomicMoveSpec extends FlatSpec {
   }
 
   "Conj" should "conjugate relators by generators" in {
-    val pres    = Presentation(2, "a", "b")
-    val OpPres  = Some(pres)
+    val pres = Presentation(2, "a", "b")
+    val OpPres = Some(pres)
     val result1 = Some(Presentation(2, "b!ab", "b"))
     val result2 = Some(Presentation(2, "bab!", "b"))
     val result3 = None
@@ -125,15 +125,15 @@ class AtomicMoveSpec extends FlatSpec {
 class AtomicMoveObjectSpec extends FlatSpec {
   val id: AtomicMove = Id
   "AtomicMove companion object" should "read a string and convert it to an AtomicMove" in {
-    val inp1    = "id"
-    val inp2    = "2!"
-    val inp3    = "12!"
-    val inp4    = "12!!"
-    val inp5    = "12->3"
-    val inp6    = "12->3a"
-    val inp7    = "12<-3"
-    val inp8    = "6^a"
-    val inp9    = "6^a!"
+    val inp1 = "id"
+    val inp2 = "2!"
+    val inp3 = "12!"
+    val inp4 = "12!!"
+    val inp5 = "12->3"
+    val inp6 = "12->3a"
+    val inp7 = "12<-3"
+    val inp8 = "6^a"
+    val inp9 = "6^a!"
     val result1 = Some(id)
     val result2 = Some(Inv(2))
     val result3 = Some(Inv(12))
@@ -168,12 +168,12 @@ class AtomicMoveObjectSpec extends FlatSpec {
 
 class MovesSpec extends FlatSpec {
   "Moves" should "reduce to functions of type Presentation => Option[Presentation]" in {
-    val moves   = Moves(List(Inv(0), Inv(1), Inv(2)))
-    val pres1   = Presentation(2, "a", "b")
-    val pres2   = Presentation(3, "a", "b", "c")
+    val moves = Moves(List(Inv(0), Inv(1), Inv(2)))
+    val pres1 = Presentation(2, "a", "b")
+    val pres2 = Presentation(3, "a", "b", "c")
     val result1 = None
     val result2 = Some(Presentation(3, "a!", "b!", "c!"))
-    val fn      = moves.reduce
+    val fn = moves.reduce
     assert(fn(pres1) === result1)
     assert(fn(pres2) === result2)
   }
@@ -186,11 +186,11 @@ class MovesSpec extends FlatSpec {
   }
 
   it should "compose with functions of the type Presentation => Option[Presentation]" in {
-    val fn      = Inv(0).toFunc
-    val moves   = Moves(List(Inv(1), Inv(2)))
-    val new_fn  = moves(fn)
-    val pres1   = Presentation(3, "a", "b", "c")
-    val pres2   = Presentation(2, "a", "b")
+    val fn = Inv(0).toFunc
+    val moves = Moves(List(Inv(1), Inv(2)))
+    val new_fn = moves(fn)
+    val pres1 = Presentation(3, "a", "b", "c")
+    val pres2 = Presentation(2, "a", "b")
     val result1 = Some(Presentation(3, "a!", "b!", "c!"))
     val result2 = None
     assert(new_fn(pres1) === result1)
@@ -198,20 +198,20 @@ class MovesSpec extends FlatSpec {
   }
 
   it should "act on AtomicMove" in {
-    val moves  = Moves(List(Inv(0)))
-    val am     = Inv(1)
+    val moves = Moves(List(Inv(0)))
+    val am = Inv(1)
     val result = Moves(List(Inv(0), Inv(1)))
     assert(moves(am) === result)
   }
 
   it should "have a well defined length" in {
-    val moves  = Moves(List(Inv(0), Inv(1)))
+    val moves = Moves(List(Inv(0), Inv(1)))
     val result = 2
     assert(moves.length === result)
   }
 
   it should "act on a trivial Presentation" in {
-    val moves   = Moves(List(Inv(0), Inv(1)))
+    val moves = Moves(List(Inv(0), Inv(1)))
     val result1 = Some(Presentation(2, "a!", "b!"))
     val result2 = Some(Presentation(3, "a!", "b!", "c"))
     assert(moves.actOnTriv(2) === result1)
@@ -228,23 +228,23 @@ class MovesObjectSpec extends FlatSpec {
   }
 
   "liftOption" should "take a function of type A => Option[A] and return Option[A] => Option[A]" in {
-    val f        = ((x: Int) => Some(x * x + 2 * x + 1))
+    val f = ((x: Int) => Some(x * x + 2 * x + 1))
     val lifted_f = liftOption(f)
-    val input1   = Some(2)
-    val input2   = Some(-1)
-    val input3   = None
-    val result1  = Some(9)
-    val result2  = Some(0)
-    val result3  = None
+    val input1 = Some(2)
+    val input2 = Some(-1)
+    val input3 = None
+    val result1 = Some(9)
+    val result2 = Some(0)
+    val result3 = None
     assert(lifted_f(input1) === result1)
     assert(lifted_f(input2) === result2)
     assert(lifted_f(input3) === result3)
   }
 
   "liftResult" should "take a function of type A => A and return A => Option[A]" in {
-    val f      = ((x: Int) => x * 2)
-    val g      = liftResult(f)
-    val input  = 2
+    val f = ((x: Int) => x * 2)
+    val g = liftResult(f)
+    val input = 2
     val result = Some(4)
     assert(g(input) === result)
   }

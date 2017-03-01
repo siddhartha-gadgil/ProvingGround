@@ -18,59 +18,61 @@ object PennTrees {
     }
   }
 
-  object Twig{
-    def unapply(t: Tree): Option[String] = t match{
+  object Twig {
+    def unapply(t: Tree): Option[String] = t match {
       case Leaf(w) => Some(w.toLowerCase)
       case Node(_, Vector(t)) => unapply(t)
       case _ => None
     }
   }
 
-  object LeftBinTree{
+  object LeftBinTree {
     def unapply(t: Tree): Option[(Tree, Tree)] = t match {
       case Node(_, Vector(x, y)) => Some((x, y))
-      case parent @ Node(tag, x +: ys) if ys.size > 0 => Some((x, mkTree(ys, tag, parent)))
+      case parent @ Node(tag, x +: ys) if ys.size > 0 =>
+        Some((x, mkTree(ys, tag, parent)))
       case _ => None
     }
   }
 
-  object RightBinTree{
+  object RightBinTree {
     def unapply(t: Tree): Option[(Tree, Tree)] = t match {
       case Node(_, Vector(x, y)) => Some((x, y))
-      case parent @ Node(tag,  ys :+ x) if ys.size > 0 => Some((x, mkTree(ys, tag, parent)))
+      case parent @ Node(tag, ys :+ x) if ys.size > 0 =>
+        Some((x, mkTree(ys, tag, parent)))
       case _ => None
     }
   }
 
-  object WordDash{
+  object WordDash {
     def unapply(t: Tree): Option[(String, Tree)] = t match {
       case LeftBinTree(Twig(w), y) => Some((w, y))
       case _ => None
     }
   }
 
-  object WordDashDash{
+  object WordDashDash {
     def unapply(t: Tree): Option[(String, Tree, Tree)] = t match {
       case LeftBinTree(WordDash(w, y), z) => Some((w, y, z))
       case _ => None
     }
   }
 
-  object DashWord{
+  object DashWord {
     def unapply(t: Tree): Option[(Tree, String)] = t match {
       case RightBinTree(y, Twig(w)) => Some((y, w))
       case _ => None
     }
   }
 
-  object DashDashWord{
+  object DashDashWord {
     def unapply(t: Tree): Option[(Tree, Tree, String)] = t match {
       case RightBinTree(x, DashWord(y, w)) => Some((x, y, w))
       case _ => None
     }
   }
 
-  object DashWordDash{
+  object DashWordDash {
     def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
       case LeftBinTree(DashWord(y, w), z) => Some((y, w, z))
       case RightBinTree(y, WordDash(w, z)) => Some((y, w, z))
@@ -79,7 +81,7 @@ object PennTrees {
   }
 
   def model(t: Tree): TreeModel = t match {
-    case Leaf(s)           => TreeModel.Leaf(s)
+    case Leaf(s) => TreeModel.Leaf(s)
     case Node(s, children) => TreeModel.Node(s, children map model)
   }
 
@@ -100,12 +102,10 @@ object PennTrees {
       .treeFactory()
       .newTreeNode(tag, children.asJava: java.util.List[Tree])
 
-
   def sentence(children: Vector[Tree]) =
     children.head
       .treeFactory()
       .newTreeNode("S", children.asJava: java.util.List[Tree])
-
 }
 
 sealed trait TreeModel
@@ -119,5 +119,4 @@ object TreeModel {
       extends TreeModel {
     // override def toString = s"""Node("$value", ${children})"""
   }
-
 }

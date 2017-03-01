@@ -15,7 +15,7 @@ object Circ {
   /**
     * having apply, i.e., f(g), and the method andThen correspond to using circ method.
     */
-  implicit class applyCirc[A: Circ](x: A) {
+  implicit class applyCirc[A : Circ](x: A) {
     def apply(y: A) = implicitly[Circ[A]].circ(x, y)
 
     def circ(y: A) = apply(y)

@@ -8,7 +8,7 @@ object ZFC {
 
   trait AbsSet extends Const {
     def contains(that: AbsSet): Formula = BinRel("in")(this, that)
-    def <::(that: AbsSet): Formula      = BinRel("in")(that, this)
+    def <::(that: AbsSet): Formula = BinRel("in")(that, this)
   }
 
   val belongs = BinRel("in")

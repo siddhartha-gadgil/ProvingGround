@@ -31,13 +31,11 @@ object Sampler {
   }
 
   def fromPMF[A](pmf: Vector[Weighted[A]], size: Int): Map[A, Int] =
-    if ((pmf map (_.weight)).sum >0)
-    {
-    val vec = pmf map (_.elem)
-    val ps = pmf map (_.weight)
-    getMultinomial(vec, ps, size)
-  }
-  else Map()
+    if ((pmf map (_.weight)).sum > 0) {
+      val vec = pmf map (_.elem)
+      val ps = pmf map (_.weight)
+      getMultinomial(vec, ps, size)
+    } else Map()
 
   def getMultinomial[A](xs: Vector[A], ps: Vector[Double], size: Int) = {
     val mult = Multinomial(DenseVector(ps.toArray))
@@ -54,7 +52,7 @@ object Sampler {
   }
 
   def linear[A](m: Map[A, Int]) =
-    m.toVector flatMap{
+    m.toVector flatMap {
       case (a, n) => Vector.fill(n)(a)
     }
 
@@ -102,16 +100,13 @@ object Sampler {
         case fp: FiberProduct[u, q, v] =>
           import fp._
           val baseSamp = sample(base, n)
-          val groups = baseSamp groupBy { case (x, n) => quotient(x)}
-          val sampVec =
-            groups.keys.toVector.flatMap {
-              (a) =>
-                val size = groups(a).values.sum
-                val fiberSamp = sample(fibers(a), size)
-                rand.shuffle(linear(groups(a))).zip(linear(fiberSamp))
-              }
+          val groups = baseSamp groupBy { case (x, n) => quotient(x) }
+          val sampVec = groups.keys.toVector.flatMap { (a) =>
+            val size = groups(a).values.sum
+            val fiberSamp = sample(fibers(a), size)
+            rand.shuffle(linear(groups(a))).zip(linear(fiberSamp))
+          }
           grouped(sampVec)
-
 
         case Conditioned(base, p) =>
           val firstSamp = sample(base, n) filter { case (a, n) => p(a) }

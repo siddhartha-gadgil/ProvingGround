@@ -9,12 +9,13 @@ import LinearStructure._
 
 object FiniteDistributionLearnerExtras {
   @tailrec
-  def goalFlow[A: LinearStructure, R](init: A,
-                                      shift: A => A,
-                                      epsilon: Double,
-                                      n: Int,
-                                      result: A => Option[R]): Either[A, R] = {
-    lazy val sum    = vsum[A]
+  def goalFlow[A : LinearStructure, R](
+      init: A,
+      shift: A => A,
+      epsilon: Double,
+      n: Int,
+      result: A => Option[R]): Either[A, R] = {
+    lazy val sum = vsum[A]
     lazy val ScProd = vprod[A]
     result(init) match {
       case Some(r) => Right(r)
@@ -32,13 +33,13 @@ object FiniteDistributionLearnerExtras {
   case class ResultState[A, R](state: A, results: Set[R])
 
   @tailrec
-  def resultsFlow[A: LinearStructure, R](
+  def resultsFlow[A : LinearStructure, R](
       init: ResultState[A, R],
       shift: A => A,
       epsilon: Double,
       n: Int,
       results: A => Set[R]): ResultState[A, R] = {
-    lazy val sum    = vsum[A]
+    lazy val sum = vsum[A]
     lazy val ScProd = vprod[A]
     if (n < 1) init
     else {
@@ -51,7 +52,7 @@ object FiniteDistributionLearnerExtras {
     }
   }
 
-  def dynsum[M: LinearStructure, V: LinearStructure] =
+  def dynsum[M : LinearStructure, V : LinearStructure] =
     vsum[DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                          FiniteDistribution[V]]]
 
@@ -82,8 +83,10 @@ object FiniteDistributionLearnerExtras {
     * declare the gradient to be the identity - to be used for approximations, pruning, sampling.
     */
   def formalSmooth[A](f: A => A) =
-    DiffbleFunction(f)((a: A) => { (b: A) =>
-      b
+    DiffbleFunction(f)(
+        (a: A) =>
+          { (b: A) =>
+        b
     })
 
   // Helpers for operations on pairs of distributions.
@@ -94,8 +97,7 @@ object FiniteDistributionLearnerExtras {
     (fst._1 ++ scnd._1, fst._2 ++ scnd._2)
 
   private def dstmult[M, V](
-      fst: (FiniteDistribution[M], FiniteDistribution[V]),
-      scnd: Double) =
+      fst: (FiniteDistribution[M], FiniteDistribution[V]), scnd: Double) =
     (fst._1 * scnd, fst._2 * scnd)
 
   private def dstdot[M, V](
@@ -110,9 +112,8 @@ object FiniteDistributionLearnerExtras {
 
   // Building dynamics (FiniteDistribution[M], FiniteDistribution[V]) => FiniteDistribution[V]
 
-  private type DynFn[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    FiniteDistribution[V]]
+  private type DynFn[M, V] = DiffbleFunction[
+      (FiniteDistribution[M], FiniteDistribution[V]), FiniteDistribution[V]]
 
   /**
     * smooth function corresponding to adding the V distributions for two given smooth functions.
@@ -123,8 +124,9 @@ object FiniteDistributionLearnerExtras {
       fst.func(st) ++ scnd.func(st)
 
     val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: FiniteDistribution[V]) => {
-        dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+      (w: FiniteDistribution[V]) =>
+        {
+          dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
     DiffbleFunction(func)(grad)
@@ -139,9 +141,10 @@ object FiniteDistributionLearnerExtras {
     val func = (cv: (Double, FiniteDistribution[V])) => fn.func(cv._2) * cv._1
 
     val grad = (cv: (Double, FiniteDistribution[V])) =>
-      (w: FiniteDistribution[V]) => {
-        val x = fn.grad(cv._2)(w)
-        (x dot cv._2, x * cv._1)
+      (w: FiniteDistribution[V]) =>
+        {
+          val x = fn.grad(cv._2)(w)
+          (x dot cv._2, x * cv._1)
     }
 
     DiffbleFunction(func)(grad)
@@ -158,21 +161,24 @@ object FiniteDistributionLearnerExtras {
   /**
     * binds a scalar (multiplication) constant to a particular parameter.
     */
-  def bindFn[M, V](m: M,
-                   fn: DiffbleFunction[(Double, FiniteDistribution[V]),
-                                       FiniteDistribution[V]]) = {
-    val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) => {
-      val c = csv._1(m)
-      val v = csv._2
-      fn.func((c, v))
+  def bindFn[M, V](
+      m: M,
+      fn: DiffbleFunction[
+          (Double, FiniteDistribution[V]), FiniteDistribution[V]]) = {
+    val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
+      {
+        val c = csv._1(m)
+        val v = csv._2
+        fn.func((c, v))
     }
 
     val grad = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: FiniteDistribution[V]) => {
-        val c     = csv._1(m)
-        val v     = csv._2
-        val cterm = fn.grad((c, v))(w)
-        atM(cterm, m)
+      (w: FiniteDistribution[V]) =>
+        {
+          val c = csv._1(m)
+          val v = csv._2
+          val cterm = fn.grad((c, v))(w)
+          atM(cterm, m)
     }
 
     DiffbleFunction(func)(grad)
@@ -205,44 +211,48 @@ object FiniteDistributionLearnerExtras {
     */
   def linComb[M, V](
       dyns: Map[
-        M,
-        DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]]) = {
+          M,
+          DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]]) = {
     val syslst = for ((m, f) <- dyns) yield wtdDyn(m, f)
     (zeroMVV[M, V] /: syslst)((a, b) => sumFn(a, b))
   }
 
   // Building dynamics on (FiniteDistribution[M], FiniteDistribution[V])
 
-  private type DS[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    (FiniteDistribution[M], FiniteDistribution[V])]
+  private type DS[M, V] = DiffbleFunction[(FiniteDistribution[M],
+                                          FiniteDistribution[V]),
+                                          (FiniteDistribution[M],
+                                          FiniteDistribution[V])]
 
   def sumDF[M, V](fst: => DS[M, V], scnd: => DS[M, V]) = {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       dstsum(fst.func(st), scnd.func(st))
 
     val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
-        dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+      (w: (FiniteDistribution[M], FiniteDistribution[V])) =>
+        {
+          dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
     DiffbleFunction(func)(grad)
   }
 
   def foldDF[M, V](base: DS[M, V], comps: Map[V, DS[M, V]]) = {
-    val func = (arg: (FiniteDistribution[M], FiniteDistribution[V])) => {
-      val l = for ((v, f) <- comps) yield dstmult(f.func(arg), arg._2(v))
-      (base.func(arg) /: l)(dstsum)
+    val func = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
+      {
+        val l = for ((v, f) <- comps) yield dstmult(f.func(arg), arg._2(v))
+        (base.func(arg) /: l)(dstsum)
     }
 
     val grad = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (vect: (FiniteDistribution[M], FiniteDistribution[V])) => {
-        val l = for ((v, f) <- comps) yield {
-          val prob = dstdot(f.grad(arg)(vect), arg)
-          val term = dstmult(f.grad(arg)(vect), arg._2(v))
-          (term._1, term._2 + (v, prob))
-        }
-        (base.grad(arg)(vect) /: l)(dstsum)
+      (vect: (FiniteDistribution[M], FiniteDistribution[V])) =>
+        {
+          val l = for ((v, f) <- comps) yield {
+            val prob = dstdot(f.grad(arg)(vect), arg)
+            val term = dstmult(f.grad(arg)(vect), arg._2(v))
+            (term._1, term._2 + (v, prob))
+          }
+          (base.grad(arg)(vect) /: l)(dstsum)
     }
 
     DiffbleFunction(func)(grad)
@@ -252,8 +262,8 @@ object FiniteDistributionLearnerExtras {
     * prune the distribution on vertices without changing the one on M.
     */
   def pruneV[M, V](t: Double) =
-    formalSmooth((mv: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (mv._1, mv._2 normalized (t)))
+    formalSmooth((mv: (FiniteDistribution[M],
+        FiniteDistribution[V])) => (mv._1, mv._2 normalized (t)))
 
   /**
     * prune a distribution
@@ -265,24 +275,27 @@ object FiniteDistributionLearnerExtras {
     * Linear combination of dynamical systems with coefficients in V
     */
   def linComb[M, V](dyns: V => Option[DS[M, V]]) = {
-    val func = (arg: (FiniteDistribution[M], FiniteDistribution[V])) => {
-      val vdst = arg._2
-      val vs   = vdst.support
-      val terms = for (v <- vs; f <- dyns(v))
-        yield dstmult(f.func(arg), vdst(v))
-      (dstzero[M, V] /: terms)(dstsum)
+    val func = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
+      {
+        val vdst = arg._2
+        val vs = vdst.support
+        val terms = for (v <- vs; f <- dyns(v)) yield
+          dstmult(f.func(arg), vdst(v))
+        (dstzero[M, V] /: terms)(dstsum)
     }
 
     val grad = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
-        val vdst = arg._2
-        val vs   = vdst.support
-        val vectterms = for (v <- vs; f <- dyns(v))
-          yield dstmult(f.grad(arg)(w), vdst(v))
-        val scatoms = for (v <- vs; f <- dyns(v))
-          yield Weighted(v, dstdot(f.grad(arg)(w), arg))
-        val scdst = (FiniteDistribution.empty[M], FiniteDistribution(scatoms))
-        dstsum(scdst, (dstzero[M, V] /: vectterms)(dstsum))
+      (w: (FiniteDistribution[M], FiniteDistribution[V])) =>
+        {
+          val vdst = arg._2
+          val vs = vdst.support
+          val vectterms = for (v <- vs; f <- dyns(v)) yield
+            dstmult(f.grad(arg)(w), vdst(v))
+          val scatoms = for (v <- vs; f <- dyns(v)) yield
+            Weighted(v, dstdot(f.grad(arg)(w), arg))
+          val scdst =
+            (FiniteDistribution.empty[M], FiniteDistribution(scatoms))
+          dstsum(scdst, (dstzero[M, V] /: vectterms)(dstsum))
     }
 
     DiffbleFunction(func)(grad)
@@ -295,19 +308,21 @@ object FiniteDistributionLearnerExtras {
     * (p_M, p_V) -> (p_M(m) * f(p_M, p_V))
     */
   def isleMultFn[M, V](fn: DynFn[M, V], m: M) = {
-    val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) => {
-      val c = csv._1(m)
-      val v = csv._2
-      fn.func((csv._1, v)) * c
+    val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
+      {
+        val c = csv._1(m)
+        val v = csv._2
+        fn.func((csv._1, v)) * c
     }
 
     val grad = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: FiniteDistribution[V]) => {
-        val c     = csv._1(m)
-        val v     = csv._2
-        val mv    = fn.grad((csv._1, v))(w)
-        val shift = mv._2 dot v
-        (mv._1 + (m, shift), mv._2)
+      (w: FiniteDistribution[V]) =>
+        {
+          val c = csv._1(m)
+          val v = csv._2
+          val mv = fn.grad((csv._1, v))(w)
+          val shift = mv._2 dot v
+          (mv._1 + (m, shift), mv._2)
     }
 
     DiffbleFunction(func)(grad)
@@ -318,17 +333,19 @@ object FiniteDistributionLearnerExtras {
     * To actually create an isle, we compose this with the corresponding mixin.
     */
   def simpleIsleInitFn[M, V](v: V, t: M) = {
-    val func = (ds: (FiniteDistribution[M], FiniteDistribution[V])) => {
-      val p = ds._1(t)
-      (ds._1, ds._2 * (1.0 - p) + (v, p))
+    val func = (ds: (FiniteDistribution[M], FiniteDistribution[V])) =>
+      {
+        val p = ds._1(t)
+        (ds._1, ds._2 * (1.0 - p) + (v, p))
     }
 
     val grad = (ds: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (ws: (FiniteDistribution[M], FiniteDistribution[V])) => {
-        val p     = ds._1(t)
-        val c     = ws._1(t)
-        val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
-        (ws._1 + (t, c), shift)
+      (ws: (FiniteDistribution[M], FiniteDistribution[V])) =>
+        {
+          val p = ds._1(t)
+          val c = ws._1(t)
+          val shift = (ds._2 filter ((x: V) => x != v)) * (1.0 - p)
+          (ws._1 + (t, c), shift)
     }
 
     DiffbleFunction(func)(grad)
@@ -351,10 +368,9 @@ object FiniteDistributionLearnerExtras {
       f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                          (FiniteDistribution[M], FiniteDistribution[V])],
       epsilon: Double,
-      feedback: (FiniteDistribution[M], FiniteDistribution[V]) => (FiniteDistribution[
-                                                                     M],
-                                                                   FiniteDistribution[
-                                                                     V])) = {
+      feedback: (FiniteDistribution[M],
+      FiniteDistribution[V]) => (FiniteDistribution[M],
+      FiniteDistribution[V])) = {
     (init: (FiniteDistribution[M], FiniteDistribution[V])) =>
       val fb = feedback(f.func(init)._1, f.func(init)._2)
       (init._1 ++ (fb._1 * epsilon), init._2 ++ (fb._2 * epsilon))
@@ -398,21 +414,21 @@ object FiniteDistributionLearnerExtras {
     def withIsle(v: V,
                  t: M,
                  m: M,
-                 export: => DiffbleFunction[FiniteDistribution[V],
-                                            FiniteDistribution[V]],
+                 export: => DiffbleFunction[
+                     FiniteDistribution[V], FiniteDistribution[V]],
                  d: Int = depth,
                  isleDepth: Int => Int): DynFn[M, V] = {
       def iternext =
         iterateDiffbleDepth(
-          extendM(withIsle(v, t, m, export, d + 1, isleDepth)),
-          steps,
-          isleDepth(d))
+            extendM(withIsle(v, t, m, export, d + 1, isleDepth)),
+            steps,
+            isleDepth(d))
       def isle =
         spawnSimpleIsle[M, V](
-          v: V,
-          t: M,
-          m: M,
-          iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
+            v: V,
+            t: M,
+            m: M,
+            iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
       sumFn(dyn, isle)
     }
 
@@ -427,24 +443,24 @@ object FiniteDistributionLearnerExtras {
     def mkIsle(v: V,
                t: M,
                m: M,
-               export: => DiffbleFunction[FiniteDistribution[V],
-                                          FiniteDistribution[V]],
+               export: => DiffbleFunction[
+                   FiniteDistribution[V], FiniteDistribution[V]],
                d: Int = depth,
                isleDepth: Int => Int): DynFn[M, V] = {
       def iternext =
         iterateDiffbleDepth(iter(isleDepth(d)), steps, isleDepth(d))
       spawnSimpleIsle[M, V](
-        v: V,
-        t: M,
-        m: M,
-        iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
+          v: V,
+          t: M,
+          m: M,
+          iternext andthen projectV[M, FiniteDistribution[V]]) andthen export
     }
 
     def addIsle(v: V,
                 t: M,
                 m: M,
-                export: => DiffbleFunction[FiniteDistribution[V],
-                                           FiniteDistribution[V]],
+                export: => DiffbleFunction[
+                    FiniteDistribution[V], FiniteDistribution[V]],
                 isleDepth: Int => Int = (n) => n + 1) =
       new IterDynSys(withIsle(v: V, t: M, m: M, export, depth, isleDepth),
                      steps,
@@ -453,17 +469,19 @@ object FiniteDistributionLearnerExtras {
     def next = extendM(dyn)
   }
 
-  type DynF[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    (FiniteDistribution[M], FiniteDistribution[V])]
+  type DynF[M, V] = DiffbleFunction[(FiniteDistribution[M],
+                                    FiniteDistribution[V]),
+                                    (FiniteDistribution[M],
+                                    FiniteDistribution[V])]
 
   def sumF[M, V](fst: => DynF[M, V], scnd: => DynF[M, V]) = {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       dstsum(fst.func(st), scnd.func(st))
 
     val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
-      (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
-        dstsum(fst.grad(st)(w), scnd.grad(st)(w))
+      (w: (FiniteDistribution[M], FiniteDistribution[V])) =>
+        {
+          dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
     DiffbleFunction(func)(grad)

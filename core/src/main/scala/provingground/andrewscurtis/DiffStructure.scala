@@ -42,7 +42,7 @@ object DiffStructure {
 
   def genProjectionMap(rank: Int, iterations: Int = 5)(lst: List[M]) = {
     iterateDiff(lst, iterations) andthen projectV andthen genPresentationMoveFn(
-      rank)
+        rank)
   }
 
   def getFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(
@@ -52,9 +52,8 @@ object DiffStructure {
   }
 
   def conjugateByFeedback(
-      presCntn: Double,
-      wrdCntn: Double,
-      scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[M]) = {
+      presCntn: Double, wrdCntn: Double, scale: Double = 1)(
+      rank: Int, iterations: Int = 5)(lst: List[M]) = {
     val projectionMap = genProjectionMap(rank, iterations)(lst)
     projectionMap.^:(getFeedback(presCntn, wrdCntn, scale)(_: FD[P]))
   }

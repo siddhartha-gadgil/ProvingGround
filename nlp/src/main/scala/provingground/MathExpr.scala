@@ -136,7 +136,6 @@ object MathExpr {
     case object In extends Preposition
 
     case object Modulo extends Preposition
-
   }
 
   case class Prep(word: String) extends Preposition
@@ -162,14 +161,14 @@ object MathExpr {
     case object No extends Determiner
 
     def apply(s: String) = s.toLowerCase match {
-      case "a"     => A
-      case "an"    => A
-      case "the"   => The
-      case "some"  => Some
+      case "a" => A
+      case "an" => A
+      case "the" => The
+      case "some" => Some
       case "every" => Every
-      case "all"   => Every
-      case "no"    => No
-      case "any"   => Every
+      case "all" => Every
+      case "no" => No
+      case "any" => Every
     }
   }
 
@@ -325,7 +324,6 @@ object MathExpr {
     */
   case class ThatIsSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
-
 }
 
 // import MathExpr._
@@ -348,13 +346,14 @@ object FormalExpr {
   // implicit val travSL = traversePair[S, Vector]
 
   def translator =
-    Translator.Empty[Tree, MathExpr] ||
-      Pattern.partial[Tree, S] { case PennTrees.Leaf(s) => s } >>> {
-        case s => Leaf(s)
-      } ||
-      Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
-        case (s, l) => Node(s, l)
-      }
+    Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
+      case PennTrees.Leaf(s) => s
+    } >>> {
+      case s => Leaf(s)
+    } ||
+    Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
+      case (s, l) => Node(s, l)
+    }
 }
 
 /**
@@ -371,8 +370,8 @@ case class Raw(model: TreeModel) extends MathText with MathExpr
 // with QuantTerm
 
 object Raw {
-  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) =>
-    Some(Raw(PennTrees.model(t))))
+  val translator = Translator.Simple[Tree, MathExpr](
+      (t: Tree) => Some(Raw(PennTrees.model(t))))
 }
 
 sealed trait MathText

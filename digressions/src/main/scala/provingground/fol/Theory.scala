@@ -23,12 +23,11 @@ object Theory {
   case class Context(boundedVars: Set[Var] = Set.empty,
                      assumptions: Set[Formula] = Set.empty) {
     def subs(xt: Var => Term) = {
-      val newVars = for (x <- boundedVars)
-        yield
-          (xt(x) match {
-            case y: Var => y
-            case _      => x
-          })
+      val newVars = for (x <- boundedVars) yield
+        (xt(x) match {
+          case y: Var => y
+          case _ => x
+        })
       Context(newVars, assumptions map (_.subs(xt)))
     }
 
@@ -67,13 +66,13 @@ object Theory {
   }
 
   case class Definition(given: Context, require: Formula) extends Formula {
-    override val freeVars     = require.freeVars -- given.boundedVars
+    override val freeVars = require.freeVars -- given.boundedVars
     def subs(xt: Var => Term) = new Definition(given subs xt, require subs xt)
   }
 
   case class Canonical(constr: Construction) extends Formula {
     def subs(xt: Var => Term) = Canonical(constr subs xt)
-    val freeVars              = constr.freeVars
+    val freeVars = constr.freeVars
   }
 
   /** A result */
@@ -254,15 +253,15 @@ object Theory {
 
     /** Data considered upto an Equivalence relation */
     case class QuotientData(d: Data, r: EquivRelation) extends Data {
-      val freeVars                    = d.freeVars
+      val freeVars = d.freeVars
       def subs(xt: Var => Term): Term = QuotientData(d.subsData(xt), r)
-      val axiom                       = (d.axiom) & (r.axiom)
+      val axiom = (d.axiom) & (r.axiom)
     }
 
     /** A single term as data */
     case class DataTerm(term: Term, axiom: Formula = True) extends Data {
       def subs(xt: Var => Term): Term = DataTerm(term.subs(xt))
-      val freeVars                    = term.freeVars
+      val freeVars = term.freeVars
     }
 
     /** Convert term to data */
@@ -271,8 +270,8 @@ object Theory {
     /** A list of terms as data */
     case class DataList(lt: List[Data]) extends Data {
       def subs(xt: Var => Term): Term = DataList(lt map (_.subsData(xt)))
-      val freeVars: Set[Var]          = (lt map (_.freeVars)) reduce (_ union _)
-      val axiom                       = True
+      val freeVars: Set[Var] = (lt map (_.freeVars)) reduce (_ union _)
+      val axiom = True
     }
 
     /** A list of terms as data to be viewed as folded by */
@@ -280,14 +279,14 @@ object Theory {
       def subs(xt: Var => Term): Term =
         DataFoldList(lt map (_.subsData(xt)), b)
       val freeVars: Set[Var] = (lt map (_.freeVars)) reduce (_ union _)
-      val axiom              = True
+      val axiom = True
     }
 
     /** Add a condition to the data */
     case class DataCond(data: Data, cond: Formula) extends Data {
       def subs(xt: Var => Term): Term = DataCond(subsData(xt), cond.subs(xt))
-      val freeVars                    = data.freeVars
-      val axiom                       = data.axiom & cond
+      val freeVars = data.freeVars
+      val axiom = data.axiom & cond
     }
 
     /** Constructs a DataList from several data parameters */
@@ -330,7 +329,7 @@ object Theory {
     /** A collection of axioms giving an Axiom*/
     case class Axioms(axioms: Formula*) extends Paragraph with Axiom {
       val axiomList = axioms.toList
-      val axiom     = axiomList reduce (_ & _)
+      val axiom = axiomList reduce (_ & _)
     }
 
     /** Generator for axioms from a list */
@@ -425,8 +424,7 @@ object Theory {
       * {{(prime: Pred) => (prime(p) implies ((p=:=1) or (p=:=p))}}
       */
     case class PropertyDefn(deg: Int, defn: Pred => Formula)
-        extends Property(deg)
-        with Axiom {
+        extends Property(deg) with Axiom {
       val axiom = defn(this)
     }
 
@@ -445,9 +443,11 @@ object Theory {
       val axiom = defn(term)
     }
 
-    implicit def termPropt(p: Var => Formula): Term => Formula = (t: Term) => {
-      p(VarSym("x")).subs(VarSym("x"), t)
-    }
+    implicit def termPropt(p: Var => Formula): Term => Formula =
+      (t: Term) =>
+        {
+          p(VarSym("x")).subs(VarSym("x"), t)
+      }
 
     /** An Assumption */
     trait Assumption extends ConditionClause with Axiom with Paragraph {
@@ -657,15 +657,15 @@ object Theory {
     trait LogicProof extends CheckedProof
 
     case class ModusPoens(p: Formula, q: Formula) extends LogicProof {
-      val hyp    = Set(p, p implies q)
-      val concl  = Set(q)
+      val hyp = Set(p, p implies q)
+      val concl = Set(q)
       val verify = true
     }
 
     case class Gen(x: Var, p: Formula) extends LogicProof {
-      val hyp                 = Set(p)
+      val hyp = Set(p)
       val concl: Set[Formula] = Set(UnivQuantFormula(x, p))
-      val verify              = true
+      val verify = true
     }
 
     trait noFreeVars {
@@ -673,33 +673,32 @@ object Theory {
     }
 
     def atoms(p: Formula): Set[Formula] = p match {
-      case NegFormula(p)           => atoms(p)
+      case NegFormula(p) => atoms(p)
       case ConjFormula(p, conj, q) => atoms(p) union atoms(q)
-      case ExQuantFormula(x, p)    => atoms(p)
-      case UnivQuantFormula(x, p)  => atoms(p)
-      case p: Formula              => Set(p)
+      case ExQuantFormula(x, p) => atoms(p)
+      case UnivQuantFormula(x, p) => atoms(p)
+      case p: Formula => Set(p)
     }
 
     def isLogicPoly(p: Formula) =
       (atoms(p) map (_.isInstanceOf[FormulaVar])) reduce (_ && _)
 
     def isTautology(p: Formula) = isLogicPoly(p) && {
-      (allMaps(atoms(p), Set(true, false)) map (recValue(p, _))) reduce (_ &&
-      _)
+      (allMaps(atoms(p), Set(true, false)) map (recValue(p, _))) reduce
+      (_ && _)
     }
 
     def isTautology(p: Schema) =
       isLogicPoly(p) && (p.params.toSet == atoms(p.formula)) && {
-        (allMaps(atoms(p.formula), Set(true, false)) map (recValue(
-          p.formula,
-          _))) reduce (_ && _)
+        (allMaps(atoms(p.formula), Set(true, false)) map
+            (recValue(p.formula, _))) reduce (_ && _)
       }
 
     case class Tautology(f: Schema, ps: Formula*) extends LogicProof {
       val hyp: Set[Formula] = Set.empty
-      val fmla              = f(ps.toList)
-      val concl             = Set(fmla)
-      lazy val verify       = isTautology(f)
+      val fmla = f(ps.toList)
+      val concl = Set(fmla)
+      lazy val verify = isTautology(f)
     }
   }
 }
