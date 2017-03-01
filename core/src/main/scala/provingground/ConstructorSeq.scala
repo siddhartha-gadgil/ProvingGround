@@ -375,4 +375,34 @@ case class ConstructorSeqTL[
 object ConstructorSeqTL {
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =
     ConstructorSeqTL(ConstructorSeqDom.Empty[H], W)
+
+  trait Exst{
+    type SS <: HList
+    type Intros <: HList
+
+    val value : ConstructorSeqTL[SS, Term, Intros]
+
+    def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
+      head: ConstructorTL[S, Term, ConstructorType]) =
+        Exst(head |: value)
+  }
+
+  object Exst{
+    def apply[SSS <: HList, IIntros<: HList](cs: ConstructorSeqTL[SSS, Term, IIntros]) =
+      new Exst{
+        type SS = SSS
+        type Intros = IIntros
+
+
+        val value = cs
+      }
+  }
+
+  def getExst(w: Typ[Term], intros: List[Typ[Term]]) : Exst = intros match {
+    case List() => Exst(Empty(w))
+    case x :: ys =>
+      val name = x.asInstanceOf[Symbolic].name.toString
+      val head = name ::: ConstructorTypTL.getExst(w, x)
+      head |: getExst(w, ys)
+  }
 }

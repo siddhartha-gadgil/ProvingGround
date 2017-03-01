@@ -376,4 +376,43 @@ object IterFuncPatternMap {
       IterFuncMapper.depFuncIterMapper(headfibre(tail.Var).mapper)
     }
   }
+object IterFuncShape{
+  trait Exst{
+    // type O <: Term with Subs[O]
+
+    type F <: Term with Subs[F]
+
+    val shape: IterFuncShape[Term, F]
+
+    def piShape[TT<: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
+      DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
+    }
+
+    def piWrap[TT<: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = Exst(piShape(variable, dom))
+
+    def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = Exst(FuncShape(dom, shape))
+  }
+
+  object Exst{
+    def apply[Fm <: Term with Subs[Fm]](sh: IterFuncShape[Term, Fm]) = new Exst{
+      type F = Fm
+      val shape = sh
+    }
+  }
+
+  def getExst(w: Typ[Term], fmly: Typ[Term]): Exst = fmly match {
+    case ft: FuncTyp[u, v] => ft.dom ->: getExst(w, ft.codom)
+    case pd: PiDefn[u, v] =>
+      val targWrap = getExst(w, pd.value)
+      targWrap.piWrap(pd.variable, pd.domain)
+    case `w` => Exst(IdIterShape[Term])
+  }
+
+
+  def fromTyp[F <: Term with Subs[F]](w: Typ[Term], fmly: F) : IterFuncShape[Term, F] = fmly match {
+    case ft: FuncTyp[u, v] => FuncShape(ft.dom, fromTyp(w, ft.codom)).asInstanceOf[IterFuncShape[Term, F]]
+    case ft: GenFuncTyp[u, v] => DepFuncShape(ft.domain, (t: u) => fromTyp(w, ft.fib(t))).asInstanceOf[IterFuncShape[Term, F]]
+    case `w` => IdIterShape[Term].asInstanceOf[IterFuncShape[Term, F]]
+  }
+}
 }
