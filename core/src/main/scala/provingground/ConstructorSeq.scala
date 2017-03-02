@@ -398,11 +398,11 @@ object ConstructorSeqTL {
       }
   }
 
-  def getExst(w: Typ[Term], intros: List[Typ[Term]]) : Exst = intros match {
+  def getExst(w: Typ[Term], intros: List[Term]) : Exst = intros match {
     case List() => Exst(Empty(w))
     case x :: ys =>
       val name = x.asInstanceOf[Symbolic].name.toString
-      val head = name ::: ConstructorTypTL.getExst(w, x)
+      val head = name ::: ConstructorTypTL.getExst(w, x.typ)
       head |: getExst(w, ys)
   }
 }
