@@ -138,6 +138,50 @@ object TypFamilyPtn {
       depFuncTypFamilyMapper(
           tailfibre(head.Var).mapper[C], implicitly[Subst[TI]])
   }
+
+  sealed trait Exst{
+    type F <: Term with Subs[F]
+    type Index <: HList
+
+    val value : TypFamilyPtn[Term, F, Index]
+
+    implicit val subst : Subst[Index]
+
+    def lambdaExst[TT<: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
+      Exst(
+        DepFuncTypFamily(dom, (t: TT) => value.subs(variable, t))
+      )
+
+    def ~>:[TT <: Term with Subs[TT]](variable: TT) =
+      Exst(
+        DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]], (t: TT) => value.subs(variable, t))
+      )
+
+    def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = Exst(FuncTypFamily(dom, value))
+
+
+  }
+
+  object Exst{
+    def apply[Fb <: Term with Subs[Fb], In <: HList : Subst](tf: TypFamilyPtn[Term, Fb, In ]) =
+      new Exst{
+        type F = Fb
+        type Index = In
+
+        val subst = implicitly[Subst[Index]]
+
+        val value = tf
+      }
+  }
+
+  def getExst[F <: Term with Subs[F]](w: F) : Exst = w match {
+    case _ : Typ[u] => Exst(IdTypFamily[Term])
+    case fn: Func[u, v] => fn.dom ->: getExst(fn(fn.dom.Var))
+    case g : FuncLike[u, v] =>
+      val x = g.dom.Var
+      x ~>: getExst(g(x))
+  }
+
 }
 
 sealed trait TypFamilyMap[H <: Term with Subs[H],

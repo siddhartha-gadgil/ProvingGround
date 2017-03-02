@@ -428,6 +428,41 @@ object IndexedIterFuncShape {
                                   tailfibre(head.Var).mapper(fmlyMapper))
     }
   }
+
+  sealed trait Exst{
+  type Fb <: Term with Subs[Fb]
+
+  type F <: Term with Subs[F]
+
+  type Index <: HList
+
+  val value : IndexedIterFuncShape[Term, F, Fb, Index]
+
+  implicit val subst : Subst[Index]
+
+  def piExst[TT<: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
+    Exst(
+      DepFuncShape(dom, (t: TT) => value.subs(variable, t))
+    )
+
+  def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = Exst(FuncShape(dom, value))
+
+
+}
+
+object Exst{
+  def apply[FF <: Term with Subs[FF], Fib <: Term with Subs[Fib], In <: HList : Subst](
+    fs: IndexedIterFuncShape[Term, FF, Fib, In ]) =
+    new Exst{
+      type F = FF
+      type Fb = Fib
+      type Index = In
+
+      val subst = implicitly[Subst[Index]]
+
+      val value = fs
+    }
+}
 }
 
 abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
