@@ -20,8 +20,8 @@ class TermParser extends JavaTokenParsers {
   def colon: Parser[String] = ":"
 
   def makeSymbol(s: String): AnySym =
-    if (s endsWith "_1") LeftSym(makeSymbol(s.dropRight(2)))
-    else if (s endsWith "_2") RightSym(makeSymbol(s.dropRight(2)))
+    if (s endsWith "_1") LeftProjSym(makeSymbol(s.dropRight(2)))
+    else if (s endsWith "_2") RightProjSym(makeSymbol(s.dropRight(2)))
     else Name(s)
 
   def name: Parser[AnySym] = "[a-zA-Z0-9!@#$%^&*()_+-]+".r ^^ { makeSymbol(_) }

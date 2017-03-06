@@ -360,15 +360,39 @@ object HoTT {
       }
   }
 
+  def evalSym(symbobj: AnySym => Term)(x: Term, y: Term): AnySym => Option[Term] = {
+    case LeftProjSym(s) =>
+      evalSym(symbobj)(x, y)(s) flatMap {
+        case pair : AbsPair[u, v] =>
+          Some(pair.first)
+        case x =>
+          println(s"inner evaluation gives $x")
+          None
+    }
+    case RightProjSym(s) =>
+      evalSym(symbobj)(x, y)(s) flatMap {
+        case pair : AbsPair[u, v] =>
+          Some(pair.second)
+        case x =>
+          println(s"inner evaluation gives $x")
+          None
+      }
+    case fx: ApplnSym[w, u] =>
+      Try((fx.func
+            .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])).toOption
+    case _ => None
+  }
+
   /**
     * substitute symbols, with the only non-trivial substitution for formal applications.
     */
-  def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = {
-    case fx: ApplnSym[w, u] =>
-      Try((fx.func
-            .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
-            .asInstanceOf[U]) getOrElse symbobj(fx)
-    case sym => symbobj(sym.subs(x, y))
+  def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = (sym) => {
+    // case fx: ApplnSym[w, u] =>
+    //   Try((fx.func
+    //         .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
+    //         .asInstanceOf[U]) getOrElse symbobj(fx)
+    // case sym => symbobj(sym.subs(x, y))
+    evalSym(symbobj)(x, y)(sym).flatMap((t) => Try(t.asInstanceOf[U]).toOption).getOrElse(symbobj(sym.subs(x, y)))
   }
 
   /**
@@ -595,7 +619,7 @@ object HoTT {
 
     // The name is lost as `name', but can be recovered using pattern matching.
     def variable(name: AnySym): Obj =
-      PairTerm(first.symbObj(LeftSym(name)), second.symbObj(RightSym(name)))
+      PairTerm(first.symbObj(LeftProjSym(name)), second.symbObj(RightProjSym(name)))
 
     case class RecFn[W <: Term with Subs[W]](codom: Typ[W],
                                              data: Func[U, Func[V, W]])
@@ -1591,8 +1615,8 @@ object HoTT {
   /**
     *  symbol for left component in pair from a given symbol
     */
-  case class LeftSym(name: AnySym) extends AnySym {
-    def subs(x: Term, y: Term) = LeftSym(name.subs(x, y))
+  case class LeftProjSym(name: AnySym) extends AnySym {
+    def subs(x: Term, y: Term) = LeftProjSym(name.subs(x, y))
 
     override def toString = name.toString + "_1"
   }
@@ -1600,8 +1624,8 @@ object HoTT {
   /**
     *  symbol for right component in pair from a given symbol
     */
-  case class RightSym(name: AnySym) extends AnySym {
-    def subs(x: Term, y: Term) = RightSym(name.subs(x, y))
+  case class RightProjSym(name: AnySym) extends AnySym {
+    def subs(x: Term, y: Term) = RightProjSym(name.subs(x, y))
 
     override def toString = name.toString + "_2"
   }
@@ -1619,8 +1643,8 @@ object HoTT {
     type Obj = DepPair[W, U]
 
     def variable(name: AnySym) = {
-      val a = fibers.dom.symbObj(LeftSym(name))
-      val b = fibers(a).symbObj(RightSym(name))
+      val a = fibers.dom.symbObj(LeftProjSym(name))
+      val b = fibers(a).symbObj(RightProjSym(name))
       DepPair(a, b, fibers)
     }
 
