@@ -2182,7 +2182,7 @@ object HoTT {
   def nextName(name: String): String =
     if (name == "") "a"
     else {
-      if (name.endsWith("z")) nextName(name.dropRight(1) + "a")
+      if (name.endsWith("z")) nextName(name.dropRight(1))+ "a"
       else name.dropRight(1) + (name.toCharArray.last + 1).toChar.toString
     }
 
