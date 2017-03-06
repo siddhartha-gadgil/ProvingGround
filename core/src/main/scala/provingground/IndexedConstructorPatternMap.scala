@@ -244,11 +244,11 @@ object IndexedConstructorPatternMap {
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-      val a = tail(family.pattern.typ(w, ind)).Var
+      val a = tail(family.pattern.typ(w, ind)).Var//; println(s"247: $a")
       val headcons = cons(a)
       val xss = family.typRestrict(xs, ind)
-      val fibre =
-        lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
+      // val fibre =
+      //   lmbda(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(w, xs)(headcons))
     }
 
@@ -333,11 +333,11 @@ object IndexedConstructorPatternMap {
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-      val a = tail(w).Var
+      val a = tail(w).Var //; println(s"336: $a")
       val headcons = cons(a)
       // val xss = family.typRestrict(xs, ind)
-      val fibre =
-        lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
+      // val fibre =
+      //   lmbda(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
     }
 
@@ -403,7 +403,7 @@ object IndexedConstructorPatternMap {
     def recDataTyp(w: Fb, x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: Func[T, HC]) = {
-      val a = tail.Var
+      val a = tail.Var; //; println(s"406: $a")
       val headcons = cons(a)
       val fibre = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(head.inducDataTyp(w, xs)(headcons))
@@ -472,7 +472,7 @@ object IndexedConstructorPatternMap {
     }
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: FuncLike[T, HC]) = {
-      val a = tail.Var
+      val a = tail.Var//; println(s"475: $a")
       val headcons = cons(a)
       val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
       piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
@@ -487,7 +487,7 @@ object IndexedConstructorPatternMap {
 
     def apply(W: Fb) = {
       val a = tail.Var
-      val fiber = lmbda(a)(headfibre(a)(W))
+      // val fiber = lmbda(a)(headfibre(a)(W))
       piDefn(a)(headfibre(a)(W))
     }
 
