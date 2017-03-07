@@ -4,6 +4,8 @@ import HoTT._
 
 import IterFuncPatternMap._
 
+// import IndexedIterFuncPatternMap._
+
 import Subst._
 
 import scala.language.existentials
@@ -541,12 +543,19 @@ abstract class IndexedConstructorShape[
 
   import IndexedConstructorShape._
 
-  def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F], ind: Index) =
-    IndexedFuncConsShape(that, this, ind)
+  // def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F], ind: Index) = // FIXME - should use the indexed versions
+  //   IndexedFuncConsShape(that, this, ind)
+  //
 
-  def -->>:(that: IndexedIdShape[H, Fb, Index]) = {
-    IndexedFuncConsShape(IdIterShape[H], this, that.index)
-  }
+  def -->>:[F <: Term with Subs[F]](that: IndexedIterFuncShape[H, F, Fb, Index], ind: Index) = 
+    IndexedIndexedFuncConsShape(that, this, ind)
+
+
+
+
+  // def -->>:(that: IndexedIdShape[H, Fb, Index]) = {
+  //   IndexedFuncConsShape(IdIterShape[H], this, that.index)
+  // }
 
   def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
     IndexedCnstFuncConsShape(tail, this)

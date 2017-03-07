@@ -378,7 +378,7 @@ class TypObj[T <: Typ[Term] with Subs[T], C <: Term with Subs[C]](
 }
 
 object TypObj {
-  implicit def taut[U <: Term with Subs[U]]: TypObj[Typ[U], U] =
+  implicit def tautology[U <: Term with Subs[U]]: TypObj[Typ[U], U] =
     new TypObj[Typ[U], U]
 
   implicit def func[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
@@ -391,6 +391,13 @@ object TypObj {
 
   implicit def pi[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
       PiDefn[U, V], FuncLike[U, V]] = new TypObj[PiDefn[U, V], FuncLike[U, V]]
+
+  implicit def pair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
+      ProdTyp[U, V], PairTerm[U, V]] = new TypObj[ProdTyp[U, V], PairTerm[U, V]]
+
+  // implicit def deppair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
+  //     SigmaTyp[U, V], AbsPair[U, V]] = new TypObj[SigmaTyp[U, V], AbsPair[U, V]]
+
 
   // implicit def piT[U <: Term with Subs[U], V <: Term with Subs[V]] : TypObj[PiTyp[U, V], FuncLike[U, V]] = new TypObj[PiTyp[U, V], FuncLike[U, V]]
 
