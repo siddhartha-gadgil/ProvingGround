@@ -2,6 +2,7 @@ package provingground
 
 import HoTT._
 import shapeless._
+import scala.language.existentials
 
 
 sealed trait TypFamilyExst{
@@ -27,6 +28,9 @@ sealed trait TypFamilyExst{
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)
 
+  def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
+    TypFamilyExst(FuncTypFamily(dom, pattern), variable :-> W)
+
 // Inner existentials
 
 trait IndexedIterFuncExst{
@@ -45,6 +49,7 @@ trait IndexedIterFuncExst{
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = IndexedIterFuncExst(FuncShape(dom, shape))
 }
+
 
 object IndexedIterFuncExst{
   import IndexedIterFuncShape._
@@ -104,7 +109,7 @@ object IndexedConstructorShapeExst{
         type S = SI
         type ConstructorType = ConstructorTypeI
 
-        val value = shape
+        lazy val value = shape
       }
     def getIndexedConstructorShape(cnstTyp: Typ[Term]): IndexedConstructorShapeExst =
       pattern.getIndex(W, cnstTyp).map {
@@ -120,6 +125,12 @@ object IndexedConstructorShapeExst{
         val ind = pattern.getIndex(W, ft.dom).get
         getIndexedConstructorShape(ft.codom).-->>:(
           IndexedIterFuncExst.getIterFuncShape(ft.dom), ind)
+      case _ =>
+        println(cnstTyp)
+        println(pattern.getIndex(W, cnstTyp))
+        println(W)
+        println(pattern)
+        ???
     }
   }
 
@@ -147,15 +158,15 @@ object IndexedConstructorSeqExst{
 
       type Intros = IIntros
 
-      val value = seq
+      lazy val value = seq
     }
 
-  val empty =
+  lazy val empty =
     IndexedConstructorSeqExst{
       IndexedConstructorSeqDom.Empty(W, pattern)
     }
 
-  def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](intros: List[Term]) : IndexedConstructorSeqExst = {
+  def getIndexedConstructorSeq(intros: List[Term]) : IndexedConstructorSeqExst = {
     intros match {
       case List() => empty
       case l =>
@@ -177,17 +188,19 @@ object TypFamilyExst{
       type Fb = Fib
       type Index = In
 
-      val subst = implicitly[Subst[Index]]
+      lazy val subst = implicitly[Subst[Index]]
 
-      val pattern = tf
+      lazy val pattern = tf
 
-      val W = w
+      lazy val W = w
     }
 
 
 def getFamily[Fb <: Term with Subs[Fb]](w: Fb) : TypFamilyExst = w match {
   case tp : Typ[u] => TypFamilyExst[Typ[Term], HNil](IdTypFamily[Term], tp)
-  case fn: Func[u, v] => fn.dom ->: getFamily(fn(fn.dom.Var))
+  case fn: Func[u, v] =>
+    val x = fn.dom.Var
+    getFamily(fn(x)).mapsTo(x, fn.dom)
   case g : FuncLike[u, v] =>
     val x = g.dom.Var
     x ~>: getFamily(g(x))

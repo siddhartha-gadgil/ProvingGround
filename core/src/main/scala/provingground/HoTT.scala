@@ -2270,7 +2270,9 @@ object HoTT {
     case sym: Symbolic =>
       sym.name match {
         case fx: ApplnSym[u, w] =>
-          if (fx.func == func && fx.arg.typ == func.dom)
+          val x = func.dom.Var
+          if (fx.func.dom == func.dom &&  
+            fx.func(x.asInstanceOf[u]) == func(x) && fx.arg.typ == func.dom)
             Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
           else getArg(func)(fx.func)
         case _ => None
