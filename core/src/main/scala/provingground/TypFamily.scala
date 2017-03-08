@@ -139,32 +139,33 @@ object TypFamilyPtn {
           tailfibre(head.Var).mapper[C], implicitly[Subst[TI]])
   }
 
-  sealed trait Exst{
+  sealed trait Exst {
     type F <: Term with Subs[F]
     type Index <: HList
 
-    val value : TypFamilyPtn[Term, F, Index]
+    val value: TypFamilyPtn[Term, F, Index]
 
-    implicit val subst : Subst[Index]
+    implicit val subst: Subst[Index]
 
-    def lambdaExst[TT<: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
+    def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
       Exst(
-        DepFuncTypFamily(dom, (t: TT) => value.subs(variable, t))
+          DepFuncTypFamily(dom, (t: TT) => value.subs(variable, t))
       )
 
     def ~>:[TT <: Term with Subs[TT]](variable: TT) =
       Exst(
-        DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]], (t: TT) => value.subs(variable, t))
+          DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+                           (t: TT) => value.subs(variable, t))
       )
 
-    def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) = Exst(FuncTypFamily(dom, value))
-
-
+    def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
+      Exst(FuncTypFamily(dom, value))
   }
 
-  object Exst{
-    def apply[Fb <: Term with Subs[Fb], In <: HList : Subst](tf: TypFamilyPtn[Term, Fb, In ]) =
-      new Exst{
+  object Exst {
+    def apply[Fb <: Term with Subs[Fb], In <: HList : Subst](
+        tf: TypFamilyPtn[Term, Fb, In]) =
+      new Exst {
         type F = Fb
         type Index = In
 
@@ -174,14 +175,13 @@ object TypFamilyPtn {
       }
   }
 
-  def getExst[F <: Term with Subs[F]](w: F) : Exst = w match {
-    case _ : Typ[u] => Exst(IdTypFamily[Term])
+  def getExst[F <: Term with Subs[F]](w: F): Exst = w match {
+    case _: Typ[u] => Exst(IdTypFamily[Term])
     case fn: Func[u, v] => fn.dom ->: getExst(fn(fn.dom.Var))
-    case g : FuncLike[u, v] =>
+    case g: FuncLike[u, v] =>
       val x = g.dom.Var
       x ~>: getExst(g(x))
   }
-
 }
 
 sealed trait TypFamilyMap[H <: Term with Subs[H],
@@ -393,11 +393,11 @@ object TypObj {
       PiDefn[U, V], FuncLike[U, V]] = new TypObj[PiDefn[U, V], FuncLike[U, V]]
 
   implicit def pair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
-      ProdTyp[U, V], PairTerm[U, V]] = new TypObj[ProdTyp[U, V], PairTerm[U, V]]
+      ProdTyp[U, V], PairTerm[U, V]] =
+    new TypObj[ProdTyp[U, V], PairTerm[U, V]]
 
   // implicit def deppair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
   //     SigmaTyp[U, V], AbsPair[U, V]] = new TypObj[SigmaTyp[U, V], AbsPair[U, V]]
-
 
   // implicit def piT[U <: Term with Subs[U], V <: Term with Subs[V]] : TypObj[PiTyp[U, V], FuncLike[U, V]] = new TypObj[PiTyp[U, V], FuncLike[U, V]]
 

@@ -360,40 +360,44 @@ object HoTT {
       }
   }
 
-  def evalSym(symbobj: AnySym => Term)(x: Term, y: Term): AnySym => Option[Term] = {
+  def evalSym(symbobj: AnySym => Term)(
+      x: Term, y: Term): AnySym => Option[Term] = {
     case LeftProjSym(s) =>
       evalSym(symbobj)(x, y)(s) flatMap {
-        case pair : AbsPair[u, v] =>
+        case pair: AbsPair[u, v] =>
           Some(pair.first)
         case x =>
           println(s"inner evaluation gives $x")
           None
-    }
+      }
     case RightProjSym(s) =>
       evalSym(symbobj)(x, y)(s) flatMap {
-        case pair : AbsPair[u, v] =>
+        case pair: AbsPair[u, v] =>
           Some(pair.second)
         case x =>
           println(s"inner evaluation gives $x")
           None
       }
     case fx: ApplnSym[w, u] =>
-      Try((fx.func
-            .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])).toOption
+      Try((fx.func.replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])).toOption
     case _ => None
   }
 
   /**
     * substitute symbols, with the only non-trivial substitution for formal applications.
     */
-  def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U = (sym) => {
-    // case fx: ApplnSym[w, u] =>
-    //   Try((fx.func
-    //         .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
-    //         .asInstanceOf[U]) getOrElse symbobj(fx)
-    // case sym => symbobj(sym.subs(x, y))
-    evalSym(symbobj)(x, y)(sym).flatMap((t) => Try(t.asInstanceOf[U]).toOption).getOrElse(symbobj(sym.subs(x, y)))
-  }
+  def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U =
+    (sym) =>
+      {
+        // case fx: ApplnSym[w, u] =>
+        //   Try((fx.func
+        //         .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
+        //         .asInstanceOf[U]) getOrElse symbobj(fx)
+        // case sym => symbobj(sym.subs(x, y))
+        evalSym(symbobj)(x, y)(sym)
+          .flatMap((t) => Try(t.asInstanceOf[U]).toOption)
+          .getOrElse(symbobj(sym.subs(x, y)))
+    }
 
   /**
     * Symbolic types, which the compiler knows are types.
@@ -619,7 +623,8 @@ object HoTT {
 
     // The name is lost as `name', but can be recovered using pattern matching.
     def variable(name: AnySym): Obj =
-      PairTerm(first.symbObj(LeftProjSym(name)), second.symbObj(RightProjSym(name)))
+      PairTerm(
+          first.symbObj(LeftProjSym(name)), second.symbObj(RightProjSym(name)))
 
     case class RecFn[W <: Term with Subs[W]](codom: Typ[W],
                                              data: Func[U, Func[V, W]])
@@ -2182,7 +2187,7 @@ object HoTT {
   def nextName(name: String): String =
     if (name == "") "a"
     else {
-      if (name.endsWith("z")) nextName(name.dropRight(1))+ "a"
+      if (name.endsWith("z")) nextName(name.dropRight(1)) + "a"
       else name.dropRight(1) + (name.toCharArray.last + 1).toChar.toString
     }
 
@@ -2271,8 +2276,8 @@ object HoTT {
       sym.name match {
         case fx: ApplnSym[u, w] =>
           val x = func.dom.Var
-          if (fx.func.dom == func.dom &&  
-            fx.func(x.asInstanceOf[u]) == func(x) && fx.arg.typ == func.dom)
+          if (fx.func.dom == func.dom &&
+              fx.func(x.asInstanceOf[u]) == func(x) && fx.arg.typ == func.dom)
             Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
           else getArg(func)(fx.func)
         case _ => None

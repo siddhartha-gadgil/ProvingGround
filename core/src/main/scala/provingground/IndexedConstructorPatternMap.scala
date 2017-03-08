@@ -246,7 +246,7 @@ object IndexedConstructorPatternMap {
 
     def inducDataTyp(w: Fb, xs: IDFT)(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
-      val a = tail(family.pattern.typ(w, ind)).Var//; println(s"247: $a")
+      val a = tail(family.pattern.typ(w, ind)).Var //; println(s"247: $a")
       val headcons = cons(a)
       val xss = family.typRestrict(xs, ind)
       // val fibre =
@@ -474,7 +474,7 @@ object IndexedConstructorPatternMap {
     }
 
     def inducDataTyp(w: Fb, xs: IDFT)(cons: FuncLike[T, HC]) = {
-      val a = tail.Var//; println(s"475: $a")
+      val a = tail.Var //; println(s"475: $a")
       val headcons = cons(a)
       val fibre = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
       piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
@@ -547,11 +547,9 @@ abstract class IndexedConstructorShape[
   //   IndexedFuncConsShape(that, this, ind)
   //
 
-  def -->>:[F <: Term with Subs[F]](that: IndexedIterFuncShape[H, F, Fb, Index], ind: Index) = 
+  def -->>:[F <: Term with Subs[F]](
+      that: IndexedIterFuncShape[H, F, Fb, Index], ind: Index) =
     IndexedIndexedFuncConsShape(that, this, ind)
-
-
-
 
   // def -->>:(that: IndexedIdShape[H, Fb, Index]) = {
   //   IndexedFuncConsShape(IdIterShape[H], this, that.index)
@@ -584,8 +582,7 @@ object IndexedConstructorShape {
 
   case class IndexedIdShape[
       H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList : Subst](
-      family: TypFamilyPtn[H, F, Index],
-      index: Index)
+      family: TypFamilyPtn[H, F, Index], index: Index)
       extends IndexedConstructorShape[HNil, H, F, H, Index] {
     def subs(x: Term, y: Term) =
       IndexedIdShape(family.subs(x, y), index.subst(x, y))

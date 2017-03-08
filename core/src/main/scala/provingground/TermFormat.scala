@@ -152,9 +152,8 @@ object FansiTranslate {
                 syms.MapsTo) ++ " " ++ value)
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        (Cyan(Str(syms.Pi)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ typ ++ LightYellow(")")
-        ++ LightRed(
-                "{ ") ++ value ++ LightRed(" }"))
+        (Cyan(Str(syms.Pi)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ typ ++ LightYellow(
+                ")") ++ LightRed("{ ") ++ value ++ LightRed(" }"))
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
         (Cyan(Str(syms.Sigma)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ LightRed(

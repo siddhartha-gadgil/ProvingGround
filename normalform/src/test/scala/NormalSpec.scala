@@ -78,7 +78,8 @@ class MainStuctureSpec extends FlatSpec {
   it should "multiply with a sigma" ignore {
     val a = NumTerm(4)
     val b = Sigma(AssocTerm(List(NumTerm(3), Variable("x"))))
-    val result = Sigma(AssocTerm(
+    val result = Sigma(
+        AssocTerm(
             List(NumTerm(12),
                  Pi(CommTerm(Map((NumTerm(4), 1), (Variable("x"), 1)))))))
     assert(a * b === result)

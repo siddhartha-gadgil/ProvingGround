@@ -96,7 +96,8 @@ object DeducerJS {
     def svgLines(lines: List[(String, Vector[Double])]) =
       for ((label, points) <- lines;
       ((val1, val2), index) <- (points zip points.tail).zipWithIndex) yield {
-        line(onclick := { () =>
+        line(
+            onclick := { () =>
           {
             info.innerHTML = ""
             info.appendChild(div("Element: ",

@@ -90,8 +90,7 @@ object Translator {
   }
 
   case class PolyJunction[I, O, X[_]: Traverse](
-      polySplit: I => Option[Vector[X[I]]],
-      build: X[O] => Option[O])
+      polySplit: I => Option[Vector[X[I]]], build: X[O] => Option[O])
       extends Translator[I, O] {
     def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
     def recTranslate(leafMap: => (I => Option[O])) = {

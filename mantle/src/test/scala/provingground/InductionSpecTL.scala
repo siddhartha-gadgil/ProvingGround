@@ -99,15 +99,11 @@ class InductionSpecTL extends FlatSpec {
 
     val ackmp1n = "ack(m+1)(n)" :: Nat
 
-    val ack =
-      recNNN(succ)(m :-> (ackm :->
-        recNN(ackm(one))(
-          n :-> (ackmp1n :-> (ackm(ackmp1n))))
-      ))
+    val ack = recNNN(succ)(
+        m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n))))))
 
     assert(ack(two)(two) == seven)
     assert(ack(three)(one) == add(seven)(six))
-
   }
 
   // Example: Lists

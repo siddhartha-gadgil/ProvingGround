@@ -602,11 +602,7 @@ sealed trait ConstructorPatternMapper[
     InducDataType <: Term with Subs[InducDataType]
 ] {
   def mapper: ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
-      Cod,
-      ConstructorType,
-      H,
-      RecDataType,
-      InducDataType]
+      Cod, ConstructorType, H, RecDataType, InducDataType]
 }
 
 case class ConstructorTypTL[
@@ -642,8 +638,8 @@ case class ConstructorTypTL[
     ConstructorTypTL(thatVar ~>: shape, typ)
 }
 
-object ConstructorTypTL{
-  trait Exst{
+object ConstructorTypTL {
+  trait Exst {
     type S <: HList
     type ConstructorType <: Term with Subs[ConstructorType]
 
@@ -661,10 +657,10 @@ object ConstructorTypTL{
     def :::(name: AnySym) = name ::: value
   }
 
-  object Exst{
-    def apply[Shape <: HList,
-    CT <: Term with Subs[CT]](cns: ConstructorTypTL[Shape, Term, CT]) =
-      new Exst{
+  object Exst {
+    def apply[Shape <: HList, CT <: Term with Subs[CT]](
+        cns: ConstructorTypTL[Shape, Term, CT]) =
+      new Exst {
         type S = Shape
         type ConstructorType = CT
 
@@ -674,9 +670,12 @@ object ConstructorTypTL{
 
   def getExst(w: Typ[Term], cnstTyp: Typ[Term]): Exst = cnstTyp match {
     case `w` => Exst(ConstructorTypTL(IdShape[Term], w))
-    case ft: FuncTyp[u, v] if (ft.dom.indepOf(w)) => ft.dom ->>: getExst(w, ft.codom)
-    case pd: PiDefn[u, v] if (pd.domain.indepOf(w)) => pd.variable ~>>: getExst(w, pd.value)
-    case ft: FuncTyp[u, v]  => IterFuncShape.getExst(w, ft.dom) -->>: getExst(w, ft.codom)
+    case ft: FuncTyp[u, v] if (ft.dom.indepOf(w)) =>
+      ft.dom ->>: getExst(w, ft.codom)
+    case pd: PiDefn[u, v] if (pd.domain.indepOf(w)) =>
+      pd.variable ~>>: getExst(w, pd.value)
+    case ft: FuncTyp[u, v] =>
+      IterFuncShape.getExst(w, ft.dom) -->>: getExst(w, ft.codom)
   }
 }
 

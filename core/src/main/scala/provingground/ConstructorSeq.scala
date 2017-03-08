@@ -343,8 +343,7 @@ object ConstructorSeqDom {
 
 case class ConstructorSeqTL[
     SS <: HList, H <: Term with Subs[H], Intros <: HList](
-    seqDom: ConstructorSeqDom[SS, H, Intros],
-    typ: Typ[H]) {
+    seqDom: ConstructorSeqDom[SS, H, Intros], typ: Typ[H]) {
   def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
       head: ConstructorTL[S, H, ConstructorType]) =
     ConstructorSeqTL(
@@ -376,29 +375,29 @@ object ConstructorSeqTL {
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =
     ConstructorSeqTL(ConstructorSeqDom.Empty[H], W)
 
-  trait Exst{
+  trait Exst {
     type SS <: HList
     type Intros <: HList
 
-    val value : ConstructorSeqTL[SS, Term, Intros]
+    val value: ConstructorSeqTL[SS, Term, Intros]
 
     def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
-      head: ConstructorTL[S, Term, ConstructorType]) =
-        Exst(head |: value)
+        head: ConstructorTL[S, Term, ConstructorType]) =
+      Exst(head |: value)
   }
 
-  object Exst{
-    def apply[SSS <: HList, IIntros<: HList](cs: ConstructorSeqTL[SSS, Term, IIntros]) =
-      new Exst{
+  object Exst {
+    def apply[SSS <: HList, IIntros <: HList](
+        cs: ConstructorSeqTL[SSS, Term, IIntros]) =
+      new Exst {
         type SS = SSS
         type Intros = IIntros
-
 
         val value = cs
       }
   }
 
-  def getExst(w: Typ[Term], intros: List[Term]) : Exst = intros match {
+  def getExst(w: Typ[Term], intros: List[Term]): Exst = intros match {
     case List() => Exst(Empty(w))
     case x :: ys =>
       val name = x.asInstanceOf[Symbolic].name.toString

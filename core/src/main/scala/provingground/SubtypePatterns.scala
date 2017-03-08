@@ -152,8 +152,7 @@ object QuasiProjection {
 }
 
 class SubTypePattern[X, Y, F[_]: Traverse](
-    implicit val qi: QuasiInclusion[X, Y, F],
-    val qp: QuasiProjection[X, Y]) {
+    implicit val qi: QuasiInclusion[X, Y, F], val qp: QuasiProjection[X, Y]) {
   val split: X => Option[F[X]] = (x) => qp.proj(x) map (qi.incl)
 
   val build: F[X] => Option[X] = (x) => qi.proj(x) map (qp.incl)
@@ -179,8 +178,8 @@ object TestTrait {
 
 object SubTypePattern {
   def pattern[X, Y, F[_] <: HList : Traverse](
-      implicit qi: QuasiInclHList[X, Y, F],
-      qp: QuasiProjection[X, Y]) = new SubTypePattern[X, Y, F]
+      implicit qi: QuasiInclHList[X, Y, F], qp: QuasiProjection[X, Y]) =
+    new SubTypePattern[X, Y, F]
 
   object Test {
     import TestTrait._
