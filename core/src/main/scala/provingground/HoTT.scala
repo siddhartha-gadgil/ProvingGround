@@ -2090,8 +2090,8 @@ object HoTT {
 
     def induc[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]]) = {
       val (a, b)     = (first.Var, second.Var)
-      val firstData  = (a ~>: depcodom(a)).Var
-      val secondData = (b ~>: depcodom(b)).Var
+      val firstData  = (a ~>: depcodom(incl1(a))).Var
+      val secondData = (b ~>: depcodom(incl2(b))).Var
       firstData :~>
         (secondData :~>
           (InducFn(depcodom, firstData, secondData): FuncLike[Term, W]))

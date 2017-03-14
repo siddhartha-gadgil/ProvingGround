@@ -250,4 +250,14 @@ class InductionSpecTL extends FlatSpec {
     val step = n :~> ( m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result) )  ) )
     assert(vsum(three)(iv(step)(two)(iv(step)(one)(v1))) == five)
   }
+
+  // Sum type
+  "Induction from sum type to dependent type" should "have proper type" in {
+    val B = "B" :: Type
+    val b = "b" :: B
+    val aorb = "a or b" :: PlusTyp(A, B)
+    val D = "D(_ : A + B)" :: PlusTyp(A, B) ->: Type
+    PlusTyp(A, B).induc(D) !: (a ~>: D(PlusTyp(A, B).incl1(a))) ->:
+      ((b ~>: D(PlusTyp(A, B).incl2(b))) ->: (aorb ~>: D(aorb) ))
+  }
 }
