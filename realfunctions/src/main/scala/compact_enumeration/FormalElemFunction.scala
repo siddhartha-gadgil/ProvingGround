@@ -14,7 +14,7 @@ sealed trait FormalElemFunction {
     * concrete elementary functions of type A,
     * A must have field operations, composition and Elementary Functions of type A in view.
     */
-  def as[A: FieldOps: ElementaryFunctions: Circ]: A
+  def as[A : FieldOps : ElementaryFunctions : Circ]: A
 
   /**
     * formal derivative
@@ -45,7 +45,7 @@ import FormalElemFunction._
 import FieldOpsSyms._
 
 case object Sin extends FormalElemFunction with OneVar {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].sin
   }
 
@@ -55,7 +55,7 @@ case object Sin extends FormalElemFunction with OneVar {
 }
 
 case object Cos extends FormalElemFunction with OneVar {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].cos
   }
 
@@ -65,7 +65,7 @@ case object Cos extends FormalElemFunction with OneVar {
 }
 
 case object Log extends FormalElemFunction with OneVar {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].log
   }
 
@@ -75,7 +75,7 @@ case object Log extends FormalElemFunction with OneVar {
 }
 
 case object Sqrt extends FormalElemFunction with OneVar {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].sqrt
   }
 
@@ -85,7 +85,7 @@ case object Sqrt extends FormalElemFunction with OneVar {
 }
 
 case class Proj(i: Int) extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].proj(i)
   }
 
@@ -105,7 +105,7 @@ case class Proj(i: Int) extends FormalElemFunction {
 }
 
 case object Exp extends FormalElemFunction with OneVar {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].exp
   }
 
@@ -115,7 +115,7 @@ case object Exp extends FormalElemFunction with OneVar {
 }
 
 case object One extends FormalElemFunction with ConstFunc {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
 
@@ -125,7 +125,7 @@ case object One extends FormalElemFunction with ConstFunc {
 }
 
 case object Zero extends FormalElemFunction with ConstFunc {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].one
   }
 
@@ -135,7 +135,7 @@ case object Zero extends FormalElemFunction with ConstFunc {
 }
 
 case object Pi extends FormalElemFunction with ConstFunc {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[ElementaryFunctions[A]].pi
   }
 
@@ -149,7 +149,7 @@ case object Pi extends FormalElemFunction with ConstFunc {
   */
 case class Plus(x: FormalElemFunction, y: FormalElemFunction)
     extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].plus(x.as[A], y.as[A])
   }
 
@@ -166,7 +166,7 @@ case class Plus(x: FormalElemFunction, y: FormalElemFunction)
   */
 case class Times(x: FormalElemFunction, y: FormalElemFunction)
     extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].times(x.as[A], y.as[A])
   }
 
@@ -183,7 +183,7 @@ case class Times(x: FormalElemFunction, y: FormalElemFunction)
   * Formal negation
   */
 case class Reciprocal(x: FormalElemFunction) extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     val f = implicitly[FieldOps[A]]
     f.div(f.one, x.as[A])
   }
@@ -208,7 +208,7 @@ object Div {
     : Option[(FormalElemFunction, FormalElemFunction)] = q match {
     case Times(x, Reciprocal(y)) => Some(x, y)
     case Times(Reciprocal(y), x) => Some(x, y)
-    case _                       => None
+    case _ => None
   }
 }
 
@@ -216,7 +216,7 @@ object Div {
   * Formal Negation
   */
 case class Negate(x: FormalElemFunction) extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[FieldOps[A]].negate(x.as[A])
   }
 
@@ -233,7 +233,7 @@ case class Negate(x: FormalElemFunction) extends FormalElemFunction {
   */
 case class Compose(x: FormalElemFunction, y: FormalElemFunction)
     extends FormalElemFunction {
-  def as[A: FieldOps: ElementaryFunctions: Circ] = {
+  def as[A : FieldOps : ElementaryFunctions : Circ] = {
     implicitly[Circ[A]].circ(x.as[A], y.as[A])
   }
 
@@ -291,12 +291,12 @@ object FormalElemFunction {
 
     def one: FormalElemFunction = One
 
-    def plus(x: FormalElemFunction,
-             y: FormalElemFunction): FormalElemFunction =
+    def plus(
+        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
       Plus(x, y)
 
-    def times(x: FormalElemFunction,
-              y: FormalElemFunction): FormalElemFunction =
+    def times(
+        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
       Times(x, y)
 
     def div(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
@@ -304,8 +304,8 @@ object FormalElemFunction {
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction] {
-    def circ(x: FormalElemFunction,
-             y: FormalElemFunction): FormalElemFunction =
+    def circ(
+        x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
       Compose(x, y)
   }
 
@@ -316,13 +316,13 @@ object FormalElemFunction {
   import Circ._
 
   def multiVar: FormalElemFunction => Boolean = {
-    case Proj(_)       => true
-    case Negate(f)     => multiVar(f)
+    case Proj(_) => true
+    case Negate(f) => multiVar(f)
     case Reciprocal(f) => multiVar(f)
-    case Plus(x, y)    => multiVar(x) && multiVar(y)
-    case Times(x, y)   => multiVar(x) && multiVar(y)
+    case Plus(x, y) => multiVar(x) && multiVar(y)
+    case Times(x, y) => multiVar(x) && multiVar(y)
     case Compose(x, y) => multiVar(y)
-    case _: ConstFunc  => true
-    case _: OneVar     => false
+    case _: ConstFunc => true
+    case _: OneVar => false
   }
 }

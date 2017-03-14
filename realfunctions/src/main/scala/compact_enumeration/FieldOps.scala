@@ -34,7 +34,7 @@ object FieldOps {
     /**
       * for a type A with FieldOps, define operations +, -, *, /, unary_-
       */
-    implicit class FieldOpElem[A: FieldOps](x: A) {
+    implicit class FieldOpElem[A : FieldOps](x: A) {
       val fl = implicitly[FieldOps[A]]
       import fl._
       def +(y: A) = plus(x, y)
@@ -51,12 +51,12 @@ object FieldOps {
     /**
       * Map the natural numbers into a type with field operations.
       */
-    implicit def natField[A: FieldOps](n: Int): A = {
+    implicit def natField[A : FieldOps](n: Int): A = {
       val fl = implicitly[FieldOps[A]]
       n match {
-        case 0          => fl.zero
+        case 0 => fl.zero
         case k if k < 0 => -natField[A](-k)
-        case _          => natField[A](n - 1) + fl.one
+        case _ => natField[A](n - 1) + fl.one
       }
     }
   }
@@ -64,7 +64,7 @@ object FieldOps {
   /**
     * Field operations a la FieldOps on a spire field.
     */
-  implicit def fieldAsFieldOps[A: Field]: FieldOps[A] = new FieldOps[A] {
+  implicit def fieldAsFieldOps[A : Field]: FieldOps[A] = new FieldOps[A] {
     val f = implicitly[Field[A]]
 
     def negate(x: A): A = f.negate(x)
@@ -85,27 +85,28 @@ object FieldOps {
   /**
     * Field operations on Intervals with endpoints in a field.
     */
-  implicit def intervalFieldOps[F: Field: Order] = new FieldOps[Interval[F]] {
-    def negate(x: spire.math.Interval[F]): spire.math.Interval[F] = -x
+  implicit def intervalFieldOps[F : Field : Order] =
+    new FieldOps[Interval[F]] {
+      def negate(x: spire.math.Interval[F]): spire.math.Interval[F] = -x
 
-    def zero: spire.math.Interval[F] = Interval.point(Field[F].zero)
+      def zero: spire.math.Interval[F] = Interval.point(Field[F].zero)
 
-    def plus(x: spire.math.Interval[F],
-             y: spire.math.Interval[F]): spire.math.Interval[F] = x + y
+      def plus(x: spire.math.Interval[F],
+               y: spire.math.Interval[F]): spire.math.Interval[F] = x + y
 
-    def div(x: spire.math.Interval[F],
-            y: spire.math.Interval[F]): spire.math.Interval[F] = x / y
+      def div(x: spire.math.Interval[F],
+              y: spire.math.Interval[F]): spire.math.Interval[F] = x / y
 
-    def one: spire.math.Interval[F] = Interval.point(Field[F].one)
+      def one: spire.math.Interval[F] = Interval.point(Field[F].one)
 
-    def times(x: spire.math.Interval[F],
-              y: spire.math.Interval[F]): spire.math.Interval[F] = x * y
-  }
+      def times(x: spire.math.Interval[F],
+                y: spire.math.Interval[F]): spire.math.Interval[F] = x * y
+    }
 
   /**
     * Field operations on functions A => F
     */
-  implicit def funcFieldOps[A, F: FieldOps]: FieldOps[A => F] =
+  implicit def funcFieldOps[A, F : FieldOps]: FieldOps[A => F] =
     new FieldOps[A => F] {
       val fl = implicitly[FieldOps[F]]
       import FieldOpsSyms._
@@ -126,7 +127,7 @@ object FieldOps {
   /**
     * Field operations on optional functions A => Option[F]
     */
-  implicit def OptFieldStruct[A, F: FieldOps] = new FieldOps[A => Option[F]] {
+  implicit def OptFieldStruct[A, F : FieldOps] = new FieldOps[A => Option[F]] {
     val fl = implicitly[FieldOps[F]]
     import FieldOpsSyms._
 

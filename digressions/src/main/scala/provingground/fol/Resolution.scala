@@ -11,17 +11,17 @@ object Resolution {
   case class SplitList[A](head: List[A], cursor: A, tail: List[A])
 
   def splitList[A](l: List[A]): List[SplitList[A]] = l match {
-    case List()  => List()
+    case List() => List()
     case List(a) => List(SplitList(List(), a, List()))
     case (a) :: (l: List[A]) =>
-      val tailList = for (sl <- splitList(l))
-        yield (SplitList(a :: sl.head, sl.cursor, sl.tail))
+      val tailList = for (sl <- splitList(l)) yield
+        (SplitList(a :: sl.head, sl.cursor, sl.tail))
       SplitList(List.empty, a, l) :: tailList
   }
 
   def subTerms(t: Term): List[Term] = t match {
     case RecTerm(f, params) => params flatMap (subTerms(_))
-    case _                  => List(t)
+    case _ => List(t)
   }
 
   case class SubTermSubsTerm(term: Term, onSubs: Term => Term) {
@@ -39,7 +39,7 @@ object Resolution {
 
   def subTermSubsRec(t: Term): List[SubTermSubsTerm] = t match {
     case RecTerm(f, params) => params flatMap (subTermSubsRec(_))
-    case s: Term            => List(SubTermSubsTerm(s, (p: Term) => p))
+    case s: Term => List(SubTermSubsTerm(s, (p: Term) => p))
   }
 
   def subTermSubs(t: Term) =
@@ -47,10 +47,9 @@ object Resolution {
 
   def subTermSubsLit(l: Literal): List[SubTermSubsLit] = {
     for (SplitList(head, t, tail) <- splitList(l.p.params);
-         st                       <- subTermSubs(t))
-      yield
-        SubTermSubsLit(st.term,
-                       (s: Term) => l(l.p.pred(head ::: List(st(t)) ::: tail)))
+    st <- subTermSubs(t)) yield
+      SubTermSubsLit(st.term,
+                     (s: Term) => l(l.p.pred(head ::: List(st(t)) ::: tail)))
   }
 
   def paramodSet(eql: Literal, l: Literal): Set[Literal] = eql.p match {
@@ -75,7 +74,7 @@ object Resolution {
       mguList(paramf, paramg)
     case (x: Var, t: Term) if notOccurs(x, t) => Some(Map(x -> t))
     case (t: Term, x: Var) if notOccurs(x, t) => Some(Map(x -> t))
-    case _                                    => None
+    case _ => None
   }
 
   def intersection[A](a: Set[A], b: Set[A]) = {
@@ -86,13 +85,13 @@ object Resolution {
     if (ss.size != ts.size) None
     else
       ss match {
-        case List()        => Some(Map.empty)
+        case List() => Some(Map.empty)
         case List(s: Term) => mgu(s, ts.head)
         case shead :: stail =>
           for (tailMap <- mguList(stail, ts.tail);
-               headMap <- mgu(shead subs tailMap, ts.head.subs(tailMap))
-               if (intersection(tailMap.keySet, headMap.keySet).isEmpty))
-            yield (tailMap ++ headMap)
+          headMap <- mgu(shead subs tailMap, ts.head.subs(tailMap)) if (intersection(
+                        tailMap.keySet, headMap.keySet).isEmpty)) yield
+          (tailMap ++ headMap)
         case _ => None
       }
 
@@ -117,7 +116,7 @@ object Resolution {
   def oppSnse(a: Literal, b: Literal): Boolean = (a, b) match {
     case (PosLit(x), NegLit(y)) => true
     case (NegLit(x), PosLit(y)) => true
-    case _                      => false
+    case _ => false
   }
 
   def mguFmla(f: AtomicFormula,
@@ -151,46 +150,45 @@ object Resolution {
   def idVar: PartialFunction[Var, Term] = { case x: Var => x }
 
   def unify(a: SplitClause, b: SplitClause) = {
-    mguFmla(a.one.p, b.one.p) map ((f: PartialFunction[Var, Term]) =>
-                                     (a.rest map (_.subs(f))) union (b.rest map (_.subs(
-                                       f))))
+    mguFmla(a.one.p, b.one.p) map
+    ((f: PartialFunction[Var, Term]) =>
+          (a.rest map (_.subs(f))) union (b.rest map (_.subs(f))))
   }
 
   def newResolutionClauses(c: CNF) = {
     for (x <- c.clauses; y <- c.clauses; a <- splitClause(x);
-         b <- splitClause(y) if oppSnse(a.one, b.one)) yield unify(a, b)
+    b <- splitClause(y) if oppSnse(a.one, b.one)) yield unify(a, b)
   }
 
   def negate(fmla: Formula): Formula = fmla match {
-    case p: AtomicFormula         => NegFormula(p)
-    case NegFormula(p)            => p
-    case ConjFormula(p, "&", q)   => negate(p) | negate(q)
-    case ConjFormula(p, "|", q)   => negate(p) & negate(q)
-    case ConjFormula(p, "=>", q)  => p & negate(q)
+    case p: AtomicFormula => NegFormula(p)
+    case NegFormula(p) => p
+    case ConjFormula(p, "&", q) => negate(p) | negate(q)
+    case ConjFormula(p, "|", q) => negate(p) & negate(q)
+    case ConjFormula(p, "=>", q) => p & negate(q)
     case ConjFormula(p, "<=>", q) => (p & negate(q)) | (q & negate(p))
-    case ExQuantFormula(x, p)     => UnivQuantFormula(x, negate(p))
-    case UnivQuantFormula(x, p)   => ExQuantFormula(x, negate(p))
+    case ExQuantFormula(x, p) => UnivQuantFormula(x, negate(p))
+    case UnivQuantFormula(x, p) => ExQuantFormula(x, negate(p))
   }
 
   class Skolem(x: Var, d: Int) extends Func(d)
 
   def cnf(fmla: Formula, outerVars: List[Var]): CNF = fmla match {
-    case p: AtomicFormula        => CNF(Set(Clause(Set(PosLit(p)))))
-    case ConjFormula(p, "&", q)  => cnf(p, outerVars) & cnf(q, outerVars)
-    case ConjFormula(p, "|", q)  => cnf(p, outerVars) | cnf(q, outerVars)
+    case p: AtomicFormula => CNF(Set(Clause(Set(PosLit(p)))))
+    case ConjFormula(p, "&", q) => cnf(p, outerVars) & cnf(q, outerVars)
+    case ConjFormula(p, "|", q) => cnf(p, outerVars) | cnf(q, outerVars)
     case ConjFormula(p, "=>", q) => cnf(!p, outerVars) | cnf(q, outerVars)
     case ConjFormula(p, "<=>", q) =>
-      (cnf(p, outerVars) & cnf(q, outerVars)) | (cnf(!p, outerVars) & cnf(
-        !q,
-        outerVars))
-    case NegFormula(NegFormula(p))    => cnf(p, outerVars)
+      (cnf(p, outerVars) & cnf(q, outerVars)) |
+      (cnf(!p, outerVars) & cnf(!q, outerVars))
+    case NegFormula(NegFormula(p)) => cnf(p, outerVars)
     case NegFormula(p: AtomicFormula) => CNF(Set(Clause(Set(NegLit(p)))))
-    case NegFormula(p: Formula)       => cnf(negate(p), outerVars)
+    case NegFormula(p: Formula) => cnf(negate(p), outerVars)
 
     case UnivQuantFormula(x: Var, p) => cnf(p, x :: outerVars)
     case ExQuantFormula(x, p) =>
       val vars = outerVars
-      val t    = new Skolem(x, vars.length)(vars)
+      val t = new Skolem(x, vars.length)(vars)
       cnf(p, outerVars) subs (Map(x -> t) orElse idVar)
   }
 
@@ -215,9 +213,8 @@ object Resolution {
   def paramodTerm(e: Formula, t: Term): Set[Term] = t match {
     case x: Var => Set()
     case RecTerm(f, ts) =>
-      (paramodList(e, ts) map (RecTerm(f, _)): Set[Term]) union (paraSubs(
-        e,
-        RecTerm(f, ts)).toSet)
+      (paramodList(e, ts) map (RecTerm(f, _)): Set[Term]) union
+      (paraSubs(e, RecTerm(f, ts)).toSet)
     case x: Term => paraSubs(e, x).toSet
   }
 

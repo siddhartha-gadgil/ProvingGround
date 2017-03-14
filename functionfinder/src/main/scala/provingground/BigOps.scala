@@ -4,11 +4,7 @@ import ScalaRep._
 import IntTypes._
 import EnumType._
 import ListType._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object BigOps {
 
@@ -20,13 +16,13 @@ object BigOps {
 
   val BigSum = {
     lambda(A)(
-      lambda(en)(
-        lambda(f)({
-          val enlist = enumlist(A)(en)
-          val lst    = lmap(A)(N)(f)(enlist)
-          foldLeft(N)(N)(lst)(N.sum)
-        })
-      )
+        lambda(en)(
+            lambda(f)({
+              val enlist = enumlist(A)(en)
+              val lst = lmap(A)(N)(f)(enlist)
+              foldLeft(N)(N)(lst)(N.sum)
+            })
+        )
     )
   }
 }

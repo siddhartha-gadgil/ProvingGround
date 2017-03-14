@@ -17,12 +17,11 @@ import HoTT._
 
 import FineDeducer._
 
-case class NextSample(
-                p: FD[Term],
-                ded : FineDeducer = FineDeducer(),
-                vars: Vector[Term] = Vector(),
-                size: Int = 1000,
-                derTotalSize: Int = 1000,
+case class NextSample(p: FD[Term],
+                      ded: FineDeducer = FineDeducer(),
+                      vars: Vector[Term] = Vector(),
+                      size: Int = 1000,
+                      derTotalSize: Int = 1000,
                       epsilon: Double = 0.2,
                       inertia: Double = 0.3) {
   lazy val init = ded.evolve(p)
@@ -56,8 +55,7 @@ case class NextSample(
         val dPD =
           ded.Devolve(nextFD, tang) //recursive distribution based on derivative for sampling
         val samp = sample(dPD, n)
-        val DdPd =
-          ded.DevolveTyp(nextFD, tang)
+        val DdPd = ded.DevolveTyp(nextFD, tang)
         val Dsamp = sample(DdPd, n)
         x -> (toFD(samp), toFD(Dsamp))
     }
@@ -104,15 +102,18 @@ case class NextSample(
   def buf = BufferedRun(iter)
 }
 
-case class BufferedRun[A](iter: Iterator[A]){
+case class BufferedRun[A](iter: Iterator[A]) {
   var live: Boolean = true
   def stop() = {
     println(s"Sending halt signal to $this")
-     live = false }
+    live = false
+  }
   val it = iter.takeWhile(
-    (_) => {
+      (_) =>
+        {
       if (!live) println(s"Halted $this")
-      live})
+      live
+  })
   val timeseries = scala.collection.mutable.ArrayBuffer[A]()
   Future {
     it.foreach((ns) => timeseries.append(ns))

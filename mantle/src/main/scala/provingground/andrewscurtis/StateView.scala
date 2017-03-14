@@ -64,9 +64,6 @@ object StateView {
    */
   def fromMongo(name: String) =
     (getFutOptElems(name) flatMapp
-        ((vec) =>
-              getFutOptFDM(name) mapp
-              (new StateView(name,
-                             vec,
-                             _)))) map (_.get)
+        ((vec) => getFutOptFDM(name) mapp (new StateView(name, vec, _)))) map
+    (_.get)
 }

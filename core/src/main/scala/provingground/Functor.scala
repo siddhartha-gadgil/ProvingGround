@@ -5,7 +5,6 @@ import scala.language.higherKinds
 import shapeless.{Id => _, _}
 import HList._
 
-
 import cats._
 
 //import cats.data.Prod
@@ -18,16 +17,18 @@ trait Equiv[X[_], Y[_]] {
   def inv[A]: Y[A] => X[A]
 }
 
-object Equiv{
-  def idEquiv[X[_]] : Equiv[X, X] = new Equiv[X, X]{
+object Equiv {
+  def idEquiv[X[_]]: Equiv[X, X] = new Equiv[X, X] {
     def map[A] = (xa) => xa
 
     def inv[A] = (xa) => xa
   }
 }
 
-trait CompositeFunctors{
-  implicit def traverseHCons[X[_], Y[_] <: HList](implicit tx: Lazy[Traverse[X]], YT : Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
+trait CompositeFunctors {
+  implicit def traverseHCons[X[_], Y[_] <: HList](
+      implicit tx: Lazy[Traverse[X]],
+      YT: Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
     new Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] {
       val XT = tx.value
       // val YT = implicitly[Traverse[Y]]
@@ -52,9 +53,8 @@ trait CompositeFunctors{
       }
     }
 
-
-  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
-    : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
+  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]: Traverse[
+      ({ type Z[A] = X[Y[A]] })#Z] =
     new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
       type F[A] = X[Y[A]]
 
@@ -80,11 +80,9 @@ trait CompositeFunctors{
         tx.foldRight(fa, lb)(g)
       }
     }
-
-
 }
 
-object Functors extends CompositeFunctors{
+object Functors extends CompositeFunctors {
   // type T = List[?]
 
   def liftMap[A, B, F[_]: Functor](fa: F[A], f: A => B) = {
@@ -146,9 +144,8 @@ object Functors extends CompositeFunctors{
 
   type II[A] = (Id[A], Id[A]);
 
-
-  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]
-    : Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] =
+  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]: Traverse[
+      ({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] {
       val XT = implicitly[Traverse[X]]
       val YT = implicitly[Traverse[Y]]
@@ -173,7 +170,6 @@ object Functors extends CompositeFunctors{
       }
     }
 
-
   type HN[A] = HNil
 
   type IdHN[A] = Id[A] :: HN[A]
@@ -193,10 +189,6 @@ object Functors extends CompositeFunctors{
   type InHN[A] = In[A] :: HN[A]
 
   type StIntHN[A] = St[A] :: InHN[A]
-
-
-
-
 
   implicit def traverseEquiv[F[_], Y[_]](implicit equiv: Equiv[F, Y],
                                          TY: Traverse[Y]): Traverse[F] =

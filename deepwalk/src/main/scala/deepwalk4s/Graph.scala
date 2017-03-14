@@ -25,7 +25,7 @@ object Graph {
                  weight: Double = 1.0,
                  oriented: Boolean = false) = {
     val vertices = map.keys.toList ++ map.values.toList.flatten
-    val edges    = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
+    val edges = for ((x, l) <- map; y <- l) yield Edge(x, y, weight, oriented)
     Graph(vertices.toSet, edges.toList)
   }
 
@@ -43,7 +43,6 @@ object Graph {
     val ss = lines map (_.split(separator).toList)
     fromSeqs(ss, weight, oriented)
   }
-
 }
 
 import Graph._
@@ -53,17 +52,18 @@ case class Graph[V](vertices: Set[V], edges: List[Edge[V]]) {
 
   val vert = index map { case (x, n) => (n, x) }
 
-  val vertex = (for ((n, v) <- vert)
-    yield ((v, IndexedVertex(n, v): graph.api.Vertex[V]))).toMap
+  val vertex = (for ((n, v) <- vert) yield
+    ((v, IndexedVertex(n, v): graph.api.Vertex[V]))).toMap
 
   val jVertices = vertex.values.toList.asJava
 
   val jEdges =
-    edges map ((e) =>
-                 IndexEdge(index(e.initial),
-                           index(e.terminal),
-                           e.weight,
-                           e.oriented))
+    edges map
+    ((e) =>
+          IndexEdge(index(e.initial),
+                    index(e.terminal),
+                    e.weight,
+                    e.oriented))
 
   val jGraph: graph.graph.Graph[V, java.lang.Double] = {
     val base = new graph.graph.Graph[V, java.lang.Double](jVertices)
@@ -82,10 +82,10 @@ case class Graph[V](vertices: Set[V], edges: List[Edge[V]]) {
       .windowSize(windowSize)
     val deepLearn = builder.build()
     val provider = new WeightedRandomWalkGraphIteratorProvider(
-      jGraph,
-      walkLength,
-      12345,
-      org.deeplearning4j.graph.api.NoEdgeHandling.SELF_LOOP_ON_DISCONNECTED)
+        jGraph,
+        walkLength,
+        12345,
+        org.deeplearning4j.graph.api.NoEdgeHandling.SELF_LOOP_ON_DISCONNECTED)
     deepLearn.initialize(jGraph)
     deepLearn.fit(provider)
     deepLearn

@@ -70,7 +70,7 @@ object Collections {
   object ApproxSeq {
     case class Const[T](t: T) extends ApproxSeq[T] {
       lazy val head = t
-      val stable    = true
+      val stable = true
 
       lazy val tail = this
     }
@@ -131,7 +131,7 @@ object Collections {
 
   case class InnerProduct[V](dot: (V, V) => Double)
 
-  implicit class DotOp[V: InnerProduct](a: V) {
+  implicit class DotOp[V : InnerProduct](a: V) {
     def |*|(b: V) = implicitly[InnerProduct[V]].dot(a, b)
   }
 
@@ -169,14 +169,14 @@ object Collections {
     def sum = (for (l <- support; value <- get(l)) yield value).sum
 
     def innerProduct(that: LabelledVector[L]) =
-      (for (l <- support; fst <- get(l); scnd <- that.get(l))
-        yield fst * scnd).sum
+      (for (l <- support; fst <- get(l); scnd <- that.get(l)) yield
+        fst * scnd).sum
 
     def dot(that: LabelledVector[L]) = innerProduct(that)
   }
 
-  case class ArrayMap[L, T](coords: Map[L, T],
-                            supp: Option[Traversable[L]] = None)
+  case class ArrayMap[L, T](
+      coords: Map[L, T], supp: Option[Traversable[L]] = None)
       extends LabelledArray[L, T] {
     lazy val support = supp getOrElse (coords.keys)
 
@@ -191,8 +191,8 @@ object Collections {
       coords.values.foldLeft(zero)(ls.sum(_, _))
 
     def ++(that: ArrayMap[L, T])(implicit zero: T, ls: LinearStructure[T]) = {
-      val unionmap = (for (k <- coords.keySet.union(that.coords.keySet))
-        yield (k -> ls.sum(this(k), that(k)))).toMap
+      val unionmap = (for (k <- coords.keySet.union(that.coords.keySet)) yield
+      (k -> ls.sum(this(k), that(k)))).toMap
 
       ArrayMap(unionmap, supp)
     }
@@ -233,7 +233,7 @@ object Collections {
 
     def ++(that: MultiSet[A]) = {
       val newmap = ((wts.keySet union that.wts.keySet) map
-        ((k: A) => (k, weight(k) + that.weight(k)))).toMap
+          ((k: A) => (k, weight(k) + that.weight(k)))).toMap
       MultiSet(newmap)
     }
 

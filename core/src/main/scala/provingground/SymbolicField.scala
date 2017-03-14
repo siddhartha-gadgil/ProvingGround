@@ -13,7 +13,7 @@ import scala.language.implicitConversions
 /**
   * @author gadgil
   */
-class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
+class SymbolicField[A : Field] extends SymbolicCRing[A] { self =>
   val field = implicitly[Field[A]]
 
   import field._
@@ -32,9 +32,9 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
           prod(reciprocal(u))(reciprocal(v))
         case Reciprocal(a) => a
         case PiTerm(elems) => {
-          val flipElems = for ((a, p) <- elems) yield (a, -p)
-          PiTerm(flipElems)
-        }
+            val flipElems = for ((a, p) <- elems) yield (a, -p)
+            PiTerm(flipElems)
+          }
         case a => Reciprocal(a)
       }
 

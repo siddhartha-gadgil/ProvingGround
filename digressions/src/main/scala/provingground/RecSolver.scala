@@ -13,7 +13,7 @@ object RecSolver {
     def solve(a: P): Option[Either[P, S]]
     def apply(a: P) = solve(a)
     def apply(a: Either[P, S]): Option[Either[P, S]] = a match {
-      case Left(b)  => solve(b)
+      case Left(b) => solve(b)
       case Right(c) => Some(Right(c))
     }
   }
@@ -34,13 +34,13 @@ object RecSolver {
     else
       as.head match {
         case Right(s) => Some(s)
-        case Left(p)  => solve(p)(solvers) orElse (solveSeq(as.tail)(solvers))
+        case Left(p) => solve(p)(solvers) orElse (solveSeq(as.tail)(solvers))
       }
   }
 
   def trySolve[P, S](s: Either[P, S])(implicit solvers: AtomSeq[P, S]) =
     s match {
-      case Left(a)  => solve(a)(solvers) map (Right(_)) getOrElse (Left(a))
+      case Left(a) => solve(a)(solvers) map (Right(_)) getOrElse (Left(a))
       case Right(a) => a
     }
 

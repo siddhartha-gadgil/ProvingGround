@@ -76,8 +76,8 @@ object Application extends Controller {
   }
 
   val bounceForm = Form(
-    mapping("value" -> text, "mult" -> number)(bouncePair.apply)(
-      bouncePair.unapply)
+      mapping("value" -> text, "mult" -> number)(bouncePair.apply)(
+          bouncePair.unapply)
   )
 
   def bounce = Action(parse.text) { implicit request =>
@@ -94,9 +94,9 @@ object Application extends Controller {
   }
 
   def acLoop = Action { implicit request =>
-    val presGen   = presentationGenForm.bindFromRequest.get
+    val presGen = presentationGenForm.bindFromRequest.get
     val learnLoop = learnerForm(presGen.feedback).bindFromRequest.get
-    val finalDst  = learnLoop.outerlearn(defaultdstbn)
+    val finalDst = learnLoop.outerlearn(defaultdstbn)
     Ok(views.html.acLoop(???))
   }
 }

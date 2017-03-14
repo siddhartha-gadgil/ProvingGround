@@ -94,6 +94,18 @@ class InductionSpecTL extends FlatSpec {
     assert(add(two)(one) == three && add(two)(two) == four)
   }
 
+  "Ackermann function recursively defined" should "give the correct values" in {
+    val ackm = "ack(m)" :: Nat ->: Nat
+
+    val ackmp1n = "ack(m+1)(n)" :: Nat
+
+    val ack = recNNN(succ)(
+        m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n))))))
+
+    assert(ack(two)(two) == seven)
+    assert(ack(three)(one) == add(seven)(six))
+  }
+
   // Example: Lists
 
   val A = "A" :: Type
@@ -211,11 +223,16 @@ class InductionSpecTL extends FlatSpec {
   }
 
   "Concatenating vectors using indexed induction" should "behave as expected" in {
-    val indVVV = VecInd.induc(n :~> (vn :-> (m ~>: (Vec(m) ->: Vec(add(n)(m)) ))))
-    val concatVn = "concat(v_n)" :: (m ~>: (Vec(m) ->: Vec(add(n)(m)) ))
-    val vconcat = indVVV(m :~> (vm :-> vm))(n :~> (a :-> (vn :-> (concatVn :-> (m :~> (vm :->
-      vcons(add(n)(m))(a)(concatVn(m)(vm)) ))))))
-    assert(vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
+    val indVVV =
+      VecInd.induc(n :~> (vn :-> (m ~>: (Vec(m) ->: Vec(add(n)(m))))))
+    val concatVn = "concat(v_n)" :: (m ~>: (Vec(m) ->: Vec(add(n)(m))))
+    val vconcat = indVVV(m :~> (vm :-> vm))(n :~>
+        (a :->
+            (vn :->
+                (concatVn :->
+                    (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm))))))))
+    assert(vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(
+            vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
   val VecN = "Vec(Nat)" :: Nat ->: Type
@@ -247,7 +264,8 @@ class InductionSpecTL extends FlatSpec {
     val iv = ind(v1)
     val tail = "tail" :: VecN(n)
     val result = "result" :: VecN(succ(n))
-    val step = n :~> ( m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result) )  ) )
+    val step =
+      n :~> (m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result))))
     assert(vsum(three)(iv(step)(two)(iv(step)(one)(v1))) == five)
   }
 

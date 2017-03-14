@@ -10,7 +10,7 @@ object WordExpressions {
 
   case class Word(ts: List[Term]) extends Term {
     def subs(xt: Var => Term) = Word(ts map (_.subs(xt)))
-    val freeVars              = (ts map (_.freeVars)) reduce (_ union _)
+    val freeVars = (ts map (_.freeVars)) reduce (_ union _)
   }
 
   case class Sequence(ts: Stream[Term]) extends Term {
@@ -22,32 +22,32 @@ object WordExpressions {
 
   case class RepSeq(term: Term, n: Term) extends Term {
     def subs(xt: Var => Term) = RepSeq(term subs xt, n)
-    val freeVars              = term.freeVars
+    val freeVars = term.freeVars
     def this(term: Term) = this(term, new Var)
   }
 
   case class FoldSeq(r: RepSeq, b: BinOp) extends Term {
     def subs(xt: Var => Term) = FoldSeq(r subs xt, b)
-    val freeVars              = r.freeVars
+    val freeVars = r.freeVars
   }
 
   class VarSeq {
     val stream: Stream[Var] = (Stream.from(0)) map (_ => new Var)
-    def apply(n: Int)       = stream(n)
-    def take(n: Int)        = stream.take(n).toList
-    def apply(n: Term)      = VarIndx(this, n)
+    def apply(n: Int) = stream(n)
+    def take(n: Int) = stream.take(n).toList
+    def apply(n: Term) = VarIndx(this, n)
   }
 
   case class VarSeqSym(name: String) extends VarSeq
 
   case class VarIndx(xs: VarSeq, index: Term) extends Term {
     def subs(xt: Var => Term) = VarIndx(xs, index subs xt)
-    val freeVars              = index.freeVars
+    val freeVars = index.freeVars
   }
 
   case class OneOf(ts: Set[Term]) extends Term {
     def subs(xt: Var => Term) = OneOf(ts map (_.subs(xt)))
-    val freeVars              = (ts map (_.freeVars)) reduce (_ union _)
+    val freeVars = (ts map (_.freeVars)) reduce (_ union _)
   }
 
   private def subsWordFirst[A](l: List[A],
@@ -69,29 +69,27 @@ object WordExpressions {
   }
 
   def cancellationSet(genSet: Set[Term])(implicit u: UnOp) = {
-    (for (gen <- genSet)
-      yield
-        (
+    (for (gen <- genSet) yield
+      (
           Set((List(gen, u(gen)), List.empty[Term]),
               (List(u(gen), gen), List.empty[Term]))
-        )) reduce (_ union _)
+      )) reduce (_ union _)
   }
 
   def inverseSet(genSet: Set[Term])(implicit u: UnOp) = {
-    (for (gen <- genSet)
-      yield
-        (
+    (for (gen <- genSet) yield
+      (
           Set((List(gen, u(gen)), List.empty[Term]),
               (List(u(gen), gen), List.empty[Term]),
               (List.empty[Term], List(gen, u(gen))),
               (List.empty[Term], List(u(gen), gen)))
-        )) reduce (_ union _)
+      )) reduce (_ union _)
   }
 
   def relationSet(rels: Set[List[Term]]) = {
-    rels flatMap ((r: List[Term]) =>
-                    Set((r, List.empty: List[Term]),
-                        (List.empty: List[Term], r)))
+    rels flatMap
+    ((r: List[Term]) =>
+          Set((r, List.empty: List[Term]), (List.empty: List[Term], r)))
   }
 
   def equalitySet(eqns: Set[(List[Term], List[Term])]) =

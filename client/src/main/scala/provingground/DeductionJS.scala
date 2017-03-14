@@ -39,13 +39,13 @@ object DeducerJS {
     val rows = fd sortBy ((t) => 1 - t._3) take (100) map (row)
 
     div(
-      table(
-        caption("Entropies of terms"),
-        thead(
-          tr(th("Term"), th("Type"), th("Entropy"))
-        ),
-        tbody(rows: _*)
-      )
+        table(
+            caption("Entropies of terms"),
+            thead(
+                tr(th("Term"), th("Type"), th("Entropy"))
+            ),
+            tbody(rows: _*)
+        )
     ).render
   }
 
@@ -83,40 +83,40 @@ object DeducerJS {
       div(span("x-scale:"), xcBox, span("; y-scale:"), ycBox).render
 
     jsDiv.appendChild(
-      div(h1("Dynamics and Learning for deduction"),
-          plotDiv,
-          selected,
-          div(all.style := "clear: both;"),
-          refresh,
-          info,
-          queryDiv,
-          h2("Entropies of Terms"),
-          tableDiv).render)
+        div(h1("Dynamics and Learning for deduction"),
+            plotDiv,
+            selected,
+            div(all.style := "clear: both;"),
+            refresh,
+            info,
+            queryDiv,
+            h2("Entropies of Terms"),
+            tableDiv).render)
 
     def svgLines(lines: List[(String, Vector[Double])]) =
-      for ((label, points)       <- lines;
-           ((val1, val2), index) <- (points zip points.tail).zipWithIndex)
-        yield {
-          line(onclick := { () =>
-            {
-              info.innerHTML = ""
-              info.appendChild(div("Element: ",
-                                   katex(label),
-                                   "Entropy: ",
-                                   points.last).render)
-            }
-          })(onfocus := { () =>
-            {
-              info.innerHTML = ""
-              info.appendChild(katex(label))
-            }
-          })(x1 := xc(index.toDouble),
-             y1 := yc(val1),
-             x2 := xc(index.toDouble + 1),
-             y2 := yc(val2),
-             stroke := "blue",
-             strokeWidth := 3).render
-        }
+      for ((label, points) <- lines;
+      ((val1, val2), index) <- (points zip points.tail).zipWithIndex) yield {
+        line(
+            onclick := { () =>
+          {
+            info.innerHTML = ""
+            info.appendChild(div("Element: ",
+                                 katex(label),
+                                 "Entropy: ",
+                                 points.last).render)
+          }
+        })(onfocus := { () =>
+          {
+            info.innerHTML = ""
+            info.appendChild(katex(label))
+          }
+        })(x1 := xc(index.toDouble),
+           y1 := yc(val1),
+           x2 := xc(index.toDouble + 1),
+           y2 := yc(val2),
+           stroke := "blue",
+           strokeWidth := 3).render
+      }
 
     def showFD() = {
       val plot = svg(svgAttrs.width := 1000, svgAttrs.height := 250).render
@@ -126,18 +126,18 @@ object DeducerJS {
       plotDiv.appendChild(plot)
 
       plot.appendChild(
-        rect(x := 0,
-             y := 0,
-             svgAttrs.width := 1000,
-             svgAttrs.height := 400,
-             fill := "grey",
-             fillOpacity := "0.1").render
+          rect(x := 0,
+               y := 0,
+               svgAttrs.width := 1000,
+               svgAttrs.height := 400,
+               fill := "grey",
+               fillOpacity := "0.1").render
       )
 
       Ajax.get("../terms-data").onSuccess {
         case xhr =>
           tableDiv.appendChild(
-            fdView(read[Vector[(String, String, Double)]](xhr.responseText))
+              fdView(read[Vector[(String, String, Double)]](xhr.responseText))
           )
       }
       Ajax.get("../terms-time-series").onSuccess {
@@ -145,9 +145,8 @@ object DeducerJS {
           val tsList = read[List[(String, Vector[Double])]](xhr.responseText)
           svgLines(tsList).foreach((elem) => plot.appendChild(elem))
           val items =
-            tsList
-              .sortBy(_._2.last)
-              .reverse map ((lv) => katex(lv._1)) map (li(_))
+            tsList.sortBy(_._2.last).reverse map ((lv) => katex(lv._1)) map
+            (li(_))
           val list = ol(items: _*).render
           // tsList sortBy (_._2.last) foreach (
           //   (lv) =>
@@ -162,14 +161,16 @@ object DeducerJS {
 
     refresh.onclick = (e: dom.Event) => showFD()
 
-    xcBox.onchange = (ev: dom.Event) => {
-      xScale = xcBox.value.toInt
-      showFD()
+    xcBox.onchange = (ev: dom.Event) =>
+      {
+        xScale = xcBox.value.toInt
+        showFD()
     }
 
-    ycBox.onchange = (ev: dom.Event) => {
-      yScale = ycBox.value.toInt
-      showFD()
+    ycBox.onchange = (ev: dom.Event) =>
+      {
+        yScale = ycBox.value.toInt
+        showFD()
     }
   }
 }

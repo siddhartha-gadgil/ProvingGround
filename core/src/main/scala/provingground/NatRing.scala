@@ -13,8 +13,8 @@ import annotation.tailrec
 
 object NatRing extends SymbolicCRing[SafeLong] {
   override def toString = "Nat"
-  val x                 = "x" :: LocalTyp
-  val succ              = lmbda(x)(x + 1)
+  val x = "x" :: LocalTyp
+  val succ = lmbda(x)(x + 1)
 
   val NatTyp = LocalTyp
 
@@ -31,13 +31,13 @@ object NatRing extends SymbolicCRing[SafeLong] {
       extends Func[Nat, U] { self =>
     def h = (n: SafeLong) => g(Literal(n))
 
-    val dom   = NatTyp
+    val dom = NatTyp
     val codom = init.typ.asInstanceOf[Typ[U]]
 
     val typ = dom ->: codom
 
     def subs(x: Term, y: Term) = this
-    def newobj                 = this
+    def newobj = this
 
     def act(x: LocalTerm) = x match {
       case Literal(n) => recDefn(n, init, h)
@@ -60,7 +60,7 @@ object NatRing extends SymbolicCRing[SafeLong] {
     val depcodom = typFamily
 
     def subs(x: Term, y: Term) = this
-    def newobj                 = this
+    def newobj = this
 
     def act(x: LocalTerm) = x match {
       case Literal(n) => recDefn(n, init, h)

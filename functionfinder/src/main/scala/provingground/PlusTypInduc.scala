@@ -1,11 +1,7 @@
 package provingground
 import provingground.HoTT._
 import ScalaRep._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
+import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 
 object PlusTypInduc {
   import PlusTyp.{FirstIncl, ScndIncl}
@@ -16,8 +12,7 @@ object PlusTypInduc {
       codom: Typ[V],
       firstfn: Func[Term, V],
       scndfn: Func[Term, V])
-      extends Func[Term, V]
-      with Subs[PlusExtendedFunction[V]] {
+      extends Func[Term, V] with Subs[PlusExtendedFunction[V]] {
 
     val dom = pair(first, second)
 
@@ -28,7 +23,7 @@ object PlusTypInduc {
     def act(u: Term) = u match {
       case FirstIncl(`first`, a: Term) => firstfn(a)
       case ScndIncl(`second`, b: Term) => scndfn(b)
-      case _                           => codom.symbObj(ApplnSym(this, u))
+      case _ => codom.symbObj(ApplnSym(this, u))
     }
 
 //	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
@@ -49,8 +44,7 @@ object PlusTypInduc {
       depcodom: Func[Term, Typ[V]],
       firstfn: FuncLike[Term, V],
       scndfn: FuncLike[Term, V])
-      extends FuncLike[Term, V]
-      with Subs[PlusExtendedDepFunction[V]] {
+      extends FuncLike[Term, V] with Subs[PlusExtendedDepFunction[V]] {
 
     val dom = pair(first, second)
 
@@ -61,7 +55,7 @@ object PlusTypInduc {
     def act(u: Term) = u match {
       case FirstIncl(`first`, a: Term) => firstfn(a)
       case ScndIncl(`second`, b: Term) => scndfn(b)
-      case _                           => depcodom(u).symbObj(ApplnSym(this, u))
+      case _ => depcodom(u).symbObj(ApplnSym(this, u))
     }
 
 //	  // val domobjtpe: reflect.runtime.universe.Type = typeOf[Term]
@@ -86,12 +80,9 @@ object PlusTypInduc {
 
   val g = "g " :: A ->: C
 
-  val rec = lambda(A)(
-    lambda(B)(
-      lambda(C)(
-        lambda(f)(
-          lambda(g)(PlusExtendedFunction(A, B, C, f, g))
-        ))))
+  val rec = lambda(A)(lambda(B)(lambda(C)(lambda(f)(
+                  lambda(g)(PlusExtendedFunction(A, B, C, f, g))
+              ))))
 
   val AplusB = PlusTyp(A, B)
 
@@ -111,10 +102,7 @@ object PlusTypInduc {
 
   val gdep = "g" :: (b !: B) ~>: Cs(j(b))
 
-  val induc = lambda(A)(
-    lambda(B)(
-      lambda(Cs)(
-        lambda(fdep)(
-          lambda(gdep)(PlusExtendedDepFunction(A, B, Cs, fdep, gdep))
-        ))))
+  val induc = lambda(A)(lambda(B)(lambda(Cs)(lambda(fdep)(
+                  lambda(gdep)(PlusExtendedDepFunction(A, B, Cs, fdep, gdep))
+              ))))
 }

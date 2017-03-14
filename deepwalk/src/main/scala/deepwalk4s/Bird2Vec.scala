@@ -24,8 +24,8 @@ object Bird2Vec {
   val commonBirds = { for ((name, f) <- birdFreqs if f > 100) yield name }.toSet
 
   val checklists =
-    read.lines(data / "checklists.tsv") map (_.split("\t").toVector.tail
-      .filter(commonBirds.contains(_)))
+    read.lines(data / "checklists.tsv") map
+    (_.split("\t").toVector.tail.filter(commonBirds.contains(_)))
 
   lazy val commonPairs = {
     for (x <- commonBirds; y <- commonBirds if x != y) yield (x, y)
@@ -57,7 +57,7 @@ object Bird2Vec {
     }
 
   lazy val iter = new BasicLineIterator(
-    new File("/home/gadgil/code/ProvingGround/data/bird-sentences.txt"))
+      new File("/home/gadgil/code/ProvingGround/data/bird-sentences.txt"))
 
   lazy val t = new DefaultTokenizerFactory();
   t.setTokenPreProcessor(new CommonPreprocessor());
@@ -77,13 +77,11 @@ object Bird2Vec {
 
   def save(vec: Word2Vec) =
     WordVectorSerializer.writeWordVectors(
-      vec,
-      new File("/home/gadgil/code/ProvingGround/data/bird2vec.txt"))
+        vec, new File("/home/gadgil/code/ProvingGround/data/bird2vec.txt"))
 
   def nearest(vec: Word2Vec) =
     commonPairs
       .sortBy((ab) =>
-        -vec.similarity(ab._1.replace(" ", "@"), ab._2.replace(" ", "@")))
+            -vec.similarity(ab._1.replace(" ", "@"), ab._2.replace(" ", "@")))
       .map { case (a, b) => (commonNames(a), commonNames(b)) }
-
 }

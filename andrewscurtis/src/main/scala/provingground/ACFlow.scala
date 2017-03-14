@@ -22,7 +22,7 @@ object ACFlow {
     * Actor reference only after materialization.
     */
   val src = Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove],
-                                   FiniteDistribution[Moves]),
+                                  FiniteDistribution[Moves]),
                                   Param]](100, OverflowStrategy.dropHead)
 
   /**

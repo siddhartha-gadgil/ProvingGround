@@ -26,8 +26,8 @@ object InductiveTyp {
   def fromFormal(formalCons: List[Term], formalTyp: Typ[Term]) = {
     val constructorDefs =
       formalCons map
-        ((cons) =>
-           (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
+      ((cons) =>
+            (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
     InductiveTypDefinition(constructorDefs)
   }
 }
@@ -37,7 +37,7 @@ case class InductiveTypDefinition[C <: Term with Subs[C]](
     extends InductiveTyp[C, Term] {
   val typ = Type
 
-  lazy val constructors = constructorDefs map (_(this))
+  lazy val constructors = constructorDefs map (_ (this))
 
   def subs(x: Term, y: Term) = this
 
@@ -52,7 +52,7 @@ case class InductiveTypDefinition[C <: Term with Subs[C]](
 
   def withCod[CC <: Term with Subs[CC]] =
     InductiveTypDefinition(
-      constructorDefs map ((fn) => (t: Typ[Term]) => (fn(t).withCod[CC])))
+        constructorDefs map ((fn) => (t: Typ[Term]) => (fn(t).withCod[CC])))
 
   def recFn[CC <: Term with Subs[CC]](X: Typ[CC]) =
     withCod[CC].rec(X)

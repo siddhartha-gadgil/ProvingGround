@@ -95,20 +95,20 @@ object AndrewsCurtis {
   sealed trait ACMoveType
 
   object ACMoveType {
-    case object ACStabMv   extends ACMoveType
+    case object ACStabMv extends ACMoveType
     case object ACDeStabMv extends ACMoveType
-    case object RtMultMv   extends ACMoveType
-    case object LftMultMv  extends ACMoveType
-    case object ConjMv     extends ACMoveType
-    case object InvMv      extends ACMoveType
+    case object RtMultMv extends ACMoveType
+    case object LftMultMv extends ACMoveType
+    case object ConjMv extends ACMoveType
+    case object InvMv extends ACMoveType
 
     def fromString(mv: String): ACMoveType =
       (MoveTypeList find (_.toString == mv)).get
   }
 
   import ACMoveType._
-  val MoveTypeList: List[ACMoveType] =
-    List(ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
+  val MoveTypeList: List[ACMoveType] = List(
+      ACStabMv, ACDeStabMv, RtMultMv, LftMultMv, ConjMv, InvMv)
 
   /*
   implicit object ACMoveFreqFormat extends Format[FiniteDistribution[ACMoveType]]{
@@ -130,12 +130,12 @@ object AndrewsCurtis {
    * Multiplicity of moves of a given type given a presentation. In general this should be a function of the presentation.
    */
   def multiplicity(rk: Int): MoveType => Long = {
-    case ACStabMv   => 1: Long
+    case ACStabMv => 1: Long
     case ACDeStabMv => (1: Long) // can be zero in practice
-    case RtMultMv   => (rk.toLong: Long) * ((rk.toLong) - 1)
-    case LftMultMv  => (rk.toLong) * ((rk.toLong) - 1)
-    case ConjMv     => (rk.toLong) * ((rk.toLong) * 2 - 1)
-    case InvMv      => (rk.toLong)
+    case RtMultMv => (rk.toLong: Long) * ((rk.toLong) - 1)
+    case LftMultMv => (rk.toLong) * ((rk.toLong) - 1)
+    case ConjMv => (rk.toLong) * ((rk.toLong) * 2 - 1)
+    case InvMv => (rk.toLong)
   }
 
   def allMoves(pres: Presentation): MoveType => List[Move] = {
@@ -144,12 +144,10 @@ object AndrewsCurtis {
       if (pres.ACstabilized) List(ACDeStab) else List()
     case RtMultMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k)
-        yield RtMult(j, k)).toList
+      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k) yield RtMult(j, k)).toList
     case LftMultMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k)
-        yield LftMult(j, k)).toList
+      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k) yield LftMult(j, k)).toList
     case ConjMv =>
       val n = pres.rank
       (for (j <- 0 to n - 1; k <- -n to n if k != 0) yield Conj(j, k)).toList
@@ -159,10 +157,10 @@ object AndrewsCurtis {
   }
 
   private val vrtdst = FiniteDistribution(Set(Weighted(nullpres, 1.0)))
-  private val edgseq = for (mvtyp <- MoveTypeList)
-    yield Weighted(mvtyp, 1.0 / MoveTypeList.length)
+  private val edgseq = for (mvtyp <- MoveTypeList) yield
+    Weighted(mvtyp, 1.0 / MoveTypeList.length)
   private val edgdst = FiniteDistribution(edgseq.toSet)
-  val baseDstbn      = DynDst(vrtdst, edgdst, 0.3)
+  val baseDstbn = DynDst(vrtdst, edgdst, 0.3)
 
   trait Move extends (Vert => Vert) {
     val mvType: MoveType
@@ -241,14 +239,14 @@ object AndrewsCurtis {
      */
     def prob(d: DynDstbn) =
       start.prob(d) * d.probE(move.mvType) * d.cntn / multiplicity(head.rank)(
-        move.mvType)
+          move.mvType)
   }
 
   object Chain {
     @tailrec def addMoves(start: Chain, moveStack: List[Move]): Chain =
       moveStack match {
         case List() => start
-        case xs     => addMoves(RecChain(start, xs.last), xs.dropRight(1))
+        case xs => addMoves(RecChain(start, xs.last), xs.dropRight(1))
       }
 
     /*
@@ -265,8 +263,8 @@ object AndrewsCurtis {
       addMoves(AtomicChain(foot), moveStack)
 
     def offspring(chain: Chain) =
-      for (mvTyp <- MoveTypeList; mv <- allMoves(chain.head)(mvTyp))
-        yield RecChain(chain, mv)
+      for (mvTyp <- MoveTypeList; mv <- allMoves(chain.head)(mvTyp)) yield
+        RecChain(chain, mv)
 
     def fullnextgen(chains: Set[Chain]) =
       (chains flatMap (offspring(_))) ++ chains
@@ -295,7 +293,7 @@ object AndrewsCurtis {
           val newmult =
             mult * d.probE(move.mvType) * d.cntn / multplcty // to be passed on to the previous chain
           val mvTypWeight = start.prob(d) * d.cntn / multplcty
-          val cntnWt      = start.prob(d) * d.probE(move.mvType) / multplcty
+          val cntnWt = start.prob(d) * d.probE(move.mvType) / multplcty
           val newaccum =
             accum.addE(move.mvType, mult * mvTypWeight) addC (mult * cntnWt)
           backprop(start, newmult, d, newaccum)
@@ -307,7 +305,7 @@ object AndrewsCurtis {
    */
   def dstbn(chains: Set[Chain], d: DynDstbn) = {
     val fdchains = FiniteDistribution(
-      for (chn <- chains) yield Weighted(chn, chn.prob(d)))
+        for (chn <- chains) yield Weighted(chn, chn.prob(d)))
     (fdchains map ((chn: Chain) => chn.head)).flatten
   }
 
@@ -323,7 +321,7 @@ object AndrewsCurtis {
                        0)
     val bcklist =
       chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
-    ((bcklist :\ empty)(_ ++ _)).flatten
+    ( (bcklist :\ empty)(_ ++ _)).flatten
   }
 
   /*
@@ -338,16 +336,15 @@ object AndrewsCurtis {
    * with generating from Andrews-Curtis moves. This has total zero.
    * A high (raw) feedback is for a simple distribution needing a lot of moves.
    */
-  def dstbnFeedback(presdstbn: FiniteDistribution[Vert],
-                    bgwt: Vert => Double) = {
+  def dstbnFeedback(
+      presdstbn: FiniteDistribution[Vert], bgwt: Vert => Double) = {
     val dstbnpmf = presdstbn.pmf
-    val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf)
-      yield (Weighted(pres, bgwt(pres) / prob))
+    val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf) yield
+      (Weighted(pres, bgwt(pres) / prob))
     val fdbkpmftot = (fdbkrawpmf map (_.weight)).sum
     val fdbkpmf =
-      fdbkrawpmf map ((x) =>
-                        Weighted(x.elem,
-                                 x.weight - (fdbkpmftot / fdbkrawpmf.size)))
+      fdbkrawpmf map
+      ((x) => Weighted(x.elem, x.weight - (fdbkpmftot / fdbkrawpmf.size)))
     FiniteDistribution(fdbkpmf)
   }
 
@@ -359,8 +356,8 @@ object AndrewsCurtis {
                 bgwt: Vert => Double,
                 epsilon: Double,
                 threshold: Double = 0) = {
-    val presdstbn       = dstbn(chains.toSet, d)
-    val feedback        = dstbnFeedback(presdstbn, bgwt) * epsilon
+    val presdstbn = dstbn(chains.toSet, d)
+    val feedback = dstbnFeedback(presdstbn, bgwt) * epsilon
     val shift: DynDstbn = backpropdstbn(chains, feedback, d)
     (d ++ shift).normalized(threshold)
   }
@@ -373,7 +370,7 @@ object AndrewsCurtis {
                      d: DynDstbn,
                      cutoff: Double): Set[Chain] = {
     val prune: Chain => Boolean = (chain) => chain.prob(d) > cutoff
-    val nextgen                 = Chain.prunednextgen(chains, prune)
+    val nextgen = Chain.prunednextgen(chains, prune)
     if (chains == nextgen) chains else chainGenCutoff(nextgen, d, cutoff)
   }
 
