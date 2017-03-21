@@ -2,7 +2,7 @@ import provingground._
 import HoTT._
 
 import TLImplicits._
-import shapeless._
+import shapeless.{Nat => SNat, _}
 val Nat = "Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
 val zero :: succ :: HNil = NatInd.intros
@@ -24,3 +24,15 @@ val fibn = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
 val fib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2)) ))))
 val fib = n :-> fib_aux(n)(zero)(one)
 val stepData = (n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2)) ))))
+val fstepData = (n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
+
+val Nt = "Nat" :: Type
+val k = "k" :: Nt
+val l = "l" :: Nt
+
+val fadd = "add" :: Nt ->: Nt ->: Nt
+val ffib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
+
+def fn(t: Term) = FormalAppln.unapply(t).get._1
+def arg(t: Term) = FormalAppln.unapply(t).get._1
+def dc(t: Term) = t match {case d : RecursiveDefinition.DataCons[u, v, w] => d}

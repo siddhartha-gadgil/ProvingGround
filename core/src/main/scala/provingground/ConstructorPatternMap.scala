@@ -173,7 +173,11 @@ sealed trait RecursiveConstructorPatternMap[
       for (arg <- getArg(cons)(t);
       term <- headfibre(arg).recDefCase(cons(arg),
                                         headData(data, arg, f),
-                                        f)(t)) yield term
+                                        f)(t)) yield {
+                                          println("Recursive Def case (println from RecDefCase)")
+                                          println(s"Argument is $arg for constructor $cons")
+                                          println(s"Result is the term $term \n\n")
+                                          term}
   }
 
   def headInducData(data: InducDataType,
@@ -189,6 +193,11 @@ sealed trait RecursiveConstructorPatternMap[
                                         f)(t)) yield term
   }
 }
+
+object Debug{
+  val rnd = new scala.util.Random
+}
+
 
 /**
   * Extending a constructor-pattern by a type pattern.
@@ -240,8 +249,19 @@ case class FuncPtnMap[C <: Term with Subs[C],
     piDefn(a)(tail.depTarget(xs)(a) ->: head.inducDataTyp(w, xs)(headcons))
   }
 
+
   def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
-    data(arg)(tail.induced(f)(arg))
+    val key = Debug.rnd.nextInt(10000)
+    println(s"\n Matched Func case (printing from HeadData): key : $key")
+    println(s"Recursion data $data \n of type: ${data.typ}")
+    println(s"Argument: $arg")
+    val g = tail.induced(f)
+    println(s"Induced function co-incides: ${f == g}")
+    val recres = g(arg)
+    println(s"\n Recursive result for key $key: $recres")
+    val result = data(arg)(recres)
+    println(s"\n Result for key $key : $result \n\n")
+    result
   }
 
   def headInducData(data: FuncLike[F, Func[DT, HI]],
