@@ -41,4 +41,9 @@ def dc(t: Term) = t match {case d : RecursiveDefinition.DataCons[u, v, w] => d}
 lazy val recres = ffib_aux(succ(n))
 lazy val psi = fn(fn(fn(recres(m1)(m2)))) // equal to ffib_aux
 lazy val result = fstepData(succ(n))(recres)
-lazy val eta = fn(fn(fn(result(m1)(m2)))) // not equal to psi
+lazy val eta = fn(fn(fn(result(m1)(m2)))) // not equal to psi; but allegedly equal to ffib_aux
+
+lazy val fibd = dc(dc(ffib_aux).tail).data
+lazy val etad = dc(dc(eta).tail).data  // badly mangled, has a variable in scope that is not a lambda.
+lazy val psid = dc(dc(psi).tail).data
+// It is claimed that fibd == etad, but they are clearly different
