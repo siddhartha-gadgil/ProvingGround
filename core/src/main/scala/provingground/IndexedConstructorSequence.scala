@@ -184,7 +184,7 @@ object IndexedConstructorSeqMap {
     // type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
     def recDataLambda(X: Typ[Cod]) =
-      f => LambdaFixed(data(X), tail.recDataLambda(X)(f))
+      f => lmbda(data(X))(tail.recDataLambda(X)(f))
 
     // type InducType = Func[cons.pattern.InducDataType, tail.InducType]
 
@@ -199,7 +199,7 @@ object IndexedConstructorSeqMap {
                                           tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: IDFT) =
-      (f) => LambdaFixed(inducData(fibre), tail.inducDataLambda(fibre)(f))
+      (f) => lmbda(inducData(fibre))( tail.inducDataLambda(fibre)(f))
   }
 }
 
