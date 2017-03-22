@@ -29,9 +29,12 @@ val Nt = "Nat" :: Type
 val k = "k" :: Nt
 val l = "l" :: Nt
 
-val fadd = "add" :: Nt ->: Nt ->: Nt
-val ffib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
-val fstepData = (n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
+
+lazy val fadd = "add" :: Nt ->: Nt ->: Nt
+lazy val ffib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
+
+lazy val fstepData = (n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) ))))
+
 
 
 def fn(t: Term) = FormalAppln.unapply(t).get._1

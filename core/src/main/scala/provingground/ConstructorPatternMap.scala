@@ -174,9 +174,9 @@ sealed trait RecursiveConstructorPatternMap[
       term <- headfibre(arg).recDefCase(cons(arg),
                                         headData(data, arg, f),
                                         f)(t)) yield {
-                                          println("Recursive Def case (println from RecDefCase)")
-                                          println(s"Argument is $arg for constructor $cons")
-                                          println(s"Result is the term $term \n\n")
+                                          // println("Recursive Def case (// println from RecDefCase)")
+                                          // println(s"Argument is $arg for constructor $cons")
+                                          // println(s"Result is the term $term \n\n")
                                           term}
   }
 
@@ -252,15 +252,15 @@ case class FuncPtnMap[C <: Term with Subs[C],
 
   def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
     val key = Debug.rnd.nextInt(10000)
-    println(s"\n Matched Func case (printing from HeadData): key : $key")
-    println(s"Recursion data $data \n of type: ${data.typ}")
-    println(s"Argument: $arg")
+    // println(s"\n Matched Func case (printing from HeadData): key : $key")
+    // println(s"Recursion data $data \n of type: ${data.typ}")
+    // println(s"Argument: $arg")
     val g = tail.induced(f)
-    println(s"Induced function co-incides: ${f == g}")
+    // println(s"Induced function co-incides: ${f == g}")
     val recres = g(arg)
-    println(s"\n Recursive result for key $key: $recres")
+    // println(s"\n Recursive result for key $key: $recres")
     val result = data(arg)(recres)
-    println(s"\n Result for key $key : $result \n\n")
+    // println(s"\n Result for key $key : $result \n\n")
     result
   }
 

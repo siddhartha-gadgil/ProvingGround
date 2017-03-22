@@ -11,13 +11,23 @@ trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
 
   def act(arg: H) = {
-    caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(self, arg))
+    caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(rebuilt, arg))
   }
 
   def subs(x: Term, y: Term): RecursiveDefinition[H, C]
+
+  def rebuilt: RecursiveDefinition[H, C]
 }
 
 object RecursiveDefinition {
+  def rebuild[U <: Term with Subs[Term]](t: U): U = t match {
+    case lf: LambdaFixed[u, v] => lmbda(rebuild(lf.variable))(rebuild(lf.value)).asInstanceOf[U]
+    case lt: LambdaLike[u, v] => lambda(rebuild(lt.variable))(rebuild(lt.value)).asInstanceOf[U]
+    case FormalAppln(func: FuncLike[u, v], arg) => (rebuild(func)(rebuild(arg).asInstanceOf[u])).asInstanceOf[U]
+
+    case term => term
+  }
+
   case class Empty[H <: Term with Subs[H], C <: Term with Subs[C]](
       dom: Typ[H],
       codom: Typ[C]
@@ -33,6 +43,8 @@ object RecursiveDefinition {
     }
 
     def caseFn(f: => Func[H, C])(arg: H): Option[C] = None
+
+    def rebuilt = this
   }
 
   case class DataCons[
@@ -48,14 +60,21 @@ object RecursiveDefinition {
 
     val typ = dom ->: codom
 
-    def newobj = DataCons(data.newobj, defn, tail)
+    def newobj = {
+      // println("Calling new object")
+      DataCons(data.newobj, defn, tail)
+    }
 
     def subs(x: Term, y: Term) =
       DataCons(data.replace(x, y), defn, tail.subs(x, y))
 
     def caseFn(f: => Func[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
+
+      def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt)
+
   }
+
 }
 
 import Subst.SubstOp
