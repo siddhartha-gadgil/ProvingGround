@@ -252,15 +252,15 @@ case class FuncPtnMap[C <: Term with Subs[C],
 
   def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
     val key = Debug.rnd.nextInt(10000)
-    // println(s"\n Matched Func case (printing from HeadData): key : $key")
+    // println(s"\nMatched Func case (printing from HeadData): key : $key")
     // println(s"Recursion data $data \n of type: ${data.typ}")
     // println(s"Argument: $arg")
     val g = tail.induced(f)
     // println(s"Induced function co-incides: ${f == g}")
     val recres = g(arg)
-    // println(s"\n Recursive result for key $key: $recres")
+    // println(s"\nRecursive result for key $key: $recres\n")
     val result = data(arg)(recres)
-    // println(s"\n Result for key $key : $result \n\n")
+    // println(s"\nResult for key $key : $result \n\n")
     result
   }
 
