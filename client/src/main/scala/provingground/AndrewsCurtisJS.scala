@@ -30,62 +30,64 @@ object AndrewsCurtisJS {
 
   def debug(mess: String) = debugDiv.appendChild(h4(mess).render)
 
-  sse.onmessage = (event: dom.MessageEvent) =>
-    {
+  sse.onmessage = (event: dom.MessageEvent) => {
 //    debug(event.data.toString)
-      val (header, message) = read[(String, String)](event.data.toString)
+    val (header, message) = read[(String, String)](event.data.toString)
 //      debug(header)
 //    val header = fdMVP
 //    val message = event.data.toString
-      header match {
-        case fdMVP => {
-            val (pmfM, pmfV, pmfP) = read[(List[(String, Double)], List[
-                    (String, Double)], List[(String, Double)])](message)
-            val output = pmfMVPdiv(pmfM, pmfV, pmfP)
-            fdOut(output)
-          }
+    header match {
+      case fdMVP => {
+        val (pmfM, pmfV, pmfP) = read[(List[(String, Double)],
+                                       List[(String, Double)],
+                                       List[(String, Double)])](message)
+        val output = pmfMVPdiv(pmfM, pmfV, pmfP)
+        fdOut(output)
       }
+    }
   }
 
   def pmfMVPdiv(pmfM: List[(String, Double)],
                 pmfV: List[(String, Double)],
                 pmfP: List[(String, Double)]) = {
     div(
-        h3("Distribution on Moves"),
-        pmfDiv(pmfM),
-        h3("Distribution on Vertices"),
-        pmfDiv(pmfV),
-        h3("Distribution on Presentations"),
-        pmfDiv(pmfP)
+      h3("Distribution on Moves"),
+      pmfDiv(pmfM),
+      h3("Distribution on Vertices"),
+      pmfDiv(pmfV),
+      h3("Distribution on Presentations"),
+      pmfDiv(pmfP)
     ).render
   }
 
   def pmfDiv(fd: List[(String, Double)]) = {
     val lst = fd.sortBy((x) => -x._2).zipWithIndex
     val title = div(`class` := "atom")(
-        span(`class` := "index")("index"),
-        span(`class` := "probability")("probability"),
-        span(`class` := "entropy")("entropy"),
-        span(`class` := "element")("element")
+      span(`class` := "index")("index"),
+      span(`class` := "probability")("probability"),
+      span(`class` := "entropy")("entropy"),
+      span(`class` := "element")("element")
     )
 
-    val nodeList = for (((a, x), j) <- lst) yield
-      (
+    val nodeList = for (((a, x), j) <- lst)
+      yield
+        (
           div(`class` := "atom")(
-              span(`class` := "index")(j),
-              span(`class` := "probability")(x),
-              span(`class` := "entropy")(-math.log(x) / math.log(2)),
-              span(`class` := "element")(a.toString)
+            span(`class` := "index")(j),
+            span(`class` := "probability")(x),
+            span(`class` := "entropy")(-math.log(x) / math.log(2)),
+            span(`class` := "element")(a.toString)
           )
-      )
+        )
     div(`class` := "finite-distribution")(title, div(nodeList: _*)).render
   }
 
   def getPMF(pickled: String) = read[List[(String, Double)]](pickled)
 
   def getFDtriple(pickled: String) =
-    read[(List[(String, Double)], List[(String, Double)], List[
-            (String, Double)])](pickled)
+    read[(List[(String, Double)],
+          List[(String, Double)],
+          List[(String, Double)])](pickled)
 
   lazy val dashboard = div(`class` := "dashboard")(h3("Dashboard"),
                                                    div(b("rank: "), rankBox),
@@ -112,20 +114,20 @@ object AndrewsCurtisJS {
 
   def postEvolve(rank: Int, steps: Int) = {
     val message = write((rank, steps))
-    val post = write((Header.evolve, message))
+    val post    = write((Header.evolve, message))
     Ajax.post("/acquery", post)
   }
 
   val rankBox = input(
-      `type` := "number",
-      size := 4,
-      value := "2"
+    `type` := "number",
+    size := 4,
+    value := "2"
   ).render
 
   val stepsBox = input(
-      `type` := "number",
-      size := 4,
-      value := "2"
+    `type` := "number",
+    size := 4,
+    value := "2"
   ).render
 
   def getRank = rankBox.value.toInt
@@ -137,9 +139,8 @@ object AndrewsCurtisJS {
   val evolveButton =
     input(`type` := "submit", value := "Start evolution").render
 
-  evolveButton.onclick = (e: dom.Event) =>
-    {
-      fdOut(div(p("output?")).render)
-      runEvolve
+  evolveButton.onclick = (e: dom.Event) => {
+    fdOut(div(p("output?")).render)
+    runEvolve
   }
 }

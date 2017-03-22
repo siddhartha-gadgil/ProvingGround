@@ -60,7 +60,8 @@ object ScalaHoTT {
   implicit def realExpr(value: Double) = RealExpr(value)
 
   case class TypedVar[A](sym: SymVar, override val ty: Typ[A])
-      extends Obj[A](ty) with VarExpression
+      extends Obj[A](ty)
+      with VarExpression
 
   /** An object with a specified HoTT type */
   class Obj[A](val ty: Typ[A]) extends Expression
@@ -75,7 +76,8 @@ object ScalaHoTT {
   abstract class ValueObj[A](ty: Typ[A]) extends Obj[A](ty) with Value[A]
 
   abstract class VerifiedValueObj[A](ty: Typ[A])
-      extends Obj[A](ty) with Value[A]
+      extends Obj[A](ty)
+      with Value[A]
 
   case class ValObj[A](value: A, override val ty: Typ[A])
       extends ValueObj[A](ty)

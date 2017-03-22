@@ -15,15 +15,15 @@ object AtomicMove {
       fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] =
     mf(fdVertices)
   def actOnMoves(mf: AtomicMove): Moves => Option[Moves] = mf.actOnMoves(_)
-  def apply(w: String): AtomicMove = fromString(w).get
+  def apply(w: String): AtomicMove                       = fromString(w).get
   def fromString(w: String): Option[AtomicMove] = {
     // Regular expressions to match to various case classes
     // Won't work in conj if there are more than 26 generators
-    val id = """^id$""".r
-    val inv = """^[0-9]+!$""".r
+    val id      = """^id$""".r
+    val inv     = """^[0-9]+!$""".r
     val lftmult = """^[0-9]+->[0-9]+$""".r
-    val rtmult = """^[0-9]+<-[0-9]+$""".r
-    val conj = """^[0-9]+\^[a-z]!?$""".r
+    val rtmult  = """^[0-9]+<-[0-9]+$""".r
+    val conj    = """^[0-9]+\^[a-z]!?$""".r
     val numbers = """[0-9]+""".r
     val letters = """[a-z]!?$""".r
 
@@ -34,13 +34,13 @@ object AtomicMove {
       Some(Inv(rel))
     } else if (lftmult.findFirstIn(w).isDefined) {
       val nums = numbers.findAllMatchIn(w).toList
-      val l = nums(0).toString.toInt
-      val k = nums(1).toString.toInt
+      val l    = nums(0).toString.toInt
+      val k    = nums(1).toString.toInt
       Some(LftMult(k, l))
     } else if (rtmult.findFirstIn(w).isDefined) {
       val nums = numbers.findAllMatchIn(w).toList
-      val k = nums(0).toString.toInt
-      val l = nums(1).toString.toInt
+      val k    = nums(0).toString.toInt
+      val l    = nums(1).toString.toInt
       Some(RtMult(k, l))
     } else if (conj.findFirstIn(w).isDefined) {
       val letter = letters.findFirstIn(w).toList(0).toString.apply(0)
@@ -48,7 +48,7 @@ object AtomicMove {
         if (w.contains('!')) -1
         else 1
       val generator = (letter.toInt - 'a'.toInt + 1) * multiplier
-      val relation = numbers.findAllMatchIn(w).toList(0).toString.toInt
+      val relation  = numbers.findAllMatchIn(w).toList(0).toString.toInt
       Some(Conj(relation, generator))
     } else None
   }
@@ -60,7 +60,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   def apply(opPres: Option[Presentation]): Option[Presentation] = {
     opPres match {
       case Some(pres) => this.apply(pres)
-      case None => None
+      case None       => None
     }
   }
 
@@ -73,8 +73,8 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   def actOnMoves(moves: Moves): Option[Moves] =
     Some(toMoves(this) compose moves)
 
-  def movesDF: DiffbleFunction[
-      FiniteDistribution[Moves], FiniteDistribution[Moves]] =
+  def movesDF: DiffbleFunction[FiniteDistribution[Moves],
+                               FiniteDistribution[Moves]] =
     MoveFn(actOnMoves)
 
   def actOnPres(fdPres: FiniteDistribution[Presentation])
@@ -91,9 +91,9 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
 
   def toPlainString: String = {
     this match {
-      case Id => "id"
-      case Inv(k) => s"$k!"
-      case RtMult(k, l) => s"$k<-$l"
+      case Id            => "id"
+      case Inv(k)        => s"$k!"
+      case RtMult(k, l)  => s"$k<-$l"
       case LftMult(k, l) => s"$l->$k"
       case Conj(k, l) =>
         if (l > 0) {
@@ -109,7 +109,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
 
   def toLatex = {
     this match {
-      case Id => s"$$r \\mapsto r$$"
+      case Id     => s"$$r \\mapsto r$$"
       case Inv(k) => s"$$r_{$k} \\mapsto \\bar{r_$k}$$"
       case RtMult(k, l) =>
         if (k < l) s"$$(r_{$k}, r_{$l}) \\mapsto (r_{$k}r_{$l}, r_{$l})$$"
@@ -148,8 +148,8 @@ case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
 //  override def actOnMoves(moves: Moves) = Some(moves)
 
-  override def movesDF: DiffbleFunction[
-      FiniteDistribution[Moves], FiniteDistribution[Moves]] =
+  override def movesDF: DiffbleFunction[FiniteDistribution[Moves],
+                                        FiniteDistribution[Moves]] =
     DiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 
@@ -219,16 +219,15 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal {
   }
    */
   def reduce: Presentation => Option[Presentation] =
-    (pres) =>
-      {
-        def act(mv: AtomicMove, op: Option[Presentation]) = {
-          op flatMap ((p) => mv(p))
-        }
-        (moves :\ (Some(pres): Option[Presentation]))(act)
+    (pres) => {
+      def act(mv: AtomicMove, op: Option[Presentation]) = {
+        op flatMap ((p) => mv(p))
+      }
+      (moves :\ (Some(pres): Option[Presentation]))(act)
     }
 
   def apply(pres: Presentation) = this.reduce(pres)
-  def apply(that: Moves) = this compose that
+  def apply(that: Moves)        = this compose that
   def apply(that: Presentation => Option[Presentation]) =
     liftOption(this.reduce) compose that
   def apply(that: AtomicMove) = this compose that

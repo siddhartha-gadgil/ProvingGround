@@ -228,7 +228,7 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
       case chain: AtomicChain => accum + (append(chain))
       case RecChain(head, tail, mvTyp) =>
         val newAppend = (c: Chain) => RecChain(head, append(c), mvTyp): Chain
-        val newAccum = accum + append(chn)
+        val newAccum  = accum + append(chn)
         subChains(tail, newAccum, newAppend)
     }
 
@@ -236,8 +236,8 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
     * offspring of a chain, applying all possible moves to its head.
     */
   def offspring(chain: Chain) =
-    for (mvtyp <- movetypes; res <- moves(chain.head, mvtyp)) yield
-      RecChain(res, chain, mvtyp)
+    for (mvtyp <- movetypes; res <- moves(chain.head, mvtyp))
+      yield RecChain(res, chain, mvtyp)
 
   /**
     * offspring of chains as well as the chains themselves.
@@ -263,8 +263,8 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
     *
     * @param steps number of steps
     */
-  @tailrec final def propagateSteps(
-      chains: Set[Chain], steps: Int): Set[Chain] =
+  @tailrec final def propagateSteps(chains: Set[Chain],
+                                    steps: Int): Set[Chain] =
     if (steps < 1) chains else propagateSteps(fullnextgen(chains), steps - 1)
 
   /**
@@ -319,7 +319,7 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
     case rec @ RecChain(head, tail, mvtyp) =>
       val errorprop =
         error * (initdstbn.edgdst(mvtyp) * initdstbn.cntn / rec.mult)
-      val mvWt = error * (tail.prob(initdstbn) * initdstbn.cntn / rec.mult)
+      val mvWt     = error * (tail.prob(initdstbn) * initdstbn.cntn / rec.mult)
       val newAccum = accum addM (mvtyp, mvWt)
 //      val headWt = error * (1 - initdstbn.cntn)
 //      val cntnWt = error * (tail.prob(initdstbn) * initdstbn.edgdst(mvtyp) /rec.mult - initdstbn.probV(head))
@@ -334,12 +334,10 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
                error: FiniteDistribution[V],
                chains: Set[Chain]) =
     (DynDst.empty /:
-        (chains map
-            ((chain) =>
-                  backpropchain(initdstbn,
-                                error(chain.head),
-                                DynDst.empty,
-                                chain))))(_ ++ _)
+      (chains map
+        ((chain) =>
+           backpropchain(initdstbn, error(chain.head), DynDst.empty, chain))))(
+      _ ++ _)
 
   /**
     * feedback for learning, generally given by an implicit object.
@@ -391,7 +389,7 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
 
     def spannedchains(d: DynDst) = {
       val startchains: Set[Chain] = d.vrtdst.support map (AtomicChain(_))
-      val prune = (ch: Chain) => ch.prob(d) > cutoff
+      val prune                   = (ch: Chain) => ch.prob(d) > cutoff
       propagate(startchains, prune) flatMap (subChains(_))
     }
 

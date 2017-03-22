@@ -117,8 +117,9 @@ case class RecTail[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
   * @param tail previously added constructors
   */
 @deprecated("recursion not implemented", "must remove")
-case class RecFunctionCons[
-    D <: Term with Subs[D], C <: Term with Subs[C], H <: Term with Subs[H]](
+case class RecFunctionCons[D <: Term with Subs[D],
+                           C <: Term with Subs[C],
+                           H <: Term with Subs[H]](
     recdom: Typ[C] => Typ[D],
     caseFn: D => Func[H, C] => Func[H, C] => Func[H, C],
     tail: RecFunction[C, H])
@@ -132,11 +133,10 @@ case class RecFunctionCons[
   def fullTyp(x: Typ[C]): Typ[FullType] = FuncTyp(recdom(x), tail.fullTyp(x))
 
   def pullback(X: Typ[C])(transform: Func[Term, C] => Func[Term, C]) =
-    (g) =>
-      {
-        new FuncDefn((a: D) => tail.pullback(X)(transform)(g(a)),
-                     recdom(X),
-                     tail.fullTyp(X))
+    (g) => {
+      new FuncDefn((a: D) => tail.pullback(X)(transform)(g(a)),
+                   recdom(X),
+                   tail.fullTyp(X))
     }
 
   def recursion(X: Typ[C])(f: => FullType) = {

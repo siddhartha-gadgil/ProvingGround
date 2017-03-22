@@ -43,7 +43,8 @@ object MereProposition {
   }
 
   case class Factorize[U <: Term with Subs[U], V <: Term with Subs[V]](
-      A: Typ[U], B: Typ[V])
+      A: Typ[U],
+      B: Typ[V])
       extends Func[Term, Func[Func[U, V], Func[Term, V]]]
       with Subs[Factorize[U, V]] {
 

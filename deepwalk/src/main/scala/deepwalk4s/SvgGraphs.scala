@@ -21,7 +21,7 @@ object SvgGraphs {
     s"""
     <circle cx="$x" cy="$y" r="$r" fill="$colour" class = "labelled"/>
     <text x="${x + r +
-    r}" y="$y" font-size="$fontSize" text-anchor="start" class = "labl">$t</text>
+      r}" y="$y" font-size="$fontSize" text-anchor="start" class = "labl">$t</text>
     """
   }
 
@@ -46,12 +46,12 @@ object SvgGraphs {
                   colour: String = "blue",
                   fontSize: Int = 12) = {
 
-    val xs = points map (_._1)
-    val ys = points map (_._2)
-    val xmax = xs.max
-    val xmin = xs.min
-    val ymax = ys.max
-    val ymin = ys.min
+    val xs     = points map (_._1)
+    val ys     = points map (_._2)
+    val xmax   = xs.max
+    val xmin   = xs.min
+    val ymax   = ys.max
+    val ymin   = ys.min
     val xScale = (width * 0.6 - (4 * r)) / (xmax - xmin)
     val yScale = (height * 0.9 - (4 * r)) / (ymax - ymin)
     val circles =

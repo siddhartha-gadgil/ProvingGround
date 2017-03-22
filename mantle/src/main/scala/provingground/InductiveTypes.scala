@@ -54,15 +54,16 @@ object InductiveTypes {
 	 */
   class InductiveTypDefn(
       symptns: List[(AnySym, ConstructorPattern[Term, Term, Term])])
-      extends SmallTyp with InductiveTyp {
+      extends SmallTyp
+      with InductiveTyp {
 //	  type Obj = Term
 
 //	  val constructorFns : List[Term] = for ((a, p) <- symptns) yield (p(this).symbObj(a))
 
 //	  val ptns = for ((a, p) <- symptns) yield p
 
-    lazy val constructors = for ((name, ptn) <- symptns) yield
-      ptn.constructor(this, name)
+    lazy val constructors = for ((name, ptn) <- symptns)
+      yield ptn.constructor(this, name)
     /*
 	  val univLevel = (ptns map (_.univLevel)).max
 

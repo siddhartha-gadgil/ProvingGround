@@ -33,7 +33,7 @@ object Sampler {
   def fromPMF[A](pmf: Vector[Weighted[A]], size: Int): Map[A, Int] =
     if ((pmf map (_.weight)).sum > 0) {
       val vec = pmf map (_.elem)
-      val ps = pmf map (_.weight)
+      val ps  = pmf map (_.weight)
       getMultinomial(vec, ps, size)
     } else Map()
 
@@ -45,8 +45,7 @@ object Sampler {
 
   def toFD[A](sample: Map[A, Int]) = {
     val tot = total(sample.toVector)
-    FiniteDistribution(
-        sample.toVector map {
+    FiniteDistribution(sample.toVector map {
       case (x, n) => Weighted(x, n.toDouble / tot)
     })
   }
@@ -72,15 +71,15 @@ object Sampler {
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
         case mx: MixinOpt[u] =>
-          val m = Binomial(n, mx.q).draw
-          val optSample = Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
+          val m            = Binomial(n, mx.q).draw
+          val optSample    = Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
-          combine(
-              sample(mx.first, n - total(secondSample.toVector)), secondSample)
+          combine(sample(mx.first, n - total(secondSample.toVector)),
+                  secondSample)
 
         case mx: Mixture[u] =>
           val sampSizes = getMultinomial(mx.dists, mx.ps, n)
-          val polySamp = (for ((d, m) <- sampSizes) yield sample(d, m))
+          val polySamp  = (for ((d, m) <- sampSizes) yield sample(d, m))
           combineAll(polySamp.toVector)
 
         case Mapped(base, f) =>
@@ -88,21 +87,21 @@ object Sampler {
 
         case FlatMapped(base, f) =>
           val baseSamp = sample(base, n)
-          val sampsVec = (for ((a, m) <- baseSamp) yield
-            sample(f(a), m)).toVector
+          val sampsVec =
+            (for ((a, m) <- baseSamp) yield sample(f(a), m)).toVector
           combineAll(sampsVec)
 
         case Product(first, second) =>
-          val firstSamp = sample(first, n)
+          val firstSamp  = sample(first, n)
           val secondSamp = sample(second, n)
           grouped(rand.shuffle(linear(firstSamp)).zip(linear(secondSamp)))
 
         case fp: FiberProduct[u, q, v] =>
           import fp._
           val baseSamp = sample(base, n)
-          val groups = baseSamp groupBy { case (x, n) => quotient(x) }
+          val groups   = baseSamp groupBy { case (x, n) => quotient(x) }
           val sampVec = groups.keys.toVector.flatMap { (a) =>
-            val size = groups(a).values.sum
+            val size      = groups(a).values.sum
             val fiberSamp = sample(fibers(a), size)
             rand.shuffle(linear(groups(a))).zip(linear(fiberSamp))
           }
@@ -110,7 +109,7 @@ object Sampler {
 
         case Conditioned(base, p) =>
           val firstSamp = sample(base, n) filter { case (a, n) => p(a) }
-          val tot = firstSamp.values.sum
+          val tot       = firstSamp.values.sum
           if (tot == 0) Map()
           else if (tot == n) firstSamp
           else {
@@ -162,8 +161,8 @@ class TermSampler(d: BasicDeducer) {
            sc: Double,
            inertia: Double): FD[Term] => FD[Term] =
     (p: FD[Term]) =>
-      NextSample(p, sampleSize, derSampleSize, sc, epsilon, inertia).shiftedFD(
-          derSampleSize, epsilon)
+      NextSample(p, sampleSize, derSampleSize, sc, epsilon, inertia)
+        .shiftedFD(derSampleSize, epsilon)
 
   def iterator(init: FD[Term],
                sampleSize: Int,
@@ -172,7 +171,7 @@ class TermSampler(d: BasicDeducer) {
                sc: Double,
                inertia: Double) =
     Iterator.iterate(init)(
-        flow(sampleSize, derSampleSize, epsilon, sc, inertia))
+      flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
   def loggedIterator(init: FD[Term],
                      sampleSize: Int,
@@ -181,11 +180,11 @@ class TermSampler(d: BasicDeducer) {
                      sc: Double,
                      inertia: Double) =
     Iterator.iterate(
-        NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
+      NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia)
     )((ns) => ns.succ)
 
   var live: Boolean = true
-  def stop() = { live = false }
+  def stop()        = { live = false }
 
   def loggedBuffer(init: FD[Term],
                    sampleSize: Int,
@@ -257,13 +256,13 @@ class TermSampler(d: BasicDeducer) {
 
     def totalFlow(totalSize: Int): Map[Term, Double] =
       (sample(nextFD, totalSize) map {
-            case (x, n) =>
-              val flow = termFlow(x, n)
-              x -> flow
-          }).toMap
+        case (x, n) =>
+          val flow = termFlow(x, n)
+          x -> flow
+      }).toMap
 
     def shiftedFD(totalSize: Int, epsilon: Double) = {
-      val tf = feedBacks // totalFlow(totalSize)
+      val tf    = feedBacks // totalFlow(totalSize)
       val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
       val pmf =

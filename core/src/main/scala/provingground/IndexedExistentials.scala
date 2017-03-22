@@ -17,15 +17,15 @@ sealed trait TypFamilyExst {
 
   def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
     TypFamilyExst(
-        DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t)),
-        variable :~> W
+      DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t)),
+      variable :~> W
     )
 
   def ~>:[TT <: Term with Subs[TT]](variable: TT) =
     TypFamilyExst(
-        DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                         (t: TT) => pattern.subs(variable, t)),
-        variable :~> W
+      DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+                       (t: TT) => pattern.subs(variable, t)),
+      variable :~> W
     )
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
@@ -72,7 +72,7 @@ sealed trait TypFamilyExst {
         targWrap.piWrap(pd.variable, pd.domain)
       case tp: Typ[u] =>
         IndexedIterFuncExst(
-            IdIterShape[Term, Fb, Index](pattern, pattern.getIndex(W, tp).get))
+          IdIterShape[Term, Fb, Index](pattern, pattern.getIndex(W, tp).get))
     }
   }
 
@@ -105,11 +105,11 @@ sealed trait TypFamilyExst {
   }
 
   object IndexedConstructorShapeExst {
-    def apply[
-        SI <: HList, ConstructorTypeI <: Term with Subs[ConstructorTypeI]](
+    def apply[SI <: HList,
+              ConstructorTypeI <: Term with Subs[ConstructorTypeI]](
         shape: IndexedConstructorShape[SI, Term, Fb, ConstructorTypeI, Index]) =
       new IndexedConstructorShapeExst {
-        type S = SI
+        type S               = SI
         type ConstructorType = ConstructorTypeI
 
         lazy val value = shape
@@ -175,12 +175,12 @@ sealed trait TypFamilyExst {
       intros match {
         case List() => empty
         case l =>
-          val x = l.head
-          val ys = l.tail
+          val x    = l.head
+          val ys   = l.tail
           val name = x.asInstanceOf[Symbolic].name.toString
           val head =
             name ::: IndexedConstructorShapeExst.getIndexedConstructorShape(
-                x.typ)
+              x.typ)
           head |: getIndexedConstructorSeq(ys)
       }
     }
@@ -189,10 +189,11 @@ sealed trait TypFamilyExst {
 
 object TypFamilyExst {
   import TypFamilyPtn._
-  def apply[Fib <: Term with Subs[Fib], In <: HList : Subst](
-      tf: TypFamilyPtn[Term, Fib, In], w: Fib) =
+  def apply[Fib <: Term with Subs[Fib], In <: HList: Subst](
+      tf: TypFamilyPtn[Term, Fib, In],
+      w: Fib) =
     new TypFamilyExst {
-      type Fb = Fib
+      type Fb    = Fib
       type Index = In
 
       lazy val subst = implicitly[Subst[Index]]
@@ -213,12 +214,13 @@ object TypFamilyExst {
   }
 
   def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](
-      w: Fb, intros: List[Term]) = {
+      w: Fb,
+      intros: List[Term]) = {
     getFamily(w).IndexedConstructorSeqExst.getIndexedConstructorSeq(intros)
   }
 
   def getTerms: HList => List[Term] = {
-    case HNil => List()
+    case HNil                 => List()
     case (head: Term) :: tail => head :: getTerms(tail)
   }
 }

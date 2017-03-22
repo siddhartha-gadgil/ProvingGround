@@ -87,7 +87,7 @@ object WebServer {
       """
 
   val fdView = makePage(
-      """
+    """
     <div id ="jsdiv"></div>
     <script type="text/javascript">
     provingground.DeducerJS().main()
@@ -126,10 +126,10 @@ object WebServer {
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U],
                                        names: Vector[(Term, String)]) = {
     fdVec = fd.pmf map
-    ((wt) =>
-          (latex(encode(names)(wt.elem)),
-           latex(encode(names)(wt.elem.typ)),
-           wt.weight))
+        ((wt) =>
+           (latex(encode(names)(wt.elem)),
+            latex(encode(names)(wt.elem.typ)),
+            wt.weight))
   }
 
   def showTimeSeries[U <: Term with Subs[U]](term: U,
@@ -145,10 +145,10 @@ object WebServer {
     showDist(fds.last, names)
     timeSeries.clear
     val typFDs = fds map ((fd) => fd map (_.typ))
-    for (x <- terms) showTimeSeries(
-        x, fds map ((fd) => -math.log(fd(x))), names)
-    for (x <- typs) showTimeSeries(
-        x, typFDs map ((fd) => -math.log(fd(x))), names)
+    for (x <- terms)
+      showTimeSeries(x, fds map ((fd) => -math.log(fd(x))), names)
+    for (x <- typs)
+      showTimeSeries(x, typFDs map ((fd) => -math.log(fd(x))), names)
   }
 
   val viewTerms: MutSet[Term] = MutSet()
@@ -188,7 +188,7 @@ object WebServer {
     } ~ path("terms-time-series") {
       get {
         complete(
-            HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
+          HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
       }
     }
 
@@ -240,12 +240,13 @@ object WebServer {
   def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
 
   val route = mixin(
-      htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
+    htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
 
   val helloRoute = path("hello") {
     get {
-      complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-                          "<h1>Say hello to akka-http</h1>"))
+      complete(
+        HttpEntity(ContentTypes.`text/html(UTF-8)`,
+                   "<h1>Say hello to akka-http</h1>"))
     }
   }
 

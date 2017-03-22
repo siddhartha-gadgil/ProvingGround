@@ -23,7 +23,7 @@ object IntVector {
 
     def unapply(term: RepTerm[Vector[Int]]) = term.typ match {
       case IntVector(dim) => IntVector(dim).rep.unapply(term)
-      case _ => None
+      case _              => None
     }
 
     def subs(x: Term, y: Term) = this

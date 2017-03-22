@@ -23,7 +23,7 @@ class SvgPlot(width: Int, height: Int, scale: Double = 1.0) {
   }
 
   def polyline(pts: (Double, Double)*) = {
-    val stl = pts map { case (x, y) => s"${xval(x)},${yval(y)}" }
+    val stl    = pts map { case (x, y) => s"${xval(x)},${yval(y)}" }
     val ptsStr = stl mkString (" ")
     <polyline points={ptsStr}/>
   }
@@ -39,8 +39,8 @@ class SvgPlot(width: Int, height: Int, scale: Double = 1.0) {
       stroke={colour} stroke-width="2" />
   }
 
-  val axes = List(
-      line(-xmax, 0, xmax, 0, "blue"), line(0, -ymax, 0, ymax, "blue"))
+  val axes =
+    List(line(-xmax, 0, xmax, 0, "blue"), line(0, -ymax, 0, ymax, "blue"))
 
   def plot(nodes: Seq[Node]) =
     <svg width={width.toString} height={height.toString}>{NodeSeq fromSeq nodes}</svg>

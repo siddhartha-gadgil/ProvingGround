@@ -30,30 +30,31 @@ object Statement {
 
   case class EndCase[E](beginning: Case[E]) extends Statement[E]
 
-  abstract class Define[S, E : ExprLang](name: S, typ: E)
-      extends Statement[E] with Assertion[E] {
+  abstract class Define[S, E: ExprLang](name: S, typ: E)
+      extends Statement[E]
+      with Assertion[E] {
     lazy val lang = implicitly[ExprLang[E]]
 
     lazy val variable = lang.variable(name, typ).get
   }
 
-  case class Definition[S, E : ExprLang](name: S, typ: E, value: E)
+  case class Definition[S, E: ExprLang](name: S, typ: E, value: E)
       extends Define[S, E](name, typ) {
     lazy val claim = lang.equality(variable, value).get
   }
 
-  case class DefnPropn[S, E : ExprLang](name: S, typ: E, claim: E)
+  case class DefnPropn[S, E: ExprLang](name: S, typ: E, claim: E)
       extends Define[S, E](name, typ)
 
   case class Fix[E](variable: E) extends Statement[E]
 
   object Fix {
-    def apply[S, E : ExprLang](name: S, typ: E): Fix[E] =
+    def apply[S, E: ExprLang](name: S, typ: E): Fix[E] =
       Fix(implicitly[ExprLang[E]].variable(name, typ).get)
   }
 
   object Assume {
-    def apply[E : ExprLang](typ: E): Fix[E] =
+    def apply[E: ExprLang](typ: E): Fix[E] =
       Fix(implicitly[ExprLang[E]].anonVar(typ).get)
   }
 

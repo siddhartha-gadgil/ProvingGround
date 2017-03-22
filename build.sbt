@@ -28,12 +28,12 @@ lazy val commonSettings = baseSettings ++ Seq(
       // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.spire-math" %% "spire"         % "0.13.0",
-      "com.lihaoyi"    %% "fansi"         % "0.2.3",
-      "com.lihaoyi"    %% "upickle"       % "0.4.4",
-      "com.chuusai"    %% "shapeless"     % "2.3.2",
-      "org.typelevel"  %% "cats"          % "0.9.0",
-      "com.lihaoyi"    % "ammonite"       % ammV cross CrossVersion.full
+      "org.spire-math" %% "spire"     % "0.13.0",
+      "com.lihaoyi"    %% "fansi"     % "0.2.3",
+      "com.lihaoyi"    %% "upickle"   % "0.4.4",
+      "com.chuusai"    %% "shapeless" % "2.3.2",
+      "org.typelevel"  %% "cats"      % "0.9.0",
+      "com.lihaoyi"    % "ammonite"   % ammV cross CrossVersion.full
     ),
     scalacOptions ++= Seq("-unchecked",
                           "-deprecation",
@@ -56,8 +56,8 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
-    "org.scalactic" %% "scalactic" % "3.0.1",
-    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+    "org.scalactic"          %% "scalactic"     % "3.0.1",
+    "org.scalatest"          %% "scalatest"     % "3.0.1" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config"  % "1.3.0",
     "org.mongodb"  %% "casbah" % "3.1.1",
@@ -70,9 +70,9 @@ lazy val jvmSettings = Seq(
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-    "org.slf4j"              % "slf4j-api"       % "1.7.16",
-    "org.slf4j"   % "slf4j-simple"  %   "1.7.16",
-    "com.lihaoyi" %% "pprint" % "0.4.4",
+    "org.slf4j"   % "slf4j-api"    % "1.7.16",
+    "org.slf4j"   % "slf4j-simple" % "1.7.16",
+    "com.lihaoyi" %% "pprint"      % "0.4.4",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.13.+"
     // Native libraries are not included by default. add this if you want them (as of 0.7)

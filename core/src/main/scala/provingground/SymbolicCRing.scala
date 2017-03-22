@@ -15,7 +15,7 @@ import annotation.tailrec
 /**
   * @author gadgil
   */
-class SymbolicCRing[A : CRing] extends SymbolicCRig[A] { self =>
+class SymbolicCRing[A: CRing] extends SymbolicCRig[A] { self =>
   val ring = implicitly[Ring[A]]
 
   import ring._

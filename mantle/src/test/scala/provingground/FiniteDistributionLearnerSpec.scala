@@ -30,10 +30,12 @@ class FiniteDistributionLearnerSpec extends FlatSpec {
 
   it should "map non-uniform distributions correctly" in {
 
-    val d = FiniteDistribution((1 to 10).toSet map
+    val d = FiniteDistribution(
+      (1 to 10).toSet map
         ((i: Int) => Weighted(i.toDouble, i.toDouble))).flatten
 
-    val dd = FiniteDistribution((1 to 10).toSet map
+    val dd = FiniteDistribution(
+      (1 to 10).toSet map
         ((i: Int) => Weighted(i.toDouble * 2.0, i.toDouble))).flatten
 
     for (i <- 1 to 20) yield assert(double.func(d)(i) == dd(i))

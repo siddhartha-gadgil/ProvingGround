@@ -20,9 +20,9 @@ object PennTrees {
 
   object Twig {
     def unapply(t: Tree): Option[String] = t match {
-      case Leaf(w) => Some(w.toLowerCase)
+      case Leaf(w)            => Some(w.toLowerCase)
       case Node(_, Vector(t)) => unapply(t)
-      case _ => None
+      case _                  => None
     }
   }
 
@@ -47,41 +47,41 @@ object PennTrees {
   object WordDash {
     def unapply(t: Tree): Option[(String, Tree)] = t match {
       case LeftBinTree(Twig(w), y) => Some((w, y))
-      case _ => None
+      case _                       => None
     }
   }
 
   object WordDashDash {
     def unapply(t: Tree): Option[(String, Tree, Tree)] = t match {
       case LeftBinTree(WordDash(w, y), z) => Some((w, y, z))
-      case _ => None
+      case _                              => None
     }
   }
 
   object DashWord {
     def unapply(t: Tree): Option[(Tree, String)] = t match {
       case RightBinTree(y, Twig(w)) => Some((y, w))
-      case _ => None
+      case _                        => None
     }
   }
 
   object DashDashWord {
     def unapply(t: Tree): Option[(Tree, Tree, String)] = t match {
       case RightBinTree(x, DashWord(y, w)) => Some((x, y, w))
-      case _ => None
+      case _                               => None
     }
   }
 
   object DashWordDash {
     def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
-      case LeftBinTree(DashWord(y, w), z) => Some((y, w, z))
+      case LeftBinTree(DashWord(y, w), z)  => Some((y, w, z))
       case RightBinTree(y, WordDash(w, z)) => Some((y, w, z))
-      case _ => None
+      case _                               => None
     }
   }
 
   def model(t: Tree): TreeModel = t match {
-    case Leaf(s) => TreeModel.Leaf(s)
+    case Leaf(s)           => TreeModel.Leaf(s)
     case Node(s, children) => TreeModel.Node(s, children map model)
   }
 

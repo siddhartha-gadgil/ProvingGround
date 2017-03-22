@@ -19,9 +19,9 @@ object LeanIO {
   }
 
   def pickleDefs(file: Path, outputDir: Path) = {
-    val defs = readDefs(file)
+    val defs  = readDefs(file)
     val lines = defs map (_.depPickle)
-    val out = outputDir / file.name
+    val out   = outputDir / file.name
     rm(out)
     lines map ((l) => { write.append(out, l + "\n"); l })
   }
@@ -40,6 +40,6 @@ object LeanIO {
 
   def recallDefs(defDir: Path = pwd / 'data / 'leandefs) = {
     ls(defDir).toVector flatMap
-    ((f) => read.lines(f) map (_.split("\t").toList))
+      ((f) => read.lines(f) map (_.split("\t").toList))
   }
 }

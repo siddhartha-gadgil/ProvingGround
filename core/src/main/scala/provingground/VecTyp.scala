@@ -10,7 +10,8 @@ import ScalaRep._
   * @author gadgil
   */
 case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](
-    basetyp: Typ[U], dim: Long)(implicit _baserep: ScalaRep[U, X])
+    basetyp: Typ[U],
+    dim: Long)(implicit _baserep: ScalaRep[U, X])
     extends Typ[RepTerm[Vector[X]]] {
   val baserep = _baserep
 
@@ -36,18 +37,18 @@ object VecTyp {
 
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match {
       case tp @ VecTyp(basetyp, dim) if dim == elem.size => {
-          val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](
-              tp.asInstanceOf[Typ[RepTerm[Vector[X]]]])
-          Some(pattern(elem))
-        }
+        val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](
+          tp.asInstanceOf[Typ[RepTerm[Vector[X]]]])
+        Some(pattern(elem))
+      }
       case _ => None
     }
 
     def unapply(term: RepTerm[Vector[X]]) = term.typ match {
       case tp: VecTyp[_, X] => {
-          val pattern = new ScalaSym[Term, Vector[X]](tp)
-          pattern.unapply(term)
-        }
+        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        pattern.unapply(term)
+      }
       case _ => None
     }
 
@@ -72,20 +73,18 @@ object VecTyp {
   private val ltyp = n ~>: (Vec(n) ->: NatTypLong)
 
   private val vsize = (n: Long) =>
-    (v: Vector[Long]) =>
-      {
-        assert(v.size == n, "domain mismatch in Pi-type")
-        n
+    (v: Vector[Long]) => {
+      assert(v.size == n, "domain mismatch in Pi-type")
+      n
   }
 
   val nsize = vsize.hott(ltyp)
 
   private val nvsucc = (n: Long) =>
     (a: Long) =>
-      (v: Vector[Long]) =>
-        {
-          assert(v.size == n, "domain mismatch in Pi-type")
-          a +: v
+      (v: Vector[Long]) => {
+        assert(v.size == n, "domain mismatch in Pi-type")
+        a +: v
   }
 
   private val nsucctyp =

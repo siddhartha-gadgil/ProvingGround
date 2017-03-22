@@ -21,9 +21,12 @@ trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
 
 object RecursiveDefinition {
   def rebuild[U <: Term with Subs[Term]](t: U): U = t match {
-    case lf: LambdaFixed[u, v] => lmbda(rebuild(lf.variable))(rebuild(lf.value)).asInstanceOf[U]
-    case lt: LambdaLike[u, v] => lambda(rebuild(lt.variable))(rebuild(lt.value)).asInstanceOf[U]
-    case FormalAppln(func: FuncLike[u, v], arg) => (rebuild(func)(rebuild(arg).asInstanceOf[u])).asInstanceOf[U]
+    case lf: LambdaFixed[u, v] =>
+      lmbda(rebuild(lf.variable))(rebuild(lf.value)).asInstanceOf[U]
+    case lt: LambdaLike[u, v] =>
+      lambda(rebuild(lt.variable))(rebuild(lt.value)).asInstanceOf[U]
+    case FormalAppln(func: FuncLike[u, v], arg) =>
+      (rebuild(func)(rebuild(arg).asInstanceOf[u])).asInstanceOf[U]
 
     case term => term
   }
@@ -31,8 +34,7 @@ object RecursiveDefinition {
   case class Empty[H <: Term with Subs[H], C <: Term with Subs[C]](
       dom: Typ[H],
       codom: Typ[C]
-  )
-      extends RecursiveDefinition[H, C] {
+  ) extends RecursiveDefinition[H, C] {
     val typ = dom ->: codom
 
     def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
@@ -47,13 +49,13 @@ object RecursiveDefinition {
     def rebuilt = this
   }
 
-  case class DataCons[
-      H <: Term with Subs[H], C <: Term with Subs[C], D <: Term with Subs[D]](
+  case class DataCons[H <: Term with Subs[H],
+                      C <: Term with Subs[C],
+                      D <: Term with Subs[D]](
       data: D,
       defn: D => Func[H, C] => H => Option[C],
       tail: RecursiveDefinition[H, C]
-  )
-      extends RecursiveDefinition[H, C] {
+  ) extends RecursiveDefinition[H, C] {
     val dom = tail.dom
 
     val codom = tail.codom
@@ -71,7 +73,7 @@ object RecursiveDefinition {
     def caseFn(f: => Func[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
 
-      def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt)
+    def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt)
 
   }
 
@@ -82,7 +84,7 @@ import Subst.SubstOp
 abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
-                                          Index <: HList : Subst,
+                                          Index <: HList: Subst,
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]] {
@@ -120,15 +122,14 @@ object IndexedRecursiveDefinition {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    C <: Term with Subs[C],
-                   Index <: HList : Subst,
+                   Index <: HList: Subst,
                    IF <: Term with Subs[IF],
                    IDF <: Term with Subs[IDF],
                    IDFT <: Term with Subs[IDFT]](
       W: F,
       X: Typ[C],
       family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
-  )
-      extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
+  ) extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
 
     def caseFn(f: => IF)(arg: H): Option[C] = None
 
@@ -139,7 +140,7 @@ object IndexedRecursiveDefinition {
   case class DataCons[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       C <: Term with Subs[C],
-                      Index <: HList : Subst,
+                      Index <: HList: Subst,
                       IF <: Term with Subs[IF],
                       IDF <: Term with Subs[IDF],
                       IDFT <: Term with Subs[IDFT],
@@ -147,8 +148,7 @@ object IndexedRecursiveDefinition {
       data: D,
       defn: D => IF => H => Option[C],
       tail: IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
-  )
-      extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
+  ) extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
     val family = tail.family
 
     val W = tail.W

@@ -104,13 +104,13 @@ object TermExpr {
   case class SigmaExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
       case fib: Func[_, _] => {
-          val x = fib.dom.Var
-          val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
-          SigmaTyp(fibre)
-        }
+        val x     = fib.dom.Var
+        val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
+        SigmaTyp(fibre)
+      }
       case _ =>
         throw (new IllegalArgumentException(
-            s"cannot construct Sigma Type with fibre ${fiber.asTerm}"))
+          s"cannot construct Sigma Type with fibre ${fiber.asTerm}"))
     }
 
     override def toString = s"${Sigma}_($fiber)"
@@ -119,13 +119,13 @@ object TermExpr {
   case class PiExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
       case fib: Func[_, _] => {
-          val x = fib.dom.Var
-          val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
-          piDefn(x)(fib(x).asInstanceOf[Typ[Term]])
-        }
+        val x     = fib.dom.Var
+        val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
+        piDefn(x)(fib(x).asInstanceOf[Typ[Term]])
+      }
       case _ =>
         throw (new IllegalArgumentException(
-            s"cannot construct Pi Type with fibre ${fiber.asTerm}"))
+          s"cannot construct Pi Type with fibre ${fiber.asTerm}"))
     }
     override def toString = s"${Pi}_$fiber"
   }

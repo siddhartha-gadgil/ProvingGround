@@ -29,15 +29,15 @@ object WikiRead {
 
   def mathPages(nodes: NodeSeq) =
     for (node <- nodes; a <- (node \ "a"); h <- a \ "@href" if !(h.text
-                                                 .startsWith("#"))) yield
-      MathPage(a.text, h.text)
+           .startsWith("#"))) yield MathPage(a.text, h.text)
 
   def nextgen(pgsfut: Future[Seq[MathPage]]) =
     pgsfut map (_ filter (_.isList)) flatMap
-    ((pgs) =>
-          Future.sequence(pgs map
-              ((pg) => getXML(pg.url) map ((xml) => mathPages(xml))))) map
-    (_.flatten)
+      ((pgs) =>
+         Future.sequence(
+           pgs map
+             ((pg) => getXML(pg.url) map ((xml) => mathPages(xml))))) map
+      (_.flatten)
 
   def saveAll(pgsfut: Future[Seq[MathPage]])(implicit save: MathPage => Unit) = {
     pgsfut.onSuccess {
@@ -49,8 +49,9 @@ object WikiRead {
 
   val otherPagesFut = nextgen(topPagesFut)
 
-  val masterlist = for (nodeseq <- getXML(
-      baseUrl + "/wiki/Lists_of_mathematics_topics")) yield (nodeseq \\ "li")
+  val masterlist =
+    for (nodeseq <- getXML(baseUrl + "/wiki/Lists_of_mathematics_topics"))
+      yield (nodeseq \\ "li")
 
   def savePages(implicit save: MathPage => Unit) = {
     saveAll(topPagesFut)

@@ -5,7 +5,11 @@ import provingground.Contexts._
 
 //import provingground.Context.Context.empty
 
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.reflect.runtime.universe.{
+  Try => UnivTry,
+  Function => FunctionUniv,
+  _
+}
 import annotation._
 
 /**

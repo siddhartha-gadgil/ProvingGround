@@ -1,6 +1,10 @@
 package provingground
 import HoTT._
-import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
+import scala.reflect.runtime.universe.{
+  Try => UnivTry,
+  Function => FunctionUniv,
+  _
+}
 import scala.language.implicitConversions
 
 object Tuples {
@@ -19,9 +23,9 @@ object Tuples {
     def +:[U <: Term with Subs[U]](head: U) = prepend(head)
   }
 
-  implicit def getTerm[
-      U <: Term with Subs[U], F <: Term with Subs[F], T <: Term with Subs[T]](
-      tuple: TermTuple[U, F, T]): U =
+  implicit def getTerm[U <: Term with Subs[U],
+                       F <: Term with Subs[F],
+                       T <: Term with Subs[T]](tuple: TermTuple[U, F, T]): U =
     tuple.term
 
   trait MapsTo[F, T] {
@@ -55,8 +59,7 @@ object Tuples {
                       T <: Term with Subs[T]](
       head: U,
       tail: TermTuple[W, F, T]
-  )
-      extends TermTuple[PairTerm[U, W], FuncLike[U, F], T] {
+  ) extends TermTuple[PairTerm[U, W], FuncLike[U, F], T] {
 
     lazy val term = PairTerm(head, tail.term)
 
@@ -71,8 +74,7 @@ object Tuples {
                          T <: Term with Subs[T]](
       head: U,
       tail: TermTuple[W, F, T]
-  )
-      extends TermTuple[DepPair[U, W], FuncLike[U, F], T] {
+  ) extends TermTuple[DepPair[U, W], FuncLike[U, F], T] {
 
     lazy val term = lambdaPair(head)(tail.term)
 

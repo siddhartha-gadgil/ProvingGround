@@ -20,7 +20,8 @@ import NatTyp._
   * @author gadgil
   */
 case class IndexedVecTyp[X, +U <: RepTerm[X] with Subs[U]](
-    basetyp: Typ[U], dim: SafeLong)(implicit baserep: ScalaRep[U, X])
+    basetyp: Typ[U],
+    dim: SafeLong)(implicit baserep: ScalaRep[U, X])
     extends Typ[RepTerm[Vector[X]]] {
   type Obj = RepTerm[Vector[X]]
 
@@ -43,13 +44,13 @@ class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
   implicit val vrep = IndexedVecTyp.vecRep[U, X]
 
   assert(
-      basetyp == baserep.typ,
-      s"specified type $basetyp does not match type of ${baserep.typ} of scalarep")
+    basetyp == baserep.typ,
+    s"specified type $basetyp does not match type of ${baserep.typ} of scalarep")
 
   val n = "n" :: NatTyp
 
   val Vec = ((n: SafeLong) =>
-    IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
+               IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
 
   val NilVec = (Vector(): Vector[X]).getTerm(Vec(Literal(0)))
 
@@ -58,13 +59,13 @@ class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
   val consFn = (n: SafeLong) => (x: X) => (v: Vector[X]) => (x +: v)
 
   val consRep = depFuncPolyRep(
-      poly(NatTyp.rep),
-      depFuncPolyRep(poly(baserep), depFuncPolyRep(vrep, vrep)))
+    poly(NatTyp.rep),
+    depFuncPolyRep(poly(baserep), depFuncPolyRep(vrep, vrep)))
 
   val consLike = ScalaPolyTerm(consFn)(consRep).getTerm(consTyp)
 
-  val cons = consLike.asInstanceOf[FuncLike[
-          Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
+  val cons = consLike.asInstanceOf[
+    FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
 }
 
 object NatVecTyps extends VecTyps[SafeLong, Nat](NatTyp)
@@ -75,18 +76,18 @@ object IndexedVecTyp {
 
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match {
       case tp @ IndexedVecTyp(basetyp, dim) if dim == elem.size => {
-          val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](
-              tp.asInstanceOf[Typ[RepTerm[Vector[X]]]])
-          Some(pattern(elem))
-        }
+        val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](
+          tp.asInstanceOf[Typ[RepTerm[Vector[X]]]])
+        Some(pattern(elem))
+      }
       case _ => None
     }
 
     def unapply(term: RepTerm[Vector[X]]) = term.typ match {
       case tp: IndexedVecTyp[_, X] => {
-          val pattern = new ScalaSym[Term, Vector[X]](tp)
-          pattern.unapply(term)
-        }
+        val pattern = new ScalaSym[Term, Vector[X]](tp)
+        pattern.unapply(term)
+      }
       case _ => None
     }
 

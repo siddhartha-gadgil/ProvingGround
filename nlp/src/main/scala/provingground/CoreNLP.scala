@@ -53,7 +53,7 @@ object CoreNLP {
       sentence.get(classOf[CollapsedCCProcessedDependenciesAnnotation]);
     val dependencyIterable = dependencies.edgeIterable().asScala
     dependencyIterable map
-    ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
+      ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
   }
 
   def proseTrees(text: String)(implicit pipe: StanfordCoreNLP) = {
@@ -118,7 +118,7 @@ object CoreNLPTest extends App {
       sentence.get(classOf[CollapsedCCProcessedDependenciesAnnotation]);
     val dependencyIterable = dependencies.edgeIterable().asScala
     dependencyIterable map
-    ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
+      ((e: SemanticGraphEdge) => DepRel(gov(e), dep(e), depType(e)))
   }
   for (t <- depTrees; e <- t) println(e)
 
@@ -130,6 +130,6 @@ object CoreNLPTest extends App {
 //      document.get(CorefChainAnnotation.class);
 
   val tree = proseTrees(
-      "if a prime number p divides mn, p divides one of m and n").head
+    "if a prime number p divides mn, p divides one of m and n").head
 //		println(toFormula(tree, Global))
 }

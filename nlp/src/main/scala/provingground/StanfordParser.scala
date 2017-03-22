@@ -17,10 +17,10 @@ import scala.collection.JavaConverters._
 
 object StanfordParser {
   val lp = LexicalizedParser.loadModel(
-      "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
+    "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
 
   val tagger = new MaxentTagger(
-      "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
+    "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
 
   val tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "")
 
@@ -37,8 +37,8 @@ object StanfordParser {
 
   case class TeXParsed(raw: String) {
     lazy val texMap = (texInline(raw).zipWithIndex map {
-          case (w, n) => (s"TeXInline$n", w)
-        }).toMap
+      case (w, n) => (s"TeXInline$n", w)
+    }).toMap
 
     lazy val deTeXed = (texMap :\ raw) { case ((l, w), s) => s.replace(w, l) }
 

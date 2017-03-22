@@ -16,9 +16,9 @@ class ExprApplnOps[E](appln: => (E, E) => Option[E])(implicit l: ExprLang[E],
   }
 
   def shiftArg(f: E, x: E) =
-    for (d <- d.domain(f);
-    y <- l.anonVar(d);
-    fy <- appln(f, y);
-    g <- l.lambda(y, fy);
-    fyx <- appln(g, x)) yield fyx
+    for (d   <- d.domain(f);
+         y   <- l.anonVar(d);
+         fy  <- appln(f, y);
+         g   <- l.lambda(y, fy);
+         fyx <- appln(g, x)) yield fyx
 }

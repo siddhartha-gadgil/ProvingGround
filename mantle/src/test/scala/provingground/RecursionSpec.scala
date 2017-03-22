@@ -122,7 +122,7 @@ class RecursionSpec extends FlatSpec {
     recFn(BoolCons, SmallBool, X)
 
   "And defined recursively" should "have correct values" in {
-    val a = "a" :: SmallBool
+    val a   = "a" :: SmallBool
     val and = recBool(SmallBool ->: SmallBool)(lambda(a)(a), lambda(a)(ff))
     assert(and(tt, tt) == tt)
   }
@@ -132,12 +132,12 @@ class RecursionSpec extends FlatSpec {
     val k = "k" :: SmallNat
     val f = "f" :: (SmallNat ->: SmallNat)
     val add = recNat(SmallNat ->: SmallNat)(
-        lambda(n)(n),
-        lambda(n)(
-            lambda(f)(
-                lambda(k)(succ(f(k)))
-            )
+      lambda(n)(n),
+      lambda(n)(
+        lambda(f)(
+          lambda(k)(succ(f(k)))
         )
+      )
     )
 
     assert(add(one, one) == succ(one))

@@ -30,8 +30,8 @@ object TreePatterns {
       extends Pattern.Partial[Tree, IV]({
         case Node("S",
                   x +: Node(
-                  "ADVP",
-                  Vector(Node("RB", Vector(Leaf(word("then")))))) +: ys) =>
+                    "ADVP",
+                    Vector(Node("RB", Vector(Leaf(word("then")))))) +: ys) =>
           (x, ys filter ((y) => Set(",", "RB") contains (y.value)))
       })
 
@@ -45,7 +45,7 @@ object TreePatterns {
   object IfTree
       extends Pattern.Partial[Tree, IV]({
         case Node("S", IfClause(x) +: ys) => (x, ys filter (_.value != ","))
-        case IfClause(Then(x, ys)) => (x, ys)
+        case IfClause(Then(x, ys))        => (x, ys)
       })
 
   object IfTreeSent
@@ -60,8 +60,8 @@ object TreePatterns {
   val ifPattern = Translator.Pattern[Tree, IV](IfTree.unapply)
 
   object Test {
-    val ifTrans = ifPattern.join(
-        (xl: (Int, Vector[Int])) => xl._2.headOption map (_ + xl._1))
+    val ifTrans = ifPattern.join((xl: (Int, Vector[Int])) =>
+      xl._2.headOption map (_ + xl._1))
   }
 
   object VP
@@ -84,10 +84,10 @@ object TreePatterns {
 
   object VerbNotObj
       extends Pattern.Partial[Tree, II]({
-        case Node(
-            "VP",
-            Vector(
-            x @ Node(vb, _), Node(_, Vector(Leaf("not"))), y @ Node(nn, _)))
+        case Node("VP",
+                  Vector(x @ Node(vb, _),
+                         Node(_, Vector(Leaf("not"))),
+                         y @ Node(nn, _)))
             if (vb.startsWith("V") && nn.startsWith("N")) =>
           (x, y)
       })
@@ -112,7 +112,7 @@ object TreePatterns {
       extends Pattern.Partial[Tree, IV]({
         case Node("ADJP", x +: ys)
             if x.value.startsWith("JJ") &&
-            ys.forall(_.value.startsWith("PP")) =>
+              ys.forall(_.value.startsWith("PP")) =>
           (x, ys)
       })
 
@@ -120,7 +120,7 @@ object TreePatterns {
       extends Pattern.Partial[Tree, IV]({
         case Node("VP", x +: ys)
             if x.value.startsWith("V") &&
-            ys.forall(_.value.startsWith("PP")) =>
+              ys.forall(_.value.startsWith("PP")) =>
           (x, ys)
       })
 
@@ -128,8 +128,8 @@ object TreePatterns {
       extends Pattern.Partial[Tree, II]({
         case Node("PP",
                   Vector(
-                  jj @ Node("IN", Vector(Leaf(_))),
-                  np @ Node("NP", _)
+                    jj @ Node("IN", Vector(Leaf(_))),
+                    np @ Node("NP", _)
                   )) =>
           (jj, np)
       })
@@ -143,8 +143,8 @@ object TreePatterns {
       extends Pattern.Partial[Tree, II]({
         case Node("NP",
                   Vector(
-                  x @ NP(_),
-                  Node("SBAR", Vector(Node("WHADVP", _), y))
+                    x @ NP(_),
+                    Node("SBAR", Vector(Node("WHADVP", _), y))
                   )) =>
           (x, y)
       })
@@ -155,7 +155,7 @@ object TreePatterns {
       }) {
     val pattern = Translator.Pattern[Tree, Functors.II](unapply)
 
-    def translate[E : ExprLang] = {
+    def translate[E: ExprLang] = {
       pattern.join(ExprLang.appln[E])
     }
   }
@@ -188,59 +188,54 @@ object TreePatterns {
   object DPQuant
       extends Pattern.Partial[Tree, SVI]({
         case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np)
-            if
-            (adjs.forall(_.value == "JJ") && (np.value != "NN") &&
-                np.value.startsWith("N")) =>
+            if (adjs.forall(_.value == "JJ") && (np.value != "NN") &&
+              np.value.startsWith("N")) =>
           (det, (adjs, np))
       })
 
   object DPBaseQuant
       extends Pattern.Partial[Tree, SVII]({
         case Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np :+ npp)
-            if
-            (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
-                npp.value.startsWith("N")) =>
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
+              npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
         case Node("NP",
                   Vector(
-                  Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np),
-                  Node("NP", Vector(npp))
+                    Node("NP", Node("DT", Vector(Leaf(det))) +: adjs :+ np),
+                    Node("NP", Vector(npp))
                   ))
-            if
-            (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
-                npp.value.startsWith("N")) =>
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
+              npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
       })
 
   object DPBaseQuantZero
       extends Pattern.Partial[Tree, VII]({
         case Node("NP", adjs :+ np :+ npp)
-            if
-            (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-                npp.value.startsWith("N")) =>
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
+              npp.value.startsWith("N")) =>
           (adjs, (np, npp))
         case Node("NP",
                   Vector(
-                  Node("NP", adjs :+ np),
-                  Node("NP", Vector(npp))
+                    Node("NP", adjs :+ np),
+                    Node("NP", Vector(npp))
                   ))
-            if
-            (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-                npp.value.startsWith("N")) =>
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
+              npp.value.startsWith("N")) =>
           (adjs, (np, npp))
       })
 
   val isModalDo: Tree => Boolean = {
-    case Node("MD", _) => true
+    case Node("MD", _)            => true
     case Node(_, Vector(Leaf(v))) => Set("do", "does") contains (v)
-    case _ => false
+    case _                        => false
   }
 
   object NotVP
       extends Pattern.Partial[Tree, Id]({
         case Node("VP",
                   head +: Node("RB", Vector(Leaf("not"))) +: Vector(
-                  vp @ Node("VP", _))) if isModalDo(head) =>
+                    vp @ Node("VP", _))) if isModalDo(head) =>
           vp
       })
 
@@ -254,7 +249,7 @@ object TreePatterns {
   object NNP
       extends Pattern.Partial[Tree, S]({
         case Node("NP", Vector(Node("NNP", Vector(Leaf(nn))))) => nn
-        case Node("NNP", Vector(Leaf(nn))) => nn
+        case Node("NNP", Vector(Leaf(nn)))                     => nn
       })
 
   object DisjunctNP
@@ -332,15 +327,15 @@ object TreeToMath {
       case (pp, np) => MathExpr.PP(false, pp, np)
     }
 
-  val nn = TreePatterns.NN >>> [MathExpr] (MathExpr.NN(_))
+  val nn = TreePatterns.NN >>> [MathExpr](MathExpr.NN(_))
 
-  val fmla = TreePatterns.NNP >>> [MathExpr] (MathExpr.Formula(_))
+  val fmla = TreePatterns.NNP >>> [MathExpr](MathExpr.Formula(_))
 
-  val vb = TreePatterns.VB >>> [MathExpr] (MathExpr.VB(_))
+  val vb = TreePatterns.VB >>> [MathExpr](MathExpr.VB(_))
 
-  val jj = TreePatterns.JJ >>> [MathExpr] (MathExpr.JJ(_))
+  val jj = TreePatterns.JJ >>> [MathExpr](MathExpr.JJ(_))
 
-  val prep = TreePatterns.IN >>> [MathExpr] (MathExpr.Prep(_))
+  val prep = TreePatterns.IN >>> [MathExpr](MathExpr.Prep(_))
 
   val dpBase =
     TreePatterns.DPBase >>> [MathExpr] {
@@ -374,16 +369,16 @@ object TreeToMath {
 
   val addPP =
     TreePatterns.NPPP >> [MathExpr] {
-      case (dp: MathExpr.DP, pp) => Some(dp.add(pp))
+      case (dp: MathExpr.DP, pp)        => Some(dp.add(pp))
       case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
-      case _ => None
+      case _                            => None
     }
 
   val addST =
     TreePatterns.NPWH >> [MathExpr] {
-      case (dp: MathExpr.DP, wh) => Some(dp.st(wh))
+      case (dp: MathExpr.DP, wh)        => Some(dp.st(wh))
       case (fmla: MathExpr.Formula, wh) => Some(fmla.dp.st(wh))
-      case _ => None
+      case _                            => None
     }
 
   val jjpp =
@@ -396,9 +391,9 @@ object TreeToMath {
       case (verb, pps) => MathExpr.VerbPP(verb, pps)
     }
 
-  val or = TreePatterns.DisjunctNP >>> [MathExpr] (MathExpr.DisjunctNP(_))
+  val or = TreePatterns.DisjunctNP >>> [MathExpr](MathExpr.DisjunctNP(_))
 
-  val and = TreePatterns.ConjunctNP >>> [MathExpr] (MathExpr.ConjunctNP(_))
+  val and = TreePatterns.ConjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
 
   val dropRoot =
     TreePatterns.DropRoot >>> [MathExpr] { (x) =>
@@ -407,7 +402,7 @@ object TreeToMath {
 
   val dropNP =
     TreePatterns.DropNP >> [MathExpr] {
-      case Vector(x: MathExpr.DP) => Some(x)
+      case Vector(x: MathExpr.DP)      => Some(x)
       case Vector(x: MathExpr.Formula) => Some(x)
       case v =>
         println(v)
@@ -415,7 +410,7 @@ object TreeToMath {
         None
     }
 
-  val purge = TreePatterns.Purge >>> [MathExpr] ((x) => x)
+  val purge = TreePatterns.Purge >>> [MathExpr]((x) => x)
 
   // val ifThen = TreePatterns.IfTree >>[MathExpr]{
   //   case (x, Vector(y)) =>
@@ -431,13 +426,13 @@ object TreeToMath {
       case (x, y) => MathExpr.IfThen(x, y)
     }
 
-  val notvp = TreePatterns.NotVP >>> [MathExpr] (MathExpr.NegVP(_))
+  val notvp = TreePatterns.NotVP >>> [MathExpr](MathExpr.NegVP(_))
 
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || nn || vb || jj || pp ||
-    prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || jjpp ||
-    verbpp || notvp || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
-    dpBaseQuantZero || dropRoot || dropNP || purge
+      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || jjpp ||
+      verbpp || notvp || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
+      dpBaseQuantZero || dropRoot || dropNP || purge
 
   val mathExprTree = mathExpr || FormalExpr.translator
 }

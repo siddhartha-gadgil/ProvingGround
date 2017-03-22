@@ -54,8 +54,8 @@ case class NextSample(p: FD[Term],
         val tang = FD.unif(x) //tangent vecror, atom at `x`
         val dPD =
           ded.Devolve(nextFD, tang) //recursive distribution based on derivative for sampling
-        val samp = sample(dPD, n)
-        val DdPd = ded.DevolveTyp(nextFD, tang)
+        val samp  = sample(dPD, n)
+        val DdPd  = ded.DevolveTyp(nextFD, tang)
         val Dsamp = sample(DdPd, n)
         x -> (toFD(samp), toFD(Dsamp))
     }
@@ -81,7 +81,7 @@ case class NextSample(p: FD[Term],
   //       }).toMap
 
   def shiftedFD(totalSize: Int, epsilon: Double) = {
-    val tf = feedBacks // totalFlow(totalSize)
+    val tf    = feedBacks // totalFlow(totalSize)
     val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
     val pmf =
@@ -108,11 +108,9 @@ case class BufferedRun[A](iter: Iterator[A]) {
     println(s"Sending halt signal to $this")
     live = false
   }
-  val it = iter.takeWhile(
-      (_) =>
-        {
-      if (!live) println(s"Halted $this")
-      live
+  val it = iter.takeWhile((_) => {
+    if (!live) println(s"Halted $this")
+    live
   })
   val timeseries = scala.collection.mutable.ArrayBuffer[A]()
   Future {

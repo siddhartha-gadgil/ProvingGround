@@ -21,13 +21,13 @@ object NormalForm {
   implicit def toSigma(term: Term): Sigma = {
     term match {
       case Sigma(_) => term
-      case x: Term => Sigma(CommRep(Map((x, 1))))
+      case x: Term  => Sigma(CommRep(Map((x, 1))))
     }
   }
 
   implicit def toPi(term: Term): Pi = {
     term match {
-      case Pi(_) => term
+      case Pi(_)   => term
       case x: Term => Pi(CommRep(Map((x, 1))))
     }
   }
@@ -47,21 +47,21 @@ object NormalForm {
   def addOp(x: Term, y: Term): Term = {
     (x, y) match {
       case (NumTerm(a), NumTerm(b)) => NumTerm(a + b)
-      case _ => x
+      case _                        => x
     }
   }
 
   def mulOp(x: Term, y: Term): Term = {
     (x, y) match {
       case (NumTerm(a), NumTerm(b)) => NumTerm(a * b)
-      case _ => x
+      case _                        => x
     }
   }
 
   def numTermMatch(term: Term): Boolean = {
     term match {
       case NumTerm(_) => true
-      case _ => false
+      case _          => false
     }
   }
 
@@ -86,21 +86,21 @@ object NormalForm {
 
   def commReduce(op: (Term, Term) => Term, rep: CommRep[Term]): CommRep[Term] = {
     val onlyNumbers = rep filter numTermMatch
-    val theRest = rep filter (numTermMatch(_) == false)
+    val theRest     = rep filter (numTermMatch(_) == false)
     if (onlyNumbers.isEmpty) {
       theRest
     } else {
       val finalNumber = onlyNumbers reduce op
-      val out = theRest combine CommRep[Term](Map((finalNumber, 1)))
+      val out         = theRest combine CommRep[Term](Map((finalNumber, 1)))
       out match {
         case x: CommRep[Term] => x
-        case _ => rep
+        case _                => rep
       }
     }
   }
 
-  def assocReduce(
-      op: (Term, Term) => Term, rep: AssocRep[Term]): AssocRep[Term] = {
+  def assocReduce(op: (Term, Term) => Term,
+                  rep: AssocRep[Term]): AssocRep[Term] = {
     val grouped = clumpTerms(rep.representation, numTermMatch)
     def action(list: List[Term]): List[Term] = {
       if (numTermMatch(list.head)) {
@@ -185,7 +185,7 @@ case class CommRep[A](representation: Map[A, Int]) extends Representation[A] {
 
   override def combine(that: Representation[A]): Representation[A] = {
     that match {
-      case CommRep(x) => CommRep(listToMap(listRep ::: toList(x)))
+      case CommRep(x)  => CommRep(listToMap(listRep ::: toList(x)))
       case AssocRep(x) => AssocRep(listRep ::: x)
     }
   }
@@ -225,7 +225,7 @@ case class AssocRep[A](representation: List[A]) extends Representation[A] {
   override def combine(that: Representation[A]): Representation[A] = {
     that match {
       case comm @ CommRep(x) => AssocRep(representation ::: comm.listRep)
-      case AssocRep(x) => AssocRep(representation ::: x)
+      case AssocRep(x)       => AssocRep(representation ::: x)
     }
   }
 
@@ -268,7 +268,7 @@ case class NumTerm(num: Number) extends Term {
   override def +(that: Term): Term = {
     val out = that match {
       case NumTerm(x) => NumTerm(num + x)
-      case x: Term => toSigma(this) + x
+      case x: Term    => toSigma(this) + x
     }
     semiReduce(out)
   }
@@ -276,17 +276,17 @@ case class NumTerm(num: Number) extends Term {
   override def *(that: Term): Term = {
     val out = that match {
       case NumTerm(x) => NumTerm(num * x)
-      case x: Term => toPi(this) * x
+      case x: Term    => toPi(this) * x
     }
     semiReduce(out)
   }
 }
 
 case class Variable(symbol: String) extends Term {
-  override def toString() = symbol
+  override def toString()             = symbol
   override def fullReduce(): Variable = this
-  override def +(that: Term): Term = semiReduce(toSigma(this) + that)
-  override def *(that: Term): Term = semiReduce(toPi(this) * that)
+  override def +(that: Term): Term    = semiReduce(toSigma(this) + that)
+  override def *(that: Term): Term    = semiReduce(toPi(this) * that)
 }
 
 case class Sigma(representation: Representation[Term]) extends BigOp {
@@ -306,7 +306,7 @@ case class Sigma(representation: Representation[Term]) extends BigOp {
   def +(that: Term): Term = {
     val out = that match {
       case Sigma(thatRep) => Sigma(representation combine thatRep)
-      case x: Term => this + toSigma(x)
+      case x: Term        => this + toSigma(x)
     }
     semiReduce(out)
   }
@@ -315,7 +315,7 @@ case class Sigma(representation: Representation[Term]) extends BigOp {
     val out = that match {
       case Sigma(thatRep) =>
         Sigma(
-            (thatRep map ((x: Term) => this * x)) reduce
+          (thatRep map ((x: Term) => this * x)) reduce
             ((x: Term, y: Term) => x + y))
       case x: Term => Sigma(representation map ((y: Term) => toPi(y) * x))
     }
@@ -340,16 +340,16 @@ case class Pi(representation: Representation[Term]) extends BigOp {
   def +(that: Term): Term = {
     val out = that match {
       case sigma @ Sigma(_) => toSigma(this) + sigma
-      case x: Term => toSigma(this) + toSigma(that)
+      case x: Term          => toSigma(this) + toSigma(that)
     }
     semiReduce(out)
   }
 
   def *(that: Term): Term = {
     val out = that match {
-      case Pi(thatRep) => Pi(representation combine thatRep)
+      case Pi(thatRep)    => Pi(representation combine thatRep)
       case Sigma(thatRep) => Sigma(thatRep map ((x: Term) => this * x))
-      case x: Term => this * toPi(x)
+      case x: Term        => this * toPi(x)
     }
     semiReduce(out)
   }

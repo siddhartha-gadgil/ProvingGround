@@ -53,8 +53,8 @@ trait CompositeFunctors {
       }
     }
 
-  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]: Traverse[
-      ({ type Z[A] = X[Y[A]] })#Z] =
+  implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
+    : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
     new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
       type F[A] = X[Y[A]]
 
@@ -144,8 +144,8 @@ object Functors extends CompositeFunctors {
 
   type II[A] = (Id[A], Id[A]);
 
-  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]: Traverse[
-      ({ type Z[A] = (X[A], Y[A]) })#Z] =
+  implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]
+    : Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] {
       val XT = implicitly[Traverse[X]]
       val YT = implicitly[Traverse[Y]]

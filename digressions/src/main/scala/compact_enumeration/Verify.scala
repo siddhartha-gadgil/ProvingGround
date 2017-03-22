@@ -59,10 +59,10 @@ object Verify {
       faceBoundPf: FaceBound,
       partialDerivativeBounds: Traversable[PartialDerBound]): Option[Term] =
     Try(
-        MVTfaceBoundFuncPositive(func,
-                                 domain,
-                                 faceBoundPf,
-                                 partialDerivativeBounds)).toOption
+      MVTfaceBoundFuncPositive(func,
+                               domain,
+                               faceBoundPf,
+                               partialDerivativeBounds)).toOption
 
   def optDeducedFaceBoundProof(func: RealMultiFunc,
                                domain: Cube,
@@ -81,6 +81,7 @@ object Verify {
 
   def optInferredPartialDerivativeBound(der: IsPartialDerivative,
                                         funcBound: MultiFuncBound) =
-    Try(InferredPartialDerivativeBound(der: IsPartialDerivative,
-                                       funcBound: MultiFuncBound)).toOption
+    Try(
+      InferredPartialDerivativeBound(der: IsPartialDerivative,
+                                     funcBound: MultiFuncBound)).toOption
 }

@@ -99,74 +99,75 @@ object ExprLang {
 
   case class All[E](term: E)
 
-  def appln[E : ExprLang] =
+  def appln[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].appln(fa._1, fa._2)
 
-  def lambda[E : ExprLang] =
+  def lambda[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].lambda(fa._1, fa._2)
 
-  def pair[E : ExprLang] =
+  def pair[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].pair(fa._1, fa._2)
 
-  def pairTyp[E : ExprLang] =
+  def pairTyp[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].pairTyp(fa._1, fa._2)
 
-  def equality[E : ExprLang] =
+  def equality[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].equality(fa._1, fa._2)
 
-  def pi[E : ExprLang] =
+  def pi[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].pi(fa._1, fa._2)
 
-  def func[E : ExprLang] =
+  def func[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].funcTyp(fa._1, fa._2)
 
-  def sigma[E : ExprLang] =
+  def sigma[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].sigma(fa._1, fa._2)
 
-  def or[E : ExprLang] =
+  def or[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].or(fa._1, fa._2)
 
-  def orCases[E : ExprLang] =
+  def orCases[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].orCases(fa._1, fa._2)
 
-  def i1[E : ExprLang] =
+  def i1[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].i1(fa._1, fa._2)
 
-  def i2[E : ExprLang] =
+  def i2[E: ExprLang] =
     (fa: (E, E)) => implicitly[ExprLang[E]].i2(fa._1, fa._2)
 
-  def incl1[E : ExprLang] = implicitly[ExprLang[E]].incl1 _
+  def incl1[E: ExprLang] = implicitly[ExprLang[E]].incl1 _
 
-  def incl2[E : ExprLang] = implicitly[ExprLang[E]].incl2 _
+  def incl2[E: ExprLang] = implicitly[ExprLang[E]].incl2 _
 
-  def proj1[E : ExprLang] = implicitly[ExprLang[E]].proj1 _
+  def proj1[E: ExprLang] = implicitly[ExprLang[E]].proj1 _
 
-  def proj2[E : ExprLang] = implicitly[ExprLang[E]].proj2 _
+  def proj2[E: ExprLang] = implicitly[ExprLang[E]].proj2 _
 
-  def anonVar[E : ExprLang] = implicitly[ExprLang[E]].anonVar _
+  def anonVar[E: ExprLang] = implicitly[ExprLang[E]].anonVar _
 
-  def metaVar[E : ExprLang] = implicitly[ExprLang[E]].metaVar _
+  def metaVar[E: ExprLang] = implicitly[ExprLang[E]].metaVar _
 
-  def numeral[E : ExprLang] = implicitly[ExprLang[E]].numeral _
+  def numeral[E: ExprLang] = implicitly[ExprLang[E]].numeral _
 
-  def variable[E : ExprLang] =
+  def variable[E: ExprLang] =
     (nt: (String, E)) => implicitly[ExprLang[E]].variable(nt._1, nt._2)
 
-  def tt[E : ExprLang] = implicitly[ExprLang[E]].tt
+  def tt[E: ExprLang] = implicitly[ExprLang[E]].tt
 
-  def ff[E : ExprLang] = implicitly[ExprLang[E]].ff
+  def ff[E: ExprLang] = implicitly[ExprLang[E]].ff
 
-  def qed[E : ExprLang] = implicitly[ExprLang[E]].qed
+  def qed[E: ExprLang] = implicitly[ExprLang[E]].qed
 
-  def applnQ[E : ExprLang](func: E, arg: E): Option[E] = {
+  def applnQ[E: ExprLang](func: E, arg: E): Option[E] = {
     val lang = implicitly[ExprLang[E]]
     (func, arg) match {
       case (_, All(x)) =>
-        Try(applnQ(func, x.asInstanceOf[E]) flatMap
+        Try(
+          applnQ(func, x.asInstanceOf[E]) flatMap
             (lang.lambda(x.asInstanceOf[E], _))).toOption.flatten
       case (_, Exists(x)) =>
         Try(
-            applnQ(func, x.asInstanceOf[E]) flatMap
+          applnQ(func, x.asInstanceOf[E]) flatMap
             (lang.sigma(x.asInstanceOf[E], _))).toOption.flatten
       case (All(x), _) =>
         Try(lang.lambda(x.asInstanceOf[E], arg)).toOption.flatten

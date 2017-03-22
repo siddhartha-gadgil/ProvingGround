@@ -15,8 +15,8 @@ class DiffbleFunctionSpec extends FlatSpec {
     DiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
 
   "A Differentiable function" should "evaluate by apply" in {
-    val fn = DiffbleFunction((x: Double) => 2 * x)(
-        (x: Double) => (y: Double) => 2 * y)
+    val fn = DiffbleFunction((x: Double) => 2 * x)((x: Double) =>
+      (y: Double) => 2 * y)
 
     assert(double.func(2) == 4)
 
@@ -24,8 +24,8 @@ class DiffbleFunctionSpec extends FlatSpec {
   }
 
   it should "apply gradient" in {
-    val fn = DiffbleFunction((x: Double) => x * x)(
-        (x: Double) => (y: Double) => x * y)
+    val fn = DiffbleFunction((x: Double) => x * x)((x: Double) =>
+      (y: Double) => x * y)
 
     assert(square.grad(2)(3) == 6)
 
