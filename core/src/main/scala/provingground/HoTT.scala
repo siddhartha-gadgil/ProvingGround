@@ -74,6 +74,8 @@ object HoTT {
       * returns whether this is independent of that.
       */
     def indepOf(that: Term) = !dependsOn(that)
+
+    def usesVar(t: Term) = false // override in Lambda's
   }
 
   /**
@@ -1084,6 +1086,8 @@ object HoTT {
 
     lazy val dom = variable.typ.asInstanceOf[Typ[X]]
 
+    override def usesVar(t: Term) = t.dependsOn(variable) || value.usesVar(t)
+
     override def toString =
       s"""(${variable.toString}) $MapsTo (${value.toString})"""
 
@@ -1097,13 +1101,13 @@ object HoTT {
                 value.typ.asInstanceOf[Typ[Y]])
 
     def act(arg: X) =
-      if (arg.dependsOn(variable))
+      if (usesVar(arg))
       {
         val newvar = variable.newobj
-        assert(newvar != variable && arg.indepOf(newvar))
+        // assert(newvar != variable && arg.indepOf(newvar))
         // println(s"escaped variable $variable in $arg")
         val result = value.replace(variable, newvar).replace(newvar, arg)
-        if (result != value.replace(variable, arg)) println("Escaping needed")
+        // if (result != value.replace(variable, arg)) println("Escaping needed")
         result
       }
       else value.replace(variable, arg)
