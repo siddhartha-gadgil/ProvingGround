@@ -1052,6 +1052,15 @@ object HoTT {
                    codom.replace(x, y))
   }
 
+  def replaceVar[U <: Term with Subs[U]](variable: U)(x: Term, y: Term) = variable match {
+    case sym: Symbolic =>
+      val newtyp = variable.typ.asInstanceOf[Typ[U]]
+      newtyp.variable (sym.name)
+    case t =>
+      println(s"Encountered non-symbolic variable $t of type ${t.typ}")
+      t.replace(x, y)
+  }
+
   /**
     *  A lambda-expression.
     *  variable is mapped to value.
@@ -1087,7 +1096,17 @@ object HoTT {
         FuncTyp(variable.typ.asInstanceOf[Typ[X]],
                 value.typ.asInstanceOf[Typ[Y]])
 
-    def act(arg: X) = value.replace(variable, arg)
+    def act(arg: X) =
+      if (arg.dependsOn(variable))
+      {
+        val newvar = variable.newobj
+        assert(newvar != variable && arg.indepOf(newvar))
+        // println(s"escaped variable $variable in $arg")
+        val result = value.replace(variable, newvar).replace(newvar, arg)
+        if (result != value.replace(variable, arg)) println("Escaping needed")
+        result
+      }
+      else value.replace(variable, arg)
 
     override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
@@ -1103,7 +1122,11 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
-      LambdaTerm(variable replace (x, y), value replace (x, y))
+      if (variable.replace(x, y) == variable) LambdaTerm(variable, value.replace(x, y))
+      else {
+      val newvar = variable.replace(x, y)
+      LambdaTerm(newvar, value. replace(variable, newvar). replace(x, y))
+    }
 
 //    private lazy val myv = variable.newobj
 
@@ -1193,7 +1216,11 @@ object HoTT {
     }
 
     override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
-      LambdaFixed(variable replace (x, y), value replace (x, y))
+      if (variable.replace(x, y) == variable) LambdaFixed(variable, value.replace(x, y))
+      else {
+      val newvar = variable.newobj
+      LambdaFixed(newvar.replace(x, y), value. replace(variable, newvar). replace(x, y))
+    }
   }
 
   case class LambdaTypedFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](

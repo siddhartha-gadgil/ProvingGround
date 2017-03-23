@@ -38,7 +38,7 @@ lazy val fstepData = (n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(fadd(m1)(m2)) )))
 
 
 def fn(t: Term) = FormalAppln.unapply(t).get._1
-def arg(t: Term) = FormalAppln.unapply(t).get._1
+def arg(t: Term) = FormalAppln.unapply(t).get._2
 def dc(t: Term) = t match {case d : RecursiveDefinition.DataCons[u, v, w] => d}
 
 lazy val recres = ffib_aux(succ(n))
