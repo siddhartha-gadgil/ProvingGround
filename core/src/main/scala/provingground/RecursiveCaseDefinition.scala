@@ -11,7 +11,7 @@ trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
 
   def act(arg: H) = {
-    caseFn(rebuilt)(arg) getOrElse codom.symbObj(ApplnSym(rebuilt, arg))
+    caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(self, arg))
   }
 
   def subs(x: Term, y: Term): RecursiveDefinition[H, C]
