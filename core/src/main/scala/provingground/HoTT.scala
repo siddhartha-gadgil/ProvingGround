@@ -118,6 +118,22 @@ object HoTT {
     }
 
     def newobj: U with Subs[U]
+
+  }
+
+  // returns x after modifying to avoid clashes of variables
+  def avoidVars[U<: Term with Subs[U]](t: Term, x: U): U = x match {
+    case ll: LambdaFixed[u, v] =>
+      if (t.dependsOn(ll.variable)) {
+        val newvar = ll.variable.newobj
+          LambdaFixed(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
+        } else LambdaFixed(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
+    case ll: LambdaLike[u, v] =>
+      if (t.dependsOn(ll.variable)) {
+        val newvar = ll.variable.newobj
+        LambdaTerm(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
+      } else LambdaTerm(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
+    case _ => x
   }
 
   /**
@@ -1106,11 +1122,11 @@ object HoTT {
         val newvar = variable.newobj
         // assert(newvar != variable && arg.indepOf(newvar))
         // println(s"escaped variable $variable in $arg")
-        val result = value.replace(variable, newvar).replace(newvar, arg)
+        val result =  avoidVars(arg, value).replace(variable, newvar).replace(newvar, arg)
         // if (result != value.replace(variable, arg)) println("Escaping needed")
         result
       }
-      else value.replace(variable, arg)
+      else  avoidVars(arg, value).replace(variable, arg)
 
     override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
@@ -1126,10 +1142,10 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
-      if (variable.replace(x, y) == variable) LambdaTerm(variable, value.replace(x, y))
+      if (variable.replace(x, y) == variable) LambdaTerm(variable,  avoidVars(x, value).replace(x, y))
       else {
       val newvar = variable.replace(x, y)
-      LambdaTerm(newvar, value. replace(variable, newvar). replace(x, y))
+      LambdaTerm(newvar,  avoidVars(x, value). replace(variable, newvar). replace(x, y))
     }
 
 //    private lazy val myv = variable.newobj
@@ -1220,10 +1236,10 @@ object HoTT {
     }
 
     override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
-      if (variable.replace(x, y) == variable) LambdaFixed(variable, value.replace(x, y))
+      if (variable.replace(x, y) == variable) LambdaFixed(variable, avoidVars(x, value).replace(x, y))
       else {
       val newvar = variable.newobj
-      LambdaFixed(newvar.replace(x, y), value. replace(variable, newvar). replace(x, y))
+      LambdaFixed(newvar.replace(x, y), avoidVars(x, value). replace(variable, newvar). replace(x, y))
     }
   }
 
