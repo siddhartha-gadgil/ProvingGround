@@ -163,6 +163,23 @@ lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
 lazy val coreJVM = core.jvm
 lazy val coreJS  = core.js
 
+lazy val server = (project in file("server")).settings(
+  scalaVersion := scalaV,
+  scalaJSProjects := Seq(client),
+  pipelineStages in Assets := Seq(scalaJSPipeline),
+  // triggers scalaJSPipeline when using compile or continuous compilation
+  compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
+  libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-http" % "10.0.0",
+    "com.vmunier" %% "scalajs-scripts" % "1.1.0"
+  ),
+  WebKeys.packagePrefix in Assets := "public/",
+  managedClasspath in Runtime += (packageBin in Assets).value,
+  // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
+  EclipseKeys.preTasks := Seq(compile in Compile)
+).enablePlugins(SbtWeb, SbtTwirl).
+  dependsOn(coreJVM)
+
 lazy val functionfinder = project
   .settings(commonSettings: _*)
   .settings(name := "ProvingGround-FunctionFinder")
@@ -192,6 +209,7 @@ lazy val mantle = (project in file("mantle"))
     s"""ammonite.Main("$initCommands").run() """)
   .dependsOn(coreJVM)
   .dependsOn(functionfinder)
+  .dependsOn(server)
   // .dependsOn(translation)
   .settings(tutSettings)
   .enablePlugins(SbtWeb)

@@ -28,7 +28,7 @@ import org.scalajs.dom.ext._
 
 //import FreeExprLang.{readTerm, readDist}
 
-object ProvingGroundJS extends js.JSApp {
+object ProvingGroundJS  {
   def main(): Unit = {
     val page = Try(dom.document.getElementById("page"))
       .map(_.textContent)
@@ -39,7 +39,7 @@ object ProvingGroundJS extends js.JSApp {
       case "default"        => JsTest.jstest()
     }
 
-//      JsTest.jstest()
+     JsTest.jstest()
   }
 
   lazy val jsDiv = dom.document.getElementById("jsdiv")

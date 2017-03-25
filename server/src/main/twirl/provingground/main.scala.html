@@ -1,0 +1,13 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>@title</title>
+  </head>
+  <body>
+   @content
+   @scalajs.html.scripts("provingground-js", name => s"/assets/$name", name => getClass.getResource(s"/public/$name") != null)
+  </body>
+</html>

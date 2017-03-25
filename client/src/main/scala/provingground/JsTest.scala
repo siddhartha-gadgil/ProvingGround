@@ -6,9 +6,20 @@ import org.scalajs.dom
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 
+import scala.scalajs.js
+import org.scalajs.dom
+
 import HoTT._
 
+object ScalaJSExample extends js.JSApp {
+  def main(): Unit = {
+    dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
+  }
+}
+
+@JSExport
 object JsTest {
+  @JSExport
   def jstest(): Unit = {
     dom.document
       .getElementById("scalajs")
