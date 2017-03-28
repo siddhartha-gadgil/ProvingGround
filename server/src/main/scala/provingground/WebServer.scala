@@ -5,20 +5,32 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
+import scala.io.StdIn
 
 object WebServer {
   def main(args: Array[String]) {
     implicit val system = ActorSystem("server-system")
     implicit val materializer = ActorMaterializer()
 
-    val config = ConfigFactory.load()
-    val interface = config.getString("http.interface")
-    val port = config.getInt("http.port")
+    implicit val executionContext = system.dispatcher
 
-    val service = new WebService()
+    // val config = ConfigFactory.load()
+    val interface = "localhost" //config.getString("http.interface")
+    val port = 8080//config.getInt("http.port")
 
-    Http().bindAndHandle(service.route, interface, port)
+    // val service = new WebService()
 
-    println(s"Server online at http://$interface:$port")
+    val kernel = ammonite.kernel.ReplKernel()
+
+    println(kernel.process("provingground.HoTT.Type"))
+
+    val bindingFuture = Http().bindAndHandle(CoreServer.route, interface, port)
+
+    println(s"Server online at http://$interface:$port\n Press RETURN to stop")
+
+    StdIn.readLine() // let it run until user presses return
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ => system.terminate()) // and shutdown when done
   }
 }

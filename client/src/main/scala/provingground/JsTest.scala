@@ -13,7 +13,70 @@ import HoTT._
 
 object ScalaJSExample extends js.JSApp {
   def main(): Unit = {
+    import dom.document._
     dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
+
+    import dom.ext._
+
+
+    val echo = span.render
+
+    import dom.ext._
+    import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
+
+    val box = input(
+      `type` := "text",
+      placeholder := "Type here!"
+    ).render
+
+    val results = div().render
+
+    val ticks = div("Ticks:").render
+
+    val sse = new dom.EventSource("/events")
+
+    import upickle.default._
+
+    sse.onmessage = (event: dom.MessageEvent) => {
+      ticks.appendChild(
+        p(event.data.toString).render
+      )
+      ticks.appendChild(p("tick").render)
+    }
+
+
+    box.onchange = (e: dom.Event) => {
+      echo.textContent = box.value
+      Ajax.post("/ammker", box.value).onSuccess{case xhr => {
+          val answer = xhr.responseText
+          results.appendChild(p(answer).render)
+      }
+    }
+
+    }
+
+    val target = dom.document.getElementById("jsdiv")
+
+    val (animalA, animalB) = ("fox", "dog")
+
+
+    target.appendChild(
+      div(
+        h1("Hello World!"),
+        p(
+          "The quick brown ",
+          b(animalA),
+          " jumps over the lazy ",
+          i(animalB),
+          "."
+        ),
+        box,
+        echo,
+        p("ammonite results"),
+        results,
+        ticks
+  ).render
+)
   }
 }
 

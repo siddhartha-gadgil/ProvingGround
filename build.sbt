@@ -41,7 +41,7 @@ lazy val commonSettings = baseSettings ++ Seq(
                           "-language:existentials")
   )
 
-val akkaV = "2.4.14"
+val akkaV = "2.4.17"
 
 assemblyMergeStrategy in assembly := {
   case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
@@ -55,7 +55,7 @@ lazy val jvmSettings = Seq(
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
-    "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
+    // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic"          %% "scalactic"     % "3.0.1",
     "org.scalatest"          %% "scalatest"     % "3.0.1" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
@@ -63,9 +63,9 @@ lazy val jvmSettings = Seq(
     "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "com.typesafe.akka" %% "akka-http"   % "10.0.3",
+    "com.typesafe.akka" %% "akka-http"   % "10.0.5",
     // "com.typesafe.akka" %% "akka-http" % akkaV,
-    "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.3",
+    "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.5",
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
@@ -171,7 +171,12 @@ lazy val server = (project in file("server")).settings(
   compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
   libraryDependencies ++= Seq(
     "com.typesafe.akka" %% "akka-http" % "10.0.0",
-    "com.vmunier" %% "scalajs-scripts" % "1.1.0"
+    "com.vmunier" %% "scalajs-scripts" % "1.1.0",
+    "com.simianquant" %% "ammonite-kernel" % "0.3.0",
+    "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
+    "com.typesafe.akka"      %% "akka-actor"    % akkaV,
+    "com.typesafe.akka"      %% "akka-stream"    % akkaV
+
   ),
   WebKeys.packagePrefix in Assets := "public/",
   managedClasspath in Runtime += (packageBin in Assets).value,
