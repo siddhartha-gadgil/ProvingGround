@@ -61,4 +61,6 @@ object Hub {
   implicit val system = ActorSystem("provingground")
 
   implicit val materializer = ActorMaterializer()
+
+  implicit val executionContext = system.dispatcher
 }

@@ -6,16 +6,9 @@ import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 
-object  BaseRoute {
+object  BaseServer {
 
-  val route = {
-    pathSingleSlash {
-      get {
-        complete {
-          provingground.html.index.render(provingground.HoTT.Type.toString)
-        }
-      }
-    } ~
+  val route =
       pathPrefix("assets" / Remaining) { file =>
         // optionally compresses the response with Gzip or Deflate
         // if the client accepts compressed responses
@@ -31,17 +24,17 @@ object  BaseRoute {
             getFromFile(f)
 
         }
-  }
+
 }
 
-object CoreServer{
+class AmmService{
   import ammonite.kernel._
 
   val kernel = ReplKernel()
 
   kernel.process("import provingground._; import HoTT._")
 
-  val ammRoute =
+  val route =
     post {
       path("ammker") {
         entity(as[String]) { d =>
@@ -55,7 +48,22 @@ object CoreServer{
       }
     }
 
-  val route = BaseRoute.route ~ ammRoute ~ TimeServer.route
+}
+
+object AmmServer extends AmmService
+
+object TestServer{
+  val testRoute = {
+    pathSingleSlash {
+      get {
+        complete {
+          provingground.html.test.render(provingground.HoTT.Type.toString)
+        }
+      }
+    }
+  }
+
+  val route = testRoute ~ BaseServer.route ~ AmmServer.route ~ TimeServer.route
 }
 
 import akka.NotUsed
@@ -90,6 +98,7 @@ object TimeServer {
     buf = Vector()
     b
   }).map (ServerSentEvent(_))
+  .keepAlive(1.second, () => ServerSentEvent.heartbeat)
             //
             // .map(_ => LocalTime.now())
             // .map(_ => ServerSentEvent("this"))
