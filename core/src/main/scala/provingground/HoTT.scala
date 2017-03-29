@@ -1373,8 +1373,8 @@ object HoTT {
     // if (isVar(variable)) LambdaTerm(variable, value)
     // else {
     val newvar = variable.newobj
-    assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
-    assert(newvar.typ == variable.typ, s"variable $variable changed type")
+    // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
+    // assert(newvar.typ == variable.typ, s"variable $variable changed type")
     if (value.typ dependsOn variable)
       LambdaTerm(newvar, value.replace(variable, newvar))
     else LambdaFixed(newvar, value.replace(variable, newvar))

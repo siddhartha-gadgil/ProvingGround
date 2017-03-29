@@ -78,11 +78,13 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
     val fibre = family.typRestrict(Xs, ind)
 
+    lazy val outer = self
+
     val depcodom = fibre
 
     val typ = PiDefn(fibre)
 
-    def newobj = fself
+    def newobj = ??? // fself
 
     def act(arg: H) =
       caseFn(iterDepFunc)(arg) getOrElse

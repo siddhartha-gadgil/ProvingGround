@@ -104,7 +104,9 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
     val typ = dom ->: codom
 
-    def newobj = fself
+    lazy val outer = self
+
+    def newobj = ??? //fself
 
     def act(arg: H) =
       caseFn(iterFunc)(arg) getOrElse (codom.symbObj(ApplnSym(fself, arg)))

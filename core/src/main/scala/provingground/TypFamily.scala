@@ -349,6 +349,18 @@ object TypFamilyMap {
                            FuncLike[U, TIDF],
                            FuncLike[U, TIDFT]] {
 
+    override lazy val hashCode =
+      (head, tailfibre(head.symbObj(HashSym))).hashCode
+
+    override def equals(that: Any) = that match {
+      case df: DepFuncTypFamilyMap[u, a, b, c, d, e, f, g] =>
+        head == df.head && {
+          val x = head.Var
+          tailfibre(x) == df.tailfibre(x.asInstanceOf[u])
+        }
+      case _ => false
+    }
+
     val pattern = DepFuncTypFamily(head, (u: U) => tailfibre(u).pattern)
 
     def iterFuncTyp(w: Typ[H], x: Typ[C]) = {
