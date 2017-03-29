@@ -1373,6 +1373,8 @@ object HoTT {
     // if (isVar(variable)) LambdaTerm(variable, value)
     // else {
     val newvar = variable.newobj
+    assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
+    assert(newvar.typ == variable.typ, s"variable $variable changed type")
     if (value.typ dependsOn variable)
       LambdaTerm(newvar, value.replace(variable, newvar))
     else LambdaFixed(newvar, value.replace(variable, newvar))
@@ -1425,6 +1427,8 @@ object HoTT {
     // if (isVar(variable)) LambdaFixed(variable, value)
     // else {
     val newvar = variable.newobj
+      assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
+      assert(newvar.typ == variable.typ, s"variable $variable changed type")
 //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
     LambdaFixed(newvar, value.replace(variable, newvar))
     // }
@@ -1619,7 +1623,7 @@ object HoTT {
     def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 
     def newobj =
-      DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
+      DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers)
 
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
