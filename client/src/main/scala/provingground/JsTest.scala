@@ -9,7 +9,9 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 
-import HoTT._
+import com.scalawarrior.scalajs.ace._
+
+import HoTT.{id => _, _}
 
 object ScalaJSExample extends js.JSApp {
   def main(): Unit = {
@@ -17,6 +19,9 @@ object ScalaJSExample extends js.JSApp {
     dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
 
     import dom.ext._
+
+
+    val editButton = input(`type`:= "button", value:= "compile").render
 
 
     val echo = span.render
@@ -62,6 +67,7 @@ object ScalaJSExample extends js.JSApp {
 
     target.appendChild(
       div(
+        editButton,
         h1("Hello World!"),
         p(
           "The quick brown ",
@@ -77,6 +83,25 @@ object ScalaJSExample extends js.JSApp {
         ticks
   ).render
 )
+
+  val editor = ace.edit("editor")
+  editor.setTheme("ace/theme/chrome")
+  editor.getSession().setMode("ace/mode/scala")
+
+  val text = editor.getValue()
+  editor.insert("1 + 1 == 2")
+
+  editButton.onclick = (event: dom.Event) => {
+    val code = editor.getValue()
+    echo.textContent = code
+      Ajax.post("/ammker", code).onSuccess{case xhr => {
+          val answer = xhr.responseText
+          results.appendChild(p(answer).render)
+      }
+    }
+  }
+
+
   }
 }
 

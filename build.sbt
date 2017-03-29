@@ -141,10 +141,12 @@ lazy val client = project
     // sourceMapsDirectories += coreJS.base / "..",
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),
+      resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.1",
       "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"  %%% "upickle"     % "0.4.4"
+      "com.lihaoyi"  %%% "upickle"     % "0.4.4",
+       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4"
     )
   )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
