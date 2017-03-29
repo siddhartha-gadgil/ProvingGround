@@ -15,10 +15,10 @@ import HoTT.{id => _, _}
 
 object ScalaJSExample extends js.JSApp {
   def main(): Unit = {
-    import dom.document._
+    import org.scalajs.dom.document._
     dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
 
-    import dom.ext._
+    import org.scalajs.dom.ext._
 
 
     val editButton = input(`type`:= "button", value:= "compile").render
@@ -26,7 +26,7 @@ object ScalaJSExample extends js.JSApp {
 
     val echo = span.render
 
-    import dom.ext._
+    // import dom.ext._
     import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
     val box = input(
