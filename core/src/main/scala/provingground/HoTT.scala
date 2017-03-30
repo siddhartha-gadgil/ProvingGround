@@ -862,6 +862,14 @@ object HoTT {
     def subs(x: Term, y: Term) = CodomSym(func.subs(x, y))
   }
 
+  trait InducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U]] extends FuncLike[W, U]{
+    val defnData: Vector[Term]
+
+    override def toString() =
+      defnData.foldLeft(s"ind(${dom})(${depcodom})"){
+        case (str, t) => s"$str($t)"}
+  }
+
   /**
     * Includes both functions and dependent functions
     *
@@ -940,6 +948,14 @@ object HoTT {
         fn: FuncLike[U, V],
         x: U) =
       fn.depcodom(x).symbObj(ApplnSym(fn, x))
+  }
+
+  trait RecFunc[W <: Term with Subs[W], +U <: Term with Subs[U]] extends Func[W, U]{
+    val defnData: Vector[Term]
+
+    override def toString() =
+      defnData.foldLeft(s"rec(${dom})(${codom})"){
+        case (str, t) => s"$str($t)"}
   }
 
   /**

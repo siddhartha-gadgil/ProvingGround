@@ -7,7 +7,7 @@ import HList._
 import HoTT._
 
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
-    extends Func[H, C] { self =>
+    extends RecFunc[H, C] { self =>
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
 
   def act(arg: H) = {
@@ -35,6 +35,8 @@ object RecursiveDefinition {
       dom: Typ[H],
       codom: Typ[C]
   ) extends RecursiveDefinition[H, C] {
+    val defnData = Vector()
+
     val typ = dom ->: codom
 
     def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
@@ -61,6 +63,8 @@ object RecursiveDefinition {
     val codom = tail.codom
 
     val typ = dom ->: codom
+
+    val defnData = data +: tail.defnData
 
     def newobj = {
       // println("Calling new object")
@@ -95,12 +99,16 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
   val X: Typ[C]
 
+  val defnData: Vector[Term]
+
   def caseFn(f: => IF)(arg: H): Option[C]
 
-  case class Funcs(ind: Index) extends Func[H, C] { fself =>
+  case class Funcs(ind: Index) extends RecFunc[H, C] { fself =>
     val dom = family.pattern.typ(W, ind)
 
     val codom = X
+
+    val defnData = self.defnData
 
     val typ = dom ->: codom
 
@@ -141,6 +149,8 @@ object IndexedRecursiveDefinition {
       family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
   ) extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
 
+    val defnData = Vector()
+
     def caseFn(f: => IF)(arg: H): Option[C] = None
 
     def subs(x: Term, y: Term) =
@@ -160,6 +170,8 @@ object IndexedRecursiveDefinition {
       tail: IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
   ) extends IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
     val family = tail.family
+
+    val defnData = data +: tail.defnData
 
     val W = tail.W
 
