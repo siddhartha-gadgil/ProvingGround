@@ -1991,7 +1991,7 @@ object HoTT {
 
       lazy val typ = p ~>: (targetFmly(start)(end)(p))
 
-      lazy val depcodom = (t: Term) => targetFmly(start)(end)(p)
+      lazy val depcodom = p :-> targetFmly(start)(end)(p)
 
       def act(t: Term) =
         if (start == end && t == Refl(domain, start)) data(start)
