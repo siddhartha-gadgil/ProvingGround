@@ -482,8 +482,10 @@ object HoTT {
     */
   case object Unit extends SmallTyp {
     case class RecFn[U <: Term with Subs[U]](codom: Typ[U], data: U)
-        extends Func[Term, U] { self =>
+        extends RecFunc[Term, U] { self =>
       val dom = Unit
+
+      val defnData = Vector()
 
       val typ = dom ->: codom
 
@@ -505,8 +507,10 @@ object HoTT {
 
     case class InducFn[U <: Term with Subs[U]](depcodom: Func[Term, Typ[U]],
                                                data: U)
-        extends FuncLike[Term, U] { self =>
+        extends InducFuncLike[Term, U] { self =>
       val dom = Unit
+
+      val defnData = Vector(data)
 
       val typ = PiDefn(depcodom)
 
@@ -646,8 +650,10 @@ object HoTT {
 
     case class RecFn[W <: Term with Subs[W]](codom: Typ[W],
                                              data: Func[U, Func[V, W]])
-        extends Func[PairTerm[U, V], W] { self =>
+        extends RecFunc[PairTerm[U, V], W] { self =>
       lazy val dom = prod
+
+      val defnData = Vector(data)
 
       lazy val typ = dom ->: codom
 
@@ -671,8 +677,10 @@ object HoTT {
     case class InducFn[W <: Term with Subs[W]](
         targetFmly: Func[U, Func[V, Typ[W]]],
         data: FuncLike[U, FuncLike[V, W]])
-        extends FuncLike[PairTerm[U, V], W] { self =>
+        extends InducFuncLike[PairTerm[U, V], W] { self =>
       lazy val dom = prod
+
+      val defnData = Vector(data)
 
       val xy = prod.Var
 
@@ -1757,10 +1765,12 @@ object HoTT {
 
     case class RecFn[V <: Term with Subs[V]](codom: Typ[V],
                                              data: FuncLike[W, Func[U, V]])
-        extends Func[AbsPair[W, U], V] { self =>
+        extends RecFunc[AbsPair[W, U], V] { self =>
       lazy val dom = prod: Typ[AbsPair[W, U]]
 
       lazy val typ = dom ->: codom
+
+      val defnData = Vector(data)
 
       def newobj = self
 
@@ -1783,8 +1793,10 @@ object HoTT {
     case class InducFn[V <: Term with Subs[V]](
         targetFmly: FuncLike[W, Func[U, Typ[V]]],
         data: FuncLike[W, FuncLike[U, V]])
-        extends FuncLike[AbsPair[W, U], V] { self =>
+        extends InducFuncLike[AbsPair[W, U], V] { self =>
       lazy val dom = prod
+
+      val defnData = Vector(data)
 
       val xy: AbsPair[W, U] = prod.Var
 
@@ -1917,10 +1929,12 @@ object HoTT {
         data: Func[U, V],
         start: U,
         end: U)
-        extends Func[Term, V] { self =>
+        extends RecFunc[Term, V] { self =>
       lazy val dom = (start =:= end)
 
       lazy val codom = target
+
+      val defnData = Vector(data)
 
       lazy val typ = dom ->: codom
 
@@ -1953,8 +1967,10 @@ object HoTT {
         data: FuncLike[U, V],
         start: U,
         end: U
-    ) extends FuncLike[Term, V] { self =>
+    ) extends InducFuncLike[Term, V] { self =>
       def newobj = this
+
+      val defnData = Vector(data)
 
       def subs(x: Term, y: Term) =
         InducFn(
@@ -2095,7 +2111,9 @@ object HoTT {
                                              codom: Typ[W],
                                              firstCase: Func[U, W],
                                              secondCase: Func[V, W])
-        extends Func[Term, W] {
+        extends RecFunc[Term, W] {
+        val defnData = Vector(firstCase, secondCase)
+
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == (first || second) =>
           firstCase(y.asInstanceOf[U])
@@ -2156,7 +2174,9 @@ object HoTT {
     case class InducFn[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]],
                                                firstCase: FuncLike[U, W],
                                                secondCase: FuncLike[V, W])
-        extends FuncLike[Term, W] {
+        extends InducFuncLike[Term, W] {
+          val defnData = Vector(firstCase, secondCase)
+
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == plustyp =>
           firstCase(y.asInstanceOf[U])
