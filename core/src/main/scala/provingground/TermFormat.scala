@@ -168,6 +168,19 @@ object FansiTranslate {
       equation >>> { case (lhs, rhs) => (lhs ++ LightRed(" = ")) ++ rhs } ||
       plusTyp >>> {
         case (first, scnd) => (first ++ LightRed(Str(" + ")) ++ scnd)
+      } ||
+      recFunc >>> {
+        case (dom, (codom, defnData)) =>
+          defnData.foldLeft(s"rec($dom)($codom)"){
+            case (head, d) => s"$head($d)"
+          }
+      } ||
+      inducFunc >>> {
+        case (dom, (x, (depcodomx, defnData))) =>
+          val h = Str(s"induc($dom)($x") ++  LightRed(syms.MapsTo) ++ s"$depcodomx)"
+          defnData.foldLeft(h){
+            case (head, d) => s"$head($d)"
+          }
       }
 
   import pprint._

@@ -130,6 +130,10 @@ object Functors extends CompositeFunctors {
 
   type IVI[A] = (Id[A], VI[A])
 
+  type IIV[A] = (Id[A], IV[A])
+
+  type IIIV[A] = (Id[A], IIV[A])
+
   type SVI[A] = (S[A], VI[A])
 
   type VII[A] = (Vector[A], II[A])
