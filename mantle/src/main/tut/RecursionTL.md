@@ -46,7 +46,7 @@ recBoolBool.typ
 The compile time scala type of the recursion function is just `Term`. The `import Fold._` allows pattern matching and using the runtime type.
 
 ```tut
-import Fold._
+// import Fold._
 ```
 
 We can define functions recursively using terms obtained from the `rec` method.
@@ -152,7 +152,7 @@ We define the number of vertices recursively on this.
 val T ="Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
 val leaf :: node :: HNil = TInd.intros
-import Fold._
+// import Fold._
 val t = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf))
 
 val recTN = TInd.rec(Nat)
