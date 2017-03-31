@@ -30,33 +30,59 @@ object  BaseServer {
 class AmmService{
   import ammonite.kernel._
 
-  implicit val kernel = ReplKernel()
+  implicit var kernel = ReplKernel()
 
-  kernel.process("import provingground._; import HoTT._; import TLImplicits._; import shapeless._")
+  // import scala.collection.mutable.ArrayBuffer
+  var prevCode = ""
 
-  def kernelOut(inp: String)(implicit ker: ReplKernel) = {
-    val res = ker.process(inp)
-    res match {
-      case None => "none"
-      case Some(resp) =>
-        resp.toEither match {
-          case Right(evaluation) => s"result:${evaluation.value}"
-          case Left(nel) =>
-            val errors = nel.list.toList.map(_.msg).mkString(";")
-            s"error:$errors"
-        }
-    }
+  def initKernel() = {
+
+    val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
+
+    kernel.process(initCommands)
+
+    prevCode = initCommands
+
+    println("initialized kernel")
+
   }
+
+  def newCode(s: String) = if (s.startsWith(prevCode)) Some(s.drop(prevCode.length)) else None
+
+  def useCode(s: String) =
+    newCode(s).getOrElse{
+      kernel = ReplKernel()
+      initKernel()
+      s
+  }
+
+
+  def kernelRes(inp: String)(implicit ker: ReplKernel): Option[Either[String, Any]] =
+    ker.process(inp) map {resp =>
+      resp.toEither match {
+        case Right(evaluation) =>
+          Right(evaluation.value)
+        case Left(nel) =>
+          Left(nel.list.toList.map(_.msg).mkString(";"))
+      }
+    }
+
+
 
   val route =
     post {
       path("ammker") {
         entity(as[String]) { d =>
-          println(s"post received $d")
-          val res = kernelOut(d)
+          println(s"post received:\n$d")
+          val code = useCode(d)
+          println(s"processing code: \n$code")
+          val res = kernelRes(code)
           println(res)
+          res.foreach{e =>
+            e.foreach((_) => prevCode = d)
+          }
           TimeServer.buf = TimeServer.buf :+ res.toString
-          println(s"Buffer: ${TimeServer.buf}")
+          // println(s"Buffer: ${TimeServer.buf}")
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, res.toString))
         }
       }

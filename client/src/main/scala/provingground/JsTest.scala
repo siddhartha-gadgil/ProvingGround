@@ -87,9 +87,25 @@ object ScalaJSExample extends js.JSApp {
   val editor = ace.edit("editor")
   editor.setTheme("ace/theme/chrome")
   editor.getSession().setMode("ace/mode/scala")
+  // editor.setAutoScrollEditorIntoView()
 
   val text = editor.getValue()
-  editor.insert("1 + 1 == 2")
+  val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n\n"
+  editor.insert(initCommands)
+
+  def editorAppend(text: String) = {
+    editor.setValue(editor.getValue() + text)
+  }
+
+  def parseAnswer(text: String) : Option[Either[String, String]] =
+    if (text == "None") None
+    else {
+      assert(text.startsWith("Some(") && text.endsWith(")"))
+      val e = text.drop(5).dropRight(1)
+      if (e.startsWith("Right(")) Some(Right(e.drop(6).dropRight(1)))
+        else Some(Left(e.drop(5).dropRight(1)))
+    }
+
 
   editButton.onclick = (event: dom.Event) => {
     val code = editor.getValue()
@@ -97,6 +113,8 @@ object ScalaJSExample extends js.JSApp {
       Ajax.post("/ammker", code).onSuccess{case xhr => {
           val answer = xhr.responseText
           results.appendChild(p(answer).render)
+          val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
+          editorAppend(s"\n// $answerLines \n\n")
       }
     }
   }
