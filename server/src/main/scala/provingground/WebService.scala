@@ -55,7 +55,7 @@ object $name{
   val objectsDir = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"
 
   def clean(body: String) =
-    body.split("\n").filter((l) => !l.startsWith("// res:")).mkString("\n")
+    body.split("\n").filter((l) => !l.startsWith("//result:")).mkString("\n")
 
   def saveObject(name: String, body: String) =
     write.over(objectsDir / s"${name}.sc", makeObject(name, clean(body)))

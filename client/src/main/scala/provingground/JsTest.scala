@@ -87,7 +87,9 @@ object ScalaJSExample extends js.JSApp {
 
   val errDiv = div().render
 
-  editDiv.appendChild(div(editButton, div("Errors:", errDiv)).render)
+  val ed = div(id:= "editor", `class` := "editor")
+
+  editDiv.appendChild(div(ed, editButton, div("Errors:", errDiv)).render)
 
   val editor = ace.edit("editor")
   editor.setTheme("ace/theme/chrome")
@@ -104,6 +106,7 @@ object ScalaJSExample extends js.JSApp {
     val prev = editor.getValue
     val lines = prev.count(_ == '\n') + (if (prev.endsWith("\n")) 1 else 2)
     editor.gotoLine(lines)
+    if (!prev.endsWith("\n")) editor.insert("\n")
     editor.insert(text)
     editor.gotoLine(lines+2)
   }
@@ -120,14 +123,27 @@ object ScalaJSExample extends js.JSApp {
         else Some(Left(e.drop(5).dropRight(1)))
     }
 
+  def showAnswer(result: Option[Either[String, String]]) =
+    result.foreach{(lr) =>
+      lr match {
+        case Right(resp) =>
+          editorAppend(s"//result: $resp\n\n")
+          errDiv.innerHTML = ""
+        case Left(err) =>
+          errDiv.innerHTML = ""
+          errDiv.appendChild( pre(div(`class`:= "text-danger")(err)).render)
+      }
+    }
+
     def compile() = {
       val code = editor.getValue()
       echo.textContent = code
         Ajax.post("/kernel", code).foreach{(xhr) => {
             val answer = xhr.responseText
-            results.appendChild(p(answer).render)
-            val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
-            editorAppend(s"// $answerLines \n\n")
+            // results.appendChild(p(answer).render)
+            // val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
+            // editorAppend(s"// $answerLines \n\n")
+            showAnswer(parseAnswer(answer))
         }
       }
     }
