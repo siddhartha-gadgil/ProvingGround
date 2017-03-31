@@ -20,10 +20,6 @@ object ScalaJSExample extends js.JSApp {
 
     import org.scalajs.dom.ext._
 
-
-    val editButton = input(`type`:= "button", value:= "compile").render
-
-
     val echo = span.render
 
     // import dom.ext._
@@ -52,7 +48,7 @@ object ScalaJSExample extends js.JSApp {
 
     box.onchange = (e: dom.Event) => {
       echo.textContent = box.value
-      Ajax.post("/ammker", box.value).onSuccess{case xhr => {
+      Ajax.post("/kernel", box.value).foreach{(xhr) => {
           val answer = xhr.responseText
           results.appendChild(p(answer).render)
       }
@@ -67,7 +63,6 @@ object ScalaJSExample extends js.JSApp {
 
     target.appendChild(
       div(
-        editButton,
         h1("Hello World!"),
         p(
           "The quick brown ",
@@ -84,12 +79,22 @@ object ScalaJSExample extends js.JSApp {
   ).render
 )
 
+  // Ace editor code
+
+  val editDiv = dom.document.getElementById("edit-div").asInstanceOf[org.scalajs.dom.html.Div]
+
+  val editButton = input(`type`:= "button", value:= "compile (ctrl-B)").render
+
+  val errDiv = div().render
+
+  editDiv.appendChild(div(editButton, div("Errors:", errDiv)).render)
+
   val editor = ace.edit("editor")
   editor.setTheme("ace/theme/chrome")
   editor.getSession().setMode("ace/mode/scala")
 
 
-  val ed = dom.document.getElementById("editor").asInstanceOf[org.scalajs.dom.html.Div]
+  // val ed = dom.document.getElementById("editor").asInstanceOf[org.scalajs.dom.html.Div]
 
   val text = editor.getValue()
   val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n\n"
@@ -118,7 +123,7 @@ object ScalaJSExample extends js.JSApp {
     def compile() = {
       val code = editor.getValue()
       echo.textContent = code
-        Ajax.post("/ammker", code).onSuccess{case xhr => {
+        Ajax.post("/kernel", code).foreach{(xhr) => {
             val answer = xhr.responseText
             results.appendChild(p(answer).render)
             val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
@@ -130,10 +135,15 @@ object ScalaJSExample extends js.JSApp {
 
   editButton.onclick = (event: dom.Event) => compile()
 
-  ed.onkeydown = (e) => {
+  editDiv.onkeydown = (e) => {
     if (e.ctrlKey && e.keyCode == 66) compile()
   }
 
+  def scriptListFut = Ajax.get("/list-scripts")
+
+  def loadScriptFut(name: String) = Ajax.get(s"/script/$name")
+
+  def saveScript(name: String, body: String) = Ajax.post(s"/save-script/$name", body)
 
   }
 }
@@ -152,7 +162,7 @@ object JsTest {
     val echo = span.render
 
     import dom.ext._
-    import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
+    import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
     val box = input(
       `type` := "text",

@@ -30,14 +30,42 @@ object  BaseServer {
 class AmmService{
   import ammonite.kernel._
 
+  import ammonite.ops._
+
+  val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
+
+  val scriptsDir = pwd / "repl-scripts"
+
+  def listScripts = ls(scriptsDir).filter(_.ext == "sc").map(_.name.drop(scriptsDir.name.length).dropRight(3))
+
+  def script(name: String) = read(scriptsDir / s"${name}.sc")
+
+  def saveScript(name: String, body: String) = {
+    write.over(scriptsDir / s"${name}.sc", body)
+  }
+
+  def makeObject(name: String, body: String) =
+    s"""package provingground.scripts
+
+object $name{
+  $body
+}
+"""
+
+  val objectsDir = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"
+
+  def clean(body: String) =
+    body.split("\n").filter((l) => !l.startsWith("// res:")).mkString("\n")
+
+  def saveObject(name: String, body: String) =
+    write.over(objectsDir / s"${name}.sc", makeObject(name, clean(body)))
+
   implicit var kernel = ReplKernel()
 
   // import scala.collection.mutable.ArrayBuffer
   var prevCode = ""
 
   def initKernel() = {
-
-    val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
 
     kernel.process(initCommands)
 
@@ -46,6 +74,8 @@ class AmmService{
     println("initialized kernel")
 
   }
+
+  initKernel()
 
   def newCode(s: String) = if (s.startsWith(prevCode)) Some(s.drop(prevCode.length)) else None
 
@@ -71,7 +101,7 @@ class AmmService{
 
   val route =
     post {
-      path("ammker") {
+      path("kernel") {
         entity(as[String]) { d =>
           println(s"post received:\n$d")
           val code = useCode(d)
@@ -81,11 +111,27 @@ class AmmService{
           res.foreach{e =>
             e.foreach((_) => prevCode = d)
           }
-          TimeServer.buf = TimeServer.buf :+ res.toString
+          // TimeServer.buf = TimeServer.buf :+ res.toString
           // println(s"Buffer: ${TimeServer.buf}")
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, res.toString))
         }
       }
+    } ~
+    get {
+      path("list-scripts") {
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, listScripts.mkString("\n")))
+      }
+    } ~
+    post {
+      path("save-script" / Segment) {name =>
+        entity(as[String]) { body =>
+          saveScript(name, body)
+          complete("Saved script")
+        }}
+    } ~
+    get {
+      path("script" / Segment) {name =>
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, script(name)))}
     }
 
 }

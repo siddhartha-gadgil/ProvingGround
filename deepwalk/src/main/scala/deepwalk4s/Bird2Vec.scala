@@ -13,7 +13,7 @@ import java.io.File
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor._
 
 object Bird2Vec {
-  val data = cwd / "data"
+  val data = pwd / "data"
 
   val freqF = data / "frequencies.tsv"
 
