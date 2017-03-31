@@ -167,7 +167,9 @@ lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
 lazy val coreJVM = core.jvm
 lazy val coreJS  = core.js
 
-lazy val server = (project in file("server")).settings(
+lazy val server = (project in file("server"))
+  .settings(commonSettings: _*)
+  .settings(
   scalaVersion := scalaV,
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
