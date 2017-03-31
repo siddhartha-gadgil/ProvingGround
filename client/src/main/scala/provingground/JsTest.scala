@@ -87,15 +87,24 @@ object ScalaJSExample extends js.JSApp {
   val editor = ace.edit("editor")
   editor.setTheme("ace/theme/chrome")
   editor.getSession().setMode("ace/mode/scala")
-  // editor.setAutoScrollEditorIntoView()
+
+
+  val ed = dom.document.getElementById("editor").asInstanceOf[org.scalajs.dom.html.Div]
 
   val text = editor.getValue()
   val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n\n"
   editor.insert(initCommands)
 
   def editorAppend(text: String) = {
-    editor.setValue(editor.getValue() + text)
+    val prev = editor.getValue
+    val lines = prev.count(_ == '\n') + (if (prev.endsWith("\n")) 1 else 2)
+    editor.gotoLine(lines)
+    editor.insert(text)
+    editor.gotoLine(lines+2)
   }
+
+
+
 
   def parseAnswer(text: String) : Option[Either[String, String]] =
     if (text == "None") None
@@ -106,17 +115,23 @@ object ScalaJSExample extends js.JSApp {
         else Some(Left(e.drop(5).dropRight(1)))
     }
 
-
-  editButton.onclick = (event: dom.Event) => {
-    val code = editor.getValue()
-    echo.textContent = code
-      Ajax.post("/ammker", code).onSuccess{case xhr => {
-          val answer = xhr.responseText
-          results.appendChild(p(answer).render)
-          val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
-          editorAppend(s"\n// $answerLines \n\n")
+    def compile() = {
+      val code = editor.getValue()
+      echo.textContent = code
+        Ajax.post("/ammker", code).onSuccess{case xhr => {
+            val answer = xhr.responseText
+            results.appendChild(p(answer).render)
+            val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
+            editorAppend(s"// $answerLines \n\n")
+        }
       }
     }
+
+
+  editButton.onclick = (event: dom.Event) => compile()
+
+  ed.onkeydown = (e) => {
+    if (e.ctrlKey && e.keyCode == 66) compile()
   }
 
 
