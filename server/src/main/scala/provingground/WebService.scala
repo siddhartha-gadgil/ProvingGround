@@ -6,6 +6,8 @@ import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 
+import scala.util.Try
+
 object  BaseServer {
 
   val route =
@@ -58,7 +60,7 @@ object $name{
     body.split("\n").filter((l) => !l.startsWith("//result:")).mkString("\n")
 
   def saveObject(name: String, body: String) =
-    write.over(objectsDir / s"${name}.sc", makeObject(name, clean(body)))
+    write.over(objectsDir / s"${name}.scala", makeObject(name, clean(body)))
 
   implicit var kernel = ReplKernel()
 
@@ -125,20 +127,28 @@ object $name{
     post {
       path("save-script" / Segment) {name =>
         entity(as[String]) { body =>
-          saveScript(name, body)
-          complete("Saved script")
+          val res = Try(saveScript(name, body)).map (_ => s"saved script $name").toString
+          println(res)
+          complete(res)
         }}
     } ~
     get {
       path("script" / Segment) {name =>
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, script(name)))}
-    }
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, Try(script(name)).toString))}
+    }  ~
+    post {
+      path("create-object" / Segment) {name =>
+        entity(as[String]) { body =>
+          val res = Try(saveObject(name, body)).map (_ => s"created object $name").toString
+          complete(res)
+        }}
+      }
 
 }
 
 object AmmServer extends AmmService
 
-object TestServer{
+object AmmScriptServer{
   val testRoute = {
     pathSingleSlash {
       get {

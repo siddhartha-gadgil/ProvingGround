@@ -7,7 +7,7 @@ import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import scala.io.StdIn
 
-object WebTestServer  extends App {
+object ScriptServer  extends App {
     implicit val system = ActorSystem("server-system")
     implicit val materializer = ActorMaterializer()
 
@@ -19,11 +19,11 @@ object WebTestServer  extends App {
 
     // val service = new WebService()
 
-    val kernel = ammonite.kernel.ReplKernel()
+    // val kernel = ammonite.kernel.ReplKernel()
+    //
+    // println(kernel.process("provingground.HoTT.Type"))
 
-    println(kernel.process("provingground.HoTT.Type"))
-
-    val bindingFuture = Http().bindAndHandle(TestServer.route, interface, port)
+    val bindingFuture = Http().bindAndHandle(AmmScriptServer.route, interface, port)
 
     println(s"Server online at http://$interface:$port\n Press RETURN to stop")
 

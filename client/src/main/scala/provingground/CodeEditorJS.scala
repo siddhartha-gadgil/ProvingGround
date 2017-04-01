@@ -15,6 +15,8 @@ import dom.ext._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 
+import scala.util.{Try, Success, Failure}
+
 import HoTT.{id => _, _}
 
 object CodeEditorJS  extends js.JSApp  {
@@ -22,13 +24,31 @@ object CodeEditorJS  extends js.JSApp  {
   def main() = {
     val editDiv = dom.document.getElementById("edit-div").asInstanceOf[org.scalajs.dom.html.Div]
 
-    val editButton = input(`type`:= "button", value:= "compile (ctrl-B)").render
+    val runButton = input(`type`:= "button", value:= "Run (ctrl-B)", `class` := "btn btn-space btn-primary pull-right").render
 
-    val errDiv = div().render
+    val saveButton = input(`type`:= "button", value:= "save", `class` := "btn btn-space btn-success pull-right").render
 
-    val ed = div(id:= "editor", `class` := "editor")
+    val objButton = input(`type`:= "button", value:= "create object", `class` := "btn btn-space btn-danger pull-right").render
 
-    editDiv.appendChild(div(ed, editButton, div("Errors:", errDiv)).render)
+    val loadButton = input(`type`:= "button", value:= "load", `class` := "btn btn-space btn-warning pull-right").render
+
+    val nameInp = input(`type`:= "text", placeholder:= "scriptname", size := 10).render
+
+    def filename = nameInp.value
+
+    val logDiv = div().render
+
+    val ed = div(id:= "editor", `class` := "panel-body editor")
+
+    editDiv.appendChild(
+      div(
+        div(`class` := "panel panel-default")(
+          ed,
+          div(`class` := "panel-footer clearfix")(
+            label("script-name: "), nameInp, saveButton,   loadButton,  runButton, objButton
+          )),
+        div("Logs:", logDiv)
+    ).render)
 
     val editor = ace.edit("editor")
     editor.setTheme("ace/theme/chrome")
@@ -62,15 +82,34 @@ object CodeEditorJS  extends js.JSApp  {
           else Some(Left(e.drop(5).dropRight(1)))
       }
 
+
     def showAnswer(result: Option[Either[String, String]]) =
       result.foreach{(lr) =>
         lr match {
           case Right(resp) =>
             editorAppend(s"//result: $resp\n\n")
-            errDiv.innerHTML = ""
+            logDiv.innerHTML = ""
           case Left(err) =>
-            errDiv.innerHTML = ""
-            errDiv.appendChild( pre(div(`class`:= "text-danger")(err)).render)
+            logDiv.innerHTML = ""
+            logDiv.appendChild( pre(div(`class`:= "text-danger")(err)).render)
+        }
+      }
+
+      def parseEither(s: String) : Either[String, String] =
+        if (s.startsWith("Right(")) Right(s.drop(6).dropRight(1))
+          else Left(s.drop(5).dropRight(1))
+
+      def parseTry(s: String) : Either[String, String] =
+        if (s.startsWith("Success(")) Right(s.drop(8).dropRight(1))
+          else Left(s.drop(7).dropRight(1))
+
+      def showEither(e: Either[String, String]) = {
+        logDiv.innerHTML = ""
+        e match {
+          case Left(err) =>
+            logDiv.appendChild( pre(div(`class`:= "text-danger")(err)).render)
+          case Right(res) =>
+            logDiv.appendChild( pre(div(`class`:= "text-success")(res)).render)
         }
       }
 
@@ -87,7 +126,7 @@ object CodeEditorJS  extends js.JSApp  {
       }
 
 
-    editButton.onclick = (event: dom.Event) => compile()
+    runButton.onclick = (event: dom.Event) => compile()
 
     editDiv.onkeydown = (e) => {
       if (e.ctrlKey && e.keyCode == 66) compile()
@@ -95,9 +134,32 @@ object CodeEditorJS  extends js.JSApp  {
 
     def scriptListFut = Ajax.get("/list-scripts")
 
-    def loadScriptFut(name: String) = Ajax.get(s"/script/$name")
+    def loadScriptFut(name: String) =
+      Ajax.get(s"/script/$name").map{(xhr) =>
+        val resp = parseTry(xhr.responseText)
+        showEither(resp.map((_) => s"loaded script $name") )
+        resp.foreach{(sc) =>
+          editor.setValue(sc)}
+      }
 
-    def saveScript(name: String, body: String) = Ajax.post(s"/save-script/$name", body)
+    def saveScript(name: String, body: String) =
+      Ajax.post(s"/save-script/$name", body).map{(xhr) =>
+        val resp = parseTry(xhr.responseText)
+        showEither(resp)
+      }
+
+      def createObject(name: String, body: String) =
+      Ajax.post(s"/create-object/$name", body).map{(xhr) =>
+        val resp = parseTry(xhr.responseText)
+        showEither(resp)
+      }
+
+    saveButton.onclick = (event: dom.Event) => saveScript(filename, editor.getValue)
+
+    loadButton.onclick = (event: dom.Event) => loadScriptFut(filename)
+
+    objButton.onclick = (event: dom.Event) => createObject(filename, editor.getValue)
+
 
   }
 }
