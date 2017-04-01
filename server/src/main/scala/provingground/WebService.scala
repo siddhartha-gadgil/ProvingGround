@@ -143,13 +143,13 @@ object TestServer{
     pathSingleSlash {
       get {
         complete {
-          provingground.html.test.render(provingground.HoTT.Type.toString)
+          provingground.html.index.render()
         }
       }
     }
   }
 
-  val route = testRoute ~ BaseServer.route ~ AmmServer.route ~ TimeServer.route
+  val route = testRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
 }
 
 import akka.NotUsed
