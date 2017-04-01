@@ -32,6 +32,9 @@ object CodeEditorJS  extends js.JSApp  {
 
     val loadButton = input(`type`:= "button", value:= "load", `class` := "btn btn-space btn-warning pull-right").render
 
+    val insertButton = input(`type`:= "button", value:= "insert object", `class` := "btn btn-space btn-danger pull-right").render
+
+
     val nameInp = input(`type`:= "text", placeholder:= "scriptname", size := 10).render
 
     def filename = nameInp.value
@@ -45,7 +48,7 @@ object CodeEditorJS  extends js.JSApp  {
         div(`class` := "panel panel-default")(
           ed,
           div(`class` := "panel-footer clearfix")(
-            label("script-name: "), nameInp, saveButton,   loadButton,  runButton, objButton
+            label("script-name: "), nameInp, saveButton,  insertButton, loadButton,  runButton, objButton
           )),
         div("Logs:", logDiv)
     ).render)
@@ -142,6 +145,13 @@ object CodeEditorJS  extends js.JSApp  {
           editor.setValue(sc)}
       }
 
+    def insertObject(name: String) = Ajax.get(s"/load-object/$name").map{(xhr) =>
+      val resp = parseTry(xhr.responseText)
+      showEither(resp.map((_) => s"loaded script $name") )
+      resp.foreach{(sc) =>
+        editor.insert(sc)}
+    }
+
     def saveScript(name: String, body: String) =
       Ajax.post(s"/save-script/$name", body).map{(xhr) =>
         val resp = parseTry(xhr.responseText)
@@ -159,6 +169,8 @@ object CodeEditorJS  extends js.JSApp  {
     loadButton.onclick = (event: dom.Event) => loadScriptFut(filename)
 
     objButton.onclick = (event: dom.Event) => createObject(filename, editor.getValue)
+
+    insertButton.onclick = (event: dom.Event) => insertObject(filename)
 
 
   }

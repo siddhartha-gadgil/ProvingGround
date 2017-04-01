@@ -46,18 +46,18 @@ class AmmService{
     write.over(scriptsDir / s"${name}.sc", body)
   }
 
-  def makeObject(name: String, body: String) =
-    s"""package provingground.scripts
+  def makeObject(name: String, body: String, header : String = "package provingground.scripts") =
+    s"""$header
 
 object $name{
-  $body
+$body
 }
 """
 
   val objectsDir = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"
 
   def clean(body: String) =
-    body.split("\n").filter((l) => !l.startsWith("//result:")).mkString("\n")
+    body.split("\n").filter((l) => !l.startsWith("//result:")).map("  " + _).mkString("\n")
 
   def saveObject(name: String, body: String) =
     write.over(objectsDir / s"${name}.scala", makeObject(name, clean(body)))
@@ -142,7 +142,13 @@ object $name{
           val res = Try(saveObject(name, body)).map (_ => s"created object $name").toString
           complete(res)
         }}
-      }
+      } ~
+    get {
+      path("load-object" / Segment) {name =>
+        val objTry = Try(makeObject(name, clean(script(name)), ""))
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))}
+    }
+
 
 }
 
