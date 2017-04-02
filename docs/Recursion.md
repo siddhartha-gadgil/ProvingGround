@@ -1,5 +1,5 @@
 ---
-title: Inductive Types
+title: Inductive Types (old style)
 layout: page
 ---
 
