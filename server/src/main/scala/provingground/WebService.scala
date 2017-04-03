@@ -12,11 +12,9 @@ object  BaseServer {
 
   val route =
       pathPrefix("assets" / Remaining) { file =>
-        // optionally compresses the response with Gzip or Deflate
-        // if the client accepts compressed responses
-        encodeResponse {
+        println(s"asset requested: assets/$file")
           getFromResource("public/" + file)
-        }
+
       } ~
         pathPrefix("static" / Remaining) { file =>
           // optionally compresses the response with Gzip or Deflate
@@ -25,6 +23,9 @@ object  BaseServer {
             println("serving from file: " + f)
             getFromFile(f)
 
+        } ~ path("resources" / Remaining) { path =>
+          println("serving from resource: " + path)
+          getFromResource(path.toString)
         }
 
 }
@@ -115,7 +116,7 @@ $body
           }
           // TimeServer.buf = TimeServer.buf :+ res.toString
           // println(s"Buffer: ${TimeServer.buf}")
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, res.toString))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, res.toString))
         }
       }
     } ~
@@ -158,67 +159,105 @@ object AmmScriptServer{
   val testRoute = {
     pathSingleSlash {
       get {
-        complete {
-          provingground.html.index.render()
-        }
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, indexHTML))
       }
     }
   }
 
   val route = testRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
-}
+  val indexHTML =
+"""
+<!DOCTYPE html>
 
-import akka.NotUsed
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.StatusCodes.PermanentRedirect
-import akka.http.scaladsl.server.Directives
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Source
-import de.heikoseeberger.akkasse.{ EventStreamMarshalling, ServerSentEvent }
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import scala.concurrent.duration.DurationInt
+<html>
+  <head>
+    <title>Script Editor</title>
+    <link rel="stylesheet" href="/resources/bootstrap.min.css">
+    <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/highlight.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/provingground-js-fastopt.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css" media="screen">
+        .editor {
+            height: 300px;
+            font-size: 14px;
 
-
-
-object TimeServer {
-
-  var buf = Vector[String]()
-
-
-  def route = {
-    import Directives._
-    import EventStreamMarshalling._
-
-
-
-  val src = Source
-  .tick(100.millis, 100.millis, NotUsed)
-  .mapConcat(_ => {
-    val b = buf
-    buf = Vector()
-    b
-  }).map (ServerSentEvent(_))
-  .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-            //
-            // .map(_ => LocalTime.now())
-            // .map(_ => ServerSentEvent("this"))
-            // .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-
-
-    def events =
-      path("events") {
-        get {
-          complete {
-            src
-          }
         }
-      }
-
-    events
-  }
-
-  private def timeToServerSentEvent(time: LocalTime) =
-    ServerSentEvent(DateTimeFormatter.ISO_LOCAL_TIME.format(time))
+        .btn-space {
+    margin-right: 5px;
 }
+    </style>
+  </head>
+  <body>
+
+  <div class="container">
+    <h2> Proving Ground script editor </h2>
+
+
+    <div id="edit-div"></div>
+  </div>
+
+  <script>
+    provingground.CodeEditorJS().main()
+    </script>
+
+  </body>
+</html>
+"""
+
+}
+
+// import akka.NotUsed
+// import akka.actor.ActorSystem
+// import akka.http.scaladsl.Http
+// import akka.http.scaladsl.model.StatusCodes.PermanentRedirect
+// import akka.http.scaladsl.server.Directives
+// import akka.stream.ActorMaterializer
+// import akka.stream.scaladsl.Source
+// import de.heikoseeberger.akkasse.{ EventStreamMarshalling, ServerSentEvent }
+// import java.time.LocalTime
+// import java.time.format.DateTimeFormatter
+// import scala.concurrent.duration.DurationInt
+//
+//
+//
+// object TimeServer {
+//
+//   var buf = Vector[String]()
+//
+//
+//   def route = {
+//     import Directives._
+//     import EventStreamMarshalling._
+//
+//
+//
+//   val src = Source
+//   .tick(100.millis, 100.millis, NotUsed)
+//   .mapConcat(_ => {
+//     val b = buf
+//     buf = Vector()
+//     b
+//   }).map (ServerSentEvent(_))
+//   .keepAlive(1.second, () => ServerSentEvent.heartbeat)
+//             //
+//             // .map(_ => LocalTime.now())
+//             // .map(_ => ServerSentEvent("this"))
+//             // .keepAlive(1.second, () => ServerSentEvent.heartbeat)
+//
+//
+//     def events =
+//       path("events") {
+//         get {
+//           complete {
+//             src
+//           }
+//         }
+//       }
+//
+//     events
+//   }
+//
+//   private def timeToServerSentEvent(time: LocalTime) =
+//     ServerSentEvent(DateTimeFormatter.ISO_LOCAL_TIME.format(time))
+// }

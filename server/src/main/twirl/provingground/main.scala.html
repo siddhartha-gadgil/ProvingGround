@@ -5,10 +5,11 @@
 <html>
   <head>
     <title>@title</title>
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <script src="/static/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/katex.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/highlight.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="/resources/bootstrap.min.css">
+    <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/highlight.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/provingground-js-fastopt.js" type="text/javascript" charset="utf-8"></script>
     <style type="text/css" media="screen">
         .editor {
             height: 300px;
@@ -22,6 +23,7 @@
   </head>
   <body>
    @content
-   @scalajs.html.scripts("provingground-js", name => s"/assets/$name", name => getClass.getResource(s"/public/$name") != null)
+   <!-- @scalajs.html.scripts("provingground-js", name => s"/assets/$name", name => getClass.getResource(s"/public/$name") != null) -->
+
   </body>
 </html>

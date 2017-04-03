@@ -174,7 +174,7 @@ lazy val server = (project in file("server"))
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
   // triggers scalaJSPipeline when using compile or continuous compilation
-  compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
+  // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
   libraryDependencies ++= Seq(
     "com.typesafe.akka" %% "akka-http" % "10.0.0",
     "com.vmunier" %% "scalajs-scripts" % "1.1.0",
@@ -184,11 +184,12 @@ lazy val server = (project in file("server"))
     "com.typesafe.akka"      %% "akka-stream"    % akkaV
 
   ),
-  WebKeys.packagePrefix in Assets := "public/",
-  managedClasspath in Runtime += (packageBin in Assets).value,
+  resources in Compile += (fastOptJS in (client, Compile)).value.data
+  // WebKeys.packagePrefix in Assets := "public/",
+  // managedClasspath in Runtime += (packageBin in Assets).value,
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
-  EclipseKeys.preTasks := Seq(compile in Compile)
-).enablePlugins(SbtWeb, SbtTwirl, JavaAppPackaging, UniversalPlugin).
+  // EclipseKeys.preTasks := Seq(compile in Compile)
+).enablePlugins(JavaAppPackaging, UniversalPlugin).
   dependsOn(coreJVM)
 
 lazy val functionfinder = project
