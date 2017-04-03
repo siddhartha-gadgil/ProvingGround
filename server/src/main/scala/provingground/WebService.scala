@@ -30,14 +30,16 @@ object  BaseServer {
 
 }
 
-class AmmService{
+  import ammonite.ops._
+
+class AmmService (val scriptsDir : Path = pwd / "repl-scripts", val objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"){
   import ammonite.kernel._
 
-  import ammonite.ops._
+
 
   val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
 
-  val scriptsDir = pwd / "repl-scripts"
+
 
   def listScripts = ls(scriptsDir).filter(_.ext == "sc").map(_.name.drop(scriptsDir.name.length).dropRight(3))
 
@@ -55,7 +57,6 @@ $body
 }
 """
 
-  val objectsDir = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"
 
   def clean(body: String) =
     body.split("\n").filter((l) => !l.startsWith("//result:")).map("  " + _).mkString("\n")
@@ -153,10 +154,10 @@ $body
 
 }
 
-object AmmServer extends AmmService
+// object AmmServer extends AmmService()
 
-object AmmScriptServer{
-  val testRoute = {
+class AmmScriptServer(val scriptsDir : Path = pwd / "repl-scripts", val objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"){
+  val htmlRoute = {
     pathSingleSlash {
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, indexHTML))
@@ -164,7 +165,6 @@ object AmmScriptServer{
     }
   }
 
-  val route = testRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
   val indexHTML =
 """
 <!DOCTYPE html>
@@ -204,6 +204,11 @@ object AmmScriptServer{
   </body>
 </html>
 """
+
+
+  val AmmServer = new AmmService(scriptsDir, objectsDir)
+
+  val route = htmlRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
 
 }
 

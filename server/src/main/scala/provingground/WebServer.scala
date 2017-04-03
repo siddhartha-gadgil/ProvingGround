@@ -13,19 +13,25 @@ object ScriptServer  extends App {
 
     implicit val executionContext = system.dispatcher
 
-    // val config = ConfigFactory.load()
-    val interface = "localhost" //config.getString("http.interface")
-    val port = 8080//config.getInt("http.port")
+    import ammonite.ops._
 
-    // val service = new WebService()
+    case class Config(
+      scriptsDir : Path = pwd / "repl-scripts",
+      objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
+      host: String = "localhost",
+      port: Int = 8080
+    )
 
-    // val kernel = ammonite.kernel.ReplKernel()
-    //
-    // println(kernel.process("provingground.HoTT.Type"))
+    val config = Config()
 
-    val bindingFuture = Http().bindAndHandle(AmmScriptServer.route, interface, port)
+    val interface = "localhost"
+    val port = 8080
 
-    println(s"Server online at http://$interface:$port\n Press RETURN to stop")
+    val server = new AmmScriptServer(config.scriptsDir, config.objectsDir)
+
+    val bindingFuture = Http().bindAndHandle(server.route, config.host, config.port)
+
+    println(s"Server online at http://${config.host}:${config.port}\n Press RETURN to stop")
 
     StdIn.readLine() // let it run until user presses return
     bindingFuture

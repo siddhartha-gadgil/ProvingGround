@@ -188,6 +188,7 @@ lazy val server = (project in file("server"))
   // WebKeys.packagePrefix in Assets := "public/",
   // managedClasspath in Runtime += (packageBin in Assets).value,
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
+
   // EclipseKeys.preTasks := Seq(compile in Compile)
 ).enablePlugins(JavaAppPackaging, UniversalPlugin).
   dependsOn(coreJVM)
