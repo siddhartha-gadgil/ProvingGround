@@ -188,7 +188,9 @@ lazy val server = (project in file("server"))
   managedClasspath in Runtime += (packageBin in Assets).value,
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
   EclipseKeys.preTasks := Seq(compile in Compile)
-).enablePlugins(SbtWeb, SbtTwirl, JavaAppPackaging, UniversalPlugin).
+).enablePlugins(SbtWeb, SbtTwirl
+  // , JavaAppPackaging, UniversalPlugin
+).
   dependsOn(coreJVM)
 
 lazy val functionfinder = project

@@ -29,14 +29,16 @@ object  BaseServer {
 
 }
 
-class AmmService{
+  import ammonite.ops._
+
+class AmmService (val scriptsDir : Path = pwd / "repl-scripts", val objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"){
   import ammonite.kernel._
 
-  import ammonite.ops._
+
 
   val initCommands = "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
 
-  val scriptsDir = pwd / "repl-scripts"
+
 
   def listScripts = ls(scriptsDir).filter(_.ext == "sc").map(_.name.drop(scriptsDir.name.length).dropRight(3))
 
@@ -54,7 +56,6 @@ $body
 }
 """
 
-  val objectsDir = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"
 
   def clean(body: String) =
     body.split("\n").filter((l) => !l.startsWith("//result:")).map("  " + _).mkString("\n")
@@ -152,10 +153,10 @@ $body
 
 }
 
-object AmmServer extends AmmService
+// object AmmServer extends AmmService()
 
-object AmmScriptServer{
-  val testRoute = {
+class AmmScriptServer(val scriptsDir : Path = pwd / "repl-scripts", val objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts"){
+  val htmlRoute = {
     pathSingleSlash {
       get {
         complete {
@@ -165,60 +166,62 @@ object AmmScriptServer{
     }
   }
 
-  val route = testRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
+  val AmmServer = new AmmService(scriptsDir, objectsDir)
+
+  val route = htmlRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
 }
 
-import akka.NotUsed
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.StatusCodes.PermanentRedirect
-import akka.http.scaladsl.server.Directives
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Source
-import de.heikoseeberger.akkasse.{ EventStreamMarshalling, ServerSentEvent }
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import scala.concurrent.duration.DurationInt
-
-
-
-object TimeServer {
-
-  var buf = Vector[String]()
-
-
-  def route = {
-    import Directives._
-    import EventStreamMarshalling._
-
-
-
-  val src = Source
-  .tick(100.millis, 100.millis, NotUsed)
-  .mapConcat(_ => {
-    val b = buf
-    buf = Vector()
-    b
-  }).map (ServerSentEvent(_))
-  .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-            //
-            // .map(_ => LocalTime.now())
-            // .map(_ => ServerSentEvent("this"))
-            // .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-
-
-    def events =
-      path("events") {
-        get {
-          complete {
-            src
-          }
-        }
-      }
-
-    events
-  }
-
-  private def timeToServerSentEvent(time: LocalTime) =
-    ServerSentEvent(DateTimeFormatter.ISO_LOCAL_TIME.format(time))
-}
+// import akka.NotUsed
+// import akka.actor.ActorSystem
+// import akka.http.scaladsl.Http
+// import akka.http.scaladsl.model.StatusCodes.PermanentRedirect
+// import akka.http.scaladsl.server.Directives
+// import akka.stream.ActorMaterializer
+// import akka.stream.scaladsl.Source
+// import de.heikoseeberger.akkasse.{ EventStreamMarshalling, ServerSentEvent }
+// import java.time.LocalTime
+// import java.time.format.DateTimeFormatter
+// import scala.concurrent.duration.DurationInt
+//
+//
+//
+// object TimeServer {
+//
+//   var buf = Vector[String]()
+//
+//
+//   def route = {
+//     import Directives._
+//     import EventStreamMarshalling._
+//
+//
+//
+//   val src = Source
+//   .tick(100.millis, 100.millis, NotUsed)
+//   .mapConcat(_ => {
+//     val b = buf
+//     buf = Vector()
+//     b
+//   }).map (ServerSentEvent(_))
+//   .keepAlive(1.second, () => ServerSentEvent.heartbeat)
+//             //
+//             // .map(_ => LocalTime.now())
+//             // .map(_ => ServerSentEvent("this"))
+//             // .keepAlive(1.second, () => ServerSentEvent.heartbeat)
+//
+//
+//     def events =
+//       path("events") {
+//         get {
+//           complete {
+//             src
+//           }
+//         }
+//       }
+//
+//     events
+//   }
+//
+//   private def timeToServerSentEvent(time: LocalTime) =
+//     ServerSentEvent(DateTimeFormatter.ISO_LOCAL_TIME.format(time))
+// }
