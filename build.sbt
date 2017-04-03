@@ -18,7 +18,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 lazy val jsProjects = Seq(client)
 
-lazy val baseSettings = Seq(version := "0.8",
+lazy val baseSettings = Seq(version := "0.1",
                             organization := "in.ernet.iisc.math",
                             scalaVersion := scalaV)
 
@@ -170,6 +170,7 @@ lazy val coreJS  = core.js
 lazy val server = (project in file("server"))
   .settings(commonSettings: _*)
   .settings(
+    name := "provingground-server",
   scalaVersion := scalaV,
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
