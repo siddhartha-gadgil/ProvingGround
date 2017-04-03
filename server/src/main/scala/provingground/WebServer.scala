@@ -15,6 +15,11 @@ object ScriptServer  extends App {
 
     import ammonite.ops._
 
+    def path(s: String) = scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
+
+    implicit val pathRead: scopt.Read[Path] =
+      scopt.Read.reads(path)
+
     case class Config(
       scriptsDir : Path = pwd / "repl-scripts",
       objectsDir : Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
@@ -24,8 +29,29 @@ object ScriptServer  extends App {
 
     val config = Config()
 
-    val interface = "localhost"
-    val port = 8080
+    val parser = new scopt.OptionParser[Config]("provingground-server") {
+      head("ProvingGround Server", "0.1")
+
+      opt[String]('h', "host").action( (x, c) =>
+        c.copy(host = x) ).text("server host")
+      opt[Int]('p', "port").action( (x, c) =>
+        c.copy(port = x) ).text("server port")
+      opt[Path]('s', "scripts").action( (x, c) =>
+        c.copy(scriptsDir = x) ).text("scripts directory")
+      opt[Path]('o', "objects").action( (x, c) =>
+        c.copy(objectsDir = x) ).text("scripts directory")
+
+      }
+
+      parser.parse(args, Config()) match {
+        case Some(config) =>
+          // do stuff
+
+        case None =>
+          // arguments are bad, error message will have been displayed
+      }
+
+
 
     val server = new AmmScriptServer(config.scriptsDir, config.objectsDir)
 

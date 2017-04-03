@@ -182,7 +182,8 @@ lazy val server = (project in file("server"))
     "com.simianquant" %% "ammonite-kernel" % "0.3.0",
     "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
-    "com.typesafe.akka"      %% "akka-stream"    % akkaV
+    "com.typesafe.akka"      %% "akka-stream"    % akkaV,
+    "com.github.scopt" %% "scopt" % "3.5.0"
 
   ),
   resources in Compile += (fastOptJS in (client, Compile)).value.data
