@@ -1,3 +1,10 @@
+---
+title: Code scripting
+layout: page
+---
+
+
+
 As an alternative to the repl with some conveniences (and inconveniences), there is a crude experimental code scripting server, which can be downloaded as a [zip file](./provingground-server-0.1.zip) or a [zipped tarball](./provingground-server-0.1.tgz). To run a local server extract and, run the script or `.bat` script(windows) in the `bin` folder. This requires Java 8 to be installed.
 
 

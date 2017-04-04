@@ -30,7 +30,9 @@ In addition to the documentation on this site, the following is available.
 
 ## Running
 
-At present the only way to run the code is to load a console. For example, in the home of the project, run
+At present the best way to run the code is to load a console, but there is also a crude expermental server, see [Code Scripting](Code-Scripting) to download and run. 
+
+To run from a console, in the home of the project, run
 ```
 sbt mantle/test:console
 ```

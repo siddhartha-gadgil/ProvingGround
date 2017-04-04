@@ -26,7 +26,7 @@ There is not much besides the source.
 
 ## Running
 
-At present the only way to run the code is to load a console. For example, in the home of the project, run
+At present the main way to run the code is to load a console (for an alternative, visit the [website](http://siddhartha-gadgil.github.io/ProvingGround/)). For example, in the home of the project, run
 ```
 sbt mantle/test:console
 ```
