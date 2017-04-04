@@ -12,7 +12,7 @@ object  BaseServer {
 
   val route =
       pathPrefix("assets" / Remaining) { file =>
-        println(s"asset requested: assets/$file")
+        // println(s"asset requested: assets/$file")
           getFromResource("public/" + file)
 
       } ~
@@ -20,11 +20,11 @@ object  BaseServer {
           // optionally compresses the response with Gzip or Deflate
           // if the client accepts compressed responses
             val f = new java.io.File("static/"+ file)
-            println("serving from file: " + f)
+            // println("serving from file: " + f)
             getFromFile(f)
 
         } ~ path("resources" / Remaining) { path =>
-          println("serving from resource: " + path)
+          // println("serving from resource: " + path)
           getFromResource(path.toString)
         }
 
@@ -75,7 +75,7 @@ $body
 
     prevCode = initCommands
 
-    println("initialized kernel")
+    // println("initialized kernel")
 
   }
 
@@ -107,11 +107,11 @@ $body
     post {
       path("kernel") {
         entity(as[String]) { d =>
-          println(s"post received:\n$d")
+          // println(s"post received:\n$d")
           val code = useCode(d)
-          println(s"processing code: \n$code")
+          // println(s"processing code: \n$code")
           val res = kernelRes(code)
-          println(res)
+          // println(res)
           res.foreach{e =>
             e.foreach((_) => prevCode = d)
           }
@@ -130,7 +130,7 @@ $body
       path("save-script" / Segment) {name =>
         entity(as[String]) { body =>
           val res = Try(saveScript(name, body)).map (_ => s"saved script $name").toString
-          println(res)
+          // println(res)
           complete(res)
         }}
     } ~

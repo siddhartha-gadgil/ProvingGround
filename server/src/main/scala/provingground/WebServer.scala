@@ -32,36 +32,34 @@ object ScriptServer  extends App {
     val parser = new scopt.OptionParser[Config]("provingground-server") {
       head("ProvingGround Server", "0.1")
 
-      opt[String]('h', "host").action( (x, c) =>
-        c.copy(host = x) ).text("server host")
+      opt[String]('i', "interface").action( (x, c) =>
+        c.copy(host = x) ).text("server ip")
       opt[Int]('p', "port").action( (x, c) =>
         c.copy(port = x) ).text("server port")
       opt[Path]('s', "scripts").action( (x, c) =>
         c.copy(scriptsDir = x) ).text("scripts directory")
       opt[Path]('o', "objects").action( (x, c) =>
-        c.copy(objectsDir = x) ).text("scripts directory")
+        c.copy(objectsDir = x) ).text("created objects directory")
 
       }
 
       parser.parse(args, Config()) match {
         case Some(config) =>
-          // do stuff
+          // println(s"Scopt config: $config")
+          val server = new AmmScriptServer(config.scriptsDir, config.objectsDir)
+          val bindingFuture = Http().bindAndHandle(server.route, config.host, config.port)
+          println(s"Server online at http://${config.host}:${config.port}\n Press RETURN to stop")
+          StdIn.readLine() // let it run until user presses return
+          bindingFuture
+            .flatMap(_.unbind()) // trigger unbinding from the port
+            .onComplete(_ => system.terminate()) // and shutdown when done
+
 
         case None =>
-          // arguments are bad, error message will have been displayed
+          system.terminate()
       }
 
 
 
-    val server = new AmmScriptServer(config.scriptsDir, config.objectsDir)
-
-    val bindingFuture = Http().bindAndHandle(server.route, config.host, config.port)
-
-    println(s"Server online at http://${config.host}:${config.port}\n Press RETURN to stop")
-
-    StdIn.readLine() // let it run until user presses return
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
 
 }
