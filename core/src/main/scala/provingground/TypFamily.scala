@@ -10,12 +10,16 @@ import HList._
 
 trait Subst[A] {
   def subst(a: A)(x: Term, y: Term): A
+
+  def terms(a: A) : Vector[Term] // reusing this to list terms in an HList
 }
 
 object Subst {
   implicit def termSubst[U <: Term with Subs[U]]: Subst[U] =
     new Subst[U] {
       def subst(a: U)(x: Term, y: Term) = a.replace(x, y)
+
+      def terms(a: U) = Vector(a)
     }
 
   // implicit object UnitSubst extends Subst[Unit] {
@@ -24,6 +28,8 @@ object Subst {
 
   implicit object HNilSubst extends Subst[HNil] {
     def subst(a: HNil)(x: Term, y: Term) = a
+
+    def terms(a: HNil) = Vector()
   }
 
   implicit def hConsSubst[U: Subst, V <: HList: Subst]: Subst[U :: V] =
@@ -31,6 +37,8 @@ object Subst {
       def subst(a: U :: V)(x: Term, y: Term) =
         implicitly[Subst[U]].subst(a.head)(x, y) :: implicitly[Subst[V]]
           .subst(a.tail)(x, y)
+
+      def terms(a: U :: V) = implicitly[Subst[U]].terms(a.head) ++ implicitly[Subst[V]].terms(a.tail)
     }
 
   // implicit def pairSubst[U: Subst, V: Subst]: Subst[(U, V)] =
@@ -42,6 +50,8 @@ object Subst {
 
   implicit class SubstOp[A: Subst](a: A) {
     def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
+
+    def terms = implicitly[Subst[A]].terms(a)
   }
 }
 

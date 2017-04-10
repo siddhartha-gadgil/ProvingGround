@@ -878,6 +878,17 @@ object HoTT {
         case (str, t) => s"$str($t)"}
   }
 
+  trait IndInducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F], IDFT <: Term with Subs[IDFT]] extends InducFuncLike[W, U]{
+    val domW: F
+
+    val codXs : IDFT
+
+    override def toString() =
+      defnData.foldLeft(s"ind(${domW} :> ${dom})(${codXs} :> ${depcodom})"){
+    case (str, t) => s"$str($t)"}
+
+  }
+
   /**
     * Includes both functions and dependent functions
     *
@@ -964,6 +975,10 @@ object HoTT {
     override def toString() =
       defnData.foldLeft(s"rec(${dom})(${codom})"){
         case (str, t) => s"$str($t)"}
+  }
+
+  trait IndRecFunc[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F]] extends RecFunc[W, U]{
+    val domW : F
   }
 
   /**

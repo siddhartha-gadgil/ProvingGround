@@ -80,10 +80,15 @@ object TermPatterns {
     case rf : RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
   }
 
-  val inducFunc = Pattern.partial[Term, IIIV] {
+  val inducFunc = Pattern.partial[Term, IIV] {
     case rf : InducFuncLike[u, v] =>
-      val x = rf.dom.Var
-      (rf.dom, (x, (rf.depcodom(x), rf.defnData)))
+      val fmly : Term = rf.depcodom match {
+        case t: Term => t
+        case _ =>
+          val x = rf.dom.Var
+          x :-> rf.depcodom(x)
+      }
+      (rf.dom, (fmly, rf.defnData))
   }
 
   val identityTyp = Pattern.partial[Term, III] {

@@ -176,8 +176,8 @@ object FansiTranslate {
           }
       } ||
       inducFunc >>> {
-        case (dom, (x, (depcodomx, defnData))) =>
-          val h = Str(s"induc($dom)($x") ++  LightRed(syms.MapsTo) ++ s"$depcodomx)"
+        case (dom, (depcodom, defnData)) =>
+          val h = Str(s"induc($dom)($depcodom)")
           defnData.foldLeft(h){
             case (head, d) => s"$head($d)"
           }

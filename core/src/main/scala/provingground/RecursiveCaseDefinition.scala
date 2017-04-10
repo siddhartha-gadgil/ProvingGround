@@ -103,8 +103,10 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
   def caseFn(f: => IF)(arg: H): Option[C]
 
-  case class Funcs(ind: Index) extends RecFunc[H, C] { fself =>
+  case class Funcs(ind: Index) extends IndRecFunc[H, C, F] { fself =>
     val dom = family.pattern.typ(W, ind)
+
+    val domW = self.W
 
     val codom = X
 

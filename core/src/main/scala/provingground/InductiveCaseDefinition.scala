@@ -79,8 +79,11 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   def caseFn(f: => IDF)(arg: H): Option[C]
 
-  case class Funcs(ind: Index) extends InducFuncLike[H, C] { fself =>
+  case class Funcs(ind: Index) extends IndInducFuncLike[H, C, F, IDFT] { fself =>
     val dom = family.pattern.typ(W, ind)
+
+    val domW = self.W
+    val codXs = self.Xs
 
     val defnData = self.defnData
 
