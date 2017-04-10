@@ -883,8 +883,10 @@ object HoTT {
 
     val codXs : IDFT
 
+    val index: Vector[Term]
+
     override def toString() =
-      defnData.foldLeft(s"ind(${domW} :> ${dom})(${codXs} :> ${depcodom})"){
+      defnData.foldLeft(s"ind{${domW}${index.mkString("(", ")(", ")")}}{${codXs}}"){
     case (str, t) => s"$str($t)"}
 
   }
@@ -979,6 +981,13 @@ object HoTT {
 
   trait IndRecFunc[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F]] extends RecFunc[W, U]{
     val domW : F
+
+    val index: Vector[Term]
+
+    override def toString() =
+      defnData.foldLeft(s"rec{${domW}${index.mkString("(", ")(", ")")}}{${codom}}"){
+    case (str, t) => s"$str($t)"}
+
   }
 
   /**

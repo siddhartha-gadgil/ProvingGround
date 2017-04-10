@@ -108,6 +108,8 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
     val domW = self.W
 
+    val index = ind.terms
+
     val codom = X
 
     val defnData = self.defnData

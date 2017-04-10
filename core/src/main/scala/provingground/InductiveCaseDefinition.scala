@@ -85,6 +85,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
     val domW = self.W
     val codXs = self.Xs
 
+    val index = ind.terms
+
     val defnData = self.defnData
 
     val fibre = family.typRestrict(Xs, ind)

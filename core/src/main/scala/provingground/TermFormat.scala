@@ -169,12 +169,25 @@ object FansiTranslate {
       plusTyp >>> {
         case (first, scnd) => (first ++ LightRed(Str(" + ")) ++ scnd)
       } ||
+      indRecFunc >>> {
+        case (index, (dom, (codom, defnData))) =>
+          defnData.foldLeft(s"rec($dom${index.mkString("(", ")(", ")")})($codom)"){
+            case (head, d) => s"$head($d)"
+          }
+        } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
           defnData.foldLeft(s"rec($dom)($codom)"){
             case (head, d) => s"$head($d)"
           }
       } ||
+      indInducFunc >>> {
+        case (index, (dom, (depcodom, defnData))) =>
+          val h = Str(s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)")
+          defnData.foldLeft(h){
+            case (head, d) => s"$head($d)"
+          }
+      }  ||
       inducFunc >>> {
         case (dom, (depcodom, defnData)) =>
           val h = Str(s"induc($dom)($depcodom)")
