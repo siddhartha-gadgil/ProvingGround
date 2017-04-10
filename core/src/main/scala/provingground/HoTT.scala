@@ -1953,10 +1953,18 @@ object HoTT {
         data: Func[U, V],
         start: U,
         end: U)
-        extends RecFunc[Term, V] { self =>
+        extends IndRecFunc[Term, V, Func[U, Func[U, Typ[Term]]]] { self =>
       lazy val dom = (start =:= end)
 
       lazy val codom = target
+
+      lazy val domW = {
+        val x = domain.Var
+        val y = domain.Var
+        x :-> (y :-> (x =:= y))
+      }
+
+      val index = Vector(start, end)
 
       val defnData = Vector(data)
 
@@ -1991,10 +1999,21 @@ object HoTT {
         data: FuncLike[U, V],
         start: U,
         end: U
-    ) extends InducFuncLike[Term, V] { self =>
+    ) extends IndInducFuncLike[Term, V, Func[U, Func[U, Typ[Term]]], FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]] { self =>
       def newobj = this
 
       val defnData = Vector(data)
+
+      lazy val domW = {
+        val x = domain.Var
+        val y = domain.Var
+        x :-> (y :-> (x =:= y))
+      }
+
+      val codXs = targetFmly
+
+      val index = Vector(start, end)
+
 
       def subs(x: Term, y: Term) =
         InducFn(
