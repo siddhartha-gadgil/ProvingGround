@@ -160,10 +160,11 @@ object FansiTranslate {
           "{ ") ++ value ++ LightRed(" }"))
     } || universe >>> { (n) =>
       (LightCyan(Str(UnivSym)))
-    } || symName >>> ((s) => (Str(s))) || absPair >>> {
-      case (first, second) => (Str("(") ++ first ++ " , " ++ second ++ ")")
-    } ||
+    } || symName >>> ((s) => (Str(s))) ||
       prodTyp >>> { case (first, second) => (first ++ syms.Prod ++ second) } ||
+      absPair >>> {
+      case (first, second) => (Str("(") ++ first ++ " , " ++ second ++ ")")
+    }  ||
       // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
       equation >>> { case (lhs, rhs) => (lhs ++ LightRed(" = ")) ++ rhs } ||
       plusTyp >>> {
@@ -200,6 +201,73 @@ object FansiTranslate {
   implicit val termprint: PPrinter[Term] = new PPrinter[Term] {
     def render0(t: Term, c: Config) = List(apply(t)).toIterator
   }
+}
+
+object TeXTranslate{
+  import TermPatterns._
+
+  val syms = UnicodeSyms
+
+  def apply(x: Term) =
+    texTrans(x) map (_.toString()) getOrElse (x.toString())
+
+  // import fansi.Color.LightRed
+
+  val texTrans =
+    Translator.Empty[Term, String] || formalAppln >>> {
+      case (func, arg) => func ++ "(" ++ arg ++ ")"
+    } || funcTyp >>> {
+      case (dom, codom) =>
+       s"$dom \\to $codom"
+    } || lambdaTriple >>> {
+      case ((variable, typ), value) =>
+      s"($variable : $typ) \\mapsto $value"
+    } || piTriple >>> {
+      case ((variable, typ), value) =>
+        s"\\prod\\limits_{$variable : $typ} $value"
+    } || sigmaTriple >>> {
+      case ((variable, typ), value) =>
+        s"\\sum\\limits_{$variable : $typ} $value"
+    } || universe >>> { (n) =>
+      s"\\mathcal{U}_n"
+    } || symName >>> ((s) => s) ||
+      prodTyp >>>
+      { case (first, second) => s"$first \times $second" } ||
+    absPair >>> {
+      case (first, second) => s"($first, $second)"
+    } ||
+      // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
+      equation >>> { case (lhs, rhs) => s"$lhs = $rhs" } ||
+      plusTyp >>> {
+        case (first, scnd) => s"$first \\oplus $scnd"
+      } ||
+      indRecFunc >>> {
+        case (index, (dom, (codom, defnData))) =>
+          defnData.foldLeft(s"rec($dom${index.mkString("(", ")(", ")")})($codom)"){
+            case (head, d) => s"$head($d)"
+          }
+        } ||
+      recFunc >>> {
+        case (dom, (codom, defnData)) =>
+          defnData.foldLeft(s"rec($dom)($codom)"){
+            case (head, d) => s"$head($d)"
+          }
+      } ||
+      indInducFunc >>> {
+        case (index, (dom, (depcodom, defnData))) =>
+          val h = s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)"
+          defnData.foldLeft(h){
+            case (head, d) => s"$head($d)"
+          }
+      }  ||
+      inducFunc >>> {
+        case (dom, (depcodom, defnData)) =>
+          val h = s"induc($dom)($depcodom)"
+          defnData.foldLeft(h){
+            case (head, d) => s"$head($d)"
+          }
+      }
+
 }
 
 trait FansiShow[-U] {
