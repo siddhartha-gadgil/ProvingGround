@@ -345,3 +345,66 @@ object FansiShow {
         (x.flatten.sort map (_.fansi)).pmf.fansi
     }
 }
+
+import upickle.Js
+import upickle.default._
+
+object JsonTranslate{
+  import TermPatterns._
+
+
+  val jsonTrans =
+    Translator.Empty[Term, Js.Value] || formalAppln >>> {
+      case (func, arg) => Js.Obj("intro" -> Js.Str("appln"), "func" -> func, "arg" -> arg)
+    } || funcTyp >>> {
+      case (dom, codom) =>
+       Js.Obj("intro" -> Js.Str("func-type"), "dom" -> dom, "codom" -> codom)
+    } || lambdaTriple >>> {
+      case ((variable, typ), value) =>
+      Js.Obj("intro" -> Js.Str("lambda"), "var" -> variable, "type" -> typ, "value" -> value)
+    } || piTriple >>> {
+      case ((variable, typ), value) =>
+      Js.Obj("intro" -> Js.Str("pi"), "var" -> variable, "type" -> typ, "value" -> value)
+    } || sigmaTriple >>> {
+      case ((variable, typ), value) =>
+      Js.Obj("intro" -> Js.Str("sigma"), "var" -> variable, "type" -> typ, "value" -> value)
+    } || universe >>> { (n) =>
+      Js.Obj("intro" -> Js.Str("universe"), "level" -> Js.Num(n))
+    } || symName >>>
+      ((s) => Js.Str(s)) ||
+      prodTyp >>>
+      { case (first, second) =>
+        Js.Obj("intro" -> Js.Str("product-type"), "first" -> first, "second" -> second)
+      } ||
+    absPair >>>       { case (first, second) =>
+        Js.Obj("intro" -> Js.Str("pair"), "first" -> first, "second" -> second)
+      } ||
+      // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
+      equation >>> { case (lhs, rhs) =>
+        Js.Obj("intro" ->  Js.Str("equality"), "lhs" -> lhs, "rhs" -> rhs)} ||
+      plusTyp >>>       { case (first, second) =>
+        Js.Obj("intro" -> Js.Str("plus-type"), "first" -> first, "second" -> second)
+      }||
+      indRecFunc >>> {
+        case (index, (dom, (codom, defnData))) =>
+            Js.Obj("intro" -> Js.Str("indexed-rec-function"), "dom" -> dom, "codom" -> codom, "data" -> Js.Arr(defnData : _*), "index" -> Js.Arr(index : _*))
+          } ||
+      recFunc >>> {
+        case (dom, (codom, defnData)) =>
+        Js.Obj("intro" -> Js.Str("rec-function"), "dom" -> dom, "codom" -> codom, "data" -> Js.Arr(defnData : _*))
+      } ||
+      indInducFunc >>> {
+        case (index, (dom, (depcodom, defnData))) =>
+        Js.Obj("intro" -> Js.Str("indexed-induc-function"), "dom" -> dom, "depcodom" -> depcodom, "data" -> Js.Arr(defnData : _*), "index" -> Js.Arr(index : _*))
+      }  ||
+      inducFunc >>> {
+        case (dom, (depcodom, defnData)) =>
+        Js.Obj("intro" -> Js.Str("induc-function"), "dom" -> dom, "depcodom" -> depcodom, "data" -> Js.Arr(defnData : _*))
+      }
+
+      implicit val TermWriter = upickle.default.Writer[Term]{
+        case t => jsonTrans(t).getOrElse(Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
+      }
+
+
+}
