@@ -92,6 +92,11 @@ trait ExprLang[E] {
   def i1(typ: E, value: E) = incl1(typ) flatMap ((i) => appln(i, value))
 
   def i2(typ: E, value: E) = incl2(typ) flatMap ((i) => appln(i, value))
+
+  def applyAll(funcOpt: Option[E], args: Vector[E]) =
+    args.foldLeft(funcOpt){
+      case (fO, x) => fO.flatMap ((f) => appln(f, x))
+    }
 }
 
 object ExprLang {

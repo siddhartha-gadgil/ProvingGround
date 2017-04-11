@@ -72,6 +72,8 @@ sealed abstract class TypFamilyPtn[
       type IDFT <: Term with Subs[IDFT]
     }
 
+  def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_]
+
   def getMapper[C <: Term with Subs[C],
                 IF <: Term with Subs[IF],
                 IDF <: Term with Subs[IDF],
@@ -99,6 +101,11 @@ object TypFamilyPtn {
     def subs(x: Term, y: Term) = this
 
     def mapper[C <: Term with Subs[C]] = idTypFamilyMapper[H, C]
+
+    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] = depCod match {
+      case tp: Typ[u] => tp
+    }
+
   }
 
   case class FuncTypFamily[U <: Term with Subs[U],
@@ -123,6 +130,11 @@ object TypFamilyPtn {
 
     def mapper[C <: Term with Subs[C]] =
       funcTypFamilyMapper(tail.mapper[C], implicitly[Subst[TI]])
+
+    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] =
+      tail.finalCod(fold(depCod)(head.Var))
+
+
   }
 
   case class DepFuncTypFamily[U <: Term with Subs[U],
@@ -149,6 +161,12 @@ object TypFamilyPtn {
     def mapper[C <: Term with Subs[C]] =
       depFuncTypFamilyMapper(tailfibre(head.Var).mapper[C],
                              implicitly[Subst[TI]])
+
+     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] =
+       {
+         val x = head.Var
+         tailfibre(x).finalCod(fold(depCod)(x))
+     }
   }
 
   sealed trait Exst {
@@ -410,7 +428,7 @@ object TypFamilyMap {
 
 class TypObj[T <: Typ[Term] with Subs[T], C <: Term with Subs[C]](
     implicit ev: T <:< Typ[C]) {
-  def me(t: T): Typ[C] = t // just a test
+  def me(t: T): Typ[C] = t
 }
 
 object TypObj {

@@ -42,6 +42,8 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
 
   def induc(fibre: IDFT) =
     inducDataLambda(fibre)(inducDefn(fibre).iterDepFunc)
+
+  def inducF(fibre: Term) = induc(fibre.asInstanceOf[IDFT])
 }
 
 object IndexedConstructorSeqMap {
@@ -444,6 +446,14 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
                                                    IDF,
                                                    IDFT]
   ) = mapper.mapped(this)(W, family).induc(Xs)
+
+  def inducE[IDFT <: Term with Subs[IDFT]](Xs: IDFT) =
+    family.finalCod(Xs) match {
+      case tp: Typ[u] =>
+        implicit val mp = family.mapper[u]
+        val mpd         = mapped
+        mpd.inducF(Xs)
+    }
 
   def |:[HShape <: HList, HC <: Term with Subs[HC]](
       head: IndexedConstructor[HShape, H, F, HC, Index]) =

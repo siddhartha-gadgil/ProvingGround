@@ -250,9 +250,9 @@ case class IdFmlyPtn[O <: Term with Subs[O], C <: Term with Subs[C]]()
 
   def incl(term: O, arg: ArgType, w: FamilyType): Total = term
 
-  type ArgType = AtomicTerm
+  type ArgType = Term
 
-  def arg(x: Total): AtomicTerm = Star
+  def arg(x: Total): Term = Star
 
   def domTotal(w: FamilyType): Typ[Total] = w
 

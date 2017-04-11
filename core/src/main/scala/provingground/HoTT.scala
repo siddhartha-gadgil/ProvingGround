@@ -473,7 +473,7 @@ object HoTT {
     def rec[U <: Term with Subs[U]](codom: Typ[U]) =
       (Zero ->: codom).symbObj(vacuous)
 
-    def induc[U <: Term with Subs[U]](depcodom: Func[AtomicTerm, Typ[U]]) =
+    def induc[U <: Term with Subs[U]](depcodom: Func[Term, Typ[U]]) =
       PiDefn(depcodom).symbObj(vacuous)
   }
 

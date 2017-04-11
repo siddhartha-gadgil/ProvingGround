@@ -170,5 +170,26 @@ object TermPatterns {
     (universe >> univ) || termToExprRaw[E]
   }
 
+  import TermLang.applyAll
+
+  def termToRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]]) =
+    recFunc >>[Term] {
+      case (pt : ProdTyp[u, v], (codom: Typ[w] , data) ) =>
+        applyAll(Some(pt.rec(codom)), data)
+      case (Zero, (codom: Typ[w] , data) ) =>
+        applyAll(Some(Zero.rec(codom)), data)
+      case (Unit, (codom: Typ[w] , data) ) =>
+        applyAll(Some(Unit.rec(codom)), data)
+      case (pt : PlusTyp[u, v], (codom: Typ[w] , data) ) =>
+        applyAll(Some(pt.rec(codom)), data)
+      case (pt : SigmaTyp[u, v], (codom: Typ[w] , data) ) =>
+        applyAll(Some(pt.rec(codom)), data)
+      case (dom: Typ[u], (codom : Typ[v], data)) =>
+        inds(dom) flatMap (
+          (cs) => applyAll(Some(cs.recE(codom)), data)
+        )
+      case _ => None
+    }
+
   // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }
