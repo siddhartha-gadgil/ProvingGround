@@ -353,7 +353,7 @@ object JsonTranslate{
   import TermPatterns._
 
 
-  val jsonTrans =
+  val termToJson =
     Translator.Empty[Term, Js.Value] || formalAppln >>> {
       case (func, arg) => Js.Obj("intro" -> Js.Str("appln"), "func" -> func, "arg" -> arg)
     } || funcTyp >>> {
@@ -403,8 +403,38 @@ object JsonTranslate{
       }
 
       implicit val TermWriter = upickle.default.Writer[Term]{
-        case t => jsonTrans(t).getOrElse(Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
+        case t => termToJson(t).getOrElse(Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
       }
 
+      import provingground.{TermLang => T}
+
+      def jsonToTerm(js: Js.Value) : Option[Term] = js("intro").str match {
+        case "appln" =>
+          for (func <- jsonToTerm(js("func")); arg <- jsonToTerm(js("arg")); res <- T.appln(func, arg)) yield res
+        case "func-type" =>
+          for (dom <- jsonToTerm(js("dom")); codom <- jsonToTerm(js("codom"))) yield
+            dom.asInstanceOf[Typ[Term]] ->: codom.asInstanceOf[Typ[Term]]
+        case "lambda" =>
+          for (variable <- jsonToTerm(js("var")); value <- jsonToTerm(js("value"))) yield
+            variable :~> value
+        case "pi" =>
+          for (variable <- jsonToTerm(js("var")); value <- jsonToTerm(js("value"))) yield
+            pi(variable)(value.asInstanceOf[Typ[Term]])
+        case "sigma" =>
+          for (variable <- jsonToTerm(js("var")); value <- jsonToTerm(js("value"))) yield
+            sigma(variable)(value.asInstanceOf[Typ[Term]])
+        case "universe" =>
+          Some(Universe(js("level").num.toInt))
+        case "product-type" =>
+          for (dom <- jsonToTerm(js("first")); codom <- jsonToTerm(js("second"))) yield
+            ProdTyp(dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])
+        case "pair" =>
+          for (first <- jsonToTerm(js("first")); second <- jsonToTerm(js("second"));
+            res <- T.pair(first, second)) yield res
+        case "equality" =>
+          for (lhs <- jsonToTerm(js("lhs")); rhs <- jsonToTerm(js("rhs"))) yield
+            lhs =:= rhs
+
+      }
 
 }
