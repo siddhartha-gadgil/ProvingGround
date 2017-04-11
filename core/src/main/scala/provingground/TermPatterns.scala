@@ -191,5 +191,65 @@ object TermPatterns {
       case _ => None
     }
 
+    def termToIndRecDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]]) =
+      indRecFunc >>[Term] {
+        case (Vector(start, finish), (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn : Func[x, y])))) =>
+          val rf = idt.rec(codom)
+          applyAll(Some(rf), Vector(fn, start, finish))
+        case (index, (dom, (codom : Typ[v], data))) =>
+          inds(dom) flatMap (
+            (cs) => applyAll(Some(cs.recE(codom)), data ++ index)
+          )
+      }
+
+  def fm[U <: Term with Subs[U]](dom: Typ[U], fmly: Term) = {
+    val x = dom.Var
+    val tp = fold(fmly)(x)
+    tp match {
+      case t : Typ[_] => x :-> t
+    }
+  }
+
+
+  def termToIndDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]]) =
+    recFunc >>[Term] {
+      case (pt : ProdTyp[u, v], (depcodom , data) ) =>
+        val x = pt.first.Var
+        val y = pt.second.Var
+        val tp = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
+        val fmly = x :-> (y :-> tp)
+        applyAll(Some(pt.induc(fmly)), data)
+      case (Zero, (depcodom , data) ) =>
+        applyAll(Some(Zero.induc(fm(Zero, depcodom))), data)
+      case (Unit, (depcodom , data) ) =>
+        applyAll(Some(Unit.induc(fm(Unit, depcodom))), data)
+      case (pt : PlusTyp[u, v], (depcodom , data) ) =>
+        applyAll(Some(pt.induc(fm(pt, depcodom))), data)
+      case (pt : SigmaTyp[u, v], (depcodom , data) ) =>
+        val x = pt.fibers.dom.Var
+        val y = pt.fibers(x).Var
+        val tp = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
+        val fmly = x :-> (y :-> tp)
+        applyAll(Some(pt.induc(fmly)), data)
+      case (dom: Typ[u], (depcodom, data)) =>
+        inds(dom) flatMap (
+          (cs) => applyAll(Some(cs.inducE(fm(cs.typ, depcodom))), data)
+        )
+      case _ => None
+    }
+
+    def termToIndIndDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]]) =
+      indRecFunc >>[Term] {
+        case (Vector(start, finish), (idt: IdentityTyp[u], (depcodom, Vector(fn : Func[x, y])))) =>
+          val rf = idt.induc(depcodom.asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
+          applyAll(Some(rf), Vector(fn, start, finish))
+        case (index, (dom, (depcodom, data))) =>
+          inds(dom) flatMap (
+            (cs) => applyAll(Some(cs.inducE(depcodom)), data ++ index)
+          )
+      }
+
+
+
   // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }
