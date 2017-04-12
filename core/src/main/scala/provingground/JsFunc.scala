@@ -6,6 +6,8 @@ import upickle.Js
 
 import cats._
 
+import cats.implicits._
+
 trait JsFunc[F[_]]{
   def encode(t: F[Js.Value]): Js.Value
 
@@ -19,13 +21,27 @@ object JsFunc{
     def decode(js: Js.Value) = js
   }
 
-  import Functors.N
+  import Functors._
 
   implicit val intJs : JsFunc[N] = new JsFunc[N]{
     def encode(t : Int) = Js.Num(t)
 
     def decode(js: Js.Value) = js.num.toInt
   }
+
+  implicit val strJs : JsFunc[S] = new JsFunc[S]{
+    def encode(t : String) = Js.Str(t)
+
+    def decode(js: Js.Value) = js.str
+  }
+
+  implicit val unitJs : JsFunc[Un] = new JsFunc[Un]{
+    def encode(t : Unit) = Js.Null
+
+    def decode(js: Js.Value) = ()
+  }
+
+
 
   implicit val vecJs : JsFunc[Vector] = new JsFunc[Vector]{
     def encode(t: Vector[Js.Value]) = Js.Arr(t : _*)
@@ -69,5 +85,73 @@ object JsFunc{
     }
 
 
+
+}
+
+import TermPatterns._
+
+import HoTT._
+
+import Functors._
+
+object TermJson {
+  import JsFunc._
+
+  implicit val travNamed : Traverse[Named] = traversePair[S, Id]
+
+  val termToJson =
+    toJs(formalAppln)("appln") ||
+    toJs(lambdaTriple)("lambda") ||
+    toJs(sigmaTriple)("sigma") ||
+    toJs(piTriple)("pi") ||
+    toJs(prodTyp)("product-type") ||
+    toJs(absPair)("pair") ||
+    toJs(plusTyp)("plus-type") ||
+    toJs(funcTyp)("func-type") ||
+    toJs(star)("star") ||
+    toJs(unit)("unit-type") ||
+    toJs(zero)("zero-type") ||
+    toJs(indInducFunc)("indexed-inductive-function") ||
+    toJs(indRecFunc)("indexed-recursive-function") ||
+    toJs(recFunc)("recursive-function") ||
+    toJs(inducFunc)("inductive-function") ||
+    toJs(symbolic)("symbolic") ||
+    toJs(firstIncl)("first-inclusion") ||
+    toJs(secondIncl)("second-inclusion")
+
+  val jsonToTermBase =
+    jsToBuild[Term, II]("appln"){case (func, arg) => fold(func)(arg)} ||
+    jsToBuild[Term, III]("lambda"){case ((variable, typ), value) => variable :-> value} ||
+    jsToBuild[Term, III]("pi"){case ((variable, typ), value : Typ[u]) => variable ~>: value} ||
+    jsToBuild[Term, III]("sigma"){case ((variable, typ), value : Typ[u]) => sigma(variable)(value)} ||
+    jsToBuild[Term, II]("product-type"){case (x: Typ[u], y: Typ[v]) => ProdTyp(x, y)} ||
+    jsToBuild[Term, II]("pair"){case (x, y) => mkPair(x, y)} ||
+    jsToBuild[Term, II]("func-type"){case (x: Typ[u], y: Typ[v]) => FuncTyp(x, y)} ||
+    jsToBuild[Term, II]("star"){(_) => Star} ||
+    jsToBuild[Term, II]("unit-type"){(_) => Unit} ||
+    jsToBuild[Term, II]("zero-type"){(_) => Zero} ||
+    jsToBuild[Term, II]("first-inclusion"){case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])} ||
+    jsToBuild[Term, II]("second-inclusion"){case (tp: PlusTyp[u, v], x) => tp.incl2(x.asInstanceOf[v])} ||
+    jsToOpt[Term, IIV]("recursive-function"){
+      case (a, (b, v)) =>
+        val fn = buildRecDef()
+        fn(a, (b, v))
+    } ||
+    jsToOpt[Term, IIV]("inductive-function"){
+      case (a, (b, v)) =>
+        val fn = buildIndDef()
+        fn(a, (b, v))
+    } ||
+    jsToOpt[Term, VIIV]("indexed-recursive-function"){
+      case (w, (a, (b, v))) =>
+        val fn = buildIndRecDef()
+        fn(w, (a, (b, v)))
+    } ||
+    jsToOpt[Term, VIIV]("indexed-inductive-function"){
+      case (w, (a, (b, v))) =>
+        val fn = buildIndIndDef()
+        fn(w, (a, (b, v)))
+    } ||
+    jsToBuild[Term, Named]("symbolic"){case (name, tp: Typ[u]) => name :: tp}(travNamed, implicitly[JsFunc[Named]])
 
 }

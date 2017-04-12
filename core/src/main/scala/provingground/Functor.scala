@@ -109,7 +109,7 @@ object Functors extends CompositeFunctors {
         (fa._1, implicitly[Functor[X]].map(fa._2)(f))
     }
 
-  type Named[A] = (String, Id[A])
+  type Named[A] = (S[A], Id[A])
 
   implicit def t2[X[_]: Functor, Y[_]: Functor] =
     new Functor[({ type Z[A] = (X[A], Y[A]) })#Z] {
@@ -218,6 +218,8 @@ object Functors extends CompositeFunctors {
 
   type S[A] = C[A, String]
 
+  type Un[A] = C[A, Unit]
+
   type Coded[A] = (S[A], (IL[A]))
 
   implicit def trCnst[X]: Traverse[({ type Z[A] = C[A, X] })#Z] =
@@ -234,6 +236,10 @@ object Functors extends CompositeFunctors {
     }
 
   implicit def trCod: Traverse[Coded] = traversePair[S, IL]
+
+  // implicit val travIIV: Traverse[IIV] = traversePair[Id, IV]
+  //
+  // implicit val travVIIV: Traverse[VIIV] = traversePair[Vector, ]
 
   type Pickled = Coded[String]
 

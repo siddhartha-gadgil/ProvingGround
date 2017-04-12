@@ -163,6 +163,13 @@ object Translator {
         if (p(x)) Some(x) else None
       }
 
+      import Functors._
+
+    def check[I](p: I => Boolean) =
+      Pattern[I, Un] { (x: I) =>
+        if (p(x)) Some(()) else None
+      }
+
     /**
       * Builds a splitter from a word of a given shape, and a map that matches and returns the image of an element.
       * This is problematic if lists should be returned.

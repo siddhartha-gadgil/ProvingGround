@@ -122,11 +122,11 @@ object TermPatterns {
     case fi: PlusTyp.ScndIncl[u, v] => (fi.typ, fi.value)
   }
 
-  val star = Pattern.filter[Term](_ == Star)
+  val star = Pattern.check[Term](_ == Star)
 
-  val unit = Pattern.filter[Term](_ == Unit)
+  val unit = Pattern.check[Term](_ == Unit)
 
-  val zero = Pattern.filter[Term](_ == Unit)
+  val zero = Pattern.check[Term](_ == Unit)
 
   val universe = Pattern.partial[Term, N] {
     case Universe(n) => n
@@ -155,13 +155,13 @@ object TermPatterns {
     (sigmaLam >> sigma[E]) || (equation >> equality[E]) ||
     (symbolic >> variable[E]) || (plusTyp >> or[E]) || (funcTyp >> func[E]) ||
     (prodTyp >> pairTyp[E]) || (absPair >> pair[E]) ||
-    (unit >> { (e: E) =>
+    (unit >> { (_) =>
       tt[E]
     }) ||
-    (zero >> { (e: E) =>
+    (zero >> { (_) =>
       ff[E]
     }) ||
-    (star >> { (e: E) =>
+    (star >> { (_) =>
       qed[E]
     }) || (firstIncl >> i1[E]) || (secondIncl >> i2[E])
   }
@@ -172,8 +172,8 @@ object TermPatterns {
 
   import TermLang.applyAll
 
-  def termToRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]]) =
-    recFunc >>[Term] {
+  def buildRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]] = (_) => None) : (Term, (Term, Vector[Term])) => Option[Term] =
+     {
       case (pt : ProdTyp[u, v], (codom: Typ[w] , data) ) =>
         applyAll(Some(pt.rec(codom)), data)
       case (Zero, (codom: Typ[w] , data) ) =>
@@ -191,8 +191,8 @@ object TermPatterns {
       case _ => None
     }
 
-    def termToIndRecDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]]) =
-      indRecFunc >>[Term] {
+    def buildIndRecDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]] = (_) => None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] =
+      {
         case (Vector(start, finish), (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn : Func[x, y])))) =>
           val rf = idt.rec(codom)
           applyAll(Some(rf), Vector(fn, start, finish))
@@ -211,8 +211,8 @@ object TermPatterns {
   }
 
 
-  def termToIndDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]]) =
-    recFunc >>[Term] {
+  def buildIndDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None) : (Term, (Term, Vector[Term])) => Option[Term]=
+     {
       case (pt : ProdTyp[u, v], (depcodom , data) ) =>
         val x = pt.first.Var
         val y = pt.second.Var
@@ -238,8 +238,8 @@ object TermPatterns {
       case _ => None
     }
 
-    def termToIndIndDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]]) =
-      indRecFunc >>[Term] {
+    def buildIndIndDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]] = (_) => None) : (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term]=
+       {
         case (Vector(start, finish), (idt: IdentityTyp[u], (depcodom, Vector(fn : Func[x, y])))) =>
           val rf = idt.induc(depcodom.asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
           applyAll(Some(rf), Vector(fn, start, finish))
