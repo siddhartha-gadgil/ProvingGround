@@ -308,7 +308,7 @@ object FreeExprPatterns {
       } >> orCases[E]) ||
       (Pattern.partial[FreeExpr, Named] {
         case Variable(name, typ) => (name, typ)
-      } >> variable[E]) ||
+      }(namedTrav) >> variable[E]) ||
       (Pattern.partial[FreeExpr, Id] {
         case FreeIncl1(a) => a
       } >> incl1[E]) ||

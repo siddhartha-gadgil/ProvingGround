@@ -458,6 +458,8 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
   def |:[HShape <: HList, HC <: Term with Subs[HC]](
       head: IndexedConstructor[HShape, H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
+
+  def subs(x: Term, y: Term) : IndexedConstructorSeqDom[SS, H, F, Index, Intros]
 }
 
 object IndexedConstructorSeqDom {
@@ -498,6 +500,8 @@ object IndexedConstructorSeqDom {
         fmlyMapper.mapper(family))
 
     val intros = HNil
+
+    def subs(x: Term, y: Term) = Empty(W.replace(x, y), family.subs(x, y))
   }
 
   case class Cons[TSS <: HList,
@@ -542,5 +546,7 @@ object IndexedConstructorSeqDom {
                                         tail.mapped(fmlyMapper))
 
     val intros = pattern.symbcons(name, W) :: tail.intros
+
+    def subs(x: Term, y: Term) = Cons(name, pattern.subs(x, y), tail.subs(x, y))
   }
 }

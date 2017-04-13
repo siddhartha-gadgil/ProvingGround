@@ -111,6 +111,9 @@ object Functors extends CompositeFunctors {
 
   type Named[A] = (S[A], Id[A])
 
+  implicit val namedTrav : Traverse[Named] = traversePair[S, Id]
+
+
   implicit def t2[X[_]: Functor, Y[_]: Functor] =
     new Functor[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def map[A, B](fa: (X[A], Y[A]))(f: A => B) =

@@ -137,7 +137,7 @@ object TermPatterns {
       outerSym(sym).name match {
         case Name(name) => (name, sym.typ)
       }
-  }
+  }(namedTrav)
 
   val symName = Pattern[Term, S] {
     case sym: Symbolic with Term =>

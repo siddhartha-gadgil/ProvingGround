@@ -313,6 +313,8 @@ trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
     mapped[C](W).induc(Xs)
 
   def intros(typ: Typ[H]): Intros
+
+  def subs(x: Term, y: Term) : ConstructorSeqDom[SS, H, Intros]
 }
 
 object ConstructorSeqDom {
@@ -324,6 +326,8 @@ object ConstructorSeqDom {
       ConstructorSeqMap.Empty[C, H](W)
 
     def intros(typ: Typ[H]) = HNil
+
+    def subs(x: Term, y: Term) = this
   }
 
   case class Cons[TSS <: HList,
@@ -347,8 +351,26 @@ object ConstructorSeqDom {
 
     def intros(typ: Typ[H]) =
       pattern.symbcons(name, typ) :: tail.intros(typ)
+
+    def subs(x: Term, y: Term) = Cons(name, pattern.subs(x, y), tail.subs(x, y))
   }
 }
+
+case class IndTyp[SS <: HList, Intros <: HList](name: String, seqDom: ConstructorSeqDom[SS, Term, Intros]) extends Typ[Term]{ self =>
+    lazy val struct = ConstructorSeqTL(seqDom, self)
+
+    val baseTyp = ConstructorSeqTL(seqDom, name:: Type)
+
+    type Obj = Term
+
+    val typ = Type
+
+    def newobj = ??? // should not be using this as a variable
+
+    def subs(x: Term, y: Term) = IndTyp(name, seqDom.subs(x, y))
+
+    def variable(name: AnySym) = SymbObj(name, self)
+  }
 
 case class ConstructorSeqTL[SS <: HList,
                             H <: Term with Subs[H],
