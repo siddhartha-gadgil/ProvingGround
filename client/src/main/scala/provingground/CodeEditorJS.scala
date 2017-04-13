@@ -14,6 +14,7 @@ import com.scalawarrior.scalajs.ace._
 import dom.ext._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
+  import upickle.{Js, json}
 
 import scala.util.{Try, Success, Failure}
 
@@ -116,14 +117,29 @@ object CodeEditorJS  extends js.JSApp  {
         }
       }
 
+      def showLog(js: Js.Value) =
+        js.obj.get("log").foreach{(err) =>
+          logDiv.appendChild( pre(div(`class`:= "text-danger")(err.str)).render)
+        }
+
+      def showResult(js: Js.Value) =
+        js.obj.get("result").foreach{(resp) =>
+          editorAppend(s"//result: $resp\n\n")
+          logDiv.innerHTML = ""
+        }
+
       def compile() = {
         val code = editor.getValue()
           Ajax.post("/kernel", code).foreach{(xhr) => {
               val answer = xhr.responseText
+              val js = json.read(answer)
+              // val decoded = json.read(answer)("response").str
               // results.appendChild(p(answer).render)
               // val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
               // editorAppend(s"// $answerLines \n\n")
-              showAnswer(parseAnswer(answer))
+              // showAnswer(parseAnswer(decoded))
+              showResult(js)
+              showLog(js)
           }
         }
       }

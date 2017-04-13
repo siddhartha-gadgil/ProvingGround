@@ -8,6 +8,8 @@ import akka.http.scaladsl.server.Directives._
 
 import scala.util.Try
 
+  import upickle.{Js, json}
+
 object  BaseServer {
 
   val route =
@@ -101,6 +103,16 @@ $body
       }
     }
 
+  def kernelJS(res: Option[Either[String, Any]]) = {
+    // val res = kernelRes(inp)
+    val base = res match{
+      case Some(Right(evaluation)) => Js.Obj("result" -> Js.Str(evaluation.toString))
+      case Some(Left(log)) => Js.Obj("log" -> Js.Str(log.toString))
+      case None => Js.Obj("log" -> Js.Str("No response from kernel"))
+    }
+    base
+  }
+
 
 
   val route =
@@ -115,9 +127,14 @@ $body
           res.foreach{e =>
             e.foreach((_) => prevCode = d)
           }
+
+          val js = kernelJS(res)
+            //Js.Obj("response" -> Js.Str(res.toString))
+          println(res)
+          println(kernelJS(res).toString)
           // TimeServer.buf = TimeServer.buf :+ res.toString
           // println(s"Buffer: ${TimeServer.buf}")
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, res.toString))
+          complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
         }
       }
     } ~
