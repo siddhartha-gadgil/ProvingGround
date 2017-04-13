@@ -104,9 +104,16 @@ $body
     }
 
   def kernelJS(res: Option[Either[String, Any]]) = {
+    import HoTT._
     // val res = kernelRes(inp)
     val base = res match{
-      case Some(Right(evaluation)) => Js.Obj("result" -> Js.Str(evaluation.toString))
+      case Some(Right(evaluation)) =>
+        evaluation match {
+          case t: Term => Js.Obj("result" -> Js.Str(evaluation.toString),
+          "tex" ->
+            Js.Str(TeXTranslate(t)))
+          case _ => Js.Obj("result" -> Js.Str(evaluation.toString))
+      }
       case Some(Left(log)) => Js.Obj("log" -> Js.Str(log.toString))
       case None => Js.Obj("log" -> Js.Str("No response from kernel"))
     }
@@ -191,6 +198,7 @@ class AmmScriptServer(val scriptsDir : Path = pwd / "repl-scripts", val objectsD
     <title>Script Editor</title>
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
     <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="/resources/katex.min.css">
     <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/resources/highlight.js" type="text/javascript" charset="utf-8"></script>
     <script src="/resources/provingground-js-fastopt.js" type="text/javascript" charset="utf-8"></script>

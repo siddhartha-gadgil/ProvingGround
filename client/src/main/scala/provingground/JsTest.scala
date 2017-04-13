@@ -15,7 +15,7 @@ import HoTT.{id => _, _}
 
 object ScalaJSExample {
   def main(): Unit = {
-    import org.scalajs.dom.document._
+    // import org.scalajs.dom.document._
     dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
 
     import org.scalajs.dom.ext._

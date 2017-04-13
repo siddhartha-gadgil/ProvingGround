@@ -6,8 +6,12 @@ import org.scalajs.dom
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 
+
+
 import scala.scalajs.js
 import org.scalajs.dom
+
+import js.Dynamic.{global => g}
 
 import com.scalawarrior.scalajs.ace._
 
@@ -117,6 +121,13 @@ object CodeEditorJS  extends js.JSApp  {
         }
       }
 
+      def katex(f: String) = {
+        val html = g.katex.renderToString(f)
+        val d = div.render
+        d.innerHTML = html.toString
+        d
+      }
+
       def showLog(js: Js.Value) =
         js.obj.get("log").foreach{(err) =>
           logDiv.appendChild( pre(div(`class`:= "text-danger")(err.str)).render)
@@ -127,6 +138,10 @@ object CodeEditorJS  extends js.JSApp  {
           editorAppend(s"//result: $resp\n\n")
           logDiv.innerHTML = ""
         }
+
+      def showTeX(js: Js.Value) = js.obj.get("tex").foreach{(resp) =>
+        logDiv.appendChild(katex(resp.str))
+      }
 
       def compile() = {
         val code = editor.getValue()
@@ -140,6 +155,7 @@ object CodeEditorJS  extends js.JSApp  {
               // showAnswer(parseAnswer(decoded))
               showResult(js)
               showLog(js)
+              showTeX(js)
           }
         }
       }

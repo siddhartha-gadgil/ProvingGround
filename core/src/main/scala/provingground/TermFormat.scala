@@ -54,7 +54,7 @@ object LatexFormat extends TermRec[String] {
   def appln(func: String, arg: String): String = func + "(" + arg + ")"
 
   def arrow(dom: String, codom: String): String =
-    dom + " \\to " + codom
+    dom + " \to " + codom
 
   def lambda(variable: String, typ: String, value: String): String =
     s"($variable : $typ)" + " \\mapsto " + s"$value"
@@ -62,9 +62,9 @@ object LatexFormat extends TermRec[String] {
   def equality(dom: String, lhs: String, rhs: String) =
     s"$lhs = $rhs (in $dom)"
 
-  def pi(fibre: String): String = s"\\prod\\limits_{$fibre}"
+  def pi(fibre: String): String = s"\prod\limits_{$fibre}"
 
-  def sigma(fibre: String): String = s"\\sum\\limits_{$fibre}"
+  def sigma(fibre: String): String = s"\sum\limits_{$fibre}"
 
   def plus(first: String, scnd: String): String = first + " + " + scnd
 
@@ -218,28 +218,28 @@ object TeXTranslate{
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
       case (dom, codom) =>
-       s"$dom \\to $codom"
+       s"""$dom \\to $codom"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-      s"($variable : $typ) \\mapsto $value"
+      s"""($variable : $typ) \\mapsto $value"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        s"\\prod\\limits_{$variable : $typ} $value"
+        s"""\\prod\\limits_{$variable : $typ} $value"""
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
-        s"\\sum\\limits_{$variable : $typ} $value"
+        s"""\\sum\\limits_{$variable : $typ} $value"""
     } || universe >>> { (n) =>
-      s"\\mathcal{U}_n"
+      s"""\\mathcal{U}_$n"""
     } || symName >>> ((s) => s) ||
       prodTyp >>>
-      { case (first, second) => s"$first \times $second" } ||
+      { case (first, second) => s"""$first \\times $second""" } ||
     absPair >>> {
-      case (first, second) => s"($first, $second)"
+      case (first, second) => s"""($first, $second)"""
     } ||
       // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
       equation >>> { case (lhs, rhs) => s"$lhs = $rhs" } ||
       plusTyp >>> {
-        case (first, scnd) => s"$first \\oplus $scnd"
+        case (first, scnd) => s"""$first \\oplus $scnd"""
       } ||
       indRecFunc >>> {
         case (index, (dom, (codom, defnData))) =>
