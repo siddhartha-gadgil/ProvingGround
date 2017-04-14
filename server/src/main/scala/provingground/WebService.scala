@@ -137,8 +137,8 @@ $body
 
           val js = kernelJS(res)
             //Js.Obj("response" -> Js.Str(res.toString))
-          println(res)
-          println(kernelJS(res).toString)
+          // println(res)
+          // println(kernelJS(res).toString)
           // TimeServer.buf = TimeServer.buf :+ res.toString
           // println(s"Buffer: ${TimeServer.buf}")
           complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
@@ -207,6 +207,10 @@ class AmmScriptServer(val scriptsDir : Path = pwd / "repl-scripts", val objectsD
             height: 300px;
             font-size: 14px;
 
+        }
+        .view {
+          overflow-y: auto;
+          height: 300px;
         }
         .btn-space {
     margin-right: 5px;

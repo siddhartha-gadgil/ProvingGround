@@ -46,6 +46,8 @@ object CodeEditorJS  extends js.JSApp  {
 
     val logDiv = div().render
 
+    val viewDiv = div(`class` := "view")().render
+
     val ed = div(id:= "editor", `class` := "panel-body editor")
 
     editDiv.appendChild(
@@ -55,7 +57,8 @@ object CodeEditorJS  extends js.JSApp  {
           div(`class` := "panel-footer clearfix")(
             label("script-name: "), nameInp, saveButton,  insertButton, loadButton,  runButton, objButton
           )),
-        div("Logs:", logDiv)
+        div("Logs:", logDiv),
+        div("Formatted output:", viewDiv)
     ).render)
 
     val editor = ace.edit("editor")
@@ -140,7 +143,7 @@ object CodeEditorJS  extends js.JSApp  {
         }
 
       def showTeX(js: Js.Value) = js.obj.get("tex").foreach{(resp) =>
-        logDiv.appendChild(katex(resp.str))
+        viewDiv.appendChild(katex(resp.str))
       }
 
       def compile() = {
