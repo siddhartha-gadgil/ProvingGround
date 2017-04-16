@@ -18,7 +18,7 @@ import reactivemongo.api._
 
 import reactivemongo.bson._
 
-import com.mongodb.casbah.Imports._
+// import com.mongodb.casbah.Imports._
 
 import FiniteDistribution._
 
@@ -38,24 +38,24 @@ object SimpleAcRun {
   def getId(thread: Int = 0) =
     s"""SimpleAcEvolution#$thread@${DateTime.now}"""
 
-  object Casbah {
-    import Hub.Casbah._
-    val collection = db("simpleACpaths")
-
-    implicit def mongoRead: Future[List[Path]] =
-      Future {
-        val doclist = collection.find().toList
-        for (bd <- doclist; p <- bd.getAs[String]("path"))
-          yield read[PickledPath](p).unpickle
-      }
-
-    implicit def mongoUpdate: Path => Unit =
-      (p) => {
-        val query = MongoDBObject("id" -> p.id)
-        val entry = MongoDBObject("id" -> p.id, "path" -> write(p.pickle))
-        collection.update(query, entry, upsert = true)
-      }
-  }
+  // object Casbah {
+  //   import Hub.Casbah._
+  //   val collection = db("simpleACpaths")
+  //
+  //   implicit def mongoRead: Future[List[Path]] =
+  //     Future {
+  //       val doclist = collection.find().toList
+  //       for (bd <- doclist; p <- bd.getAs[String]("path"))
+  //         yield read[PickledPath](p).unpickle
+  //     }
+  //
+  //   implicit def mongoUpdate: Path => Unit =
+  //     (p) => {
+  //       val query = MongoDBObject("id" -> p.id)
+  //       val entry = MongoDBObject("id" -> p.id, "path" -> write(p.pickle))
+  //       collection.update(query, entry, upsert = true)
+  //     }
+  // }
 
   object Reactive {
     import Hub.ReactiveMongo._

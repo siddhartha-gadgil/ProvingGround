@@ -1,6 +1,6 @@
 package provingground
 
-import com.mongodb.casbah._
+// import com.mongodb.casbah._
 import reactivemongo.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -8,7 +8,7 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 
 import com.typesafe.config._
-import com.mongodb.casbah.Imports
+// import com.mongodb.casbah.Imports
 
 object Hub {
   // gets an instance of the driver
@@ -53,10 +53,10 @@ object Hub {
     implicit lazy val db: DefaultDB = connection("provingground")
   }
 
-  object Casbah {
-    lazy val mongoClient = MongoClient()
-    lazy val db          = mongoClient("provingground")
-  }
+  // object Casbah {
+  //   lazy val mongoClient = MongoClient()
+  //   lazy val db          = mongoClient("provingground")
+  // }
 
   implicit val system = ActorSystem("provingground")
 
