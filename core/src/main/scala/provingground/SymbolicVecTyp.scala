@@ -30,7 +30,7 @@ case class IndexedVecTyp[X, +U <: RepTerm[X] with Subs[U]](
   def variable(name: AnySym): RepTerm[Vector[X]] =
     RepSymbObj[Vector[X], RepTerm[Vector[X]]](name, this)
 
-  def newobj = this
+  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = (x, y) match {
     case (xt: Typ[_], yt: Typ[_]) if (xt == this) =>

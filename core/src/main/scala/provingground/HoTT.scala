@@ -149,7 +149,7 @@ object HoTT {
   trait ConstantTerm extends Term {
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
   }
 
   trait ConstantTyp extends Typ[Term] {
@@ -157,7 +157,7 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def variable(name: AnySym) = SymbObj(name, this)
 
@@ -489,7 +489,7 @@ object HoTT {
 
       val typ = dom ->: codom
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         RecFn(codom.replace(x, y), data.replace(x, y))
@@ -514,7 +514,7 @@ object HoTT {
 
       val typ = PiDefn(depcodom)
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         InducFn(depcodom.replace(x, y), data.replace(x, y))
@@ -582,7 +582,7 @@ object HoTT {
 
     def variable(name: AnySym) = SymbTyp(name, level)
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = this
 
@@ -657,7 +657,7 @@ object HoTT {
 
       lazy val typ = dom ->: codom
 
-      def newobj = self
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         ProdTyp(first.replace(x, y), second.replace(x, y))
@@ -688,7 +688,7 @@ object HoTT {
 
       lazy val depcodom = (p: PairTerm[U, V]) => targetFmly(p.first)(p.second)
 
-      def newobj = self
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         ProdTyp(first.replace(x, y), second.replace(x, y))
@@ -1728,7 +1728,7 @@ object HoTT {
 
     def act(arg: W) = func(arg).getOrElse(Star)
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) =
       OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)),
@@ -1796,7 +1796,7 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def newobj = self
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         SigmaTyp(fibers.replace(x, y))
@@ -1828,7 +1828,7 @@ object HoTT {
 
       lazy val depcodom = (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
 
-      def newobj = self
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         SigmaTyp(fibers.replace(x, y))
@@ -1970,7 +1970,7 @@ object HoTT {
 
       lazy val typ = dom ->: codom
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         RecFn(domain.replace(x, y),
@@ -2000,7 +2000,7 @@ object HoTT {
         start: U,
         end: U
     ) extends IndInducFuncLike[Term, V, Func[U, Func[U, Typ[Term]]], FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]] { self =>
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       val defnData = Vector(data)
 
@@ -2127,7 +2127,7 @@ object HoTT {
         extends Term
         with Subs[FirstIncl[U, V]] {
 
-      def newobj = this //FirstIncl(typ, value.newobj)
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)") //FirstIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) =
         FirstIncl(typ.replace(x, y), value.replace(x, y))
@@ -2141,7 +2141,7 @@ object HoTT {
         value: V)
         extends Term
         with Subs[ScndIncl[U, V]] {
-      def newobj = this //ScndIncl(typ, value.newobj)
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)") //ScndIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) =
         ScndIncl(typ.replace(x, y), value.replace(x, y))
@@ -2178,7 +2178,7 @@ object HoTT {
       val dom: provingground.HoTT.Typ[provingground.HoTT.Term] =
         PlusTyp(first, second)
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
     }
   }
 
@@ -2239,7 +2239,7 @@ object HoTT {
 
       lazy val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
     }
 
     def induc[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]]) = {
@@ -2254,7 +2254,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       PlusTyp(first.replace(x, y), second.replace(x, y))
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     type Obj = Term
 
@@ -2467,7 +2467,7 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
   }
 
   class CnstFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -2484,7 +2484,7 @@ object HoTT {
 
     override val typ = dom ->: codom
 
-    override def newobj = this
+    override def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     override def subs(x: Term, y: Term) = this
   }
@@ -2503,7 +2503,7 @@ object HoTT {
 
     val depcodom = term.depcodom
 
-    override def newobj = this
+    override def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     override def subs(x: Term, y: Term) = this
   }
@@ -2531,7 +2531,7 @@ object HoTT {
 
       def variable(name: AnySym) = sample
 
-      def newobj = this
+      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) = this
     }

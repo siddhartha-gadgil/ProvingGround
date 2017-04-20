@@ -288,7 +288,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(x: LocalTerm) = x match {
       case Literal(a) =>
@@ -322,7 +322,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(b)                         => Literal(a + b)
@@ -345,7 +345,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = {
 //      println(s"AddTerm($x) applied to $y")
@@ -414,7 +414,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(x: LocalTerm) = x match {
       case Literal(a) =>
@@ -454,7 +454,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(a)                          => Literal(b * a)
@@ -478,7 +478,7 @@ class SymbolicCRig[A: Rig] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = this
+    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(a)                          => prod(Literal(a))(x)
