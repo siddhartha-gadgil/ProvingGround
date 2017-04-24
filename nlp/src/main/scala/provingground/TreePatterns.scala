@@ -294,6 +294,42 @@ object TreePatterns {
       extends Pattern.Partial[Tree, Vector]({
         case Node("NP", x) => x
       })
+
+  def phraseFromVec(s: Vector[String]) : Pattern[Tree, Vector] = Pattern[Tree, Vector](
+    (t: Tree) =>
+      s match {
+        case Vector("_") => Some(Vector(t))
+        case Vector(w) =>
+          t match {
+            case Twig(u) if u == w => Some(Vector())
+            case _ => None
+          }
+        case Vector(w, "_") =>
+          t match {
+            case WordDash(u, v) if u == w =>  Some(Vector(v))
+            case _ => None
+          }
+        case Vector("_", w) =>
+          t match {
+            case DashWord(a, b) if b == w => Some(Vector(a))
+          }
+        case "_" +: w +: tail =>
+          t match {
+            case DashWordDash(a, b, c) if b == w =>
+              phraseFromVec(tail).unapply(c).map (a +: _)
+            case _ => None
+          }
+        case w +: "_" +: tail =>
+          t match {
+            case WordDashDash(a, b, c) if a == w => phraseFromVec(tail).unapply(c).map (b +: _)
+            case WordDash(u, v) if u == v => phraseFromVec("_" +: tail).unapply(v)
+            case _ => None
+          }
+        case _ => None
+      }
+  )
+
+  def phrase(s: String) = phraseFromVec(s.split(" ").toVector)
 }
 
 object TreeToMath {
