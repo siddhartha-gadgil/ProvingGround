@@ -42,23 +42,46 @@ object SuccNOrNEven{
 
   import Nats.{Nat => Nt, _}
 
-  val statement = n :-> (isEven(n) || isEven(succ(n)))
+  val claim = n :-> (isEven(n) || isEven(succ(n)))
 
-  val base = statement(zero).incl1(zeroEven) !: statement(zero)
+  val base = claim(zero).incl1(zeroEven) !: claim(zero)
 
   val hyp1 = "n-is-Even" :: isEven(n)
 
   val hyp2 = "(n+1)-is-Even" :: isEven(succ(n))
 
-  val thm = n ~>: (statement(n))
+  val thm = n ~>: (claim(n))
 
   val step = n :~> {
-    (statement(n).rec(statement(succ(n)))){
-      hyp1 :-> (statement(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{
-        hyp2 :-> (statement(succ(n)).incl1((hyp2)))}
+    (claim(n).rec(claim(succ(n)))){
+      hyp1 :-> (claim(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{
+        hyp2 :-> (claim(succ(n)).incl1((hyp2)))}
       }
 
-  val inductor = NatInd.induc(statement)
+  val inductor = NatInd.induc(claim)
 
   val pf = inductor(base)(step) !: thm
+}
+
+object LocalConstImpliesConst{
+  import Nats.{Nat => Nt, _}
+
+  val A = "A" :: Type
+
+  val f = "f" :: Nt ->: A
+
+  val ass = "assumption" :: n ~>: (f(n) =:= f(succ(n)))
+
+  val claim = n :-> (f(zero) =:= f(n))
+
+  val base = f(zero).refl
+
+  val hyp = "hypothesis" :: (f(zero) =:= f(n))
+  val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
+
+  val thm = n ~>: (claim(n))
+
+  val inductor = NatInd.induc(claim)
+
+  val pf = inductor(n :~> step)  !: thm
 }
