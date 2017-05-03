@@ -35,10 +35,13 @@ lazy val commonSettings = baseSettings ++ Seq(
       "org.typelevel"  %% "cats"      % "0.9.0",
       "com.lihaoyi"    % "ammonite"   % ammV cross CrossVersion.full
     ),
-    scalacOptions ++= Seq("-unchecked",
+    scalacOptions in Compile ++= Seq("-unchecked",
                           "-deprecation",
                           "-feature",
-                          "-language:existentials")
+                          "-language:existentials"),
+
+      scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits", "-implicits-show-all")
+
   )
 
 val akkaV = "2.4.17"
