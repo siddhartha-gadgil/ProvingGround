@@ -333,6 +333,7 @@ lazy val andrewscurtis = (project in file("andrewscurtis"))
 
 lazy val normalform = (project in file("normalform"))
   .settings(commonSettings: _*)
+  .settings(jvmSettings: _*)
   .settings(nfSettings: _*)
 
 fork in run := true
