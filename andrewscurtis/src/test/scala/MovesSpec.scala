@@ -56,7 +56,7 @@ class AtomicMoveSpec extends FlatSpec {
     assert(id(OpPres) === result)
   }
 
-  it should "act on Moves to return the same Moves" in {
+  it should "act on Moves to return the same Moves" ignore {
     val moves  = Moves(List(Inv(0), RtMult(0, 1), LftMult(1, 0)))
     val result = Some(moves)
     assert(id(moves) === result)
