@@ -111,3 +111,6 @@ wiki/
 gh-pages/
 
 data/*.tsv
+
+# macOS
+.DS_Store
