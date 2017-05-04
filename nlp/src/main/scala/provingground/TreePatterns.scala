@@ -334,110 +334,110 @@ object TreePatterns {
 
 object TreeToMath {
   val npvp =
-    TreePatterns.NPVP >>> [MathExpr] {
-      case (np, vp) => MathExpr.NPVP(np, vp)
-    }
+    TreePatterns.NPVP.>>>[MathExpr]({
+          case (np, vp) => MathExpr.NPVP(np, vp)
+        })
 
   val verbObj =
-    TreePatterns.VerbObj >>> [MathExpr] {
-      case (vp, np) => MathExpr.VerbObj(vp, np)
-    }
+    TreePatterns.VerbObj.>>>[MathExpr]({
+          case (vp, np) => MathExpr.VerbObj(vp, np)
+        })
 
   val verbAdj =
-    TreePatterns.VerbAdj >>> [MathExpr] {
-      case (vp, adj) => MathExpr.VerbAdj(vp, adj)
-    }
+    TreePatterns.VerbAdj.>>>[MathExpr]({
+          case (vp, adj) => MathExpr.VerbAdj(vp, adj)
+        })
 
   val verbNotObj =
-    TreePatterns.VerbNotObj >>> [MathExpr] {
-      case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
-    }
+    TreePatterns.VerbNotObj.>>>[MathExpr]({
+          case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
+        })
 
   val verbNotAdj =
-    TreePatterns.VerbNotAdj >>> [MathExpr] {
-      case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
-    }
+    TreePatterns.VerbNotAdj.>>>[MathExpr]({
+          case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
+        })
 
   val pp =
-    TreePatterns.PP >>> [MathExpr] {
-      case (pp, np) => MathExpr.PP(false, pp, np)
-    }
+    TreePatterns.PP.>>>[MathExpr]({
+          case (pp, np) => MathExpr.PP(false, pp, np)
+        })
 
-  val nn = TreePatterns.NN >>> [MathExpr](MathExpr.NN(_))
+  val nn = TreePatterns.NN.>>>[MathExpr](MathExpr.NN(_))
 
-  val fmla = TreePatterns.NNP >>> [MathExpr](MathExpr.Formula(_))
+  val fmla = TreePatterns.NNP.>>>[MathExpr](MathExpr.Formula(_))
 
-  val vb = TreePatterns.VB >>> [MathExpr](MathExpr.VB(_))
+  val vb = TreePatterns.VB.>>>[MathExpr](MathExpr.VB(_))
 
-  val jj = TreePatterns.JJ >>> [MathExpr](MathExpr.JJ(_))
+  val jj = TreePatterns.JJ.>>>[MathExpr](MathExpr.JJ(_))
 
-  val prep = TreePatterns.IN >>> [MathExpr](MathExpr.Prep(_))
+  val prep = TreePatterns.IN.>>>[MathExpr](MathExpr.Prep(_))
 
   val dpBase =
-    TreePatterns.DPBase >>> [MathExpr] {
-      case (det, (adjs, nnOpt)) =>
-        MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)
-    }
+    TreePatterns.DPBase.>>>[MathExpr]({
+          case (det, (adjs, nnOpt)) =>
+            MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)
+        })
 
   val dpBaseZero =
-    TreePatterns.DPBaseZero >>> [MathExpr] {
-      case (adjs, nnOpt) =>
-        MathExpr.DP(MathExpr.Determiner.Zero, adjs, nnOpt)
-    }
+    TreePatterns.DPBaseZero.>>>[MathExpr]({
+          case (adjs, nnOpt) =>
+            MathExpr.DP(MathExpr.Determiner.Zero, adjs, nnOpt)
+        })
 
   val dpQuant =
-    TreePatterns.DPQuant >>> [MathExpr] {
-      case (det, (adjs, np)) =>
-        MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))
-    }
+    TreePatterns.DPQuant.>>>[MathExpr]({
+          case (det, (adjs, np)) =>
+            MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))
+        })
 
   val dpBaseQuant =
-    TreePatterns.DPBaseQuant >>> [MathExpr] {
-      case (det, (adjs, (np, npp))) =>
-        MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
-    }
+    TreePatterns.DPBaseQuant.>>>[MathExpr]({
+          case (det, (adjs, (np, npp))) =>
+            MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
+        })
 
   val dpBaseQuantZero =
-    TreePatterns.DPBaseQuantZero >>> [MathExpr] {
-      case (adjs, (np, npp)) =>
-        MathExpr.DP(MathExpr.Determiner.Zero, adjs, Some(np), Some(npp))
-    }
+    TreePatterns.DPBaseQuantZero.>>>[MathExpr]({
+          case (adjs, (np, npp)) =>
+            MathExpr.DP(MathExpr.Determiner.Zero, adjs, Some(np), Some(npp))
+        })
 
   val addPP =
-    TreePatterns.NPPP >> [MathExpr] {
+    TreePatterns.NPPP.>>[MathExpr] {
       case (dp: MathExpr.DP, pp)        => Some(dp.add(pp))
       case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
       case _                            => None
     }
 
   val addST =
-    TreePatterns.NPWH >> [MathExpr] {
+    TreePatterns.NPWH.>>[MathExpr] {
       case (dp: MathExpr.DP, wh)        => Some(dp.st(wh))
       case (fmla: MathExpr.Formula, wh) => Some(fmla.dp.st(wh))
       case _                            => None
     }
 
   val jjpp =
-    TreePatterns.JJPP >>> [MathExpr] {
-      case (adj, pps) => MathExpr.JJPP(adj, pps)
-    }
+    TreePatterns.JJPP.>>>[MathExpr]({
+          case (adj, pps) => MathExpr.JJPP(adj, pps)
+        })
 
   val verbpp =
-    TreePatterns.VerbPP >>> [MathExpr] {
-      case (verb, pps) => MathExpr.VerbPP(verb, pps)
-    }
+    TreePatterns.VerbPP.>>>[MathExpr]({
+          case (verb, pps) => MathExpr.VerbPP(verb, pps)
+        })
 
-  val or = TreePatterns.DisjunctNP >>> [MathExpr](MathExpr.DisjunctNP(_))
+  val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
 
-  val and = TreePatterns.ConjunctNP >>> [MathExpr](MathExpr.ConjunctNP(_))
+  val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
 
   val dropRoot =
-    TreePatterns.DropRoot >>> [MathExpr] { (x) =>
+    TreePatterns.DropRoot.>>>[MathExpr] { (x) =>
       x
     }
 
   val dropNP =
-    TreePatterns.DropNP >> [MathExpr] {
+    TreePatterns.DropNP.>>[MathExpr] {
       case Vector(x: MathExpr.DP)      => Some(x)
       case Vector(x: MathExpr.Formula) => Some(x)
       case v =>
@@ -446,7 +446,7 @@ object TreeToMath {
         None
     }
 
-  val purge = TreePatterns.Purge >>> [MathExpr]((x) => x)
+  val purge = TreePatterns.Purge.>>>[MathExpr]((x) => x)
 
   // val ifThen = TreePatterns.IfTree >>[MathExpr]{
   //   case (x, Vector(y)) =>
@@ -458,11 +458,11 @@ object TreeToMath {
   // }
 
   val ifThen =
-    TreePatterns.IfTreeSent >>> [MathExpr] {
-      case (x, y) => MathExpr.IfThen(x, y)
-    }
+    TreePatterns.IfTreeSent.>>>[MathExpr]({
+          case (x, y) => MathExpr.IfThen(x, y)
+        })
 
-  val notvp = TreePatterns.NotVP >>> [MathExpr](MathExpr.NegVP(_))
+  val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || nn || vb || jj || pp ||
