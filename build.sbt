@@ -139,6 +139,7 @@ lazy val client = project
   .settings(
     name := "ProvingGround-JS",
     scalaVersion := scalaV,
+    coverageEnabled := false,
     persistLauncher := true,
     persistLauncher in Test := false,
     // sourceMapsDirectories += coreJS.base / "..",
