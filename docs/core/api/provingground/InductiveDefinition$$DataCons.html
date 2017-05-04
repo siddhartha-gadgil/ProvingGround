@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -151,7 +151,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>], <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>], (<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>) ⇒ <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>], <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>], <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>], (<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>) ⇒ <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -177,7 +177,12 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.InductiveDefinition.DataCons"><span>DataCons</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.InductiveDefinition"><span>InductiveDefinition</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.InductiveDefinition.DataCons"><span>DataCons</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.InductiveDefinition"><span>InductiveDefinition</span></li><li class="in" name="provingground.HoTT.InducFuncLike"><span>InducFuncLike</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -274,6 +279,49 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(DataCons[H,C,D],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -325,22 +373,6 @@
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.HoTT.FuncLike#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(arg:provingground.HoTT.TypedTerm[W]):provingground.HoTT.TypedTerm[U]"></a><a id="apply(TypedTerm[H]):TypedTerm[C]"></a>
-      <span class="permalink">
-      <a href="../provingground/InductiveDefinition$$DataCons.html#apply(arg:provingground.HoTT.TypedTerm[W]):provingground.HoTT.TypedTerm[U]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="arg">arg: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>]</span>)</span><span class="result">: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="provingground.HoTT.FuncLike#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(arg:W):U"></a><a id="apply(H):C"></a>
       <span class="permalink">
@@ -462,6 +494,22 @@
       </span>
       
       
+    </li><li name="provingground.InductiveDefinition.DataCons#defnData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="defnData:Vector[provingground.HoTT.Term]"></a><a id="defnData:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#defnData:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">defnData</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a> → <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
     </li><li name="provingground.InductiveDefinition.DataCons#depcodom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="depcodom:H=&gt;provingground.HoTT.Typ[C]"></a><a id="depcodom:(H)⇒Typ[C]"></a>
       <span class="permalink">
@@ -512,6 +560,86 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((DataCons[H,C,D])⇒Boolean,⇒Any):DataCons[H,C,D]"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((DataCons[H,C,D])⇒Boolean):DataCons[H,C,D]"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):DataCons[H,C,D]"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):DataCons[H,C,D]"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -548,6 +676,29 @@
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -732,7 +883,7 @@ testing for types also done.
       </span>
       
       
-    </li><li name="scala.Function1#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.InducFuncLike#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
       <a href="../provingground/InductiveDefinition$$DataCons.html#toString():String" title="Permalink">
@@ -744,10 +895,10 @@ testing for types also done.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1 → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.InductiveDefinition.DataCons#typ" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typ:provingground.HoTT.Typ[provingground.HoTT.FuncLike[H,C]]"></a><a id="typ:Typ[FuncLike[H,C]]"></a>
       <span class="permalink">
@@ -780,6 +931,22 @@ testing for types also done.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Term#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="usesVar(t:provingground.HoTT.Term):Boolean"></a><a id="usesVar(Term):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#usesVar(t:provingground.HoTT.Term):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">usesVar</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -846,6 +1013,26 @@ testing for types also done.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(DataCons[H,C,D],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/InductiveDefinition$$DataCons.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -866,6 +1053,8 @@ testing for types also done.
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.InductiveDefinition">
               <h3>Inherited from <a href="InductiveDefinition.html" class="extype" name="provingground.InductiveDefinition">InductiveDefinition</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]</h3>
+            </div><div class="parent" name="provingground.HoTT.InducFuncLike">
+              <h3>Inherited from <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]</h3>
             </div><div class="parent" name="provingground.HoTT.FuncLike">
               <h3>Inherited from <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>]</h3>
             </div><div class="parent" name="scala.Function1">
@@ -879,7 +1068,23 @@ testing for types also done.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.InductiveDefinition.DataCons">DataCons</a>[<span class="extype" name="provingground.InductiveDefinition.DataCons.H">H</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.C">C</span>, <span class="extype" name="provingground.InductiveDefinition.DataCons.D">D</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

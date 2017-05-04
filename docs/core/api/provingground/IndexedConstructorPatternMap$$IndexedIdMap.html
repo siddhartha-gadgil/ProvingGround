@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -166,7 +166,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">IndexedIdMap</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>]</span>, <span name="F">F &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>]</span>, <span name="Index">Index &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="IF">IF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>]</span>, <span name="IDF">IDF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>]</span>, <span name="IDFT">IDFT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>]</span><span class="params">(<span name="family">family: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>, <span name="index">index: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$2">evidence$2: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>]</span>)</span><span class="result"> extends <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<a href="HeadTerm.html" class="extype" name="provingground.HeadTerm">HeadTerm</a>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">IndexedIdMap</span><span class="tparams">[<span name="C">C &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>, <span name="H">H &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>]</span>, <span name="Fb">Fb &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>]</span>, <span name="Index">Index &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="IF">IF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>]</span>, <span name="IDF">IDF &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>]</span>, <span name="IDFT">IDFT &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>]</span><span class="params">(<span name="family">family: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>, <span name="index">index: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$2">evidence$2: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>]</span>)</span><span class="result"> extends <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -175,7 +175,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<a href="HeadTerm.html" class="extype" name="provingground.HeadTerm">HeadTerm</a>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -204,6 +204,11 @@
                     <li class="in" name="provingground.IndexedConstructorPatternMap.IndexedIdMap"><span>IndexedIdMap</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.IndexedConstructorPatternMap"><span>IndexedConstructorPatternMap</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
               <span class="filtertype"></span>
               <ol>
                 <li class="hideall out"><span>Hide All</span></li>
@@ -222,9 +227,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(family:provingground.TypFamilyMap[H,F,C,Index,IF,IDF,IDFT],index:Index)(implicitevidence$2:provingground.Subst[Index]):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]"></a><a id="&lt;init&gt;:IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]"></a>
+      <a id="&lt;init&gt;(family:provingground.TypFamilyMap[H,Fb,C,Index,IF,IDF,IDFT],index:Index)(implicitevidence$2:provingground.Subst[Index]):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a><a id="&lt;init&gt;:IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#&lt;init&gt;(family:provingground.TypFamilyMap[H,F,C,Index,IF,IDF,IDFT],index:Index)(implicitevidence$2:provingground.Subst[Index]):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#&lt;init&gt;(family:provingground.TypFamilyMap[H,Fb,C,Index,IF,IDF,IDFT],index:Index)(implicitevidence$2:provingground.Subst[Index]):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -233,7 +238,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">IndexedIdMap</span><span class="params">(<span name="family">family: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>, <span name="index">index: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>]</span>)</span>
+        <span class="name">IndexedIdMap</span><span class="params">(<span name="family">family: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>, <span name="index">index: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>]</span>)</span>
       </span>
       
       
@@ -279,6 +284,49 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -296,9 +344,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(W:F):provingground.HoTT.Typ[H]"></a><a id="apply(F):Typ[H]"></a>
+      <a id="apply(W:Fb):provingground.HoTT.Typ[H]"></a><a id="apply(Fb):Typ[H]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#apply(W:F):provingground.HoTT.Typ[H]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#apply(W:Fb):provingground.HoTT.Typ[H]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -307,10 +355,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="W">W: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>]</span>
+        <span class="name">apply</span><span class="params">(<span name="W">W: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">returns HoTT type corresponding to the pattern given the (inductive) type W (to be the head).</p><div class="fullcomment"><div class="comment cmt"><p>returns HoTT type corresponding to the pattern given the (inductive) type W (to be the head).
+      <p class="shortcomment cmt">returns HoTT type corresponding to the pattern given the (inductive) type family W (to be the head).</p><div class="fullcomment"><div class="comment cmt"><p>returns HoTT type corresponding to the pattern given the (inductive) type family W (to be the head).
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a> → <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -350,6 +398,86 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT])⇒Boolean,⇒Any):IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT])⇒Boolean):IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -367,9 +495,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#family" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="family:provingground.TypFamilyMap[H,F,C,Index,IF,IDF,IDFT]"></a><a id="family:TypFamilyMap[H,F,C,Index,IF,IDF,IDFT]"></a>
+      <a id="family:provingground.TypFamilyMap[H,Fb,C,Index,IF,IDF,IDFT]"></a><a id="family:TypFamilyMap[H,Fb,C,Index,IF,IDF,IDFT]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#family:provingground.TypFamilyMap[H,F,C,Index,IF,IDF,IDFT]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#family:provingground.TypFamilyMap[H,Fb,C,Index,IF,IDF,IDFT]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -378,7 +506,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">family</span><span class="result">: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+        <span class="name">family</span><span class="result">: <a href="TypFamilyMap.html" class="extype" name="provingground.TypFamilyMap">TypFamilyMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a> → <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a></dd></dl></div>
@@ -402,6 +530,29 @@
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -437,9 +588,9 @@
       
       
     </li><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#inducDataTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="inducDataTyp(w:F,xs:IDFT)(cons:H):provingground.HoTT.Typ[C]"></a><a id="inducDataTyp(F,IDFT)(H):Typ[C]"></a>
+      <a id="inducDataTyp(w:Fb,xs:IDFT)(cons:H):provingground.HoTT.Typ[C]"></a><a id="inducDataTyp(Fb,IDFT)(H):Typ[C]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#inducDataTyp(w:F,xs:IDFT)(cons:H):provingground.HoTT.Typ[C]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#inducDataTyp(w:Fb,xs:IDFT)(cons:H):provingground.HoTT.Typ[C]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -448,7 +599,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inducDataTyp</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span></span>, <span name="xs">xs: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span></span>)</span><span class="params">(<span name="cons">cons: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>
+        <span class="name">inducDataTyp</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span></span>, <span name="xs">xs: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span></span>)</span><span class="params">(<span name="cons">cons: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>
       </span>
       
       <p class="shortcomment cmt">domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.</p><div class="fullcomment"><div class="comment cmt"><p>domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.
@@ -535,9 +686,9 @@ optionally returns simplification (if the term matches).</p></div><dl class="par
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#recDataTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="recDataTyp(w:F,x:provingground.HoTT.Typ[C]):provingground.HoTT.Typ[C]"></a><a id="recDataTyp(F,Typ[C]):Typ[C]"></a>
+      <a id="recDataTyp(w:Fb,x:provingground.HoTT.Typ[C]):provingground.HoTT.Typ[C]"></a><a id="recDataTyp(Fb,Typ[C]):Typ[C]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#recDataTyp(w:F,x:provingground.HoTT.Typ[C]):provingground.HoTT.Typ[C]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#recDataTyp(w:Fb,x:provingground.HoTT.Typ[C]):provingground.HoTT.Typ[C]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -546,7 +697,7 @@ optionally returns simplification (if the term matches).</p></div><dl class="par
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recDataTyp</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span></span>, <span name="x">x: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>
+        <span class="name">recDataTyp</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span></span>, <span name="x">x: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>]</span>
       </span>
       
       <p class="shortcomment cmt">domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.</p><div class="fullcomment"><div class="comment cmt"><p>domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
@@ -569,9 +720,9 @@ optionally returns simplification (if the term matches).</p></div><dl class="par
       <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
 optionally returns simplification (if the term matches), determined by the recursion data.</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined recursively, to be used recursively in definition.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a> → <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a></dd></dl></div>
     </li><li name="provingground.IndexedConstructorPatternMap.IndexedIdMap#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]"></a><a id="subs(Term,Term):IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]"></a>
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a><a id="subs(Term,Term):IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,F,Index,IF,IDF,IDFT]" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.IndexedConstructorPatternMap.IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -580,14 +731,14 @@ optionally returns simplification (if the term matches), determined by the recur
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a> → <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a></dd></dl></div>
     </li><li name="provingground.IndexedConstructorPatternMap#symbcons" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="symbcons(name:provingground.HoTT.AnySym,tp:F):ConstructorType"></a><a id="symbcons(AnySym,F):H"></a>
+      <a id="symbcons(name:provingground.HoTT.AnySym,tp:Fb):ConstructorType"></a><a id="symbcons(AnySym,Fb):H"></a>
       <span class="permalink">
-      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#symbcons(name:provingground.HoTT.AnySym,tp:F):ConstructorType" title="Permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#symbcons(name:provingground.HoTT.AnySym,tp:Fb):ConstructorType" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -596,7 +747,7 @@ optionally returns simplification (if the term matches), determined by the recur
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">symbcons</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span></span>)</span><span class="result">: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span></span>
+        <span class="name">symbcons</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span></span>)</span><span class="result">: <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a></dd></dl></div>
@@ -698,6 +849,26 @@ optionally returns simplification (if the term matches), determined by the recur
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(IndexedIdMap[C,H,Fb,Index,IF,IDF,IDFT],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/IndexedConstructorPatternMap$$IndexedIdMap.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -717,13 +888,29 @@ optionally returns simplification (if the term matches), determined by the recur
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.IndexedConstructorPatternMap">
-              <h3>Inherited from <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<a href="HeadTerm.html" class="extype" name="provingground.HeadTerm">HeadTerm</a>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.F">F</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</h3>
+              <h3>Inherited from <a href="IndexedConstructorPatternMap.html" class="extype" name="provingground.IndexedConstructorPatternMap">IndexedConstructorPatternMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap">IndexedIdMap</a>[<span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.C">C</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.H">H</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Fb">Fb</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.Index">Index</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IF">IF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDF">IDF</span>, <span class="extype" name="provingground.IndexedConstructorPatternMap.IndexedIdMap.IDFT">IDFT</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

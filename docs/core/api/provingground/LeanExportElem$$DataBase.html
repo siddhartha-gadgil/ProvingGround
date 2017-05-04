@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -120,7 +120,7 @@
                           Data
                         </a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="LeanExportElem$$DataBase$.html" title=""></a>
                         <a class="class" href="" title=""></a>
                         <a href="" title="">
                           DataBase
@@ -192,14 +192,16 @@
           <div id="content">
             <body class="class type">
       <div id="definition">
-        <div class="big-circle class">c</div>
+        <a href="LeanExportElem$$DataBase$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
         <p id="owner"><a href="index.html" class="extype" name="provingground">provingground</a>.<a href="LeanExportElem$.html" class="extype" name="provingground.LeanExportElem">LeanExportElem</a></p>
-        <h1>DataBase<span class="permalink">
+        <h1><a href="LeanExportElem$$DataBase$.html" title="See companion object">DataBase</a><span class="permalink">
       <a href="../provingground/LeanExportElem$$DataBase.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="LeanExportElem$$DataBase$.html" title="See companion object">object DataBase</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -246,6 +248,11 @@
                     <li class="in" name="provingground.LeanExportElem.DataBase"><span>DataBase</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
               <span class="filtertype"></span>
               <ol>
                 <li class="hideall out"><span>Hide All</span></li>
@@ -264,9 +271,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.LeanExportElem.DataBase#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(dat:Vector[provingground.LeanExportElem.Data],lines:Vector[String]):provingground.LeanExportElem.DataBase"></a><a id="&lt;init&gt;:DataBase"></a>
+      <a id="&lt;init&gt;(dat:Vector[provingground.LeanExportElem.Data],lines:Vector[String],deBruijn:Boolean):provingground.LeanExportElem.DataBase"></a><a id="&lt;init&gt;:DataBase"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#&lt;init&gt;(dat:Vector[provingground.LeanExportElem.Data],lines:Vector[String]):provingground.LeanExportElem.DataBase" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#&lt;init&gt;(dat:Vector[provingground.LeanExportElem.Data],lines:Vector[String],deBruijn:Boolean):provingground.LeanExportElem.DataBase" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -275,7 +282,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DataBase</span><span class="params">(<span name="dat">dat: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$Data.html" class="extype" name="provingground.LeanExportElem.Data">Data</a>]</span>, <span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span>
+        <span class="name">DataBase</span><span class="params">(<span name="dat">dat: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$Data.html" class="extype" name="provingground.LeanExportElem.Data">Data</a>]</span>, <span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="deBruijn">deBruijn: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span>
       </span>
       
       
@@ -321,6 +328,49 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(DataBase,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -375,6 +425,86 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((DataBase)⇒Boolean,⇒Any):DataBase"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((DataBase)⇒Boolean):DataBase"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):DataBase"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):DataBase"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -445,6 +575,45 @@
       </span>
       
       
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.LeanExportElem.DataBase#getAllAxioms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getAllAxioms:scala.collection.immutable.Vector[provingground.LeanExportElem.Axiom]"></a><a id="getAllAxioms:Vector[Axiom]"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#getAllAxioms:scala.collection.immutable.Vector[provingground.LeanExportElem.Axiom]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAllAxioms</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="LeanExportElem$$Axiom.html" class="extype" name="provingground.LeanExportElem.Axiom">Axiom</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.LeanExportElem.DataBase#getAllDefs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="getAllDefs:scala.collection.immutable.Vector[provingground.LeanExportElem.Definition]"></a><a id="getAllDefs:Vector[Definition]"></a>
       <span class="permalink">
@@ -510,9 +679,9 @@
       
       
     </li><li name="provingground.LeanExportElem.DataBase#getExpr" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getExpr(index:Long):Option[provingground.LeanExportElem.Expr]"></a><a id="getExpr(Long):Option[Expr]"></a>
+      <a id="getExpr(index:Long,vars:Vector[(provingground.LeanExportElem.Name,provingground.LeanExportElem.Expr)]):Option[provingground.LeanExportElem.Expr]"></a><a id="getExpr(Long,Vector[(Name,Expr)]):Option[Expr]"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#getExpr(index:Long):Option[provingground.LeanExportElem.Expr]" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#getExpr(index:Long,vars:Vector[(provingground.LeanExportElem.Name,provingground.LeanExportElem.Expr)]):Option[provingground.LeanExportElem.Expr]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -521,7 +690,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">getExpr</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeanExportElem$$Expr.html" class="extype" name="provingground.LeanExportElem.Expr">Expr</a>]</span>
+        <span class="name">getExpr</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Long">Long</span></span>, <span name="vars">vars: <span class="extype" name="scala.Vector">Vector</span>[(<a href="LeanExportElem$$Name.html" class="extype" name="provingground.LeanExportElem.Name">Name</a>, <a href="LeanExportElem$$Expr.html" class="extype" name="provingground.LeanExportElem.Expr">Expr</a>)] = <span class="symbol">Vector()</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeanExportElem$$Expr.html" class="extype" name="provingground.LeanExportElem.Expr">Expr</a>]</span>
       </span>
       
       
@@ -654,9 +823,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.LeanExportElem.DataBase#readAllInducDefns" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="readAllInducDefns(lines:Vector[String],accum:Vector[provingground.LeanExportElem.InducDefn]):Vector[provingground.LeanExportElem.InducDefn]"></a><a id="readAllInducDefns(Vector[String],Vector[InducDefn]):Vector[InducDefn]"></a>
+      <a id="readAllInducDefns(inp:Vector[String],accum:Vector[provingground.LeanExportElem.InducDefn]):Vector[provingground.LeanExportElem.InducDefn]"></a><a id="readAllInducDefns(Vector[String],Vector[InducDefn]):Vector[InducDefn]"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#readAllInducDefns(lines:Vector[String],accum:Vector[provingground.LeanExportElem.InducDefn]):Vector[provingground.LeanExportElem.InducDefn]" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#readAllInducDefns(inp:Vector[String],accum:Vector[provingground.LeanExportElem.InducDefn]):Vector[provingground.LeanExportElem.InducDefn]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -665,7 +834,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">readAllInducDefns</span><span class="params">(<span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="accum">accum: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>] = <span class="symbol">Vector()</span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>]</span>
+        <span class="name">readAllInducDefns</span><span class="params">(<span name="inp">inp: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="accum">accum: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>] = <span class="symbol">Vector()</span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>]</span>
       </span>
       
       
@@ -682,22 +851,6 @@
       </span>
       <span class="symbol">
         <span class="name">readAxiom</span><span class="params">(<span name="command">command: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeanExportElem$$Axiom.html" class="extype" name="provingground.LeanExportElem.Axiom">Axiom</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.LeanExportElem.DataBase#readAxioms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="readAxioms:scala.collection.immutable.Vector[provingground.LeanExportElem.Axiom]"></a><a id="readAxioms:Vector[Axiom]"></a>
-      <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#readAxioms:scala.collection.immutable.Vector[provingground.LeanExportElem.Axiom]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">lazy val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">readAxioms</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="LeanExportElem$$Axiom.html" class="extype" name="provingground.LeanExportElem.Axiom">Axiom</a>]</span>
       </span>
       
       
@@ -750,9 +903,9 @@
       
       
     </li><li name="provingground.LeanExportElem.DataBase#readInducDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="readInducDefn(lines:Vector[String]):provingground.LeanExportElem.InducDefn"></a><a id="readInducDefn(Vector[String]):InducDefn"></a>
+      <a id="readInducDefn(inp:Vector[String]):provingground.LeanExportElem.InducDefn"></a><a id="readInducDefn(Vector[String]):InducDefn"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#readInducDefn(lines:Vector[String]):provingground.LeanExportElem.InducDefn" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#readInducDefn(inp:Vector[String]):provingground.LeanExportElem.InducDefn" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -761,14 +914,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">readInducDefn</span><span class="params">(<span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a></span>
+        <span class="name">readInducDefn</span><span class="params">(<span name="inp">inp: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a></span>
       </span>
       
       
     </li><li name="provingground.LeanExportElem.DataBase#readInducDefnFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="readInducDefnFrom(lines:Vector[String]):provingground.LeanExportElem.InducDefn"></a><a id="readInducDefnFrom(Vector[String]):InducDefn"></a>
+      <a id="readInducDefnFrom(inp:Vector[String]):provingground.LeanExportElem.InducDefn"></a><a id="readInducDefnFrom(Vector[String]):InducDefn"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#readInducDefnFrom(lines:Vector[String]):provingground.LeanExportElem.InducDefn" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#readInducDefnFrom(inp:Vector[String]):provingground.LeanExportElem.InducDefn" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -777,7 +930,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">readInducDefnFrom</span><span class="params">(<span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a></span>
+        <span class="name">readInducDefnFrom</span><span class="params">(<span name="inp">inp: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a></span>
       </span>
       
       
@@ -798,9 +951,9 @@
       
       
     </li><li name="provingground.LeanExportElem.DataBase#readNextInducDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="readNextInducDefn(lines:Vector[String]):Option[provingground.LeanExportElem.InducDefn]"></a><a id="readNextInducDefn(Vector[String]):Option[InducDefn]"></a>
+      <a id="readNextInducDefn(inp:Vector[String]):Option[(provingground.LeanExportElem.InducDefn,Vector[String])]"></a><a id="readNextInducDefn(Vector[String]):Option[(InducDefn,Vector[String])]"></a>
       <span class="permalink">
-      <a href="../provingground/LeanExportElem$$DataBase.html#readNextInducDefn(lines:Vector[String]):Option[provingground.LeanExportElem.InducDefn]" title="Permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#readNextInducDefn(inp:Vector[String]):Option[(provingground.LeanExportElem.InducDefn,Vector[String])]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -809,7 +962,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">readNextInducDefn</span><span class="params">(<span name="lines">lines: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>]</span>
+        <span class="name">readNextInducDefn</span><span class="params">(<span name="inp">inp: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<a href="LeanExportElem$$InducDefn.html" class="extype" name="provingground.LeanExportElem.InducDefn">InducDefn</a>, <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>])]</span>
       </span>
       
       
@@ -911,6 +1064,26 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(DataBase,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/LeanExportElem$$DataBase.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -926,7 +1099,23 @@
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.LeanExportElem.DataBase">DataBase</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

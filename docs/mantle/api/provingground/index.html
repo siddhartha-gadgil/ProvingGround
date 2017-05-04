@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -155,12 +155,6 @@
                         </a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="object" href="Contexts$.html" title="Contexts, from which objects can be exported."></a>
-                        <a href="Contexts$.html" title="Contexts, from which objects can be exported.">
-                          Contexts
-                        </a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="class" href="DeducerBuffer.html" title=""></a>
                         <a href="DeducerBuffer.html" title="">
                           DeducerBuffer
@@ -259,18 +253,6 @@ maintains info on the state etc.">
                         </a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="object" href="Recursion$.html" title="Recursion and induction for inductive types."></a>
-                        <a href="Recursion$.html" title="Recursion and induction for inductive types.">
-                          Recursion
-                        </a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="class" href="RecursionIndexed.html" title="Recursion and induction for inductive type families."></a>
-                        <a href="RecursionIndexed.html" title="Recursion and induction for inductive type families.">
-                          RecursionIndexed
-                        </a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="object" href="ReflPickle$.html" title="Reflection based picking for case objects which are terms."></a>
                         <a href="ReflPickle$.html" title="Reflection based picking for case objects which are terms.">
                           ReflPickle
@@ -339,7 +321,12 @@ maintains info on the state etc.">
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"></div>
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -357,10 +344,22 @@ maintains info on the state etc.">
             <ol>
               
               <li class="alpha in"><span>Alphabetic</span></li>
-              
+              <li class="inherit out"><span>By Inheritance</span></li>
             </ol>
           </div>
-          
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground"><span>provingground</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
           <div id="visbl">
               <span class="filtertype">Visibility</span>
               <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
@@ -603,27 +602,6 @@ Example: Andrews-Curtis</p><p>The dynamics is given by:</p><p>Generating chains 
       </span>
       
       
-    </li><li name="provingground.RecursionIndexed" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="RecursionIndexedextendsAnyRef"></a><a id="RecursionIndexed:RecursionIndexed"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#RecursionIndexedextendsAnyRef" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Recursion and induction for inductive type families." href="RecursionIndexed.html">
-              <span class="name">RecursionIndexed</span>
-            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Recursion and induction for inductive type families.</p><div class="fullcomment"><div class="comment cmt"><p>Recursion and induction for inductive type families.
-A lot of the same code as recursion is used, but with a different import, so constructors etc are indexed.</p><p>Recursion and induction are given in two ways:
-* A context for each constructor, from which an identity is generated given an rhs: the kappaCtx maybe the better one for this.
-* A formal recursion/induction function.</p></div></div>
     </li><li name="provingground.ServerStart" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ServerStartextendsAnyRef"></a><a id="ServerStart:ServerStart"></a>
       <span class="permalink">
@@ -668,7 +646,71 @@ A lot of the same code as recursion is used, but with a different import, so con
         <div class="values members">
               <h3>Value Members</h3>
               <ol>
-                <li name="provingground.AgdaExpressions" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+                <li name="provingground#twirlHtmlMarshaller" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="twirlHtmlMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Html]"></a><a id="twirlHtmlMarshaller:ToEntityMarshaller[Html]"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#twirlHtmlMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Html]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">twirlHtmlMarshaller</span><span class="result">: <span class="extype" name="akka.http.scaladsl.marshalling.ToEntityMarshaller">ToEntityMarshaller</span>[<span class="extype" name="play.twirl.api.Html">Html</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground#twirlMarshaller" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="twirlMarshaller[A](contentType:akka.http.scaladsl.model.MediaType):akka.http.scaladsl.marshalling.ToEntityMarshaller[A]"></a><a id="twirlMarshaller[A](MediaType):ToEntityMarshaller[A]"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#twirlMarshaller[A](contentType:akka.http.scaladsl.model.MediaType):akka.http.scaladsl.marshalling.ToEntityMarshaller[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">twirlMarshaller</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="contentType">contentType: <span class="extype" name="akka.http.scaladsl.model.MediaType">MediaType</span></span>)</span><span class="result">: <span class="extype" name="akka.http.scaladsl.marshalling.ToEntityMarshaller">ToEntityMarshaller</span>[<span class="extype" name="provingground.twirlMarshaller.A">A</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground#twirlTxtMarshaller" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="twirlTxtMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Txt]"></a><a id="twirlTxtMarshaller:ToEntityMarshaller[Txt]"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#twirlTxtMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Txt]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">twirlTxtMarshaller</span><span class="result">: <span class="extype" name="akka.http.scaladsl.marshalling.ToEntityMarshaller">ToEntityMarshaller</span>[<span class="extype" name="play.twirl.api.Txt">Txt</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground#twirlXmlMarshaller" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="twirlXmlMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Xml]"></a><a id="twirlXmlMarshaller:ToEntityMarshaller[Xml]"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#twirlXmlMarshaller:akka.http.scaladsl.marshalling.ToEntityMarshaller[play.twirl.api.Xml]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">twirlXmlMarshaller</span><span class="result">: <span class="extype" name="akka.http.scaladsl.marshalling.ToEntityMarshaller">ToEntityMarshaller</span>[<span class="extype" name="play.twirl.api.Xml">Xml</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.AgdaExpressions" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AgdaExpressions"></a><a id="AgdaExpressions:AgdaExpressions"></a>
       <span class="permalink">
       <a href="../provingground/index.html#AgdaExpressions" title="Permalink">
@@ -707,26 +749,6 @@ At the next level, we note names and try to parse to terms.</p><p>There is also 
       </span>
       
       
-    </li><li name="provingground.Contexts" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Contexts"></a><a id="Contexts:Contexts"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#Contexts" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="Contexts, from which objects can be exported." href="Contexts$.html">
-              <span class="name">Contexts</span>
-            </a>
-      </span>
-      
-      <p class="shortcomment cmt">Contexts, from which objects can be exported.</p><div class="fullcomment"><div class="comment cmt"><p>Contexts, from which objects can be exported.
-Most fundamental case is lambda's
-</p></div></div>
     </li><li name="provingground.DeducerSource" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DeducerSource"></a><a id="DeducerSource:DeducerSource"></a>
       <span class="permalink">
@@ -927,26 +949,6 @@ Most fundamental case is lambda's
       </span>
       
       <p class="shortcomment cmt"></p>
-    </li><li name="provingground.Recursion" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Recursion"></a><a id="Recursion:Recursion"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#Recursion" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="Recursion and induction for inductive types." href="Recursion$.html">
-              <span class="name">Recursion</span>
-            </a>
-      </span>
-      
-      <p class="shortcomment cmt">Recursion and induction for inductive types.</p><div class="fullcomment"><div class="comment cmt"><p>Recursion and induction for inductive types.</p><p>Recursion and induction are given in two ways:
-* A context for each constructor, from which an identity is generated given an rhs: the kappaCtx maybe the better one for this.
-* A formal recursion/induction function.</p></div></div>
     </li><li name="provingground.ReflPickle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ReflPickle"></a><a id="ReflPickle:ReflPickle"></a>
       <span class="permalink">
@@ -1065,7 +1067,11 @@ Most fundamental case is lambda's
         </div>
 
         <div id="inheritedMembers">
-        
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
         
         </div>
 

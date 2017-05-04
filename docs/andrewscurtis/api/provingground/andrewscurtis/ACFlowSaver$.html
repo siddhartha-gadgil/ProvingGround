@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -294,88 +294,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#FDM" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FDM(name:String):Option[provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]]"></a><a id="FDM(String):Option[FiniteDistribution[AtomicMove]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#FDM(name:String):Option[provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">FDM</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Weights on atomic moves for the actor.</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#FDV" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FDV(name:String,loops:Int):provingground.FiniteDistribution[provingground.andrewscurtis.Moves]"></a><a id="FDV(String,Int):FiniteDistribution[Moves]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#FDV(name:String,loops:Int):provingground.FiniteDistribution[provingground.andrewscurtis.Moves]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">FDV</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">returns finite distribution on Moves given stage and number of loops.</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#actorData" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="actorData:com.mongodb.casbah.MongoCollection"></a><a id="actorData:MongoCollection"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#actorData:com.mongodb.casbah.MongoCollection" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">actorData</span><span class="result">: <span class="extype" name="com.mongodb.casbah.MongoCollection">MongoCollection</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Database for actors:
-on creation additional parameter data can be added; only number of loops is updated.</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#actorLoops" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="actorLoops(name:String):Option[Int]"></a><a id="actorLoops(String):Option[Int]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#actorLoops(name:String):Option[Int]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">actorLoops</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">(optional) number of loops of an actor in database
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#actorNames" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="actorNames:scala.collection.immutable.Vector[String]"></a><a id="actorNames:Vector[String]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#actorNames:scala.collection.immutable.Vector[String]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">actorNames</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Names of actors in database.</p>
     </li><li name="provingground.andrewscurtis.ACFlowSaver#actorRef" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="actorRef(dir:String,rank:Int):akka.actor.ActorRef"></a><a id="actorRef(String,Int):ActorRef"></a>
       <span class="permalink">
@@ -394,40 +312,6 @@ on creation additional parameter data can be added; only number of loops is upda
       <p class="shortcomment cmt">ActorRef for messages to start a flow, with file saving.</p><div class="fullcomment"><div class="comment cmt"><p>ActorRef for messages to start a flow, with file saving.
 Obtained by materializing source with file saver sink.
 </p></div></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#addElem" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="addElem(elem:provingground.andrewscurtis.ACElem):com.mongodb.casbah.TypeImports.WriteResult"></a><a id="addElem(ACElem):com.mongodb.casbah.TypeImports.WriteResult"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#addElem(elem:provingground.andrewscurtis.ACElem):com.mongodb.casbah.TypeImports.WriteResult" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">addElem</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.andrewscurtis.ACElem">ACElem</span></span>)</span><span class="result">: <span class="extype" name="com.mongodb.casbah.TypeImports.WriteResult">com.mongodb.casbah.TypeImports.WriteResult</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">add element to database
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#addThm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="addThm(thm:provingground.andrewscurtis.ACThm):com.mongodb.casbah.TypeImports.WriteResult"></a><a id="addThm(ACThm):com.mongodb.casbah.TypeImports.WriteResult"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#addThm(thm:provingground.andrewscurtis.ACThm):com.mongodb.casbah.TypeImports.WriteResult" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">addThm</span><span class="params">(<span name="thm">thm: <span class="extype" name="provingground.andrewscurtis.ACThm">ACThm</span></span>)</span><span class="result">: <span class="extype" name="com.mongodb.casbah.TypeImports.WriteResult">com.mongodb.casbah.TypeImports.WriteResult</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">add presentation (theorem) to database
-</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -466,57 +350,6 @@ Obtained by materializing source with file saver sink.
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#currentFDV" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="currentFDV(name:String):Option[provingground.FiniteDistribution[provingground.andrewscurtis.Moves]]"></a><a id="currentFDV(String):Option[FiniteDistribution[Moves]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#currentFDV(name:String):Option[provingground.FiniteDistribution[provingground.andrewscurtis.Moves]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">currentFDV</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">(optional) Finite distribution on moves given actor name, for the latest stage of the actor
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#elems" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="elems:com.mongodb.casbah.MongoCollection"></a><a id="elems:MongoCollection"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#elems:com.mongodb.casbah.MongoCollection" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">elems</span><span class="result">: <span class="extype" name="com.mongodb.casbah.MongoCollection">MongoCollection</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Database for elements
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#elemsCashbahAdd" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="elemsCashbahAdd:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]"></a><a id="elemsCashbahAdd:Sink[Snap,NotUsed]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#elemsCashbahAdd:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">elemsCashbahAdd</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="akka.NotUsed">NotUsed</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Sink for adding all elements from snapshot
-</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -549,39 +382,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#fdMdb" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fdMdb:com.mongodb.casbah.MongoCollection"></a><a id="fdMdb:MongoCollection"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#fdMdb:com.mongodb.casbah.MongoCollection" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fdMdb</span><span class="result">: <span class="extype" name="com.mongodb.casbah.MongoCollection">MongoCollection</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Data base for weights on atomic moves.</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#fdmCasbahUpdate" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fdmCasbahUpdate:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]"></a><a id="fdmCasbahUpdate:Sink[Snap,NotUsed]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#fdmCasbahUpdate:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fdmCasbahUpdate</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="akka.NotUsed">NotUsed</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">sink for updating weights of atomic moves in databse from snapshot
-</p>
     </li><li name="provingground.andrewscurtis.ACFlowSaver#fileSaver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="fileSaver(dir:String,rank:Int):akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,scala.concurrent.Future[akka.Done]]"></a><a id="fileSaver(String,Int):Sink[Snap,Future[Done]]"></a>
       <span class="permalink">
@@ -636,54 +436,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#getCurrentElems" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getCurrentElems(name:String):scala.collection.immutable.Vector[provingground.andrewscurtis.ACElem]"></a><a id="getCurrentElems(String):Vector[ACElem]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#getCurrentElems(name:String):scala.collection.immutable.Vector[provingground.andrewscurtis.ACElem]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getCurrentElems</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<span class="extype" name="provingground.andrewscurtis.ACElem">ACElem</span>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#getElems" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getElems(name:String,loops:Int):scala.collection.immutable.Vector[provingground.andrewscurtis.ACElem]"></a><a id="getElems(String,Int):Vector[ACElem]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#getElems(name:String,loops:Int):scala.collection.immutable.Vector[provingground.andrewscurtis.ACElem]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getElems</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<span class="extype" name="provingground.andrewscurtis.ACElem">ACElem</span>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#getState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getState(name:String):Option[(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves])]"></a><a id="getState(String):Option[(FiniteDistribution[AtomicMove],FiniteDistribution[Moves])]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#getState(name:String):Option[(provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove],provingground.FiniteDistribution[provingground.andrewscurtis.Moves])]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getState</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>], <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.Moves">Moves</span>])]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
@@ -716,40 +468,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#loopsCasbahUpdate" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="loopsCasbahUpdate:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]"></a><a id="loopsCasbahUpdate:Sink[Snap,NotUsed]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#loopsCasbahUpdate:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">loopsCasbahUpdate</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="akka.NotUsed">NotUsed</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Sink for updating loops in database from snapshot
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#mongoSaveRef" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="mongoSaveRef[M](interface:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,M]):akka.actor.ActorRef"></a><a id="mongoSaveRef[M](Sink[Snap,M]):ActorRef"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#mongoSaveRef[M](interface:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,M]):akka.actor.ActorRef" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">mongoSaveRef</span><span class="tparams">[<span name="M">M</span>]</span><span class="params">(<span name="interface">interface: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="provingground.andrewscurtis.ACFlowSaver.mongoSaveRef.M">M</span>] = <span class="symbol">Sink.foreach((x: Snap) =&gt; {})</span></span>)</span><span class="result">: <span class="extype" name="akka.actor.ActorRef">ActorRef</span></span>
-      </span>
-      
-      <p class="shortcomment cmt"> ActorRef from materialized flow saving various things in Casbah mongo database
-</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -798,23 +516,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#presWeights" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="presWeights(name:String,pres:provingground.andrewscurtis.FreeGroups.Presentation):Iterator[Double]"></a><a id="presWeights(String,Presentation):Iterator[Double]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#presWeights(name:String,pres:provingground.andrewscurtis.FreeGroups.Presentation):Iterator[Double]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">presWeights</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="pres">pres: <span class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Iterator">Iterator</span>[<span class="extype" name="scala.Double">Double</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">returns iterator of weights of a given presentation for a given actor at all stages, ordered by loops/
-</p>
     </li><li name="provingground.andrewscurtis.ACFlowSaver#snapFile" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="snapFile(batch:Int):ammonite.ops.Path"></a><a id="snapFile(Int):Path"></a>
       <span class="permalink">
@@ -943,38 +644,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#thmsCashbahAdd" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="thmsCashbahAdd:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]"></a><a id="thmsCashbahAdd:Sink[Snap,NotUsed]"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#thmsCashbahAdd:akka.stream.scaladsl.Sink[provingground.andrewscurtis.ACElem.Snap,akka.NotUsed]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">thmsCashbahAdd</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.Sink">Sink</span>[<span class="extype" name="provingground.andrewscurtis.ACElem.Snap">Snap</span>, <span class="extype" name="akka.NotUsed">NotUsed</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">sink for adding all theorems from snapshot.</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#thmsdb" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="thmsdb:com.mongodb.casbah.MongoCollection"></a><a id="thmsdb:MongoCollection"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#thmsdb:com.mongodb.casbah.MongoCollection" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">thmsdb</span><span class="result">: <span class="extype" name="com.mongodb.casbah.MongoCollection">MongoCollection</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Database for presentations (theorems).</p>
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
@@ -991,40 +660,6 @@ Obtained by materializing source with file saver sink.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#updateFDM" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="updateFDM(name:String,fdM:provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):com.mongodb.casbah.TypeImports.WriteResult"></a><a id="updateFDM(String,FiniteDistribution[AtomicMove]):com.mongodb.casbah.TypeImports.WriteResult"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#updateFDM(name:String,fdM:provingground.FiniteDistribution[provingground.andrewscurtis.AtomicMove]):com.mongodb.casbah.TypeImports.WriteResult" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">updateFDM</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="fdM">fdM: <span class="extype" name="provingground.FiniteDistribution">FiniteDistribution</span>[<span class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</span>]</span>)</span><span class="result">: <span class="extype" name="com.mongodb.casbah.TypeImports.WriteResult">com.mongodb.casbah.TypeImports.WriteResult</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Update the weights of atomic moves given name and distribution
-</p>
-    </li><li name="provingground.andrewscurtis.ACFlowSaver#updateLoops" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="updateLoops(name:String,loops:Int):com.mongodb.casbah.TypeImports.WriteResult"></a><a id="updateLoops(String,Int):com.mongodb.casbah.TypeImports.WriteResult"></a>
-      <span class="permalink">
-      <a href="../../provingground/andrewscurtis/ACFlowSaver$.html#updateLoops(name:String,loops:Int):com.mongodb.casbah.TypeImports.WriteResult" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">updateLoops</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="loops">loops: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="com.mongodb.casbah.TypeImports.WriteResult">com.mongodb.casbah.TypeImports.WriteResult</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">update number of loops from snapshot
-</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">

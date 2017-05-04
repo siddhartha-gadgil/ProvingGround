@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -314,6 +314,11 @@ namely:
                     <li class="in" name="provingground.andrewscurtis.Conj"><span>Conj</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.andrewscurtis.AtomicMove"><span>AtomicMove</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.andrewscurtis.Moves.toMoves" data-hidden="false"><span>by toMoves</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
               <span class="filtertype"></span>
               <ol>
                 <li class="hideall out"><span>Hide All</span></li>
@@ -389,6 +394,49 @@ namely:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Conj,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -437,6 +485,26 @@ namely:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#actOnTriv" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="actOnTriv(rank:Int):Option[provingground.andrewscurtis.FreeGroups.Presentation]"></a><a id="actOnTriv(Int):Option[Presentation]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#actOnTriv(rank:Int):Option[provingground.andrewscurtis.FreeGroups.Presentation]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">actOnTriv</span><span class="params">(<span name="rank">rank: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
     </li><li name="scala.Function1#andThen" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a><a id="andThen[A]((Option[Moves])⇒A):(Moves)⇒A"></a>
       <span class="permalink">
@@ -593,6 +661,86 @@ namely:
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Conj)⇒Boolean,⇒Any):Conj"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Conj)⇒Boolean):Conj"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Conj"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Conj"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -631,6 +779,29 @@ namely:
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -647,6 +818,26 @@ namely:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#idLast" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="idLast:provingground.andrewscurtis.Moves"></a><a id="idLast:Moves"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#idLast:provingground.andrewscurtis.Moves" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">idLast</span><span class="result">: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -695,6 +886,46 @@ namely:
       </span>
       
       
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#length" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="length:Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#length:Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">length</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#moves" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="moves:List[provingground.andrewscurtis.AtomicMove]"></a><a id="moves:List[AtomicMove]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#moves:List[provingground.andrewscurtis.AtomicMove]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">moves</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
     </li><li name="provingground.andrewscurtis.AtomicMove#movesDF" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="movesDF:provingground.DiffbleFunction[provingground.FiniteDistribution[provingground.andrewscurtis.Moves],provingground.FiniteDistribution[provingground.andrewscurtis.Moves]]"></a><a id="movesDF:DiffbleFunction[FiniteDistribution[Moves],FiniteDistribution[Moves]]"></a>
       <span class="permalink">
@@ -759,6 +990,26 @@ namely:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#reduce" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reduce:provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]"></a><a id="reduce:(Presentation)⇒Option[Presentation]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#reduce:provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">reduce</span><span class="result">: (<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -905,11 +1156,134 @@ namely:
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Conj,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
 
-        
+        <div class="values members">
+              <h3>Shadowed Implicit Value Members</h3>
+              <ol><li name="provingground.andrewscurtis.Moves.toMoves#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(that:provingground.andrewscurtis.AtomicMove):provingground.andrewscurtis.Moves"></a><a id="apply(AtomicMove):Moves"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#apply(that:provingground.andrewscurtis.AtomicMove):provingground.andrewscurtis.Moves" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">apply</span><span class="params">(<span name="that">that: <a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a></span>)</span><span class="result">: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(conj: Moves).apply(that)</pre></div></dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(that:provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]):provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]"></a><a id="apply((Presentation)⇒Option[Presentation]):(Presentation)⇒Option[Presentation]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#apply(that:provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]):provingground.andrewscurtis.FreeGroups.Presentation=&gt;Option[provingground.andrewscurtis.FreeGroups.Presentation]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">apply</span><span class="params">(<span name="that">that: (<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>]</span>)</span><span class="result">: (<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(conj: Moves).apply(that)</pre></div></dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(that:provingground.andrewscurtis.Moves):provingground.andrewscurtis.Moves"></a><a id="apply(Moves):Moves"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#apply(that:provingground.andrewscurtis.Moves):provingground.andrewscurtis.Moves" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">apply</span><span class="params">(<span name="that">that: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>)</span><span class="result">: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(conj: Moves).apply(that)</pre></div></dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(pres:provingground.andrewscurtis.FreeGroups.Presentation):Option[provingground.andrewscurtis.FreeGroups.Presentation]"></a><a id="apply(Presentation):Option[Presentation]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#apply(pres:provingground.andrewscurtis.FreeGroups.Presentation):Option[provingground.andrewscurtis.FreeGroups.Presentation]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">apply</span><span class="params">(<span name="pres">pres: <a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="FreeGroups$$Presentation.html" class="extype" name="provingground.andrewscurtis.FreeGroups.Presentation">Presentation</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(conj: Moves).apply(pres)</pre></div></dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.Moves.toMoves#compose" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compose(that:provingground.andrewscurtis.Moves):provingground.andrewscurtis.Moves"></a><a id="compose(Moves):Moves"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/Conj.html#compose(that:provingground.andrewscurtis.Moves):provingground.andrewscurtis.Moves" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">compose</span><span class="params">(<span name="that">that: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>)</span><span class="result">: <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to
+            <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a> performed by method toMoves in <a href="Moves$.html" class="extype" name="provingground.andrewscurtis.Moves">provingground.andrewscurtis.Moves</a>.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(conj: Moves).compose(that)</pre></div></dd><dt>Definition Classes</dt><dd><a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a></dd></dl></div>
+    </li></ol>
+            </div>
 
         
         </div>
@@ -932,7 +1306,27 @@ namely:
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="provingground.andrewscurtis.Moves.toMoves">
+              <h3>Inherited by implicit conversion toMoves from
+                <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to <a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.andrewscurtis.Conj">Conj</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

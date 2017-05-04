@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -395,22 +395,6 @@
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.FuncLike#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(arg:provingground.HoTT.TypedTerm[W]):provingground.HoTT.TypedTerm[U]"></a><a id="apply(TypedTerm[LocalTerm]):TypedTerm[Func[LocalTerm,LocalTerm]]"></a>
-      <span class="permalink">
-      <a href="../provingground/SymbolicCRig$prod$.html#apply(arg:provingground.HoTT.TypedTerm[W]):provingground.HoTT.TypedTerm[U]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="arg">arg: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>]</span>)</span><span class="result">: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>, <a href="SymbolicCRig.html#LocalTerm=provingground.RepTerm[A]" class="extmbr" name="provingground.SymbolicCRig.LocalTerm">LocalTerm</a>]]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
-    </li><li name="provingground.HoTT.FuncLike#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(arg:W):U"></a><a id="apply(LocalTerm):Func[LocalTerm,LocalTerm]"></a>
       <span class="permalink">
       <a href="../provingground/SymbolicCRig$prod$.html#apply(arg:W):U" title="Permalink">
@@ -669,9 +653,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.SymbolicCRig.prod#newobj" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="newobj:SymbolicCRig.this.prod.type"></a><a id="newobj:prod"></a>
+      <a id="newobj:Nothing"></a>
       <span class="permalink">
-      <a href="../provingground/SymbolicCRig$prod$.html#newobj:SymbolicCRig.this.prod.type" title="Permalink">
+      <a href="../provingground/SymbolicCRig$prod$.html#newobj:Nothing" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -680,7 +664,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">newobj</span><span class="result">: <a href="" class="extype" name="provingground.SymbolicCRig.prod">prod</a></span>
+        <span class="name">newobj</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.SymbolicCRig.prod">prod</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
@@ -817,6 +801,22 @@ testing for types also done.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Term#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="usesVar(t:provingground.HoTT.Term):Boolean"></a><a id="usesVar(Term):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/SymbolicCRig$prod$.html#usesVar(t:provingground.HoTT.Term):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">usesVar</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
