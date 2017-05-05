@@ -102,12 +102,12 @@ object SimpleAcEvolution {
     lazy val presFn = genPresentationMoveFn(rank)
 
     lazy val imageFeedbackV: FiniteDistribution[V] =
-      presFn.grad(evolved.fdV)(presentationFeedback)
+      presFn.adjDer(evolved.fdV)(presentationFeedback)
 
-    lazy val imageFeedback = projectV.grad(evolved.pair)(imageFeedbackV)
+    lazy val imageFeedback = projectV.adjDer(evolved.pair)(imageFeedbackV)
 
     lazy val (feedbackM, feedbackV) =
-      evolution.grad(current.pair)(imageFeedback)
+      evolution.adjDer(current.pair)(imageFeedback)
 
     lazy val (nextM, nextV) =
       (current.fdM ++ (feedbackM * scale), current.fdV ++ (feedbackV * scale))

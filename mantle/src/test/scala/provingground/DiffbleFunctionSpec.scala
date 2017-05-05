@@ -23,13 +23,13 @@ class DiffbleFunctionSpec extends FlatSpec {
     assert(square.func(3) == 9)
   }
 
-  it should "apply gradient" in {
+  it should "apply adjDerient" in {
     val fn = DiffbleFunction((x: Double) => x * x)((x: Double) =>
       (y: Double) => x * y)
 
-    assert(square.grad(2)(3) == 6)
+    assert(square.adjDer(2)(3) == 6)
 
-    assert(double.grad(3)(2) == 4)
+    assert(double.adjDer(3)(2) == 4)
   }
 
   it should "have expected derivatives and values for inclusion" in {
@@ -38,10 +38,10 @@ class DiffbleFunctionSpec extends FlatSpec {
     val fn2 = Incl2[Double, Double]
 
     assert(fn1.func(1.5) == (1.5, 0))
-    assert(fn1.grad(1.5)(2.5, 3.5) == 2.5)
+    assert(fn1.adjDer(1.5)(2.5, 3.5) == 2.5)
 
     assert(fn2.func(1.5) == (0, 1.5))
-    assert(fn2.grad(1.5)(2.5, 3.5) == 3.5)
+    assert(fn2.adjDer(1.5)(2.5, 3.5) == 3.5)
   }
 
   it should "have expected derivatives and values for projection" in {
@@ -50,9 +50,9 @@ class DiffbleFunctionSpec extends FlatSpec {
     val fn2 = Proj2[Double, Double]
 
     assert(fn1.func((1.5, 2.5)) == 1.5)
-    assert(fn1.grad(1.5, 2.5)(3) == (3, 0))
+    assert(fn1.adjDer(1.5, 2.5)(3) == (3, 0))
 
     assert(fn2.func((1.5, 2.5)) == 2.5)
-    assert(fn2.grad(1.5, 2.5)(3) == (0, 3))
+    assert(fn2.adjDer(1.5, 2.5)(3) == (0, 3))
   }
 }

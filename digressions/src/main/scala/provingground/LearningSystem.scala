@@ -130,7 +130,7 @@ object LearningSystem {
     new LearningSystem[I, P, O] {
       lazy val func = (a: (I, P)) => f.func(a)
 
-      lazy val grad = (a: (I, P)) => f.grad(a)
+      lazy val adjDer = (a: (I, P)) => f.grad(a)
     }
 
   def learn[I, P, O](learner: LearningSystem[I, P, O],

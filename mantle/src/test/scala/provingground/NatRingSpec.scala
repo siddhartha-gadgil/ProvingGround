@@ -4,7 +4,7 @@ import HoTT._
 
 import SymbolicCRing._
 
-import SymbolicCRig._
+import SymbolicCRing._
 
 import spire.math._
 

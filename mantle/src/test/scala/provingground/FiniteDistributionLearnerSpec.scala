@@ -57,15 +57,15 @@ class FiniteDistributionLearnerSpec extends FlatSpec {
     assert(fn.func(unif(1.0, 4.0, -1.0, -3.0))(-1.0) == 0)
   }
 
-  it should "have expected gradient" in {
+  it should "have expected adjDerient" in {
     val p = FiniteDistribution.unif(1.0, 3.0, 4.0)
 
     val w = FiniteDistribution(weights(2.0 -> 0.5, 6.0 -> 0.25, 10.0 -> 0.25))
 
-    assert(double.grad(p)(w)(1.0) == 0.5)
+    assert(double.adjDer(p)(w)(1.0) == 0.5)
 
-    assert(double.grad(p)(w)(3.0) == 0.25)
+    assert(double.adjDer(p)(w)(3.0) == 0.25)
 
-//    assert(fn.grad(p)(w) == FiniteDistribution.fromWts(1 -> 0.5, 3 -> 0.25))
+//    assert(fn.adjDer(p)(w) == FiniteDistribution.fromWts(1 -> 0.5, 3 -> 0.25))
   }
 }

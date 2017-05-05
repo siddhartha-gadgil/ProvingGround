@@ -4,6 +4,10 @@ package provingground
 
 import Collections._
 
+import spire.algebra._
+// import spire.math._
+import spire.implicits._
+
 //import LinearStructure._
 
 //import scala.collection.parallel.immutable.ParVector
@@ -16,6 +20,8 @@ import Collections._
   * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
   */
 object FiniteDistribution {
+  val random = new scala.util.Random
+
   // choose default implementation
 //  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
   def apply[T](pmf: Traversable[Weighted[T]]): FiniteDistribution[T] =
@@ -55,6 +61,22 @@ object FiniteDistribution {
     val dists = support map ((s: S) => f(s))
     (dists :\ FiniteDistribution.empty[T])(_ ++ _)
   }
+
+  implicit def vs[T] : InnerProductSpace[FiniteDistribution[T], Double] =
+      new InnerProductSpace[FiniteDistribution[T], Double]{
+        def negate(x: FiniteDistribution[T]) =
+          FiniteDistribution(x.pmf.map {case Weighted(x, w) => Weighted(x, -w) })
+
+        val  zero = empty[T]
+
+        def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
+
+        def timesl(r: Double, x: FiniteDistribution[T]) = x * r
+
+        implicit def scalar:Field[Double] = Field[Double]
+
+        def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
+      }
 
   implicit def FiniteDistVec[T] =
     LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty,
@@ -180,6 +202,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def memo: Map[T, Double] = flatten.preMemo
 
   def total = (pmf map { case Weighted(x, p) => p }).sum
+
+  import FiniteDistribution.random
 
   /**
     * next instance of a random variable with the given distribution

@@ -12,8 +12,8 @@ import spire.implicits._
   * @author gadgil
   *
   * Symbolic algebra for numeric types, with Sigma's and Pi's
-  * More generally start with a spire CRig
-  * Requires a commutative rig, but Pi's and Sigma's are written to allow rings and fields
+  * More generally start with a spire CRing
+  * Requires a commutative ring, but Pi's and Sigma's are written to allow rings and fields
   *
   * Terms of type RepTerm[A] are created, i.e., terms with the refinement that they correspond to the scala type A.
   *
@@ -31,14 +31,18 @@ import spire.implicits._
   * * c x
   * * c Pi{(x -> k)}; no k is zero, there are either at least two terms or there is one term with k not 1.
   *
-  * Using type Rig, not CRig as CRing does not extend CRig
+  * Using type Ring, not CRing as CRing does not extend CRing
   */
-class SymbolicCRig[A: Rig] { self =>
-  val rig = implicitly[Rig[A]]
+class SymbolicCRing[A: Ring] { self =>
+  val ring = implicitly[Ring[A]]
 
-  import rig.{sumn, zero, one}
+  import ring.{zero, one}
 
-  val two = rig.plus(rig.one, rig.one)
+  val two = ring.plus(ring.one, ring.one)
+
+  val minusone = Literal(ring.negate(one))
+
+  def negate(x: LocalTerm) = prod(minusone)(x)
 
   type LocalTerm = RepTerm[A]
 
@@ -51,7 +55,7 @@ class SymbolicCRig[A: Rig] { self =>
   }
 
   object Literal extends ScalaSym[LocalTerm, A](LocalTyp) {
-    def fromInt(n: Int) = Literal(sumn(one, n))
+    def fromInt(n: Int) = Literal(ring.fromInt(n))
   }
 
   object Comb {
@@ -145,9 +149,9 @@ class SymbolicCRig[A: Rig] { self =>
       case (LitProd(a, u), LitProd(b, v)) if u == v =>
         Some(LitProd(a + b, u))
       case (LitProd(a, u), v) if u == v =>
-        Some(LitProd(rig.plus(a, rig.one), u))
+        Some(LitProd(ring.plus(a, ring.one), u))
       case (v, LitProd(a, u)) if u == v =>
-        Some(LitProd(rig.plus(a, rig.one), u))
+        Some(LitProd(ring.plus(a, ring.one), u))
       case (u, v) if u == v =>
         Some(LitProd(two, u))
       case _ => None
@@ -493,32 +497,34 @@ class SymbolicCRig[A: Rig] { self =>
     }
   }
 
-  implicit val crigStructure: CRig[LocalTerm] = new CRig[LocalTerm] {
-    val zero = Literal(rig.zero)
+  implicit val cringStructure: CRing[LocalTerm] = new CRing[LocalTerm] {
+    val zero = Literal(ring.zero)
 
-    val one = Literal(rig.one)
+    val one = Literal(ring.one)
 
     def plus(x: LocalTerm, y: LocalTerm) = self.sum(x)(y)
 
     def times(x: LocalTerm, y: LocalTerm) = self.prod(x)(y)
+
+    def negate(x: LocalTerm) = prod(minusone)(x)
   }
 }
 
-object SymbolicCRig extends LiteralParser {
+object SymbolicCRing extends LiteralParser {
 
   def parse(typ: Typ[Term])(str: String): Option[Term] = typ match {
-    case FuncTyp(a: SymbolicCRig[u], FuncTyp(b, c)) if a == b && b == c =>
+    case FuncTyp(a: SymbolicCRing[u], FuncTyp(b, c)) if a == b && b == c =>
       str match {
         case x if x == a.sum.toString()  => Some(a.sum)
         case x if x == a.prod.toString() => Some(a.prod)
         case _                           => None
       }
-    case tp: SymbolicCRig[a] => Try(tp.Literal.fromInt(str.toInt)).toOption
+    case tp: SymbolicCRing[a] => Try(tp.Literal.fromInt(str.toInt)).toOption
     case _                   => None
   }
 
   def literal(term: Term) = term.typ match {
-    case tp: SymbolicCRig[a] =>
+    case tp: SymbolicCRing[a] =>
       term match {
         case tp.Literal(a) => Some(a.toString)
         case _             => None

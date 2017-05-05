@@ -61,16 +61,19 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
 
     // Members declared in spire.algebra.EuclideanRing
     def gcd(a: SymbolicField.this.LocalTerm,
-            b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
+            b: SymbolicField.this.LocalTerm)(implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm]): SymbolicField.this.LocalTerm =
       Literal(field.one)
 
-    def mod(a: SymbolicField.this.LocalTerm,
-            b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
-      Literal(field.zero)
+    def lcm(a: SymbolicField.this.LocalTerm,b: SymbolicField.this.LocalTerm
+    )(implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm]): SymbolicField.this.LocalTerm = ???
 
-    def quot(a: SymbolicField.this.LocalTerm,
-             b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
-      div(a, b)
+    // def mod(a: SymbolicField.this.LocalTerm,
+    //         b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
+    //   Literal(field.zero)
+    //
+    // def quot(a: SymbolicField.this.LocalTerm,
+    //          b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =
+    //   div(a, b)
 
     // Members declared in spire.algebra.MultiplicativeGroup
     def div(x: SymbolicField.this.LocalTerm,

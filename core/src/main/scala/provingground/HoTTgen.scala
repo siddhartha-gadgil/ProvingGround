@@ -203,7 +203,7 @@ object HoTTgen {
 
   val typFlow = (d: FiniteDistribution[Term]) => {
     val shift = mapTyp.func(d) rawfeedback (getTyps(d).getsum(_))
-    mapTyp.grad(d)(shift)
+    mapTyp.adjDer(d)(shift)
   }
 
   def dynTypFlow(dyn: DiffbleFunction[FiniteDistribution[Term],

@@ -6,7 +6,7 @@ import scala.util._
 import scala.language.implicitConversions
 
 object Collections {
-  lazy val random = new Random
+  // lazy val random = new Random
 
   implicit val ZeroReal: Double = 0
 

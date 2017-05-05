@@ -8,6 +8,9 @@ import LinearStructure._
 
 import annotation._
 
+import spire.algebra._
+import spire.implicits._
+
 import FiniteDistribution._
 
 case class SnapShot[X, P](state: X, name: String, loops: Int, param: P)
@@ -28,7 +31,7 @@ object FiniteDistributionLearner {
       extends DiffbleFunction[Double, FiniteDistribution[V]] {
     val func = (w: Double) => FiniteDistribution[V](Vector(Weighted(x, w)))
 
-    val grad = (w: Double) => (p: FiniteDistribution[V]) => p(x)
+    val adjDer = (w: Double) => (p: FiniteDistribution[V]) => p(x)
   }
 
   /**
@@ -38,7 +41,7 @@ object FiniteDistributionLearner {
       extends DiffbleFunction[FiniteDistribution[V], Double] {
     val func = (p: FiniteDistribution[V]) => p(x)
 
-    val grad = (p: FiniteDistribution[V]) =>
+    val adjDer = (p: FiniteDistribution[V]) =>
       (w: Double) => FiniteDistribution[V](Set(Weighted(x, w)))
   }
 
@@ -49,7 +52,7 @@ object FiniteDistributionLearner {
       FiniteDistribution(pmf)
     }
 
-    val grad = (q: FiniteDistribution[V]) =>
+    val adjDer = (q: FiniteDistribution[V]) =>
       (p: FiniteDistribution[V]) => {
         val pmf = for (Weighted(x, w) <- p.pmf) yield Weighted(x, w * sc(x))
         FiniteDistribution(pmf)
@@ -75,7 +78,7 @@ object FiniteDistributionLearner {
       extends DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]] {
     val func = (d: FiniteDistribution[V]) => d.normalized().flatten
 
-    val grad = (d: FiniteDistribution[V]) =>
+    val adjDer = (d: FiniteDistribution[V]) =>
       (w: FiniteDistribution[V]) => w * (1 / d.norm)
   }
 
@@ -95,7 +98,7 @@ object FiniteDistributionLearner {
       d mapOpt (f)
     }
 
-    val grad = (d: FiniteDistribution[V]) =>
+    val adjDer = (d: FiniteDistribution[V]) =>
       (w: FiniteDistribution[W]) => {
         w.invmapOpt(f, d.supp)
     }
@@ -108,7 +111,7 @@ object FiniteDistributionLearner {
       d filter (firstFilter) flatMap ((v: V) => d mapOpt ((w: V) => f(v, w)))
     }
 
-    val grad = (d: FiniteDistribution[V]) =>
+    val adjDer = (d: FiniteDistribution[V]) =>
       (w: FiniteDistribution[V]) => {
         val fstsum = invFlatMap(
           (a: V) => (w.invmapOpt((b: V) => f(a, b), d.supp)) * d(a),
@@ -134,7 +137,7 @@ object FiniteDistributionLearner {
     val func = (wp: (Double, FiniteDistribution[V])) =>
       wp._2 * (1 - wp._1) + (v, wp._1)
 
-    val grad = (wp: (Double, FiniteDistribution[V])) =>
+    val adjDer = (wp: (Double, FiniteDistribution[V])) =>
       (q: FiniteDistribution[V]) => {
         val nov = q filter ((x: V) => x != v)
         (q(v), nov * wp._1)
@@ -165,9 +168,9 @@ object FiniteDistributionLearner {
                               (FiniteDistribution[M], X)] {
     val func = (mv: (FiniteDistribution[M], X)) => (mv._1, fn.func(mv))
 
-    val grad = (mv: (FiniteDistribution[M], X)) =>
+    val adjDer = (mv: (FiniteDistribution[M], X)) =>
       (mw: (FiniteDistribution[M], X)) =>
-        (mw._1 ++ fn.grad(mv)(mw._2)._1, fn.grad(mv)(mw._2)._2)
+        (mw._1 ++ fn.adjDer(mv)(mw._2)._1, fn.adjDer(mv)(mw._2)._2)
   }
 
   /**
@@ -188,7 +191,7 @@ object FiniteDistributionLearner {
 
     //     val zero = implicitly[LinearStructure[FiniteDistribution[M]]].zero
 
-    val grad = (mv: (FiniteDistribution[M], X)) =>
+    val adjDer = (mv: (FiniteDistribution[M], X)) =>
       (v: X) => (FiniteDistribution.empty[M], v)
   }
 

@@ -9,10 +9,14 @@ import provingground.Collections._
 
 import LinearStructure._
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 trait DiffbleFunction[A, B] { self =>
   val func: A => B
 
-  val grad: A => B => A
+  val adjDer: A => B => A
 
   def apply(a: A): B = func(a)
 
@@ -27,12 +31,12 @@ trait DiffbleFunction[A, B] { self =>
   /**
     	 * Conjugate that by this.
     	 */
-  def ^:(that: B => B) = (a: A) => grad(a)(that(func(a)))
+  def ^:(that: B => B) = (a: A) => adjDer(a)(that(func(a)))
 
   /**
     	 * post-compose by the gradient of this, for instance for a feedback.
     	 */
-  def **:(that: A => B) = (a: A) => grad(a)(that(a))
+  def **:(that: A => B) = (a: A) => adjDer(a)(that(a))
 
   def oplus[C, D](that: DiffbleFunction[C, D]) =
     DiffbleFunction.Oplus(this, that)
@@ -43,7 +47,7 @@ object DiffbleFunction {
     new DiffbleFunction[A, B] {
       lazy val func = (a: A) => f(a)
 
-      lazy val grad = grd
+      lazy val adjDer = grd
     }
 
   case class Composition[A, B, C](
@@ -52,7 +56,7 @@ object DiffbleFunction {
   ) extends DiffbleFunction[A, C] {
     val func = (a: A) => g.func(f.func(a))
 
-    val grad = (a: A) => (c: C) => f.grad(a)(g.grad(f.func(a))(c))
+    val adjDer = (a: A) => (c: C) => f.adjDer(a)(g.adjDer(f.func(a))(c))
   }
 
   case class Oplus[A, B, C, D](
@@ -61,19 +65,19 @@ object DiffbleFunction {
   ) extends DiffbleFunction[(A, C), (B, D)] {
     val func = (ac: (A, C)) => (first.func(ac._1), second.func(ac._2))
 
-    val grad = (ac: (A, C)) =>
-      (bd: (B, D)) => (first.grad(ac._1)(bd._1), second.grad(ac._2)(bd._2))
+    val adjDer = (ac: (A, C)) =>
+      (bd: (B, D)) => (first.adjDer(ac._1)(bd._1), second.adjDer(ac._2)(bd._2))
   }
 
   case class SelfAdj[A](func: A => A) extends DiffbleFunction[A, A] {
-    val grad = (x: A) => (v: A) => func(v)
+    val adjDer = (x: A) => (v: A) => func(v)
   }
 
 //      def selfadj[A](f: => A => A) = SelfAdj(f)
 
   case class Id[A]() extends DiffbleFunction[A, A] {
     val func = (a: A) => a
-    val grad = (a: A) => (b: A) => b
+    val adjDer = (a: A) => (b: A) => b
   }
 
   def id[A]: DiffbleFunction[A, A] = Id[A]
@@ -83,7 +87,7 @@ object DiffbleFunction {
     val lsB = implicitly[LinearStructure[B]]
 
     val func = (a: A) => (a, lsB.zero)
-    val grad = (a: A) => (x: (A, B)) => x._1
+    val adjDer = (a: A) => (x: (A, B)) => x._1
   }
 
   case class Incl2[A: LinearStructure, B]()
@@ -91,7 +95,7 @@ object DiffbleFunction {
     val lsA = implicitly[LinearStructure[A]]
 
     val func = (b: B) => (lsA.zero, b)
-    val grad = (b: B) => (x: (A, B)) => x._2
+    val adjDer = (b: B) => (x: (A, B)) => x._2
   }
 
   case class Proj1[A, B: LinearStructure]()
@@ -99,7 +103,7 @@ object DiffbleFunction {
     val lsB = implicitly[LinearStructure[B]]
 
     val func = (x: (A, B)) => x._1
-    val grad = (x: (A, B)) => (a: A) => (a, lsB.zero)
+    val adjDer = (x: (A, B)) => (a: A) => (a, lsB.zero)
   }
 
   case class Proj2[A: LinearStructure, B]()
@@ -107,7 +111,7 @@ object DiffbleFunction {
     val lsA = implicitly[LinearStructure[A]]
 
     val func = (x: (A, B)) => x._2
-    val grad = (x: (A, B)) => (b: B) => (lsA.zero, b)
+    val adjDer = (x: (A, B)) => (b: B) => (lsA.zero, b)
   }
 
 //      def Proj2[A, B](implicit lsA: LinearStructure[A]) = apply((x: (A, B)) => x._2)((x) => (b) => (lsA.zero, b))
@@ -135,7 +139,7 @@ object DiffbleFunction {
 
     val func = (av: (Double, V)) => ls.mult(av._1, av._2)
 
-    val grad = (av: (Double, V)) =>
+    val adjDer = (av: (Double, V)) =>
       (w: V) => (ip.dot(av._2, w), ls.mult(av._1, w))
   }
 
@@ -174,8 +178,8 @@ object DiffbleFunction {
 
     val func: X => X = (a: X) => g.func(fn.func(a))
 
-    val grad: X => X => X = (a: X) =>
-      (c: X) => fn.grad(a)(g.grad(fn.func(a))(c))
+    val adjDer: X => X => X = (a: X) =>
+      (c: X) => fn.adjDer(a)(g.adjDer(fn.func(a))(c))
   }
 
   def consIterateDiffble[X](fn: DiffbleFunction[X, X], n: Int) = n match {
@@ -224,9 +228,9 @@ object DiffbleFunction {
     private val zeroA = vzero[A]
     private val sumA  = vsum[A]
 
-    val grad = (a: A) =>
+    val adjDer = (a: A) =>
       (b: B) => {
-        val terms = for (f <- fns(a)) yield f.grad(a)(b)
+        val terms = for (f <- fns(a)) yield f.adjDer(a)(b)
         (terms :\ zeroA)(sumA)
     }
   }
@@ -237,7 +241,7 @@ object DiffbleFunction {
 
     val func = (a: A) => (a, a)
 
-    val grad = (a: A) => (v: (A, A)) => lsA.sum(v._1, v._2)
+    val adjDer = (a: A) => (v: (A, A)) => lsA.sum(v._1, v._2)
   }
 
   case class DotProd[A: LinearStructure, B: LinearStructure](
@@ -250,7 +254,7 @@ object DiffbleFunction {
 
     val func = (a: A) => prodB(sc, vect.func(a))
 
-    val grad = (a: A) => (b: B) => prodA(sc, vect.grad(a)(b))
+    val adjDer = (a: A) => (b: B) => prodA(sc, vect.adjDer(a)(b))
   }
 
   case class Sum[A: LinearStructure, B: LinearStructure](
@@ -263,7 +267,7 @@ object DiffbleFunction {
 
     val func = (a: A) => sumB(first.func(a), second.func(a))
 
-    val grad = (a: A) => (b: B) => sumA(first.grad(a)(b), second.grad(a)(b))
+    val adjDer = (a: A) => (b: B) => sumA(first.adjDer(a)(b), second.adjDer(a)(b))
   }
 
   case class Zero[A: LinearStructure, B: LinearStructure]()
@@ -274,7 +278,7 @@ object DiffbleFunction {
 
     val func = (a: A) => zeroB
 
-    val grad = (a: A) => (b: B) => zeroA
+    val adjDer = (a: A) => (b: B) => zeroA
   }
 
   implicit def diffFnLS[A: LinearStructure, B: LinearStructure]
@@ -290,9 +294,31 @@ object DiffbleFunction {
     LinearStructure(zero, sum, mult)
   }
 
+  implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double], vsB : VectorSpace[B, Double]) =
+    new VectorSpace[DiffbleFunction[A, B], Double]{
+
+   // Members declared in algebra.ring.AdditiveGroup
+   def negate(x: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
+     DiffbleFunction((a: A) => -x(a))((a: A) => (b: B) => -x.adjDer(a)(b))
+
+   // Members declared in algebra.ring.AdditiveMonoid
+   def zero: DiffbleFunction[A,B] = DiffbleFunction((a: A) => vsB.zero)((a: A) => (b: B) => vsA.zero)
+
+   // Members declared in algebra.ring.AdditiveSemigroup
+   def plus(x: DiffbleFunction[A,B],y: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
+     DiffbleFunction((a: A) => x(a) + y(a))((a: A) => (b: B) => x.adjDer(a)(b) + y.adjDer(a)(b))
+
+   // Members declared in spire.algebra.Module
+   def timesl(r: Double,v: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
+     DiffbleFunction((a: A) => vsB.timesl(r, v(a)))((a: A) => (b: B) => vsA.timesl(r, v.adjDer(a)(b)))
+
+   // Members declared in spire.algebra.VectorSpace
+   implicit def scalar:Field[Double] = Field[Double]
+  }
+
   trait FormalExtension[A] extends DiffbleFunction[A, A] {
     val func: A => A
 
-    val grad = (a: A) => (b: A) => b
+    val adjDer = (a: A) => (b: A) => b
   }
 }

@@ -12,9 +12,9 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-// addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
+// addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.9.3")
 
-// addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
+// addCompilerPlugin("org.typelevel" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
 lazy val jsProjects = Seq(client)
 
@@ -28,7 +28,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.spire-math" %% "spire"     % "0.13.0",
+      "org.typelevel" %% "spire"     % "0.14.1",
       "com.lihaoyi"    %% "fansi"     % "0.2.3",
       "com.lihaoyi"    %% "upickle"   % "0.4.4",
       "com.chuusai"    %% "shapeless" % "2.3.2",
@@ -130,7 +130,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.spire-math" %% "spire" % "0.11.0"),
+  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.14.1"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )

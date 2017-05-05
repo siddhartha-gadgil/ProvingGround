@@ -69,7 +69,7 @@ object FiniteDistributionLearnerExtras {
       FiniteDistribution(pmf)
     }
 
-    val grad(d: FiniteDistribution[V])(pd: FiniteDistribution[(V, V)]) = {
+    val adjDer(d: FiniteDistribution[V])(pd: FiniteDistribution[(V, V)]) = {
       val rawpmf = pd.pmf.flatMap(ab => Set(Weighted(ab.elem._1, d(ab.elem._2)), Weighted(ab.elem._2, d(ab.elem._1))))
       FiniteDistribution(rawpmf).flatten
     }
@@ -122,7 +122,7 @@ object FiniteDistributionLearnerExtras {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       fst.func(st) ++ scnd.func(st)
 
-    val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: FiniteDistribution[V]) => {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
@@ -138,7 +138,7 @@ object FiniteDistributionLearnerExtras {
       fn: DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) = {
     val func = (cv: (Double, FiniteDistribution[V])) => fn.func(cv._2) * cv._1
 
-    val grad = (cv: (Double, FiniteDistribution[V])) =>
+    val adjDer = (cv: (Double, FiniteDistribution[V])) =>
       (w: FiniteDistribution[V]) => {
         val x = fn.grad(cv._2)(w)
         (x dot cv._2, x * cv._1)
@@ -167,7 +167,7 @@ object FiniteDistributionLearnerExtras {
       fn.func((c, v))
     }
 
-    val grad = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: FiniteDistribution[V]) => {
         val c     = csv._1(m)
         val v     = csv._2
@@ -193,7 +193,7 @@ object FiniteDistributionLearnerExtras {
     val func = (a: (FiniteDistribution[M], FiniteDistribution[V])) =>
       FiniteDistribution.empty[V]
 
-    val grad = (a: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (a: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (b: FiniteDistribution[V]) =>
         (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
 
@@ -221,7 +221,7 @@ object FiniteDistributionLearnerExtras {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       dstsum(fst.func(st), scnd.func(st))
 
-    val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
@@ -235,7 +235,7 @@ object FiniteDistributionLearnerExtras {
       (base.func(arg) /: l)(dstsum)
     }
 
-    val grad = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (vect: (FiniteDistribution[M], FiniteDistribution[V])) => {
         val l = for ((v, f) <- comps) yield {
           val prob = dstdot(f.grad(arg)(vect), arg)
@@ -273,7 +273,7 @@ object FiniteDistributionLearnerExtras {
       (dstzero[M, V] /: terms)(dstsum)
     }
 
-    val grad = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (arg: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
         val vdst = arg._2
         val vs   = vdst.support
@@ -302,7 +302,7 @@ object FiniteDistributionLearnerExtras {
       fn.func((csv._1, v)) * c
     }
 
-    val grad = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (csv: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: FiniteDistribution[V]) => {
         val c     = csv._1(m)
         val v     = csv._2
@@ -324,7 +324,7 @@ object FiniteDistributionLearnerExtras {
       (ds._1, ds._2 * (1.0 - p) + (v, p))
     }
 
-    val grad = (ds: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (ds: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (ws: (FiniteDistribution[M], FiniteDistribution[V])) => {
         val p     = ds._1(t)
         val c     = ws._1(t)
@@ -462,7 +462,7 @@ object FiniteDistributionLearnerExtras {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       dstsum(fst.func(st), scnd.func(st))
 
-    val grad = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
+    val adjDer = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
       (w: (FiniteDistribution[M], FiniteDistribution[V])) => {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }

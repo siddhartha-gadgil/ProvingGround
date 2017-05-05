@@ -60,7 +60,7 @@ class FDLooper[X: LinearStructure, P](
     val dynLoop     = DiffbleFunction.iterateDiffble(dyn, steps)
     val result      = dynLoop(start)
     val imageChange = feedback(strictness)(start)(result)
-    dynLoop.grad(init)(imageChange) |*| (epsilon)
+    dynLoop.adjDer(init)(imageChange) |*| (epsilon)
   }
 
   import FDHub._
