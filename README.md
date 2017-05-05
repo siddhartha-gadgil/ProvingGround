@@ -4,6 +4,10 @@ Proving Ground: Tools for Automated Mathematics
 A system under development for (semi-)automated theorem proving, with foundations *homotopy type theory*, using
 *machine learning*, both by _reinforcement learing_ using backward-propagation and using natural language processing to assimilate part of the mathematics literature.
 
+[![Build Status](https://img.shields.io/travis/newca12/ProvingGround.svg)](https://travis-ci.org/newca12/ProvingGround)
+[![codecov.io](http://codecov.io/github/newca12/ProvingGround/coverage.svg?branch=demo-badges)](https://codecov.io/github/newca12/ProvingGround?branch=demo-badges)
+[![Ohloh](http://www.ohloh.net/p/ProvingGround/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/ProvingGround)
+
 ## Implemented:
 
 * Most of Homotopy type theory.
