@@ -229,6 +229,7 @@ object SubTypePattern {
 
     pat >>> ((xy: Int :: Int :: HNil) => xy.head + xy.tail.head)
 
-    pat >>> [Int] { case x :: y :: HNil => x + y }
+    //dot notation required as a workaround for https://github.com/scoverage/scalac-scoverage-plugin/issues/175
+    pat.>>>[Int]({ case x :: y :: HNil => x.+(y) })
   }
 }
