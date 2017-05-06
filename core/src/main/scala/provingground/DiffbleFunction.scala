@@ -33,7 +33,8 @@ object DiffbleFunction{
   }
 }
 
-class LoopyFunc[A, B](recdef: (A, B) => B) extends (A => B){
+class LoopyFunc[A, B](recdef: (A,  => B) => B) extends (A => B){
+
   def apply(a: A) = recdef(a, apply(a))
 }
 
