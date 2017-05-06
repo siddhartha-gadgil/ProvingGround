@@ -1,6 +1,6 @@
 package provingground
 
-import DiffbleFunction._
+import AdjDiffbleFunction._
 import Collections._; import FiniteDistribution._; import provingground._
 import annotation._
 
@@ -52,7 +52,7 @@ object FiniteDistributionLearnerExtras {
   }
 
   def dynsum[M: LinearStructure, V: LinearStructure] =
-    vsum[DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
+    vsum[AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                          FiniteDistribution[V]]]
 
   // Generic helpers
@@ -74,7 +74,7 @@ object FiniteDistributionLearnerExtras {
       FiniteDistribution(rawpmf).flatten
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
     *
     */
@@ -82,7 +82,7 @@ object FiniteDistributionLearnerExtras {
     * declare the gradient to be the identity - to be used for approximations, pruning, sampling.
     */
   def formalSmooth[A](f: A => A) =
-    DiffbleFunction(f)((a: A) => { (b: A) =>
+    AdjDiffbleFunction(f)((a: A) => { (b: A) =>
       b
     })
 
@@ -111,7 +111,7 @@ object FiniteDistributionLearnerExtras {
   // Building dynamics (FiniteDistribution[M], FiniteDistribution[V]) => FiniteDistribution[V]
 
   private type DynFn[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
+    AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                     FiniteDistribution[V]]
 
   /**
@@ -127,7 +127,7 @@ object FiniteDistributionLearnerExtras {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -135,7 +135,7 @@ object FiniteDistributionLearnerExtras {
     * Namely, (s, x) -> s * f(x), with gradient having weights on both s and x.
     */
   def scProdFn[V](
-      fn: DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) = {
+      fn: AdjDiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]) = {
     val func = (cv: (Double, FiniteDistribution[V])) => fn.func(cv._2) * cv._1
 
     val adjDer = (cv: (Double, FiniteDistribution[V])) =>
@@ -144,7 +144,7 @@ object FiniteDistributionLearnerExtras {
         (x dot cv._2, x * cv._1)
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -159,7 +159,7 @@ object FiniteDistributionLearnerExtras {
     * binds a scalar (multiplication) constant to a particular parameter.
     */
   def bindFn[M, V](m: M,
-                   fn: DiffbleFunction[(Double, FiniteDistribution[V]),
+                   fn: AdjDiffbleFunction[(Double, FiniteDistribution[V]),
                                        FiniteDistribution[V]]) = {
     val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) => {
       val c = csv._1(m)
@@ -175,7 +175,7 @@ object FiniteDistributionLearnerExtras {
         atM(cterm, m)
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -183,7 +183,7 @@ object FiniteDistributionLearnerExtras {
     */
   def wtdDyn[M, V](
       m: M,
-      fn: DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]])
+      fn: AdjDiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]])
     : DynFn[M, V] = bindFn(m, scProdFn(fn))
 
   /**
@@ -197,7 +197,7 @@ object FiniteDistributionLearnerExtras {
       (b: FiniteDistribution[V]) =>
         (FiniteDistribution.empty[M], FiniteDistribution.empty[V])
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -206,7 +206,7 @@ object FiniteDistributionLearnerExtras {
   def linComb[M, V](
       dyns: Map[
         M,
-        DiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]]) = {
+        AdjDiffbleFunction[FiniteDistribution[V], FiniteDistribution[V]]]) = {
     val syslst = for ((m, f) <- dyns) yield wtdDyn(m, f)
     (zeroMVV[M, V] /: syslst)((a, b) => sumFn(a, b))
   }
@@ -214,7 +214,7 @@ object FiniteDistributionLearnerExtras {
   // Building dynamics on (FiniteDistribution[M], FiniteDistribution[V])
 
   private type DS[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
+    AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                     (FiniteDistribution[M], FiniteDistribution[V])]
 
   def sumDF[M, V](fst: => DS[M, V], scnd: => DS[M, V]) = {
@@ -226,7 +226,7 @@ object FiniteDistributionLearnerExtras {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   def foldDF[M, V](base: DS[M, V], comps: Map[V, DS[M, V]]) = {
@@ -245,7 +245,7 @@ object FiniteDistributionLearnerExtras {
         (base.grad(arg)(vect) /: l)(dstsum)
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -286,7 +286,7 @@ object FiniteDistributionLearnerExtras {
         dstsum(scdst, (dstzero[M, V] /: vectterms)(dstsum))
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   // Various attempts at islands
@@ -311,7 +311,7 @@ object FiniteDistributionLearnerExtras {
         (mv._1 + (m, shift), mv._2)
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -332,7 +332,7 @@ object FiniteDistributionLearnerExtras {
         (ws._1 + (t, c), shift)
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /**
@@ -349,7 +349,7 @@ object FiniteDistributionLearnerExtras {
     * step for learning based on feedback.
     */
   def learnstep[M, V](
-      f: DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
+      f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                          (FiniteDistribution[M], FiniteDistribution[V])],
       epsilon: Double,
       feedback: (FiniteDistribution[M], FiniteDistribution[V]) => (FiniteDistribution[
@@ -366,10 +366,10 @@ object FiniteDistributionLearnerExtras {
     */
   @tailrec
   def iterateDiffbleDepth[X](
-      fn: => DiffbleFunction[X, X],
+      fn: => AdjDiffbleFunction[X, X],
       steps: Int,
       depth: Int,
-      accum: => DiffbleFunction[X, X] = id[X]): DiffbleFunction[X, X] = {
+      accum: => AdjDiffbleFunction[X, X] = id[X]): AdjDiffbleFunction[X, X] = {
     if (steps < math.pow(2, depth)) accum
     else
       iterateDiffbleDepth(fn,
@@ -399,7 +399,7 @@ object FiniteDistributionLearnerExtras {
     def withIsle(v: V,
                  t: M,
                  m: M,
-                 export: => DiffbleFunction[FiniteDistribution[V],
+                 export: => AdjDiffbleFunction[FiniteDistribution[V],
                                             FiniteDistribution[V]],
                  d: Int = depth,
                  isleDepth: Int => Int): DynFn[M, V] = {
@@ -428,7 +428,7 @@ object FiniteDistributionLearnerExtras {
     def mkIsle(v: V,
                t: M,
                m: M,
-               export: => DiffbleFunction[FiniteDistribution[V],
+               export: => AdjDiffbleFunction[FiniteDistribution[V],
                                           FiniteDistribution[V]],
                d: Int = depth,
                isleDepth: Int => Int): DynFn[M, V] = {
@@ -444,7 +444,7 @@ object FiniteDistributionLearnerExtras {
     def addIsle(v: V,
                 t: M,
                 m: M,
-                export: => DiffbleFunction[FiniteDistribution[V],
+                export: => AdjDiffbleFunction[FiniteDistribution[V],
                                            FiniteDistribution[V]],
                 isleDepth: Int => Int = (n) => n + 1) =
       new IterDynSys(withIsle(v: V, t: M, m: M, export, depth, isleDepth),
@@ -455,7 +455,7 @@ object FiniteDistributionLearnerExtras {
   }
 
   type DynF[M, V] =
-    DiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
+    AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                     (FiniteDistribution[M], FiniteDistribution[V])]
 
   def sumF[M, V](fst: => DynF[M, V], scnd: => DynF[M, V]) = {
@@ -467,7 +467,7 @@ object FiniteDistributionLearnerExtras {
         dstsum(fst.grad(st)(w), scnd.grad(st)(w))
     }
 
-    DiffbleFunction(func)(grad)
+    AdjDiffbleFunction(func)(grad)
   }
 
   /*

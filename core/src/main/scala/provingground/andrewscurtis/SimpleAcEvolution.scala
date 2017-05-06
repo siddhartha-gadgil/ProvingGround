@@ -79,7 +79,7 @@ object SimpleAcEvolution {
     def length = states.size
 
     lazy val evolution = {
-      import DiffbleFunction._
+      import AdjDiffbleFunction._
       def iterateSampDiff(lst: List[M], iterations: Int = 5) =
         iterate(sampleV(size) andthen genExtendM(lst))(iterations)
       iterateSampDiff(allMoves(rank), steps)

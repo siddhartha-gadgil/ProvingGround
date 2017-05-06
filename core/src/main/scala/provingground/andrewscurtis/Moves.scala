@@ -73,7 +73,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   def actOnMoves(moves: Moves): Option[Moves] =
     Some(toMoves(this) compose moves)
 
-  def movesDF: DiffbleFunction[FiniteDistribution[Moves],
+  def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
                                FiniteDistribution[Moves]] =
     MoveFn(actOnMoves)
 
@@ -148,9 +148,9 @@ case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
 //  override def actOnMoves(moves: Moves) = Some(moves)
 
-  override def movesDF: DiffbleFunction[FiniteDistribution[Moves],
+  override def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
                                         FiniteDistribution[Moves]] =
-    DiffbleFunction.Id[FiniteDistribution[Moves]]
+    AdjDiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 
 case class Inv(k: Int) extends AtomicMove {

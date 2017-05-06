@@ -29,7 +29,7 @@ object FDLooper {
   * @param param parameters for the system that can be changed while running.
   */
 class FDLooper[X: LinearStructure, P](
-    dyn: DiffbleFunction[X, X], //includes purging
+    dyn: AdjDiffbleFunction[X, X], //includes purging
     feedback: Double => X => X => X,
     normalize: X => X,
     init: X,
@@ -57,7 +57,7 @@ class FDLooper[X: LinearStructure, P](
     * change to make for next step: evolve, compute feedback, pullback feedback
     */
   def shift(start: X, strictness: Double, steps: Int, epsilon: Double = 1.0) = {
-    val dynLoop     = DiffbleFunction.iterateDiffble(dyn, steps)
+    val dynLoop     = AdjDiffbleFunction.iterateDiffble(dyn, steps)
     val result      = dynLoop(start)
     val imageChange = feedback(strictness)(start)(result)
     dynLoop.adjDer(init)(imageChange) |*| (epsilon)

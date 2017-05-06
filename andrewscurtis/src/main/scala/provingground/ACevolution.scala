@@ -18,7 +18,7 @@ import FreeGroups._
 
 import provingground.FiniteDistributionLearner._
 
-import DiffbleFunction._
+import AdjDiffbleFunction._
 
 import QDI._
 
@@ -38,7 +38,7 @@ object ACevolution {
 
   type P = Presentation
 
-  def foldPair(rank: Int): DiffbleFunction[(FD[M], FD[V]), FD[P]] =
+  def foldPair(rank: Int): AdjDiffbleFunction[(FD[M], FD[V]), FD[P]] =
     (projectV andthen genPresentationMoveFn(rank))
 
   def trivMoveSeq = FiniteDistribution.uniform(Some(Moves.empty))

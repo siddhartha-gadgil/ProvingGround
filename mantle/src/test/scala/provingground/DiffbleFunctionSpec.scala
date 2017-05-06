@@ -4,18 +4,18 @@ import provingground._
 import Collections._; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
-import DiffbleFunction._
+import AdjDiffbleFunction._
 import LinearStructure._
 
-class DiffbleFunctionSpec extends FlatSpec {
+class AdjDiffbleFunctionSpec extends FlatSpec {
   val double =
-    DiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 * y)
+    AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 * y)
 
   val square =
-    DiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
+    AdjDiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
 
   "A Differentiable function" should "evaluate by apply" in {
-    val fn = DiffbleFunction((x: Double) => 2 * x)((x: Double) =>
+    val fn = AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) =>
       (y: Double) => 2 * y)
 
     assert(double.func(2) == 4)
@@ -24,7 +24,7 @@ class DiffbleFunctionSpec extends FlatSpec {
   }
 
   it should "apply adjDerient" in {
-    val fn = DiffbleFunction((x: Double) => x * x)((x: Double) =>
+    val fn = AdjDiffbleFunction((x: Double) => x * x)((x: Double) =>
       (y: Double) => x * y)
 
     assert(square.adjDer(2)(3) == 6)

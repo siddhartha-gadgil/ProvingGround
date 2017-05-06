@@ -6,11 +6,11 @@ import scala.util._
 import scala.language.implicitConversions
 
 import provingground.Collections._
-import DiffbleFunction._
+import AdjDiffbleFunction._
 
 object LearningSystem {
 
-  trait LearningSystem[I, P, O] extends DiffbleFunction[(I, P), O] {
+  trait LearningSystem[I, P, O] extends AdjDiffbleFunction[(I, P), O] {
     def apply(inp: I, param: P): O = this.func((inp, param))
 
     def update(feedback: O, inp: I, param: P, epsilon: Double)(
@@ -65,10 +65,10 @@ object LearningSystem {
 
       def back(ip: (I, P))(out: O): (I, P) = back(ip._1, ip._2)(out)
 
-      asLearner(DiffbleFunction[(I, P), O](forward)(back))
+      asLearner(AdjDiffbleFunction[(I, P), O](forward)(back))
     }
 
-    def edge[I](f: DiffbleFunction[I, Double]) = {
+    def edge[I](f: AdjDiffbleFunction[I, Double]) = {
       def fwd(inp: I, wt: Double) = wt * f.func(inp)
 
       def bck(inp: I, wt: Double)(o: Double) =
@@ -103,7 +103,7 @@ object LearningSystem {
       LearningSystem[I, ArrayMap[E, P], ArrayMap[E, O]](fwd, bck)
     }
 
-    def ANN[D, C](f: DiffbleFunction[Double, Double],
+    def ANN[D, C](f: AdjDiffbleFunction[Double, Double],
                   dom: Traversable[D],
                   codom: Traversable[C],
                   inc: (D, C) => Boolean) = {
@@ -116,7 +116,7 @@ object LearningSystem {
       collect(exitMap)
     }
 
-    def tuner[P, O](evol: DiffbleFunction[P, O]) = {
+    def tuner[P, O](evol: AdjDiffbleFunction[P, O]) = {
       def fwd: (Unit, P) => O = { (_, p) =>
         evol.func(p)
       }
@@ -126,7 +126,7 @@ object LearningSystem {
   }
 
   implicit def asLearner[I, P, O](
-      f: DiffbleFunction[(I, P), O]): LearningSystem[I, P, O] =
+      f: AdjDiffbleFunction[(I, P), O]): LearningSystem[I, P, O] =
     new LearningSystem[I, P, O] {
       lazy val func = (a: (I, P)) => f.func(a)
 

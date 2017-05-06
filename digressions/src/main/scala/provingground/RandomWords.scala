@@ -125,7 +125,7 @@ object RandomWords {
       FiniteDistribution((support map ((x) => Weighted(x, xshift(x)))).toSet)
     }
 
-    DiffbleFunction(forward)(back)
+    AdjDiffbleFunction(forward)(back)
   }
 
   def relEntropy[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) = {

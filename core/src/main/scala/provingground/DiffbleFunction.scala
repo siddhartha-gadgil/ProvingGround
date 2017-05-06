@@ -13,7 +13,31 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-trait DiffbleFunction[A, B] { self =>
+trait DiffbleFunction[A, B] extends (A => B){
+  val func: A => B
+
+  def derv(a: A, t: A): B
+
+  def apply(a: A) = func(a)
+}
+
+object DiffbleFunction{
+  case class Linear[A, B](func: A => B) extends DiffbleFunction[A, B]{
+    def derv(a: A, t: A) = func(t)
+  }
+
+  case class Quadratic[A, B](bilinear: (A, A) => B)(implicit vs: VectorSpace[B, Double]){
+    val func = (a: A) => bilinear(a, a)
+
+    def derv(a: A, t: A) = bilinear(a, t) + bilinear(t, a)
+  }
+}
+
+class LoopyFunc[A, B](recdef: (A, B) => B) extends (A => B){
+  def apply(a: A) = recdef(a, apply(a))
+}
+
+trait AdjDiffbleFunction[A, B] { self =>
   val func: A => B
 
   val adjDer: A => B => A
@@ -23,10 +47,10 @@ trait DiffbleFunction[A, B] { self =>
   /**
     	 * Composition f *: g is f(g(_))
     	 */
-  def *:[C](that: => DiffbleFunction[B, C]) = andthen(that)
+  def *:[C](that: => AdjDiffbleFunction[B, C]) = andthen(that)
 
-  def andthen[C](that: => DiffbleFunction[B, C]): DiffbleFunction[A, C] =
-    DiffbleFunction.Composition(this, that)
+  def andthen[C](that: => AdjDiffbleFunction[B, C]): AdjDiffbleFunction[A, C] =
+    AdjDiffbleFunction.Composition(this, that)
 
   /**
     	 * Conjugate that by this.
@@ -38,52 +62,52 @@ trait DiffbleFunction[A, B] { self =>
     	 */
   def **:(that: A => B) = (a: A) => adjDer(a)(that(a))
 
-  def oplus[C, D](that: DiffbleFunction[C, D]) =
-    DiffbleFunction.Oplus(this, that)
+  def oplus[C, D](that: AdjDiffbleFunction[C, D]) =
+    AdjDiffbleFunction.Oplus(this, that)
 }
 
-object DiffbleFunction {
+object AdjDiffbleFunction {
   def apply[A, B](f: => A => B)(grd: => A => (B => A)) =
-    new DiffbleFunction[A, B] {
+    new AdjDiffbleFunction[A, B] {
       lazy val func = (a: A) => f(a)
 
       lazy val adjDer = grd
     }
 
   case class Composition[A, B, C](
-      f: DiffbleFunction[A, B],
-      g: DiffbleFunction[B, C]
-  ) extends DiffbleFunction[A, C] {
+      f: AdjDiffbleFunction[A, B],
+      g: AdjDiffbleFunction[B, C]
+  ) extends AdjDiffbleFunction[A, C] {
     val func = (a: A) => g.func(f.func(a))
 
     val adjDer = (a: A) => (c: C) => f.adjDer(a)(g.adjDer(f.func(a))(c))
   }
 
   case class Oplus[A, B, C, D](
-      first: DiffbleFunction[A, B],
-      second: DiffbleFunction[C, D]
-  ) extends DiffbleFunction[(A, C), (B, D)] {
+      first: AdjDiffbleFunction[A, B],
+      second: AdjDiffbleFunction[C, D]
+  ) extends AdjDiffbleFunction[(A, C), (B, D)] {
     val func = (ac: (A, C)) => (first.func(ac._1), second.func(ac._2))
 
     val adjDer = (ac: (A, C)) =>
       (bd: (B, D)) => (first.adjDer(ac._1)(bd._1), second.adjDer(ac._2)(bd._2))
   }
 
-  case class SelfAdj[A](func: A => A) extends DiffbleFunction[A, A] {
+  case class SelfAdj[A](func: A => A) extends AdjDiffbleFunction[A, A] {
     val adjDer = (x: A) => (v: A) => func(v)
   }
 
 //      def selfadj[A](f: => A => A) = SelfAdj(f)
 
-  case class Id[A]() extends DiffbleFunction[A, A] {
+  case class Id[A]() extends AdjDiffbleFunction[A, A] {
     val func = (a: A) => a
     val adjDer = (a: A) => (b: A) => b
   }
 
-  def id[A]: DiffbleFunction[A, A] = Id[A]
+  def id[A]: AdjDiffbleFunction[A, A] = Id[A]
 
   case class Incl1[A, B: LinearStructure]()
-      extends DiffbleFunction[A, (A, B)] {
+      extends AdjDiffbleFunction[A, (A, B)] {
     val lsB = implicitly[LinearStructure[B]]
 
     val func = (a: A) => (a, lsB.zero)
@@ -91,7 +115,7 @@ object DiffbleFunction {
   }
 
   case class Incl2[A: LinearStructure, B]()
-      extends DiffbleFunction[B, (A, B)] {
+      extends AdjDiffbleFunction[B, (A, B)] {
     val lsA = implicitly[LinearStructure[A]]
 
     val func = (b: B) => (lsA.zero, b)
@@ -99,7 +123,7 @@ object DiffbleFunction {
   }
 
   case class Proj1[A, B: LinearStructure]()
-      extends DiffbleFunction[(A, B), A] {
+      extends AdjDiffbleFunction[(A, B), A] {
     val lsB = implicitly[LinearStructure[B]]
 
     val func = (x: (A, B)) => x._1
@@ -107,7 +131,7 @@ object DiffbleFunction {
   }
 
   case class Proj2[A: LinearStructure, B]()
-      extends DiffbleFunction[(A, B), B] {
+      extends AdjDiffbleFunction[(A, B), B] {
     val lsA = implicitly[LinearStructure[A]]
 
     val func = (x: (A, B)) => x._2
@@ -119,9 +143,9 @@ object DiffbleFunction {
   def block[A: LinearStructure,
             B: LinearStructure,
             C: LinearStructure,
-            D: LinearStructure](f: DiffbleFunction[A, C],
-                                g: DiffbleFunction[B, D]) = {
-    val add = vsum[DiffbleFunction[(A, B), (C, D)]]
+            D: LinearStructure](f: AdjDiffbleFunction[A, C],
+                                g: AdjDiffbleFunction[B, D]) = {
+    val add = vsum[AdjDiffbleFunction[(A, B), (C, D)]]
 
     val p1 = Proj1[A, B]
     val p2 = Proj2[A, B]
@@ -133,7 +157,7 @@ object DiffbleFunction {
   }
 
   case class ScProd[V: LinearStructure: InnerProduct]()
-      extends DiffbleFunction[(Double, V), V] {
+      extends AdjDiffbleFunction[(Double, V), V] {
     val ls = implicitly[LinearStructure[V]]
     val ip = implicitly[InnerProduct[V]]
 
@@ -147,11 +171,11 @@ object DiffbleFunction {
     * raise a function to 2^(n -1) wrt composition, so for n = 0 we get identity and n = 1 gives f.
     */
   def repsquare[A: LinearStructure](
-      f: DiffbleFunction[A, A]): Int => DiffbleFunction[A, A] = {
+      f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] = {
     case 0 => id[A]
     case 1 => f
     case n if n < 0 =>
-      vzero[DiffbleFunction[A, A]]
+      vzero[AdjDiffbleFunction[A, A]]
     case n => {
       val rs = repsquare(f)
       rs(n - 1) andthen (rs(n - 1))
@@ -163,16 +187,16 @@ object DiffbleFunction {
     */
   @tailrec
   def recIterateDiffble[X](
-      fn: DiffbleFunction[X, X],
+      fn: AdjDiffbleFunction[X, X],
       n: Int,
-      accum: DiffbleFunction[X, X] = id[X]): DiffbleFunction[X, X] = {
+      accum: AdjDiffbleFunction[X, X] = id[X]): AdjDiffbleFunction[X, X] = {
     if (n < 1) accum
     else
-      recIterateDiffble(fn, n - 1, accum andthen (fn: DiffbleFunction[X, X]))
+      recIterateDiffble(fn, n - 1, accum andthen (fn: AdjDiffbleFunction[X, X]))
   }
 
-  case class IteratedDiffble[X](fn: DiffbleFunction[X, X], n: Int)
-      extends DiffbleFunction[X, X] {
+  case class IteratedDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int)
+      extends AdjDiffbleFunction[X, X] {
     require(n > 1, s"should not use case class for $n iterations")
     lazy val g = consIterateDiffble(fn, n - 1)
 
@@ -182,29 +206,29 @@ object DiffbleFunction {
       (c: X) => fn.adjDer(a)(g.adjDer(fn.func(a))(c))
   }
 
-  def consIterateDiffble[X](fn: DiffbleFunction[X, X], n: Int) = n match {
+  def consIterateDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int) = n match {
     case 0          => Id[X]
     case 1          => fn
     case k if k > 1 => IteratedDiffble(fn, k)
   }
 
-  def iterateDiffble[X](fn: DiffbleFunction[X, X], n: Int) =
+  def iterateDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int) =
     consIterateDiffble(fn, n)
 
-  def iterate[A](f: DiffbleFunction[A, A]): Int => DiffbleFunction[A, A] =
+  def iterate[A](f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] =
     (n) => iterateDiffble(f, n)
 
   def mixinIsle[A: LinearStructure](
-      f: DiffbleFunction[A, A],
-      isle: DiffbleFunction[A, A] => DiffbleFunction[A, A],
-      normalize: DiffbleFunction[A, A] = id[A]) = {
+      f: AdjDiffbleFunction[A, A],
+      isle: AdjDiffbleFunction[A, A] => AdjDiffbleFunction[A, A],
+      normalize: AdjDiffbleFunction[A, A] = id[A]) = {
     val g = iterate(f)
-    def h(m: Int): DiffbleFunction[A, A] = m match {
+    def h(m: Int): AdjDiffbleFunction[A, A] = m match {
       case 0 => id[A]
       case n if n < 0 =>
-        vzero[DiffbleFunction[A, A]]
+        vzero[AdjDiffbleFunction[A, A]]
       case n if n > 0 =>
-        val dsum = vsum[DiffbleFunction[A, A]]
+        val dsum = vsum[AdjDiffbleFunction[A, A]]
         dsum(g(n), isle(h(n - 1))) andthen normalize
     }
     h _
@@ -214,8 +238,8 @@ object DiffbleFunction {
     * Big sum, with terms (via support) in general depending on the argument.
     */
   case class BigSum[A: LinearStructure, B: LinearStructure](
-      fns: A => Traversable[DiffbleFunction[A, B]]
-  ) extends DiffbleFunction[A, B] {
+      fns: A => Traversable[AdjDiffbleFunction[A, B]]
+  ) extends AdjDiffbleFunction[A, B] {
     val func = (a: A) => {
       val terms = for (f <- fns(a)) yield f.func(a)
 
@@ -236,7 +260,7 @@ object DiffbleFunction {
   }
 
   case class Diagonal[A: LinearStructure]()
-      extends DiffbleFunction[A, (A, A)] {
+      extends AdjDiffbleFunction[A, (A, A)] {
     val lsA = implicitly[LinearStructure[A]]
 
     val func = (a: A) => (a, a)
@@ -246,8 +270,8 @@ object DiffbleFunction {
 
   case class DotProd[A: LinearStructure, B: LinearStructure](
       sc: Double,
-      vect: DiffbleFunction[A, B])
-      extends DiffbleFunction[A, B] {
+      vect: AdjDiffbleFunction[A, B])
+      extends AdjDiffbleFunction[A, B] {
     val prodB = vprod[B]
 
     val prodA = vprod[A]
@@ -258,9 +282,9 @@ object DiffbleFunction {
   }
 
   case class Sum[A: LinearStructure, B: LinearStructure](
-      first: DiffbleFunction[A, B],
-      second: DiffbleFunction[A, B])
-      extends DiffbleFunction[A, B] {
+      first: AdjDiffbleFunction[A, B],
+      second: AdjDiffbleFunction[A, B])
+      extends AdjDiffbleFunction[A, B] {
     val sumB = vsum[B]
 
     val sumA = vsum[A]
@@ -271,7 +295,7 @@ object DiffbleFunction {
   }
 
   case class Zero[A: LinearStructure, B: LinearStructure]()
-      extends DiffbleFunction[A, B] {
+      extends AdjDiffbleFunction[A, B] {
     val zeroA = vzero[A]
 
     val zeroB = vzero[B]
@@ -282,41 +306,41 @@ object DiffbleFunction {
   }
 
   implicit def diffFnLS[A: LinearStructure, B: LinearStructure]
-    : LinearStructure[DiffbleFunction[A, B]] = {
+    : LinearStructure[AdjDiffbleFunction[A, B]] = {
 
-    val sum = (f: DiffbleFunction[A, B], g: DiffbleFunction[A, B]) =>
+    val sum = (f: AdjDiffbleFunction[A, B], g: AdjDiffbleFunction[A, B]) =>
       Sum[A, B](f, g)
 
     val zero = Zero[A, B]
 
-    val mult = (c: Double, f: DiffbleFunction[A, B]) => DotProd(c, f)
+    val mult = (c: Double, f: AdjDiffbleFunction[A, B]) => DotProd(c, f)
 
     LinearStructure(zero, sum, mult)
   }
 
   implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double], vsB : VectorSpace[B, Double]) =
-    new VectorSpace[DiffbleFunction[A, B], Double]{
+    new VectorSpace[AdjDiffbleFunction[A, B], Double]{
 
    // Members declared in algebra.ring.AdditiveGroup
-   def negate(x: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
-     DiffbleFunction((a: A) => -x(a))((a: A) => (b: B) => -x.adjDer(a)(b))
+   def negate(x: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
+     AdjDiffbleFunction((a: A) => -x(a))((a: A) => (b: B) => -x.adjDer(a)(b))
 
    // Members declared in algebra.ring.AdditiveMonoid
-   def zero: DiffbleFunction[A,B] = DiffbleFunction((a: A) => vsB.zero)((a: A) => (b: B) => vsA.zero)
+   def zero: AdjDiffbleFunction[A,B] = AdjDiffbleFunction((a: A) => vsB.zero)((a: A) => (b: B) => vsA.zero)
 
    // Members declared in algebra.ring.AdditiveSemigroup
-   def plus(x: DiffbleFunction[A,B],y: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
-     DiffbleFunction((a: A) => x(a) + y(a))((a: A) => (b: B) => x.adjDer(a)(b) + y.adjDer(a)(b))
+   def plus(x: AdjDiffbleFunction[A,B],y: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
+     AdjDiffbleFunction((a: A) => x(a) + y(a))((a: A) => (b: B) => x.adjDer(a)(b) + y.adjDer(a)(b))
 
    // Members declared in spire.algebra.Module
-   def timesl(r: Double,v: DiffbleFunction[A,B]): DiffbleFunction[A,B] =
-     DiffbleFunction((a: A) => vsB.timesl(r, v(a)))((a: A) => (b: B) => vsA.timesl(r, v.adjDer(a)(b)))
+   def timesl(r: Double,v: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
+     AdjDiffbleFunction((a: A) => vsB.timesl(r, v(a)))((a: A) => (b: B) => vsA.timesl(r, v.adjDer(a)(b)))
 
    // Members declared in spire.algebra.VectorSpace
    implicit def scalar:Field[Double] = Field[Double]
   }
 
-  trait FormalExtension[A] extends DiffbleFunction[A, A] {
+  trait FormalExtension[A] extends AdjDiffbleFunction[A, A] {
     val func: A => A
 
     val adjDer = (a: A) => (b: A) => b
