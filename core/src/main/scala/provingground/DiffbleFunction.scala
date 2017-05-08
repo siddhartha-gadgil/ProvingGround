@@ -13,30 +13,52 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-trait DiffbleFunction[A, B] extends (A => B){
-  val func: A => B
+case class TangVec[A](point: A, vec: A)
+
+object TangVec{
+  def liftLinear[A, B](func: A => B): TangVec[A] => TangVec[B] =
+    (pv) => TangVec(func(pv.point), func(pv.vec))
+
+  def liftBilinear[A, B](bilinear: (A, A) => B)(implicit vs: VectorSpace[B, Double]) =
+    (pv: TangVec[(A, A)]) =>
+      TangVec(bilinear(pv.point._1, pv.point._2),
+              bilinear(pv.point._1, pv.vec._2) + bilinear(pv.vec._1, pv.point._2))
+}
+
+trait DiffbleFunction[A, B] extends (A => B){self =>
 
   def derv(a: A, t: A): B
 
-  def apply(a: A) = func(a)
+  def apply(a: A) : B
+
+  def total(a: A, t: A) : (B, B) = (self(a), derv(a, t))
+
+  def apply(av : TangVec[A]) : TangVec[B] = TangVec(self(av.point), derv(av.point, av.vec))
 }
 
 object DiffbleFunction{
   case class Linear[A, B](func: A => B) extends DiffbleFunction[A, B]{
     def derv(a: A, t: A) = func(t)
+
+    def apply(a: A) = func(a)
   }
 
   case class Quadratic[A, B](bilinear: (A, A) => B)(implicit vs: VectorSpace[B, Double]){
-    val func = (a: A) => bilinear(a, a)
+    def apply (a: A) = bilinear(a, a)
 
     def derv(a: A, t: A) = bilinear(a, t) + bilinear(t, a)
   }
 }
 
-class LoopyFunc[A, B](recdef: (A,  => B) => B) extends (A => B){
+class LoopyFunc[A, B](recdef: (A, Unit => B) => B) extends (A => B){self =>
 
-  def apply(a: A) = recdef(a, apply(a))
+  def apply(a: A) = recdef(a, (_) => self(a))
 }
+
+class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, Unit => B), B]) extends
+  LoopyFunc[A, B]((a, b) => recdef((a, b))) with DiffbleFunction[A, B]{self =>
+    def derv(a: A, t: A) = recdef.derv((a, (_) =>self(a)), (t, (_) => derv(a, t)))
+  }
 
 trait AdjDiffbleFunction[A, B] { self =>
   val func: A => B
