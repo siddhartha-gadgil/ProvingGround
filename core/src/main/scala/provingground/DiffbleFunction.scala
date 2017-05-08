@@ -19,10 +19,27 @@ object TangVec{
   def liftLinear[A, B](func: A => B): TangVec[A] => TangVec[B] =
     (pv) => TangVec(func(pv.point), func(pv.vec))
 
-  def liftBilinear[A, B](bilinear: (A, A) => B)(implicit vs: VectorSpace[B, Double]) =
-    (pv: TangVec[(A, A)]) =>
+  def liftBilinear[A, B, C](bilinear: (A, B) => C)(implicit vs: VectorSpace[C, Double]) =
+    (pv: TangVec[(A, B)]) =>
       TangVec(bilinear(pv.point._1, pv.point._2),
               bilinear(pv.point._1, pv.vec._2) + bilinear(pv.vec._1, pv.point._2))
+
+  def tangProd[A, B](av: TangVec[A], bw: TangVec[B]) = TangVec((av.point, bw.point), (av.vec, bw.vec))
+
+  implicit def vs[T](implicit bvs: VectorSpace[T, Double]) : VectorSpace[TangVec[T], Double] =
+      new VectorSpace[TangVec[T], Double]{
+        def negate(x: TangVec[T]) =
+          TangVec(-x.point, -x.vec)
+
+        val  zero = TangVec(bvs.zero, bvs.zero)
+
+        def plus(x: TangVec[T], y: TangVec[T]) = TangVec(x.point + y.point, x.vec + y.vec)
+
+        def timesl(r: Double, x: TangVec[T]) = TangVec(r *: x.point, r *: x.vec)
+
+        implicit def scalar:Field[Double] = Field[Double]
+
+      }
 }
 
 trait DiffbleFunction[A, B] extends (A => B){self =>

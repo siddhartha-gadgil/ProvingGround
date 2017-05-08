@@ -6,6 +6,10 @@ import scala.concurrent._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import spire.algebra._
+// import spire.math._
+import spire.implicits._
+
 /**
   * A probability distribution, from which we can pick values at random (the only abstract method).
   * We can obtain a random variable from this, which is an iterator.
@@ -194,4 +198,36 @@ object ProbabilityDistribution {
       if (p(x)) x else next // Warning: unsafe, if there are no elements satisfying the condition this hangs.
     }
   }
+
+  // The distributions below have total measure different from 1
+
+  case class Scaled[A](base: ProbabilityDistribution[A], scale: Double) extends ProbabilityDistribution[A]{
+    def next = base.next
+  }
+
+  case class Sum[A](first: ProbabilityDistribution[A], second: ProbabilityDistribution[A]) extends ProbabilityDistribution[A]{
+    def next = if (rand.nextDouble <0.5) first.next else second.next
+  }
+
+  case class Flattened[A](base: ProbabilityDistribution[Option[A]]) extends ProbabilityDistribution[A]{
+    def next: A = {
+      val x = base.next
+      x.getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
+    }
+  }
+
+  implicit def vs[T] : VectorSpace[ProbabilityDistribution[T], Double] =
+      new VectorSpace[ProbabilityDistribution[T], Double]{
+        def negate(x: ProbabilityDistribution[T]) =
+          Scaled(x, -1)
+
+        val  zero = FiniteDistribution.empty[T]
+
+        def plus(x: ProbabilityDistribution[T], y: ProbabilityDistribution[T]) = Sum(x, y)
+
+        def timesl(r: Double, x: ProbabilityDistribution[T]) = Scaled(x, r)
+
+        implicit def scalar:Field[Double] = Field[Double]
+      }
+
 }
