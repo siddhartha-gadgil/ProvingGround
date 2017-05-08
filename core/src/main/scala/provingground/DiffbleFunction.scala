@@ -13,7 +13,7 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-case class TangVec[A](point: A, vec: A)
+case class TangVec[+A](point: A, vec: A)
 
 object TangVec{
   def liftLinear[A, B](func: A => B): TangVec[A] => TangVec[B] =
@@ -25,6 +25,9 @@ object TangVec{
               bilinear(pv.point._1, pv.vec._2) + bilinear(pv.vec._1, pv.point._2))
 
   def tangProd[A, B](av: TangVec[A], bw: TangVec[B]) = TangVec((av.point, bw.point), (av.vec, bw.vec))
+
+  def tProd[A, B](pair: (TangVec[A], TangVec[B])) =
+      TangVec((pair._1.point, pair._2.point), (pair._1.vec, pair._2.vec))
 
   implicit def vs[T](implicit bvs: VectorSpace[T, Double]) : VectorSpace[TangVec[T], Double] =
       new VectorSpace[TangVec[T], Double]{
