@@ -13,7 +13,9 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-case class TangVec[+A](point: A, vec: A)
+case class TangVec[+A](point: A, vec: A){
+  def &&[B](that: TangVec[B]) = TangVec((point, that.point), (vec, that.vec))
+}
 
 object TangVec{
   def liftLinear[A, B](func: A => B): TangVec[A] => TangVec[B] =
