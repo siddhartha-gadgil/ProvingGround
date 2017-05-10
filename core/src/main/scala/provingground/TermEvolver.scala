@@ -5,15 +5,15 @@ import provingground.{
   TangVec => T
 }
 
-import TangVec.{liftLinear => lin, liftBilinear => bil, _}
+import TangVec.{liftLinear => lin, liftBilinear => bil}
 
-import scala.language.existentials
+// import scala.language.existentials
 
 import HoTT._
 
 // import FineDeducer._
 
-import spire.algebra._
+// import spire.algebra._
 import spire.implicits._
 
 object TermEvolver{
@@ -42,7 +42,16 @@ object TermEvolver{
     // def flatMapped[B](f: A => PD[B]) : T[PD[B]] = ???
 
     def condMap[B](f: A => Option[B]) = lin((p: PD[A]) => p.condMap (f))(pd)
+
+    def conditioned(pred: A => Boolean) = lin((p: PD[A]) => p.conditioned(pred))(pd)
   }
+
+  def typOpt(x: Term) = x match {
+    case typ: Typ[_] => Some(typ: Typ[Term])
+    case _ => None
+  }
+
+  def justTerm[U <: Term with Subs[U]](x: U) = x: Term
 }
 
 trait ExstFunc{
@@ -53,6 +62,8 @@ trait ExstFunc{
   val func: FuncLike[U, V]
 
   val term: Term = func
+
+  val dom: Typ[Term] = func.dom
 
   def apply(arg: Term) : Option[Term] = if (arg.typ == func.dom) Some(func.asInstanceOf[U]) else None
 }
@@ -71,7 +82,7 @@ object ExstFunc{
   }
 }
 
-class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Double= 0.1, varWeight: Double = 0.3 ){
+class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Double= 0.1, piWeight : Double = 0.1, varWeight: Double = 0.3 ){
   import TermEvolver._
 
   val evolve : T[FD[Term]] => T[PD[Term]] =
@@ -84,21 +95,48 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
             evolveFuncs(init) && evolveWithTyp(init)
           ),
           appl
-        ) <+> (lambdaMix(init), lambdaWeight)
+        ) <+>
+        (lambdaMix(init), lambdaWeight) <+>
+        (piMix(init).map(justTerm[Typ[Term]]), piWeight)
 
   val evolveFuncs : T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) =>
-      evolve(init).condMap(ExstFunc.opt)
+      {evolve(init) <+?> (
+        TunifAppln(
+          evolveFuncs(init) && evolve(init)) ,
+        unApp) <+?> (
+          Tappln(
+            evolveFuncs(init) && evolveWithTyp(init)
+          ),
+          appl
+        ) <+> (lambdaMix(init), lambdaWeight)
+    }.condMap(ExstFunc.opt)
 
-  val evolveWithTyp : T[FD[Term]] => T[Typ[Term] => PD[Term]] = ???
+  val evolveWithTyp : T[FD[Term]] => T[Typ[Term] => PD[Term]] =
+    (tfd: T[FD[Term]]) =>
+      TangVec(
+        (tp: Typ[Term]) => evolveAtTyp(tp)(tfd).point,
+        (tp: Typ[Term]) => evolveAtTyp(tp)(tfd).vec
+      )
 
-  val evolveTyps : T[FD[Term]] => T[PD[Typ[Term]]] = ???
+  val evolveTyps : T[FD[Term]] => T[PD[Typ[Term]]] =
+    (init: T[FD[Term]]) =>
+      {evolve(init) <+?> (
+        TunifAppln(
+          evolveFuncs(init) && evolve(init)) ,
+        unApp) <+?> (
+          Tappln(
+            evolveFuncs(init) && evolveWithTyp(init)
+          ),
+          appl
+        )
+    }.condMap(typOpt) <+>
+    (piMix(init), piWeight)
 
-  def evolveAtTyp(typ: Typ[Term]) =
+  def evolveAtTyp(typ: Typ[Term]) : T[FD[Term]] => T[PD[Term]] =
     (tfd: T[FD[Term]]) => {
-      val res = evolveWithTyp(tfd)
-      TangVec(res.point(typ), res.vec(typ))
-    }
+      evolve(tfd)
+    }.conditioned(_.typ == typ)
 
 
   def unifAppln(x: PD[ExstFunc], y: PD[Term]) = (x product y).map{
@@ -117,10 +155,13 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
   def lambdaMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Term]])) = (tfd: T[FD[Term]]) => {
     val dist =
       lin((fd: FD[Term]) => fd * (1 -wt) + (x, wt))(tfd)
-      // TangVec(
-      // tfd.point * (1- wt) + (x, wt),
-      // tfd.vec * (1- wt) + (x, wt))
     base(dist).map ((y) => x :~> y : Term)
+  }
+
+  def piMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Typ[Term]]])) = (tfd: T[FD[Term]]) => {
+    val dist =
+      lin((fd: FD[Term]) => fd * (1 -wt) + (x, wt))(tfd)
+    base(dist).map ((y) => x ~>: y : Typ[Term])
   }
 
   def lambdaMixTyp(typ: Typ[Term], wt: Double, base: => (T[FD[Term]] => T[PD[Term]])) =
@@ -129,5 +170,24 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
       lambdaMixVar(x, wt, base)
     }
 
+  def piMixTyp(typ: Typ[Term], wt: Double, base: => (T[FD[Term]] => T[PD[Typ[Term]]])) =
+    {
+      val x = typ.Var
+      piMixVar(x, wt, base)
+    }
+
   def lambdaMix(fd: T[FD[Term]]) =  evolveTyps(fd).flatMap((tp) => lambdaMixTyp(tp, varWeight, evolve)(fd))
+
+  def lambdaForTyp(typ: Typ[Term])(fd: T[FD[Term]]) : T[PD[Term]]  = typ match {
+    case FuncTyp(dom : Typ[u], codom : Typ[v]) =>
+      lambdaMixTyp(dom, lambdaWeight, evolveAtTyp(codom))(fd)
+    case PiDefn(variable: Term, value: Typ[u]) =>
+      val x : Term = variable.typ.Var
+      val cod = value.replace(variable, x)
+      lambdaMixTyp(variable.typ, lambdaWeight, evolveAtTyp(cod))(fd)
+    case _ =>
+      TangVec(FD.empty[Term], FD.empty[Term])
+  }
+
+  def piMix(fd: T[FD[Term]]) = evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }

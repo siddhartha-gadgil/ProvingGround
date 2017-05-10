@@ -45,6 +45,10 @@ object TangVec{
         implicit def scalar:Field[Double] = Field[Double]
 
       }
+
+    implicit class OnPoints[A, B](func: TangVec[A] => TangVec[B])(implicit vsA: VectorSpace[A, Double], vsB: VectorSpace[B, Double]){
+      def apply(a: A): B = func(TangVec(a, vsA.zero)).point
+    }
 }
 
 trait DiffbleFunction[A, B] extends (A => B){self =>
