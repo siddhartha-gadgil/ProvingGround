@@ -88,6 +88,9 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   def conditioned(p: A => Boolean): ProbabilityDistribution[A] =
     ProbabilityDistribution.Conditioned(this, p)
 
+  def mapOpt[B](f: A => Option[B]): ProbabilityDistribution[B] =
+    ProbabilityDistribution.MapOpt(this, f)
+
   /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))*/
 }
@@ -123,6 +126,11 @@ object ProbabilityDistribution {
         case Weighted(d, w) => Weighted(d.conditioned(p), w)
       })
 
+    override def mapOpt[B](f: A => Option[B]) =
+      new Mixture(base.mapOpt(f), components map {
+        case Weighted(d, w) => Weighted(d.mapOpt(f), w)
+      })
+
     def next =
       chooseOpt(rand.nextDouble, components) map (_.next) getOrElse (base.next)
   }
@@ -139,6 +147,9 @@ object ProbabilityDistribution {
 
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+> (mixin.conditioned(p), weight)
+
+    override def mapOpt[B](p: A => Option[B]) =
+      base.mapOpt(p) <+> (mixin.mapOpt(p), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next else base.next
@@ -158,6 +169,10 @@ object ProbabilityDistribution {
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+?>
         (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
+
+    override def mapOpt[B](f: A => Option[B]) =
+      base.mapOpt(f) <+?>
+        (mixin.mapOpt((oa) => oa.map(f)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
@@ -200,6 +215,13 @@ object ProbabilityDistribution {
   }
 
   // The distributions below have total measure different from 1
+
+  case class MapOpt[A, B](base: ProbabilityDistribution[A], f: A => Option[B])
+      extends ProbabilityDistribution[B] {
+    def next: B = {
+      f(base.next).getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
+    }
+  }
 
   case class Scaled[A](base: ProbabilityDistribution[A], scale: Double) extends ProbabilityDistribution[A]{
     def next = base.next

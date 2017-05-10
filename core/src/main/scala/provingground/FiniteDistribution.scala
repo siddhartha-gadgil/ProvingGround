@@ -158,10 +158,10 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(newpmf)
   }
 
-  def mapOpt[S](f: T => Option[S]): FiniteDistribution[S] = {
+  override def mapOpt[S](f: T => Option[S]): FiniteDistribution[S] = {
     val newpmf = for (Weighted(elem, wt) <- pmf;
                       felem <- f(elem)) yield Weighted(felem, wt)
-    FiniteDistribution(newpmf)
+  if (newpmf.isEmpty) FiniteDistribution.empty[S] else FiniteDistribution(newpmf).normalized()
   }
 
   def invmap[S](f: S => T, support: Traversable[S]): FiniteDistribution[S] = {

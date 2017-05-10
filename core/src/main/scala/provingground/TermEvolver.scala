@@ -37,6 +37,8 @@ object TermEvolver{
     def map[B](f: A => B) = TangVec(pd.point.map(f), pd.vec.map(f))
 
     def flatMap[B](f: A => T[PD[B]]) = TangVec(pd.point.flatMap( (a) => f(a).point), pd.vec.flatMap((a) => f(a).vec))
+
+    def mapOpt[B](f: A => Option[B]) = TangVec(pd.point.mapOpt(f), pd.vec.mapOpt(f))
   }
 }
 
@@ -60,7 +62,7 @@ object ExstFunc{
     val func = fn
   }
 
-  def opt(t: Term) = t match {
+  def opt(t: Term) : Option[ExstFunc] = t match {
     case fn: FuncLike[u, v] => Some(ExstFunc(fn))
     case _ => None
   }
@@ -81,7 +83,9 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
           appl
         ) <+> (lambdaMix(init), lambdaWeight)
 
-  val evolveFuncs : T[FD[Term]] => T[PD[ExstFunc]] = ???
+  val evolveFuncs : T[FD[Term]] => T[PD[ExstFunc]] =
+    (init: T[FD[Term]]) =>
+      evolve(init).mapOpt(ExstFunc.opt)
 
   val evolveWithTyp : T[FD[Term]] => T[Typ[Term] => PD[Term]] = ???
 
