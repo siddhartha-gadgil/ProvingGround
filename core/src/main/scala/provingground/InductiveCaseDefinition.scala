@@ -71,7 +71,7 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
   self =>
   val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 
-  val defnData : Vector[Term]
+  val defnData: Vector[Term]
 
   val W: F
 
@@ -79,10 +79,11 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   def caseFn(f: => IDF)(arg: H): Option[C]
 
-  case class Funcs(ind: Index) extends IndInducFuncLike[H, C, F, IDFT] { fself =>
+  case class Funcs(ind: Index) extends IndInducFuncLike[H, C, F, IDFT] {
+    fself =>
     val dom = family.pattern.typ(W, ind)
 
-    val domW = self.W
+    val domW  = self.W
     val codXs = self.Xs
 
     val index = ind.terms
@@ -97,7 +98,7 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
     val typ = PiDefn(fibre)
 
-    def newobj = ??? // should not be called
+    def newobj                 = ??? // should not be called
     override lazy val hashCode = (outer, ind).hashCode
 
     override def equals(that: Any) = that match {
@@ -105,8 +106,6 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
         (outer, ind) == (fn.outer, fn.ind)
       case _ => false
     }
-
-
 
     def act(arg: H) =
       caseFn(iterDepFunc)(arg) getOrElse

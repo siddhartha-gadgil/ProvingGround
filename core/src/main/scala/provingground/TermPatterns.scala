@@ -77,16 +77,17 @@ object TermPatterns {
   }
 
   val recFunc = Pattern.partial[Term, IIV] {
-    case rf : RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
+    case rf: RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
   }
 
   val indRecFunc = Pattern.partial[Term, VIIV] {
-    case rf : IndRecFunc[u, v, w] => (rf.index, (rf.dom, (rf.codom, rf.defnData)))
+    case rf: IndRecFunc[u, v, w] =>
+      (rf.index, (rf.dom, (rf.codom, rf.defnData)))
   }
 
   val inducFunc = Pattern.partial[Term, IIV] {
-    case rf : InducFuncLike[u, v] =>
-      val fmly : Term = rf.depcodom match {
+    case rf: InducFuncLike[u, v] =>
+      val fmly: Term = rf.depcodom match {
         case t: Term => t
         case _ =>
           val x = rf.dom.Var
@@ -96,8 +97,8 @@ object TermPatterns {
   }
 
   val indInducFunc = Pattern.partial[Term, VIIV] {
-    case rf : IndInducFuncLike[u, v, w, z] =>
-      val fmly : Term = rf.depcodom match {
+    case rf: IndInducFuncLike[u, v, w, z] =>
+      val fmly: Term = rf.depcodom match {
         case t: Term => t
         case _ =>
           val x = rf.dom.Var
@@ -172,84 +173,82 @@ object TermPatterns {
 
   import TermLang.applyAll
 
-  def buildRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]] = (_) => None) : (Term, (Term, Vector[Term])) => Option[Term] =
-     {
-      case (pt : ProdTyp[u, v], (codom: Typ[w] , data) ) =>
-        applyAll(Some(pt.rec(codom)), data)
-      case (Zero, (codom: Typ[w] , data) ) =>
-        applyAll(Some(Zero.rec(codom)), data)
-      case (Unit, (codom: Typ[w] , data) ) =>
-        applyAll(Some(Unit.rec(codom)), data)
-      case (pt : PlusTyp[u, v], (codom: Typ[w] , data) ) =>
-        applyAll(Some(pt.rec(codom)), data)
-      case (pt : SigmaTyp[u, v], (codom: Typ[w] , data) ) =>
-        applyAll(Some(pt.rec(codom)), data)
-      case (dom: Typ[u], (codom : Typ[v], data)) =>
-        inds(dom) flatMap (
-          (cs) => applyAll(Some(cs.recE(codom)), data)
-        )
-      case _ => None
-    }
+  def buildRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]] = (_) =>
+    None): (Term, (Term, Vector[Term])) => Option[Term] = {
+    case (pt: ProdTyp[u, v], (codom: Typ[w], data)) =>
+      applyAll(Some(pt.rec(codom)), data)
+    case (Zero, (codom: Typ[w], data)) =>
+      applyAll(Some(Zero.rec(codom)), data)
+    case (Unit, (codom: Typ[w], data)) =>
+      applyAll(Some(Unit.rec(codom)), data)
+    case (pt: PlusTyp[u, v], (codom: Typ[w], data)) =>
+      applyAll(Some(pt.rec(codom)), data)
+    case (pt: SigmaTyp[u, v], (codom: Typ[w], data)) =>
+      applyAll(Some(pt.rec(codom)), data)
+    case (dom: Typ[u], (codom: Typ[v], data)) =>
+      inds(dom) flatMap ((cs) => applyAll(Some(cs.recE(codom)), data))
+    case _ => None
+  }
 
-    def buildIndRecDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]] = (_) => None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] =
-      {
-        case (Vector(start, finish), (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn : Func[x, y])))) =>
-          val rf = idt.rec(codom)
-          applyAll(Some(rf), Vector(fn, start, finish))
-        case (index, (dom, (codom : Typ[v], data))) =>
-          inds(dom) flatMap (
-            (cs) => applyAll(Some(cs.recE(codom)), data ++ index)
-          )
-      }
+  def buildIndRecDef(
+      inds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] = (_) =>
+        None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] = {
+    case (Vector(start, finish),
+          (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn: Func[x, y])))) =>
+      val rf = idt.rec(codom)
+      applyAll(Some(rf), Vector(fn, start, finish))
+    case (index, (dom, (codom: Typ[v], data))) =>
+      inds(dom) flatMap ((cs) => applyAll(Some(cs.recE(codom)), data ++ index))
+  }
 
   def fm[U <: Term with Subs[U]](dom: Typ[U], fmly: Term) = {
-    val x = dom.Var
+    val x  = dom.Var
     val tp = fold(fmly)(x)
     tp match {
-      case t : Typ[_] => x :-> t
+      case t: Typ[_] => x :-> t
     }
   }
 
+  def buildIndDef(
+      inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None)
+    : (Term, (Term, Vector[Term])) => Option[Term] = {
+    case (pt: ProdTyp[u, v], (depcodom, data)) =>
+      val x    = pt.first.Var
+      val y    = pt.second.Var
+      val tp   = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
+      val fmly = x :-> (y :-> tp)
+      applyAll(Some(pt.induc(fmly)), data)
+    case (Zero, (depcodom, data)) =>
+      applyAll(Some(Zero.induc(fm(Zero, depcodom))), data)
+    case (Unit, (depcodom, data)) =>
+      applyAll(Some(Unit.induc(fm(Unit, depcodom))), data)
+    case (pt: PlusTyp[u, v], (depcodom, data)) =>
+      applyAll(Some(pt.induc(fm(pt, depcodom))), data)
+    case (pt: SigmaTyp[u, v], (depcodom, data)) =>
+      val x    = pt.fibers.dom.Var
+      val y    = pt.fibers(x).Var
+      val tp   = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
+      val fmly = x :-> (y :-> tp)
+      applyAll(Some(pt.induc(fmly)), data)
+    case (dom: Typ[u], (depcodom, data)) =>
+      inds(dom) flatMap ((cs) =>
+                           applyAll(Some(cs.inducE(fm(cs.typ, depcodom))),
+                                    data))
+    case _ => None
+  }
 
-  def buildIndDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None) : (Term, (Term, Vector[Term])) => Option[Term]=
-     {
-      case (pt : ProdTyp[u, v], (depcodom , data) ) =>
-        val x = pt.first.Var
-        val y = pt.second.Var
-        val tp = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
-        val fmly = x :-> (y :-> tp)
-        applyAll(Some(pt.induc(fmly)), data)
-      case (Zero, (depcodom , data) ) =>
-        applyAll(Some(Zero.induc(fm(Zero, depcodom))), data)
-      case (Unit, (depcodom , data) ) =>
-        applyAll(Some(Unit.induc(fm(Unit, depcodom))), data)
-      case (pt : PlusTyp[u, v], (depcodom , data) ) =>
-        applyAll(Some(pt.induc(fm(pt, depcodom))), data)
-      case (pt : SigmaTyp[u, v], (depcodom , data) ) =>
-        val x = pt.fibers.dom.Var
-        val y = pt.fibers(x).Var
-        val tp = fold(fold(depcodom)(x))(y).asInstanceOf[Typ[Term]]
-        val fmly = x :-> (y :-> tp)
-        applyAll(Some(pt.induc(fmly)), data)
-      case (dom: Typ[u], (depcodom, data)) =>
-        inds(dom) flatMap (
-          (cs) => applyAll(Some(cs.inducE(fm(cs.typ, depcodom))), data)
-        )
-      case _ => None
-    }
-
-    def buildIndIndDef(inds: Term => Option[IndexedConstructorSeqDom[_, Term, _,  _, _]] = (_) => None) : (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term]=
-       {
-        case (Vector(start, finish), (idt: IdentityTyp[u], (depcodom, Vector(fn : Func[x, y])))) =>
-          val rf = idt.induc(depcodom.asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
-          applyAll(Some(rf), Vector(fn, start, finish))
-        case (index, (dom, (depcodom, data))) =>
-          inds(dom) flatMap (
-            (cs) => applyAll(Some(cs.inducE(depcodom)), data ++ index)
-          )
-      }
-
-
-
+  def buildIndIndDef(
+      inds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] = (_) =>
+        None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] = {
+    case (Vector(start, finish),
+          (idt: IdentityTyp[u], (depcodom, Vector(fn: Func[x, y])))) =>
+      val rf = idt.induc(
+        depcodom
+          .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
+      applyAll(Some(rf), Vector(fn, start, finish))
+    case (index, (dom, (depcodom, data))) =>
+      inds(dom) flatMap ((cs) =>
+                           applyAll(Some(cs.inducE(depcodom)), data ++ index))
+  }
   // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }

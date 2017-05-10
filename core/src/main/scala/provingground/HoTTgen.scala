@@ -98,20 +98,21 @@ object HoTTgen {
 	}
    */
 
-  lazy val moves: List[(Move,
-                        AdjDiffbleFunction[FiniteDistribution[Term],
-                                        FiniteDistribution[Term]])] = List(
-    (Move.appl, CombinationFn(funcappl, isFunc)),
-    (Move.arrow, CombinationFn(functyp, isTyp)),
-    (Move.pi, MoveFn(pityp)),
-    (Move.sigma, MoveFn(sigmatyp)),
-    (Move.pairt, CombinationFn(pairtyp, isTyp)),
-    (Move.pair, CombinationFn(PairTerm)),
-    (Move.paircons, MoveFn(paircons)),
-    (Move.icons, MoveFn(icons)),
-    (Move.jcons, MoveFn(icons)),
-    (Move.id, Id[FiniteDistribution[Term]])
-  )
+  lazy val moves: List[
+    (Move,
+     AdjDiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
+    List(
+      (Move.appl, CombinationFn(funcappl, isFunc)),
+      (Move.arrow, CombinationFn(functyp, isTyp)),
+      (Move.pi, MoveFn(pityp)),
+      (Move.sigma, MoveFn(sigmatyp)),
+      (Move.pairt, CombinationFn(pairtyp, isTyp)),
+      (Move.pair, CombinationFn(PairTerm)),
+      (Move.paircons, MoveFn(paircons)),
+      (Move.icons, MoveFn(icons)),
+      (Move.jcons, MoveFn(icons)),
+      (Move.id, Id[FiniteDistribution[Term]])
+    )
 
   object Move {
     case object lambda extends Move
@@ -148,9 +149,9 @@ object HoTTgen {
 
   def lambdaFn[M](
       l: M,
-      f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]),
-                         (FiniteDistribution[M], FiniteDistribution[Term])])(
-      typ: Typ[Term]) = {
+      f: AdjDiffbleFunction[
+        (FiniteDistribution[M], FiniteDistribution[Term]),
+        (FiniteDistribution[M], FiniteDistribution[Term])])(typ: Typ[Term]) = {
     import AdjDiffbleFunction._
     val x    = typ.Var
     val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
@@ -163,7 +164,7 @@ object HoTTgen {
 
   def lambdaSum[M](l: M)(
       f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]),
-                         (FiniteDistribution[M], FiniteDistribution[Term])]
+                            (FiniteDistribution[M], FiniteDistribution[Term])]
   ) = {
     val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
       val terms = fd._2.supp
@@ -206,8 +207,9 @@ object HoTTgen {
     mapTyp.adjDer(d)(shift)
   }
 
-  def dynTypFlow(dyn: AdjDiffbleFunction[FiniteDistribution[Term],
-                                      FiniteDistribution[Term]]) = {
+  def dynTypFlow(
+      dyn: AdjDiffbleFunction[FiniteDistribution[Term],
+                              FiniteDistribution[Term]]) = {
     typFlow ^: dyn
   }
 }

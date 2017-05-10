@@ -11,7 +11,7 @@ import HList._
 trait Subst[A] {
   def subst(a: A)(x: Term, y: Term): A
 
-  def terms(a: A) : Vector[Term] // reusing this to list terms in an HList
+  def terms(a: A): Vector[Term] // reusing this to list terms in an HList
 }
 
 object Subst {
@@ -38,7 +38,9 @@ object Subst {
         implicitly[Subst[U]].subst(a.head)(x, y) :: implicitly[Subst[V]]
           .subst(a.tail)(x, y)
 
-      def terms(a: U :: V) = implicitly[Subst[U]].terms(a.head) ++ implicitly[Subst[V]].terms(a.tail)
+      def terms(a: U :: V) =
+        implicitly[Subst[U]].terms(a.head) ++ implicitly[Subst[V]]
+          .terms(a.tail)
     }
 
   // implicit def pairSubst[U: Subst, V: Subst]: Subst[(U, V)] =
@@ -72,7 +74,7 @@ sealed abstract class TypFamilyPtn[
       type IDFT <: Term with Subs[IDFT]
     }
 
-  def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_]
+  def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_]
 
   def getMapper[C <: Term with Subs[C],
                 IF <: Term with Subs[IF],
@@ -102,9 +104,10 @@ object TypFamilyPtn {
 
     def mapper[C <: Term with Subs[C]] = idTypFamilyMapper[H, C]
 
-    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] = depCod match {
-      case tp: Typ[u] => tp
-    }
+    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
+      depCod match {
+        case tp: Typ[u] => tp
+      }
 
   }
 
@@ -131,9 +134,8 @@ object TypFamilyPtn {
     def mapper[C <: Term with Subs[C]] =
       funcTypFamilyMapper(tail.mapper[C], implicitly[Subst[TI]])
 
-    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] =
+    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       tail.finalCod(fold(depCod)(head.Var))
-
 
   }
 
@@ -162,11 +164,10 @@ object TypFamilyPtn {
       depFuncTypFamilyMapper(tailfibre(head.Var).mapper[C],
                              implicitly[Subst[TI]])
 
-     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT) : Typ[_] =
-       {
-         val x = head.Var
-         tailfibre(x).finalCod(fold(depCod)(x))
-     }
+    def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] = {
+      val x = head.Var
+      tailfibre(x).finalCod(fold(depCod)(x))
+    }
   }
 
   sealed trait Exst {

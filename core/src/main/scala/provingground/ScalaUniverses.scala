@@ -19,7 +19,9 @@ case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U])
 
   def variable(name: AnySym) = univ
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = this
 }
@@ -67,7 +69,9 @@ case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
     PiTyp(typFmly)
   }
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = this
 }
@@ -108,7 +112,9 @@ case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
 
   def variable(name: AnySym) = FineSymbTyp(name, symobj)
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = this
 }
@@ -131,7 +137,9 @@ object ScalaUniverses {
     ScalaUniv(HigherUniv(sc.univ))
   }
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   /**
     * implicitly build universe with elements FuncTyps from universes for domain and codomain.

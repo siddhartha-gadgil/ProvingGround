@@ -219,37 +219,43 @@ object ProbabilityDistribution {
   case class MapOpt[A, B](base: ProbabilityDistribution[A], f: A => Option[B])
       extends ProbabilityDistribution[B] {
     def next: B = {
-      f(base.next).getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
+      f(base.next)
+        .getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
     }
   }
 
-  case class Scaled[A](base: ProbabilityDistribution[A], scale: Double) extends ProbabilityDistribution[A]{
+  case class Scaled[A](base: ProbabilityDistribution[A], scale: Double)
+      extends ProbabilityDistribution[A] {
     def next = base.next
   }
 
-  case class Sum[A](first: ProbabilityDistribution[A], second: ProbabilityDistribution[A]) extends ProbabilityDistribution[A]{
-    def next = if (rand.nextDouble <0.5) first.next else second.next
+  case class Sum[A](first: ProbabilityDistribution[A],
+                    second: ProbabilityDistribution[A])
+      extends ProbabilityDistribution[A] {
+    def next = if (rand.nextDouble < 0.5) first.next else second.next
   }
 
-  case class Flattened[A](base: ProbabilityDistribution[Option[A]]) extends ProbabilityDistribution[A]{
+  case class Flattened[A](base: ProbabilityDistribution[Option[A]])
+      extends ProbabilityDistribution[A] {
     def next: A = {
       val x = base.next
       x.getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
     }
   }
 
-  implicit def vs[T] : VectorSpace[ProbabilityDistribution[T], Double] =
-      new VectorSpace[ProbabilityDistribution[T], Double]{
-        def negate(x: ProbabilityDistribution[T]) =
-          Scaled(x, -1)
+  implicit def vs[T]: VectorSpace[ProbabilityDistribution[T], Double] =
+    new VectorSpace[ProbabilityDistribution[T], Double] {
+      def negate(x: ProbabilityDistribution[T]) =
+        Scaled(x, -1)
 
-        val  zero = FiniteDistribution.empty[T]
+      val zero = FiniteDistribution.empty[T]
 
-        def plus(x: ProbabilityDistribution[T], y: ProbabilityDistribution[T]) = Sum(x, y)
+      def plus(x: ProbabilityDistribution[T], y: ProbabilityDistribution[T]) =
+        Sum(x, y)
 
-        def timesl(r: Double, x: ProbabilityDistribution[T]) = Scaled(x, r)
+      def timesl(r: Double, x: ProbabilityDistribution[T]) = Scaled(x, r)
 
-        implicit def scalar:Field[Double] = Field[Double]
-      }
+      implicit def scalar: Field[Double] = Field[Double]
+    }
 
 }

@@ -29,19 +29,19 @@ lazy val commonSettings = baseSettings ++ Seq(
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.typelevel" %% "spire"     % "0.14.1",
-      "com.lihaoyi"    %% "fansi"     % "0.2.3",
-      "com.lihaoyi"    %% "upickle"   % "0.4.4",
-      "com.chuusai"    %% "shapeless" % "2.3.2",
-      "org.typelevel"  %% "cats"      % "0.9.0",
-      "com.lihaoyi"    % "ammonite"   % ammV cross CrossVersion.full
+      "com.lihaoyi"   %% "fansi"     % "0.2.3",
+      "com.lihaoyi"   %% "upickle"   % "0.4.4",
+      "com.chuusai"   %% "shapeless" % "2.3.2",
+      "org.typelevel" %% "cats"      % "0.9.0",
+      "com.lihaoyi"   % "ammonite"   % ammV cross CrossVersion.full
     ),
     scalacOptions in Compile ++= Seq("-unchecked",
-                          "-deprecation",
-                          "-feature",
-                          "-language:existentials"),
-
-      scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits", "-implicits-show-all")
-
+                                     "-deprecation",
+                                     "-feature",
+                                     "-language:existentials"),
+    scalacOptions in (Compile, doc) ++= Seq("-diagrams",
+                                            "-implicits",
+                                            "-implicits-show-all")
   )
 
 val akkaV = "2.4.17"
@@ -59,10 +59,10 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
-    "org.scalactic"          %% "scalactic"     % "3.0.1",
-    "org.scalatest"          %% "scalatest"     % "3.0.1" % "test",
+    "org.scalactic" %% "scalactic" % "3.0.1",
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
-    "com.typesafe" % "config"  % "1.3.0",
+    "com.typesafe" % "config" % "1.3.0",
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
@@ -145,13 +145,13 @@ lazy val client = project
     // sourceMapsDirectories += coreJS.base / "..",
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),
-      resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
-      resolvers += "jitpack" at "https://jitpack.io",
+    resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
+    resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
-      "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"  %%% "upickle"     % "0.4.4",
-       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4"//,
+      "org.scala-js"     %%% "scalajs-dom" % "0.9.1",
+      "com.lihaoyi"      %%% "scalatags"   % "0.6.3",
+      "com.lihaoyi"      %%% "upickle"     % "0.4.4",
+      "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )
@@ -175,29 +175,29 @@ lazy val server = (project in file("server"))
   .settings(commonSettings: _*)
   .settings(
     name := "provingground-server",
-  scalaVersion := scalaV,
-  scalaJSProjects := Seq(client),
-  pipelineStages in Assets := Seq(scalaJSPipeline),
-  // triggers scalaJSPipeline when using compile or continuous compilation
-  // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
-  libraryDependencies ++= Seq(
-    "com.typesafe.akka" %% "akka-http" % "10.0.0",
-    "com.vmunier" %% "scalajs-scripts" % "1.1.0",
-    "com.simianquant" %% "ammonite-kernel" % "0.3.0",
-    "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
-    "com.typesafe.akka"      %% "akka-actor"    % akkaV,
-    "com.typesafe.akka"      %% "akka-stream"    % akkaV,
-    "com.github.scopt" %% "scopt" % "3.5.0"
+    scalaVersion := scalaV,
+    scalaJSProjects := Seq(client),
+    pipelineStages in Assets := Seq(scalaJSPipeline),
+    // triggers scalaJSPipeline when using compile or continuous compilation
+    // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-http"       % "10.0.0",
+      "com.vmunier"       %% "scalajs-scripts" % "1.1.0",
+      "com.simianquant"   %% "ammonite-kernel" % "0.3.0",
+      "de.heikoseeberger" %% "akka-sse"        % "2.0.0",
+      "com.typesafe.akka" %% "akka-actor"      % akkaV,
+      "com.typesafe.akka" %% "akka-stream"     % akkaV,
+      "com.github.scopt"  %% "scopt"           % "3.5.0"
+    ),
+    resources in Compile += (fastOptJS in (client, Compile)).value.data
+    // WebKeys.packagePrefix in Assets := "public/",
+    // managedClasspath in Runtime += (packageBin in Assets).value,
+    // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
 
-  ),
-  resources in Compile += (fastOptJS in (client, Compile)).value.data
-  // WebKeys.packagePrefix in Assets := "public/",
-  // managedClasspath in Runtime += (packageBin in Assets).value,
-  // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
-
-  // EclipseKeys.preTasks := Seq(compile in Compile)
-).enablePlugins(JavaAppPackaging, UniversalPlugin).
-  dependsOn(coreJVM)
+    // EclipseKeys.preTasks := Seq(compile in Compile)
+  )
+  .enablePlugins(JavaAppPackaging, UniversalPlugin)
+  .dependsOn(coreJVM)
 
 lazy val functionfinder = project
   .settings(commonSettings: _*)

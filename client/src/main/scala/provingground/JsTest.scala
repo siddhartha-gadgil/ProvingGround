@@ -16,7 +16,8 @@ import HoTT.{id => _, _}
 object ScalaJSExample {
   def main(): Unit = {
     // import org.scalajs.dom.document._
-    dom.document.getElementById("scalajsShoutOut").textContent = HoTT.Type.toString
+    dom.document.getElementById("scalajsShoutOut").textContent =
+      HoTT.Type.toString
 
     import org.scalajs.dom.ext._
 
@@ -45,21 +46,20 @@ object ScalaJSExample {
       ticks.appendChild(p("tick").render)
     }
 
-
     box.onchange = (e: dom.Event) => {
       echo.textContent = box.value
-      Ajax.post("/kernel", box.value).foreach{(xhr) => {
+      Ajax.post("/kernel", box.value).foreach { (xhr) =>
+        {
           val answer = xhr.responseText
           results.appendChild(p(answer).render)
+        }
       }
-    }
 
     }
 
     val target = dom.document.getElementById("jsdiv")
 
     val (animalA, animalB) = ("fox", "dog")
-
 
     target.appendChild(
       div(
@@ -76,12 +76,12 @@ object ScalaJSExample {
         p("ammonite results"),
         results,
         ticks
-  ).render
-)
+      ).render
+    )
 
-  // Ace editor code
+    // Ace editor code
 
-  CodeEditorJS.main()
+    CodeEditorJS.main()
 
   }
 }

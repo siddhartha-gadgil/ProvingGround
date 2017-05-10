@@ -8,7 +8,7 @@ import TLImplicits._
 
 import shapeless._
 
-object Vecs{
+object Vecs {
   import Nats._
 
   val A = "A" :: Type

@@ -133,7 +133,7 @@ object FiniteDistributionLearner {
     */
   case class NewVertex[V](v: V)
       extends AdjDiffbleFunction[(Double, FiniteDistribution[V]),
-                              FiniteDistribution[V]] {
+                                 FiniteDistribution[V]] {
     val func = (wp: (Double, FiniteDistribution[V])) =>
       wp._2 * (1 - wp._1) + (v, wp._1)
 
@@ -150,8 +150,9 @@ object FiniteDistributionLearner {
     * the smooth function being defined is p(m)f.
     */
   def weightedDyn[M, X: LinearStructure: InnerProduct]
-    : (M, AdjDiffbleFunction[X, X]) => AdjDiffbleFunction[(FiniteDistribution[M], X),
-                                                    X] =
+    : (M, AdjDiffbleFunction[X, X]) => AdjDiffbleFunction[
+      (FiniteDistribution[M], X),
+      X] =
     (m, fn) => {
       val pm  = Proj1[FiniteDistribution[M], X]
       val scm = Evaluate(m)
@@ -163,9 +164,10 @@ object FiniteDistributionLearner {
       fnsum(atM, fv) andthen ScProd[X]
     }
 
-  case class ExtendM[M, X](fn: AdjDiffbleFunction[(FiniteDistribution[M], X), X])
+  case class ExtendM[M, X](
+      fn: AdjDiffbleFunction[(FiniteDistribution[M], X), X])
       extends AdjDiffbleFunction[(FiniteDistribution[M], X),
-                              (FiniteDistribution[M], X)] {
+                                 (FiniteDistribution[M], X)] {
     val func = (mv: (FiniteDistribution[M], X)) => (mv._1, fn.func(mv))
 
     val adjDer = (mv: (FiniteDistribution[M], X)) =>
@@ -176,10 +178,9 @@ object FiniteDistributionLearner {
   /**
     * Extend differentiable function by identity on M.
     */
-  def extendM[M, X](
-      fn: AdjDiffbleFunction[(FiniteDistribution[M], X), X]): AdjDiffbleFunction[
-    (FiniteDistribution[M], X),
-    (FiniteDistribution[M], X)] = {
+  def extendM[M, X](fn: AdjDiffbleFunction[(FiniteDistribution[M], X), X])
+    : AdjDiffbleFunction[(FiniteDistribution[M], X),
+                         (FiniteDistribution[M], X)] = {
     ExtendM(fn)
   }
 
@@ -200,6 +201,6 @@ object FiniteDistributionLearner {
 
   def sampleV[M, V](N: Double)
     : AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                      (FiniteDistribution[M], FiniteDistribution[V])] =
+                         (FiniteDistribution[M], FiniteDistribution[V])] =
     block(id[FiniteDistribution[M]], sample(N))
 }

@@ -62,21 +62,22 @@ object FiniteDistribution {
     (dists :\ FiniteDistribution.empty[T])(_ ++ _)
   }
 
-  implicit def vs[T] : InnerProductSpace[FiniteDistribution[T], Double] =
-      new InnerProductSpace[FiniteDistribution[T], Double]{
-        def negate(x: FiniteDistribution[T]) =
-          FiniteDistribution(x.pmf.map {case Weighted(x, w) => Weighted(x, -w) })
+  implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
+    new InnerProductSpace[FiniteDistribution[T], Double] {
+      def negate(x: FiniteDistribution[T]) =
+        FiniteDistribution(
+          x.pmf.map { case Weighted(x, w) => Weighted(x, -w) })
 
-        val  zero = empty[T]
+      val zero = empty[T]
 
-        def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
+      def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
 
-        def timesl(r: Double, x: FiniteDistribution[T]) = x * r
+      def timesl(r: Double, x: FiniteDistribution[T]) = x * r
 
-        implicit def scalar:Field[Double] = Field[Double]
+      implicit def scalar: Field[Double] = Field[Double]
 
-        def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
-      }
+      def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
+    }
 
   implicit def FiniteDistVec[T] =
     LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty,

@@ -459,7 +459,7 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
       head: IndexedConstructor[HShape, H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
 
-  def subs(x: Term, y: Term) : IndexedConstructorSeqDom[SS, H, F, Index, Intros]
+  def subs(x: Term, y: Term): IndexedConstructorSeqDom[SS, H, F, Index, Intros]
 }
 
 object IndexedConstructorSeqDom {
@@ -547,6 +547,7 @@ object IndexedConstructorSeqDom {
 
     val intros = pattern.symbcons(name, W) :: tail.intros
 
-    def subs(x: Term, y: Term) = Cons(name, pattern.subs(x, y), tail.subs(x, y))
+    def subs(x: Term, y: Term) =
+      Cons(name, pattern.subs(x, y), tail.subs(x, y))
   }
 }

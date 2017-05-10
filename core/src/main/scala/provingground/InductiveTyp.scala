@@ -41,7 +41,9 @@ case class InductiveTypDefinition[C <: Term with Subs[C]](
 
   def subs(x: Term, y: Term) = this
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   /** As seen from class InductiveTypDefinition, the missing signatures are as follows.
     *  *  For convenience, these are usable as stub implementations.  */

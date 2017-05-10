@@ -219,7 +219,9 @@ class ScalaTyp[A] extends Typ[RepTerm[A]] {
   def variable(name: AnySym): RepTerm[A] =
     RepSymbObj[A, RepTerm[A]](name, this)
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = (x, y) match {
     case (xt: Typ[_], yt: Typ[_]) if (xt == this) =>
@@ -249,7 +251,9 @@ case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
 
   def subs(x: Term, y: Term) = this
 
-  def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def variable(name: AnySym) = SymbScalaTyp[A](name)
 }
@@ -438,7 +442,9 @@ object ScalaRep {
 
     val typ = dom ->: codom
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(u: U) = u match {
       case domrep(v) => dfn(v)

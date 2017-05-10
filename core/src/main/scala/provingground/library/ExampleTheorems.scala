@@ -8,14 +8,14 @@ import TLImplicits._
 
 import shapeless._
 
-object SimpleEvens{
+object SimpleEvens {
   import Nats.{Nat => Nt, _}
-  val isEven = "isEven" :: Nt ->: Type
-  val zeroEven = "0even" :: isEven(zero)
+  val isEven      = "isEven" :: Nt ->: Type
+  val zeroEven    = "0even" :: isEven(zero)
   val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
 }
 
-object DoubleEven{
+object DoubleEven {
   import Nats.{Nat => Nt, _}
 
   import SimpleEvens._
@@ -27,17 +27,16 @@ object DoubleEven{
   val inductor = NatInd.induc(n :-> isEven(double(n)))
 
   val pf =
-    inductor(
-       zeroEven){
-         n :~> (
-           hyp :-> (
-             plusTwoEven(double(n))(hyp)
-             )
-             )
-       }  !: thm
+    inductor(zeroEven) {
+      n :~> (
+        hyp :-> (
+          plusTwoEven(double(n))(hyp)
+        )
+      )
+    } !: thm
 }
 
-object SuccNOrNEven{
+object SuccNOrNEven {
   import SimpleEvens._
 
   import Nats.{Nat => Nt, _}
@@ -53,17 +52,19 @@ object SuccNOrNEven{
   val thm = n ~>: (claim(n))
 
   val step = n :~> {
-    (claim(n).rec(claim(succ(n)))){
-      hyp1 :-> (claim(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{
-        hyp2 :-> (claim(succ(n)).incl1((hyp2)))}
-      }
+    (claim(n).rec(claim(succ(n)))) {
+      hyp1 :-> (claim(succ(n)).incl2(plusTwoEven(n)(hyp1)))
+    } {
+      hyp2 :-> (claim(succ(n)).incl1((hyp2)))
+    }
+  }
 
   val inductor = NatInd.induc(claim)
 
   val pf = inductor(base)(step) !: thm
 }
 
-object LocalConstImpliesConst{
+object LocalConstImpliesConst {
   import Nats.{Nat => Nt, _}
 
   val A = "A" :: Type
@@ -77,11 +78,13 @@ object LocalConstImpliesConst{
   val base = f(zero).refl
 
   val hyp = "hypothesis" :: (f(zero) =:= f(n))
-  val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
+  val step = hyp :-> {
+    IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n))
+  }
 
   val thm = n ~>: (claim(n))
 
   val inductor = NatInd.induc(claim)
 
-  val pf = inductor(n :~> step)  !: thm
+  val pf = inductor(n :~> step) !: thm
 }

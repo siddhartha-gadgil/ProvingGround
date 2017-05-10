@@ -295,39 +295,42 @@ object TreePatterns {
         case Node("NP", x) => x
       })
 
-  def phraseFromVec(s: Vector[String]) : Pattern[Tree, Vector] = Pattern[Tree, Vector](
-    (t: Tree) =>
-      s match {
-        case Vector("_") => Some(Vector(t))
-        case Vector(w) =>
-          t match {
-            case Twig(u) if u == w => Some(Vector())
-            case _ => None
-          }
-        case Vector(w, "_") =>
-          t match {
-            case WordDash(u, v) if u == w =>  Some(Vector(v))
-            case _ => None
-          }
-        case Vector("_", w) =>
-          t match {
-            case DashWord(a, b) if b == w => Some(Vector(a))
-          }
-        case "_" +: w +: tail =>
-          t match {
-            case DashWordDash(a, b, c) if b == w =>
-              phraseFromVec(tail).unapply(c).map (a +: _)
-            case _ => None
-          }
-        case w +: "_" +: tail =>
-          t match {
-            case WordDashDash(a, b, c) if a == w => phraseFromVec(tail).unapply(c).map (b +: _)
-            case WordDash(u, v) if u == v => phraseFromVec("_" +: tail).unapply(v)
-            case _ => None
-          }
-        case _ => None
+  def phraseFromVec(s: Vector[String]): Pattern[Tree, Vector] =
+    Pattern[Tree, Vector](
+      (t: Tree) =>
+        s match {
+          case Vector("_") => Some(Vector(t))
+          case Vector(w) =>
+            t match {
+              case Twig(u) if u == w => Some(Vector())
+              case _                 => None
+            }
+          case Vector(w, "_") =>
+            t match {
+              case WordDash(u, v) if u == w => Some(Vector(v))
+              case _                        => None
+            }
+          case Vector("_", w) =>
+            t match {
+              case DashWord(a, b) if b == w => Some(Vector(a))
+            }
+          case "_" +: w +: tail =>
+            t match {
+              case DashWordDash(a, b, c) if b == w =>
+                phraseFromVec(tail).unapply(c).map(a +: _)
+              case _ => None
+            }
+          case w +: "_" +: tail =>
+            t match {
+              case WordDashDash(a, b, c) if a == w =>
+                phraseFromVec(tail).unapply(c).map(b +: _)
+              case WordDash(u, v) if u == v =>
+                phraseFromVec("_" +: tail).unapply(v)
+              case _ => None
+            }
+          case _ => None
       }
-  )
+    )
 
   def phrase(s: String) = phraseFromVec(s.split(" ").toVector)
 }
@@ -335,33 +338,33 @@ object TreePatterns {
 object TreeToMath {
   val npvp =
     TreePatterns.NPVP.>>>[MathExpr]({
-          case (np, vp) => MathExpr.NPVP(np, vp)
-        })
+      case (np, vp) => MathExpr.NPVP(np, vp)
+    })
 
   val verbObj =
     TreePatterns.VerbObj.>>>[MathExpr]({
-          case (vp, np) => MathExpr.VerbObj(vp, np)
-        })
+      case (vp, np) => MathExpr.VerbObj(vp, np)
+    })
 
   val verbAdj =
     TreePatterns.VerbAdj.>>>[MathExpr]({
-          case (vp, adj) => MathExpr.VerbAdj(vp, adj)
-        })
+      case (vp, adj) => MathExpr.VerbAdj(vp, adj)
+    })
 
   val verbNotObj =
     TreePatterns.VerbNotObj.>>>[MathExpr]({
-          case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
-        })
+      case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
+    })
 
   val verbNotAdj =
     TreePatterns.VerbNotAdj.>>>[MathExpr]({
-          case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
-        })
+      case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
+    })
 
   val pp =
     TreePatterns.PP.>>>[MathExpr]({
-          case (pp, np) => MathExpr.PP(false, pp, np)
-        })
+      case (pp, np) => MathExpr.PP(false, pp, np)
+    })
 
   val nn = TreePatterns.NN.>>>[MathExpr](MathExpr.NN(_))
 
@@ -375,33 +378,33 @@ object TreeToMath {
 
   val dpBase =
     TreePatterns.DPBase.>>>[MathExpr]({
-          case (det, (adjs, nnOpt)) =>
-            MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)
-        })
+      case (det, (adjs, nnOpt)) =>
+        MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)
+    })
 
   val dpBaseZero =
     TreePatterns.DPBaseZero.>>>[MathExpr]({
-          case (adjs, nnOpt) =>
-            MathExpr.DP(MathExpr.Determiner.Zero, adjs, nnOpt)
-        })
+      case (adjs, nnOpt) =>
+        MathExpr.DP(MathExpr.Determiner.Zero, adjs, nnOpt)
+    })
 
   val dpQuant =
     TreePatterns.DPQuant.>>>[MathExpr]({
-          case (det, (adjs, np)) =>
-            MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))
-        })
+      case (det, (adjs, np)) =>
+        MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))
+    })
 
   val dpBaseQuant =
     TreePatterns.DPBaseQuant.>>>[MathExpr]({
-          case (det, (adjs, (np, npp))) =>
-            MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
-        })
+      case (det, (adjs, (np, npp))) =>
+        MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
+    })
 
   val dpBaseQuantZero =
     TreePatterns.DPBaseQuantZero.>>>[MathExpr]({
-          case (adjs, (np, npp)) =>
-            MathExpr.DP(MathExpr.Determiner.Zero, adjs, Some(np), Some(npp))
-        })
+      case (adjs, (np, npp)) =>
+        MathExpr.DP(MathExpr.Determiner.Zero, adjs, Some(np), Some(npp))
+    })
 
   val addPP =
     TreePatterns.NPPP.>>[MathExpr] {
@@ -419,13 +422,13 @@ object TreeToMath {
 
   val jjpp =
     TreePatterns.JJPP.>>>[MathExpr]({
-          case (adj, pps) => MathExpr.JJPP(adj, pps)
-        })
+      case (adj, pps) => MathExpr.JJPP(adj, pps)
+    })
 
   val verbpp =
     TreePatterns.VerbPP.>>>[MathExpr]({
-          case (verb, pps) => MathExpr.VerbPP(verb, pps)
-        })
+      case (verb, pps) => MathExpr.VerbPP(verb, pps)
+    })
 
   val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
 
@@ -459,8 +462,8 @@ object TreeToMath {
 
   val ifThen =
     TreePatterns.IfTreeSent.>>>[MathExpr]({
-          case (x, y) => MathExpr.IfThen(x, y)
-        })
+      case (x, y) => MathExpr.IfThen(x, y)
+    })
 
   val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 

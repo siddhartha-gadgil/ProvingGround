@@ -15,18 +15,17 @@ object Nats {
 
   val N = Stream.iterate(zero)(succ)
 
-  val n          = "n" :: Nat
-  val m    = "m" :: Nat
+  val n = "n" :: Nat
+  val m = "m" :: Nat
 
   val recNN  = NatInd.rec(Nat)
   val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
 
   val recNNN = NatInd.rec(Nat ->: Nat)
-  val addn = "add(n)" :: Nat ->: Nat
-  val add  = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))))))
+  val addn   = "add(n)" :: Nat ->: Nat
+  val add    = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))))))
 
   lazy val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
-
 
   val ackm = "ack(m)" :: Nat ->: Nat
 

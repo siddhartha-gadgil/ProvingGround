@@ -292,7 +292,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(x: LocalTerm) = x match {
       case Literal(a) =>
@@ -326,7 +328,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(b)                         => Literal(a + b)
@@ -349,7 +353,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = {
 //      println(s"AddTerm($x) applied to $y")
@@ -418,7 +424,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(x: LocalTerm) = x match {
       case Literal(a) =>
@@ -458,7 +466,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(a)                          => Literal(b * a)
@@ -482,7 +492,9 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
       case Literal(a)                          => prod(Literal(a))(x)
@@ -520,7 +532,7 @@ object SymbolicCRing extends LiteralParser {
         case _                           => None
       }
     case tp: SymbolicCRing[a] => Try(tp.Literal.fromInt(str.toInt)).toOption
-    case _                   => None
+    case _                    => None
   }
 
   def literal(term: Term) = term.typ match {

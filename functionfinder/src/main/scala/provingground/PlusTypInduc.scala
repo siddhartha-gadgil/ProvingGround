@@ -23,7 +23,9 @@ object PlusTypInduc {
 
     val typ = (dom: Typ[Term]) ->: codom
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(u: Term) = u match {
       case FirstIncl(`first`, a: Term) => firstfn(a)
@@ -56,7 +58,9 @@ object PlusTypInduc {
 
     val typ = PiDefn(depcodom)
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(u: Term) = u match {
       case FirstIncl(`first`, a: Term) => firstfn(a)

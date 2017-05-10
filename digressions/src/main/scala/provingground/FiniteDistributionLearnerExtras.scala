@@ -53,7 +53,7 @@ object FiniteDistributionLearnerExtras {
 
   def dynsum[M: LinearStructure, V: LinearStructure] =
     vsum[AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                         FiniteDistribution[V]]]
+                            FiniteDistribution[V]]]
 
   // Generic helpers
 
@@ -112,7 +112,7 @@ object FiniteDistributionLearnerExtras {
 
   private type DynFn[M, V] =
     AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    FiniteDistribution[V]]
+                       FiniteDistribution[V]]
 
   /**
     * smooth function corresponding to adding the V distributions for two given smooth functions.
@@ -160,7 +160,7 @@ object FiniteDistributionLearnerExtras {
     */
   def bindFn[M, V](m: M,
                    fn: AdjDiffbleFunction[(Double, FiniteDistribution[V]),
-                                       FiniteDistribution[V]]) = {
+                                          FiniteDistribution[V]]) = {
     val func = (csv: (FiniteDistribution[M], FiniteDistribution[V])) => {
       val c = csv._1(m)
       val v = csv._2
@@ -215,7 +215,7 @@ object FiniteDistributionLearnerExtras {
 
   private type DS[M, V] =
     AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    (FiniteDistribution[M], FiniteDistribution[V])]
+                       (FiniteDistribution[M], FiniteDistribution[V])]
 
   def sumDF[M, V](fst: => DS[M, V], scnd: => DS[M, V]) = {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>
@@ -350,7 +350,7 @@ object FiniteDistributionLearnerExtras {
     */
   def learnstep[M, V](
       f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                         (FiniteDistribution[M], FiniteDistribution[V])],
+                            (FiniteDistribution[M], FiniteDistribution[V])],
       epsilon: Double,
       feedback: (FiniteDistribution[M], FiniteDistribution[V]) => (FiniteDistribution[
                                                                      M],
@@ -400,7 +400,7 @@ object FiniteDistributionLearnerExtras {
                  t: M,
                  m: M,
                  export: => AdjDiffbleFunction[FiniteDistribution[V],
-                                            FiniteDistribution[V]],
+                                               FiniteDistribution[V]],
                  d: Int = depth,
                  isleDepth: Int => Int): DynFn[M, V] = {
       def iternext =
@@ -429,7 +429,7 @@ object FiniteDistributionLearnerExtras {
                t: M,
                m: M,
                export: => AdjDiffbleFunction[FiniteDistribution[V],
-                                          FiniteDistribution[V]],
+                                             FiniteDistribution[V]],
                d: Int = depth,
                isleDepth: Int => Int): DynFn[M, V] = {
       def iternext =
@@ -445,7 +445,7 @@ object FiniteDistributionLearnerExtras {
                 t: M,
                 m: M,
                 export: => AdjDiffbleFunction[FiniteDistribution[V],
-                                           FiniteDistribution[V]],
+                                              FiniteDistribution[V]],
                 isleDepth: Int => Int = (n) => n + 1) =
       new IterDynSys(withIsle(v: V, t: M, m: M, export, depth, isleDepth),
                      steps,
@@ -456,7 +456,7 @@ object FiniteDistributionLearnerExtras {
 
   type DynF[M, V] =
     AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
-                    (FiniteDistribution[M], FiniteDistribution[V])]
+                       (FiniteDistribution[M], FiniteDistribution[V])]
 
   def sumF[M, V](fst: => DynF[M, V], scnd: => DynF[M, V]) = {
     val func = (st: (FiniteDistribution[M], FiniteDistribution[V])) =>

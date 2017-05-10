@@ -122,16 +122,19 @@ object HoTT {
   }
 
   // returns x after modifying to avoid clashes of variables
-  def avoidVars[U<: Term with Subs[U]](t: Term, x: U): U = x match {
+  def avoidVars[U <: Term with Subs[U]](t: Term, x: U): U = x match {
     case ll: LambdaFixed[u, v] =>
       if (t.dependsOn(ll.variable)) {
         val newvar = ll.variable.newobj
-          LambdaFixed(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
-        } else LambdaFixed(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
+        LambdaFixed(
+          newvar,
+          avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
+      } else LambdaFixed(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
     case ll: LambdaLike[u, v] =>
       if (t.dependsOn(ll.variable)) {
         val newvar = ll.variable.newobj
-        LambdaTerm(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
+        LambdaTerm(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar)))
+          .asInstanceOf[U]
       } else LambdaTerm(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
     case _ => x
   }
@@ -149,7 +152,9 @@ object HoTT {
   trait ConstantTerm extends Term {
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
   }
 
   trait ConstantTyp extends Typ[Term] {
@@ -157,7 +162,9 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def variable(name: AnySym) = SymbObj(name, this)
 
@@ -489,7 +496,9 @@ object HoTT {
 
       val typ = dom ->: codom
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         RecFn(codom.replace(x, y), data.replace(x, y))
@@ -514,7 +523,9 @@ object HoTT {
 
       val typ = PiDefn(depcodom)
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         InducFn(depcodom.replace(x, y), data.replace(x, y))
@@ -582,7 +593,9 @@ object HoTT {
 
     def variable(name: AnySym) = SymbTyp(name, level)
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = this
 
@@ -657,7 +670,9 @@ object HoTT {
 
       lazy val typ = dom ->: codom
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         ProdTyp(first.replace(x, y), second.replace(x, y))
@@ -688,7 +703,9 @@ object HoTT {
 
       lazy val depcodom = (p: PairTerm[U, V]) => targetFmly(p.first)(p.second)
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         ProdTyp(first.replace(x, y), second.replace(x, y))
@@ -870,24 +887,32 @@ object HoTT {
     def subs(x: Term, y: Term) = CodomSym(func.subs(x, y))
   }
 
-  trait InducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U]] extends FuncLike[W, U]{
+  trait InducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U]]
+      extends FuncLike[W, U] {
     val defnData: Vector[Term]
 
     override def toString() =
-      defnData.foldLeft(s"ind(${dom})(${depcodom})"){
-        case (str, t) => s"$str($t)"}
+      defnData.foldLeft(s"ind(${dom})(${depcodom})") {
+        case (str, t) => s"$str($t)"
+      }
   }
 
-  trait IndInducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F], IDFT <: Term with Subs[IDFT]] extends InducFuncLike[W, U]{
+  trait IndInducFuncLike[W <: Term with Subs[W],
+                         +U <: Term with Subs[U],
+                         F <: Term with Subs[F],
+                         IDFT <: Term with Subs[IDFT]]
+      extends InducFuncLike[W, U] {
     val domW: F
 
-    val codXs : IDFT
+    val codXs: IDFT
 
     val index: Vector[Term]
 
     override def toString() =
-      defnData.foldLeft(s"ind{${domW}${index.mkString("(", ")(", ")")}}{${codXs}}"){
-    case (str, t) => s"$str($t)"}
+      defnData.foldLeft(
+        s"ind{${domW}${index.mkString("(", ")(", ")")}}{${codXs}}") {
+        case (str, t) => s"$str($t)"
+      }
 
   }
 
@@ -971,22 +996,28 @@ object HoTT {
       fn.depcodom(x).symbObj(ApplnSym(fn, x))
   }
 
-  trait RecFunc[W <: Term with Subs[W], +U <: Term with Subs[U]] extends Func[W, U]{
+  trait RecFunc[W <: Term with Subs[W], +U <: Term with Subs[U]]
+      extends Func[W, U] {
     val defnData: Vector[Term]
 
     override def toString() =
-      defnData.foldLeft(s"rec(${dom})(${codom})"){
-        case (str, t) => s"$str($t)"}
+      defnData.foldLeft(s"rec(${dom})(${codom})") {
+        case (str, t) => s"$str($t)"
+      }
   }
 
-  trait IndRecFunc[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F]] extends RecFunc[W, U]{
-    val domW : F
+  trait IndRecFunc[
+      W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[F]]
+      extends RecFunc[W, U] {
+    val domW: F
 
     val index: Vector[Term]
 
     override def toString() =
-      defnData.foldLeft(s"rec{${domW}${index.mkString("(", ")(", ")")}}{${codom}}"){
-    case (str, t) => s"$str($t)"}
+      defnData.foldLeft(
+        s"rec{${domW}${index.mkString("(", ")(", ")")}}{${codom}}") {
+        case (str, t) => s"$str($t)"
+      }
 
   }
 
@@ -1118,14 +1149,15 @@ object HoTT {
                    codom.replace(x, y))
   }
 
-  def replaceVar[U <: Term with Subs[U]](variable: U)(x: Term, y: Term) = variable match {
-    case sym: Symbolic =>
-      val newtyp = variable.typ.asInstanceOf[Typ[U]]
-      newtyp.variable (sym.name)
-    case t =>
-      println(s"Encountered non-symbolic variable $t of type ${t.typ}")
-      t.replace(x, y)
-  }
+  def replaceVar[U <: Term with Subs[U]](variable: U)(x: Term, y: Term) =
+    variable match {
+      case sym: Symbolic =>
+        val newtyp = variable.typ.asInstanceOf[Typ[U]]
+        newtyp.variable(sym.name)
+      case t =>
+        println(s"Encountered non-symbolic variable $t of type ${t.typ}")
+        t.replace(x, y)
+    }
 
   /**
     *  A lambda-expression.
@@ -1165,16 +1197,15 @@ object HoTT {
                 value.typ.asInstanceOf[Typ[Y]])
 
     def act(arg: X) =
-      if (usesVar(arg))
-      {
+      if (usesVar(arg)) {
         val newvar = variable.newobj
         // assert(newvar != variable && arg.indepOf(newvar))
         // println(s"escaped variable $variable in $arg")
-        val result =  avoidVars(arg, value).replace(variable, newvar).replace(newvar, arg)
+        val result =
+          avoidVars(arg, value).replace(variable, newvar).replace(newvar, arg)
         // if (result != value.replace(variable, arg)) println("Escaping needed")
         result
-      }
-      else  avoidVars(arg, value).replace(variable, arg)
+      } else avoidVars(arg, value).replace(variable, arg)
 
     override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
@@ -1190,11 +1221,13 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
-      if (variable.replace(x, y) == variable) LambdaTerm(variable,  avoidVars(x, value).replace(x, y))
+      if (variable.replace(x, y) == variable)
+        LambdaTerm(variable, avoidVars(x, value).replace(x, y))
       else {
-      val newvar = variable.replace(x, y)
-      LambdaTerm(newvar,  avoidVars(x, value). replace(variable, newvar). replace(x, y))
-    }
+        val newvar = variable.replace(x, y)
+        LambdaTerm(newvar,
+                   avoidVars(x, value).replace(variable, newvar).replace(x, y))
+      }
 
 //    private lazy val myv = variable.newobj
 
@@ -1284,11 +1317,14 @@ object HoTT {
     }
 
     override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
-      if (variable.replace(x, y) == variable) LambdaFixed(variable, avoidVars(x, value).replace(x, y))
+      if (variable.replace(x, y) == variable)
+        LambdaFixed(variable, avoidVars(x, value).replace(x, y))
       else {
-      val newvar = variable.newobj
-      LambdaFixed(newvar.replace(x, y), avoidVars(x, value). replace(variable, newvar). replace(x, y))
-    }
+        val newvar = variable.newobj
+        LambdaFixed(
+          newvar.replace(x, y),
+          avoidVars(x, value).replace(variable, newvar).replace(x, y))
+      }
   }
 
   case class LambdaTypedFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](
@@ -1475,8 +1511,8 @@ object HoTT {
     // if (isVar(variable)) LambdaFixed(variable, value)
     // else {
     val newvar = variable.newobj
-      assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
-      assert(newvar.typ == variable.typ, s"variable $variable changed type")
+    assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
+    assert(newvar.typ == variable.typ, s"variable $variable changed type")
 //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
     LambdaFixed(newvar, value.replace(variable, newvar))
     // }
@@ -1728,7 +1764,9 @@ object HoTT {
 
     def act(arg: W) = func(arg).getOrElse(Star)
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) =
       OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)),
@@ -1796,7 +1834,9 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         SigmaTyp(fibers.replace(x, y))
@@ -1828,7 +1868,9 @@ object HoTT {
 
       lazy val depcodom = (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         SigmaTyp(fibers.replace(x, y))
@@ -1970,7 +2012,9 @@ object HoTT {
 
       lazy val typ = dom ->: codom
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) =
         RecFn(domain.replace(x, y),
@@ -1999,8 +2043,14 @@ object HoTT {
         data: FuncLike[U, V],
         start: U,
         end: U
-    ) extends IndInducFuncLike[Term, V, Func[U, Func[U, Typ[Term]]], FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]] { self =>
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    ) extends IndInducFuncLike[
+          Term,
+          V,
+          Func[U, Func[U, Typ[Term]]],
+          FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]] { self =>
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       val defnData = Vector(data)
 
@@ -2013,7 +2063,6 @@ object HoTT {
       val codXs = targetFmly
 
       val index = Vector(start, end)
-
 
       def subs(x: Term, y: Term) =
         InducFn(
@@ -2127,7 +2176,9 @@ object HoTT {
         extends Term
         with Subs[FirstIncl[U, V]] {
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)") //FirstIncl(typ, value.newobj)
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)") //FirstIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) =
         FirstIncl(typ.replace(x, y), value.replace(x, y))
@@ -2141,7 +2192,9 @@ object HoTT {
         value: V)
         extends Term
         with Subs[ScndIncl[U, V]] {
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)") //ScndIncl(typ, value.newobj)
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)") //ScndIncl(typ, value.newobj)
 
       def subs(x: Term, y: Term) =
         ScndIncl(typ.replace(x, y), value.replace(x, y))
@@ -2155,7 +2208,7 @@ object HoTT {
                                              firstCase: Func[U, W],
                                              secondCase: Func[V, W])
         extends RecFunc[Term, W] {
-        val defnData = Vector(firstCase, secondCase)
+      val defnData = Vector(firstCase, secondCase)
 
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == (first || second) =>
@@ -2178,7 +2231,9 @@ object HoTT {
       val dom: provingground.HoTT.Typ[provingground.HoTT.Term] =
         PlusTyp(first, second)
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
     }
   }
 
@@ -2218,7 +2273,7 @@ object HoTT {
                                                firstCase: FuncLike[U, W],
                                                secondCase: FuncLike[V, W])
         extends InducFuncLike[Term, W] {
-          val defnData = Vector(firstCase, secondCase)
+      val defnData = Vector(firstCase, secondCase)
 
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == plustyp =>
@@ -2239,7 +2294,9 @@ object HoTT {
 
       lazy val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = plustyp
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
     }
 
     def induc[W <: Term with Subs[W]](depcodom: Func[Term, Typ[W]]) = {
@@ -2254,7 +2311,9 @@ object HoTT {
     def subs(x: Term, y: Term) =
       PlusTyp(first.replace(x, y), second.replace(x, y))
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     type Obj = Term
 
@@ -2467,7 +2526,9 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-    def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
   }
 
   class CnstFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -2484,7 +2545,9 @@ object HoTT {
 
     override val typ = dom ->: codom
 
-    override def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    override def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     override def subs(x: Term, y: Term) = this
   }
@@ -2503,7 +2566,9 @@ object HoTT {
 
     val depcodom = term.depcodom
 
-    override def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+    override def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     override def subs(x: Term, y: Term) = this
   }
@@ -2531,7 +2596,9 @@ object HoTT {
 
       def variable(name: AnySym) = sample
 
-      def newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       def subs(x: Term, y: Term) = this
     }

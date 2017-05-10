@@ -74,7 +74,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
     Some(toMoves(this) compose moves)
 
   def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
-                               FiniteDistribution[Moves]] =
+                                  FiniteDistribution[Moves]] =
     MoveFn(actOnMoves)
 
   def actOnPres(fdPres: FiniteDistribution[Presentation])
@@ -149,7 +149,7 @@ case object Id extends AtomicMove {
 //  override def actOnMoves(moves: Moves) = Some(moves)
 
   override def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
-                                        FiniteDistribution[Moves]] =
+                                           FiniteDistribution[Moves]] =
     AdjDiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 

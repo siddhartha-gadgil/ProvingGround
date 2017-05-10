@@ -163,7 +163,7 @@ object Translator {
         if (p(x)) Some(x) else None
       }
 
-      import Functors._
+    import Functors._
 
     def check[I](p: I => Boolean) =
       Pattern[I, Un] { (x: I) =>

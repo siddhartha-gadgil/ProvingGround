@@ -9,10 +9,12 @@ import LinearStructure._
 
 class AdjDiffbleFunctionSpec extends FlatSpec {
   val double =
-    AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) => (y: Double) => 2 * y)
+    AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) =>
+      (y: Double) => 2 * y)
 
   val square =
-    AdjDiffbleFunction((x: Double) => x * x)((x: Double) => (y: Double) => x * y)
+    AdjDiffbleFunction((x: Double) => x * x)((x: Double) =>
+      (y: Double) => x * y)
 
   "A Differentiable function" should "evaluate by apply" in {
     val fn = AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) =>

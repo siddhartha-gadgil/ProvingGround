@@ -40,7 +40,8 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
 
       def subs(x: Term, y: Term) = this
 
-      val newobj = throw new IllegalArgumentException(s"trying to use the constant $this as a variable (or a component of one)")
+      val newobj = throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
       override def toString = "reciprocal"
     }
@@ -60,12 +61,14 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
     def negate(x: LocalTerm) = self.negate(x)
 
     // Members declared in spire.algebra.EuclideanRing
-    def gcd(a: SymbolicField.this.LocalTerm,
-            b: SymbolicField.this.LocalTerm)(implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm]): SymbolicField.this.LocalTerm =
+    def gcd(a: SymbolicField.this.LocalTerm, b: SymbolicField.this.LocalTerm)(
+        implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm])
+      : SymbolicField.this.LocalTerm =
       Literal(field.one)
 
-    def lcm(a: SymbolicField.this.LocalTerm,b: SymbolicField.this.LocalTerm
-    )(implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm]): SymbolicField.this.LocalTerm = ???
+    def lcm(a: SymbolicField.this.LocalTerm, b: SymbolicField.this.LocalTerm)(
+        implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm])
+      : SymbolicField.this.LocalTerm = ???
 
     // def mod(a: SymbolicField.this.LocalTerm,
     //         b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =

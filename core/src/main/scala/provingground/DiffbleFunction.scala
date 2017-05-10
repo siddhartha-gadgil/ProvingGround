@@ -13,78 +13,89 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-case class TangVec[+A](point: A, vec: A){
+case class TangVec[+A](point: A, vec: A) {
   def &&[B](that: TangVec[B]) = TangVec((point, that.point), (vec, that.vec))
 }
 
-object TangVec{
+object TangVec {
   def liftLinear[A, B](func: A => B): TangVec[A] => TangVec[B] =
     (pv) => TangVec(func(pv.point), func(pv.vec))
 
-  def liftBilinear[A, B, C](bilinear: (A, B) => C)(implicit vs: VectorSpace[C, Double]) =
+  def liftBilinear[A, B, C](bilinear: (A, B) => C)(
+      implicit vs: VectorSpace[C, Double]) =
     (pv: TangVec[(A, B)]) =>
-      TangVec(bilinear(pv.point._1, pv.point._2),
-              bilinear(pv.point._1, pv.vec._2) + bilinear(pv.vec._1, pv.point._2))
+      TangVec(
+        bilinear(pv.point._1, pv.point._2),
+        bilinear(pv.point._1, pv.vec._2) + bilinear(pv.vec._1, pv.point._2))
 
-  def tangProd[A, B](av: TangVec[A], bw: TangVec[B]) = TangVec((av.point, bw.point), (av.vec, bw.vec))
+  def tangProd[A, B](av: TangVec[A], bw: TangVec[B]) =
+    TangVec((av.point, bw.point), (av.vec, bw.vec))
 
   def tProd[A, B](pair: (TangVec[A], TangVec[B])) =
-      TangVec((pair._1.point, pair._2.point), (pair._1.vec, pair._2.vec))
+    TangVec((pair._1.point, pair._2.point), (pair._1.vec, pair._2.vec))
 
-  implicit def vs[T](implicit bvs: VectorSpace[T, Double]) : VectorSpace[TangVec[T], Double] =
-      new VectorSpace[TangVec[T], Double]{
-        def negate(x: TangVec[T]) =
-          TangVec(-x.point, -x.vec)
+  implicit def vs[T](
+      implicit bvs: VectorSpace[T, Double]): VectorSpace[TangVec[T], Double] =
+    new VectorSpace[TangVec[T], Double] {
+      def negate(x: TangVec[T]) =
+        TangVec(-x.point, -x.vec)
 
-        val  zero = TangVec(bvs.zero, bvs.zero)
+      val zero = TangVec(bvs.zero, bvs.zero)
 
-        def plus(x: TangVec[T], y: TangVec[T]) = TangVec(x.point + y.point, x.vec + y.vec)
+      def plus(x: TangVec[T], y: TangVec[T]) =
+        TangVec(x.point + y.point, x.vec + y.vec)
 
-        def timesl(r: Double, x: TangVec[T]) = TangVec(r *: x.point, r *: x.vec)
+      def timesl(r: Double, x: TangVec[T]) = TangVec(r *: x.point, r *: x.vec)
 
-        implicit def scalar:Field[Double] = Field[Double]
+      implicit def scalar: Field[Double] = Field[Double]
 
-      }
-
-    implicit class OnPoints[A, B](func: TangVec[A] => TangVec[B])(implicit vsA: VectorSpace[A, Double], vsB: VectorSpace[B, Double]){
-      def apply(a: A): B = func(TangVec(a, vsA.zero)).point
     }
+
+  implicit class OnPoints[A, B](func: TangVec[A] => TangVec[B])(
+      implicit vsA: VectorSpace[A, Double],
+      vsB: VectorSpace[B, Double]) {
+    def apply(a: A): B = func(TangVec(a, vsA.zero)).point
+  }
 }
 
-trait DiffbleFunction[A, B] extends (A => B){self =>
+trait DiffbleFunction[A, B] extends (A => B) { self =>
 
   def derv(a: A, t: A): B
 
-  def apply(a: A) : B
+  def apply(a: A): B
 
-  def total(a: A, t: A) : (B, B) = (self(a), derv(a, t))
+  def total(a: A, t: A): (B, B) = (self(a), derv(a, t))
 
-  def apply(av : TangVec[A]) : TangVec[B] = TangVec(self(av.point), derv(av.point, av.vec))
+  def apply(av: TangVec[A]): TangVec[B] =
+    TangVec(self(av.point), derv(av.point, av.vec))
 }
 
-object DiffbleFunction{
-  case class Linear[A, B](func: A => B) extends DiffbleFunction[A, B]{
+object DiffbleFunction {
+  case class Linear[A, B](func: A => B) extends DiffbleFunction[A, B] {
     def derv(a: A, t: A) = func(t)
 
     def apply(a: A) = func(a)
   }
 
-  case class Quadratic[A, B](bilinear: (A, A) => B)(implicit vs: VectorSpace[B, Double]){
-    def apply (a: A) = bilinear(a, a)
+  case class Quadratic[A, B](bilinear: (A, A) => B)(
+      implicit vs: VectorSpace[B, Double]) {
+    def apply(a: A) = bilinear(a, a)
 
     def derv(a: A, t: A) = bilinear(a, t) + bilinear(t, a)
   }
 }
 
-class LoopyFunc[A, B](recdef: (A, Unit => B) => B) extends (A => B){self =>
+class LoopyFunc[A, B](recdef: (A, Unit => B) => B) extends (A => B) { self =>
 
   def apply(a: A) = recdef(a, (_) => self(a))
 }
 
-class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, Unit => B), B]) extends
-  LoopyFunc[A, B]((a, b) => recdef((a, b))) with DiffbleFunction[A, B]{self =>
-    def derv(a: A, t: A) = recdef.derv((a, (_) =>self(a)), (t, (_) => derv(a, t)))
-  }
+class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, Unit => B), B])
+    extends LoopyFunc[A, B]((a, b) => recdef((a, b)))
+    with DiffbleFunction[A, B] { self =>
+  def derv(a: A, t: A) =
+    recdef.derv((a, (_) => self(a)), (t, (_) => derv(a, t)))
+}
 
 trait AdjDiffbleFunction[A, B] { self =>
   val func: A => B
@@ -149,7 +160,7 @@ object AdjDiffbleFunction {
 //      def selfadj[A](f: => A => A) = SelfAdj(f)
 
   case class Id[A]() extends AdjDiffbleFunction[A, A] {
-    val func = (a: A) => a
+    val func   = (a: A) => a
     val adjDer = (a: A) => (b: A) => b
   }
 
@@ -159,7 +170,7 @@ object AdjDiffbleFunction {
       extends AdjDiffbleFunction[A, (A, B)] {
     val lsB = implicitly[LinearStructure[B]]
 
-    val func = (a: A) => (a, lsB.zero)
+    val func   = (a: A) => (a, lsB.zero)
     val adjDer = (a: A) => (x: (A, B)) => x._1
   }
 
@@ -167,7 +178,7 @@ object AdjDiffbleFunction {
       extends AdjDiffbleFunction[B, (A, B)] {
     val lsA = implicitly[LinearStructure[A]]
 
-    val func = (b: B) => (lsA.zero, b)
+    val func   = (b: B) => (lsA.zero, b)
     val adjDer = (b: B) => (x: (A, B)) => x._2
   }
 
@@ -175,7 +186,7 @@ object AdjDiffbleFunction {
       extends AdjDiffbleFunction[(A, B), A] {
     val lsB = implicitly[LinearStructure[B]]
 
-    val func = (x: (A, B)) => x._1
+    val func   = (x: (A, B)) => x._1
     val adjDer = (x: (A, B)) => (a: A) => (a, lsB.zero)
   }
 
@@ -183,7 +194,7 @@ object AdjDiffbleFunction {
       extends AdjDiffbleFunction[(A, B), B] {
     val lsA = implicitly[LinearStructure[A]]
 
-    val func = (x: (A, B)) => x._2
+    val func   = (x: (A, B)) => x._2
     val adjDer = (x: (A, B)) => (b: B) => (lsA.zero, b)
   }
 
@@ -241,7 +252,9 @@ object AdjDiffbleFunction {
       accum: AdjDiffbleFunction[X, X] = id[X]): AdjDiffbleFunction[X, X] = {
     if (n < 1) accum
     else
-      recIterateDiffble(fn, n - 1, accum andthen (fn: AdjDiffbleFunction[X, X]))
+      recIterateDiffble(fn,
+                        n - 1,
+                        accum andthen (fn: AdjDiffbleFunction[X, X]))
   }
 
   case class IteratedDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int)
@@ -264,7 +277,8 @@ object AdjDiffbleFunction {
   def iterateDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int) =
     consIterateDiffble(fn, n)
 
-  def iterate[A](f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] =
+  def iterate[A](
+      f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] =
     (n) => iterateDiffble(f, n)
 
   def mixinIsle[A: LinearStructure](
@@ -340,7 +354,8 @@ object AdjDiffbleFunction {
 
     val func = (a: A) => sumB(first.func(a), second.func(a))
 
-    val adjDer = (a: A) => (b: B) => sumA(first.adjDer(a)(b), second.adjDer(a)(b))
+    val adjDer = (a: A) =>
+      (b: B) => sumA(first.adjDer(a)(b), second.adjDer(a)(b))
   }
 
   case class Zero[A: LinearStructure, B: LinearStructure]()
@@ -367,27 +382,34 @@ object AdjDiffbleFunction {
     LinearStructure(zero, sum, mult)
   }
 
-  implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double], vsB : VectorSpace[B, Double]) =
-    new VectorSpace[AdjDiffbleFunction[A, B], Double]{
+  implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double],
+                                    vsB: VectorSpace[B, Double]) =
+    new VectorSpace[AdjDiffbleFunction[A, B], Double] {
 
-   // Members declared in algebra.ring.AdditiveGroup
-   def negate(x: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
-     AdjDiffbleFunction((a: A) => -x(a))((a: A) => (b: B) => -x.adjDer(a)(b))
+      // Members declared in algebra.ring.AdditiveGroup
+      def negate(x: AdjDiffbleFunction[A, B]): AdjDiffbleFunction[A, B] =
+        AdjDiffbleFunction((a: A) => -x(a))((a: A) =>
+          (b: B) => -x.adjDer(a)(b))
 
-   // Members declared in algebra.ring.AdditiveMonoid
-   def zero: AdjDiffbleFunction[A,B] = AdjDiffbleFunction((a: A) => vsB.zero)((a: A) => (b: B) => vsA.zero)
+      // Members declared in algebra.ring.AdditiveMonoid
+      def zero: AdjDiffbleFunction[A, B] =
+        AdjDiffbleFunction((a: A) => vsB.zero)((a: A) => (b: B) => vsA.zero)
 
-   // Members declared in algebra.ring.AdditiveSemigroup
-   def plus(x: AdjDiffbleFunction[A,B],y: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
-     AdjDiffbleFunction((a: A) => x(a) + y(a))((a: A) => (b: B) => x.adjDer(a)(b) + y.adjDer(a)(b))
+      // Members declared in algebra.ring.AdditiveSemigroup
+      def plus(x: AdjDiffbleFunction[A, B],
+               y: AdjDiffbleFunction[A, B]): AdjDiffbleFunction[A, B] =
+        AdjDiffbleFunction((a: A) => x(a) + y(a))((a: A) =>
+          (b: B) => x.adjDer(a)(b) + y.adjDer(a)(b))
 
-   // Members declared in spire.algebra.Module
-   def timesl(r: Double,v: AdjDiffbleFunction[A,B]): AdjDiffbleFunction[A,B] =
-     AdjDiffbleFunction((a: A) => vsB.timesl(r, v(a)))((a: A) => (b: B) => vsA.timesl(r, v.adjDer(a)(b)))
+      // Members declared in spire.algebra.Module
+      def timesl(r: Double,
+                 v: AdjDiffbleFunction[A, B]): AdjDiffbleFunction[A, B] =
+        AdjDiffbleFunction((a: A) => vsB.timesl(r, v(a)))((a: A) =>
+          (b: B) => vsA.timesl(r, v.adjDer(a)(b)))
 
-   // Members declared in spire.algebra.VectorSpace
-   implicit def scalar:Field[Double] = Field[Double]
-  }
+      // Members declared in spire.algebra.VectorSpace
+      implicit def scalar: Field[Double] = Field[Double]
+    }
 
   trait FormalExtension[A] extends AdjDiffbleFunction[A, A] {
     val func: A => A
