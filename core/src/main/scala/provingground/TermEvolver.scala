@@ -34,11 +34,14 @@ object TermEvolver{
     def <+?>(mixin: => T[PD[Option[A]]], weight: Double) =
       T(pd.point <+?> (mixin.point, weight), pd.vec <+?> (mixin.vec, weight))
 
-    def map[B](f: A => B) = TangVec(pd.point.map(f), pd.vec.map(f))
+    def map[B](f: A => B) =  lin((p: PD[A]) => p.map (f))(pd)
 
-    def flatMap[B](f: A => T[PD[B]]) = TangVec(pd.point.flatMap( (a) => f(a).point), pd.vec.flatMap((a) => f(a).vec))
+    def flatMap[B](f: A => T[PD[B]]) : T[PD[B]] =
+      TangVec(pd.point.flatMap( (a) => f(a).point), pd.vec.flatMap((a) => f(a).vec))
 
-    def mapOpt[B](f: A => Option[B]) = TangVec(pd.point.mapOpt(f), pd.vec.mapOpt(f))
+    // def flatMapped[B](f: A => PD[B]) : T[PD[B]] = ???
+
+    def mapOpt[B](f: A => Option[B]) = lin((p: PD[A]) => p.mapOpt (f))(pd)
   }
 }
 
@@ -112,9 +115,11 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
   val Tappln = bil(simpleAppln)
 
   def lambdaMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Term]])) = (tfd: T[FD[Term]]) => {
-    val dist = TangVec(
-      tfd.point * (1- wt) + (x, wt),
-      tfd.vec * (1- wt) + (x, wt))
+    val dist =
+      lin((fd: FD[Term]) => fd * (1 -wt) + (x, wt))(tfd)
+      // TangVec(
+      // tfd.point * (1- wt) + (x, wt),
+      // tfd.vec * (1- wt) + (x, wt))
     base(dist).map ((y) => x :~> y : Term)
   }
 
