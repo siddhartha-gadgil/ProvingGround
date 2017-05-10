@@ -41,7 +41,7 @@ object TermEvolver{
 
     // def flatMapped[B](f: A => PD[B]) : T[PD[B]] = ???
 
-    def mapOpt[B](f: A => Option[B]) = lin((p: PD[A]) => p.mapOpt (f))(pd)
+    def condMap[B](f: A => Option[B]) = lin((p: PD[A]) => p.condMap (f))(pd)
   }
 }
 
@@ -88,7 +88,7 @@ class TermEvolver(unApp: Double = 0.1, appl : Double = 0.1, lambdaWeight : Doubl
 
   val evolveFuncs : T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) =>
-      evolve(init).mapOpt(ExstFunc.opt)
+      evolve(init).condMap(ExstFunc.opt)
 
   val evolveWithTyp : T[FD[Term]] => T[Typ[Term] => PD[Term]] = ???
 

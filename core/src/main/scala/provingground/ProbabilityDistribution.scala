@@ -88,7 +88,7 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   def conditioned(p: A => Boolean): ProbabilityDistribution[A] =
     ProbabilityDistribution.Conditioned(this, p)
 
-  def mapOpt[B](f: A => Option[B]): ProbabilityDistribution[B] =
+  def condMap[B](f: A => Option[B]): ProbabilityDistribution[B] =
     ProbabilityDistribution.MapOpt(this, f)
 
   /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
@@ -126,9 +126,9 @@ object ProbabilityDistribution {
         case Weighted(d, w) => Weighted(d.conditioned(p), w)
       })
 
-    override def mapOpt[B](f: A => Option[B]) =
-      new Mixture(base.mapOpt(f), components map {
-        case Weighted(d, w) => Weighted(d.mapOpt(f), w)
+    override def condMap[B](f: A => Option[B]) =
+      new Mixture(base.condMap(f), components map {
+        case Weighted(d, w) => Weighted(d.condMap(f), w)
       })
 
     def next =
@@ -148,8 +148,8 @@ object ProbabilityDistribution {
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+> (mixin.conditioned(p), weight)
 
-    override def mapOpt[B](p: A => Option[B]) =
-      base.mapOpt(p) <+> (mixin.mapOpt(p), weight)
+    override def condMap[B](p: A => Option[B]) =
+      base.condMap(p) <+> (mixin.condMap(p), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next else base.next
@@ -170,9 +170,9 @@ object ProbabilityDistribution {
       base.conditioned(p) <+?>
         (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
 
-    override def mapOpt[B](f: A => Option[B]) =
-      base.mapOpt(f) <+?>
-        (mixin.mapOpt((oa) => oa.map(f)), weight)
+    override def condMap[B](f: A => Option[B]) =
+      base.condMap(f) <+?>
+        (mixin.condMap((oa) => oa.map(f)), weight)
 
     def next =
       if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)

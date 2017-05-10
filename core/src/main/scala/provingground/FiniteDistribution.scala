@@ -158,10 +158,10 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(newpmf)
   }
 
-  override def mapOpt[S](f: T => Option[S]): FiniteDistribution[S] = {
+  def mapOpt[S](f: T => Option[S]): FiniteDistribution[S] = {
     val newpmf = for (Weighted(elem, wt) <- pmf;
                       felem <- f(elem)) yield Weighted(felem, wt)
-  if (newpmf.isEmpty) FiniteDistribution.empty[S] else FiniteDistribution(newpmf).normalized()
+    FiniteDistribution(newpmf)
   }
 
   def invmap[S](f: S => T, support: Traversable[S]): FiniteDistribution[S] = {
@@ -221,6 +221,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     val filtered = filter(p)
     if (filtered.total > 0) filtered.normalized()
     else FiniteDistribution.empty[T]
+  }
+
+  override def condMap[S](f: T => Option[S]) = {
+    val image = mapOpt(f)
+    if (image.norm > 0) image.normalized() else FiniteDistribution.empty[S]
   }
 
   def entropy(elem: T) = -math.log(apply(elem)) / math.log(2)
