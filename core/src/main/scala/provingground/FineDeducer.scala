@@ -348,7 +348,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
 }
 
 case class TheoremFeedback(fd: FD[Term],
-                           typfd: FD[Term],
+                           tfd: FD[Typ[Term]],
                            vars: Vector[Term] = Vector(),
                            scale: Double = 1.0,
                            thmScale: Double = 0.3,
@@ -356,12 +356,6 @@ case class TheoremFeedback(fd: FD[Term],
   import FineDeducer._, math._
 
   lazy val lfd = termClosure(vars)(fd)
-
-  lazy val tfd = FiniteDistribution {
-    typfd.pmf collect {
-      case Weighted(tp: Typ[u], p) => Weighted[Typ[Term]](tp, p)
-    }
-  }
 
   lazy val pfd = typClosure(vars)(tfd)
 

@@ -34,7 +34,7 @@ case class NextSample(p: FD[Term],
 
   lazy val nextTypSamp = sample(ded.evolveTyp(p), size)
 
-  lazy val nextTypFD = toFD(nextTypSamp)
+  lazy val nextTypFD = toFD(nextTypSamp).map {case tp: Typ[u] => tp: Typ[Term]}
 
   lazy val thmFeedback = TheoremFeedback(nextFD, nextTypFD, vars)
 
