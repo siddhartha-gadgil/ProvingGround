@@ -117,6 +117,17 @@ class TermEvolver(unApp: Double = 0.1,
       ) <+> (lambdaMix(init), lambdaWeight)
     }.condMap(ExstFunc.opt)
 
+  val evolveTypFamilies: T[FD[Term]] => T[PD[ExstFunc]] =
+    (init: T[FD[Term]]) => {
+      evolve(init) <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
+      unApp) <+?> (
+        Tappln(
+          evolveTypFamilies(init) && evolveWithTyp(init)
+        ),
+        appl
+      ) <+> (lambdaMix(init), lambdaWeight)
+    }.conditioned(isTypFamily).condMap(ExstFunc.opt)
+
   val evolveWithTyp: T[FD[Term]] => T[Typ[Term] => PD[Term]] =
     (tfd: T[FD[Term]]) =>
       TangVec(
@@ -126,10 +137,10 @@ class TermEvolver(unApp: Double = 0.1,
 
   val evolveTyps: T[FD[Term]] => T[PD[Typ[Term]]] =
     (init: T[FD[Term]]) => {
-      evolve(init) <+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
+      evolve(init) <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
       unApp) <+?> (
         Tappln(
-          evolveFuncs(init) && evolveWithTyp(init)
+          evolveTypFamilies(init) && evolveWithTyp(init)
         ),
         appl
       )

@@ -117,7 +117,46 @@ object Sampler {
             val ps = xs map ((a) => firstSamp(a).toDouble / tot)
             getMultinomial(xs, ps, n)
           }
-      }
+
+        case Flattened(base) =>
+          val optSamp = sample(base, n)
+          val firstSamp =
+            for {
+              (optx, p) <- optSamp
+              x <- optx
+          } yield (x -> p)
+          val tot       = firstSamp.values.sum
+          if (tot == 0) Map()
+          else if (tot == n) firstSamp
+          else {
+            val xs = firstSamp.keys.toVector
+            val ps = xs map ((a) => firstSamp(a).toDouble / tot)
+            getMultinomial(xs, ps, n)
+          }
+
+          case CondMapped(base, f) =>
+            val optSamp = sample(base, n) map { case (x, n) => (f(x), n) }
+            val firstSamp =
+              for {
+                (optx, p) <- optSamp
+                x <- optx
+            } yield (x -> p)
+            val tot       = firstSamp.values.sum
+            if (tot == 0) Map()
+            else if (tot == n) firstSamp
+            else {
+              val xs = firstSamp.keys.toVector
+              val ps = xs map ((a) => firstSamp(a).toDouble / tot)
+              getMultinomial(xs, ps, n)
+            }
+
+
+        case Scaled(base, sc) => sample(base, (n * sc).toInt)
+
+        case Sum(first, second) => combine(sample(first, n), sample(second, n))
+        }
+
+
 }
 
 import HoTT._

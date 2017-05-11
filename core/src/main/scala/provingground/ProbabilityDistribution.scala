@@ -89,7 +89,7 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     ProbabilityDistribution.Conditioned(this, p)
 
   def condMap[B](f: A => Option[B]): ProbabilityDistribution[B] =
-    ProbabilityDistribution.MapOpt(this, f)
+    ProbabilityDistribution.CondMapped(this, f)
 
   /*  def |++|(components: => Seq[(ProbabilityDistribution[A], Double)]) =
     new ProbabilityDistribution.Mixture(this, components.toVector map ((xy) => Weighted(xy._1, xy._2)))*/
@@ -216,7 +216,7 @@ object ProbabilityDistribution {
 
   // The distributions below have total measure different from 1
 
-  case class MapOpt[A, B](base: ProbabilityDistribution[A], f: A => Option[B])
+  case class CondMapped[A, B](base: ProbabilityDistribution[A], f: A => Option[B])
       extends ProbabilityDistribution[B] {
     def next: B = {
       f(base.next)
