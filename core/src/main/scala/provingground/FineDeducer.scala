@@ -403,7 +403,7 @@ case class TheoremFeedback(fd: FD[Term],
     case _ => 0.0
   }
 
-  def feedbackTermDist(fd: FD[Term], typfd: FD[Term]) = {
+  def feedbackTermDist(fd: FD[Term], typfd: FD[Typ[Term]]) = {
     val ltang = termClosure(vars)(fd).normalized()
     val tpfd = FiniteDistribution {
       typfd.pmf collect {

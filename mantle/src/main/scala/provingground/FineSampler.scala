@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import HoTT._
 
-import FineDeducer._
+// import FineDeducer._
 
 case class NextSample(p: FD[Term],
                       ded: FineDeducer = FineDeducer(),
@@ -56,8 +56,8 @@ case class NextSample(p: FD[Term],
           ded.Devolve(nextFD, tang) //recursive distribution based on derivative for sampling
         val samp  = sample(dPD, n)
         val DdPd  = ded.DevolveTyp(nextFD, tang)
-        val Dsamp = sample(DdPd, n)
-        x -> (toFD(samp), toFD(Dsamp))
+        val Dsamp = sample(DdPd, n).map {case (tp: Typ[u], n) => (tp: Typ[Term], n)}
+        (x , (toFD(samp), toFD(Dsamp)))
     }
 
   lazy val feedBacks =
@@ -80,7 +80,7 @@ case class NextSample(p: FD[Term],
   //           x -> flow
   //       }).toMap
 
-  def shiftedFD(totalSize: Int, epsilon: Double) = {
+  def shiftedFD(epsilon: Double) = {
     val tf    = feedBacks // totalFlow(totalSize)
     val shift = (x: Term) => tf.getOrElse(x, 0.0)
 
@@ -93,7 +93,7 @@ case class NextSample(p: FD[Term],
     FD(pmf).flatten.normalized()
   }
 
-  lazy val succFD = shiftedFD(derTotalSize, epsilon)
+  lazy val succFD = shiftedFD(epsilon)
 
   lazy val succ = this.copy(p = succFD)
 

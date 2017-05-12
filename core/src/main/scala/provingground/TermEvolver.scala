@@ -49,6 +49,15 @@ object TermEvolver {
       lin((p: PD[A]) => p.conditioned(pred))(pd)
   }
 
+  def total[A](x: Vector[(A, Int)]) = (x map (_._2)).sum
+
+  def toFD[A](sample: Map[A, Int]) = {
+    val tot = total(sample.toVector)
+    FiniteDistribution(sample.toVector map {
+      case (x, n) => Weighted(x, n.toDouble / tot)
+    })
+  }
+
   def typOpt(x: Term) = x match {
     case typ: Typ[_] => Some(typ: Typ[Term])
     case _           => None
@@ -87,11 +96,25 @@ object ExstFunc {
   }
 }
 
+trait TermEvolution{
+  val evolve: T[FD[Term]] => T[PD[Term]]
+
+  val evolveTyps: T[FD[Term]] => T[PD[Typ[Term]]]
+
+  def baseEvolve(fd: FD[Term]) = evolve(T(fd, FD.empty[Term])).point
+
+  def baseEvolveTyps(fd: FD[Term]) = evolveTyps(T(fd, FD.empty[Term])).point
+
+  def tangEvolve(base: FD[Term])(vec: FD[Term]) = evolve(T(base, vec)).vec
+
+  def tangEvolveTyps(base: FD[Term])(vec: FD[Term]) = evolveTyps(T(base, vec)).vec
+}
+
 class TermEvolver(unApp: Double = 0.1,
                   appl: Double = 0.1,
                   lambdaWeight: Double = 0.1,
                   piWeight: Double = 0.1,
-                  varWeight: Double = 0.3) {
+                  varWeight: Double = 0.3)  extends TermEvolution{
   import TermEvolver._
 
   val evolve: T[FD[Term]] => T[PD[Term]] =
@@ -214,3 +237,70 @@ class TermEvolver(unApp: Double = 0.1,
   def piMix(fd: T[FD[Term]]) =
     evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }
+
+trait TangSamples{
+  def sample[A](pd: PD[A], n: Int) : Map[A, Int]
+
+  def fdTang[A](tpd: T[PD[A]], n: Int) =
+    TangVec.liftLinear((pd: PD[A]) => TermEvolver.toFD(sample(pd,n)))(tpd)
+
+  def tangSizes[A](n: Int)(base: FD[A]) : Vector[(FD[A], Int)]
+}
+
+trait Samples extends TangSamples{
+  def tangSizes[A](n: Int)(base: FD[A]) =
+    sample(base, n).toVector.map{
+      case (a, n) => (FD.unif(a), n)}
+}
+
+case class TermEvolutionStep(p: FD[Term],
+                      samp: TangSamples,
+                      ev: TermEvolution = new TermEvolver(),
+                      vars: Vector[Term] = Vector(),
+                      size: Int = 1000,
+                      derTotalSize: Int = 1000,
+                      epsilon: Double = 0.2,
+                      inertia: Double = 0.3,
+                      scale: Double = 1.0,
+                      thmScale: Double = 0.3,
+                      thmTarget: Double = 0.2){
+        import samp._, TermEvolver._
+        lazy val init = ev.baseEvolve(p)
+        lazy val nextSamp = sample(init, size)
+
+        lazy val nextFD = toFD(nextSamp) * (1.0 - inertia) ++ (p * inertia)
+
+        lazy val nextTypSamp = sample(ev.baseEvolveTyps(p), size)
+
+        lazy val nextTypFD = toFD(nextTypSamp)
+
+        lazy val thmFeedback = TheoremFeedback(nextFD, nextTypFD, vars, scale, thmScale, thmTarget)
+
+        def derivativePD(tang: FD[Term]): PD[Term] = ev.tangEvolve(p)(tang)
+
+        def derivativeFD(tang: FD[Term], n: Int) = toFD(sample(derivativePD(tang), n))
+
+        def derivativeTypsFD(tang: FD[Term], n: Int) = toFD(sample(ev.tangEvolveTyps(p)(tang), n))
+
+        lazy val tangSamples= tangSizes(derTotalSize)(nextFD)
+
+
+        lazy val derFDs =
+          tangSamples map {
+            case (fd, n) => (fd, (derivativeFD(fd, n), derivativeTypsFD(fd, n)))
+          }
+
+        lazy val feedBacks =
+          (derFDs map {
+            case (x, (tfd, tpfd)) =>
+              (x, thmFeedback.feedbackTermDist(tfd, tpfd))
+            })
+
+        lazy val succFD =
+          feedBacks.foldRight(nextFD){case ((t, w), fd) => fd ++ (t * w)}
+
+        lazy val succ = this.copy(p = succFD)
+
+        def next = succ
+
+  }
