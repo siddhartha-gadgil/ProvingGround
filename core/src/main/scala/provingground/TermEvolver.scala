@@ -5,6 +5,11 @@ import provingground.{
   TangVec => T
 }
 
+import cats._
+import cats.implicits._
+
+import scala.language.higherKinds
+
 import TangVec.{liftLinear => lin, liftBilinear => bil}
 
 // import scala.language.existentials
@@ -238,23 +243,28 @@ class TermEvolver(unApp: Double = 0.1,
     evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }
 
-trait TangSamples{
-  def sample[A](pd: PD[A], n: Int) : Map[A, Int]
+abstract class TangSamples[X[_]: Monad]{
+  def sample[A](pd: PD[A], n: Int) : X[Map[A, Int]]
 
-  def fdTang[A](tpd: T[PD[A]], n: Int) =
-    TangVec.liftLinear((pd: PD[A]) => TermEvolver.toFD(sample(pd,n)))(tpd)
+  // Override for concurrency etc
+  def sequence[A](v : Vector[X[A]]) : X[Vector[A]] = Traverse[Vector].sequence[X, A](v)
 
-  def tangSizes[A](n: Int)(base: FD[A]) : Vector[(FD[A], Int)]
+  def sampFD[A](pd: PD[A], n: Int) =
+    for (samp <- sample(pd, n)) yield TermEvolver.toFD(samp)
+
+  def tangSizes[A](n: Int)(base: FD[A]) : X[Vector[(FD[A], Int)]]
 }
 
-trait Samples extends TangSamples{
+abstract class Samples[X[_]: Monad] extends TangSamples[X]{
   def tangSizes[A](n: Int)(base: FD[A]) =
-    sample(base, n).toVector.map{
-      case (a, n) => (FD.unif(a), n)}
+    sample(base, n). map {
+      (samp) =>
+        for {(a, n) <- samp.toVector} yield (FD.unif(a), n)
+      }
 }
 
-case class TermEvolutionStep(p: FD[Term],
-                      samp: TangSamples,
+case class TermEvolutionStep[X[_]: Monad](p: FD[Term],
+                      samp: TangSamples[X],
                       ev: TermEvolution = new TermEvolver(),
                       vars: Vector[Term] = Vector(),
                       size: Int = 1000,
@@ -266,40 +276,59 @@ case class TermEvolutionStep(p: FD[Term],
                       thmTarget: Double = 0.2){
         import samp._, TermEvolver._
         lazy val init = ev.baseEvolve(p)
-        lazy val nextSamp = sample(init, size)
 
-        lazy val nextFD = toFD(nextSamp) * (1.0 - inertia) ++ (p * inertia)
+        lazy val nextFD =
+          for (samp <- sampFD(init, size)) yield samp * (1.0 - inertia) ++ (p * inertia)
 
-        lazy val nextTypSamp = sample(ev.baseEvolveTyps(p), size)
+        lazy val nextTypFD = sampFD(ev.baseEvolveTyps(p), size)
 
-        lazy val nextTypFD = toFD(nextTypSamp)
-
-        lazy val thmFeedback = TheoremFeedback(nextFD, nextTypFD, vars, scale, thmScale, thmTarget)
+        lazy val thmFeedback =
+          for {
+            nFD <- nextFD
+            ntFD <- nextTypFD
+          } yield TheoremFeedback(nFD, ntFD, vars, scale, thmScale, thmTarget)
 
         def derivativePD(tang: FD[Term]): PD[Term] = ev.tangEvolve(p)(tang)
 
-        def derivativeFD(tang: FD[Term], n: Int) = toFD(sample(derivativePD(tang), n))
+        def derivativeFD(tang: FD[Term], n: Int) = sampFD(derivativePD(tang), n)
 
-        def derivativeTypsFD(tang: FD[Term], n: Int) = toFD(sample(ev.tangEvolveTyps(p)(tang), n))
+        def derivativeTypsFD(tang: FD[Term], n: Int) = sampFD(ev.tangEvolveTyps(p)(tang), n)
 
-        lazy val tangSamples= tangSizes(derTotalSize)(nextFD)
+        lazy val tangSamples : X[Vector[(FD[Term], Int)]] =
+          for (nfd <- nextFD; ts <-tangSizes(derTotalSize)(nfd)) yield ts
 
+        def derFDX(vec: Vector[(FD[Term], Int)])  =
+          sequence{
+            for {
+              (fd, n) <- vec
+            } yield
+              for {
+                dfd <- derivativeFD(fd, n)
+                dtfd <- derivativeTypsFD(fd, n)
+              } yield(fd, (dfd , dtfd))}
 
-        lazy val derFDs =
-          tangSamples map {
-            case (fd, n) => (fd, (derivativeFD(fd, n), derivativeTypsFD(fd, n)))
-          }
+        lazy val derivativeFDs : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
+          tangSamples.flatMap(derFDX)
 
-        lazy val feedBacks =
-          (derFDs map {
-            case (x, (tfd, tpfd)) =>
-              (x, thmFeedback.feedbackTermDist(tfd, tpfd))
-            })
+        lazy val feedBacks : X[Vector[(FD[Term], Double)]] =
+          for {
+            derFDs <- derivativeFDs
+            thmFb <- thmFeedback
+          } yield
+              for { (x, (tfd, tpfd)) <- derFDs
+              } yield (x, thmFb.feedbackTermDist(tfd, tpfd))
+
 
         lazy val succFD =
-          feedBacks.foldRight(nextFD){case ((t, w), fd) => fd ++ (t * w)}
+          for {
+            fbs <- feedBacks
+            nfd <- nextFD
+          } yield
+            fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
 
-        lazy val succ = this.copy(p = succFD)
+        def newp(np: FD[Term]) = this.copy(p = np)
+
+        lazy val succ = succFD.map(newp)
 
         def next = succ
 
