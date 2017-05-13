@@ -33,6 +33,8 @@ lazy val commonSettings = baseSettings ++ Seq(
       "com.lihaoyi"   %% "upickle"   % "0.4.4",
       "com.chuusai"   %% "shapeless" % "2.3.2",
       "org.typelevel" %% "cats"      % "0.9.0",
+      "io.monix" %% "monix" % "2.3.0",
+      "io.monix" %% "monix-cats" % "2.3.0",
       "com.lihaoyi"   % "ammonite"   % ammV cross CrossVersion.full
     ),
     scalacOptions in Compile ++= Seq("-unchecked",

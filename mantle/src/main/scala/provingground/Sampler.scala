@@ -60,6 +60,13 @@ object Sampler {
 
   import ProbabilityDistribution._
 
+  import monix.eval._
+
+  implicit object MonixBreezeSamples extends MonixSamples with TangSamples[Task]{
+
+    def sample[A](pd: PD[A], n: Int) = Task(Sampler.sample(pd, n))
+  }
+
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()
     else

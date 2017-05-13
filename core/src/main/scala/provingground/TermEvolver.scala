@@ -8,6 +8,12 @@ import provingground.{
 import cats._
 import cats.implicits._
 
+import monix.eval._
+import monix.cats._
+
+import monix.execution.Scheduler.Implicits.global
+import monix.reactive._
+
 import scala.language.higherKinds
 
 import TangVec.{liftLinear => lin, liftBilinear => bil}
@@ -243,7 +249,9 @@ class TermEvolver(unApp: Double = 0.1,
     evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }
 
-abstract class TangSamples[X[_]: Monad]{
+trait TangSamples[X[_]]{
+  implicit val monad: Monad[X]
+
   def sample[A](pd: PD[A], n: Int) : X[Map[A, Int]]
 
   // Override for concurrency etc
@@ -252,10 +260,15 @@ abstract class TangSamples[X[_]: Monad]{
   def sampFD[A](pd: PD[A], n: Int) =
     for (samp <- sample(pd, n)) yield TermEvolver.toFD(samp)
 
+  def batchSampFD[A](pd: PD[A], batches: Int, n: Int) =
+    sequence(
+      (1 to batches).toVector.map((_) => sampFD(pd, n))
+    ).map ((vfd) => vfd.reduce(_ ++ _).normalized())
+
   def tangSizes[A](n: Int)(base: FD[A]) : X[Vector[(FD[A], Int)]]
 }
 
-abstract class Samples[X[_]: Monad] extends TangSamples[X]{
+trait Samples[X[_]] extends TangSamples[X]{
   def tangSizes[A](n: Int)(base: FD[A]) =
     sample(base, n). map {
       (samp) =>
@@ -263,18 +276,51 @@ abstract class Samples[X[_]: Monad] extends TangSamples[X]{
       }
 }
 
-case class TermEvolutionStep[X[_]: Monad](p: FD[Term],
-                      samp: TangSamples[X],
-                      ev: TermEvolution = new TermEvolver(),
-                      vars: Vector[Term] = Vector(),
-                      size: Int = 1000,
-                      derTotalSize: Int = 1000,
-                      epsilon: Double = 0.2,
-                      inertia: Double = 0.3,
-                      scale: Double = 1.0,
-                      thmScale: Double = 0.3,
-                      thmTarget: Double = 0.2){
-        import samp._, TermEvolver._
+trait MonixSamples extends Samples[Task]{
+  implicit val monad = MonixSamples.monad
+
+  override def sequence[A](v: Vector[Task[A]]) =
+    Task.gatherUnordered(v) map (_.toVector)
+}
+
+object MonixSamples{
+  implicit val monad = implicitly[Monad[Task]]
+
+  def obserEv(
+    p: FD[Term], param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+    )(implicit ms: MonixSamples) =
+      Observable.fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
+        (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
+      )(
+        new TermEvolutionStep(p, param)(ms)
+      )
+
+  def observable(
+    p: FD[Term], param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+    )(implicit ms: MonixSamples) =
+      Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
+        (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
+      )(
+        new TermEvolutionStep(p, param)(ms)
+      )
+}
+
+object TermEvolutionStep{
+  case class Param(ev: TermEvolution = new TermEvolver(),
+  vars: Vector[Term] = Vector(),
+  size: Int = 1000,
+  derTotalSize: Int = 1000,
+  epsilon: Double = 0.2,
+  inertia: Double = 0.3,
+  scale: Double = 1.0,
+  thmScale: Double = 0.3,
+  thmTarget: Double = 0.2)
+}
+
+class TermEvolutionStep[X[_]](val p: FD[Term],
+                      val param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+                    )(implicit  val samp: TangSamples[X]){
+        import samp._, TermEvolver._, param._
         lazy val init = ev.baseEvolve(p)
 
         lazy val nextFD =
@@ -326,7 +372,7 @@ case class TermEvolutionStep[X[_]: Monad](p: FD[Term],
           } yield
             fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
 
-        def newp(np: FD[Term]) = this.copy(p = np)
+        def newp(np: FD[Term]) = new TermEvolutionStep(p, param)
 
         lazy val succ = succFD.map(newp)
 
