@@ -235,7 +235,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     supp.map((x) => Weighted(x.toString, entropy(x))).sortBy(_.weight)
 
   def entropyVec =
-    supp.map((x) => Weighted(x.toString, entropy(x))).sortBy(_.weight)
+    supp.map((x) => Weighted(x, entropy(x))).sortBy(_.weight)
 
   def split(groups: Int) = {
     val rand = new scala.util.Random

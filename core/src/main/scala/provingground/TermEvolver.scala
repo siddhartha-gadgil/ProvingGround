@@ -75,6 +75,12 @@ object TermEvolver {
   }
 
   def justTerm[U <: Term with Subs[U]](x: U) = x: Term
+
+  def theorems(fd: FD[Term]) = {
+    fd.filter(_.typ.typ == Type).map(_.typ : Typ[Term]).filter(fd(_) > 0)
+  }
+
+  def topTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec.take(n)
 }
 
 trait ExstFunc {
@@ -372,7 +378,7 @@ class TermEvolutionStep[X[_]](val p: FD[Term],
           } yield
             fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
 
-        def newp(np: FD[Term]) = new TermEvolutionStep(p, param)
+        def newp(np: FD[Term]) = new TermEvolutionStep(np, param)
 
         lazy val succ = succFD.map(newp)
 

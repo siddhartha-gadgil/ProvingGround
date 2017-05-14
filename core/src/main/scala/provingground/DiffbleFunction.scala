@@ -1,16 +1,16 @@
 package provingground
 
 import scala.annotation._
-import scala.util._
+// import scala.util._
 
-import scala.language.implicitConversions
+// import scala.language.implicitConversions
 
 import provingground.Collections._
 
 import LinearStructure._
 
 import spire.algebra._
-import spire.math._
+// import spire.math._
 import spire.implicits._
 
 case class TangVec[+A](point: A, vec: A) {
@@ -85,16 +85,23 @@ object DiffbleFunction {
   }
 }
 
-class LoopyFunc[A, B](recdef: (A, Unit => B) => B) extends (A => B) { self =>
+import cats._
 
-  def apply(a: A) = recdef(a, (_) => self(a))
+// import cats.implicits._
+
+class LoopyFunc[A, B](recdef: (A, B) => B) extends (A => Eval[B]) { self =>
+
+  def apply(a: A) = Eval.defer(self(a)).map(recdef(a, _))
 }
 
-class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, Unit => B), B])
+class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, B), B])
     extends LoopyFunc[A, B]((a, b) => recdef((a, b)))
-    with DiffbleFunction[A, B] { self =>
-  def derv(a: A, t: A) =
-    recdef.derv((a, (_) => self(a)), (t, (_) => derv(a, t)))
+    with DiffbleFunction[A, Eval[B]] { self =>
+  def derv(a: A, t: A) ={
+    val  d : Eval[B] = Eval.defer(derv(a, t));
+    for (x <- self(a); y <- d) yield
+    recdef.derv((a, x), (t, y))
+  }
 }
 
 trait AdjDiffbleFunction[A, B] { self =>
