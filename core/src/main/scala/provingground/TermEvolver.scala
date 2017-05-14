@@ -298,7 +298,7 @@ object MonixSamples{
       Observable.fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
         (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
       )(
-        new TermEvolutionStep(p, param)(ms)
+        new TermEvolutionStep(p, new TermEvolver(), param)(ms)
       )
 
   def observable(
@@ -307,12 +307,12 @@ object MonixSamples{
       Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
         (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
       )(
-        new TermEvolutionStep(p, param)(ms)
+        new TermEvolutionStep(p, new TermEvolver(), param)(ms)
       )
 }
 
 object TermEvolutionStep{
-  case class Param(ev: TermEvolution = new TermEvolver(),
+  case class Param(
   vars: Vector[Term] = Vector(),
   size: Int = 1000,
   derTotalSize: Int = 1000,
@@ -324,6 +324,7 @@ object TermEvolutionStep{
 }
 
 class TermEvolutionStep[X[_]](val p: FD[Term],
+                      ev: TermEvolution = new TermEvolver(),
                       val param: TermEvolutionStep.Param = TermEvolutionStep.Param()
                     )(implicit  val samp: TangSamples[X]){
         import samp._, TermEvolver._, param._
@@ -378,7 +379,7 @@ class TermEvolutionStep[X[_]](val p: FD[Term],
           } yield
             fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
 
-        def newp(np: FD[Term]) = new TermEvolutionStep(np, param)
+        def newp(np: FD[Term]) = new TermEvolutionStep(np, ev, param)
 
         lazy val succ = succFD.map(newp)
 

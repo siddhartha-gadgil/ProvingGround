@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.1"
 
-val ammV = "0.8.1"
+val ammV = "0.8.5"
 
 scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -210,7 +210,7 @@ lazy val mizar = project
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
   .settings(name := "Mizar-Parser",
-            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.1")
+            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
   """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
