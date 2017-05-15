@@ -510,7 +510,7 @@ class FineDeducerStep[X[_]](val p: FD[Term],
             fbs <- feedBacks
             nfd <- nextFD
           } yield
-            fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
+            fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}.flatten.normalized()
 
         def newp(np: FD[Term]) = new FineDeducerStep(np, ded, param)
 
