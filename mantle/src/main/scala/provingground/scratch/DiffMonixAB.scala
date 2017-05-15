@@ -12,7 +12,7 @@ object DiffMonixAB{
 
   val fd = FD.unif[Term](A, B)
 
-  val simpleObs = MonixSamples.observable(fd)
+  val simpleObs = TermEvolutionStep.observable(fd)
 
   val thmsObs = simpleObs.map(TermEvolver.topTheorems(_, 25))
 

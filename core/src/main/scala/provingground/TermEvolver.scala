@@ -22,8 +22,6 @@ import TangVec.{liftLinear => lin, liftBilinear => bil}
 
 import HoTT._
 
-// import FineDeducer._
-
 // import spire.algebra._
 import spire.implicits._
 
@@ -255,42 +253,19 @@ class TermEvolver(unApp: Double = 0.1,
     evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }
 
-trait TangSamples[X[_]]{
-  implicit val monad: Monad[X]
 
-  def sample[A](pd: PD[A], n: Int) : X[Map[A, Int]]
+object TermEvolutionStep{
+  case class Param(
+  vars: Vector[Term] = Vector(),
+  size: Int = 1000,
+  derTotalSize: Int = 1000,
+  epsilon: Double = 0.2,
+  inertia: Double = 0.3,
+  scale: Double = 1.0,
+  thmScale: Double = 0.3,
+  thmTarget: Double = 0.2)
 
-  // Override for concurrency etc
-  def sequence[A](v : Vector[X[A]]) : X[Vector[A]] = Traverse[Vector].sequence[X, A](v)
-
-  def sampFD[A](pd: PD[A], n: Int) =
-    for (samp <- sample(pd, n)) yield TermEvolver.toFD(samp)
-
-  def batchSampFD[A](pd: PD[A], batches: Int, n: Int) =
-    sequence(
-      (1 to batches).toVector.map((_) => sampFD(pd, n))
-    ).map ((vfd) => vfd.reduce(_ ++ _).normalized())
-
-  def tangSizes[A](n: Int)(base: FD[A]) : X[Vector[(FD[A], Int)]]
-}
-
-trait Samples[X[_]] extends TangSamples[X]{
-  def tangSizes[A](n: Int)(base: FD[A]) =
-    sample(base, n). map {
-      (samp) =>
-        for {(a, n) <- samp.toVector} yield (FD.unif(a), n)
-      }
-}
-
-trait MonixSamples extends Samples[Task]{
-  implicit val monad = MonixSamples.monad
-
-  override def sequence[A](v: Vector[Task[A]]) =
-    Task.gatherUnordered(v) map (_.toVector)
-}
-
-object MonixSamples{
-  implicit val monad = implicitly[Monad[Task]]
+  // implicit val taskMonad = implicitly[Monad[Task]]
 
   def obserEv(
     p: FD[Term], param: TermEvolutionStep.Param = TermEvolutionStep.Param()
@@ -309,18 +284,7 @@ object MonixSamples{
       )(
         new TermEvolutionStep(p, new TermEvolver(), param)(ms)
       )
-}
 
-object TermEvolutionStep{
-  case class Param(
-  vars: Vector[Term] = Vector(),
-  size: Int = 1000,
-  derTotalSize: Int = 1000,
-  epsilon: Double = 0.2,
-  inertia: Double = 0.3,
-  scale: Double = 1.0,
-  thmScale: Double = 0.3,
-  thmTarget: Double = 0.2)
 }
 
 class TermEvolutionStep[X[_]](val p: FD[Term],

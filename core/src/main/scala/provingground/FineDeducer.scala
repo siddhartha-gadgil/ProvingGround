@@ -7,6 +7,16 @@ import provingground.{
 
 import scala.language.existentials
 
+import cats._
+import cats.implicits._
+
+import monix.eval._
+import monix.cats._
+
+import monix.execution.Scheduler.Implicits.global
+import monix.reactive._
+import scala.language.higherKinds
+
 import HoTT._
 
 /**
@@ -415,3 +425,79 @@ case class TheoremFeedback(fd: FD[Term],
       ptang.integral(thmFeedbackFunction)
   }
 }
+
+object FineDeducerStep{
+  case class Param(
+  vars: Vector[Term] = Vector(),
+  size: Int = 1000,
+  derTotalSize: Int = 1000,
+  epsilon: Double = 0.2,
+  inertia: Double = 0.3,
+  scale: Double = 1.0,
+  thmScale: Double = 0.3,
+  thmTarget: Double = 0.2)
+}
+
+class FineDeducerStep[X[_]](val p: FD[Term],
+                      ded: FineDeducer = FineDeducer(),
+                      val param: FineDeducerStep.Param = FineDeducerStep.Param()
+                    )(implicit  val samp: TangSamples[X]){
+        import samp._,  param._, FineDeducer._
+        lazy val init = ded.evolve(p)
+
+        lazy val nextFD =
+          for (samp <- sampFD(init, size)) yield samp * (1.0 - inertia) ++ (p * inertia)
+
+        lazy val nextTypFD = sampFD(ded.evolveTyp(p), size).map((fd) => fd.map {case u: Typ[u] => u: Typ[Term]})
+
+        lazy val thmFeedback =
+          for {
+            nFD <- nextFD
+            ntFD <- nextTypFD
+          } yield TheoremFeedback(nFD, ntFD, vars, scale, thmScale, thmTarget)
+
+        def derivativePD(tang: FD[Term]): PD[Term] = ded.Devolve(p, tang)
+
+        def derivativeFD(tang: FD[Term], n: Int) = sampFD(derivativePD(tang), n)
+
+        def derivativeTypsFD(tang: FD[Term], n: Int) = sampFD(asTyps(ded.DevolveTyp(p, tang)), n)
+
+        lazy val tangSamples : X[Vector[(FD[Term], Int)]] =
+          for (nfd <- nextFD; ts <-tangSizes(derTotalSize)(nfd)) yield ts
+
+        def derFDX(vec: Vector[(FD[Term], Int)])  =
+          sequence{
+            for {
+              (fd, n) <- vec
+            } yield
+              for {
+                dfd <- derivativeFD(fd, n)
+                dtfd <- derivativeTypsFD(fd, n)
+              } yield(fd, (dfd , dtfd))}
+
+        lazy val derivativeFDs : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
+          tangSamples.flatMap(derFDX)
+
+        lazy val feedBacks : X[Vector[(FD[Term], Double)]] =
+          for {
+            derFDs <- derivativeFDs
+            thmFb <- thmFeedback
+          } yield
+              for { (x, (tfd, tpfd)) <- derFDs
+              } yield (x, thmFb.feedbackTermDist(tfd, tpfd))
+
+
+        lazy val succFD =
+          for {
+            fbs <- feedBacks
+            nfd <- nextFD
+          } yield
+            fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
+
+        def newp(np: FD[Term]) = new FineDeducerStep(np, ded, param)
+
+        lazy val succ = succFD.map(newp)
+
+        def next = succ
+
+  }
