@@ -12,6 +12,14 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+libraryDependencies += "com.lihaoyi" % "ammonite" % "0.8.5" % "test" cross CrossVersion.full
+
+sourceGenerators in Test += Def.task {
+  val file = (sourceManaged in Test).value / "amm.scala"
+  IO.write(file, """object amm extends App { ammonite.Main().run() }""")
+  Seq(file)
+}.taskValue
+
 // addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.9.3")
 
 // addCompilerPlugin("org.typelevel" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
@@ -224,10 +232,12 @@ lazy val mantle = (project in file("mantle"))
   )
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
-  .
-//        settings(serverSettings : _*).
-  settings(initialCommands in (Test, console) :=
-    s"""ammonite.Main("$initCommands").run() """)
+//        .settings(serverSettings : _*)
+  // .settings(sourceGenerators in Test += Def.task {
+  //   val file = (sourceManaged in Test).value / "amm.scala"
+  //   IO.write(file, s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+  //   Seq(file)
+  // }.taskValue)
   .dependsOn(coreJVM)
   .dependsOn(functionfinder)
   .dependsOn(server)
@@ -247,11 +257,10 @@ lazy val nlp = (project in file("nlp"))
   .settings(name := "ProvingGround-NLP")
   .settings(commonSettings: _*)
   .settings(nlpSettings: _*)
-  .
-//        settings(jvmSettings : _*).
-//        settings(serverSettings : _*).
-  settings(initialCommands in (Test, console) :=
-    s"""ammonite.Main("import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._").run() """)
+//        .settings(jvmSettings : _*)
+//        .settings(serverSettings : _*)
+  // .settings(initialCommands in (Test, console) :=
+  //   s"""ammonite.Main("import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._").run() """)
   .dependsOn(coreJVM)
 
 // lazy val translation = (project in file("translation"))

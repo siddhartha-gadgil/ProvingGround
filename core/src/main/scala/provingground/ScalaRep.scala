@@ -79,7 +79,7 @@ case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
   def subs(x: Term, y: Term) = IdRep(typ.subs(x, y))
 }
 
-case class IdTypRep[U <: Term with Subs[U]](implicit univ: Typ[Typ[U]])
+case class IdTypRep[U <: Term with Subs[U]]()(implicit univ: Typ[Typ[U]])
     extends ScalaRep[Typ[U], Typ[U]] {
   val typ = univ
 

@@ -436,6 +436,24 @@ object FineDeducerStep{
   scale: Double = 1.0,
   thmScale: Double = 0.3,
   thmTarget: Double = 0.2)
+
+  def obserEv(
+  p: FD[Term], fd: FineDeducer = new FineDeducer(), param: Param = Param()
+  )(implicit ms: MonixSamples) =
+    Observable.fromAsyncStateAction[FineDeducerStep[Task], FineDeducerStep[Task]](
+      (st : FineDeducerStep[Task]) => st.succ.map((x) => (x, x))
+    )(
+      new FineDeducerStep(p, fd, param)(ms)
+    )
+
+def observable(
+  p: FD[Term], fd: FineDeducer = new FineDeducer(), param: Param = Param()
+  )(implicit ms: MonixSamples) =
+    Observable.fromAsyncStateAction[FineDeducerStep[Task], FD[Term]](
+      (st : FineDeducerStep[Task]) => st.succ.map((x) => (x.p, x))
+    )(
+      new FineDeducerStep(p, fd, param)(ms)
+    )
 }
 
 class FineDeducerStep[X[_]](val p: FD[Term],

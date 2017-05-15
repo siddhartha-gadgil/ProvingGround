@@ -268,7 +268,7 @@ object TermEvolutionStep{
   // implicit val taskMonad = implicitly[Monad[Task]]
 
   def obserEv(
-    p: FD[Term], param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+    p: FD[Term], param: Param = Param()
     )(implicit ms: MonixSamples) =
       Observable.fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
         (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
@@ -277,7 +277,7 @@ object TermEvolutionStep{
       )
 
   def observable(
-    p: FD[Term], param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+    p: FD[Term], param: Param = Param()
     )(implicit ms: MonixSamples) =
       Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
         (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
