@@ -16,7 +16,7 @@ libraryDependencies += "com.lihaoyi" % "ammonite" % "0.8.5" % "test" cross Cross
 
 sourceGenerators in Test += Def.task {
   val file = (sourceManaged in Test).value / "amm.scala"
-  IO.write(file, """object amm extends App { ammonite.Main().run() }""")
+  IO.write(file, """object amm{ def main(args: Array[String]) = ammonite.Main().run() }""")
   Seq(file)
 }.taskValue
 
@@ -233,11 +233,11 @@ lazy val mantle = (project in file("mantle"))
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
 //        .settings(serverSettings : _*)
-  // .settings(sourceGenerators in Test += Def.task {
-  //   val file = (sourceManaged in Test).value / "amm.scala"
-  //   IO.write(file, s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
-  //   Seq(file)
-  // }.taskValue)
+  .settings(sourceGenerators in Test += Def.task {
+    val file = (sourceManaged in Test).value / "amm.scala"
+    IO.write(file, s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+    Seq(file)
+  }.taskValue)
   .dependsOn(coreJVM)
   .dependsOn(functionfinder)
   .dependsOn(server)
