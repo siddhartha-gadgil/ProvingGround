@@ -489,8 +489,8 @@ class FineDeducerStep[X[_]](val p: FD[Term],
               (fd, n) <- vec
             } yield
               for {
-                dfd <- derivativeFD(fd, n)
-                dtfd <- derivativeTypsFD(fd, n)
+                dfd <- derivativeFD(fd, n) map (_ * (n / derTotalSize))
+                dtfd <- derivativeTypsFD(fd, n) map (_ * (n / derTotalSize))
               } yield(fd, (dfd , dtfd))}
 
         lazy val derivativeFDs : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
