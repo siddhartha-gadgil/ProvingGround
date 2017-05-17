@@ -99,12 +99,14 @@ sealed trait ConstructorPatternMap[
   val univLevel: Int
 }
 
+
+object ConstructorPatternMap{
 /**
   * The constructor pattern W - the only valid head for constructor-patterns.
   */
 case class IdTargMap[C <: Term with Subs[C], H <: Term with Subs[H]]()
     extends ConstructorPatternMap[C, H, H, C, C] {
-  val domain = IdTarg[C, H]
+  // val domain = IdTarg[C, H]
 
   def apply(W: Typ[H]) = W
 
@@ -407,6 +409,8 @@ case class CnstDepFuncPtnMap[T <: Term with Subs[T],
   val univLevel = headlevel
 }
 
+}
+
 import scala.language.existentials
 
 sealed trait ConstructorShape[S <: HList,
@@ -558,6 +562,8 @@ object ConstructorShape {
 import ConstructorShape._
 
 object ConstructorPatternMapper {
+  import ConstructorPatternMap._
+
   implicit def idTargMapper[C <: Term with Subs[C], H <: Term with Subs[H]] =
     new ConstructorPatternMapper[HNil, C, H, H, C, C] {
       def mapper = (_) => IdTargMap[C, H]

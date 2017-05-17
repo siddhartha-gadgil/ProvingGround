@@ -92,6 +92,8 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
                    data: InducDataType,
                    f: => FuncLike[H, Cod]): H => Option[Cod]
 
+  import ConstructorPattern._
+
   /**
     * function pattern.
     */
@@ -184,50 +186,10 @@ object ConstructorPattern {
           cp.asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
         }
     }
-}
 
-/**
-  * Constructor pattern with type, for convenient building.
-  */
-case class ConstructorTyp[C <: Term with Subs[C],
-                          F <: Term with Subs[F],
-                          H <: Term with Subs[H]](
-    pattern: ConstructorPattern[C, F, H],
-    typ: Typ[H]) {
-  def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
 
-  def >::(cons: F) = ConstructorDefn(pattern, cons, typ)
 
-  def -->>:(that: Typ[H]) = {
-    assert(
-      that == typ,
-      s"the method -->: is for extenidng by the same type but $that is not $typ")
-    val tail = IdIterPtn[H, C]
-    val ptn  = FuncPtn(tail, pattern)
-    ConstructorTyp(ptn, typ)
-  }
-
-  def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) =
-    ConstructorTyp(that.pattern -->: pattern, typ)
-
-  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
-    assert(
-      !(that.dependsOn(typ)),
-      "the method ->: is for extension by constant types, maybe you mean _-->:_")
-    ConstructorTyp(that ->: pattern, typ)
-  }
-
-  def ~>>:[T <: Term with Subs[T]](thatVar: H) =
-    ConstructorTyp(thatVar ~>: pattern, typ)
-}
-
-object ConstructorTyp {
-
-  def head[H <: Term with Subs[H], C <: Term with Subs[C]](typ: Typ[H]) =
-    ConstructorTyp(IdTarg[C, H](), typ)
-}
-
-import ConstructorPattern._
+// import ConstructorPattern._
 
 /**
   * The constructor pattern W - the only valid head for constructor-patterns.
@@ -701,6 +663,53 @@ case class DepFuncPtn[U <: Term with Subs[U],
   val univLevel = max(tail.univLevel, headlevel)
 }
 
+}
+
+/**
+  * Constructor pattern with type, for convenient building.
+  */
+case class ConstructorTyp[C <: Term with Subs[C],
+                          F <: Term with Subs[F],
+                          H <: Term with Subs[H]](
+    pattern: ConstructorPattern[C, F, H],
+    typ: Typ[H]) {
+  import ConstructorPattern._
+
+  def :::(name: AnySym): Constructor[C, H] = pattern.constructor(typ, name)
+
+  def >::(cons: F) = ConstructorDefn(pattern, cons, typ)
+
+  def -->>:(that: Typ[H]) = {
+    assert(
+      that == typ,
+      s"the method -->: is for extenidng by the same type but $that is not $typ")
+    val tail = IdIterPtn[H, C]
+    val ptn  = FuncPtn(tail, pattern)
+    ConstructorTyp(ptn, typ)
+  }
+
+  def -->>:[FF <: Term with Subs[FF]](that: IterFuncTyp[H, C, FF]) =
+    ConstructorTyp(that.pattern -->: pattern, typ)
+
+  def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
+    assert(
+      !(that.dependsOn(typ)),
+      "the method ->: is for extension by constant types, maybe you mean _-->:_")
+    ConstructorTyp(that ->: pattern, typ)
+  }
+
+  def ~>>:[T <: Term with Subs[T]](thatVar: H) =
+    ConstructorTyp(thatVar ~>: pattern, typ)
+}
+
+object ConstructorTyp {
+  import ConstructorPattern._
+
+  def head[H <: Term with Subs[H], C <: Term with Subs[C]](typ: Typ[H]) =
+    ConstructorTyp(IdTarg[C, H](), typ)
+}
+
+
 /**
   * Dependent extension by a constant type  of a constructor-pattern depending on elements of that type.
   */
@@ -740,6 +749,8 @@ trait Constructor[Cod <: Term with Subs[Cod], H <: Term with Subs[H]] { self =>
 }
 
 object Constructor {
+  import ConstructorPattern._
+
   case class RecSym[C <: Term with Subs[C], H <: Term with Subs[H]](
       cons: Constructor[C, H])
       extends AnySym {

@@ -7,6 +7,8 @@ import scala.language.existentials
 import shapeless._
 
 object Implicits {
+  import ConstructorPattern._
+
   val Types = IdFmlyPtn[Term, Term]()
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {

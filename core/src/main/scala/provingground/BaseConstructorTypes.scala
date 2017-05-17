@@ -14,6 +14,8 @@ import IterFuncPattern._
 import Implicits._
 
 object BaseConstructorTypes {
+  import ConstructorPattern._
+
   implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
 
   case object SmallBool extends SmallTyp
