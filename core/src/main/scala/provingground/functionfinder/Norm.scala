@@ -1,6 +1,6 @@
-package provingground
+package provingground.functionfinder
 
-import provingground.HoTT._
+import provingground._, HoTT._
 import RecEnum._
 import IntTypes._
 import Math._

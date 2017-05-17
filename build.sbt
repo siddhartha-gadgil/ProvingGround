@@ -209,10 +209,10 @@ lazy val server = (project in file("server"))
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .dependsOn(coreJVM)
 
-lazy val functionfinder = project
-  .settings(commonSettings: _*)
-  .settings(name := "ProvingGround-FunctionFinder")
-  .dependsOn(coreJVM)
+// lazy val functionfinder = project
+//   .settings(commonSettings: _*)
+//   .settings(name := "ProvingGround-FunctionFinder")
+//   .dependsOn(coreJVM)
 
 lazy val mizar = project
   .settings(commonSettings: _*)
@@ -239,7 +239,7 @@ lazy val mantle = (project in file("mantle"))
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
-  .dependsOn(functionfinder)
+  // .dependsOn(functionfinder)
   .dependsOn(server)
   // .dependsOn(translation)
   .settings(tutSettings)

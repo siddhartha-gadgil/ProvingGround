@@ -1,4 +1,4 @@
-package provingground
+package provingground.functionfinder
 import provingground.HoTT._
 import EnumType._
 import EnumFuncs._

@@ -1,6 +1,6 @@
-package provingground
+package provingground.functionfinder
 
-import provingground.HoTT._
+import provingground._, HoTT._
 import ScalaRep._
 import scala.reflect.runtime.universe.{
   Try => UnivTry,

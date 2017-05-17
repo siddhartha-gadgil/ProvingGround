@@ -1,10 +1,11 @@
 package provingground
 
 import scala.annotation._
-import scala.util._
+// import scala.util._
 
-import scala.language.implicitConversions
+// import scala.language.implicitConversions
 
+@deprecated("use spire", "17/5/2017")
 object Collections {
   // lazy val random = new Random
 

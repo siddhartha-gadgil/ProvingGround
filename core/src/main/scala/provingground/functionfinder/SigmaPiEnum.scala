@@ -1,6 +1,6 @@
-package provingground
+package provingground.functionfinder
 
-import provingground.HoTT._
+import provingground._, HoTT._
 import EnumType._
 import ListType._
 import ScalaRep._

@@ -1,5 +1,5 @@
-package provingground
-import provingground.HoTT._
+package provingground.functionfinder
+import provingground._, HoTT._
 import EnumType._
 import ScalaRep._
 import scala.reflect.runtime.universe.{
