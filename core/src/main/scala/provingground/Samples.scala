@@ -35,6 +35,14 @@ trait TangSamples[X[_]]{
   def tangSizes[A](n: Int)(base: FD[A]) : X[Vector[(FD[A], Int)]]
 }
 
+object Samples{
+  def sampleFD[A, X[_]](p: PD[A], n: Int)(implicit s: TangSamples[X]) =
+    s.sampFD(p, n)
+
+  def batchSample[A, X[_]](pd: PD[A], batches: Int, n: Int)(implicit s: TangSamples[X]) =
+      s.batchSampFD(pd, batches, n)
+}
+
 trait Samples[X[_]] extends TangSamples[X]{
   def tangSizes[A](n: Int)(base: FD[A]) =
     sample(base, n). map {
