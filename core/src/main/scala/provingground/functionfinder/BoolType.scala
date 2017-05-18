@@ -6,7 +6,7 @@ import scala.reflect.runtime.universe.{
   Function => FunctionUniv,
   _
 }
-// import provingground.ScalaUniverses._
+// import provingground.ScalaUniv._
 
 object BoolType {
   case object Bool extends SmallTyp

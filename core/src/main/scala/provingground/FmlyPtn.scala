@@ -1,6 +1,6 @@
 package provingground
 import HoTT._
-//import ScalaUniverses._
+//import ScalaUniv._
 import math._
 import scala.language.existentials
 
@@ -123,6 +123,8 @@ sealed trait FmlyPtn[
     type Total       = self.Total
   } = self
 
+  import FmlyPtn._
+
   def ->:[TT <: Term with Subs[TT]](
       tail: Typ[TT]): FmlyPtn[O, C, Func[TT, F]] = FuncFmlyPtn(tail, me)
 
@@ -217,7 +219,6 @@ object FmlyPtn {
         )
         DepFuncFmlyPtn(tail, newHeadFibre).asInstanceOf[FmlyPtn[O, Term, F]]
     }
-}
 
 /**
   * The identity family
@@ -729,3 +730,5 @@ case class DepFuncFmlyPtn[TT <: Term with Subs[TT],
   val univLevel = max(univlevel(tail.typ), headlevel)
 }
 //}
+
+}

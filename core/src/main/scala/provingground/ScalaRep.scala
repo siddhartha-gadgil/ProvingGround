@@ -6,7 +6,7 @@ import scala.util._
 
 import scala.language.implicitConversions
 import scala.language.existentials
-//import provingground.ScalaUniverses._
+//import provingground.ScalaUniv._
 
 /**
   * Representation by a scala object of a HoTT term
@@ -104,6 +104,8 @@ case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic {
     }
   }
 }
+
+import ScalaUniv._
 
 case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
   lazy val typ = HigherUniv(this)

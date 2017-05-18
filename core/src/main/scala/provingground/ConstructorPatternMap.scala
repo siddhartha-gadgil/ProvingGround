@@ -2,7 +2,7 @@ package provingground
 import HoTT._
 //import Iternn._
 //import math.max
-//import ScalaUniverses._
+//import ScalaUniv._
 //import scala.util.Try
 //import scala.language.existentials
 

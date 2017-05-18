@@ -8,7 +8,7 @@ import scala.reflect.runtime.universe.{
 }
 import ScalaRep._
 import BoolType._
-//import provingground.ScalaUniverses._
+//import provingground.ScalaUniv._
 
 object IntTypes {
 

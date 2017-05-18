@@ -8,7 +8,7 @@ import scala.reflect.runtime.universe.{
   _
 }
 import ListType._
-//import provingground.ScalaUniverses._
+//import provingground.ScalaUniv._
 
 object EnumType {
   case class EnumTyp[U <: Term with Subs[U]](elemTyp: Typ[U]) extends SmallTyp

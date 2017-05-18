@@ -6,7 +6,7 @@ import math._
 
 //import scala.util.Try
 
-trait HeadTerm extends Term with Subs[HeadTerm]
+// trait HeadTerm extends Term with Subs[HeadTerm]
 
 object IterFuncPatternMap {
   sealed trait IterFuncPtnMap[O <: Term with Subs[O],

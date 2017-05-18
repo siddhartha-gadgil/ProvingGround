@@ -11,12 +11,16 @@ trait ScalaPolyRep[U <: Term with Subs[U], W] {
 
   def unapply(term: U): Option[W]
 
+  import ScalaPolyRep._
+
   def ||(that: ScalaPolyRep[U, W]) = OrScalaPolyRep(this, that)
 
   def subs(x: Term, y: Term): ScalaPolyRep[U, W]
 }
 
-import ScalaPolyRep._
+
+
+object ScalaPolyRep {
 
 case class ScalaRepWrap[U <: Term with Subs[U], W](rep: ScalaRep[U, W])
     extends ScalaPolyRep[U, W] {
@@ -135,7 +139,7 @@ case class PairPolyRep[U <: Term with Subs[U], W, X <: Term with Subs[X], Y](
     PairPolyRep(firstrep.subs(x, y), secondrep.subs(x, y))
 }
 
-object ScalaPolyRep {
+
 
   implicit class ScalaPolyTerm[U <: Term with Subs[U], W](elem: W)(
       implicit rep: ScalaPolyRep[U, W]) {

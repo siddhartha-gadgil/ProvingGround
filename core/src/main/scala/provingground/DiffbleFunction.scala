@@ -83,26 +83,28 @@ object DiffbleFunction {
 
     def derv(a: A, t: A) = bilinear(a, t) + bilinear(t, a)
   }
-}
 
-import cats._
+  import cats._
 
-// import cats.implicits._
+  // import cats.implicits._
 
-class LoopyFunc[A, B](recdef: (A, B) => B) extends (A => Eval[B]) { self =>
+  class LoopyFunc[A, B](recdef: (A, B) => B) extends (A => Eval[B]) { self =>
 
-  def apply(a: A) = Eval.defer(self(a)).map(recdef(a, _))
-}
+    def apply(a: A) = Eval.defer(self(a)).map(recdef(a, _))
+  }
 
-class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, B), B])
-    extends LoopyFunc[A, B]((a, b) => recdef((a, b)))
-    with DiffbleFunction[A, Eval[B]] { self =>
-  def derv(a: A, t: A) ={
-    val  d : Eval[B] = Eval.defer(derv(a, t));
-    for (x <- self(a); y <- d) yield
-    recdef.derv((a, x), (t, y))
+  class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, B), B])
+      extends LoopyFunc[A, B]((a, b) => recdef((a, b)))
+      with DiffbleFunction[A, Eval[B]] { self =>
+    def derv(a: A, t: A) ={
+      val  d : Eval[B] = Eval.defer(derv(a, t));
+      for (x <- self(a); y <- d) yield
+      recdef.derv((a, x), (t, y))
+    }
   }
 }
+
+
 
 trait AdjDiffbleFunction[A, B] { self =>
   val func: A => B

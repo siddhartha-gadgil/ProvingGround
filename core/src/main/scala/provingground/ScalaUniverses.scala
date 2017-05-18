@@ -8,6 +8,8 @@ import HoTT._
   */
 case class ScalaUniv[U <: Term with Subs[U]](univ: Typ[Typ[U]])
 
+object ScalaUniv{
+
 /**
   * given a universe with objects of scala type Typ[U], gives one with scala type Typ[Typ[U]]
   */
@@ -119,10 +121,7 @@ case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
   def subs(x: Term, y: Term) = this
 }
 
-/**
-  * @author gadgil
-  */
-object ScalaUniverses {
+  // import ScalaUniv._
 
   /**
     * scala universe with no refinement.

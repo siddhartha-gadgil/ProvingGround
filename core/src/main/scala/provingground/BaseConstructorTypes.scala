@@ -13,6 +13,8 @@ import IterFuncPattern._
 
 import Implicits._
 
+import FmlyPtn._
+
 object BaseConstructorTypes {
   import ConstructorPattern._
 

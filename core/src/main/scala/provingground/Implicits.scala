@@ -9,7 +9,7 @@ import shapeless._
 object Implicits {
   import ConstructorPattern._
 
-  val Types = IdFmlyPtn[Term, Term]()
+  val Types = FmlyPtn.IdFmlyPtn[Term, Term]()
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair              = ConstructorTyp(IdW[H], typ)

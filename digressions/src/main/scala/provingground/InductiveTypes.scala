@@ -8,7 +8,7 @@ import scala.language.implicitConversions
 import scala.language.existentials
 //import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 //import Math._
-//import provingground.ScalaUniverses._
+//import provingground.ScalaUniv._
 
 /**
   * Inductively defined types in homotopy type theory
