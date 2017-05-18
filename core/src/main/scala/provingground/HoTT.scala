@@ -270,7 +270,9 @@ object HoTT {
 
     /**
       * dependent function type (Pi-Type) define by a lambda:
-      *  `this` depends on a variable, which hence gives a type family.
+      *  `this` depends on the `variable`, which hence gives a type family;
+      * note that a new variable is created and substituted in `this`
+      * to avoid name clashes.
       */
     def ~>:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         variable: V): GenFuncTyp[V, UU] = {
@@ -1059,7 +1061,7 @@ object HoTT {
     def subs(x: Term, y: Term): FuncLike[W, U]
   }
 
-  /*
+  /**
    * A symbol representing a formal application
    */
   case class ApplnSym[W <: Term with Subs[W], U <: Term with Subs[U]](
@@ -1072,7 +1074,7 @@ object HoTT {
       ApplnSym(func.replace(x, y), arg.replace(x, y))
   }
 
-  /*
+  /**
    * Pattern matching for a formal application.
    */
   object FormalAppln {
@@ -1166,7 +1168,7 @@ object HoTT {
   }
 
   /**
-    * wrap function adding name
+    * wrapped function adding name
     */
   case class NamedFunc[W <: Term with Subs[W], +U <: Term with Subs[U]](
       name: AnySym,
@@ -1186,7 +1188,7 @@ object HoTT {
   }
 
   /**
-    * wrap dependent function adding name
+    * wrapped dependent function adding name
     */
   case class NamedDepFunc[W <: Term with Subs[W], +U <: Term with Subs[U]](
       name: AnySym,
@@ -1282,8 +1284,9 @@ object HoTT {
     *  variable is mapped to value.
     *  This may or may not be a dependent function.
     *  If it is required at compile time that it is not dependent,
-    * and hence has scala type Func, then use the class [[provingground.LambdaFixed]]
-    *
+    * and hence has scala type Func, then use the class [[LambdaFixed]]
+    * @note Equality is overriden here, so that pure functions disguised as dependent ones
+    * can be equal to undisguised pure functions.
     *
     */
   sealed trait LambdaLike[X <: Term with Subs[X], Y <: Term with Subs[Y]]
@@ -1292,8 +1295,14 @@ object HoTT {
 
     //	  // val codomobjtpe = typeOf[Y]
 
+    /**
+     * the variable `x` in the lambda definition `x \mapsto y`
+     */
     val variable: X
 
+  /**
+   * the value `y` in the lambda definition `x mapsto y`
+   */
     val value: Y
 
     type D = X
@@ -1356,7 +1365,13 @@ object HoTT {
   }
 
   /**
-    * functions given by lambda, which may be dependent - this is checked by making a substitution.
+    * functions given by lambda, which may be dependent;
+    * even if it is pure, the scala type does not show this;
+    * one should usually not use the constructor of this case class,
+    * instead use the function [[lmbda]] or the syntactic sugar for this,
+    * e.g. {{{ val f = x :~> y }}}
+    * Note the `:~>`, not `:->`
+    * These create a new variable to avoid name collisions.
     */
   case class LambdaTerm[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       variable: X,
@@ -1373,15 +1388,11 @@ object HoTT {
       LambdaTerm(newvar, value.replace(variable, newvar))
     }
 
-    // override def equals(that: Any) = that match {
-    //   case LambdaTerm(x: Term, y: Term) if x.typ == variable.typ =>
-    //     y.replace(x, variable) == value
-    //   case LambdaFixed(x: Term, y: Term) if x.typ == variable.typ =>
-    //       y.replace(x, variable) == value
-    //   case _ => false
-    // }
   }
 
+  /**
+   * pure functions defined by lambdas;
+   */
   case class LambdaTyped[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       tvar: TypedTerm[X],
       tvalue: TypedTerm[Y])
@@ -1407,7 +1418,13 @@ object HoTT {
   }
 
   /**
-    * lambda which is known to have fixed codomain.
+    * lambda which is known to be pure, i.e., have fixed codomain;
+    * this is reflected in its scala class;
+    * one should usually not use the constructor of this case class,
+    * instead use the function [[lambda]] or the syntactic sugar for this,
+    * e.g. {{{ val f = x :-> y }}}
+    * this creates a new variable to avoid name collisions.
+    * @note: that this construction gives a runtime error if the type of `y` depends on `x`.
     */
   case class LambdaFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](
       variable: X,
@@ -1518,7 +1535,8 @@ object HoTT {
   }
 
   /**
-    * A symbol to be used to generate new variables of a type, with string matching given variable.
+    * A symbol to be used to generate new variables of a type,
+    * without changing [[toString]].
     */
   class InnerSym[U <: Term with Subs[U]](variable: U with Symbolic)
       extends AnySym {
@@ -1569,7 +1587,12 @@ object HoTT {
   }*/
 
   /**
-    * LambdaTerm constructor
+    * constructor for an (in general) dependent lambda;
+    * creates a new variable and substitutes this in the value,
+    * to avoid name collisions;
+    * it is better style to use the syntactic sugar
+    * e.g. {{{ val f = x :~> y }}}
+    * Note the `:~>`, not `:->`
     *
     */
   def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
@@ -1585,7 +1608,7 @@ object HoTT {
     // }
   }
 
-  def lambda[U <: Term with Subs[U], V <: Term with Subs[V]](
+  def lambdaTyped[U <: Term with Subs[U], V <: Term with Subs[V]](
       variable: TypedTerm[U])(value: TypedTerm[V]): FuncLike[U, V] = {
     val newvar = variable.term.newobj
     if (value.typ dependsOn variable.term)
@@ -1596,7 +1619,7 @@ object HoTT {
                        value.replace(variable.term, newvar))
   }
 
-  def lmbda[U <: Term with Subs[U], V <: Term with Subs[V]](
+  def lmbdaTyped[U <: Term with Subs[U], V <: Term with Subs[V]](
       variable: TypedTerm[U])(value: TypedTerm[V]): Func[U, V] = {
     require(
       value.typ.indepOf(variable.term),
@@ -1607,6 +1630,15 @@ object HoTT {
                      value.replace(variable.term, newvar))
   }
 
+  /**
+      * constructor for pi-Types;
+      * creates a new variable and substitutes this in the value,
+      * to avoid name collisions;
+      * it is better style to use the syntactic sugar
+      * e.g. {{{ val P = x ~>: A }}}
+      * Note the `~>:`, not `->:`
+      *
+      */
   def piDefn[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
       value: Typ[V]): PiDefn[U, V] = {
     val newvar = variable.newobj
@@ -1619,9 +1651,16 @@ object HoTT {
   def piClosure(vars: Vector[Term])(t: Typ[Term]): Typ[Term] =
     vars.foldRight(t) { case (v, t) => if (t.dependsOn(v)) v ~>: t else t }
 
-  /**
-    * lambda constructor for fixed codomain
-    */
+    /**
+      * constructor for a pure lambda, i.e., not a dependent function;
+      * this gives a runtime error if the type of the variable depends on the value.
+      * creates a new variable and substitutes this in the value,
+      * to avoid name collisions;
+      * it is better style to use the syntactic sugar
+      * e.g. {{{ val f = x :-> y }}}
+      *
+      *
+      */
   def lmbda[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
       value: V): Func[U, V] = {
     require(
@@ -1638,18 +1677,24 @@ object HoTT {
     // }
   }
 
+  /**
+   * the identity function defined as a lambda.
+   */
   def id[U <: Term with Subs[U]](typ: Typ[U]) = {
     val x = typ.Var
     lmbda(x)(x)
   }
 
+  /**
+   * lambda-like syntax for [[piDefn]]
+   */
   def pi[U <: Term with Subs[U], V <: Term with Subs[V]](variable: U)(
       value: Typ[V]): Typ[FuncLike[U, V]] =
     if (value dependsOn variable) piDefn(variable)(value)
     else (variable.typ.asInstanceOf[Typ[U]] ->: value)
 
   /**
-    * lambda if necessary, otherwise constant.
+    * [[lambda]] if necessary, otherwise constant.
     */
   def optlambda(variable: Term): Term => Term =
     value => if (value dependsOn variable) lambda(variable)(value) else value
@@ -1661,15 +1706,18 @@ object HoTT {
     DepPair(variable, value, fibre)
   }
 
+  /**
+   * composition of functions, defined as a lambda
+   */
   def composition[U <: Term with Subs[U],
                   V <: Term with Subs[V],
                   W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
     val x = g.dom.Var
-    LambdaFixed(x, f(g(x)))
+    lmbda(x)(f(g(x)))
   }
 
   /**
-    * Sigma type based on lambda
+    * Sigma type defined using [[lmbda]], so with new variable created.
     *
     */
   def sigma[U <: Term with Subs[U], V <: Term with Subs[V]](
@@ -1697,6 +1745,10 @@ object HoTT {
     }
   }
 
+  /**
+   * Pi-Type, defined in terms of a variable and value, i.e.,
+   * `\Pi_{x: X}Q` (latex) with `x` the `variable` and `Q` the `value`
+   */
   case class PiDefn[W <: Term with Subs[W], U <: Term with Subs[U]](
       variable: W,
       value: Typ[U])
@@ -1731,7 +1783,8 @@ object HoTT {
   }
 
   /**
-    *  For all/Product for a type family. This is the type of dependent functions
+    *  For all/Product for a type family. This is the type of dependent functions.
+    * deprecated in favour of [[PiDefn]]
     */
   @deprecated("Use PiDefn", "14/12/2016")
   case class PiTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
@@ -1759,8 +1812,7 @@ object HoTT {
   }
 
   /**
-    *  Object in a dependent function type, i.e.,
-    *  a dependent function. Has a family of codomains
+    *  a dependent function
     */
   trait DepFunc[W <: Term with Subs[W], U <: Term with Subs[U]]
       extends FuncLike[W, U] {
@@ -1773,6 +1825,10 @@ object HoTT {
     def act(arg: W): U
   }
 
+  /**
+   * slightly different [[DepSymbolicFunc]] is used instead as this causes
+   * some tests to fail
+   */
   case class PiSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
       variable: W,
@@ -1810,7 +1866,7 @@ object HoTT {
   }
 
   /**
-    * Symbolic dependent function
+    * Symbolic dependent function, acts formally.
     */
   case class DepSymbolicFunc[W <: Term with Subs[W], U <: Term with Subs[U]](
       name: AnySym,
@@ -1841,7 +1897,7 @@ object HoTT {
     override def toString = s"""${name.toString} : (${typ.toString})"""
   }
 
-  /** A dependent function given by a scala funcion */
+  /** A dependent function defined by a scala funcion */
   class DepFuncDefn[W <: Term with Subs[W], U <: Term with Subs[U]](
       func: W => U,
       val dom: Typ[W],
@@ -1912,7 +1968,7 @@ object HoTT {
   }
 
   /**
-    *  Exists/Sum for a type family
+    *  Sigma Type, i.e., dependent pair type.
     */
   case class SigmaTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       fibers: TypFamily[W, U]
@@ -1928,12 +1984,18 @@ object HoTT {
       DepPair(a, b, fibers)
     }
 
+    /**
+     * introduction rule for the Sigma type
+     */
     lazy val paircons = {
       val a = fibers.dom.Var
       val b = (fibers(a)).Var
       lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
     }
 
+    /**
+     * projections from the Sigma-Type
+     */
     lazy val (proj1, proj2) = {
       val x = this.Var
       (x :-> x.first, x :~> x.second)

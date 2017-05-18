@@ -24,9 +24,21 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 There is not much besides the source.
 
-* The [website](http://siddhartha-gadgil.github.io/ProvingGround/) has the most current documentation.
+* The [website](http://siddhartha-gadgil.github.io/ProvingGround/) has the most current documentation, including _scaladocs_.
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
+
+## Contributors
+
+This project has _greatly_ benefited by contributions from
+
+* Dymtro Mitin
+* Tomoaki Hashizaki
+* Olivier Roland
+* Ankit Jaiswal
+* Sayantan Khan
+
+The principal developer is Siddhartha Gadgil (Department of Mathematics, Indian Institute of Science, Bangalore).
 
 ## Running
 
