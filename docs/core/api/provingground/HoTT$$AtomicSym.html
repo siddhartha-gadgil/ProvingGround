@@ -101,42 +101,43 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="The Homotopy type theory objects, types and utility functions
-S
-" href="HoTT$.html">
+        <a title="Core of Homotopy Type Theory (HoTT) implementation." href="HoTT$.html">
               <span class="name">HoTT</span>
             </a>
       </span>
       
-      <p class="shortcomment cmt">The Homotopy type theory objects, types and utility functions
-S
-</p><div class="fullcomment"><div class="comment cmt"><p>The Homotopy type theory objects, types and utility functions
-S
+      <p class="shortcomment cmt">Core of Homotopy Type Theory (HoTT) implementation.</p><div class="fullcomment"><div class="comment cmt"><p>Core of Homotopy Type Theory (HoTT) implementation.
+Includes:</p><ul><li>  terms : <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>,</li><li>  types : <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></li><li>  universes</li><li>  functions and dependent functions (see [FuncLike], [Func])</li><li>  function types <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a> and pi-types <a href="HoTT$$PiDefn.html" class="extype" name="provingground.HoTT.PiDefn">PiDefn</a>,</li><li>  lambda definitions <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>,</li><li>  pairs <a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a> and dependent pairs <a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a></li><li>  product types <a href="HoTT$$ProdTyp.html" class="extype" name="provingground.HoTT.ProdTyp">ProdTyp</a> and sigma types <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a></li><li>  Coproduct types <a href="HoTT$$PlusTyp.html" class="extype" name="provingground.HoTT.PlusTyp">PlusTyp</a>, the Unit type <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a> and the empty type <a href="HoTT$$Zero$.html" class="extype" name="provingground.HoTT.Zero">Zero</a></li><li>  recursion and induction functions for products, coproducts</li></ul><p>General inductive types are <code><code>not</code></code> implemented here.
+See the documentation of <a href="ConstructorSeqTL.html" class="extype" name="provingground.ConstructorSeqTL">ConstructorSeqTL</a> for these.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="HoTT$$AbsPair$.html" title=""></a>
-                        <a class="trait" href="HoTT$$AbsPair.html" title="Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type."></a>
-                        <a href="HoTT$$AbsPair.html" title="Abstract pair, parametrized by scala types of components, generally a (dependent) pair object or a pair type.">
+                        <a class="trait" href="HoTT$$AbsPair.html" title="Abstract pair, parametrized by scala types of components,
+generally a (dependent) pair object or a product type."></a>
+                        <a href="HoTT$$AbsPair.html" title="Abstract pair, parametrized by scala types of components,
+generally a (dependent) pair object or a product type.">
                           AbsPair
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$AnySym.html" title="Symbol
+                        <a class="trait" href="HoTT$$AnySym.html" title="Symbol - may be a name or a formal expression
 "></a>
-                        <a href="HoTT$$AnySym.html" title="Symbol
+                        <a href="HoTT$$AnySym.html" title="Symbol - may be a name or a formal expression
 ">
                           AnySym
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$ApplnSym.html" title=""></a>
-                        <a href="HoTT$$ApplnSym.html" title="">
+                        <a class="class" href="HoTT$$ApplnSym.html" title="A symbol representing a formal application
+"></a>
+                        <a href="HoTT$$ApplnSym.html" title="A symbol representing a formal application
+">
                           ApplnSym
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="class" href="" title="A constant symbol, so a name."></a>
+                        <a href="" title="A constant symbol, so a name.">
                           AtomicSym
                         </a>
                       </li><li class="current-entities indented2">
@@ -147,8 +148,10 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$BaseUniv.html" title=""></a>
-                        <a href="HoTT$$BaseUniv.html" title="">
+                        <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type
+but may have refined scala type."></a>
+                        <a href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type
+but may have refined scala type.">
                           BaseUniv
                         </a>
                       </li><li class="current-entities indented2">
@@ -181,28 +184,26 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$ConstantTerm.html" title=""></a>
-                        <a href="HoTT$$ConstantTerm.html" title="">
+                        <a class="trait" href="HoTT$$ConstantTerm.html" title="Term invariant under substitution."></a>
+                        <a href="HoTT$$ConstantTerm.html" title="Term invariant under substitution.">
                           ConstantTerm
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$ConstantTyp.html" title=""></a>
-                        <a href="HoTT$$ConstantTyp.html" title="">
+                        <a class="trait" href="HoTT$$ConstantTyp.html" title="Term invariant under substitution."></a>
+                        <a href="HoTT$$ConstantTyp.html" title="Term invariant under substitution.">
                           ConstantTyp
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$DepFunc.html" title=" Object in a dependent function type, i.e.,
- a dependent function."></a>
-                        <a href="HoTT$$DepFunc.html" title=" Object in a dependent function type, i.e.,
- a dependent function.">
+                        <a class="trait" href="HoTT$$DepFunc.html" title=" a dependent function - rarely used trait as not closed under substitution."></a>
+                        <a href="HoTT$$DepFunc.html" title=" a dependent function - rarely used trait as not closed under substitution.">
                           DepFunc
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$DepFuncDefn.html" title="A dependent function given by a scala funcion"></a>
-                        <a href="HoTT$$DepFuncDefn.html" title="A dependent function given by a scala funcion">
+                        <a class="class" href="HoTT$$DepFuncDefn.html" title="A dependent function defined by a scala funcion"></a>
+                        <a href="HoTT$$DepFuncDefn.html" title="A dependent function defined by a scala funcion">
                           DepFuncDefn
                         </a>
                       </li><li class="current-entities indented2">
@@ -213,10 +214,8 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$DepSymbolicFunc.html" title="Symbolic dependent function
-"></a>
-                        <a href="HoTT$$DepSymbolicFunc.html" title="Symbolic dependent function
-">
+                        <a class="class" href="HoTT$$DepSymbolicFunc.html" title="Symbolic dependent function, acts formally."></a>
+                        <a href="HoTT$$DepSymbolicFunc.html" title="Symbolic dependent function, acts formally.">
                           DepSymbolicFunc
                         </a>
                       </li><li class="current-entities indented2">
@@ -235,44 +234,54 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$Fold$.html" title=""></a>
-                        <a href="HoTT$$Fold$.html" title="">
+                        <a class="object" href="HoTT$$Fold$.html" title="convenience methods to apply methods of special scala types such as functions
+without the compiler knowing that the object has the special type."></a>
+                        <a href="HoTT$$Fold$.html" title="convenience methods to apply methods of special scala types such as functions
+without the compiler knowing that the object has the special type.">
                           Fold
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$FormalAppln$.html" title=""></a>
-                        <a href="HoTT$$FormalAppln$.html" title="">
+                        <a class="object" href="HoTT$$FormalAppln$.html" title="Pattern matching for a formal application."></a>
+                        <a href="HoTT$$FormalAppln$.html" title="Pattern matching for a formal application.">
                           FormalAppln
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$Func.html" title=" a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain."></a>
-                        <a href="HoTT$$Func.html" title=" a function (not dependent), i.e.,  an object in a function type, has a codomain and a fixed type for the domain.">
+                        <a class="trait" href="HoTT$$Func.html" title=" a function (pure, not dependent), i.e.,
+a term in a function type, has a codomain and a fixed type for the domain."></a>
+                        <a href="HoTT$$Func.html" title=" a function (pure, not dependent), i.e.,
+a term in a function type, has a codomain and a fixed type for the domain.">
                           Func
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$FuncDefn.html" title="A function given by a scala function"></a>
-                        <a href="HoTT$$FuncDefn.html" title="A function given by a scala function">
+                        <a class="class" href="HoTT$$FuncDefn.html" title="A function defined by a scala function
+"></a>
+                        <a href="HoTT$$FuncDefn.html" title="A function defined by a scala function
+">
                           FuncDefn
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$FuncLike.html" title="Includes both functions and dependent functions"></a>
-                        <a href="HoTT$$FuncLike.html" title="Includes both functions and dependent functions">
+                        <a class="trait" href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions,
+is a scala function, but the apply is not directly defined -
+instead the method act is defined."></a>
+                        <a href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions,
+is a scala function, but the apply is not directly defined -
+instead the method act is defined.">
                           FuncLike
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$FuncTyp.html" title="Function type (not dependent functions)"></a>
-                        <a href="HoTT$$FuncTyp.html" title="Function type (not dependent functions)">
+                        <a class="class" href="HoTT$$FuncTyp.html" title="  Function type - pure, not dependent."></a>
+                        <a href="HoTT$$FuncTyp.html" title="  Function type - pure, not dependent.">
                           FuncTyp
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$GenFuncTyp.html" title=""></a>
-                        <a href="HoTT$$GenFuncTyp.html" title="">
+                        <a class="class" href="HoTT$$GenFuncTyp.html" title="Possibly dependent function type."></a>
+                        <a href="HoTT$$GenFuncTyp.html" title="Possibly dependent function type.">
                           GenFuncTyp
                         </a>
                       </li><li class="current-entities indented2">
@@ -289,50 +298,78 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$IndInducFuncLike.html" title=""></a>
-                        <a href="HoTT$$IndInducFuncLike.html" title="">
+                        <a class="trait" href="HoTT$$IndInducFuncLike.html" title="common trait for indexed induction functions,
+for serialization and pretty printing."></a>
+                        <a href="HoTT$$IndInducFuncLike.html" title="common trait for indexed induction functions,
+for serialization and pretty printing.">
                           IndInducFuncLike
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$IndRecFunc.html" title=""></a>
-                        <a href="HoTT$$IndRecFunc.html" title="">
+                        <a class="trait" href="HoTT$$IndRecFunc.html" title="common trait for indexed recurion functions,
+for serialization and pretty printing."></a>
+                        <a href="HoTT$$IndRecFunc.html" title="common trait for indexed recurion functions,
+for serialization and pretty printing.">
                           IndRecFunc
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$InducFuncLike.html" title=""></a>
-                        <a href="HoTT$$InducFuncLike.html" title="">
+                        <a class="trait" href="HoTT$$InducFuncLike.html" title="common trait for induction functions,
+for serialization and pretty printing."></a>
+                        <a href="HoTT$$InducFuncLike.html" title="common trait for induction functions,
+for serialization and pretty printing.">
                           InducFuncLike
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$InnerSym.html" title="A symbol to be used to generate new variables of a type, with string matching given variable."></a>
-                        <a href="HoTT$$InnerSym.html" title="A symbol to be used to generate new variables of a type, with string matching given variable.">
+                        <a class="class" href="HoTT$$InnerSym.html" title="A symbol to be used to generate new variables of a type,
+without changing toString."></a>
+                        <a href="HoTT$$InnerSym.html" title="A symbol to be used to generate new variables of a type,
+without changing toString.">
                           InnerSym
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$LambdaFixed.html" title="lambda which is known to have fixed codomain."></a>
-                        <a href="HoTT$$LambdaFixed.html" title="lambda which is known to have fixed codomain.">
+                        <a class="class" href="HoTT$$LambdaFixed.html" title="lambda which is known to be pure, i.e., have fixed codomain;
+this is reflected in its scala class;
+one should usually not use the constructor of this case class,
+instead use the function lambda or the syntactic sugar for this,
+e.g."></a>
+                        <a href="HoTT$$LambdaFixed.html" title="lambda which is known to be pure, i.e., have fixed codomain;
+this is reflected in its scala class;
+one should usually not use the constructor of this case class,
+instead use the function lambda or the syntactic sugar for this,
+e.g.">
                           LambdaFixed
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$LambdaLike.html" title=" A lambda-expression."></a>
-                        <a href="HoTT$$LambdaLike.html" title=" A lambda-expression.">
+                        <a class="trait" href="HoTT$$LambdaLike.html" title=" A lambda-expression;
+ variable is mapped to value."></a>
+                        <a href="HoTT$$LambdaLike.html" title=" A lambda-expression;
+ variable is mapped to value.">
                           LambdaLike
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$LambdaTerm.html" title="functions given by lambda, which may be dependent - this is checked by making a substitution."></a>
-                        <a href="HoTT$$LambdaTerm.html" title="functions given by lambda, which may be dependent - this is checked by making a substitution.">
+                        <a class="class" href="HoTT$$LambdaTerm.html" title="functions given by lambda, which may be dependent;
+even if it is pure, the scala type does not show this;
+one should usually not use the constructor of this case class,
+instead use the function lmbda or the syntactic sugar for this,
+e.g."></a>
+                        <a href="HoTT$$LambdaTerm.html" title="functions given by lambda, which may be dependent;
+even if it is pure, the scala type does not show this;
+one should usually not use the constructor of this case class,
+instead use the function lmbda or the syntactic sugar for this,
+e.g.">
                           LambdaTerm
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$LambdaTyped.html" title=""></a>
-                        <a href="HoTT$$LambdaTyped.html" title="">
+                        <a class="class" href="HoTT$$LambdaTyped.html" title="pure functions defined by lambdas;
+"></a>
+                        <a href="HoTT$$LambdaTyped.html" title="pure functions defined by lambdas;
+">
                           LambdaTyped
                         </a>
                       </li><li class="current-entities indented2">
@@ -359,23 +396,25 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$NameFactory$.html" title=""></a>
-                        <a href="HoTT$$NameFactory$.html" title="">
+                        <a class="object" href="HoTT$$NameFactory$.html" title="factory for variable names
+"></a>
+                        <a href="HoTT$$NameFactory$.html" title="factory for variable names
+">
                           NameFactory
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$NamedDepFunc.html" title="wrap dependent function adding name
+                        <a class="class" href="HoTT$$NamedDepFunc.html" title="wrapped dependent function adding name
 "></a>
-                        <a href="HoTT$$NamedDepFunc.html" title="wrap dependent function adding name
+                        <a href="HoTT$$NamedDepFunc.html" title="wrapped dependent function adding name
 ">
                           NamedDepFunc
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$NamedFunc.html" title="wrap function adding name
+                        <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name
 "></a>
-                        <a href="HoTT$$NamedFunc.html" title="wrap function adding name
+                        <a href="HoTT$$NamedFunc.html" title="wrapped function adding name
 ">
                           NamedFunc
                         </a>
@@ -387,20 +426,30 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$PairTerm.html" title="Object (a, b) in (A, B)"></a>
-                        <a href="HoTT$$PairTerm.html" title="Object (a, b) in (A, B)">
+                        <a class="class" href="HoTT$$PairTerm.html" title="Term (a, b) in  A times B
+"></a>
+                        <a href="HoTT$$PairTerm.html" title="Term (a, b) in  A times B
+">
                           PairTerm
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="HoTT$$PiDefn$.html" title=""></a>
-                        <a class="class" href="HoTT$$PiDefn.html" title=""></a>
-                        <a href="HoTT$$PiDefn.html" title="">
+                        <a class="class" href="HoTT$$PiDefn.html" title="Pi-Type, defined in terms of a variable and value, i.e.,
+\Pi_{x: X}Q (latex) with x the variable and Q the value
+"></a>
+                        <a href="HoTT$$PiDefn.html" title="Pi-Type, defined in terms of a variable and value, i.e.,
+\Pi_{x: X}Q (latex) with x the variable and Q the value
+">
                           PiDefn
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$PiSymbolicFunc.html" title=""></a>
-                        <a href="HoTT$$PiSymbolicFunc.html" title="">
+                        <a class="class" href="HoTT$$PiSymbolicFunc.html" title="slightly different DepSymbolicFunc is used instead as this causes
+some tests to fail
+"></a>
+                        <a href="HoTT$$PiSymbolicFunc.html" title="slightly different DepSymbolicFunc is used instead as this causes
+some tests to fail
+">
                           PiSymbolicFunc
                         </a>
                       </li><li class="current-entities indented2">
@@ -411,34 +460,40 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="HoTT$$PlusTyp$.html" title=""></a>
-                        <a class="class" href="HoTT$$PlusTyp.html" title="type A + B
+                        <a class="class" href="HoTT$$PlusTyp.html" title="coproduct type A + B
 "></a>
-                        <a href="HoTT$$PlusTyp.html" title="type A + B
+                        <a href="HoTT$$PlusTyp.html" title="coproduct type A + B
 ">
                           PlusTyp
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$ProdTyp.html" title="Pair of types (A, B)"></a>
-                        <a href="HoTT$$ProdTyp.html" title="Pair of types (A, B)">
+                        <a class="class" href="HoTT$$ProdTyp.html" title="The product type A  times B"></a>
+                        <a href="HoTT$$ProdTyp.html" title="The product type A  times B">
                           ProdTyp
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$RecFunc.html" title=""></a>
-                        <a href="HoTT$$RecFunc.html" title="">
+                        <a class="trait" href="HoTT$$RecFunc.html" title="common trait for recursion functions,
+for serialization and pretty printing."></a>
+                        <a href="HoTT$$RecFunc.html" title="common trait for recursion functions,
+for serialization and pretty printing.">
                           RecFunc
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$Refl.html" title=""></a>
-                        <a href="HoTT$$Refl.html" title="">
+                        <a class="class" href="HoTT$$Refl.html" title="the reflexivity term with type an equality value = value
+"></a>
+                        <a href="HoTT$$Refl.html" title="the reflexivity term with type an equality value = value
+">
                           Refl
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$RichTerm.html" title=""></a>
-                        <a href="HoTT$$RichTerm.html" title="">
+                        <a class="class" href="HoTT$$RichTerm.html" title="Operations on terms
+"></a>
+                        <a href="HoTT$$RichTerm.html" title="Operations on terms
+">
                           RichTerm
                         </a>
                       </li><li class="current-entities indented2">
@@ -457,16 +512,14 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$SigmaTyp.html" title=" Exists/Sum for a type family
-"></a>
-                        <a href="HoTT$$SigmaTyp.html" title=" Exists/Sum for a type family
-">
+                        <a class="class" href="HoTT$$SigmaTyp.html" title=" Sigma Type, i.e., dependent pair type."></a>
+                        <a href="HoTT$$SigmaTyp.html" title=" Sigma Type, i.e., dependent pair type.">
                           SigmaTyp
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$SimpleSyms$.html" title="simple symbols for maps etc."></a>
-                        <a href="HoTT$$SimpleSyms$.html" title="simple symbols for maps etc.">
+                        <a class="object" href="HoTT$$SimpleSyms$.html" title="plain text symbols for maps etc."></a>
+                        <a href="HoTT$$SimpleSyms$.html" title="plain text symbols for maps etc.">
                           SimpleSyms
                         </a>
                       </li><li class="current-entities indented2">
@@ -485,8 +538,10 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$Subs.html" title="specify result of substitution, typically so a class is closed under substitution."></a>
-                        <a href="HoTT$$Subs.html" title="specify result of substitution, typically so a class is closed under substitution.">
+                        <a class="trait" href="HoTT$$Subs.html" title="specify result of substitution
+a typical class is closed under substitution."></a>
+                        <a href="HoTT$$Subs.html" title="specify result of substitution
+a typical class is closed under substitution.">
                           Subs
                         </a>
                       </li><li class="current-entities indented2">
@@ -515,14 +570,14 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$SymbolicFunc.html" title="Symbol containing function info"></a>
-                        <a href="HoTT$$SymbolicFunc.html" title="Symbol containing function info">
+                        <a class="class" href="HoTT$$SymbolicFunc.html" title="A symbolic function, acts formally."></a>
+                        <a href="HoTT$$SymbolicFunc.html" title="A symbolic function, acts formally.">
                           SymbolicFunc
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$Term.html" title=""></a>
-                        <a href="HoTT$$Term.html" title="">
+                        <a class="trait" href="HoTT$$Term.html" title="A HoTT term."></a>
+                        <a href="HoTT$$Term.html" title="A HoTT term.">
                           Term
                         </a>
                       </li><li class="current-entities indented2">
@@ -535,10 +590,8 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$TermSyms.html" title="symbols for printing
-"></a>
-                        <a href="HoTT$$TermSyms.html" title="symbols for printing
-">
+                        <a class="trait" href="HoTT$$TermSyms.html" title="Symbols for printing, allowing choice between e.g."></a>
+                        <a href="HoTT$$TermSyms.html" title="Symbols for printing, allowing choice between e.g.">
                           TermSyms
                         </a>
                       </li><li class="current-entities indented2">
@@ -557,8 +610,8 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$TypedTerm.html" title=""></a>
-                        <a href="HoTT$$TypedTerm.html" title="">
+                        <a class="class" href="HoTT$$TypedTerm.html" title="A term of type U with its HoTT-type of scala-type Typ[U]."></a>
+                        <a href="HoTT$$TypedTerm.html" title="A term of type U with its HoTT-type of scala-type Typ[U].">
                           TypedTerm
                         </a>
                       </li><li class="current-entities indented2">
@@ -595,11 +648,11 @@ S
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$vacuous$.html" title=" Symbol for map 0 -&gt; A
+                        <a class="object" href="HoTT$$vacuousSym$.html" title=" Symbol for map 0 -&gt; A
 "></a>
-                        <a href="HoTT$$vacuous$.html" title=" Symbol for map 0 -&gt; A
+                        <a href="HoTT$$vacuousSym$.html" title=" Symbol for map 0 -&gt; A
 ">
-                          vacuous
+                          vacuousSym
                         </a>
                       </li>
               </ul>
@@ -629,7 +682,8 @@ S
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A constant symbol, so a name.
+</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -638,12 +692,12 @@ S
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="HoTT$$HashSym$.html" class="extype" name="provingground.HoTT.HashSym">HashSym</a>, <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>, <a href="HoTT$$vacuous$.html" class="extype" name="provingground.HoTT.vacuous">vacuous</a>, <a href="IndexedConstructorPatterns$iConstructor$$InducSym.html" class="extype" name="provingground.IndexedConstructorPatterns.iConstructor.InducSym">InducSym</a>, <a href="IndexedConstructorPatterns$iConstructor$$RecSym.html" class="extype" name="provingground.IndexedConstructorPatterns.iConstructor.RecSym">RecSym</a>, <a href="ScalaRep$$ScalaSymbol.html" class="extype" name="provingground.ScalaRep.ScalaSymbol">ScalaSymbol</a></div>
+            <div class="subClasses hiddenContent"><a href="HoTT$$HashSym$.html" class="extype" name="provingground.HoTT.HashSym">HashSym</a>, <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>, <a href="HoTT$$vacuousSym$.html" class="extype" name="provingground.HoTT.vacuousSym">vacuousSym</a>, <a href="IndexedConstructorPatterns$iConstructor$$InducSym.html" class="extype" name="provingground.IndexedConstructorPatterns.iConstructor.InducSym">InducSym</a>, <a href="IndexedConstructorPatterns$iConstructor$$RecSym.html" class="extype" name="provingground.IndexedConstructorPatterns.iConstructor.RecSym">RecSym</a>, <a href="ScalaRep$$ScalaSymbol.html" class="extype" name="provingground.ScalaRep.ScalaSymbol">ScalaSymbol</a></div>
           </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
                 <span class="toggle diagram-link">
                   Type Hierarchy
                 </span>
-                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 609.50 155.00" height="155pt" width="610pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="graph0"><polygon points="-4,4 -4,-151 605.5,-151 605.5,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.HoTT.AtomicSym (this class)" xlink:href="#inheritance-diagram"><path d="M326.167,-86C326.167,-86 250.833,-86 250.833,-86 246.667,-86 242.5,-81.8333 242.5,-77.6667 242.5,-77.6667 242.5,-69.3333 242.5,-69.3333 242.5,-65.1667 246.667,-61 250.833,-61 250.833,-61 326.167,-61 326.167,-61 330.333,-61 334.5,-65.1667 334.5,-69.3333 334.5,-69.3333 334.5,-77.6667 334.5,-77.6667 334.5,-81.8333 330.333,-86 326.167,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-80.5" x="252.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="273.5" text-anchor="start">AtomicSym</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.HoTT.HashSym" xlink:href="HoTT$$HashSym$.html#inheritance-diagram"><path d="M76.6667,-25C76.6667,-25 8.33333,-25 8.33333,-25 4.16667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.33333 0,-8.33333 0,-4.16667 4.16667,-0 8.33333,-0 8.33333,-0 76.6667,-0 76.6667,-0 80.8333,-0 85,-4.16667 85,-8.33333 85,-8.33333 85,-16.6667 85,-16.6667 85,-20.8333 80.8333,-25 76.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">HashSym</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="HashSym is a subtype of AtomicSym"><path d="M235.188,-59.7139C190.291,-48.9457 126.904,-33.7432 85.2709,-23.7581" stroke="#d4d4d4" fill="none"></path><polygon points="234.851,-62.1524 242.229,-61.4026 235.994,-57.3875 234.851,-62.1524" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.IndexedConstructorPatterns.iConstructor.InducSym" xlink:href="IndexedConstructorPatterns$iConstructor$$InducSym.html#inheritance-diagram"><path d="M181.167,-25C181.167,-25 111.833,-25 111.833,-25 107.667,-25 103.5,-20.8333 103.5,-16.6667 103.5,-16.6667 103.5,-8.33333 103.5,-8.33333 103.5,-4.16667 107.667,-0 111.833,-0 111.833,-0 181.167,-0 181.167,-0 185.333,-0 189.5,-4.16667 189.5,-8.33333 189.5,-8.33333 189.5,-16.6667 189.5,-16.6667 189.5,-20.8333 185.333,-25 181.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="113.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="134.5" text-anchor="start">InducSym</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="InducSym is a subtype of AtomicSym"><path d="M254.136,-58.2219C229.768,-48.0972 197.47,-34.6777 174.632,-25.1884" stroke="#d4d4d4" fill="none"></path><polygon points="253.38,-60.5607 260.784,-60.9841 255.26,-56.0358 253.38,-60.5607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.Name" xlink:href="HoTT$$Name.html#inheritance-diagram"><path d="M268.667,-25C268.667,-25 216.333,-25 216.333,-25 212.167,-25 208,-20.8333 208,-16.6667 208,-16.6667 208,-8.33333 208,-8.33333 208,-4.16667 212.167,-0 216.333,-0 216.333,-0 268.667,-0 268.667,-0 272.833,-0 277,-4.16667 277,-8.33333 277,-8.33333 277,-16.6667 277,-16.6667 277,-20.8333 272.833,-25 268.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="218.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="239.5" text-anchor="start">Name</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="Name is a subtype of AtomicSym"><path d="M274.967,-55.1423C267.427,-45.4716 258.243,-33.6919 251.569,-25.1323" stroke="#d4d4d4" fill="none"></path><polygon points="273.176,-56.8295 279.412,-60.8435 277.04,-53.8166 273.176,-56.8295" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.IndexedConstructorPatterns.iConstructor.RecSym" xlink:href="IndexedConstructorPatterns$iConstructor$$RecSym.html#inheritance-diagram"><path d="M365.167,-25C365.167,-25 303.833,-25 303.833,-25 299.667,-25 295.5,-20.8333 295.5,-16.6667 295.5,-16.6667 295.5,-8.33333 295.5,-8.33333 295.5,-4.16667 299.667,-0 303.833,-0 303.833,-0 365.167,-0 365.167,-0 369.333,-0 373.5,-4.16667 373.5,-8.33333 373.5,-8.33333 373.5,-16.6667 373.5,-16.6667 373.5,-20.8333 369.333,-25 365.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="305.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="326.5" text-anchor="start">RecSym</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="RecSym is a subtype of AtomicSym"><path d="M302.033,-55.1423C309.573,-45.4716 318.757,-33.6919 325.431,-25.1323" stroke="#d4d4d4" fill="none"></path><polygon points="299.96,-53.8166 297.588,-60.8435 303.824,-56.8295 299.96,-53.8166" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.ScalaRep.ScalaSymbol" xlink:href="ScalaRep$$ScalaSymbol.html#inheritance-diagram"><path d="M494.667,-25C494.667,-25 400.333,-25 400.333,-25 396.167,-25 392,-20.8333 392,-16.6667 392,-16.6667 392,-8.33333 392,-8.33333 392,-4.16667 396.167,-0 400.333,-0 400.333,-0 494.667,-0 494.667,-0 498.833,-0 503,-4.16667 503,-8.33333 503,-8.33333 503,-16.6667 503,-16.6667 503,-20.8333 498.833,-25 494.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="402.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="423.5" text-anchor="start">ScalaSymbol[X]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="ScalaSymbol[X] is a subtype of AtomicSym"><path d="M326.303,-58.4723C353.761,-48.2837 390.474,-34.6606 416.273,-25.0875" stroke="#d4d4d4" fill="none"></path><polygon points="325.245,-56.2519 319.534,-60.9841 326.949,-60.8458 325.245,-56.2519" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node object" id="graph1_6"><g id="a_object|graph1_6"><a xlink:title="provingground.HoTT.vacuous" xlink:href="HoTT$$vacuous$.html#inheritance-diagram"><path d="M593.167,-25C593.167,-25 529.833,-25 529.833,-25 525.667,-25 521.5,-20.8333 521.5,-16.6667 521.5,-16.6667 521.5,-8.33333 521.5,-8.33333 521.5,-4.16667 525.667,-0 529.833,-0 529.833,-0 593.167,-0 593.167,-0 597.333,-0 601.5,-4.16667 601.5,-8.33333 601.5,-8.33333 601.5,-16.6667 601.5,-16.6667 601.5,-20.8333 597.333,-25 593.167,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="531.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="552.5" text-anchor="start">vacuous</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="vacuous is a subtype of AtomicSym"><path d="M341.998,-61.4938C387.423,-52.0674 454.313,-37.996 512.5,-25 515.4,-24.3524 518.393,-23.674 521.405,-22.9843" stroke="#d4d4d4" fill="none"></path><polygon points="341.253,-59.1459 334.896,-62.9659 342.248,-63.9439 341.253,-59.1459" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.HoTT.AnySym" xlink:href="HoTT$$AnySym.html#inheritance-diagram"><path d="M319.167,-147C319.167,-147 257.833,-147 257.833,-147 253.667,-147 249.5,-142.833 249.5,-138.667 249.5,-138.667 249.5,-130.333 249.5,-130.333 249.5,-126.167 253.667,-122 257.833,-122 257.833,-122 319.167,-122 319.167,-122 323.333,-122 327.5,-126.167 327.5,-130.333 327.5,-130.333 327.5,-138.667 327.5,-138.667 327.5,-142.833 323.333,-147 319.167,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="259.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="280.5" text-anchor="start">AnySym</text></a></g></g><!-- node7&#45;&gt;node0 --><g class="edge inheritance" id="graph1_7_0"><g id="a_inheritance|graph1_7_0"><a xlink:title="AtomicSym is a subtype of AnySym"><path d="M288.5,-114.76C288.5,-105.367 288.5,-94.2882 288.5,-86.1323" stroke="#d4d4d4" fill="none"></path><polygon points="286.05,-114.843 288.5,-121.843 290.95,-114.844 286.05,-114.843" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 628.00 155.00" height="155pt" width="628pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="graph0"><polygon points="-4,4 -4,-151 624,-151 624,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.HoTT.AtomicSym (this class)" xlink:href="#inheritance-diagram"><path d="M326.167,-86C326.167,-86 250.833,-86 250.833,-86 246.667,-86 242.5,-81.8333 242.5,-77.6667 242.5,-77.6667 242.5,-69.3333 242.5,-69.3333 242.5,-65.1667 246.667,-61 250.833,-61 250.833,-61 326.167,-61 326.167,-61 330.333,-61 334.5,-65.1667 334.5,-69.3333 334.5,-69.3333 334.5,-77.6667 334.5,-77.6667 334.5,-81.8333 330.333,-86 326.167,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-80.5" x="252.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="273.5" text-anchor="start">AtomicSym</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.HoTT.HashSym" xlink:href="HoTT$$HashSym$.html#inheritance-diagram"><path d="M76.6667,-25C76.6667,-25 8.33333,-25 8.33333,-25 4.16667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.33333 0,-8.33333 0,-4.16667 4.16667,-0 8.33333,-0 8.33333,-0 76.6667,-0 76.6667,-0 80.8333,-0 85,-4.16667 85,-8.33333 85,-8.33333 85,-16.6667 85,-16.6667 85,-20.8333 80.8333,-25 76.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">HashSym</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="HashSym is a subtype of AtomicSym"><path d="M235.188,-59.7139C190.291,-48.9457 126.904,-33.7432 85.2709,-23.7581" stroke="#d4d4d4" fill="none"></path><polygon points="234.851,-62.1524 242.229,-61.4026 235.994,-57.3875 234.851,-62.1524" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.IndexedConstructorPatterns.iConstructor.InducSym" xlink:href="IndexedConstructorPatterns$iConstructor$$InducSym.html#inheritance-diagram"><path d="M181.167,-25C181.167,-25 111.833,-25 111.833,-25 107.667,-25 103.5,-20.8333 103.5,-16.6667 103.5,-16.6667 103.5,-8.33333 103.5,-8.33333 103.5,-4.16667 107.667,-0 111.833,-0 111.833,-0 181.167,-0 181.167,-0 185.333,-0 189.5,-4.16667 189.5,-8.33333 189.5,-8.33333 189.5,-16.6667 189.5,-16.6667 189.5,-20.8333 185.333,-25 181.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="113.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="134.5" text-anchor="start">InducSym</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="InducSym is a subtype of AtomicSym"><path d="M254.136,-58.2219C229.768,-48.0972 197.47,-34.6777 174.632,-25.1884" stroke="#d4d4d4" fill="none"></path><polygon points="253.38,-60.5607 260.784,-60.9841 255.26,-56.0358 253.38,-60.5607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.Name" xlink:href="HoTT$$Name.html#inheritance-diagram"><path d="M268.667,-25C268.667,-25 216.333,-25 216.333,-25 212.167,-25 208,-20.8333 208,-16.6667 208,-16.6667 208,-8.33333 208,-8.33333 208,-4.16667 212.167,-0 216.333,-0 216.333,-0 268.667,-0 268.667,-0 272.833,-0 277,-4.16667 277,-8.33333 277,-8.33333 277,-16.6667 277,-16.6667 277,-20.8333 272.833,-25 268.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="218.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="239.5" text-anchor="start">Name</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="Name is a subtype of AtomicSym"><path d="M274.967,-55.1423C267.427,-45.4716 258.243,-33.6919 251.569,-25.1323" stroke="#d4d4d4" fill="none"></path><polygon points="273.176,-56.8295 279.412,-60.8435 277.04,-53.8166 273.176,-56.8295" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.IndexedConstructorPatterns.iConstructor.RecSym" xlink:href="IndexedConstructorPatterns$iConstructor$$RecSym.html#inheritance-diagram"><path d="M365.167,-25C365.167,-25 303.833,-25 303.833,-25 299.667,-25 295.5,-20.8333 295.5,-16.6667 295.5,-16.6667 295.5,-8.33333 295.5,-8.33333 295.5,-4.16667 299.667,-0 303.833,-0 303.833,-0 365.167,-0 365.167,-0 369.333,-0 373.5,-4.16667 373.5,-8.33333 373.5,-8.33333 373.5,-16.6667 373.5,-16.6667 373.5,-20.8333 369.333,-25 365.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="305.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="326.5" text-anchor="start">RecSym</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="RecSym is a subtype of AtomicSym"><path d="M302.033,-55.1423C309.573,-45.4716 318.757,-33.6919 325.431,-25.1323" stroke="#d4d4d4" fill="none"></path><polygon points="299.96,-53.8166 297.588,-60.8435 303.824,-56.8295 299.96,-53.8166" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.ScalaRep.ScalaSymbol" xlink:href="ScalaRep$$ScalaSymbol.html#inheritance-diagram"><path d="M494.667,-25C494.667,-25 400.333,-25 400.333,-25 396.167,-25 392,-20.8333 392,-16.6667 392,-16.6667 392,-8.33333 392,-8.33333 392,-4.16667 396.167,-0 400.333,-0 400.333,-0 494.667,-0 494.667,-0 498.833,-0 503,-4.16667 503,-8.33333 503,-8.33333 503,-16.6667 503,-16.6667 503,-20.8333 498.833,-25 494.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="402.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="423.5" text-anchor="start">ScalaSymbol[X]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="ScalaSymbol[X] is a subtype of AtomicSym"><path d="M326.303,-58.4723C353.761,-48.2837 390.474,-34.6606 416.273,-25.0875" stroke="#d4d4d4" fill="none"></path><polygon points="325.245,-56.2519 319.534,-60.9841 326.949,-60.8458 325.245,-56.2519" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node object" id="graph1_6"><g id="a_object|graph1_6"><a xlink:title="provingground.HoTT.vacuousSym" xlink:href="HoTT$$vacuousSym$.html#inheritance-diagram"><path d="M611.667,-25C611.667,-25 529.333,-25 529.333,-25 525.167,-25 521,-20.8333 521,-16.6667 521,-16.6667 521,-8.33333 521,-8.33333 521,-4.16667 525.167,-0 529.333,-0 529.333,-0 611.667,-0 611.667,-0 615.833,-0 620,-4.16667 620,-8.33333 620,-8.33333 620,-16.6667 620,-16.6667 620,-20.8333 615.833,-25 611.667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="531.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="552.5" text-anchor="start">vacuousSym</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="vacuousSym is a subtype of AtomicSym"><path d="M341.84,-61.3401C393.34,-50.5654 470.701,-34.38 520.9,-23.8773" stroke="#d4d4d4" fill="none"></path><polygon points="341.101,-58.9918 334.751,-62.8234 342.104,-63.7879 341.101,-58.9918" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.HoTT.AnySym" xlink:href="HoTT$$AnySym.html#inheritance-diagram"><path d="M319.167,-147C319.167,-147 257.833,-147 257.833,-147 253.667,-147 249.5,-142.833 249.5,-138.667 249.5,-138.667 249.5,-130.333 249.5,-130.333 249.5,-126.167 253.667,-122 257.833,-122 257.833,-122 319.167,-122 319.167,-122 323.333,-122 327.5,-126.167 327.5,-130.333 327.5,-130.333 327.5,-138.667 327.5,-138.667 327.5,-142.833 323.333,-147 319.167,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="259.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="280.5" text-anchor="start">AnySym</text></a></g></g><!-- node7&#45;&gt;node0 --><g class="edge inheritance" id="graph1_7_0"><g id="a_inheritance|graph1_7_0"><a xlink:title="AtomicSym is a subtype of AnySym"><path d="M288.5,-114.76C288.5,-105.367 288.5,-94.2882 288.5,-86.1323" stroke="#d4d4d4" fill="none"></path><polygon points="286.05,-114.843 288.5,-121.843 290.95,-114.844 286.05,-114.843" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
                 <div id="diagram-controls" class="hiddenContent">
                   <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
                   <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>

@@ -101,17 +101,14 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="The Homotopy type theory objects, types and utility functions
-S
-" href="HoTT$.html">
+        <a title="Core of Homotopy Type Theory (HoTT) implementation." href="HoTT$.html">
               <span class="name">HoTT</span>
             </a>
       </span>
       
-      <p class="shortcomment cmt">The Homotopy type theory objects, types and utility functions
-S
-</p><div class="fullcomment"><div class="comment cmt"><p>The Homotopy type theory objects, types and utility functions
-S
+      <p class="shortcomment cmt">Core of Homotopy Type Theory (HoTT) implementation.</p><div class="fullcomment"><div class="comment cmt"><p>Core of Homotopy Type Theory (HoTT) implementation.
+Includes:</p><ul><li>  terms : <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>,</li><li>  types : <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></li><li>  universes</li><li>  functions and dependent functions (see [FuncLike], [Func])</li><li>  function types <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a> and pi-types <a href="HoTT$$PiDefn.html" class="extype" name="provingground.HoTT.PiDefn">PiDefn</a>,</li><li>  lambda definitions <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>,</li><li>  pairs <a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a> and dependent pairs <a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a></li><li>  product types <a href="HoTT$$ProdTyp.html" class="extype" name="provingground.HoTT.ProdTyp">ProdTyp</a> and sigma types <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a></li><li>  Coproduct types <a href="HoTT$$PlusTyp.html" class="extype" name="provingground.HoTT.PlusTyp">PlusTyp</a>, the Unit type <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a> and the empty type <a href="HoTT$$Zero$.html" class="extype" name="provingground.HoTT.Zero">Zero</a></li><li>  recursion and induction functions for products, coproducts</li></ul><p>General inductive types are <code><code>not</code></code> implemented here.
+See the documentation of <a href="ConstructorSeqTL.html" class="extype" name="provingground.ConstructorSeqTL">ConstructorSeqTL</a> for these.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li name="provingground.HoTT.ProdTyp" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ProdTyp[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]]extendsHoTT.Typ[provingground.HoTT.PairTerm[U,V]]withHoTT.AbsPair[provingground.HoTT.Typ[U],provingground.HoTT.Typ[V]]withHoTT.Subs[provingground.HoTT.ProdTyp[U,V]]withProductwithSerializable"></a><a id="ProdTyp[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]]:ProdTyp[U,V]"></a>
@@ -125,28 +122,28 @@ S
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Pair of types (A, B)" href="HoTT$$ProdTyp.html">
+        <a title="The product type A  times B" href="HoTT$$ProdTyp.html">
               <span class="name">ProdTyp</span>
             </a><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]</span>]</span><span class="params">(<span name="first">first: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>]</span>, <span name="second">second: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]</span>)</span><span class="result"> extends <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]] with <a href="HoTT$$AbsPair.html" class="extype" name="provingground.HoTT.AbsPair">AbsPair</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>], <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$ProdTyp.html" class="extype" name="provingground.HoTT.ProdTyp">ProdTyp</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      <p class="shortcomment cmt">Pair of types (A, B)</p><div class="fullcomment"><div class="comment cmt"><p>Pair of types (A, B)</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a></dd></dl></div>
+      <p class="shortcomment cmt">The product type <code>A  times B</code></p><div class="fullcomment"><div class="comment cmt"><p>The product type <code>A  times B</code></p></div><dl class="paramcmts block"><dt class="param">first</dt><dd class="cmt"><p>the first component</p></dd><dt class="param">second</dt><dd class="cmt"><p>the second component</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$Typ$Elem$.html" title=""></a>
-                        <a href="HoTT$$Typ$Elem$.html" title="">
+                        <a class="object" href="HoTT$$Typ$Elem$.html" title="Pattern for element of the given type."></a>
+                        <a href="HoTT$$Typ$Elem$.html" title="Pattern for element of the given type.">
                           Elem
                         </a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="HoTT$$ProdTyp$InducFn.html" title=""></a>
-                        <a href="HoTT$$ProdTyp$InducFn.html" title="">
+                        <a class="class" href="HoTT$$ProdTyp$InducFn.html" title="Inductive definition"></a>
+                        <a href="HoTT$$ProdTyp$InducFn.html" title="Inductive definition">
                           InducFn
                         </a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="class" href="" title="Recursion function from product type"></a>
+                        <a href="" title="Recursion function from product type">
                           RecFn
                         </a>
                       </li>
@@ -177,7 +174,7 @@ S
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>[<span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]</dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Recursion function from product type</p></div><dl class="paramcmts block"><dt class="param">codom</dt><dd class="cmt"><p>the codomain</p></dd><dt class="param">data</dt><dd class="cmt"><p>the definition data</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>[<span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -242,7 +239,7 @@ S
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.HoTT.ProdTyp.RecFn#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.HoTT.ProdTyp.RecFn#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(codom:provingground.HoTT.Typ[W],data:provingground.HoTT.Func[U,provingground.HoTT.Func[V,W]]):ProdTyp.this.RecFn[W]"></a><a id="&lt;init&gt;:RecFn[W]"></a>
       <span class="permalink">
       <a href="../provingground/HoTT$$ProdTyp$RecFn.html#&lt;init&gt;(codom:provingground.HoTT.Typ[W],data:provingground.HoTT.Func[U,provingground.HoTT.Func[V,W]]):ProdTyp.this.RecFn[W]" title="Permalink">
@@ -257,7 +254,7 @@ S
         <span class="name">RecFn</span><span class="params">(<span name="codom">codom: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]</span>, <span name="data">data: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>, <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]]</span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">codom</dt><dd class="cmt"><p>the codomain</p></dd><dt class="param">data</dt><dd class="cmt"><p>the definition data</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -393,7 +390,10 @@ S
         <span class="name">act</span><span class="params">(<span name="w">w: <a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span></span>
       </span>
       
-      <p class="shortcomment cmt">Function application</p><div class="fullcomment"><div class="comment cmt"><p>Function application</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+      <p class="shortcomment cmt">the action of the function to define:
+define this method, but use apply.</p><div class="fullcomment"><div class="comment cmt"><p>the action of the function to define:
+define this method, but use apply.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.Function1#andThen" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a><a id="andThen[A]((W)⇒A):(PairTerm[U,V])⇒A"></a>
       <span class="permalink">
@@ -428,7 +428,10 @@ S
         <span class="name">apply</span><span class="params">(<span name="arg">arg: <a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → Function1</dd></dl></div>
+      <p class="shortcomment cmt">application of the function: use this but define the <a href="HoTT$$FuncLike.html#act(arg:W):U" class="extmbr" name="provingground.HoTT.FuncLike#act">act</a> method;
+checks HoTT-type of argument is in the domain and throws exception if it fails.</p><div class="fullcomment"><div class="comment cmt"><p>application of the function: use this but define the <a href="HoTT$$FuncLike.html#act(arg:W):U" class="extmbr" name="provingground.HoTT.FuncLike#act">act</a> method;
+checks HoTT-type of argument is in the domain and throws exception if it fails.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → Function1</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -565,8 +568,8 @@ S
         <span class="name">dependsOn</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <p class="shortcomment cmt">returns whether this depends on that
-</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this depends on that
+      <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.ProdTyp.RecFn#dom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dom:provingground.HoTT.ProdTyp[U,V]"></a><a id="dom:ProdTyp[U,V]"></a>
@@ -756,7 +759,7 @@ S
         <span class="name">indepOf</span><span class="params">(<span name="that">that: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <p class="shortcomment cmt">returns whether this is independent of that.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether this is independent of that.
+      <p class="shortcomment cmt">returns whether <code>this</code> is independent of <code>that</code>.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> is independent of <code>that</code>.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -805,7 +808,11 @@ S
         <span class="name">newobj</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
+      <p class="shortcomment cmt">A new object with the same type,
+to be used in place of a variable to avoid name clashes.</p><div class="fullcomment"><div class="comment cmt"><p>A new object with the same type,
+to be used in place of a variable to avoid name clashes.
+Should throw exception when invoked for constants.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
@@ -853,11 +860,11 @@ S
         <span class="name">replace</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>], <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>], <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]]</span>
       </span>
       
-      <p class="shortcomment cmt">refine substitution so if x and y are both abstract pairs with independent components (for x),
-both components are substituted.</p><div class="fullcomment"><div class="comment cmt"><p>refine substitution so if x and y are both abstract pairs with independent components (for x),
-both components are substituted.
-testing for types also done.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
+      <p class="shortcomment cmt">refine substitution so if x and y are both of certain forms such as
+pairs or formal applications,
+components are substituted.</p><div class="fullcomment"><div class="comment cmt"><p>refine substitution so if x and y are both of certain forms such as
+pairs or formal applications,
+components are substituted.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="provingground.HoTT.ProdTyp.RecFn#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.HoTT.ProdTyp[U,V]#RecFn[W]"></a><a id="subs(Term,Term):RecFn[W]"></a>
       <span class="permalink">
@@ -873,7 +880,7 @@ testing for types also done.
         <span class="name">subs</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>[<span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]</span>
       </span>
       
-      <p class="shortcomment cmt"> substitute x by y.</p><div class="fullcomment"><div class="comment cmt"><p> substitute x by y.
+      <p class="shortcomment cmt"> substitute x by y recursively in <code>this</code>.</p><div class="fullcomment"><div class="comment cmt"><p> substitute x by y recursively in <code>this</code>.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
@@ -922,8 +929,8 @@ testing for types also done.
         <span class="name">typ</span><span class="result">: <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>], <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">Gives limited information on types when the types are universes, so should not be used in this case.</p><div class="fullcomment"><div class="comment cmt"><p>Gives limited information on types when the types are universes, so should not be used in this case.
-So avoid making this judgement.
+      <p class="shortcomment cmt">the HoTT-type of the term
+</p><div class="fullcomment"><div class="comment cmt"><p>the HoTT-type of the term
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a> → <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.Func#typed" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typed:provingground.HoTT.TypedTerm[provingground.HoTT.Func[W,U]]"></a><a id="typed:TypedTerm[Func[PairTerm[U,V],W]]"></a>
@@ -940,7 +947,8 @@ So avoid making this judgement.
         <span class="name">typed</span><span class="result">: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a>[<span class="extype" name="provingground.HoTT.ProdTyp.U">U</span>, <span class="extype" name="provingground.HoTT.ProdTyp.V">V</span>], <span class="extype" name="provingground.HoTT.ProdTyp.RecFn.W">W</span>]]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+      <p class="shortcomment cmt">Term with somewhat refined type.</p><div class="fullcomment"><div class="comment cmt"><p>Term with somewhat refined type.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.Term#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="usesVar(t:provingground.HoTT.Term):Boolean"></a><a id="usesVar(Term):Boolean"></a>
       <span class="permalink">
@@ -956,7 +964,10 @@ So avoid making this judgement.
         <span class="name">usesVar</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+      <p class="shortcomment cmt">returns whether the variable <code>t</code> is used as a variable in a lambda
+definition.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether the variable <code>t</code> is used as a variable in a lambda
+definition.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
