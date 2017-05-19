@@ -1737,7 +1737,7 @@ object HoTT {
                   V <: Term with Subs[V],
                   W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
     val x = g.dom.Var
-    lmbda(x)(f(g(x)))
+    LambdaFixed(x, f(g(x)))
   }
 
   /**
