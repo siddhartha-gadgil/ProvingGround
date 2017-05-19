@@ -63,6 +63,6 @@ object ParserGUI /*extends SimpleSwingApplication*/ {
 		  val parsedTree =proseTrees(toParse.text, pipe).head
 			parseResult.text = toFormula(parsedTree, Global).toString
 			depListView.listData = parsedTree.tree
-			depHeader.text = parsedTree.root.toString
+			depinterface.Header.text = parsedTree.root.toString
 		}*/
 }

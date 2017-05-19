@@ -43,7 +43,7 @@ object AndrewsCurtisController extends Controller {
   def acQuery = Action(parse.text) { implicit request =>
     val (header, message) = read[(String, String)](request.body)
     header match {
-      case Header.evolve => {
+      case interface.Header.evolve => {
         val (rank, steps) = read[(Int, Int)](message)
         acPost(pickleInit(rank))
         evolvePost(rank, steps)

@@ -1,4 +1,4 @@
-package provingground
+package provingground.interface
 import scala.xml._
 import scala.language.implicitConversions
 

@@ -21,7 +21,7 @@ object AndrewsCurtisJS {
 
   import dom.ext._
 
-  import Header._
+  import interface.Header._
   import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
   val sse = new dom.EventSource("/acstream")
@@ -114,7 +114,7 @@ object AndrewsCurtisJS {
 
   def postEvolve(rank: Int, steps: Int) = {
     val message = write((rank, steps))
-    val post    = write((Header.evolve, message))
+    val post    = write((interface.Header.evolve, message))
     Ajax.post("/acquery", post)
   }
 

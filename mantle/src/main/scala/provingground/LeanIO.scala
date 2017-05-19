@@ -1,4 +1,5 @@
-package provingground
+package provingground.interface
+import provingground._
 
 import LeanExportElem._
 import ammonite.ops._

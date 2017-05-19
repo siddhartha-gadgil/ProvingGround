@@ -1,4 +1,4 @@
-package provingground
+package provingground.interface
 
 /**
   * @author gadgil
