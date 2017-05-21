@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.1"
 
-val ammV = "0.8.5"
+val ammV = "0.9.0"
 
 scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -12,11 +12,11 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-libraryDependencies += "com.lihaoyi" % "ammonite" % "0.8.5" % "test" cross CrossVersion.full
+libraryDependencies += "com.lihaoyi" % "ammonite" % "0.9.0" % "test" cross CrossVersion.full
 
 sourceGenerators in Test += Def.task {
   val file = (sourceManaged in Test).value / "amm.scala"
-  IO.write(file, """object amm{ def main(args: Array[String]) = ammonite.Main().run() }""")
+  IO.write(file, """object amm extends App { ammonite.Main("$initCommands").run() }""")
   Seq(file)
 }.taskValue
 
@@ -37,7 +37,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
       "org.typelevel" %% "spire"     % "0.14.1",
-      "com.lihaoyi"   %% "fansi"     % "0.2.3",
+      "com.lihaoyi"   %% "fansi"     % "0.2.4",
       "com.lihaoyi"   %% "upickle"   % "0.4.4",
       "com.chuusai"   %% "shapeless" % "2.3.2",
       "org.typelevel" %% "cats"      % "0.9.0",
