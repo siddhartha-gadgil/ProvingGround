@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import org.scalatest.FlatSpec
-import TLImplicits._
+import induction.TLImplicits._
 // import Fold._
 
 import shapeless._

@@ -1,9 +1,10 @@
 package provingground
 import provingground.{
   FiniteDistribution => FD,
-  ProbabilityDistribution => PD,
-  TermLang => TL
+  ProbabilityDistribution => PD
 }
+
+import translation.{TermLang => TL}
 
 import scala.language.existentials
 

@@ -1,4 +1,6 @@
-package provingground
+package provingground.translation
+
+import provingground._
 
 class ExprApplnOps[E](appln: => (E, E) => Option[E])(implicit l: ExprLang[E],
                                                      d: Domain[E],

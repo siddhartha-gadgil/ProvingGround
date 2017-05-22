@@ -2,9 +2,11 @@ package provingground
 
 import HoTT._
 import org.scalatest.FlatSpec
-import Implicits._
+import induction.coarse.Implicits._
 import Fold._
 import scala.language.existentials
+
+import induction.coarse._
 
 class InductionSpec extends FlatSpec {
 

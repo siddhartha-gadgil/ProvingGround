@@ -1,6 +1,6 @@
-package provingground
+package provingground.induction.coarse
 
-import HoTT._
+import provingground._, induction._, HoTT._
 
 trait Curry[Iter <: Term with Subs[Term],
             Total <: Term with Subs[Total],

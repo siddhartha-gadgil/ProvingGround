@@ -1,10 +1,10 @@
-package provingground
+package provingground.induction
 
 import shapeless._
 
 import HList._
 
-import HoTT._
+import provingground._, HoTT._
 
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends RecFunc[H, C] { self =>

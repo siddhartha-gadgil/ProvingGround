@@ -7,6 +7,8 @@ import org.scalatest.FlatSpec
 
 //import RecFunction.{ recFunction }
 
+import induction.coarse._
+
 import BaseConstructorTypes._
 
 import scala.util.Try

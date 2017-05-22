@@ -1,6 +1,6 @@
-package provingground
+package provingground.induction.coarse
 
-import HoTT._
+import provingground._, induction._, HoTT._
 import shapeless.HList
 // import HList._
 

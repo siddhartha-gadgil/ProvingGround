@@ -1,6 +1,6 @@
-package provingground
+package provingground.induction.coarse
 
-import HoTT._
+import provingground._, induction._, HoTT._
 
 trait InductiveTyp[C <: Term with Subs[C], H <: Term with Subs[H]]
     extends Typ[H] {

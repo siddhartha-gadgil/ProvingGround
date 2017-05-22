@@ -1,5 +1,5 @@
-package provingground
-import provingground.HoTT._
+package provingground.functionfinder
+import provingground._, HoTT._
 // import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv}
 
 import scala.util._
@@ -307,6 +307,8 @@ object ScalaRep {
   case object NatInt extends ScalaTyp[Int]
 
   import NatInt.rep
+
+  import induction.coarse._
 
   implicit val boolRep: ScalaRep[Term, Boolean] = SimpleRep(
     BaseConstructorTypes.SmallBool)

@@ -1,5 +1,5 @@
-package provingground
-import HoTT._
+package provingground.induction.coarse
+import provingground._, induction._, HoTT._
 //import ScalaUniv._
 import math._
 import scala.language.existentials

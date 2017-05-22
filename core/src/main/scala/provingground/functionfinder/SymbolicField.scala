@@ -1,6 +1,6 @@
-package provingground
+package provingground.functionfinder
 
-import HoTT._
+import provingground._, HoTT._
 
 import ScalaRep._
 

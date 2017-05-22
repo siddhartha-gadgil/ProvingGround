@@ -1,6 +1,6 @@
 package provingground.andrewscurtis
 
-import provingground.StringParse._
+import provingground.translation.StringParse._
 
 /*
  * Free group in n generators

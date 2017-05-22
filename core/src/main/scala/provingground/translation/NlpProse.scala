@@ -1,4 +1,4 @@
-package provingground
+package provingground.translation
 
 /** Stanford dependency trees and associated methods */
 object NlpProse {

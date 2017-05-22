@@ -2,6 +2,8 @@ package provingground
 
 import edu.stanford.nlp.trees.Tree
 
+import translation._
+
 /**
   * Expression in a language to represent terms in HoTT and
   trees representing them in prose, including partially collapsed trees.

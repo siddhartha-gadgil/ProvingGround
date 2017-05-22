@@ -1,6 +1,6 @@
-package provingground
+package provingground.translation
 
-import HoTT._
+import provingground._, HoTT._
 
 sealed trait ShapeTree {
   def recSubTrees: Set[ShapeTree] // excuding the single leaf

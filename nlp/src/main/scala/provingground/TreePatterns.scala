@@ -4,6 +4,8 @@ import edu.stanford.nlp.trees.Tree
 
 import PennTrees._
 
+import translation._
+
 import Functors._
 
 import Translator.Pattern

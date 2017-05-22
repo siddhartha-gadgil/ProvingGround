@@ -1,8 +1,8 @@
-package provingground
+package provingground.functionfinder
 
 import scala.language.implicitConversions
 
-import HoTT._
+import provingground._, HoTT._
 
 import scala.util._
 

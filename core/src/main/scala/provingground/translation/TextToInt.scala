@@ -1,4 +1,4 @@
-package provingground
+package provingground.translation
 import scala.util._
 
 /** Converts prose numbers to Integers without checking for bad cases */

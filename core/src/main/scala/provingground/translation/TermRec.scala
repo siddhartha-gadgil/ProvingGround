@@ -1,5 +1,5 @@
-package provingground
-import HoTT._
+package provingground.translation
+import provingground._, HoTT._
 
 trait FoldedTerm[U <: Term with Subs[U]] extends Term {
   val op: Func[U, Func[U, U]]

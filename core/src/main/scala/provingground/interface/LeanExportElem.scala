@@ -3,6 +3,8 @@ import provingground._
 
 import scala.util.Try
 
+import induction.coarse._
+
 sealed trait LeanExportElem
 
 object LeanExportElem {
@@ -482,7 +484,7 @@ class LeanToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
 
     val valueOpt =
       formalConsOpt map
-        ((formalCons) => InductiveTyp.fromFormal(formalCons.toList, formalTyp))
+        ((formalCons) => induction.coarse.InductiveTyp.fromFormal(formalCons.toList, formalTyp))
 
     val checkTyp =
       fullTypOpt flatMap ((typ) => Try(foldterms(typ, paramsOpt.get)).toOption)

@@ -2,7 +2,7 @@
 
 We illustrate construction of inductive types, and defining functions on them recursively.
 
-We begin with some imports. The import Implicits gives the operations to construct inductive types.
+We begin with some imports. The import induction.coarse.Implicits gives the operations to construct inductive types.
 ```scala
 scala> import provingground._
 import provingground._
@@ -10,8 +10,8 @@ import provingground._
 scala> import HoTT._
 import HoTT._
 
-scala> import Implicits._
-import Implicits._
+scala> import induction.coarse.Implicits._
+import induction.coarse.Implicits._
 ```
 
 We do not define inductive types, but instead define the _structure of an inductive type_ on a given, typically symbolic type.

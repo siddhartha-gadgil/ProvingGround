@@ -5,6 +5,8 @@ import akka.stream.scaladsl._
 
 import scala.concurrent._
 
+import translation._
+
 import HoTT._
 
 import Deducer._

@@ -1,4 +1,4 @@
-package provingground
+package provingground.translation
 
 trait NestedDoc[T] {
   def append(t: T): NestedDoc[T]

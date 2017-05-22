@@ -1,4 +1,4 @@
-package provingground
+package provingground.translation
 
 import scala.language.higherKinds
 import scala.util.Try

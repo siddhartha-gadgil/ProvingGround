@@ -5,6 +5,8 @@ import provingground.{
   TruncatedDistributionLang => TDL
 }
 
+import translation._
+
 class StochasticLang[E: ExprLang: Domain: ExprPatterns](
     baseWeight: Double = 1.0,
     flipWeight: Double = 0.0,

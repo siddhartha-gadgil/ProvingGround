@@ -1,6 +1,6 @@
-package provingground
+package provingground.translation
 
-import HoTT._
+import provingground._, HoTT._
 
 class TermToExpr[E](
     univ: Int => E,

@@ -1,4 +1,4 @@
-package provingground
+package provingground.translation
 
 import Functors._
 
@@ -6,9 +6,11 @@ import cats.implicits._
 
 import cats._
 
-import HoTT._
+import provingground._, HoTT._
 
 import Translator._
+
+import induction._
 
 object TermPatterns {
   val formalAppln = Pattern[Term, II](FormalAppln.unapply)

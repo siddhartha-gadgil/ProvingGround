@@ -1,6 +1,8 @@
 package provingground
 // import example._
 
+import translation._
+
 import akka.http.scaladsl.server.Directives
 // import shared.SharedMessages
 import akka.http.scaladsl.model._
@@ -40,7 +42,7 @@ class AmmService(
   import ammonite.kernel._
 
   val initCommands =
-    "import provingground._\nimport HoTT._\nimport TLImplicits._\nimport shapeless._\n"
+    "import provingground._\nimport HoTT._\nimport induction.TLImplicits._\nimport shapeless._\n"
 
   def listScripts =
     ls(scriptsDir)

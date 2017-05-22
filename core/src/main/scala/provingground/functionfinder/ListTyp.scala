@@ -1,8 +1,8 @@
-package provingground
+package provingground.functionfinder
 
 import ScalaRep._
 
-import HoTT._
+import provingground._, HoTT._
 
 /**
   * @author gadgil

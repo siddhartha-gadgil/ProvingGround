@@ -1,6 +1,8 @@
 package provingground
 
-import provingground.NlpProse._
+import translation._
+
+import NlpProse._
 //import provingground.ParseProse._
 
 import java.io._

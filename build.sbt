@@ -85,7 +85,7 @@ lazy val jvmSettings = Seq(
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j"   % "slf4j-api"    % "1.7.16",
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
-    "com.lihaoyi" %% "pprint"      % "0.4.4",
+    "com.lihaoyi" %% "pprint"      % "0.5.1",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.13.+"
     // Native libraries are not included by default. add this if you want them (as of 0.7)

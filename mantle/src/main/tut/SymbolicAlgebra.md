@@ -20,6 +20,7 @@ The ring of natural numbers is an object NatRing. This has
 
 ```tut
 import provingground._
+import functionfinder._
 import NatRing._
 ```
 

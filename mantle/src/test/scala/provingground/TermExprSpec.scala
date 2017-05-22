@@ -1,6 +1,8 @@
 package provingground
 
 import HoTT._
+import translation._
+
 import org.scalatest.FlatSpec
 
 @deprecated("Use expression spec", "April 2016")

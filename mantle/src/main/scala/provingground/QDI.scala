@@ -1,5 +1,7 @@
 package provingground
 
+import translation._
+
 import java.io._
 import java.awt.Desktop
 

@@ -1,5 +1,5 @@
 ---
-title: Inductive Types (old style)
+title: Inductive Types
 layout: page
 ---
 
@@ -7,7 +7,7 @@ layout: page
 
 We illustrate construction of inductive types, and defining functions on them recursively.
 
-We begin with some imports. The import Implicits gives the operations to construct inductive types.
+We begin with some imports. The import induction.coarse.Implicits gives the operations to construct inductive types.
 
 ```scala
 scala> import provingground._
@@ -16,8 +16,14 @@ import provingground._
 scala> import HoTT._
 import HoTT._
 
-scala> import Implicits._
-import Implicits._
+scala> import translation._
+import translation._
+
+scala> import induction.coarse._
+import induction.coarse._
+
+scala> import induction.coarse.Implicits._
+import induction.coarse.Implicits._
 ```
 
 We do not define inductive types, but instead define the _structure of an inductive type_ on a given, typically symbolic type.
@@ -30,7 +36,7 @@ scala> val Bool = "Boolean" :: Type
 Bool: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Boolean : 𝒰 _0
 
 scala> val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
-BoolInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),true : (Boolean : 𝒰 _0),Boolean : 𝒰 _0),Cons(ConstructorDefn(IdW(),false : (Boolean : 𝒰 _0),Boolean : 𝒰 _0),Empty(Boolean : 𝒰 _0)))
+BoolInd: provingground.induction.coarse.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),true : (Boolean : 𝒰 _0),Boolean : 𝒰 _0),Cons(ConstructorDefn(IdW(),false : (Boolean : 𝒰 _0),Boolean : 𝒰 _0),Empty(Boolean : 𝒰 _0)))
 ```
 
 From the inductive structure, we can obtain the introduction rules.
@@ -122,7 +128,7 @@ scala> val Nat ="Nat" :: Type
 Nat: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Nat : 𝒰 _0
 
 scala> val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
-NatInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),0 : (Nat : 𝒰 _0),Nat : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0)),Nat : 𝒰 _0),Empty(Nat : 𝒰 _0)))
+NatInd: provingground.induction.coarse.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),0 : (Nat : 𝒰 _0),Nat : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0)),Nat : 𝒰 _0),Empty(Nat : 𝒰 _0)))
 
 scala> val List(zero, succ) = NatInd.intros
 zero: provingground.HoTT.Term = 0 : (Nat : 𝒰 _0)
@@ -213,7 +219,7 @@ scala> val ListA = "List(A)" :: Type
 ListA: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = List(A) : 𝒰 _0
 
 scala> val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
-ListAInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 _0),List(A) : 𝒰 _0),Cons(ConstructorDefn(CnstFncPtn(A : 𝒰 _0,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 _0) → ((List(A) : 𝒰 _0) → (List(A) : 𝒰 _0))),List(A) : 𝒰 _0),Empty(List(A) : 𝒰 _0)))
+ListAInd: provingground.induction.coarse.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),nil : (List(A) : 𝒰 _0),List(A) : 𝒰 _0),Cons(ConstructorDefn(CnstFncPtn(A : 𝒰 _0,FuncPtn(IdIterPtn(),IdW())),cons : ((A : 𝒰 _0) → ((List(A) : 𝒰 _0) → (List(A) : 𝒰 _0))),List(A) : 𝒰 _0),Empty(List(A) : 𝒰 _0)))
 
 scala> val List(nil, cons) = ListAInd.intros
 nil: provingground.HoTT.Term = nil : (List(A) : 𝒰 _0)
@@ -256,7 +262,7 @@ scala> val T ="Tree" :: Type
 T: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Tree : 𝒰 _0
 
 scala> val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
-TInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (Tree : 𝒰 _0),Tree : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node : ((Tree : 𝒰 _0) → ((Tree : 𝒰 _0) → (Tree : 𝒰 _0))),Tree : 𝒰 _0),Empty(Tree : 𝒰 _0)))
+TInd: provingground.induction.coarse.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (Tree : 𝒰 _0),Tree : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node : ((Tree : 𝒰 _0) → ((Tree : 𝒰 _0) → (Tree : 𝒰 _0))),Tree : 𝒰 _0),Empty(Tree : 𝒰 _0)))
 
 scala> val List(leaf, node) = TInd.intros
 leaf: provingground.HoTT.Term = leaf : (Tree : 𝒰 _0)
@@ -307,7 +313,7 @@ scala> val BT ="BinTree" :: Type
 BT: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = BinTree : 𝒰 _0
 
 scala> val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
-BTInd: provingground.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (BinTree : 𝒰 _0),BinTree : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean : 𝒰 _0,IdIterPtn()),IdW()),node : (((Boolean : 𝒰 _0) → (BinTree : 𝒰 _0)) → (BinTree : 𝒰 _0)),BinTree : 𝒰 _0),Empty(BinTree : 𝒰 _0)))
+BTInd: provingground.induction.coarse.ConstructorSeq.Cons[provingground.HoTT.Term,provingground.HoTT.Term] = Cons(ConstructorDefn(IdW(),leaf : (BinTree : 𝒰 _0),BinTree : 𝒰 _0),Cons(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean : 𝒰 _0,IdIterPtn()),IdW()),node : (((Boolean : 𝒰 _0) → (BinTree : 𝒰 _0)) → (BinTree : 𝒰 _0)),BinTree : 𝒰 _0),Empty(BinTree : 𝒰 _0)))
 
 scala> val List(leaf, node) = BTInd.intros
 leaf: provingground.HoTT.Term = leaf : (BinTree : 𝒰 _0)
@@ -563,10 +569,10 @@ scala> val hyp = "hypothesis" :: (f(zero) =:= f(n))
 hyp: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = hypothesis : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))
 
 scala> val step = hyp :-> {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) }
-step: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = (hypothesis : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))) ↦ (((ind((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))(($gdsf : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))) ↦ (((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (A :...
+step: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = (hypothesis : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))) ↦ (((ind{($gdsf : (A : 𝒰 _0)) ↦ (($gdsg : (A : 𝒰 _0)) ↦ ($gdsf : (A : 𝒰 _0) = $gdsg : (A : 𝒰 _0)))((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0))((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))}{($gbvg : (A : 𝒰 _0)) ↦ (($gbvh : (A : 𝒰 _0)) ↦ (($gbvj : ($gbvg : (A : 𝒰 _0) = $gbvh : (A : 𝒰 _0))) ↦ (($gbvh : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (A : 𝒰 _0...
 
 scala> val pf = NatInd.induc(claim)(base)(n :~> step) !: (n ~>: (f(zero) =:= f(n)))
-pf: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = ind(Nat : 𝒰 _0)((n : (Nat : 𝒰 _0)) ↦ ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0)))(Refl(A : 𝒰 _0,(f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0)))((n : (Nat : 𝒰 _0)) ↦ ((hypothesis : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))) ↦ (((ind((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))(($gguu : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat...
+pf: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term] = ind(Nat : 𝒰 _0)((n : (Nat : 𝒰 _0)) ↦ ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0)))(Refl(A : 𝒰 _0,(f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0)))((n : (Nat : 𝒰 _0)) ↦ ((hypothesis : ((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0) = (f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (n : (Nat : 𝒰 _0)) : (A : 𝒰 _0))) ↦ (((ind{($gguw : (A : 𝒰 _0)) ↦ (($ggux : (A : 𝒰 _0)) ↦ ($gguw : (A : 𝒰 _0) = $ggux : (A : 𝒰 _0)))((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (A : 𝒰 _0))((f : ((Nat : 𝒰 _0) → (A : 𝒰 _0)...
 ```
 
 
@@ -580,26 +586,26 @@ A typical example is vectors, defined as a family indexed by their length.
 
 ```scala
 scala> val IndN = new IndexedConstructorPatterns(Nat ->: Types)
-IndN: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@6502904c
+IndN: provingground.induction.coarse.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@ed2cba2
 
 scala> val Vec = "Vec" :: Nat ->: Type
 Vec: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = Vec : ((Nat : 𝒰 _0) → (𝒰 _0))
 
 scala> val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-VecPtn: provingground.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.IndexedConstructorPatterns@145fcbe7
+VecPtn: provingground.induction.coarse.IndexedConstructorPatterns[provingground.HoTT.Term,provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@ac64497
 
 scala> val VecFmly = VecPtn.Family(Vec)
 VecFmly: VecPtn.Family = Family(Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))
 
 scala> val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
-VecInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec : ((Nat : 𝒰 _0) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.IndexedConstructorPatterns$iConstructorPattern$$Lambda$36094/470074946@5a155fd0),cons : ($gguw : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec : ((Nat : 𝒰 _0) → (𝒰 _0))),Empty(Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))))
+VecInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec : ((Nat : 𝒰 _0) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$21277/1355453460@a66cd22),cons : ($ggva : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec : ((Nat : 𝒰 _0) → (𝒰 _0))),Empty(Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))))
 
 scala> val List(vnil, vcons) = VecInd.intros
 vnil: provingground.HoTT.Term = nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0)
-vcons: provingground.HoTT.Term = cons : ($gguw : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))
+vcons: provingground.HoTT.Term = cons : ($ggva : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))
 
 scala> vcons.typ.fansi
-res45: String = ∏($gguw : Nat){ (A → (Vec($gguw) → Vec(succ($gguw)))) }
+res45: String = ∏($ggva : Nat){ (A → (Vec($ggva) → Vec(succ($ggva)))) }
 ```
 
 We can define function recursively on vectors of all indices. For instance, we can define the size.
@@ -609,16 +615,16 @@ scala> val vn = "v_n" :: Vec(n)
 vn: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_n : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)
 
 scala> val recVN = VecInd.rec(Nat)
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))) : (Nat : 𝒰 _0)) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.IndexedConstructorPatterns$iConstructorPattern$$Lambda$36094/470074946@5a155fd0),cons : ($gguw : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))) : ($ggva : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))))) ↦ (($gguz_1 :...
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))) : (Nat : 𝒰 _0)) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$21277/1355453460@a66cd22),cons : ($ggva : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec : ((Nat : 𝒰 _0) → (𝒰 _0)))) : ($ggve : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggve : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))...
 
 scala> val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
-size: provingground.HoTT.Term = ($gguz_1 : (Nat : 𝒰 _0)) ↦ (($gguz_2 : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguz_1 : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((rec(∑(($gguy : (Nat : 𝒰 _0)) ↦ ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguy : (Nat : 𝒰 _0)) : 𝒰 _0)))(Nat : 𝒰 _0)(0 : (Nat : 𝒰 _0))((n : (Nat : 𝒰 _0)) ↦ ((a : (A : 𝒰 _0)) ↦ ((v_n : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((m : (Nat : 𝒰 _0)) ↦ ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (m : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0))))))) ((($gguz_1 : (Nat : 𝒰 _0)) , ($gguz_2 : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguz_1 : (Nat : 𝒰 _0)) : 𝒰 _0)))) : (Nat : 𝒰 _0)))
+size: provingground.HoTT.Term = ($ggvd_1 : (Nat : 𝒰 _0)) ↦ (($ggvd_2 : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggvd_1 : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((rec(∑(($ggvc : (Nat : 𝒰 _0)) ↦ ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggvc : (Nat : 𝒰 _0)) : 𝒰 _0)))(Nat : 𝒰 _0)(0 : (Nat : 𝒰 _0))((n : (Nat : 𝒰 _0)) ↦ ((a : (A : 𝒰 _0)) ↦ ((v_n : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((m : (Nat : 𝒰 _0)) ↦ ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (m : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0))))))) ((($ggvd_1 : (Nat : 𝒰 _0)) , ($ggvd_2 : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggvd_1 : (Nat : 𝒰 _0)) : 𝒰 _0)))) : (Nat : 𝒰 _0)))
 
 scala> size(zero)(vnil)
 res46: provingground.HoTT.Term = 0 : (Nat : 𝒰 _0)
 
 scala> val v1 = vcons(zero)(a)(vnil)
-v1: provingground.HoTT.Term = (((cons : ($gguw : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gguw : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (0 : (Nat : 𝒰 _0)) : ((A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (a : (A : 𝒰 _0)) : (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))) (nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0)) : ...
+v1: provingground.HoTT.Term = (((cons : ($ggva : (Nat : 𝒰 _0) ~> (A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($ggva : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (0 : (Nat : 𝒰 _0)) : ((A : 𝒰 _0) → (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (a : (A : 𝒰 _0)) : (((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))) (nil : ((Vec : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0)) : ...
 
 scala> size(one)(v1)
 res47: provingground.HoTT.Term = (succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)
@@ -639,26 +645,26 @@ scala> val vnn = "v_n" :: VecN(n)
 vnn: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = v_n : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)
 
 scala> val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
-VecNInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.IndexedConstructorPatterns$iConstructorPattern$$Lambda$36094/470074946@9ddf09e),cons : ($gjmx : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))),Empty(Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))))
+VecNInd: VecPtn.iConstructorSeq.Cons = Cons(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))),Cons(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$21277/1355453460@505e393a),cons : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))),Empty(Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))))
 
 scala> val recVNN = VecNInd.rec(Nat)
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))) : (Nat : 𝒰 _0)) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.IndexedConstructorPatterns$iConstructorPattern$$Lambda$36094/470074946@9ddf09e),cons : ($gjmx : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))) : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Nat : 𝒰 _0...
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0 : (Nat : 𝒰 _0)) , (Star))),nil : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))) : (Nat : 𝒰 _0)) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat : 𝒰 _0,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$21277/1355453460@505e393a),cons : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0))),Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0)))) : ($gjnf : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnf : (Nat : 𝒰 _0)) : 𝒰 ...
 
 scala> val List(vnilN, vconsN) = VecNInd.intros
 vnilN: provingground.HoTT.Term = nil : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0)
-vconsN: provingground.HoTT.Term = cons : ($gjmx : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))
+vconsN: provingground.HoTT.Term = cons : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))
 
 scala> val k ="k" :: Nat
 k: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = k : (Nat : 𝒰 _0)
 
 scala> val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
-vsum: provingground.HoTT.Term = ($gjna_1 : (Nat : 𝒰 _0)) ↦ (($gjna_2 : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjna_1 : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((rec(∑(($gjmz : (Nat : 𝒰 _0)) ↦ ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmz : (Nat : 𝒰 _0)) : 𝒰 _0)))(Nat : 𝒰 _0)(0 : (Nat : 𝒰 _0))((n : (Nat : 𝒰 _0)) ↦ ((k : (Nat : 𝒰 _0)) ↦ ((v_n : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((m : (Nat : 𝒰 _0)) ↦ (((rec(Nat : 𝒰 _0)((Nat : 𝒰 _0) → (Nat : 𝒰 _0))((m : (Nat : 𝒰 _0)) ↦ (m : (Nat : 𝒰 _0)))((n : (Nat : 𝒰 _0)) ↦ ((add(n) : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ↦ ((m : (Nat : 𝒰 _0)) ↦ ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((add(n) : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (m : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)))))) (m : (Nat : 𝒰 _0)) : ((Nat :...
+vsum: provingground.HoTT.Term = ($gjne_1 : (Nat : 𝒰 _0)) ↦ (($gjne_2 : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjne_1 : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((rec(∑(($gjnd : (Nat : 𝒰 _0)) ↦ ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnd : (Nat : 𝒰 _0)) : 𝒰 _0)))(Nat : 𝒰 _0)(0 : (Nat : 𝒰 _0))((n : (Nat : 𝒰 _0)) ↦ ((k : (Nat : 𝒰 _0)) ↦ ((v_n : ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (n : (Nat : 𝒰 _0)) : 𝒰 _0)) ↦ ((m : (Nat : 𝒰 _0)) ↦ (((rec(Nat : 𝒰 _0)((Nat : 𝒰 _0) → (Nat : 𝒰 _0))((m : (Nat : 𝒰 _0)) ↦ (m : (Nat : 𝒰 _0)))((n : (Nat : 𝒰 _0)) ↦ ((add(n) : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ↦ ((m : (Nat : 𝒰 _0)) ↦ ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((add(n) : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (m : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)))))) (m : (Nat : 𝒰 _0)) : ((Nat :...
 
 scala> vsum(zero)(vnilN)
 res49: provingground.HoTT.Term = 0 : (Nat : 𝒰 _0)
 
 scala> val v2 = vconsN(zero)(two)(vnilN)
-v2: provingground.HoTT.Term = (((cons : ($gjmx : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (0 : (Nat : 𝒰 _0)) : ((Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : (...
+v2: provingground.HoTT.Term = (((cons : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) (0 : (Nat : 𝒰 _0)) : ((Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) (0 : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : (...
 
 scala> vsum(one)(v2)
 res50: provingground.HoTT.Term = (succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)
@@ -666,7 +672,7 @@ res50: provingground.HoTT.Term = (succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) 
 scala> assert(vsum(one)(v2) == two)
 
 scala> val v3 = vconsN(one)(one)(v2)
-v3: provingground.HoTT.Term = (((cons : ($gjmx : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjmx : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : ((Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (((V...
+v3: provingground.HoTT.Term = (((cons : ($gjnb : (Nat : 𝒰 _0) ~> (Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ($gjnb : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : ((Nat : 𝒰 _0) → (((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0) → ((Vec(Nat) : ((Nat : 𝒰 _0) → (𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : 𝒰 _0)))) ((succ : ((Nat : 𝒰 _0) → (Nat : 𝒰 _0))) (0 : (Nat : 𝒰 _0)) : (Nat : 𝒰 _0)) : (((V...
 
 scala> v3.fansi
 res52: String = cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))

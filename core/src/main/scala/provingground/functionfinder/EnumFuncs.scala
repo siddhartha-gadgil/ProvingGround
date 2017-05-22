@@ -7,7 +7,7 @@ import scala.reflect.runtime.universe.{
   Function => FunctionUniv,
   _
 }
-import provingground.ScalaUniv._
+import provingground.functionfinder.ScalaUniv._
 
 object EnumFuncs {
   def allMaps[U, V](dom: List[U], codom: List[V]): List[Map[U, V]] =

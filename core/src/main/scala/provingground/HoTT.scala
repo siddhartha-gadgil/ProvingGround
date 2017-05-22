@@ -22,7 +22,7 @@ import Math._
   -   recursion and induction functions for products, coproducts
   *
   * General inductive types are ``not`` implemented here.
-  * See the documentation of [[ConstructorSeqTL]] for these.
+  * See the documentation of [[induction.ConstructorSeqTL]] for these.
   */
 object HoTT {
 

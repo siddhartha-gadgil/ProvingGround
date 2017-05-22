@@ -1,5 +1,7 @@
 package provingground
 
+import translation._
+
 import provingground.{TruncatedDistribution => TD}
 
 class TruncatedDistributionLang[E: ExprLang]

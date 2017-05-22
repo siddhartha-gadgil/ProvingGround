@@ -1,6 +1,8 @@
-package provingground
+package provingground.translation
 
-import HoTT._
+import provingground._, HoTT._
+
+import functionfinder._
 
 import RefineTerms.{refine, refineTyp}
 

@@ -4,6 +4,8 @@ import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, _}
 
 import HoTT._
 
+import translation._
+
 import ammonite.ops._
 
 //import upickle.default._

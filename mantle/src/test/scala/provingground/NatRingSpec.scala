@@ -1,4 +1,6 @@
-package provingground
+package provingground.functionfinder
+
+import provingground._
 
 import HoTT._
 
@@ -15,6 +17,8 @@ import spire.implicits._
 import spire.syntax._
 
 import org.scalatest.FlatSpec
+
+
 
 import NatRing._
 

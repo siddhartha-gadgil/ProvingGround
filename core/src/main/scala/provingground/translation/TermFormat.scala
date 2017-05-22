@@ -1,6 +1,6 @@
-package provingground
+package provingground.translation
 
-import HoTT._
+import provingground._, HoTT._
 
 import UnicodeSyms.UnivSym
 
@@ -443,7 +443,7 @@ object JsonTranslate {
         Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
   }
 
-  import provingground.{TermLang => T}
+  import provingground.translation.{TermLang => T}
 
   def jsonToTerm(js: Js.Value): Option[Term] = js("intro").str match {
     case "appln" =>

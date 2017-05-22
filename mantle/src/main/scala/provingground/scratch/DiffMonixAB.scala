@@ -3,6 +3,7 @@ import monix.execution.Scheduler.Implicits.global
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD, _}
 import HoTT._
+import translation._
 import Sampler._
 import FansiShow._
 

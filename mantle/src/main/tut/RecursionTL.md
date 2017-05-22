@@ -7,11 +7,13 @@ layout: page
 
 We illustrate construction of inductive types, and defining functions on them recursively.
 
-We begin with some imports. The import Implicits gives the operations to construct inductive types.
+We begin with some imports. The import induction.coarse.Implicits gives the operations to construct inductive types.
 
 ```tut
 import provingground._
 import HoTT._
+import induction._
+import translation._
 import TLImplicits._
 import shapeless._
 ```

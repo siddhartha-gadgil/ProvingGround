@@ -4,7 +4,7 @@ import provingground._
 
 import HoTT._
 
-import TLImplicits._
+import induction.TLImplicits._
 
 import shapeless._
 

@@ -1,6 +1,6 @@
-package provingground
+package provingground.functionfinder
 
-import HoTT._
+import provingground._, HoTT._
 
 /**
   * Wrapper for universe with refined scala type for objects (i.e., types) in it.

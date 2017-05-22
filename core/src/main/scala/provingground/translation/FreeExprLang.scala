@@ -1,4 +1,8 @@
-package provingground
+package provingground.translation
+
+import provingground._
+
+import functionfinder._
 
 import upickle.default._
 
@@ -276,7 +280,7 @@ object FreeExpr {
 import Translator._
 import Functors._
 
-import HoTT._
+import provingground._, HoTT._
 
 object FreeExprPatterns {
   import FreeExpr._

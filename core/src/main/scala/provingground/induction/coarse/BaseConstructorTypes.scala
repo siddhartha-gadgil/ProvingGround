@@ -1,6 +1,6 @@
-package provingground
+package provingground.induction.coarse
 
-import HoTT._
+import provingground._, induction._, HoTT._
 
 //import ConstructorPattern._
 
@@ -11,7 +11,7 @@ import IterFuncPattern._
 
 //import RecFunction._
 
-import Implicits._
+import induction.coarse.Implicits._
 
 import FmlyPtn._
 

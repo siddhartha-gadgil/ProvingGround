@@ -1,6 +1,6 @@
-package provingground
+package provingground.induction
 
-import HoTT._
+import provingground._, HoTT._
 import shapeless._
 import scala.language.existentials
 

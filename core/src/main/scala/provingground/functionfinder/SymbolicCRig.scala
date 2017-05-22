@@ -1,7 +1,8 @@
-package provingground
+package provingground.functionfinder
 
-import HoTT._
+import provingground._, HoTT._
 import ScalaRep._
+import translation._
 //import scala.language.{existentials, implicitConversions}
 import scala.util._
 import spire.algebra._

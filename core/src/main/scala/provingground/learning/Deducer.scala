@@ -2,9 +2,10 @@ package provingground
 import provingground.{
   FiniteDistribution => FD,
   TruncatedDistribution => TD,
-  ProbabilityDistribution => PD,
-  TermLang => TL
+  ProbabilityDistribution => PD
 }
+
+import translation.{TermLang => TL, _}
 
 import HoTT._
 

@@ -1,5 +1,5 @@
-package provingground
-import HoTT._
+package provingground.induction.coarse
+import provingground._, induction._, HoTT._
 //import IterFuncPtn._
 import math.max
 //import ScalaUniv._
