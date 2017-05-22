@@ -44,6 +44,6 @@ The principal developer is Siddhartha Gadgil (Department of Mathematics, Indian 
 
 At present the main way to run the code is to load a console (for an alternative, visit the [website](http://siddhartha-gadgil.github.io/ProvingGround/)). For example, in the home of the project, run
 ```
-sbt mantle/test:console
+sbt mantle/test:run
 ```
 to pop up a nice console (Li Haoyi's ammonite repl), with many imports already in scope.
