@@ -134,7 +134,7 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 
 ```scala
 scala> val m = lmbda(n)(prod(n + 1))
-m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n : (Nat.Typ)) ↦ ((provingground.HoTT$Typ$newname$2$@64e43dac : (Nat.Typ)) ↦ (SigmaTerm(Set(provingground.HoTT$Typ$newname$2$@64e43dac : (Nat.Typ), PiTerm(Map(n : (Nat.Typ) -> 1, provingground.HoTT$Typ$newname$2$@64e43dac : (Nat.Typ) -> 1))))))
+m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n : (Nat.Typ)) ↦ ((provingground.HoTT$Typ$newname$2$@341748cf : (Nat.Typ)) ↦ (SigmaTerm(Set(provingground.HoTT$Typ$newname$2$@341748cf : (Nat.Typ), PiTerm(Map(n : (Nat.Typ) -> 1, provingground.HoTT$Typ$newname$2$@341748cf : (Nat.Typ) -> 1))))))
 
 scala> val factorial = Rec(1: Nat, m)
 factorial: provingground.functionfinder.NatRing.Rec[provingground.functionfinder.NatRing.LocalTerm] = <function1>

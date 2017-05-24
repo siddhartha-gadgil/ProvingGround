@@ -353,19 +353,22 @@ Further, the recursion and induction function only allow construction of (depend
 
 A typical example is vectors, defined as a family indexed by their length.
 
-```scala
-val IndN = new IndexedConstructorPatterns(Nat ->: Types)
+```tut
 val Vec = "Vec" :: Nat ->: Type
-val VecPtn = new IndexedConstructorPatterns(Nat ->: Types)
-val VecFmly = VecPtn.Family(Vec)
-val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: Vec(n) -->>: VecFmly.head(Vec(succ(n))))} =: VecFmly
+
+val VecInd =
+  ("nil" ::: (Vec -> Vec(zero))) |: {
+    "cons" ::: n ~>>: (A ->>: (Vec :> Vec(n)) -->>: (Vec -> Vec(succ(n))))
+  } =:: Vec
+
 val vnil :: vcons :: HNil = VecInd.intros
+
 vcons.typ.fansi
 ```
 
 We can define function recursively on vectors of all indices. For instance, we can define the size.
 
-```scala
+```tut
 val vn = "v_n" :: Vec(n)
 val recVN = VecInd.rec(Nat)
 val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
@@ -377,15 +380,17 @@ assert(size(one)(v1) == one)
 
 For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
 
-```scala
-val VecN = "Vec(Nat)" ::: Nat ->: Types
-val VecNFmly = VecPtn.Family(VecN)
+```tut
+val VecN = "Vec(Nat)" :: Nat ->: Type
+val vnn  = "v_n" :: VecN(n)
+val VecNInd =
+  ("nil" ::: (VecN -> VecN(zero))) |: {
+    "cons" ::: n ~>>:
+      (Nat ->>: (VecN :> VecN(n)) -->>: (VecN -> VecN(succ(n))))
+  } =:: VecN
 
-val vnn = "v_n" :: VecN(n)
-val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat ->>: VecN(n) -->>: VecNFmly.head(VecN(succ(n))))} =: VecNFmly
-
-val recVNN = VecNInd.rec(Nat)
-val vnilN :: vconsN :: Hnil = VecNInd.intros
+val recVNN                  = VecNInd.rec(Nat)
+val vnilN :: vconsN :: HNil = VecNInd.intros
 
 val k ="k" :: Nat
 val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))

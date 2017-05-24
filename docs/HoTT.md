@@ -268,7 +268,7 @@ res19: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provinggroun
 
 ```scala
 scala> AplusB.incl2
-res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($pyqy : (B : 𝒰 _0)) ↦ (ScndIncl(PlusTyp(A : 𝒰 _0,B : 𝒰 _0),$pyqy : (B : 𝒰 _0)))
+res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($qwor : (B : 𝒰 _0)) ↦ (ScndIncl(PlusTyp(A : 𝒰 _0,B : 𝒰 _0),$qwor : (B : 𝒰 _0)))
 ```
 
 In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.
