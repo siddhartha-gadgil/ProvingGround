@@ -1,6 +1,9 @@
 package provingground.scratch
 
-import provingground.{FiniteDistribution => FD, TruncatedDistribution => TD, _}
+import provingground.{FiniteDistribution => FD, _}
+
+import learning.{TruncatedDistribution => TD, _}
+
 
 import HoTT._
 

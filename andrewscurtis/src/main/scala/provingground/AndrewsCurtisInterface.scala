@@ -1,7 +1,7 @@
 package provingground.andrewscurtis
 
 import AndrewsCurtis._
-import provingground.Collections._
+import provingground._, learning._, Collections._
 import FreeGroups._
 //import play.api.libs.json._
 //import play.api.libs.concurrent._

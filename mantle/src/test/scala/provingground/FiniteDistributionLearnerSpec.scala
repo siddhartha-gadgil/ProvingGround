@@ -1,4 +1,6 @@
-import provingground._
+package provingground
+
+import provingground._, learning._
 import FiniteDistributionLearner._
 import Collections._; import FiniteDistribution._; import provingground._
 import org.scalatest.FlatSpec

@@ -1,4 +1,5 @@
-package provingground
+package provingground.learning
+import provingground._
 
 import provingground.HoTT._
 //import provingground.Contexts._

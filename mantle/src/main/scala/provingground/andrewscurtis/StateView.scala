@@ -2,6 +2,8 @@ package provingground.andrewscurtis
 
 import provingground._
 
+import learning._
+
 import Collections._
 
 import FreeGroups._

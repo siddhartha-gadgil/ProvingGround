@@ -1,4 +1,6 @@
-import provingground.Collections._
+package provingground
+
+import learning._, Collections._
 import provingground.andrewscurtis._
 import provingground.andrewscurtis.Moves._
 import provingground.andrewscurtis.FreeGroups._

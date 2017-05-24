@@ -1,7 +1,9 @@
-package provingground
+package provingground.learning
+import provingground._
+
 import provingground.{
   FiniteDistribution => FD,
-  ProbabilityDistribution => PD
+  ProbabilityDistribution => PD,
 }
 
 import translation.{TermLang => TL}

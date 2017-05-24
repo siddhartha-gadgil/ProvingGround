@@ -4,6 +4,8 @@ import provingground.{FiniteDistribution => FD}
 
 import provingground._
 
+import learning._
+
 import translation._
 
 import ammonite.ops._

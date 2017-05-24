@@ -1,5 +1,6 @@
 package provingground
 
+import learning._
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import Collections.IterateDyn

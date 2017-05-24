@@ -2,6 +2,8 @@ package provingground
 
 import translation._
 
+import learning._
+
 import akka.http.scaladsl._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route

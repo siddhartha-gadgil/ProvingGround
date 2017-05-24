@@ -2,7 +2,7 @@ package provingground
 
 //import scala.language.implicitConversions
 
-import Collections._
+// import Collections._
 
 import spire.algebra._
 // import spire.math._
@@ -34,8 +34,7 @@ object FiniteDistribution {
     FiniteDistribution(
       fd.pmf.filter(wo => !(wo.elem.isEmpty)).map((wo) => wo.map(_.get)))
 
-  implicit def finiteDistInnerProd[X] =
-    InnerProduct[FiniteDistribution[X]](_ dot _)
+
 
   def uniform[A](s: Traversable[A]): FiniteDistribution[A] = {
     val prob = 1.0 / s.size
@@ -62,27 +61,6 @@ object FiniteDistribution {
     (dists :\ FiniteDistribution.empty[T])(_ ++ _)
   }
 
-  implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
-    new InnerProductSpace[FiniteDistribution[T], Double] {
-      def negate(x: FiniteDistribution[T]) =
-        FiniteDistribution(
-          x.pmf.map { case Weighted(x, w) => Weighted(x, -w) })
-
-      val zero = empty[T]
-
-      def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
-
-      def timesl(r: Double, x: FiniteDistribution[T]) = x * r
-
-      implicit def scalar: Field[Double] = Field[Double]
-
-      def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
-    }
-
-  implicit def FiniteDistVec[T] =
-    LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty,
-                                           _ ++ _,
-                                           (w, d) => d * w)
 }
 
 case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
@@ -183,9 +161,15 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   }
 
   def flatMap[S](f: T => FiniteDistribution[S]) = {
-    implicit val ls = FiniteDistribution.FiniteDistVec[S]
-    val distdist    = map(f)
-    distdist.expectation
+    // implicit val ls = FiniteDistribution.FiniteDistVec[S]
+    // val distdist    = map(f)
+    // distdist.expectation
+    val newpmf =
+      for (
+        Weighted(x, p) <- pmf;
+        Weighted(y, q) <- (f(x).pmf)
+      ) yield Weighted(y, p * q)
+    FiniteDistribution(newpmf)
   }
 
   def pickle =
@@ -245,9 +229,9 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     }
   }
 
-  def expectation(implicit ls: LinearStructure[T]): T = {
-    val wtdelems = for (Weighted(a, p) <- pmf) yield ls.mult(p, a)
-    (wtdelems :\ ls.zero)(ls.sum)
+  def expectation(implicit ls: VectorSpace[T, Double]): T = {
+    val wtdelems = for (Weighted(a, p) <- pmf) yield (p *: a)
+    (wtdelems :\ ls.zero)(_ + _)
   }
 
   def integral(f: T => Double) =

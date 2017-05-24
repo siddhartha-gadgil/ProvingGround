@@ -135,7 +135,8 @@ object QDI {
     }
   }
 
-  import Collections._; import FiniteDistribution._; import LinearStructure._
+
+import FiniteDistribution._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]): Node = {
     val lst      = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex

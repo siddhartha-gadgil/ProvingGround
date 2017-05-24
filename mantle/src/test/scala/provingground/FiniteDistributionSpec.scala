@@ -1,6 +1,6 @@
 package provingground
 
-import Collections._
+// import Collections._
 import org.scalatest.FlatSpec
 import FiniteDistribution._
 import LinearStructure._

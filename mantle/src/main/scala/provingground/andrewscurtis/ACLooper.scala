@@ -2,6 +2,8 @@ package provingground.andrewscurtis
 
 import provingground._
 
+import learning._
+
 import FreeGroups._
 //import Moves._
 import MoveGenerator._

@@ -64,4 +64,9 @@ object LinearStructure {
 
     LinearStructure(zerofn, sumfn, multfn)
   }
+
+  implicit def FiniteDistVec[T] =
+    LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty,
+                                           _ ++ _,
+                                           (w, d) => d * w)
 }

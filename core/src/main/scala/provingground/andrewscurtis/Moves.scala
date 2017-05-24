@@ -1,11 +1,11 @@
 package provingground.andrewscurtis
 
 import provingground.andrewscurtis.FreeGroups._
-//import provingground.Collections._
+//import provingground.learning.Collections._
 import scala.language.implicitConversions
 import Moves._
 //import AtomicMove._
-import provingground._
+import provingground._, learning._
 //import FiniteDistribution._
 import FiniteDistributionLearner._
 

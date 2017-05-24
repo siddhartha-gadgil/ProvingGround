@@ -2,6 +2,8 @@ package provingground.translation
 
 import provingground._
 
+import learning._
+
 class ExprApplnOps[E](appln: => (E, E) => Option[E])(implicit l: ExprLang[E],
                                                      d: Domain[E],
                                                      ep: ExprPatterns[E]) {

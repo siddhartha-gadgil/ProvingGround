@@ -1,4 +1,6 @@
-package provingground
+package provingground.learning
+
+import provingground._
 
 import AdjDiffbleFunction._
 

@@ -1,9 +1,11 @@
 package provingground.andrewscurtis
 
 import FreeGroups._
-import provingground.Collections.IterateDyn
+import provingground._, learning._, Collections.IterateDyn
 
 import provingground._
+
+import learning._
 
 //import FiniteDistribution._
 import annotation._

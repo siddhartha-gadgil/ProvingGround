@@ -1,4 +1,5 @@
-package provingground
+package provingground.learning
+import provingground._
 
 import HoTT._
 import FiniteDistributionLearner._

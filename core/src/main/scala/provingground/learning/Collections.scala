@@ -1,4 +1,5 @@
-package provingground
+package provingground.learning
+import provingground._
 
 import scala.annotation._
 // import scala.util._
@@ -132,6 +133,10 @@ object Collections {
 
   case class InnerProduct[V](dot: (V, V) => Double)
 
+object InnerProduct{
+  implicit def finiteDistInnerProd[X] =
+    InnerProduct[FiniteDistribution[X]](_ dot _)
+
   implicit class DotOp[V: InnerProduct](a: V) {
     def |*|(b: V) = implicitly[InnerProduct[V]].dot(a, b)
   }
@@ -144,6 +149,26 @@ object Collections {
                                        ipB: InnerProduct[B]) = {
     InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
   }
+
+
+}
+
+// implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
+//   new InnerProductSpace[FiniteDistribution[T], Double] {
+//     def negate(x: FiniteDistribution[T]) =
+//       FiniteDistribution(
+//         x.pmf.map { case Weighted(x, w) => Weighted(x, -w) })
+//
+//         val zero = empty[T]
+//
+//         def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
+//
+//         def timesl(r: Double, x: FiniteDistribution[T]) = x * r
+//
+//         implicit def scalar: Field[Double] = Field[Double]
+//
+//         def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
+//       }
 
   trait LabelledArray[L, T] extends Any {
     def support: Traversable[L]

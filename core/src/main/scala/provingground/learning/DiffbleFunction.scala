@@ -1,11 +1,13 @@
-package provingground
+package provingground.learning
+
+import provingground._
 
 import scala.annotation._
 // import scala.util._
 
 // import scala.language.implicitConversions
 
-import provingground.Collections._
+import Collections._
 
 import LinearStructure._
 

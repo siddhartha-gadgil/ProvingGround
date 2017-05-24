@@ -6,6 +6,8 @@ import dom.html
 import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 
+import learning._
+
 import Collections._
 
 import HoTT._

@@ -1,11 +1,13 @@
-package provingground
+package provingground.learning
+
+import provingground._
 
 import scala.language.implicitConversions
 
 //import provingground.{FiniteDistribution => FD}
 
-import FiniteDistribution.FiniteDistVec
-import LinearStructure._
+// import FiniteDistribution.FiniteDistVec
+// import LinearStructure._
 
 import cats._
 
@@ -68,7 +70,7 @@ object TruncDistVal {
       if (fds.isEmpty) None
       else
         Some(
-          vBigSum(fds)
+          fds.reduce(_ ++ _)
         )
     }
     TruncDistVal(getFD)
@@ -268,10 +270,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
 
   class BigSum[A](tds: => Vector[TruncatedDistribution[A]])
       extends TruncatedDistribution[A] {
-    def getFD(cutoff: Double) = {
-      val fds = (tds map (_.getFD(cutoff))).flatten
-      if (fds.isEmpty) None else Some(vBigSum(fds))
-    }
+    def getFD(cutoff: Double) =
+      TruncatedDistribution.bigSum(tds).getFD(cutoff)
   }
 
   def bigSum[A](tds: => Vector[TruncatedDistribution[A]]) =

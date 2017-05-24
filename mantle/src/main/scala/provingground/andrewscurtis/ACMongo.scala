@@ -2,6 +2,8 @@ package provingground.andrewscurtis
 
 import provingground._
 
+import learning._
+
 import reactivemongo.api._
 import reactivemongo.bson._
 

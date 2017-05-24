@@ -1,9 +1,12 @@
-package provingground
+package provingground.learning
+import provingground._
+
 import provingground.{
   FiniteDistribution => FD,
-  ProbabilityDistribution => PD,
-  TangVec => T
+  ProbabilityDistribution => PD
 }
+
+import learning.{TangVec => T}
 
 import cats._
 import cats.implicits._

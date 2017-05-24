@@ -1,6 +1,6 @@
 package provingground.andrewscurtis
 
-import provingground.Collections._
+import provingground.learning.Collections._
 import provingground._
 
 import com.github.nscala_time.time.Imports._

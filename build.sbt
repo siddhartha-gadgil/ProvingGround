@@ -221,7 +221,7 @@ lazy val mizar = project
             libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
-  """import provingground._; import HoTT._; import ammonite.ops._;  import FansiShow._"""
+  """import provingground._; import HoTT._; import induction._; import ammonite.ops._;  import FansiShow._"""
 
 lazy val mantle = (project in file("mantle"))
   .settings(

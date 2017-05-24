@@ -1,6 +1,6 @@
 package provingground.induction.coarse
 
-import provingground._, induction._, HoTT._
+import provingground._, induction._, HoTT._, learning._
 
 import scala.language.existentials
 

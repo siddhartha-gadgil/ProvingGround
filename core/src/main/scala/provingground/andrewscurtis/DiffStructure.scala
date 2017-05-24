@@ -1,12 +1,12 @@
 package provingground.andrewscurtis
 
 import provingground.andrewscurtis.FreeGroups._
-import provingground.Collections._
-import provingground.FiniteDistributionLearner._
-import provingground.AdjDiffbleFunction._
+import provingground.learning.Collections._
+import provingground.learning.FiniteDistributionLearner._
+import provingground.learning.AdjDiffbleFunction._
 import provingground.andrewscurtis.Moves._
 
-import provingground._
+import provingground._, learning._
 import provingground.FiniteDistribution._
 import LinearStructure._
 

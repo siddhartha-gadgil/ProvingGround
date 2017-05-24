@@ -1,9 +1,13 @@
-package provingground
+package provingground.learning
+
+import provingground._
+
 import provingground.{
   FiniteDistribution => FD,
-  TruncatedDistribution => TD,
   ProbabilityDistribution => PD
 }
+
+import learning.{TruncatedDistribution => TD}
 
 import translation.{TermLang => TL, _}
 

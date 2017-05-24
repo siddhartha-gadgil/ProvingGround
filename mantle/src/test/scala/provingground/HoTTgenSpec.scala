@@ -2,6 +2,8 @@ package provingground
 
 import HoTT._
 
+import learning._
+
 import HoTTgen._
 
 import FiniteDistributionLearner.NewVertex

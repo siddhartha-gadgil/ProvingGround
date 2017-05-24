@@ -7,6 +7,8 @@ import scala.concurrent._
 
 import translation._
 
+import learning._
+
 import HoTT._
 
 import Deducer._

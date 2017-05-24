@@ -1,8 +1,10 @@
-package provingground
+package provingground.learning
+
+import provingground._
 
 import translation._
 
-import provingground.{TruncatedDistribution => TD}
+import provingground.learning.{TruncatedDistribution => TD}
 
 class TruncatedDistributionLang[E: ExprLang]
     extends ExprLang[TruncatedDistribution[E]] {

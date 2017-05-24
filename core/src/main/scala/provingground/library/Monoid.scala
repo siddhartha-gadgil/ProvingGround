@@ -2,6 +2,8 @@ package provingground.library
 
 import provingground._
 
+import learning._
+
 import HoTT._
 
 object Monoid {

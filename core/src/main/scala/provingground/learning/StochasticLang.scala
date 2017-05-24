@@ -1,6 +1,8 @@
-package provingground
+package provingground.learning
 
-import provingground.{
+import provingground._
+
+import provingground.learning.{
   TruncatedDistribution => TD,
   TruncatedDistributionLang => TDL
 }

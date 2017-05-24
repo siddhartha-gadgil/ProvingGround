@@ -1,8 +1,9 @@
-package provingground
+package provingground.learning
+import provingground._
 
 import scala.annotation._
 import scala.util._
-import provingground.Collections._
+import Collections._
 import math._
 
 import scala.language.implicitConversions

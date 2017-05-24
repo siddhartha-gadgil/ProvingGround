@@ -4,6 +4,8 @@ import ammonite.ops._
 
 import provingground._
 
+import learning._
+
 import Collections._
 
 import upickle.default.{write => uwrite, read => uread, _}

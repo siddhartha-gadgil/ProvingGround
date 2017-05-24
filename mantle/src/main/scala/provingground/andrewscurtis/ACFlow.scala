@@ -2,6 +2,8 @@ package provingground.andrewscurtis
 
 import provingground._
 
+import learning._
+
 import akka.stream._
 
 import akka.stream.scaladsl.{Source => Src, _}
