@@ -60,22 +60,22 @@ object ConstructorSeqMap {
   }
 
   object Cons {
-    def sym[C <: Term with Subs[C],
-            H <: Term with Subs[H],
-            Cod <: Term with Subs[Cod],
-            RD <: Term with Subs[RD],
-            ID <: Term with Subs[ID],
-            TR <: Term with Subs[TR],
-            TI <: Term with Subs[TI],
-            TIntros <: HList](
-        name: AnySym,
-        pattern: ConstructorPatternMap[Cod, C, H, RD, ID],
-        tail: ConstructorSeqMap[Cod, H, TR, TI, TIntros]
-    ) = {
-      val W    = tail.W
-      val cons = pattern.symbcons(name, W)
-      Cons(cons, pattern, tail)
-    }
+    // def sym[C <: Term with Subs[C],
+    //         H <: Term with Subs[H],
+    //         Cod <: Term with Subs[Cod],
+    //         RD <: Term with Subs[RD],
+    //         ID <: Term with Subs[ID],
+    //         TR <: Term with Subs[TR],
+    //         TI <: Term with Subs[TI],
+    //         TIntros <: HList](
+    //     name: AnySym,
+    //     pattern: ConstructorPatternMap[Cod, C, H, RD, ID],
+    //     tail: ConstructorSeqMap[Cod, H, TR, TI, TIntros]
+    // ) = {
+    //   val W    = tail.W
+    //   val cons = pattern.symbcons(name, W)
+    //   Cons(cons, pattern, tail)
+    // }
   }
 
   case class Cons[C <: Term with Subs[C],
@@ -187,7 +187,7 @@ object ConstructorSeqMapper {
           case ConstructorSeqDom.Cons(name, pattern, tail) =>
             val patternMap = patternMapper.mapper(pattern)
             val tailMap    = tailMapper.mapped(tail)(W)
-            ConstructorSeqMap.Cons.sym(name, patternMap, tailMap)
+            ConstructorSeqMap.Cons(pattern.symbcons(name, W), patternMap, tailMap)
         }
     }
 }
@@ -240,7 +240,7 @@ object ConstructorSeqDom {
       } = {
       val ptn = pattern.mapped[C]
       val tl  = tail.mapped[C](W)
-      ConstructorSeqMap.Cons.sym(name, ptn, tl)
+      ConstructorSeqMap.Cons(pattern.symbcons(name, W), ptn, tl)
     }
 
     def intros(typ: Typ[H]) =

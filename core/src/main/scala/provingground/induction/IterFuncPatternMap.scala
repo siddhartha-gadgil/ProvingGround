@@ -340,6 +340,12 @@ object IterFuncPatternMap {
     //                             type DT <: Term with Subs[DT]
     //                           }
 
+    /**
+      * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
+      *  this is used mainly for constructor patterns, with the W being fixed.
+      */
+    def apply(tp: Typ[O]): Typ[F]
+
     def mapper[C <: Term with Subs[C]]
       : IterFuncMapper[O, C, F, TT, DT] forSome {
         type TT <: Term with Subs[TT];
@@ -354,6 +360,8 @@ object IterFuncPatternMap {
 
   case class IdIterShape[O <: Term with Subs[O]]()
       extends IterFuncShape[O, O] {
+    def apply(tp: Typ[O]) = tp
+
     def subs(x: Term, y: Term) = IdIterShape[O]
 
     def mapper[C <: Term with Subs[C]] =
@@ -366,6 +374,7 @@ object IterFuncPatternMap {
                        HF <: Term with Subs[HF]](tail: Typ[TT],
                                                  head: IterFuncShape[O, HF])
       extends IterFuncShape[O, Func[TT, HF]] {
+    def apply(tp: Typ[O]) = tail ->: head(tp)
 
     def subs(x: Term, y: Term) = FuncShape(tail.replace(x, y), head.subs(x, y))
 
@@ -381,6 +390,13 @@ object IterFuncPatternMap {
       tail: Typ[TT],
       headfibre: TT => IterFuncShape[O, HF])
       extends IterFuncShape[O, FuncLike[TT, HF]] {
+
+    def apply(W: Typ[O]) = {
+          val x     = tail.Var
+          piDefn(x)(headfibre(x)(W))
+        }
+
+
     def subs(x: Term, y: Term) =
       DepFuncShape(tail.replace(x, y), (t: TT) => headfibre(t).subs(x, y))
 
