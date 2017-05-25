@@ -83,12 +83,18 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="../index.html">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
               <span class="name">provingground</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="induction"></a><a id="induction:induction"></a>
       <span class="permalink">
@@ -101,12 +107,15 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html">
+        <a title="Here be induction documentation
+" href="index.html">
               <span class="name">induction</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+      <p class="shortcomment cmt">Here be induction documentation
+</p><div class="fullcomment"><div class="comment cmt"><p>Here be induction documentation
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li name="provingground.induction.coarse" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="coarse"></a><a id="coarse:coarse"></a>
       <span class="permalink">
@@ -127,18 +136,22 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMap$.html" title=""></a>
-                        <a class="trait" href="" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
-hence the scala type of the recurion and induction types are determined, as are the definitions of these
-functions for the case matching the introduction rule."></a>
-                        <a href="" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
-hence the scala type of the recurion and induction types are determined, as are the definitions of these
-functions for the case matching the introduction rule.">
+                        <a class="trait" href="" title="Introduction rule for an inductive type,
+as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined."></a>
+                        <a href="" title="Introduction rule for an inductive type,
+as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMapper$.html" title=""></a>
-                        <a class="trait" href="ConstructorPatternMapper.html" title=""></a>
-                        <a href="ConstructorPatternMapper.html" title="">
+                        <a class="trait" href="ConstructorPatternMapper.html" title="bridge between the definition ConstructorShape of an introduction rule and ConstructorPatternMap which depends also
+on the scala type of the codomain, allowing cases for recursive and  inductive definition;
+ideally used implicitly."></a>
+                        <a href="ConstructorPatternMapper.html" title="bridge between the definition ConstructorShape of an introduction rule and ConstructorPatternMap which depends also
+on the scala type of the codomain, allowing cases for recursive and  inductive definition;
+ideally used implicitly.">
                           ConstructorPatternMapper
                         </a>
                       </li><li class="current-entities indented2">
@@ -177,14 +190,16 @@ May have Pi-types instead of function types.">
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ConstructorTL.html" title=""></a>
-                        <a href="ConstructorTL.html" title="">
+                        <a class="class" href="ConstructorTL.html" title="an introduction rule for an inductive type
+"></a>
+                        <a href="ConstructorTL.html" title="an introduction rule for an inductive type
+">
                           ConstructorTL
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorTypTL$.html" title=""></a>
-                        <a class="class" href="ConstructorTypTL.html" title=""></a>
-                        <a href="ConstructorTypTL.html" title="">
+                        <a class="class" href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined."></a>
+                        <a href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined.">
                           ConstructorTypTL
                         </a>
                       </li><li class="current-entities indented2">
@@ -373,9 +388,12 @@ May have Pi-types instead of function types.">
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Introduction rule as in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> with the <i>scala</i> type of the codomain specified;
-hence the scala type of the recurion and induction types are determined, as are the definitions of these
-functions for the case matching the introduction rule.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Introduction rule for an inductive type,
+as in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> with the <i>scala</i> type of the codomain specified;
+hence the scala type of the recurion and induction types are determined.
+The definitions of recursion and induction
+functions for the case matching the introduction rule are the abstract methods
+<a href="#recDefCase(cons:ConstructorType,data:RecDataType,f:=&gt;provingground.HoTT.Func[H,Cod]):H=&gt;Option[Cod]" class="extmbr" name="provingground.induction.ConstructorPatternMap#recDefCase">recDefCase</a> and <a href="#inducDefCase(cons:ConstructorType,data:InducDataType,f:=&gt;provingground.HoTT.FuncLike[H,Cod]):H=&gt;Option[Cod]" class="extmbr" name="provingground.induction.ConstructorPatternMap#inducDefCase">inducDefCase</a>.
 </p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>the scala type of the codomain.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>the scala type of the introduction rule</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>the scala type of terms of an inductive type that can have this constructor.</p></dd><dt class="tparam">RecDataType</dt><dd class="cmt"><p>type of data for recursive definitions for the case corresponding to this introduction rule.</p></dd><dt class="tparam">InducDataType</dt><dd class="cmt"><p>type of data for inductive definitions for  the case corresponding to this introduction rule.
 this is used indirectly through <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a></p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.InducDataType">InducDataType</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">
@@ -482,7 +500,9 @@ this is used indirectly through <a href="ConstructorSeqTL.html" class="extype" n
         <span class="name">inducDefCase</span><span class="params">(<span name="cons">cons: <span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span></span>, <span name="data">data: <span class="extype" name="provingground.induction.ConstructorPatternMap.InducDataType">InducDataType</span></span>, <span name="f">f: ⇒ <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>]</span>)</span><span class="result">: (<span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
+      <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor,
+with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor,
+with <code>this</code> constructor pattern.
 optionally returns simplification (if the term matches).
 </p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined inductively, to be used recursively in definition.</p></dd></dl></div>
     </li><li name="provingground.induction.ConstructorPatternMap#recDataTyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">

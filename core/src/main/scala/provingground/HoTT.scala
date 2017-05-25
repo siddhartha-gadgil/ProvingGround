@@ -21,8 +21,8 @@ import Math._
   -   Coproduct types [[PlusTyp]], the Unit type [[Unit]] and the empty type [[Zero]]
   -   recursion and induction functions for products, coproducts
   *
-  * General inductive types are ``not`` implemented here.
-  * See the documentation of [[induction.ConstructorSeqTL]] for these.
+  * General inductive types are ``not`` implemented here, but in the [[induction]] package.
+  *
   */
 object HoTT {
 

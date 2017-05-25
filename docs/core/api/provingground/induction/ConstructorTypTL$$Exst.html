@@ -83,12 +83,18 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="../index.html">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
               <span class="name">provingground</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="induction"></a><a id="induction:induction"></a>
       <span class="permalink">
@@ -101,12 +107,15 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html">
+        <a title="Here be induction documentation
+" href="index.html">
               <span class="name">induction</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+      <p class="shortcomment cmt">Here be induction documentation
+</p><div class="fullcomment"><div class="comment cmt"><p>Here be induction documentation
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li name="provingground.induction.ConstructorTypTL" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ConstructorTypTL"></a><a id="ConstructorTypTL:ConstructorTypTL"></a>
       <span class="permalink">
@@ -127,8 +136,8 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <a class="object" href="ConstructorTypTL$$Exst$.html" title=""></a>
-                        <a class="trait" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="trait" href="" title="wrapped existential form of ConstructorTypTL, to be used at runtime, translation etc where refined types are  unknown."></a>
+                        <a href="" title="wrapped existential form of ConstructorTypTL, to be used at runtime, translation etc where refined types are  unknown.">
                           Exst
                         </a>
                       </li>
@@ -161,7 +170,8 @@
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>wrapped existential form of <a href="ConstructorTypTL.html" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>, to be used at runtime, translation etc where refined types are  unknown.
+</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -354,7 +364,9 @@
         <span title="gt4s: $minus$minus$greater$greater$colon" class="name">--&gt;&gt;:</span><span class="params">(<span name="that">that: <a href="IterFuncPatternMap$$IterFuncShape$$Exst.html" class="extype" name="provingground.induction.IterFuncPatternMap.IterFuncShape.Exst">IterFuncPatternMap.IterFuncShape.Exst</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL.Exst">Exst</a> { ... /* 2 definitions in type refinement */ }</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns constructor with shape <code>W -&gt; this';
+invoking this is an error if we </code>that<code> is not </code>W<code>
+</code></p>
     </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Exst,B)"></a>
       <span class="permalink">
@@ -393,7 +405,9 @@
         <span title="gt4s: $minus$greater$greater$colon" class="name">-&gt;&gt;:</span><span class="params">(<span name="that">that: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL.Exst">Exst</a> { ... /* 2 definitions in type refinement */ }</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns constructor with shape <code>that -&gt; this' where </code>that<code> is a type A;
+invoking this is an error if we </code>that<code> is not independent of </code>W<code>
+</code></p>
     </li><li name="provingground.induction.ConstructorTypTL.Exst#:::" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id=":::(name:provingground.HoTT.AnySym):provingground.induction.ConstructorTL[Exst.this.S,provingground.HoTT.Term,Exst.this.ConstructorType]"></a><a id=":::(AnySym):ConstructorTL[S,Term,ConstructorType]"></a>
       <span class="permalink">
@@ -409,7 +423,7 @@
         <span title="gt4s: $colon$colon$colon" class="name">:::</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <a href="ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a>[<a href="#S&lt;:shapeless.HList" class="extmbr" name="provingground.induction.ConstructorTypTL.Exst.S">S</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="#ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Exst.this.ConstructorType]" class="extmbr" name="provingground.induction.ConstructorTypTL.Exst.ConstructorType">ConstructorType</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns a variable to act as an introduction rule.</p>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -830,7 +844,9 @@
         <span title="gt4s: $tilde$greater$greater$colon" class="name">~&gt;&gt;:</span><span class="params">(<span name="thatVar">thatVar: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL.Exst">Exst</a> { ... /* 2 definitions in type refinement */ }</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns constructor with shape <code>that ~&gt; this' where </code>that<code> is a type A;
+invoking this is an error if we </code>that<code> is not independent of </code>W<code>
+</code></p>
     </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Exst,B)"></a>
       <span class="permalink">

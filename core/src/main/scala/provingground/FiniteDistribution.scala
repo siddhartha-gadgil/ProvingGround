@@ -12,13 +12,7 @@ import spire.implicits._
 
 //import scala.collection.parallel.immutable.ParVector
 
-/**
-  * Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.
-  *
-  * @param pmf probability mass function, may have same object split.
-  *
-  * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
-  */
+
 object FiniteDistribution {
   val random = new scala.util.Random
 
@@ -63,6 +57,14 @@ object FiniteDistribution {
 
 }
 
+/**
+  * Finite distributions, often supposed to be probability distributions,
+  * but may also be tangents to this or intermediates.
+  *
+  * @param pmf probability mass function, may have same object split.
+  *
+  * @param epsilon cutoff below which some methods ignore objects. should be very small to allow for split objects.
+  */
 case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     extends AnyVal
     with ProbabilityDistribution[T] {

@@ -83,12 +83,18 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="../index.html">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
               <span class="name">provingground</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="induction"></a><a id="induction:induction"></a>
       <span class="permalink">
@@ -101,12 +107,15 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html">
+        <a title="Here be induction documentation
+" href="index.html">
               <span class="name">induction</span>
             </a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+      <p class="shortcomment cmt">Here be induction documentation
+</p><div class="fullcomment"><div class="comment cmt"><p>Here be induction documentation
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li name="provingground.induction.coarse" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="coarse"></a><a id="coarse:coarse"></a>
       <span class="permalink">
@@ -127,18 +136,22 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMap$.html" title=""></a>
-                        <a class="trait" href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
-hence the scala type of the recurion and induction types are determined, as are the definitions of these
-functions for the case matching the introduction rule."></a>
-                        <a href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
-hence the scala type of the recurion and induction types are determined, as are the definitions of these
-functions for the case matching the introduction rule.">
+                        <a class="trait" href="ConstructorPatternMap.html" title="Introduction rule for an inductive type,
+as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined."></a>
+                        <a href="ConstructorPatternMap.html" title="Introduction rule for an inductive type,
+as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMapper$.html" title=""></a>
-                        <a class="trait" href="ConstructorPatternMapper.html" title=""></a>
-                        <a href="ConstructorPatternMapper.html" title="">
+                        <a class="trait" href="ConstructorPatternMapper.html" title="bridge between the definition ConstructorShape of an introduction rule and ConstructorPatternMap which depends also
+on the scala type of the codomain, allowing cases for recursive and  inductive definition;
+ideally used implicitly."></a>
+                        <a href="ConstructorPatternMapper.html" title="bridge between the definition ConstructorShape of an introduction rule and ConstructorPatternMap which depends also
+on the scala type of the codomain, allowing cases for recursive and  inductive definition;
+ideally used implicitly.">
                           ConstructorPatternMapper
                         </a>
                       </li><li class="current-entities indented2">
@@ -177,14 +190,16 @@ May have Pi-types instead of function types.">
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ConstructorTL.html" title=""></a>
-                        <a href="ConstructorTL.html" title="">
+                        <a class="class" href="ConstructorTL.html" title="an introduction rule for an inductive type
+"></a>
+                        <a href="ConstructorTL.html" title="an introduction rule for an inductive type
+">
                           ConstructorTL
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorTypTL$.html" title=""></a>
-                        <a class="class" href="ConstructorTypTL.html" title=""></a>
-                        <a href="ConstructorTypTL.html" title="">
+                        <a class="class" href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined."></a>
+                        <a href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined.">
                           ConstructorTypTL
                         </a>
                       </li><li class="current-entities indented2">
@@ -437,12 +452,16 @@ May have Pi-types instead of function types.">
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ConstructorShape$$CnstDepFuncConsShape.html">
+        <a title="ConstructorShape corresponding to an introduction rule of the form
+A ~&gt; head with A not dependent on the inductive type W being constructed
+" href="ConstructorShape$$CnstDepFuncConsShape.html">
               <span class="name">CnstDepFuncConsShape</span>
             </a><span class="tparams">[<span name="HShape">HShape &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.H">H</span>]</span>, <span name="HC">HC &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HC">HC</span>]</span>, <span name="T">T &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.T">T</span>]</span>, <span name="HS">HS &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HS">HS</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.T">T</span>]</span>, <span name="headfibre">headfibre: (<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.T">T</span>) ⇒ <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HC">HC</span>]</span>)</span><span class="result"> extends <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="shapeless.::">::</span>[<a href="ConstructorShape$$CnstDepFuncConsShape$.html" class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape">CnstDepFuncConsShape</a>.type, <span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HShape">HShape</span>], <span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.H">H</span>, <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.T">T</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape.HC">HC</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt"><a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> corresponding to an introduction rule of the form
+<code>A ~&gt; head</code> with <code>A</code> not dependent on the inductive type <code>W</code> being constructed
+</p>
     </li><li name="provingground.induction.ConstructorShape.CnstFuncConsShape" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CnstFuncConsShape[HShape&lt;:shapeless.HList,H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC],T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T],HS&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HS]]extendsConstructorShape[provingground.induction.ConstructorShape.CnstFuncConsShape.type::HShape,H,provingground.HoTT.Func[T,HC]]withProductwithSerializable"></a><a id="CnstFuncConsShape[HShape&lt;:HList,H&lt;:TermwithSubs[H],HC&lt;:TermwithSubs[HC],T&lt;:TermwithSubs[T],HS&lt;:TermwithSubs[HS]]:CnstFuncConsShape[HShape,H,HC,T,HS]"></a>
       <span class="permalink">
@@ -455,12 +474,16 @@ May have Pi-types instead of function types.">
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ConstructorShape$$CnstFuncConsShape.html">
+        <a title="ConstructorShape corresponding to an introduction rule of the form
+A -&gt; head with A not dependent on the inductive type W being constructed
+" href="ConstructorShape$$CnstFuncConsShape.html">
               <span class="name">CnstFuncConsShape</span>
             </a><span class="tparams">[<span name="HShape">HShape &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.H">H</span>]</span>, <span name="HC">HC &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HC">HC</span>]</span>, <span name="T">T &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.T">T</span>]</span>, <span name="HS">HS &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HS">HS</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.T">T</span>]</span>, <span name="head">head: <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HC">HC</span>]</span>)</span><span class="result"> extends <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="shapeless.::">::</span>[<a href="ConstructorShape$$CnstFuncConsShape$.html" class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape">CnstFuncConsShape</a>.type, <span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HShape">HShape</span>], <span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.H">H</span>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.T">T</span>, <span class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape.HC">HC</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt"><a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> corresponding to an introduction rule of the form
+<code>A -&gt; head</code> with <code>A</code> not dependent on the inductive type <code>W</code> being constructed
+</p>
     </li><li name="provingground.induction.ConstructorShape.FuncConsShape" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FuncConsShape[HS&lt;:shapeless.HList,H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],HC&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HC],F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]]extendsConstructorShape[provingground.induction.ConstructorShape.FuncConsShape.type::HS,H,provingground.HoTT.Func[F,HC]]withProductwithSerializable"></a><a id="FuncConsShape[HS&lt;:HList,H&lt;:TermwithSubs[H],HC&lt;:TermwithSubs[HC],F&lt;:TermwithSubs[F]]:FuncConsShape[HS,H,HC,F]"></a>
       <span class="permalink">
@@ -473,12 +496,16 @@ May have Pi-types instead of function types.">
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ConstructorShape$$FuncConsShape.html">
+        <a title="ConstructorShape corresponding to an introduction rule of the form
+(.. -&gt; W) -&gt; head
+" href="ConstructorShape$$FuncConsShape.html">
               <span class="name">FuncConsShape</span>
             </a><span class="tparams">[<span name="HS">HS &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.H">H</span>]</span>, <span name="HC">HC &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.HC">HC</span>]</span>, <span name="F">F &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.F">F</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.induction.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.F">F</span>]</span>, <span name="head">head: <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.HS">HS</span>, <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.HC">HC</span>]</span>)</span><span class="result"> extends <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="shapeless.::">::</span>[<a href="ConstructorShape$$FuncConsShape$.html" class="extype" name="provingground.induction.ConstructorShape.FuncConsShape">FuncConsShape</a>.type, <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.HS">HS</span>], <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.H">H</span>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.F">F</span>, <span class="extype" name="provingground.induction.ConstructorShape.FuncConsShape.HC">HC</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt"><a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> corresponding to an introduction rule of the form
+<code>(.. -&gt; W) -&gt; head</code>
+</p>
     </li><li name="provingground.induction.ConstructorShape.IdShape" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="IdShape[H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H]]extendsConstructorShape[shapeless.HNil,H,H]withProductwithSerializable"></a><a id="IdShape[H&lt;:TermwithSubs[H]]:IdShape[H]"></a>
       <span class="permalink">

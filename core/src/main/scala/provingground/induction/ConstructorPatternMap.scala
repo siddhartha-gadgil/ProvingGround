@@ -14,15 +14,14 @@ import shapeless._
 
 //import RecFunction._
 
-/**
-  * constructors, their patterns, recursion
-  * @author gadgil
-  */
 
 /**
- * Introduction rule as in [[ConstructorShape]] with the ''scala'' type of the codomain specified;
- * hence the scala type of the recurion and induction types are determined, as are the definitions of these
- * functions for the case matching the introduction rule.
+ * Introduction rule for an inductive type,
+ * as in [[ConstructorShape]] with the ''scala'' type of the codomain specified;
+ * hence the scala type of the recurion and induction types are determined.
+ * The definitions of recursion and induction
+ * functions for the case matching the introduction rule are the abstract methods
+ * [[recDefCase]] and [[inducDefCase]].
  *
  * @tparam H the scala type of terms of an inductive type that can have this constructor.
  * @tparam Cod the scala type of the codomain.
@@ -41,24 +40,12 @@ sealed trait ConstructorPatternMap[
     InducDataType <: Term with Subs[InducDataType]
 ] { self =>
 
-//  val domain : ConstructorPattern[Cod, ConstructorType, H]
-
   def subs(x: Term, y: Term): ConstructorPatternMap[Cod,
                                                     ConstructorType,
                                                     H,
                                                     RecDataType,
                                                     InducDataType]
 
-  /**
-    * returns HoTT type of the introduction rule given the (inductive) type W (to be the head).
-    */
-  // def apply(tp: Typ[H]): Typ[ConstructorType]
-
-  /**
-   * returns term giving introduction rule given inductive type and name
-   */
-  // def symbcons(name: AnySym, tp: Typ[H]): ConstructorType =
-  //   apply(tp).variable(name)
 
 
   /**
@@ -86,7 +73,8 @@ sealed trait ConstructorPatternMap[
                  f: => Func[H, Cod]): H => Option[Cod]
 
   /**
-    * given a term, matches to see if this is the image of a given (quasi)-constructor, with `this` constructor pattern.
+    * given a term, matches to see if this is the image of a given (quasi)-constructor,
+    * with `this` constructor pattern.
     * optionally returns simplification (if the term matches).
     *
     * @param cons constructor, actually quasi-constructor, with which to match.
@@ -103,11 +91,11 @@ sealed trait ConstructorPatternMap[
 
 object ConstructorPatternMap{
 
+/**
+ * [[ConstructorPatternMap]] for recursion, induction corresponding to the constant shape `W`
+ */
 case class IdTargMap[C <: Term with Subs[C], H <: Term with Subs[H]]()
     extends ConstructorPatternMap[C, H, H, C, C] {
-  // val domain = IdTarg[C, H]
-
-  // def apply(W: Typ[H]) = W
 
   val univLevel = 0
 
@@ -138,7 +126,9 @@ case class IdTargMap[C <: Term with Subs[C], H <: Term with Subs[H]]()
 }
 
 /**
-  * Functional extension of a type pattern
+  * Functional extension of [[ConstructorPatternMap]],
+  * Recursively defines the functions needed for recursion and induction in terms of
+  * those for the `head`
   */
 sealed trait RecursiveConstructorPatternMap[
     Cod <: Term with Subs[Cod],
@@ -154,7 +144,7 @@ sealed trait RecursiveConstructorPatternMap[
   self =>
 
   /**
-    * The head pattern, constant T for A -> T and T(a) for A ~> T(a)
+    * The head pattern map, constant T for A -> T and T(a) for A ~> T(a)
     */
   val headfibre: ArgType => ConstructorPatternMap[Cod,
                                                   HeadConstructorType,
@@ -163,7 +153,8 @@ sealed trait RecursiveConstructorPatternMap[
                                                   HeadInducDataType]
 
   /**
-    * returns data for recursion to be passed on to the head given an argument (when matching with the constructor).
+    * returns data for recursion to be passed on to the head given an argument
+    * (when matching with the constructor).
     */
   def headData(data: RecDataType,
                arg: ArgType,
@@ -176,13 +167,14 @@ sealed trait RecursiveConstructorPatternMap[
          term <- headfibre(arg).recDefCase(cons(arg),
                                            headData(data, arg, f),
                                            f)(t)) yield {
-      // println("Recursive Def case (// println from RecDefCase)")
-      // println(s"Argument is $arg for constructor $cons")
-      // println(s"Result is the term $term \n\n")
       term
     }
   }
 
+  /**
+    * returns data for induction to be passed on to the head given an argument
+    * (when matching with the constructor).
+    */
   def headInducData(data: InducDataType,
                     arg: ArgType,
                     f: => FuncLike[H, Cod]): HeadInducDataType
@@ -202,7 +194,7 @@ object Debug {
 }
 
 /**
-  * Extending a constructor-pattern by a type pattern.
+  * [[ConstructorPatternMap]] corresponding to introduction rule [[ConstructorShape.FuncConsShape]]
   */
 case class FuncPtnMap[C <: Term with Subs[C],
                       F <: Term with Subs[F],
@@ -270,7 +262,7 @@ case class FuncPtnMap[C <: Term with Subs[C],
 }
 
 /**
-  * Extending a poly-pattern by a constant type, i.e., not depending on W.
+  * [[ConstructorPatternMap]] corresponding to [[ConstructorShape.CnstFuncConsShape]]
   */
 case class CnstFncPtnMap[T <: Term with Subs[T],
                          Cod <: Term with Subs[Cod],
@@ -289,13 +281,7 @@ case class CnstFncPtnMap[T <: Term with Subs[T],
                                            FuncLike[T, HI],
                                            HR,
                                            HI] { self =>
-  //   type ArgType = Term
 
-  //   type HeadType = head.ConstructorType
-
-  //  type Cod = head.Cod
-
-  // val domain = CnstFncPtn(tail, head.domain)
 
   def subs(x: Term, y: Term) =
     CnstFncPtnMap(tail.subs(x, y), head.subs(x, y))
@@ -326,6 +312,9 @@ case class CnstFncPtnMap[T <: Term with Subs[T],
   val univLevel = head.univLevel
 }
 
+/**
+ * [[ConstructorPatternMap]] corresponding to [[ConstructorShape.CnstDepFuncConsShape]]
+ */
 case class CnstDepFuncPtnMap[T <: Term with Subs[T],
                              V <: Term with Subs[V],
                              VV <: Term with Subs[VV],
@@ -388,15 +377,6 @@ case class CnstDepFuncPtnMap[T <: Term with Subs[T],
   def headInducData(data: InducDataType,
                     arg: T,
                     f: => FuncLike[H, C]): HeadInducDataType = data(arg)
-
-  // def apply(W: Typ[H]): Typ[FuncLike[T, HC]] = {
-  //   //     val fiber = typFamily[Term, U](tail,  (t : Term) => headfibre(t)(W))
-  //   val a     = tail.Var
-  //   val fiber = lmbda(a)(headfibre(a)(W))
-  //   piDefn[T, HC](a)(headfibre(a)(W))
-  // }
-
-  //    type ConstructorType = Term
 
   val univLevel = headlevel
 }
@@ -526,6 +506,10 @@ object ConstructorShape {
 
   object FuncConsShape
 
+  /**
+   * [[ConstructorShape]] corresponding to an introduction rule of the form
+   * `(.. -> W) -> head`
+   */
   case class FuncConsShape[HS <: HList,
                            H <: Term with Subs[H],
                            HC <: Term with Subs[HC],
@@ -553,6 +537,10 @@ object ConstructorShape {
 
   object CnstFuncConsShape
 
+  /**
+   * [[ConstructorShape]] corresponding to an introduction rule of the form
+   * `A -> head` with `A` not dependent on the inductive type `W` being constructed
+   */
   case class CnstFuncConsShape[HShape <: HList,
                                H <: Term with Subs[H],
                                HC <: Term with Subs[HC],
@@ -574,6 +562,10 @@ object ConstructorShape {
 
   object CnstDepFuncConsShape
 
+  /**
+   * [[ConstructorShape]] corresponding to an introduction rule of the form
+   * `A ~> head` with `A` not dependent on the inductive type `W` being constructed
+   */
   case class CnstDepFuncConsShape[HShape <: HList,
                                   H <: Term with Subs[H],
                                   HC <: Term with Subs[HC],
@@ -674,6 +666,12 @@ object ConstructorPatternMapper {
     }
 }
 
+
+/**
+ * bridge between the definition [[ConstructorShape]] of an introduction rule and [[ConstructorPatternMap]] which depends also
+ * on the scala type of the codomain, allowing cases for recursive and  inductive definition;
+ * ideally used implicitly.
+ */
 sealed trait ConstructorPatternMapper[
     Shape <: HList,
     Cod <: Term with Subs[Cod],
@@ -682,6 +680,9 @@ sealed trait ConstructorPatternMapper[
     RecDataType <: Term with Subs[RecDataType],
     InducDataType <: Term with Subs[InducDataType]
 ] {
+  /**
+   * the bridge function
+   */
   def mapper: ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
     Cod,
     ConstructorType,
@@ -690,6 +691,9 @@ sealed trait ConstructorPatternMapper[
     InducDataType]
 }
 
+/**
+ * an introduction rule [[shape]] together with the iductive type [[typ]] being defined.
+ */
 case class ConstructorTypTL[
     S <: HList,
     H <: Term with Subs[H],
@@ -699,20 +703,35 @@ case class ConstructorTypTL[
 
   import ConstructorShape._
 
+  /**
+   * returns a variable to act as an introduction rule.
+   */
   def :::(name: AnySym) = ConstructorTL(name, shape, typ)
 
+  /**
+   * returns constructor with shape `W -> this';
+   * invoking this is an error if we `that` is not `W`
+   */
   def -->>:(that: Typ[H]) = {
     assert(
       that == typ,
-      s"the method -->: is for extenidng by the same type but $that is not $typ")
+      s"the method -->: is for extending by the same type but $that is not $typ")
     val tail = IdIterShape[H]
     val ptn  = FuncConsShape(tail, shape)
     ConstructorTypTL(ptn, typ)
   }
 
+  /**
+   * returns constructor with shape `that -> this' where `that` is of the form `W`, `A -> W` etc;
+   * invoking this is an error if we `that` is independent of `W`
+   */
   def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F]) =
     ConstructorTypTL(that -->: shape, typ)
 
+  /**
+   * returns constructor with shape `that -> this' where `that` is a type A;
+   * invoking this is an error if we `that` is not independent of `W`
+   */
   def ->>:[T <: Term with Subs[T]](that: Typ[T]) = {
     assert(
       !(that.dependsOn(typ)),
@@ -720,30 +739,55 @@ case class ConstructorTypTL[
     ConstructorTypTL(that ->: shape, typ)
   }
 
+  /**
+   * returns constructor with shape `that ~> this' where `that` is a type A;
+   * invoking this is an error if we `that` is not independent of `W`
+   */
   def ~>>:(thatVar: H) =
     ConstructorTypTL(thatVar ~>: shape, typ)
 }
 
 object ConstructorTypTL {
+  /**
+   * wrapped existential form of [[ConstructorTypTL]], to be used at runtime, translation etc where refined types are  unknown.
+   */
   trait Exst {
     type S <: HList
     type ConstructorType <: Term with Subs[ConstructorType]
 
     val value: ConstructorTypTL[S, Term, ConstructorType]
 
+    /**
+     * returns constructor with shape `W -> this';
+     * invoking this is an error if we `that` is not `W`
+     */
     def -->>:(that: IterFuncShape.Exst) =
       Exst(that.shape -->>: value)
 
+      /**
+     * returns constructor with shape `that -> this' where `that` is a type A;
+     * invoking this is an error if we `that` is not independent of `W`
+     */
     def ->>:(that: Typ[Term]) =
       Exst(that ->>: value)
 
+      /**
+     * returns constructor with shape `that ~> this' where `that` is a type A;
+     * invoking this is an error if we `that` is not independent of `W`
+     */
     def ~>>:(thatVar: Term) =
       Exst(thatVar ~>>: value)
 
+      /**
+     * returns a variable to act as an introduction rule.
+     */
     def :::(name: AnySym) = name ::: value
   }
 
   object Exst {
+    /**
+     * helper for constructing existentials
+     */
     def apply[Shape <: HList, CT <: Term with Subs[CT]](
         cns: ConstructorTypTL[Shape, Term, CT]) =
       new Exst {
@@ -754,6 +798,10 @@ object ConstructorTypTL {
       }
   }
 
+  /**
+   * returns existential form of [[ConstructorTypTL]] given the inductive type `w` and
+   * the type `cnstTyp` of the introduction rule.
+   */
   def getExst(w: Typ[Term], cnstTyp: Typ[Term]): Exst = cnstTyp match {
     case `w` => Exst(ConstructorTypTL(IdShape[Term], w))
     case ft: FuncTyp[u, v] if (ft.dom.indepOf(w)) =>
@@ -765,6 +813,9 @@ object ConstructorTypTL {
   }
 }
 
+/**
+ * an introduction rule for an inductive type
+ */
 case class ConstructorTL[S <: HList,
                          H <: Term with Subs[H],
                          ConstructorType <: Term with Subs[ConstructorType]](
