@@ -127,8 +127,12 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMap$.html" title=""></a>
-                        <a class="trait" href="ConstructorPatternMap.html" title="A composite pattern for inductive types."></a>
-                        <a href="ConstructorPatternMap.html" title="A composite pattern for inductive types.">
+                        <a class="trait" href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule."></a>
+                        <a href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
@@ -163,8 +167,12 @@
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorShape$.html" title=""></a>
-                        <a class="trait" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="trait" href="" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types."></a>
+                        <a href="" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.">
                           ConstructorShape
                         </a>
                       </li><li class="current-entities indented2">
@@ -365,7 +373,10 @@
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.</p><p>Usually constructed using the DSL in <a href="TLImplicits$.html" class="extype" name="provingground.induction.TLImplicits">TLImplicits</a>
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>formal type to capture information at type level</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>scala type of the terms of the inductive type.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>scala type of a constructor (introduction rule) corresponding to this pattern.</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -439,7 +450,23 @@
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.induction.ConstructorShape#mapper" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.induction.ConstructorShape#apply" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="apply(tp:provingground.HoTT.Typ[H]):provingground.HoTT.Typ[ConstructorType]"></a><a id="apply(Typ[H]):Typ[ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorShape.html#apply(tp:provingground.HoTT.Typ[H]):provingground.HoTT.Typ[ConstructorType]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>)</span><span class="result">: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">returns HoTT type of the introduction rule given the (inductive) type W (to be the head).</p>
+    </li><li name="provingground.induction.ConstructorShape#mapper" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="mapper[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}"></a><a id="mapper[Cod&lt;:TermwithSubs[Cod]]:ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:TermwithSubs[RecDataType],typeInducDataType&lt;:TermwithSubs[InducDataType]}"></a>
       <span class="permalink">
       <a href="../../provingground/induction/ConstructorShape.html#mapper[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}" title="Permalink">
@@ -454,7 +481,7 @@
         <span class="name">mapper</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapper.Cod">Cod</span>]</span>]</span><span class="result">: <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.mapper.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.mapper.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorShape.mapper.InducDataType">InducDataType</span>] forSome {type RecDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapper.RecDataType">RecDataType</span>], type InducDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapper.InducDataType">InducDataType</span>]}</span>
       </span>
       
-      
+      <p class="shortcomment cmt">helper to give <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a> when scala type of codomain is specified.</p>
     </li><li name="provingground.induction.ConstructorShape#subs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ConstructorShape[S,H,ConstructorType]"></a><a id="subs(Term,Term):ConstructorShape[S,H,ConstructorType]"></a>
       <span class="permalink">
@@ -544,7 +571,8 @@
         <span title="gt4s: $minus$minus$greater$colon" class="name">--&gt;:</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.induction.ConstructorShape.IdShape">IdShape</span>.type</span>)</span><span class="result">: <a href="ConstructorShape$$FuncConsShape.html" class="extype" name="provingground.induction.ConstructorShape.FuncConsShape">FuncConsShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns shape <code>that -&gt; this' where </code>that<code> must be the shape for inductive type </code>W<code>
+</code></p>
     </li><li name="provingground.induction.ConstructorShape#--&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="--&gt;:[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.induction.IterFuncPatternMap.IterFuncShape[H,F]):provingground.induction.ConstructorShape.FuncConsShape[S,H,ConstructorType,F]"></a><a id="--&gt;:[F&lt;:TermwithSubs[F]](IterFuncShape[H,F]):FuncConsShape[S,H,ConstructorType,F]"></a>
       <span class="permalink">
@@ -560,7 +588,9 @@
         <span title="gt4s: $minus$minus$greater$colon" class="name">--&gt;:</span><span class="tparams">[<span name="F">F &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.--&gt;:.F">F</span>]</span>]</span><span class="params">(<span name="that">that: <a href="IterFuncPatternMap$$IterFuncShape.html" class="extype" name="provingground.induction.IterFuncPatternMap.IterFuncShape">IterFuncShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.--&gt;:.F">F</span>]</span>)</span><span class="result">: <a href="ConstructorShape$$FuncConsShape.html" class="extype" name="provingground.induction.ConstructorShape.FuncConsShape">FuncConsShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.--&gt;:.F">F</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns shape <code>that -&gt; this' where </code>that<code> is of the form </code>W<code>, </code>A -&gt; W<code> etc;
+invoking this is an error if we </code>that<code> is independent of </code>W<code>
+</code></p>
     </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ConstructorShape[S,H,ConstructorType],B)"></a>
       <span class="permalink">
@@ -599,7 +629,7 @@
         <span title="gt4s: $minus$greater$colon" class="name">-&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.-&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tail">tail: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.-&gt;:.T">T</span>]</span>)</span><span class="result">: <a href="ConstructorShape$$CnstFuncConsShape.html" class="extype" name="provingground.induction.ConstructorShape.CnstFuncConsShape">CnstFuncConsShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.-&gt;:.T">T</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns shape <code>tail -&gt;: this</code> where tail must be independent of the inductive type <code>W</code> being defined.</p>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -874,7 +904,8 @@
         <span class="name">lift</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.lift.Cod">Cod</span>]</span>, <span name="RecDataType">RecDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.lift.RecDataType">RecDataType</span>]</span>, <span name="InducDataType">InducDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.lift.InducDataType">InducDataType</span>]</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="mp">mp: <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.lift.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.lift.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorShape.lift.InducDataType">InducDataType</span>]</span>)</span><span class="result">: <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorShape.lift.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.lift.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorShape.lift.InducDataType">InducDataType</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">lift to <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a> using an implicit <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a>,
+which could from the <a href="#mapper[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}" class="extmbr" name="provingground.induction.ConstructorShape#mapper">mapper</a> method.</p>
     </li><li name="provingground.induction.ConstructorShape#mapped" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="mapped[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]:provingground.induction.ConstructorPatternMap[Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}"></a><a id="mapped[Cod&lt;:TermwithSubs[Cod]]:ConstructorPatternMap[Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:TermwithSubs[RecDataType],typeInducDataType&lt;:TermwithSubs[InducDataType]}"></a>
       <span class="permalink">
@@ -890,7 +921,7 @@
         <span class="name">mapped</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapped.Cod">Cod</span>]</span>]</span><span class="result">: <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapped.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.mapped.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorShape.mapped.InducDataType">InducDataType</span>] forSome {type RecDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapped.RecDataType">RecDataType</span>], type InducDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.mapped.InducDataType">InducDataType</span>]}</span>
       </span>
       
-      
+      <p class="shortcomment cmt">lift to <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a> using the result of the <a href="#mapper[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod]]:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]forSome{typeRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType];typeInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]}" class="extmbr" name="provingground.induction.ConstructorShape#mapper">mapper</a> method.</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -939,26 +970,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.induction.ConstructorShape#symbCons" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="symbCons[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType],InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]](name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H])(implicitmp:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]):ConstructorType"></a><a id="symbCons[Cod&lt;:TermwithSubs[Cod],RecDataType&lt;:TermwithSubs[RecDataType],InducDataType&lt;:TermwithSubs[InducDataType]](AnySym,Typ[H])(ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]):ConstructorType"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ConstructorShape.html#symbCons[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType],InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]](name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H])(implicitmp:provingground.induction.ConstructorPatternMapper[S,Cod,ConstructorType,H,RecDataType,InducDataType]):ConstructorType" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">symbCons</span><span class="tparams">[<span name="Cod">Cod &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.symbCons.Cod">Cod</span>]</span>, <span name="RecDataType">RecDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.symbCons.RecDataType">RecDataType</span>]</span>, <span name="InducDataType">InducDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.symbCons.InducDataType">InducDataType</span>]</span>]</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="mp">mp: <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.symbCons.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.symbCons.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorShape.symbCons.InducDataType">InducDataType</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span></span>
-      </span>
-      
-      
     </li><li name="provingground.induction.ConstructorShape#symbcons" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):ConstructorType"></a><a id="symbcons(AnySym,Typ[H]):ConstructorType"></a>
+      <a id="symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):_1.Objwithprovingground.HoTT.Subs[_1.Obj]forSome{val_1:provingground.HoTT.Typ[ConstructorType]}"></a><a id="symbcons(AnySym,Typ[H]):symbcons._1.type.ObjwithSubs[symbcons._1.type.Obj]forSome{val_1:Typ[ConstructorType]}"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ConstructorShape.html#symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):ConstructorType" title="Permalink">
+      <a href="../../provingground/induction/ConstructorShape.html#symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):_1.Objwithprovingground.HoTT.Subs[_1.Obj]forSome{val_1:provingground.HoTT.Typ[ConstructorType]}" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -967,10 +982,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">symbcons</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span></span>
+        <span class="name">symbcons</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.HoTT.Typ.Obj">symbcons._1.type.Obj</span> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.Obj">symbcons._1.type.Obj</span>] forSome {val _1: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>]}</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns term giving introduction rule given inductive type and name</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -1084,7 +1099,7 @@
         <span title="gt4s: $tilde$greater$colon" class="name">~&gt;:</span><span class="tparams">[<span name="T">T &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.~&gt;:.T">T</span>]</span>]</span><span class="params">(<span name="tailVar">tailVar: <span class="extype" name="provingground.induction.ConstructorShape.~&gt;:.T">T</span></span>)</span><span class="result">: <a href="ConstructorShape$$CnstDepFuncConsShape.html" class="extype" name="provingground.induction.ConstructorShape.CnstDepFuncConsShape">CnstDepFuncConsShape</a>[<span class="extype" name="provingground.induction.ConstructorShape.S">S</span>, <span class="extype" name="provingground.induction.ConstructorShape.H">H</span>, <span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorShape.~&gt;:.T">T</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">returns dependent shape <code>tail ~&gt;: this</code> where tail must be independent of the inductive type <code>W</code> being defined.</p>
     </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ConstructorShape[S,H,ConstructorType],B)"></a>
       <span class="permalink">

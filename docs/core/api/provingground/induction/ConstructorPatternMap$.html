@@ -127,8 +127,12 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="" title=""></a>
-                        <a class="trait" href="ConstructorPatternMap.html" title="A composite pattern for inductive types."></a>
-                        <a href="ConstructorPatternMap.html" title="A composite pattern for inductive types.">
+                        <a class="trait" href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule."></a>
+                        <a href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
@@ -163,8 +167,12 @@
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorShape$.html" title=""></a>
-                        <a class="trait" href="ConstructorShape.html" title=""></a>
-                        <a href="ConstructorShape.html" title="">
+                        <a class="trait" href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types."></a>
+                        <a href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.">
                           ConstructorShape
                         </a>
                       </li><li class="current-entities indented2">
@@ -493,12 +501,12 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="The constructor pattern W - the only valid head for constructor-patterns." href="ConstructorPatternMap$$IdTargMap.html">
+        <a title="" href="ConstructorPatternMap$$IdTargMap.html">
               <span class="name">IdTargMap</span>
             </a><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.C">C</span>]</span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.H">H</span>]</span>]</span><span class="params">()</span><span class="result"> extends <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.C">C</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.C">C</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.IdTargMap.C">C</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      <p class="shortcomment cmt">The constructor pattern W - the only valid head for constructor-patterns.</p>
+      
     </li><li name="provingground.induction.ConstructorPatternMap.RecursiveConstructorPatternMap" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="RecursiveConstructorPatternMap[Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],ArgType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ArgType],HeadConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HeadConstructorType],CT&lt;:provingground.HoTT.FuncLike[ArgType,HeadConstructorType]withprovingground.HoTT.Subs[CT],H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType],InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType],HeadRecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HeadRecDataType],HeadInducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[HeadInducDataType]]extendsConstructorPatternMap[Cod,CT,H,RecDataType,InducDataType]"></a><a id="RecursiveConstructorPatternMap[Cod&lt;:TermwithSubs[Cod],ArgType&lt;:TermwithSubs[ArgType],HeadConstructorType&lt;:TermwithSubs[HeadConstructorType],CT&lt;:FuncLike[ArgType,HeadConstructorType]withSubs[CT],H&lt;:TermwithSubs[H],RecDataType&lt;:TermwithSubs[RecDataType],InducDataType&lt;:TermwithSubs[InducDataType],HeadRecDataType&lt;:TermwithSubs[HeadRecDataType],HeadInducDataType&lt;:TermwithSubs[HeadInducDataType]]:RecursiveConstructorPatternMap[Cod,ArgType,HeadConstructorType,CT,H,RecDataType,InducDataType,HeadRecDataType,HeadInducDataType]"></a>
       <span class="permalink">

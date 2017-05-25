@@ -472,35 +472,34 @@ sealed trait ConstructorShape[S <: HList,
   def symbcons(name: AnySym, tp: Typ[H]) =
     apply(tp).variable(name)
 
-    /**
-    * returns term giving introduction rule given inductive type and name
-    */
-  // def symbCons[
-  //     Cod <: Term with Subs[Cod],
-  //     RecDataType <: Term with Subs[RecDataType],
-  //     InducDataType <: Term with Subs[InducDataType]
-  // ](name: AnySym, tp: Typ[H])(
-  //     implicit mp: ConstructorPatternMapper[S,
-  //                                           Cod,
-  //                                           ConstructorType,
-  //                                           H,
-  //                                           RecDataType,
-  //                                           InducDataType]) =
-  //   mp.mapper(this).symbcons(name, tp)
 
   def subs(x: Term, y: Term): ConstructorShape[S, H, ConstructorType]
 
   import ConstructorShape._
 
+  /**
+   * returns shape `that -> this' where `that` is of the form `W`, `A -> W` etc;
+   * invoking this is an error if we `that` is independent of `W`
+   */
   def -->:[F <: Term with Subs[F]](that: IterFuncShape[H, F]) =
     FuncConsShape(that, this)
 
+    /**
+     * returns shape `that -> this' where `that` must be the shape for inductive type `W`
+     */
   def -->:(that: IdShape.type) = {
     FuncConsShape(IdIterShape[H], this)
   }
 
+
+  /**
+   * returns shape `tail ->: this` where tail must be independent of the inductive type `W` being defined.
+   */
   def ->:[T <: Term with Subs[T]](tail: Typ[T]) = CnstFuncConsShape(tail, this)
 
+  /**
+   * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
+   */
   def ~>:[T <: Term with Subs[T]](tailVar: T) = {
     val fibre = (t: T) => this.subs(tailVar, t)
 

@@ -161,8 +161,12 @@
       
     </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMap$.html" title=""></a>
-                        <a class="trait" href="ConstructorPatternMap.html" title="A composite pattern for inductive types."></a>
-                        <a href="ConstructorPatternMap.html" title="A composite pattern for inductive types.">
+                        <a class="trait" href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule."></a>
+                        <a href="ConstructorPatternMap.html" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
@@ -197,8 +201,12 @@
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorShape$.html" title=""></a>
-                        <a class="trait" href="ConstructorShape.html" title=""></a>
-                        <a href="ConstructorShape.html" title="">
+                        <a class="trait" href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types."></a>
+                        <a href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.">
                           ConstructorShape
                         </a>
                       </li><li class="current-entities indented2">
@@ -526,17 +534,20 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="A composite pattern for inductive types." href="ConstructorPatternMap.html">
+        <a title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule." href="ConstructorPatternMap.html">
               <span class="name">ConstructorPatternMap</span>
             </a><span class="tparams">[<span name="Cod">Cod &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>]</span>, <span name="ConstructorType">ConstructorType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span>]</span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>]</span>, <span name="RecDataType">RecDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.RecDataType">RecDataType</span>]</span>, <span name="InducDataType">InducDataType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.InducDataType">InducDataType</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
-      <p class="shortcomment cmt">A composite pattern for inductive types.</p><div class="fullcomment"><div class="comment cmt"><p>A composite pattern for inductive types.
-Typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
-May have Pi-types instead of function types
-Assumed to have fixed type for codomain  X.
-</p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>scala type of objects in codomain for recursion and induction functions.
-The type of the codomain is needed as there are inner types for data for recursion and induction functions.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>scala type of a constructor corresponding to this pattern.</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>scala type of the terms of the inductive type.</p></dd></dl></div>
+      <p class="shortcomment cmt">Introduction rule as in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> with the <i>scala</i> type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.</p><div class="fullcomment"><div class="comment cmt"><p>Introduction rule as in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> with the <i>scala</i> type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.
+</p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>the scala type of the codomain.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>the scala type of the introduction rule</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>the scala type of terms of an inductive type that can have this constructor.</p></dd><dt class="tparam">RecDataType</dt><dd class="cmt"><p>type of data for recursive definitions for the case corresponding to this introduction rule.</p></dd><dt class="tparam">InducDataType</dt><dd class="cmt"><p>type of data for inductive definitions for  the case corresponding to this introduction rule.
+this is used indirectly through <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a></p></dd></dl></div>
     </li><li name="provingground.induction.ConstructorPatternMapper" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ConstructorPatternMapper[Shape&lt;:shapeless.HList,Cod&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Cod],ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType],H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],RecDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecDataType],InducDataType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducDataType]]extendsAnyRef"></a><a id="ConstructorPatternMapper[Shape&lt;:HList,Cod&lt;:TermwithSubs[Cod],ConstructorType&lt;:TermwithSubs[ConstructorType],H&lt;:TermwithSubs[H],RecDataType&lt;:TermwithSubs[RecDataType],InducDataType&lt;:TermwithSubs[InducDataType]]:ConstructorPatternMapper[Shape,Cod,ConstructorType,H,RecDataType,InducDataType]"></a>
       <span class="permalink">
@@ -627,7 +638,7 @@ The type of the codomain is needed as there are inner types for data for recursi
       </span>
       
       
-    </li><li name="provingground.induction.ConstructorShape" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.induction.ConstructorShape" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ConstructorShape[S&lt;:shapeless.HList,H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType]]extendsAnyRef"></a><a id="ConstructorShape[S&lt;:HList,H&lt;:TermwithSubs[H],ConstructorType&lt;:TermwithSubs[ConstructorType]]:ConstructorShape[S,H,ConstructorType]"></a>
       <span class="permalink">
       <a href="../../provingground/induction/index.html#ConstructorShape[S&lt;:shapeless.HList,H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType]]extendsAnyRef" title="Permalink">
@@ -639,12 +650,19 @@ The type of the codomain is needed as there are inner types for data for recursi
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="ConstructorShape.html">
+        <a title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types." href="ConstructorShape.html">
               <span class="name">ConstructorShape</span>
             </a><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.H">H</span>]</span>, <span name="ConstructorType">ConstructorType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorShape.ConstructorType">ConstructorType</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.</p><div class="fullcomment"><div class="comment cmt"><p>The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.</p><p>Usually constructed using the DSL in <a href="TLImplicits$.html" class="extype" name="provingground.induction.TLImplicits">TLImplicits</a>
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>formal type to capture information at type level</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>scala type of the terms of the inductive type.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>scala type of a constructor (introduction rule) corresponding to this pattern.</p></dd></dl></div>
     </li><li name="provingground.induction.ConstructorTL" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ConstructorTL[S&lt;:shapeless.HList,H&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[H],ConstructorType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[ConstructorType]]extendsProductwithSerializable"></a><a id="ConstructorTL[S&lt;:HList,H&lt;:TermwithSubs[H],ConstructorType&lt;:TermwithSubs[ConstructorType]]:ConstructorTL[S,H,ConstructorType]"></a>
       <span class="permalink">

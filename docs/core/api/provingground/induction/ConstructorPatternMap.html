@@ -127,8 +127,12 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorPatternMap$.html" title=""></a>
-                        <a class="trait" href="" title="A composite pattern for inductive types."></a>
-                        <a href="" title="A composite pattern for inductive types.">
+                        <a class="trait" href="" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule."></a>
+                        <a href="" title="Introduction rule as in ConstructorShape with the scala type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.">
                           ConstructorPatternMap
                         </a>
                       </li><li class="current-entities indented2">
@@ -163,8 +167,12 @@
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ConstructorShape$.html" title=""></a>
-                        <a class="trait" href="ConstructorShape.html" title=""></a>
-                        <a href="ConstructorShape.html" title="">
+                        <a class="trait" href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types."></a>
+                        <a href="ConstructorShape.html" title="The introduction rule for an inductive type, as a function of the type;
+typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
+May have Pi-types instead of function types.">
                           ConstructorShape
                         </a>
                       </li><li class="current-entities indented2">
@@ -365,12 +373,11 @@
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A composite pattern for inductive types.
-Typically (A -&gt; B -&gt; W)-&gt; C -&gt; W -&gt; (D -&gt; W) -&gt; W as a function of W
-May have Pi-types instead of function types
-Assumed to have fixed type for codomain  X.
-</p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>scala type of objects in codomain for recursion and induction functions.
-The type of the codomain is needed as there are inner types for data for recursion and induction functions.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>scala type of a constructor corresponding to this pattern.</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>scala type of the terms of the inductive type.</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.InducDataType">InducDataType</span>]</dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Introduction rule as in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> with the <i>scala</i> type of the codomain specified;
+hence the scala type of the recurion and induction types are determined, as are the definitions of these
+functions for the case matching the introduction rule.
+</p></div><dl class="paramcmts block"><dt class="tparam">Cod</dt><dd class="cmt"><p>the scala type of the codomain.</p></dd><dt class="tparam">ConstructorType</dt><dd class="cmt"><p>the scala type of the introduction rule</p></dd><dt class="tparam">H</dt><dd class="cmt"><p>the scala type of terms of an inductive type that can have this constructor.</p></dd><dt class="tparam">RecDataType</dt><dd class="cmt"><p>type of data for recursive definitions for the case corresponding to this introduction rule.</p></dd><dt class="tparam">InducDataType</dt><dd class="cmt"><p>type of data for inductive definitions for  the case corresponding to this introduction rule.
+this is used indirectly through <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a></p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.Cod">Cod</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.RecDataType">RecDataType</span>, <span class="extype" name="provingground.induction.ConstructorPatternMap.InducDataType">InducDataType</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -444,23 +451,7 @@ The type of the codomain is needed as there are inner types for data for recursi
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.induction.ConstructorPatternMap#apply" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="apply(tp:provingground.HoTT.Typ[H]):provingground.HoTT.Typ[ConstructorType]"></a><a id="apply(Typ[H]):Typ[ConstructorType]"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ConstructorPatternMap.html#apply(tp:provingground.HoTT.Typ[H]):provingground.HoTT.Typ[ConstructorType]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>]</span>)</span><span class="result">: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">returns HoTT type corresponding to the pattern given the (inductive) type W (to be the head).</p>
-    </li><li name="provingground.induction.ConstructorPatternMap#inducDataTyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.induction.ConstructorPatternMap#inducDataTyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="inducDataTyp(w:provingground.HoTT.Typ[H],xs:provingground.HoTT.Func[H,provingground.HoTT.Typ[Cod]])(cons:ConstructorType):provingground.HoTT.Typ[InducDataType]"></a><a id="inducDataTyp(Typ[H],Func[H,Typ[Cod]])(ConstructorType):Typ[InducDataType]"></a>
       <span class="permalink">
       <a href="../../provingground/induction/ConstructorPatternMap.html#inducDataTyp(w:provingground.HoTT.Typ[H],xs:provingground.HoTT.Func[H,provingground.HoTT.Typ[Cod]])(cons:ConstructorType):provingground.HoTT.Typ[InducDataType]" title="Permalink">
@@ -492,7 +483,8 @@ The type of the codomain is needed as there are inner types for data for recursi
       </span>
       
       <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
-optionally returns simplification (if the term matches).</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined inductively, to be used recursively in definition.</p></dd></dl></div>
+optionally returns simplification (if the term matches).
+</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined inductively, to be used recursively in definition.</p></dd></dl></div>
     </li><li name="provingground.induction.ConstructorPatternMap#recDataTyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="recDataTyp(w:provingground.HoTT.Typ[H],x:provingground.HoTT.Typ[Cod]):provingground.HoTT.Typ[RecDataType]"></a><a id="recDataTyp(Typ[H],Typ[Cod]):Typ[RecDataType]"></a>
       <span class="permalink">
@@ -525,7 +517,8 @@ optionally returns simplification (if the term matches).</p></div><dl class="par
       </span>
       
       <p class="shortcomment cmt">given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.</p><div class="fullcomment"><div class="comment cmt"><p>given a term, matches to see if this is the image of a given (quasi)-constructor, with <code>this</code> constructor pattern.
-optionally returns simplification (if the term matches), determined by the recursion data.</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined recursively, to be used recursively in definition.</p></dd></dl></div>
+optionally returns simplification (if the term matches), determined by the recursion data.
+</p></div><dl class="paramcmts block"><dt class="param">cons</dt><dd class="cmt"><p>constructor, actually quasi-constructor, with which to match.</p></dd><dt class="param">data</dt><dd class="cmt"><p>definition data for the image of the constructor.</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function being defined recursively, to be used recursively in definition.</p></dd></dl></div>
     </li><li name="provingground.induction.ConstructorPatternMap#subs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ConstructorPatternMap[Cod,ConstructorType,H,RecDataType,InducDataType]"></a><a id="subs(Term,Term):ConstructorPatternMap[Cod,ConstructorType,H,RecDataType,InducDataType]"></a>
       <span class="permalink">
@@ -946,22 +939,6 @@ optionally returns simplification (if the term matches), determined by the recur
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.induction.ConstructorPatternMap#symbcons" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):ConstructorType"></a><a id="symbcons(AnySym,Typ[H]):ConstructorType"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ConstructorPatternMap.html#symbcons(name:provingground.HoTT.AnySym,tp:provingground.HoTT.Typ[H]):ConstructorType" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">symbcons</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorPatternMap.H">H</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.induction.ConstructorPatternMap.ConstructorType">ConstructorType</span></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
