@@ -2,7 +2,7 @@ package provingground.induction
 
 import provingground._, HoTT._
 
-import IterFuncPatternMap._
+// import IterFuncPatternMap._
 
 // import IndexedIterFuncPatternMap._
 
@@ -43,8 +43,8 @@ abstract class IndexedConstructorPatternMap[
     */
   def apply(tp: Fb): Typ[ConstructorType]
 
-  def symbcons(name: AnySym, tp: Fb): ConstructorType =
-    apply(tp).symbObj(name)
+  // def symbcons(name: AnySym, tp: Fb): ConstructorType =
+  //   apply(tp).symbObj(name)
 
   /**
     * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
@@ -495,6 +495,14 @@ abstract class IndexedConstructorShape[S <: HList,
                                        Index <: HList: Subst] {
   val family: TypFamilyPtn[H, Fb, Index]
 
+  /**
+    * returns HoTT type corresponding to the pattern given the (inductive) type family W (to be the head).
+    */
+  def apply(tp: Fb): Typ[ConstructorType]
+
+  def symbcons(name: AnySym, tp: Fb): ConstructorType =
+    apply(tp).symbObj(name)
+
   def subs(x: Term,
            y: Term): IndexedConstructorShape[S, H, Fb, ConstructorType, Index]
 
@@ -525,11 +533,11 @@ abstract class IndexedConstructorShape[S <: HList,
       implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT]) =
     mapper(fmlyMapper).mapper(fmlyMapper)(this)
 
-  def symbcons(name: AnySym, tp: Fb) = {
-    implicit val mpr = family.mapper[Term]
-    val mp           = mapped
-    mp.symbcons(name, tp)
-  }
+  // def symbcons(name: AnySym, tp: Fb) = {
+  //   implicit val mpr = family.mapper[Term]
+  //   val mp           = mapped
+  //   mp.symbcons(name, tp)
+  // }
 
   import IndexedConstructorShape._
 
@@ -578,6 +586,8 @@ object IndexedConstructorShape {
       family: TypFamilyPtn[H, F, Index],
       index: Index)
       extends IndexedConstructorShape[HNil, H, F, H, Index] {
+    def apply(W: F) = family.typ(W, index)
+
     def subs(x: Term, y: Term) =
       IndexedIdShape(family.subs(x, y), index.subst(x, y))
 
@@ -621,6 +631,9 @@ object IndexedConstructorShape {
                                       F,
                                       Func[FI, HC],
                                       Index] {
+
+    def apply(W: F) =
+      tail(family.typ(W, ind)) ->: head(W)
 
     val family = head.family
 
@@ -668,6 +681,9 @@ object IndexedConstructorShape {
         Fb,
         Func[F, HC],
         Index] {
+
+    def apply(W: Fb) =
+      tail(W) ->: head(W)
 
     val family = head.family
 
@@ -717,6 +733,9 @@ object IndexedConstructorShape {
                                       Func[T, HC],
                                       Index] {
 
+    def apply(W: F) =
+          tail ->: head(W)
+
     val family = head.family
 
     def mapper[C <: Term with Subs[C],
@@ -762,6 +781,11 @@ object IndexedConstructorShape {
         F,
         FuncLike[T, HC],
         Index] {
+    def apply(W: F) = {
+      val a = tail.Var
+      piDefn(a)(headfibre(a)(W))
+    }
+
 
     val family = headfibre(tail.Var).family
 

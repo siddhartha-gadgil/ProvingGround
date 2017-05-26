@@ -6,8 +6,15 @@ import HList._
 
 import provingground._, HoTT._
 
+/**
+ * recursively defined function, to be built by mixing in cases,
+ * defaults to a formal application by itself
+ */
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends RecFunc[H, C] { self =>
+  /**
+   * the optional recursive definition if a case is matched
+   */
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
 
   def act(arg: H) = {
@@ -31,6 +38,9 @@ object RecursiveDefinition {
     case term => term
   }
 
+  /**
+   * empty [[RecursiveDefinition]], always a formal application
+   */
   case class Empty[H <: Term with Subs[H], C <: Term with Subs[C]](
       dom: Typ[H],
       codom: Typ[C]
@@ -51,6 +61,9 @@ object RecursiveDefinition {
     def rebuilt = this
   }
 
+  /**
+   * an additional case for a [[RecursiveDefinition]], depending on definition data `data`
+   */
   case class DataCons[H <: Term with Subs[H],
                       C <: Term with Subs[C],
                       D <: Term with Subs[D]](
@@ -85,6 +98,9 @@ object RecursiveDefinition {
 
 import Subst.SubstOp
 
+/**
+ * indexed version of [[RecursiveDefinitio]]
+ */
 abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],

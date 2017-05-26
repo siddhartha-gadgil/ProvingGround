@@ -6,8 +6,11 @@ import provingground._, HoTT._
 
 import shapeless._
 
+/**
+ * implicits for constructing inductive types
+ */
 object TLImplicits {
-  import IterFuncPatternMap._
+  import IterFuncShape._
 
   import ConstructorShape._
 
@@ -32,7 +35,7 @@ object TLImplicits {
         head: ConstructorTL[S, H, ConstructorType]) = head |: seq
   }
 
-  import IterFuncPatternMap._
+
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
 

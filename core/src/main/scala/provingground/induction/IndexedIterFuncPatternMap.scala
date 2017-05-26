@@ -307,6 +307,12 @@ abstract class IndexedIterFuncShape[H <: Term with Subs[H],
                                     F <: Term with Subs[F],
                                     Fb <: Term with Subs[Fb],
                                     Index <: HList: Subst] {
+  /**
+    * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
+    *  this is used mainly for constructor patterns, with the W being fixed.
+    */
+  def apply(W: Fb): Typ[F]
+
   def subs(x: Term, y: Term): IndexedIterFuncShape[H, F, Fb, Index]
 
   val family: TypFamilyPtn[H, Fb, Index]
@@ -338,6 +344,8 @@ object IndexedIterFuncShape {
       family: TypFamilyPtn[H, Fb, Index],
       index: Index
   ) extends IndexedIterFuncShape[H, H, Fb, Index] {
+    def apply(W: Fb) = family.typ(W, index)
+
     def subs(x: Term, y: Term) =
       IdIterShape(family.subs(x, y), index.subst(x, y))
 
@@ -375,6 +383,8 @@ object IndexedIterFuncShape {
       head: Typ[TT],
       tail: IndexedIterFuncShape[H, TF, Fb, Index])
       extends IndexedIterFuncShape[H, Func[TT, TF], Fb, Index] {
+    def apply(W: Fb) = head ->: tail(W)
+
     val family = tail.family
 
     def subs(x: Term, y: Term) = FuncShape(head.subs(x, y), tail.subs(x, y))
@@ -405,6 +415,11 @@ object IndexedIterFuncShape {
       tailfibre: TT => IndexedIterFuncShape[H, TF, Fb, Index])(
       implicit subst: Subst[Index])
       extends IndexedIterFuncShape[H, FuncLike[TT, TF], Fb, Index] {
+    def apply(W: Fb) = {
+      val x = head.Var
+      x ~>: tailfibre(x)(W)
+    }
+
     val family = tailfibre(head.Var).family
 
     def subs(x: Term, y: Term) =

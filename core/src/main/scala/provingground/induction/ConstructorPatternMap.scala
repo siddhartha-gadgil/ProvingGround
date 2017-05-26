@@ -8,7 +8,8 @@ import provingground._, HoTT._
 
 //import IterFuncPattern.{IterFuncPtn => IterFuncPtn, _}
 
-import IterFuncPatternMap._
+import IterFuncPtnMap._
+import IterFuncShape._
 
 import shapeless._
 

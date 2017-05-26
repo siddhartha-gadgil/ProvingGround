@@ -4,10 +4,11 @@ import provingground._, HoTT._
 import shapeless.HList
 
 /**
-* Inductive type definition ``shape`` as in [[ConstructorSeqDom]] together with the scala type of a codomain;
+* Inductive type definition as in [[ConstructorSeqTL]] together with the scala type of a codomain;
 * this determines the scala type of `rec_W,X` and `induc_W, Xs` functions.
-* Recursive and inductive definitions, given codomain, are essentially abstract methods, but the real work is done 
-* for each introduction rule in `ConstructorPatternMap` and combining in `RecursiveDefinition` and `InductiveDefintion` 
+* methods return recursive and inductive definitions for a  given codomain; these  are lambda forms of definitions made
+* for each introduction rule in [[ConstructorPatternMap]] and combined for different introduction rules
+*  in [[RecursiveDefinition]] and [[InductiveDefinition]]
 *
 * @tparam C scala type of terms in the codomain for defining recursive/inductive function
 * @tparam H scala type of terms in the inductive type with this shape.
@@ -21,23 +22,42 @@ trait ConstructorSeqMap[C <: Term with Subs[C],
                         InducType <: Term with Subs[InducType],
                         Intros <: HList] {
 
+  /**
+   * recursive definition function `rec_W, X` in raw form
+   */
   def recDefn(X: Typ[C]): RecursiveDefinition[H, C]
 
+  /**
+   * the inductive type being defined
+   */
   val W: Typ[H]
 
-  // type RecType <: Term with Subs[RecType]
-
+  /**
+   * converts a recursive definition built by [[RecursiveDefinition]] to a lambda
+   */
   def recDataLambda(X: Typ[C]): Func[H, C] => RecType
 
+  /**
+   * the recursion function `rec_W,X`
+   */
   def rec(X: Typ[C]): RecType =
     recDataLambda(X: Typ[C])(recDefn(X: Typ[C]))
 
+
+    /**
+     * inductive definition function `ind_W, X` in raw form
+     */
   def inducDefn(fibre: Func[H, Typ[C]]): InductiveDefinition[H, C]
 
-  // type InducType <: Term with Subs[InducType]
 
+  /**
+   * converts an inductive definition built by [[InductiveDefinition]] to a lambda
+   */
   def inducDataLambda(fibre: Func[H, Typ[C]]): FuncLike[H, C] => InducType
 
+  /**
+   * inductive definition function `ind_W, Xs`
+   */
   def induc(fibre: Func[H, Typ[C]]) =
     inducDataLambda(fibre)(inducDefn(fibre))
 }
@@ -45,37 +65,46 @@ trait ConstructorSeqMap[C <: Term with Subs[C],
 object ConstructorSeqMap {
   import shapeless._
 
+  /**
+   * [[ConstructorSeqMap]] for an empty sequence of introduction rules
+   */
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C], HNil] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
-    // type RecType = Func[H, C]
 
     def recDataLambda(X: Typ[C]) = (f) => f
 
     def inducDefn(fibre: Func[H, Typ[C]]) =
       InductiveDefinition.Empty(fibre)
 
-    // type InducType = FuncLike[H, C]
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
 
-    val intros = List()
   }
 
   /**
-  * formal symbol for ???
+  * formal symbol for definition data for a recursion function
   */
-  case class RecSym[C <: Term with Subs[C]](cons: C) extends AnySym {
-    def subs(x: Term, y: Term) = RecSym(cons.replace(x, y))
+  case class RecDataSym[C <: Term with Subs[C]](cons: C) extends AnySym {
+    def subs(x: Term, y: Term) = RecDataSym(cons.replace(x, y))
   }
 
-  case class InducSym[C <: Term with Subs[C]](cons: C) extends AnySym {
-    def subs(x: Term, y: Term) = InducSym(cons.replace(x, y))
+/**
+ * formal symbol for definition data for an induction symbol
+ */
+  case class InducDataSym[C <: Term with Subs[C]](cons: C) extends AnySym {
+    def subs(x: Term, y: Term) = InducDataSym(cons.replace(x, y))
   }
 
-  
 
+  /**
+   * prepending an introduction rule to [[ConstructorSeqMap]]
+   *
+   * @param cons the introduction rule
+   * @param pattern the mapped version of the introduction rule for the given codomain
+   * @param tail the tail [[ConstructorSeqMap]]
+   */
   case class Cons[C <: Term with Subs[C],
                   H <: Term with Subs[H],
                   Cod <: Term with Subs[Cod],
@@ -96,22 +125,20 @@ object ConstructorSeqMap {
     val W = tail.W
 
     def data(X: Typ[Cod]): RD =
-      pattern.recDataTyp(W, X).symbObj(RecSym(cons))
+      pattern.recDataTyp(W, X).symbObj(RecDataSym(cons))
 
     val defn = (d: RD) => (f: Func[H, Cod]) => pattern.recDefCase(cons, d, f)
 
     def recDefn(X: Typ[Cod]) =
       RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
 
-    // type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
     def recDataLambda(X: Typ[Cod]) =
       f => lmbda(data(X))(tail.recDataLambda(X)(f))
 
-    // type InducType = Func[cons.pattern.InducDataType, tail.InducType]
 
     def inducData(fibre: Func[H, Typ[Cod]]) =
-      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducSym(cons))
+      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons))
 
     val inducDefn = (d: ID) =>
       (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)
@@ -128,12 +155,18 @@ object ConstructorSeqMap {
 
 import scala.language.existentials
 
+/**
+ * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]
+ */
 trait ConstructorSeqMapper[SS <: HList,
                            C <: Term with Subs[C],
                            H <: Term with Subs[H],
                            RecType <: Term with Subs[RecType],
                            InducType <: Term with Subs[InducType],
                            Intros <: HList] {
+     /**
+    * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]
+    */
   def mapped(seqdom: ConstructorSeqDom[SS, H, Intros])(
       W: Typ[H]): ConstructorSeqMap[C, H, RecType, InducType, Intros]
 }
@@ -194,12 +227,12 @@ object ConstructorSeqMapper {
 * the ``shape`` of the definition of an inductive type; when a type is specified we get an object of type
 * [[ConstructorSeqTL]], which is the full definition
 *
-* 
+*
 * @tparam SS ``shape sequence`` - a formal type for lifting information about introduction rules to type level.
 * @tparam H the scala type of terms in an inductive type of this shape
-* @tparam Intros the scala type of the introduction rules 
+* @tparam Intros the scala type of the introduction rules
 *
-* 
+*
 */
 trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
   /**
@@ -224,7 +257,7 @@ trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
     mapped[C](W).induc(Xs)
 
   /**
-  * returns introduction rules, given an inductive type. 
+  * returns introduction rules, given an inductive type.
   */
   def intros(typ: Typ[H]): Intros
 
@@ -303,7 +336,7 @@ case class IndTyp[SS <: HList, Intros <: HList](
 * @param typ the inductive type being defined.
 * @tparam SS ``shape sequence`` - a formal type for lifting information about introduction rules to type level.
 * @tparam H the scala type of terms in the inductive type `typ`
-* @tparam Intros the scala type of the introduction rules 
+* @tparam Intros the scala type of the introduction rules
 *
 * We can define functions recursively using the [[rec]] method and inductively using the [[induc]] method.
 */
@@ -350,7 +383,7 @@ case class ConstructorSeqTL[SS <: HList,
   def inducE[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
     seqDom.induc(typ, Xs)
 
-  
+
   /**
   * returns the term `ind_W, X` for inductively defining function to the type family `Xs` on W
   * from the inductive type `W = typ`;

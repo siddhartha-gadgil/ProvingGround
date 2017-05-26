@@ -82,49 +82,49 @@ object IndexedConstructorSeqMap {
     val intros = HNil
   }
 
-  import ConstructorSeqMap.{RecSym, InducSym}
+  import ConstructorSeqMap.{RecDataSym, InducDataSym}
 
-  object Cons {
-    def sym[C <: Term with Subs[C],
-            H <: Term with Subs[H],
-            Cod <: Term with Subs[Cod],
-            RD <: Term with Subs[RD],
-            ID <: Term with Subs[ID],
-            TR <: Term with Subs[TR],
-            TI <: Term with Subs[TI],
-            TIntros <: HList,
-            F <: Term with Subs[F],
-            Index <: HList: Subst,
-            IF <: Term with Subs[IF],
-            IDF <: Term with Subs[IDF],
-            IDFT <: Term with Subs[IDFT]](
-        name: AnySym,
-        pattern: IndexedConstructorPatternMap[Cod,
-                                              C,
-                                              H,
-                                              RD,
-                                              ID,
-                                              F,
-                                              Index,
-                                              IF,
-                                              IDF,
-                                              IDFT],
-        tail: IndexedConstructorSeqMap[Cod,
-                                       H,
-                                       TR,
-                                       TI,
-                                       TIntros,
-                                       F,
-                                       Index,
-                                       IF,
-                                       IDF,
-                                       IDFT]
-    ) = {
-      val W    = tail.W
-      val cons = pattern.symbcons(name, W)
-      Cons(cons, pattern, tail)
-    }
-  }
+  // object Cons {
+  //   def sym[C <: Term with Subs[C],
+  //           H <: Term with Subs[H],
+  //           Cod <: Term with Subs[Cod],
+  //           RD <: Term with Subs[RD],
+  //           ID <: Term with Subs[ID],
+  //           TR <: Term with Subs[TR],
+  //           TI <: Term with Subs[TI],
+  //           TIntros <: HList,
+  //           F <: Term with Subs[F],
+  //           Index <: HList: Subst,
+  //           IF <: Term with Subs[IF],
+  //           IDF <: Term with Subs[IDF],
+  //           IDFT <: Term with Subs[IDFT]](
+  //       name: AnySym,
+  //       pattern: IndexedConstructorPatternMap[Cod,
+  //                                             C,
+  //                                             H,
+  //                                             RD,
+  //                                             ID,
+  //                                             F,
+  //                                             Index,
+  //                                             IF,
+  //                                             IDF,
+  //                                             IDFT],
+  //       tail: IndexedConstructorSeqMap[Cod,
+  //                                      H,
+  //                                      TR,
+  //                                      TI,
+  //                                      TIntros,
+  //                                      F,
+  //                                      Index,
+  //                                      IF,
+  //                                      IDF,
+  //                                      IDFT]
+  //   ) = {
+  //     val W    = tail.W
+  //     val cons = pattern.symbcons(name, W)
+  //     Cons(cons, pattern, tail)
+  //   }
+  // }
 
   case class Cons[C <: Term with Subs[C],
                   H <: Term with Subs[H],
@@ -176,7 +176,7 @@ object IndexedConstructorSeqMap {
     val family = tail.family
 
     def data(X: Typ[Cod]): RD =
-      pattern.recDataTyp(W, X).symbObj(RecSym(cons))
+      pattern.recDataTyp(W, X).symbObj(RecDataSym(cons))
 
     val defn = (d: RD) => (f: IF) => pattern.recDefCase(cons, d, f)
 
@@ -191,7 +191,7 @@ object IndexedConstructorSeqMap {
     // type InducType = Func[cons.pattern.InducDataType, tail.InducType]
 
     def inducData(fibre: IDFT) =
-      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducSym(cons))
+      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons))
 
     val inducDefn = (d: ID) => (f: IDF) => pattern.inducDefCase(cons, d, f)
 
@@ -332,7 +332,7 @@ object IndexedConstructorSeqMapper {
           case IndexedConstructorSeqDom.Cons(name, pattern, tail) =>
             val patternMap = patternMapper.mapper(fmlyMapper)(pattern)
             val tailMap    = tailMapper.mapped(tail)(W, family)
-            IndexedConstructorSeqMap.Cons.sym(name, patternMap, tailMap)
+            IndexedConstructorSeqMap.Cons(pattern.symbcons(name, W), patternMap, tailMap)
         }
     }
 }
@@ -541,7 +541,7 @@ object IndexedConstructorSeqDom {
       type RecType <: Term with Subs[RecType];
       type InducType <: Term with Subs[InducType];
     } =
-      IndexedConstructorSeqMap.Cons.sym(name,
+      IndexedConstructorSeqMap.Cons(pattern.symbcons(name, W),
                                         pattern.mapped(fmlyMapper),
                                         tail.mapped(fmlyMapper))
 

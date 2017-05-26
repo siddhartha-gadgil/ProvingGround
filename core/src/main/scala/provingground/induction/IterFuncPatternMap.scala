@@ -8,7 +8,16 @@ import math._
 
 // trait HeadTerm extends Term with Subs[HeadTerm]
 
-object IterFuncPatternMap {
+  /**
+   * a family of the form `P: A -> B -> W` etc, or dependent versions of this as a function of W,
+   * together with the scala type of a codomain; has methods for defining induced functions and dependent functions.
+   *
+   * @tparam O scala type of terms of the type `W`
+   * @tparam C scala type of codomain
+   * @tparam F scala type of the family eg `P: A -> W`
+   * @tparam TT scala type of family type eg `A -> B -> X`, ie, codomain of induced function
+   * @tparam DT scala type of family type eg `A -> B -> X`, ie, codomain of induced function
+   */
   sealed trait IterFuncPtnMap[O <: Term with Subs[O],
                               C <: Term with Subs[C],
                               F <: Term with Subs[F],
@@ -79,6 +88,7 @@ object IterFuncPatternMap {
     def inducedDep(f: FuncLike[O, Cod]): Family => DT
   }
 
+object IterFuncPtnMap{
   /**
     * The identity family
     */
@@ -268,7 +278,7 @@ object IterFuncPatternMap {
 
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
-
+}
   import scala.language.existentials
 
   // sealed trait IterFuncMapper[
@@ -278,14 +288,22 @@ object IterFuncPatternMap {
   //         def mapper(shape: IterFuncShape[S]) : IterFuncPtnMap[S, O, C, F,TT, DT]
   //       }
 
+  /**
+   * Given the scala type of the codomain, lifts [[IterFuncShape]] to [[IterFuncMapper]]
+   */
   sealed trait IterFuncMapper[O <: Term with Subs[O],
                               C <: Term with Subs[C],
                               F <: Term with Subs[F],
                               TT <: Term with Subs[TT],
                               DT <: Term with Subs[DT]] {
-    // need types to be  typelevel for the dependent case, so we pick a mapper and use it for all fibres.
+    /**
+   * Given the scala type of the codomain, lifts [[IterFuncShape]] to [[IterFuncMapper]]
+   */
     def mapper: IterFuncShape[O, F] => IterFuncPtnMap[O, C, F, TT, DT]
   }
+
+import IterFuncPtnMap._
+import IterFuncShape._
 
   object IterFuncMapper {
     implicit def idIterMapper[O <: Term with Subs[O], C <: Term with Subs[C]] =
@@ -330,15 +348,13 @@ object IterFuncPatternMap {
       }
   }
 
+  /**
+   * a family of the form `P: A -> B -> W` etc, or dependent versions of this as a function of W.
+   *
+   * @tparam O scala type of terms of the type `W`
+   * @tparam F scala type of the family eg `P: A -> W`
+   */
   sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {
-    // need types to be  typelevel for the dependent case, so we pick a mapper and use it for all fibres.
-    // def mapper[
-    //   O <: Term with Subs[O],
-    //   C <: Term with Subs[C]]: IterFuncShape[S] => IterFuncPtnMap[S, O, C, F,TT, DT] forSome {
-    //                             type F <: Term with Subs[F];
-    //                             type TT <: Term with Subs[TT];
-    //                             type DT <: Term with Subs[DT]
-    //                           }
 
     /**
       * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
@@ -357,6 +373,8 @@ object IterFuncPatternMap {
     // def mapped[C <: Term with Subs[C]] =
     //   mapper[O].mapper(this)
   }
+
+object IterFuncShape{
 
   case class IdIterShape[O <: Term with Subs[O]]()
       extends IterFuncShape[O, O] {
@@ -404,7 +422,7 @@ object IterFuncPatternMap {
       IterFuncMapper.depFuncIterMapper(headfibre(tail.Var).mapper)
     }
   }
-  object IterFuncShape {
+
     trait Exst {
       // type O <: Term with Subs[O]
 
@@ -451,4 +469,3 @@ object IterFuncPatternMap {
         case `w` => IdIterShape[Term].asInstanceOf[IterFuncShape[Term, F]]
       }
   }
-}
