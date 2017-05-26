@@ -3,6 +3,18 @@ package provingground.induction
 import provingground._, HoTT._
 import shapeless.HList
 
+/**
+* Inductive type definition ``shape`` as in [[ConstructorSeqDom]] together with the scala type of a codomain;
+* this determines the scala type of `rec_W,X` and `induc_W, Xs` functions.
+* Recursive and inductive definitions, given codomain, are essentially abstract methods, but the real work is done 
+* for each introduction rule in `ConstructorPatternMap` and combining in `RecursiveDefinition` and `InductiveDefintion` 
+*
+* @tparam C scala type of terms in the codomain for defining recursive/inductive function
+* @tparam H scala type of terms in the inductive type with this shape.
+* @tparam Intros introduction rules for inductive type of this shape
+* @tparam RecType scala type of a function `rec_W, X`
+* @tparam InducType scala type of a function `ind_W, X`
+*/
 trait ConstructorSeqMap[C <: Term with Subs[C],
                         H <: Term with Subs[H],
                         RecType <: Term with Subs[RecType],
@@ -51,6 +63,9 @@ object ConstructorSeqMap {
     val intros = List()
   }
 
+  /**
+  * formal symbol for ???
+  */
   case class RecSym[C <: Term with Subs[C]](cons: C) extends AnySym {
     def subs(x: Term, y: Term) = RecSym(cons.replace(x, y))
   }
@@ -59,24 +74,7 @@ object ConstructorSeqMap {
     def subs(x: Term, y: Term) = InducSym(cons.replace(x, y))
   }
 
-  object Cons {
-    // def sym[C <: Term with Subs[C],
-    //         H <: Term with Subs[H],
-    //         Cod <: Term with Subs[Cod],
-    //         RD <: Term with Subs[RD],
-    //         ID <: Term with Subs[ID],
-    //         TR <: Term with Subs[TR],
-    //         TI <: Term with Subs[TI],
-    //         TIntros <: HList](
-    //     name: AnySym,
-    //     pattern: ConstructorPatternMap[Cod, C, H, RD, ID],
-    //     tail: ConstructorSeqMap[Cod, H, TR, TI, TIntros]
-    // ) = {
-    //   val W    = tail.W
-    //   val cons = pattern.symbcons(name, W)
-    //   Cons(cons, pattern, tail)
-    // }
-  }
+  
 
   case class Cons[C <: Term with Subs[C],
                   H <: Term with Subs[H],
@@ -192,20 +190,42 @@ object ConstructorSeqMapper {
     }
 }
 
+/**
+* the ``shape`` of the definition of an inductive type; when a type is specified we get an object of type
+* [[ConstructorSeqTL]], which is the full definition
+*
+* 
+* @tparam SS ``shape sequence`` - a formal type for lifting information about introduction rules to type level.
+* @tparam H the scala type of terms in an inductive type of this shape
+* @tparam Intros the scala type of the introduction rules 
+*
+* 
+*/
 trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
-
+  /**
+  * given a codomain, returns a `mapped` version, i.e. one with all the types needed for recursion and induction.
+  */
   def mapped[C <: Term with Subs[C]](W: Typ[H])
     : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
       type RecType <: Term with Subs[RecType];
       type InducType <: Term with Subs[InducType]; type TIntros <: HList
     }
 
+  /**
+  * existential typed `rec_W, X`, used by the method `recE` of [[ConstructorSeqTL]]
+  */
   def rec[C <: Term with Subs[C]](W: Typ[H], X: Typ[C]) =
     mapped[C](W).rec(X)
 
+  /**
+  * existential typed `ind_W, X`, used by the method `indE` of [[ConstructorSeqTL]]
+  */
   def induc[C <: Term with Subs[C]](W: Typ[H], Xs: Func[H, Typ[C]]) =
     mapped[C](W).induc(Xs)
 
+  /**
+  * returns introduction rules, given an inductive type. 
+  */
   def intros(typ: Typ[H]): Intros
 
   def subs(x: Term, y: Term): ConstructorSeqDom[SS, H, Intros]
@@ -214,6 +234,9 @@ trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
 object ConstructorSeqDom {
   import shapeless._
 
+  /**
+  * Empty sequence of introduction rules
+  */
   case class Empty[H <: Term with Subs[H]]()
       extends ConstructorSeqDom[HNil, H, HNil] {
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
@@ -224,6 +247,9 @@ object ConstructorSeqDom {
     def subs(x: Term, y: Term) = this
   }
 
+  /**
+  * prepending an introduction rule, given `name` and `shape`.
+  */
   case class Cons[TSS <: HList,
                   HShape <: HList,
                   H <: Term with Subs[H],
@@ -270,18 +296,43 @@ case class IndTyp[SS <: HList, Intros <: HList](
   def variable(name: AnySym) = SymbObj(name, self)
 }
 
+/**
+* Essentially the definition of an inductive type; has all parameters of the definition:
+*
+* @param seqDom the sequence of introduction rules.
+* @param typ the inductive type being defined.
+* @tparam SS ``shape sequence`` - a formal type for lifting information about introduction rules to type level.
+* @tparam H the scala type of terms in the inductive type `typ`
+* @tparam Intros the scala type of the introduction rules 
+*
+* We can define functions recursively using the [[rec]] method and inductively using the [[induc]] method.
+*/
 case class ConstructorSeqTL[SS <: HList,
                             H <: Term with Subs[H],
                             Intros <: HList](
     seqDom: ConstructorSeqDom[SS, H, Intros],
     typ: Typ[H]) {
+  /**
+  * Prepend to the sequence of introduction rules.
+  */
   def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
       head: ConstructorTL[S, H, ConstructorType]) =
     ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom),
                      typ)
 
+  /**
+  * Existential typed version of [[rec]] for use at runtime if neccesary.
+  */
   def recE[C <: Term with Subs[C]](X: Typ[C]) = seqDom.rec(typ, X)
 
+  /**
+  * returns the term `rec_W, X` for recursively defining function to `X` from the inductive type `W = typ`;
+  * an implicit `mapper` is used, which also allows calculation of the type `RecType`.
+  *
+  * @param X the codomain to which we wish to define recursive functions - the only one we need to specify;
+  * @tparam RecType type of the `rec` function returned;
+  * @tparam InducType not used here, but part of the definition of the `mapper`.
+  */
   def rec[C <: Term with Subs[C],
           RecType <: Term with Subs[RecType],
           InducType <: Term with Subs[InducType]](X: Typ[C])(
@@ -293,9 +344,22 @@ case class ConstructorSeqTL[SS <: HList,
                                             Intros]
   ) = mapper.mapped(seqDom)(typ).rec(X)
 
+  /**
+  * Existential typed version of [[induc]] to be used at runtime if necessary.
+  */
   def inducE[C <: Term with Subs[C]](Xs: Func[H, Typ[C]]) =
     seqDom.induc(typ, Xs)
 
+  
+  /**
+  * returns the term `ind_W, X` for inductively defining function to the type family `Xs` on W
+  * from the inductive type `W = typ`;
+  * an implicit `mapper` is used, which also allows calculation of the type `RecType`.
+  *
+  * @param X the codomain to which we wish to define recursive functions - the only one we need to specify;
+  * @tparam RecType not used here, but part of the definition of the `mapper`.
+  * @tparam InducType the type of the `induc` function returned.
+  */
   def induc[C <: Term with Subs[C],
             RecType <: Term with Subs[RecType],
             InducType <: Term with Subs[InducType]](Xs: Func[H, Typ[C]])(
@@ -307,6 +371,9 @@ case class ConstructorSeqTL[SS <: HList,
                                             Intros]
   ) = mapper.mapped(seqDom)(typ).induc(Xs)
 
+  /**
+  * The introduction rules.
+  */
   val intros = seqDom.intros(typ)
 }
 
@@ -314,18 +381,30 @@ object ConstructorSeqTL {
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =
     ConstructorSeqTL(ConstructorSeqDom.Empty[H], W)
 
+  /**
+  * Wrapped existential version of [[ConstructorSeqTL]]
+  */
   trait Exst {
     type SS <: HList
     type Intros <: HList
 
+    /**
+    * the wrapped value
+    */
     val value: ConstructorSeqTL[SS, Term, Intros]
 
+    /**
+    * prepend introduction rule
+    */
     def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
         head: ConstructorTL[S, Term, ConstructorType]) =
       Exst(head |: value)
   }
 
   object Exst {
+    /**
+    * helper for construction
+    */
     def apply[SSS <: HList, IIntros <: HList](
         cs: ConstructorSeqTL[SSS, Term, IIntros]) =
       new Exst {
@@ -336,6 +415,9 @@ object ConstructorSeqTL {
       }
   }
 
+  /**
+  * returns the wrapped existential form of [[ConstructorSeqTL]]
+  */
   def getExst(w: Typ[Term], intros: List[Term]): Exst = intros match {
     case List() => Exst(Empty(w))
     case x :: ys =>
