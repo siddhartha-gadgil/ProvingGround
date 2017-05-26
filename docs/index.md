@@ -23,17 +23,17 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Documentation:
 
-In addition to the documentation on this site, the following is available.
+In addition to the documentation on this site (see, in particular the [ScalaDocs](Scaladocs])), the following is available.
 
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
 
 ## Running
 
-At present the best way to run the code is to load a console, but there is also a crude expermental server, see [Code Scripting](Code-Scripting) to download and run. 
+At present the best way to run the code is to load a console, but there is also a crude expermental server, see [Code Scripting](Code-Scripting) to download and run.
 
 To run from a console, in the home of the project, run
 ```
-sbt mantle/test:console
+sbt mantle/test:run
 ```
 to pop up a nice console (Li Haoyi's ammonite repl), with many imports already in scope.
