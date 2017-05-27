@@ -12,13 +12,13 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-libraryDependencies += "com.lihaoyi" % "ammonite" % "0.9.0" % "test" cross CrossVersion.full
-
-sourceGenerators in Test += Def.task {
-  val file = (sourceManaged in Test).value / "amm.scala"
-  IO.write(file, """object amm extends App { ammonite.Main("$initCommands").run() }""")
-  Seq(file)
-}.taskValue
+// libraryDependencies += "com.lihaoyi" % "ammonite" % "0.9.0" % "test" cross CrossVersion.full
+//
+// sourceGenerators in Test += Def.task {
+//   val file = (sourceManaged in Test).value / "amm.scala"
+//   IO.write(file, """object amm extends App { ammonite.Main("$initCommands").run() }""")
+//   Seq(file)
+// }.taskValue
 
 // addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.9.3")
 
@@ -221,7 +221,7 @@ lazy val mizar = project
             libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
-  """import provingground._; import HoTT._; import induction._; import ammonite.ops._;  import FansiShow._"""
+  """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
 
 lazy val mantle = (project in file("mantle"))
   .settings(

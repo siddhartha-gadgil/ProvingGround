@@ -286,6 +286,12 @@ object FansiShow {
     // FansiFormat(x).toString
   }
 
+  import pprint._
+
+  val fansiHandler: PartialFunction[Any, Tree] = {case t: Term => Tree.Literal(FansiTranslate(t))}
+
+  val fansiPrint = pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
+
   implicit def list[U: FansiShow]: FansiShow[List[U]] =
     new FansiShow[List[U]] {
       def show(x: List[U]) = (x map (_.fansi)).mkString("[", "\n", "]")
