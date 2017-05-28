@@ -75,14 +75,14 @@ $body
   def saveObject(name: String, body: String) =
     write.over(objectsDir / s"${name}.scala", makeObject(name, clean(body)))
 
-  implicit var kernel = ReplKernel()
+  // implicit var kernel = ReplKernel()
 
   // import scala.collection.mutable.ArrayBuffer
   var prevCode = ""
 
   def initKernel() = {
 
-    kernel.process(initCommands)
+    // kernel.process(initCommands)
 
     prevCode = initCommands
 
@@ -90,17 +90,17 @@ $body
 
   }
 
-  initKernel()
+  // initKernel()
 
-  def newCode(s: String) =
-    if (s.startsWith(prevCode)) Some(s.drop(prevCode.length)) else None
-
-  def useCode(s: String) =
-    newCode(s).getOrElse {
-      kernel = ReplKernel()
-      initKernel()
-      s
-    }
+  // def newCode(s: String) =
+  //   if (s.startsWith(prevCode)) Some(s.drop(prevCode.length)) else None
+  //
+  // def useCode(s: String) =
+  //   newCode(s).getOrElse {
+  //     kernel = ReplKernel()
+  //     initKernel()
+  //     s
+  //   }
 
   def kernelRes(inp: String)(
       implicit ker: ReplKernel): Option[Either[String, Any]] =
@@ -131,20 +131,75 @@ $body
     base
   }
 
+
+  import java.io.OutputStream
+
+  class StringOutputStream extends OutputStream {
+    private val bytes = collection.mutable.ArrayBuffer[Byte]()
+
+    def isEmpty = bytes.isEmpty
+
+    def reset = bytes.clear()
+
+  override def write(b: Int): Unit = {
+    bytes += b.toByte
+  }
+
+  def string: String = new String(bytes.toArray.map(_.toChar))
+  }
+
+
+
+  def replResult(code: String) = {
+    import java.io._
+    val outputS= new ByteArrayOutputStream()
+    val errLog = new StringOutputStream
+    val infoLog = new StringOutputStream
+
+    import java.nio.charset.StandardCharsets
+
+    val ammMain =
+      ammonite.Main(
+        inputStream = new ByteArrayInputStream((code+"\nexit\n").getBytes(StandardCharsets.UTF_8)),
+        outputStream = outputS,
+        errorStream = errLog, infoStream = infoLog)
+
+    println(code)
+
+    ammMain.run()
+
+    val output = new String(outputS.toByteArray, "UTF-8")
+
+    println(s"output (is this okay?) :\n${output}\n log: ${infoLog.string}\n errors: ${errLog.string}")
+
+    if (errLog.isEmpty) Right(output) else Left(infoLog.string +  errLog.string)
+  }
+
+  def replResJS(code: String) = replResult(code) match {
+    case Right(res) =>
+      println(s"\n\nraw:\n$res")
+      println(s"\n\nJs.Str:\n${Js.Str(res)}")
+      Js.Obj("result" -> Js.Str(res))
+    case Left(log) => Js.Obj("log" -> Js.Str(log))
+  }
+
   val route =
     post {
       path("kernel") {
         entity(as[String]) { d =>
-          // println(s"post received:\n$d")
-          val code = useCode(d)
+          println(s"post received:\n$d")
+          // val code = useCode(d)
           // println(s"processing code: \n$code")
-          val res = kernelRes(code)
+          // val res = kernelRes(code)
           // println(res)
-          res.foreach { e =>
-            e.foreach((_) => prevCode = d)
-          }
+          // res.foreach { e =>
+          //   e.foreach((_) => prevCode = d)
+          // }
 
-          val js = kernelJS(res)
+          // val js = kernelJS(res)
+          val js = replResJS(d)
+          println(js)
+            //Js.Obj("result" -> Js.Str("not implemented"))
           //Js.Obj("response" -> Js.Str(res.toString))
           // println(res)
           // println(kernelJS(res).toString)
