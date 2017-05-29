@@ -160,6 +160,7 @@ $body
 
     val ammMain =
       ammonite.Main(
+        predef="repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix", 
         inputStream = new ByteArrayInputStream((code+"\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
         errorStream = errLog, infoStream = infoLog)
@@ -195,17 +196,19 @@ $body
           // res.foreach { e =>
           //   e.foreach((_) => prevCode = d)
           // }
-
+          val result = replResult(d).getOrElse("error")
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+                              result))
           // val js = kernelJS(res)
-          val js = replResJS(d)
-          println(js)
+          // val js = replResJS(d)
+          // println(js)
             //Js.Obj("result" -> Js.Str("not implemented"))
           //Js.Obj("response" -> Js.Str(res.toString))
           // println(res)
           // println(kernelJS(res).toString)
           // TimeServer.buf = TimeServer.buf :+ res.toString
           // println(s"Buffer: ${TimeServer.buf}")
-          complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
+          // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
         }
       }
     } ~

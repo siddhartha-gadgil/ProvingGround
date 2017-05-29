@@ -168,15 +168,12 @@ object CodeEditorJS extends js.JSApp {
       Ajax.post("/kernel", code).foreach { (xhr) =>
         {
           val answer = xhr.responseText
-          val js     = json.read(answer)
-          // val decoded = json.read(answer)("response").str
-          // results.appendChild(p(answer).render)
-          // val answerLines = parseAnswer(answer).toString.replace("\n", "\n// ")
-          // editorAppend(s"// $answerLines \n\n")
-          // showAnswer(parseAnswer(decoded))
-          showResult(js)
-          showLog(js)
-          showTeX(js)
+          logDiv.innerHTML = ""
+          logDiv.appendChild(pre(answer).render)
+          // val js     = json.read(answer)
+          // showResult(js)
+          // showLog(js)
+          // showTeX(js)
         }
       }
     }
