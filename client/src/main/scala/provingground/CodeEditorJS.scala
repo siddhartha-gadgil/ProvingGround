@@ -92,7 +92,7 @@ object CodeEditorJS extends js.JSApp {
 
     val text = editor.getValue()
     val initCommands =
-      "import provingground._\nimport HoTT._\nimport induction.TLImplicits._\nimport shapeless._\n\n"
+      "import provingground._\nimport HoTT._\nimport induction.TLImplicits._\nimport shapeless._\nrepl.pprinter.bind(translation.FansiShow.simplePrint)\n\n"
     editor.insert(initCommands)
 
     def editorAppend(text: String) = {
