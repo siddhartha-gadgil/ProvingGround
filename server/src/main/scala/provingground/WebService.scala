@@ -289,7 +289,7 @@ class AmmScriptServer(
     <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/katex.min.css">
     <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/resources/auto-render.min.js" type="text/javascript" charset="utf-8"></script>
+   <script src="/resources/auto-render.min.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/github-gist.css">
     <script src="/resources/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="/resources/provingground-js-fastopt.js" type="text/javascript" charset="utf-8"></script>

@@ -9,7 +9,7 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 
-import com.karasiq.highlightjs.HighlightJS
+// import com.karasiq.highlightjs.HighlightJS
 
 import js.Dynamic.{global => g}
 
@@ -178,12 +178,12 @@ object CodeEditorJS extends js.JSApp {
           viewDiv.appendChild(
               pre(code(`class`:= "scala", view)).render
             )
-          g.renderMathInElement(viewDiv)
+          g.renderMathInElement(viewDiv, js.Dynamic.literal(ignoreTags = Seq()))
           if (answer.startsWith("--ERROR--\n")) {
             val err = answer.drop("--ERROR--\n".length).split("--OUTPUT--\n")(0).drop("--INFO--\n".length)
             logDiv.appendChild(pre(div(`class` := "text-danger")(err)).render)
           }
-          HighlightJS.highlightBlock(viewDiv)
+          g.hljs.highlightBlock(viewDiv)
           // val js     = json.read(answer)
           // showResult(js)
           // showLog(js)
