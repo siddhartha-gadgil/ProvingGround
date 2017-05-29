@@ -153,14 +153,15 @@ $body
   def replResult(code: String) = {
     import java.io._
     val outputS= new ByteArrayOutputStream()
-    val errLog = new StringOutputStream
-    val infoLog = new StringOutputStream
+    val errLog = new ByteArrayOutputStream()
+    val infoLog = new ByteArrayOutputStream()
 
     import java.nio.charset.StandardCharsets
 
     val ammMain =
       ammonite.Main(
-        predef="repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix", 
+        predef=
+          "repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
         inputStream = new ByteArrayInputStream((code+"\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
         errorStream = errLog, infoStream = infoLog)
@@ -171,9 +172,13 @@ $body
 
     val output = new String(outputS.toByteArray, "UTF-8")
 
-    println(s"output (is this okay?) :\n${output}\n log: ${infoLog.string}\n errors: ${errLog.string}")
+    val err = new String(errLog.toByteArray, "UTF-8")
 
-    if (errLog.isEmpty) Right(output) else Left(infoLog.string +  errLog.string)
+    val info = new String(infoLog.toByteArray, "UTF-8")
+
+    println(s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
+
+    if (err == "") Right(output) else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
   }
 
   def replResJS(code: String) = replResult(code) match {
@@ -196,7 +201,11 @@ $body
           // res.foreach { e =>
           //   e.foreach((_) => prevCode = d)
           // }
-          val result = replResult(d).getOrElse("error")
+          val result =
+            replResult(d) match {
+              case Right(z) => "--RESULT--\n" + z
+              case Left(z) => "--ERROR--\n" + z
+            }
           complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
                               result))
           // val js = kernelJS(res)
@@ -280,7 +289,9 @@ class AmmScriptServer(
     <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/katex.min.css">
     <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/resources/highlight.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/resources/auto-render.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="/resources/github-gist.css">
+    <script src="/resources/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="/resources/provingground-js-fastopt.js" type="text/javascript" charset="utf-8"></script>
     <style type="text/css" media="screen">
         .editor {
@@ -337,7 +348,7 @@ class AmmScriptServer(
 // object TimeServer {
 //
 //   var buf = Vector[String]()
-//
+//"Success:" +
 //
 //   def route = {
 //     import Directives._

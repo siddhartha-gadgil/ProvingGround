@@ -9,6 +9,8 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 
+import com.karasiq.highlightjs.HighlightJS
+
 import js.Dynamic.{global => g}
 
 import com.scalawarrior.scalajs.ace._
@@ -79,7 +81,7 @@ object CodeEditorJS extends js.JSApp {
             objButton
           )),
         div("Logs:", logDiv),
-        div("Formatted output:", viewDiv)
+        div("Output:", viewDiv)
       ).render)
 
     val editor = ace.edit("editor")
@@ -164,12 +166,24 @@ object CodeEditorJS extends js.JSApp {
     }
 
     def compile() = {
-      val code = editor.getValue()
-      Ajax.post("/kernel", code).foreach { (xhr) =>
+      val codetext = editor.getValue()
+      Ajax.post("/kernel", codetext).foreach { (xhr) =>
         {
           val answer = xhr.responseText
           logDiv.innerHTML = ""
-          logDiv.appendChild(pre(answer).render)
+          val view =
+            if (answer.startsWith("--RESULT--\n")) answer.drop("--RESULT--\n".length)
+            else answer.split("--OUTPUT--\n")(1)
+          viewDiv.innerHTML = ""
+          viewDiv.appendChild(
+              pre(code(`class`:= "scala", view)).render
+            )
+          g.renderMathInElement(viewDiv)
+          if (answer.startsWith("--ERROR--\n")) {
+            val err = answer.drop("--ERROR--\n".length).split("--OUTPUT--\n")(0).drop("--INFO--\n".length)
+            logDiv.appendChild(pre(div(`class` := "text-danger")(err)).render)
+          }
+          HighlightJS.highlightBlock(viewDiv)
           // val js     = json.read(answer)
           // showResult(js)
           // showLog(js)

@@ -161,6 +161,7 @@ lazy val client = project
       "org.scala-js"     %%% "scalajs-dom" % "0.9.1",
       "com.lihaoyi"      %%% "scalatags"   % "0.6.3",
       "com.lihaoyi"      %%% "upickle"     % "0.4.4",
+      "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
