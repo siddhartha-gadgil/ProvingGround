@@ -175,15 +175,17 @@ object CodeEditorJS extends js.JSApp {
             if (answer.startsWith("--RESULT--\n")) answer.drop("--RESULT--\n".length)
             else answer.split("--OUTPUT--\n")(1)
           viewDiv.innerHTML = ""
+          val codeDiv = code(`class`:= "scala", view).render
           viewDiv.appendChild(
-              pre(code(`class`:= "scala", view)).render
+              pre(
+                codeDiv).render
             )
           g.renderMathInElement(viewDiv, js.Dynamic.literal(ignoreTags = Seq()))
           if (answer.startsWith("--ERROR--\n")) {
             val err = answer.drop("--ERROR--\n".length).split("--OUTPUT--\n")(0).drop("--INFO--\n".length)
             logDiv.appendChild(pre(div(`class` := "text-danger")(err)).render)
           }
-          g.hljs.highlightBlock(viewDiv)
+          g.hljs.highlightBlock(codeDiv)
           // val js     = json.read(answer)
           // showResult(js)
           // showLog(js)
