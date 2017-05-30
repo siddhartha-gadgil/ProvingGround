@@ -8,6 +8,22 @@ import Subst._
 
 import shapeless._
 
+/**
+ * indexed version of [[ConstructorSeqMap]], giving definitions of  indexed recursion and induction functions.
+ *
+ *
+ * @tparam H the scala type of terms of an inductive type that can have this constructor.
+ * @tparam Cod the scala type of the codomain.
+ * @tparam Fb scala type of the inductive  type family
+ * @tparam Index scala type of the index
+ * @tparam Intros scala type of the introduction rules
+ * @tparam RecType scala type of the recursion function
+ * @tparam InducType scala type of the induction function
+ * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
+ * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
+ * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
+ *
+ */
 abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
                                         H <: Term with Subs[H],
                                         RecType <: Term with Subs[RecType],
@@ -19,20 +35,35 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
                                         IDF <: Term with Subs[IDF],
                                         IDFT <: Term with Subs[IDFT]] {
 
+  /**
+   * the inductive type family
+   */
   val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 
+  /**
+   * the raw recursive definition, from which the recursion function is built by lambdas
+   */
   def recDefn(
       X: Typ[C]): IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
 
+  /**
+   * the index type family
+   */
   val W: F
 
   // type RecType <: Term with Subs[RecType]
 
   def recDataLambda(X: Typ[C]): IF => RecType
 
+  /**
+   * the recursion function
+   */
   def rec(X: Typ[C]): RecType =
     recDataLambda(X: Typ[C])(recDefn(X: Typ[C]).iterFunc)
 
+    /**
+   * the raw inductive definition, from which the induction function is built by lambdas
+   */
   def inducDefn(
       fibre: IDFT): IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
 
@@ -40,9 +71,15 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
 
   def inducDataLambda(fibre: IDFT): IDF => InducType
 
+  /**
+   * the induction function
+   */
   def induc(fibre: IDFT) =
     inducDataLambda(fibre)(inducDefn(fibre).iterDepFunc)
 
+  /**
+   * the induction function with type casting
+   */
   def inducF(fibre: Term) = induc(fibre.asInstanceOf[IDFT])
 }
 
@@ -84,47 +121,6 @@ object IndexedConstructorSeqMap {
 
   import ConstructorSeqMap.{RecDataSym, InducDataSym}
 
-  // object Cons {
-  //   def sym[C <: Term with Subs[C],
-  //           H <: Term with Subs[H],
-  //           Cod <: Term with Subs[Cod],
-  //           RD <: Term with Subs[RD],
-  //           ID <: Term with Subs[ID],
-  //           TR <: Term with Subs[TR],
-  //           TI <: Term with Subs[TI],
-  //           TIntros <: HList,
-  //           F <: Term with Subs[F],
-  //           Index <: HList: Subst,
-  //           IF <: Term with Subs[IF],
-  //           IDF <: Term with Subs[IDF],
-  //           IDFT <: Term with Subs[IDFT]](
-  //       name: AnySym,
-  //       pattern: IndexedConstructorPatternMap[Cod,
-  //                                             C,
-  //                                             H,
-  //                                             RD,
-  //                                             ID,
-  //                                             F,
-  //                                             Index,
-  //                                             IF,
-  //                                             IDF,
-  //                                             IDFT],
-  //       tail: IndexedConstructorSeqMap[Cod,
-  //                                      H,
-  //                                      TR,
-  //                                      TI,
-  //                                      TIntros,
-  //                                      F,
-  //                                      Index,
-  //                                      IF,
-  //                                      IDF,
-  //                                      IDFT]
-  //   ) = {
-  //     val W    = tail.W
-  //     val cons = pattern.symbcons(name, W)
-  //     Cons(cons, pattern, tail)
-  //   }
-  // }
 
   case class Cons[C <: Term with Subs[C],
                   H <: Term with Subs[H],
@@ -205,6 +201,9 @@ object IndexedConstructorSeqMap {
   }
 }
 
+/**
+ * bride between [[IndexedConstructorSeqDom]] and [[IndexedConstructorSeqMap]]
+ */
 abstract class IndexedConstructorSeqMapper[SS <: HList,
                                            C <: Term with Subs[C],
                                            H <: Term with Subs[H],
@@ -337,17 +336,38 @@ object IndexedConstructorSeqMapper {
     }
 }
 
+/**
+ * Essentially the definition of an indexed inductive type;
+ *
+ *
+ * @tparam SS ``shape sequence`` - a formal type for lifting information about introduction rules to type level.
+ * @tparam H the scala type of terms in an inductive type of this shape
+ * @tparam Intros the scala type of the introduction rules
+ *
+ */
 abstract class IndexedConstructorSeqDom[SS <: HList,
                                         H <: Term with Subs[H],
                                         F <: Term with Subs[F],
                                         Index <: HList: Subst,
                                         Intros <: HList] {
+  /**
+   * the index family
+   */
   val family: TypFamilyPtn[H, F, Index]
 
+  /**
+   * the inductive type family
+   */
   val W: F
 
+  /**
+   * the introduction rules
+   */
   val intros: Intros
 
+  /**
+   * existentitally typed lift given codomain
+   */
   def mapped[C <: Term with Subs[C], IF <: Term with Subs[IF],
   IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](
       implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT])
@@ -365,12 +385,18 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
       type InducType <: Term with Subs[InducType];
     }
 
+  /**
+   * existentitally typed recursion function definition
+   */
   def recE[C <: Term with Subs[C]](x: Typ[C]) = {
     implicit val mp = family.mapper[C]
     val mpd         = mapped
     mpd.rec(x)
   }
 
+  /**
+   * recursion function definition based on implcits
+   */
   def rec[C <: Term with Subs[C],
           IF <: Term with Subs[IF],
           IDF <: Term with Subs[IDF],
@@ -428,6 +454,9 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
                                                    IDFT]
   ) = mapper.mapped(this)(W, family)
 
+  /**
+   * induction function based on implicits
+   */
   def induc[IDFT <: Term with Subs[IDFT],
             C <: Term with Subs[C],
             IF <: Term with Subs[IF],
@@ -447,6 +476,9 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
                                                    IDFT]
   ) = mapper.mapped(this)(W, family).induc(Xs)
 
+  /**
+   * existentitally typed induction function
+   */
   def inducE[IDFT <: Term with Subs[IDFT]](Xs: IDFT) =
     family.finalCod(Xs) match {
       case tp: Typ[u] =>
@@ -455,6 +487,9 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
         mpd.inducF(Xs)
     }
 
+  /**
+   * prepend introduction rule
+   */
   def |:[HShape <: HList, HC <: Term with Subs[HC]](
       head: IndexedConstructor[HShape, H, F, HC, Index]) =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)

@@ -1,0 +1,1083 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../lib/index.js"></script>
+      <script type="text/javascript" src="../../index.js"></script>
+      <script type="text/javascript" src="../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html">
+              <span class="name">root</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="index.html#provingground" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
+              <span class="name">provingground</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#functionfinder" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="index.html">
+              <span class="name">functionfinder</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="BigOps$.html" title=""></a>
+                        <a href="BigOps$.html" title="">
+                          BigOps
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Bool$.html" title=""></a>
+                        <a href="Bool$.html" title="">
+                          Bool
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="BoolType$.html" title=""></a>
+                        <a href="BoolType$.html" title="">
+                          BoolType
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumFin$.html" title=""></a>
+                        <a href="EnumFin$.html" title="">
+                          EnumFin
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumFuncs$.html" title=""></a>
+                        <a href="EnumFuncs$.html" title="">
+                          EnumFuncs
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="EnumType$.html" title=""></a>
+                        <a href="EnumType$.html" title="">
+                          EnumType
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FunctionFeedback$.html" title=""></a>
+                        <a href="FunctionFeedback$.html" title="">
+                          FunctionFeedback
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="IndexedVecTyp$.html" title=""></a>
+                        <a class="class" href="IndexedVecTyp.html" title=""></a>
+                        <a href="IndexedVecTyp.html" title="">
+                          IndexedVecTyp
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="InducPairs$.html" title="Recursion and induction for (dependent) pairs."></a>
+                        <a href="InducPairs$.html" title="Recursion and induction for (dependent) pairs.">
+                          InducPairs
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="IntTypes$.html" title=""></a>
+                        <a href="IntTypes$.html" title="">
+                          IntTypes
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="IntVector$.html" title=""></a>
+                        <a class="class" href="IntVector.html" title=""></a>
+                        <a href="IntVector.html" title="">
+                          IntVector
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ListTyp.html" title=""></a>
+                        <a href="ListTyp.html" title="">
+                          ListTyp
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="ListType$.html" title=""></a>
+                        <a href="ListType$.html" title="">
+                          ListType
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MatrixTypes$.html" title=""></a>
+                        <a href="MatrixTypes$.html" title="">
+                          MatrixTypes
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="NatRing$.html" title=""></a>
+                        <a href="NatRing$.html" title="">
+                          NatRing
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="NatTypLong$.html" title=""></a>
+                        <a href="NatTypLong$.html" title="">
+                          NatTypLong
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="NatVecTyps$.html" title=""></a>
+                        <a href="NatVecTyps$.html" title="">
+                          NatVecTyps
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Norm$.html" title=""></a>
+                        <a href="Norm$.html" title="">
+                          Norm
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="PlusTypInduc$.html" title=""></a>
+                        <a href="PlusTypInduc$.html" title="">
+                          PlusTypInduc
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RecEnum$.html" title=""></a>
+                        <a href="RecEnum$.html" title="">
+                          RecEnum
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RepTerm.html" title=""></a>
+                        <a href="RepTerm.html" title="">
+                          RepTerm
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ScalaPolyRep$.html" title=""></a>
+                        <a class="trait" href="" title=""></a>
+                        <a href="" title="">
+                          ScalaPolyRep
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ScalaRep$.html" title=""></a>
+                        <a class="trait" href="ScalaRep.html" title="Representation by a scala object of a HoTT term"></a>
+                        <a href="ScalaRep.html" title="Representation by a scala object of a HoTT term">
+                          ScalaRep
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ScalaTyp.html" title=""></a>
+                        <a href="ScalaTyp.html" title="">
+                          ScalaTyp
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ScalaTypUniv.html" title=""></a>
+                        <a href="ScalaTypUniv.html" title="">
+                          ScalaTypUniv
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ScalaUniv$.html" title=""></a>
+                        <a class="class" href="ScalaUniv.html" title="Wrapper for universe with refined scala type for objects (i.e., types) in it."></a>
+                        <a href="ScalaUniv.html" title="Wrapper for universe with refined scala type for objects (i.e., types) in it.">
+                          ScalaUniv
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ScalaVec.html" title=""></a>
+                        <a href="ScalaVec.html" title="">
+                          ScalaVec
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="SigmaPiEnum$.html" title=""></a>
+                        <a href="SigmaPiEnum$.html" title="">
+                          SigmaPiEnum
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="SymbScalaTyp.html" title=""></a>
+                        <a href="SymbScalaTyp.html" title="">
+                          SymbScalaTyp
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SymbolicCRing$.html" title=""></a>
+                        <a class="class" href="SymbolicCRing.html" title=""></a>
+                        <a href="SymbolicCRing.html" title="">
+                          SymbolicCRing
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="SymbolicField.html" title=""></a>
+                        <a href="SymbolicField.html" title="">
+                          SymbolicField
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="VecTyp$.html" title=""></a>
+                        <a class="class" href="VecTyp.html" title=""></a>
+                        <a href="VecTyp.html" title="">
+                          VecTyp
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="VecTyps.html" title=""></a>
+                        <a href="VecTyps.html" title="">
+                          VecTyps
+                        </a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="trait type">
+      <div id="definition">
+        <a href="ScalaPolyRep$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.functionfinder">functionfinder</a></p>
+        <h1><a href="ScalaPolyRep$.html" title="See companion object">ScalaPolyRep</a><span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        <h3><span class="morelinks"><div>
+            Companion <a href="ScalaPolyRep$.html" title="See companion object">object ScalaPolyRep</a>
+          </div></span></h3>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ScalaPolyRep</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>]</span>, <span name="W">W</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">
+              Known Subclasses
+            </span>
+            <div class="subClasses hiddenContent"><a href="IndexedVecTyp$$VecPolyRep.html" class="extype" name="provingground.functionfinder.IndexedVecTyp.VecPolyRep">VecPolyRep</a>, <a href="IntVector$$IntVecRep$.html" class="extype" name="provingground.functionfinder.IntVector.IntVecRep">IntVecRep</a>, <a href="ScalaPolyRep$$DepFuncPolyRep.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.DepFuncPolyRep">DepFuncPolyRep</a>, <a href="ScalaPolyRep$$FuncPolyRep.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.FuncPolyRep">FuncPolyRep</a>, <a href="ScalaPolyRep$$OrScalaPolyRep.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.OrScalaPolyRep">OrScalaPolyRep</a>, <a href="ScalaPolyRep$$PairPolyRep.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.PairPolyRep">PairPolyRep</a>, <a href="ScalaPolyRep$$ScalaRepWrap.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaRepWrap">ScalaRepWrap</a>, <a href="ScalaVec$Rep$.html" class="extype" name="provingground.functionfinder.ScalaVec.Rep">Rep</a>, <a href="VecTyp$$VecPolyRep.html" class="extype" name="provingground.functionfinder.VecTyp.VecPolyRep">VecPolyRep</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 1239.50 169.00" height="169pt" width="1240pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 165)" class="graph" id="graph0"><polygon points="-4,4 -4,-165 1235.5,-165 1235.5,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><g class="cluster" id="clust3"></g><!-- node11 --><g class="node implicit-outgoing class" id="graph1_11"><g id="a_implicit-outgoing class|graph1_11"><a xlink:title="provingground.functionfinder.ScalaPolyRep can be implicitly converted to ScalaPolyTerm[U, ScalaPolyRep[U, W]] by the implicit method ScalaPolyTerm in object provingground.functionfinder.ScalaPolyRep" xlink:href="ScalaPolyRep$$ScalaPolyTerm.html#inheritance-diagram"><path d="M1000.17,-93C1000.17,-93 811.833,-93 811.833,-93 807.667,-93 803.5,-88.8333 803.5,-84.6667 803.5,-84.6667 803.5,-76.3333 803.5,-76.3333 803.5,-72.1667 807.667,-68 811.833,-68 811.833,-68 1000.17,-68 1000.17,-68 1004.33,-68 1008.5,-72.1667 1008.5,-76.3333 1008.5,-76.3333 1008.5,-84.6667 1008.5,-84.6667 1008.5,-88.8333 1004.33,-93 1000.17,-93" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/class_diagram.png" y="-87.5" x="814" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="835" text-anchor="start">ScalaPolyTerm[U, ScalaPolyRep[U, W]]</text></a></g></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.functionfinder.ScalaPolyRep (this trait)" xlink:href="#inheritance-diagram"><path d="M723.667,-93C723.667,-93 614.333,-93 614.333,-93 610.167,-93 606,-88.8333 606,-84.6667 606,-84.6667 606,-76.3333 606,-76.3333 606,-72.1667 610.167,-68 614.333,-68 614.333,-68 723.667,-68 723.667,-68 727.833,-68 732,-72.1667 732,-76.3333 732,-76.3333 732,-84.6667 732,-84.6667 732,-88.8333 727.833,-93 723.667,-93" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-87.5" x="616" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="637" text-anchor="start">ScalaPolyRep[U, W]</text></a></g></g><!-- node0&#45;&gt;node11 --><g class="edge implicit-outgoing" id="0_11"><g id="a_implicit-outgoing|0_11"><a xlink:title="ScalaPolyRep[U, W] can be implicitly converted to ScalaPolyTerm[U, ScalaPolyRep[U, W]]"><path d="M739.71,-80.5C755.234,-80.5 772.073,-80.5 788.875,-80.5" stroke="#d4d4d4" fill="none"></path><polygon points="789.072,-82.9501 796.072,-80.5 789.071,-78.0501 789.072,-82.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-86.3" x="767.75" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.functionfinder.ScalaPolyRep.DepFuncPolyRep" xlink:href="ScalaPolyRep$$DepFuncPolyRep.html#inheritance-diagram"><path d="M151.667,-25C151.667,-25 8.33333,-25 8.33333,-25 4.16667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.33333 0,-8.33333 0,-4.16667 4.16667,-0 8.33333,-0 8.33333,-0 151.667,-0 151.667,-0 155.833,-0 160,-4.16667 160,-8.33333 160,-8.33333 160,-16.6667 160,-16.6667 160,-20.8333 155.833,-25 151.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">DepFuncPolyRep[U, W, X, Y]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="DepFuncPolyRep[U, W, X, Y] is a subtype of ScalaPolyRep[U, W]"><path d="M598.7,-72.2835C501.889,-62.2438 322.108,-43.2344 169,-25 166.061,-24.6499 163.067,-24.2885 160.044,-23.9193" stroke="#d4d4d4" fill="none"></path><polygon points="598.595,-74.7357 605.81,-73.0203 599.1,-69.8618 598.595,-74.7357" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.functionfinder.ScalaPolyRep.FuncPolyRep" xlink:href="ScalaPolyRep$$FuncPolyRep.html#inheritance-diagram"><path d="M313.667,-25C313.667,-25 186.333,-25 186.333,-25 182.167,-25 178,-20.8333 178,-16.6667 178,-16.6667 178,-8.33333 178,-8.33333 178,-4.16667 182.167,-0 186.333,-0 186.333,-0 313.667,-0 313.667,-0 317.833,-0 322,-4.16667 322,-8.33333 322,-8.33333 322,-16.6667 322,-16.6667 322,-20.8333 317.833,-25 313.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="188" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="209" text-anchor="start">FuncPolyRep[U, W, X, Y]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="FuncPolyRep[U, W, X, Y] is a subtype of ScalaPolyRep[U, W]"><path d="M598.533,-68.4002C521.759,-56.3069 399.575,-37.0608 322.147,-24.8644" stroke="#d4d4d4" fill="none"></path><polygon points="598.522,-70.8786 605.818,-69.5477 599.284,-66.0382 598.522,-70.8786" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node object" id="graph1_3"><g id="a_object|graph1_3"><a xlink:title="provingground.functionfinder.IntVector.IntVecRep" xlink:href="IntVector$$IntVecRep$.html#inheritance-diagram"><path d="M417.167,-25C417.167,-25 348.833,-25 348.833,-25 344.667,-25 340.5,-20.8333 340.5,-16.6667 340.5,-16.6667 340.5,-8.33333 340.5,-8.33333 340.5,-4.16667 344.667,-0 348.833,-0 348.833,-0 417.167,-0 417.167,-0 421.333,-0 425.5,-4.16667 425.5,-8.33333 425.5,-8.33333 425.5,-16.6667 425.5,-16.6667 425.5,-20.8333 421.333,-25 417.167,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="351" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="372" text-anchor="start">IntVecRep</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="IntVecRep is a subtype of ScalaPolyRep[U, W]"><path d="M611.957,-66.3361C557.003,-53.6545 475.12,-34.7585 425.618,-23.3349" stroke="#d4d4d4" fill="none"></path><polygon points="611.484,-68.7413 618.855,-67.9282 612.586,-63.9668 611.484,-68.7413" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.functionfinder.ScalaPolyRep.OrScalaPolyRep" xlink:href="ScalaPolyRep$$OrScalaPolyRep.html#inheritance-diagram"><path d="M571.667,-25C571.667,-25 452.333,-25 452.333,-25 448.167,-25 444,-20.8333 444,-16.6667 444,-16.6667 444,-8.33333 444,-8.33333 444,-4.16667 448.167,-0 452.333,-0 452.333,-0 571.667,-0 571.667,-0 575.833,-0 580,-4.16667 580,-8.33333 580,-8.33333 580,-16.6667 580,-16.6667 580,-20.8333 575.833,-25 571.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="454" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="475" text-anchor="start">OrScalaPolyRep[U, W]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="OrScalaPolyRep[U, W] is a subtype of ScalaPolyRep[U, W]"><path d="M634.654,-65.0615C606.067,-53.0442 565.903,-36.1599 539.43,-25.0311" stroke="#d4d4d4" fill="none"></path><polygon points="633.89,-67.3982 641.293,-67.8525 635.789,-62.8811 633.89,-67.3982" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.functionfinder.ScalaPolyRep.PairPolyRep" xlink:href="ScalaPolyRep$$PairPolyRep.html#inheritance-diagram"><path d="M731.167,-25C731.167,-25 606.833,-25 606.833,-25 602.667,-25 598.5,-20.8333 598.5,-16.6667 598.5,-16.6667 598.5,-8.33333 598.5,-8.33333 598.5,-4.16667 602.667,-0 606.833,-0 606.833,-0 731.167,-0 731.167,-0 735.333,-0 739.5,-4.16667 739.5,-8.33333 739.5,-8.33333 739.5,-16.6667 739.5,-16.6667 739.5,-20.8333 735.333,-25 731.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="609" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="630" text-anchor="start">PairPolyRep[U, W, X, Y]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="PairPolyRep[U, W, X, Y] is a subtype of ScalaPolyRep[U, W]"><path d="M669,-60.6706C669,-49.245 669,-35.0216 669,-25.1973" stroke="#d4d4d4" fill="none"></path><polygon points="666.55,-60.7005 669,-67.7005 671.45,-60.7006 666.55,-60.7005" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node object" id="graph1_6"><g id="a_object|graph1_6"><a xlink:title="provingground.functionfinder.ScalaVec.Rep" xlink:href="ScalaVec$Rep$.html#inheritance-diagram"><path d="M809.667,-25C809.667,-25 766.333,-25 766.333,-25 762.167,-25 758,-20.8333 758,-16.6667 758,-16.6667 758,-8.33333 758,-8.33333 758,-4.16667 762.167,-0 766.333,-0 766.333,-0 809.667,-0 809.667,-0 813.833,-0 818,-4.16667 818,-8.33333 818,-8.33333 818,-16.6667 818,-16.6667 818,-20.8333 813.833,-25 809.667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="768" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="789" text-anchor="start">Rep</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="Rep is a subtype of ScalaPolyRep[U, W]"><path d="M696.138,-64.4489C717.725,-52.4759 747.482,-35.9721 767.209,-25.0311" stroke="#d4d4d4" fill="none"></path><polygon points="694.934,-62.3147 690.001,-67.8525 697.311,-66.5998 694.934,-62.3147" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="provingground.functionfinder.ScalaPolyRep.ScalaRepWrap" xlink:href="ScalaPolyRep$$ScalaRepWrap.html#inheritance-diagram"><path d="M957.167,-25C957.167,-25 844.833,-25 844.833,-25 840.667,-25 836.5,-20.8333 836.5,-16.6667 836.5,-16.6667 836.5,-8.33333 836.5,-8.33333 836.5,-4.16667 840.667,-0 844.833,-0 844.833,-0 957.167,-0 957.167,-0 961.333,-0 965.5,-4.16667 965.5,-8.33333 965.5,-8.33333 965.5,-16.6667 965.5,-16.6667 965.5,-20.8333 961.333,-25 957.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="847" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="868" text-anchor="start">ScalaRepWrap[U, W]</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="ScalaRepWrap[U, W] is a subtype of ScalaPolyRep[U, W]"><path d="M716.569,-65.9674C758.935,-53.915 820.255,-36.4705 860.37,-25.0586" stroke="#d4d4d4" fill="none"></path><polygon points="715.739,-63.6562 709.677,-67.9282 717.08,-68.3692 715.739,-63.6562" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node class" id="graph1_8"><g id="a_class|graph1_8"><a xlink:title="provingground.functionfinder.IndexedVecTyp.VecPolyRep" xlink:href="IndexedVecTyp$$VecPolyRep.html#inheritance-diagram"><path d="M1090.17,-25C1090.17,-25 991.833,-25 991.833,-25 987.667,-25 983.5,-20.8333 983.5,-16.6667 983.5,-16.6667 983.5,-8.33333 983.5,-8.33333 983.5,-4.16667 987.667,-0 991.833,-0 991.833,-0 1090.17,-0 1090.17,-0 1094.33,-0 1098.5,-4.16667 1098.5,-8.33333 1098.5,-8.33333 1098.5,-16.6667 1098.5,-16.6667 1098.5,-20.8333 1094.33,-25 1090.17,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="994" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1015" text-anchor="start">VecPolyRep[U, X]</text></a></g></g><!-- node0&#45;&gt;node8 --><g class="edge inheritance" id="graph1_0_8"><g id="a_inheritance|graph1_0_8"><a xlink:title="VecPolyRep[U, X] is a subtype of ScalaPolyRep[U, W]"><path d="M723.796,-66.3439C745.026,-61.4846 769.577,-56.1549 792,-52 872.838,-37.0208 893.83,-38.0574 975,-25 977.756,-24.5567 980.575,-24.0954 983.422,-23.6234" stroke="#d4d4d4" fill="none"></path><polygon points="723.002,-64.0124 716.731,-67.9714 724.102,-68.7873 723.002,-64.0124" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node9 --><g class="node class" id="graph1_9"><g id="a_class|graph1_9"><a xlink:title="provingground.functionfinder.VecTyp.VecPolyRep" xlink:href="VecTyp$$VecPolyRep.html#inheritance-diagram"><path d="M1223.17,-25C1223.17,-25 1124.83,-25 1124.83,-25 1120.67,-25 1116.5,-20.8333 1116.5,-16.6667 1116.5,-16.6667 1116.5,-8.33333 1116.5,-8.33333 1116.5,-4.16667 1120.67,-0 1124.83,-0 1124.83,-0 1223.17,-0 1223.17,-0 1227.33,-0 1231.5,-4.16667 1231.5,-8.33333 1231.5,-8.33333 1231.5,-16.6667 1231.5,-16.6667 1231.5,-20.8333 1227.33,-25 1223.17,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="1127" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1148" text-anchor="start">VecPolyRep[U, X]</text></a></g></g><!-- node0&#45;&gt;node9 --><g class="edge inheritance" id="graph1_0_9"><g id="a_inheritance|graph1_0_9"><a xlink:title="VecPolyRep[U, X] is a subtype of ScalaPolyRep[U, W]"><path d="M720.664,-66.3232C742.542,-61.1677 768.387,-55.6316 792,-52 861.659,-41.2869 1038.11,-34.0576 1108,-25 1110.77,-24.6413 1113.6,-24.2487 1116.45,-23.8318" stroke="#d4d4d4" fill="none"></path><polygon points="719.949,-63.9748 713.708,-67.9808 721.085,-68.7413 719.949,-63.9748" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node10 --><g class="node class" id="graph1_10"><g id="a_class|graph1_10"><a xlink:title="scala.AnyRef"><path d="M697.167,-161C697.167,-161 640.833,-161 640.833,-161 636.667,-161 632.5,-156.833 632.5,-152.667 632.5,-152.667 632.5,-144.333 632.5,-144.333 632.5,-140.167 636.667,-136 640.833,-136 640.833,-136 697.167,-136 697.167,-136 701.333,-136 705.5,-140.167 705.5,-144.333 705.5,-144.333 705.5,-152.667 705.5,-152.667 705.5,-156.833 701.333,-161 697.167,-161" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-155.5" x="643" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="664" text-anchor="start">AnyRef</text></a></g></g><!-- node10&#45;&gt;node0 --><g class="edge inheritance" id="graph1_10_0"><g id="a_inheritance|graph1_10_0"><a xlink:title="ScalaPolyRep[U, W] is a subtype of AnyRef"><path d="M669,-128.671C669,-117.245 669,-103.022 669,-93.1973" stroke="#d4d4d4" fill="none"></path><polygon points="666.55,-128.7 669,-135.701 671.45,-128.701 666.55,-128.7" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
+        
+
+      <div id="mbrsel">
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
+            <ol>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
+            </ol>
+          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.functionfinder.ScalaPolyRep"><span>ScalaPolyRep</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm" data-hidden="false"><span>by ScalaPolyTerm</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        <div class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="provingground.functionfinder.ScalaPolyRep#apply" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="apply(typ:provingground.HoTT.Typ[provingground.HoTT.Term])(elem:W):Option[U]"></a><a id="apply(Typ[Term])(W):Option[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#apply(typ:provingground.HoTT.Typ[provingground.HoTT.Term])(elem:W):Option[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.functionfinder.ScalaPolyRep#subs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.functionfinder.ScalaPolyRep[U,W]"></a><a id="subs(Term,Term):ScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.functionfinder.ScalaPolyRep[U,W]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.functionfinder.ScalaPolyRep#unapply" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="unapply(term:U):Option[W]"></a><a id="unapply(U):Option[W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#unapply(term:U):Option[W]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unapply</span><span class="params">(<span name="term">term: <span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
+
+        <div class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol>
+                <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#!=(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html###():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ScalaPolyRep[U,W],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#==(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#asInstanceOf[T0]:T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a><a id="clone():AnyRef"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#clone():Object" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((ScalaPolyRep[U,W])⇒Boolean,⇒Any):ScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((ScalaPolyRep[U,W])⇒Boolean):ScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):ScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):ScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#finalize():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#getClass():Class[_]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm#getTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getTerm(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):U"></a><a id="getTerm(Typ[Term]):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#getTerm(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">getTerm</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <a href="ScalaPolyRep$$ScalaPolyTerm.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">ScalaPolyTerm</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>, <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method ScalaPolyTerm in <a href="ScalaPolyRep$.html" class="extype" name="provingground.functionfinder.ScalaPolyRep">provingground.functionfinder.ScalaPolyRep</a>.
+            This conversion will take place only if an implicit value of type <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>, <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd><a href="ScalaPolyRep$$ScalaPolyTerm.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">ScalaPolyTerm</a></dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm#hott" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hott(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[U]"></a><a id="hott(Typ[Term]):Option[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#hott(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">hott</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <a href="ScalaPolyRep$$ScalaPolyTerm.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">ScalaPolyTerm</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>, <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method ScalaPolyTerm in <a href="ScalaPolyRep$.html" class="extype" name="provingground.functionfinder.ScalaPolyRep">provingground.functionfinder.ScalaPolyRep</a>.
+            This conversion will take place only if an implicit value of type <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>, <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd><a href="ScalaPolyRep$$ScalaPolyTerm.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">ScalaPolyTerm</a></dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#isInstanceOf[T0]:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#notify():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#notifyAll():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#toString():String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#wait():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#wait(x$1:Long):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.functionfinder.ScalaPolyRep#||" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="||(that:provingground.functionfinder.ScalaPolyRep[U,W]):provingground.functionfinder.ScalaPolyRep.OrScalaPolyRep[U,W]"></a><a id="||(ScalaPolyRep[U,W]):OrScalaPolyRep[U,W]"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#||(that:provingground.functionfinder.ScalaPolyRep[U,W]):provingground.functionfinder.ScalaPolyRep.OrScalaPolyRep[U,W]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>)</span><span class="result">: <a href="ScalaPolyRep$$OrScalaPolyRep.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.OrScalaPolyRep">OrScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]</span>
+      </span>
+      
+      
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ScalaPolyRep[U,W],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/functionfinder/ScalaPolyRep.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
+    </li>
+              </ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        <div class="conversion" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">
+              <h3>Inherited by implicit conversion ScalaPolyTerm from
+                <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to <a href="ScalaPolyRep$$ScalaPolyTerm.html" class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm">ScalaPolyTerm</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.ScalaPolyTerm.U">U</span>, <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.functionfinder.ScalaPolyRep">ScalaPolyRep</a>[<span class="extype" name="provingground.functionfinder.ScalaPolyRep.U">U</span>, <span class="extype" name="provingground.functionfinder.ScalaPolyRep.W">W</span>]]
+              </h3>
+            </div>
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>

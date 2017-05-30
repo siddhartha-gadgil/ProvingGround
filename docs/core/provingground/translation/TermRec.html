@@ -1,0 +1,1350 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../lib/index.js"></script>
+      <script type="text/javascript" src="../../index.js"></script>
+      <script type="text/javascript" src="../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html">
+              <span class="name">root</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="index.html#provingground" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
+              <span class="name">provingground</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="provingground.translation" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="translation"></a><a id="translation:translation"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#translation" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="Translation primarily using a functorial framework - see Translator$, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc." href="index.html">
+              <span class="name">translation</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="Translator.html" class="extype" name="provingground.translation.Translator">Translator</a> framework and helper typeclasses is <a href="Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>, several structures for
+concrete languages including our implementation of HoTT are in this package.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="CompositeFunctors.html" title=""></a>
+                        <a href="CompositeFunctors.html" title="">
+                          CompositeFunctors
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ConeRestriction.html" title="restriction of cone on functors
+"></a>
+                        <a href="ConeRestriction.html" title="restriction of cone on functors
+">
+                          ConeRestriction
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ContextTranslator$.html" title=""></a>
+                        <a class="trait" href="ContextTranslator.html" title="context dependent version of Translation!
+"></a>
+                        <a href="ContextTranslator.html" title="context dependent version of Translation!
+">
+                          ContextTranslator
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Domain.html" title=""></a>
+                        <a href="Domain.html" title="">
+                          Domain
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Equiv$.html" title=""></a>
+                        <a class="trait" href="Equiv.html" title=""></a>
+                        <a href="Equiv.html" title="">
+                          Equiv
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ExprApplnOps.html" title=""></a>
+                        <a href="ExprApplnOps.html" title="">
+                          ExprApplnOps
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExprLang$.html" title=""></a>
+                        <a class="trait" href="ExprLang.html" title="Abstraction (as a type class) of a language for mathematical expressions, i.e., of"></a>
+                        <a href="ExprLang.html" title="Abstraction (as a type class) of a language for mathematical expressions, i.e., of">
+                          ExprLang
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ExprPatterns.html" title=""></a>
+                        <a href="ExprPatterns.html" title="">
+                          ExprPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FansiFormat$.html" title=""></a>
+                        <a href="FansiFormat$.html" title="">
+                          FansiFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FansiShow$.html" title=""></a>
+                        <a class="trait" href="FansiShow.html" title=""></a>
+                        <a href="FansiShow.html" title="">
+                          FansiShow
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FansiTranslate$.html" title=""></a>
+                        <a href="FansiTranslate$.html" title="">
+                          FansiTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FoldedTerm.html" title=""></a>
+                        <a href="FoldedTerm.html" title="">
+                          FoldedTerm
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FormulaParser.html" title=""></a>
+                        <a href="FormulaParser.html" title="">
+                          FormulaParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FreeExpr$.html" title=""></a>
+                        <a class="trait" href="FreeExpr.html" title=""></a>
+                        <a href="FreeExpr.html" title="">
+                          FreeExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FreeExprHLPatterns$.html" title=""></a>
+                        <a href="FreeExprHLPatterns$.html" title="">
+                          FreeExprHLPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FreeExprPatterns$.html" title=""></a>
+                        <a href="FreeExprPatterns$.html" title="">
+                          FreeExprPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Functors$.html" title=""></a>
+                        <a href="Functors$.html" title="">
+                          Functors
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Inclusion$.html" title=""></a>
+                        <a class="trait" href="Inclusion.html" title="inclusion of functors
+"></a>
+                        <a href="Inclusion.html" title="inclusion of functors
+">
+                          Inclusion
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="JsonTranslate$.html" title=""></a>
+                        <a href="JsonTranslate$.html" title="">
+                          JsonTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LatexFormat$.html" title=""></a>
+                        <a href="LatexFormat$.html" title="">
+                          LatexFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LiteralParser$.html" title=""></a>
+                        <a class="trait" href="LiteralParser.html" title=""></a>
+                        <a href="LiteralParser.html" title="">
+                          LiteralParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MathReader$.html" title=""></a>
+                        <a class="trait" href="MathReader.html" title=""></a>
+                        <a href="MathReader.html" title="">
+                          MathReader
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MathWriter$.html" title=""></a>
+                        <a class="trait" href="MathWriter.html" title="Type-class for  writing to a document of type D in terms of expressions of type E."></a>
+                        <a href="MathWriter.html" title="Type-class for  writing to a document of type D in terms of expressions of type E.">
+                          MathWriter
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NestedDoc$.html" title=""></a>
+                        <a class="trait" href="NestedDoc.html" title=""></a>
+                        <a href="NestedDoc.html" title="">
+                          NestedDoc
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="NlpProse$.html" title="Stanford dependency trees and associated methods"></a>
+                        <a href="NlpProse$.html" title="Stanford dependency trees and associated methods">
+                          NlpProse
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="OptNat.html" title=""></a>
+                        <a href="OptNat.html" title="">
+                          OptNat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="OptRestriction$.html" title=""></a>
+                        <a class="trait" href="OptRestriction.html" title="restriction on optional functor
+"></a>
+                        <a href="OptRestriction.html" title="restriction on optional functor
+">
+                          OptRestriction
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="PrintFormat$.html" title=""></a>
+                        <a href="PrintFormat$.html" title="">
+                          PrintFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="QuasiInclHList.html" title=""></a>
+                        <a href="QuasiInclHList.html" title="">
+                          QuasiInclHList
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QuasiInclusion$.html" title=""></a>
+                        <a class="class" href="QuasiInclusion.html" title=""></a>
+                        <a href="QuasiInclusion.html" title="">
+                          QuasiInclusion
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QuasiProjection$.html" title=""></a>
+                        <a class="trait" href="QuasiProjection.html" title=""></a>
+                        <a href="QuasiProjection.html" title="">
+                          QuasiProjection
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RefineTerms$.html" title=""></a>
+                        <a href="RefineTerms$.html" title="">
+                          RefineTerms
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Scoped$.html" title=""></a>
+                        <a class="trait" href="Scoped.html" title=""></a>
+                        <a href="Scoped.html" title="">
+                          Scoped
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ShapeTree$.html" title=""></a>
+                        <a class="trait" href="ShapeTree.html" title=""></a>
+                        <a href="ShapeTree.html" title="">
+                          ShapeTree
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ShapeTreeFormat.html" title=""></a>
+                        <a href="ShapeTreeFormat.html" title="">
+                          ShapeTreeFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="SpecialTerms$.html" title=""></a>
+                        <a href="SpecialTerms$.html" title="">
+                          SpecialTerms
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Statement$.html" title=""></a>
+                        <a class="trait" href="Statement.html" title="A statement obtained from source which affects a document."></a>
+                        <a href="Statement.html" title="A statement obtained from source which affects a document.">
+                          Statement
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="StringParse$.html" title=""></a>
+                        <a href="StringParse$.html" title="">
+                          StringParse
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SubType.html" title="subtype relation between functors, giving inclusion and optional restriction
+"></a>
+                        <a href="SubType.html" title="subtype relation between functors, giving inclusion and optional restriction
+">
+                          SubType
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SubTypePattern$.html" title=""></a>
+                        <a class="class" href="SubTypePattern.html" title=""></a>
+                        <a href="SubTypePattern.html" title="">
+                          SubTypePattern
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TeXTranslate$.html" title=""></a>
+                        <a href="TeXTranslate$.html" title="">
+                          TeXTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermExpr$.html" title=""></a>
+                        <a class="trait" href="TermExpr.html" title=""></a>
+                        <a href="TermExpr.html" title="">
+                          TermExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermFormat$.html" title=""></a>
+                        <a href="TermFormat$.html" title="">
+                          TermFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermLang$.html" title=""></a>
+                        <a href="TermLang$.html" title="">
+                          TermLang
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermParser.html" title=""></a>
+                        <a href="TermParser.html" title="">
+                          TermParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermPatterns$.html" title=""></a>
+                        <a href="TermPatterns$.html" title="">
+                          TermPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="" title=""></a>
+                        <a href="" title="">
+                          TermRec
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermShapeTree$.html" title=""></a>
+                        <a href="TermShapeTree$.html" title="">
+                          TermShapeTree
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermToExpr$.html" title=""></a>
+                        <a class="class" href="TermToExpr.html" title=""></a>
+                        <a href="TermToExpr.html" title="">
+                          TermToExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TestTrait$.html" title=""></a>
+                        <a href="TestTrait$.html" title="">
+                          TestTrait
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TextToInt$.html" title="Converts prose numbers to Integers without checking for bad cases"></a>
+                        <a href="TextToInt$.html" title="Converts prose numbers to Integers without checking for bad cases">
+                          TextToInt
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Translator$.html" title="General functorial framework for translation."></a>
+                        <a class="trait" href="Translator.html" title="recursive  translation from one scala type to the other, allowing mixing in cases;
+the abstract method applies to leaves, and a concrete one is obtained by taking a diagonal."></a>
+                        <a href="Translator.html" title="recursive  translation from one scala type to the other, allowing mixing in cases;
+the abstract method applies to leaves, and a concrete one is obtained by taking a diagonal.">
+                          Translator
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Vocabulary.html" title=""></a>
+                        <a href="Vocabulary.html" title="">
+                          Vocabulary
+                        </a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="trait type">
+      <div id="definition">
+        <div class="big-circle trait">t</div>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.translation">translation</a></p>
+        <h1>TermRec<span class="permalink">
+      <a href="../../provingground/translation/TermRec.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        <h3><span class="morelinks"></span></h3>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">TermRec</span><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">
+              Known Subclasses
+            </span>
+            <div class="subClasses hiddenContent"><a href="FansiFormat$.html" class="extype" name="provingground.translation.FansiFormat">FansiFormat</a>, <a href="LatexFormat$.html" class="extype" name="provingground.translation.LatexFormat">LatexFormat</a>, <a href="PrintFormat$.html" class="extype" name="provingground.translation.PrintFormat">PrintFormat</a>, <a href="ShapeTreeFormat.html" class="extype" name="provingground.translation.ShapeTreeFormat">ShapeTreeFormat</a>, <a href="TermExpr$$expr.html" class="extype" name="provingground.translation.TermExpr.expr">expr</a>, <a href="TermShapeTree$.html" class="extype" name="provingground.translation.TermShapeTree">TermShapeTree</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 551.50 155.00" height="155pt" width="552pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="graph0"><polygon points="-4,4 -4,-151 547.5,-151 547.5,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.translation.TermRec (this trait)" xlink:href="#inheritance-diagram"><path d="M315.167,-86C315.167,-86 238.833,-86 238.833,-86 234.667,-86 230.5,-81.8333 230.5,-77.6667 230.5,-77.6667 230.5,-69.3333 230.5,-69.3333 230.5,-65.1667 234.667,-61 238.833,-61 238.833,-61 315.167,-61 315.167,-61 319.333,-61 323.5,-65.1667 323.5,-69.3333 323.5,-69.3333 323.5,-77.6667 323.5,-77.6667 323.5,-81.8333 319.333,-86 315.167,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="241" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="262" text-anchor="start">TermRec[U]</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.translation.FansiFormat" xlink:href="FansiFormat$.html#inheritance-diagram"><path d="M87.6667,-25C87.6667,-25 8.33333,-25 8.33333,-25 4.16667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.33333 0,-8.33333 0,-4.16667 4.16667,-0 8.33333,-0 8.33333,-0 87.6667,-0 87.6667,-0 91.8333,-0 96,-4.16667 96,-8.33333 96,-8.33333 96,-16.6667 96,-16.6667 96,-20.8333 91.8333,-25 87.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">FansiFormat</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="FansiFormat is a subtype of TermRec[U]"><path d="M225.049,-59.1152C185.255,-48.8627 130.919,-34.8634 92.9751,-25.0875" stroke="#d4d4d4" fill="none"></path><polygon points="224.913,-61.6101 232.303,-60.9841 226.136,-56.8651 224.913,-61.6101" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node object" id="graph1_2"><g id="a_object|graph1_2"><a xlink:title="provingground.translation.LatexFormat" xlink:href="LatexFormat$.html#inheritance-diagram"><path d="M203.167,-25C203.167,-25 122.833,-25 122.833,-25 118.667,-25 114.5,-20.8333 114.5,-16.6667 114.5,-16.6667 114.5,-8.33333 114.5,-8.33333 114.5,-4.16667 118.667,-0 122.833,-0 122.833,-0 203.167,-0 203.167,-0 207.333,-0 211.5,-4.16667 211.5,-8.33333 211.5,-8.33333 211.5,-16.6667 211.5,-16.6667 211.5,-20.8333 207.333,-25 203.167,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="125" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="146" text-anchor="start">LatexFormat</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="LatexFormat is a subtype of TermRec[U]"><path d="M248.403,-57.6998C228.965,-47.6396 203.606,-34.5155 185.584,-25.1884" stroke="#d4d4d4" fill="none"></path><polygon points="247.406,-59.9425 254.749,-60.9841 249.658,-55.5908 247.406,-59.9425" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node object" id="graph1_3"><g id="a_object|graph1_3"><a xlink:title="provingground.translation.PrintFormat" xlink:href="PrintFormat$.html#inheritance-diagram"><path d="M315.667,-25C315.667,-25 238.333,-25 238.333,-25 234.167,-25 230,-20.8333 230,-16.6667 230,-16.6667 230,-8.33333 230,-8.33333 230,-4.16667 234.167,-0 238.333,-0 238.333,-0 315.667,-0 315.667,-0 319.833,-0 324,-4.16667 324,-8.33333 324,-8.33333 324,-16.6667 324,-16.6667 324,-20.8333 319.833,-25 315.667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="240" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="261" text-anchor="start">PrintFormat</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="PrintFormat is a subtype of TermRec[U]"><path d="M277,-53.7603C277,-44.3675 277,-33.2882 277,-25.1323" stroke="#d4d4d4" fill="none"></path><polygon points="274.55,-53.8435 277,-60.8435 279.45,-53.8435 274.55,-53.8435" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.translation.ShapeTreeFormat" xlink:href="ShapeTreeFormat.html#inheritance-diagram"><path d="M453.667,-25C453.667,-25 350.333,-25 350.333,-25 346.167,-25 342,-20.8333 342,-16.6667 342,-16.6667 342,-8.33333 342,-8.33333 342,-4.16667 346.167,-0 350.333,-0 350.333,-0 453.667,-0 453.667,-0 457.833,-0 462,-4.16667 462,-8.33333 462,-8.33333 462,-16.6667 462,-16.6667 462,-20.8333 457.833,-25 453.667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="352" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="373" text-anchor="start">ShapeTreeFormat</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="ShapeTreeFormat is a subtype of TermRec[U]"><path d="M307.802,-57.9615C329.186,-47.8681 357.304,-34.5966 377.236,-25.1884" stroke="#d4d4d4" fill="none"></path><polygon points="306.683,-55.7806 301.398,-60.9841 308.774,-60.2118 306.683,-55.7806" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.translation.TermExpr.expr" xlink:href="TermExpr$$expr.html#inheritance-diagram"><path d="M535.167,-25C535.167,-25 488.833,-25 488.833,-25 484.667,-25 480.5,-20.8333 480.5,-16.6667 480.5,-16.6667 480.5,-8.33333 480.5,-8.33333 480.5,-4.16667 484.667,-0 488.833,-0 488.833,-0 535.167,-0 535.167,-0 539.333,-0 543.5,-4.16667 543.5,-8.33333 543.5,-8.33333 543.5,-16.6667 543.5,-16.6667 543.5,-20.8333 539.333,-25 535.167,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="491" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="512" text-anchor="start">expr</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="expr is a subtype of TermRec[U]"><path d="M330.861,-59.8218C369.861,-50.5176 423.798,-37.3947 471,-25 474.003,-24.2114 477.124,-23.372 480.244,-22.5198" stroke="#d4d4d4" fill="none"></path><polygon points="329.999,-57.5083 323.757,-61.5136 331.135,-62.275 329.999,-57.5083" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="scala.AnyRef"><path d="M305.167,-147C305.167,-147 248.833,-147 248.833,-147 244.667,-147 240.5,-142.833 240.5,-138.667 240.5,-138.667 240.5,-130.333 240.5,-130.333 240.5,-126.167 244.667,-122 248.833,-122 248.833,-122 305.167,-122 305.167,-122 309.333,-122 313.5,-126.167 313.5,-130.333 313.5,-130.333 313.5,-138.667 313.5,-138.667 313.5,-142.833 309.333,-147 305.167,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="251" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="272" text-anchor="start">AnyRef</text></a></g></g><!-- node6&#45;&gt;node0 --><g class="edge inheritance" id="graph1_6_0"><g id="a_inheritance|graph1_6_0"><a xlink:title="TermRec[U] is a subtype of AnyRef"><path d="M277,-114.76C277,-105.367 277,-94.2882 277,-86.1323" stroke="#d4d4d4" fill="none"></path><polygon points="274.55,-114.843 277,-121.843 279.45,-114.844 274.55,-114.843" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
+        
+
+      <div id="mbrsel">
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
+            <ol>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
+            </ol>
+          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.translation.TermRec"><span>TermRec</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        <div class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="provingground.translation.TermRec#appln" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="appln(func:U,arg:U):U"></a><a id="appln(U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#appln(func:U,arg:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appln</span><span class="params">(<span name="func">func: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="arg">arg: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#arrow" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="arrow(dom:U,codom:U):U"></a><a id="arrow(U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#arrow(dom:U,codom:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">arrow</span><span class="params">(<span name="dom">dom: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="codom">codom: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#equality" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="equality(dom:U,lhs:U,rhs:U):U"></a><a id="equality(U,U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#equality(dom:U,lhs:U,rhs:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equality</span><span class="params">(<span name="dom">dom: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="lhs">lhs: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="rhs">rhs: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#fromString" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="fromString(str:String)(implicittyp:provingground.HoTT.Typ[provingground.HoTT.Term]):U"></a><a id="fromString(String)(Typ[Term]):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#fromString(str:String)(implicittyp:provingground.HoTT.Typ[provingground.HoTT.Term]):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromString</span><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#lambda" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="lambda(variable:U,typ:U,value:U):U"></a><a id="lambda(U,U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#lambda(variable:U,typ:U,value:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambda</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="typ">typ: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="value">value: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#pair" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="pair(first:U,second:U):U"></a><a id="pair(U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#pair(first:U,second:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="second">second: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#pi" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="pi(fibre:U):U"></a><a id="pi(U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#pi(fibre:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pi</span><span class="params">(<span name="fibre">fibre: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#plus" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="plus(first:U,second:U):U"></a><a id="plus(U,U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#plus(first:U,second:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plus</span><span class="params">(<span name="first">first: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>, <span name="second">second: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#sigma" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="sigma(fibre:U):U"></a><a id="sigma(U):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#sigma(fibre:U):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sigma</span><span class="params">(<span name="fibre">fibre: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#specialTerms" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="specialTerms:PartialFunction[provingground.HoTT.Term,U]"></a><a id="specialTerms:PartialFunction[Term,U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#specialTerms:PartialFunction[provingground.HoTT.Term,U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">specialTerms</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.translation.TermRec.U">U</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#symbobj" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="symbobj(term:provingground.HoTT.SymbObj[provingground.HoTT.Term]):U"></a><a id="symbobj(SymbObj[Term]):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#symbobj(term:provingground.HoTT.SymbObj[provingground.HoTT.Term]):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbobj</span><span class="params">(<span name="term">term: <a href="../HoTT$$SymbObj.html" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#symbolic" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="symbolic(name:provingground.HoTT.AnySym,typ:provingground.HoTT.Typ[provingground.HoTT.Term]):U"></a><a id="symbolic(AnySym,Typ[Term]):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#symbolic(name:provingground.HoTT.AnySym,typ:provingground.HoTT.Typ[provingground.HoTT.Term]):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbolic</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#symbtyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="symbtyp(term:provingground.HoTT.SymbTyp):U"></a><a id="symbtyp(SymbTyp):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#symbtyp(term:provingground.HoTT.SymbTyp):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbtyp</span><span class="params">(<span name="term">term: <a href="../HoTT$$SymbTyp.html" class="extype" name="provingground.HoTT.SymbTyp">SymbTyp</a></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermRec#univ" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="univ(n:Int):U"></a><a id="univ(Int):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#univ(n:Int):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">univ</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
+
+        <div class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol>
+                <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#!=(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html###():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(TermRec[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#==(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.translation.TermRec#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply(term:provingground.HoTT.Term):U"></a><a id="apply(Term):U"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#apply(term:provingground.HoTT.Term):U" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="term">term: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="provingground.translation.TermRec.U">U</span></span>
+      </span>
+      
+      
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#asInstanceOf[T0]:T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a><a id="clone():AnyRef"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#clone():Object" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((TermRec[U])⇒Boolean,⇒Any):TermRec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((TermRec[U])⇒Boolean):TermRec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):TermRec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):TermRec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#finalize():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#getClass():Class[_]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#isInstanceOf[T0]:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#notify():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#notifyAll():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#toString():String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#wait():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#wait(x$1:Long):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(TermRec[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermRec.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
+    </li>
+              </ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="provingground.translation.TermRec.U">U</span>]]
+              </h3>
+            </div>
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>

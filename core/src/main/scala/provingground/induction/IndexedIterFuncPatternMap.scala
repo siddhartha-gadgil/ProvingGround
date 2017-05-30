@@ -6,6 +6,9 @@ import scala.language.existentials
 
 import shapeless._
 
+/**
+ * Indexed version of [[IterFuncPtnMap]]
+ */
 abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
                                      Fb <: Term with Subs[Fb],
                                      Index <: HList: Subst,
@@ -122,6 +125,7 @@ object IndexedIterFuncPtnMap {
       */
     def inducedDep(f: IDF) = family.depRestrict(f, index)
   }
+
 
   case class IndexedFuncIterPtnMap[TT <: Term with Subs[TT],
                                    V <: Term with Subs[V],
@@ -303,6 +307,9 @@ object IndexedIterFuncPtnMap {
   }
 }
 
+/**
+ * indexed version of [[IterFuncShape]]
+ */
 abstract class IndexedIterFuncShape[H <: Term with Subs[H],
                                     F <: Term with Subs[F],
                                     Fb <: Term with Subs[Fb],
@@ -479,6 +486,9 @@ object IndexedIterFuncShape {
   }
 }
 
+/**
+ * bridge between [[IndexedIterFuncShape]] and [[IndexedIterFuncPtnMap]]
+ */
 abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
                                         Fb <: Term with Subs[Fb],
                                         Index <: HList: Subst,

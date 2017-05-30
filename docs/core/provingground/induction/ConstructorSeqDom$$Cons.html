@@ -1,0 +1,929 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../lib/index.js"></script>
+      <script type="text/javascript" src="../../index.js"></script>
+      <script type="text/javascript" src="../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html">
+              <span class="name">root</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="index.html#provingground" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
+              <span class="name">provingground</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="induction"></a><a id="induction:induction"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#induction" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="index.html">
+              <span class="name">induction</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
+recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
+is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
+and <a href="ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
+scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
+To make these types visible, some type level calculations using  implicits are done, giving traits <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
+and <a href="ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
+single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ConstructorSeqDom"></a><a id="ConstructorSeqDom:ConstructorSeqDom"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/index.html#ConstructorSeqDom" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ConstructorSeqDom$.html">
+              <span class="name">ConstructorSeqDom</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
+    </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="" title="prepending an introduction rule, given name and shape."></a>
+                        <a href="" title="prepending an introduction rule, given name and shape.">
+                          Cons
+                        </a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="ConstructorSeqDom$$Empty.html" title="Empty sequence of introduction rules
+"></a>
+                        <a href="ConstructorSeqDom$$Empty.html" title="Empty sequence of introduction rules
+">
+                          Empty
+                        </a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="class type">
+      <div id="definition">
+        <div class="big-circle class">c</div>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.induction">induction</a>.<a href="ConstructorSeqDom$.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></p>
+        <h1>Cons<span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        <h3><span class="morelinks"></span></h3>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Cons</span><span class="tparams">[<span name="TSS">TSS &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="HShape">HShape &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>]</span>, <span name="ConstructorType">ConstructorType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>]</span>, <span name="TIntros">TIntros &lt;: <span class="extype" name="shapeless.HList">HList</span></span>]</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="pattern">pattern: <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>]</span>, <span name="tail">tail: <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>)</span><span class="result"> extends <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>], <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>prepending an introduction rule, given <code>name</code> and <code>shape</code>.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>], <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 555.00 118.00" height="118pt" width="555pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="graph0"><polygon points="-4,4 -4,-114 551,-114 551,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.induction.ConstructorSeqDom.Cons (this class)" xlink:href="#inheritance-diagram"><path d="M514.667,-49C514.667,-49 279.333,-49 279.333,-49 275.167,-49 271,-44.8333 271,-40.6667 271,-40.6667 271,-32.3333 271,-32.3333 271,-28.1667 275.167,-24 279.333,-24 279.333,-24 514.667,-24 514.667,-24 518.833,-24 523,-28.1667 523,-32.3333 523,-32.3333 523,-40.6667 523,-40.6667 523,-44.8333 518.833,-49 514.667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="281" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="302" text-anchor="start">Cons[TSS, HShape, H, ConstructorType, TIntros]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.induction.ConstructorSeqDom" xlink:href="ConstructorSeqDom.html#inheritance-diagram"><path d="M331.667,-110C331.667,-110 8.33333,-110 8.33333,-110 4.16667,-110 0,-105.833 0,-101.667 0,-101.667 0,-93.3333 0,-93.3333 0,-89.1667 4.16667,-85 8.33333,-85 8.33333,-85 331.667,-85 331.667,-85 335.833,-85 340,-89.1667 340,-93.3333 340,-93.3333 340,-101.667 340,-101.667 340,-105.833 335.833,-110 331.667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31" text-anchor="start">ConstructorSeqDom[::[HShape, TSS], H, ::[ConstructorType, TIntros]]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="Cons[TSS, HShape, H, ConstructorType, TIntros] is a subtype of ConstructorSeqDom[::[HShape, TSS], H, ::[ConstructorType, TIntros]]"><path d="M221.497,-83.1152C260.943,-72.8627 314.805,-58.8634 352.418,-49.0875" stroke="#d4d4d4" fill="none"></path><polygon points="220.465,-80.852 214.307,-84.9841 221.698,-85.5944 220.465,-80.852" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M427.167,-110C427.167,-110 366.833,-110 366.833,-110 362.667,-110 358.5,-105.833 358.5,-101.667 358.5,-101.667 358.5,-93.3333 358.5,-93.3333 358.5,-89.1667 362.667,-85 366.833,-85 366.833,-85 427.167,-85 427.167,-85 431.333,-85 435.5,-89.1667 435.5,-93.3333 435.5,-93.3333 435.5,-101.667 435.5,-101.667 435.5,-105.833 431.333,-110 427.167,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="369" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="390" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="Cons[TSS, HShape, H, ConstructorType, TIntros] is a subtype of Product"><path d="M397,-77.7603C397,-68.3675 397,-57.2882 397,-49.1323" stroke="#d4d4d4" fill="none"></path><polygon points="394.55,-77.8435 397,-84.8435 399.45,-77.8435 394.55,-77.8435" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M538.167,-110C538.167,-110 461.833,-110 461.833,-110 457.667,-110 453.5,-105.833 453.5,-101.667 453.5,-101.667 453.5,-93.3333 453.5,-93.3333 453.5,-89.1667 457.667,-85 461.833,-85 461.833,-85 538.167,-85 538.167,-85 542.333,-85 546.5,-89.1667 546.5,-93.3333 546.5,-93.3333 546.5,-101.667 546.5,-101.667 546.5,-105.833 542.333,-110 538.167,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="464" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="485" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="Cons[TSS, HShape, H, ConstructorType, TIntros] is a subtype of Serializable"><path d="M473.453,-81.2936C455.951,-71.268 433.378,-58.338 417.307,-49.1323" stroke="#d4d4d4" fill="none"></path><polygon points="472.359,-83.4901 479.651,-84.8435 474.794,-79.2382 472.359,-83.4901" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
+        
+
+      <div id="mbrsel">
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
+            <ol>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
+            </ol>
+          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.induction.ConstructorSeqDom.Cons"><span>Cons</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.induction.ConstructorSeqDom"><span>ConstructorSeqDom</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="provingground.induction.ConstructorSeqDom.Cons#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(name:provingground.HoTT.AnySym,pattern:provingground.induction.ConstructorShape[HShape,H,ConstructorType],tail:provingground.induction.ConstructorSeqDom[TSS,H,TIntros]):provingground.induction.ConstructorSeqDom.Cons[TSS,HShape,H,ConstructorType,TIntros]"></a><a id="&lt;init&gt;:Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#&lt;init&gt;(name:provingground.HoTT.AnySym,pattern:provingground.induction.ConstructorShape[HShape,H,ConstructorType],tail:provingground.induction.ConstructorSeqDom[TSS,H,TIntros]):provingground.induction.ConstructorSeqDom.Cons[TSS,HShape,H,ConstructorType,TIntros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Cons</span><span class="params">(<span name="name">name: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="pattern">pattern: <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>]</span>, <span name="tail">tail: <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>)</span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div class="values members">
+              <h3>Value Members</h3>
+              <ol>
+                <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#!=(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html###():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Cons[TSS,HShape,H,ConstructorType,TIntros],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#==(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#asInstanceOf[T0]:T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a><a id="clone():AnyRef"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#clone():Object" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Cons[TSS,HShape,H,ConstructorType,TIntros])⇒Boolean,⇒Any):Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Cons[TSS,HShape,H,ConstructorType,TIntros])⇒Boolean):Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#finalize():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#getClass():Class[_]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom#induc" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="induc[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H],Xs:provingground.HoTT.Func[H,provingground.HoTT.Typ[C]]):InducTypeforSome{typeInducType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducType]}"></a><a id="induc[C&lt;:TermwithSubs[C]](Typ[H],Func[H,Typ[C]]):InducTypeforSome{typeInducType&lt;:TermwithSubs[InducType]}"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#induc[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H],Xs:provingground.HoTT.Func[H,provingground.HoTT.Typ[C]]):InducTypeforSome{typeInducType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducType]}" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">induc</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.induc.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>]</span>, <span name="Xs">Xs: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.induc.C">C</span>]]</span>)</span><span class="result">: <span class="extype" name="provingground.induction.ConstructorSeqDom.induc.InducType">InducType</span> forSome {type InducType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.induc.InducType">InducType</span>]}</span>
+      </span>
+      
+      <p class="shortcomment cmt">existential typed <code>ind_W, X</code>, used by the method <code>indE</code> of <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>existential typed <code>ind_W, X</code>, used by the method <code>indE</code> of <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#intros" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="intros(typ:provingground.HoTT.Typ[H]):_1.Objwithprovingground.HoTT.Subs[_1.Obj]::TIntrosforSome{val_1:provingground.HoTT.Typ[ConstructorType]}"></a><a id="intros(Typ[H]):::[intros._1.type.ObjwithSubs[intros._1.type.Obj],TIntros]forSome{val_1:Typ[ConstructorType]}"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#intros(typ:provingground.HoTT.Typ[H]):_1.Objwithprovingground.HoTT.Subs[_1.Obj]::TIntrosforSome{val_1:provingground.HoTT.Typ[ConstructorType]}" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">intros</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>]</span>)</span><span class="result">: <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.HoTT.Typ.Obj">intros._1.type.Obj</span> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.Obj">intros._1.type.Obj</span>], <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] forSome {val _1: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>]}</span>
+      </span>
+      
+      <p class="shortcomment cmt">returns introduction rules, given an inductive type.</p><div class="fullcomment"><div class="comment cmt"><p>returns introduction rules, given an inductive type.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a> → <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#isInstanceOf[T0]:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#mapped" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="mapped[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H]):provingground.induction.ConstructorSeqMap[C,H,RecType,InducType,TIntros]forSome{typeRecType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecType];typeInducType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducType];typeTIntros&lt;:shapeless.HList}"></a><a id="mapped[C&lt;:TermwithSubs[C]](Typ[H]):ConstructorSeqMap[C,H,RecType,InducType,TIntros]forSome{typeRecType&lt;:TermwithSubs[RecType],typeInducType&lt;:TermwithSubs[InducType],typeTIntros&lt;:HList}"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#mapped[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H]):provingground.induction.ConstructorSeqMap[C,H,RecType,InducType,TIntros]forSome{typeRecType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecType];typeInducType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[InducType];typeTIntros&lt;:shapeless.HList}" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapped</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>]</span>)</span><span class="result">: <a href="ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.C">C</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.RecType">RecType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.InducType">InducType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.TIntros">TIntros</span>] forSome {type RecType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.RecType">RecType</span>], type InducType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.mapped.InducType">InducType</span>], type TIntros &lt;: <span class="extype" name="shapeless.HList">HList</span>}</span>
+      </span>
+      
+      <p class="shortcomment cmt">given a codomain, returns a <code>mapped</code> version, i.e.</p><div class="fullcomment"><div class="comment cmt"><p>given a codomain, returns a <code>mapped</code> version, i.e. one with all the types needed for recursion and induction.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a> → <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#name" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="name:provingground.HoTT.AnySym"></a><a id="name:AnySym"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#name:provingground.HoTT.AnySym" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">name</span><span class="result">: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      
+      
+    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#notify():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#notifyAll():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#pattern" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pattern:provingground.induction.ConstructorShape[HShape,H,ConstructorType]"></a><a id="pattern:ConstructorShape[HShape,H,ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#pattern:provingground.induction.ConstructorShape[HShape,H,ConstructorType]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pattern</span><span class="result">: <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.induction.ConstructorSeqDom#rec" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="rec[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H],X:provingground.HoTT.Typ[C]):RecTypeforSome{typeRecType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecType]}"></a><a id="rec[C&lt;:TermwithSubs[C]](Typ[H],Typ[C]):RecTypeforSome{typeRecType&lt;:TermwithSubs[RecType]}"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#rec[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](W:provingground.HoTT.Typ[H],X:provingground.HoTT.Typ[C]):RecTypeforSome{typeRecType&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[RecType]}" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rec</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.rec.C">C</span>]</span>]</span><span class="params">(<span name="W">W: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>]</span>, <span name="X">X: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.rec.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="provingground.induction.ConstructorSeqDom.rec.RecType">RecType</span> forSome {type RecType &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.rec.RecType">RecType</span>]}</span>
+      </span>
+      
+      <p class="shortcomment cmt">existential typed <code>rec_W, X</code>, used by the method <code>recE</code> of <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>existential typed <code>rec_W, X</code>, used by the method <code>recE</code> of <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ConstructorSeqDom.Cons[TSS,HShape,H,ConstructorType,TIntros]"></a><a id="subs(Term,Term):Cons[TSS,HShape,H,ConstructorType,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ConstructorSeqDom.Cons[TSS,HShape,H,ConstructorType,TIntros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a> → <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.induction.ConstructorSeqDom.Cons#tail" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tail:provingground.induction.ConstructorSeqDom[TSS,H,TIntros]"></a><a id="tail:ConstructorSeqDom[TSS,H,TIntros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#tail:provingground.induction.ConstructorSeqDom[TSS,H,TIntros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tail</span><span class="result">: <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]</span>
+      </span>
+      
+      
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#wait():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#wait(x$1:Long):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Cons[TSS,HShape,H,ConstructorType,TIntros],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorSeqDom$$Cons.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
+    </li>
+              </ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.induction.ConstructorSeqDom">
+              <h3>Inherited from <a href="ConstructorSeqDom.html" class="extype" name="provingground.induction.ConstructorSeqDom">ConstructorSeqDom</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>], <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorSeqDom.Cons">Cons</a>[<span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TSS">TSS</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.HShape">HShape</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.H">H</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.ConstructorType">ConstructorType</span>, <span class="extype" name="provingground.induction.ConstructorSeqDom.Cons.TIntros">TIntros</span>]]
+              </h3>
+            </div>
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>

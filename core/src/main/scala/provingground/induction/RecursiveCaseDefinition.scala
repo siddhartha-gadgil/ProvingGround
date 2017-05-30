@@ -99,7 +99,7 @@ object RecursiveDefinition {
 import Subst.SubstOp
 
 /**
- * indexed version of [[RecursiveDefinitio]]
+ * indexed version of [[RecursiveDefinition]]
  */
 abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
