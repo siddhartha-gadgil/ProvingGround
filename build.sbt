@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.1"
 
-val ammV = "0.9.0"
+val ammV = "0.9.4"
 
 scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -12,7 +12,7 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-// libraryDependencies += "com.lihaoyi" % "ammonite" % "0.9.0" % "test" cross CrossVersion.full
+// libraryDependencies += "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full
 //
 // sourceGenerators in Test += Def.task {
 //   val file = (sourceManaged in Test).value / "amm.scala"
