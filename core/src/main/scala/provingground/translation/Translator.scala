@@ -8,9 +8,78 @@ import cats.implicits._
 import cats._
 
 /**
- * recursive  translation from one scala type to the other, allowing mixing in cases;
- * the abstract method applies to leaves, and a concrete one is obtained by taking a diagonal.
- */
+  * Translator from an input I to an output O, designed to be built recursively.
+  *
+  *
+  * ==Translation by Splitting and joining==
+  *
+  * The most import class of translators are constructed from
+  *
+  * * a split map I => Option[X], where X is obtained from I by taking Tuples, Lists and sub-types
+  *
+  * * a join map Y => Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I,
+  * e.g. X = (I, I) and Y = (O, O).
+  *
+  * However X and Y may involve taking sub-types independently of each other.
+  *
+  * Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).
+  *
+  * ==Combinations, Basic Translators==
+  *
+  * Translators are built by combining others by OrElse, starting with basic translators specified by a function I => Option[O].
+  * One can instead start with an empty translator.
+  *
+  * Note that we can restrict the domain or extend the codomain of a translator by
+  * just using it as a function I => Option[O]. However this should be done after making all OrElse combinations, as the
+  * wrapped translator does not combine recursively.
+  *
+  * A typical example of usage is as below
+  * {{{
+scala> import provingground._
+import provingground._
+
+scala> import translation._, Translator._
+import translation._
+import Translator._
+
+scala> import cats._, cats.implicits._
+import cats._
+import cats.implicits._
+
+scala> class A
+defined class A
+
+scala> case class B(x: A, y: A) extends A
+defined class B
+
+scala> case class C(x: A, y: A) extends A
+defined class C
+
+scala> case object D extends A
+defined object D
+
+scala> import Functors._
+import Functors._
+
+scala> val Bpat = Pattern.partial[A, II]{case B(x, y) => (x, y)}
+Bpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.II] = provingground.translation.Translator$Pattern@5ba695d
+
+scala> val Dpat = Pattern.partial[A, Un]{case D => ()}
+Dpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.Un] = provingground.translation.Translator$Pattern@2f5c9798
+
+scala> case object E extends A
+defined object E
+
+scala> val trans = Translator.Empty[A, A] || Bpat >>> {case (x, y) => C(x,y)} || Dpat >>> {case _ => E}
+trans: provingground.translation.Translator.OrElse[A,A] = <function1>
+
+scala> trans(B(B(D, D), B(B(D, D), D)))
+res0: Option[A] = Some(C(C(E,E),C(C(E,E),E)))
+
+scala> trans(C(D, D))
+res1: Option[A] = None
+}}}
+  */
 trait Translator[I, O] extends (I => Option[O]) { self =>
   def apply(inp: I) = recTranslate(self)(inp)
 
@@ -322,12 +391,13 @@ object OptRestriction {
 }
 
 /**
- * subtype relation between functors, giving inclusion and optional restriction
+ * subtype relation between functors, giving inclusion and optional restriction,
+ * explicit, not depending on scala type checking
  */
 trait SubType[X[_], Y[_]] extends Inclusion[X, Y] with OptRestriction[X, Y]
 
 /**
- * context dependent version of [[Translation!]]
+ * context dependent version of [[Translator]]
  */
 trait ContextTranslator[I, O, X[_], Ctx[_, _]]
     extends (Ctx[I, O] => X[I] => Option[X[O]]) { self =>
