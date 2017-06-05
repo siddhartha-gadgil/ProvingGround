@@ -86,7 +86,7 @@ object JsFunc {
   def jsToBuild[I, F[_]: Traverse](name: String, header: String = "intro")(
       build: F[I] => I)(implicit jsF: JsFunc[F]): Translator[Js.Value, I] = {
     val pat = Pattern[Js.Value, F] { (js) =>
-      if (js(header) == name) Some(jsF.decode(js("tree"))) else None
+      if (js(header) == Js.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
     pat >>> build
   }
@@ -105,6 +105,7 @@ object TermJson {
   implicit val travNamed: Traverse[Named] = traversePair[S, Id]
 
   val termToJson =
+    toJs(universe)("universe") ||
     toJs(formalAppln)("appln") ||
       toJs(lambdaTriple)("lambda") ||
       toJs(sigmaTriple)("sigma") ||
@@ -122,12 +123,17 @@ object TermJson {
       toJs(inducFunc)("inductive-function") ||
       toJs(symbolic)("symbolic") ||
       toJs(firstIncl)("first-inclusion") ||
-      toJs(secondIncl)("second-inclusion")
+      toJs(secondIncl)("second-inclusion") ||
+      toJs(identityTyp)("equality")
 
   val jsonToTermBase =
+    jsToBuild[Term, N]("universe")((n) => Universe(n)) ||
     jsToBuild[Term, II]("appln") { case (func, arg) => fold(func)(arg) } ||
       jsToBuild[Term, III]("lambda") {
-        case ((variable, typ), value) => variable :-> value
+        case ((variable, typ), value) => variable :~> value
+      } ||
+      jsToBuild[Term, III]("equality") {
+        case ((dom, lhs), rhs) => lhs =:= rhs
       } ||
       jsToBuild[Term, III]("pi") {
         case ((variable, typ), value: Typ[u]) => variable ~>: value
@@ -138,17 +144,20 @@ object TermJson {
       jsToBuild[Term, II]("product-type") {
         case (x: Typ[u], y: Typ[v]) => ProdTyp(x, y)
       } ||
+      jsToBuild[Term, II]("plus-type") {
+        case (x: Typ[u], y: Typ[v]) => PlusTyp(x, y)
+      } ||
       jsToBuild[Term, II]("pair") { case (x, y) => mkPair(x, y) } ||
       jsToBuild[Term, II]("func-type") {
         case (x: Typ[u], y: Typ[v]) => FuncTyp(x, y)
       } ||
-      jsToBuild[Term, II]("star") { (_) =>
+      jsToBuild[Term, Un]("star") { (_) =>
         Star
       } ||
-      jsToBuild[Term, II]("unit-type") { (_) =>
+      jsToBuild[Term, Un]("unit-type") { (_) =>
         Unit
       } ||
-      jsToBuild[Term, II]("zero-type") { (_) =>
+      jsToBuild[Term, Un]("zero-type") { (_) =>
         Zero
       } ||
       jsToBuild[Term, II]("first-inclusion") {
