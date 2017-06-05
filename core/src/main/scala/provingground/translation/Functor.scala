@@ -396,30 +396,4 @@ object Functors extends CompositeFunctors {
 
   type Pickled = Coded[String]
 
-  // Tests:
-  object Tests {
-    val ll = implicitly[Functor[LL]]
-
-    val li = implicitly[Functor[IL]]
-
-    val ii = implicitly[Functor[II]]
-
-    //  val iii  : Functor[III]= tuple3[Id, Id, Id]
-
-    val iii = implicitly[Functor[III]]
-
-//    val cff = implicitly[Functor[Coded]]
-
-    val nn = implicitly[Functor[N]]
-
-    val ss = implicitly[Functor[S]]
-
-    val xx: IL[Int] = (1, List(1, 2))
-
-    val a = liftMap(List(1, 2, 3), (n: Int) => n + 1)
-
-    val b = liftMap[Int, Int, LL]((List(1), List(2)), (n: Int) => n + 1)
-
-    val c = liftMap[Int, Int, IL]((3, List(1, 2)), (n: Int) => n + 1)
-  }
 }
