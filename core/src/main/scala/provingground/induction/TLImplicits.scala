@@ -9,7 +9,9 @@ import shapeless._
 /**
  * implicits for constructing inductive types
  */
-object TLImplicits {
+object TLImplicits extends InductionImplicits
+
+trait InductionImplicits {
   import IterFuncShape._
 
   import ConstructorShape._

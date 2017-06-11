@@ -18,7 +18,7 @@ trait Subst[A] {
   def terms(a: A): Vector[Term] // reusing this to list terms in an HList
 }
 
-object Subst {
+object Subst extends SubstImplicits{
   implicit def termSubst[U <: Term with Subs[U]]: Subst[U] =
     new Subst[U] {
       def subst(a: U)(x: Term, y: Term) = a.replace(x, y)
@@ -54,11 +54,15 @@ object Subst {
   //        implicitly[Subst[V]].subst(a.tail)(x, y))
   //   }
 
+}
+
+trait SubstImplicits{
   implicit class SubstOp[A: Subst](a: A) {
     def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
 
     def terms = implicitly[Subst[A]].terms(a)
   }
+
 }
 
 object TestS { implicitly[Subst[Term :: HNil]] }
