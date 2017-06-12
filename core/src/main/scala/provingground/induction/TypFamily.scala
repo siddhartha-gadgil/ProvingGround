@@ -132,7 +132,14 @@ object TypFamilyPtn {
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       depCod match {
-        case tp: Typ[u] => tp
+        case tf: Func[a, b] =>
+          val x = tf.dom.Var
+          tf(x) match {
+            case tp: Typ[u] => tp
+            case t : Term =>
+              import translation.FansiShow._
+              throw new IllegalArgumentException(s"expected type but got ${t.fansi}")
+            }
       }
 
   }
