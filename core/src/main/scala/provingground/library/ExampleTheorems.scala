@@ -86,5 +86,5 @@ object LocalConstImpliesConst {
 
   val inductor = NatInd.induc(claim)
 
-  val pf = inductor(n :~> step) !: thm
+  val pf = inductor(base)(n :~> step) !: thm
 }

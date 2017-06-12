@@ -78,7 +78,7 @@ object JsFunc {
       build: F[I] => Option[I])(
       implicit jsF: JsFunc[F]): Translator[Js.Value, I] = {
     val pat = Pattern[Js.Value, F] { (js) =>
-      if (js(header) == name) Some(jsF.decode(js("tree"))) else None
+      if (js(header) == Js.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
     pat >> build
   }
@@ -124,7 +124,27 @@ object TermJson {
       toJs(symbolic)("symbolic") ||
       toJs(firstIncl)("first-inclusion") ||
       toJs(secondIncl)("second-inclusion") ||
-      toJs(identityTyp)("equality")
+      toJs(identityTyp)("equality") ||
+      toJs(refl)("reflexivity")
+
+  import induction._
+
+  def jsonToTerm(
+    inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) =>
+      None
+  ) =
+    jsonToTermBase ||
+      jsToOpt[Term, IIV]("recursive-function"){
+        case (x ,(y ,v)) =>
+          // println(s"building recursive type $x codomain $y data $v")
+          buildRecDef(inds)(x, (y,v))
+        case z =>
+                // println(s"strange pattern $z")
+                ???
+      } ||
+      jsToOpt[Term, IIV]("inductive-function"){
+        case (x ,(y ,v)) => buildIndDef(inds)(x, (y,v))
+      }
 
   val jsonToTermBase =
     jsToBuild[Term, N]("universe")((n) => Universe(n)) ||
@@ -151,6 +171,9 @@ object TermJson {
       jsToBuild[Term, II]("func-type") {
         case (x: Typ[u], y: Typ[v]) => FuncTyp(x, y)
       } ||
+      jsToBuild[Term, II]("reflexivity") {
+        case (dom: Typ[u], value: Term) => Refl(dom, value)
+      } ||
       jsToBuild[Term, Un]("star") { (_) =>
         Star
       } ||
@@ -168,6 +191,7 @@ object TermJson {
       } ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (a, (b, v)) =>
+          println(s"building base recursive type $a codomain $b data $v")
           val fn = buildRecDef()
           fn(a, (b, v))
       } ||
@@ -178,13 +202,19 @@ object TermJson {
       } ||
       jsToOpt[Term, VIIV]("indexed-recursive-function") {
         case (w, (a, (b, v))) =>
+          println(s"building indexed recursive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn = buildIndRecDef()
-          fn(w, (a, (b, v)))
+          val res = fn(w, (a, (b, v)))
+          println(s"result: $res")
+          res
       } ||
       jsToOpt[Term, VIIV]("indexed-inductive-function") {
         case (w, (a, (b, v))) =>
+          println(s"building indexed inductive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn = buildIndIndDef()
-          fn(w, (a, (b, v)))
+          val res = fn(w, (a, (b, v)))
+          println(s"result: $res")
+          res
       } ||
       jsToBuild[Term, Named]("symbolic") {
         case (name, tp: Typ[u]) => name :: tp
