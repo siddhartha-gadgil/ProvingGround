@@ -117,11 +117,13 @@ class InductionSpecTL extends FlatSpec {
   val a  = "a" :: A
   val a1 = "a1" :: A
 
+  val ListA = "List(A)" :: Type
+  val ListAInd =
+    ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
+
+
   "Recursion function size from List(A) to Nat" should "be defined properly" in {
 
-    val ListA = "List(A)" :: Type
-    val ListAInd =
-      ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
     val nil :: cons :: HNil = ListAInd.intros
 
     val recLN = ListAInd.rec(Nat)

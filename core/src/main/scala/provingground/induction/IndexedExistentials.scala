@@ -31,9 +31,13 @@ sealed trait TypFamilyExst {
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
     TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)
 
-  def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
-    TypFamilyExst(FuncTypFamily(dom, pattern), variable :-> W)
-
+  def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
+    val fmly = W match {
+      case FormalAppln(f, x) if x == variable => f.asInstanceOf[Func[TT, Fb]]
+      case _ =>  variable :-> W
+    }
+    TypFamilyExst(FuncTypFamily(dom, pattern), fmly)
+  }
 // Inner existentials
 
   trait IndexedIterFuncExst {
@@ -124,6 +128,7 @@ sealed trait TypFamilyExst {
         .getOrElse {
           cnstTyp match {
             case ft: FuncTyp[u, v] if (ft.dom.indepOf(W)) =>
+              // println(s"apparently ${ft.dom} is independent of $W")
               ft.dom ->>: getIndexedConstructorShape(ft.codom)
             case pd: PiDefn[u, v] if (pd.domain.indepOf(W)) =>
               pd.variable ~>>: getIndexedConstructorShape(pd.value)
@@ -212,6 +217,8 @@ object TypFamilyExst {
       val x = g.dom.Var
       x ~>: getFamily(g(x))
   }
+
+
 
   def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](
       w: Fb,
