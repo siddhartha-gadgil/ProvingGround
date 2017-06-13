@@ -60,4 +60,22 @@ class  JsonSpec extends FlatSpec{
     assert(checkBase(Zero))
     assert(checkBase(One))
   }
+
+  import library._, Nats._, Bools._, Vecs._
+
+  def roundTrip(t: Term) =
+    termToJson(t).flatMap(
+      jsonToTerm(Map(Nat ->NatInd, Bool -> BoolInd).lift, Map((Vec : Term) -> VecInd).lift)
+    )
+
+  def check(t: Term) = roundTrip(t) == Some(t)
+
+  import Fold._
+
+  "Serialization with induction" should "work correctly" in {
+    val double2 = roundTrip(double).get
+    assert(double2(N(1)) == N(2))
+
+    // assert(check(DoubleEven.pf))
+  }
 }

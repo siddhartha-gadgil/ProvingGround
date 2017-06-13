@@ -176,9 +176,9 @@ sealed trait TypFamilyExst {
     }
 
     def getIndexedConstructorSeq(
-        intros: List[Term]): IndexedConstructorSeqExst = {
+        intros: Vector[Term]): IndexedConstructorSeqExst = {
       intros match {
-        case List() => empty
+        case Vector() => empty
         case l =>
           val x    = l.head
           val ys   = l.tail
@@ -222,12 +222,12 @@ object TypFamilyExst {
 
   def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](
       w: Fb,
-      intros: List[Term]) = {
+      intros: Vector[Term]) = {
     getFamily(w).IndexedConstructorSeqExst.getIndexedConstructorSeq(intros)
   }
 
-  def getTerms: HList => List[Term] = {
-    case HNil                 => List()
-    case (head: Term) :: tail => head :: getTerms(tail)
-  }
+  // def getTerms: HList => Vector[Term] = {
+  //   case HNil                 => Vector()
+  //   case (head: Term) :: tail => head +: getTerms(tail)
+  // }
 }

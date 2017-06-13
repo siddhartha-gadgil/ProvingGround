@@ -131,19 +131,22 @@ object TermJson {
 
   def jsonToTerm(
     inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) =>
+      None,
+    indexedInds : Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] = (_) =>
       None
   ) =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function"){
         case (x ,(y ,v)) =>
-          // println(s"building recursive type $x codomain $y data $v")
-          buildRecDef(inds)(x, (y,v))
-        case z =>
-                // println(s"strange pattern $z")
-                ???
-      } ||
+          buildRecDef(inds)(x, (y,v))      } ||
       jsToOpt[Term, IIV]("inductive-function"){
         case (x ,(y ,v)) => buildIndDef(inds)(x, (y,v))
+      } ||
+      jsToOpt[Term, VIIV]("indexed-recursive-function"){
+        case (w, (x, (y, v))) => buildIndRecDef(indexedInds)(w, (x, (y, v)))
+      } ||
+      jsToOpt[Term, VIIV]("indexed-inductive-function"){
+        case (w, (x, (y, v))) => buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
   val jsonToTermBase =
@@ -191,7 +194,7 @@ object TermJson {
       } ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (a, (b, v)) =>
-          println(s"building base recursive type $a codomain $b data $v")
+          // println(s"building base recursive type $a codomain $b data $v")
           val fn = buildRecDef()
           fn(a, (b, v))
       } ||
@@ -202,7 +205,7 @@ object TermJson {
       } ||
       jsToOpt[Term, VIIV]("indexed-recursive-function") {
         case (w, (a, (b, v))) =>
-          println(s"building indexed recursive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
+          // println(s"building indexed recursive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn = buildIndRecDef()
           val res = fn(w, (a, (b, v)))
           println(s"result: $res")
@@ -210,10 +213,10 @@ object TermJson {
       } ||
       jsToOpt[Term, VIIV]("indexed-inductive-function") {
         case (w, (a, (b, v))) =>
-          println(s"building indexed inductive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
+          // println(s"building indexed inductive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn = buildIndIndDef()
           val res = fn(w, (a, (b, v)))
-          println(s"result: $res")
+          // println(s"result: $res")
           res
       } ||
       jsToBuild[Term, Named]("symbolic") {

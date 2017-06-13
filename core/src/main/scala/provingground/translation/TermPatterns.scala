@@ -354,15 +354,9 @@ object TermPatterns {
       val rf = idt.induc(
         depcodom
           .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
-      println(s"got ind $rf")
+      // println(s"got ind $rf")
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>
-      // println(
-      //   s"index: $index\n (size ${index.size}) dom: $dom\n depcodom: $depcodom\n data: $data (size ${data.size})\n")
-      // data match {
-      //   case Vector(fn: Func[u, v]) => println(s"got function $fn")
-      //   case Vector(fn: FuncLike[u, v]) => println(s"got dependent function $fn, fails")
-      // }
       inds(dom) flatMap ((cs) =>
                            applyAll(Some(cs.inducE(depcodom)), data ++ index))
   }
