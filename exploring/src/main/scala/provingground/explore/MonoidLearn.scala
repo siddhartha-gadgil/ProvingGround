@@ -20,10 +20,10 @@ object MonoidLearn {
   viewTypes ++= Set(l =:= r, leftId.typ, (b ~>: (op(r)(b) =:= b)), idUnique)
 }
 
-object MonoidLearnRun extends App {
+object MonoidLearnRun  {
   import ammonite.ops._
 
-  val file = pwd / "tmp" / "blah"
+  val file = home / "tmp" / "blah"
 
   write.append(file, "reached here")
 

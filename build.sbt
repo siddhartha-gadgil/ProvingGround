@@ -12,6 +12,12 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+javaOptions in Universal ++= Seq(
+    // -J params will be added as jvm parameters
+    "-J-Xmx4G",
+    "-J-Xms512m"
+  )
+
 // libraryDependencies += "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full
 //
 // sourceGenerators in Test += Def.task {
@@ -253,6 +259,7 @@ lazy val exploring = project
             libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
+  .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
 lazy val nlp = (project in file("nlp"))
   .settings(name := "ProvingGround-NLP")

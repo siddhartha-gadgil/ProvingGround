@@ -599,10 +599,10 @@ case class TheoremFeedback(fd: FD[Term],
 object FineDeducerStep{
   case class Param(
   vars: Vector[Term] = Vector(),
-  size: Int = 1000,
-  derTotalSize: Int = 1000,
-  epsilon: Double = 0.2,
-  inertia: Double = 0.3,
+  size: Int = 10000,
+  derTotalSize: Int = 10000,
+  epsilon: Double = 0.1,
+  inertia: Double = 0.9,
   scale: Double = 1.0,
   thmScale: Double = 0.3,
   thmTarget: Double = 0.2)
