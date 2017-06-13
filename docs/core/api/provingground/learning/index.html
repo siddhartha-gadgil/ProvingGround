@@ -235,14 +235,14 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
-                        <a class="class" href="FineDeducer.html" title=""></a>
-                        <a href="FineDeducer.html" title="">
+                        <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">
                           FineDeducer
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducerStep$.html" title=""></a>
-                        <a class="class" href="FineDeducerStep.html" title=""></a>
-                        <a href="FineDeducerStep.html" title="">
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">
                           FineDeducerStep
                         </a>
                       </li><li class="current-entities indented2">
@@ -331,8 +331,12 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TheoremFeedback.html" title=""></a>
-                        <a href="TheoremFeedback.html" title="">
+                        <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+"></a>
+                        <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+">
                           TheoremFeedback
                         </a>
                       </li><li class="current-entities indented2">
@@ -593,7 +597,7 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       
-    </li><li name="provingground.learning.FineDeducer" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.FineDeducer" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="FineDeducerextendsProductwithSerializable"></a><a id="FineDeducer:FineDeducer"></a>
       <span class="permalink">
       <a href="../../provingground/learning/index.html#FineDeducerextendsProductwithSerializable" title="Permalink">
@@ -605,12 +609,16 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="FineDeducer.html">
+        <a title="A refined deducer, i.e., evolution of terms and derivatives of evolution." href="FineDeducer.html">
               <span class="name">FineDeducer</span>
             </a><span class="params">(<span name="applnWeight">applnWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lambdaWeight">lambdaWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piWeight">piWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="unifyWeight">unifyWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">A refined deducer, i.e., evolution of terms and derivatives of evolution.</p><div class="fullcomment"><div class="comment cmt"><p>A refined deducer, i.e., evolution of terms and derivatives of evolution.
+Various evolutions are defined mutually recursively - of functions, of types,
+of terms of a type, of type families and of all terms.
+Derivatives are defined mutually recursively with the evolutions.</p><p>This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
+</p></div><dl class="paramcmts block"><dt class="param">varWeight</dt><dd class="cmt"><p>weight of a variable inside a lambda</p></dd></dl></div>
     </li><li name="provingground.learning.FineDeducerStep" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FineDeducerStep[X[_]]extendsAnyRef"></a><a id="FineDeducerStep[X[_]]:FineDeducerStep[X]"></a>
       <span class="permalink">
@@ -623,12 +631,12 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="FineDeducerStep.html">
+        <a title="Monad based step for deducer, to be used, for example, with Monix Task" href="FineDeducerStep.html">
               <span class="name">FineDeducerStep</span>
             </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">Monad based step for deducer, to be used, for example, with Monix <code>Task</code></p>
     </li><li name="provingground.learning.MonixSamples" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="MonixSamplesextendsSamples[monix.eval.Task]"></a><a id="MonixSamples:MonixSamples"></a>
       <span class="permalink">
@@ -857,12 +865,16 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="TheoremFeedback.html">
+        <a title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+" href="TheoremFeedback.html">
               <span class="name">TheoremFeedback</span>
             </a><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tfd">tfd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol">Vector()</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="thmScale">thmScale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="thmTarget">thmTarget: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.2</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+</p>
     </li><li name="provingground.learning.ThmEntropies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ThmEntropiesextendsProductwithSerializable"></a><a id="ThmEntropies:ThmEntropies"></a>
       <span class="permalink">
@@ -1090,8 +1102,9 @@ but the adjoint regards truncated distributions as the tangent space, and restri
       </span>
       
       <p class="shortcomment cmt">A refined deducer, i.e., evolution of terms and derivatives of evolution.</p><div class="fullcomment"><div class="comment cmt"><p>A refined deducer, i.e., evolution of terms and derivatives of evolution.
-Various evolutions are defined mutually recursively - of functions, of types, of terms of a type and of all terms.
-Derivatives are defined mutually recursively with the evolutions.
+Various evolutions are defined mutually recursively - of functions, of types,
+of terms of a type and of all terms.
+Derivatives are defined mutually recursively with the evolutions.</p><p>This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
 </p></div></div>
     </li><li name="provingground.learning.FineDeducerStep" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FineDeducerStep"></a><a id="FineDeducerStep:FineDeducerStep"></a>

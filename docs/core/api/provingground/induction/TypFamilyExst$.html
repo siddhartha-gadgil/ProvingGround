@@ -328,6 +328,12 @@ May have Pi-types instead of function types.">
                           IndexedRecursiveDefinition
                         </a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="InductionImplicits.html" title=""></a>
+                        <a href="InductionImplicits.html" title="">
+                          InductionImplicits
+                        </a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="InductiveDefinition$.html" title=""></a>
                         <a class="trait" href="InductiveDefinition.html" title="inductively defined dependent function, to be built by mixing in cases,
 defaults to a formal application by itself
@@ -376,6 +382,12 @@ making into a vector of Term rides piggyback on this."></a>
                         <a href="Subst.html" title="allows substitution of a Term by another, chiefly subtypes of Term and HLists of these;
 making into a vector of Term rides piggyback on this.">
                           Subst
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SubstImplicits.html" title=""></a>
+                        <a href="SubstImplicits.html" title="">
+                          SubstImplicits
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
@@ -442,6 +454,12 @@ eg shows that FuncTyp[A, B] is a subtype of Typ[Func[A, B]]">
                         <a class="trait" href="WeakImplicit.html" title=""></a>
                         <a href="WeakImplicit.html" title="">
                           WeakImplicit
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="package$$implicits$.html" title=""></a>
+                        <a href="package$$implicits$.html" title="">
+                          implicits
                         </a>
                       </li>
               </ul>
@@ -719,9 +737,9 @@ eg shows that FuncTyp[A, B] is a subtype of Typ[Func[A, B]]">
       
       
     </li><li name="provingground.induction.TypFamilyExst#getIndexedConstructorSeq" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getIndexedConstructorSeq[Fb&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fb]](w:Fb,intros:List[provingground.HoTT.Term]):provingground.induction.TypFamilyExst#IndexedConstructorSeqExst"></a><a id="getIndexedConstructorSeq[Fb&lt;:TermwithSubs[Fb]](Fb,List[Term]):IndexedConstructorSeqExst"></a>
+      <a id="getIndexedConstructorSeq[Fb&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fb]](w:Fb,intros:Vector[provingground.HoTT.Term]):provingground.induction.TypFamilyExst#IndexedConstructorSeqExst"></a><a id="getIndexedConstructorSeq[Fb&lt;:TermwithSubs[Fb]](Fb,Vector[Term]):IndexedConstructorSeqExst"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/TypFamilyExst$.html#getIndexedConstructorSeq[Fb&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fb]](w:Fb,intros:List[provingground.HoTT.Term]):provingground.induction.TypFamilyExst#IndexedConstructorSeqExst" title="Permalink">
+      <a href="../../provingground/induction/TypFamilyExst$.html#getIndexedConstructorSeq[Fb&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[Fb]](w:Fb,intros:Vector[provingground.HoTT.Term]):provingground.induction.TypFamilyExst#IndexedConstructorSeqExst" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -730,23 +748,7 @@ eg shows that FuncTyp[A, B] is a subtype of Typ[Func[A, B]]">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">getIndexedConstructorSeq</span><span class="tparams">[<span name="Fb">Fb &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.TypFamilyExst.getIndexedConstructorSeq.Fb">Fb</span>]</span>]</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.induction.TypFamilyExst.getIndexedConstructorSeq.Fb">Fb</span></span>, <span name="intros">intros: <span class="extype" name="scala.List">List</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="TypFamilyExst$IndexedConstructorSeqExst.html" class="extype" name="provingground.induction.TypFamilyExst.IndexedConstructorSeqExst">IndexedConstructorSeqExst</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.induction.TypFamilyExst#getTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="getTerms:shapeless.HList=&gt;List[provingground.HoTT.Term]"></a><a id="getTerms:(HList)⇒List[Term]"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/TypFamilyExst$.html#getTerms:shapeless.HList=&gt;List[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getTerms</span><span class="result">: (<span class="extype" name="shapeless.HList">HList</span>) ⇒ <span class="extype" name="scala.List">List</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">getIndexedConstructorSeq</span><span class="tparams">[<span name="Fb">Fb &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.TypFamilyExst.getIndexedConstructorSeq.Fb">Fb</span>]</span>]</span><span class="params">(<span name="w">w: <span class="extype" name="provingground.induction.TypFamilyExst.getIndexedConstructorSeq.Fb">Fb</span></span>, <span name="intros">intros: <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="TypFamilyExst$IndexedConstructorSeqExst.html" class="extype" name="provingground.induction.TypFamilyExst.IndexedConstructorSeqExst">IndexedConstructorSeqExst</a></span>
       </span>
       
       

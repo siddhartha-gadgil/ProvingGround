@@ -151,14 +151,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
-                        <a class="class" href="FineDeducer.html" title=""></a>
-                        <a href="FineDeducer.html" title="">
+                        <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">
                           FineDeducer
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="" title=""></a>
-                        <a class="class" href="FineDeducerStep.html" title=""></a>
-                        <a href="FineDeducerStep.html" title="">
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">
                           FineDeducerStep
                         </a>
                       </li><li class="current-entities indented2">
@@ -247,8 +247,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TheoremFeedback.html" title=""></a>
-                        <a href="TheoremFeedback.html" title="">
+                        <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+"></a>
+                        <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+">
                           TheoremFeedback
                         </a>
                       </li><li class="current-entities indented2">
@@ -664,7 +668,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">obserEv</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="fd">fd: <a href="FineDeducer.html" class="extype" name="provingground.learning.FineDeducer">FineDeducer</a> = <span class="symbol"><span class="name"><a href="FineDeducer$.html">new FineDeducer()</a></span></span></span>, <span name="param">param: <a href="FineDeducerStep$$Param.html" class="extype" name="provingground.learning.FineDeducerStep.Param">Param</a> = <span class="symbol">Param()</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ms">ms: <a href="MonixSamples.html" class="extype" name="provingground.learning.MonixSamples">MonixSamples</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<a href="FineDeducerStep.html" class="extype" name="provingground.learning.FineDeducerStep">FineDeducerStep</a>[<span class="extype" name="monix.eval.Task">Task</span>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Monix observable of the full evolution for the distribution of terms,
+for debugging etc.</p>
     </li><li name="provingground.learning.FineDeducerStep#observable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="observable(p:provingground.FiniteDistribution[provingground.HoTT.Term],fd:provingground.learning.FineDeducer,param:provingground.learning.FineDeducerStep.Param)(implicitms:provingground.learning.MonixSamples):monix.reactive.Observable[provingground.FiniteDistribution[provingground.HoTT.Term]]"></a><a id="observable(FiniteDistribution[Term],FineDeducer,Param)(MonixSamples):Observable[FiniteDistribution[Term]]"></a>
       <span class="permalink">
@@ -680,7 +685,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">observable</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="fd">fd: <a href="FineDeducer.html" class="extype" name="provingground.learning.FineDeducer">FineDeducer</a> = <span class="symbol"><span class="name"><a href="FineDeducer$.html">new FineDeducer()</a></span></span></span>, <span name="param">param: <a href="FineDeducerStep$$Param.html" class="extype" name="provingground.learning.FineDeducerStep.Param">Param</a> = <span class="symbol">Param()</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ms">ms: <a href="MonixSamples.html" class="extype" name="provingground.learning.MonixSamples">MonixSamples</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Monix observable for the  evolution of a distribution of terms
+</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">

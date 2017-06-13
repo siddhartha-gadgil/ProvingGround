@@ -151,14 +151,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
-                        <a class="class" href="FineDeducer.html" title=""></a>
-                        <a href="FineDeducer.html" title="">
+                        <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">
                           FineDeducer
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducerStep$.html" title=""></a>
-                        <a class="class" href="FineDeducerStep.html" title=""></a>
-                        <a href="FineDeducerStep.html" title="">
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">
                           FineDeducerStep
                         </a>
                       </li><li class="current-entities indented2">
@@ -247,8 +247,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TheoremFeedback.html" title=""></a>
-                        <a href="TheoremFeedback.html" title="">
+                        <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+"></a>
+                        <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+">
                           TheoremFeedback
                         </a>
                       </li><li class="current-entities indented2">
@@ -336,8 +340,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A refined deducer, i.e., evolution of terms and derivatives of evolution.
-Various evolutions are defined mutually recursively - of functions, of types, of terms of a type and of all terms.
-Derivatives are defined mutually recursively with the evolutions.
+Various evolutions are defined mutually recursively - of functions, of types,
+of terms of a type and of all terms.
+Derivatives are defined mutually recursively with the evolutions.</p><p>This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
 </p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
@@ -634,7 +639,7 @@ Derivatives are defined mutually recursively with the evolutions.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.learning.FineDeducer#lambdaEv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.FineDeducer#lambdaEv" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambdaEv(varweight:Double)(typEvolve:=&gt;provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term],valueEvolve:=&gt;provingground.HoTT.Term=&gt;(provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term]))(p:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="lambdaEv(Double)(⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[Term],⇒(Term)⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[Term])(FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/FineDeducer$.html#lambdaEv(varweight:Double)(typEvolve:=&gt;provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term],valueEvolve:=&gt;provingground.HoTT.Term=&gt;(provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term]))(p:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]" title="Permalink">
@@ -649,7 +654,11 @@ Derivatives are defined mutually recursively with the evolutions.
         <span class="name">lambdaEv</span><span class="params">(<span name="varweight">varweight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="typEvolve">typEvolve: ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="valueEvolve">valueEvolve: ⇒ (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">a lambda-island for evolution:
+</p><div class="fullcomment"><div class="comment cmt"><p>a lambda-island for evolution:
+</p></div><dl class="paramcmts block"><dt class="param">typEvolve</dt><dd class="cmt"><p>evolution of types, from which a variable is chosen</p></dd><dt class="param">valueEvolve</dt><dd class="cmt"><p>evolution of terms, given initial distribution</p></dd><dt class="param">p</dt><dd class="cmt"><p>initial distribution
+A type is picked at random, a variable <code>x</code> with this type is generated and mixed in with weight <code>varWeight</code>
+into the  initial distribution <code>p</code>. The evolved distribution is mapped by <code>x :-&gt; _</code>.</p></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -698,7 +707,7 @@ Derivatives are defined mutually recursively with the evolutions.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.learning.FineDeducer#piEv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.FineDeducer#piEv" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="piEv(varweight:Double)(typEvolve:=&gt;provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term],valueEvolve:=&gt;provingground.HoTT.Term=&gt;(provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term]))(p:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="piEv(Double)(⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[Term],⇒(Term)⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[Term])(FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/FineDeducer$.html#piEv(varweight:Double)(typEvolve:=&gt;provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term],valueEvolve:=&gt;provingground.HoTT.Term=&gt;(provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term]))(p:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]" title="Permalink">
@@ -713,7 +722,11 @@ Derivatives are defined mutually recursively with the evolutions.
         <span class="name">piEv</span><span class="params">(<span name="varweight">varweight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="typEvolve">typEvolve: ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="valueEvolve">valueEvolve: ⇒ (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">a lambda-island for evolution:
+</p><div class="fullcomment"><div class="comment cmt"><p>a lambda-island for evolution:
+</p></div><dl class="paramcmts block"><dt class="param">typEvolve</dt><dd class="cmt"><p>evolution of types, from which a variable is chosen</p></dd><dt class="param">valueEvolve</dt><dd class="cmt"><p>evolution of terms, given initial distribution</p></dd><dt class="param">p</dt><dd class="cmt"><p>initial distribution
+A type is picked at random, a variable <code>x</code> with this type is generated and mixed in with weight <code>varWeight</code>
+into the  initial distribution <code>p</code>. The evolved distribution is mapped by <code>pi(x)(_)</code>.</p></dd></dl></div>
     </li><li name="provingground.learning.FineDeducer#simpleApplnEv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="simpleApplnEv(funcEvolve:=&gt;provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.learning.FineDeducer.SomeFunc],argEvolve:=&gt;provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;(provingground.FiniteDistribution[provingground.HoTT.Term]=&gt;provingground.ProbabilityDistribution[provingground.HoTT.Term]))(p:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[vforSome{typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}]"></a><a id="simpleApplnEv(⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[SomeFunc],⇒(Typ[Term])⇒(FiniteDistribution[Term])⇒ProbabilityDistribution[Term])(FiniteDistribution[Term]):ProbabilityDistribution[vforSome{typev&lt;:TermwithSubs[v]}]"></a>
       <span class="permalink">
@@ -729,7 +742,8 @@ Derivatives are defined mutually recursively with the evolutions.
         <span class="name">simpleApplnEv</span><span class="params">(<span name="funcEvolve">funcEvolve: ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>, <span name="argEvolve">argEvolve: ⇒ (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.learning.FineDeducer.simpleApplnEv.$anonfun.v">v</span> forSome {type v &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.learning.FineDeducer.simpleApplnEv.$anonfun.v">v</span>]}]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution by function application,
+to be used by choosing function at random and then argument conditionally in its domain.</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -825,7 +839,8 @@ Derivatives are defined mutually recursively with the evolutions.
         <span class="name">unifApplnEv</span><span class="params">(<span name="funcEvolve">funcEvolve: ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>, <span name="argEvolve">argEvolve: ⇒ (<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="p">p: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution by function application with  unification
+</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">

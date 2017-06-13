@@ -328,6 +328,12 @@ May have Pi-types instead of function types.">
                           IndexedRecursiveDefinition
                         </a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="InductionImplicits.html" title=""></a>
+                        <a href="InductionImplicits.html" title="">
+                          InductionImplicits
+                        </a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="InductiveDefinition$.html" title=""></a>
                         <a class="trait" href="" title="inductively defined dependent function, to be built by mixing in cases,
 defaults to a formal application by itself
@@ -376,6 +382,12 @@ making into a vector of Term rides piggyback on this."></a>
                         <a href="Subst.html" title="allows substitution of a Term by another, chiefly subtypes of Term and HLists of these;
 making into a vector of Term rides piggyback on this.">
                           Subst
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SubstImplicits.html" title=""></a>
+                        <a href="SubstImplicits.html" title="">
+                          SubstImplicits
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
@@ -442,6 +454,12 @@ eg shows that FuncTyp[A, B] is a subtype of Typ[Func[A, B]]">
                         <a class="trait" href="WeakImplicit.html" title=""></a>
                         <a href="WeakImplicit.html" title="">
                           WeakImplicit
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="package$$implicits$.html" title=""></a>
+                        <a href="package$$implicits$.html" title="">
+                          implicits
                         </a>
                       </li>
               </ul>
@@ -1014,10 +1032,10 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+    </li><li name="provingground.HoTT.InducFuncLike#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(that:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/InductiveDefinition.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/InductiveDefinition.html#equals(that:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1026,10 +1044,10 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span><span class="params">(<span name="that">that: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -1075,6 +1093,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.HoTT.InducFuncLike#fullData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fullData:(provingground.HoTT.Typ[W],W=&gt;provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])"></a><a id="fullData:(Typ[H],(H)⇒Typ[C],Vector[Term])"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/InductiveDefinition.html#fullData:(provingground.HoTT.Typ[W],W=&gt;provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fullData</span><span class="result">: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.InductiveDefinition.H">H</span>], (<span class="extype" name="provingground.induction.InductiveDefinition.H">H</span>) ⇒ <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.InductiveDefinition.C">C</span>], <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -1091,7 +1125,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.InducFuncLike#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
       <a href="../../provingground/induction/InductiveDefinition.html#hashCode():Int" title="Permalink">
@@ -1106,7 +1140,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a><a id="indepOf(Term):Boolean"></a>
       <span class="permalink">

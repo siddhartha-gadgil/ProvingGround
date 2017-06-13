@@ -151,14 +151,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="class" href="" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">
                           FineDeducer
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducerStep$.html" title=""></a>
-                        <a class="class" href="FineDeducerStep.html" title=""></a>
-                        <a href="FineDeducerStep.html" title="">
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">
                           FineDeducerStep
                         </a>
                       </li><li class="current-entities indented2">
@@ -247,8 +247,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TheoremFeedback.html" title=""></a>
-                        <a href="TheoremFeedback.html" title="">
+                        <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+"></a>
+                        <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+">
                           TheoremFeedback
                         </a>
                       </li><li class="current-entities indented2">
@@ -335,7 +339,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.learning.FineDeducer">FineDeducer</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A refined deducer, i.e., evolution of terms and derivatives of evolution.
+Various evolutions are defined mutually recursively - of functions, of types,
+of terms of a type, of type families and of all terms.
+Derivatives are defined mutually recursively with the evolutions.</p><p>This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
+</p></div><dl class="paramcmts block"><dt class="param">varWeight</dt><dd class="cmt"><p>weight of a variable inside a lambda</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.learning.FineDeducer">FineDeducer</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -400,7 +408,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.learning.FineDeducer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.learning.FineDeducer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(applnWeight:Double,lambdaWeight:Double,piWeight:Double,varWeight:Double,unifyWeight:Double):provingground.learning.FineDeducer"></a><a id="&lt;init&gt;:FineDeducer"></a>
       <span class="permalink">
       <a href="../../provingground/learning/FineDeducer.html#&lt;init&gt;(applnWeight:Double,lambdaWeight:Double,piWeight:Double,varWeight:Double,unifyWeight:Double):provingground.learning.FineDeducer" title="Permalink">
@@ -415,7 +423,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">FineDeducer</span><span class="params">(<span name="applnWeight">applnWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lambdaWeight">lambdaWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piWeight">piWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="unifyWeight">unifyWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">varWeight</dt><dd class="cmt"><p>weight of a variable inside a lambda</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -532,7 +540,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DevolvFuncs</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="FineDeducer$.html#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">derivative of evolution of functions (adding components)
+</p>
     </li><li name="provingground.learning.FineDeducer#DevolvTypFamilies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DevolvTypFamilies(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.learning.FineDeducer.SomeFunc]"></a><a id="DevolvTypFamilies(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[SomeFunc]"></a>
       <span class="permalink">
@@ -548,7 +557,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DevolvTypFamilies</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="FineDeducer$.html#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">derivative of evolution of type families (adding components)
+</p>
     </li><li name="provingground.learning.FineDeducer#Devolve" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Devolve(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="Devolve(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -564,7 +574,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">Devolve</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">derivative of evolution <a href="#evolve(fd:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]" class="extmbr" name="provingground.learning.FineDeducer#evolve">evolve</a> of terms
+</p>
     </li><li name="provingground.learning.FineDeducer#DevolveTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DevolveTyp(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DevolveTyp(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -580,7 +591,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DevolveTyp</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">derivative of evolution of types
+</p>
     </li><li name="provingground.learning.FineDeducer#DevolveWithType" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DevolveWithType(tp:provingground.HoTT.Typ[provingground.HoTT.Term])(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DevolveWithType(Typ[Term])(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -596,7 +608,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DevolveWithType</span><span class="params">(<span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">derivative of evolution of terms with a fixed type
+</p>
     </li><li name="provingground.learning.FineDeducer#DlambdaVal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DlambdaVal(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DlambdaVal(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -612,7 +625,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DlambdaVal</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of lambda islands with resepect to the value exported
+</p>
     </li><li name="provingground.learning.FineDeducer#DlambdaVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DlambdaVar(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DlambdaVar(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -628,7 +642,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DlambdaVar</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of lambda islands with resepect to the weight  of the variable (really the type)
+</p>
     </li><li name="provingground.learning.FineDeducer#DpiVal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DpiVal(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DpiVal(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -644,7 +659,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DpiVal</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of pi islands with resepect to the value exported
+</p>
     </li><li name="provingground.learning.FineDeducer#DpiVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DpiVar(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DpiVar(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -660,7 +676,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DpiVar</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of pi islands with resepect to the weight  of the variable (really the type)
+</p>
     </li><li name="provingground.learning.FineDeducer#DsimpleApplnArg" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DsimpleApplnArg(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DsimpleApplnArg(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -676,7 +693,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DsimpleApplnArg</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of function application without unification
+with respect to arguments.</p>
     </li><li name="provingground.learning.FineDeducer#DsimpleApplnFunc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DsimpleApplnFunc(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DsimpleApplnFunc(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -692,7 +710,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DsimpleApplnFunc</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of function application (without unification) with respect to functions
+</p>
     </li><li name="provingground.learning.FineDeducer#DsimpleApplnTypArg" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DsimpleApplnTypArg(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DsimpleApplnTypArg(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -708,7 +727,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DsimpleApplnTypArg</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of function application without unification
+for type families with respect to arguments.</p>
     </li><li name="provingground.learning.FineDeducer#DsimpleApplnTypFamilies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DsimpleApplnTypFamilies(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="DsimpleApplnTypFamilies(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -724,7 +744,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DsimpleApplnTypFamilies</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of function application without unification for type families with respect to type families
+</p>
     </li><li name="provingground.learning.FineDeducer#DunifApplnArg" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DunifApplnArg(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DunifApplnArg(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -740,7 +761,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DunifApplnArg</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of unified function application with respect to arguments.</p>
     </li><li name="provingground.learning.FineDeducer#DunifApplnFunc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DunifApplnFunc(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DunifApplnFunc(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -756,7 +777,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DunifApplnFunc</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of unified function application with respect to the function term.</p>
     </li><li name="provingground.learning.FineDeducer#DunifApplnTypArg" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DunifApplnTypArg(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DunifApplnTypArg(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -772,7 +793,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DunifApplnTypArg</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of unified function application for type families with respect to arguments
+</p>
     </li><li name="provingground.learning.FineDeducer#DunifApplnTypFamilies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DunifApplnTypFamilies(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tang:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[Option[provingground.HoTT.Term]]"></a><a id="DunifApplnTypFamilies(FiniteDistribution[Term],FiniteDistribution[Term]):ProbabilityDistribution[Option[Term]]"></a>
       <span class="permalink">
@@ -788,7 +810,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">DunifApplnTypFamilies</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tang">tang: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">partial derivative of unified function application for type families with respect to type families
+</p>
     </li><li name="provingground.learning.FineDeducer#applnWeight" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="applnWeight:Double"></a>
       <span class="permalink">
@@ -954,7 +977,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">evolvFuncs</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="FineDeducer$.html#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution of functions, used for function application.</p>
     </li><li name="provingground.learning.FineDeducer#evolvTypFamilies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolvTypFamilies(fd:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.learning.FineDeducer.SomeFunc]"></a><a id="evolvTypFamilies(FiniteDistribution[Term]):ProbabilityDistribution[SomeFunc]"></a>
       <span class="permalink">
@@ -970,7 +993,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">evolvTypFamilies</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="FineDeducer$.html#SomeFunc=provingground.HoTT.FuncLike[u,v]forSome{typeu&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[u];typev&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[v]}" class="extmbr" name="provingground.learning.FineDeducer.SomeFunc">SomeFunc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution of type families, to be used for function application to generate types.</p>
     </li><li name="provingground.learning.FineDeducer#evolve" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolve(fd:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="evolve(FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -986,7 +1009,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">evolve</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution of terms, by combining various operations and islands
+</p>
     </li><li name="provingground.learning.FineDeducer#evolveTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolveTyp(fd:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="evolveTyp(FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -1002,7 +1026,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">evolveTyp</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution of types
+</p>
     </li><li name="provingground.learning.FineDeducer#evolveWithTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolveWithTyp(tp:provingground.HoTT.Typ[provingground.HoTT.Term])(fd:provingground.FiniteDistribution[provingground.HoTT.Term]):provingground.ProbabilityDistribution[provingground.HoTT.Term]"></a><a id="evolveWithTyp(Typ[Term])(FiniteDistribution[Term]):ProbabilityDistribution[Term]"></a>
       <span class="permalink">
@@ -1018,7 +1043,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">evolveWithTyp</span><span class="params">(<span name="tp">tp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">evolution of a term with a given type
+</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -1223,7 +1249,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">varScaled</span><span class="result">: <a href="" class="extype" name="provingground.learning.FineDeducer">FineDeducer</a></span>
       </span>
       
-      
+      <p class="shortcomment cmt">FineDeducer with <code>varWeight</code> rescaled so that the weight of different variables does not depend on the order
+in which they were introduced in lambda or pi islands.</p>
     </li><li name="provingground.learning.FineDeducer#varWeight" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="varWeight:Double"></a>
       <span class="permalink">

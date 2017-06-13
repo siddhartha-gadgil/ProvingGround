@@ -151,14 +151,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
-                        <a class="class" href="FineDeducer.html" title=""></a>
-                        <a href="FineDeducer.html" title="">
+                        <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">
                           FineDeducer
                         </a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducerStep$.html" title=""></a>
-                        <a class="class" href="FineDeducerStep.html" title=""></a>
-                        <a href="FineDeducerStep.html" title="">
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">
                           FineDeducerStep
                         </a>
                       </li><li class="current-entities indented2">
@@ -247,8 +247,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         </a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">
+                        <a class="class" href="" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+"></a>
+                        <a href="" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+">
                           TheoremFeedback
                         </a>
                       </li><li class="current-entities indented2">
@@ -333,7 +337,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>feedback based on the term-type map as well as ensuring total weight of theorems is not  small;
+various steps are explicit for exploration and debugging
+</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -546,7 +552,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">byProof</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">distribution of theorems (inhabited types) weighted by proofs.</p>
     </li><li name="provingground.learning.TheoremFeedback#byStatement" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="byStatement:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="byStatement:FiniteDistribution[Typ[Term]]"></a>
       <span class="permalink">
@@ -562,7 +568,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">byStatement</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">distribution of theorems (inhabited  types) weighted as in the type distribution and normalized.</p>
     </li><li name="provingground.learning.TheoremFeedback#byStatementUnscaled" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="byStatementUnscaled:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="byStatementUnscaled:FiniteDistribution[Typ[Term]]"></a>
       <span class="permalink">
@@ -578,7 +584,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">byStatementUnscaled</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">distribution of theorems (inhabited  types) weighted as in the type distribution, not normalized.</p>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -681,7 +687,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TheoremFeedback">TheoremFeedback</a>] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
-    </li><li name="provingground.learning.TheoremFeedback#entropyPairs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TheoremFeedback#entropyPairs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="entropyPairs:scala.collection.immutable.Vector[(provingground.HoTT.Typ[provingground.HoTT.Term],(Double,Double))]"></a><a id="entropyPairs:Vector[(Typ[Term],(Double,Double))]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TheoremFeedback.html#entropyPairs:scala.collection.immutable.Vector[(provingground.HoTT.Typ[provingground.HoTT.Term],(Double,Double))]" title="Permalink">
@@ -696,7 +702,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">entropyPairs</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[(<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>))]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">for each theorem, the pair of  entropies with respect to the distribution</p><div class="fullcomment"><div class="comment cmt"><p>for each theorem, the pair of  entropies with respect to the distribution</p><ul><li>as statement weight</li><li>as proof weight</li></ul></div></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -744,7 +750,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">feedbackFunction</span><span class="params">(<span name="x">x: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">term-type map feedback as function of type
+</p>
     </li><li name="provingground.learning.TheoremFeedback#feedbackMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="feedbackMap:scala.collection.immutable.Map[provingground.HoTT.Typ[provingground.HoTT.Term],Double]"></a><a id="feedbackMap:Map[Typ[Term],Double]"></a>
       <span class="permalink">
@@ -760,7 +767,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">feedbackMap</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">term-type map feedback map ie <a href="#feedbackVec:scala.collection.immutable.Vector[(provingground.HoTT.Typ[provingground.HoTT.Term],Double)]" class="extmbr" name="provingground.learning.TheoremFeedback#feedbackVec">feedbackVec</a> as a map
+</p>
     </li><li name="provingground.learning.TheoremFeedback#feedbackTermDist" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="feedbackTermDist(fd:provingground.FiniteDistribution[provingground.HoTT.Term],typfd:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]):Double"></a><a id="feedbackTermDist(FiniteDistribution[Term],FiniteDistribution[Typ[Term]]):Double"></a>
       <span class="permalink">
@@ -776,7 +784,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">feedbackTermDist</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typfd">typfd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">feedback based on distributions on terms and on types,
+by backward propagation from <a href="#feedbackTypDist(fd:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]):Double" class="extmbr" name="provingground.learning.TheoremFeedback#feedbackTypDist">feedbackTypDist</a> and <a href="#thmFeedbackFunction(x:provingground.HoTT.Term):Double" class="extmbr" name="provingground.learning.TheoremFeedback#thmFeedbackFunction">thmFeedbackFunction</a>
+</p>
     </li><li name="provingground.learning.TheoremFeedback#feedbackTypDist" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="feedbackTypDist(fd:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]):Double"></a><a id="feedbackTypDist(FiniteDistribution[Typ[Term]]):Double"></a>
       <span class="permalink">
@@ -792,7 +802,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">feedbackTypDist</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">feedback as function of distribution on types
+</p>
     </li><li name="provingground.learning.TheoremFeedback#feedbackVec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="feedbackVec:scala.collection.immutable.Vector[(provingground.HoTT.Typ[provingground.HoTT.Term],Double)]"></a><a id="feedbackVec:Vector[(Typ[Term],Double)]"></a>
       <span class="permalink">
@@ -808,7 +819,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">feedbackVec</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[(<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Double">Double</span>)]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">term-type map feedback vector with entries pairs <code>(typ, p)</code>
+</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -901,7 +913,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lfd</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">terms mapped to  lambdas with resepect to the variables
+</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -965,7 +978,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">pfd</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">types mapped to pis with respect to the variables.</p>
     </li><li name="provingground.learning.TheoremFeedback#scale" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="scale:Double"></a>
       <span class="permalink">
@@ -1029,7 +1042,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">thmFeedbackFunction</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">feedback based on total weight of theorems
+</p>
     </li><li name="provingground.learning.TheoremFeedback#thmScale" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="thmScale:Double"></a>
       <span class="permalink">
@@ -1061,7 +1075,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">thmSet</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">set of theorems
+</p>
     </li><li name="provingground.learning.TheoremFeedback#thmShift" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="thmShift:Double"></a>
       <span class="permalink">
@@ -1077,7 +1092,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">thmShift</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">amount to shift to ensure theorems have a minimum total weight
+</p>
     </li><li name="provingground.learning.TheoremFeedback#thmTarget" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="thmTarget:Double"></a>
       <span class="permalink">
@@ -1109,7 +1125,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">thmTotal</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">total weight of theorems
+</p>
     </li><li name="provingground.learning.TheoremFeedback#vars" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="vars:Vector[provingground.HoTT.Term]"></a><a id="vars:Vector[Term]"></a>
       <span class="permalink">
