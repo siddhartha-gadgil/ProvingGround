@@ -984,6 +984,16 @@ object HoTT {
      */
     val defnData: Vector[Term]
 
+    val fullData = (dom, depcodom, defnData)
+
+    override def hashCode = fullData.hashCode
+
+    override def equals(that: Any) = that match {
+      case r: InducFuncLike[_, _] => fullData == r.fullData
+      case _ => false
+    }
+
+
     override def toString() =
       defnData.foldLeft(s"ind(${dom})(${depcodom})") {
         case (str, t) => s"$str($t)"
@@ -1013,6 +1023,17 @@ object HoTT {
      * indices of the introduction rules.
      */
     val index: Vector[Term]
+
+    val fullIndData = (domW, index, codXs, defnData)
+
+      override def hashCode = fullIndData.hashCode
+
+      override def equals(that: Any) = that match {
+        case r: IndInducFuncLike[_, _, _, _] =>
+          fullIndData == r.fullIndData
+        case _ => false
+      }
+
 
     override def toString() =
       defnData.foldLeft(
@@ -1122,6 +1143,16 @@ object HoTT {
          */
     val defnData: Vector[Term]
 
+    val fullData = (dom, codom, defnData)
+
+    override def hashCode = fullData.hashCode
+
+    override def equals(that: Any) = that match {
+      case r: RecFunc[_, _] =>
+        fullData == r.fullData
+      case _ => false
+    }
+
     override def toString() =
       defnData.foldLeft(s"rec(${dom})(${codom})") {
         case (str, t) => s"$str($t)"
@@ -1144,6 +1175,17 @@ object HoTT {
      * indices of the introduction rules.
      */
     val index: Vector[Term]
+
+    val fullIndData = (domW, index, codom, defnData)
+
+    override def hashCode = fullIndData.hashCode
+
+    override def equals(that: Any) = that match {
+      case r: IndRecFunc[_, _, _] =>
+        fullIndData == r.fullIndData
+      case _ => false
+    }
+
 
     override def toString() =
       defnData.foldLeft(

@@ -76,6 +76,12 @@ class  JsonSpec extends FlatSpec{
     val double2 = roundTrip(double).get
     assert(double2(N(1)) == N(2))
 
-    // assert(check(DoubleEven.pf))
+    assert(roundTrip(double) == Some(double))
+    assert(check(DoubleEven.pf))
+
+    assert(check(LocalConstImpliesConst.pf))
+
+    assert(check(SuccNOrNEven.pf))
+
   }
 }
