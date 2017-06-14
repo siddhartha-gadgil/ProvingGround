@@ -12,13 +12,24 @@ import translation._
   *
   *
   * We model expressions that will mostly become Terms in HoTT, mostly following Naproche.
-  * At the upper level are sentential phrases. We typeically start with a tree that encodes a sentential phrase.
+  * At the upper level are sentential phrases. We typically start with a tree that encodes a sentential phrase.
   *
-  *  We have various traits representing parts of speech, and case classes for syntax.
-  * All traits are sealed, so automatic patterns should work.
   */
 sealed trait MathExpr
 
+/**
+  * Expression in a language to represent terms in HoTT and
+  trees representing them in prose, including partially collapsed trees.
+  * At the level of structure, we do not make distinctions between words and phrases;
+  * the distinction is specific to trees, where a word is a leaf.
+  *
+  *
+  * We model expressions that will mostly become Terms in HoTT, mostly following Naproche.
+  * At the upper level are sentential phrases. We typically start with a tree that encodes a sentential phrase.
+  *
+  *  We have various case classes for syntax, but a single trait
+  *
+  */
 object MathExpr {
 
   type T = Tree
@@ -118,6 +129,9 @@ object MathExpr {
   //   }
   // }
 
+  /**
+   * Various prepositions
+   */
   object Preposition {
     case object Of extends Preposition
 
@@ -140,6 +154,9 @@ object MathExpr {
     case object Modulo extends Preposition
   }
 
+  /**
+   * A generic preposition
+   */
   case class Prep(word: String) extends Preposition
 
   /**
@@ -328,7 +345,6 @@ object MathExpr {
       extends SententialPhrase
 }
 
-// import MathExpr._
 
 object FormalExpr {
   case class Leaf(s: String) extends MathExpr
@@ -346,6 +362,8 @@ object FormalExpr {
   type SL[A] = (S[A], Vector[A])
 
   // implicit val travSL = traversePair[S, Vector]
+
+  case class Vec(vec: Vector[MathExpr]) extends MathExpr
 
   def translator =
     Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {

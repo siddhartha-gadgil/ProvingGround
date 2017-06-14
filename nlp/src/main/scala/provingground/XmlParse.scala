@@ -4,6 +4,7 @@ import translation._
 
 import NlpProse._
 
+@deprecated("0.1", "call parser directly")
 object XmlParse {
 
   /** Load XML file */

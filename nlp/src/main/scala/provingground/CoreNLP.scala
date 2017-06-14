@@ -18,6 +18,9 @@ import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.semgraph._
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
 
+/**
+ * direct interface to the Stanford parser; the [[StanfordParser]] object which handles LaTeX is used instead.
+ */
 object CoreNLP {
 
   def gov(e: SemanticGraphEdge) =

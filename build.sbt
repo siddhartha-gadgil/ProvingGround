@@ -261,14 +261,19 @@ lazy val exploring = project
   .dependsOn(mantle)
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
+val nlpInitCommands = "import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, translation._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._"
+
 lazy val nlp = (project in file("nlp"))
   .settings(name := "ProvingGround-NLP")
   .settings(commonSettings: _*)
   .settings(nlpSettings: _*)
+  .settings(sourceGenerators in Test += Def.task {
+    val file = (sourceManaged in Test).value / "amm.scala"
+    IO.write(file,
+      s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
+    Seq(file)
+  }.taskValue)
 //        .settings(jvmSettings : _*)
-//        .settings(serverSettings : _*)
-  // .settings(initialCommands in (Test, console) :=
-  //   s"""ammonite.Main("import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._").run() """)
   .dependsOn(coreJVM)
 
 // lazy val translation = (project in file("translation"))

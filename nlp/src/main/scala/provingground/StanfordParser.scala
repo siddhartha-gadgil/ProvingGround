@@ -1,13 +1,8 @@
 package provingground
 
-// import edu.stanford.nlp.io._
 import edu.stanford.nlp.ling._
 import edu.stanford.nlp.process._
-// import edu.stanford.nlp.trees._
-// import edu.stanford.nlp.util._
-// import edu.stanford.nlp.ling.CoreAnnotations._
-// import edu.stanford.nlp.semgraph._
-// import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
+
 import edu.stanford.nlp.parser.lexparser._
 import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
@@ -15,6 +10,10 @@ import edu.stanford.nlp.tagger.maxent._
 import java.io._
 import scala.collection.JavaConverters._
 
+/**
+ * Interface to the Stanford parser, handling (inline) TeX by separating tokenizing and POS tagging from parsing.
+ * Parsing is done by the [[texParse]] method
+ */
 object StanfordParser {
   val lp = LexicalizedParser.loadModel(
     "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
@@ -35,7 +34,20 @@ object StanfordParser {
 
   def texDisplay(s: String) = """\$\$[^\$]+\$\$""".r.findAllIn(s)
 
-  case class TeXParsed(raw: String) {
+  def reTag(word: String, tag: String)(tw: TaggedWord) =
+    if (tw.word.toLowerCase == word) new TaggedWord(tw.word, tag) else tw
+
+  def mergeTag(mwe: Vector[String], tag: String)(tws: Vector[TaggedWord]): Vector[TaggedWord] =
+    if (tws.take(mwe.size).map(_.word.toLowerCase) == mwe)
+      (new TaggedWord(tws.take(mwe.size).map(_.word).mkString(" "), tag)) +: tws.drop(mwe.size)
+    else tws match {
+      case Vector() => Vector()
+      case x +: ys => x +: mergeTag(mwe, tag)(ys)
+    }
+
+  case class TeXParsed(raw: String,
+    wordTags: Vector[(String, String)] = Vector(),
+    mweTags: Vector[(Vector[String], String)] = Vector()) {
     lazy val texMap = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
     }).toMap
@@ -46,12 +58,19 @@ object StanfordParser {
 
     lazy val deTeXTagged = tagger(deTeXWords.asJava)
 
+    def reTagged(tw: TaggedWord) =
+          wordTags.foldRight(tw){case ((w, tag), t) => reTag(w, tag)(t)}
+
+
     lazy val tagged =
       deTeXTagged.asScala map { (tw) =>
         if (tw.word.startsWith("TeXInline"))
           new TaggedWord(texMap(tw.word), "NNP")
-        else tw
+        else reTagged(tw)
       }
+
+    lazy val mergeTagged =
+        mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
 
     lazy val parsed = lp(tagged.asJava)
   }

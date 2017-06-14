@@ -335,6 +335,11 @@ object TreePatterns {
     )
 
   def phrase(s: String) = phraseFromVec(s.split(" ").toVector)
+
+  def phraseTrans(s: String) = phrase(s) >>> {(v: Vector[MathExpr]) => FormalExpr.Vec(v) : MathExpr}
+
+  def phrasesTrans(ss: String*) =
+    ss.toVector.map(phraseTrans).fold(Translator.Empty[Tree, MathExpr])(_ || _)
 }
 
 object TreeToMath {
@@ -476,4 +481,7 @@ object TreeToMath {
       dpBaseQuantZero || dropRoot || dropNP || purge
 
   val mathExprTree = mathExpr || FormalExpr.translator
+
+  def mathExprFormal(ss: String*) =
+    mathExpr || TreePatterns.phrasesTrans(ss : _*) || FormalExpr.translator
 }

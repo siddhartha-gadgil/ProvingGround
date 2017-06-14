@@ -38,8 +38,8 @@ object PennTrees {
   object RightBinTree {
     def unapply(t: Tree): Option[(Tree, Tree)] = t match {
       case Node(_, Vector(x, y)) => Some((x, y))
-      case parent @ Node(tag, ys :+ x) if ys.size > 0 =>
-        Some((x, mkTree(ys, tag, parent)))
+      case parent @ Node(tag, xs :+ y) if xs.size > 0 =>
+        Some((mkTree(xs, tag, parent), y))
       case _ => None
     }
   }
@@ -76,6 +76,8 @@ object PennTrees {
     def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
       case LeftBinTree(DashWord(y, w), z)  => Some((y, w, z))
       case RightBinTree(y, WordDash(w, z)) => Some((y, w, z))
+      case LeftBinTree(y, WordDash(w, z)) => Some((y, w, z))
+      case RightBinTree(DashWord(y, w), z) => Some((y, w, z))
       case _                               => None
     }
   }
@@ -112,7 +114,7 @@ sealed trait TreeModel
 
 object TreeModel {
   case class Leaf(value: String) extends TreeModel {
-    override def toString = s"""Leaf("$value")"""
+    // override def toString = s"""Leaf("$value")"""
   }
 
   case class Node(value: String, children: Vector[TreeModel])

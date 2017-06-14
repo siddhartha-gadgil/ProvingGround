@@ -17,8 +17,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
 
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.14")
 
-// addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.10")
-
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "5.1.0")
 
 // addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "0.5.1")

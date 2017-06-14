@@ -3,6 +3,10 @@ import provingground.HoTT._
 import scala.util.parsing.combinator._
 import scala.language.implicitConversions
 
+/**
+ * deprecated informally designed language, replaced by the Naproche based [[MathExpr]]
+ */
+ @deprecated("Use Naproche based languages", "0.1")
 object TheoryTypes {
 
   // type Typ[HoTT.Term] = Typ[HoTT.Term]
@@ -153,7 +157,7 @@ object TheoryTypes {
     def term: Parser[Term] = equality | binRelParse | lambda | noRelTerm
 
     def simpleTerm: Parser[Term] =
-      typedTerm | parenTerm | texBraces | braces | underscore | subScript | supScript | sym // without operations, relations, bigOps, 	  	
+      typedTerm | parenTerm | texBraces | braces | underscore | subScript | supScript | sym // without operations, relations, bigOps,
 
     def noOpTerm: Parser[Term] = bigOpParse | simpleTerm
 

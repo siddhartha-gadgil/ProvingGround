@@ -12,6 +12,7 @@ import provingground.TheoryTypes.{Term => TheoryTerm, Apply => TheoryApply, _}
   *  Gives context-free expressions, not actual typed terms.
   *  Warning: Should handle conjunctions carefully
   */
+@deprecated("use TreePatterns and MathExpr", "0.1")
 object NLPHoTT {
   val parse: ProseTree => TheoryTerm = {
     case ProseTree(root, List()) => TermSym(root.word)
