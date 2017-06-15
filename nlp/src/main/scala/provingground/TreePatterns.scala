@@ -475,7 +475,7 @@ object TreeToMath {
 
   val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 
-  val iff = TreePatterns.phrase("_ iff _") >>>[MathExpr] {
+  val iff = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
     case Vector(x, y) => MathExpr.Iff(x, y)
   }
 
