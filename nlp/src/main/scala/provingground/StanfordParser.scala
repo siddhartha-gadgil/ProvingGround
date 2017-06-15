@@ -72,8 +72,24 @@ object StanfordParser {
     lazy val mergeTagged =
         mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
 
-    lazy val parsed = lp(tagged.asJava)
+    lazy val parsed = lp(mergeTagged.asJava)
   }
 
-  def texParse(s: String) = TeXParsed(s).parsed
+  val baseWordTags =
+    Vector(
+      "iff" -> "CC",
+      "modulo" -> "IN"
+    )
+
+  val baseMweTags =
+    Vector(
+      Vector("if", "and", "only", "if") -> "CC",
+      Vector("such", "that") -> "WRB"
+    )
+
+  def texParse(
+    s: String,
+      wordTags: Vector[(String, String)] = Vector(),
+      mweTags: Vector[(Vector[String], String)] = Vector()) =
+        TeXParsed(s, wordTags, mweTags).parsed
 }
