@@ -57,7 +57,8 @@ lazy val commonSettings = baseSettings ++ Seq(
                                      "-language:existentials"),
     scalacOptions in (Compile, doc) ++= Seq("-diagrams",
                                             "-implicits",
-                                            "-implicits-show-all")
+                                            "-implicits-show-all"),
+    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
   )
 
 val akkaV = "2.4.17"
