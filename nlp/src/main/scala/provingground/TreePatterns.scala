@@ -113,7 +113,7 @@ object TreePatterns {
   object JJPP
       extends Pattern.Partial[Tree, IV]({
         case Node("ADJP", x +: ys)
-            if x.value.startsWith("JJ") &&
+            if (x.value.startsWith("JJ") || (x.value.startsWith("ADJ"))) &&
               ys.forall(_.value.startsWith("PP")) =>
           (x, ys)
       })
@@ -143,11 +143,11 @@ object TreePatterns {
 
   object NPWH
       extends Pattern.Partial[Tree, II]({
-        case Node("NP",
+        case Node(n,
                   Vector(
                     x @ NP(_),
-                    Node("SBAR", Vector(Node("WHADVP", _), y))
-                  )) =>
+                    Node("SBAR", Vector(Node(w, _), y))
+                  )) if n.startsWith("N") && w.startsWith("WHA") =>
           (x, y)
       })
 
@@ -279,7 +279,7 @@ object TreePatterns {
 
   object JJ
       extends Pattern.Partial[Tree, S]({
-        case Node("JJ", Vector(Leaf(nn))) => nn
+        case Node(jj, Vector(Leaf(nn))) if jj.startsWith("JJ") => nn
       })
 
   object IN

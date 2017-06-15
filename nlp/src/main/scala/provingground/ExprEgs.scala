@@ -18,6 +18,8 @@ import TreeToMath._
 object ExprEgs{
   val assertions =
     Vector(
+      "Every natural number is greater than $0$", //parsed
+      "Every natural number $n$, where $n$ is greater than $1$, is divisible by a prime number", //parsed
       "if a prime number $p$ divides the product of $m$ and $n$,  $p$ divides one of $m$ and $n$",
       "if a prime number $p$ divides the product of $m$ and $n$,  $p$ divides $m$ or $n$", //parsed
       "if a prime number $p$ divides $mn$, $p$ divides $m$ or $n$", //parsed
@@ -31,7 +33,8 @@ object ExprEgs{
       "If $G/H$ is cyclic, $G$ is abelian", //parsed
       "$\\ker \\phi$ is the set of all $a\\in A$ that map to an element in $B$",
       "$6$ is not the square of a prime", //parsed
-      "$6$ is not the square of all prime numbers", //parsed
+      "$6$ is not the square of all prime numbers", //parsed,
+      "$6$ is not the sum of distinct prime numbers",
       "$6$ is not the square of all primes",
       // "An abelian group is finitely generated if and only if the corresponding $Z$-module is finitely generated",
       "$G$ is solvable if there exists $n in \\N$ such that $G^{(n)}=1$",
@@ -49,6 +52,10 @@ object ExprEgs{
       "$AB \\subgroup G$ and $AB = BA$", //experiment iff -> and; parsed
       "$[A,B] = \\{e\\}$ if and only if $ab = ba, \\forall a \\in A, b \\in B$ if and only if $A \\subgroup C_G(B)$ if and only if $B \\subgroup C_G(A)$"
     )
+
+  def parse(s: String) = mathExpr(texParse(s))
+
+  def parseT(s: String) = mathExprTree(texParse(s))
 
   lazy val parsed =
     assertions.map((s) =>
