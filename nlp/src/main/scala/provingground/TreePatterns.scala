@@ -130,7 +130,7 @@ object TreePatterns {
       extends Pattern.Partial[Tree, II]({
         case Node("PP",
                   Vector(
-                    jj @ Node("IN", Vector(Leaf(_))),
+                    jj @ IN(_),
                     np @ Node("NP", _)
                   )) =>
           (jj, np)
@@ -285,6 +285,7 @@ object TreePatterns {
   object IN
       extends Pattern.Partial[Tree, S]({
         case Node("IN", Vector(Leaf(nn))) => nn
+        case Node("TO", Vector(Leaf(nn))) => nn
       })
 
   object DropRoot
@@ -451,8 +452,8 @@ object TreeToMath {
       case Vector(x: MathExpr.DP)      => Some(x)
       case Vector(x: MathExpr.Formula) => Some(x)
       case v =>
-        println(v)
-        println(v.size)
+        // println(v)
+        // println(v.size)
         None
     }
 
@@ -474,11 +475,15 @@ object TreeToMath {
 
   val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 
+  val iff = TreePatterns.phrase("_ iff _") >>>[MathExpr] {
+    case Vector(x, y) => MathExpr.Iff(x, y)
+  }
+
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || nn || vb || jj || pp ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || jjpp ||
       verbpp || notvp || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
-      dpBaseQuantZero || dropRoot || dropNP || purge
+      dpBaseQuantZero || dropRoot || dropNP || purge || iff
 
   val mathExprTree = mathExpr || FormalExpr.translator
 

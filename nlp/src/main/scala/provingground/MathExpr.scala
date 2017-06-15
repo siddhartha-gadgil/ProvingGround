@@ -63,6 +63,13 @@ object MathExpr {
       extends SententialPhrase
 
   /**
+   * A bi-implication, kept separate from two implications for definitions etc
+   */
+  case class Iff(premise: SententialPhrase, consequence: SententialPhrase)
+      extends SententialPhrase
+
+
+  /**
     * Abstract Noun phrase
     */
   // sealed trait NounPhrase extends MathExpr
@@ -179,6 +186,8 @@ object MathExpr {
 
     case object No extends Determiner
 
+    case object This extends Determiner
+
     def apply(s: String) = s.toLowerCase match {
       case "a"     => A
       case "an"    => A
@@ -188,6 +197,7 @@ object MathExpr {
       case "all"   => Every
       case "no"    => No
       case "any"   => Every
+      case "this" => This
     }
   }
 
@@ -347,9 +357,9 @@ object MathExpr {
 
 
 object FormalExpr {
-  case class Leaf(s: String) extends MathExpr
+  case class FormalLeaf(s: String) extends MathExpr
 
-  case class Node(s: String, children: Vector[MathExpr]) extends MathExpr
+  case class FormalNode(s: String, children: Vector[MathExpr]) extends MathExpr
 
   import Translator.Pattern
 
@@ -369,10 +379,10 @@ object FormalExpr {
     Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
       case PennTrees.Leaf(s) => s
     } >>> {
-      case s => Leaf(s)
+      case s => FormalLeaf(s)
     } ||
       Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
-        case (s, l) => Node(s, l)
+        case (s, l) => FormalNode(s, l)
       }
 }
 

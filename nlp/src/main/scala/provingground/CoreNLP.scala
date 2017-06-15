@@ -80,7 +80,7 @@ object CoreNLP {
 }
 
 // The part below is for testing.
-object CoreNLPTest extends App {
+object CoreNLPTest  {
   import provingground.CoreNLP._
 
   val props = new java.util.Properties()

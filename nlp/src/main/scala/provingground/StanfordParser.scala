@@ -45,9 +45,19 @@ object StanfordParser {
       case x +: ys => x +: mergeTag(mwe, tag)(ys)
     }
 
+  def mergeSubs(mwe: Vector[String], tw: TaggedWord)(tws: Vector[TaggedWord]): Vector[TaggedWord] =
+    if (tws.take(mwe.size).map(_.word.toLowerCase) == mwe)
+      tw +: tws.drop(mwe.size)
+    else tws match {
+      case Vector() => Vector()
+      case x +: ys => x +: mergeSubs(mwe, tw)(ys)
+    }
+
   case class TeXParsed(raw: String,
     wordTags: Vector[(String, String)] = Vector(),
-    mweTags: Vector[(Vector[String], String)] = Vector()) {
+    mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
+    // , mweTags: Vector[(Vector[String], String)] = Vector()
+  ) {
     lazy val texMap = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
     }).toMap
@@ -69,10 +79,13 @@ object StanfordParser {
         else reTagged(tw)
       }
 
-    lazy val mergeTagged =
-        mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
+    lazy val mergeSubsTagged =
+      mweSubs.foldRight(tagged.toVector){case ((ws, tw), t) => mergeSubs(ws, tw)(t)}
 
-    lazy val parsed = lp(mergeTagged.asJava)
+    // lazy val mergeTagged =
+    //     mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
+
+    lazy val parsed = lp(mergeSubsTagged.asJava)
   }
 
   val baseWordTags =
@@ -81,15 +94,17 @@ object StanfordParser {
       "modulo" -> "IN"
     )
 
-  val baseMweTags =
+  val baseMweSubs =
     Vector(
-      Vector("if", "and", "only", "if") -> "CC",
-      Vector("such", "that") -> "WRB"
+      Vector("if", "and", "only", "if") -> new TaggedWord("iff", "CC"),
+      Vector("such", "that") -> new TaggedWord("where, WRB")
     )
 
   def texParse(
     s: String,
-      wordTags: Vector[(String, String)] = Vector(),
-      mweTags: Vector[(Vector[String], String)] = Vector()) =
-        TeXParsed(s, wordTags, mweTags).parsed
+      wordTags: Vector[(String, String)] = baseWordTags,
+      // mweTags: Vector[(Vector[String], String)] = Vector(),
+      mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
+    ) =
+        TeXParsed(s, wordTags, mweSubs).parsed
 }
