@@ -296,6 +296,16 @@ object MathExpr {
   case class VerbAdj(vp: VerbPhrase, ap: AdjectivalPhrase) extends VerbPhrase
 
   /**
+   * representing existential 'there', purely as a parsing target
+   */
+  case object Exists extends MathExpr
+
+  /**
+   * to take care of an idiosyncracy of the StanfordParser, with 'if' SP attached to a VP in an NPVP
+   */
+  case class VPIf(vp: VerbPhrase, ifc: MathExpr) extends MathExpr
+
+  /**
     * is ... property given by a noun.
     */
   case class IsNoun(property: NounPhrase) extends VerbPhrase // case of VerbObj

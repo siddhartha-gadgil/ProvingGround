@@ -69,6 +69,11 @@ object TreePatterns {
   object VP
       extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
 
+  object VPIf
+      extends Pattern.Partial[Tree, II]({
+        case vp @ Node("VP", xs :+ IfClause(t)) =>
+          (PennTrees.mkTree(xs, "VP", vp), t) })
+
   object NP
       extends Pattern.Partial[Tree, Vector]({ case Node("NP", xs) => xs })
 
@@ -318,6 +323,11 @@ object TreePatterns {
       case Node("NP", Vector(Node(_, Vector(Leaf("they"))))) => ()
     })
 
+  object Exists
+    extends Pattern.Partial[Tree, Un]({
+        case  Node("NP", Vector(Node("EX", _))) => ()
+    })
+
   object DropRoot
       extends Pattern.Partial[Tree, Id]({
         case Node("ROOT", Vector(x)) => x
@@ -399,6 +409,11 @@ object TreeToMath {
       case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
     })
 
+  val verbIf =
+    TreePatterns.VPIf.>>>[MathExpr]({
+      case (vp, ifc) => MathExpr.VPIf(vp, ifc)
+    })
+
   val pp =
     TreePatterns.PP.>>>[MathExpr]({
       case (pp, np) => MathExpr.PP(false, pp, np)
@@ -478,6 +493,11 @@ object TreeToMath {
       case (verb, pps) => MathExpr.VerbPP(verb, pps)
     })
 
+  val exists =
+    TreePatterns.Exists.>>>[MathExpr]({
+      (_) => MathExpr.Exists
+    })
+
   val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
 
   val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
@@ -525,7 +545,7 @@ object TreeToMath {
 
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp ||
-      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || jjpp ||
+      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp ||
       verbpp || notvp || it || they || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen
 

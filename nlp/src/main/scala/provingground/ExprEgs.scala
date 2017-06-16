@@ -38,7 +38,7 @@ object ExprEgs{
       "$6$ is not the sum of distinct prime numbers",
       "$6$ is not the square of all primes",
       // "An abelian group is finitely generated if and only if the corresponding $Z$-module is finitely generated",
-      "$G$ is solvable if there exists $n in \\N$ such that $G^{(n)}=1$",
+      "$G$ is solvable if there exists $n in \\N$ such that $G^{(n)}=1$", //parsed
       "there are $n,m\\in \\Z$ such that $xH = (gH)^n = g^nH$",
       // "Two quadratic forms over $k$ are equivalent if and only if they have the same rank",
       "Two quadratic forms over $k$ are equivalent if and only if they have the same rank", //experiment iff -> and
