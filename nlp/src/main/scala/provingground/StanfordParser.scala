@@ -53,11 +53,13 @@ object StanfordParser {
       case x +: ys => x +: mergeSubs(mwe, tw)(ys)
     }
 
-  case class TeXParsed(raw: String,
+  case class TeXParsed(preraw: String,
     wordTags: Vector[(String, String)] = Vector(),
     mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
     // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
+    val raw = preraw.replace("such that", "with").replace("which", "where it").replace("that", "where it")
+
     lazy val texMap = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
     }).toMap

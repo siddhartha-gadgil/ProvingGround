@@ -68,7 +68,15 @@ object MathExpr {
   case class Iff(premise: SententialPhrase, consequence: SententialPhrase)
       extends SententialPhrase
 
+  /**
+  Pronoun 'it' with an optional coreference
+  */
+  case class It(coref: Option[MathExpr]) extends MathExpr
 
+  /**
+  Pronoun 'they' with (psoosibly empty) coreferences
+  */
+  case class They(corefs: Vector[MathExpr]) extends MathExpr
   /**
     * Abstract Noun phrase
     */
@@ -188,6 +196,8 @@ object MathExpr {
 
     case object This extends Determiner
 
+    case class Card(s: String) extends Determiner
+
     def apply(s: String) = s.toLowerCase match {
       case "a"     => A
       case "an"    => A
@@ -198,6 +208,7 @@ object MathExpr {
       case "no"    => No
       case "any"   => Every
       case "this" => This
+      case s if s.startsWith("#") => Card(s.drop(1))
     }
   }
 
@@ -381,8 +392,10 @@ object FormalExpr {
     } >>> {
       case s => FormalLeaf(s)
     } ||
-      Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
-        case (s, l) => FormalNode(s, l)
+      Pattern.partial[Tree, SL] {
+        case PennTrees.Node(s, l) => (s, l) } >>> {
+          case ("NP", Vector(dp: MathExpr.DP)) => dp
+          case (s, l) => FormalNode(s, l)
       }
 }
 
