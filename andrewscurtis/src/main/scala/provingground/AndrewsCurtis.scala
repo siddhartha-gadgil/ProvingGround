@@ -32,9 +32,7 @@ object AndrewsCurtis {
 
   type DynDstbn = DynDst[Presentation, ACMoveType]
 
-  case class DynDst[V, E](vrtdst: FiniteDistribution[V],
-                          edgdst: FiniteDistribution[E],
-                          cntn: Double) {
+  case class DynDst[V, E](vrtdst: FiniteDistribution[V], edgdst: FiniteDistribution[E], cntn: Double) {
     def probV(v: V) = vrtdst(v)
 
     def probE(e: E) = edgdst(e)
@@ -242,8 +240,7 @@ object AndrewsCurtis {
      * We need to multiply by the probability of not continuing, but this is part of start.prob already.
      */
     def prob(d: DynDstbn) =
-      start.prob(d) * d.probE(move.mvType) * d.cntn / multiplicity(head.rank)(
-        move.mvType)
+      start.prob(d) * d.probE(move.mvType) * d.cntn / multiplicity(head.rank)(move.mvType)
   }
 
   object Chain {
@@ -256,12 +253,12 @@ object AndrewsCurtis {
     /*
      * Subchains with the same head. Recursively defined with tail being moves to be appended to each chain
      */
-    @tailrec def subchains(chain: Chain, tail: List[Move] = List(), accum: Set[Chain] = Set())
-      : Set[Chain] = chain match {
-      case AtomicChain(head) => accum + addMoves(chain, tail)
-      case RecChain(start, move) =>
-        subchains(start, tail :+ move, accum + addMoves(chain, tail))
-    }
+    @tailrec def subchains(chain: Chain, tail: List[Move] = List(), accum: Set[Chain] = Set()): Set[Chain] =
+      chain match {
+        case AtomicChain(head) => accum + addMoves(chain, tail)
+        case RecChain(start, move) =>
+          subchains(start, tail :+ move, accum + addMoves(chain, tail))
+      }
 
     def apply(foot: Vert, moveStack: List[Move]) =
       addMoves(AtomicChain(foot), moveStack)
@@ -284,10 +281,7 @@ object AndrewsCurtis {
 	   * In particular, we backprop multiplying only by start.prob(d), and not the cumulative.
 	   */
     @annotation.tailrec
-    def backprop(chain: Chain,
-                 mult: Double,
-                 d: DynDstbn,
-                 accum: DynDstbn): DynDstbn =
+    def backprop(chain: Chain, mult: Double, d: DynDstbn, accum: DynDstbn): DynDstbn =
       chain match {
         case AtomicChain(head) =>
           accum.addV(head, mult * (1 - d.cntn)) addC (-mult * d.probV(head))
@@ -308,21 +302,16 @@ object AndrewsCurtis {
    * The distribution on presentations via head of chains induced by that on presentations, moves and continuation.
    */
   def dstbn(chains: Set[Chain], d: DynDstbn) = {
-    val fdchains = FiniteDistribution(
-      for (chn <- chains) yield Weighted(chn, chn.prob(d)))
+    val fdchains = FiniteDistribution(for (chn <- chains) yield Weighted(chn, chn.prob(d)))
     (fdchains map ((chn: Chain) => chn.head)).flatten
   }
 
   /*
    * Back-propagate a feedback on distribution on presentations.
    */
-  def backpropdstbn(chains: Set[Chain],
-                    feedback: FiniteDistribution[Vert],
-                    d: DynDstbn) = {
+  def backpropdstbn(chains: Set[Chain], feedback: FiniteDistribution[Vert], d: DynDstbn) = {
 //    val empty = FiniteDistribution[DynObj](Set())
-    val empty = DynDst(FiniteDistribution.empty[Presentation],
-                       FiniteDistribution.empty[MoveType],
-                       0)
+    val empty = DynDst(FiniteDistribution.empty[Presentation], FiniteDistribution.empty[MoveType], 0)
     val bcklist =
       chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
     ((bcklist :\ empty)(_ ++ _)).flatten
@@ -340,8 +329,7 @@ object AndrewsCurtis {
    * with generating from Andrews-Curtis moves. This has total zero.
    * A high (raw) feedback is for a simple distribution needing a lot of moves.
    */
-  def dstbnFeedback(presdstbn: FiniteDistribution[Vert],
-                    bgwt: Vert => Double) = {
+  def dstbnFeedback(presdstbn: FiniteDistribution[Vert], bgwt: Vert => Double) = {
     val dstbnpmf = presdstbn.pmf
     val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf)
       yield (Weighted(pres, bgwt(pres) / prob))
@@ -355,11 +343,7 @@ object AndrewsCurtis {
   /*
    * Change the initial distribution based on feedback, possibly pruning at threshold. This is the learning step.
    */
-  def dstbnflow(chains: Set[Chain],
-                d: DynDstbn,
-                bgwt: Vert => Double,
-                epsilon: Double,
-                threshold: Double = 0) = {
+  def dstbnflow(chains: Set[Chain], d: DynDstbn, bgwt: Vert => Double, epsilon: Double, threshold: Double = 0) = {
     val presdstbn       = dstbn(chains.toSet, d)
     val feedback        = dstbnFeedback(presdstbn, bgwt) * epsilon
     val shift: DynDstbn = backpropdstbn(chains, feedback, d)
@@ -370,9 +354,7 @@ object AndrewsCurtis {
    * Generate chains based on a cutoff (which stops descendants).
    */
   @annotation.tailrec
-  def chainGenCutoff(chains: Set[Chain],
-                     d: DynDstbn,
-                     cutoff: Double): Set[Chain] = {
+  def chainGenCutoff(chains: Set[Chain], d: DynDstbn, cutoff: Double): Set[Chain] = {
     val prune: Chain => Boolean = (chain) => chain.prob(d) > cutoff
     val nextgen                 = Chain.prunednextgen(chains, prune)
     if (chains == nextgen) chains else chainGenCutoff(nextgen, d, cutoff)
@@ -393,10 +375,7 @@ object AndrewsCurtis {
    * Next step of the evolution of the distribution, assuming selection of sequences based on cutoff
    *
    */
-  def dstbnFlowCutoff(d: DynDstbn,
-                      bgwt: Vert => Double,
-                      epsilon: Double,
-                      cutoff: Double): DynDstbn = {
+  def dstbnFlowCutoff(d: DynDstbn, bgwt: Vert => Double, epsilon: Double, cutoff: Double): DynDstbn = {
     val chainSet =
       chainGenCutoff(initChains(d), d, cutoff) flatMap (Chain.subchains(_))
     dstbnflow(chainSet, d, bgwt, epsilon)
@@ -405,10 +384,7 @@ object AndrewsCurtis {
   /*
    * flow for tuning, without adding vertices to the support. This is accomplished by not propogating on subchains
    */
-  def tuneFlowCutoff(d: DynDstbn,
-                     bgwt: Vert => Double,
-                     epsilon: Double,
-                     cutoff: Double) = {
+  def tuneFlowCutoff(d: DynDstbn, bgwt: Vert => Double, epsilon: Double, cutoff: Double) = {
     dstbnflow(chainGenCutoff(initChains(d), d, cutoff), d, bgwt, epsilon)
   }
 
@@ -432,9 +408,7 @@ object AndrewsCurtis {
 // Long loop : Repeat short loop
    */
   def initDstbn(pthCntn: Double) =
-    DynDst(FiniteDistribution(Set(Weighted(nullpres, 1.0))),
-           FiniteDistribution.empty[Presentation],
-           pthCntn)
+    DynDst(FiniteDistribution(Set(Weighted(nullpres, 1.0))), FiniteDistribution.empty[Presentation], pthCntn)
 
   case class ACparameters(
       epsilon: Double = 1.0 / 100.0,
@@ -463,8 +437,7 @@ object AndrewsCurtis {
     def multigrowflow: DynDstbn => DynDstbn =
       IterateDyn(_, growflow, growLoops)
 
-    val flow: DynDstbn => DynDstbn = (d) =>
-      multigrowflow(d).normalized(purgeLevel)
+    val flow: DynDstbn => DynDstbn = (d) => multigrowflow(d).normalized(purgeLevel)
   }
 
   case class ACFlowData(params: ACparameters, dstbn: DynDstbn)

@@ -63,9 +63,7 @@ object DeducerJS {
 
 //    val cons = div(refresh, info, selected).render
 
-    val tableDiv = div(all.width := 1000,
-                       all.height := 250,
-                       all.style := "overflow-y: auto;").render
+    val tableDiv = div(all.width := 1000, all.height := 250, all.style := "overflow-y: auto;").render
 
     var yScale = 15
 
@@ -100,10 +98,7 @@ object DeducerJS {
           line(onclick := { () =>
             {
               info.innerHTML = ""
-              info.appendChild(div("Element: ",
-                                   katex(label),
-                                   "Entropy: ",
-                                   points.last).render)
+              info.appendChild(div("Element: ", katex(label), "Entropy: ", points.last).render)
             }
           })(onfocus := { () =>
             {
@@ -126,12 +121,7 @@ object DeducerJS {
       plotDiv.appendChild(plot)
 
       plot.appendChild(
-        rect(x := 0,
-             y := 0,
-             svgAttrs.width := 1000,
-             svgAttrs.height := 400,
-             fill := "grey",
-             fillOpacity := "0.1").render
+        rect(x := 0, y := 0, svgAttrs.width := 1000, svgAttrs.height := 400, fill := "grey", fillOpacity := "0.1").render
       )
 
       Ajax.get("../terms-data").onSuccess {

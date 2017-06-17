@@ -59,24 +59,23 @@ object MathExpr {
   /**
     * An if_then_ sentential phrase, translating to implies.
     */
-  case class IfThen(premise: SententialPhrase, consequence: SententialPhrase)
-      extends SententialPhrase
+  case class IfThen(premise: SententialPhrase, consequence: SententialPhrase) extends SententialPhrase
 
   /**
-   * A bi-implication, kept separate from two implications for definitions etc
-   */
-  case class Iff(premise: SententialPhrase, consequence: SententialPhrase)
-      extends SententialPhrase
+    * A bi-implication, kept separate from two implications for definitions etc
+    */
+  case class Iff(premise: SententialPhrase, consequence: SententialPhrase) extends SententialPhrase
 
   /**
   Pronoun 'it' with an optional coreference
-  */
+    */
   case class It(coref: Option[MathExpr]) extends MathExpr
 
   /**
   Pronoun 'they' with (psoosibly empty) coreferences
-  */
+    */
   case class They(corefs: Vector[MathExpr]) extends MathExpr
+
   /**
     * Abstract Noun phrase
     */
@@ -145,8 +144,8 @@ object MathExpr {
   // }
 
   /**
-   * Various prepositions
-   */
+    * Various prepositions
+    */
   object Preposition {
     case object Of extends Preposition
 
@@ -170,8 +169,8 @@ object MathExpr {
   }
 
   /**
-   * A generic preposition
-   */
+    * A generic preposition
+    */
   case class Prep(word: String) extends Preposition
 
   /**
@@ -199,15 +198,15 @@ object MathExpr {
     case class Card(s: String) extends Determiner
 
     def apply(s: String) = s.toLowerCase match {
-      case "a"     => A
-      case "an"    => A
-      case "the"   => The
-      case "some"  => Some
-      case "every" => Every
-      case "all"   => Every
-      case "no"    => No
-      case "any"   => Every
-      case "this" => This
+      case "a"                    => A
+      case "an"                   => A
+      case "the"                  => The
+      case "some"                 => Some
+      case "every"                => Every
+      case "all"                  => Every
+      case "no"                   => No
+      case "any"                  => Every
+      case "this"                 => This
       case s if s.startsWith("#") => Card(s.drop(1))
     }
   }
@@ -232,15 +231,13 @@ object MathExpr {
 
   case class JJ(word: String) extends AdjectivalPhrase
 
-  case class JJPP(adj: MathExpr, pps: Vector[MathExpr])
-      extends AdjectivalPhrase
+  case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
 
   /**
     * Prepositional phrase, usually translates to an argument, sometimes to a property.
     Can be a Post-modifier in a determiner phrase, where it acts as an argument.
     */
-  case class PP(negated: Boolean = false, prep: Preposition, np: NounPhrase)
-      extends PostModifier
+  case class PP(negated: Boolean = false, prep: Preposition, np: NounPhrase) extends PostModifier
 
   /**
     * A quantterm (in the Naproche sense) - a variable or something more complex such as `n_k`.
@@ -284,9 +281,7 @@ object MathExpr {
     * The core of a determiner phrase, which is a noun, a list of quant-terms
    or a noun followed by a list of quant-terms
     */
-  case class Core(optNoun: Option[NounPhrase],
-                  quantterms: Vector[QuantTerm] = Vector())
-      extends MathExpr
+  case class Core(optNoun: Option[NounPhrase], quantterms: Vector[QuantTerm] = Vector()) extends MathExpr
 
   // case class QuantifiedNoun(np: NounPhrase)
 
@@ -296,13 +291,13 @@ object MathExpr {
   case class VerbAdj(vp: VerbPhrase, ap: AdjectivalPhrase) extends VerbPhrase
 
   /**
-   * representing existential 'there', purely as a parsing target
-   */
+    * representing existential 'there', purely as a parsing target
+    */
   case object Exists extends MathExpr
 
   /**
-   * to take care of an idiosyncracy of the StanfordParser, with 'if' SP attached to a VP in an NPVP
-   */
+    * to take care of an idiosyncracy of the StanfordParser, with 'if' SP attached to a VP in an NPVP
+    */
   case class VPIf(vp: VerbPhrase, ifc: MathExpr) extends MathExpr
 
   /**
@@ -347,9 +342,7 @@ object MathExpr {
   /**
     * Existential-style quantified sentence, but also allowing at most one and precisely one.
     */
-  case class ExistentialSP(sentence: SententialPhrase,
-                           exists: Boolean = true,
-                           unique: Boolean = false)
+  case class ExistentialSP(sentence: SententialPhrase, exists: Boolean = true, unique: Boolean = false)
       extends SententialPhrase
 
   /**
@@ -360,22 +353,18 @@ object MathExpr {
   /**
     * Conjunction of sentential phrases.
     */
-  case class ConjSP(sentences: Vector[SententialPhrase])
-      extends SententialPhrase
+  case class ConjSP(sentences: Vector[SententialPhrase]) extends SententialPhrase
 
   /**
     * Disjunction of sentential phrases.
     */
-  case class DisjSP(sentences: Vector[SententialPhrase])
-      extends SententialPhrase
+  case class DisjSP(sentences: Vector[SententialPhrase]) extends SententialPhrase
 
   /**
     * Sentential phrases connected by "i.e., " or "so, ".
     */
-  case class ThatIsSP(sentences: Vector[SententialPhrase])
-      extends SententialPhrase
+  case class ThatIsSP(sentences: Vector[SententialPhrase]) extends SententialPhrase
 }
-
 
 object FormalExpr {
   case class FormalLeaf(s: String) extends MathExpr
@@ -403,9 +392,10 @@ object FormalExpr {
       case s => FormalLeaf(s)
     } ||
       Pattern.partial[Tree, SL] {
-        case PennTrees.Node(s, l) => (s, l) } >>> {
-          case ("NP", Vector(dp: MathExpr.DP)) => dp
-          case (s, l) => FormalNode(s, l)
+        case PennTrees.Node(s, l) => (s, l)
+      } >>> {
+        case ("NP", Vector(dp: MathExpr.DP)) => dp
+        case (s, l)                          => FormalNode(s, l)
       }
 }
 
@@ -423,8 +413,7 @@ case class Raw(model: TreeModel) extends MathText with MathExpr
 // with QuantTerm
 
 object Raw {
-  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) =>
-    Some(Raw(PennTrees.model(t))))
+  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) => Some(Raw(PennTrees.model(t))))
 }
 
 sealed trait MathText
@@ -437,36 +426,23 @@ object MathText {
 
   case class Assume(assumption: SententialPhrase) extends MathText
 
-  case class BiImplicationDefiniendumSP(definiendum: SententialPhrase)
-      extends SententialPhrase
+  case class BiImplicationDefiniendumSP(definiendum: SententialPhrase) extends SententialPhrase
 
-  case class BiImplicationDefiniendum(name: String,
-                                      variables: Vector[T],
-                                      formula: SententialPhrase)
-      extends MathExpr
+  case class BiImplicationDefiniendum(name: String, variables: Vector[T], formula: SententialPhrase) extends MathExpr
 
   case class CopulaDefiniendumNP(definiendum: NounPhrase) extends NounPhrase
 
-  case class CopulaDefiniendum(name: String,
-                               variables: Vector[T],
-                               lhs: NounPhrase)
-      extends MathExpr
+  case class CopulaDefiniendum(name: String, variables: Vector[T], lhs: NounPhrase) extends MathExpr
 
-  case class BiEquationalDefinitionSP(definiendum: BiEquationalDefinitionSP,
-                                      definiens: SententialPhrase)
+  case class BiEquationalDefinitionSP(definiendum: BiEquationalDefinitionSP, definiens: SententialPhrase)
       extends SententialPhrase
 
-  case class CopulaDefinitionSP(definiendum: CopulaDefiniendumNP,
-                                definiens: NounPhrase)
+  case class CopulaDefinitionSP(definiendum: CopulaDefiniendumNP, definiens: NounPhrase) extends SententialPhrase
+
+  case class BiEquationalDefinition(definiendum: BiEquationalDefinition, definiens: SententialPhrase)
       extends SententialPhrase
 
-  case class BiEquationalDefinition(definiendum: BiEquationalDefinition,
-                                    definiens: SententialPhrase)
-      extends SententialPhrase
-
-  case class CopulaDefinition(definiendum: CopulaDefiniendum,
-                              definiens: NounPhrase)
-      extends SententialPhrase
+  case class CopulaDefinition(definiendum: CopulaDefiniendum, definiens: NounPhrase) extends SententialPhrase
 
   case class VariableType(variables: Vector[NounPhrase], typ: NounPhrase)
 }

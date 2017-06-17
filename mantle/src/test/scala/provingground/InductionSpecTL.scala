@@ -104,8 +104,7 @@ class InductionSpecTL extends FlatSpec {
 
     val ackmp1n = "ack(m+1)(n)" :: Nat
 
-    val ack = recNNN(succ)(
-      m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n))))))
+    val ack = recNNN(succ)(m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n))))))
 
     assert(ack(two)(two) == seven)
     assert(ack(three)(one) == add(seven)(six))
@@ -120,7 +119,6 @@ class InductionSpecTL extends FlatSpec {
   val ListA = "List(A)" :: Type
   val ListAInd =
     ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA) =: ListA
-
 
   "Recursion function size from List(A) to Nat" should "be defined properly" in {
 
@@ -200,9 +198,7 @@ class InductionSpecTL extends FlatSpec {
 
   "Induction function countdown" should "be defined properly" in {
     assert(countdown(zero) == nilv)
-    assert(
-      countdown(three) == consv(two)(three)(
-        consv(one)(two)(consv(zero)(one)(nilv))))
+    assert(countdown(three) == consv(two)(three)(consv(one)(two)(consv(zero)(one)(nilv))))
   }
 
   // Indexed Inductive types
@@ -240,9 +236,7 @@ class InductionSpecTL extends FlatSpec {
           (vn :->
             (concatVn :->
               (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm))))))))
-    assert(
-      vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(
-        vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
+    assert(vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
   val VecN = "Vec(Nat)" :: Nat ->: Type

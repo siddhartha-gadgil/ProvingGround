@@ -29,12 +29,11 @@ object BatchTest extends App {
   // })
 
   timedRun.foreach(
-      (x) =>
-      {
-        count += 1
-        write.append(file, s"count: $count\nTheorems:\n${x.fansi}\n\n")
-      }
-      )
+    (x) => {
+      count += 1
+      write.append(file, s"count: $count\nTheorems:\n${x.fansi}\n\n")
+    }
+  )
 
   Await.result(awaitTask.runAsync, duration * 2)
 }

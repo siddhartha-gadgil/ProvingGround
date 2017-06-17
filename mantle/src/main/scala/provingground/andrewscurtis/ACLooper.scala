@@ -20,39 +20,27 @@ import ACLooper._
 /**
   * The loop for learning specialized to Andrews-Curtis moves
   */
-class ACLooper(
-    rank: Int,
-    size: Int,
-    wrdCntn: Double,
-    init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    srcRef: ActorRef,
-    param: Param)
+class ACLooper(rank: Int,
+               size: Int,
+               wrdCntn: Double,
+               init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+               srcRef: ActorRef,
+               param: Param)
     extends FDLooper[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
       Param
-    ](ACLooper.dyn(rank, size),
-      ACLooper.padFeedback(rank, wrdCntn),
-      normalize,
-      init,
-      srcRef,
-      param)
+    ](ACLooper.dyn(rank, size), ACLooper.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
-class ACsmoothLooper(
-    rank: Int,
-    size: Int,
-    wrdCntn: Double,
-    init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-    srcRef: ActorRef,
-    param: Param)
+class ACsmoothLooper(rank: Int,
+                     size: Int,
+                     wrdCntn: Double,
+                     init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                     srcRef: ActorRef,
+                     param: Param)
     extends FDLooper[
       (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
       Param
-    ](ACLooper.dyn(rank, size),
-      ACLooper.padFeedback(rank, wrdCntn),
-      normalize,
-      init,
-      srcRef,
-      param)
+    ](ACLooper.dyn(rank, size), ACLooper.padFeedback(rank, wrdCntn), normalize, init, srcRef, param)
 
 object ACLooper {
 
@@ -69,8 +57,7 @@ object ACLooper {
 
   def feedback(rank: Int, wrdCntn: Double, strictness: Double) = {
     val projPresFn =
-      projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(
-        rank)
+      projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d: FiniteDistribution[Presentation]) => {
       val res =
         d.rawfeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
@@ -82,8 +69,7 @@ object ACLooper {
 
   def smoothFeedback(rank: Int, wrdCntn: Double, strictness: Double) = {
     val projPresFn =
-      projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(
-        rank)
+      projectV[AtomicMove, FiniteDistribution[Moves]] andthen genPresentationMoveFn(rank)
     val fb = (d: FiniteDistribution[Presentation]) => {
       d.smoothedFeedback(FreeGroups.Presentation.weight(wrdCntn), strictness)
     }
@@ -93,8 +79,7 @@ object ACLooper {
   def padFeedback(rank: Int, wrdCntn: Double) =
     (strictness: Double) =>
       (x: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
-        (y: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) =>
-          feedback(rank, wrdCntn, strictness)(y)
+        (y: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) => feedback(rank, wrdCntn, strictness)(y)
 
   def padSmoothback(rank: Int, wrdCntn: Double) =
     (strictness: Double) =>
@@ -109,29 +94,26 @@ object ACLooper {
             srcRef: ActorRef,
             param: Param): Props =
     Props(
-      new ACLooper(
-        rank: Int,
-        size: Int,
-        wrdCntn: Double,
-        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-        srcRef,
-        param))
+      new ACLooper(rank: Int,
+                   size: Int,
+                   wrdCntn: Double,
+                   init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                   srcRef,
+                   param))
 
-  def smoothProps(
-      rank: Int,
-      size: Int,
-      wrdCntn: Double,
-      init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-      srcRef: ActorRef,
-      param: Param): Props =
+  def smoothProps(rank: Int,
+                  size: Int,
+                  wrdCntn: Double,
+                  init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                  srcRef: ActorRef,
+                  param: Param): Props =
     Props(
-      new ACsmoothLooper(
-        rank: Int,
-        size: Int,
-        wrdCntn: Double,
-        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-        srcRef,
-        param))
+      new ACsmoothLooper(rank: Int,
+                         size: Int,
+                         wrdCntn: Double,
+                         init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                         srcRef,
+                         param))
 
   def spawn(name: String,
             rank: Int,
@@ -140,34 +122,30 @@ object ACLooper {
             init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
             srcRef: ActorRef,
             param: Param) = {
-    val runner = Hub.system.actorOf(
-      props(rank: Int,
-            size: Int,
-            wrdCntn: Double,
-            init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-            srcRef,
-            param),
-      name)
+    val runner = Hub.system.actorOf(props(rank: Int,
+                                          size: Int,
+                                          wrdCntn: Double,
+                                          init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                                          srcRef,
+                                          param),
+                                    name)
     runner
   }
 
-  def smoothSpawn(
-      name: String,
-      rank: Int,
-      size: Int,
-      wrdCntn: Double,
-      init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-      srcRef: ActorRef,
-      param: Param) = {
-    val runner = Hub.system.actorOf(
-      smoothProps(
-        rank: Int,
-        size: Int,
-        wrdCntn: Double,
-        init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-        srcRef,
-        param),
-      name)
+  def smoothSpawn(name: String,
+                  rank: Int,
+                  size: Int,
+                  wrdCntn: Double,
+                  init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                  srcRef: ActorRef,
+                  param: Param) = {
+    val runner = Hub.system.actorOf(smoothProps(rank: Int,
+                                                size: Int,
+                                                wrdCntn: Double,
+                                                init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+                                                srcRef,
+                                                param),
+                                    name)
     runner
   }
 

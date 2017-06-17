@@ -8,7 +8,7 @@ import learning._
 import Sampler._
 import FansiShow._
 
-object DiffMonixAB{
+object DiffMonixAB {
   val A = "A" :: Type
   val B = "B" :: Type
 
@@ -23,7 +23,7 @@ object DiffMonixAB{
   lazy val showEv = simpleObs.foreach(println)
 }
 
-object FDMonixAB{
+object FDMonixAB {
   val A = "A" :: Type
   val B = "B" :: Type
 

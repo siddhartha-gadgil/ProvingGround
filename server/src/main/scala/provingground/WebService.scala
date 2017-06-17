@@ -36,9 +36,8 @@ object BaseServer {
 
 import ammonite.ops._
 
-class AmmService(
-    val scriptsDir: Path = pwd / "repl-scripts",
-    val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
+class AmmService(val scriptsDir: Path = pwd / "repl-scripts",
+                 val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
   import ammonite.kernel._
 
   val initCommands =
@@ -55,9 +54,7 @@ class AmmService(
     write.over(scriptsDir / s"${name}.sc", body)
   }
 
-  def makeObject(name: String,
-                 body: String,
-                 header: String = "package provingground.scripts") =
+  def makeObject(name: String, body: String, header: String = "package provingground.scripts") =
     s"""$header
 
 object $name{
@@ -102,8 +99,7 @@ $body
   //     s
   //   }
 
-  def kernelRes(inp: String)(
-      implicit ker: ReplKernel): Option[Either[String, Any]] =
+  def kernelRes(inp: String)(implicit ker: ReplKernel): Option[Either[String, Any]] =
     ker.process(inp) map { resp =>
       resp.toEither match {
         case Right(evaluation) =>
@@ -131,7 +127,6 @@ $body
     base
   }
 
-
   import java.io.OutputStream
 
   class StringOutputStream extends OutputStream {
@@ -141,30 +136,30 @@ $body
 
     def reset = bytes.clear()
 
-  override def write(b: Int): Unit = {
-    bytes += b.toByte
+    override def write(b: Int): Unit = {
+      bytes += b.toByte
+    }
+
+    def string: String = new String(bytes.toArray.map(_.toChar))
   }
-
-  def string: String = new String(bytes.toArray.map(_.toChar))
-  }
-
-
 
   def replResult(code: String) = {
     import java.io._
-    val outputS= new ByteArrayOutputStream()
-    val errLog = new ByteArrayOutputStream()
+    val outputS = new ByteArrayOutputStream()
+    val errLog  = new ByteArrayOutputStream()
     val infoLog = new ByteArrayOutputStream()
 
     import java.nio.charset.StandardCharsets
 
     val ammMain =
       ammonite.Main(
-        predef=
+        predef =
           "repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
-        inputStream = new ByteArrayInputStream((code+"\nexit\n").getBytes(StandardCharsets.UTF_8)),
+        inputStream = new ByteArrayInputStream((code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
-        errorStream = errLog, infoStream = infoLog)
+        errorStream = errLog,
+        infoStream = infoLog
+      )
 
     println(code)
 
@@ -204,27 +199,25 @@ $body
           val result =
             replResult(d) match {
               case Right(z) => "--RESULT--\n" + z
-              case Left(z) => "--ERROR--\n" + z
+              case Left(z)  => "--ERROR--\n" + z
             }
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-                              result))
-          // val js = kernelJS(res)
-          // val js = replResJS(d)
-          // println(js)
-            //Js.Obj("result" -> Js.Str("not implemented"))
-          //Js.Obj("response" -> Js.Str(res.toString))
-          // println(res)
-          // println(kernelJS(res).toString)
-          // TimeServer.buf = TimeServer.buf :+ res.toString
-          // println(s"Buffer: ${TimeServer.buf}")
-          // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, result))
+        // val js = kernelJS(res)
+        // val js = replResJS(d)
+        // println(js)
+        //Js.Obj("result" -> Js.Str("not implemented"))
+        //Js.Obj("response" -> Js.Str(res.toString))
+        // println(res)
+        // println(kernelJS(res).toString)
+        // TimeServer.buf = TimeServer.buf :+ res.toString
+        // println(s"Buffer: ${TimeServer.buf}")
+        // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
         }
       }
     } ~
       get {
         path("list-scripts") {
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-                              listScripts.mkString("\n")))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, listScripts.mkString("\n")))
         }
       } ~
       post {
@@ -240,9 +233,7 @@ $body
       } ~
       get {
         path("script" / Segment) { name =>
-          complete(
-            HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-                       Try(script(name)).toString))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, Try(script(name)).toString))
         }
       } ~
       post {
@@ -258,8 +249,7 @@ $body
       get {
         path("load-object" / Segment) { name =>
           val objTry = Try(makeObject(name, clean(script(name)), ""))
-          complete(
-            HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
         }
       }
 
@@ -267,9 +257,8 @@ $body
 
 // object AmmServer extends AmmService()
 
-class AmmScriptServer(
-    val scriptsDir: Path = pwd / "repl-scripts",
-    val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
+class AmmScriptServer(val scriptsDir: Path = pwd / "repl-scripts",
+                      val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
   val htmlRoute = {
     pathSingleSlash {
       get {

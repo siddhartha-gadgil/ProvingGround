@@ -55,8 +55,7 @@ object ScriptServer extends App {
       val server = new AmmScriptServer(config.scriptsDir, config.objectsDir)
       val bindingFuture =
         Http().bindAndHandle(server.route, config.host, config.port)
-      println(
-        s"Server online at http://${config.host}:${config.port}\n Press RETURN to stop")
+      println(s"Server online at http://${config.host}:${config.port}\n Press RETURN to stop")
       StdIn.readLine() // let it run until user presses return
       bindingFuture
         .flatMap(_.unbind()) // trigger unbinding from the port

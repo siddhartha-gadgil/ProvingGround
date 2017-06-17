@@ -7,7 +7,7 @@ import translation._, interface._
 
 import TermJson._
 
-class  JsonSpec extends FlatSpec{
+class JsonSpec extends FlatSpec {
   def roundTripBase(t: Term) = termToJson(t).flatMap(jsonToTermBase)
 
   def checkBase(t: Term) = roundTripBase(t) == Some(t)
@@ -65,7 +65,7 @@ class  JsonSpec extends FlatSpec{
 
   def roundTrip(t: Term) =
     termToJson(t).flatMap(
-      jsonToTerm(Map(Nat ->NatInd, Bool -> BoolInd).lift, Map((Vec : Term) -> VecInd).lift)
+      jsonToTerm(Map(Nat -> NatInd, Bool -> BoolInd).lift, Map((Vec: Term) -> VecInd).lift)
     )
 
   def check(t: Term) = roundTrip(t) == Some(t)

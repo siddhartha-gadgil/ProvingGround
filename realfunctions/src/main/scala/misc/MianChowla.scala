@@ -21,8 +21,8 @@ object MianChowla {
   val seq: Stream[SafeLong] =
     Stream.from(1) map
       ((n: Int) =>
-         if (n == 1) SafeLong(1)
-         else nextNum(seq take (n - 1), n: SafeLong))
+        if (n == 1) SafeLong(1)
+        else nextNum(seq take (n - 1), n: SafeLong))
 
   def view(n: Int) = seq.take(n).toList
 
@@ -36,7 +36,6 @@ object MianChowla {
     val wd   = pwd / "data"
     val iter = seq.zipWithIndex.take(n).toIterator
     for ((x, y) <- iter)
-      write.append(wd / file,
-                   s"$x, ${y + 1}, ${log(x.toDouble) / log(y.toDouble + 1)}\n")
+      write.append(wd / file, s"$x, ${y + 1}, ${log(x.toDouble) / log(y.toDouble + 1)}\n")
   }
 }

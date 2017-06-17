@@ -76,7 +76,7 @@ object PennTrees {
     def unapply(t: Tree): Option[(Tree, String, Tree)] = t match {
       case LeftBinTree(DashWord(y, w), z)  => Some((y, w, z))
       case RightBinTree(y, WordDash(w, z)) => Some((y, w, z))
-      case LeftBinTree(y, WordDash(w, z)) => Some((y, w, z))
+      case LeftBinTree(y, WordDash(w, z))  => Some((y, w, z))
       case RightBinTree(DashWord(y, w), z) => Some((y, w, z))
       case _                               => None
     }
@@ -117,8 +117,7 @@ object TreeModel {
     // override def toString = s"""Leaf("$value")"""
   }
 
-  case class Node(value: String, children: Vector[TreeModel])
-      extends TreeModel {
+  case class Node(value: String, children: Vector[TreeModel]) extends TreeModel {
     // override def toString = s"""Node("$value", ${children})"""
   }
 }

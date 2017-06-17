@@ -53,8 +53,7 @@ class ApproxTrig(N: SafeLong) {
     *
     *
     */
-  def spanPositive(stream: Int => Interval[Rational])(
-      xs: Interval[Rational]): Option[Interval[Rational]] =
+  def spanPositive(stream: Int => Interval[Rational])(xs: Interval[Rational]): Option[Interval[Rational]] =
     if (xs.isEmpty) Some(Interval.empty)
     else {
       assert(!xs.hasBelow(0),
@@ -76,8 +75,7 @@ class ApproxTrig(N: SafeLong) {
   /**
     * for a monotonic function, gives bound on [(k-1)/N, k/N] given bound at the point k/N.
     */
-  def monotoneBound(
-      endBound: Int => Interval[Rational]): Int => Interval[Rational] =
+  def monotoneBound(endBound: Int => Interval[Rational]): Int => Interval[Rational] =
     (k) => if (k == 0) endBound(k) else endBound(k - 1) + endBound(k)
 
   /**
@@ -88,9 +86,7 @@ class ApproxTrig(N: SafeLong) {
     * @param inv : inversion, i.e., f(-x) = inv(f(x))
 
     */
-  def span(stream: Int => Interval[Rational],
-           inv: Interval[Rational] => Interval[Rational])(
-      xs: Interval[Rational]) = {
+  def span(stream: Int => Interval[Rational], inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) = {
     val split = xs.splitAtZero
     for (a <- spanPositive(stream)(split._2);
          b <- spanPositive(stream)(-split._1)) yield a union inv(b)
@@ -103,13 +99,13 @@ class ApproxTrig(N: SafeLong) {
   lazy val expStream: Stream[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0) Interval.point(Rational(1))
-         else {
-           val b = get(expStream, n - 1)
-           val a =
-             b * Interval.closed(r"1/2", (1 + width) / (2 - (width * width)))
-           (a * width * width) + (b * (width + 1))
-         })
+        if (n == 0) Interval.point(Rational(1))
+        else {
+          val b = get(expStream, n - 1)
+          val a =
+            b * Interval.closed(r"1/2", (1 + width) / (2 - (width * width)))
+          (a * width * width) + (b * (width + 1))
+        })
 
   /**
     * bound on exponential on the interval [(k-1)/N, k/N]
@@ -142,13 +138,12 @@ class ApproxTrig(N: SafeLong) {
   def logStream: Stream[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0) Interval.point(r"0")
-         else {
-           val prev = get(logStream, n - 1)
-           prev +
-             (Interval.closed(r"1" / (r"1" + (width * n)),
-                              r"1" / (r"1" + (width * (n - 1)))) * width)
-         })
+        if (n == 0) Interval.point(r"0")
+        else {
+          val prev = get(logStream, n - 1)
+          prev +
+            (Interval.closed(r"1" / (r"1" + (width * n)), r"1" / (r"1" + (width * (n - 1)))) * width)
+        })
 
   /**
     * bound on log(1 + x) for x in [(k-1)/N, k/N] at index k.
@@ -223,14 +218,14 @@ class ApproxTrig(N: SafeLong) {
   lazy val sinStream: Stream[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0)
-           (Interval.point(Rational(0)), Interval.point(Rational(0)))
-         else {
-           val c        = get(sinStream, n - 1)._1
-           val b        = get(cosStream, n - 1)._1
-           val trigAppr = TrigBound(b, c)
-           (trigAppr.atRightEnd, trigAppr.intervalImage)
-         })
+        if (n == 0)
+          (Interval.point(Rational(0)), Interval.point(Rational(0)))
+        else {
+          val c        = get(sinStream, n - 1)._1
+          val b        = get(cosStream, n - 1)._1
+          val trigAppr = TrigBound(b, c)
+          (trigAppr.atRightEnd, trigAppr.intervalImage)
+        })
 
   /**
     * on the interval ((n - 1)/ N, n/N) if n>0 , (0, 0) otherwise,
@@ -239,14 +234,14 @@ class ApproxTrig(N: SafeLong) {
   lazy val cosStream: Stream[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0)
-           (Interval.point(Rational(1)), Interval.point(Rational(1)))
-         else {
-           val c        = get(cosStream, n - 1)._1
-           val b        = -get(sinStream, n - 1)._1
-           val trigAppr = TrigBound(b, c)
-           (trigAppr.atRightEnd, trigAppr.intervalImage)
-         })
+        if (n == 0)
+          (Interval.point(Rational(1)), Interval.point(Rational(1)))
+        else {
+          val c        = get(cosStream, n - 1)._1
+          val b        = -get(sinStream, n - 1)._1
+          val trigAppr = TrigBound(b, c)
+          (trigAppr.atRightEnd, trigAppr.intervalImage)
+        })
 
   import ApproxTrig._
 
@@ -266,8 +261,7 @@ class ApproxTrig(N: SafeLong) {
 
   import spire.math.Numeric._
 
-  val sqrt: Approx = (J) =>
-    Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
+  val sqrt: Approx = (J) => Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
 }
 
 object ApproxTrig {
@@ -311,9 +305,7 @@ object ApproxTrig {
     */
   def split[F: Field: Order](J: Interval[F]) = {
     for (lower <- getBound(J.lowerBound); upper <- getBound(J.upperBound))
-      yield
-        Set(Interval.closed(lower, (lower + upper) / 2),
-            Interval.closed((lower + upper) / 2, upper))
+      yield Set(Interval.closed(lower, (lower + upper) / 2), Interval.closed((lower + upper) / 2, upper))
   }
 
   /**
@@ -345,8 +337,7 @@ object ApproxTrig {
         for (initCubes <- initCubesOpt; finalCoords <- finalCoordsOpt) // splits, if Some, of the initial and final coordinates
           yield
             for (cubelet <- initCubes; interval <- finalCoords) //sub-cubes, subintervals in split
-              yield
-                Cube(cubelet.coords :+ interval) // products of sub-cubes with subintervals
+              yield Cube(cubelet.coords :+ interval) // products of sub-cubes with subintervals
       }
     }
 
@@ -359,14 +350,14 @@ object ApproxTrig {
         val prevSplit = recSplit(k - 1)
         prevSplit flatMap
           ((cs) => // sub-cubes in the spltting of depth (k-1), if split successful
-           {
-             val setopts =
-               cs map (_.splitCube) // split each sub-cube if possible.
-             if (setopts contains None)
-               None // if some sub-cube fails to split, no total split.
-             else
-               Some(setopts.flatten.flatten) // Extract split cubes (from option type) as Set(Set) and flatten
-           })
+          {
+            val setopts =
+              cs map (_.splitCube) // split each sub-cube if possible.
+            if (setopts contains None)
+              None // if some sub-cube fails to split, no total split.
+            else
+              Some(setopts.flatten.flatten) // Extract split cubes (from option type) as Set(Set) and flatten
+          })
       }
 
     /**
@@ -381,14 +372,14 @@ object ApproxTrig {
       val boundsOpt =
         recSplit(depth) flatMap
           ((cubelets) => {
-             //sub-cubes in depth k split cube, if splitting successful.
-             val bds =
-               cubelets map (func) // optional bounds for value of function on cubelets
-             if (bds contains None)
-               None // if no bound for some sub-cube, then no bound
-             else
-               Some(bds.flatten) // extract from options a collection of bounds
-           }) // collection of bounds if splitting succeeds and we get a bound for each cube.
+            //sub-cubes in depth k split cube, if splitting successful.
+            val bds =
+              cubelets map (func) // optional bounds for value of function on cubelets
+            if (bds contains None)
+              None // if no bound for some sub-cube, then no bound
+            else
+              Some(bds.flatten) // extract from options a collection of bounds
+          }) // collection of bounds if splitting succeeds and we get a bound for each cube.
       for (bounds     <- boundsOpt;                              // collection of bounds if any
            unionBound <- Try(bounds.reduce(_ union _)).toOption) // if union succeeds (not empty collection for example)
         yield unionBound // union of bounds
@@ -411,9 +402,7 @@ object ApproxTrig {
     * bounds for coordinates only depend on the cube.
     * Combining the two should be done with care (as is done in rationalBound)
     */
-  class RationalBounds(N: SafeLong, cube: Cube)
-      extends ApproxTrig(N)
-      with ElementaryFunctions[Approx] {
+  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with ElementaryFunctions[Approx] {
     val proj = (i: Int) => ConstantBound(cube.coords(i))
   }
 
@@ -433,14 +422,12 @@ object ApproxTrig {
     * this is checked before returing a result.
     */
   def rationalBound(fn: FormalElemFunction, N: SafeLong, cube: Cube) = {
-    implicit val local: ElementaryFunctions[Approx] = new RationalBounds(
-      N,
-      cube) // bounds on the cube for coordinates and on interval for sin etc
+    implicit val local
+      : ElementaryFunctions[Approx] = new RationalBounds(N, cube) // bounds on the cube for coordinates and on interval for sin etc
     val bnd =
       fn.as[Approx] // rational bound function from the formal function.
-    assert(
-      multiVar(fn),
-      s" cannot bound $fn : bounds are only for functions of coordinates not direct univaraites such as sin")
+    assert(multiVar(fn),
+           s" cannot bound $fn : bounds are only for functions of coordinates not direct univaraites such as sin")
     bnd(Interval.point(0)) // bound is supposed to be independent of the chosen interval; as verified above.
   }
 }

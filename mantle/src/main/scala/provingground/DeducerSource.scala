@@ -44,9 +44,9 @@ class DeducerSource(ded: Deducer,
       .sequence {
         (1 to threads) map
           ((_) =>
-             Future {
-               nextDistribution(initDist, initBatch, false, Vector(), smooth)
-             })
+            Future {
+              nextDistribution(initDist, initBatch, false, Vector(), smooth)
+            })
       }
       .map(
         (fdsInvMap) =>
@@ -72,9 +72,9 @@ class DeducerSource(ded: Deducer,
           .sequence {
             (1 to threads) map
               ((_) =>
-                 Future {
-                   nextDistribution(fd, batchSize, true, invM, smooth)
-                 })
+                Future {
+                  nextDistribution(fd, batchSize, true, invM, smooth)
+                })
           }
           .map(
             (fdsInvMap) =>
@@ -115,14 +115,9 @@ class DeducerSource(ded: Deducer,
           .sequence {
             (1 to threads) map
               ((_) =>
-                 Future {
-                   learnerNextDistribution(fd,
-                                           theorems,
-                                           batchSize,
-                                           true,
-                                           invM,
-                                           smooth)
-                 })
+                Future {
+                  learnerNextDistribution(fd, theorems, batchSize, true, invM, smooth)
+                })
           }
           .map(
             (fdsInvMap) =>
@@ -169,9 +164,7 @@ class DeducerSource(ded: Deducer,
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
 
-  def timedRun(dedTime: FiniteDuration,
-               learnTime: FiniteDuration,
-               name: String) = {
+  def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
     deduc
       .takeWithin(dedTime)
       .alsoTo(display())
@@ -185,10 +178,7 @@ class DeducerSource(ded: Deducer,
       .runWith(Sink.ignore)
   }
 
-  def timedRunConc(dedTime: FiniteDuration,
-                   learnTime: FiniteDuration,
-                   name: String,
-                   threads: Int = 3) = {
+  def timedRunConc(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String, threads: Int = 3) = {
     deducConc(threads)
       .takeWithin(dedTime)
       .alsoTo(display())

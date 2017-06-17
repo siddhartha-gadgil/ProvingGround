@@ -12,14 +12,10 @@ import ACMongo._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class StateView(name: String,
-                elems: Vector[ACElem],
-                fdM: FiniteDistribution[AtomicMove]) {
-  lazy val fdV = FiniteDistribution(
-    elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
+class StateView(name: String, elems: Vector[ACElem], fdM: FiniteDistribution[AtomicMove]) {
+  lazy val fdV = FiniteDistribution(elems map ((x) => Weighted(x.moves, x.weight))).flatten.normalized()
 
-  lazy val fdP = FiniteDistribution(
-    elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
+  lazy val fdP = FiniteDistribution(elems map ((x) => Weighted(x.pres, x.weight))).flatten.normalized()
 
   lazy val proofElems = elems groupBy (_.pres)
 

@@ -19,8 +19,8 @@ import edu.stanford.nlp.semgraph._
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
 
 /**
- * direct interface to the Stanford parser; the [[StanfordParser]] object which handles LaTeX is used instead.
- */
+  * direct interface to the Stanford parser; the [[StanfordParser]] object which handles LaTeX is used instead.
+  */
 object CoreNLP {
 
   def gov(e: SemanticGraphEdge) =
@@ -80,7 +80,7 @@ object CoreNLP {
 }
 
 // The part below is for testing.
-object CoreNLPTest  {
+object CoreNLPTest {
   import provingground.CoreNLP._
 
   val props = new java.util.Properties()
@@ -134,7 +134,6 @@ object CoreNLPTest  {
 //    Map<Integer, CorefChain> graph =
 //      document.get(CorefChainAnnotation.class);
 
-  val tree = proseTrees(
-    "if a prime number p divides mn, p divides one of m and n").head
+  val tree = proseTrees("if a prime number p divides mn, p divides one of m and n").head
 //		println(toFormula(tree, Global))
 }

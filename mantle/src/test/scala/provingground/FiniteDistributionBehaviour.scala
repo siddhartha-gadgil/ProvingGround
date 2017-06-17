@@ -8,10 +8,8 @@ import Weighted._
 
 trait FiniteDistributionBehaviours { this: FlatSpec =>
 
-  def intFiniteDistribution(
-      finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
-    val x = finDist(
-      weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
+  def intFiniteDistribution(finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {
+    val x = finDist(weights(-1 -> 0.2, 1 -> 0.2, 3 -> 0.25, 4 -> 0.25, 7 -> 0.1))
 
     val y = finDist(weights(0 -> 0.3, 1 -> 0.4, 5 -> 0.3))
 

@@ -5,17 +5,17 @@ import StanfordParser._
 import TreeToMath._
 
 /**
- * Examples to experiment and illustrate expression level NLP parsing
- * Issues revealed:
- *  - Cardinals should be treated as determiners
- *  - determiners in a phrase e.g. 'divides some ...' need special rules
- *  - useless 'then'
- *  - primes is tagged as a verb, not a noun
- *  - in 'are represented by ...', 'represented by ...'
- *  - copula followed by an adjectival phrase is mishandled
- *  - TeX fragment that is part of a word gives error.
- */
-object ExprEgs{
+  * Examples to experiment and illustrate expression level NLP parsing
+  * Issues revealed:
+  *  - Cardinals should be treated as determiners
+  *  - determiners in a phrase e.g. 'divides some ...' need special rules
+  *  - useless 'then'
+  *  - primes is tagged as a verb, not a noun
+  *  - in 'are represented by ...', 'represented by ...'
+  *  - copula followed by an adjectival phrase is mishandled
+  *  - TeX fragment that is part of a word gives error.
+  */
+object ExprEgs {
   val assertions =
     Vector(
       "Every natural number is greater than $0$", //parsed
@@ -60,12 +60,8 @@ object ExprEgs{
   def parseT(s: String) = mathExprTree(texParse(s))
 
   lazy val parsed =
-    assertions.map((s) =>
-      s -> mathExpr(
-        texParse(s))).filter(!_._2.isEmpty).toMap
+    assertions.map((s) => s -> mathExpr(texParse(s))).filter(!_._2.isEmpty).toMap
 
   lazy val exprs =
-    assertions.map((s) =>
-      s -> mathExprFormal()(
-        texParse(s))).toMap
+    assertions.map((s) => s -> mathExprFormal()(texParse(s))).toMap
 }

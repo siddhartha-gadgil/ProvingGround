@@ -21,9 +21,7 @@ object XmlParse {
 
   /** Extract Dependency relation from XML */
   def xmltoDepRel(node: scala.xml.Node) =
-    DepRel(xmltoToken((node \ "governor").head),
-           xmltoToken((node \ "dependent").head),
-           (node \ "@type").head.text)
+    DepRel(xmltoToken((node \ "governor").head), xmltoToken((node \ "dependent").head), (node \ "@type").head.text)
 
   /** Extract List of Dependency relations from XML Source */
   def depTree(parse: scala.xml.NodeSeq) =

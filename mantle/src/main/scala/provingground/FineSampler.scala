@@ -36,7 +36,7 @@ case class NextSample(p: FD[Term],
 
   lazy val nextTypSamp = sample(ded.evolveTyp(p), size)
 
-  lazy val nextTypFD = toFD(nextTypSamp).map {case tp: Typ[u] => tp: Typ[Term]}
+  lazy val nextTypFD = toFD(nextTypSamp).map { case tp: Typ[u] => tp: Typ[Term] }
 
   lazy val thmFeedback = TheoremFeedback(nextFD, nextTypFD, vars)
 
@@ -58,8 +58,8 @@ case class NextSample(p: FD[Term],
           ded.Devolve(nextFD, tang) //recursive distribution based on derivative for sampling
         val samp  = sample(dPD, n)
         val DdPd  = ded.DevolveTyp(nextFD, tang)
-        val Dsamp = sample(DdPd, n).map {case (tp: Typ[u], n) => (tp: Typ[Term], n)}
-        (x , (toFD(samp), toFD(Dsamp)))
+        val Dsamp = sample(DdPd, n).map { case (tp: Typ[u], n) => (tp: Typ[Term], n) }
+        (x, (toFD(samp), toFD(Dsamp)))
     }
 
   lazy val feedBacks =

@@ -18,8 +18,6 @@ import spire.syntax._
 
 import org.scalatest.FlatSpec
 
-
-
 import NatRing._
 
 object NatRingSpec {

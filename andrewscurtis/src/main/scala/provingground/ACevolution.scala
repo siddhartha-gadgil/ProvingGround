@@ -1,6 +1,5 @@
 package provingground.andrewscurtis
 
-
 import Moves._
 
 import MoveGenerator._

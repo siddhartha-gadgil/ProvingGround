@@ -46,9 +46,7 @@ class GetInductiveSpec extends InductionSpecTL {
           (vn :->
             (concatVn :->
               (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm))))))))
-    assert(
-      vconcat2(two)(v2)(two)(v2) == vcons(three)(a1)(
-        vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
+    assert(vconcat2(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
 }

@@ -4,9 +4,9 @@ import scala.util.parsing.combinator._
 import scala.language.implicitConversions
 
 /**
- * deprecated informally designed language, replaced by the Naproche based [[MathExpr]]
- */
- @deprecated("Use Naproche based languages", "0.1")
+  * deprecated informally designed language, replaced by the Naproche based [[MathExpr]]
+  */
+@deprecated("Use Naproche based languages", "0.1")
 object TheoryTypes {
 
   // type Typ[HoTT.Term] = Typ[HoTT.Term]
@@ -33,8 +33,7 @@ object TheoryTypes {
 
   case class Is(first: Expression, second: Expression) extends Term
 
-  case class Conjunct(conj: String, first: Expression, second: Expression)
-      extends Term
+  case class Conjunct(conj: String, first: Expression, second: Expression) extends Term
 
   case class ParaTerm(first: Expression, rest: Expression) extends Term
 
@@ -48,8 +47,7 @@ object TheoryTypes {
 
   case class Apply(func: Term, argument: Term) extends Term
 
-  case class MultiApply[L](func: Expression, args: Map[L, Expression])
-      extends Term
+  case class MultiApply[L](func: Expression, args: Map[L, Expression]) extends Term
 
   case class FuncTypTerm(dom: Term, codom: Term) extends Term
 
@@ -75,10 +73,7 @@ object TheoryTypes {
 
   case class RealSym(value: Double) extends Term
 
-  class ExpressionParser(binOps: List[String],
-                         binRels: List[String],
-                         bigOps: List[String])
-      extends JavaTokenParsers {
+  class ExpressionParser(binOps: List[String], binRels: List[String], bigOps: List[String]) extends JavaTokenParsers {
     def varSym: Parser[Term] = ("[a-zA-Z]".r | """\\(\w)+""".r) ^^ {
       case s: String => TermSym(s)
     }

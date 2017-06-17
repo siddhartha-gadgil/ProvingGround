@@ -36,10 +36,7 @@ import com.github.nscala_time.time.Imports._
 
 import ACFlow._
 
-case class ACData(paths: Map[String,
-                             Stream[(FiniteDistribution[AtomicMove],
-                                     FiniteDistribution[Moves])]],
-                  dir: String)
+case class ACData(paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]], dir: String)
     extends ACresults(paths) {
 
   def last = ACStateData(states, dir)
@@ -65,10 +62,7 @@ case class ACData(paths: Map[String,
   }
 }
 
-case class ACStateData(
-    states: Map[String,
-                (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])],
-    dir: String)
+case class ACStateData(states: Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])], dir: String)
     extends ACStates {
   def revive(name: String, p: Param = Param())(implicit hub: ActorRef) = {
     import p._
@@ -109,11 +103,9 @@ case class ACStateData(
 import FDLooper._
 
 class ACFileSaver(dir: String = "acDev", rank: Int = 2)
-    extends FDSrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-                  Param] {
+    extends FDSrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param] {
   def save =
-    (snap: Snap) =>
-      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
+    (snap: Snap) => fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
 }
 
 object ACFileSaver {
@@ -159,8 +151,7 @@ object ACFlowSaver {
   def snapStream(date: String) =
     (ls(wd / date).toStream map (_.name))
       .sortBy(_.toInt)
-      .flatMap((filename: String) =>
-        (read.lines(snapd / date / filename)).toStream)
+      .flatMap((filename: String) => (read.lines(snapd / date / filename)).toStream)
       .map(uread[Snap])
 
   def snapSource(date: String) = Src(snapStream(date))
@@ -359,10 +350,7 @@ object ACData {
   // def srcRef(batch: String = "acDev", rank: Int) = ACFlowSaver.mongoSaveRef()
   //ACFlowSaver.actorRef(batch, rank)
 
-  def thmFileCSV(dir: String = "acDev",
-                 file: String,
-                 rank: Int = 2,
-                 lines: Option[Int] = None) = {
+  def thmFileCSV(dir: String = "acDev", file: String, rank: Int = 2, lines: Option[Int] = None) = {
     val source = wd / dir / s"${file}.acthms"
     val target = wd / dir / s"${file}.acthms.csv"
     val l = (lines map ((n) => ((read.lines.iter(source)).take(n)).toVector))
@@ -384,8 +372,7 @@ object ACData {
       ((file) => file.ext == "acthms" && s(file.name.dropRight(7)))
   }
 
-  def pickle(
-      state: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
+  def pickle(state: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])) = {
     val fdM = state._1
     val fdV = state._2
     val pmfM = for (Weighted(m, p) <- fdM.pmf)
@@ -409,9 +396,8 @@ object ACData {
   }
 
   val wd = pwd / "data"
-  def fileSave(name: String, dir: String = "acDev", rank: Int = 2)(
-      fdM: FiniteDistribution[AtomicMove],
-      fdV: FiniteDistribution[Moves]) = {
+  def fileSave(name: String, dir: String = "acDev", rank: Int = 2)(fdM: FiniteDistribution[AtomicMove],
+                                                                   fdV: FiniteDistribution[Moves]) = {
     val file      = wd / dir / (name + ".acrun")
     val statefile = wd / dir / (name + ".acstate")
     val thmfile   = wd / dir / (name + ".acthms")
@@ -461,15 +447,11 @@ object ACData {
 
   def loadData(dir: String = "acDev") = ACData(loadAll(dir), dir)
 
-  def saveFD[T](file: String,
-                dir: String = "0.5-output",
-                fd: FiniteDistribution[T]) = {
+  def saveFD[T](file: String, dir: String = "0.5-output", fd: FiniteDistribution[T]) = {
     for (Weighted(x, p) <- fd.pmf) write.append(wd / file, s"$x, $p\n")
   }
 
-  def saveEntropy(file: String,
-                  dir: String = "0.5-output",
-                  ent: List[Weighted[String]]) = {
+  def saveEntropy(file: String, dir: String = "0.5-output", ent: List[Weighted[String]]) = {
     for (Weighted(x, p) <- ent) write.append(wd / file, s"$x, $p\n")
   }
 

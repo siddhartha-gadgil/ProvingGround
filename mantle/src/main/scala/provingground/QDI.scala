@@ -23,9 +23,7 @@ import com.github.nscala_time.time.Imports._
   * @author gadgil
   */
 object QDI {
-  def writeFD(fd: FiniteDistribution[String],
-              filename: String,
-              dir: String = "data") = {
+  def writeFD(fd: FiniteDistribution[String], filename: String, dir: String = "data") = {
     val file = ops.pwd / dir / filename
     ops.rm(file)
     fd.pmf.foreach { case Weighted(s, p) => ops.write(file, s"$s\t$p\n") }
@@ -36,9 +34,9 @@ object QDI {
     val pmf =
       ops.read.lines(file) map
         ((l) => {
-           val Array(s, p) = l.split("\t")
-           Weighted(s, p.toDouble)
-         })
+          val Array(s, p) = l.split("\t")
+          Weighted(s, p.toDouble)
+        })
     FiniteDistribution(pmf)
   }
 
@@ -67,10 +65,7 @@ object QDI {
     state
   }
 
-  def runForFut[A](f: A => A,
-                   init: A,
-                   duration: Long,
-                   save: (A, Int) => Unit) =
+  def runForFut[A](f: A => A, init: A, duration: Long, save: (A, Int) => Unit) =
     Future(runFor(f, init, duration, save))
 
   def runForFut[A](f: A => A, init: A, duration: Long) =
@@ -135,8 +130,7 @@ object QDI {
     }
   }
 
-
-import FiniteDistribution._
+  import FiniteDistribution._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]): Node = {
     val lst      = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
@@ -244,8 +238,7 @@ import FiniteDistribution._
     new ReadString[List[List[String]]] {
       def reader(str: String) = {
         val tokens = str.split("\"").toList.tail
-        def recread(ss: List[String],
-                    accum: List[List[String]] = Nil): List[List[String]] = {
+        def recread(ss: List[String], accum: List[List[String]] = Nil): List[List[String]] = {
           if (ss.length == 0) accum
           else {
             val token :: sep :: tail = ss

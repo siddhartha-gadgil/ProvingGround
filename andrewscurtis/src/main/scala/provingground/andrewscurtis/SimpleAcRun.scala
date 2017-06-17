@@ -76,8 +76,8 @@ object SimpleAcRun {
       val ps =
         futureList map
           ((doclist) =>
-             for (bd <- doclist; p <- bd.getAs[String]("path"))
-               yield read[PickledPath](p).unpickle)
+            for (bd <- doclist; p <- bd.getAs[String]("path"))
+              yield read[PickledPath](p).unpickle)
       ps
     }
   }
@@ -116,8 +116,7 @@ object SimpleAcRun {
   object MemDB extends InMem
 
   @tailrec
-  def iter(p: Path, loops: Int, initial: Boolean = false)(
-      implicit update: Path => Unit): Path = {
+  def iter(p: Path, loops: Int, initial: Boolean = false)(implicit update: Path => Unit): Path = {
     if (!initial) update(p)
     if (loops < 1) p
     else {
@@ -130,8 +129,7 @@ object SimpleAcRun {
   def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) =
     ps map ((p) => Future(iter(p, loops, true)(update)))
 
-  def resume(loops: Int)(implicit dbread: Future[List[Path]],
-                         update: Path => Unit) =
+  def resume(loops: Int)(implicit dbread: Future[List[Path]], update: Path => Unit) =
     dbread flatMap
       ((ps: List[Path]) => Future.sequence(continue(ps, loops)(update)))
 
@@ -141,8 +139,7 @@ object SimpleAcRun {
               threads: Int = 6,
               wordCntn: Double = 0.5,
               size: Double = 1000,
-              scale: Double = 1.0)(implicit dbread: Future[List[Path]],
-                                   update: Path => Unit) = {
+              scale: Double = 1.0)(implicit dbread: Future[List[Path]], update: Path => Unit) = {
     val p = new PathView()(dbread)
 
     val ps = for (j <- 0 to threads - 1)

@@ -31,30 +31,20 @@ object CodeEditorJS extends js.JSApp {
       .getElementById("edit-div")
       .asInstanceOf[org.scalajs.dom.html.Div]
 
-    val runButton = input(
-      `type` := "button",
-      value := "Run (ctrl-B)",
-      `class` := "btn btn-space btn-primary pull-right").render
+    val runButton =
+      input(`type` := "button", value := "Run (ctrl-B)", `class` := "btn btn-space btn-primary pull-right").render
 
-    val saveButton = input(
-      `type` := "button",
-      value := "save",
-      `class` := "btn btn-space btn-success pull-right").render
+    val saveButton =
+      input(`type` := "button", value := "save", `class` := "btn btn-space btn-success pull-right").render
 
-    val objButton = input(
-      `type` := "button",
-      value := "create object",
-      `class` := "btn btn-space btn-danger pull-right").render
+    val objButton =
+      input(`type` := "button", value := "create object", `class` := "btn btn-space btn-danger pull-right").render
 
-    val loadButton = input(
-      `type` := "button",
-      value := "load",
-      `class` := "btn btn-space btn-warning pull-right").render
+    val loadButton =
+      input(`type` := "button", value := "load", `class` := "btn btn-space btn-warning pull-right").render
 
-    val insertButton = input(
-      `type` := "button",
-      value := "insert object",
-      `class` := "btn btn-space btn-danger pull-right").render
+    val insertButton =
+      input(`type` := "button", value := "insert object", `class` := "btn btn-space btn-danger pull-right").render
 
     val nameInp =
       input(`type` := "text", placeholder := "scriptname", size := 10).render
@@ -69,17 +59,16 @@ object CodeEditorJS extends js.JSApp {
 
     editDiv.appendChild(
       div(
-        div(`class` := "panel panel-default")(
-          ed,
-          div(`class` := "panel-footer clearfix")(
-            label("script-name: "),
-            nameInp,
-            saveButton,
-            insertButton,
-            loadButton,
-            runButton,
-            objButton
-          )),
+        div(`class` := "panel panel-default")(ed,
+                                              div(`class` := "panel-footer clearfix")(
+                                                label("script-name: "),
+                                                nameInp,
+                                                saveButton,
+                                                insertButton,
+                                                loadButton,
+                                                runButton,
+                                                objButton
+                                              )),
         div("Logs:", logDiv),
         div("Output:", viewDiv)
       ).render)
@@ -175,11 +164,10 @@ object CodeEditorJS extends js.JSApp {
             if (answer.startsWith("--RESULT--\n")) answer.drop("--RESULT--\n".length)
             else answer.split("--OUTPUT--\n")(1)
           viewDiv.innerHTML = ""
-          val codeDiv = code(`class`:= "scala", view).render
+          val codeDiv = code(`class` := "scala", view).render
           viewDiv.appendChild(
-              pre(
-                codeDiv).render
-            )
+            pre(codeDiv).render
+          )
           g.renderMathInElement(viewDiv, js.Dynamic.literal(ignoreTags = Seq()))
           if (answer.startsWith("--ERROR--\n")) {
             val err = answer.drop("--ERROR--\n".length).split("--OUTPUT--\n")(0).drop("--INFO--\n".length)
@@ -211,13 +199,12 @@ object CodeEditorJS extends js.JSApp {
         }
       }
 
-    def insertObject(name: String) = Ajax.get(s"/load-object/$name").map {
-      (xhr) =>
-        val resp = parseTry(xhr.responseText)
-        showEither(resp.map((_) => s"loaded script $name"))
-        resp.foreach { (sc) =>
-          editor.insert(sc)
-        }
+    def insertObject(name: String) = Ajax.get(s"/load-object/$name").map { (xhr) =>
+      val resp = parseTry(xhr.responseText)
+      showEither(resp.map((_) => s"loaded script $name"))
+      resp.foreach { (sc) =>
+        editor.insert(sc)
+      }
     }
 
     def saveScript(name: String, body: String) =
@@ -232,13 +219,11 @@ object CodeEditorJS extends js.JSApp {
         showEither(resp)
       }
 
-    saveButton.onclick = (event: dom.Event) =>
-      saveScript(filename, editor.getValue)
+    saveButton.onclick = (event: dom.Event) => saveScript(filename, editor.getValue)
 
     loadButton.onclick = (event: dom.Event) => loadScriptFut(filename)
 
-    objButton.onclick = (event: dom.Event) =>
-      createObject(filename, editor.getValue)
+    objButton.onclick = (event: dom.Event) => createObject(filename, editor.getValue)
 
     insertButton.onclick = (event: dom.Event) => insertObject(filename)
 
