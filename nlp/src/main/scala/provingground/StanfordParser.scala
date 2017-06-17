@@ -3,6 +3,8 @@ package provingground
 import edu.stanford.nlp.ling._
 import edu.stanford.nlp.process._
 
+import edu.stanford.nlp.trees._
+
 import edu.stanford.nlp.parser.lexparser._
 import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
@@ -17,6 +19,10 @@ import scala.collection.JavaConverters._
 object StanfordParser {
   val lp = LexicalizedParser.loadModel(
     "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
+
+  lazy val tlp = new PennTreebankLanguagePack
+
+  lazy val gsf = tlp.grammaticalStructureFactory
 
   val tagger = new MaxentTagger(
     "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
@@ -88,6 +94,20 @@ object StanfordParser {
     //     mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
 
     lazy val parsed = lp(mergeSubsTagged.asJava)
+
+    lazy val gs = gsf.newGrammaticalStructure(parsed)
+
+    lazy val tdl = gs.typedDependenciesCCprocessed
+
+    import translation.NlpProse._
+
+    def token(w: IndexedWord) = Token(w.word, w.index)
+
+    lazy val typedDeps =
+      tdl.asScala.map{(x) =>
+        DepRel(token(x.gov), token(x.dep), x.reln.toString)}
+
+    lazy val proseTree = ProseTree(typedDeps.toList)
   }
 
   val baseWordTags =
@@ -109,4 +129,5 @@ object StanfordParser {
       mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
     ) =
         TeXParsed(s, wordTags, mweSubs).parsed
+
 }

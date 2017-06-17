@@ -31,5 +31,5 @@ object XmlParse {
 
   /** Extract ProseTree from XML file folding in multi-word expressions */
   def proseTree(filename: String) =
-    mweFold(new ProseTree(depTree(xmlSrc(filename))))
+    mweFold(ProseTree(depTree(xmlSrc(filename))))
 }

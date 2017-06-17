@@ -63,7 +63,7 @@ object CoreNLP {
 
   def proseTrees(text: String)(implicit pipe: StanfordCoreNLP) = {
     for (sentence <- sentences(annotatedDoc(text, pipe))) yield {
-      new ProseTree(depRelIterable(sentence).toList)
+      ProseTree(depRelIterable(sentence).toList)
     }
   }
 
