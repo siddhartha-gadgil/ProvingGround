@@ -53,7 +53,8 @@ class ApproxTrig(N: SafeLong) {
     *
     *
     */
-  def spanPositive(stream: Int => Interval[Rational])(xs: Interval[Rational]): Option[Interval[Rational]] =
+  def spanPositive(stream: Int => Interval[Rational])(
+      xs: Interval[Rational]): Option[Interval[Rational]] =
     if (xs.isEmpty) Some(Interval.empty)
     else {
       assert(!xs.hasBelow(0),
@@ -75,7 +76,8 @@ class ApproxTrig(N: SafeLong) {
   /**
     * for a monotonic function, gives bound on [(k-1)/N, k/N] given bound at the point k/N.
     */
-  def monotoneBound(endBound: Int => Interval[Rational]): Int => Interval[Rational] =
+  def monotoneBound(
+      endBound: Int => Interval[Rational]): Int => Interval[Rational] =
     (k) => if (k == 0) endBound(k) else endBound(k - 1) + endBound(k)
 
   /**
@@ -86,7 +88,9 @@ class ApproxTrig(N: SafeLong) {
     * @param inv : inversion, i.e., f(-x) = inv(f(x))
 
     */
-  def span(stream: Int => Interval[Rational], inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) = {
+  def span(stream: Int => Interval[Rational],
+           inv: Interval[Rational] => Interval[Rational])(
+      xs: Interval[Rational]) = {
     val split = xs.splitAtZero
     for (a <- spanPositive(stream)(split._2);
          b <- spanPositive(stream)(-split._1)) yield a union inv(b)
@@ -142,7 +146,8 @@ class ApproxTrig(N: SafeLong) {
         else {
           val prev = get(logStream, n - 1)
           prev +
-            (Interval.closed(r"1" / (r"1" + (width * n)), r"1" / (r"1" + (width * (n - 1)))) * width)
+            (Interval.closed(r"1" / (r"1" + (width * n)),
+                             r"1" / (r"1" + (width * (n - 1)))) * width)
         })
 
   /**
@@ -261,7 +266,8 @@ class ApproxTrig(N: SafeLong) {
 
   import spire.math.Numeric._
 
-  val sqrt: Approx = (J) => Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
+  val sqrt: Approx = (J) =>
+    Some(E + J mapBounds ((x) => spire.math.sqrt(max(x, r"0"))))
 }
 
 object ApproxTrig {
@@ -305,7 +311,9 @@ object ApproxTrig {
     */
   def split[F: Field: Order](J: Interval[F]) = {
     for (lower <- getBound(J.lowerBound); upper <- getBound(J.upperBound))
-      yield Set(Interval.closed(lower, (lower + upper) / 2), Interval.closed((lower + upper) / 2, upper))
+      yield
+        Set(Interval.closed(lower, (lower + upper) / 2),
+            Interval.closed((lower + upper) / 2, upper))
   }
 
   /**
@@ -337,7 +345,8 @@ object ApproxTrig {
         for (initCubes <- initCubesOpt; finalCoords <- finalCoordsOpt) // splits, if Some, of the initial and final coordinates
           yield
             for (cubelet <- initCubes; interval <- finalCoords) //sub-cubes, subintervals in split
-              yield Cube(cubelet.coords :+ interval) // products of sub-cubes with subintervals
+              yield
+                Cube(cubelet.coords :+ interval) // products of sub-cubes with subintervals
       }
     }
 
@@ -402,7 +411,9 @@ object ApproxTrig {
     * bounds for coordinates only depend on the cube.
     * Combining the two should be done with care (as is done in rationalBound)
     */
-  class RationalBounds(N: SafeLong, cube: Cube) extends ApproxTrig(N) with ElementaryFunctions[Approx] {
+  class RationalBounds(N: SafeLong, cube: Cube)
+      extends ApproxTrig(N)
+      with ElementaryFunctions[Approx] {
     val proj = (i: Int) => ConstantBound(cube.coords(i))
   }
 
@@ -422,12 +433,14 @@ object ApproxTrig {
     * this is checked before returing a result.
     */
   def rationalBound(fn: FormalElemFunction, N: SafeLong, cube: Cube) = {
-    implicit val local
-      : ElementaryFunctions[Approx] = new RationalBounds(N, cube) // bounds on the cube for coordinates and on interval for sin etc
+    implicit val local: ElementaryFunctions[Approx] = new RationalBounds(
+      N,
+      cube) // bounds on the cube for coordinates and on interval for sin etc
     val bnd =
       fn.as[Approx] // rational bound function from the formal function.
-    assert(multiVar(fn),
-           s" cannot bound $fn : bounds are only for functions of coordinates not direct univaraites such as sin")
+    assert(
+      multiVar(fn),
+      s" cannot bound $fn : bounds are only for functions of coordinates not direct univaraites such as sin")
     bnd(Interval.point(0)) // bound is supposed to be independent of the chosen interval; as verified above.
   }
 }

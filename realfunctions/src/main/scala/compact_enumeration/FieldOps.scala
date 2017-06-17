@@ -91,13 +91,16 @@ object FieldOps {
 
       def zero: spire.math.Interval[F] = Interval.point(Field[F].zero)
 
-      def plus(x: spire.math.Interval[F], y: spire.math.Interval[F]): spire.math.Interval[F] = x + y
+      def plus(x: spire.math.Interval[F],
+               y: spire.math.Interval[F]): spire.math.Interval[F] = x + y
 
-      def div(x: spire.math.Interval[F], y: spire.math.Interval[F]): spire.math.Interval[F] = x / y
+      def div(x: spire.math.Interval[F],
+              y: spire.math.Interval[F]): spire.math.Interval[F] = x / y
 
       def one: spire.math.Interval[F] = Interval.point(Field[F].one)
 
-      def times(x: spire.math.Interval[F], y: spire.math.Interval[F]): spire.math.Interval[F] = x * y
+      def times(x: spire.math.Interval[F],
+                y: spire.math.Interval[F]): spire.math.Interval[F] = x * y
     }
 
   /**

@@ -19,12 +19,18 @@ object Hub {
   val cnf = conf
     .withValue("akka.loglevel", ConfigValueFactory.fromAnyRef("INFO"))
     .withValue("logger.reactivemongo", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("mongo-async-driver.akka.loglevel", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("mongo-async-driver.loglevel", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("reactivemongo-akka.loglevel", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("mongo-async-driver.akka.stdout-loglevel", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("mongo-async-driver.stdout-loglevel", ConfigValueFactory.fromAnyRef("INFO"))
-    .withValue("reactivemogo-akka.actor.loglevel", ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("mongo-async-driver.akka.loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("mongo-async-driver.loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("reactivemongo-akka.loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("mongo-async-driver.akka.stdout-loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("mongo-async-driver.stdout-loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
+    .withValue("reactivemogo-akka.actor.loglevel",
+               ConfigValueFactory.fromAnyRef("INFO"))
 
   println(
     cnf

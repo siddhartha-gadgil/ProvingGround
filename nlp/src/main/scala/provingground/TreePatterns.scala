@@ -30,7 +30,10 @@ object TreePatterns {
 
   object Then
       extends Pattern.Partial[Tree, IV]({
-        case Node("S", x +: Node("ADVP", Vector(Node("RB", Vector(Leaf(word("then")))))) +: ys) =>
+        case Node("S",
+                  x +: Node(
+                    "ADVP",
+                    Vector(Node("RB", Vector(Leaf(word("then")))))) +: ys) =>
           (x, ys filter ((y) => Set(",", "RB") contains (y.value)))
       })
 
@@ -59,10 +62,12 @@ object TreePatterns {
   val ifPattern = Translator.Pattern[Tree, IV](IfTree.unapply)
 
   object Test {
-    val ifTrans = ifPattern.join((xl: (Int, Vector[Int])) => xl._2.headOption map (_ + xl._1))
+    val ifTrans = ifPattern.join((xl: (Int, Vector[Int])) =>
+      xl._2.headOption map (_ + xl._1))
   }
 
-  object VP extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
+  object VP
+      extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
 
   object VPIf
       extends Pattern.Partial[Tree, II]({
@@ -70,36 +75,46 @@ object TreePatterns {
           (PennTrees.mkTree(xs, "VP", vp), t)
       })
 
-  object NP extends Pattern.Partial[Tree, Vector]({ case Node("NP", xs) => xs })
+  object NP
+      extends Pattern.Partial[Tree, Vector]({ case Node("NP", xs) => xs })
 
   object NPVP
       extends Pattern.Partial[Tree, II]({
-        case Node(h, Vector(x @ NP(_), y @ VP(_))) if h.startsWith("S") || h.startsWith("N") => (x, y)
+        case Node(h, Vector(x @ NP(_), y @ VP(_)))
+            if h.startsWith("S") || h.startsWith("N") =>
+          (x, y)
       })
 
   object VerbObj
       extends Pattern.Partial[Tree, II]({
-        case Node("VP", Vector(x @ Node(vb, _), y @ Node(nn, _))) if (vb.startsWith("V") && nn.startsWith("N")) =>
+        case Node("VP", Vector(x @ Node(vb, _), y @ Node(nn, _)))
+            if (vb.startsWith("V") && nn.startsWith("N")) =>
           (x, y)
       })
 
   object VerbNotObj
       extends Pattern.Partial[Tree, II]({
-        case Node("VP", Vector(x @ Node(vb, _), Node(_, Vector(Leaf("not"))), y @ Node(nn, _)))
+        case Node("VP",
+                  Vector(x @ Node(vb, _),
+                         Node(_, Vector(Leaf("not"))),
+                         y @ Node(nn, _)))
             if (vb.startsWith("V") && nn.startsWith("N")) =>
           (x, y)
       })
 
   object VerbAdj
       extends Pattern.Partial[Tree, II]({
-        case Node("VP", Vector(x @ Node(vb, _), y @ Node("ADJP", _))) if vb.startsWith("V") =>
+        case Node("VP", Vector(x @ Node(vb, _), y @ Node("ADJP", _)))
+            if vb.startsWith("V") =>
           (x, y)
       })
 
   object VerbNotAdj
       extends Pattern.Partial[Tree, II]({
-        case Node("VP", Vector(x @ Node(vb, _), Node(_, Vector(Leaf("not"))), y @ Node("ADJP", _)))
-            if vb.startsWith("V") =>
+        case Node("VP",
+                  Vector(x @ Node(vb, _),
+                         Node(_, Vector(Leaf("not"))),
+                         y @ Node("ADJP", _))) if vb.startsWith("V") =>
           (x, y)
       })
 
@@ -182,7 +197,8 @@ object TreePatterns {
 
   object DPBase
       extends Pattern.Partial[Tree, SVO]({
-        case Node("NP", Det(det) +: adjs :+ nn) if (adjs.forall(_.value == "JJ") && (nn.value == "NN")) =>
+        case Node("NP", Det(det) +: adjs :+ nn)
+            if (adjs.forall(_.value == "JJ") && (nn.value == "NN")) =>
           (det, (adjs, Some(nn)))
         case Node("NP", Det(det) +: adjs) if (adjs.forall(_.value == "JJ")) =>
           (det, (adjs, None))
@@ -190,7 +206,8 @@ object TreePatterns {
 
   object DPBaseZero
       extends Pattern.Partial[Tree, VO]({
-        case Node("NP", adjs :+ nn) if (adjs.forall(_.value == "JJ") && (nn.value == "NNS")) =>
+        case Node("NP", adjs :+ nn)
+            if (adjs.forall(_.value == "JJ") && (nn.value == "NNS")) =>
           (adjs, Some(nn))
       })
 
@@ -242,15 +259,19 @@ object TreePatterns {
 
   object NotVP
       extends Pattern.Partial[Tree, Id]({
-        case Node("VP", head +: Node("RB", Vector(Leaf("not"))) +: Vector(vp @ Node("VP", _))) if isModalDo(head) =>
+        case Node("VP",
+                  head +: Node("RB", Vector(Leaf("not"))) +: Vector(
+                    vp @ Node("VP", _))) if isModalDo(head) =>
           vp
       })
 
   object NN
       extends Pattern.Partial[Tree, S]({
-        case Node(tag, Vector(Leaf(nn))) if tag.startsWith("N") & tag != "NNP" =>
+        case Node(tag, Vector(Leaf(nn)))
+            if tag.startsWith("N") & tag != "NNP" =>
           nn
-        case Node("NP", Vector(Node(tag, Vector(Leaf(nn))))) if tag.startsWith("N") & tag != "NNP" =>
+        case Node("NP", Vector(Node(tag, Vector(Leaf(nn)))))
+            if tag.startsWith("N") & tag != "NNP" =>
           nn
       })
 

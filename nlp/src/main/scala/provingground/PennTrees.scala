@@ -117,7 +117,8 @@ object TreeModel {
     // override def toString = s"""Leaf("$value")"""
   }
 
-  case class Node(value: String, children: Vector[TreeModel]) extends TreeModel {
+  case class Node(value: String, children: Vector[TreeModel])
+      extends TreeModel {
     // override def toString = s"""Node("$value", ${children})"""
   }
 }

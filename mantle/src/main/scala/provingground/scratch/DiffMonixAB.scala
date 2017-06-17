@@ -1,7 +1,11 @@
 package provingground.scratch
 import monix.execution.Scheduler.Implicits.global
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD, _}
+import provingground.{
+  FiniteDistribution => FD,
+  ProbabilityDistribution => PD,
+  _
+}
 import HoTT._
 import translation._
 import learning._
@@ -18,7 +22,8 @@ object DiffMonixAB {
 
   val thmsObs = simpleObs.map(TermEvolver.topTheorems(_, 25))
 
-  lazy val showTheorems = thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
+  lazy val showTheorems =
+    thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
 
   lazy val showEv = simpleObs.foreach(println)
 }
@@ -33,7 +38,8 @@ object FDMonixAB {
 
   val thmsObs = simpleObs.map(TermEvolver.topTheorems(_, 25))
 
-  lazy val showTheorems = thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
+  lazy val showTheorems =
+    thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
 
   lazy val showEv = simpleObs.foreach(println)
 }

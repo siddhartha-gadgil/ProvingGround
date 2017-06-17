@@ -17,7 +17,8 @@ import scala.collection.JavaConverters._
   * Parsing is done by the [[texParse]] method
   */
 object StanfordParser {
-  val lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
+  val lp = LexicalizedParser.loadModel(
+    "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
 
   lazy val tlp = new PennTreebankLanguagePack
 
@@ -42,16 +43,19 @@ object StanfordParser {
   def reTag(word: String, tag: String)(tw: TaggedWord) =
     if (tw.word.toLowerCase == word) new TaggedWord(tw.word, tag) else tw
 
-  def mergeTag(mwe: Vector[String], tag: String)(tws: Vector[TaggedWord]): Vector[TaggedWord] =
+  def mergeTag(mwe: Vector[String], tag: String)(
+      tws: Vector[TaggedWord]): Vector[TaggedWord] =
     if (tws.take(mwe.size).map(_.word.toLowerCase) == mwe)
-      (new TaggedWord(tws.take(mwe.size).map(_.word).mkString(" "), tag)) +: tws.drop(mwe.size)
+      (new TaggedWord(tws.take(mwe.size).map(_.word).mkString(" "), tag)) +: tws
+        .drop(mwe.size)
     else
       tws match {
         case Vector() => Vector()
         case x +: ys  => x +: mergeTag(mwe, tag)(ys)
       }
 
-  def mergeSubs(mwe: Vector[String], tw: TaggedWord)(tws: Vector[TaggedWord]): Vector[TaggedWord] =
+  def mergeSubs(mwe: Vector[String], tw: TaggedWord)(
+      tws: Vector[TaggedWord]): Vector[TaggedWord] =
     if (tws.take(mwe.size).map(_.word.toLowerCase) == mwe)
       tw +: tws.drop(mwe.size)
     else
@@ -65,7 +69,10 @@ object StanfordParser {
                        mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
                        // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
-    val raw = preraw.replace("such that", "with").replace("which", "where it").replace("that", "where it")
+    val raw = preraw
+      .replace("such that", "with")
+      .replace("which", "where it")
+      .replace("that", "where it")
 
     lazy val texMap = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
@@ -88,7 +95,9 @@ object StanfordParser {
       }
 
     lazy val mergeSubsTagged =
-      mweSubs.foldRight(tagged.toVector) { case ((ws, tw), t) => mergeSubs(ws, tw)(t) }
+      mweSubs.foldRight(tagged.toVector) {
+        case ((ws, tw), t) => mergeSubs(ws, tw)(t)
+      }
 
     // lazy val mergeTagged =
     //     mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}

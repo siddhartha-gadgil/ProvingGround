@@ -23,9 +23,9 @@ object ACFlow {
     * A source from an actor, to which messages are sent to start the flow.
     * Actor reference only after materialization.
     */
-  val src = Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]](
-    100,
-    OverflowStrategy.dropHead)
+  val src = Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove],
+                                   FiniteDistribution[Moves]),
+                                  Param]](100, OverflowStrategy.dropHead)
 
   /**
     * Flow extracting actor names and number of loops from snapshot.

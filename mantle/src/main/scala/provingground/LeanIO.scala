@@ -30,7 +30,8 @@ object LeanIO {
   def futPickleDefs(file: Path, outputDir: Path) =
     Future(pickleDefs(file, outputDir))
 
-  def makeDefs(inDir: Path = pwd / 'data / 'leanlibrary, outDir: Path = pwd / 'data / 'leandefs) = {
+  def makeDefs(inDir: Path = pwd / 'data / 'leanlibrary,
+               outDir: Path = pwd / 'data / 'leandefs) = {
     val files = ls(inDir) filter (_.ext == "export")
     (files map ((f) => (f.name + ".defs", futPickleDefs(f, outDir)))).toMap
   }

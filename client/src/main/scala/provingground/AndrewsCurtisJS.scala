@@ -41,14 +41,18 @@ object AndrewsCurtisJS {
     header match {
       case fdMVP => {
         val (pmfM, pmfV, pmfP) =
-          read[(List[(String, Double)], List[(String, Double)], List[(String, Double)])](message)
+          read[(List[(String, Double)],
+                List[(String, Double)],
+                List[(String, Double)])](message)
         val output = pmfMVPdiv(pmfM, pmfV, pmfP)
         fdOut(output)
       }
     }
   }
 
-  def pmfMVPdiv(pmfM: List[(String, Double)], pmfV: List[(String, Double)], pmfP: List[(String, Double)]) = {
+  def pmfMVPdiv(pmfM: List[(String, Double)],
+                pmfV: List[(String, Double)],
+                pmfP: List[(String, Double)]) = {
     div(
       h3("Distribution on Moves"),
       pmfDiv(pmfM),
@@ -84,7 +88,9 @@ object AndrewsCurtisJS {
   def getPMF(pickled: String) = read[List[(String, Double)]](pickled)
 
   def getFDtriple(pickled: String) =
-    read[(List[(String, Double)], List[(String, Double)], List[(String, Double)])](pickled)
+    read[(List[(String, Double)],
+          List[(String, Double)],
+          List[(String, Double)])](pickled)
 
   lazy val dashboard = div(`class` := "dashboard")(h3("Dashboard"),
                                                    div(b("rank: "), rankBox),

@@ -26,7 +26,8 @@ object TermObj {
 
   def apply(t: Term) = {
     val p = pickle(t)
-    require(Try(unpickle(p)) == Success(t), s"could not pickle $t as term object, may not be a singleton")
+    require(Try(unpickle(p)) == Success(t),
+            s"could not pickle $t as term object, may not be a singleton")
     p
   }
 

@@ -99,7 +99,8 @@ object NormalForm {
     }
   }
 
-  def assocReduce(op: (Term, Term) => Term, rep: AssocRep[Term]): AssocRep[Term] = {
+  def assocReduce(op: (Term, Term) => Term,
+                  rep: AssocRep[Term]): AssocRep[Term] = {
     val grouped = clumpTerms(rep.representation, numTermMatch)
     def action(list: List[Term]): List[Term] = {
       if (numTermMatch(list.head)) {

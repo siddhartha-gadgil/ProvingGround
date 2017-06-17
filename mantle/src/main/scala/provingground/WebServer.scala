@@ -127,12 +127,18 @@ object WebServer {
 
   val typTimeSeries: MutMap[String, Vector[Double]] = MutMap()
 
-  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U], names: Vector[(Term, String)]) = {
+  def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U],
+                                       names: Vector[(Term, String)]) = {
     fdVec = fd.pmf map
-      ((wt) => (latex(encode(names)(wt.elem)), latex(encode(names)(wt.elem.typ)), wt.weight))
+      ((wt) =>
+        (latex(encode(names)(wt.elem)),
+         latex(encode(names)(wt.elem.typ)),
+         wt.weight))
   }
 
-  def showTimeSeries[U <: Term with Subs[U]](term: U, ts: Vector[Double], names: Vector[(Term, String)]) = {
+  def showTimeSeries[U <: Term with Subs[U]](term: U,
+                                             ts: Vector[Double],
+                                             names: Vector[(Term, String)]) = {
     timeSeries(latex(encode(names)(term))) = ts
   }
 
@@ -153,7 +159,8 @@ object WebServer {
 
   val viewTypes: MutSet[Typ[Term]] = MutSet()
 
-  def displayTS(fds: Vector[FiniteDistribution[Term]], names: Vector[(Term, String)] = Vector()) =
+  def displayTS(fds: Vector[FiniteDistribution[Term]],
+                names: Vector[(Term, String)] = Vector()) =
     showFDs(fds, viewTerms.toSet, viewTypes.toSet, names)
 
   def display(buf: Deducer#BufferedRun) = {
@@ -184,7 +191,8 @@ object WebServer {
       }
     } ~ path("terms-time-series") {
       get {
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
+        complete(
+          HttpEntity(ContentTypes.`text/plain(UTF-8)`, write(getTimeSeries)))
       }
     }
 
@@ -235,11 +243,14 @@ object WebServer {
 
   def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
 
-  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
+  val route = mixin(
+    htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
 
   val helloRoute = path("hello") {
     get {
-      complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+      complete(
+        HttpEntity(ContentTypes.`text/html(UTF-8)`,
+                   "<h1>Say hello to akka-http</h1>"))
     }
   }
 

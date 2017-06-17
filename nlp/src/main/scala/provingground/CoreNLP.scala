@@ -134,6 +134,7 @@ object CoreNLPTest {
 //    Map<Integer, CorefChain> graph =
 //      document.get(CorefChainAnnotation.class);
 
-  val tree = proseTrees("if a prime number p divides mn, p divides one of m and n").head
+  val tree = proseTrees(
+    "if a prime number p divides mn, p divides one of m and n").head
 //		println(toFormula(tree, Global))
 }

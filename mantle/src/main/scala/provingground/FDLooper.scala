@@ -11,7 +11,9 @@ import Hub.system
 import FDLooper._
 
 object FDLooper {
-  case class Continue(steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class Continue(steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
   case object RunnerStop
 }
@@ -68,7 +70,8 @@ class FDLooper[X: LinearStructure, P](
   def receive = {
     case Continue(steps, strictness, epsilon) => // another loop
       {
-        val newState = normalize(state |+| (shift(state, strictness, steps, epsilon)))
+        val newState = normalize(
+          state |+| (shift(state, strictness, steps, epsilon)))
         state = newState
         loops += 1
         srcRef ! snapShot(newState)

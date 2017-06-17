@@ -24,7 +24,10 @@ class FDHub extends Actor {
   def states = (for ((r, x) <- loopers) yield (r.path.name -> x))
 
   def receive = {
-    case Start(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double) =>
+    case Start(runner: ActorRef,
+               steps: Int,
+               strictness: Double,
+               epsilon: Double) =>
       // start a looper
       {
         loopers = loopers + (runner -> State(true, steps, strictness, epsilon))
@@ -96,13 +99,24 @@ object FDHub {
 
   case class Done(steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
 
-  case class Start(runner: ActorRef, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class Start(runner: ActorRef,
+                   steps: Int,
+                   strictness: Double = 1.0,
+                   epsilon: Double = 1.0)
 
-  case class StartAll(steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class StartAll(steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
-  case class State(running: Boolean, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class State(running: Boolean,
+                   steps: Int,
+                   strictness: Double = 1.0,
+                   epsilon: Double = 1.0)
 
-  case class SetParam(runner: ActorRef, steps: Int, strictness: Double = 1.0, epsilon: Double = 1.0)
+  case class SetParam(runner: ActorRef,
+                      steps: Int,
+                      strictness: Double = 1.0,
+                      epsilon: Double = 1.0)
 
   case class SetSteps(runner: ActorRef, steps: Int)
 
@@ -141,20 +155,33 @@ object FDHub {
   def states(implicit hub: ActorRef) =
     (hub ? States).mapTo[Map[String, State]]
 
-  def start(runner: ActorRef, steps: Int = 3, strictness: Double = 1, epsilon: Double = 0.1)(implicit hub: ActorRef) =
-    hub ! Start(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)
+  def start(runner: ActorRef,
+            steps: Int = 3,
+            strictness: Double = 1,
+            epsilon: Double = 0.1)(implicit hub: ActorRef) =
+    hub ! Start(runner: ActorRef,
+                steps: Int,
+                strictness: Double,
+                epsilon: Double)
 
   def pause(runner: ActorRef)(implicit hub: ActorRef) = hub ! Pause(runner)
 
   def resume(runner: ActorRef)(implicit hub: ActorRef) = hub ! Resume(runner)
 
-  def setParam(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)(implicit hub: ActorRef) =
-    hub ! SetParam(runner: ActorRef, steps: Int, strictness: Double, epsilon: Double)
+  def setParam(runner: ActorRef,
+               steps: Int,
+               strictness: Double,
+               epsilon: Double)(implicit hub: ActorRef) =
+    hub ! SetParam(runner: ActorRef,
+                   steps: Int,
+                   strictness: Double,
+                   epsilon: Double)
 
   def setSteps(runner: ActorRef, steps: Int)(implicit hub: ActorRef) =
     hub ! SetSteps(runner: ActorRef, steps: Int)
 
-  def setStrictness(runner: ActorRef, strictness: Double)(implicit hub: ActorRef) =
+  def setStrictness(runner: ActorRef, strictness: Double)(
+      implicit hub: ActorRef) =
     hub ! SetStrictness(runner: ActorRef, strictness)
 
   def setEpsilon(runner: ActorRef, epsilon: Double)(implicit hub: ActorRef) =

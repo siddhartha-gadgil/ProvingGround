@@ -113,14 +113,20 @@ object ProvingGroundJS {
         line(onclick := { () =>
           {
             cons.innerHTML = ""
-            cons.appendChild(div("Element: ", katex(label), "Entropy: ", points.last).render)
+            cons.appendChild(
+              div("Element: ", katex(label), "Entropy: ", points.last).render)
           }
         })(onfocus := { () =>
           {
             cons.innerHTML = ""
             cons.appendChild(katex(label))
           }
-        })(x1 := xc(index), y1 := yc(val1), x2 := xc(index + 1), y2 := yc(val2), stroke := "black", strokeWidth := 2).render
+        })(x1 := xc(index),
+           y1 := yc(val1),
+           x2 := xc(index + 1),
+           y2 := yc(val2),
+           stroke := "black",
+           strokeWidth := 2).render
       }
 
   def svgGroup(lines: List[(String, Vector[Double])]) = {
@@ -132,7 +138,10 @@ object ProvingGroundJS {
 
   def svgLabels(lines: List[(String, Vector[Double])]) =
     for ((label, points) <- lines)
-      yield text(x := xc(points.size), y := yc(points.last), label.replace("$", ".")).render
+      yield
+        text(x := xc(points.size),
+             y := yc(points.last),
+             label.replace("$", ".")).render
 
   @JSExport
   def showFD() = {
@@ -140,7 +149,12 @@ object ProvingGroundJS {
     val fdDiv = dom.document.getElementById("finite-distribution")
     val svg   = dom.document.getElementById("time-series")
     svg.appendChild(
-      rect(x := 0, y := 0, svgAttrs.width := 1000, svgAttrs.height := 400, fill := "blue", fillOpacity := "0.1").render
+      rect(x := 0,
+           y := 0,
+           svgAttrs.width := 1000,
+           svgAttrs.height := 400,
+           fill := "blue",
+           fillOpacity := "0.1").render
     )
     Ajax.get("../terms-data").onSuccess {
       case xhr =>

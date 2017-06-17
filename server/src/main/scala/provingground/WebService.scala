@@ -36,8 +36,9 @@ object BaseServer {
 
 import ammonite.ops._
 
-class AmmService(val scriptsDir: Path = pwd / "repl-scripts",
-                 val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
+class AmmService(
+    val scriptsDir: Path = pwd / "repl-scripts",
+    val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
   import ammonite.kernel._
 
   val initCommands =
@@ -54,7 +55,9 @@ class AmmService(val scriptsDir: Path = pwd / "repl-scripts",
     write.over(scriptsDir / s"${name}.sc", body)
   }
 
-  def makeObject(name: String, body: String, header: String = "package provingground.scripts") =
+  def makeObject(name: String,
+                 body: String,
+                 header: String = "package provingground.scripts") =
     s"""$header
 
 object $name{
@@ -99,7 +102,8 @@ $body
   //     s
   //   }
 
-  def kernelRes(inp: String)(implicit ker: ReplKernel): Option[Either[String, Any]] =
+  def kernelRes(inp: String)(
+      implicit ker: ReplKernel): Option[Either[String, Any]] =
     ker.process(inp) map { resp =>
       resp.toEither match {
         case Right(evaluation) =>
@@ -155,7 +159,8 @@ $body
       ammonite.Main(
         predef =
           "repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
-        inputStream = new ByteArrayInputStream((code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
+        inputStream = new ByteArrayInputStream(
+          (code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
         errorStream = errLog,
         infoStream = infoLog
@@ -171,9 +176,11 @@ $body
 
     val info = new String(infoLog.toByteArray, "UTF-8")
 
-    println(s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
+    println(
+      s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
 
-    if (err == "") Right(output) else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
+    if (err == "") Right(output)
+    else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
   }
 
   def replResJS(code: String) = replResult(code) match {
@@ -217,7 +224,8 @@ $body
     } ~
       get {
         path("list-scripts") {
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, listScripts.mkString("\n")))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+                              listScripts.mkString("\n")))
         }
       } ~
       post {
@@ -233,7 +241,9 @@ $body
       } ~
       get {
         path("script" / Segment) { name =>
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, Try(script(name)).toString))
+          complete(
+            HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+                       Try(script(name)).toString))
         }
       } ~
       post {
@@ -249,7 +259,8 @@ $body
       get {
         path("load-object" / Segment) { name =>
           val objTry = Try(makeObject(name, clean(script(name)), ""))
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
+          complete(
+            HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
         }
       }
 
@@ -257,8 +268,9 @@ $body
 
 // object AmmServer extends AmmService()
 
-class AmmScriptServer(val scriptsDir: Path = pwd / "repl-scripts",
-                      val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
+class AmmScriptServer(
+    val scriptsDir: Path = pwd / "repl-scripts",
+    val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
   val htmlRoute = {
     pathSingleSlash {
       get {

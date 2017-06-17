@@ -64,7 +64,9 @@ object Sampler {
 
   import monix.eval._
 
-  implicit object MonixBreezeSamples extends MonixSamples with TangSamples[Task] {
+  implicit object MonixBreezeSamples
+      extends MonixSamples
+      with TangSamples[Task] {
 
     def sample[A](pd: PD[A], n: Int) = Task(Sampler.sample(pd, n))
   }
@@ -83,7 +85,8 @@ object Sampler {
           val m            = Binomial(n, mx.q).draw
           val optSample    = Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
-          combine(sample(mx.first, n - total(secondSample.toVector)), secondSample)
+          combine(sample(mx.first, n - total(secondSample.toVector)),
+                  secondSample)
 
         case mx: Mixture[u] =>
           val sampSizes = getMultinomial(mx.dists, mx.ps, n)
@@ -200,13 +203,23 @@ class TermSampler(d: BasicDeducer) {
   import Sampler._
   import TermSampler._
 
-  def flow(sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double): FD[Term] => FD[Term] =
+  def flow(sampleSize: Int,
+           derSampleSize: Int,
+           epsilon: Double,
+           sc: Double,
+           inertia: Double): FD[Term] => FD[Term] =
     (p: FD[Term]) =>
       NextSample(p, sampleSize, derSampleSize, sc, epsilon, inertia)
         .shiftedFD(derSampleSize, epsilon)
 
-  def iterator(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double) =
-    Iterator.iterate(init)(flow(sampleSize, derSampleSize, epsilon, sc, inertia))
+  def iterator(init: FD[Term],
+               sampleSize: Int,
+               derSampleSize: Int,
+               epsilon: Double,
+               sc: Double,
+               inertia: Double) =
+    Iterator.iterate(init)(
+      flow(sampleSize, derSampleSize, epsilon, sc, inertia))
 
   def loggedIterator(init: FD[Term],
                      sampleSize: Int,
@@ -221,7 +234,12 @@ class TermSampler(d: BasicDeducer) {
   var live: Boolean = true
   def stop()        = { live = false }
 
-  def loggedBuffer(init: FD[Term], sampleSize: Int, derSampleSize: Int, epsilon: Double, sc: Double, inertia: Double) = {
+  def loggedBuffer(init: FD[Term],
+                   sampleSize: Int,
+                   derSampleSize: Int,
+                   epsilon: Double,
+                   sc: Double,
+                   inertia: Double) = {
     val it = loggedIterator(init,
                             sampleSize: scala.Int,
                             derSampleSize: scala.Int,
@@ -235,7 +253,12 @@ class TermSampler(d: BasicDeducer) {
     buf
   }
 
-  case class NextSample(p: FD[Term], size: Int, derTotalSize: Int, sc: Double, epsilon: Double, inertia: Double) {
+  case class NextSample(p: FD[Term],
+                        size: Int,
+                        derTotalSize: Int,
+                        sc: Double,
+                        epsilon: Double,
+                        inertia: Double) {
     lazy val init = d.hFunc(sc)(p)
 
     lazy val nextSamp = sample(init, size)

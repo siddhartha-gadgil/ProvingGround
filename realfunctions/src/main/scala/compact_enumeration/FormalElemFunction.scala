@@ -147,7 +147,8 @@ case object Pi extends FormalElemFunction with ConstFunc {
 /**
   * Formal sum
   */
-case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction {
+case class Plus(x: FormalElemFunction, y: FormalElemFunction)
+    extends FormalElemFunction {
   def as[A: FieldOps: ElementaryFunctions: Circ] = {
     implicitly[FieldOps[A]].plus(x.as[A], y.as[A])
   }
@@ -163,7 +164,8 @@ case class Plus(x: FormalElemFunction, y: FormalElemFunction) extends FormalElem
 /**
   * Formal product
   */
-case class Times(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction {
+case class Times(x: FormalElemFunction, y: FormalElemFunction)
+    extends FormalElemFunction {
   def as[A: FieldOps: ElementaryFunctions: Circ] = {
     implicitly[FieldOps[A]].times(x.as[A], y.as[A])
   }
@@ -202,7 +204,8 @@ object Div {
   def apply(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
     Times(x, Reciprocal(y))
 
-  def unapply(q: FormalElemFunction): Option[(FormalElemFunction, FormalElemFunction)] = q match {
+  def unapply(q: FormalElemFunction)
+    : Option[(FormalElemFunction, FormalElemFunction)] = q match {
     case Times(x, Reciprocal(y)) => Some(x, y)
     case Times(Reciprocal(y), x) => Some(x, y)
     case _                       => None
@@ -228,7 +231,8 @@ case class Negate(x: FormalElemFunction) extends FormalElemFunction {
 /**
   * Formal composition x \circ y
   */
-case class Compose(x: FormalElemFunction, y: FormalElemFunction) extends FormalElemFunction {
+case class Compose(x: FormalElemFunction, y: FormalElemFunction)
+    extends FormalElemFunction {
   def as[A: FieldOps: ElementaryFunctions: Circ] = {
     implicitly[Circ[A]].circ(x.as[A], y.as[A])
   }
@@ -287,10 +291,12 @@ object FormalElemFunction {
 
     def one: FormalElemFunction = One
 
-    def plus(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def plus(x: FormalElemFunction,
+             y: FormalElemFunction): FormalElemFunction =
       Plus(x, y)
 
-    def times(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def times(x: FormalElemFunction,
+              y: FormalElemFunction): FormalElemFunction =
       Times(x, y)
 
     def div(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
@@ -298,7 +304,8 @@ object FormalElemFunction {
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction] {
-    def circ(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
+    def circ(x: FormalElemFunction,
+             y: FormalElemFunction): FormalElemFunction =
       Compose(x, y)
   }
 

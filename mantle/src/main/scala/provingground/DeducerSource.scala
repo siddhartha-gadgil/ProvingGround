@@ -116,7 +116,12 @@ class DeducerSource(ded: Deducer,
             (1 to threads) map
               ((_) =>
                 Future {
-                  learnerNextDistribution(fd, theorems, batchSize, true, invM, smooth)
+                  learnerNextDistribution(fd,
+                                          theorems,
+                                          batchSize,
+                                          true,
+                                          invM,
+                                          smooth)
                 })
           }
           .map(
@@ -164,7 +169,9 @@ class DeducerSource(ded: Deducer,
       .alsoTo(saveLearn(name, names))
       .runWith(Sink.ignore)
 
-  def timedRun(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String) = {
+  def timedRun(dedTime: FiniteDuration,
+               learnTime: FiniteDuration,
+               name: String) = {
     deduc
       .takeWithin(dedTime)
       .alsoTo(display())
@@ -178,7 +185,10 @@ class DeducerSource(ded: Deducer,
       .runWith(Sink.ignore)
   }
 
-  def timedRunConc(dedTime: FiniteDuration, learnTime: FiniteDuration, name: String, threads: Int = 3) = {
+  def timedRunConc(dedTime: FiniteDuration,
+                   learnTime: FiniteDuration,
+                   name: String,
+                   threads: Int = 3) = {
     deducConc(threads)
       .takeWithin(dedTime)
       .alsoTo(display())

@@ -61,9 +61,19 @@ object ABDeduc {
   val bufQuick =
     new ded.BufferedRun(distAB, 100000, 10000, (_) => false, (_) => (), smooth)
 
-  val bufFine = new dedFine.BufferedRun(distAB, 10000000, 100000, (_) => false, saveFine, smooth)
+  val bufFine = new dedFine.BufferedRun(distAB,
+                                        10000000,
+                                        100000,
+                                        (_) => false,
+                                        saveFine,
+                                        smooth)
 
   val twodays = 1000.toLong * 3600 * 24 * 2
 
-  val buf2Days = new ded.BufferedRun(distAB, 10000000, 100000, (b) => b.getElapsedTime > twodays, save2, smooth)
+  val buf2Days = new ded.BufferedRun(distAB,
+                                     10000000,
+                                     100000,
+                                     (b) => b.getElapsedTime > twodays,
+                                     save2,
+                                     smooth)
 }

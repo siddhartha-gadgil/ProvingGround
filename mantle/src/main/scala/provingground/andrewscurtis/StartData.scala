@@ -45,8 +45,9 @@ case class StartData(name: String,
   /**
     * spawns running actor
     */
-  def runner(init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-             sse: Sink[Snap, Future[akka.Done]] = Sink.foreach((a: Snap) => {})) =
+  def runner(
+      init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
+      sse: Sink[Snap, Future[akka.Done]] = Sink.foreach((a: Snap) => {})) =
     if (!smooth)
       spawn(name, rank, size, wrdCntn, init, ACMongo.writerRef(sse), p)
     else
@@ -66,7 +67,10 @@ case class StartData(name: String,
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =
       updatedStartsFut map
-        ((us: List[StartData]) => BSONDocument("name" -> name, "loops" -> 0, "start-data" -> uwrite(us)))
+        ((us: List[StartData]) =>
+          BSONDocument("name"       -> name,
+                       "loops"      -> 0,
+                       "start-data" -> uwrite(us)))
     val res = futDoc.map(
       (doc) =>
         //println(doc)
