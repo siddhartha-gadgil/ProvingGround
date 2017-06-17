@@ -65,7 +65,8 @@ class JsonSpec extends FlatSpec {
 
   def roundTrip(t: Term) =
     termToJson(t).flatMap(
-      jsonToTerm(Map(Nat -> NatInd, Bool -> BoolInd).lift, Map((Vec: Term) -> VecInd).lift)
+      jsonToTerm(Map(Nat         -> NatInd, Bool -> BoolInd).lift,
+                 Map((Vec: Term) -> VecInd).lift)
     )
 
   def check(t: Term) = roundTrip(t) == Some(t)

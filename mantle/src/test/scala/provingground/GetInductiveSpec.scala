@@ -11,11 +11,13 @@ class GetInductiveSpec extends InductionSpecTL {
   }
 
   it should "work for Lists" in {
-    assert(ConstructorSeqTL.getExst(ListA, ListAInd.intros.terms).value == ListAInd)
+    assert(
+      ConstructorSeqTL.getExst(ListA, ListAInd.intros.terms).value == ListAInd)
   }
 
   it should "work for Booleans" in {
-    assert(ConstructorSeqTL.getExst(Bool, BoolInd.intros.terms).value == BoolInd)
+    assert(
+      ConstructorSeqTL.getExst(Bool, BoolInd.intros.terms).value == BoolInd)
   }
 
   it should "work for simple binary trees" in {
@@ -27,7 +29,8 @@ class GetInductiveSpec extends InductionSpecTL {
   }
 
   "Getting indexed inductive types" should "give correct definitions" in {
-    val VecInd2 = TypFamilyExst.getIndexedConstructorSeq(Vec, VecInd.intros.terms).value
+    val VecInd2 =
+      TypFamilyExst.getIndexedConstructorSeq(Vec, VecInd.intros.terms).value
 
     val recVN2 = VecInd2.recE(Nat)
 
@@ -46,7 +49,9 @@ class GetInductiveSpec extends InductionSpecTL {
           (vn :->
             (concatVn :->
               (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm))))))))
-    assert(vconcat2(two)(v2)(two)(v2) == vcons(three)(a1)(vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
+    assert(
+      vconcat2(two)(v2)(two)(v2) == vcons(three)(a1)(
+        vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
   }
 
 }

@@ -34,7 +34,9 @@ javaOptions in Universal ++= Seq(
 
 lazy val jsProjects = Seq(client)
 
-lazy val baseSettings = Seq(version := "0.1", organization := "in.ernet.iisc.math", scalaVersion := scalaV)
+lazy val baseSettings = Seq(version := "0.1",
+                            organization := "in.ernet.iisc.math",
+                            scalaVersion := scalaV)
 
 lazy val commonSettings = baseSettings ++ Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -51,8 +53,13 @@ lazy val commonSettings = baseSettings ++ Seq(
     "io.monix"      %% "monix-cats" % "2.3.0",
     "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
   ),
-  scalacOptions in Compile ++= Seq("-unchecked", "-deprecation", "-feature", "-language:existentials"),
-  scalacOptions in (Compile, doc) ++= Seq("-diagrams", "-implicits", "-implicits-show-all"),
+  scalacOptions in Compile ++= Seq("-unchecked",
+                                   "-deprecation",
+                                   "-feature",
+                                   "-language:existentials"),
+  scalacOptions in (Compile, doc) ++= Seq("-diagrams",
+                                          "-implicits",
+                                          "-implicits-show-all"),
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
 )
 
@@ -155,7 +162,8 @@ lazy val client = project
     persistLauncher := true,
     persistLauncher in Test := false,
     // sourceMapsDirectories += coreJS.base / "..",
-    unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
+    unmanagedSourceDirectories in Compile := Seq(
+      (scalaSource in Compile).value),
     resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
@@ -219,7 +227,8 @@ lazy val server = (project in file("server"))
 lazy val mizar = project
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
-  .settings(name := "Mizar-Parser", libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
+  .settings(name := "Mizar-Parser",
+            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
@@ -236,7 +245,9 @@ lazy val mantle = (project in file("mantle"))
 //        .settings(serverSettings : _*)
   .settings(sourceGenerators in Test += Def.task {
     val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(file, s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+    IO.write(
+      file,
+      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
@@ -249,7 +260,8 @@ lazy val mantle = (project in file("mantle"))
 //        dependsOn(exploring)
 
 lazy val exploring = project
-  .settings(name := "ProvingGround-exploring", libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
+  .settings(name := "ProvingGround-exploring",
+            libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
@@ -263,7 +275,9 @@ lazy val nlp = (project in file("nlp"))
   .settings(nlpSettings: _*)
   .settings(sourceGenerators in Test += Def.task {
     val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(file, s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
+    IO.write(
+      file,
+      s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
     Seq(file)
   }.taskValue)
 //        .settings(jvmSettings : _*)

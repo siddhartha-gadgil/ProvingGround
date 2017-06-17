@@ -184,7 +184,9 @@ class InductionSpec extends FlatSpec {
 
   "Induction function countdown" should "be defined properly" in {
     assert(countdown(zero) == nilv)
-    assert(countdown(three) == consv(two)(three)(consv(one)(two)(consv(zero)(one)(nilv))))
+    assert(
+      countdown(three) == consv(two)(three)(
+        consv(one)(two)(consv(zero)(one)(nilv))))
   }
 
   // Indexed Inductive types
