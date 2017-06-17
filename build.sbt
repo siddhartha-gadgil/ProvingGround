@@ -7,6 +7,8 @@ val ammV = "0.9.4"
 scalaOrganization in ThisBuild := "org.typelevel"
 
 scalaVersion in ThisBuild := scalaV
+scalafmtOnCompile in ThisBuild := true
+scalafmtVersion in ThisBuild := "1.0.0-RC3"
 
 classpathTypes += "maven-plugin"
 
