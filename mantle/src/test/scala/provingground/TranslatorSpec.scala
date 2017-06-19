@@ -19,17 +19,17 @@ class TranslatorSpec extends FlatSpec {
 
   case class Big(v: Vector[A], x: A, y: A, w: Vector[A]) extends A
 
-  val Bpat = Pattern.partial[A, II]{case B(x, y) => (x, y)}
-  val Dpat = Pattern.partial[A, Un]{case D => ()}
+  val Bpat = Pattern.partial[A, II] { case B(x, y) => (x, y) }
+  val Dpat = Pattern.partial[A, Un] { case D       => () }
 
-  val bigPat = Pattern.partial[A, VIIV]{
+  val bigPat = Pattern.partial[A, VIIV] {
     case Big(v, x, y, w) => (v, (x, (y, w)))
   }
 
   val trans = Translator.Empty[A, A] ||
-                 Bpat >>> {case (x, y) => C(x, y)} ||
-                 Dpat >>> {case _ => E} ||
-                 bigPat >>> {case (v, (x, (y, w))) => Big(v, x, y, w)}
+    Bpat >>> { case (x, y)             => C(x, y) } ||
+    Dpat >>> { case _                  => E } ||
+    bigPat >>> { case (v, (x, (y, w))) => Big(v, x, y, w) }
 
   val big =
     Big(
@@ -49,12 +49,12 @@ class TranslatorSpec extends FlatSpec {
 
   import shapeless._
 
-  val Cpat = Pattern.partial[A, IdIdHN]{case C(x, y) => x :: y :: HNil}
+  val Cpat = Pattern.partial[A, IdIdHN] { case C(x, y) => x :: y :: HNil }
 
-  val htrans = trans || Cpat >>> {case x :: y :: HNil => B(x, y)}
+  val htrans = trans || Cpat >>> { case x :: y :: HNil => B(x, y) }
 
   "Composite translation" should "translate trees recursively" in {
-    assert(trans(B(B(D, D), B(B(D, D), D))) == Some(C(C(E,E),C(C(E,E),E))))
+    assert(trans(B(B(D, D), B(B(D, D), D))) == Some(C(C(E, E), C(C(E, E), E))))
     assert(trans(big) == Some(bigIm))
   }
 
@@ -76,8 +76,8 @@ class TranslatorSpec extends FlatSpec {
   }
 
   "Functors" should "be solved as implicits and map correctly" in {
-  // these are mainly tests at compile times
-  val ll = implicitly[Functor[LL]]
+    // these are mainly tests at compile times
+    val ll = implicitly[Functor[LL]]
 
     val li = implicitly[Functor[IL]]
 
@@ -103,6 +103,5 @@ class TranslatorSpec extends FlatSpec {
 
     assert(c == (4, List(2, 3)))
   }
-
 
 }

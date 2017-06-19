@@ -4,9 +4,9 @@ import scala.util.parsing.combinator._
 import scala.language.implicitConversions
 
 /**
- * deprecated informally designed language, replaced by the Naproche based [[MathExpr]]
- */
- @deprecated("Use Naproche based languages", "0.1")
+  * deprecated informally designed language, replaced by the Naproche based [[MathExpr]]
+  */
+@deprecated("Use Naproche based languages", "0.1")
 object TheoryTypes {
 
   // type Typ[HoTT.Term] = Typ[HoTT.Term]

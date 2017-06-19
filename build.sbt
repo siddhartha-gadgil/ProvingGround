@@ -7,16 +7,18 @@ val ammV = "0.9.4"
 scalaOrganization in ThisBuild := "org.typelevel"
 
 scalaVersion in ThisBuild := scalaV
+scalafmtOnCompile in ThisBuild := true
+scalafmtVersion in ThisBuild := "1.0.0-RC3"
 
 classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
 javaOptions in Universal ++= Seq(
-    // -J params will be added as jvm parameters
-    "-J-Xmx4G",
-    "-J-Xms512m"
-  )
+  // -J params will be added as jvm parameters
+  "-J-Xmx4G",
+  "-J-Xms512m"
+)
 
 // libraryDependencies += "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full
 //
@@ -37,28 +39,29 @@ lazy val baseSettings = Seq(version := "0.1",
                             scalaVersion := scalaV)
 
 lazy val commonSettings = baseSettings ++ Seq(
-    resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
-    libraryDependencies ++= Seq(
-      // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
+  resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  libraryDependencies ++= Seq(
+    // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.typelevel" %% "spire"     % "0.14.1",
-      "com.lihaoyi"   %% "fansi"     % "0.2.4",
-      "com.lihaoyi"   %% "upickle"   % "0.4.4",
-      "com.chuusai"   %% "shapeless" % "2.3.2",
-      "org.typelevel" %% "cats"      % "0.9.0",
-      "io.monix" %% "monix" % "2.3.0",
-      "io.monix" %% "monix-cats" % "2.3.0",
-      "com.lihaoyi"   % "ammonite"   % ammV cross CrossVersion.full
-    ),
-    scalacOptions in Compile ++= Seq("-unchecked",
-                                     "-deprecation",
-                                     "-feature",
-                                     "-language:existentials"),
-    scalacOptions in (Compile, doc) ++= Seq("-diagrams",
-                                            "-implicits",
-                                            "-implicits-show-all")
-  )
+    "org.typelevel" %% "spire"      % "0.14.1",
+    "com.lihaoyi"   %% "fansi"      % "0.2.4",
+    "com.lihaoyi"   %% "upickle"    % "0.4.4",
+    "com.chuusai"   %% "shapeless"  % "2.3.2",
+    "org.typelevel" %% "cats"       % "0.9.0",
+    "io.monix"      %% "monix"      % "2.3.0",
+    "io.monix"      %% "monix-cats" % "2.3.0",
+    "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
+  ),
+  scalacOptions in Compile ++= Seq("-unchecked",
+                                   "-deprecation",
+                                   "-feature",
+                                   "-language:existentials"),
+  scalacOptions in (Compile, doc) ++= Seq("-diagrams",
+                                          "-implicits",
+                                          "-implicits-show-all"),
+  testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
+)
 
 val akkaV = "2.4.17"
 
@@ -164,9 +167,9 @@ lazy val client = project
     resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js"     %%% "scalajs-dom" % "0.9.1",
-      "com.lihaoyi"      %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"      %%% "upickle"     % "0.4.4",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
+      "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
+      "com.lihaoyi"  %%% "upickle"     % "0.4.4",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
@@ -242,7 +245,9 @@ lazy val mantle = (project in file("mantle"))
 //        .settings(serverSettings : _*)
   .settings(sourceGenerators in Test += Def.task {
     val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(file, s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+    IO.write(
+      file,
+      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
@@ -261,7 +266,8 @@ lazy val exploring = project
   .dependsOn(mantle)
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
-val nlpInitCommands = "import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, translation._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._"
+val nlpInitCommands =
+  "import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, translation._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._"
 
 lazy val nlp = (project in file("nlp"))
   .settings(name := "ProvingGround-NLP")
@@ -269,7 +275,8 @@ lazy val nlp = (project in file("nlp"))
   .settings(nlpSettings: _*)
   .settings(sourceGenerators in Test += Def.task {
     val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(file,
+    IO.write(
+      file,
       s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
     Seq(file)
   }.taskValue)

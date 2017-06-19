@@ -103,13 +103,13 @@ class ApproxTrig(N: SafeLong) {
   lazy val expStream: Stream[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0) Interval.point(Rational(1))
-         else {
-           val b = get(expStream, n - 1)
-           val a =
-             b * Interval.closed(r"1/2", (1 + width) / (2 - (width * width)))
-           (a * width * width) + (b * (width + 1))
-         })
+        if (n == 0) Interval.point(Rational(1))
+        else {
+          val b = get(expStream, n - 1)
+          val a =
+            b * Interval.closed(r"1/2", (1 + width) / (2 - (width * width)))
+          (a * width * width) + (b * (width + 1))
+        })
 
   /**
     * bound on exponential on the interval [(k-1)/N, k/N]
@@ -142,13 +142,13 @@ class ApproxTrig(N: SafeLong) {
   def logStream: Stream[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0) Interval.point(r"0")
-         else {
-           val prev = get(logStream, n - 1)
-           prev +
-             (Interval.closed(r"1" / (r"1" + (width * n)),
-                              r"1" / (r"1" + (width * (n - 1)))) * width)
-         })
+        if (n == 0) Interval.point(r"0")
+        else {
+          val prev = get(logStream, n - 1)
+          prev +
+            (Interval.closed(r"1" / (r"1" + (width * n)),
+                             r"1" / (r"1" + (width * (n - 1)))) * width)
+        })
 
   /**
     * bound on log(1 + x) for x in [(k-1)/N, k/N] at index k.
@@ -223,14 +223,14 @@ class ApproxTrig(N: SafeLong) {
   lazy val sinStream: Stream[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0)
-           (Interval.point(Rational(0)), Interval.point(Rational(0)))
-         else {
-           val c        = get(sinStream, n - 1)._1
-           val b        = get(cosStream, n - 1)._1
-           val trigAppr = TrigBound(b, c)
-           (trigAppr.atRightEnd, trigAppr.intervalImage)
-         })
+        if (n == 0)
+          (Interval.point(Rational(0)), Interval.point(Rational(0)))
+        else {
+          val c        = get(sinStream, n - 1)._1
+          val b        = get(cosStream, n - 1)._1
+          val trigAppr = TrigBound(b, c)
+          (trigAppr.atRightEnd, trigAppr.intervalImage)
+        })
 
   /**
     * on the interval ((n - 1)/ N, n/N) if n>0 , (0, 0) otherwise,
@@ -239,14 +239,14 @@ class ApproxTrig(N: SafeLong) {
   lazy val cosStream: Stream[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
-         if (n == 0)
-           (Interval.point(Rational(1)), Interval.point(Rational(1)))
-         else {
-           val c        = get(cosStream, n - 1)._1
-           val b        = -get(sinStream, n - 1)._1
-           val trigAppr = TrigBound(b, c)
-           (trigAppr.atRightEnd, trigAppr.intervalImage)
-         })
+        if (n == 0)
+          (Interval.point(Rational(1)), Interval.point(Rational(1)))
+        else {
+          val c        = get(cosStream, n - 1)._1
+          val b        = -get(sinStream, n - 1)._1
+          val trigAppr = TrigBound(b, c)
+          (trigAppr.atRightEnd, trigAppr.intervalImage)
+        })
 
   import ApproxTrig._
 
@@ -359,14 +359,14 @@ object ApproxTrig {
         val prevSplit = recSplit(k - 1)
         prevSplit flatMap
           ((cs) => // sub-cubes in the spltting of depth (k-1), if split successful
-           {
-             val setopts =
-               cs map (_.splitCube) // split each sub-cube if possible.
-             if (setopts contains None)
-               None // if some sub-cube fails to split, no total split.
-             else
-               Some(setopts.flatten.flatten) // Extract split cubes (from option type) as Set(Set) and flatten
-           })
+          {
+            val setopts =
+              cs map (_.splitCube) // split each sub-cube if possible.
+            if (setopts contains None)
+              None // if some sub-cube fails to split, no total split.
+            else
+              Some(setopts.flatten.flatten) // Extract split cubes (from option type) as Set(Set) and flatten
+          })
       }
 
     /**
@@ -381,14 +381,14 @@ object ApproxTrig {
       val boundsOpt =
         recSplit(depth) flatMap
           ((cubelets) => {
-             //sub-cubes in depth k split cube, if splitting successful.
-             val bds =
-               cubelets map (func) // optional bounds for value of function on cubelets
-             if (bds contains None)
-               None // if no bound for some sub-cube, then no bound
-             else
-               Some(bds.flatten) // extract from options a collection of bounds
-           }) // collection of bounds if splitting succeeds and we get a bound for each cube.
+            //sub-cubes in depth k split cube, if splitting successful.
+            val bds =
+              cubelets map (func) // optional bounds for value of function on cubelets
+            if (bds contains None)
+              None // if no bound for some sub-cube, then no bound
+            else
+              Some(bds.flatten) // extract from options a collection of bounds
+          }) // collection of bounds if splitting succeeds and we get a bound for each cube.
       for (bounds     <- boundsOpt;                              // collection of bounds if any
            unionBound <- Try(bounds.reduce(_ union _)).toOption) // if union succeeds (not empty collection for example)
         yield unionBound // union of bounds

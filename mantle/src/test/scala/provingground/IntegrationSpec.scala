@@ -189,7 +189,8 @@ class FunctionTypeSpec extends FlatSpec {
 
     assert(call(A)(B)(g)(a).typ === B)
 
-    val square = lmbda(NatInt)(NatInt)(((x: Int) => x * x).term.asInstanceOf[Func[Term, Term]])
+    val square = lmbda(NatInt)(NatInt)(
+      ((x: Int) => x * x).term.asInstanceOf[Func[Term, Term]])
     assert(square.typ === Fun(NatInt)(NatInt))
     assert(call(NatInt)(NatInt)(square)(2.term) === 4.term)
   }
@@ -240,8 +241,9 @@ class SigmaTypeSpec extends FlatSpec {
   }
 
   "For arbitrary type user defined id with user defined Sigma type" should "be defined properly" in {
-    val Sigma            = "Σ" :: A ~>: ((A ->: Type) ->: Type)
-    val SigmaInd         = ("mkPair" ::: A ~>>: (B ~>>: (a ~>>: (B(a) ->>: (Sigma -> Sigma(A)(B)))))) =:: Sigma
+    val Sigma = "Σ" :: A ~>: ((A ->: Type) ->: Type)
+    val SigmaInd = ("mkPair" ::: A ~>>: (B ~>>: (a ~>>: (B(a) ->>: (Sigma -> Sigma(
+      A)(B)))))) =:: Sigma
     val makePair :: HNil = SigmaInd.intros
     val pair             = makePair(A)(B)(a)(b)
     assert(pair.typ === Sigma(A)(B))
@@ -319,7 +321,7 @@ class EmptyAndUnitTypeSpec extends FlatSpec {
   val z     = "z" :: Zero
   assert(recZA(z).typ === A)
 
-  assert(Star.typ  === Unit)
+  assert(Star.typ === Unit)
   val recUA = Unit.rec(A)
   assert(recUA(a)(Star) === a)
 }
@@ -445,13 +447,17 @@ class IdentityTypeSpec extends FlatSpec {
     val two   = succ(one)
     val three = succ(two)
 
-    val indN_assoc = NatInd.induc(n :-> (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k))))))
-    val pf         = "(n+m)+k=n+(m+k)" :: m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k))))
+    val indN_assoc = NatInd.induc(
+      n :-> (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k))))))
+    val pf = "(n+m)+k=n+(m+k)" :: m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(
+      add(m)(k))))
     val assoc = indN_assoc(m :~> (k :~> add(m)(k).refl))(
       n :~> (pf :-> (m :~> (k :~>
         IdentityTyp
           .extnslty(succ)(add(add(n)(m))(k))(add(n)(add(m)(k)))(pf(m)(k))))))
-    assert(assoc.typ === (n ~>: (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k)))))))
+    assert(
+      assoc.typ === (n ~>: (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(
+        add(m)(k)))))))
   }
 
   "refl(a)" should "have proper type" in {
@@ -542,15 +548,17 @@ class EliminatorsSpec extends FlatSpec {
 
     val recAorBC = PlusTyp(A, B).rec(C)
     assert(recAorBC.typ === (A ->: C) ->: (B ->: C) ->: PlusTyp(A, B) ->: C)
-    val f        = "f" :: A ->: C
-    val g        = "g" :: B ->: C
+    val f = "f" :: A ->: C
+    val g = "g" :: B ->: C
     assert(recAorBC(f)(g)(s1) === f(a))
     assert(recAorBC(f)(g)(s2) === g(b))
 
-    val D = "D(_ : A + B)" :: PlusTyp(A, B) ->: Type
-    val s = "s" :: PlusTyp(A, B)
+    val D        = "D(_ : A + B)" :: PlusTyp(A, B) ->: Type
+    val s        = "s" :: PlusTyp(A, B)
     val indAorBD = PlusTyp(A, B).induc(D)
-    assert(indAorBD.typ === (a ~>: D(PlusTyp(A, B).incl1(a))) ->: (b ~>: D(PlusTyp(A, B).incl2(b))) ->: s ~>: D(s))
+    assert(
+      indAorBD.typ === (a ~>: D(PlusTyp(A, B).incl1(a))) ->: (b ~>: D(
+        PlusTyp(A, B).incl2(b))) ->: s ~>: D(s))
     val f2 = "f2" :: a ~>: D(PlusTyp(A, B).incl1(a))
     val g2 = "g2" :: b ~>: D(PlusTyp(A, B).incl2(b))
     assert(indAorBD(f2)(g2)(s1) === f2(a))
@@ -563,7 +571,7 @@ class EliminatorsSpec extends FlatSpec {
     val inl :: inr :: HNil = SumInd.intros
     val s1                 = inl(a)
     assert(s1.typ === AorB)
-    val s2                 = inr(b)
+    val s2 = inr(b)
     assert(s2.typ === AorB)
 
     val recAorBC = SumInd.rec(C)
@@ -576,7 +584,8 @@ class EliminatorsSpec extends FlatSpec {
     val D        = "D(_ : A + B)" :: AorB ->: Type
     val s        = "s" :: AorB
     val indAorBD = SumInd.induc(D)
-    assert(indAorBD.typ === (a ~>: D(inl(a))) ->: (b ~>: D(inr(b))) ->: s ~>: D(s))
+    assert(
+      indAorBD.typ === (a ~>: D(inl(a))) ->: (b ~>: D(inr(b))) ->: s ~>: D(s))
     val f2 = "f2" :: a ~>: D(inl(a))
     val g2 = "g2" :: b ~>: D(inr(b))
     assert(indAorBD(f2)(g2)(s1) === f2(a))
@@ -596,7 +605,8 @@ class EliminatorsSpec extends FlatSpec {
     val D         = "D(_ : A x B)" :: A ->: B ->: Type
     val p         = "(a, b)" :: ProdTyp(A, B)
     val indAandBD = ProdTyp(A, B).induc(D)
-    assert(indAandBD.typ === (a ~>: b ~>: D(a)(b)) ->: p ~>: D(p.first)(p.second))
+    assert(
+      indAandBD.typ === (a ~>: b ~>: D(a)(b)) ->: p ~>: D(p.first)(p.second))
     val f2 = "f2" :: a ~>: b ~>: D(a)(b)
     assert(indAandBD(f2)(pair) === f2(a)(b))
   }
@@ -610,14 +620,14 @@ class EliminatorsSpec extends FlatSpec {
 
     val recAandBC = ProdInd.rec(C)
     assert(recAandBC.typ === (A ->: B ->: C) ->: AandB ->: C)
-    val f         = "f" :: A ->: B ->: C
+    val f = "f" :: A ->: B ->: C
     assert(recAandBC(f)(pair) === f(a)(b))
 
     val D         = "D(_ : A x B)" :: AandB ->: Type
     val p         = "(a, b)" :: AandB
     val indAandBD = ProdInd.induc(D)
     assert(indAandBD.typ === (a ~>: b ~>: D(makePair(a)(b))) ->: p ~>: D(p))
-    val f2        = "f2" :: a ~>: b ~>: D(makePair(a)(b))
+    val f2 = "f2" :: a ~>: b ~>: D(makePair(a)(b))
     assert(indAandBD(f2)(pair) === f2(a)(b))
   }
 
@@ -631,7 +641,7 @@ class EliminatorsSpec extends FlatSpec {
 
     val recFunC = FunInd.rec(C)
     assert(recFunC.typ === ((A ->: B) ->: C) ->: AtoB ->: C)
-    val F       = "F" :: (A ->: B) ->: C
+    val F = "F" :: (A ->: B) ->: C
     assert(recFunC(F)(fun) === F(f))
 
     val g       = "g" :: AtoB
@@ -655,7 +665,7 @@ class EliminatorsSpec extends FlatSpec {
     val p       = "(a, ba)" :: Sgma(a !: A, Ba(a))
     val indSgmD = Sgma(a !: A, Ba(a)).induc(D)
     //assert(indSgmD.typ ===  (a ~>: ba ~>: D(a)(ba) ) ->: p ~>: D(p.first)(p.second))
-    val f2      = "f2" :: a ~>: ba ~>: D(a)(ba)
+    val f2 = "f2" :: a ~>: ba ~>: D(a)(ba)
     assert(indSgmD(f2)(pair) === f2(a)(ba))
   }
 
@@ -664,7 +674,7 @@ class EliminatorsSpec extends FlatSpec {
     val SigmaInd         = ("mkPair" ::: a ~>>: (Ba(a) ->>: SigmaAB)) =: SigmaAB
     val makePair :: HNil = SigmaInd.intros
     val pair             = makePair(a)(ba)
-     assert(pair.typ === SigmaAB)
+    assert(pair.typ === SigmaAB)
     val recSgmC = SigmaInd.rec(C)
     assert(recSgmC.typ === (a ~>: (Ba(a) ->: C)) ->: SigmaAB ->: C)
     val f = "f" :: a ~>: (Ba(a) ->: C)
@@ -734,7 +744,8 @@ class EliminatorsSpec extends FlatSpec {
 
     val D     = "D(_ : Nat)" :: Nat ->: Type
     val indND = NatInd.induc(D)
-    assert(indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
+    assert(
+      indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
     val d  = "d" :: D(zero)
     val f2 = "f2" :: n ~>: (D(n) ->: D(succ(n)))
     assert(indND(d)(f2)(zero) === d)
@@ -756,7 +767,9 @@ class EliminatorsSpec extends FlatSpec {
 
     val D     = "D(_ : List(A))" :: ListA ->: Type
     val indLD = ListAInd.induc(D)
-    assert(indLD.typ === D(nil) ->: a ~>: as ~>: (D(as) ->: D(cons(a)(as))) ->: as1 ~>: D(as1))
+    assert(
+      indLD.typ === D(nil) ->: a ~>: as ~>: (D(as) ->: D(cons(a)(as))) ->: as1 ~>: D(
+        as1))
     val f2 = "f2" :: a ~>: as ~>: (D(as) ->: D(cons(a)(as)))
     val d  = "d" :: D(nil)
     assert(indLD(d)(f2)(nil) === d)
@@ -778,29 +791,35 @@ class EliminatorsSpec extends FlatSpec {
     val vm                    = "v_m" :: Vec(m)
 
     val recVC = VecInd.rec(C)
-    assert(recVC.typ === C ->: n ~>: (A ->: Vec(n) ->: C ->: C) ->: m ~>: (Vec(m) ->: C))
+    assert(recVC.typ === C ->: n ~>: (A ->: Vec(n) ->: C ->: C) ->: m ~>: (Vec(
+      m) ->: C))
     val f = "f" :: n ~>: (A ->: Vec(n) ->: C ->: C)
     assert(recVC(c)(f)(zero)(vnil) === c)
-    assert(recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(recVC(c)(f)(n)(vn)))
+    assert(
+      recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(
+        recVC(c)(f)(n)(vn)))
 
     val D     = "D(_ : Vec(_))" :: n ~>: (Vec(n) ->: Type)
     val indVD = VecInd.induc(D)
     assert(
-      indVD.typ === D(zero)(vnil) ->: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(succ(n))(vcons(n)(a)(vn))) ->: m ~>: vm ~>: D(
-        m)(vm))
-    val f2 = "f2" :: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(succ(n))(vcons(n)(a)(vn)))
-    val d  = "d" :: D(zero)(vnil)
+      indVD.typ === D(zero)(vnil) ->: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(
+        succ(n))(vcons(n)(a)(vn))) ->: m ~>: vm ~>: D(m)(vm))
+    val f2 = "f2" :: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(succ(n))(
+      vcons(n)(a)(vn)))
+    val d = "d" :: D(zero)(vnil)
     assert(indVD(d)(f2)(zero)(vnil) === d)
-    assert(indVD(d)(f2)(succ(n))(vcons(n)(a)(vn)) === f2(n)(a)(vn)(indVD(d)(f2)(n)(vn)))
+    assert(
+      indVD(d)(f2)(succ(n))(vcons(n)(a)(vn)) === f2(n)(a)(vn)(
+        indVD(d)(f2)(n)(vn)))
   }
 
   "Identity type" should "be defined property" in {
-    assert((a1 =:= a2).typ  === Type)
+    assert((a1 =:= a2).typ === Type)
     assert(a.refl.typ === (a =:= a))
 
     val recIdC = IdentityTyp.rec(A, C)
     assert(recIdC.typ === (A ->: C) ->: a1 ~>: a2 ~>: ((a1 =:= a2) ->: C))
-    val f      = "f" :: A ->: C
+    val f = "f" :: A ->: C
     recIdC(f)(a)(a)(a.refl) == f(a) // false
 
     val D  = "D(_ : a1 = a2)" :: a1 ~>: (a2 ~>: ((a1 =:= a2) ->: Type))
@@ -825,7 +844,9 @@ class EliminatorsSpec extends FlatSpec {
     val D      = "D(_ : a1 = a2)" :: a1 ~>: a2 ~>: (IdA(a1)(a2) ->: Type)
     val pf     = "a1 = a2" :: IdA(a1)(a2)
     val indIdD = IdAInd.induc(D)
-    assert(indIdD.typ === a ~>: D(a)(a)(refl(a)) ->: a1 ~>: a2 ~>: pf ~>: D(a1)(a2)(pf))
+    assert(
+      indIdD.typ === a ~>: D(a)(a)(refl(a)) ->: a1 ~>: a2 ~>: pf ~>: D(a1)(a2)(
+        pf))
     val f2 = "f2" :: a ~>: D(a)(a)(refl(a))
     assert(indIdD(f2)(a)(a)(refl(a)) === f2(a))
   }

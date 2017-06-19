@@ -36,9 +36,9 @@ object QDI {
     val pmf =
       ops.read.lines(file) map
         ((l) => {
-           val Array(s, p) = l.split("\t")
-           Weighted(s, p.toDouble)
-         })
+          val Array(s, p) = l.split("\t")
+          Weighted(s, p.toDouble)
+        })
     FiniteDistribution(pmf)
   }
 
@@ -135,8 +135,7 @@ object QDI {
     }
   }
 
-
-import FiniteDistribution._
+  import FiniteDistribution._
 
   implicit def fdDiv[A](fd: FiniteDistribution[A]): Node = {
     val lst      = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex

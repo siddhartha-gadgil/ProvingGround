@@ -256,12 +256,14 @@ object AndrewsCurtis {
     /*
      * Subchains with the same head. Recursively defined with tail being moves to be appended to each chain
      */
-    @tailrec def subchains(chain: Chain, tail: List[Move] = List(), accum: Set[Chain] = Set())
-      : Set[Chain] = chain match {
-      case AtomicChain(head) => accum + addMoves(chain, tail)
-      case RecChain(start, move) =>
-        subchains(start, tail :+ move, accum + addMoves(chain, tail))
-    }
+    @tailrec def subchains(chain: Chain,
+                           tail: List[Move] = List(),
+                           accum: Set[Chain] = Set()): Set[Chain] =
+      chain match {
+        case AtomicChain(head) => accum + addMoves(chain, tail)
+        case RecChain(start, move) =>
+          subchains(start, tail :+ move, accum + addMoves(chain, tail))
+      }
 
     def apply(foot: Vert, moveStack: List[Move]) =
       addMoves(AtomicChain(foot), moveStack)

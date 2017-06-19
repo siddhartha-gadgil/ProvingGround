@@ -131,7 +131,6 @@ $body
     base
   }
 
-
   import java.io.OutputStream
 
   class StringOutputStream extends OutputStream {
@@ -141,30 +140,31 @@ $body
 
     def reset = bytes.clear()
 
-  override def write(b: Int): Unit = {
-    bytes += b.toByte
+    override def write(b: Int): Unit = {
+      bytes += b.toByte
+    }
+
+    def string: String = new String(bytes.toArray.map(_.toChar))
   }
-
-  def string: String = new String(bytes.toArray.map(_.toChar))
-  }
-
-
 
   def replResult(code: String) = {
     import java.io._
-    val outputS= new ByteArrayOutputStream()
-    val errLog = new ByteArrayOutputStream()
+    val outputS = new ByteArrayOutputStream()
+    val errLog  = new ByteArrayOutputStream()
     val infoLog = new ByteArrayOutputStream()
 
     import java.nio.charset.StandardCharsets
 
     val ammMain =
       ammonite.Main(
-        predef=
+        predef =
           "repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
-        inputStream = new ByteArrayInputStream((code+"\nexit\n").getBytes(StandardCharsets.UTF_8)),
+        inputStream = new ByteArrayInputStream(
+          (code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
-        errorStream = errLog, infoStream = infoLog)
+        errorStream = errLog,
+        infoStream = infoLog
+      )
 
     println(code)
 
@@ -176,9 +176,11 @@ $body
 
     val info = new String(infoLog.toByteArray, "UTF-8")
 
-    println(s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
+    println(
+      s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
 
-    if (err == "") Right(output) else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
+    if (err == "") Right(output)
+    else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
   }
 
   def replResJS(code: String) = replResult(code) match {
@@ -204,20 +206,19 @@ $body
           val result =
             replResult(d) match {
               case Right(z) => "--RESULT--\n" + z
-              case Left(z) => "--ERROR--\n" + z
+              case Left(z)  => "--ERROR--\n" + z
             }
-          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-                              result))
-          // val js = kernelJS(res)
-          // val js = replResJS(d)
-          // println(js)
-            //Js.Obj("result" -> Js.Str("not implemented"))
-          //Js.Obj("response" -> Js.Str(res.toString))
-          // println(res)
-          // println(kernelJS(res).toString)
-          // TimeServer.buf = TimeServer.buf :+ res.toString
-          // println(s"Buffer: ${TimeServer.buf}")
-          // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, result))
+        // val js = kernelJS(res)
+        // val js = replResJS(d)
+        // println(js)
+        //Js.Obj("result" -> Js.Str("not implemented"))
+        //Js.Obj("response" -> Js.Str(res.toString))
+        // println(res)
+        // println(kernelJS(res).toString)
+        // TimeServer.buf = TimeServer.buf :+ res.toString
+        // println(s"Buffer: ${TimeServer.buf}")
+        // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
         }
       }
     } ~

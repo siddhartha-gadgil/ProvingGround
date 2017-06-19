@@ -4,7 +4,6 @@ import provingground.{FiniteDistribution => FD, _}
 
 import learning.{TruncatedDistribution => TD, _}
 
-
 import HoTT._
 
 import translation._

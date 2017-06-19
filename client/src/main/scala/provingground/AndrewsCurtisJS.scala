@@ -40,9 +40,10 @@ object AndrewsCurtisJS {
 //    val message = event.data.toString
     header match {
       case fdMVP => {
-        val (pmfM, pmfV, pmfP) = read[(List[(String, Double)],
-                                       List[(String, Double)],
-                                       List[(String, Double)])](message)
+        val (pmfM, pmfV, pmfP) =
+          read[(List[(String, Double)],
+                List[(String, Double)],
+                List[(String, Double)])](message)
         val output = pmfMVPdiv(pmfM, pmfV, pmfP)
         fdOut(output)
       }

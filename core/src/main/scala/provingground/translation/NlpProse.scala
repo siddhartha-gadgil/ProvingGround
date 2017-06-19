@@ -33,6 +33,10 @@ object NlpProse {
     }
   }
 
+  object ProseTree{
+    def apply(t: List[DepRel]) : ProseTree = ProseTree(findroot(t), t)
+  }
+
   /** Stanford Dependency tree */
   case class ProseTree(root: Token, tree: List[DepRel]) extends ParseData {
 
@@ -45,7 +49,7 @@ object NlpProse {
     def heirs: List[DepRel] = offspring(root)
 
     /** Initiates ProseTree from a list of Tokens by finding root*/
-    def this(t: List[DepRel]) = this(findroot(t), t)
+    // def this(t: List[DepRel]) = this(findroot(t), t)
 
     /**List of dependency relations descending from an initial list */
     def desc(init: List[DepRel]): List[DepRel] = {

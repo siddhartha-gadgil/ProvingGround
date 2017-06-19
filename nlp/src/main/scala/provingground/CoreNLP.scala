@@ -19,8 +19,8 @@ import edu.stanford.nlp.semgraph._
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations._
 
 /**
- * direct interface to the Stanford parser; the [[StanfordParser]] object which handles LaTeX is used instead.
- */
+  * direct interface to the Stanford parser; the [[StanfordParser]] object which handles LaTeX is used instead.
+  */
 object CoreNLP {
 
   def gov(e: SemanticGraphEdge) =
@@ -63,7 +63,7 @@ object CoreNLP {
 
   def proseTrees(text: String)(implicit pipe: StanfordCoreNLP) = {
     for (sentence <- sentences(annotatedDoc(text, pipe))) yield {
-      new ProseTree(depRelIterable(sentence).toList)
+      ProseTree(depRelIterable(sentence).toList)
     }
   }
 
@@ -80,7 +80,7 @@ object CoreNLP {
 }
 
 // The part below is for testing.
-object CoreNLPTest  {
+object CoreNLPTest {
   import provingground.CoreNLP._
 
   val props = new java.util.Properties()

@@ -63,11 +63,20 @@ object MathExpr {
       extends SententialPhrase
 
   /**
-   * A bi-implication, kept separate from two implications for definitions etc
-   */
+    * A bi-implication, kept separate from two implications for definitions etc
+    */
   case class Iff(premise: SententialPhrase, consequence: SententialPhrase)
       extends SententialPhrase
 
+  /**
+  Pronoun 'it' with an optional coreference
+    */
+  case class It(coref: Option[MathExpr]) extends MathExpr
+
+  /**
+  Pronoun 'they' with (psoosibly empty) coreferences
+    */
+  case class They(corefs: Vector[MathExpr]) extends MathExpr
 
   /**
     * Abstract Noun phrase
@@ -137,8 +146,8 @@ object MathExpr {
   // }
 
   /**
-   * Various prepositions
-   */
+    * Various prepositions
+    */
   object Preposition {
     case object Of extends Preposition
 
@@ -162,8 +171,8 @@ object MathExpr {
   }
 
   /**
-   * A generic preposition
-   */
+    * A generic preposition
+    */
   case class Prep(word: String) extends Preposition
 
   /**
@@ -188,16 +197,19 @@ object MathExpr {
 
     case object This extends Determiner
 
+    case class Card(s: String) extends Determiner
+
     def apply(s: String) = s.toLowerCase match {
-      case "a"     => A
-      case "an"    => A
-      case "the"   => The
-      case "some"  => Some
-      case "every" => Every
-      case "all"   => Every
-      case "no"    => No
-      case "any"   => Every
-      case "this" => This
+      case "a"                    => A
+      case "an"                   => A
+      case "the"                  => The
+      case "some"                 => Some
+      case "every"                => Every
+      case "all"                  => Every
+      case "no"                   => No
+      case "any"                  => Every
+      case "this"                 => This
+      case s if s.startsWith("#") => Card(s.drop(1))
     }
   }
 
@@ -285,6 +297,16 @@ object MathExpr {
   case class VerbAdj(vp: VerbPhrase, ap: AdjectivalPhrase) extends VerbPhrase
 
   /**
+    * representing existential 'there', purely as a parsing target
+    */
+  case object Exists extends MathExpr
+
+  /**
+    * to take care of an idiosyncracy of the StanfordParser, with 'if' SP attached to a VP in an NPVP
+    */
+  case class VPIf(vp: VerbPhrase, ifc: MathExpr) extends MathExpr
+
+  /**
     * is ... property given by a noun.
     */
   case class IsNoun(property: NounPhrase) extends VerbPhrase // case of VerbObj
@@ -355,7 +377,6 @@ object MathExpr {
       extends SententialPhrase
 }
 
-
 object FormalExpr {
   case class FormalLeaf(s: String) extends MathExpr
 
@@ -381,8 +402,11 @@ object FormalExpr {
     } >>> {
       case s => FormalLeaf(s)
     } ||
-      Pattern.partial[Tree, SL] { case PennTrees.Node(s, l) => (s, l) } >>> {
-        case (s, l) => FormalNode(s, l)
+      Pattern.partial[Tree, SL] {
+        case PennTrees.Node(s, l) => (s, l)
+      } >>> {
+        case ("NP", Vector(dp: MathExpr.DP)) => dp
+        case (s, l)                          => FormalNode(s, l)
       }
 }
 
