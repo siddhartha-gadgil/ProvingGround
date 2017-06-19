@@ -57,7 +57,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.typelevel" %% "cats"       % "0.9.0",
     "io.monix"      %% "monix"      % "2.3.0",
     "io.monix"      %% "monix-cats" % "2.3.0",
-    "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
+    "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.patch
   ),
   scalacOptions in Compile ++= Seq("-unchecked",
                                    "-deprecation",
@@ -77,7 +77,7 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.patch,
     "com.lihaoyi"            %% "ammonite-ops"  % ammV,
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
@@ -132,7 +132,7 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
+    "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.patch,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
@@ -260,8 +260,7 @@ lazy val mantle = (project in file("mantle"))
   // .dependsOn(functionfinder)
   .dependsOn(server)
   // .dependsOn(translation)
-  .settings(tutSettings)
-  .enablePlugins(SbtWeb)
+  .enablePlugins(SbtWeb, TutPlugin)
 //        dependsOn(deepwalk).
 //        dependsOn(exploring)
 

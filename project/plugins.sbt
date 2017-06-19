@@ -23,7 +23,7 @@ addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.6")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.1.1")
 
-addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.4.8")
+addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.2")
 
 addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.12")
 
