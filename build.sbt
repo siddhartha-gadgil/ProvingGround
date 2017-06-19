@@ -1,10 +1,15 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.12.1"
+val scalaV = "2.12.2"
 
 val ammV = "0.9.4"
 
-scalaOrganization in ThisBuild := "org.typelevel"
+// scalaOrganization in ThisBuild := "org.typelevel"
+
+// inThisBuild(Seq(
+//   scalaOrganization := "org.typelevel",
+//   scalaVersion := "2.12.2-bin-typelevel-4"
+// ))
 
 scalaVersion in ThisBuild := scalaV
 scalafmtOnCompile in ThisBuild := true
@@ -14,11 +19,11 @@ classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-javaOptions in Universal ++= Seq(
-  // -J params will be added as jvm parameters
-  "-J-Xmx4G",
-  "-J-Xms512m"
-)
+// javaOptions in Universal ++= Seq(
+//   // -J params will be added as jvm parameters
+//   "-J-Xmx4G",
+//   "-J-Xms512m"
+// )
 
 // libraryDependencies += "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full
 //
@@ -34,9 +39,10 @@ javaOptions in Universal ++= Seq(
 
 lazy val jsProjects = Seq(client)
 
-lazy val baseSettings = Seq(version := "0.1",
-                            organization := "in.ernet.iisc.math",
-                            scalaVersion := scalaV)
+lazy val baseSettings = Seq(
+  version := "0.1",
+  organization := "in.ernet.iisc.math" //, scalaVersion := scalaV
+)
 
 lazy val commonSettings = baseSettings ++ Seq(
   resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -157,7 +163,7 @@ lazy val nfSettings = Seq(
 lazy val client = project
   .settings(
     name := "ProvingGround-JS",
-    scalaVersion := scalaV,
+    // scalaVersion := scalaV,
     coverageEnabled := false,
     persistLauncher := true,
     persistLauncher in Test := false,
@@ -195,7 +201,7 @@ lazy val server = (project in file("server"))
   .settings(commonSettings: _*)
   .settings(
     name := "provingground-server",
-    scalaVersion := scalaV,
+    // scalaVersion := scalaV,
     scalaJSProjects := Seq(client),
     pipelineStages in Assets := Seq(scalaJSPipeline),
     // triggers scalaJSPipeline when using compile or continuous compilation
