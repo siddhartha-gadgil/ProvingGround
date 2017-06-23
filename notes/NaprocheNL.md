@@ -85,6 +85,15 @@ On parsing, one automatically gets more general post-modifiers than in Naproche,
 
 **Note:** A noun or verb can have more than one word.
 
+**Determiners**: 
+Besides the standard English ones, we (should) have 
+* cardinals, 
+* 'precisely one of' etc. 
+* even allow eg _at least two_
+* _such a_, eg _such a function_
+
+**Transitive nouns**: Unlike Naproche, a transitive noun with a prepositional phrase is parsed.
+
 ### Verb phrases
 
 A verb phrase is one of
@@ -102,8 +111,55 @@ An affirmative verb phrase is one of:
   * a transitive adjective followed by a prepositional phrase.
   * a such-that clause
   * a prepositional phrase
+* (extending Naproche) inflected forms of _to have_, _with_ and _without_, eg _a Ring without zero divisors_
 
-## Additional usage
+While parsing, copula, have etc are picked up as verbs with objects, with special rules at interpretation stage.
 
-* without loss of generality
-* the following are equivalent
+### Metalingual NP phrases
+
+These may be parsed as ordinary NPs.
+
+#### Anaphoric
+
+Refers to previously defined cases, properties, axioms etc, and combines by conjunction, disjunction etc. 
+
+In natural language, also have other references to earlier definitions, eg
+* _it_ and _they_
+* anaphoric definite noun phrases, eg _the group_ for a previously definied group.
+
+#### Cataphoric NPs
+
+Example: _One of the following cases_ followed by a list of statements.
+
+### Metalingual VP phrases
+
+Inflected form of “to hold”, “to be true”, “to be correct”, “to be incorrect”, “to be false”, “not to be true”, “not to be correct”, “not to hold” or “to be inconsistent”. In HoTT can even use propositions as types to make these mathematical.
+
+## Quantified sentences
+
+Existentially or universally quantified sentences.
+
+## Sentential Connectives
+
+Some of these are special: _assertion triggers_, _assumption triggers_ and _justifications_ (by reference).
+
+* Assertion triggers include: "thus",“also”, “and”, “but”, “clearly”, “finally”, “furthermore”, “hence”, “i.e.”, “in particular”, “now”, “observe that”, “obviously”, “recall that”, “so”, “therefore”, “this (in turn) implies (that)”,8 and “trivially”; and the _empty assertion trigger_.
+* Assumption triggers include: “(now) assume (that)”, “(now) assume for a contradiction that”, “(now) suppose that”, “(now) let” and “(now) consider”.
+* Justifications are prepositional phrases _by Theorem-n_, _using ..._ etc. In general statements should be allowed here, which means we have two assertions.
+* Assumptions can also be formed by _consider_, _fix_, _let ... be given_ etc
+
+We also have the simpler sentential connectives, the result of which form expressions: _if_, _and_, _or_, _i.e._, _if and only if_, _is (not) the case that_ 
+
+
+## Additional usage (most from Naproche thesis).
+
+* _without loss of generality_: a special _justification_.
+* _the following are equivalent_: another case of cataphoric metaphrses (like all of the following).
+* ellipsis 
+* analogue of a statement.
+* reduction of statements, 'we still need to show that' etc
+* the word respectively
+* many forms of definitions
+* flexible conclusion by contradiction.
+* which and that clauses - at present this is crudely handled by rewriting as _where it_.
+* _otherwise_ to negate assumptions
