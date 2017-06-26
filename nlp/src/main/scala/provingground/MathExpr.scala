@@ -187,6 +187,8 @@ object MathExpr {
 
     case object The extends Determiner
 
+    case object That extends Determiner
+
     case object Some extends Determiner
 
     case object Every extends Determiner
@@ -209,6 +211,7 @@ object MathExpr {
       case "no"                   => No
       case "any"                  => Every
       case "this"                 => This
+      case "that"                 => That
       case s if s.startsWith("#") => Card(s.drop(1))
     }
   }

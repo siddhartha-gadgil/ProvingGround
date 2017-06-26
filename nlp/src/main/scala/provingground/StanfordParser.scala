@@ -72,7 +72,7 @@ object StanfordParser {
     val raw = preraw
       .replace("such that", "with")
       .replace("which", "where it")
-      .replace("that", "where it")
+    // .replace("that", "where it")
 
     lazy val texMap = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
@@ -139,5 +139,13 @@ object StanfordParser {
       mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
   ) =
     TeXParsed(s, wordTags, mweSubs).parsed
+
+  def proseTree(
+      s: String,
+      wordTags: Vector[(String, String)] = baseWordTags,
+      // mweTags: Vector[(Vector[String], String)] = Vector(),
+      mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
+  ) =
+    TeXParsed(s, wordTags, mweSubs).proseTree
 
 }
