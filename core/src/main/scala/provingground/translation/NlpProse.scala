@@ -40,6 +40,8 @@ object NlpProse {
   /** Stanford Dependency tree */
   case class ProseTree(root: Token, tree: List[DepRel]) extends ParseData {
 
+    val vertices = (tree.map(_.gov).toSet) union (tree.map(_.dep).toSet)
+
     override def toString = root.toString + ":" + tree.toString
 
     /** Dependence relations with governor a given token */
@@ -79,7 +81,14 @@ object NlpProse {
     }
 
     /** The tree of all descendants of a node */
-    def -<(node: Token) = ProseTree(node, desc(offspring(node)))
+    def descTree(node: Token) = ProseTree(node, desc(offspring(node)))
+
+    lazy val subTrees = vertices.map(descTree)
+
+    def treeAt(head: String) = subTrees.find(_.root.word == head)
+
+    /** The tree of all descendants of a node */
+    def -<(node: Token) = descTree(node)
 
     /** Splits into the tree of descendants and the rest */
     def split(r: DepRel) = (r, -<(r.dep), this - (-<(r.dep)))
