@@ -70,8 +70,8 @@ object StanfordParser {
                        // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
     val raw = preraw
-      .replace("such that", "with")
-      .replace("which", "where it")
+      .replace("such that", "so that")
+    // .replace("which", "where it") // useful for contituency parsing
     // .replace("that", "where it")
 
     lazy val texMap = (texInline(raw).zipWithIndex map {

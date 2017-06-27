@@ -87,6 +87,8 @@ object NlpProse {
 
     def treeAt(head: String) = subTrees.find(_.root.word == head)
 
+    def treesAt(head: String) = subTrees.filter(_.root.word == head)
+
     /** The tree of all descendants of a node */
     def -<(node: Token) = descTree(node)
 
