@@ -25,7 +25,7 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.1.1")
 
 addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.2")
 
-addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.12")
+addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.13")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC3")
 

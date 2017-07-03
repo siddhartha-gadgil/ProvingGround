@@ -188,6 +188,8 @@ object MonoidSimple {
     eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
   )
 
+  // val dedStep = FineDeducerStep(p = dist, param = FineDeducerStep.Param(vars = Vector(a, b, c)))
+
   // val idUnique =
   //   b ~>: (
   //       (a ~>: (eqM(op(l)(a))(a))) ~>: (eqM(l)(b))

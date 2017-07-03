@@ -32,6 +32,14 @@ object FDMonixAB {
   val A = "A" :: Type
   val B = "B" :: Type
 
+  val a = "a" :: A
+
+  val b = "b" :: B
+
+  val f = a :-> (b :-> a)
+
+  val g = a :-> (b :-> b)
+
   val fd = FD.unif[Term](A, B)
 
   val simpleObs = FineDeducerStep.observable(fd)
@@ -42,4 +50,44 @@ object FDMonixAB {
     thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
 
   lazy val showEv = simpleObs.foreach(println)
+
+  lazy val obs = FineDeducerStep.obserEv(fd)
+
+  import math.log
+
+  lazy val showFG =
+    obs.foreach { (st) =>
+      st.succFD.foreach { (nst) =>
+        println(s"${-log(st.p(f))} -> ${-log(nst(f))}")
+        println(s"${-log(st.p(g))} -> ${-log(nst(g))}\n\n")
+      }
+    }
+
+}
+
+object MonoidEv {
+  import library.MonoidSimple._
+
+  val obs = FineDeducerStep.observable(
+    p = dist,
+    param = FineDeducerStep.Param(vars = Vector(a, b, c)))
+
+  val viewThms =
+    Vector(
+      eqM(op(l)(r))(l),
+      eqM(op(l)(r))(r),
+      eqM(l)(op(l)(r)),
+      eqM(r)(op(l)(r)),
+      eqM(l)(r)
+    )
+
+  import math.log
+  lazy val showLemmas =
+    obs.foreach { (fd) =>
+      val thms = fd.map(_.typ)
+      viewThms.foreach { (lem) =>
+        println(s"${lem.fansi} -> ${-log(thms(lem))}")
+      }
+      println("\n")
+    }
 }
