@@ -119,7 +119,7 @@ object Sampler {
           grouped(sampVec)
 
         case Conditioned(base, p) =>
-          val firstSamp = sample(base, n) filterKeys(p)
+          val firstSamp = sample(base, n) filterKeys (p)
           val tot       = firstSamp.values.sum
           if (tot == 0) Map()
           else if (tot == n) firstSamp

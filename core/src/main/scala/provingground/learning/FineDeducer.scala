@@ -197,6 +197,23 @@ case class FineDeducer(applnWeight: Double = 0.1,
               lambdaWeight)
     }
 
+  def evolvTypFamilyDepth(depth: Int)(fd: FD[Term]): PD[SomeFunc] =
+    asFuncs {
+      fd.conditioned((t) => typFamilyDepth(t) == Some(depth)).
+        <+?>(unifApplnEv(evolvTypFamilyDepth(depth + 1), evolve)(fd),
+              applnWeight * unifyWeight)
+        .<+>(simpleApplnEv(evolvTypFamilyDepth(depth + 1), evolveWithTyp)(fd),
+             applnWeight * (1 - unifyWeight))
+        .<+?>(lambdaEv(varWeight)(
+           if (depth == 0)
+            evolveTyp
+          else {
+            (d) => evolvTypFamilyDepth(depth - 1)(d).map((f) => f: Term)
+          },
+          (t) => varScaled.evolve)(fd),
+              lambdaWeight)
+    }
+
   /**
    * evolution of a term with a given type
    */

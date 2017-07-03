@@ -2808,6 +2808,13 @@ object HoTT {
     case _                 => false
   }
 
+  def typFamilyDepth : Term => Option[Int] = {
+    case tp: Typ[_] => Some(0)
+    case f: Func[u, v]     => typFamilyDepth(f.codom).map (_ + 1)
+    case f: FuncLike[u, v] => typFamilyDepth(f.depcodom(f.dom.Var)).map (_ + 1)
+    case _                 => None
+  }
+
   /**
      * returns whether term is a universe
      */
