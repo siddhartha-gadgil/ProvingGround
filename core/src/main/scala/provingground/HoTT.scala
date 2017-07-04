@@ -2803,8 +2803,10 @@ object HoTT {
      * returns whether term is a type family
      */
   def isTypFamily: Term => Boolean = {
-    case f: Func[u, v]     => isTyp(f.codom) || isTypFamily(f.codom)
-    case f: FuncLike[u, v] => isTypFamily(f.depcodom(f.dom.Var))
+    // case f: Func[u, v]     => isTyp(f.codom) || isTypFamily(f.codom)
+    case f: FuncLike[u, v] =>
+      val y = f(f.dom.Var)
+      isTyp(y) || isTypFamily(y)
     case _                 => false
   }
 
