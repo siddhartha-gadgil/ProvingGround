@@ -183,8 +183,13 @@ case class FineDeducer(applnWeight: Double = 0.1,
               lambdaWeight)
     }
 
+    // import spire.math._
+    // import spire.algebra._
+    // import spire.implicits._
+
   /**
    * evolution of type families, to be used for function application to generate types.
+   * lambda evolution uses only types and type families as values.
    */
   def evolvTypFamilies(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
@@ -193,10 +198,21 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd),
              applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        .<+?>(lambdaEv(varWeight)(evolveTyp, (t) => varScaled.evolve)(fd),
+        .<+?>(lambdaEv(varWeight)(
+          evolveTyp,
+          (t) =>
+             (d) =>
+              varScaled.evolveTyp(d) <+>
+              (varScaled.evolvTypFamilies(d).map((f) => f: Term), 0.5)
+             )(fd),
               lambdaWeight)
     }
 
+    /**
+     * evolution of a type family at a fixed depth :
+     * mostly encoded in generation functions, not much conditioning needed.
+     * FIXME : unification can change depth by more than one, so not correct.
+     */
   def evolvTypFamilyDepth(depth: Int)(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
       fd.conditioned((t) => typFamilyDepth(t) == Some(depth)).
@@ -205,7 +221,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+>(simpleApplnEv(evolvTypFamilyDepth(depth + 1), evolveWithTyp)(fd),
              applnWeight * (1 - unifyWeight))
         .<+?>(lambdaEv(varWeight)(
-           if (depth == 0)
+           if (depth == 1)
             evolveTyp
           else {
             (d) => evolvTypFamilyDepth(depth - 1)(d).map((f) => f: Term)
@@ -357,7 +373,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
   //   Devolve(fd, tang) <+> (DevolveWithType(f.dom)(fd, tang), 1 - unifyWeight)
 
   /**
-   * partial derivative of lambda islands with resepect to the weight  of the variable (really the type)
+   * partial derivative of lambda islands with respect to the weight  of the variable (really the type)
    */
   def DlambdaVar(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
     DevolveTyp(fd, tang) flatMap
@@ -367,6 +383,20 @@ case class FineDeducer(applnWeight: Double = 0.1,
           val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
           (varScaled.evolve(newp)) map
             ((y: Term) =>
+               if (!isUniv(y)) TL.lambda(x, y)
+               else None)
+        case _ => FD.unif(None)
+      })
+
+  def DlambdaTypVar(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
+    DevolveTyp(fd, tang) flatMap
+      ({
+        case tp: Typ[u] =>
+          val x    = tp.Var
+          val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+          (
+            varScaled.evolveTyp(newp) <+> (varScaled.evolvTypFamilies(newp).map((f) => f: Term), 0.5)
+        ). map((y: Term) =>
                if (!isUniv(y)) TL.lambda(x, y)
                else None)
         case _ => FD.unif(None)
@@ -388,6 +418,21 @@ case class FineDeducer(applnWeight: Double = 0.1,
         case _ => FD.unif(None)
       })
 
+
+    def DlambdaTypVal(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
+      evolveTyp(fd) flatMap
+        ({
+          case tp: Typ[u] =>
+            val x    = tp.Var
+            val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
+            (
+              varScaled.DevolveTyp(newp, tang * (1 - varWeight)
+            ) <+> (varScaled.DevolvTypFamilies(newp, tang * (1 - varWeight)).map ((f) => f: Term), 0.5)
+          ).map((y: Term) =>
+                 if (!isUniv(y)) TL.lambda(x, y)
+                 else None)
+          case _ => FD.unif(None)
+        })
 
   /**
    * partial derivative of pi islands with resepect to the weight  of the variable (really the type)
@@ -433,6 +478,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
 
     /**
      * derivative of evolution of type families (adding components)
+     * FIXME the lambda terms should be specific to type families.
      */
   def DevolvTypFamilies(fd: FD[Term], tang: FD[Term]): PD[SomeFunc] =
     asFuncs {
@@ -443,8 +489,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+?>(DunifApplnTypArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnTypArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        .<+?>(DlambdaVar(fd, tang), lambdaWeight)
-        .<+?>(DlambdaVal(fd, tang), lambdaWeight)
+        .<+?>(DlambdaTypVar(fd, tang), lambdaWeight)
+        .<+?>(DlambdaTypVal(fd, tang), lambdaWeight)
     }
 
     /**

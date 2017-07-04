@@ -1603,10 +1603,10 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term) = {
-      val newvar = outer.replace(x, y) match {
-        case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
-        case _             => variable
-      }
+      // val newvar = outer.replace(x, y) match {
+      //   case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
+      //   case _             => variable
+      // }
 //      outer = newvar
       this
     }
