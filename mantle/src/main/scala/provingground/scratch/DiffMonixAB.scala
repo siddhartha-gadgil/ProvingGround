@@ -70,11 +70,13 @@ object MonoidEv {
 
   val obs = FineDeducerStep.observable(
     p = dist,
-    fd= new FineDeducer(applnWeight = 0.3, lambdaWeight = 0, piWeight = 0.2),
+    fd = new FineDeducer(applnWeight = 0.2, lambdaWeight = 0, piWeight = 0),
     param = FineDeducerStep.Param(vars = Vector(a, b, c)))
 
   val viewThms =
     Vector(
+      eqM(l)(l),
+      a ~>: (b ~>: (eqM(a)(b) ->: eqM(b)(a))),
       eqM(op(l)(r))(l),
       eqM(op(l)(r))(r),
       eqM(l)(op(l)(r)),
@@ -87,7 +89,8 @@ object MonoidEv {
     obs.foreach { (fd) =>
       val thms = fd.map(_.typ)
       viewThms.foreach { (lem) =>
-        println(s"${lem.fansi} -> ${-log(thms(lem))}")
+        println(s"lemma: ${lem.fansi} -> ${-log(fd(lem))}")
+        println(s"proof: ${lem.fansi} -> ${-log(thms(lem))}")
       }
       println("\n")
     }

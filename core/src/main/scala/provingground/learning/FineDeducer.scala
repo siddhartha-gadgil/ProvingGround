@@ -664,7 +664,7 @@ object FineDeducerStep{
   vars: Vector[Term] = Vector(),
   size: Int = 10000,
   derTotalSize: Int = 10000,
-  epsilon: Double = 0.1,
+  epsilon: Double = 1.0,
   inertia: Double = 0.9,
   scale: Double = 1.0,
   thmScale: Double = 0.3,
