@@ -664,7 +664,7 @@ object FineDeducerStep{
   vars: Vector[Term] = Vector(),
   size: Int = 10000,
   derTotalSize: Int = 10000,
-  epsilon: Double = 1.0,
+  epsilon: Double = 0.2,
   inertia: Double = 0.9,
   scale: Double = 1.0,
   thmScale: Double = 0.3,
@@ -764,8 +764,8 @@ class FineDeducerStep[X[_]](val p: FD[Term],
               (fd, n) <- vec
             } yield
               for {
-                dfd <- derivativeFD(fd, n) map (_ * (n / derTotalSize))
-                dtfd <- derivativeTypsFD(fd, n) map (_ * (n / derTotalSize))
+                dfd <- derivativeFD(fd, n) map (_ * (n.toDouble / derTotalSize.toDouble))
+                dtfd <- derivativeTypsFD(fd, n) map (_ * (n.toDouble / derTotalSize.toDouble))
               } yield(fd, (dfd , dtfd))}
 
       /**
