@@ -162,7 +162,9 @@ $body
         inputStream = new ByteArrayInputStream(
           (code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
-        errorStream = errLog
+        errorStream = errLog,
+        verboseOutput = false,
+        remoteLogging = false
         // // infoStream = infoLog
       )
 

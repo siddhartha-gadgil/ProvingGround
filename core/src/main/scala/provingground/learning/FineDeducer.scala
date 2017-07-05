@@ -663,8 +663,7 @@ object FineDeducerStep{
   case class Param(
   vars: Vector[Term] = Vector(),
   size: Int = 10000,
-  derTotalSize: Int = 10000,
-  epsilon: Double = 0.2,
+  derTotalSize: Int = 100000,
   inertia: Double = 0.9,
   scale: Double = 1.0,
   thmScale: Double = 0.3,

@@ -32,3 +32,5 @@ addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC6")
 // addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.3.0")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
+
+addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.3.0")
