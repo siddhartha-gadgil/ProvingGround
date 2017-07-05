@@ -70,7 +70,7 @@ object MonoidEv {
 
   val obs = FineDeducerStep.observable(
     p = dist,
-    fd= new FineDeducer(applnWeight = 0.3, lambdaWeight = 0, piWeight = 0.2),
+    fd = new FineDeducer(applnWeight = 0.3, lambdaWeight = 0, piWeight = 0.2),
     param = FineDeducerStep.Param(vars = Vector(a, b, c)))
 
   val viewThms =

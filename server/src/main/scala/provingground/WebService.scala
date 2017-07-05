@@ -157,13 +157,13 @@ $body
 
     val ammMain =
       ammonite.Main(
-        predef =
-          "repl.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
+        predefCode =
+          "interp.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
         inputStream = new ByteArrayInputStream(
           (code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
         outputStream = outputS,
-        errorStream = errLog,
-        infoStream = infoLog
+        errorStream = errLog
+        // // infoStream = infoLog
       )
 
     println(code)

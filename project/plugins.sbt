@@ -27,7 +27,7 @@ addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.2")
 
 addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.13")
 
-addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC3")
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC6")
 
 // addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.3.0")
 
