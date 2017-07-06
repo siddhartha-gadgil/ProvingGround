@@ -3,7 +3,7 @@ import monix.execution.Scheduler.Implicits.global
 
 import provingground.{
   FiniteDistribution => FD,
-  ProbabilityDistribution => PD,
+  // ProbabilityDistribution => PD,
   _
 }
 import HoTT._
@@ -11,6 +11,8 @@ import translation._
 import learning._
 import Sampler._
 import FansiShow._
+
+import ammonite.ops._
 
 object DiffMonixAB {
   val A = "A" :: Type
@@ -50,6 +52,19 @@ object FDMonixAB {
     thmsObs.foreach((x) => println(s"Theorems:\n${x.fansi}\n\n"))
 
   lazy val showEv = simpleObs.foreach(println)
+
+  val ABfile = pwd / "data" / "ABentropy.txt"
+
+  def update(fd: FD[Typ[Term]]) = {
+    println(fd.supp.size)
+    write.over(ABfile, "")
+    fd.entropyVec.foreach {
+      case Weighted(x, t) => write.append(ABfile, s"${x.fansi} -> t\n")
+    }
+  }
+
+  lazy val saveTheorems =
+    simpleObs.map(TermEvolver.theorems).foreach(update)
 
   lazy val obs = FineDeducerStep.obserEv(fd)
 

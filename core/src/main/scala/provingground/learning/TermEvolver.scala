@@ -81,6 +81,8 @@ object TermEvolver {
     fd.filter(_.typ.typ == Type).map(_.typ : Typ[Term]).filter(fd(_) > 0)
   }
 
+  def allTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec
+
   def topTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec.take(n)
 }
 
