@@ -44,7 +44,11 @@ object FDMonixAB {
 
   val fd = FD.unif[Term](A, B)
 
-  val simpleObs = FineDeducerStep.observable(fd)
+  val simpleObs =
+    FineDeducerStep.observable(
+      fd,
+      new FineDeducer(applnWeight = 0.2, lambdaWeight = 0.07, piWeight = 0.07),
+      FineDeducerStep.Param(vars = Vector(A, B)))
 
   val thmsObs = simpleObs.map(TermEvolver.topTheorems(_, 25))
 
