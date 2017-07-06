@@ -59,7 +59,7 @@ object FDMonixAB {
     println(fd.supp.size)
     write.over(ABfile, "")
     fd.entropyVec.foreach {
-      case Weighted(x, t) => write.append(ABfile, s"${x.fansi} -> t\n")
+      case Weighted(x, p) => write.append(ABfile, s"${x.fansi} -> $p\n")
     }
   }
 
