@@ -39,11 +39,15 @@ object Sampler {
       getMultinomial(vec, ps, size)
     } else Map()
 
-  def getMultinomial[A](xs: Vector[A], ps: Vector[Double], size: Int) = {
-    val mult = Multinomial(DenseVector(ps.toArray))
-    val samp = mult.sample(size).groupBy(identity).mapValues(_.size)
-    samp map { case (j, m) => (xs(j), m) }
-  }
+  def getMultinomial[A](xs: Vector[A],
+                        ps: Vector[Double],
+                        size: Int): Map[A, Int] =
+    if (size == 0) Map()
+    else {
+      val mult = Multinomial(DenseVector(ps.toArray))
+      val samp = mult.sample(size).groupBy(identity).mapValues(_.size)
+      samp map { case (j, m) => (xs(j), m) }
+    }
 
   def toFD[A](sample: Map[A, Int]) = {
     val tot = total(sample.toVector)
