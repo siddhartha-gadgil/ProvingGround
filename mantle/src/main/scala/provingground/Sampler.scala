@@ -71,6 +71,16 @@ object Sampler {
     def sample[A](pd: PD[A], n: Int) = Task(Sampler.sample(pd, n))
   }
 
+  def reSample[A](samp: Map[A, Int], n: Int): Map[A, Int] = {
+    val tot = samp.values.sum
+    if (tot == 0 || tot == n) samp
+    else {
+      val xs = samp.keys.toVector
+      val ps = xs map ((a) => samp(a).toDouble / tot)
+      getMultinomial(xs, ps, n)
+    }
+  }
+
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()
     else
@@ -81,10 +91,13 @@ object Sampler {
           val m = Binomial(n, mx.q).draw
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
-        case mx: MixinOpt[u] =>
-          val m            = Binomial(n, mx.q).draw
-          val optSample    = Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
-          val secondSample = for ((xo, n) <- optSample; x <- xo) yield (x, n)
+        case mx: MixinOpt[u] => // TODO resample to avoid implicit drop in weight
+          val m = Binomial(n, mx.q).draw
+          val optSample: Map[Option[u], Int] =
+            Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
+          val secondPreSample = for ((xo, n) <- optSample; x <- xo)
+            yield (x, n)
+          val secondSample = reSample(secondPreSample, m)
           combine(sample(mx.first, n - total(secondSample.toVector)),
                   secondSample)
 

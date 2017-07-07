@@ -10,13 +10,13 @@ import translation.{TermLang => TL}
 
 import scala.language.existentials
 
-import cats._
+// import cats._
 import cats.implicits._
 
 import monix.eval._
-import monix.cats._
+// import monix.cats._
 
-import monix.execution.Scheduler.Implicits.global
+// import monix.execution.Scheduler.Implicits.global
 import monix.reactive._
 import scala.language.higherKinds
 
