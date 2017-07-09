@@ -175,7 +175,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
    */
   def evolvFuncs(fd: FD[Term]): PD[SomeFunc] =
     asFuncs {
-      fd.<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight * unifyWeight)
+      fd.conditioned(isFunc)
+      .<+?>(unifApplnEv(evolvFuncs, evolve)(fd), applnWeight * unifyWeight)
         .<+>(simpleApplnEv(evolvFuncs, evolveWithTyp)(fd),
              applnWeight * (1 - unifyWeight))
         .conditioned(isFunc)
