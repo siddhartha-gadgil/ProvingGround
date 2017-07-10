@@ -88,11 +88,10 @@ class SymbolicCRing[A: Ring] { self =>
 
     val typ = LocalTyp
 
-    def subs(x: Term, y: Term) =
-      {
-        val l : List[LocalTerm] = (elems.toList map (_.replace(x, y)))
-        l.reduceRight((a: LocalTerm, b: LocalTerm) => sum(a)(b))
-      }
+    def subs(x: Term, y: Term) = {
+      val l: List[LocalTerm] = (elems.toList map (_.replace(x, y)))
+      l.reduceRight((a: LocalTerm, b: LocalTerm) => sum(a)(b))
+    }
 
     def newobj = LocalTyp.obj
 

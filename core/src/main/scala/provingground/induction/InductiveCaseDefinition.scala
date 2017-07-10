@@ -5,9 +5,9 @@ import provingground._, HoTT._
 import shapeless._
 
 /**
- * inductively defined dependent function, to be built by mixing in cases,
- * defaults to a formal application by itself
- */
+  * inductively defined dependent function, to be built by mixing in cases,
+  * defaults to a formal application by itself
+  */
 trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
   def caseFn(f: => FuncLike[H, C])(arg: H): Option[C]
@@ -20,9 +20,10 @@ trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
 }
 
 object InductiveDefinition {
+
   /**
-   * empty [[InductiveDefinition]], always a formal application.
-   */
+    * empty [[InductiveDefinition]], always a formal application.
+    */
   case class Empty[H <: Term with Subs[H], C <: Term with Subs[C]](
       fibre: Func[H, Typ[C]]
   ) extends InductiveDefinition[H, C] {
@@ -42,8 +43,8 @@ object InductiveDefinition {
   }
 
   /**
-   * an additional case for an [[InductiveDefinition]], depending on definition data `data`
-   */
+    * an additional case for an [[InductiveDefinition]], depending on definition data `data`
+    */
   case class DataCons[H <: Term with Subs[H],
                       C <: Term with Subs[C],
                       D <: Term with Subs[D]](
@@ -72,8 +73,8 @@ object InductiveDefinition {
 import Subst.SubstOp
 
 /**
- * indexed version of [[InductiveDefinition]]
- */
+  * indexed version of [[InductiveDefinition]]
+  */
 abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],

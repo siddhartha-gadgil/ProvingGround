@@ -13,27 +13,27 @@ import scala.language.existentials
 import shapeless._
 
 /**
- * Introduction rule for an indexed inductive type,
- * as in [[IndexedConstructorShape]] with the ''scala'' type of the codomain specified;
- * hence the scala type of the recurion and induction types are determined.
- * The definitions of recursion and induction
- * functions for the case matching the introduction rule are the abstract methods
- * [[recDefCase]] and [[inducDefCase]].
- *
- * @tparam H the scala type of terms of an inductive type that can have this constructor.
- * @tparam Cod the scala type of the codomain.
- * @tparam Fb scala type of the inductive  type family
- * @tparam Index scala type of the index
- * @tparam ConstructorType the scala type of the introduction rule
- * @tparam RecDataType type of data for recursive definitions for the case corresponding to this introduction rule.
- * @tparam InducDataType type of data for inductive definitions for  the case corresponding to this introduction rule.
- * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
- * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
- * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
- *
- * this is used indirectly through [[IndexedConstructorSeqMap]]
- *
- */
+  * Introduction rule for an indexed inductive type,
+  * as in [[IndexedConstructorShape]] with the ''scala'' type of the codomain specified;
+  * hence the scala type of the recurion and induction types are determined.
+  * The definitions of recursion and induction
+  * functions for the case matching the introduction rule are the abstract methods
+  * [[recDefCase]] and [[inducDefCase]].
+  *
+  * @tparam H the scala type of terms of an inductive type that can have this constructor.
+  * @tparam Cod the scala type of the codomain.
+  * @tparam Fb scala type of the inductive  type family
+  * @tparam Index scala type of the index
+  * @tparam ConstructorType the scala type of the introduction rule
+  * @tparam RecDataType type of data for recursive definitions for the case corresponding to this introduction rule.
+  * @tparam InducDataType type of data for inductive definitions for  the case corresponding to this introduction rule.
+  * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
+  * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
+  * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
+  *
+  * this is used indirectly through [[IndexedConstructorSeqMap]]
+  *
+  */
 abstract class IndexedConstructorPatternMap[
     Cod <: Term with Subs[Cod],
     ConstructorType <: Term with Subs[ConstructorType],
@@ -47,9 +47,9 @@ abstract class IndexedConstructorPatternMap[
     IDFT <: Term with Subs[IDFT]
 ] { self =>
 
-/**
- * the inductive type family
- */
+  /**
+    * the inductive type family
+    */
   val family: TypFamilyMap[H, Fb, Cod, Index, IF, IDF, IDFT]
 
   def subs(x: Term, y: Term): IndexedConstructorPatternMap[Cod,
@@ -540,17 +540,17 @@ abstract class IndexedConstructorShape[S <: HList,
   def apply(tp: Fb): Typ[ConstructorType]
 
   /**
-  * returns term giving introduction rule given inductive type and name
-  */
+    * returns term giving introduction rule given inductive type and name
+    */
   def symbcons(name: AnySym, tp: Fb): ConstructorType =
     apply(tp).symbObj(name)
 
   def subs(x: Term,
            y: Term): IndexedConstructorShape[S, H, Fb, ConstructorType, Index]
 
-           /**
-            * helper to give [[ConstructorPatternMap]] when scala type of codomain is specified.
-            */
+  /**
+    * helper to give [[ConstructorPatternMap]] when scala type of codomain is specified.
+    */
   def mapper[C <: Term with Subs[C], IF <: Term with Subs[IF],
   IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](
       implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT])
@@ -569,14 +569,14 @@ abstract class IndexedConstructorShape[S <: HList,
       type InducDataType <: Term with Subs[InducDataType];
     }
 
-    /**
-     * returns a variable to act as an introduction rule.
-     */
+  /**
+    * returns a variable to act as an introduction rule.
+    */
   def :::(name: AnySym) = IndexedConstructor(name, this)
 
   /**
-   * lift to [[IndexedConstructorPatternMap]] using the result of the [[mapper]] method.
-   */
+    * lift to [[IndexedConstructorPatternMap]] using the result of the [[mapper]] method.
+    */
   def mapped[C <: Term with Subs[C],
              IF <: Term with Subs[IF],
              IDF <: Term with Subs[IDF],
@@ -597,9 +597,9 @@ abstract class IndexedConstructorShape[S <: HList,
   //
 
   /**
-   * returns shape `that -> this' where `that` is of the form `W(z)`, `A -> W(z)` etc;
-   * invoking this is an error if we `that` is independent of `W`
-   */
+    * returns shape `that -> this' where `that` is of the form `W(z)`, `A -> W(z)` etc;
+    * invoking this is an error if we `that` is independent of `W`
+    */
   def -->>:[F <: Term with Subs[F]](
       that: IndexedIterFuncShape[H, F, Fb, Index],
       ind: Index) =
@@ -610,14 +610,14 @@ abstract class IndexedConstructorShape[S <: HList,
   // }
 
   /**
-   * returns shape `tail ->: this` where tail must be independent of the inductive type `W` being defined.
-   */
+    * returns shape `tail ->: this` where tail must be independent of the inductive type `W` being defined.
+    */
   def ->>:[T <: Term with Subs[T]](tail: Typ[T]) =
     IndexedCnstFuncConsShape(tail, this)
 
-    /**
-     * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
-     */
+  /**
+    * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
+    */
   def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
     val fibre = (t: T) => this.subs(tailVar, t)
     IndexedCnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
@@ -795,7 +795,7 @@ object IndexedConstructorShape {
                                       Index] {
 
     def apply(W: F) =
-          tail ->: head(W)
+      tail ->: head(W)
 
     val family = head.family
 
@@ -847,7 +847,6 @@ object IndexedConstructorShape {
       piDefn(a)(headfibre(a)(W))
     }
 
-
     val family = headfibre(tail.Var).family
 
     def mapper[C <: Term with Subs[C],
@@ -865,8 +864,8 @@ object IndexedConstructorShape {
 }
 
 /**
- * bridge between [[IndexedConstructorShape]] and [[IndexedConstructorPatternMap]]
- */
+  * bridge between [[IndexedConstructorShape]] and [[IndexedConstructorPatternMap]]
+  */
 abstract class IndexedConstructorPatternMapper[
     S <: HList,
     Cod <: Term with Subs[Cod],

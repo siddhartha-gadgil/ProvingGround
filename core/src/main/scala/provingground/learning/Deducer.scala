@@ -2,10 +2,7 @@ package provingground.learning
 
 import provingground._
 
-import provingground.{
-  FiniteDistribution => FD,
-  ProbabilityDistribution => PD
-}
+import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import learning.{TruncatedDistribution => TD}
 

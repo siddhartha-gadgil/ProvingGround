@@ -12,8 +12,8 @@ import cats._
 import cats.implicits._
 
 /**
- * Equivalence of Functors (without laws)
- */
+  * Equivalence of Functors (without laws)
+  */
 trait Equiv[X[_], Y[_]] {
   def map[A]: X[A] => Y[A]
 
@@ -21,9 +21,10 @@ trait Equiv[X[_], Y[_]] {
 }
 
 object Equiv {
+
   /**
-   * Functor equivalent to itself
-   */
+    * Functor equivalent to itself
+    */
   def idEquiv[X[_]]: Equiv[X, X] = new Equiv[X, X] {
     def map[A] = (xa) => xa
 
@@ -32,12 +33,13 @@ object Equiv {
 }
 
 /**
- * lower priority Functor and Traverese type classes to be extended in [[Functors]]
- */
+  * lower priority Functor and Traverese type classes to be extended in [[Functors]]
+  */
 trait CompositeFunctors {
+
   /**
-   * Travese typeclass for `HCons`
-   */
+    * Travese typeclass for `HCons`
+    */
   implicit def traverseHCons[X[_], Y[_] <: HList](
       implicit tx: Lazy[Traverse[X]],
       YT: Traverse[Y]): Traverse[({ type Z[A] = X[A] :: Y[A] })#Z] =
@@ -65,9 +67,9 @@ trait CompositeFunctors {
       }
     }
 
-    /**
-     * Traverse type class for composition
-     */
+  /**
+    * Traverse type class for composition
+    */
   implicit def traverseCompose[X[_]: Traverse, Y[_]: Traverse]
     : Traverse[({ type Z[A] = X[Y[A]] })#Z] =
     new Traverse[({ type Z[A] = X[Y[A]] })#Z] {
@@ -98,27 +100,27 @@ trait CompositeFunctors {
 }
 
 /**
- * Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
- * and for Constant functors.
- *
- * To work around ambiguity in inference, for example
- * so that the type of iterated triples is interpreted as
- * `III(A) = (II(A), Id(A))`, not `III(A) = ((A, A), A)`
- * several functors are explicitly named with the appropriate structure.
- */
+  * Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+  * and for Constant functors.
+  *
+  * To work around ambiguity in inference, for example
+  * so that the type of iterated triples is interpreted as
+  * `III(A) = (II(A), Id(A))`, not `III(A) = ((A, A), A)`
+  * several functors are explicitly named with the appropriate structure.
+  */
 object Functors extends CompositeFunctors {
   // type T = List[?]
 
   /**
-   * induced map, should use cats syntax instead
-   */
+    * induced map, should use cats syntax instead
+    */
   def liftMap[A, B, F[_]: Functor](fa: F[A], f: A => B) = {
     implicitly[Functor[F]].map(fa)(f)
   }
 
   /**
-   * composition of functors is a functor
-   */
+    * composition of functors is a functor
+    */
   implicit def composeFunctors[X[_]: Functor, Y[_]: Functor] =
     new Functor[({ type Z[A] = X[Y[A]] })#Z] {
       def map[A, B](fa: X[Y[A]])(f: A => B) = {
@@ -127,36 +129,36 @@ object Functors extends CompositeFunctors {
       }
     }
 
-    /**
-     * constant functor
-     */
+  /**
+    * constant functor
+    */
   implicit def constantFunctor[Cn] =
     new Functor[({ type Z[A] = Cn })#Z] {
       def map[A, B](fa: Cn)(f: A => B) = fa
     }
 
   /**
-   * functor by product with a constant functor
-   */
+    * functor by product with a constant functor
+    */
   implicit def augmentedFunctor[Cn, X[_]: Functor] =
     new Functor[({ type Z[A] = (Cn, X[A]) })#Z] {
       def map[A, B](fa: (Cn, X[A]))(f: A => B) =
         (fa._1, implicitly[Functor[X]].map(fa._2)(f))
     }
 
-    /**
-     * Functor identity with a name
-     */
+  /**
+    * Functor identity with a name
+    */
   type Named[A] = (S[A], Id[A])
 
   /**
-   * Traverse type class for identity with name
-   */
+    * Traverse type class for identity with name
+    */
   implicit val namedTrav: Traverse[Named] = traversePair[S, Id]
 
   /**
-   * functor for pairs
-   */
+    * functor for pairs
+    */
   implicit def t2[X[_]: Functor, Y[_]: Functor] =
     new Functor[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def map[A, B](fa: (X[A], Y[A]))(f: A => B) =
@@ -164,94 +166,94 @@ object Functors extends CompositeFunctors {
          implicitly[Functor[Y]].map(fa._2)(f))
     }
 
-    /**
-     * pair of Lists
-     */
+  /**
+    * pair of Lists
+    */
   type LL[A] = (List[A], List[A]);
 
   /**
-   * pair of Vectors
-   */
+    * pair of Vectors
+    */
   type VV[A] = (Vector[A], Vector[A])
 
   /**
-   * Identity product Vector
-   */
+    * Identity product Vector
+    */
   type IV[A] = (Id[A], Vector[A])
 
   /**
-   * Vector product Identity
-   */
+    * Vector product Identity
+    */
   type VI[A] = (Vector[A], Id[A])
 
   /**
-   * Vector product Option
-   */
+    * Vector product Option
+    */
   type VO[A] = (Vector[A], Option[A])
 
   /**
-   * triple `(Id(A), (Vector(A), Id(A)))`
-   */
+    * triple `(Id(A), (Vector(A), Id(A)))`
+    */
   type IVI[A] = (Id[A], VI[A])
 
   /**
-   * triple `(Id(A), (Id(A), Vector(A)))`
-   */
+    * triple `(Id(A), (Id(A), Vector(A)))`
+    */
   type IIV[A] = (Id[A], IV[A])
 
   /**
-   * 4-tuple `(Vector(A), (Id(A), (Id(A), Vector(A))))`
-   */
+    * 4-tuple `(Vector(A), (Id(A), (Id(A), Vector(A))))`
+    */
   type VIIV[A] = (Vector[A], IIV[A])
 
   /**
-   * triple `(Id(A), (Id(A), Id(A)))`
-   */
+    * triple `(Id(A), (Id(A), Id(A)))`
+    */
   type III[A] = (II[A], Id[A])
 
   /**
-   * 4-tuple `(Id(A), (Id(A), (Id(A), Vector(A))))`
-   */
+    * 4-tuple `(Id(A), (Id(A), (Id(A), Vector(A))))`
+    */
   type IIIV[A] = (Id[A], IIV[A])
 
   /**
-   * triple `(String, (Vector(A), Id(A)))`
-   */
+    * triple `(String, (Vector(A), Id(A)))`
+    */
   type SVI[A] = (S[A], VI[A])
 
   /**
-   * triple `(Vector(A), (Id(A), Id(A)))`
-   */
+    * triple `(Vector(A), (Id(A), Id(A)))`
+    */
   type VII[A] = (Vector[A], II[A])
 
   /**
-   * 4-tuple `(String, (Vector(A), (Id(A), Id(A))))`
-   */
+    * 4-tuple `(String, (Vector(A), (Id(A), Id(A))))`
+    */
   type SVII[A] = (S[A], VII[A])
 
   /**
-   * triple `(String, (Vector(A), Option(A)))`
-   */
+    * triple `(String, (Vector(A), Option(A)))`
+    */
   type SVO[A] = (S[A], VO[A])
 
   /**
-   * pair `(String, Vector(A))`
-   */
+    * pair `(String, Vector(A))`
+    */
   type SV[A] = (S[A], Vector[A])
 
   /**
-   * Identity product with List
-   */
+    * Identity product with List
+    */
   type IL[A] = (Id[A], List[A]);
 
   /**
-   * Identity product itself
-   */
+    * Identity product itself
+    */
   type II[A] = (Id[A], Id[A]);
 
   /**
-   * traverse class for pairs
-   */
+    * traverse class for pairs
+    */
   implicit def traversePair[X[_]: Traverse, Y[_]: Traverse]
     : Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Traverse[({ type Z[A] = (X[A], Y[A]) })#Z] {
@@ -279,58 +281,58 @@ object Functors extends CompositeFunctors {
     }
 
   /**
-   * Constant `HNil` functor
-   */
+    * Constant `HNil` functor
+    */
   type HN[A] = HNil
 
   /**
-   * `Identity` product `HNil`
-   */
+    * `Identity` product `HNil`
+    */
   type IdHN[A] = Id[A] :: HN[A]
 
   /**
-   * Pair of `Identity` functors product `HNil`
-   */
+    * Pair of `Identity` functors product `HNil`
+    */
   type IdIdHN[A] = Id[A] :: IdHN[A]
 
   /**
-   * Three copies of `Identity` Functor product `HNil`
-   */
+    * Three copies of `Identity` Functor product `HNil`
+    */
   type IdIdIdHN[A] = Id[A] :: IdIdHN[A]
 
   /**
-   * Constant `String` Functor
-   */
+    * Constant `String` Functor
+    */
   type St[A] = String
 
   /**
-   * String product with `HNil`
-   */
+    * String product with `HNil`
+    */
   type StHN[A] = St[A] :: HN[A]
 
   /**
-   * Triple `(String, (A, HNil))`
-   */
+    * Triple `(String, (A, HNil))`
+    */
   type StIdHN[A] = St[A] :: IdHN[A]
 
   /**
-   * Constant `Int` functor
-   */
+    * Constant `Int` functor
+    */
   type In[A] = Int
 
   /**
-   * Product of `Int` with `HNil`
-   */
+    * Product of `Int` with `HNil`
+    */
   type InHN[A] = In[A] :: HN[A]
 
   /**
-   * triple `(String, (Int, HNil))`
-   */
+    * triple `(String, (Int, HNil))`
+    */
   type StIntHN[A] = St[A] :: InHN[A]
 
   /**
-   * Traverse class induced by equivalence of Functors
-   */
+    * Traverse class induced by equivalence of Functors
+    */
   implicit def traverseEquiv[F[_], Y[_]](implicit equiv: Equiv[F, Y],
                                          TY: Traverse[Y]): Traverse[F] =
     new Traverse[F] {
@@ -345,36 +347,34 @@ object Functors extends CompositeFunctors {
         TY.foldRight(equiv.map(fa), lb)(f)
     }
 
-
-
   /**
-   * constant functor `X`
-   */
+    * constant functor `X`
+    */
   type C[A, X] = X
 
   /**
-   * constant `Int` functor
-   */
+    * constant `Int` functor
+    */
   type N[A] = C[A, Int]
 
   /**
-   * constant `String` functor
-   */
+    * constant `String` functor
+    */
   type S[A] = C[A, String]
 
   /**
-   * constant `Unit` functor
-   */
+    * constant `Unit` functor
+    */
   type Un[A] = C[A, Unit]
 
   /**
-   * triple `(String, (Int(A), List(A)))`
-   */
+    * triple `(String, (Int(A), List(A)))`
+    */
   type Coded[A] = (S[A], (IL[A]))
 
   /**
-   * Traverse typeclass for Constant functors
-   */
+    * Traverse typeclass for Constant functors
+    */
   implicit def trCnst[X]: Traverse[({ type Z[A] = C[A, X] })#Z] =
     new Traverse[({ type F[A] = C[A, X] })#F] {
       type F[A] = C[A, X]

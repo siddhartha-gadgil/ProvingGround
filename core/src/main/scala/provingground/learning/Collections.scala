@@ -133,25 +133,24 @@ object Collections {
 
   case class InnerProduct[V](dot: (V, V) => Double)
 
-object InnerProduct{
-  implicit def finiteDistInnerProd[X] =
-    InnerProduct[FiniteDistribution[X]](_ dot _)
+  object InnerProduct {
+    implicit def finiteDistInnerProd[X] =
+      InnerProduct[FiniteDistribution[X]](_ dot _)
 
-  implicit class DotOp[V: InnerProduct](a: V) {
-    def |*|(b: V) = implicitly[InnerProduct[V]].dot(a, b)
+    implicit class DotOp[V: InnerProduct](a: V) {
+      def |*|(b: V) = implicitly[InnerProduct[V]].dot(a, b)
+    }
+
+    def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
+
+    implicit val realInnerProd = InnerProduct[Double](_ * _)
+
+    implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
+                                         ipB: InnerProduct[B]) = {
+      InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
+    }
+
   }
-
-  def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
-
-  implicit val realInnerProd = InnerProduct[Double](_ * _)
-
-  implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
-                                       ipB: InnerProduct[B]) = {
-    InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
-  }
-
-
-}
 
 // implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
 //   new InnerProductSpace[FiniteDistribution[T], Double] {

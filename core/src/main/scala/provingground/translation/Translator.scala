@@ -111,15 +111,15 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
 }
 
 /**
- * General functorial framework for translation.
- *
- * Translators with `I` the input type and `O` the output type are primarily built from [[Junction]]s
- *   - a ``pattern`` which map `I => Option[X[O]]`, with  `X[_]` a functor with traverse, e.g. a tuple or a vector.
- *   - a `builder` `O => Option[I]`
- * to avoid having to specify types too many types, traits [[Pattern]] and [[Builder]] are defined.
- *
- * We also have simpler translators for literals and also wrapping translators for a component type.
- */
+  * General functorial framework for translation.
+  *
+  * Translators with `I` the input type and `O` the output type are primarily built from [[Junction]]s
+  *   - a ``pattern`` which map `I => Option[X[O]]`, with  `X[_]` a functor with traverse, e.g. a tuple or a vector.
+  *   - a `builder` `O => Option[I]`
+  * to avoid having to specify types too many types, traits [[Pattern]] and [[Builder]] are defined.
+  *
+  * We also have simpler translators for literals and also wrapping translators for a component type.
+  */
 object Translator {
 
   /**
@@ -173,8 +173,8 @@ object Translator {
   }
 
   /**
-   * like a [[Junction]] but tries several cases.
-   */
+    * like a [[Junction]] but tries several cases.
+    */
   case class PolyJunction[I, O, X[_]: Traverse](
       polySplit: I => Option[Vector[X[I]]],
       build: X[O] => Option[O])
@@ -190,8 +190,8 @@ object Translator {
   }
 
   /**
-   * mapped translator
-   */
+    * mapped translator
+    */
   case class Mapped[I, O, X](trans: Translator[I, O], fn: O => X, ufn: X => O)
       extends Translator[I, X] {
     def recTranslate(leafMap: => (I => Option[X])): I => Option[X] =
@@ -199,9 +199,9 @@ object Translator {
   }
 
   /**
-   * The building part of a junction, pattern matching and splitting to a given shape.
-   * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
-   */
+    * The building part of a junction, pattern matching and splitting to a given shape.
+    * Crucially, the shape X[_] is determined, so junctions can be built from this, after possibly mapping.
+    */
   case class Builder[O, X[_]: Traverse](build: X[O] => Option[O]) {
     def join[I](split: I => Option[X[I]]) = Junction(split, build)
 
@@ -239,31 +239,29 @@ object Translator {
       new Pattern(split)
 
     /**
-     * pattern from a partial function
-     */
+      * pattern from a partial function
+      */
     def partial[I, X[_]: Traverse](split: PartialFunction[I, X[I]]) =
       Pattern(split.lift)
 
     /**
-     * pattern as a class from a partial function - defined as a class to allow inheritance
-     */
+      * pattern as a class from a partial function - defined as a class to allow inheritance
+      */
     class Partial[I, X[_]: Traverse](split: PartialFunction[I, X[I]])
         extends Pattern(split.lift)
 
-
-        /**
-        * Tries the first translator at top level, then the second. Is recursive.
-        */
+    /**
+      * Tries the first translator at top level, then the second. Is recursive.
+      */
     case class OrElse[I, X[_]: Traverse](first: Pattern[I, X],
                                          second: Pattern[I, X])
         extends Pattern[I, X](
           (x: I) => first.unapply(x) orElse second.unapply(x)
         )
 
-
-        /**
-         * filtered pattern
-         */
+    /**
+      * filtered pattern
+      */
     def filter[I](p: I => Boolean) =
       Pattern[I, Id] { (x: I) =>
         if (p(x)) Some(x) else None
@@ -272,8 +270,8 @@ object Translator {
     import Functors._
 
     /**
-     * pattern by checking condition, returns optional Unit
-     */
+      * pattern by checking condition, returns optional Unit
+      */
     def check[I](p: I => Boolean) =
       Pattern[I, Un] { (x: I) =>
         if (p(x)) Some(()) else None
@@ -291,8 +289,8 @@ object Translator {
     }
 
     /**
-     * like a [[Pattern]] but with multiple matches possible
-     */
+      * like a [[Pattern]] but with multiple matches possible
+      */
     class PolyPattern[I, X[_]: Traverse](split: I => Option[Vector[X[I]]]) {
       def unapply(x: I): Option[Vector[X[I]]] = split(x)
 
@@ -336,8 +334,8 @@ object Translator {
 }
 
 /**
- * inclusion of functors
- */
+  * inclusion of functors
+  */
 trait Inclusion[X[_], Y[_]] {
   def incl[I]: X[I] => Y[I]
 }
@@ -358,15 +356,15 @@ object Inclusion {
 }
 
 /**
- * restriction of cone on functors
- */
+  * restriction of cone on functors
+  */
 trait ConeRestriction[X[_], Y[_], G[_]] {
   def restrict[I]: G[Y[I]] => G[X[I]]
 }
 
 /**
- * restriction on optional functor
- */
+  * restriction on optional functor
+  */
 trait OptRestriction[X[_], Y[_]] extends ConeRestriction[X, Y, Option]
 
 import scala.util.Try
@@ -391,14 +389,14 @@ object OptRestriction {
 }
 
 /**
- * subtype relation between functors, giving inclusion and optional restriction,
- * explicit, not depending on scala type checking
- */
+  * subtype relation between functors, giving inclusion and optional restriction,
+  * explicit, not depending on scala type checking
+  */
 trait SubType[X[_], Y[_]] extends Inclusion[X, Y] with OptRestriction[X, Y]
 
 /**
- * context dependent version of [[Translator]]
- */
+  * context dependent version of [[Translator]]
+  */
 trait ContextTranslator[I, O, X[_], Ctx[_, _]]
     extends (Ctx[I, O] => X[I] => Option[X[O]]) { self =>
   def apply(ctx: Ctx[I, O]) = (inp: X[I]) => recTranslate(self)(ctx)(inp)

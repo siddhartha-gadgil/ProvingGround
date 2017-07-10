@@ -216,7 +216,8 @@ object ProbabilityDistribution {
 
   // The distributions below have total measure different from 1
 
-  case class CondMapped[A, B](base: ProbabilityDistribution[A], f: A => Option[B])
+  case class CondMapped[A, B](base: ProbabilityDistribution[A],
+                              f: A => Option[B])
       extends ProbabilityDistribution[B] {
     def next: B = {
       f(base.next)

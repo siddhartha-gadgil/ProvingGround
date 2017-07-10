@@ -12,7 +12,6 @@ import spire.implicits._
 
 //import scala.collection.parallel.immutable.ParVector
 
-
 object FiniteDistribution {
   val random = new scala.util.Random
 
@@ -27,8 +26,6 @@ object FiniteDistribution {
   def collect[T](fd: FiniteDistribution[Option[T]]) =
     FiniteDistribution(
       fd.pmf.filter(wo => !(wo.elem.isEmpty)).map((wo) => wo.map(_.get)))
-
-
 
   def uniform[A](s: Traversable[A]): FiniteDistribution[A] = {
     val prob = 1.0 / s.size
@@ -167,10 +164,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     // val distdist    = map(f)
     // distdist.expectation
     val newpmf =
-      for (
-        Weighted(x, p) <- pmf;
-        Weighted(y, q) <- (f(x).pmf)
-      ) yield Weighted(y, p * q)
+      for (Weighted(x, p) <- pmf;
+           Weighted(y, q) <- (f(x).pmf)) yield Weighted(y, p * q)
     FiniteDistribution(newpmf)
   }
 

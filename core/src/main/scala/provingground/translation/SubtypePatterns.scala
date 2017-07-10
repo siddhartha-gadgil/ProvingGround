@@ -19,8 +19,8 @@ import HList._
 import Coproduct._
 
 /**
- * inclusion of type `Y` in `F(X)`
- */
+  * inclusion of type `Y` in `F(X)`
+  */
 abstract class QuasiInclusion[X, Y, F[_]: Traverse] {
 
   def incl(y: Y): F[X]
@@ -29,8 +29,8 @@ abstract class QuasiInclusion[X, Y, F[_]: Traverse] {
 }
 
 /**
- * inclusion of type `Y` in `F(X)` with `F(_)` an `HList`
- */
+  * inclusion of type `Y` in `F(X)` with `F(_)` an `HList`
+  */
 abstract class QuasiInclHList[X, Y, F[_] <: HList: Traverse]
     extends QuasiInclusion[X, Y, F] {
 
@@ -121,8 +121,8 @@ object QuasiInclusion {
 }
 
 /**
- * projection of `X` onto `Y`
- */
+  * projection of `X` onto `Y`
+  */
 trait QuasiProjection[X, Y] {
   def proj(x: X): Option[Y]
 
@@ -164,9 +164,9 @@ object QuasiProjection {
 }
 
 /**
- * Pattern and builder for matching whether, for a term `x: X`, `F(x)` is in the ``subtype`` `Y`.
- * Here `Y` is not just a scala subtype, but we have inclusions and projections making it a direct summand.
- */
+  * Pattern and builder for matching whether, for a term `x: X`, `F(x)` is in the ``subtype`` `Y`.
+  * Here `Y` is not just a scala subtype, but we have inclusions and projections making it a direct summand.
+  */
 class SubTypePattern[X, Y, F[_]: Traverse](
     implicit val qi: QuasiInclusion[X, Y, F],
     val qp: QuasiProjection[X, Y]) {

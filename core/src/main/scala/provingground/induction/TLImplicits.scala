@@ -7,8 +7,8 @@ import provingground._, HoTT._
 import shapeless._
 
 /**
- * implicits for constructing inductive types
- */
+  * implicits for constructing inductive types
+  */
 object TLImplicits extends InductionImplicits
 
 trait InductionImplicits {
@@ -36,8 +36,6 @@ trait InductionImplicits {
     def =:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
         head: ConstructorTL[S, H, ConstructorType]) = head |: seq
   }
-
-
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
 

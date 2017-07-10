@@ -33,8 +33,8 @@ object NlpProse {
     }
   }
 
-  object ProseTree{
-    def apply(t: List[DepRel]) : ProseTree = ProseTree(findroot(t), t)
+  object ProseTree {
+    def apply(t: List[DepRel]): ProseTree = ProseTree(findroot(t), t)
   }
 
   /** Stanford Dependency tree */
@@ -125,8 +125,8 @@ object NlpProse {
     def findAll(typ: String): List[DepRel] = heirs filter (depstart(_, typ))
 
     /**
-     * Mainly for convenient visualization
-     */
+      * Mainly for convenient visualization
+      */
     lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype))
 
 // Not clear what this method does

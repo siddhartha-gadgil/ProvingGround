@@ -9,16 +9,16 @@ import shapeless._
 import HList._
 
 /**
- * allows substitution of a `Term` by another, chiefly subtypes of `Term` and `HList`s of these;
- * making into a vector of `Term` rides piggyback on this.
- */
+  * allows substitution of a `Term` by another, chiefly subtypes of `Term` and `HList`s of these;
+  * making into a vector of `Term` rides piggyback on this.
+  */
 trait Subst[A] {
   def subst(a: A)(x: Term, y: Term): A
 
   def terms(a: A): Vector[Term] // reusing this to list terms in an HList
 }
 
-object Subst extends SubstImplicits{
+object Subst extends SubstImplicits {
   implicit def termSubst[U <: Term with Subs[U]]: Subst[U] =
     new Subst[U] {
       def subst(a: U)(x: Term, y: Term) = a.replace(x, y)
@@ -56,7 +56,7 @@ object Subst extends SubstImplicits{
 
 }
 
-trait SubstImplicits{
+trait SubstImplicits {
   implicit class SubstOp[A: Subst](a: A) {
     def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
 
@@ -68,25 +68,26 @@ trait SubstImplicits{
 object TestS { implicitly[Subst[Term :: HNil]] }
 
 /**
- * the shape of a type family.
- */
+  * the shape of a type family.
+  */
 sealed abstract class TypFamilyPtn[
     H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: Subst] {
+
   /**
-   * optional index `a` given family `W` and type `W(a)`
-   */
+    * optional index `a` given family `W` and type `W(a)`
+    */
   def getIndex(w: F, typ: Typ[H]): Option[Index]
 
   /**
-   * type `W(a)` given the family `W` and index `a`
-   */
+    * type `W(a)` given the family `W` and index `a`
+    */
   def typ(w: F, index: Index): Typ[H]
 
   def subs(x: Term, y: Term): TypFamilyPtn[H, F, Index]
 
   /**
-   * existentital typed mappper to bridge to [[TypFamilyMap]] given scala type of codomain
-   */
+    * existentital typed mappper to bridge to [[TypFamilyMap]] given scala type of codomain
+    */
   def mapper[C <: Term with Subs[C]]
     : TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT] forSome {
       type IF <: Term with Subs[IF];
@@ -97,17 +98,17 @@ sealed abstract class TypFamilyPtn[
   def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_]
 
   /**
-   * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
-   */
+    * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
+    */
   def getMapper[C <: Term with Subs[C],
                 IF <: Term with Subs[IF],
                 IDF <: Term with Subs[IDF],
                 IDFT <: Term with Subs[IDFT]](cod: Typ[C])(
       implicit mpr: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) = mpr
 
-      /**
-       * lift to [[TypFamilyMap]] based on [[mapper]]
-       */
+  /**
+    * lift to [[TypFamilyMap]] based on [[mapper]]
+    */
   def mapped[C <: Term with Subs[C]] = mapper[C].mapper(this)
 }
 
@@ -136,10 +137,11 @@ object TypFamilyPtn {
           val x = tf.dom.Var
           tf(x) match {
             case tp: Typ[u] => tp
-            case t : Term =>
+            case t: Term =>
               import translation.FansiShow._
-              throw new IllegalArgumentException(s"expected type but got ${t.fansi}")
-            }
+              throw new IllegalArgumentException(
+                s"expected type but got ${t.fansi}")
+          }
       }
 
   }
@@ -249,17 +251,17 @@ object TypFamilyPtn {
 }
 
 /**
- * shape of a type family, together with the type of a codomain;
- * fixing scala types of functions and dependent functions on the type family
- *
- * @tparam Index scala type of the index
- * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
- * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
- * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
- *
- * methods allow restricting (dependent) functions and type families to indices and
- * building (dependent) functions from such restrictions.
- */
+  * shape of a type family, together with the type of a codomain;
+  * fixing scala types of functions and dependent functions on the type family
+  *
+  * @tparam Index scala type of the index
+  * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
+  * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
+  * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
+  *
+  * methods allow restricting (dependent) functions and type families to indices and
+  * building (dependent) functions from such restrictions.
+  */
 sealed trait TypFamilyMap[H <: Term with Subs[H],
                           F <: Term with Subs[F],
                           C <: Term with Subs[C],
@@ -269,43 +271,43 @@ sealed trait TypFamilyMap[H <: Term with Subs[H],
                           IDFT <: Term with Subs[IDFT]] {
 
   /**
-   * the underlying pattern (to access methods defined on it)
-   */
+    * the underlying pattern (to access methods defined on it)
+    */
   val pattern: TypFamilyPtn[H, F, Index]
 
   /**
-   * returns HoTT  type for iterated functions
-   */
+    * returns HoTT  type for iterated functions
+    */
   def iterFuncTyp(w: Typ[H], x: Typ[C]): Typ[IF]
 
   /**
-   * returns HoTT  type for iterated dependent functions
-   */
+    * returns HoTT  type for iterated dependent functions
+    */
   def iterDepFuncTyp(w: Typ[H], xs: IDFT): Typ[IDF]
 
   /**
-   * returns iterated function given functions for each index
-   */
+    * returns iterated function given functions for each index
+    */
   def iterFunc(funcs: Index => Func[H, C]): IF
 
   /**
-   * returns iterated dependent function given functions for each index
-   */
+    * returns iterated dependent function given functions for each index
+    */
   def iterDepFunc(funcs: Index => FuncLike[H, C]): IDF
 
   /**
-   * restricts iterated function to an index
-   */
+    * restricts iterated function to an index
+    */
   def restrict(f: IF, ind: Index): Func[H, C]
 
   /**
-   * restricts iterated dependent function to an index
-   */
+    * restricts iterated dependent function to an index
+    */
   def depRestrict(f: IDF, ind: Index): FuncLike[H, C]
 
   /**
-   * restricts iterated type  family to an index
-   */
+    * restricts iterated type  family to an index
+    */
   def typRestrict(xs: IDFT, ind: Index): Func[H, Typ[C]]
 
   def subs(x: Term, y: Term): TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
@@ -497,13 +499,13 @@ object TypFamilyMap {
 }
 
 /**
- * aid for implicit calculations:
- * given a scala type that is a subtype of `Typ[C]`, recovers `C`,
- * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
- *
- * Note that `C` is not unique, indeed `C = Term` is  always a solution,
- * so we seek the best `C`
- */
+  * aid for implicit calculations:
+  * given a scala type that is a subtype of `Typ[C]`, recovers `C`,
+  * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
+  *
+  * Note that `C` is not unique, indeed `C = Term` is  always a solution,
+  * so we seek the best `C`
+  */
 class TypObj[T <: Typ[Term] with Subs[T], C <: Term with Subs[C]](
     implicit ev: T <:< Typ[C]) {
   def me(t: T): Typ[C] = t
@@ -534,19 +536,19 @@ object TypObj {
   // implicit def piT[U <: Term with Subs[U], V <: Term with Subs[V]] : TypObj[PiTyp[U, V], FuncLike[U, V]] = new TypObj[PiTyp[U, V], FuncLike[U, V]]
 
   /**
-   * given the object `fmly` of scala type `TC` that is a subtype of `Typ[C]`, recovers `C`,
-   * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
-   *
-   * Note that `C` is not unique, indeed `C = Term` is  always a solution,
-   * so we seek the best `C`
-   */
+    * given the object `fmly` of scala type `TC` that is a subtype of `Typ[C]`, recovers `C`,
+    * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
+    *
+    * Note that `C` is not unique, indeed `C = Term` is  always a solution,
+    * so we seek the best `C`
+    */
   def solve[TC <: Typ[Term] with Subs[TC], C <: Term with Subs[C]](fmly: TC)(
       implicit tpObj: TypObj[TC, C]) = (tpObj.me(fmly): Typ[C])
 }
 
 /**
- * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
- */
+  * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
+  */
 sealed trait TypFamilyMapper[H <: Term with Subs[H],
                              F <: Term with Subs[F],
                              C <: Term with Subs[C],

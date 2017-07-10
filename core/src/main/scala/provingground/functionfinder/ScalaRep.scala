@@ -67,7 +67,6 @@ trait ScalaRep[+U <: Term with Subs[U], V] {
 
 import ScalaRep._
 
-
 trait RepTerm[A] extends Term with Subs[RepTerm[A]] {
   val typ: Typ[RepTerm[A]]
 }
@@ -126,7 +125,8 @@ object ScalaRep {
   /**
     * A term representing itself.
     */
-  case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
+  case class IdRep[U <: Term with Subs[U]](typ: Typ[U])
+      extends ScalaRep[U, U] {
     def apply(v: U) = v
 
     def unapply(u: Term): Option[U] = u match {
@@ -175,7 +175,8 @@ object ScalaRep {
       OptDepFuncDefn(optfn, domrep.typ)
     }
 
-    def subs(x: Term, y: Term) = FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
+    def subs(x: Term, y: Term) =
+      FuncRep(domrep.subs(x, y), codomrep.subs(x, y))
   }
 
   object SimpleFuncRep {
@@ -264,7 +265,6 @@ object ScalaRep {
                  (v: V) => codomreps(v).subs(x, y),
                  fibers.subs(x, y))
   }
-
 
   implicit val UnivRep = idRep(Type)
 

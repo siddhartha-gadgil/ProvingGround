@@ -13,32 +13,33 @@ import Translator._
 import induction._
 
 /**
- * Patterns, in the sense of [[Translator.Pattern]], as well as some builders
- * for various kinds of HoTT terms. Includes matching recursively and inductively defined functions.
- */
+  * Patterns, in the sense of [[Translator.Pattern]], as well as some builders
+  * for various kinds of HoTT terms. Includes matching recursively and inductively defined functions.
+  */
 object TermPatterns {
+
   /**
-   * matches formal applications
-   */
+    * matches formal applications
+    */
   val formalAppln = Pattern[Term, II](FormalAppln.unapply)
 
   /**
-   * matches lambda definitions
-   */
+    * matches lambda definitions
+    */
   val lambdaAppln = Pattern.partial[Term, II] {
     case l: LambdaLike[u, v] => (l.variable, l.value)
   }
 
   /**
-   * matches lambda applications and returns HoTT-type of the variable as well
-   */
+    * matches lambda applications and returns HoTT-type of the variable as well
+    */
   val lambdaTriple = Pattern.partial[Term, III] {
     case l: LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
   }
 
   /**
-   * matches Pi-Types, returns in the pi-lambda form  with the HoTT-type of variable included.
-   */
+    * matches Pi-Types, returns in the pi-lambda form  with the HoTT-type of variable included.
+    */
   val piTriple = Pattern.partial[Term, III] {
     case PiDefn(x: Term, y: Typ[u]) => ((x, x.typ), y)
     case PiTyp(fibre: Func[u, _]) =>
@@ -46,10 +47,9 @@ object TermPatterns {
       ((x, x.typ), fibre(x))
   }
 
-
   /**
-   * matches Sigma-Types, returns in the pi-lambda form  with the HoTT-type of variable included.
-   */
+    * matches Sigma-Types, returns in the pi-lambda form  with the HoTT-type of variable included.
+    */
   val sigmaTriple = Pattern.partial[Term, III] {
     case SigmaTyp(fibre: Func[u, _]) =>
       fibre match {
@@ -61,16 +61,16 @@ object TermPatterns {
   }
 
   /**
-   * matches Pi-Type and returns the fibre
-   */
+    * matches Pi-Type and returns the fibre
+    */
   val piTyp = Pattern.partial[Term, Id] {
     case PiDefn(x: Term, y: Typ[v]) => HoTT.lmbda(x)(y)
     case PiTyp(fibre)               => fibre
   }
 
   /**
-   * matches Pi-Type and returns the  fibre as a lambda
-   */
+    * matches Pi-Type and returns the  fibre as a lambda
+    */
   val piLam = Pattern.partial[Term, II] {
     case PiDefn(x: Term, y: Typ[u]) => (x, y)
     case PiTyp(fibre: Func[u, _]) =>
@@ -79,15 +79,15 @@ object TermPatterns {
   }
 
   /**
-   * matches Sigma-Type and returns the fibre
-   */
+    * matches Sigma-Type and returns the fibre
+    */
   val sigmaTyp = Pattern.partial[Term, cats.Id] {
     case SigmaTyp(fibre) => fibre
   }
 
   /**
-   * matches Sigma-Type and returns fibre as lambda
-   */
+    * matches Sigma-Type and returns fibre as lambda
+    */
   val sigmaLam = Pattern.partial[Term, II] {
     case SigmaTyp(fibre: Func[u, _]) =>
       val x: Term = fibre.dom.Var.asInstanceOf[Term]
@@ -95,51 +95,51 @@ object TermPatterns {
   }
 
   /**
-   * matches coproduct type
-   */
+    * matches coproduct type
+    */
   val plusTyp = Pattern.partial[Term, II] {
     case PlusTyp(first: Typ[u], second: Typ[v]) => (first, second)
   }
 
   /**
-   * matches all pairs
-   */
+    * matches all pairs
+    */
   val absPair = Pattern.partial[Term, II] {
     case p: AbsPair[u, v] => (p.first, p.second)
   }
 
   /**
-   * matches product types
-   */
+    * matches product types
+    */
   val prodTyp = Pattern.partial[Term, II] {
     case ProdTyp(first: Typ[u], second: Typ[v]) => (first, second)
   }
 
   /**
-   * matches function types, returning domain and codomain
-   */
+    * matches function types, returning domain and codomain
+    */
   val funcTyp = Pattern.partial[Term, II] {
     case FuncTyp(dom: Typ[u], codom: Typ[v]) => (dom, codom)
   }
 
   /**
-   * matches recursively defined function, returns domain, codomain and definition data
-   */
+    * matches recursively defined function, returns domain, codomain and definition data
+    */
   val recFunc = Pattern.partial[Term, IIV] {
     case rf: RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
   }
 
   /**
-   * matches idexed recursively defined function, returns index, domain, codomain and definition data
-   */
+    * matches idexed recursively defined function, returns index, domain, codomain and definition data
+    */
   val indRecFunc = Pattern.partial[Term, VIIV] {
     case rf: IndRecFunc[u, v, w] =>
       (rf.index, (rf.dom, (rf.codom, rf.defnData)))
   }
 
-/**
- * matches inductively defined function, returns domain, codomain and definition data
- */
+  /**
+    * matches inductively defined function, returns domain, codomain and definition data
+    */
   val inducFunc = Pattern.partial[Term, IIV] {
     case rf: InducFuncLike[u, v] =>
       val fmly: Term = rf.depcodom match {
@@ -151,9 +151,9 @@ object TermPatterns {
       (rf.dom, (fmly, rf.defnData))
   }
 
-/**
- * matches indexed inductively defined function, returns index, domain, codomain and definition data
- */
+  /**
+    * matches indexed inductively defined function, returns index, domain, codomain and definition data
+    */
   val indInducFunc = Pattern.partial[Term, VIIV] {
     case rf: IndInducFuncLike[u, v, w, z] =>
       // val fmly: Term = rf.depcodom match {
@@ -166,62 +166,62 @@ object TermPatterns {
   }
 
   /**
-   * matches identity (equality) type, returns domain, lhs and rhs
-   */
+    * matches identity (equality) type, returns domain, lhs and rhs
+    */
   val identityTyp = Pattern.partial[Term, III] {
     case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => ((dom, lhs), rhs)
   }
 
   /**
-   * matches identity (equality) type, returns lhs and rhs
-   */
+    * matches identity (equality) type, returns lhs and rhs
+    */
   val equation = Pattern.partial[Term, II] {
     case IdentityTyp(dom: Typ[u], lhs: Term, rhs: Term) => (lhs, rhs)
   }
 
   /**
-   * matches `i_1(a)`, the first inclusion function, returns the type and value
-   */
+    * matches `i_1(a)`, the first inclusion function, returns the type and value
+    */
   val firstIncl = Pattern.partial[Term, II] {
     case fi: PlusTyp.FirstIncl[u, v] => (fi.typ, fi.value)
   }
 
   /**
-   * matches `i_2(a)`, the second inclusion function, returns the type and value
-   */
+    * matches `i_2(a)`, the second inclusion function, returns the type and value
+    */
   val secondIncl = Pattern.partial[Term, II] {
     case fi: PlusTyp.ScndIncl[u, v] => (fi.typ, fi.value)
   }
 
-  val refl = Pattern.partial[Term, II]{
+  val refl = Pattern.partial[Term, II] {
     case Refl(dom: Typ[u], value: Term) => (dom, value)
   }
 
   /**
-   * matches  `Star`, the only element of the true type `Unit`, returns `() : Unit` if matched
-   */
+    * matches  `Star`, the only element of the true type `Unit`, returns `() : Unit` if matched
+    */
   val star = Pattern.check[Term](_ == Star)
 
   /**
-   * matches the true type `Unit`, returns `() : Unit` if matched
-   */
+    * matches the true type `Unit`, returns `() : Unit` if matched
+    */
   val unit = Pattern.check[Term](_ == Unit)
 
   /**
-   * matches  `Zero`, the false  type, returns `() : Unit` if matched
-   */
+    * matches  `Zero`, the false  type, returns `() : Unit` if matched
+    */
   val zero = Pattern.check[Term](_ == Zero)
 
   /**
-   * matches `Universe(n)`, returns the level `n`
-   */
+    * matches `Universe(n)`, returns the level `n`
+    */
   val universe = Pattern.partial[Term, N] {
     case Universe(n) => n
   }
 
   /**
-   * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`
-   */
+    * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`
+    */
   val symbolic = Pattern.partial[Term, Named] {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
@@ -230,8 +230,8 @@ object TermPatterns {
   }(namedTrav)
 
   /**
-   * matches a symbolic name, perhaps wrapped in `InnerSym`, returns the name as a `String`
-   */
+    * matches a symbolic name, perhaps wrapped in `InnerSym`, returns the name as a `String`
+    */
   val symName = Pattern[Term, S] {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
@@ -266,9 +266,9 @@ object TermPatterns {
   import TermLang.applyAll
 
   /**
-   * returns recursively defined function as function of domain, codomain and definition data
-   * @param inds inductive types defined (other that products etc)
-   */
+    * returns recursively defined function as function of domain, codomain and definition data
+    * @param inds inductive types defined (other that products etc)
+    */
   def buildRecDef(inds: Typ[Term] => Option[ConstructorSeqTL[_, _, _]] = (_) =>
     None): (Term, (Term, Vector[Term])) => Option[Term] = {
     case (pt: ProdTyp[u, v], (codom: Typ[w], data)) =>
@@ -287,9 +287,9 @@ object TermPatterns {
   }
 
   /**
-   * returns indexed recursively defined function as function of domain, codomain and definition data
-   * @param inds indexed inductive types defined (other than equality)
-   */
+    * returns indexed recursively defined function as function of domain, codomain and definition data
+    * @param inds indexed inductive types defined (other than equality)
+    */
   def buildIndRecDef(
       inds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] = (_) =>
         None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] = {
@@ -310,9 +310,9 @@ object TermPatterns {
   }
 
   /**
- * returns inductively defined function as function of domain, codomain and definition data
- * @param inds inductive types defined (other than products etc)
- */
+    * returns inductively defined function as function of domain, codomain and definition data
+    * @param inds inductive types defined (other than products etc)
+    */
   def buildIndDef(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None)
     : (Term, (Term, Vector[Term])) => Option[Term] = {
@@ -342,9 +342,9 @@ object TermPatterns {
   }
 
   /**
-   * returns indexed inductively defined function as function of domain, codomain and definition data
-   * @param inds inductive types defined (other than equality)
-   */
+    * returns indexed inductively defined function as function of domain, codomain and definition data
+    * @param inds inductive types defined (other than equality)
+    */
   def buildIndIndDef(
       inds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] = (_) =>
         None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] = {

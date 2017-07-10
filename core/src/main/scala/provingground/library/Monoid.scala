@@ -181,12 +181,12 @@ object MonoidSimple {
   val refl = "refl" :: a ~>: (eqM(a)(a))
 
   val dist = unif(a, b, c)(l, r, op, eqM)(
-    eqM(a)(a),
-    eqM(a)(b) ->: eqM(b)(a),
-    eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),
-    eqM(op(l)(a))(a),
-    eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
-  ) * 0.5 ++ (FiniteDistribution.unif(eqM: Term, op) * 0.5)
+      eqM(a)(a),
+      eqM(a)(b) ->: eqM(b)(a),
+      eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),
+      eqM(op(l)(a))(a),
+      eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
+    ) * 0.5 ++ (FiniteDistribution.unif(eqM: Term, op) * 0.5)
 
   // val dedStep = FineDeducerStep(p = dist, param = FineDeducerStep.Param(vars = Vector(a, b, c)))
 

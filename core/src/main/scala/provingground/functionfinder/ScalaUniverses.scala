@@ -8,118 +8,118 @@ import provingground._, HoTT._
   */
 case class ScalaUniv[U <: Term with Subs[U]](univ: Typ[Typ[U]])
 
-object ScalaUniv{
+object ScalaUniv {
 
-/**
-  * given a universe with objects of scala type Typ[U], gives one with scala type Typ[Typ[U]]
-  */
-case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U])
-    extends Typ[Typ[U]] {
-  type Obj = Typ[U]
+  /**
+    * given a universe with objects of scala type Typ[U], gives one with scala type Typ[Typ[U]]
+    */
+  case class HigherUniv[U <: Typ[Term] with Subs[U]](univ: Typ[U])
+      extends Typ[Typ[U]] {
+    type Obj = Typ[U]
 
-  lazy val typ = HigherUniv[Typ[U]](this)
+    lazy val typ = HigherUniv[Typ[U]](this)
 
-  def variable(name: AnySym) = univ
+    def variable(name: AnySym) = univ
 
-  def newobj =
-    throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
-  def subs(x: Term, y: Term) = this
-}
-
-/**
-  * Universe whose elements are FuncTyps
-  */
-case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
-    domuniv: Typ[Typ[W]],
-    codomuniv: Typ[Typ[U]]
-) extends Typ[FuncTyp[W, U]] {
-
-  type Obj = FuncTyp[W, U]
-
-  lazy val typ = HigherUniv(this)
-
-  def variable(name: AnySym) = {
-    val dom   = domuniv.symbObj(DomSym(name))
-    val codom = codomuniv.symbObj(CodomSym(name))
-    FuncTyp(dom, codom)
+    def subs(x: Term, y: Term) = this
   }
 
-  def newobj = FuncTypUniv(domuniv.newobj, codomuniv.newobj)
+  /**
+    * Universe whose elements are FuncTyps
+    */
+  case class FuncTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
+      domuniv: Typ[Typ[W]],
+      codomuniv: Typ[Typ[U]]
+  ) extends Typ[FuncTyp[W, U]] {
 
-  def subs(x: Term, y: Term) = this
-}
+    type Obj = FuncTyp[W, U]
 
-/**
-  * Universe with objects Pi-Types
-  */
-@deprecated("Use PiDefn", "14/12/2016")
-case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
-    domuniv: Typ[Typ[W]],
-    codomuniv: Typ[Typ[U]]
-) extends Typ[PiTyp[W, U]] {
+    lazy val typ = HigherUniv(this)
 
-  type Obj = PiTyp[W, U]
+    def variable(name: AnySym) = {
+      val dom   = domuniv.symbObj(DomSym(name))
+      val codom = codomuniv.symbObj(CodomSym(name))
+      FuncTyp(dom, codom)
+    }
 
-  lazy val typ = HigherUniv(this)
+    def newobj = FuncTypUniv(domuniv.newobj, codomuniv.newobj)
 
-  def variable(name: AnySym) = {
-    val dom     = domuniv.symbObj(DomSym(name))
-    val codom   = codomuniv.symbObj(CodomSym(name))
-    val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
-    PiTyp(typFmly)
+    def subs(x: Term, y: Term) = this
   }
 
-  def newobj =
-    throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+  /**
+    * Universe with objects Pi-Types
+    */
+  @deprecated("Use PiDefn", "14/12/2016")
+  case class PiTypUniv[W <: Term with Subs[W], U <: Term with Subs[U]](
+      domuniv: Typ[Typ[W]],
+      codomuniv: Typ[Typ[U]]
+  ) extends Typ[PiTyp[W, U]] {
 
-  def subs(x: Term, y: Term) = this
-}
+    type Obj = PiTyp[W, U]
 
-/**
-  * Symbolic types, which the compiler knows are types.
-  *
-  */
-case class FineSymbTyp[U <: Term with Subs[U]](name: AnySym,
-                                               symobj: AnySym => U)
-    extends Typ[U]
-    with Symbolic {
-  lazy val typ = FineUniv(symobj)
+    lazy val typ = HigherUniv(this)
 
-  def newobj = FineSymbTyp(new InnerSym[Typ[U]](this), symobj)
+    def variable(name: AnySym) = {
+      val dom     = domuniv.symbObj(DomSym(name))
+      val codom   = codomuniv.symbObj(CodomSym(name))
+      val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
+      PiTyp(typFmly)
+    }
 
-  type Obj = U
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
-  def variable(name: AnySym) = symobj(name)
+    def subs(x: Term, y: Term) = this
+  }
 
-  def elem = this
+  /**
+    * Symbolic types, which the compiler knows are types.
+    *
+    */
+  case class FineSymbTyp[U <: Term with Subs[U]](name: AnySym,
+                                                 symobj: AnySym => U)
+      extends Typ[U]
+      with Symbolic {
+    lazy val typ = FineUniv(symobj)
 
-  def subs(x: Term, y: Term) = (x, y) match {
-    case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[U]]
-    case _ => {
-      def symbobj(name: AnySym) = FineSymbTyp(name, symobj)
-      symSubs(symbobj)(x, y)(name)
+    def newobj = FineSymbTyp(new InnerSym[Typ[U]](this), symobj)
+
+    type Obj = U
+
+    def variable(name: AnySym) = symobj(name)
+
+    def elem = this
+
+    def subs(x: Term, y: Term) = (x, y) match {
+      case (u: Typ[_], v: Typ[_]) if (u == this) => v.asInstanceOf[Typ[U]]
+      case _ => {
+        def symbobj(name: AnySym) = FineSymbTyp(name, symobj)
+        symSubs(symbobj)(x, y)(name)
+      }
     }
   }
-}
 
-case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
-    extends Typ[Typ[U]]
-    with BaseUniv {
-  type Obj = Typ[U]
+  case class FineUniv[U <: Term with Subs[U]](symobj: AnySym => U)
+      extends Typ[Typ[U]]
+      with BaseUniv {
+    type Obj = Typ[U]
 
-  lazy val typ = HigherUniv(this)
+    lazy val typ = HigherUniv(this)
 
-  def variable(name: AnySym) = FineSymbTyp(name, symobj)
+    def variable(name: AnySym) = FineSymbTyp(name, symobj)
 
-  def newobj =
-    throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
-  def subs(x: Term, y: Term) = this
-}
+    def subs(x: Term, y: Term) = this
+  }
 
   // import ScalaUniv._
 

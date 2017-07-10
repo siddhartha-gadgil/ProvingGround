@@ -1,10 +1,7 @@
 package provingground.learning
 import provingground._
 
-import provingground.{
-  FiniteDistribution => FD,
-  ProbabilityDistribution => PD
-}
+import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import learning.{TangVec => T}
 
@@ -78,7 +75,7 @@ object TermEvolver {
   def justTerm[U <: Term with Subs[U]](x: U) = x: Term
 
   def theorems(fd: FD[Term]) = {
-    fd.filter(_.typ.typ == Type).map(_.typ : Typ[Term]).filter(fd(_) > 0)
+    fd.filter(_.typ.typ == Type).map(_.typ: Typ[Term]).filter(fd(_) > 0)
   }
 
   def allTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec
@@ -116,7 +113,7 @@ object ExstFunc {
   }
 }
 
-trait TermEvolution{
+trait TermEvolution {
   val evolve: T[FD[Term]] => T[PD[Term]]
 
   val evolveTyps: T[FD[Term]] => T[PD[Typ[Term]]]
@@ -127,14 +124,16 @@ trait TermEvolution{
 
   def tangEvolve(base: FD[Term])(vec: FD[Term]) = evolve(T(base, vec)).vec
 
-  def tangEvolveTyps(base: FD[Term])(vec: FD[Term]) = evolveTyps(T(base, vec)).vec
+  def tangEvolveTyps(base: FD[Term])(vec: FD[Term]) =
+    evolveTyps(T(base, vec)).vec
 }
 
 class TermEvolver(unApp: Double = 0.1,
                   appl: Double = 0.1,
                   lambdaWeight: Double = 0.1,
                   piWeight: Double = 0.1,
-                  varWeight: Double = 0.3)  extends TermEvolution{
+                  varWeight: Double = 0.3)
+    extends TermEvolution {
   import TermEvolver._
 
   val evolve: T[FD[Term]] => T[PD[Term]] =
@@ -258,100 +257,103 @@ class TermEvolver(unApp: Double = 0.1,
     evolveTyps(fd).flatMap((tp) => piMixTyp(tp, varWeight, evolveTyps)(fd))
 }
 
-
-object TermEvolutionStep{
-  case class Param(
-  vars: Vector[Term] = Vector(),
-  size: Int = 1000,
-  derTotalSize: Int = 1000,
-  epsilon: Double = 0.2,
-  inertia: Double = 0.3,
-  scale: Double = 1.0,
-  thmScale: Double = 0.3,
-  thmTarget: Double = 0.2)
+object TermEvolutionStep {
+  case class Param(vars: Vector[Term] = Vector(),
+                   size: Int = 1000,
+                   derTotalSize: Int = 1000,
+                   epsilon: Double = 0.2,
+                   inertia: Double = 0.3,
+                   scale: Double = 1.0,
+                   thmScale: Double = 0.3,
+                   thmTarget: Double = 0.2)
 
   // implicit val taskMonad = implicitly[Monad[Task]]
 
   def obserEv(
-    p: FD[Term], param: Param = Param()
-    )(implicit ms: MonixSamples) =
-      Observable.fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
-        (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
+      p: FD[Term],
+      param: Param = Param()
+  )(implicit ms: MonixSamples) =
+    Observable
+      .fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
+        (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
       )(
         new TermEvolutionStep(p, new TermEvolver(), param)(ms)
       )
 
   def observable(
-    p: FD[Term], param: Param = Param()
-    )(implicit ms: MonixSamples) =
-      Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
-        (st : TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
-      )(
-        new TermEvolutionStep(p, new TermEvolver(), param)(ms)
-      )
+      p: FD[Term],
+      param: Param = Param()
+  )(implicit ms: MonixSamples) =
+    Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
+      (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
+    )(
+      new TermEvolutionStep(p, new TermEvolver(), param)(ms)
+    )
 
 }
 
 class TermEvolutionStep[X[_]](val p: FD[Term],
-                      ev: TermEvolution = new TermEvolver(),
-                      val param: TermEvolutionStep.Param = TermEvolutionStep.Param()
-                    )(implicit  val samp: TangSamples[X]){
-        import samp._, TermEvolver._, param._
-        lazy val init = ev.baseEvolve(p)
+                              ev: TermEvolution = new TermEvolver(),
+                              val param: TermEvolutionStep.Param =
+                                TermEvolutionStep.Param())(
+    implicit val samp: TangSamples[X]) {
+  import samp._, TermEvolver._, param._
+  lazy val init = ev.baseEvolve(p)
 
-        lazy val nextFD =
-          for (samp <- sampFD(init, size)) yield samp * (1.0 - inertia) ++ (p * inertia)
+  lazy val nextFD =
+    for (samp <- sampFD(init, size))
+      yield samp * (1.0 - inertia) ++ (p * inertia)
 
-        lazy val nextTypFD = sampFD(ev.baseEvolveTyps(p), size)
+  lazy val nextTypFD = sampFD(ev.baseEvolveTyps(p), size)
 
-        lazy val thmFeedback =
-          for {
-            nFD <- nextFD
-            ntFD <- nextTypFD
-          } yield TheoremFeedback(nFD, ntFD, vars, scale, thmScale, thmTarget)
+  lazy val thmFeedback =
+    for {
+      nFD  <- nextFD
+      ntFD <- nextTypFD
+    } yield TheoremFeedback(nFD, ntFD, vars, scale, thmScale, thmTarget)
 
-        def derivativePD(tang: FD[Term]): PD[Term] = ev.tangEvolve(p)(tang)
+  def derivativePD(tang: FD[Term]): PD[Term] = ev.tangEvolve(p)(tang)
 
-        def derivativeFD(tang: FD[Term], n: Int) = sampFD(derivativePD(tang), n)
+  def derivativeFD(tang: FD[Term], n: Int) = sampFD(derivativePD(tang), n)
 
-        def derivativeTypsFD(tang: FD[Term], n: Int) = sampFD(ev.tangEvolveTyps(p)(tang), n)
+  def derivativeTypsFD(tang: FD[Term], n: Int) =
+    sampFD(ev.tangEvolveTyps(p)(tang), n)
 
-        lazy val tangSamples : X[Vector[(FD[Term], Int)]] =
-          for (nfd <- nextFD; ts <-tangSizes(derTotalSize)(nfd)) yield ts
+  lazy val tangSamples: X[Vector[(FD[Term], Int)]] =
+    for (nfd <- nextFD; ts <- tangSizes(derTotalSize)(nfd)) yield ts
 
-        def derFDX(vec: Vector[(FD[Term], Int)])  =
-          sequence{
-            for {
-              (fd, n) <- vec
-            } yield
-              for {
-                dfd <- derivativeFD(fd, n)
-                dtfd <- derivativeTypsFD(fd, n)
-              } yield(fd, (dfd , dtfd))}
+  def derFDX(vec: Vector[(FD[Term], Int)]) =
+    sequence {
+      for {
+        (fd, n) <- vec
+      } yield
+        for {
+          dfd  <- derivativeFD(fd, n)
+          dtfd <- derivativeTypsFD(fd, n)
+        } yield (fd, (dfd, dtfd))
+    }
 
-        lazy val derivativeFDs : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
-          tangSamples.flatMap(derFDX)
+  lazy val derivativeFDs: X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
+    tangSamples.flatMap(derFDX)
 
-        lazy val feedBacks : X[Vector[(FD[Term], Double)]] =
-          for {
-            derFDs <- derivativeFDs
-            thmFb <- thmFeedback
-          } yield
-              for { (x, (tfd, tpfd)) <- derFDs
-              } yield (x, thmFb.feedbackTermDist(tfd, tpfd))
+  lazy val feedBacks: X[Vector[(FD[Term], Double)]] =
+    for {
+      derFDs <- derivativeFDs
+      thmFb  <- thmFeedback
+    } yield
+      for { (x, (tfd, tpfd)) <- derFDs } yield
+        (x, thmFb.feedbackTermDist(tfd, tpfd))
 
+  lazy val succFD =
+    for {
+      fbs <- feedBacks
+      nfd <- nextFD
+    } yield fbs.foldRight(nfd) { case ((t, w), fd) => fd ++ (t * w) }
 
-        lazy val succFD =
-          for {
-            fbs <- feedBacks
-            nfd <- nextFD
-          } yield
-            fbs.foldRight(nfd){case ((t , w), fd) => fd ++ (t * w)}
+  def newp(np: FD[Term]) = new TermEvolutionStep(np, ev, param)
 
-        def newp(np: FD[Term]) = new TermEvolutionStep(np, ev, param)
+  lazy val succ = succFD.map(newp)
 
-        lazy val succ = succFD.map(newp)
+  def next = succ
 
-        def next = succ
-
-  }
+}

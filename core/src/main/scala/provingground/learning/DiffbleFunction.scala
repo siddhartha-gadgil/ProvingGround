@@ -98,15 +98,12 @@ object DiffbleFunction {
   class LoopyDiffFunc[A, B](recdef: DiffbleFunction[(A, B), B])
       extends LoopyFunc[A, B]((a, b) => recdef((a, b)))
       with DiffbleFunction[A, Eval[B]] { self =>
-    def derv(a: A, t: A) ={
-      val  d : Eval[B] = Eval.defer(derv(a, t));
-      for (x <- self(a); y <- d) yield
-      recdef.derv((a, x), (t, y))
+    def derv(a: A, t: A) = {
+      val d: Eval[B] = Eval.defer(derv(a, t));
+      for (x <- self(a); y <- d) yield recdef.derv((a, x), (t, y))
     }
   }
 }
-
-
 
 trait AdjDiffbleFunction[A, B] { self =>
   val func: A => B

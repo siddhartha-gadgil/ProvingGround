@@ -167,19 +167,20 @@ object FansiShow {
   import pprint._
 
   val fansiHandler: PartialFunction[Any, Tree] = {
-    case t: Term => Tree.Literal(FansiTranslate(t))
+    case t: Term     => Tree.Literal(FansiTranslate(t))
     case sym: AnySym => Tree.Literal(sym.toString)
   }
 
-  val fansiPrint = pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
+  val fansiPrint =
+    pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
 
-  val simpleHandler: PartialFunction[Any, Tree] =
-    {
-      case t: Term => Tree.Literal(t.toString)
-      case sym: AnySym => Tree.Literal(sym.toString)
-    }
+  val simpleHandler: PartialFunction[Any, Tree] = {
+    case t: Term     => Tree.Literal(t.toString)
+    case sym: AnySym => Tree.Literal(sym.toString)
+  }
 
-  val simplePrint = pprint.PPrinter.BlackWhite.copy(additionalHandlers = simpleHandler)
+  val simplePrint =
+    pprint.PPrinter.BlackWhite.copy(additionalHandlers = simpleHandler)
 
   implicit def list[U: FansiShow]: FansiShow[List[U]] =
     new FansiShow[List[U]] {

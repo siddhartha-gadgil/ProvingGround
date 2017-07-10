@@ -484,7 +484,9 @@ class LeanToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
 
     val valueOpt =
       formalConsOpt map
-        ((formalCons) => induction.coarse.InductiveTyp.fromFormal(formalCons.toList, formalTyp))
+        ((formalCons) =>
+           induction.coarse.InductiveTyp
+             .fromFormal(formalCons.toList, formalTyp))
 
     val checkTyp =
       fullTypOpt flatMap ((typ) => Try(foldterms(typ, paramsOpt.get)).toOption)

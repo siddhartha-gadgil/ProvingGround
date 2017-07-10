@@ -34,7 +34,7 @@ sealed trait TypFamilyExst {
   def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
     val fmly = W match {
       case FormalAppln(f, x) if x == variable => f.asInstanceOf[Func[TT, Fb]]
-      case _ =>  variable :-> W
+      case _                                  => variable :-> W
     }
     TypFamilyExst(FuncTypFamily(dom, pattern), fmly)
   }
@@ -217,8 +217,6 @@ object TypFamilyExst {
       val x = g.dom.Var
       x ~>: getFamily(g(x))
   }
-
-
 
   def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](
       w: Fb,
