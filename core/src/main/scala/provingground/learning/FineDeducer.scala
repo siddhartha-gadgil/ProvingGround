@@ -195,14 +195,14 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd),
              applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        .<+?>(lambdaEv(varWeight)(
-                evolveTyp,
-                (t) =>
-                  (d) =>
-                    varScaled.evolveTyp(d) <+>
-                      (varScaled.evolvTypFamilies(d).map((f) => f: Term), 0.5)
-              )(fd),
-              lambdaWeight)
+        // .<+?>(lambdaEv(varWeight)(
+        //         evolveTyp,
+        //         (t) =>
+        //           (d) =>
+        //             varScaled.evolveTyp(d) <+>
+        //               (varScaled.evolvTypFamilies(d).map((f) => f: Term), 0.5)
+        //       )(fd),
+        //       lambdaWeight)
     }
 
   /**
