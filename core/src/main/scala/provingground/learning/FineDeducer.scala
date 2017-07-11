@@ -125,7 +125,7 @@ object FineDeducer {
 }
 
 /**
-  * A refined deducer, i.e., evolution of terms and derivatives of evolution.
+  * A refined evolver, i.e., evolution of terms and subclasses such as types.
   * Various evolutions are defined mutually recursively - of functions, of types,
   * of terms of a type, of type families and of all terms.
   * Derivatives are defined mutually recursively with the evolutions.
@@ -134,21 +134,23 @@ object FineDeducer {
   *
   * @param varWeight weight of a variable inside a lambda
   */
-case class FineDeducer(applnWeight: Double = 0.1,
-                       lambdaWeight: Double = 0.1,
-                       piWeight: Double = 0.1,
-                       varWeight: Double = 0.3,
-                       unifyWeight: Double = 0.5) { fine =>
-  // import Deducer.{asFuncs}
-
+class FineEvolver(applnWeight: Double = 0.1,
+                  lambdaWeight: Double = 0.1,
+                  piWeight: Double = 0.1,
+                  varWeight: Double = 0.3,
+                  unifyWeight: Double = 0.5) { fine =>
   import FineDeducer._
 
   /**
-    * FineDeducer with `varWeight` rescaled so that the weight of different variables does not depend on the order
+    * FineEvolver with `varWeight` rescaled so that the weight of different variables does not depend on the order
     * in which they were introduced in lambda or pi islands.
     */
   lazy val varScaled =
-    this.copy(varWeight = this.varWeight / (1 + this.varWeight))
+    new FineEvolver(applnWeight,
+                    lambdaWeight,
+                    piWeight,
+                    fine.varWeight / (1 + fine.varWeight),
+                    unifyWeight)
 
   /**
     * evolution of terms, by combining various operations and islands
@@ -195,36 +197,14 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+>(simpleApplnEv(evolvTypFamilies, evolveWithTyp)(fd),
              applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        // .<+?>(lambdaEv(varWeight)(
-        //         evolveTyp,
-        //         (t) =>
-        //           (d) =>
-        //             varScaled.evolveTyp(d) <+>
-        //               (varScaled.evolvTypFamilies(d).map((f) => f: Term), 0.5)
-        //       )(fd),
-        //       lambdaWeight)
-    }
-
-  /**
-    * evolution of a type family at a fixed depth :
-    * mostly encoded in generation functions, not much conditioning needed.
-    * FIXME : unification can change depth by more than one, so not correct.
-    */
-  def evolvTypFamilyDepth(depth: Int)(fd: FD[Term]): PD[SomeFunc] =
-    asFuncs {
-      fd.conditioned((t) => typFamilyDepth(t) == Some(depth))
-        .<+?>(unifApplnEv(evolvTypFamilyDepth(depth + 1), evolve)(fd),
-              applnWeight * unifyWeight)
-        .<+>(simpleApplnEv(evolvTypFamilyDepth(depth + 1), evolveWithTyp)(fd),
-             applnWeight * (1 - unifyWeight))
-        .<+?>(lambdaEv(varWeight)(
-                if (depth == 1)
-                  evolveTyp
-                else { (d) =>
-                  evolvTypFamilyDepth(depth - 1)(d).map((f) => f: Term)
-                },
-                (t) => varScaled.evolve)(fd),
-              lambdaWeight)
+      // .<+?>(lambdaEv(varWeight)(
+      //         evolveTyp,
+      //         (t) =>
+      //           (d) =>
+      //             varScaled.evolveTyp(d) <+>
+      //               (varScaled.evolvTypFamilies(d).map((f) => f: Term), 0.5)
+      //       )(fd),
+      //       lambdaWeight)
     }
 
   /**
@@ -270,6 +250,35 @@ case class FineDeducer(applnWeight: Double = 0.1,
       .<+?>(piEv(varWeight)(evolveTyp, (t) => varScaled.evolveTyp)(fd),
             piWeight)
   }
+
+}
+
+/**
+  * A refined deducer, i.e., evolution of terms and derivatives of evolution.
+  * Various evolutions are defined mutually recursively - of functions, of types,
+  * of terms of a type, of type families and of all terms.
+  * Derivatives are defined mutually recursively with the evolutions.
+  *
+  * This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
+  *
+  * @param varWeight weight of a variable inside a lambda
+  */
+case class FineDeducer(applnWeight: Double = 0.1,
+                       lambdaWeight: Double = 0.1,
+                       piWeight: Double = 0.1,
+                       varWeight: Double = 0.3,
+                       unifyWeight: Double = 0.5)
+    extends FineEvolver(applnWeight,
+                        lambdaWeight,
+                        piWeight,
+                        varWeight,
+                        unifyWeight) { fine =>
+  // import Deducer.{asFuncs}
+
+  import FineDeducer._
+
+  override lazy val varScaled =
+    this.copy(varWeight = fine.varWeight / (1 + fine.varWeight))
 
 //  case class Derivative(evolved: FD[Term], evolvedFuncs: FD[SomeFunc], evolvedWithTyp: Typ[Term] => FD[Term])
   /**
@@ -469,8 +478,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+?>(DunifApplnArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isFunc)
-        .<+?>(DlambdaVar(fd, tang), lambdaWeight)
-        .<+?>(DlambdaVal(fd, tang), lambdaWeight)
+        // .<+?>(DlambdaVar(fd, tang), lambdaWeight)
+        // .<+?>(DlambdaVal(fd, tang), lambdaWeight)
     }
 
   /**
@@ -486,8 +495,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+?>(DunifApplnTypArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnTypArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        .<+?>(DlambdaTypVar(fd, tang), lambdaWeight)
-        .<+?>(DlambdaTypVal(fd, tang), lambdaWeight)
+        // .<+?>(DlambdaTypVar(fd, tang), lambdaWeight)
+        // .<+?>(DlambdaTypVal(fd, tang), lambdaWeight)
     }
 
   /**
