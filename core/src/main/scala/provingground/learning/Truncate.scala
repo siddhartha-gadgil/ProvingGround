@@ -38,7 +38,7 @@ object Truncate{
       val fds = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs) yield Truncate(fibprod.fibers(q), epsilon / p).map((y) => (x, y)) * p
       fds.foldLeft(FD.empty[A])(_ ++ _)
     case Conditioned(base, p) =>
-      val td = Truncate(base, epsilon)
+      val td = Truncate(base, epsilon).filter(p)
       val tot = td.total
       if (tot > 0) td * (1 / tot) else td
     case Flattened(base) =>
