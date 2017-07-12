@@ -75,7 +75,7 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     * as the mixed in distribution is called by name, it may depend on the present one.
     */
   def <+>(mixin: => ProbabilityDistribution[A], weight: Double) =
-    new ProbabilityDistribution.Mixin(this, mixin, weight)
+    new ProbabilityDistribution.Mixin(pd, mixin, weight)
 
   /**
     * generates from the mixed in optional valued distribution with probability `weight`,
@@ -121,6 +121,8 @@ object ProbabilityDistribution {
 
     lazy val ps = (1.0 - qs.sum) +: qs
 
+    lazy val weightedDists = dists.zip(ps)
+
     override def conditioned(p: A => Boolean) =
       new Mixture(base.conditioned(p), components map {
         case Weighted(d, w) => Weighted(d.conditioned(p), w)
@@ -145,6 +147,8 @@ object ProbabilityDistribution {
 
     lazy val q = weight
 
+    lazy val p = 1 - q
+
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+> (mixin.conditioned(p), weight)
 
@@ -164,7 +168,9 @@ object ProbabilityDistribution {
 
     lazy val second = mixin
 
-    lazy val q = weight
+    val q = weight
+
+    val p = 1 - q
 
     override def conditioned(p: A => Boolean) =
       base.conditioned(p) <+?>

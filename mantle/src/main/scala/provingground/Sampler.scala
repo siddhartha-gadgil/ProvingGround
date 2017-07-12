@@ -95,7 +95,7 @@ object Sampler {
           val m = Binomial(n, mx.q).draw
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
-        case mx: MixinOpt[u] => // TODO resample to avoid implicit drop in weight
+        case mx: MixinOpt[u] =>
           val m = Binomial(n, mx.q).draw
           val optSample: Map[Option[u], Int] =
             Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
