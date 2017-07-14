@@ -95,7 +95,7 @@ trait ExstFunc {
   lazy val dom: Typ[Term] = func.dom
 
   def apply(arg: Term): Option[Term] =
-    if (arg.typ == func.dom) Some(func.asInstanceOf[U]) else None
+    if (arg.typ == func.dom) Some(func(arg.asInstanceOf[U])) else None
 }
 
 object ExstFunc {
@@ -138,15 +138,13 @@ class TermEvolver(unApp: Double = 0.1,
 
   val evolve: T[FD[Term]] => T[PD[Term]] =
     (init: T[FD[Term]]) =>
-      (init: T[PD[Term]]) <+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
-      unApp) <+?> (
+      (init: T[PD[Term]]).<+?> (
         Tappln(
           evolveFuncs(init) && evolveWithTyp(init)
         ),
         appl
-      ) <+>
-        (lambdaMix(init), lambdaWeight) <+>
-        (piMix(init).map(justTerm[Typ[Term]]), piWeight)
+      ).<+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
+      unApp).<+>(lambdaMix(init), lambdaWeight).<+>(piMix(init).map(justTerm[Typ[Term]]), piWeight)
 
   val evolveFuncs: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {
