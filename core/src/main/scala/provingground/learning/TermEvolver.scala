@@ -90,9 +90,9 @@ trait ExstFunc {
 
   val func: FuncLike[U, V]
 
-  val term: Term = func
+  lazy val term: Term = func
 
-  val dom: Typ[Term] = func.dom
+  lazy val dom: Typ[Term] = func.dom
 
   def apply(arg: Term): Option[Term] =
     if (arg.typ == func.dom) Some(func.asInstanceOf[U]) else None
@@ -150,24 +150,24 @@ class TermEvolver(unApp: Double = 0.1,
 
   val evolveFuncs: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {
-      evolve(init) <+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
+      init <+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
       unApp) <+?> (
         Tappln(
           evolveFuncs(init) && evolveWithTyp(init)
         ),
         appl
-      ) <+> (lambdaMix(init), lambdaWeight)
+      )
     }.condMap(ExstFunc.opt)
 
   val evolveTypFamilies: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {
-      evolve(init) <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
+      init <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
       unApp) <+?> (
         Tappln(
           evolveTypFamilies(init) && evolveWithTyp(init)
         ),
         appl
-      ) <+> (lambdaMix(init), lambdaWeight)
+      )
     }.conditioned(isTypFamily).condMap(ExstFunc.opt)
 
   val evolveWithTyp: T[FD[Term]] => T[Typ[Term] => PD[Term]] =

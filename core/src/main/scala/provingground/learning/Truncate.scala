@@ -15,10 +15,10 @@ object Truncate{
       val tot = fdp.total
       if (tot > 0) fdp * (1 / tot) else FD.empty[A]
     case mx: Mixin[u] =>
-      (Truncate(mx.first, epsilon / mx.p) * mx.p) ++ (Truncate(mx.second, epsilon / mx.q) * mx.q)
+      (Truncate(mx.first, epsilon / mx.p).safeNormalized * mx.p) ++ (Truncate(mx.second, epsilon / mx.q).safeNormalized * mx.q)
     case mx: MixinOpt[u] =>
       val scndPmf = Truncate(mx.second, epsilon / mx.q).pmf.collect{case Weighted(Some(a), p) => Weighted(a, p * mx.q)}
-      (Truncate(mx.first, epsilon / mx.p) * mx.p) ++ FD(scndPmf)
+      (Truncate(mx.first, epsilon / mx.p).safeNormalized * mx.p) ++ (FD(scndPmf).safeNormalized * mx.q)
     case mx: Mixture[u] =>
       val fds = mx.weightedDists.map{case (d, p) => Truncate(d, epsilon / p) * p}
       fds.foldLeft(FD.empty[A])(_ ++ _)
