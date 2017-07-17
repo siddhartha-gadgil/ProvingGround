@@ -138,13 +138,16 @@ class TermEvolver(unApp: Double = 0.1,
 
   val evolve: T[FD[Term]] => T[PD[Term]] =
     (init: T[FD[Term]]) =>
-      (init: T[PD[Term]]).<+?> (
-        Tappln(
-          evolveFuncs(init) && evolveWithTyp(init)
-        ),
-        appl
-      ).<+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
-      unApp).<+>(lambdaMix(init), lambdaWeight).<+>(piMix(init).map(justTerm[Typ[Term]]), piWeight)
+      (init: T[PD[Term]])
+        .<+?>(
+          Tappln(
+            evolveFuncs(init) && evolveWithTyp(init)
+          ),
+          appl
+        )
+        .<+?>(TunifAppln(evolveFuncs(init) && evolve(init)), unApp)
+        .<+>(lambdaMix(init), lambdaWeight)
+        .<+>(piMix(init).map(justTerm[Typ[Term]]), piWeight)
 
   val evolveFuncs: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {

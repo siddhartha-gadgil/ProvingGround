@@ -186,9 +186,10 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def total = (pmf map { case Weighted(x, p) => p }).sum
 
   /**
-   * normalize if possible, otherwise empty.
-   */
-  def safeNormalized = if (total == 0) FiniteDistribution.empty[T] else *(1/total)
+    * normalize if possible, otherwise empty.
+    */
+  def safeNormalized =
+    if (total == 0) FiniteDistribution.empty[T] else *(1 / total)
 
   import FiniteDistribution.random
 

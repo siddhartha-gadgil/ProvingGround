@@ -479,8 +479,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+?>(DunifApplnArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isFunc)
-        // .<+?>(DlambdaVar(fd, tang), lambdaWeight)
-        // .<+?>(DlambdaVal(fd, tang), lambdaWeight)
+      // .<+?>(DlambdaVar(fd, tang), lambdaWeight)
+      // .<+?>(DlambdaVal(fd, tang), lambdaWeight)
     }
 
   /**
@@ -496,8 +496,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
         .<+?>(DunifApplnTypArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnTypArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)
-        // .<+?>(DlambdaTypVar(fd, tang), lambdaWeight)
-        // .<+?>(DlambdaTypVal(fd, tang), lambdaWeight)
+      // .<+?>(DlambdaTypVar(fd, tang), lambdaWeight)
+      // .<+?>(DlambdaTypVal(fd, tang), lambdaWeight)
     }
 
   /**
