@@ -374,6 +374,13 @@ object HoTT {
   trait Symbolic extends Term {
     val name: AnySym
     override def toString = name.toString
+
+    override def hashCode = (name, typ).hashCode
+
+    override def equals(that: Any) = that match {
+      case sym : Symbolic => sym.name == name && sym.typ == typ
+      case _ => false
+    }
   }
 
   trait Variable[U <: Term with Subs[U]] {
