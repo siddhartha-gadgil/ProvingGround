@@ -1292,6 +1292,7 @@ object HoTT {
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: Func[W, U]) if (u == this) => v
+      case (u, v: Symbolic) if (u == this) => typ.variable(v.name)
       case _ => {
         def symbobj(sym: AnySym) =
           SymbolicFunc(sym, dom.replace(x, y), codom.replace(x, y))
