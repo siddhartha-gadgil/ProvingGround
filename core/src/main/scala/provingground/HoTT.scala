@@ -1840,8 +1840,8 @@ object HoTT {
       TypedTerm(this: this.type, typ)
 
     override def variable(name: AnySym): FuncLike[W, U] =
-      DepSymbolicFunc(name, fibers)
-    //  PiSymbolicFunc(name, variable, value)
+      // DepSymbolicFunc(name, fibers)
+     PiSymbolicFunc(name, variable, value)
 
     def newobj = {
       val newvar = variable.newobj
@@ -1867,6 +1867,9 @@ object HoTT {
       with Subs[PiTyp[W, U]] {
     //type Obj = DepFunc[W, U]
     type Obj = FuncLike[W, U]
+
+    // severe deprecation
+    throw new IllegalArgumentException(s"Error: PiTyp with fibers $fibers created")
 
     lazy val typ: Typ[Typ[Term]] = Universe(
       max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))

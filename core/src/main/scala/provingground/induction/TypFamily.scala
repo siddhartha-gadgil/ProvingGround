@@ -530,10 +530,6 @@ object TypObj {
     : TypObj[ProdTyp[U, V], PairTerm[U, V]] =
     new TypObj[ProdTyp[U, V], PairTerm[U, V]]
 
-  // implicit def deppair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[
-  //     SigmaTyp[U, V], AbsPair[U, V]] = new TypObj[SigmaTyp[U, V], AbsPair[U, V]]
-
-  // implicit def piT[U <: Term with Subs[U], V <: Term with Subs[V]] : TypObj[PiTyp[U, V], FuncLike[U, V]] = new TypObj[PiTyp[U, V], FuncLike[U, V]]
 
   /**
     * given the object `fmly` of scala type `TC` that is a subtype of `Typ[C]`, recovers `C`,
