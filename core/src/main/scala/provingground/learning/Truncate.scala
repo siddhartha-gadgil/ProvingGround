@@ -91,16 +91,19 @@ object Truncate {
             if (tot > 0) fdp * (1 / tot) else FD.empty[A]
           }
           case mx: Mixin[u] =>
-            for {
-              first <- task(mx.first, epsilon / mx.p)
-              second <- task(mx.second, epsilon / mx.q)
-            } yield
-            {(first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)}.flatten
+            Task.zip2(
+              task(mx.first, epsilon / mx.p),
+              task(mx.second, epsilon / mx.q)
+            ).map {
+              case(first, second) =>
+              {(first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)}.flatten
+            }
           case mx: MixinOpt[u] =>
-          for {
-            first <- task(mx.first, epsilon / mx.p)
-            second <- task(mx.second, epsilon / mx.q)
-          } yield {
+          Task.zip2(
+            task(mx.first, epsilon / mx.p),
+            task(mx.second, epsilon / mx.q)
+          ).map {
+            case(first, second) =>
              val scndPmf = second.pmf.collect {
               case Weighted(Some(a), p) => Weighted(a, p * mx.q)}
             ((first.safeNormalized * mx.p) ++ (FD(
@@ -125,10 +128,10 @@ object Truncate {
               }
             }
           case prod: Product[u, v] =>
-            for {
-              first <- task(prod.first, epsilon)
-              second <- task(prod.second, epsilon)
-            } yield {
+            Task.zip2(
+              task(prod.first, epsilon),
+              task(prod.second, epsilon)
+            ) map { case (first, second) =>
                 val pmf1 = first.pmf
                 val pmf2 = second.pmf
                 val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
@@ -170,10 +173,10 @@ object Truncate {
           case Scaled(base, sc) =>
             task(base, epsilon / sc)
           case Sum(first, second) =>
-            for {
-              fst <- task(first, epsilon)
-              scnd <- task(second, epsilon)
-            } yield (fst ++ scnd).flatten
+            Task.zip2(
+              task(first, epsilon),
+              task(second, epsilon)
+            ) map {case (fst, scnd) => (fst ++ scnd).flatten}
           case _ =>
             throw new IllegalArgumentException(
               s"probability distribution $pd cannot be truncated")
