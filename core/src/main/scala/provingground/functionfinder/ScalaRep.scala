@@ -308,10 +308,10 @@ object ScalaRep {
 
   import NatInt.rep
 
-  import induction.coarse._
-
-  implicit val boolRep: ScalaRep[Term, Boolean] = SimpleRep(
-    BaseConstructorTypes.SmallBool)
+  // import induction.coarse._
+  //
+  // implicit val boolRep: ScalaRep[Term, Boolean] = SimpleRep(
+  //   BaseConstructorTypes.SmallBool)
 
   def incl[U <: Term with Subs[U], V, W]
     : (ScalaRep[U, V], ScalaRep[U, W]) => Option[V => W] = {

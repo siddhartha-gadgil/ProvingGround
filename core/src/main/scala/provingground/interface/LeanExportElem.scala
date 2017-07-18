@@ -3,8 +3,6 @@ import provingground._
 
 import scala.util.Try
 
-import induction.coarse._
-
 sealed trait LeanExportElem
 
 object LeanExportElem {
