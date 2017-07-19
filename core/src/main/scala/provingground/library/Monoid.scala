@@ -188,6 +188,8 @@ object MonoidSimple {
       eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
     ) * 0.5 ++ (FiniteDistribution.unif(eqM: Term, op) * 0.5)
 
+  val dist1 = dist.filter((t) => !Set(a, b, c).contains(t)).normalized()
+
   // val dedStep = FineDeducerStep(p = dist, param = FineDeducerStep.Param(vars = Vector(a, b, c)))
 
   // val idUnique =
