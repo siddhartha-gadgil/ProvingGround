@@ -11,7 +11,7 @@ import shapeless._
   */
 abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
                                      Fb <: Term with Subs[Fb],
-                                     Index <: HList: Subst,
+                                     Index <: HList: TermList,
                                      C <: Term with Subs[C],
                                      F <: Term with Subs[F],
                                      TT <: Term with Subs[TT],
@@ -87,7 +87,7 @@ object IndexedIterFuncPtnMap {
     */
   case class IdIterPtnMap[H <: Term with Subs[H],
                           Fb <: Term with Subs[Fb],
-                          Index <: HList: Subst,
+                          Index <: HList: TermList,
                           C <: Term with Subs[C],
                           F <: Term with Subs[F],
                           IF <: Term with Subs[IF],
@@ -132,7 +132,7 @@ object IndexedIterFuncPtnMap {
                                    D <: Term with Subs[D],
                                    H <: Term with Subs[H],
                                    Fb <: Term with Subs[Fb],
-                                   Index <: HList: Subst,
+                                   Index <: HList: TermList,
                                    C <: Term with Subs[C],
                                    F <: Term with Subs[F],
                                    IF <: Term with Subs[IF],
@@ -214,7 +214,7 @@ object IndexedIterFuncPtnMap {
                                       D <: Term with Subs[D],
                                       H <: Term with Subs[H],
                                       Fb <: Term with Subs[Fb],
-                                      Index <: HList: Subst,
+                                      Index <: HList: TermList,
                                       C <: Term with Subs[C],
                                       F <: Term with Subs[F],
                                       IF <: Term with Subs[IF],
@@ -312,7 +312,7 @@ object IndexedIterFuncPtnMap {
 abstract class IndexedIterFuncShape[H <: Term with Subs[H],
                                     F <: Term with Subs[F],
                                     Fb <: Term with Subs[Fb],
-                                    Index <: HList: Subst] {
+                                    Index <: HList: TermList] {
 
   /**
     * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
@@ -340,14 +340,14 @@ abstract class IndexedIterFuncShape[H <: Term with Subs[H],
     mapper(fmlyMapper).mapper(fmlyMapper)(this)
 }
 
-import Subst._
+import TermList._
 
 object IndexedIterFuncShape {
   import IndexedIterFuncPtnMapper._
 
   case class IdIterShape[H <: Term with Subs[H],
                          Fb <: Term with Subs[Fb],
-                         Index <: HList: Subst](
+                         Index <: HList: TermList](
       family: TypFamilyPtn[H, Fb, Index],
       index: Index
   ) extends IndexedIterFuncShape[H, H, Fb, Index] {
@@ -386,7 +386,7 @@ object IndexedIterFuncShape {
                        TF <: Term with Subs[TF],
                        H <: Term with Subs[H],
                        Fb <: Term with Subs[Fb],
-                       Index <: HList: Subst](
+                       Index <: HList: TermList](
       head: Typ[TT],
       tail: IndexedIterFuncShape[H, TF, Fb, Index])
       extends IndexedIterFuncShape[H, Func[TT, TF], Fb, Index] {
@@ -408,7 +408,7 @@ object IndexedIterFuncShape {
       IF,
       IDF,
       IDFT]) = {
-      indexedFuncIterPtnMapper(implicitly[Subst[Index]],
+      indexedFuncIterPtnMapper(implicitly[TermList[Index]],
                                tail.mapper(fmlyMapper))
     }
   }
@@ -420,7 +420,7 @@ object IndexedIterFuncShape {
                           Index <: HList](
       head: Typ[TT],
       tailfibre: TT => IndexedIterFuncShape[H, TF, Fb, Index])(
-      implicit subst: Subst[Index])
+      implicit subst: TermList[Index])
       extends IndexedIterFuncShape[H, FuncLike[TT, TF], Fb, Index] {
     def apply(W: Fb) = {
       val x = head.Var
@@ -444,7 +444,7 @@ object IndexedIterFuncShape {
       IF,
       IDF,
       IDFT]) = {
-      indexedDepFuncIterPtnMapper(implicitly[Subst[Index]],
+      indexedDepFuncIterPtnMapper(implicitly[TermList[Index]],
                                   tailfibre(head.Var).mapper(fmlyMapper))
     }
   }
@@ -458,7 +458,7 @@ object IndexedIterFuncShape {
 
     val value: IndexedIterFuncShape[Term, F, Fb, Index]
 
-    implicit val subst: Subst[Index]
+    implicit val subst: TermList[Index]
 
     def piExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
       Exst(
@@ -472,14 +472,14 @@ object IndexedIterFuncShape {
   object Exst {
     def apply[FF <: Term with Subs[FF],
               Fib <: Term with Subs[Fib],
-              In <: HList: Subst](
+              In <: HList: TermList](
         fs: IndexedIterFuncShape[Term, FF, Fib, In]) =
       new Exst {
         type F     = FF
         type Fb    = Fib
         type Index = In
 
-        val subst = implicitly[Subst[Index]]
+        val subst = implicitly[TermList[Index]]
 
         val value = fs
       }
@@ -491,7 +491,7 @@ object IndexedIterFuncShape {
   */
 abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
                                         Fb <: Term with Subs[Fb],
-                                        Index <: HList: Subst,
+                                        Index <: HList: TermList,
                                         C <: Term with Subs[C],
                                         F <: Term with Subs[F],
                                         TT <: Term with Subs[TT],
@@ -520,7 +520,7 @@ object IndexedIterFuncPtnMapper {
 
   implicit def idIterPtnMapper[H <: Term with Subs[H],
                                Fb <: Term with Subs[Fb],
-                               Index <: HList: Subst,
+                               Index <: HList: TermList,
                                C <: Term with Subs[C],
                                //  F <: Term with Subs[F],
                                IF <: Term with Subs[IF],
@@ -545,7 +545,7 @@ object IndexedIterFuncPtnMapper {
                                         D <: Term with Subs[D],
                                         H <: Term with Subs[H],
                                         Fb <: Term with Subs[Fb],
-                                        Index <: HList: Subst,
+                                        Index <: HList: TermList,
                                         C <: Term with Subs[C],
                                         F <: Term with Subs[F],
                                         IF <: Term with Subs[IF],
@@ -590,7 +590,7 @@ object IndexedIterFuncPtnMapper {
                                            D <: Term with Subs[D],
                                            H <: Term with Subs[H],
                                            Fb <: Term with Subs[Fb],
-                                           Index <: HList: Subst,
+                                           Index <: HList: TermList,
                                            C <: Term with Subs[C],
                                            F <: Term with Subs[F],
                                            IF <: Term with Subs[IF],

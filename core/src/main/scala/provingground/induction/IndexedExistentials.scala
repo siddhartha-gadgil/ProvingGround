@@ -13,7 +13,7 @@ sealed trait TypFamilyExst {
 
   val W: Fb
 
-  implicit val subst: Subst[Index]
+  implicit val subst: TermList[Index]
 
   def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
     TypFamilyExst(
@@ -194,14 +194,14 @@ sealed trait TypFamilyExst {
 
 object TypFamilyExst {
   import TypFamilyPtn._
-  def apply[Fib <: Term with Subs[Fib], In <: HList: Subst](
+  def apply[Fib <: Term with Subs[Fib], In <: HList: TermList](
       tf: TypFamilyPtn[Term, Fib, In],
       w: Fib) =
     new TypFamilyExst {
       type Fb    = Fib
       type Index = In
 
-      lazy val subst = implicitly[Subst[Index]]
+      lazy val subst = implicitly[TermList[Index]]
 
       lazy val pattern = tf
 

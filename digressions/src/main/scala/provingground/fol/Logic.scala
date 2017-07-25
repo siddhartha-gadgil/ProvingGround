@@ -29,10 +29,10 @@ object Logic {
   /** Logical Functions */
   class Func(val degree: Int) extends LanguageParam {
 
-    /** Substitute parameters in the function */
+    /** TermListitute parameters in the function */
     def apply(params: List[Term]): Term = RecTerm(this, params)
 
-    /** Substitute parameters in the function */
+    /** TermListitute parameters in the function */
     def apply(params: Term*): Term = RecTerm(this, params.toList)
 
     /** Make function into term with free variables replacing parameters */
@@ -45,10 +45,10 @@ object Logic {
   /** Logical Predicates */
   class Pred(val degree: Int) extends LanguageParam {
 
-    /** Substitute parameters in the predicate */
+    /** TermListitute parameters in the predicate */
     def apply(params: List[Term]): AtomFormula = AtomFormula(this, params)
 
-    /** Substitute parameters in the function */
+    /** TermListitute parameters in the function */
     def apply(params: Term*) = AtomFormula(this, params.toList)
 
     /** Make predicate into formula with free variables replacing parameters */
@@ -98,7 +98,7 @@ object Logic {
     /** Formula giving equality */
     def eqls(that: Term) = Eq(this, that)
 
-    /** Substitutes variables by terms*/
+    /** TermListitutes variables by terms*/
     def subs(xt: Var => Term): Term
 
     /** Single variable substituted by a term */
@@ -228,10 +228,10 @@ object Logic {
     /** Logical not */
     def unary_! : Formula = NegFormula(this)
 
-    /** Substitute terms for variables, should be abstract*/
+    /** TermListitute terms for variables, should be abstract*/
     def subs(xt: Var => Term): Formula
 
-    /** Substituting a sigle variable */
+    /** TermListituting a sigle variable */
     def subs(x: Var, t: Term): Formula = {
       val xt: (Var => Term) = (y: Var) => if (y == x) t else y
       subs(xt)
@@ -369,7 +369,7 @@ object Logic {
   /** Zips together a list of Formula => Formula variables and a base Formula. */
   def fmlaZip(c: List[Formula => Formula], base: Formula) = (c :\ base)(evalF)
 
-  /** Substitutes variables in (Var, Formula)=> Formula to get Formula=> Formula, and then zips with base. */
+  /** TermListitutes variables in (Var, Formula)=> Formula to get Formula=> Formula, and then zips with base. */
   def zipSubs(c: List[(Var, Formula) => Formula],
               xs: List[Var],
               base: Formula) = {
@@ -397,8 +397,8 @@ object Logic {
 
   /** Builds expressions by:
     * 1 Quantifying over free variables in a formula
-    * 2 Substituting terms for all free variables in a formula
-    * 3 Substituting terms for free variables in terms.
+    * 2 TermListituting terms for all free variables in a formula
+    * 3 TermListituting terms for free variables in terms.
     * 4 Combining formulas by conjunction and negation.
     */
   val exprProdSet: PartialFunction[(Expression, Expression), Set[Expression]] = {
@@ -463,10 +463,10 @@ object Logic {
     /** The formula variables */
     val params: List[FormulaVar]
 
-    /** Substitute some formulas - typically free variables */
+    /** TermListitute some formulas - typically free variables */
     def apply(f: PartialFunction[Formula, Formula]) = recFormula(formula, f)
 
-    /** Substitute free variables (in sequence)*/
+    /** TermListitute free variables (in sequence)*/
     def apply(ps: List[Formula]) = {
       val psubs: PartialFunction[Formula, Formula] = (params zip ps).toMap
       recFormula(formula, psubs)

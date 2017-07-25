@@ -19,13 +19,15 @@ object Truncate {
           val fdp = FD(purged)
           val tot = fdp.total
           if (tot > 0) fdp * (1 / tot) else FD.empty[A]
-        case mx: Mixin[u] =>
-          {(Truncate(mx.first, epsilon / mx.p).safeNormalized * mx.p) ++ (Truncate(
+        case mx: Mixin[u] => {
+          (Truncate(mx.first, epsilon / mx.p).safeNormalized * mx.p) ++ (Truncate(
             mx.second,
-            epsilon / mx.q).safeNormalized * mx.q)}.flatten
+            epsilon / mx.q).safeNormalized * mx.q)
+        }.flatten
         case mx: MixinOpt[u] =>
           val scndPmf = Truncate(mx.second, epsilon / mx.q).pmf.collect {
-            case Weighted(Some(a), p) => Weighted(a, p * mx.q)}
+            case Weighted(Some(a), p) => Weighted(a, p * mx.q)
+          }
           ((Truncate(mx.first, epsilon / mx.p).safeNormalized * mx.p) ++ (FD(
             scndPmf).safeNormalized * mx.q)).flatten
         case mx: Mixture[u] =>
@@ -70,19 +72,20 @@ object Truncate {
           if (tot > 0) td * (1 / tot) else td
         case Scaled(base, sc) =>
           Truncate(base, epsilon / sc)
-        case Sum(first, second) =>
-          {Truncate(first, epsilon) ++ Truncate(second, epsilon)}.flatten
+        case Sum(first, second) => {
+          Truncate(first, epsilon) ++ Truncate(second, epsilon)
+        }.flatten
         case _ =>
           throw new IllegalArgumentException(
             s"probability distribution $pd cannot be truncated")
       }
 
-    def task[A](pd: PD[A], epsilon: Double): Task[FD[A]] =
-      if (epsilon > 1) Task(FD.empty[A])
-      else
-        pd match {
-          case fd: FD[u] =>
-            Task{
+  def task[A](pd: PD[A], epsilon: Double): Task[FD[A]] =
+    if (epsilon > 1) Task(FD.empty[A])
+    else
+      pd match {
+        case fd: FD[u] =>
+          Task {
             val purged = fd.flatten.pmf.filter {
               case Weighted(x, p) => p > epsilon
             }
@@ -90,95 +93,102 @@ object Truncate {
             val tot = fdp.total
             if (tot > 0) fdp * (1 / tot) else FD.empty[A]
           }
-          case mx: Mixin[u] =>
-            Task.zip2(
+        case mx: Mixin[u] =>
+          Task
+            .zip2(
               task(mx.first, epsilon / mx.p),
               task(mx.second, epsilon / mx.q)
-            ).map {
-              case(first, second) =>
-              {(first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)}.flatten
+            )
+            .map {
+              case (first, second) => {
+                (first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)
+              }.flatten
             }
-          case mx: MixinOpt[u] =>
-          Task.zip2(
-            task(mx.first, epsilon / mx.p),
-            task(mx.second, epsilon / mx.q)
-          ).map {
-            case(first, second) =>
-             val scndPmf = second.pmf.collect {
-              case Weighted(Some(a), p) => Weighted(a, p * mx.q)}
-            ((first.safeNormalized * mx.p) ++ (FD(
-              scndPmf).safeNormalized * mx.q)).flatten
+        case mx: MixinOpt[u] =>
+          Task
+            .zip2(
+              task(mx.first, epsilon / mx.p),
+              task(mx.second, epsilon / mx.q)
+            )
+            .map {
+              case (first, second) =>
+                val scndPmf = second.pmf.collect {
+                  case Weighted(Some(a), p) => Weighted(a, p * mx.q)
+                }
+                ((first.safeNormalized * mx.p) ++ (FD(scndPmf).safeNormalized * mx.q)).flatten
             }
-          case mx: Mixture[u] =>
-            val fds = mx.weightedDists.map {
-              case (d, p) => task(d, epsilon / p).map (_ * p)
-            }
-            Task.gather(fds).map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
-          case Mapped(base, f) =>
-            task(base, epsilon).map(_.map(f))
-          case FlatMapped(base, f) =>
-            task(base, epsilon).flatMap{
-              (baseFD) => {
-                val fibs =
-                  baseFD.pmf.map{
-                    case Weighted(a, p) => task(f(a), epsilon/p).map((fd) => fd * p)
-                  }
-                val fibTask = Task.gather(fibs)
-                fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
-              }
-            }
-          case prod: Product[u, v] =>
-            Task.zip2(
-              task(prod.first, epsilon),
-              task(prod.second, epsilon)
-            ) map { case (first, second) =>
-                val pmf1 = first.pmf
-                val pmf2 = second.pmf
-                val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
-                               if p * q > epsilon) yield Weighted((x, y), p * q)
-                FD(pmf)
+        case mx: Mixture[u] =>
+          val fds = mx.weightedDists.map {
+            case (d, p) => task(d, epsilon / p).map(_ * p)
           }
-          case fibprod: FiberProduct[a, q, b] =>
-            for {
-              baseFD <- task(fibprod.base, epsilon)
-              pmf1map = baseFD.pmf.groupBy((we) =>
-                fibprod.quotient(we.elem))
-              fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
-                yield
-                  task(fibprod.fibers(q), epsilon / p).map(_.map((y) => (x, y)) * p)
-              fds <- Task.gather(fdtasks)
-                } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
-          case Conditioned(base, p) =>
-            for {
-               tdr  <- task(base, epsilon)
-               td = tdr.filter(p)
-               tot = td.total
-             } yield if (tot > 0) td * (1 / tot) else td
-          case Flattened(base) =>
-            for {
-              fd <- task(base, epsilon)
-              pmf = fd.pmf.collect {
-                case Weighted(Some(a), p) => Weighted(a, p)
-              }
+          Task.gather(fds).map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+        case Mapped(base, f) =>
+          task(base, epsilon).map(_.map(f))
+        case FlatMapped(base, f) =>
+          task(base, epsilon).flatMap { (baseFD) =>
+            {
+              val fibs =
+                baseFD.pmf.map {
+                  case Weighted(a, p) =>
+                    task(f(a), epsilon / p).map((fd) => fd * p)
+                }
+              val fibTask = Task.gather(fibs)
+              fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+            }
+          }
+        case prod: Product[u, v] =>
+          Task.zip2(
+            task(prod.first, epsilon),
+            task(prod.second, epsilon)
+          ) map {
+            case (first, second) =>
+              val pmf1 = first.pmf
+              val pmf2 = second.pmf
+              val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
+                             if p * q > epsilon) yield Weighted((x, y), p * q)
+              FD(pmf)
+          }
+        case fibprod: FiberProduct[a, q, b] =>
+          for {
+            baseFD <- task(fibprod.base, epsilon)
+            pmf1map = baseFD.pmf.groupBy((we) => fibprod.quotient(we.elem))
+            fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
+              yield
+                task(fibprod.fibers(q), epsilon / p)
+                  .map(_.map((y) => (x, y)) * p)
+            fds <- Task.gather(fdtasks)
+          } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
+        case Conditioned(base, p) =>
+          for {
+            tdr <- task(base, epsilon)
+            td  = tdr.filter(p)
+            tot = td.total
+          } yield if (tot > 0) td * (1 / tot) else td
+        case Flattened(base) =>
+          for {
+            fd <- task(base, epsilon)
+            pmf = fd.pmf.collect {
+              case Weighted(Some(a), p) => Weighted(a, p)
+            }
           } yield FD(pmf)
-          case CondMapped(base, f) =>
-            for {
-              fd <- task(base, epsilon)
-              pmf = fd.map(f).pmf.collect {
-                case Weighted(Some(a), p) => Weighted(a, p)
-              }
-              td  = FD(pmf)
-              tot = td.total
-            } yield if (tot > 0) td * (1 / tot) else td
-          case Scaled(base, sc) =>
-            task(base, epsilon / sc)
-          case Sum(first, second) =>
-            Task.zip2(
-              task(first, epsilon),
-              task(second, epsilon)
-            ) map {case (fst, scnd) => (fst ++ scnd).flatten}
-          case _ =>
-            throw new IllegalArgumentException(
-              s"probability distribution $pd cannot be truncated")
-        }
+        case CondMapped(base, f) =>
+          for {
+            fd <- task(base, epsilon)
+            pmf = fd.map(f).pmf.collect {
+              case Weighted(Some(a), p) => Weighted(a, p)
+            }
+            td  = FD(pmf)
+            tot = td.total
+          } yield if (tot > 0) td * (1 / tot) else td
+        case Scaled(base, sc) =>
+          task(base, epsilon / sc)
+        case Sum(first, second) =>
+          Task.zip2(
+            task(first, epsilon),
+            task(second, epsilon)
+          ) map { case (fst, scnd) => (fst ++ scnd).flatten }
+        case _ =>
+          throw new IllegalArgumentException(
+            s"probability distribution $pd cannot be truncated")
+      }
 }

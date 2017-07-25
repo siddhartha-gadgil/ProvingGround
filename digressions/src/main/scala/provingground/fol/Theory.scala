@@ -219,7 +219,7 @@ object Theory {
 
     trait Data extends Term with Axiom {
 
-      /** Substitute in term as well as in the assumed axiom */
+      /** TermListitute in term as well as in the assumed axiom */
       def subsData(xt: Var => Term): Data = DataTerm(subs(xt), axiom.subs(xt))
 
       /** Such that : Add an axiom */

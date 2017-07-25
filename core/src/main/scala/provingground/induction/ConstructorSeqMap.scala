@@ -264,6 +264,14 @@ trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
 object ConstructorSeqDom {
   import shapeless._
 
+  implicit def consSeqDomSubst[SS <: HList,
+                               H <: Term with Subs[H],
+                               Intros <: HList] =
+    new Subst[ConstructorSeqDom[SS, H, Intros]] {
+      def subst(a: ConstructorSeqDom[SS, H, Intros])(x: Term, y: Term) =
+        a.subs(x, y)
+    }
+
   /**
     * Empty sequence of introduction rules
     */
@@ -408,6 +416,14 @@ case class ConstructorSeqTL[SS <: HList,
 }
 
 object ConstructorSeqTL {
+  implicit def consSeqTLSubs[SS <: HList,
+                             H <: Term with Subs[H],
+                             Intros <: HList] =
+    new Subst[ConstructorSeqTL[SS, H, Intros]] {
+      def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) =
+        ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
+    }
+
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =
     ConstructorSeqTL(ConstructorSeqDom.Empty[H], W)
 

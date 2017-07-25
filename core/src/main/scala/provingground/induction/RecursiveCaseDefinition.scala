@@ -97,7 +97,7 @@ object RecursiveDefinition {
 
 }
 
-import Subst.SubstOp
+import TermList.TermListOp
 
 /**
   * indexed version of [[RecursiveDefinition]]
@@ -105,7 +105,7 @@ import Subst.SubstOp
 abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
-                                          Index <: HList: Subst,
+                                          Index <: HList: TermList,
                                           IF <: Term with Subs[IF],
                                           IDF <: Term with Subs[IDF],
                                           IDFT <: Term with Subs[IDFT]] {
@@ -161,7 +161,7 @@ object IndexedRecursiveDefinition {
   case class Empty[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    C <: Term with Subs[C],
-                   Index <: HList: Subst,
+                   Index <: HList: TermList,
                    IF <: Term with Subs[IF],
                    IDF <: Term with Subs[IDF],
                    IDFT <: Term with Subs[IDFT]](
@@ -181,7 +181,7 @@ object IndexedRecursiveDefinition {
   case class DataCons[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       C <: Term with Subs[C],
-                      Index <: HList: Subst,
+                      Index <: HList: TermList,
                       IF <: Term with Subs[IF],
                       IDF <: Term with Subs[IDF],
                       IDFT <: Term with Subs[IDFT],

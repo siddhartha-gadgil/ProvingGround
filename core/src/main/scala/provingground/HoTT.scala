@@ -378,8 +378,8 @@ object HoTT {
     override def hashCode = (name, typ).hashCode
 
     override def equals(that: Any) = that match {
-      case sym : Symbolic => sym.name == name && sym.typ == typ
-      case _ => false
+      case sym: Symbolic => sym.name == name && sym.typ == typ
+      case _             => false
     }
   }
 
@@ -1292,7 +1292,7 @@ object HoTT {
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
       case (u, v: Func[W, U]) if (u == this) => v
-      case (u, v: Symbolic) if (u == this) => typ.variable(v.name)
+      case (u, v: Symbolic) if (u == this)   => typ.variable(v.name)
       case _ => {
         def symbobj(sym: AnySym) =
           SymbolicFunc(sym, dom.replace(x, y), codom.replace(x, y))
@@ -1841,7 +1841,7 @@ object HoTT {
 
     override def variable(name: AnySym): FuncLike[W, U] =
       // DepSymbolicFunc(name, fibers)
-     PiSymbolicFunc(name, variable, value)
+      PiSymbolicFunc(name, variable, value)
 
     def newobj = {
       val newvar = variable.newobj
@@ -1869,7 +1869,8 @@ object HoTT {
     type Obj = FuncLike[W, U]
 
     // severe deprecation
-    throw new IllegalArgumentException(s"Error: PiTyp with fibers $fibers created")
+    throw new IllegalArgumentException(
+      s"Error: PiTyp with fibers $fibers created")
 
     lazy val typ: Typ[Typ[Term]] = Universe(
       max(univlevel(fibers.codom), univlevel(fibers.dom.typ)))

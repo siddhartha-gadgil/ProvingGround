@@ -6,6 +6,19 @@ import scala.util.Try
 sealed trait LeanExportElem
 
 object LeanExportElem {
+  import HoTT._
+  def typFromFamily(fmly: Term,
+                    variables: List[Term] = List()): Option[Typ[Term]] =
+    fmly match {
+      case tpe: Typ[Term] =>
+        val const = variables.map(tpe.indepOf(_)).foldLeft(true)(_ && _)
+        if (const) Some(tpe) else None
+      case fn: FuncLike[u, v] =>
+        val x = fn.dom.Var
+        typFromFamily(fn(x), x :: variables)
+      case _ => None
+    }
+
   case class Data(index: Long, tpe: String, params: List[String])
 
   object Data {

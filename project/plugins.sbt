@@ -36,3 +36,5 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
 addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.3.0")
 
 addSbtPlugin("org.lyranthe.sbt" % "partial-unification" % "1.0.0")
+
+addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0")
