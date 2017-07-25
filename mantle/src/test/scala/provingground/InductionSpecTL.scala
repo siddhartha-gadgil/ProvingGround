@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import org.scalatest.FlatSpec
-import induction.TLImplicits._
+import induction.implicits._
 // import Fold._
 
 import shapeless._
@@ -131,6 +131,54 @@ class InductionSpecTL extends FlatSpec {
     val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
 
     assert(size(nil) == zero && size(cons(a)(cons(a)(nil))) == two)
+  }
+
+  // List as a parametrized type
+
+  val B    = "B" :: Type
+  val List = "List" :: Type ->: Type
+  val ListIndA = ("nil" ::: List(A)) |: ("cons" ::: A ->>: List(A) -->>: List(
+    A)) =: List(A)
+  val ListInd = A ~->: ListIndA
+
+  "List as a parametrized type" should "have introduction rules substituting correctly" in {
+    assert(ListInd(A).intros.subst(A, B) == ListInd(B).intros)
+  }
+
+  it should "have recursion function substituting correctly" in {
+    val X = "X" :: Type
+
+    assert(ListInd(A).rec(X).replace(A, B) == ListInd(B).rec(X))
+  }
+
+  // FIXME when abstracted over A, B and f, this fails.
+  it should "have correct definition for a simple map function" in {
+    val nilA :: consA :: HNil = ListInd(A).intros
+    val nilB :: consB :: HNil = ListInd(B).intros
+    val f                     = "f" :: A ->: B
+    val recLAB                = ListInd(A).rec(List(B))
+
+    val a = "a" :: A
+
+    val la = "l_a" :: List(A)
+    val lb = "l_b" :: List(B)
+
+    val step  = a :-> (la :-> (lb :-> consB(f(a))(lb)))
+    val mapAB = recLAB(nilB)(step)
+
+    val a1 = "a1" :: A
+
+    assert(mapAB(consA(a)(consA(a1)(nilA))) == consB(f(a))(consB(f(a1))(nilB)))
+
+    val recLBA = ListInd(B).rec(List(A))
+    val h      = "h" :: B ->: A
+    val b      = "b" :: B
+    val stepBA = b :-> (lb :-> (la :-> consA(h(b))(la)))
+    val mapBA  = recLBA(nilA)(stepBA)
+
+    assert(mapBA(consB(b)(consB(b)(nilB))) == consA(h(b))(consA(h(b))(nilA)))
+    val b1 = "b1" :: B
+    assert(mapBA(consB(b)(consB(b1)(nilB))) == consA(h(b))(consA(h(b1))(nilA)))
   }
 
   // Example: binary trees
