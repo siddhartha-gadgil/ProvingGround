@@ -235,16 +235,18 @@ object ConstructorPatternMap {
     }
 
     def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
-      val key = Debug.rnd.nextInt(10000)
-      // println(s"\nMatched Func case (printing from HeadData): key : $key")
-      // println(s"Recursion data $data \n of type: ${data.typ}")
-      // println(s"Argument: $arg")
       val g = tail.induced(f)
-      // println(s"Induced function co-incides: ${f == g}")
       val recres = g(arg)
-      // println(s"\nRecursive result for key $key: $recres\n")
-      val result = data(arg)(recres)
-      // println(s"\nResult for key $key : $result \n\n")
+      val result =
+        if (data.dom == arg.typ && data(arg).dom == recres.typ) data(arg)(recres)
+        else {
+          import translation.FansiShow._
+          println(s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
+          println(s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
+          println(s"domain of data(arg) is ${data(arg).dom.fansi}")
+          println(s"induced  function g = ${g}\n from f = ${f.fansi}")
+          ???
+        }
       result
     }
 
