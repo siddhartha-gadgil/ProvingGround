@@ -58,6 +58,8 @@ trait ConstructorSeqMap[C <: Term with Subs[C],
     */
   def induc(fibre: Func[H, Typ[C]]) =
     inducDataLambda(fibre)(inducDefn(fibre))
+
+  def subs(x: Term, y: Term) : ConstructorSeqMap[C, H, RecType, InducType, Intros]
 }
 
 object ConstructorSeqMap {
@@ -76,6 +78,8 @@ object ConstructorSeqMap {
       InductiveDefinition.Empty(fibre)
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) = (f) => f
+
+    def subs(x: Term, y: Term) = Empty(W.replace(x, y))
 
   }
 
@@ -117,6 +121,8 @@ object ConstructorSeqMap {
                                 Func[ID, TI],
                                 C :: TIntros] {
 
+    def subs(x: Term, y: Term) = Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
+
     val W = tail.W
 
     def data(X: Typ[Cod]): RD =
@@ -124,8 +130,19 @@ object ConstructorSeqMap {
 
     val defn = (d: RD) => (f: Func[H, Cod]) => pattern.recDefCase(cons, d, f)
 
-    def recDefn(X: Typ[Cod]) =
-      RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+    import RecursiveDefinition.DataCons
+
+    def dataCons(X: Typ[Cod]) : DataCons[H, Cod, RD]  = DataCons(
+      data(X), defn,
+      tail.recDefn(X),
+      (x: Term) =>
+        (y: Term) =>
+          if (W.replace(x, y) == W) None
+          else Some(subs(x, y).dataCons(X.replace(x, y))))
+
+    def recDefn(X: Typ[Cod]) = dataCons(X)
+      // RecursiveDefinition.DataCons(
+      //   data(X), defn, tail.recDefn(X))
 
     def recDataLambda(X: Typ[Cod]) =
       f => lmbda(data(X))(tail.recDataLambda(X)(f))

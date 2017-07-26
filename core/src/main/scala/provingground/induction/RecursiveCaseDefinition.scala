@@ -70,7 +70,8 @@ object RecursiveDefinition {
                       D <: Term with Subs[D]](
       data: D,
       defn: D => Func[H, C] => H => Option[C],
-      tail: RecursiveDefinition[H, C]
+      tail: RecursiveDefinition[H, C],
+      replacement: Term => Term => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => None
   ) extends RecursiveDefinition[H, C] {
     val dom = tail.dom
 
@@ -82,16 +83,21 @@ object RecursiveDefinition {
 
     def newobj = {
       // println("Calling new object")
-      DataCons(data.newobj, defn, tail)
+      DataCons(data.newobj, defn, tail, replacement)
     }
 
-    def subs(x: Term, y: Term) =
-      DataCons(data.replace(x, y), defn, tail.subs(x, y))
+    def subs(x: Term, y: Term) = {
+      val newData = data.replace(x, y)
+      replacement(x)(y).
+        map(_.copy(data = newData)).
+        getOrElse(
+        DataCons(newData, defn, tail.subs(x, y), replacement)
+    )}
 
     def caseFn(f: => Func[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
 
-    def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt)
+    def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt, replacement)
 
   }
 
