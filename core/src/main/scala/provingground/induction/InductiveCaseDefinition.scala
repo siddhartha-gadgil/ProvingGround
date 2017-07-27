@@ -10,6 +10,10 @@ import shapeless._
   */
 trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
+  val fibre: Func[H, Typ[C]]
+
+  def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C]
+
   def caseFn(f: => FuncLike[H, C])(arg: H): Option[C]
 
   def act(arg: H) = {
@@ -31,6 +35,8 @@ object InductiveDefinition {
 
     val defnData = Vector()
 
+    def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C] = that
+
     val depcodom = fibre
 
     val dom = fibre.dom
@@ -50,9 +56,12 @@ object InductiveDefinition {
                       D <: Term with Subs[D]](
       data: D,
       defn: D => FuncLike[H, C] => H => Option[C],
-      tail: InductiveDefinition[H, C]
+      tail: InductiveDefinition[H, C],
+      replacement: Term => Term => Func[H, Typ[C]] => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => (_: Func[H, Typ[C]]) => None
   ) extends InductiveDefinition[H, C] {
     val typ = tail.typ
+
+    val fibre = tail.fibre
 
     val dom = tail.dom
 
@@ -60,10 +69,19 @@ object InductiveDefinition {
 
     val defnData = data +: tail.defnData
 
-    def newobj = DataCons(data.newobj, defn, tail)
+    def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C] =
+      that match {
+        case dc: DataCons[H, C, D] =>
+          DataCons(data.replace(x, y), dc.defn, tail.dataSubs(dc.tail, x, y), dc.replacement)
+        case fn => fn
+      }
+
+    def newobj = DataCons(data.newobj, defn, tail, replacement)
 
     def subs(x: Term, y: Term) =
-      DataCons(data.replace(x, y), defn, tail.subs(x, y))
+      replacement(x)(y)(fibre).
+      map(dataSubs(_, x, y)).
+      getOrElse(DataCons(data.replace(x, y), defn, tail.subs(x, y), replacement))
 
     def caseFn(f: => FuncLike[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))

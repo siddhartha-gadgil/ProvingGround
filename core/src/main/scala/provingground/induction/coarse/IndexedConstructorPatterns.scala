@@ -786,7 +786,7 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
           cons.pattern.inducDefCase(cons.cons, d, depCurry(f))
 
       def inducDefn(fibre: Func[Total, Typ[C]]) = {
-        InductiveDefinition.DataCons(inducData(fibre),
+        InductiveDefinition.DataCons[Total, C, cons.pattern.InducDataType](inducData(fibre),
                                      inducDefn,
                                      tail.inducDefn(fibre))
       }

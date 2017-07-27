@@ -137,9 +137,9 @@ object ConstructorSeqMap {
       tail.recDefn(X),
       (x: Term) =>
         (y: Term) =>
-          (d: RD) =>
+          (cod: Typ[Cod]) =>
           if (W.replace(x, y) == W) None
-          else Some(subs(x, y).dataCons(pattern.codFromData(d).replace(x, y))))
+          else Some(subs(x, y).dataCons(cod.replace(x, y))))
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
       // RecursiveDefinition.DataCons(
@@ -154,10 +154,18 @@ object ConstructorSeqMap {
     val inducDefn = (d: ID) =>
       (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)
 
-    def inducDefn(fibre: Func[H, Typ[Cod]]) =
+    def indDataCons(fibre: Func[H, Typ[Cod]]) : InductiveDefinition.DataCons[H, Cod, ID] =
       InductiveDefinition.DataCons(inducData(fibre),
                                    inducDefn,
-                                   tail.inducDefn(fibre))
+                                   tail.inducDefn(fibre),
+                                  (x) =>
+                                    (y) =>
+                                      (fib) =>
+                                      if (W.replace(x, y) == W) None
+                                        else Some(subs(x, y).inducDefn(fib.replace(x, y)) ))
+
+    def inducDefn(fibre: Func[H, Typ[Cod]]) = indDataCons(fibre)
+
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))

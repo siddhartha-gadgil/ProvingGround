@@ -81,7 +81,7 @@ object ConstructorSeq {
       (f: FuncLike[H, C]) => cons.pattern.inducDefCase(cons.cons, d, f)
 
     def inducDefn(fibre: Func[H, Typ[C]]) =
-      InductiveDefinition.DataCons(inducData(fibre),
+      InductiveDefinition.DataCons[H, C, cons.pattern.InducDataType](inducData(fibre),
                                    inducDefn,
                                    tail.inducDefn(fibre))
 

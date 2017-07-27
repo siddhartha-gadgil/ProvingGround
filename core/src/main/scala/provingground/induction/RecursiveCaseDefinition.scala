@@ -75,7 +75,7 @@ object RecursiveDefinition {
       data: D,
       defn: D => Func[H, C] => H => Option[C],
       tail: RecursiveDefinition[H, C],
-      replacement: Term => Term => D => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => (_: D) => None
+      replacement: Term => Term => Typ[C] => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => (_: Typ[C]) => None
   ) extends RecursiveDefinition[H, C] {
     val dom = tail.dom
 
@@ -98,7 +98,7 @@ object RecursiveDefinition {
 
     def subs(x: Term, y: Term) = {
       val newData = data.replace(x, y)
-      replacement(x)(y)(data).
+      replacement(x)(y)(codom).
         map(dataSubs(_, x, y)).
         getOrElse(
         DataCons(newData, defn, tail.subs(x, y), replacement)
