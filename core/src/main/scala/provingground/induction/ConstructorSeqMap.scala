@@ -137,8 +137,9 @@ object ConstructorSeqMap {
       tail.recDefn(X),
       (x: Term) =>
         (y: Term) =>
+          (d: RD) =>
           if (W.replace(x, y) == W) None
-          else Some(subs(x, y).dataCons(X.replace(x, y))))
+          else Some(subs(x, y).dataCons(pattern.codFromData(d).replace(x, y))))
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
       // RecursiveDefinition.DataCons(

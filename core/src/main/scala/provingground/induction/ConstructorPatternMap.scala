@@ -51,6 +51,8 @@ sealed trait ConstructorPatternMap[
     */
   def recDataTyp(w: Typ[H], x: Typ[Cod]): Typ[RecDataType]
 
+  def codFromData(d: RecDataType) : Typ[Cod]
+
   /**
     * domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.
     */
@@ -105,6 +107,8 @@ object ConstructorPatternMap {
     //    type Cod = C
 
     def recDataTyp(w: Typ[H], x: Typ[C]) = x
+
+    def codFromData(d: RecDataType) : Typ[C] = d.typ.asInstanceOf[Typ[C]]
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: H): Typ[InducDataType] = xs(cons)
@@ -225,6 +229,12 @@ object ConstructorPatternMap {
     def recDataTyp(w: Typ[H], x: Typ[C]) =
       tail(w) ->: tail.target(x) ->: head.recDataTyp(w, x)
 
+    def codFromData(d: Func[F, Func[TT, HR]]) : Typ[C] = {
+      val x = d.dom.Var
+      val y = d(x).dom.Var
+      head.codFromData(d(x)(y))
+    }
+
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: Func[F, HC]): Typ[FuncLike[F, Func[DT, HI]]] = {
       val a        = tail(w).Var
@@ -289,6 +299,9 @@ object ConstructorPatternMap {
     val headfibre = (t: T) => head
 
     def recDataTyp(w: Typ[H], x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
+
+    def codFromData(d: Func[T, HR]) : Typ[Cod] =
+      head.codFromData(d(tail.Var))
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[Cod]])(
         cons: Func[T, HC]): Typ[FuncLike[T, HI]] = {
@@ -356,6 +369,11 @@ object ConstructorPatternMap {
       val a     = tail.Var
       val fibre = lmbda(a)(headfibre(a).recDataTyp(w, x))
       piDefn(a)(headfibre(a).recDataTyp(w, x))
+    }
+
+    def codFromData(d: FuncLike[T, V]) : Typ[C] = {
+      val a = tail.Var
+      headfibre(a).codFromData(d(a))
     }
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(

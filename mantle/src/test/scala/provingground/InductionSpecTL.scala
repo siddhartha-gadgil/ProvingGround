@@ -179,6 +179,11 @@ class InductionSpecTL extends FlatSpec {
     assert(mapBA(consB(b)(consB(b)(nilB))) == consA(h(b))(consA(h(b))(nilA)))
     val b1 = "b1" :: B
     assert(mapBA(consB(b)(consB(b1)(nilB))) == consA(h(b))(consA(h(b1))(nilA)))
+
+    val lmap = A :~> (B :~> (f :-> (mapAB)))
+    val mpBA = lmap(B)(A)(h)
+    val bb   = consB(b)(nilB)
+    assert(mpBA(bb) == consA(h(b))(nilA))
   }
 
   // Example: binary trees

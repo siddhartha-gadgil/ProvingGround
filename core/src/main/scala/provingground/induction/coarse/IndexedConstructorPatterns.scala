@@ -767,7 +767,7 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
         (f: Func[Total, C]) => cons.pattern.recDefCase(cons.cons, d, curry(f))
 
       def recDefn(X: Typ[C]) =
-        RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+        RecursiveDefinition.DataCons[Total, C, cons.pattern.RecDataType](data(X), defn, tail.recDefn(X))
 
       type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 

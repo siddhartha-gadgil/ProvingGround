@@ -63,7 +63,7 @@ object ConstructorSeq {
       (f: Func[H, C]) => cons.pattern.recDefCase(cons.cons, d, f)
 
     def recDefn(X: Typ[C]) =
-      RecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+      RecursiveDefinition.DataCons[H, C, cons.pattern.RecDataType](data(X), defn, tail.recDefn(X))
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 

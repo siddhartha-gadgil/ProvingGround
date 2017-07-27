@@ -18,6 +18,8 @@ trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     */
   def caseFn(f: => Func[H, C])(arg: H): Option[C]
 
+  def dataSubs(that: RecursiveDefinition[H, C], x: Term, y: Term) : RecursiveDefinition[H, C]
+
   def act(arg: H) = {
     caseFn(self)(arg) getOrElse codom.symbObj(ApplnSym(self, arg))
   }
@@ -52,6 +54,8 @@ object RecursiveDefinition {
 
     def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
 
+    def dataSubs(that: RecursiveDefinition[H, C], x: Term, y: Term) : RecursiveDefinition[H, C] = that
+
     def newobj = {
       val newdom = dom.newobj
       Empty(newdom, codom.replace(dom, newdom))
@@ -71,7 +75,7 @@ object RecursiveDefinition {
       data: D,
       defn: D => Func[H, C] => H => Option[C],
       tail: RecursiveDefinition[H, C],
-      replacement: Term => Term => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => None
+      replacement: Term => Term => D => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => (_: D) => None
   ) extends RecursiveDefinition[H, C] {
     val dom = tail.dom
 
@@ -81,6 +85,12 @@ object RecursiveDefinition {
 
     val defnData = data +: tail.defnData
 
+    def dataSubs(that: RecursiveDefinition[H, C], x: Term, y: Term) : RecursiveDefinition[H, C] = that match {
+      case dc: DataCons[H, C, D] =>
+        DataCons(data.replace(x, y), dc.defn, tail.dataSubs(dc.tail, x, y), dc.replacement)
+      case fn => fn
+    }
+
     def newobj = {
       // println("Calling new object")
       DataCons(data.newobj, defn, tail, replacement)
@@ -88,8 +98,8 @@ object RecursiveDefinition {
 
     def subs(x: Term, y: Term) = {
       val newData = data.replace(x, y)
-      replacement(x)(y).
-        map(_.copy(data = newData)).
+      replacement(x)(y)(data).
+        map(dataSubs(_, x, y)).
         getOrElse(
         DataCons(newData, defn, tail.subs(x, y), replacement)
     )}
