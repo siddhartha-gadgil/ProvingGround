@@ -226,7 +226,12 @@ object IndexedConstructorSeqMap {
     def indDataCons(fibre: IDFT) : IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID] =
       IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](inducData(fibre),
                                           inducDefn,
-                                          tail.inducDefn(fibre))
+                                          tail.inducDefn(fibre),
+                                          (x) =>
+                                            (y) =>
+                                              (fib) =>
+                                                if (W.replace(x, y) == W) None
+                                                else Some(subs(x, y).indDataCons(fib.replace(x, y))))
 
     def inducDefn(fibre: IDFT) = indDataCons(fibre)
 
