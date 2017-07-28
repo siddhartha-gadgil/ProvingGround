@@ -767,7 +767,10 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
         (f: Func[Total, C]) => cons.pattern.recDefCase(cons.cons, d, curry(f))
 
       def recDefn(X: Typ[C]) =
-        RecursiveDefinition.DataCons[Total, C, cons.pattern.RecDataType](data(X), defn, tail.recDefn(X))
+        RecursiveDefinition.DataCons[Total, C, cons.pattern.RecDataType](
+          data(X),
+          defn,
+          tail.recDefn(X))
 
       type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
@@ -786,9 +789,10 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
           cons.pattern.inducDefCase(cons.cons, d, depCurry(f))
 
       def inducDefn(fibre: Func[Total, Typ[C]]) = {
-        InductiveDefinition.DataCons[Total, C, cons.pattern.InducDataType](inducData(fibre),
-                                     inducDefn,
-                                     tail.inducDefn(fibre))
+        InductiveDefinition.DataCons[Total, C, cons.pattern.InducDataType](
+          inducData(fibre),
+          inducDefn,
+          tail.inducDefn(fibre))
       }
 
       def inducDataLambda(fibre: Func[Total, Typ[C]]) =

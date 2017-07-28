@@ -12,7 +12,9 @@ trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
   val fibre: Func[H, Typ[C]]
 
-  def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C]
+  def dataSubs(that: InductiveDefinition[H, C],
+               x: Term,
+               y: Term): InductiveDefinition[H, C]
 
   def caseFn(f: => FuncLike[H, C])(arg: H): Option[C]
 
@@ -35,7 +37,9 @@ object InductiveDefinition {
 
     val defnData = Vector()
 
-    def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C] = that
+    def dataSubs(that: InductiveDefinition[H, C],
+                 x: Term,
+                 y: Term): InductiveDefinition[H, C] = that
 
     val depcodom = fibre
 
@@ -57,7 +61,8 @@ object InductiveDefinition {
       data: D,
       defn: D => FuncLike[H, C] => H => Option[C],
       tail: InductiveDefinition[H, C],
-      replacement: Term => Term => Func[H, Typ[C]] => Option[DataCons[H, C, D]] = (_ : Term) => (_: Term) => (_: Func[H, Typ[C]]) => None
+      replacement: Term => Term => Func[H, Typ[C]] => Option[DataCons[H, C, D]] =
+        (_: Term) => (_: Term) => (_: Func[H, Typ[C]]) => None
   ) extends InductiveDefinition[H, C] {
     val typ = tail.typ
 
@@ -69,19 +74,25 @@ object InductiveDefinition {
 
     val defnData = data +: tail.defnData
 
-    def dataSubs(that: InductiveDefinition[H, C], x: Term, y: Term) : InductiveDefinition[H, C] =
+    def dataSubs(that: InductiveDefinition[H, C],
+                 x: Term,
+                 y: Term): InductiveDefinition[H, C] =
       that match {
         case dc: DataCons[H, C, D] =>
-          DataCons(data.replace(x, y), dc.defn, tail.dataSubs(dc.tail, x, y), dc.replacement)
+          DataCons(data.replace(x, y),
+                   dc.defn,
+                   tail.dataSubs(dc.tail, x, y),
+                   dc.replacement)
         case fn => fn
       }
 
     def newobj = DataCons(data.newobj, defn, tail, replacement)
 
     def subs(x: Term, y: Term) =
-      replacement(x)(y)(fibre).
-      map(dataSubs(_, x, y)).
-      getOrElse(DataCons(data.replace(x, y), defn, tail.subs(x, y), replacement))
+      replacement(x)(y)(fibre)
+        .map(dataSubs(_, x, y))
+        .getOrElse(
+          DataCons(data.replace(x, y), defn, tail.subs(x, y), replacement))
 
     def caseFn(f: => FuncLike[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
@@ -150,6 +161,9 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   def subs(x: Term,
            y: Term): IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+
+  def dataSubs(that: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT],
+          x: Term, y: Term) : IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
 }
 
 object IndexedInductiveDefinition {
@@ -171,6 +185,9 @@ object IndexedInductiveDefinition {
 
     def subs(x: Term, y: Term) =
       Empty(W.replace(x, y), Xs.replace(x, y), family.subs(x, y))
+
+    def dataSubs(that: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT],
+              x: Term, y: Term) = that
   }
 
   case class DataCons[H <: Term with Subs[H],
@@ -183,7 +200,9 @@ object IndexedInductiveDefinition {
                       D <: Term with Subs[D]](
       data: D,
       defn: D => IDF => H => Option[C],
-      tail: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+      tail: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT],
+      replacement: Term => Term => IDFT => Option[DataCons[H, F, C, Index, IF, IDF, IDFT, D]] =
+        (_: Term) => (_: Term) => (_: IDFT) => None
   ) extends IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT] {
     val family = tail.family
 
@@ -197,6 +216,20 @@ object IndexedInductiveDefinition {
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
 
     def subs(x: Term, y: Term) =
-      DataCons(data.replace(x, y), defn, tail.subs(x, y))
+      replacement(x)(y)(Xs)
+        .map(dataSubs(_, x, y))
+        .getOrElse(
+          DataCons(data.replace(x, y), defn, tail.subs(x, y), replacement))
+
+      def dataSubs(that: IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT],
+              x: Term, y: Term) = that match {
+                case dc: DataCons[H, F, C, Index, IF, IDF, IDFT, D] =>
+                  DataCons(data.replace(x, y),
+                           dc.defn,
+                           tail.dataSubs(dc.tail, x, y),
+                           dc.replacement
+                        )
+                case fn => fn
+              }
   }
 }

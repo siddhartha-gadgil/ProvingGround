@@ -59,7 +59,8 @@ trait ConstructorSeqMap[C <: Term with Subs[C],
   def induc(fibre: Func[H, Typ[C]]) =
     inducDataLambda(fibre)(inducDefn(fibre))
 
-  def subs(x: Term, y: Term) : ConstructorSeqMap[C, H, RecType, InducType, Intros]
+  def subs(x: Term,
+           y: Term): ConstructorSeqMap[C, H, RecType, InducType, Intros]
 }
 
 object ConstructorSeqMap {
@@ -121,7 +122,8 @@ object ConstructorSeqMap {
                                 Func[ID, TI],
                                 C :: TIntros] {
 
-    def subs(x: Term, y: Term) = Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
+    def subs(x: Term, y: Term) =
+      Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
 
     val W = tail.W
 
@@ -132,18 +134,19 @@ object ConstructorSeqMap {
 
     import RecursiveDefinition.DataCons
 
-    def dataCons(X: Typ[Cod]) : DataCons[H, Cod, RD]  = DataCons(
-      data(X), defn,
-      tail.recDefn(X),
-      (x: Term) =>
-        (y: Term) =>
-          (cod: Typ[Cod]) =>
-          if (W.replace(x, y) == W) None
-          else Some(subs(x, y).dataCons(cod.replace(x, y))))
+    def dataCons(X: Typ[Cod]): DataCons[H, Cod, RD] =
+      DataCons(data(X),
+               defn,
+               tail.recDefn(X),
+               (x: Term) =>
+                 (y: Term) =>
+                   (cod: Typ[Cod]) =>
+                     if (W.replace(x, y) == W) None
+                     else Some(subs(x, y).dataCons(cod.replace(x, y))))
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
-      // RecursiveDefinition.DataCons(
-      //   data(X), defn, tail.recDefn(X))
+    // RecursiveDefinition.DataCons(
+    //   data(X), defn, tail.recDefn(X))
 
     def recDataLambda(X: Typ[Cod]) =
       f => lmbda(data(X))(tail.recDataLambda(X)(f))
@@ -154,18 +157,19 @@ object ConstructorSeqMap {
     val inducDefn = (d: ID) =>
       (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)
 
-    def indDataCons(fibre: Func[H, Typ[Cod]]) : InductiveDefinition.DataCons[H, Cod, ID] =
-      InductiveDefinition.DataCons(inducData(fibre),
-                                   inducDefn,
-                                   tail.inducDefn(fibre),
-                                  (x) =>
-                                    (y) =>
-                                      (fib) =>
-                                      if (W.replace(x, y) == W) None
-                                        else Some(subs(x, y).inducDefn(fib.replace(x, y)) ))
+    def indDataCons(
+        fibre: Func[H, Typ[Cod]]): InductiveDefinition.DataCons[H, Cod, ID] =
+      InductiveDefinition.DataCons(
+        inducData(fibre),
+        inducDefn,
+        tail.inducDefn(fibre),
+        (x) =>
+          (y) =>
+            (fib) =>
+              if (W.replace(x, y) == W) None
+              else Some(subs(x, y).indDataCons(fib.replace(x, y))))
 
     def inducDefn(fibre: Func[H, Typ[Cod]]) = indDataCons(fibre)
-
 
     def inducDataLambda(fibre: Func[H, Typ[Cod]]) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))

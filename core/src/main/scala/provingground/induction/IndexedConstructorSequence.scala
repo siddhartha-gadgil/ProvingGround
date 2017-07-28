@@ -40,7 +40,16 @@ abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
     */
   val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 
-  def subs(x: Term, y: Term) : IndexedConstructorSeqMap[C, H, RecType, InducType, Intros, F, Index, IF, IDF, IDFT]
+  def subs(x: Term, y: Term): IndexedConstructorSeqMap[C,
+                                                       H,
+                                                       RecType,
+                                                       InducType,
+                                                       Intros,
+                                                       F,
+                                                       Index,
+                                                       IF,
+                                                       IDF,
+                                                       IDFT]
 
   /**
     * the raw recursive definition, from which the recursion function is built by lambdas
@@ -174,7 +183,8 @@ object IndexedConstructorSeqMap {
 
     val family = tail.family
 
-    def subs(x: Term, y: Term) = Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
+    def subs(x: Term, y: Term) =
+      Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
 
     def data(X: Typ[Cod]): RD =
       pattern.recDataTyp(W, X).symbObj(RecDataSym(cons))
@@ -183,8 +193,23 @@ object IndexedConstructorSeqMap {
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
 
-    def dataCons(X: Typ[Cod]) =
-      IndexedRecursiveDefinition.DataCons(data(X), defn, tail.recDefn(X))
+    def dataCons(X: Typ[Cod]): IndexedRecursiveDefinition.DataCons[H,
+                                                                   F,
+                                                                   Cod,
+                                                                   Index,
+                                                                   IF,
+                                                                   IDF,
+                                                                   IDFT,
+                                                                   RD] =
+      IndexedRecursiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, RD](
+        data(X),
+        defn,
+        tail.recDefn(X),
+        (x: Term) =>
+          (y: Term) =>
+            (cod: Typ[Cod]) =>
+              if (W.replace(x, y) == W) None
+              else Some(subs(x, y).dataCons(cod.replace(x, y))))
 
     // type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
@@ -198,10 +223,13 @@ object IndexedConstructorSeqMap {
 
     val inducDefn = (d: ID) => (f: IDF) => pattern.inducDefCase(cons, d, f)
 
-    def inducDefn(fibre: IDFT) =
-      IndexedInductiveDefinition.DataCons(inducData(fibre),
+    def indDataCons(fibre: IDFT) : IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID] =
+      IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](inducData(fibre),
                                           inducDefn,
                                           tail.inducDefn(fibre))
+
+    def inducDefn(fibre: IDFT) = indDataCons(fibre)
+
 
     def inducDataLambda(fibre: IDFT) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))

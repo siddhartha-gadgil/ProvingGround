@@ -51,7 +51,7 @@ sealed trait ConstructorPatternMap[
     */
   def recDataTyp(w: Typ[H], x: Typ[Cod]): Typ[RecDataType]
 
-  def codFromData(d: RecDataType) : Typ[Cod]
+  def codFromData(d: RecDataType): Typ[Cod]
 
   /**
     * domain containing the induction data for the constructor, i.e., the HoTT type of the induction data.
@@ -108,7 +108,7 @@ object ConstructorPatternMap {
 
     def recDataTyp(w: Typ[H], x: Typ[C]) = x
 
-    def codFromData(d: RecDataType) : Typ[C] = d.typ.asInstanceOf[Typ[C]]
+    def codFromData(d: RecDataType): Typ[C] = d.typ.asInstanceOf[Typ[C]]
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: H): Typ[InducDataType] = xs(cons)
@@ -229,7 +229,7 @@ object ConstructorPatternMap {
     def recDataTyp(w: Typ[H], x: Typ[C]) =
       tail(w) ->: tail.target(x) ->: head.recDataTyp(w, x)
 
-    def codFromData(d: Func[F, Func[TT, HR]]) : Typ[C] = {
+    def codFromData(d: Func[F, Func[TT, HR]]): Typ[C] = {
       val x = d.dom.Var
       val y = d(x).dom.Var
       head.codFromData(d(x)(y))
@@ -245,14 +245,17 @@ object ConstructorPatternMap {
     }
 
     def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
-      val g = tail.induced(f)
+      val g      = tail.induced(f)
       val recres = g(arg)
       val result =
-        if (data.dom == arg.typ && data(arg).dom == recres.typ) data(arg)(recres)
+        if (data.dom == arg.typ && data(arg).dom == recres.typ)
+          data(arg)(recres)
         else {
           import translation.FansiShow._
-          println(s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
-          println(s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
+          println(
+            s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
+          println(
+            s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
           println(s"domain of data(arg) is ${data(arg).dom.fansi}")
           println(s"induced  function g = ${g}\n from f = ${f.fansi}")
           ???
@@ -300,7 +303,7 @@ object ConstructorPatternMap {
 
     def recDataTyp(w: Typ[H], x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
 
-    def codFromData(d: Func[T, HR]) : Typ[Cod] =
+    def codFromData(d: Func[T, HR]): Typ[Cod] =
       head.codFromData(d(tail.Var))
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[Cod]])(
@@ -371,7 +374,7 @@ object ConstructorPatternMap {
       piDefn(a)(headfibre(a).recDataTyp(w, x))
     }
 
-    def codFromData(d: FuncLike[T, V]) : Typ[C] = {
+    def codFromData(d: FuncLike[T, V]): Typ[C] = {
       val a = tail.Var
       headfibre(a).codFromData(d(a))
     }

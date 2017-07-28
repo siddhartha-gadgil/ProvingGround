@@ -63,7 +63,10 @@ object ConstructorSeq {
       (f: Func[H, C]) => cons.pattern.recDefCase(cons.cons, d, f)
 
     def recDefn(X: Typ[C]) =
-      RecursiveDefinition.DataCons[H, C, cons.pattern.RecDataType](data(X), defn, tail.recDefn(X))
+      RecursiveDefinition.DataCons[H, C, cons.pattern.RecDataType](
+        data(X),
+        defn,
+        tail.recDefn(X))
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
 
@@ -81,9 +84,10 @@ object ConstructorSeq {
       (f: FuncLike[H, C]) => cons.pattern.inducDefCase(cons.cons, d, f)
 
     def inducDefn(fibre: Func[H, Typ[C]]) =
-      InductiveDefinition.DataCons[H, C, cons.pattern.InducDataType](inducData(fibre),
-                                   inducDefn,
-                                   tail.inducDefn(fibre))
+      InductiveDefinition.DataCons[H, C, cons.pattern.InducDataType](
+        inducData(fibre),
+        inducDefn,
+        tail.inducDefn(fibre))
 
     def inducDataLambda(fibre: Func[H, Typ[C]]) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))
