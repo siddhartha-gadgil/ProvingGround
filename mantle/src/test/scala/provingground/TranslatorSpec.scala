@@ -27,9 +27,9 @@ class TranslatorSpec extends FlatSpec {
   }
 
   val trans = Translator.Empty[A, A] ||
-    Bpat >>> { case (x, y)             => C(x, y) } ||
-    Dpat >>> { case _                  => E } ||
-    bigPat >>> { case (v, (x, (y, w))) => Big(v, x, y, w) }
+      Bpat >>> { case (x, y)             => C(x, y) } ||
+      Dpat >>> { case _                  => E } ||
+      bigPat >>> { case (v, (x, (y, w))) => Big(v, x, y, w) }
 
   val big =
     Big(

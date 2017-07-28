@@ -45,29 +45,29 @@ lazy val baseSettings = Seq(
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
-    resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
-    libraryDependencies ++= Seq(
-      // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
+  resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  libraryDependencies ++= Seq(
+    // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.typelevel" %% "spire"      % "0.14.1",
-      "com.lihaoyi"   %% "fansi"      % "0.2.4",
-      "com.lihaoyi"   %% "upickle"    % "0.4.4",
-      "com.chuusai"   %% "shapeless"  % "2.3.2",
-      "org.typelevel" %% "cats"       % "0.9.0",
-      "io.monix"      %% "monix"      % "2.3.0",
-      "io.monix"      %% "monix-cats" % "2.3.0",
-      "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.patch
-    ),
-    scalacOptions in Compile ++= Seq("-unchecked",
-                                     "-deprecation",
-                                     "-feature",
-                                     "-language:existentials"),
-    scalacOptions in (Compile, doc) ++= Seq("-diagrams",
-                                            "-implicits",
-                                            "-implicits-show-all"),
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
-  )
+    "org.typelevel" %% "spire"      % "0.14.1",
+    "com.lihaoyi"   %% "fansi"      % "0.2.4",
+    "com.lihaoyi"   %% "upickle"    % "0.4.4",
+    "com.chuusai"   %% "shapeless"  % "2.3.2",
+    "org.typelevel" %% "cats"       % "0.9.0",
+    "io.monix"      %% "monix"      % "2.3.0",
+    "io.monix"      %% "monix-cats" % "2.3.0",
+    "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
+  ),
+  scalacOptions in Compile ++= Seq("-unchecked",
+                                   "-deprecation",
+                                   "-feature",
+                                   "-language:existentials"),
+  scalacOptions in (Compile, doc) ++= Seq("-diagrams",
+                                          "-implicits",
+                                          "-implicits-show-all"),
+  testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
+)
 
 val akkaV = "2.4.17"
 
@@ -77,8 +77,8 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi"            % "ammonite"       % ammV % "test" cross CrossVersion.full,
-    "com.lihaoyi"            %% "ammonite-ops"  % ammV,
+    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+    // "com.lihaoyi"            %% "ammonite-ops"  % ammV,
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
@@ -132,7 +132,7 @@ lazy val serverSettings = Seq(
 
 lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.patch,
+    "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",

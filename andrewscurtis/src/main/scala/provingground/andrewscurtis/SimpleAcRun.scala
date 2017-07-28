@@ -76,8 +76,8 @@ object SimpleAcRun {
       val ps =
         futureList map
           ((doclist) =>
-            for (bd <- doclist; p <- bd.getAs[String]("path"))
-              yield read[PickledPath](p).unpickle)
+             for (bd <- doclist; p <- bd.getAs[String]("path"))
+               yield read[PickledPath](p).unpickle)
       ps
     }
   }

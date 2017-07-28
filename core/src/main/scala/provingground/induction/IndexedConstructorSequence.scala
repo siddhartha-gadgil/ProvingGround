@@ -223,18 +223,25 @@ object IndexedConstructorSeqMap {
 
     val inducDefn = (d: ID) => (f: IDF) => pattern.inducDefCase(cons, d, f)
 
-    def indDataCons(fibre: IDFT) : IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID] =
-      IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](inducData(fibre),
-                                          inducDefn,
-                                          tail.inducDefn(fibre),
-                                          (x) =>
-                                            (y) =>
-                                              (fib) =>
-                                                if (W.replace(x, y) == W) None
-                                                else Some(subs(x, y).indDataCons(fib.replace(x, y))))
+    def indDataCons(fibre: IDFT): IndexedInductiveDefinition.DataCons[H,
+                                                                      F,
+                                                                      Cod,
+                                                                      Index,
+                                                                      IF,
+                                                                      IDF,
+                                                                      IDFT,
+                                                                      ID] =
+      IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](
+        inducData(fibre),
+        inducDefn,
+        tail.inducDefn(fibre),
+        (x) =>
+          (y) =>
+            (fib) =>
+              if (W.replace(x, y) == W) None
+              else Some(subs(x, y).indDataCons(fib.replace(x, y))))
 
     def inducDefn(fibre: IDFT) = indDataCons(fibre)
-
 
     def inducDataLambda(fibre: IDFT) =
       (f) => lmbda(inducData(fibre))(tail.inducDataLambda(fibre)(f))

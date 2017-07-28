@@ -44,9 +44,9 @@ class DeducerSource(ded: Deducer,
       .sequence {
         (1 to threads) map
           ((_) =>
-            Future {
-              nextDistribution(initDist, initBatch, false, Vector(), smooth)
-            })
+             Future {
+               nextDistribution(initDist, initBatch, false, Vector(), smooth)
+             })
       }
       .map(
         (fdsInvMap) =>
@@ -72,9 +72,9 @@ class DeducerSource(ded: Deducer,
           .sequence {
             (1 to threads) map
               ((_) =>
-                Future {
-                  nextDistribution(fd, batchSize, true, invM, smooth)
-                })
+                 Future {
+                   nextDistribution(fd, batchSize, true, invM, smooth)
+                 })
           }
           .map(
             (fdsInvMap) =>
@@ -115,14 +115,14 @@ class DeducerSource(ded: Deducer,
           .sequence {
             (1 to threads) map
               ((_) =>
-                Future {
-                  learnerNextDistribution(fd,
-                                          theorems,
-                                          batchSize,
-                                          true,
-                                          invM,
-                                          smooth)
-                })
+                 Future {
+                   learnerNextDistribution(fd,
+                                           theorems,
+                                           batchSize,
+                                           true,
+                                           invM,
+                                           smooth)
+                 })
           }
           .map(
             (fdsInvMap) =>

@@ -242,14 +242,14 @@ object IndexedRecursiveDefinition {
     def caseFn(f: => IF)(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
 
-      def subs(x: Term, y: Term) = {
-        val newData = data.replace(x, y)
-        replacement(x)(y)(X)
-          .map(dataSubs(_, x, y))
-          .getOrElse(
-            DataCons(newData, defn, tail.subs(x, y), replacement)
-          )
-        }
+    def subs(x: Term, y: Term) = {
+      val newData = data.replace(x, y)
+      replacement(x)(y)(X)
+        .map(dataSubs(_, x, y))
+        .getOrElse(
+          DataCons(newData, defn, tail.subs(x, y), replacement)
+        )
+    }
 
     def dataSubs(
         that: IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT],
