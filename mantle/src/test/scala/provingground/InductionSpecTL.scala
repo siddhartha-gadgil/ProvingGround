@@ -257,6 +257,19 @@ class InductionSpecTL extends FlatSpec {
         consv(one)(two)(consv(zero)(one)(nilv))))
   }
 
+  val W     = "Wec" :: Nat ->: Type
+  val nilw  = "nil" :: W(zero)
+  val consw = "cons" :: n ~>: (Nat ->: W(n) ->: W(succ(n)))
+
+  val countdownW = countdown.replace(V, W)
+
+  "Replacing Vectors by Wectors in induction on Nat" should "give correct results" in {
+    assert(countdownW(zero) == nilw)
+    assert(
+      countdownW(three) == consw(two)(three)(
+        consw(one)(two)(consw(zero)(one)(nilw))))
+  }
+
   // Indexed Inductive types
 
   // TypeLeveL:
@@ -329,6 +342,43 @@ class InductionSpecTL extends FlatSpec {
     val step =
       n :~> (m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result))))
     assert(vsum(three)(iv(step)(two)(iv(step)(one)(v1))) == five)
+  }
+
+  val WecN = "Wec(Nat)" :: Nat ->: Type
+  val wnn  = "w_n" :: WecN(n)
+  val WecNInd =
+    ("nil" ::: (WecN -> WecN(zero))) |: {
+      "cons" ::: n ~>>:
+        (Nat ->>: (WecN :> WecN(n)) -->>: (WecN -> WecN(succ(n))))
+    } =:: WecN
+
+  val wnilN :: wconsN :: HNil = WecNInd.intros
+
+  val wsum = vsum.replace(VecN, WecN)
+
+  "Replacing Vec By Wec" should "give correct results in indexed recursive vsum" in {
+    assert(wsum(zero)(wnilN) == zero)
+    assert(wsum(one)(wconsN(zero)(two)(wnilN)) == two)
+    assert(wsum(two)(v3.replace(VecN, WecN)) == three)
+  }
+
+  it should "give correct (indexed inductive) prepend" in {
+    val fmly   = n :~> (("w" :: VecN(n)) :-> VecN(succ(n)))
+    val ind    = VecNInd.induc(fmly)
+    val tail   = "tail" :: VecN(n)
+    val result = "result" :: VecN(succ(n))
+    val step =
+      n :~> (m :~> (tail :~> (result :-> vconsN(succ(n))(two)(result))))
+
+    val v1 = vconsN(zero)(one)(vnilN)
+    val iv = ind(v1)
+
+    val w1 = wconsN(zero)(one)(wnilN)
+
+    val func  = iv(step)
+    val funcW = func.replace(VecN, WecN)
+    // assert(vsum(three)(func(two)(func(one)(v1))) == five)
+    assert(wsum(three)(funcW(two)(funcW(one)(w1))) == five)
   }
 
   // Sum type
