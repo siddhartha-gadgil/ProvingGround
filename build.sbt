@@ -40,8 +40,8 @@ resolvers += Resolver.sonatypeRepo("releases")
 lazy val jsProjects = Seq(client)
 
 lazy val baseSettings = Seq(
-  version := "0.1",
-  organization := "in.ernet.iisc.math" //, scalaVersion := scalaV
+  version := "0.1-SNAPSHOT",
+  organization := "in.ac.iisc.math" //, scalaVersion := scalaV
 )
 
 lazy val commonSettings = baseSettings ++ Seq(

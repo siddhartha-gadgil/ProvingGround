@@ -200,8 +200,8 @@ object ACMongo extends ACWriter {
 
     emptyFut map
       ((check) =>
-         if (check) actorsDB.insert(init)
-         else actorsDB.update(selector, modifier))
+        if (check) actorsDB.insert(init)
+        else actorsDB.update(selector, modifier))
   }
 
   /**
@@ -240,9 +240,9 @@ object ACMongo extends ACWriter {
       actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
     entries map
       ((vec) =>
-         (vec map
-           (_.getAs[String]("start-data") flatMap
-             ((d) => uread[List[StartData]](d).headOption))).flatten)
+        (vec map
+          (_.getAs[String]("start-data") flatMap
+            ((d) => uread[List[StartData]](d).headOption))).flatten)
   }
 
   /**
@@ -320,9 +320,9 @@ object ACMongo extends ACWriter {
   def getFutOptFDV(name: String) =
     (getFutOptElems(name)) mapp
       ((vec: Vector[ACElem]) =>
-         FiniteDistribution(
-           vec map ((elem) => Weighted(elem.moves, elem.weight))
-         ))
+        FiniteDistribution(
+          vec map ((elem) => Weighted(elem.moves, elem.weight))
+        ))
 
   /**
     * returns finite distribution on theorems, given actor name, as future option.
@@ -330,9 +330,9 @@ object ACMongo extends ACWriter {
   def getFutOptThms(name: String) =
     getFutOptThmElems(name) mapp
       ((vec: Vector[ACThm]) =>
-         FiniteDistribution(
-           vec map ((elem) => Weighted(elem.pres, elem.weight))
-         ))
+        FiniteDistribution(
+          vec map ((elem) => Weighted(elem.pres, elem.weight))
+        ))
 
 //  def getFutOptState(name: String) =
 //    for (optFDM <- getFutOptFDM(name); optFDV <- getFutOptFDV(name))

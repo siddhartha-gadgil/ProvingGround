@@ -168,10 +168,11 @@ object ProvingGroundJS {
         svgLines(tsList).foreach((elem) => svg.appendChild(elem))
         val cons = dom.document.getElementById("time-series-console")
         tsList sortBy (_._2.last) foreach
-          ((lv) =>
-             cons.appendChild(
-               span(katex(lv._1), ";").render
-             ))
+          (
+              (lv) =>
+                cons.appendChild(
+                  span(katex(lv._1), ";").render
+                ))
     }
   }
 
@@ -186,8 +187,8 @@ object ProvingGroundJS {
 
     jsElems foreach
       ((elem) => {
-         elem.innerHTML = ""
-         elem.appendChild(script(elem.getAttribute("data-script")))
-       })
+        elem.innerHTML = ""
+        elem.appendChild(script(elem.getAttribute("data-script")))
+      })
   }
 }
