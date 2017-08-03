@@ -11,7 +11,7 @@ object MereProposition {
 
   // Should refine to type of unit
   case class Truncation[U <: Term with Subs[U]](base: Typ[U])
-      extends Typ[Term] {
+    extends Typ[Term] {
     lazy val typ = base.typ
 
     def subs(x: Term, y: Term) = Truncation(base.replace(x, y))
@@ -26,7 +26,7 @@ object MereProposition {
   }
 
   case class Quotient[U <: Term with Subs[U]](base: Typ[U])
-      extends Func[U, Term] {
+    extends Func[U, Term] {
     lazy val dom = base
 
     lazy val codom = Truncation(base)
@@ -43,10 +43,10 @@ object MereProposition {
   }
 
   case class Factorize[U <: Term with Subs[U], V <: Term with Subs[V]](
-      A: Typ[U],
-      B: Typ[V])
-      extends Func[Term, Func[Func[U, V], Func[Term, V]]]
-      with Subs[Factorize[U, V]] {
+    A: Typ[U],
+    B: Typ[V])
+    extends Func[Term, Func[Func[U, V], Func[Term, V]]]
+    with Subs[Factorize[U, V]] {
 
     lazy val dom = isPropn(B)
 

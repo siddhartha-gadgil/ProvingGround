@@ -7,7 +7,7 @@ import ScalaPolyRep._
 import ScalaRep._
 
 //import spire.algebra._
-import spire.math.{poly => mathpoly, _}
+import spire.math.{ poly => mathpoly, _ }
 import spire.implicits._
 //import scala.util._
 import scala.language.implicitConversions
@@ -17,12 +17,12 @@ import NatRing._
 import NatTyp._
 
 /**
-  * @author gadgil
-  */
+ * @author gadgil
+ */
 case class IndexedVecTyp[X, +U <: RepTerm[X] with Subs[U]](
-    basetyp: Typ[U],
-    dim: SafeLong)(implicit baserep: ScalaRep[U, X])
-    extends Typ[RepTerm[Vector[X]]] {
+  basetyp: Typ[U],
+  dim: SafeLong)(implicit baserep: ScalaRep[U, X])
+  extends Typ[RepTerm[Vector[X]]] {
   type Obj = RepTerm[Vector[X]]
 
   val typ = Universe(0)
@@ -42,7 +42,8 @@ case class IndexedVecTyp[X, +U <: RepTerm[X] with Subs[U]](
 }
 
 class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
-    implicit baserep: ScalaRep[U, X]) {
+  implicit
+  baserep: ScalaRep[U, X]) {
   implicit val vrep = IndexedVecTyp.vecRep[U, X]
 
   assert(
@@ -52,7 +53,7 @@ class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
   val n = "n" :: NatTyp
 
   val Vec = ((n: SafeLong) =>
-               IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
+    IndexedVecTyp[X, U](basetyp, n): Typ[RepTerm[Vector[X]]]).term
 
   val NilVec = (Vector(): Vector[X]).getTerm(Vec(Literal(0)))
 
@@ -66,15 +67,14 @@ class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
 
   val consLike = ScalaPolyTerm(consFn)(consRep).getTerm(consTyp)
 
-  val cons = consLike.asInstanceOf[
-    FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
+  val cons = consLike.asInstanceOf[FuncLike[Nat, Func[U, Func[RepTerm[Vector[X]], RepTerm[Vector[X]]]]]]
 }
 
 object NatVecTyps extends VecTyps[SafeLong, Nat](NatTyp)
 
 object IndexedVecTyp {
   case class VecPolyRep[U <: Term with Subs[U], X]()
-      extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
+    extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
 
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match {
       case tp @ IndexedVecTyp(basetyp, dim) if dim == elem.size => {
@@ -97,8 +97,8 @@ object IndexedVecTyp {
   }
 
   implicit def vecRep[U <: Term with Subs[U], X](
-      implicit baserep: ScalaPolyRep[U, X])
-    : ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
+    implicit
+    baserep: ScalaPolyRep[U, X]): ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
 
   val n = "n" :: NatTyp
 }

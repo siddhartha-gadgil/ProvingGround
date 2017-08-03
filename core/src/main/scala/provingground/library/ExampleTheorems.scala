@@ -9,14 +9,14 @@ import induction.TLImplicits._
 import shapeless._
 
 object SimpleEvens {
-  import Nats.{Nat => Nt, _}
-  val isEven      = "isEven" :: Nt ->: Type
-  val zeroEven    = "0even" :: isEven(zero)
+  import Nats.{ Nat => Nt, _ }
+  val isEven = "isEven" :: Nt ->: Type
+  val zeroEven = "0even" :: isEven(zero)
   val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
 }
 
 object DoubleEven {
-  import Nats.{Nat => Nt, _}
+  import Nats.{ Nat => Nt, _ }
 
   import SimpleEvens._
 
@@ -30,16 +30,14 @@ object DoubleEven {
     inductor(zeroEven) {
       n :~> (
         hyp :-> (
-          plusTwoEven(double(n))(hyp)
-        )
-      )
+          plusTwoEven(double(n))(hyp)))
     } !: thm
 }
 
 object SuccNOrNEven {
   import SimpleEvens._
 
-  import Nats.{Nat => Nt, _}
+  import Nats.{ Nat => Nt, _ }
 
   val claim = n :-> (isEven(n) || isEven(succ(n)))
 
@@ -65,7 +63,7 @@ object SuccNOrNEven {
 }
 
 object LocalConstImpliesConst {
-  import Nats.{Nat => Nt, _}
+  import Nats.{ Nat => Nt, _ }
 
   val A = "A" :: Type
 

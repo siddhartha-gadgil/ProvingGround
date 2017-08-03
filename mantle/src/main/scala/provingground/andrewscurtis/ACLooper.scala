@@ -27,15 +27,14 @@ class ACLooper(
     init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef,
     param: Param)
-    extends FDLooper[
-      (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-      Param
-    ](ACLooper.dyn(rank, size),
-      ACLooper.padFeedback(rank, wrdCntn),
-      normalize,
-      init,
-      srcRef,
-      param)
+    extends FDLooper[(FiniteDistribution[AtomicMove],
+                      FiniteDistribution[Moves]),
+                     Param](ACLooper.dyn(rank, size),
+                            ACLooper.padFeedback(rank, wrdCntn),
+                            normalize,
+                            init,
+                            srcRef,
+                            param)
 
 class ACsmoothLooper(
     rank: Int,
@@ -44,15 +43,14 @@ class ACsmoothLooper(
     init: (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
     srcRef: ActorRef,
     param: Param)
-    extends FDLooper[
-      (FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-      Param
-    ](ACLooper.dyn(rank, size),
-      ACLooper.padFeedback(rank, wrdCntn),
-      normalize,
-      init,
-      srcRef,
-      param)
+    extends FDLooper[(FiniteDistribution[AtomicMove],
+                      FiniteDistribution[Moves]),
+                     Param](ACLooper.dyn(rank, size),
+                            ACLooper.padFeedback(rank, wrdCntn),
+                            normalize,
+                            init,
+                            srcRef,
+                            param)
 
 object ACLooper {
 

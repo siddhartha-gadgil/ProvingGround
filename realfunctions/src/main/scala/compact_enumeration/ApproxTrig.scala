@@ -33,7 +33,7 @@ class ApproxTrig(N: SafeLong) {
     */
   val E = Interval.closed(-width, width)
 
-//  implicit val appr = new ApproximationContext(width)
+  //  implicit val appr = new ApproximationContext(width)
 
   import java.math.MathContext
 
@@ -86,7 +86,7 @@ class ApproxTrig(N: SafeLong) {
     * @param stream bound for function on [k/N, (k+1)/N] is stream(n)
     * @param xs interval whose image is bounded.
     * @param inv : inversion, i.e., f(-x) = inv(f(x))
-
+    *
     */
   def span(stream: Int => Interval[Rational],
            inv: Interval[Rational] => Interval[Rational])(
@@ -192,7 +192,7 @@ class ApproxTrig(N: SafeLong) {
     lazy val derSignChange =
       derImage.crossesZero // check if derivative can a priori cross 0
 
-//    implicit val appr = new ApproximationContext(width)
+    //    implicit val appr = new ApproximationContext(width)
 
     import java.math.MathContext
 
@@ -254,15 +254,9 @@ class ApproxTrig(N: SafeLong) {
 
   val log: Approx = logOptBounds
 
-  val sin: Approx = (
-    span((j) => sinStream(j)._2,
-         (I) => -I)
-  )
+  val sin: Approx = (span((j) => sinStream(j)._2, (I) => -I))
 
-  val cos: Approx = (
-    span((j: Int) => cosStream(j)._2,
-         (I) => I)
-  )
+  val cos: Approx = (span((j: Int) => cosStream(j)._2, (I) => I))
 
   import spire.math.Numeric._
 

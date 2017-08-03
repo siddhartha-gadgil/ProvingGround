@@ -102,8 +102,8 @@ $body
   //     s
   //   }
 
-  def kernelRes(inp: String)(
-      implicit ker: ReplKernel): Option[Either[String, Any]] =
+  def kernelRes(inp: String)(implicit
+                             ker: ReplKernel): Option[Either[String, Any]] =
     ker.process(inp) map { resp =>
       resp.toEither match {
         case Right(evaluation) =>

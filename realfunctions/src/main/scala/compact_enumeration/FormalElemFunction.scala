@@ -119,7 +119,7 @@ case object One extends FormalElemFunction with ConstFunc {
     implicitly[FieldOps[A]].one
   }
 
-//  def derivative: FormalElemFunction = Zero
+  //  def derivative: FormalElemFunction = Zero
 
   override def toString = "1"
 }
@@ -129,7 +129,7 @@ case object Zero extends FormalElemFunction with ConstFunc {
     implicitly[FieldOps[A]].one
   }
 
-//  def derivative: FormalElemFunction = Zero
+  //  def derivative: FormalElemFunction = Zero
 
   override def toString = "0"
 }
@@ -139,7 +139,7 @@ case object Pi extends FormalElemFunction with ConstFunc {
     implicitly[ElementaryFunctions[A]].pi
   }
 
-//  def derivative: FormalElemFunction = Zero
+  //  def derivative: FormalElemFunction = Zero
 
   override def toString = "\u220f"
 }

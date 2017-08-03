@@ -26,10 +26,7 @@ object ScalaJSExample {
     // import dom.ext._
     import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
-    val box = input(
-      `type` := "text",
-      placeholder := "Type here!"
-    ).render
+    val box = input(`type` := "text", placeholder := "Type here!").render
 
     val results = div().render
 
@@ -40,9 +37,7 @@ object ScalaJSExample {
     import upickle.default._
 
     sse.onmessage = (event: dom.MessageEvent) => {
-      ticks.appendChild(
-        p(event.data.toString).render
-      )
+      ticks.appendChild(p(event.data.toString).render)
       ticks.appendChild(p("tick").render)
     }
 
@@ -62,22 +57,17 @@ object ScalaJSExample {
     val (animalA, animalB) = ("fox", "dog")
 
     target.appendChild(
-      div(
-        h1("Hello World!"),
-        p(
-          "The quick brown ",
-          b(animalA),
-          " jumps over the lazy ",
-          i(animalB),
-          "."
-        ),
-        box,
-        echo,
-        p("ammonite results"),
-        results,
-        ticks
-      ).render
-    )
+      div(h1("Hello World!"),
+          p("The quick brown ",
+            b(animalA),
+            " jumps over the lazy ",
+            i(animalB),
+            "."),
+          box,
+          echo,
+          p("ammonite results"),
+          results,
+          ticks).render)
 
     // Ace editor code
 
@@ -102,10 +92,7 @@ object JsTest {
     import dom.ext._
     import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
-    val box = input(
-      `type` := "text",
-      placeholder := "Type here!"
-    ).render
+    val box = input(`type` := "text", placeholder := "Type here!").render
 
     box.onchange = (e: dom.Event) => {
       echo.textContent = box.value
@@ -117,9 +104,7 @@ object JsTest {
     import upickle.default._
 
     sse.onmessage = (event: dom.MessageEvent) => {
-      bouncers.appendChild(
-        p(event.data.toString).render
-      )
+      bouncers.appendChild(p(event.data.toString).render)
       val (a, b) = read[(String, String)](event.data.toString)
       bouncers.appendChild(i(a).render)
     }
@@ -129,21 +114,16 @@ object JsTest {
     val (animalA, animalB) = ("fox", "dog")
 
     target.appendChild(
-      div(
-        h1("Hello World!"),
-        p(
-          "The quick brown ",
-          b(animalA),
-          " jumps over the lazy ",
-          i(animalB),
-          "."
-        ),
-        box,
-        echo,
-        p("bouncers below"),
-        bouncers
-      ).render
-    )
+      div(h1("Hello World!"),
+          p("The quick brown ",
+            b(animalA),
+            " jumps over the lazy ",
+            i(animalB),
+            "."),
+          box,
+          echo,
+          p("bouncers below"),
+          bouncers).render)
 
   }
 }

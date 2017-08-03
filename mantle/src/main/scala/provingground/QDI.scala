@@ -104,7 +104,7 @@ object QDI {
   }
 
   def viewPage(body: Node, fileName: String = "tmp/qdi.html") = {
-    val page = <html>{head}<body>{body}</body></html>
+    val page = <html>{ head }<body>{ body }</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
     desktop.browse(file.toURI)
@@ -112,13 +112,13 @@ object QDI {
 
   def view(ps: Node*) = {
     val fileName = "tmp/qdi.html"
-    val page     = <html>{head}<body>{NodeSeq.fromSeq(ps)}</body></html>
+    val page     = <html>{ head }<body>{ NodeSeq.fromSeq(ps) }</body></html>
     writeFile(page.toString, fileName)
     val file = new File(fileName)
     desktop.browse(file.toURI)
   }
 
-  def p(s: String): Node = <p> {s} </p>
+  def p(s: String): Node = <p> { s } </p>
 
   trait WebView[A] {
     def asXML(a: A): Node
@@ -131,7 +131,7 @@ object QDI {
   implicit def listView[A: WebView]: WebView[List[A]] = new WebView[List[A]] {
     def asXML(as: List[A]) = {
       val l = as map ((a) => implicitly[WebView[A]].asXML(a))
-      <div>{NodeSeq.fromSeq(l)}</div>
+      <div>{ NodeSeq.fromSeq(l) }</div>
     }
   }
 
@@ -140,32 +140,32 @@ object QDI {
   implicit def fdDiv[A](fd: FiniteDistribution[A]): Node = {
     val lst      = fd.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
     val title    = <div class="atom">
-        <span class="index"> index </span>
-        <span class ="probability"> probability </span>
-        <span class ="entropy"> entropy </span>
-				<span class="element"> element </span>
-        </div>
+                  <span class="index"> index </span>
+                  <span class="probability"> probability </span>
+                  <span class="entropy"> entropy </span>
+                  <span class="element"> element </span>
+                </div>
     val nodeList = for ((Weighted(a, x), j) <- lst) yield (<div class="atom">
-				<span class="index"> {j} </span>
-				<span class ="probability"> {x} </span>
-				<span class ="entropy"> {-math.log(x)/math.log(2)} </span>
-				<span class="element"> {a} </span>
-				</div>)
-    <div class="finite-distribution"> {NodeSeq.fromSeq(title +: nodeList)} </div>
+                                                             <span class="index"> { j } </span>
+                                                             <span class="probability"> { x } </span>
+                                                             <span class="entropy"> { -math.log(x) / math.log(2) } </span>
+                                                             <span class="element"> { a } </span>
+                                                           </div>)
+    <div class="finite-distribution"> { NodeSeq.fromSeq(title +: nodeList) } </div>
   }
 
   implicit def fdListDiv[A](fds: List[FiniteDistribution[A]]): Node = {
     val lst = fds.last.pmf.toList.sortBy((x) => -x.weight).zipWithIndex
     def entropies(a: A) =
       for (fd <- fds)
-        yield (<span class="entropy">{-math.log(fd(a))/math.log(2)}</span>)
+        yield (<span class="entropy">{ -math.log(fd(a)) / math.log(2) }</span>)
     val nodeList = for ((Weighted(a, x), j) <- lst)
       yield (<div class="atom-list">
-        <span class="index"> {j} </span>
-        <span class="element"> {a} </span>
-				NodeSeq.fromSeq(entropies(a))
-        </div>)
-    <div class="finite-distribution"> {NodeSeq.fromSeq(nodeList)} </div>
+               <span class="index"> { j } </span>
+               <span class="element"> { a } </span>
+               NodeSeq.fromSeq(entropies(a))
+             </div>)
+    <div class="finite-distribution"> { NodeSeq.fromSeq(nodeList) } </div>
   }
 
   implicit def fdString[A](fd: FiniteDistribution[A]) =
@@ -178,14 +178,14 @@ object QDI {
   def row(xs: List[String]) = {
     def cls(i: Int) = if (i % 2 == 0) "even" else "odd"
     val spans = {
-      for ((x, i) <- xs.zipWithIndex) yield <span class={cls(i)}>{x}</span>
+      for ((x, i) <- xs.zipWithIndex) yield <span class={ cls(i) }>{ x }</span>
     }
-    <div class="row">{NodeSeq.fromSeq(spans)}</div>
+    <div class="row">{ NodeSeq.fromSeq(spans) }</div>
   }
 
   implicit def tableDiv(xy: List[List[Any]]) = {
     val rows = xy map ((r) => row(r map (_.toString)))
-    <div class="table">{NodeSeq.fromSeq(rows)}</div>
+    <div class="table">{ NodeSeq.fromSeq(rows) }</div>
   }
 
   implicit def tableString(xy: List[List[Any]]) = {
@@ -322,8 +322,8 @@ object QDI {
     """
 
   val head = <head>
-			<style type="text/css">
-      {css}
-    	</style>
-   </head>
+               <style type="text/css">
+                 { css }
+               </style>
+             </head>
 }

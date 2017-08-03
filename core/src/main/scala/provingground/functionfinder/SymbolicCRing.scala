@@ -13,8 +13,8 @@ import annotation.tailrec
 //import scala.language.existentials
 
 /**
-  * @author gadgil
-  */
+ * @author gadgil
+ */
 // class SymbolicCRing[A: CRing] extends SymbolicCRig[A] { self =>
 //   val ring = implicitly[Ring[A]]
 //

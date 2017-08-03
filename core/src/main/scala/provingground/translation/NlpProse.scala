@@ -25,10 +25,10 @@ object NlpProse {
   def findroot(t: List[DepRel]): Token = {
     val roots = t filter (_.deptype == "root")
     (roots.headOption map ((d: DepRel) => d.gov)).getOrElse {
-      val govs             = t map (_.gov)
-      val deps             = t map (_.dep)
+      val govs = t map (_.gov)
+      val deps = t map (_.dep)
       def notdep(g: Token) = !(deps contains g)
-      val top              = govs filter (notdep _)
+      val top = govs filter (notdep _)
       top.head
     }
   }
@@ -76,8 +76,8 @@ object NlpProse {
     /** Deletes in the sense of method {{-}} a list of trees*/
     def --(ss: List[ProseTree]): ProseTree = ss match {
       case s :: List() => this - s
-      case s :: sss    => (this - s) -- sss
-      case Nil         => this
+      case s :: sss => (this - s) -- sss
+      case Nil => this
     }
 
     /** The tree of all descendants of a node */
@@ -125,21 +125,21 @@ object NlpProse {
     def findAll(typ: String): List[DepRel] = heirs filter (depstart(_, typ))
 
     /**
-      * Mainly for convenient visualization
-      */
+     * Mainly for convenient visualization
+     */
     lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype))
 
-// Not clear what this method does
-//  def intyps(e: DepRel) = {tree exists ((e.deptype).startsWith(_))
-//    heirs filter intyps
-//    }
+    // Not clear what this method does
+    //  def intyps(e: DepRel) = {tree exists ((e.deptype).startsWith(_))
+    //    heirs filter intyps
+    //    }
   }
 
   /** Find the string of multi-word expressions starting at a token */
   def mweTail(t: ProseTree, node: Token): Token = {
     val nxt = t.offspring(node) find (_.deptype == "mwe")
     nxt match {
-      case None    => node
+      case None => node
       case Some(x) => mweTail(t, x.dep) + node
     }
   }
@@ -182,7 +182,7 @@ object NlpProse {
 
   object Conj {
     def splitConj(
-        t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) =
+      t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) =
       (r) => (r.deptype drop 5, r, t -< r.dep, t - (t -< r.dep))
 
     def unapply(t: ProseTree): Option[(String, DepRel, ProseTree, ProseTree)] =
@@ -191,7 +191,7 @@ object NlpProse {
 
   object Prep {
     def splitPrep(
-        t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) =
+      t: ProseTree): DepRel => (String, DepRel, ProseTree, ProseTree) =
       (r) => (r.deptype drop 5, r, t -< r.dep, t - (t -< r.dep))
 
     def unapply(t: ProseTree): Option[(String, DepRel, ProseTree, ProseTree)] =
@@ -200,56 +200,56 @@ object NlpProse {
 
   /** Fallback for all modifiers */
   object Modifier
-      extends TypeListMatch(
-        List(
-          "abbrev",
-          "amod",
-          "appos",
-          "advcl",
-          "purpcl",
-          "det",
-          "predet",
-          "preconj",
-          "infmod",
-          "partmod",
-          "advmod",
-          "mwe",
-          "neg",
-          "rcmod",
-          "quantmod",
-          "nn",
-          "npadvmod",
-          "tmod",
-          "num",
-          "number",
-          "prep",
-          "possesive",
-          "prt",
-          "aux",
-          "auxpass"
-        )) // These are not technically modifiers but behave the same way
+    extends TypeListMatch(
+      List(
+        "abbrev",
+        "amod",
+        "appos",
+        "advcl",
+        "purpcl",
+        "det",
+        "predet",
+        "preconj",
+        "infmod",
+        "partmod",
+        "advmod",
+        "mwe",
+        "neg",
+        "rcmod",
+        "quantmod",
+        "nn",
+        "npadvmod",
+        "tmod",
+        "num",
+        "number",
+        "prep",
+        "possesive",
+        "prt",
+        "aux",
+        "auxpass")) // These are not technically modifiers but behave the same way
 
   /** Fallback for all arguments */
   object Argument
-      extends TypeListMatch(
-        List("agent",
-             "comp",
-             "acomp",
-             "attr",
-             "ccomp",
-             "xcomp",
-             "complm",
-             "obj",
-             "dobj",
-             "iobj",
-             "pobj",
-             "mark",
-             "rel",
-             "subj",
-             "nsubj",
-             "nsubjpass",
-             "csubj",
-             "csubjpass"))
+    extends TypeListMatch(
+      List(
+        "agent",
+        "comp",
+        "acomp",
+        "attr",
+        "ccomp",
+        "xcomp",
+        "complm",
+        "obj",
+        "dobj",
+        "iobj",
+        "pobj",
+        "mark",
+        "rel",
+        "subj",
+        "nsubj",
+        "nsubjpass",
+        "csubj",
+        "csubjpass"))
 
   object Advcl extends TypeMatch("advcl")
 
@@ -257,7 +257,7 @@ object NlpProse {
 
   /** Extractor for quantmod */
   object QuantMod extends TypeMatch("quantmod")
-// use stringNumber()
+  // use stringNumber()
   /** Extractor for > */
   object Gt extends TypeWordMatch("quantmod", "greater than")
 

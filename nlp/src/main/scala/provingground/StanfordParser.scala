@@ -64,10 +64,11 @@ object StanfordParser {
         case x +: ys  => x +: mergeSubs(mwe, tw)(ys)
       }
 
-  case class TeXParsed(preraw: String,
-                       wordTags: Vector[(String, String)] = Vector(),
-                       mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
-                       // , mweTags: Vector[(Vector[String], String)] = Vector()
+  case class TeXParsed(
+      preraw: String,
+      wordTags: Vector[(String, String)] = Vector(),
+      mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
+      // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
     val raw = preraw
       .replace("such that", "so that")
@@ -121,31 +122,22 @@ object StanfordParser {
   }
 
   val baseWordTags =
-    Vector(
-      "iff"    -> "CC",
-      "modulo" -> "IN"
-    )
+    Vector("iff" -> "CC", "modulo" -> "IN")
 
   val baseMweSubs =
-    Vector(
-      Vector("if", "and", "only", "if") -> new TaggedWord("iff", "CC"),
-      Vector("such", "that")            -> new TaggedWord("where, WRB")
-    )
+    Vector(Vector("if", "and", "only", "if") -> new TaggedWord("iff", "CC"),
+           Vector("such", "that")            -> new TaggedWord("where, WRB"))
 
-  def texParse(
-      s: String,
-      wordTags: Vector[(String, String)] = baseWordTags,
-      // mweTags: Vector[(Vector[String], String)] = Vector(),
-      mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
-  ) =
+  def texParse(s: String,
+               wordTags: Vector[(String, String)] = baseWordTags,
+               // mweTags: Vector[(Vector[String], String)] = Vector(),
+               mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs) =
     TeXParsed(s, wordTags, mweSubs).parsed
 
-  def proseTree(
-      s: String,
-      wordTags: Vector[(String, String)] = baseWordTags,
-      // mweTags: Vector[(Vector[String], String)] = Vector(),
-      mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
-  ) =
+  def proseTree(s: String,
+                wordTags: Vector[(String, String)] = baseWordTags,
+                // mweTags: Vector[(Vector[String], String)] = Vector(),
+                mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs) =
     TeXParsed(s, wordTags, mweSubs).proseTree
 
 }

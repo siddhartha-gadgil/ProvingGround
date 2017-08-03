@@ -5,41 +5,40 @@ import scala.util._
 object TextToInt {
 
   private val wordNumber: Map[String, Long] = Map(
-    "one"       -> 1,
-    "two"       -> 2,
-    "three"     -> 3,
-    "four"      -> 4,
-    "five"      -> 5,
-    "six"       -> 6,
-    "seven"     -> 7,
-    "eight"     -> 8,
-    "nine"      -> 9,
-    "ten"       -> 10,
-    "eleven"    -> 11,
-    "twelve"    -> 12,
-    "thirteen"  -> 13,
-    "fourteen"  -> 14,
-    "fifteen"   -> 15,
-    "sixteen"   -> 16,
+    "one" -> 1,
+    "two" -> 2,
+    "three" -> 3,
+    "four" -> 4,
+    "five" -> 5,
+    "six" -> 6,
+    "seven" -> 7,
+    "eight" -> 8,
+    "nine" -> 9,
+    "ten" -> 10,
+    "eleven" -> 11,
+    "twelve" -> 12,
+    "thirteen" -> 13,
+    "fourteen" -> 14,
+    "fifteen" -> 15,
+    "sixteen" -> 16,
     "seventeen" -> 17,
-    "eighteen"  -> 18,
-    "nineteen"  -> 19,
-    "twenty"    -> 20,
-    "thirty"    -> 30,
-    "forty"     -> 40,
-    "fifty"     -> 50,
-    "sixty"     -> 60,
-    "seventy"   -> 70,
-    "eighty"    -> 80,
-    "ninety"    -> 90,
-    "hundred"   -> 100,
-    "thousand"  -> 1000,
-    "lakh"      -> 100000,
-    "million"   -> 1000000,
-    "crore"     -> 10000000,
-    "billion"   -> 1000000000,
-    "and"       -> 0
-  )
+    "eighteen" -> 18,
+    "nineteen" -> 19,
+    "twenty" -> 20,
+    "thirty" -> 30,
+    "forty" -> 40,
+    "fifty" -> 50,
+    "sixty" -> 60,
+    "seventy" -> 70,
+    "eighty" -> 80,
+    "ninety" -> 90,
+    "hundred" -> 100,
+    "thousand" -> 1000,
+    "lakh" -> 100000,
+    "million" -> 1000000,
+    "crore" -> 10000000,
+    "billion" -> 1000000000,
+    "and" -> 0)
 
   object Long {
     def unapply(s: String): Option[Long] = Try(s.toLong).toOption
@@ -52,7 +51,7 @@ object TextToInt {
   /** Returns a number for a single word*/
   def wordNum(w: String) = w match {
     case Long(x) => x
-    case _       => wordNumber(w.toLowerCase)
+    case _ => wordNumber(w.toLowerCase)
   }
 
   /** Returns a number for a list of words */
@@ -61,7 +60,7 @@ object TextToInt {
   private def numListNumber(nums: List[Long]): Long =
     if (nums.isEmpty) 0
     else {
-      val maxNum   = nums.max
+      val maxNum = nums.max
       val splitPos = nums.indexOf(maxNum)
       if (maxNum < 100) nums.sum
       else {

@@ -139,11 +139,9 @@ object ACMongo extends ACWriter {
     */
   implicit object MoveWeightWriter extends BSONDocumentWriter[ACMoveWeights] {
     def write(elem: ACMoveWeights) =
-      BSONDocument(
-        "name"  -> elem.name,
-        "fdM"   -> uwrite(elem.fdM),
-        "loops" -> elem.loops
-      )
+      BSONDocument("name"  -> elem.name,
+                   "fdM"   -> uwrite(elem.fdM),
+                   "loops" -> elem.loops)
   }
 
   /**
@@ -320,9 +318,8 @@ object ACMongo extends ACWriter {
   def getFutOptFDV(name: String) =
     (getFutOptElems(name)) mapp
       ((vec: Vector[ACElem]) =>
-        FiniteDistribution(
-          vec map ((elem) => Weighted(elem.moves, elem.weight))
-        ))
+        FiniteDistribution(vec map ((elem) =>
+          Weighted(elem.moves, elem.weight))))
 
   /**
     * returns finite distribution on theorems, given actor name, as future option.
@@ -331,16 +328,15 @@ object ACMongo extends ACWriter {
     getFutOptThmElems(name) mapp
       ((vec: Vector[ACThm]) =>
         FiniteDistribution(
-          vec map ((elem) => Weighted(elem.pres, elem.weight))
-        ))
+          vec map ((elem) => Weighted(elem.pres, elem.weight))))
 
-//  def getFutOptState(name: String) =
-//    for (optFDM <- getFutOptFDM(name); optFDV <- getFutOptFDV(name))
-//      yield {(optFDM, optFDV) match {
-//        case (Some(fdM), Some(fdV)) => Some((fdM, fdV))
-//        case _ => None
-//    }
-//    }
+  //  def getFutOptState(name: String) =
+  //    for (optFDM <- getFutOptFDM(name); optFDV <- getFutOptFDV(name))
+  //      yield {(optFDM, optFDV) match {
+  //        case (Some(fdM), Some(fdV)) => Some((fdM, fdV))
+  //        case _ => None
+  //    }
+  //    }
 
   /**
     * returns state (fdM, fdV) give name of actor, as future option

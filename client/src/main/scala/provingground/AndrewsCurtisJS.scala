@@ -33,11 +33,11 @@ object AndrewsCurtisJS {
   def debug(mess: String) = debugDiv.appendChild(h4(mess).render)
 
   sse.onmessage = (event: dom.MessageEvent) => {
-//    debug(event.data.toString)
+    //    debug(event.data.toString)
     val (header, message) = read[(String, String)](event.data.toString)
-//      debug(header)
-//    val header = fdMVP
-//    val message = event.data.toString
+    //      debug(header)
+    //    val header = fdMVP
+    //    val message = event.data.toString
     header match {
       case fdMVP => {
         val (pmfM, pmfV, pmfP) =
@@ -53,14 +53,12 @@ object AndrewsCurtisJS {
   def pmfMVPdiv(pmfM: List[(String, Double)],
                 pmfV: List[(String, Double)],
                 pmfP: List[(String, Double)]) = {
-    div(
-      h3("Distribution on Moves"),
-      pmfDiv(pmfM),
-      h3("Distribution on Vertices"),
-      pmfDiv(pmfV),
-      h3("Distribution on Presentations"),
-      pmfDiv(pmfP)
-    ).render
+    div(h3("Distribution on Moves"),
+        pmfDiv(pmfM),
+        h3("Distribution on Vertices"),
+        pmfDiv(pmfV),
+        h3("Distribution on Presentations"),
+        pmfDiv(pmfP)).render
   }
 
   def pmfDiv(fd: List[(String, Double)]) = {
@@ -69,8 +67,7 @@ object AndrewsCurtisJS {
       span(`class` := "index")("index"),
       span(`class` := "probability")("probability"),
       span(`class` := "entropy")("entropy"),
-      span(`class` := "element")("element")
-    )
+      span(`class` := "element")("element"))
 
     val nodeList = for (((a, x), j) <- lst)
       yield
@@ -121,17 +118,9 @@ object AndrewsCurtisJS {
     Ajax.post("/acquery", post)
   }
 
-  val rankBox = input(
-    `type` := "number",
-    size := 4,
-    value := "2"
-  ).render
+  val rankBox = input(`type` := "number", size := 4, value := "2").render
 
-  val stepsBox = input(
-    `type` := "number",
-    size := 4,
-    value := "2"
-  ).render
+  val stepsBox = input(`type` := "number", size := 4, value := "2").render
 
   def getRank = rankBox.value.toInt
 

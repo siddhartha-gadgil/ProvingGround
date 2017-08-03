@@ -17,14 +17,14 @@ trait NestedDoc[T] {
   def end[L](label: L): NestedDoc[T]
 
   /**
-    * export to one level up only;
-    * determined by whether the current level is labelled.
-    */
+   * export to one level up only;
+   * determined by whether the current level is labelled.
+   */
   def export: Scoped[T] => Scoped[T]
 
   /**
-    * scoped statements, recursively defined as seen from just outside the block.
-    */
+   * scoped statements, recursively defined as seen from just outside the block.
+   */
   def read: Vector[Scoped[T]]
 
   def contexts: Map[Scoped[T], Vector[Scoped[T]]]
@@ -87,20 +87,20 @@ object NestedDoc {
   }
 
   case class Append[T](init: NestedDoc[T], last: T)
-      extends ClosedDoc[T]
-      with RecDoc[T] {
+    extends ClosedDoc[T]
+    with RecDoc[T] {
     def read = init.read.+:(export(Scoped.Outer(last)))
 
     def contexts = init.contexts.+(export(Scoped.Outer(last)) -> init.read)
   }
 
   case class AppendBlock[T](init: NestedDoc[T], last: NestedDoc[T])
-      extends ClosedDoc[T]
-      with RecBlockDoc[T]
+    extends ClosedDoc[T]
+    with RecBlockDoc[T]
 
   case class AppendOpenBlock[T](init: NestedDoc[T], last: NestedDoc[T])
-      extends NestedDoc[T]
-      with RecBlockDoc[T] {
+    extends NestedDoc[T]
+    with RecBlockDoc[T] {
     def append(t: T) = AppendOpenBlock(init, last.append(t))
 
     def close = AppendBlock(init, last)
@@ -112,8 +112,9 @@ object NestedDoc {
 
     def end[L](label: L) = {
       assert(hasLabel, s"applying labelled end on $this which has no label")
-      assert(sameLabel(label),
-             s"applying end on $this with incorrect label $label")
+      assert(
+        sameLabel(label),
+        s"applying end on $this with incorrect label $label")
       close
     }
   }

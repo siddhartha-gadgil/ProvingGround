@@ -40,14 +40,14 @@ class FDHub extends Actor {
       // send messages to all loopers to stop. When return messages come, stop hub.
       {
         for (runner <- loopers.keys) runner ! RunnerStop
-//      loopers = Map.empty
+        //      loopers = Map.empty
       }
 
     case Stopping(ref) => // message that a looper has stopped.
       loopers = loopers filter (_._1 != ref)
       if (loopers.isEmpty) {
         println("All loopers stopped, hub stopping")
-//        Hub.system.shutdown()
+        //        Hub.system.shutdown()
         context.stop(self)
       }
 
@@ -180,8 +180,8 @@ object FDHub {
   def setSteps(runner: ActorRef, steps: Int)(implicit hub: ActorRef) =
     hub ! SetSteps(runner: ActorRef, steps: Int)
 
-  def setStrictness(runner: ActorRef, strictness: Double)(
-      implicit hub: ActorRef) =
+  def setStrictness(runner: ActorRef, strictness: Double)(implicit
+                                                          hub: ActorRef) =
     hub ! SetStrictness(runner: ActorRef, strictness)
 
   def setEpsilon(runner: ActorRef, epsilon: Double)(implicit hub: ActorRef) =

@@ -4,10 +4,10 @@ import provingground._
 
 import translation._
 
-import provingground.learning.{TruncatedDistribution => TD}
+import provingground.learning.{ TruncatedDistribution => TD }
 
 class TruncatedDistributionLang[E: ExprLang]
-    extends ExprLang[TruncatedDistribution[E]] {
+  extends ExprLang[TruncatedDistribution[E]] {
   val l = implicitly[ExprLang[E]]
 
   def variable[S](name: S, typ: TD[E]): Option[TD[E]] =
@@ -17,15 +17,15 @@ class TruncatedDistributionLang[E: ExprLang]
     l.typVariable(name, level) map ((e: E) => TD.atom(e))
 
   /**
-    * anonymous variable
-    */
+   * anonymous variable
+   */
   def anonVar(typ: TD[E]): Option[TD[E]] =
     TD.optF(TD.map(typ)(l.anonVar))
 
   /**
-    * meta-variable of a given type, i.e., whose value must be inferred
-    * (elaborated in lean's terminology).
-    */
+   * meta-variable of a given type, i.e., whose value must be inferred
+   * (elaborated in lean's terminology).
+   */
   def metaVar(typ: TD[E]): Option[TD[E]] =
     TD.optF(TD.map(typ)(l.metaVar))
 
@@ -63,22 +63,22 @@ class TruncatedDistributionLang[E: ExprLang]
     TD.optF(TD.map(typ)(l.incl2))
 
   /**
-    * true type
-    */
+   * true type
+   */
   def tt: Option[TD[E]] =
     l.tt map ((e: E) => TD.atom(e))
 
-//    TD.optF(l.tt map ((e: E) => TD.Atom[E](e)))
+  //    TD.optF(l.tt map ((e: E) => TD.Atom[E](e)))
 
   /**
-    * element of true type
-    */
+   * element of true type
+   */
   def qed: Option[TD[E]] =
     l.qed map ((e: E) => TD.atom(e))
 
   /**
-    * false type
-    */
+   * false type
+   */
   def ff: Option[TD[E]] =
     l.ff map ((e: E) => TD.atom(e))
 
@@ -90,7 +90,7 @@ class TruncatedDistributionLang[E: ExprLang]
 }
 
 class TruncatedDistributionDomain[E: Domain]
-    extends Domain[TruncatedDistribution[E]] {
+  extends Domain[TruncatedDistribution[E]] {
   val l = implicitly[Domain[E]]
 
   def domain: TruncatedDistribution[E] => Option[TruncatedDistribution[E]] =
@@ -98,7 +98,7 @@ class TruncatedDistributionDomain[E: Domain]
 }
 
 class TruncatedDistributionExprPatterns[E: ExprPatterns]
-    extends ExprPatterns[TruncatedDistribution[E]] {
+  extends ExprPatterns[TruncatedDistribution[E]] {
   val l = implicitly[ExprPatterns[E]]
 
   def isPair: TD[E] => Option[(TD[E], TD[E])] =

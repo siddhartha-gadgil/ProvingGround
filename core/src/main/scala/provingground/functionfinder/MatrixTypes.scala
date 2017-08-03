@@ -14,8 +14,7 @@ object MatrixTypes {
   // TODO replace this by recursive records.
   val Zmat = {
     lambda(X)(
-      lambda(Y)(X ->: Y ->: Z)
-    )
+      lambda(Y)(X ->: Y ->: Z))
   }
 
   val A = "A" :: Zmat(X)(Y)
@@ -31,9 +30,9 @@ object MatrixTypes {
   val y = "y" :: Y
 
   implicit class Matrix(entries: Func[Term, Func[Term, Term]]) {
-    val dom                                   = entries.dom
-    val codom                                 = entries.codom
-    val typ                                   = Zmat(dom)(codom)
+    val dom = entries.dom
+    val codom = entries.codom
+    val typ = Zmat(dom)(codom)
     def +(that: Func[Term, Func[Term, Term]]) = {}
   }
 
@@ -51,8 +50,7 @@ object MatrixTypes {
             lambda(w)({
               val f = LambdaFixed(y, Z.prod(A(x)(y))(B(y)(w)))
               BigSum(Y)(basis)(f)
-            })
-          )))))))
+            }))))))))
   }
 
   val ZmatEql = lambda(X)(

@@ -74,8 +74,7 @@ case class StartData(name: String,
     val res = futDoc.map(
       (doc) =>
         //println(doc)
-        actorsDB.insert(doc)
-    )
+        actorsDB.insert(doc))
     (futDoc, res)
   }
 
@@ -104,7 +103,7 @@ object StartData {
   def fromJson(st: String) = {
     val map  = st.parseJson.asJsObject.fields
     val name = map("name").convertTo[String]
-//      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
+    //      val dir = (map.get("dir") map (_.convertTo[String])) getOrElse("acDev")
     val rank  = (map.get("rank") map (_.convertTo[Int])) getOrElse (2)
     val size  = (map.get("size") map (_.convertTo[Int])) getOrElse (1000)
     val steps = (map.get("steps") map (_.convertTo[Int])) getOrElse (3)

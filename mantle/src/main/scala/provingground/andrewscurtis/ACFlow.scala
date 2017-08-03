@@ -15,7 +15,7 @@ object ACFlow {
 
   implicit val mat = ActorMaterializer()
 
-//  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
+  //  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
   val fl = Flow[Snap]
 

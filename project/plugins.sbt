@@ -11,6 +11,12 @@ resolvers += Resolver.url(
 // Use the Play sbt plugin for Play projects
 //addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.0")
 
+resolvers += Classpaths.sbtPluginReleases
+// logLevel := Level.Warn
+
+// addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
+
+
 addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.3")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")

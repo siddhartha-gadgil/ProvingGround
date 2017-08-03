@@ -7,12 +7,12 @@ import ScalaPolyRep._
 import ScalaRep._
 
 /**
-  * @author gadgil
-  */
+ * @author gadgil
+ */
 case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](
-    basetyp: Typ[U],
-    dim: Long)(implicit _baserep: ScalaRep[U, X])
-    extends Typ[RepTerm[Vector[X]]] {
+  basetyp: Typ[U],
+  dim: Long)(implicit _baserep: ScalaRep[U, X])
+  extends Typ[RepTerm[Vector[X]]] {
   val baserep = _baserep
 
   type Obj = RepTerm[Vector[X]]
@@ -35,7 +35,7 @@ case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](
 
 object VecTyp {
   case class VecPolyRep[U <: Term with Subs[U], X]()
-      extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
+    extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
 
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match {
       case tp @ VecTyp(basetyp, dim) if dim == elem.size => {
@@ -58,8 +58,8 @@ object VecTyp {
   }
 
   implicit def vecRep[U <: Term with Subs[U], X](
-      implicit baserep: ScalaPolyRep[U, X])
-    : ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
+    implicit
+    baserep: ScalaPolyRep[U, X]): ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
 
   val n = "n" :: NatTypLong
 
@@ -78,7 +78,7 @@ object VecTyp {
     (v: Vector[Long]) => {
       assert(v.size == n, "domain mismatch in Pi-type")
       n
-  }
+    }
 
   val nsize = vsize.hott(ltyp)
 
@@ -87,7 +87,7 @@ object VecTyp {
       (v: Vector[Long]) => {
         assert(v.size == n, "domain mismatch in Pi-type")
         a +: v
-  }
+      }
 
   private val nsucctyp =
     n ~>: NatTypLong ->: (Vec(n) ->: Vec(NatTypLong.succ(n)))

@@ -25,7 +25,7 @@ object MoveGenerator {
 
   def genConj(rank: Int, sz: Int): List[AtomicMove] = {
     val all_gens = (1 to rank).toList flatMap ((x: Int) => List(x, -1 * x))
-    val f        = ((k: Int) => (all_gens map ((l: Int) => Conj(k, l))))
+    val f = ((k: Int) => (all_gens map ((l: Int) => Conj(k, l))))
     (0 until sz).toList flatMap f
   }
 
@@ -45,46 +45,46 @@ object MoveGenerator {
   }
 
   def genAllMoves(rank: Int, sz: Int): List[AtomicMove] = {
-    val id      = List(Id)
-    val inv     = genAllInv(sz)
+    val id = List(Id)
+    val inv = genAllInv(sz)
     val lftmult = genLftMult(sz)
-    val rtmult  = genRtMult(sz)
-    val conj    = genConj(rank, sz)
+    val rtmult = genRtMult(sz)
+    val conj = genConj(rank, sz)
     id ++ inv ++ lftmult ++ rtmult ++ conj
   }
 
   val E = Weighted(Moves.empty, 1)
 
-//  lazy val eSet = FiniteDistributionSet(Set(E))
+  //  lazy val eSet = FiniteDistributionSet(Set(E))
 
   lazy val eVec = FiniteDistribution(Vector(E))
 
-//  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
+  //  lazy val eParVec = FiniteDistributionParVec(Vector(E).par)
 
   def allMoves(rank: Int) = genAllMoves(rank, rank)
 
   def unifMoves(rank: Int) = FiniteDistribution.uniform(allMoves(rank))
 
   def extendedMovesList(rank: Int): List[AtomicMove] = {
-    val id         = List(Id)
-    val inv        = genAllInv(rank)
-    val lftmult    = genLftMult(rank)
-    val rtmult     = genRtMult(rank)
-    val conj       = genConj(rank, rank)
+    val id = List(Id)
+    val inv = genAllInv(rank)
+    val lftmult = genLftMult(rank)
+    val rtmult = genRtMult(rank)
+    val conj = genConj(rank, rank)
     val lftmultinv = genLftInvMult(rank)
-    val rtmultinv  = genRtInvMult(rank)
-    val transp     = genTranspose(rank)
+    val rtmultinv = genRtInvMult(rank)
+    val transp = genTranspose(rank)
     id ++ inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
   }
 
   def learnerMoves(rank: Int) = {
-    val inv        = genAllInv(rank)
-    val lftmult    = genLftMult(rank)
-    val rtmult     = genRtMult(rank)
-    val conj       = genConj(rank, rank)
+    val inv = genAllInv(rank)
+    val lftmult = genLftMult(rank)
+    val rtmult = genRtMult(rank)
+    val conj = genConj(rank, rank)
     val lftmultinv = genLftInvMult(rank)
-    val rtmultinv  = genRtInvMult(rank)
-    val transp     = genTranspose(rank)
+    val rtmultinv = genRtInvMult(rank)
+    val transp = genTranspose(rank)
     val moves =
       inv ++ lftmult ++ rtmult ++ conj ++ lftmultinv ++ rtmultinv ++ transp
     val moveWeight = 0.5 / (moves.size)

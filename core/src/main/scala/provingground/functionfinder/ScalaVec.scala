@@ -2,17 +2,18 @@ package provingground.functionfinder
 
 import provingground._, HoTT._
 
-import ScalaRep.{ScalaSym}
+import ScalaRep.{ ScalaSym }
 
 //import ScalaRep._
 
 import ScalaPolyRep._
 
 /**
-  * @author gadgil
-  */
+ * @author gadgil
+ */
 class ScalaVec[X](val basetyp: Typ[Term])(
-    implicit baserep: ScalaPolyRep[RepTerm[X], X]) {
+  implicit
+  baserep: ScalaPolyRep[RepTerm[X], X]) {
   case class VecTyp(dim: Int) extends ScalaTyp[Vector[X]]
 
   implicit object Rep extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
@@ -52,7 +53,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(
     (v: Vector[X]) => {
       assert(v.size == n, "domain mismatch in Pi-type")
       n
-  }
+    }
 
   val size = vsize.hott(ltyp)
 
@@ -61,7 +62,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(
       (v: Vector[X]) => {
         assert(v.size == n, "domain mismatch in Pi-type")
         a +: v
-  }
+      }
 
   val m: RepTerm[Long] = NatTypLong.succ(n)
 
@@ -75,10 +76,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(
 
   implicit val r = depFuncPolyRep(
     implicitly[ScalaPolyRep[RepTerm[Long], Long]],
-    implicitly[ScalaPolyRep[
-      FuncLike[RepTerm[X], FuncLike[RepTerm[Vector[X]], RepTerm[Vector[X]]]],
-      X => Vector[X] => Vector[X]]]
-  )
+    implicitly[ScalaPolyRep[FuncLike[RepTerm[X], FuncLike[RepTerm[Vector[X]], RepTerm[Vector[X]]]], X => Vector[X] => Vector[X]]])
 
   val succ = ScalaPolyTerm(vcons)(r).hott(constyp).get
 

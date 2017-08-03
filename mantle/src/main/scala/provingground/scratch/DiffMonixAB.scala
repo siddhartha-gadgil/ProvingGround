@@ -93,15 +93,13 @@ object MonoidEv {
     param = FineDeducerStep.Param(vars = Vector(a, b, c)))
 
   val viewThms =
-    Vector(
-      eqM(l)(l),
-      a ~>: (b ~>: (eqM(a)(b) ->: eqM(b)(a))),
-      eqM(op(l)(r))(l),
-      eqM(op(l)(r))(r),
-      eqM(l)(op(l)(r)),
-      eqM(r)(op(l)(r)),
-      eqM(l)(r)
-    )
+    Vector(eqM(l)(l),
+           a ~>: (b ~>: (eqM(a)(b) ->: eqM(b)(a))),
+           eqM(op(l)(r))(l),
+           eqM(op(l)(r))(r),
+           eqM(l)(op(l)(r)),
+           eqM(r)(op(l)(r)),
+           eqM(l)(r))
 
   import math.log
   lazy val showLemmas =

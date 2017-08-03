@@ -244,7 +244,8 @@ case class AssocRep[A](representation: List[A]) extends Representation[A] {
   }
 }
 
-/** A trait encompassing all terms.
+/**
+  * A trait encompassing all terms.
   *
   * Terms can be numbers, variables or big operations like
   * sigma or pi.

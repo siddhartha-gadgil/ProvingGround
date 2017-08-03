@@ -9,8 +9,8 @@ import shapeless._
 import HList._
 
 /**
-  * allows substitution of a `Term` by another.
-  */
+ * allows substitution of a `Term` by another.
+ */
 trait Subst[A] {
   def subst(a: A)(x: Term, y: Term): A
 }
@@ -26,10 +26,10 @@ object Subst {
 }
 
 /**
-  * allows substitution of a `Term` by another, as well as mapping to a vector of terms
-  * chiefly subtypes of `Term` and `HList`s of these;
-  *
-  */
+ * allows substitution of a `Term` by another, as well as mapping to a vector of terms
+ * chiefly subtypes of `Term` and `HList`s of these;
+ *
+ */
 trait TermList[A] extends Subst[A] {
 
   def terms(a: A): Vector[Term]
@@ -55,8 +55,7 @@ object TermList extends TermListImplicits {
     def terms(a: HNil) = Vector()
   }
 
-  implicit def hConsTermList[U: TermList, V <: HList: TermList]
-    : TermList[U :: V] =
+  implicit def hConsTermList[U: TermList, V <: HList: TermList]: TermList[U :: V] =
     new TermList[U :: V] {
       def subst(a: U :: V)(x: Term, y: Term) =
         implicitly[TermList[U]].subst(a.head)(x, y) :: implicitly[TermList[V]]
@@ -96,61 +95,56 @@ trait TermListImplicits extends SubstImplicits {
 object TestS { implicitly[TermList[Term :: HNil]] }
 
 /**
-  * the shape of a type family.
-  */
-sealed abstract class TypFamilyPtn[
-    H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList] {
+ * the shape of a type family.
+ */
+sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList] {
 
   /**
-    * optional index `a` given family `W` and type `W(a)`
-    */
+   * optional index `a` given family `W` and type `W(a)`
+   */
   def getIndex(w: F, typ: Typ[H]): Option[Index]
 
   /**
-    * type `W(a)` given the family `W` and index `a`
-    */
+   * type `W(a)` given the family `W` and index `a`
+   */
   def typ(w: F, index: Index): Typ[H]
 
   def subs(x: Term, y: Term): TypFamilyPtn[H, F, Index]
 
   /**
-    * existentital typed mappper to bridge to [[TypFamilyMap]] given scala type of codomain
-    */
-  def mapper[C <: Term with Subs[C]]
-    : TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT] forSome {
-      type IF <: Term with Subs[IF];
-      type IDF <: Term with Subs[IDF];
-      type IDFT <: Term with Subs[IDFT]
-    }
+   * existentital typed mappper to bridge to [[TypFamilyMap]] given scala type of codomain
+   */
+  def mapper[C <: Term with Subs[C]]: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT] forSome {
+    type IF <: Term with Subs[IF];
+    type IDF <: Term with Subs[IDF];
+    type IDFT <: Term with Subs[IDFT]
+  }
 
   def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_]
 
   /**
-    * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
-    */
-  def getMapper[C <: Term with Subs[C],
-                IF <: Term with Subs[IF],
-                IDF <: Term with Subs[IDF],
-                IDFT <: Term with Subs[IDFT]](cod: Typ[C])(
-      implicit mpr: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) = mpr
+   * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
+   */
+  def getMapper[C <: Term with Subs[C], IF <: Term with Subs[IF], IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](cod: Typ[C])(
+    implicit
+    mpr: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) = mpr
 
   /**
-    * lift to [[TypFamilyMap]] based on [[mapper]]
-    */
+   * lift to [[TypFamilyMap]] based on [[mapper]]
+   */
   def mapped[C <: Term with Subs[C]] = mapper[C].mapper(this)
 }
 
 object TypFamilyPtn {
-  def apply[H <: Term with Subs[H],
-            F <: Term with Subs[F],
-            Index <: HList: TermList](w: F)(
-      implicit g: TypFamilyPtnGetter[F, H, Index]) =
+  def apply[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList](w: F)(
+    implicit
+    g: TypFamilyPtnGetter[F, H, Index]) =
     g.get(w)
 
   import TypFamilyMapper._
 
   case class IdTypFamily[H <: Term with Subs[H]]()
-      extends TypFamilyPtn[H, Typ[H], HNil] {
+    extends TypFamilyPtn[H, Typ[H], HNil] {
     def getIndex(w: Typ[H], typ: Typ[H]) = Some(HNil)
 
     def typ(w: Typ[H], index: HNil): Typ[H] = w
@@ -174,13 +168,10 @@ object TypFamilyPtn {
 
   }
 
-  case class FuncTypFamily[U <: Term with Subs[U],
-                           H <: Term with Subs[H],
-                           TF <: Term with Subs[TF],
-                           TI <: HList: TermList](
-      head: Typ[U],
-      tail: TypFamilyPtn[H, TF, TI])
-      extends TypFamilyPtn[H, Func[U, TF], U :: TI] {
+  case class FuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
+    head: Typ[U],
+    tail: TypFamilyPtn[H, TF, TI])
+    extends TypFamilyPtn[H, Func[U, TF], U :: TI] {
 
     def getIndex(w: Func[U, TF], typ: Typ[H]) = {
       val argOpt = getArg(w)(typ)
@@ -203,13 +194,10 @@ object TypFamilyPtn {
 
   }
 
-  case class DepFuncTypFamily[U <: Term with Subs[U],
-                              H <: Term with Subs[H],
-                              TF <: Term with Subs[TF],
-                              TI <: HList: TermList](
-      head: Typ[U],
-      tailfibre: U => TypFamilyPtn[H, TF, TI])
-      extends TypFamilyPtn[H, FuncLike[U, TF], U :: TI] {
+  case class DepFuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
+    head: Typ[U],
+    tailfibre: U => TypFamilyPtn[H, TF, TI])
+    extends TypFamilyPtn[H, FuncLike[U, TF], U :: TI] {
 
     def getIndex(w: FuncLike[U, TF], typ: Typ[H]) = {
       val argOpt = getArg(w)(typ)
@@ -225,8 +213,9 @@ object TypFamilyPtn {
       DepFuncTypFamily(head.replace(x, y), (u: U) => tailfibre(u).subs(x, y))
 
     def mapper[C <: Term with Subs[C]] =
-      depFuncTypFamilyMapper(tailfibre(head.Var).mapper[C],
-                             implicitly[TermList[TI]])
+      depFuncTypFamilyMapper(
+        tailfibre(head.Var).mapper[C],
+        implicitly[TermList[TI]])
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] = {
       val x = head.Var
@@ -244,14 +233,13 @@ object TypFamilyPtn {
 
     def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
       Exst(
-        DepFuncTypFamily(dom, (t: TT) => value.subs(variable, t))
-      )
+        DepFuncTypFamily(dom, (t: TT) => value.subs(variable, t)))
 
     def ~>:[TT <: Term with Subs[TT]](variable: TT) =
       Exst(
-        DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                         (t: TT) => value.subs(variable, t))
-      )
+        DepFuncTypFamily(
+          variable.typ.asInstanceOf[Typ[TT]],
+          (t: TT) => value.subs(variable, t)))
 
     def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
       Exst(FuncTypFamily(dom, value))
@@ -259,9 +247,9 @@ object TypFamilyPtn {
 
   object Exst {
     def apply[Fb <: Term with Subs[Fb], In <: HList: TermList](
-        tf: TypFamilyPtn[Term, Fb, In]) =
+      tf: TypFamilyPtn[Term, Fb, In]) =
       new Exst {
-        type F     = Fb
+        type F = Fb
         type Index = In
 
         val subst = implicitly[TermList[Index]]
@@ -271,7 +259,7 @@ object TypFamilyPtn {
   }
 
   def getExst[F <: Term with Subs[F]](w: F): Exst = w match {
-    case _: Typ[u]      => Exst(IdTypFamily[Term])
+    case _: Typ[u] => Exst(IdTypFamily[Term])
     case fn: Func[u, v] => fn.dom ->: getExst(fn(fn.dom.Var))
     case g: FuncLike[u, v] =>
       val x = g.dom.Var
@@ -280,63 +268,57 @@ object TypFamilyPtn {
 }
 
 /**
-  * shape of a type family, together with the type of a codomain;
-  * fixing scala types of functions and dependent functions on the type family
-  *
-  * @tparam Index scala type of the index
-  * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
-  * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
-  * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
-  *
-  * methods allow restricting (dependent) functions and type families to indices and
-  * building (dependent) functions from such restrictions.
-  */
-sealed trait TypFamilyMap[H <: Term with Subs[H],
-                          F <: Term with Subs[F],
-                          C <: Term with Subs[C],
-                          Index <: HList,
-                          IF <: Term with Subs[IF],
-                          IDF <: Term with Subs[IDF],
-                          IDFT <: Term with Subs[IDFT]] {
+ * shape of a type family, together with the type of a codomain;
+ * fixing scala types of functions and dependent functions on the type family
+ *
+ * @tparam Index scala type of the index
+ * @tparam IF scala type of an iterated function on the inductive type family, with codomain with terms of type `Cod`.
+ * @tparam IDF scala type of an iterated  dependent function on the inductive type family, with codomain with terms of type `Cod`.
+ * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
+ *
+ * methods allow restricting (dependent) functions and type families to indices and
+ * building (dependent) functions from such restrictions.
+ */
+sealed trait TypFamilyMap[H <: Term with Subs[H], F <: Term with Subs[F], C <: Term with Subs[C], Index <: HList, IF <: Term with Subs[IF], IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]] {
 
   /**
-    * the underlying pattern (to access methods defined on it)
-    */
+   * the underlying pattern (to access methods defined on it)
+   */
   val pattern: TypFamilyPtn[H, F, Index]
 
   /**
-    * returns HoTT  type for iterated functions
-    */
+   * returns HoTT  type for iterated functions
+   */
   def iterFuncTyp(w: Typ[H], x: Typ[C]): Typ[IF]
 
   /**
-    * returns HoTT  type for iterated dependent functions
-    */
+   * returns HoTT  type for iterated dependent functions
+   */
   def iterDepFuncTyp(w: Typ[H], xs: IDFT): Typ[IDF]
 
   /**
-    * returns iterated function given functions for each index
-    */
+   * returns iterated function given functions for each index
+   */
   def iterFunc(funcs: Index => Func[H, C]): IF
 
   /**
-    * returns iterated dependent function given functions for each index
-    */
+   * returns iterated dependent function given functions for each index
+   */
   def iterDepFunc(funcs: Index => FuncLike[H, C]): IDF
 
   /**
-    * restricts iterated function to an index
-    */
+   * restricts iterated function to an index
+   */
   def restrict(f: IF, ind: Index): Func[H, C]
 
   /**
-    * restricts iterated dependent function to an index
-    */
+   * restricts iterated dependent function to an index
+   */
   def depRestrict(f: IDF, ind: Index): FuncLike[H, C]
 
   /**
-    * restricts iterated type  family to an index
-    */
+   * restricts iterated type  family to an index
+   */
   def typRestrict(xs: IDFT, ind: Index): Func[H, Typ[C]]
 
   def subs(x: Term, y: Term): TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
@@ -347,13 +329,7 @@ object TypFamilyMap {
   import TypFamilyPtn._
 
   case class IdTypFamilyMap[H <: Term with Subs[H], C <: Term with Subs[C]]()
-      extends TypFamilyMap[H,
-                           Typ[H],
-                           C,
-                           HNil,
-                           Func[H, C],
-                           FuncLike[H, C],
-                           Func[H, Typ[C]]] {
+    extends TypFamilyMap[H, Typ[H], C, HNil, Func[H, C], FuncLike[H, C], Func[H, Typ[C]]] {
 
     val pattern = IdTypFamily[H]
 
@@ -374,16 +350,10 @@ object TypFamilyMap {
     def subs(x: Term, y: Term) = this
   }
 
-  case class IdSubTypFamilyMap[H <: Term with Subs[H],
-  TC <: Typ[Term] with Subs[TC], C <: Term with Subs[C]]()(
-      implicit subEv: TypObj[TC, C])
-      extends TypFamilyMap[H,
-                           Typ[H],
-                           C,
-                           HNil,
-                           Func[H, C],
-                           FuncLike[H, C],
-                           Func[H, TC]] {
+  case class IdSubTypFamilyMap[H <: Term with Subs[H], TC <: Typ[Term] with Subs[TC], C <: Term with Subs[C]]()(
+    implicit
+    subEv: TypObj[TC, C])
+    extends TypFamilyMap[H, Typ[H], C, HNil, Func[H, C], FuncLike[H, C], Func[H, TC]] {
 
     val pattern = IdTypFamily[H]
 
@@ -410,23 +380,10 @@ object TypFamilyMap {
     def subs(x: Term, y: Term) = this
   }
 
-  case class FuncTypFamilyMap[U <: Term with Subs[U],
-                              H <: Term with Subs[H],
-                              TF <: Term with Subs[TF],
-                              C <: Term with Subs[C],
-                              TIndex <: HList: TermList,
-                              TIF <: Term with Subs[TIF],
-                              TIDF <: Term with Subs[TIDF],
-                              TIDFT <: Term with Subs[TIDFT]](
-      head: Typ[U],
-      tail: TypFamilyMap[H, TF, C, TIndex, TIF, TIDF, TIDFT])
-      extends TypFamilyMap[H,
-                           Func[U, TF],
-                           C,
-                           U :: TIndex,
-                           FuncLike[U, TIF],
-                           FuncLike[U, TIDF],
-                           FuncLike[U, TIDFT]] {
+  case class FuncTypFamilyMap[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], C <: Term with Subs[C], TIndex <: HList: TermList, TIF <: Term with Subs[TIF], TIDF <: Term with Subs[TIDF], TIDFT <: Term with Subs[TIDFT]](
+    head: Typ[U],
+    tail: TypFamilyMap[H, TF, C, TIndex, TIF, TIDF, TIDFT])
+    extends TypFamilyMap[H, Func[U, TF], C, U :: TIndex, FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] {
 
     val pattern = FuncTypFamily(head, tail.pattern)
 
@@ -460,23 +417,10 @@ object TypFamilyMap {
       FuncTypFamilyMap(head.replace(x, y), tail.subs(x, y))
   }
 
-  case class DepFuncTypFamilyMap[U <: Term with Subs[U],
-                                 H <: Term with Subs[H],
-                                 TF <: Term with Subs[TF],
-                                 C <: Term with Subs[C],
-                                 TIndex <: HList: TermList,
-                                 TIF <: Term with Subs[TIF],
-                                 TIDF <: Term with Subs[TIDF],
-                                 TIDFT <: Term with Subs[TIDFT]](
-      head: Typ[U],
-      tailfibre: U => TypFamilyMap[H, TF, C, TIndex, TIF, TIDF, TIDFT])
-      extends TypFamilyMap[H,
-                           FuncLike[U, TF],
-                           C,
-                           (U :: TIndex),
-                           FuncLike[U, TIF],
-                           FuncLike[U, TIDF],
-                           FuncLike[U, TIDFT]] {
+  case class DepFuncTypFamilyMap[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], C <: Term with Subs[C], TIndex <: HList: TermList, TIF <: Term with Subs[TIF], TIDF <: Term with Subs[TIDF], TIDFT <: Term with Subs[TIDFT]](
+    head: Typ[U],
+    tailfibre: U => TypFamilyMap[H, TF, C, TIndex, TIF, TIDF, TIDFT])
+    extends TypFamilyMap[H, FuncLike[U, TF], C, (U :: TIndex), FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] {
 
     override lazy val hashCode =
       (head, tailfibre(head.symbObj(HashSym))).hashCode
@@ -522,21 +466,23 @@ object TypFamilyMap {
       tailfibre(ind.head).typRestrict(xs(ind.head), ind.tail)
 
     def subs(x: Term, y: Term) =
-      DepFuncTypFamilyMap(head.replace(x, y),
-                          (u: U) => tailfibre(u).subs(x, y))
+      DepFuncTypFamilyMap(
+        head.replace(x, y),
+        (u: U) => tailfibre(u).subs(x, y))
   }
 }
 
 /**
-  * aid for implicit calculations:
-  * given a scala type that is a subtype of `Typ[C]`, recovers `C`,
-  * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
-  *
-  * Note that `C` is not unique, indeed `C = Term` is  always a solution,
-  * so we seek the best `C`
-  */
+ * aid for implicit calculations:
+ * given a scala type that is a subtype of `Typ[C]`, recovers `C`,
+ * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
+ *
+ * Note that `C` is not unique, indeed `C = Term` is  always a solution,
+ * so we seek the best `C`
+ */
 class TypObj[T <: Typ[Term] with Subs[T], C <: Term with Subs[C]](
-    implicit ev: T <:< Typ[C]) {
+  implicit
+  ev: T <:< Typ[C]) {
   def me(t: T): Typ[C] = t
 }
 
@@ -544,64 +490,42 @@ object TypObj {
   implicit def tautology[U <: Term with Subs[U]]: TypObj[Typ[U], U] =
     new TypObj[Typ[U], U]
 
-  implicit def func[U <: Term with Subs[U], V <: Term with Subs[V]]
-    : TypObj[FuncTyp[U, V], Func[U, V]] = new TypObj[FuncTyp[U, V], Func[U, V]]
+  implicit def func[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[FuncTyp[U, V], Func[U, V]] = new TypObj[FuncTyp[U, V], Func[U, V]]
 
-  implicit def funclike[U <: Term with Subs[U], V <: Term with Subs[V]]
-    : TypObj[GenFuncTyp[U, V], FuncLike[U, V]] =
+  implicit def funclike[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[GenFuncTyp[U, V], FuncLike[U, V]] =
     new TypObj[GenFuncTyp[U, V], FuncLike[U, V]]
 
-  implicit def pi[U <: Term with Subs[U], V <: Term with Subs[V]]
-    : TypObj[PiDefn[U, V], FuncLike[U, V]] =
+  implicit def pi[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[PiDefn[U, V], FuncLike[U, V]] =
     new TypObj[PiDefn[U, V], FuncLike[U, V]]
 
-  implicit def pair[U <: Term with Subs[U], V <: Term with Subs[V]]
-    : TypObj[ProdTyp[U, V], PairTerm[U, V]] =
+  implicit def pair[U <: Term with Subs[U], V <: Term with Subs[V]]: TypObj[ProdTyp[U, V], PairTerm[U, V]] =
     new TypObj[ProdTyp[U, V], PairTerm[U, V]]
 
   /**
-    * given the object `fmly` of scala type `TC` that is a subtype of `Typ[C]`, recovers `C`,
-    * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
-    *
-    * Note that `C` is not unique, indeed `C = Term` is  always a solution,
-    * so we seek the best `C`
-    */
+   * given the object `fmly` of scala type `TC` that is a subtype of `Typ[C]`, recovers `C`,
+   * eg shows that `FuncTyp[A, B]` is a subtype of `Typ[Func[A, B]]`
+   *
+   * Note that `C` is not unique, indeed `C = Term` is  always a solution,
+   * so we seek the best `C`
+   */
   def solve[TC <: Typ[Term] with Subs[TC], C <: Term with Subs[C]](fmly: TC)(
-      implicit tpObj: TypObj[TC, C]) = (tpObj.me(fmly): Typ[C])
+    implicit
+    tpObj: TypObj[TC, C]) = (tpObj.me(fmly): Typ[C])
 }
 
 /**
-  * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
-  */
-sealed trait TypFamilyMapper[H <: Term with Subs[H],
-                             F <: Term with Subs[F],
-                             C <: Term with Subs[C],
-                             Index <: HList,
-                             IF <: Term with Subs[IF],
-                             IDF <: Term with Subs[IDF],
-                             IDFT <: Term with Subs[IDFT]] {
+ * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
+ */
+sealed trait TypFamilyMapper[H <: Term with Subs[H], F <: Term with Subs[F], C <: Term with Subs[C], Index <: HList, IF <: Term with Subs[IF], IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]] {
 
-  val mapper: TypFamilyPtn[H, F, Index] => TypFamilyMap[H,
-                                                        F,
-                                                        C,
-                                                        Index,
-                                                        IF,
-                                                        IDF,
-                                                        IDFT]
+  val mapper: TypFamilyPtn[H, F, Index] => TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 }
 
 trait WeakImplicit {
-  implicit def idSubTypFamilyMapper[H <: Term with Subs[H],
-                                    TC <: Typ[Term] with Subs[TC],
-                                    C <: Term with Subs[C]](
-      implicit subEv: TypObj[TC, C]) =
-    new TypFamilyMapper[H,
-                        Typ[H],
-                        C,
-                        HNil,
-                        Func[H, C],
-                        FuncLike[H, C],
-                        Func[H, TC]] {
+  implicit def idSubTypFamilyMapper[H <: Term with Subs[H], TC <: Typ[Term] with Subs[TC], C <: Term with Subs[C]](
+    implicit
+    subEv: TypObj[TC, C]) =
+    new TypFamilyMapper[H, Typ[H], C, HNil, Func[H, C], FuncLike[H, C], Func[H, TC]] {
       val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) =>
         TypFamilyMap.IdSubTypFamilyMap[H, TC, C]
     }
@@ -612,85 +536,39 @@ object TypFamilyMapper extends WeakImplicit {
 
   import TypFamilyPtn._
 
-  implicit def idTypFamilyMapper[H <: Term with Subs[H],
-                                 C <: Term with Subs[C]] =
-    new TypFamilyMapper[H,
-                        Typ[H],
-                        C,
-                        HNil,
-                        Func[H, C],
-                        FuncLike[H, C],
-                        Func[H, Typ[C]]] {
+  implicit def idTypFamilyMapper[H <: Term with Subs[H], C <: Term with Subs[C]] =
+    new TypFamilyMapper[H, Typ[H], C, HNil, Func[H, C], FuncLike[H, C], Func[H, Typ[C]]] {
       val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) => IdTypFamilyMap[H, C]
     }
 
-  implicit def funcTypFamilyMapper[U <: Term with Subs[U],
-                                   H <: Term with Subs[H],
-                                   TF <: Term with Subs[TF],
-                                   C <: Term with Subs[C],
-                                   TIndex <: HList,
-                                   TIF <: Term with Subs[TIF],
-                                   TIDF <: Term with Subs[TIDF],
-                                   TIDFT <: Term with Subs[TIDFT]](
-      implicit tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
-      subst: TermList[TIndex]) =
-    new TypFamilyMapper[H,
-                        Func[U, TF],
-                        C,
-                        (U :: TIndex),
-                        FuncLike[U, TIF],
-                        FuncLike[U, TIDF],
-                        FuncLike[U, TIDFT]] {
+  implicit def funcTypFamilyMapper[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], C <: Term with Subs[C], TIndex <: HList, TIF <: Term with Subs[TIF], TIDF <: Term with Subs[TIDF], TIDFT <: Term with Subs[TIDFT]](
+    implicit
+    tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
+    subst: TermList[TIndex]) =
+    new TypFamilyMapper[H, Func[U, TF], C, (U :: TIndex), FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] {
 
-      val mapper: TypFamilyPtn[H, Func[U, TF], (U :: TIndex)] => TypFamilyMap[
-        H,
-        Func[U, TF],
-        C,
-        (U :: TIndex),
-        FuncLike[U, TIF],
-        FuncLike[U, TIDF],
-        FuncLike[U, TIDFT]] = {
+      val mapper: TypFamilyPtn[H, Func[U, TF], (U :: TIndex)] => TypFamilyMap[H, Func[U, TF], C, (U :: TIndex), FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] = {
         case FuncTypFamily(h, t) =>
           FuncTypFamilyMap(h, tail.mapper(t))
       }
     }
 
-  implicit def depFuncTypFamilyMapper[U <: Term with Subs[U],
-                                      H <: Term with Subs[H],
-                                      TF <: Term with Subs[TF],
-                                      C <: Term with Subs[C],
-                                      TIndex <: HList,
-                                      TIF <: Term with Subs[TIF],
-                                      TIDF <: Term with Subs[TIDF],
-                                      TIDFT <: Term with Subs[TIDFT]](
-      implicit tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
-      subst: TermList[TIndex]) =
-    new TypFamilyMapper[H,
-                        FuncLike[U, TF],
-                        C,
-                        (U :: TIndex),
-                        FuncLike[U, TIF],
-                        FuncLike[U, TIDF],
-                        FuncLike[U, TIDFT]] {
+  implicit def depFuncTypFamilyMapper[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], C <: Term with Subs[C], TIndex <: HList, TIF <: Term with Subs[TIF], TIDF <: Term with Subs[TIDF], TIDFT <: Term with Subs[TIDFT]](
+    implicit
+    tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
+    subst: TermList[TIndex]) =
+    new TypFamilyMapper[H, FuncLike[U, TF], C, (U :: TIndex), FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] {
 
-      val mapper: TypFamilyPtn[H, FuncLike[U, TF], (U :: TIndex)] => TypFamilyMap[
-        H,
-        FuncLike[U, TF],
-        C,
-        (U :: TIndex),
-        FuncLike[U, TIF],
-        FuncLike[U, TIDF],
-        FuncLike[U, TIDFT]] = {
+      val mapper: TypFamilyPtn[H, FuncLike[U, TF], (U :: TIndex)] => TypFamilyMap[H, FuncLike[U, TF], C, (U :: TIndex), FuncLike[U, TIF], FuncLike[U, TIDF], FuncLike[U, TIDFT]] = {
         case DepFuncTypFamily(h, tf) =>
           DepFuncTypFamilyMap(h, (u: U) => tail.mapper(tf(u)))
       }
     }
 }
 
-trait TypFamilyPtnGetter[
-    F <: Term with Subs[F], H <: Term with Subs[H], Index <: HList] {
+trait TypFamilyPtnGetter[F <: Term with Subs[F], H <: Term with Subs[H], Index <: HList] {
 
-//  type Index
+  //  type Index
 
   def get(w: F): TypFamilyPtn[H, F, Index]
 
@@ -698,22 +576,18 @@ trait TypFamilyPtnGetter[
 }
 
 object TypFamilyPtnGetter {
-  implicit def idGetter[H <: Term with Subs[H]]
-    : TypFamilyPtnGetter[Typ[H], H, HNil] =
+  implicit def idGetter[H <: Term with Subs[H]]: TypFamilyPtnGetter[Typ[H], H, HNil] =
     new TypFamilyPtnGetter[Typ[H], H, HNil] {
-//      type Index = HNil
+      //      type Index = HNil
 
       def get(w: Typ[H]) = TypFamilyPtn.IdTypFamily[H]
 
       val subst = TermList.HNilTermList
     }
 
-  implicit def funcTypFamilyGetter[TF <: Term with Subs[TF],
-                                   U <: Term with Subs[U],
-                                   H <: Term with Subs[H],
-                                   TI <: HList](
-      implicit tail: TypFamilyPtnGetter[TF, H, TI])
-    : TypFamilyPtnGetter[Func[U, TF], H, U :: TI] =
+  implicit def funcTypFamilyGetter[TF <: Term with Subs[TF], U <: Term with Subs[U], H <: Term with Subs[H], TI <: HList](
+    implicit
+    tail: TypFamilyPtnGetter[TF, H, TI]): TypFamilyPtnGetter[Func[U, TF], H, U :: TI] =
     new TypFamilyPtnGetter[Func[U, TF], H, U :: TI] {
 
       def get(w: Func[U, TF]) =
@@ -726,12 +600,9 @@ object TypFamilyPtnGetter {
       val subst = TermList.hConsTermList[U, TI]
     }
 
-  implicit def depFuncTypFamilyGetter[TF <: Term with Subs[TF],
-                                      U <: Term with Subs[U],
-                                      H <: Term with Subs[H],
-                                      TI <: HList](
-      implicit tail: TypFamilyPtnGetter[TF, H, TI])
-    : TypFamilyPtnGetter[FuncLike[U, TF], H, U :: TI] =
+  implicit def depFuncTypFamilyGetter[TF <: Term with Subs[TF], U <: Term with Subs[U], H <: Term with Subs[H], TI <: HList](
+    implicit
+    tail: TypFamilyPtnGetter[TF, H, TI]): TypFamilyPtnGetter[FuncLike[U, TF], H, U :: TI] =
     new TypFamilyPtnGetter[FuncLike[U, TF], H, U :: TI] {
       def get(w: FuncLike[U, TF]) =
         TypFamilyPtn.DepFuncTypFamily(w.dom, (u: U) => tail.get(w(u)))

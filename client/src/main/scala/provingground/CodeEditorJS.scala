@@ -71,15 +71,13 @@ object CodeEditorJS extends js.JSApp {
       div(
         div(`class` := "panel panel-default")(
           ed,
-          div(`class` := "panel-footer clearfix")(
-            label("script-name: "),
-            nameInp,
-            saveButton,
-            insertButton,
-            loadButton,
-            runButton,
-            objButton
-          )),
+          div(`class` := "panel-footer clearfix")(label("script-name: "),
+                                                  nameInp,
+                                                  saveButton,
+                                                  insertButton,
+                                                  loadButton,
+                                                  runButton,
+                                                  objButton)),
         div("Logs:", logDiv),
         div("Output:", viewDiv)
       ).render)
@@ -177,9 +175,7 @@ object CodeEditorJS extends js.JSApp {
             else answer.split("--OUTPUT--\n")(1)
           viewDiv.innerHTML = ""
           val codeDiv = code(`class` := "scala", view).render
-          viewDiv.appendChild(
-            pre(codeDiv).render
-          )
+          viewDiv.appendChild(pre(codeDiv).render)
           g.renderMathInElement(viewDiv,
                                 js.Dynamic.literal(ignoreTags = Seq()))
           if (answer.startsWith("--ERROR--\n")) {

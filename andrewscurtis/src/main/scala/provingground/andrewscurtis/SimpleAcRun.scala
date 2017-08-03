@@ -106,7 +106,7 @@ object SimpleAcRun {
     implicit def memUpdate: Path => Unit =
       (p) => {
         dict = dict + (p.id -> write(p.pickle))
-//      println(s"$p.id -> $p")
+        //      println(s"$p.id -> $p")
       }
 
     implicit def memRead: Future[List[Path]] =
@@ -117,7 +117,8 @@ object SimpleAcRun {
 
   @tailrec
   def iter(p: Path, loops: Int, initial: Boolean = false)(
-      implicit update: Path => Unit): Path = {
+      implicit
+      update: Path => Unit): Path = {
     if (!initial) update(p)
     if (loops < 1) p
     else {
@@ -130,7 +131,8 @@ object SimpleAcRun {
   def continue(ps: List[Path], loops: Int)(implicit update: Path => Unit) =
     ps map ((p) => Future(iter(p, loops, true)(update)))
 
-  def resume(loops: Int)(implicit dbread: Future[List[Path]],
+  def resume(loops: Int)(implicit
+                         dbread: Future[List[Path]],
                          update: Path => Unit) =
     dbread flatMap
       ((ps: List[Path]) => Future.sequence(continue(ps, loops)(update)))
@@ -141,7 +143,8 @@ object SimpleAcRun {
               threads: Int = 6,
               wordCntn: Double = 0.5,
               size: Double = 1000,
-              scale: Double = 1.0)(implicit dbread: Future[List[Path]],
+              scale: Double = 1.0)(implicit
+                                   dbread: Future[List[Path]],
                                    update: Path => Unit) = {
     val p = new PathView()(dbread)
 

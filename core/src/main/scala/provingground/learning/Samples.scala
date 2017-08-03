@@ -1,9 +1,9 @@
 package provingground.learning
 import provingground._
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
+import provingground.{ FiniteDistribution => FD, ProbabilityDistribution => PD }
 
-import learning.{TangVec => T}
+import learning.{ TangVec => T }
 
 import cats._
 import cats.implicits._
@@ -30,8 +30,7 @@ trait TangSamples[X[_]] {
 
   def batchSampFD[A](pd: PD[A], batches: Int, n: Int) =
     sequence(
-      (1 to batches).toVector.map((_) => sampFD(pd, n))
-    ).map((vfd) => vfd.reduce(_ ++ _).normalized())
+      (1 to batches).toVector.map((_) => sampFD(pd, n))).map((vfd) => vfd.reduce(_ ++ _).normalized())
 
   def tangSizes[A](n: Int)(base: FD[A]): X[Vector[(FD[A], Int)]]
 }
@@ -41,7 +40,8 @@ object Samples {
     s.sampFD(p, n)
 
   def batchSample[A, X[_]](pd: PD[A], batches: Int, n: Int)(
-      implicit s: TangSamples[X]) =
+    implicit
+    s: TangSamples[X]) =
     s.batchSampFD(pd, batches, n)
 }
 

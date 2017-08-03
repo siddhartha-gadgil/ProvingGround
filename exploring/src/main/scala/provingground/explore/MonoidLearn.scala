@@ -31,10 +31,10 @@ object MonoidLearnRun {
 
   viewTypes ++= Set(l =:= r, leftId.typ, (b ~>: (op(r)(b) =:= b)), idUnique)
 
-//  MonoidLearn.shortRun
+  //  MonoidLearn.shortRun
 
   println("running")
 
-//  StdIn.readLine()
+  //  StdIn.readLine()
   Await.result(MonoidLearn.shortRun, 60.minutes)
 }

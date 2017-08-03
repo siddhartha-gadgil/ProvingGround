@@ -48,11 +48,9 @@ class DeducerSource(ded: Deducer,
               nextDistribution(initDist, initBatch, false, Vector(), smooth)
             })
       }
-      .map(
-        (fdsInvMap) =>
-          fdsInvMap.fold((FD.empty[Term], Vector()))(
-            (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-        ))
+      .map((fdsInvMap) =>
+        fdsInvMap.fold((FD.empty[Term], Vector()))((fdI1, fdI2) =>
+          (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)))
 
   def initSource = Source.fromFuture(firstBatchFut)
 
@@ -76,11 +74,9 @@ class DeducerSource(ded: Deducer,
                   nextDistribution(fd, batchSize, true, invM, smooth)
                 })
           }
-          .map(
-            (fdsInvMap) =>
-              fdsInvMap.fold((FD.empty[Term], Vector()))(
-                (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-            ))
+          .map((fdsInvMap) =>
+            fdsInvMap.fold((FD.empty[Term], Vector()))((fdI1, fdI2) =>
+              (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)))
         nextFut map ((x) => Some(x -> fd))
     }
 
@@ -124,11 +120,9 @@ class DeducerSource(ded: Deducer,
                                           smooth)
                 })
           }
-          .map(
-            (fdsInvMap) =>
-              fdsInvMap.fold((FD.empty[Term], Vector()))(
-                (fdI1, fdI2) => (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)
-            ))
+          .map((fdsInvMap) =>
+            fdsInvMap.fold((FD.empty[Term], Vector()))((fdI1, fdI2) =>
+              (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)))
         nextFut map ((x) => Some(x -> fd))
     }
   }
@@ -209,10 +203,7 @@ object DeducerSource {
   def withTimeSeries(terms: => Traversable[Term]) = {
     Flow[FD[Term]].scan(FD.empty[Term] -> (Map(): Map[Term, Vector[Double]])) {
       case ((_, m), fd) =>
-        (
-          fd,
-          (terms map ((t) => (t, m.getOrElse(t, Vector()) :+ fd(t)))).toMap
-        )
+        (fd, (terms map ((t) => (t, m.getOrElse(t, Vector()) :+ fd(t)))).toMap)
     }
   }
 

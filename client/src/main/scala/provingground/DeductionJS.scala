@@ -39,14 +39,9 @@ object DeducerJS {
     val rows = fd sortBy ((t) => 1 - t._3) take (100) map (row)
 
     div(
-      table(
-        caption("Entropies of terms"),
-        thead(
-          tr(th("Term"), th("Type"), th("Entropy"))
-        ),
-        tbody(rows: _*)
-      )
-    ).render
+      table(caption("Entropies of terms"),
+            thead(tr(th("Term"), th("Type"), th("Entropy"))),
+            tbody(rows: _*))).render
   }
 
   @JSExport
@@ -61,7 +56,7 @@ object DeducerJS {
 
     val refresh = input(all.`type` := "button", value := "Refresh").render
 
-//    val cons = div(refresh, info, selected).render
+    //    val cons = div(refresh, info, selected).render
 
     val tableDiv = div(all.width := 1000,
                        all.height := 250,
@@ -131,14 +126,12 @@ object DeducerJS {
              svgAttrs.width := 1000,
              svgAttrs.height := 400,
              fill := "grey",
-             fillOpacity := "0.1").render
-      )
+             fillOpacity := "0.1").render)
 
       Ajax.get("../terms-data").onSuccess {
         case xhr =>
           tableDiv.appendChild(
-            fdView(read[Vector[(String, String, Double)]](xhr.responseText))
-          )
+            fdView(read[Vector[(String, String, Double)]](xhr.responseText)))
       }
       Ajax.get("../terms-time-series").onSuccess {
         case xhr =>

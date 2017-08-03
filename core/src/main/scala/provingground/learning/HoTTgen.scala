@@ -32,7 +32,7 @@ object HoTTgen {
 
   val functyp: (Term, Term) => Option[Term] = {
     case (u: Typ[Term], v: Typ[Term]) if (u.typ == Type) => Some(FuncTyp(u, v))
-    case _                                               => None
+    case _ => None
   }
 
   val pityp: Term => Option[Term] = {
@@ -40,8 +40,8 @@ object HoTTgen {
       fmly.codom.typ match {
         case _: Typ[w] =>
           Try {
-            val x     = fmly.dom.Var
-            val y     = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+            val x = fmly.dom.Var
+            val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
             val fibre = lmbda(x)(y)
             PiDefn[u, w](fibre)
           }.toOption
@@ -55,8 +55,8 @@ object HoTTgen {
       fmly.codom.typ match {
         case _: Typ[w] =>
           Try {
-            val x     = fmly.dom.Var
-            val y     = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
+            val x = fmly.dom.Var
+            val y = fmly(x).asInstanceOf[Typ[w with Subs[w]]]
             val fibre = lmbda(x)(y)
             SigmaTyp[u, w](fibre)
           }.toOption
@@ -74,23 +74,23 @@ object HoTTgen {
   val PairTerm: (Term, Term) => Option[Term] = {
     case (_: Universe, _) => None
     case (_, _: Universe) => None
-    case (a, b)           => Some(pair(a, b))
+    case (a, b) => Some(pair(a, b))
   }
 
   val paircons: Term => Option[Term] = {
-    case p: ProdTyp[_, _]  => Some(p.paircons)
+    case p: ProdTyp[_, _] => Some(p.paircons)
     case p: SigmaTyp[_, _] => Some(p.paircons)
-    case _                 => None
+    case _ => None
   }
 
   val icons: Term => Option[Term] = {
     case p: PlusTyp[u, v] => Some(p.incl1)
-    case _                => None
+    case _ => None
   }
 
   val jcons: Term => Option[Term] = {
     case p: PlusTyp[u, v] => Some(p.incl2)
-    case _                => None
+    case _ => None
   }
 
   /*
@@ -99,9 +99,7 @@ object HoTTgen {
 	}
    */
 
-  lazy val moves: List[
-    (Move,
-     AdjDiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
+  lazy val moves: List[(Move, AdjDiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]])] =
     List(
       (Move.appl, CombinationFn(funcappl, isFunc)),
       (Move.arrow, CombinationFn(functyp, isTyp)),
@@ -112,8 +110,7 @@ object HoTTgen {
       (Move.paircons, MoveFn(paircons)),
       (Move.icons, MoveFn(icons)),
       (Move.jcons, MoveFn(icons)),
-      (Move.id, Id[FiniteDistribution[Term]])
-    )
+      (Move.id, Id[FiniteDistribution[Term]]))
 
   object Move {
     case object lambda extends Move
@@ -149,12 +146,10 @@ object HoTTgen {
     vBigSum(wtdMoveList) andthen block(NormalizeFD[Move], NormalizeFD[Term])
 
   def lambdaFn[M](
-      l: M,
-      f: AdjDiffbleFunction[
-        (FiniteDistribution[M], FiniteDistribution[Term]),
-        (FiniteDistribution[M], FiniteDistribution[Term])])(typ: Typ[Term]) = {
+    l: M,
+    f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])])(typ: Typ[Term]) = {
     import AdjDiffbleFunction._
-    val x    = typ.Var
+    val x = typ.Var
     val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])
     val init = NewVertex(x)
     val export = MoveFn(
@@ -164,9 +159,7 @@ object HoTTgen {
   }
 
   def lambdaSum[M](l: M)(
-      f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]),
-                            (FiniteDistribution[M], FiniteDistribution[Term])]
-  ) = {
+    f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]), (FiniteDistribution[M], FiniteDistribution[Term])]) = {
     val lambdas = (fd: (FiniteDistribution[M], FiniteDistribution[Term])) => {
       val terms = fd._2.supp
       val gettyps: PartialFunction[Term, Typ[Term]] = {
@@ -198,7 +191,7 @@ object HoTTgen {
 
   private def ifTyp: Term => Option[Typ[Term]] = {
     case typ: Typ[Term] if typ.typ == Type => Some(typ)
-    case _                                 => None
+    case _ => None
   }
 
   def getTyps(d: FiniteDistribution[Term]) = d.mapOpt(ifTyp)
@@ -209,8 +202,7 @@ object HoTTgen {
   }
 
   def dynTypFlow(
-      dyn: AdjDiffbleFunction[FiniteDistribution[Term],
-                              FiniteDistribution[Term]]) = {
+    dyn: AdjDiffbleFunction[FiniteDistribution[Term], FiniteDistribution[Term]]) = {
     typFlow ^: dyn
   }
 }

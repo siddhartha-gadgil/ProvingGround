@@ -6,7 +6,7 @@ import translation._
 
 /**
   * Expression in a language to represent terms in HoTT and
-  trees representing them in prose, including partially collapsed trees.
+  * trees representing them in prose, including partially collapsed trees.
   * At the level of structure, we do not make distinctions between words and phrases;
   * the distinction is specific to trees, where a word is a leaf.
   *
@@ -19,7 +19,7 @@ sealed trait MathExpr
 
 /**
   * Expression in a language to represent terms in HoTT and
-  trees representing them in prose, including partially collapsed trees.
+  * trees representing them in prose, including partially collapsed trees.
   * At the level of structure, we do not make distinctions between words and phrases;
   * the distinction is specific to trees, where a word is a leaf.
   *
@@ -69,12 +69,12 @@ object MathExpr {
       extends SententialPhrase
 
   /**
-  Pronoun 'it' with an optional coreference
+    * Pronoun 'it' with an optional coreference
     */
   case class It(coref: Option[MathExpr]) extends MathExpr
 
   /**
-  Pronoun 'they' with (psoosibly empty) coreferences
+    * Pronoun 'they' with (psoosibly empty) coreferences
     */
   case class They(corefs: Vector[MathExpr]) extends MathExpr
 
@@ -241,14 +241,14 @@ object MathExpr {
 
   /**
     * Prepositional phrase, usually translates to an argument, sometimes to a property.
-    Can be a Post-modifier in a determiner phrase, where it acts as an argument.
+    * Can be a Post-modifier in a determiner phrase, where it acts as an argument.
     */
   case class PP(negated: Boolean = false, prep: Preposition, np: NounPhrase)
       extends PostModifier
 
   /**
     * A quantterm (in the Naproche sense) - a variable or something more complex such as `n_k`.
-   Unlike Naproche, we may also have pronouns.
+    * Unlike Naproche, we may also have pronouns.
     */
   // sealed trait QuantTerm extends MathExpr
   type QuantTerm = MathExpr
@@ -286,7 +286,7 @@ object MathExpr {
 
   /**
     * The core of a determiner phrase, which is a noun, a list of quant-terms
-   or a noun followed by a list of quant-terms
+    * or a noun followed by a list of quant-terms
     */
   case class Core(optNoun: Option[NounPhrase],
                   quantterms: Vector[QuantTerm] = Vector())

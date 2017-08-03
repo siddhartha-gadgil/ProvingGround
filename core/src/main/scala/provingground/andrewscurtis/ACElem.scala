@@ -7,33 +7,31 @@ import FreeGroups._
 // import Moves._
 
 /**
-  * An element in the Andrews-Curtis evolution,
-  * namely:
-  * * actor name,
-  * * number of loops,
-  * * rank
-  * * associated presentation
-  * * weight in distribution
-  */
-case class ACElem(name: String,
-                  moves: Moves,
-                  rank: Int,
-                  pres: Presentation,
-                  weight: Double,
-                  loops: Int)
+ * An element in the Andrews-Curtis evolution,
+ * namely:
+ * * actor name,
+ * * number of loops,
+ * * rank
+ * * associated presentation
+ * * weight in distribution
+ */
+case class ACElem(
+  name: String,
+  moves: Moves,
+  rank: Int,
+  pres: Presentation,
+  weight: Double,
+  loops: Int)
 
 import ACElem._
 
 case class Param(
-    rank: Int = 2,
-    size: Int = 1000,
-    wrdCntn: Double = 0.1
-)
+  rank: Int = 2,
+  size: Int = 1000,
+  wrdCntn: Double = 0.1)
 
 object ACElem {
-  type Snap =
-    SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-             Param]
+  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
   def toPresentation(rank: Int, fdV: FiniteDistribution[Moves]) =
     fdV map ((v: Moves) => Moves.actOnTriv(rank)(v).get)
@@ -42,35 +40,36 @@ object ACElem {
     val d = snap.state._2
     d.supp map
       ((x) => {
-         val rank = snap.param.rank
-         ACElem(snap.name,
-                x,
-                rank,
-                Moves.actOnTriv(rank)(x).get,
-                d(x),
-                snap.loops)
-       })
+        val rank = snap.param.rank
+        ACElem(
+          snap.name,
+          x,
+          rank,
+          Moves.actOnTriv(rank)(x).get,
+          d(x),
+          snap.loops)
+      })
   }
 }
 
 /**
-  * An presentation (theorem) in the Andrews-Curtis evolution,
-  * namely:
-  * * actor name,
-  * * number of loops,
-  * * presentation
-  * * weight in distribution on presentations
-  */
+ * An presentation (theorem) in the Andrews-Curtis evolution,
+ * namely:
+ * * actor name,
+ * * number of loops,
+ * * presentation
+ * * weight in distribution on presentations
+ */
 case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
 
 object ACThm {
   val fromSnap = (snap: Snap) => {
     val rank = snap.param.rank
-    val d    = toPresentation(rank, snap.state._2)
+    val d = toPresentation(rank, snap.state._2)
     d.supp map
       ((x) => {
-         ACThm(snap.name, x, d(x), snap.loops)
-       })
+        ACThm(snap.name, x, d(x), snap.loops)
+      })
   }
 
   def weight(thms: Vector[ACThm], pres: Presentation, step: Int) = {

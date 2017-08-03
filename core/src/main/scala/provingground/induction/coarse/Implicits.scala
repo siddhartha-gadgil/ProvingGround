@@ -12,7 +12,7 @@ object Implicits {
   val Types = FmlyPtn.IdFmlyPtn[Term, Term]()
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
-    def pair              = ConstructorTyp(IdW[H], typ)
+    def pair = ConstructorTyp(IdW[H], typ)
     def :::(name: AnySym) = name ::: pair
 
     def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
@@ -20,14 +20,14 @@ object Implicits {
     def -->>:(that: Typ[H]) = that -->>: pair
 
     def -->>:[FF <: Term with Subs[FF]](
-        that: IterFuncPattern.IterFuncTyp[H, Term, FF]) =
+      that: IterFuncPattern.IterFuncTyp[H, Term, FF]) =
       that -->>: pair
 
     def ~>>:[T <: Term with Subs[T]](thatVar: H) = thatVar ~>>: pair
   }
 
   implicit class SymbFmly[C <: Term with Subs[C], F <: Term with Subs[F]](
-      ptn: FmlyPtn[Term, C, F]) {
+    ptn: FmlyPtn[Term, C, F]) {
     import FmlyPtn.fmly
 
     import IndexedConstructorPatterns.emptySeq
@@ -56,8 +56,7 @@ object Implicits {
       IterFuncTyp(tailVar ~>: pair, typ)
   }
 
-  implicit class IndTypFmly[C <: Term with Subs[C], H <: Term with Subs[H],
-  F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]) {
+  implicit class IndTypFmly[C <: Term with Subs[C], H <: Term with Subs[H], F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F]) {
     def >>(w: F) = (new IndexedConstructorPatterns(typFmlyPtn)).Family(w)
   }
 

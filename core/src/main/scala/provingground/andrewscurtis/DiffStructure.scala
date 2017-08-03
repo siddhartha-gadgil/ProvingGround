@@ -10,14 +10,14 @@ import provingground._, learning._
 import provingground.FiniteDistribution._
 import LinearStructure._
 
-import provingground.{FiniteDistribution => FD}
+import provingground.{ FiniteDistribution => FD }
 
 object DiffStructure {
 
   /*
    * Type aliases
    */
-//  type FD[X] = FiniteDistribution[X]
+  //  type FD[X] = FiniteDistribution[X]
   type M = AtomicMove
   type V = Moves
   type P = Presentation
@@ -46,21 +46,21 @@ object DiffStructure {
   }
 
   def getFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(
-      dist: FD[P]) = {
+    dist: FD[P]) = {
     val baseweight = presentationWeight(_: P, presCntn, wrdCntn)
     dist.rawfeedback(baseweight) * scale
   }
 
   def conjugateByFeedback(
-      presCntn: Double,
-      wrdCntn: Double,
-      scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[M]) = {
+    presCntn: Double,
+    wrdCntn: Double,
+    scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[M]) = {
     val projectionMap = genProjectionMap(rank, iterations)(lst)
     projectionMap.^:(getFeedback(presCntn, wrdCntn, scale)(_: FD[P]))
   }
 
   def genDynamics(conjFunc: ((FD[M], FD[V])) => (FD[M], FD[V]))(
-      orig: (FD[M], FD[V])) = {
+    orig: (FD[M], FD[V])) = {
     val sumRes = conjFunc(orig)
     (orig._1 ++ sumRes._1, orig._2 ++ sumRes._2)
   }

@@ -33,8 +33,8 @@ import upickle.default._
 
 object WebServer {
 
-//  implicit val system = Hub.system
-//  implicit val materializer = ActorMaterializer()
+  //  implicit val system = Hub.system
+  //  implicit val materializer = ActorMaterializer()
   import Hub._
 
   // needed for the future flatMap/onComplete in the end
@@ -90,14 +90,12 @@ object WebServer {
       </html>
       """
 
-  val fdView = makePage(
-    """
+  val fdView = makePage("""
     <div id ="jsdiv"></div>
     <script type="text/javascript">
     provingground.DeducerJS().main()
     </script>
-    """
-  )
+    """)
 
   val termsView = {
     val divs =
@@ -172,9 +170,9 @@ object WebServer {
 
   val pingQueue = Source.queue[Unit](10, OverflowStrategy.dropHead)
 
-//  def ping() = pingQueue.offer(())
+  //  def ping() = pingQueue.offer(())
 
-//  import FreeExprLang.writeDist
+  //  import FreeExprLang.writeDist
 
   val fdRoute =
     path("terms") {

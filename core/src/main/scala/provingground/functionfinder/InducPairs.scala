@@ -9,8 +9,8 @@ import scala.reflect.runtime.universe.{
 }
 
 /**
-  * Recursion and induction for (dependent) pairs.
-  */
+ * Recursion and induction for (dependent) pairs.
+ */
 object InducPairs {
   val A = "A" :: Type
 
@@ -30,8 +30,7 @@ object InducPairs {
     lambda(B)(
       lambda(C)(
         lambda(f)(
-          lambda(ab)(f(a)(b))
-        ))))
+          lambda(ab)(f(a)(b))))))
 
   val Bs = "B" :: A ->: Type
 
@@ -49,12 +48,11 @@ object InducPairs {
     lambda(B)(
       lambda(C)(
         lambda(g)(
-          lambda(abDep)(g(a)(bs(a)))
-        ))))
+          lambda(abDep)(g(a)(bs(a)))))))
 
   val Cs = "C" :: A ->: B ->: Type
 
-//  val toCs = PiTyp(lmbda(a)(PiTyp(lmbda(b)(Cs(a)(b)))))
+  //  val toCs = PiTyp(lmbda(a)(PiTyp(lmbda(b)(Cs(a)(b)))))
 
   val toCs =
     (a !: A) ~>: ((b !: B) ~>: Cs(a)(b)) // the !: checks types and is mainly for documentation.
@@ -65,8 +63,7 @@ object InducPairs {
     lambda(B)(
       lambda(Cs)(
         lambda(h)(
-          lambda(ab)(h(a)(b))
-        ))))
+          lambda(ab)(h(a)(b))))))
 
   val toCsDep = (a !: A) ~>: ((bs(a) !: Bs(a)) ~>: Cs(a)(bs(a)))
 
@@ -76,6 +73,5 @@ object InducPairs {
     lambda(Bs)(
       lambda(Cs)(
         lambda(hDep)(
-          lambda(abDep)(h(a)(bs(a)))
-        ))))
+          lambda(abDep)(h(a)(bs(a)))))))
 }

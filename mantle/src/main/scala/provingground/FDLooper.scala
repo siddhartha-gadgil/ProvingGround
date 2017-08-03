@@ -36,8 +36,8 @@ class FDLooper[X: LinearStructure, P](
     normalize: X => X,
     init: X,
     srcRef: ActorRef,
-    val param: P
-) extends Actor {
+    val param: P)
+    extends Actor {
   import LinearStructure._
 
   /**

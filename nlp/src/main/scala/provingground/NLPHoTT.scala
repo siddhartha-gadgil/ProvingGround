@@ -8,7 +8,8 @@ import provingground.TheoryTypes.{Term => TheoryTerm, Apply => TheoryApply, _}
 
 //import scala.language.implicitConversions
 
-/** Parses prose to HoTT
+/**
+  * Parses prose to HoTT
   *  Gives context-free expressions, not actual typed terms.
   *  Warning: Should handle conjunctions carefully
   */

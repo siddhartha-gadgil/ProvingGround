@@ -58,9 +58,7 @@ object ProvingGroundJS {
     jsDiv.appendChild(div("updating without query").render)
     Ajax.get("../../data/dummy").onSuccess {
       case xhr =>
-        jsDiv.appendChild(
-          div(xhr.responseText).render
-        )
+        jsDiv.appendChild(div(xhr.responseText).render)
     }
   }
 
@@ -77,14 +75,9 @@ object ProvingGroundJS {
     val rows = fd sortBy ((t) => 1 - t._3) take (100) map (row)
 
     div(
-      table(
-        caption("Entropies of terms"),
-        thead(
-          tr(th("Term"), th("Type"), th("Entropy"))
-        ),
-        tbody(rows: _*)
-      )
-    ).render
+      table(caption("Entropies of terms"),
+            thead(tr(th("Term"), th("Type"), th("Entropy"))),
+            tbody(rows: _*))).render
   }
 
   val yScale = 15
@@ -95,15 +88,15 @@ object ProvingGroundJS {
 
   def xc(x: Double) = (xScale * x).toInt
 
-//  val xcBox = input(all.`type` := "number", value := 15).render
+  //  val xcBox = input(all.`type` := "number", value := 15).render
 
-//  xcBox.onchange = (ev: dom.Event) => {xScale = xcBox.value.toInt}
+  //  xcBox.onchange = (ev: dom.Event) => {xScale = xcBox.value.toInt}
 
-//  val ycBox = input(all.`type` := "number", value := 20).render
+  //  val ycBox = input(all.`type` := "number", value := 20).render
 
-//  ycBox.onchange = (ev: dom.Event) => {yScale = ycBox.value.toInt}
+  //  ycBox.onchange = (ev: dom.Event) => {yScale = ycBox.value.toInt}
 
-//  val queryDiv = div(span("x-scale:"), xcBox, span("; y-scale:"), ycBox).render
+  //  val queryDiv = div(span("x-scale:"), xcBox, span("; y-scale:"), ycBox).render
 
   def svgLines(lines: List[(String, Vector[Double])]) =
     for ((label, points)       <- lines;
@@ -145,7 +138,7 @@ object ProvingGroundJS {
 
   @JSExport
   def showFD() = {
-//      jsDiv.appendChild(queryDiv)
+    //      jsDiv.appendChild(queryDiv)
     val fdDiv = dom.document.getElementById("finite-distribution")
     val svg   = dom.document.getElementById("time-series")
     svg.appendChild(
@@ -154,13 +147,11 @@ object ProvingGroundJS {
            svgAttrs.width := 1000,
            svgAttrs.height := 400,
            fill := "blue",
-           fillOpacity := "0.1").render
-    )
+           fillOpacity := "0.1").render)
     Ajax.get("../terms-data").onSuccess {
       case xhr =>
         fdDiv.appendChild(
-          fdView(read[Vector[(String, String, Double)]](xhr.responseText))
-        )
+          fdView(read[Vector[(String, String, Double)]](xhr.responseText)))
     }
     Ajax.get("../terms-time-series").onSuccess {
       case xhr =>
@@ -168,11 +159,7 @@ object ProvingGroundJS {
         svgLines(tsList).foreach((elem) => svg.appendChild(elem))
         val cons = dom.document.getElementById("time-series-console")
         tsList sortBy (_._2.last) foreach
-          (
-              (lv) =>
-                cons.appendChild(
-                  span(katex(lv._1), ";").render
-                ))
+          ((lv) => cons.appendChild(span(katex(lv._1), ";").render))
     }
   }
 

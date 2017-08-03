@@ -72,13 +72,13 @@ object Collections {
   object ApproxSeq {
     case class Const[T](t: T) extends ApproxSeq[T] {
       lazy val head = t
-      val stable    = true
+      val stable = true
 
       lazy val tail = this
     }
 
     class Prepend[T](h: => T, t: => ApproxSeq[T], val stable: Boolean = false)
-        extends ApproxSeq[T] {
+      extends ApproxSeq[T] {
       lazy val head = h
       lazy val tail = t
     }
@@ -87,7 +87,7 @@ object Collections {
       new Prepend(h, t, stable)
 
     case class Dyn[T](init: T, dyn: T => T, halt: T => Boolean)
-        extends ApproxSeq[T] {
+      extends ApproxSeq[T] {
       lazy val head = init
 
       lazy val stable = halt(init)
@@ -97,9 +97,10 @@ object Collections {
     }
 
     def diagonal[T](seq: ApproxSeq[ApproxSeq[T]]): ApproxSeq[T] =
-      cons(seq.head.head,
-           diagonal(seq.tail.tail),
-           seq.stable && seq.head.stable)
+      cons(
+        seq.head.head,
+        diagonal(seq.tail.tail),
+        seq.stable && seq.head.stable)
   }
 
   /*
@@ -145,29 +146,30 @@ object Collections {
 
     implicit val realInnerProd = InnerProduct[Double](_ * _)
 
-    implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
-                                         ipB: InnerProduct[B]) = {
+    implicit def InnerProductPairs[A, B](implicit
+      ipA: InnerProduct[A],
+      ipB: InnerProduct[B]) = {
       InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
     }
 
   }
 
-// implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
-//   new InnerProductSpace[FiniteDistribution[T], Double] {
-//     def negate(x: FiniteDistribution[T]) =
-//       FiniteDistribution(
-//         x.pmf.map { case Weighted(x, w) => Weighted(x, -w) })
-//
-//         val zero = empty[T]
-//
-//         def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
-//
-//         def timesl(r: Double, x: FiniteDistribution[T]) = x * r
-//
-//         implicit def scalar: Field[Double] = Field[Double]
-//
-//         def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
-//       }
+  // implicit def vs[T]: InnerProductSpace[FiniteDistribution[T], Double] =
+  //   new InnerProductSpace[FiniteDistribution[T], Double] {
+  //     def negate(x: FiniteDistribution[T]) =
+  //       FiniteDistribution(
+  //         x.pmf.map { case Weighted(x, w) => Weighted(x, -w) })
+  //
+  //         val zero = empty[T]
+  //
+  //         def plus(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x ++ y
+  //
+  //         def timesl(r: Double, x: FiniteDistribution[T]) = x * r
+  //
+  //         implicit def scalar: Field[Double] = Field[Double]
+  //
+  //         def dot(x: FiniteDistribution[T], y: FiniteDistribution[T]) = x dot y
+  //       }
 
   trait LabelledArray[L, T] extends Any {
     def support: Traversable[L]
@@ -200,9 +202,10 @@ object Collections {
     def dot(that: LabelledVector[L]) = innerProduct(that)
   }
 
-  case class ArrayMap[L, T](coords: Map[L, T],
-                            supp: Option[Traversable[L]] = None)
-      extends LabelledArray[L, T] {
+  case class ArrayMap[L, T](
+    coords: Map[L, T],
+    supp: Option[Traversable[L]] = None)
+    extends LabelledArray[L, T] {
     lazy val support = supp getOrElse (coords.keys)
 
     def get(label: L) = coords.get(label)
@@ -226,14 +229,16 @@ object Collections {
   implicit def ZeroMap[L, T]: ArrayMap[L, T] = ArrayMap(Map.empty: Map[L, T])
 
   implicit def VectorArray[L, T](
-      implicit zero: T,
-      ls: LinearStructure[T]): LinearStructure[ArrayMap[L, T]] = {
+    implicit
+    zero: T,
+    ls: LinearStructure[T]): LinearStructure[ArrayMap[L, T]] = {
     def mult(sc: Double, arr: ArrayMap[L, T]) =
       arr map ((t: T) => ls.mult(sc, t))
 
-    LinearStructure[ArrayMap[L, T]](ArrayMap(Map(), Some(List())),
-                                    _ ++ _,
-                                    mult)
+    LinearStructure[ArrayMap[L, T]](
+      ArrayMap(Map(), Some(List())),
+      _ ++ _,
+      mult)
   }
 
   implicit class Shift[B](shift: (B, B, Double) => B) {
@@ -289,9 +294,10 @@ object Collections {
     if (n < 1) init else IterateDyn(step(init), step, n - 1)
 
   @tailrec
-  def transversal[A](arg: List[A],
-                     equiv: (A, A) => Boolean,
-                     accum: List[A] = List()): List[A] = arg match {
+  def transversal[A](
+    arg: List[A],
+    equiv: (A, A) => Boolean,
+    accum: List[A] = List()): List[A] = arg match {
     case x :: ys =>
       if (accum contains ((a: A) => equiv(x, a))) transversal(ys, equiv, accum)
       else transversal(ys, equiv, x :: accum)

@@ -23,12 +23,12 @@ object AndrewsCurtis {
    * The vertices (e.g. presentations) and edgetype/movetype for the dynamics. We assume there are no combinations here.
    * Other generic objects also extend this.
    */
-//  type DynObj = ACobject
+  //  type DynObj = ACobject
 
   /*
    * Distribution on dynobjects - this is what evolves during learning.
    */
-//  type DynDstbn = FiniteDistribution[DynObj]
+  //  type DynDstbn = FiniteDistribution[DynObj]
 
   type DynDstbn = DynDst[Presentation, ACMoveType]
 
@@ -67,24 +67,24 @@ object AndrewsCurtis {
 
   type Vert = Presentation
 
-//  val isPresentation : ACobject => Boolean = {
-//    case pres : Presentation => true
-//    case _ => false
-//  }
+  //  val isPresentation : ACobject => Boolean = {
+  //    case pres : Presentation => true
+  //    case _ => false
+  //  }
 
-//  val WtdPresentation : PartialFunction[Weighted[DynObj], Weighted[Presentation]] = {
-//    case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
-//  }
+  //  val WtdPresentation : PartialFunction[Weighted[DynObj], Weighted[Presentation]] = {
+  //    case Weighted(pres : Presentation, wt) => Weighted(pres, wt)
+  //  }
 
-//  def FDVert(d : DynDstbn) : FiniteDistribution[Vert] = {
-//     val rawpmf = d.pmf collect WtdPresentation
-//     FiniteDistribution(rawpmf).normalized()
-//  }
+  //  def FDVert(d : DynDstbn) : FiniteDistribution[Vert] = {
+  //     val rawpmf = d.pmf collect WtdPresentation
+  //     FiniteDistribution(rawpmf).normalized()
+  //  }
 
   /*
    * Extend a path by another move. Need to do this differently while abstracting.
    */
-//  case object PathContinue extends DynObj
+  //  case object PathContinue extends DynObj
 
   /*
    * The type of moves
@@ -321,7 +321,7 @@ object AndrewsCurtis {
   def backpropdstbn(chains: Set[Chain],
                     feedback: FiniteDistribution[Vert],
                     d: DynDstbn) = {
-//    val empty = FiniteDistribution[DynObj](Set())
+    //    val empty = FiniteDistribution[DynObj](Set())
     val empty = DynDst(FiniteDistribution.empty[Presentation],
                        FiniteDistribution.empty[MoveType],
                        0)
@@ -438,16 +438,14 @@ object AndrewsCurtis {
            FiniteDistribution.empty[Presentation],
            pthCntn)
 
-  case class ACparameters(
-      epsilon: Double = 1.0 / 100.0,
-      cutoff: Double = 1.0 / 1000000.0,
-      purgeLevel: Double = 1.0 / 10000.0,
-      pthCntn: Double = 0.7,
-      presCntn: Double = 0.7,
-      wrdCntn: Double = 0.7,
-      tuneLoops: Int = 25,
-      growLoops: Int = 15
-  ) {
+  case class ACparameters(epsilon: Double = 1.0 / 100.0,
+                          cutoff: Double = 1.0 / 1000000.0,
+                          purgeLevel: Double = 1.0 / 10000.0,
+                          pthCntn: Double = 0.7,
+                          presCntn: Double = 0.7,
+                          wrdCntn: Double = 0.7,
+                          tuneLoops: Int = 25,
+                          growLoops: Int = 15) {
 
     def bgwt = ACbgWt(presCntn, wrdCntn)
 

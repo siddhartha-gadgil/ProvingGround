@@ -1,8 +1,8 @@
 package provingground.translation
 
 /**
-  * @author gadgil
-  */
+ * @author gadgil
+ */
 object StringParse {
   trait WriteString[A] {
     def writer(a: A): String

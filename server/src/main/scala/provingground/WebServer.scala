@@ -26,8 +26,7 @@ object ScriptServer extends App {
       scriptsDir: Path = pwd / "repl-scripts",
       objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
       host: String = "localhost",
-      port: Int = 8080
-  )
+      port: Int = 8080)
 
   val config = Config()
 

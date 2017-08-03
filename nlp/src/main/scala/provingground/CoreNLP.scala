@@ -106,17 +106,17 @@ object CoreNLPTest {
   val depTrees = for (sentence <- sentences) yield {
     // traversing the words in the current sentence
     // a CoreLabel is a CoreMap with additional token-specific methods
-//      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+    //      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
     // this is the text of the token
-//        String word = token.get(TextAnnotation.class);
+    //        String word = token.get(TextAnnotation.class);
     // this is the POS tag of the token
-//        String pos = token.get(PartOfSpeechAnnotation.class);
+    //        String pos = token.get(PartOfSpeechAnnotation.class);
     // this is the NER label of the token
-//       String ne = token.get(NamedEntityTagAnnotation.class);
-//      }
+    //       String ne = token.get(NamedEntityTagAnnotation.class);
+    //      }
 
     // this is the parse tree of the current sentence
-//      Tree tree = sentence.get(TreeAnnotation.class);
+    //      Tree tree = sentence.get(TreeAnnotation.class);
 
     // this is the Stanford dependency graph of the current sentence
     val dependencies =
@@ -131,10 +131,10 @@ object CoreNLPTest {
   // Each chain stores a set of mentions that link to each other,
   // along with a method for getting the most representative mention
   // Both sentence and token offsets start at 1!
-//    Map<Integer, CorefChain> graph =
-//      document.get(CorefChainAnnotation.class);
+  //    Map<Integer, CorefChain> graph =
+  //      document.get(CorefChainAnnotation.class);
 
   val tree = proseTrees(
     "if a prime number p divides mn, p divides one of m and n").head
-//		println(toFormula(tree, Global))
+  //		println(toFormula(tree, Global))
 }

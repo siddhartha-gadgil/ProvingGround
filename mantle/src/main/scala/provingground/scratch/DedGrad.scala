@@ -80,7 +80,7 @@ object DedGrad {
 
     val deduc = new Deducer(0.2, 0.2, 0.2, 0.3)
 
-//    val ev = deduc.memFunc(FD.unif(A, a, f))
+    //    val ev = deduc.memFunc(FD.unif(A, a, f))
 
     // lazy val samp = (x: Term) => (ev sample 100000)(x)
     //

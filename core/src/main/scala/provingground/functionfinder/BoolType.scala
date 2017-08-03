@@ -61,8 +61,9 @@ object BoolType {
 
   private type FnFn = Func[Term, Func[Term, Term]]
 
-  def iteDepFunc(u: Typ[Term],
-                 v: Typ[Term]) /*(implicit fnfn : ScalaUniv[FnFn])*/ = {
+  def iteDepFunc(
+    u: Typ[Term],
+    v: Typ[Term]) /*(implicit fnfn : ScalaUniv[FnFn])*/ = {
 
     val x = "x" :: u
 

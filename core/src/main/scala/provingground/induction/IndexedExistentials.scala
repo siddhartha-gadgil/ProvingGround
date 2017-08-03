@@ -18,15 +18,14 @@ sealed trait TypFamilyExst {
   def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
     TypFamilyExst(
       DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t)),
-      variable :~> W
-    )
+      variable :~> W)
 
   def ~>:[TT <: Term with Subs[TT]](variable: TT) =
     TypFamilyExst(
-      DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                       (t: TT) => pattern.subs(variable, t)),
-      variable :~> W
-    )
+      DepFuncTypFamily(
+        variable.typ.asInstanceOf[Typ[TT]],
+        (t: TT) => pattern.subs(variable, t)),
+      variable :~> W)
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
     TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)
@@ -34,11 +33,11 @@ sealed trait TypFamilyExst {
   def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
     val fmly = W match {
       case FormalAppln(f, x) if x == variable => f.asInstanceOf[Func[TT, Fb]]
-      case _                                  => variable :-> W
+      case _ => variable :-> W
     }
     TypFamilyExst(FuncTypFamily(dom, pattern), fmly)
   }
-// Inner existentials
+  // Inner existentials
 
   trait IndexedIterFuncExst {
     import IndexedIterFuncShape._
@@ -63,7 +62,7 @@ sealed trait TypFamilyExst {
     import IndexedIterFuncShape._
 
     def apply[Fm <: Term with Subs[Fm]](
-        sh: IndexedIterFuncShape[Term, Fm, Fb, Index]) =
+      sh: IndexedIterFuncShape[Term, Fm, Fb, Index]) =
       new IndexedIterFuncExst {
         type F = Fm
         val shape = sh
@@ -109,17 +108,16 @@ sealed trait TypFamilyExst {
   }
 
   object IndexedConstructorShapeExst {
-    def apply[SI <: HList,
-              ConstructorTypeI <: Term with Subs[ConstructorTypeI]](
-        shape: IndexedConstructorShape[SI, Term, Fb, ConstructorTypeI, Index]) =
+    def apply[SI <: HList, ConstructorTypeI <: Term with Subs[ConstructorTypeI]](
+      shape: IndexedConstructorShape[SI, Term, Fb, ConstructorTypeI, Index]) =
       new IndexedConstructorShapeExst {
-        type S               = SI
+        type S = SI
         type ConstructorType = ConstructorTypeI
 
         lazy val value = shape
       }
     def getIndexedConstructorShape(
-        cnstTyp: Typ[Term]): IndexedConstructorShapeExst =
+      cnstTyp: Typ[Term]): IndexedConstructorShapeExst =
       pattern
         .getIndex(W, cnstTyp)
         .map { (ind: Index) =>
@@ -154,7 +152,7 @@ sealed trait TypFamilyExst {
     val value: IndexedConstructorSeqDom[SS, Term, Fb, Index, Intros]
 
     def |:[HShape <: HList, HC <: Term with Subs[HC]](
-        head: IndexedConstructor[HShape, Term, Fb, HC, Index]) =
+      head: IndexedConstructor[HShape, Term, Fb, HC, Index]) =
       IndexedConstructorSeqExst {
         head |: value
       }
@@ -162,7 +160,7 @@ sealed trait TypFamilyExst {
 
   object IndexedConstructorSeqExst {
     def apply[SSS <: HList, IIntros <: HList](
-        seq: IndexedConstructorSeqDom[SSS, Term, Fb, Index, IIntros]) =
+      seq: IndexedConstructorSeqDom[SSS, Term, Fb, Index, IIntros]) =
       new IndexedConstructorSeqExst {
         type SS = SSS
 
@@ -176,12 +174,12 @@ sealed trait TypFamilyExst {
     }
 
     def getIndexedConstructorSeq(
-        intros: Vector[Term]): IndexedConstructorSeqExst = {
+      intros: Vector[Term]): IndexedConstructorSeqExst = {
       intros match {
         case Vector() => empty
         case l =>
-          val x    = l.head
-          val ys   = l.tail
+          val x = l.head
+          val ys = l.tail
           val name = x.asInstanceOf[Symbolic].name.toString
           val head =
             name ::: IndexedConstructorShapeExst.getIndexedConstructorShape(
@@ -195,10 +193,10 @@ sealed trait TypFamilyExst {
 object TypFamilyExst {
   import TypFamilyPtn._
   def apply[Fib <: Term with Subs[Fib], In <: HList: TermList](
-      tf: TypFamilyPtn[Term, Fib, In],
-      w: Fib) =
+    tf: TypFamilyPtn[Term, Fib, In],
+    w: Fib) =
     new TypFamilyExst {
-      type Fb    = Fib
+      type Fb = Fib
       type Index = In
 
       lazy val subst = implicitly[TermList[Index]]
@@ -219,8 +217,8 @@ object TypFamilyExst {
   }
 
   def getIndexedConstructorSeq[Fb <: Term with Subs[Fb]](
-      w: Fb,
-      intros: Vector[Term]) = {
+    w: Fb,
+    intros: Vector[Term]) = {
     getFamily(w).IndexedConstructorSeqExst.getIndexedConstructorSeq(intros)
   }
 

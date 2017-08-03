@@ -3,7 +3,7 @@ package provingground.induction.coarse
 import provingground._, induction._, HoTT._
 
 trait InductiveTyp[C <: Term with Subs[C], H <: Term with Subs[H]]
-    extends Typ[H] {
+  extends Typ[H] {
   val constructors: List[Constructor[C, H]]
 
   def rec(X: Typ[C]) = ConstructorSeq.recFn(constructors, this, X)
@@ -12,13 +12,13 @@ trait InductiveTyp[C <: Term with Subs[C], H <: Term with Subs[H]]
     ConstructorSeq.inducFn(constructors, this, Xs)
 
   /**
-	   * just the constructor patterns.
-	   */
+   * just the constructor patterns.
+   */
   val ptns = constructors map (_.pattern)
 
   /**
-	   * just the constructor functions
-	   */
+   * just the constructor functions
+   */
   val constructorFns: List[Term] = constructors map (_.cons)
 }
 
@@ -27,14 +27,14 @@ object InductiveTyp {
     val constructorDefs =
       formalCons map
         ((cons) =>
-           (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
+          (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
     InductiveTypDefinition(constructorDefs)
   }
 }
 
 case class InductiveTypDefinition[C <: Term with Subs[C]](
-    constructorDefs: List[Typ[Term] => Constructor[C, Term]])
-    extends InductiveTyp[C, Term] {
+  constructorDefs: List[Typ[Term] => Constructor[C, Term]])
+  extends InductiveTyp[C, Term] {
   val typ = Type
 
   lazy val constructors = constructorDefs map (_(this))
@@ -45,8 +45,10 @@ case class InductiveTypDefinition[C <: Term with Subs[C]](
     throw new IllegalArgumentException(
       s"trying to use the constant $this as a variable (or a component of one)")
 
-  /** As seen from class InductiveTypDefinition, the missing signatures are as follows.
-    *  *  For convenience, these are usable as stub implementations.  */
+  /**
+   * As seen from class InductiveTypDefinition, the missing signatures are as follows.
+   *  *  For convenience, these are usable as stub implementations.
+   */
   type Obj = Term
 
   def variable(name: provingground.HoTT.AnySym) =
