@@ -259,6 +259,7 @@ lazy val mantle = (project in file("mantle"))
   .dependsOn(coreJVM)
   // .dependsOn(functionfinder)
   .dependsOn(server)
+  .dependsOn(trepplein)
   // .dependsOn(translation)
   .enablePlugins(SbtWeb, TutPlugin)
 //        dependsOn(deepwalk).
@@ -373,6 +374,6 @@ lazy val normalform = (project in file("normalform"))
   .settings(jvmSettings: _*)
   .settings(nfSettings: _*)
 
-lazy val trepplein = (project in file("trepplein"))
+lazy val trepplein = (project in file("trepplein-copy"))
 
 fork in run := true
