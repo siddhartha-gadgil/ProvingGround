@@ -4,6 +4,8 @@ import provingground._
 
 import translation._
 
+import Translator.unmatched
+
 import scala.language.higherKinds
 
 import upickle.Js
@@ -28,7 +30,7 @@ object JsFunc {
   import Functors._
 
   implicit val intJs: JsFunc[N] = new JsFunc[N] {
-    def encode(t: Int) = Js.Num(t)
+    def encode(t: Int) = Js.Num(t.toDouble)
 
     def decode(js: Js.Value) = js.num.toInt
   }
@@ -161,22 +163,28 @@ object TermJson {
       } ||
       jsToBuild[Term, III]("pi") {
         case ((variable, typ), value: Typ[u]) => variable ~>: value
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, III]("sigma") {
         case ((variable, typ), value: Typ[u]) => sigma(variable)(value)
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, II]("product-type") {
         case (x: Typ[u], y: Typ[v]) => ProdTyp(x, y)
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, II]("plus-type") {
         case (x: Typ[u], y: Typ[v]) => PlusTyp(x, y)
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, II]("pair") { case (x, y) => mkPair(x, y) } ||
       jsToBuild[Term, II]("func-type") {
         case (x: Typ[u], y: Typ[v]) => FuncTyp(x, y)
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, II]("reflexivity") {
         case (dom: Typ[u], value: Term) => Refl(dom, value)
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, Un]("star") { (_) =>
         Star
@@ -189,9 +197,11 @@ object TermJson {
       } ||
       jsToBuild[Term, II]("first-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
+        case (x, y) => unmatched(x, y)
       } ||
       jsToBuild[Term, II]("second-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl2(x.asInstanceOf[v])
+        case (x, y) => unmatched(x, y)
       } ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (a, (b, v)) =>
@@ -222,6 +232,7 @@ object TermJson {
       } ||
       jsToBuild[Term, Named]("symbolic") {
         case (name, tp: Typ[u]) => name :: tp
+        case (x, y) => unmatched(x, y)
       }(travNamed, implicitly[JsFunc[Named]])
 
 }

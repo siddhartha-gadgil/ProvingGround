@@ -1,7 +1,7 @@
 package provingground.andrewscurtis
 
 import FreeGroups._
-import provingground._, learning._, Collections.IterateDyn
+import provingground._, learning._
 
 import provingground._
 

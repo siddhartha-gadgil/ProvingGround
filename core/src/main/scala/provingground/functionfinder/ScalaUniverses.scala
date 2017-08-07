@@ -64,7 +64,7 @@ object ScalaUniv {
 
     def variable(name: AnySym) = {
       val dom = domuniv.symbObj(DomSym(name))
-      val codom = codomuniv.symbObj(CodomSym(name))
+      // val codom = codomuniv.symbObj(CodomSym(name))
       val typFmly = FuncTyp(dom, codomuniv).symbObj(name)
       PiTyp(typFmly)
     }
@@ -176,14 +176,14 @@ object ScalaUniv {
   /**
    * convenience for Pi-type
    */
-  implicit class RichTypFamily[W <: Term with Subs[W], U <: Term with Subs[U]](
-    fibre: Func[W, Typ[U]])(
-    implicit
-    su: ScalaUniv[U]) {
-    //    val dom = func.dom
-
-    def pi = PiTyp(fibre)
-  }
+  // implicit class RichTypFamily[W <: Term with Subs[W], U <: Term with Subs[U]](
+  //   fibre: Func[W, Typ[U]])(
+  //   implicit
+  //   su: ScalaUniv[U]) {
+  //   //    val dom = func.dom
+  //
+  //   def pi = PiTyp(fibre)
+  // }
 
   /**
    * Companion to dependent functions

@@ -121,6 +121,9 @@ trait Translator[I, O] extends (I => Option[O]) { self =>
  * We also have simpler translators for literals and also wrapping translators for a component type.
  */
 object Translator {
+  def unmatched[A](args: A*) : Nothing = {
+    throw new IllegalArgumentException(s"pattern does not match arguments ${args}")
+  }
 
   /**
    * non-recursive translation determined by a given optional function

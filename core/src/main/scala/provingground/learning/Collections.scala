@@ -6,6 +6,15 @@ import scala.annotation._
 
 // import scala.language.implicitConversions
 
+/*
+ * Should move this elsewhere
+ */
+ object IterateDyn{
+    @tailrec def apply[A](init: A, step: A => A, n: Int): A =
+  if (n < 1) init else IterateDyn(step(init), step, n - 1)
+}
+
+
 @deprecated("use spire", "17/5/2017")
 object Collections {
   // lazy val random = new Random
@@ -286,12 +295,7 @@ object Collections {
     def empty[A] = MultiSet[A](Map.empty)
   }
 
-  /*
-   * Should move this elsewhere
-   */
 
-  @tailrec def IterateDyn[A](init: A, step: A => A, n: Int): A =
-    if (n < 1) init else IterateDyn(step(init), step, n - 1)
 
   @tailrec
   def transversal[A](

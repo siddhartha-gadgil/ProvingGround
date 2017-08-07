@@ -3,8 +3,7 @@ package provingground
 import learning._
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import Collections.IterateDyn
-import FiniteDistribution._
+// import FiniteDistribution._
 import LinearStructure._
 //import provingground.FiniteDistributionLearner.IterDynSys
 

@@ -287,12 +287,15 @@ object IterFuncMapper {
         (shape: IterFuncShape[O, O]) => IdIterPtnMap[O, C]
     }
 
+  import translation.Translator.unmatched
+
   implicit def funcIterMapper[Tail <: Term with Subs[Tail], O <: Term with Subs[O], C <: Term with Subs[C], HF <: Term with Subs[HF], HTT <: Term with Subs[HTT], HDT <: Term with Subs[HDT]](
     implicit
     hm: IterFuncMapper[O, C, HF, HTT, HDT]) =
     new IterFuncMapper[O, C, Func[Tail, HF], Func[Tail, HTT], FuncLike[Tail, HDT]] {
       def mapper = {
         case FuncShape(t, h) => FuncIterPtnMap(t, hm.mapper(h))
+        case s => unmatched(s)
       }
     }
 
@@ -303,6 +306,7 @@ object IterFuncMapper {
       def mapper = {
         case DepFuncShape(t, hf) =>
           DepFuncIterPtnMap(t, (tt: Tail) => hm.mapper(hf(tt)))
+          case s => unmatched(s)
       }
     }
 }

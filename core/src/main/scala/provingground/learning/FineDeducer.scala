@@ -5,6 +5,8 @@ import provingground.{ FiniteDistribution => FD, ProbabilityDistribution => PD }
 
 import translation.{ TermLang => TL }
 
+import translation.Translator.unmatched
+
 import scala.language.existentials
 
 // import cats._
@@ -72,6 +74,7 @@ object FineDeducer {
     (funcEvolve(p) fibProduct (_.dom, (tp: Typ[Term]) =>
       argEvolve(tp)(p))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
+      case (x, y) => unmatched(x, y)
     }
 
   /**
@@ -340,6 +343,7 @@ case class FineDeducer(
     (DevolvFuncs(fd, tang) fibProduct
       (_.dom, (tp: Typ[Term]) => evolveWithTyp(tp)(fd))) map {
         case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
+        case (x, y) => unmatched(x, y)
       }
 
   /**
@@ -350,6 +354,7 @@ case class FineDeducer(
     (evolvFuncs(fd) fibProduct
       (_.dom, (tp: Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {
         case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
+        case (x, y) => unmatched(x, y)
       }
 
   /**
@@ -375,6 +380,7 @@ case class FineDeducer(
     (DevolvTypFamilies(fd, tang) fibProduct
       (_.dom, (tp: Typ[Term]) => evolveWithTyp(tp)(fd))) map {
         case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
+        case (x, y) => unmatched(x, y)
       }
 
   /**
@@ -385,6 +391,7 @@ case class FineDeducer(
     (evolvTypFamilies(fd) fibProduct
       (_.dom, (tp: Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {
         case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
+        case (x, y) => unmatched(x, y)
       }
 
   // def DapplnArg(fd: FD[Term], tang: FD[Term]): PD[Option[Term]] =
