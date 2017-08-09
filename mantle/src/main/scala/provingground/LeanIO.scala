@@ -2,7 +2,7 @@ package provingground.interface
 import provingground._
 
 import ammonite.ops._
-// import scala.util.Try
+import scala.util.Try
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -115,14 +115,29 @@ object LeanToTerm {
       pattern: ConstructorShape[S, Term, ConstructorType],
       data: Term): Option[Term] = None // TODO implement this
 
+  def typDataVec[SS <: HList, Intros <: HList](
+      seqDom: ConstructorSeqDom[SS, Term, Intros],
+      data: Vector[Term],
+      accum: Vector[Term] = Vector()): Option[Vector[Term]] =
+    (seqDom, data) match {
+      case (_: ConstructorSeqDom.Empty[_], Vector()) => Some(accum)
+      case (cons: ConstructorSeqDom.Cons[a, b, Term, d, e], x +: ys) =>
+        for {
+          h <- typData(cons.pattern, x)
+          t <- typDataVec(cons.tail, ys, accum :+ h)
+        } yield t
+      case _ => None
+    }
+
   /**
     * the type family for an inductive definition
     */
-  def typFamily[SS <: HList, Intros <: HList](
-      seqDom: ConstructorSeqDom[SS, Term, Intros],
-      data: Vector[Term])
-    : Option[Func[Term, Typ[C]] forSome { type C <: Term with Subs[C] }] =
-    None // TODO implement this
+  // def typFamily[SS <: HList, Intros <: HList](
+  //     seqDom: ConstructorSeqDom[SS, Term, Intros],
+  //     data: Vector[Term],
+  //     accum: Vector[Term] = Vector())
+  //   : Option[Func[Term, Typ[C]] forSome { type C <: Term with Subs[C] }] =
+  //   ???
 
 }
 
@@ -147,8 +162,21 @@ case class BaseTermIndMod(name: Name,
 
   lazy val indDom = ind.seqDom
 
+  val typRec = ind.recE(Type)
+
   def inducFamily(data: Vector[Term]) =
-    LeanToTerm.typFamily(indDom, data)
+    LeanToTerm
+      .typDataVec(indDom, data)
+      .map((dat) =>
+        (Option(typRec: Term) /: dat) {
+          case (Some(f), a) => translation.TermLang.appln(f, a)
+          case _            => None
+      })
+      .map(_.asInstanceOf[Func[Term, Typ[Term]]])
+
+  // def inducFamily(data: Vector[Term]) =
+  //   // ind.rec(Type)(LeanToTerm.typDataVec(indDom, data).get)
+  //   LeanToTerm.typFamily(indDom, data)
 
   def recCod(data: Vector[Term])
     : Option[Typ[u] forSome { type u <: Term with Subs[u] }] = {
@@ -163,6 +191,16 @@ case class BaseTermIndMod(name: Name,
     }
   }
 
+  def recFunc(data: Vector[Term]) = recCod(data).map(ind.recE(_))
+
+  def recDef(data: Vector[Term]): Option[Term] = {
+    val init = recFunc(data)
+    (init /: data) {
+      case (Some(f), a) => translation.TermLang.appln(f, a)
+      case _            => None
+    }
+  }
+
   def inducFunc(data: Vector[Term]) = inducFamily(data).map(ind.inducE(_))
 
   def inducDef(data: Vector[Term]): Option[Term] = {
@@ -172,6 +210,8 @@ case class BaseTermIndMod(name: Name,
       case _            => None
     }
   }
+
+  def recOrInduc(data: Vector[Term]) = recDef(data) orElse inducDef(data)
 }
 
 object LeanInterface {
