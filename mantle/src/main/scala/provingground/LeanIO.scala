@@ -1,15 +1,180 @@
 package provingground.interface
 import provingground._
 
-import LeanExportElem._
 import ammonite.ops._
-import scala.util.Try
+// import scala.util.Try
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import HoTT.{Name => _, _}
+
+import translation.{TermLang => TL}
+import trepplein._
+
+case class LeanToTerm(defns: Expr => Option[Term], vars: Vector[Term])
+    extends (Expr => Option[Term]) { parser =>
+  def apply(exp: Expr) =
+    defns(exp).orElse(
+      exp match {
+        case App(x, y) =>
+          for {
+            a   <- parser(x)
+            b   <- parser(y)
+            res <- TL.appln(a, b)
+          } yield res
+        case Sort(_) => Some(Type)
+        case Lam(domain, body) =>
+          val xo = parseVar(domain)
+          for {
+            x   <- xo
+            pb  <- addVar(x)(body)
+            res <- TL.lambda(x, pb)
+          } yield res
+        case Pi(domain, body) =>
+          val xo = parseVar(domain)
+          for {
+            x   <- xo
+            pb  <- addVar(x)(body)
+            res <- TL.pi(x, pb)
+          } yield res
+        case Let(domain, value, body) =>
+          val xo = parseVar(domain)
+          for {
+            x       <- xo
+            pb      <- addVar(x)(body)
+            valTerm <- parser(body)
+          } yield pb.replace(x, valTerm)
+        case LocalConst(b, _, Some(tp)) => parseSym(b.prettyName, tp)
+        case Var(n)                     => Some(vars(n))
+        case _ =>
+          println(s"failed to parse $exp")
+          None
+      }
+    )
+
+  def addVar(t: Term) = LeanToTerm(defns, t +: vars)
+
+  def parseTyp(x: Expr) =
+    parser(x).collect { case tp: Typ[_] => tp }
+
+  def parseSym(name: Name, ty: Expr) =
+    parseTyp(ty).map(name.toString :: _)
+
+  def parseVar(b: Binding) = parseSym(b.prettyName, b.ty)
+
+  /**
+    * add several definitions given as an option valued function
+    */
+  def addDefns(dfn: Expr => Option[Term]) =
+    LeanToTerm((exp) => dfn(exp) orElse defns(exp), vars)
+
+  def mkAxiom(name: Name, ty: Expr): Expr => Option[Term] = {
+    case Const(`name`, _) => parseSym(name, ty)
+    case _                => None
+  }
+
+  def mkDef(name: Name, value: Expr): Expr => Option[Term] = {
+    case Const(`name`, _) => parser(value)
+    case _                => None
+  }
+
+  def addAxiomMod(ax: AxiomMod) = addDefns(mkDef(ax.name, ax.ax.ty))
+
+  def addDefMod(df: DefMod) = addDefns(mkDef(df.name, df.defn.value))
+
+  def addQuotMod = {
+    import quotient._
+    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+      mkAxiom(ax.name, ax.ty)
+    }
+    axs.foldLeft(parser)(_.addDefns(_))
+  }
+
+  def addIndModConsts(ind: IndMod) = {
+    val axs = { (ind.name -> ind.inductiveType.ty) +: ind.intros }.map {
+      case (n, t) => mkAxiom(n, t)
+    }
+    axs.foldLeft(parser)(_.addDefns(_))
+  }
+}
+import induction._, shapeless.{Path => _, _}
+
+object LeanToTerm {
+  def iterAp(name: Name, length: Int): Expr => Option[Vector[Expr]] = {
+    case c @ Const(`name`, _) if length == 0 => Some(Vector(c))
+    case App(f, z)                           => iterAp(name, length - 1)(f).map(_ :+ z)
+    case _                                   => None
+  }
+
+  /**
+    * Data for recursively defining a type family corresponding to a constructor
+    * this is the type family for an inductive definition
+    */
+  def typData[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
+      pattern: ConstructorShape[S, Term, ConstructorType],
+      data: Term): Option[Term] = None // TODO implement this
+
+  /**
+    * the type family for an inductive definition
+    */
+  def typFamily[SS <: HList, Intros <: HList](
+      seqDom: ConstructorSeqDom[SS, Term, Intros],
+      data: Vector[Term])
+    : Option[Func[Term, Typ[C]] forSome { type C <: Term with Subs[C] }] =
+    None // TODO implement this
+
+}
+
+class TermIndMod(name: Name,
+                 inductiveTyp: Term,
+                 intros: Vector[Term],
+                 numParams: Int) {
+  val recName = Name.Str(name, "rec")
+
+  object recAp {
+    def unapply(exp: Expr) = LeanToTerm.iterAp(name, intros.length)(exp)
+  }
+}
+
+import translation.TermLang.appln
+
+case class BaseTermIndMod(name: Name,
+                          inductiveTyp: Typ[Term],
+                          intros: Vector[Term])
+    extends TermIndMod(name, inductiveTyp, intros, 0) {
+  lazy val ind = ConstructorSeqTL.getExst(inductiveTyp, intros).value
+
+  lazy val indDom = ind.seqDom
+
+  def inducFamily(data: Vector[Term]) =
+    LeanToTerm.typFamily(indDom, data)
+
+  def recCod(data: Vector[Term])
+    : Option[Typ[u] forSome { type u <: Term with Subs[u] }] = {
+    val fmlyOpt = inducFamily(data)
+    val x       = inductiveTyp.Var
+    val y       = inductiveTyp.Var
+    val C       = fmlyOpt.flatMap(appln(_, x))
+    val CC      = fmlyOpt.flatMap(appln(_, y))
+    C match {
+      case Some(t: Typ[u]) if C == CC => Some(t)
+      case _                          => None
+    }
+  }
+
+  def inducFunc(data: Vector[Term]) = inducFamily(data).map(ind.inducE(_))
+
+  def inducDef(data: Vector[Term]): Option[Term] = {
+    val init = inducFunc(data)
+    (init /: data) {
+      case (Some(f), a) => translation.TermLang.appln(f, a)
+      case _            => None
+    }
+  }
+}
+
 object LeanInterface {
-  import trepplein._
 
   def consts(expr: Expr): Vector[Name] = expr match {
     case Const(name, _)      => Vector(name)
@@ -67,9 +232,9 @@ object LeanInterface {
     exportedCommands.collect { case ExportedModification(mod) => mod }
   }
 }
-
 @deprecated("august 7, 2017", "use interfce via trepplein")
 object LeanIO {
+  import LeanExportElem._
   def readData(file: Path) = Data.readAll(read.lines(file))
 
   def readDefs(file: Path) = {
