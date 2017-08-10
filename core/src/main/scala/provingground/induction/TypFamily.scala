@@ -124,6 +124,8 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
 
   def codFamily(typ: Typ[Term]) : Term
 
+  def codFromRecType(typ: Typ[Term]): Option[Typ[Term]]
+
   /**
    * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
    */
@@ -169,15 +171,14 @@ object TypFamilyPtn {
       }
 
     def codFamily(typ: Typ[Term]) : Term = typ match {
-      case tf: FuncLike[a, b] =>
-        val x = tf.dom.Var
-        tf(x) match {
-          case tp: Typ[u] => x :-> (tp : Typ[Term])
-          case t: Term =>
-            import translation.FansiShow._
-            throw new IllegalArgumentException(
-              s"expected type but got ${t.fansi}")
-        }
+      case tf: GenFuncTyp[a, b] =>
+        val x = tf.domain.Var
+        x :~> tf.fib(x)
+    }
+
+    def codFromRecType(typ: Typ[Term]): Option[Typ[Term]] = typ match {
+      case ft: FuncTyp[u, v] => Some(ft.codom)
+      case _ => None
     }
   }
 
@@ -209,7 +210,18 @@ object TypFamilyPtn {
       val x = head.Var
       typ match {
         case ft: GenFuncTyp[u, v] if ft.domain == head =>
-          x :-> tail.codFamily(ft.fib(x.asInstanceOf[u]))
+          x :~> tail.codFamily(ft.fib(x.asInstanceOf[u]))
+      }
+    }
+
+    def codFromRecType(typ: Typ[Term]): Option[Typ[Term]] = {
+      val x = head.Var
+      val y = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          val res = tail.codFromRecType(ft.fib(x.asInstanceOf[u]))
+          if (res.map(_.replace(x, y)) == res) res else None
+        case _ => None
       }
     }
 
@@ -248,6 +260,17 @@ object TypFamilyPtn {
       typ match {
         case ft: GenFuncTyp[u, v] if ft.domain == head =>
           x :~> tailfibre(x).codFamily(ft.fib(x.asInstanceOf[u]))
+      }
+    }
+
+    def codFromRecType(typ: Typ[Term]): Option[Typ[Term]] = {
+      val x = head.Var
+      val y = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          val res = tailfibre(x).codFromRecType(ft.fib(x.asInstanceOf[u]))
+          if (res.map(_.replace(x, y)) == res) res else None
+        case _ => None
       }
     }
   }
