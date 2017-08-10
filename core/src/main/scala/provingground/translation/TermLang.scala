@@ -55,6 +55,11 @@ case object TermLang
       Try(fn(arg.asInstanceOf[u])).toOption
     case _ => None
   }
+
+  def domTyp(func: Term) : Option[Typ[Term]] = func match {
+    case fn: FuncLike[u, v] => Some(fn.dom)
+    case _ => None
+  }
   /*
   def appln(func: Term, arg: Term): Option[Term] ={
     def act(x: Term) = func match

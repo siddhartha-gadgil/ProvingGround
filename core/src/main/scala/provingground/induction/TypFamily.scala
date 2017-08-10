@@ -122,6 +122,8 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
 
   def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_]
 
+  def codFamily(typ: Typ[Term]) : Term
+
   /**
    * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
    */
@@ -166,6 +168,17 @@ object TypFamilyPtn {
           }
       }
 
+    def codFamily(typ: Typ[Term]) : Term = typ match {
+      case tf: FuncLike[a, b] =>
+        val x = tf.dom.Var
+        tf(x) match {
+          case tp: Typ[u] => x :-> (tp : Typ[Term])
+          case t: Term =>
+            import translation.FansiShow._
+            throw new IllegalArgumentException(
+              s"expected type but got ${t.fansi}")
+        }
+    }
   }
 
   case class FuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
@@ -191,6 +204,14 @@ object TypFamilyPtn {
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       tail.finalCod(fold(depCod)(head.Var))
+
+    def codFamily(typ: Typ[Term]) : Term = {
+      val x = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          x :-> tail.codFamily(ft.fib(x.asInstanceOf[u]))
+      }
+    }
 
   }
 
@@ -220,6 +241,14 @@ object TypFamilyPtn {
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] = {
       val x = head.Var
       tailfibre(x).finalCod(fold(depCod)(x))
+    }
+
+    def codFamily(typ: Typ[Term]) : Term = {
+      val x = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          x :~> tailfibre(x).codFamily(ft.fib(x.asInstanceOf[u]))
+      }
     }
   }
 
