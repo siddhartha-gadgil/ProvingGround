@@ -12,28 +12,40 @@ import HoTT.{Name => _, _}
 import translation.{TermLang => TL}
 import trepplein._
 
+import cats.Eval, Eval._
+
+import LeanToTerm.Parser
+
 case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
+                      recDefns: Eval[Parser] => Parser,
                       vars: Vector[Term]) { parser =>
-  def parseTyped(exp: Expr, typOpt: Option[Typ[Term]] = None): Option[Term] =
+  val parse: Eval[Parser] =
+    Eval.later(
+      (exp: Expr, typOpt: Option[Typ[Term]]) => parseTyped(parse)(exp, typOpt)
+    )
+
+  def parseTyped(rec: Eval[Parser])(
+      exp: Expr,
+      typOpt: Option[Typ[Term]] = None): Option[Term] =
     defns(exp, typOpt).orElse(
       exp match {
         case App(x, y) =>
           val domOpt = typOpt.flatMap(TL.domTyp)
           for {
-            arg  <- parseTyped(y, domOpt)
-            func <- parseTyped(x) // cannot infer type
+            arg  <- parseTyped(rec: Eval[Parser])(y, domOpt)
+            func <- parseTyped(rec: Eval[Parser])(x) // cannot infer type
             res  <- TL.appln(func, arg)
           } yield res
         case Sort(_) => Some(Type)
         case Lam(domain, body) =>
-          val xo = parseVar(domain)
+          val xo = parseVar(rec: Eval[Parser])(domain)
           for {
             x   <- xo
-            pb  <- addVar(x).parseTyped(body)
+            pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body)
             res <- TL.lambda(x, pb)
           } yield res
         case Pi(domain, body) =>
-          val xo = parseVar(domain)
+          val xo = parseVar(rec: Eval[Parser])(domain)
           def getCodom(t: Term): Option[Typ[Term]] =
             typOpt match {
               case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
@@ -42,18 +54,21 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
             }
           for {
             x   <- xo
-            pb  <- addVar(x).parseTyped(body, getCodom(x))
+            pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body, getCodom(x))
             res <- TL.pi(x, pb)
           } yield res
         case Let(domain, value, body) =>
-          val xo = parseVar(domain)
+          val xo = parseVar(rec: Eval[Parser])(domain)
           for {
-            x       <- xo
-            pb      <- addVar(x).parseTyped(body, typOpt)
-            valTerm <- parseTyped(body, parseTyp(domain.ty))
+            x  <- xo
+            pb <- addVar(x).parseTyped(rec: Eval[Parser])(body, typOpt)
+            valTerm <- parseTyped(rec: Eval[Parser])(
+              body,
+              parseTyp(rec: Eval[Parser])(domain.ty))
           } yield pb.replace(x, valTerm)
-        case LocalConst(b, _, Some(tp)) => parseSym(b.prettyName, tp)
-        case Var(n)                     => Some(vars(n))
+        case LocalConst(b, _, Some(tp)) =>
+          parseSym(rec: Eval[Parser])(b.prettyName, tp)
+        case Var(n) => Some(vars(n))
         case c: Const =>
           println(s"Constant $c undefined")
           None
@@ -63,33 +78,46 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
       }
     )
 
-  def addVar(t: Term) = LeanToTerm(defns, t +: vars)
+  def addVar(t: Term) = LeanToTerm(defns, recDefns, t +: vars)
 
-  def parseTyp(x: Expr) =
-    parseTyped(x, Some(Type)).collect { case tp: Typ[_] => tp }
+  def parseTyp(rec: Eval[Parser])(x: Expr) =
+    parseTyped(rec: Eval[Parser])(x, Some(Type)).collect {
+      case tp: Typ[_] => tp
+    }
 
-  def parseSym(name: Name, ty: Expr) =
-    parseTyp(ty).map(name.toString :: _)
+  def parseSym(rec: Eval[Parser])(name: Name, ty: Expr) =
+    parseTyp(rec: Eval[Parser])(ty).map(name.toString :: _)
 
-  def parseVar(b: Binding) = parseSym(b.prettyName, b.ty)
+  def parseVar(rec: Eval[Parser])(b: Binding) =
+    parseSym(rec: Eval[Parser])(b.prettyName, b.ty)
 
   /**
     * add several definitions given as an option valued function
     */
   def addDefns(dfn: (Expr, Option[Typ[Term]]) => Option[Term]) =
-    LeanToTerm((exp, typ) => dfn(exp, typ) orElse defns(exp, typ), vars)
+    LeanToTerm((exp, typ) => dfn(exp, typ) orElse defns(exp, typ),
+               recDefns,
+               vars)
 
   def addDefn(dfn: Expr => Option[Term]) =
-    LeanToTerm((exp, typ) => dfn(exp) orElse defns(exp, typ), vars)
+    LeanToTerm((exp, typ) => dfn(exp) orElse defns(exp, typ), recDefns, vars)
+
+  def addRecDefns(dfn: Eval[Parser] => Parser) = {
+    val mixin: Eval[Parser] => Parser = (base: Eval[Parser]) => {
+      case (exp: Expr, typOpt: Option[Typ[Term]]) =>
+        dfn(base)(exp, typOpt).orElse(recDefns(base)(exp, typOpt))
+    }
+    LeanToTerm(defns, mixin, vars)
+  }
 
   def mkAxiom(name: Name, ty: Expr): Expr => Option[Term] = {
-    case Const(`name`, _) => parseSym(name, ty)
+    case Const(`name`, _) => parseSym(parse)(name, ty)
     case _                => None
   }
 
   def mkDef(name: Name,
             value: Expr): (Expr, Option[Typ[Term]]) => Option[Term] = {
-    case (Const(`name`, _), _) => parseTyped(value)
+    case (Const(`name`, _), _) => parseTyped(parse)(value)
     case _                     => None
   }
 
@@ -117,6 +145,8 @@ import induction._, shapeless.{Path => _, _}
 import translation.TermLang.{appln, domTyp}
 
 object LeanToTerm {
+  type Parser = (Expr, Option[Typ[Term]]) => Option[Term]
+
   def iterAp(name: Name, length: Int): Expr => Option[Vector[Expr]] = {
     case c @ Const(`name`, _) if length == 0 => Some(Vector(c))
     case App(f, z)                           => iterAp(name, length - 1)(f).map(_ :+ z)
@@ -225,6 +255,14 @@ abstract class TermIndMod(name: Name,
 
   import translation.TermLang
 
+  def recDefn(defnTyp: Typ[Term]): Eval[Parser] => Parser =
+    (base: Eval[Parser]) => {
+      case (exp: Expr, typOpt: Option[Typ[Term]]) =>
+        base.map { (recParser) =>
+          defn(defnTyp)(exp, typOpt, recParser)
+        }.value
+    }
+
   def defn(defnTyp: Typ[Term])(
       exp: Expr,
       typOpt: Option[Typ[Term]],
@@ -232,7 +270,6 @@ abstract class TermIndMod(name: Name,
     val argsPair: Option[Vector[(Expr, Option[Typ[Term]])]] =
       LeanToTerm.iterApTyp(name, intros.length, typOpt)(exp)
     argsPair.flatMap { (v: Vector[(Expr, Option[Typ[Term]])]) =>
-      // val optArgs = v.map(predef(_, None)) // FIXME improve this by deducing types
       val optArgs: Vector[Option[Term]] = v.map {
         case (exp, tpO) => predef(exp, tpO)
       }
