@@ -56,6 +56,15 @@ case object TermLang
     case _ => None
   }
 
+  def applnFold(func: Term, args: Vector[Term]) = {
+    def combine(xo: Option[Term], y : Term) =
+      for {
+        f <- xo
+        res <- appln(f, y)
+      } yield res
+    args.foldLeft(Option(func))(combine)
+  }
+
   def domTyp(func: Term) : Option[Typ[Term]] = func match {
     case fn: FuncLike[u, v] => Some(fn.dom)
     case _ => None

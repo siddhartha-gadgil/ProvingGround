@@ -126,6 +126,8 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
 
   def codFromRecType(typ: Typ[Term]): Option[Typ[Term]]
 
+  def domFromRecType(typ: Typ[Term]): Option[Typ[Term]]
+
   /**
    * mappper to bridge to [[TypFamilyMap]] given scala type of codomain based on implicits
    */
@@ -180,6 +182,11 @@ object TypFamilyPtn {
       case ft: FuncTyp[u, v] => Some(ft.codom)
       case _ => None
     }
+
+    def domFromRecType(typ: Typ[Term]): Option[Typ[Term]] = typ match {
+      case ft: FuncTyp[u, v] => Some(ft.dom)
+      case _ => None
+    }
   }
 
   case class FuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
@@ -225,7 +232,15 @@ object TypFamilyPtn {
       }
     }
 
+    def domFromRecType(typ: Typ[Term]) : Option[Typ[Term]] = {
+      val x = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          tail.domFromRecType(ft.fib(x.asInstanceOf[u]))
+    }
+
   }
+}
 
   case class DepFuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
     head: Typ[U],
@@ -273,7 +288,15 @@ object TypFamilyPtn {
         case _ => None
       }
     }
+
+    def domFromRecType(typ: Typ[Term]) : Option[Typ[Term]] =  {
+      val x = head.Var
+      typ match {
+        case ft: GenFuncTyp[u, v] if ft.domain == head =>
+          tailfibre(x).domFromRecType(ft.fib(x.asInstanceOf[u]))
+    }
   }
+}
 
   sealed trait Exst {
     type F <: Term with Subs[F]

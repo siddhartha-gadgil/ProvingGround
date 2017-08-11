@@ -294,7 +294,9 @@ abstract class IndexedConstructorSeqDom[SS <: HList, H <: Term with Subs[H], F <
 }
 
 object IndexedConstructorSeqDom {
-  implicit def substIndConsSeqDom[SS <: HList, H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList, Intros <: HList] =
+  implicit def substIndConsSeqDom[SS <: HList, H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList, Intros <: HList](
+    implicit tl: TermList[Index]
+  ) =
     new Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] {
       def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
         x: Term,

@@ -12,10 +12,10 @@ import HoTT.{Name => _, _}
 import translation.{TermLang => TL}
 import trepplein._
 
-case class LeanToTerm(defns: Expr => Option[Term], vars: Vector[Term]) {
-  parser =>
+case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
+                      vars: Vector[Term]) { parser =>
   def parseTyped(exp: Expr, typOpt: Option[Typ[Term]] = None): Option[Term] =
-    defns(exp).orElse(
+    defns(exp, typOpt).orElse(
       exp match {
         case App(x, y) =>
           val domOpt = typOpt.flatMap(TL.domTyp)
@@ -76,17 +76,21 @@ case class LeanToTerm(defns: Expr => Option[Term], vars: Vector[Term]) {
   /**
     * add several definitions given as an option valued function
     */
-  def addDefns(dfn: Expr => Option[Term]) =
-    LeanToTerm((exp) => dfn(exp) orElse defns(exp), vars)
+  def addDefns(dfn: (Expr, Option[Typ[Term]]) => Option[Term]) =
+    LeanToTerm((exp, typ) => dfn(exp, typ) orElse defns(exp, typ), vars)
+
+  def addDefn(dfn: Expr => Option[Term]) =
+    LeanToTerm((exp, typ) => dfn(exp) orElse defns(exp, typ), vars)
 
   def mkAxiom(name: Name, ty: Expr): Expr => Option[Term] = {
     case Const(`name`, _) => parseSym(name, ty)
     case _                => None
   }
 
-  def mkDef(name: Name, value: Expr): Expr => Option[Term] = {
-    case Const(`name`, _) => parseTyped(value)
-    case _                => None
+  def mkDef(name: Name,
+            value: Expr): (Expr, Option[Typ[Term]]) => Option[Term] = {
+    case (Const(`name`, _), _) => parseTyped(value)
+    case _                     => None
   }
 
   def addAxiomMod(ax: AxiomMod) = addDefns(mkDef(ax.name, ax.ax.ty))
@@ -98,14 +102,14 @@ case class LeanToTerm(defns: Expr => Option[Term], vars: Vector[Term]) {
     val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
       mkAxiom(ax.name, ax.ty)
     }
-    axs.foldLeft(parser)(_.addDefns(_))
+    axs.foldLeft(parser)(_.addDefn(_))
   }
 
   def addIndModConsts(ind: IndMod) = {
     val axs = { (ind.name -> ind.inductiveType.ty) +: ind.intros }.map {
       case (n, t) => mkAxiom(n, t)
     }
-    axs.foldLeft(parser)(_.addDefns(_))
+    axs.foldLeft(parser)(_.addDefn(_))
   }
 }
 import induction._, shapeless.{Path => _, _}
@@ -119,129 +123,257 @@ object LeanToTerm {
     case _                                   => None
   }
 
-  import ConstructorShape._
+  def iterApTyp(name: Name, length: Int, typOpt: Option[Typ[Term]])
+    : Expr => Option[Vector[(Expr, Option[Typ[Term]])]] = {
+    case c @ Const(`name`, _) if length == 0 => Some(Vector((c, typOpt)))
+    case App(f, z) =>
+      typOpt match {
+        case Some(ft: FuncTyp[u, v]) =>
+          iterApTyp(name, length - 1, Some(ft.codom))(f)
+            .map(_ :+ (z, Some(ft.dom)))
+        case Some(ft: GenFuncTyp[u, v]) =>
+          iterApTyp(name, length - 1, None)(f).map(_ :+ (z, Some(ft.domain)))
+        case _ => iterApTyp(name, length - 1, None)(f).map(_ :+ (z, None))
+      }
+    case _ => None
+  }
 
-  /**
-    * Data for recursively defining a type family corresponding to a constructor
-    * this is the type family for an inductive definition
-    */
-  def typData[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
-      pattern: ConstructorShape[S, Term, ConstructorType],
-      data: Term,
-      typ: Typ[Term]): Option[Term] =
-    pattern match {
-      case _: IdShape[Term] => Some(data.typ)
-      case shape: CnstDepFuncConsShape[a, Term, c, d, e] =>
-        val x = shape.tail.Var
-        for {
-          y   <- appln(data, x)
-          rec <- typData(shape.headfibre(x), y, typ)
-        } yield x :~> rec
-      case shape: CnstFuncConsShape[a, Term, c, d, e] =>
-        val x = shape.tail.Var
-        for {
-          y   <- appln(data, x)
-          rec <- typData(shape.head, y, typ)
-        } yield x :-> rec
-      case shape: FuncConsShape[a, Term, c, d] =>
-        val x = shape.tail(typ).Var
-        val A = Type.Var
-        for {
-          fx  <- appln(data, x)
-          dom <- domTyp(fx)
-          y = dom.Var
-          g   <- appln(fx, y)
-          rec <- typData(shape.head, g, typ)
-        } yield x :-> A :-> rec
-    }
-
-  def typDataVec[SS <: HList, Intros <: HList](
-      seqDom: ConstructorSeqDom[SS, Term, Intros],
-      data: Vector[Term],
-      typ: Typ[Term],
-      accum: Vector[Term] = Vector()): Option[Vector[Term]] =
-    (seqDom, data) match {
-      case (_: ConstructorSeqDom.Empty[_], Vector()) => Some(accum)
-      case (cons: ConstructorSeqDom.Cons[a, b, Term, d, e], x +: ys) =>
-        for {
-          h <- typData(cons.pattern, x, typ)
-          t <- typDataVec(cons.tail, ys, typ, accum :+ h)
-        } yield t
+  def unifier(
+      a: Term,
+      b: Term,
+      numParams: Int,
+      accum: Vector[(Term, Term)] = Vector()): Option[Vector[(Term, Term)]] =
+    (a, b, numParams) match {
+      case (x, y, 0) if x == y => Some(accum)
+      case (FormalAppln(func1, arg1), FormalAppln(func2, arg2), n) if n > 0 =>
+        unifier(func1.replace(arg1, arg2), func2, n - 1, (arg1, arg2) +: accum)
       case _ => None
     }
 
+  def getValue(t: Term, n: Int): Option[Term] = (t, n) match {
+    case (x, 0)                            => Some(x)
+    case (l: LambdaLike[u, v], n) if n > 0 => Some(l.value)
+    case (fn: FuncLike[u, v], n) if n > 0  => Some(fn(fn.dom.Var))
+    case _                                 => None
+  }
+
+  import ConstructorShape._
+
+  // /**
+  //   * Data for recursively defining a type family corresponding to a constructor
+  //   * this is the type family for an inductive definition
+  //   */
+  // def typData[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
+  //     pattern: ConstructorShape[S, Term, ConstructorType],
+  //     data: Term,
+  //     typ: Typ[Term]): Option[Term] =
+  //   pattern match {
+  //     case _: IdShape[Term] => Some(data.typ)
+  //     case shape: CnstDepFuncConsShape[a, Term, c, d, e] =>
+  //       val x = shape.tail.Var
+  //       for {
+  //         y   <- appln(data, x)
+  //         rec <- typData(shape.headfibre(x), y, typ)
+  //       } yield x :~> rec
+  //     case shape: CnstFuncConsShape[a, Term, c, d, e] =>
+  //       val x = shape.tail.Var
+  //       for {
+  //         y   <- appln(data, x)
+  //         rec <- typData(shape.head, y, typ)
+  //       } yield x :-> rec
+  //     case shape: FuncConsShape[a, Term, c, d] =>
+  //       val x = shape.tail(typ).Var
+  //       val A = Type.Var
+  //       for {
+  //         fx  <- appln(data, x)
+  //         dom <- domTyp(fx)
+  //         y = dom.Var
+  //         g   <- appln(fx, y)
+  //         rec <- typData(shape.head, g, typ)
+  //       } yield x :-> A :-> rec
+  //   }
+  //
+  // def typDataVec[SS <: HList, Intros <: HList](
+  //     seqDom: ConstructorSeqDom[SS, Term, Intros],
+  //     data: Vector[Term],
+  //     typ: Typ[Term],
+  //     accum: Vector[Term] = Vector()): Option[Vector[Term]] =
+  //   (seqDom, data) match {
+  //     case (_: ConstructorSeqDom.Empty[_], Vector()) => Some(accum)
+  //     case (cons: ConstructorSeqDom.Cons[a, b, Term, d, e], x +: ys) =>
+  //       for {
+  //         h <- typData(cons.pattern, x, typ)
+  //         t <- typDataVec(cons.tail, ys, typ, accum :+ h)
+  //       } yield t
+  //     case _ => None
+  //   }
+
 }
 
-class TermIndMod(name: Name,
-                 inductiveTyp: Term,
-                 intros: Vector[Term],
-                 numParams: Int) {
+abstract class TermIndMod(name: Name,
+                          inductiveTyp: Term,
+                          intros: Vector[Term],
+                          numParams: Int) {
   val recName = Name.Str(name, "rec")
 
   object recAp {
-    def unapply(exp: Expr) = LeanToTerm.iterAp(name, intros.length)(exp)
+    def unapply(exp: Expr) =
+      LeanToTerm.iterAp(name, intros.length)(exp)
+  }
+
+  def recFromTyp(typ: Typ[Term]): Option[Term]
+
+  import translation.TermLang
+
+  def defn(defnTyp: Typ[Term])(
+      exp: Expr,
+      typOpt: Option[Typ[Term]],
+      predef: => ((Expr, Option[Typ[Term]]) => Option[Term])): Option[Term] = {
+    val argsPair: Option[Vector[(Expr, Option[Typ[Term]])]] =
+      LeanToTerm.iterApTyp(name, intros.length, typOpt)(exp)
+    argsPair.flatMap { (v: Vector[(Expr, Option[Typ[Term]])]) =>
+      // val optArgs = v.map(predef(_, None)) // FIXME improve this by deducing types
+      val optArgs: Vector[Option[Term]] = v.map {
+        case (exp, tpO) => predef(exp, tpO)
+      }
+      val argsOpt: Option[Vector[Term]] =
+        if (optArgs.contains(None)) None else Some(optArgs.flatten)
+      val funcOpt: Option[Term] = recFromTyp(defnTyp)
+      for {
+        func: Term         <- funcOpt
+        args: Vector[Term] <- argsOpt
+        res                <- TermLang.applnFold(func, args)
+      } yield res
+    }
   }
 }
 
-case class BaseTermIndMod(name: Name,
-                          inductiveTyp: Typ[Term],
-                          intros: Vector[Term])
-    extends TermIndMod(name, inductiveTyp, intros, 0) {
-  lazy val ind = ConstructorSeqTL.getExst(inductiveTyp, intros).value
+case class SimpleIndMod(name: Name,
+                        typ: Typ[Term],
+                        intros: Vector[Term],
+                        numParams: Int)
+    extends TermIndMod(name, typ, intros, numParams) {
+  lazy val ind = ConstructorSeqTL.getExst(typ, intros).value
 
-  lazy val indDom = ind.seqDom
+  import LeanToTerm.unifier
 
-  val typRec = ind.recE(Type)
+  import implicits._
 
-  def inducFamily(data: Vector[Term]) =
-    LeanToTerm
-      .typDataVec(indDom, data, inductiveTyp)
-      .map((dat) =>
-        (Option(typRec: Term) /: dat) {
-          case (Some(f), a) => translation.TermLang.appln(f, a)
-          case _            => None
-      })
-      .map(_.asInstanceOf[Func[Term, Typ[Term]]])
-
-  // def inducFamily(data: Vector[Term]) =
-  //   // ind.rec(Type)(LeanToTerm.typDataVec(indDom, data).get)
-  //   LeanToTerm.typFamily(indDom, data)
-
-  def recCod(data: Vector[Term])
-    : Option[Typ[u] forSome { type u <: Term with Subs[u] }] = {
-    val fmlyOpt = inducFamily(data)
-    val x       = inductiveTyp.Var
-    val y       = inductiveTyp.Var
-    val C       = fmlyOpt.flatMap(appln(_, x))
-    val CC      = fmlyOpt.flatMap(appln(_, y))
-    C match {
-      case Some(t: Typ[u]) if C == CC => Some(t)
-      case _                          => None
+  def getInd(dom: Typ[Term]) =
+    unifier(typ, dom, numParams).map { (vec) =>
+      vec.foldLeft(ind) { case (a, (x, y)) => a.subst(x, y) }
     }
+
+  def recFromTyp(typ: Typ[Term]): Option[Term] = typ match {
+    case ft: FuncTyp[u, v] if ft.dom == typ =>
+      Some(ind.recE(ft.codom))
+    case ft: FuncTyp[u, v] =>
+      getInd(ft.dom).map { (i) =>
+        i.recE(ft.codom)
+      }
+    case gt: PiDefn[u, v] if gt.domain == typ =>
+      Some(ind.inducE(gt.fibers.asInstanceOf[Func[Term, Typ[Term]]]))
+    case gt: PiDefn[u, v] =>
+      getInd(gt.domain).map { (i) =>
+        i.inducE(gt.fibers.asInstanceOf[Func[Term, Typ[Term]]])
+      }
+    case _ => None
   }
-
-  def recFunc(data: Vector[Term]) = recCod(data).map(ind.recE(_))
-
-  def recDef(data: Vector[Term]): Option[Term] = {
-    val init = recFunc(data)
-    (init /: data) {
-      case (Some(f), a) => translation.TermLang.appln(f, a)
-      case _            => None
-    }
-  }
-
-  def inducFunc(data: Vector[Term]) = inducFamily(data).map(ind.inducE(_))
-
-  def inducDef(data: Vector[Term]): Option[Term] = {
-    val init = inducFunc(data)
-    (init /: data) {
-      case (Some(f), a) => translation.TermLang.appln(f, a)
-      case _            => None
-    }
-  }
-
-  def recOrInduc(data: Vector[Term]) = recDef(data) orElse inducDef(data)
 }
+
+case class IndexedIndMod(name: Name,
+                         typF: Term,
+                         intros: Vector[Term],
+                         numParams: Int)
+    extends TermIndMod(name, typF, intros, numParams) {
+  lazy val ind = TypFamilyExst.getIndexedConstructorSeq(typF, intros).value
+
+  import ind.family
+
+  import LeanToTerm.unifier
+
+  import implicits._
+
+  def getInd(domF: Term) =
+    unifier(typF, domF, numParams).map { (vec) =>
+      vec.foldLeft(ind) { case (a, (x, y)) => a.subs(x, y) }
+    }
+
+  def recFromTyp(typ: Typ[Term]): Option[Term] = {
+    for {
+      dom  <- family.domFromRecType(typ)
+      cod  <- family.codFromRecType(typ)
+      ind0 <- getInd(dom)
+    } yield ind0.recE(cod)
+  }.orElse {
+    for {
+      dom <- family.domFromRecType(typ)
+      cod = family.codFamily(typ)
+      ind0 <- getInd(dom)
+    } yield ind0.inducE(cod)
+  }
+}
+
+// Too complicated and does not generalize
+// case class BaseTermIndMod(name: Name,
+//                           inductiveTyp: Typ[Term],
+//                           intros: Vector[Term])
+//     extends TermIndMod(name, inductiveTyp, intros, 0) {
+//   lazy val ind = ConstructorSeqTL.getExst(inductiveTyp, intros).value
+//
+//   lazy val indDom = ind.seqDom
+//
+//   val typRec = ind.recE(Type)
+//
+//   def inducFamily(data: Vector[Term]) =
+//     LeanToTerm
+//       .typDataVec(indDom, data, inductiveTyp)
+//       .map((dat) =>
+//         (Option(typRec: Term) /: dat) {
+//           case (Some(f), a) => translation.TermLang.appln(f, a)
+//           case _            => None
+//       })
+//       .map(_.asInstanceOf[Func[Term, Typ[Term]]])
+//
+//   // def inducFamily(data: Vector[Term]) =
+//   //   // ind.rec(Type)(LeanToTerm.typDataVec(indDom, data).get)
+//   //   LeanToTerm.typFamily(indDom, data)
+//
+//   def recCod(data: Vector[Term])
+//     : Option[Typ[u] forSome { type u <: Term with Subs[u] }] = {
+//     val fmlyOpt = inducFamily(data)
+//     val x       = inductiveTyp.Var
+//     val y       = inductiveTyp.Var
+//     val C       = fmlyOpt.flatMap(appln(_, x))
+//     val CC      = fmlyOpt.flatMap(appln(_, y))
+//     C match {
+//       case Some(t: Typ[u]) if C == CC => Some(t)
+//       case _                          => None
+//     }
+//   }
+//
+//   def recFunc(data: Vector[Term]) = recCod(data).map(ind.recE(_))
+//
+//   def recDef(data: Vector[Term]): Option[Term] = {
+//     val init = recFunc(data)
+//     (init /: data) {
+//       case (Some(f), a) => translation.TermLang.appln(f, a)
+//       case _            => None
+//     }
+//   }
+//
+//   def inducFunc(data: Vector[Term]) = inducFamily(data).map(ind.inducE(_))
+//
+//   def inducDef(data: Vector[Term]): Option[Term] = {
+//     val init = inducFunc(data)
+//     (init /: data) {
+//       case (Some(f), a) => translation.TermLang.appln(f, a)
+//       case _            => None
+//     }
+//   }
+//
+//   def recOrInduc(data: Vector[Term]) = recDef(data) orElse inducDef(data)
+// }
 
 object LeanInterface {
 
