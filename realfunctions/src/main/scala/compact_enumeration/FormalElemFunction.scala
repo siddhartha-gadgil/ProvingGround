@@ -205,11 +205,12 @@ object Div {
     Times(x, Reciprocal(y))
 
   def unapply(q: FormalElemFunction)
-    : Option[(FormalElemFunction, FormalElemFunction)] = q match {
-    case Times(x, Reciprocal(y)) => Some(x, y)
-    case Times(Reciprocal(y), x) => Some(x, y)
-    case _                       => None
-  }
+    : Option[(FormalElemFunction, FormalElemFunction)] =
+    q match {
+      case Times(x, Reciprocal(y)) => Some(x, y)
+      case Times(Reciprocal(y), x) => Some(x, y)
+      case _                       => None
+    }
 }
 
 /**

@@ -94,8 +94,7 @@ object ReductionRule {
             lhs: Expr,
             rhs: Expr,
             defEqConstraints: List[(Expr, Expr)])(
-      implicit
-      dummy: DummyImplicit): ReductionRule =
+      implicit dummy: DummyImplicit): ReductionRule =
     ReductionRule(lcs.map(_.of),
                   lhs.abstr(0, lcs),
                   rhs.abstr(0, lcs),

@@ -101,8 +101,8 @@ sealed class PreEnvironment protected (
   private def addDeclsFor(mod: CompiledModification): Map[Name, Declaration] =
     declarations ++ mod.decls.view.map(d => d.name -> d)
 
-  def addWithFuture(mod: Modification)(implicit
-                                       executionContext: ExecutionContext)
+  def addWithFuture(mod: Modification)(
+      implicit executionContext: ExecutionContext)
     : (Future[Option[EnvironmentUpdateError]], PreEnvironment) = {
     val compiled = mod.compile(this)
     val checkingTask = Future {
@@ -123,8 +123,7 @@ sealed class PreEnvironment protected (
   }
 
   def add(mod: Modification)(
-      implicit
-      executionContext: ExecutionContext): PreEnvironment =
+      implicit executionContext: ExecutionContext): PreEnvironment =
     addWithFuture(mod)._2
 
   def force(implicit executionContext: ExecutionContext)
@@ -136,8 +135,8 @@ final class Environment private (declarations: Map[Name, Declaration],
                                  reductionMap: ReductionMap)
     extends PreEnvironment(declarations, reductionMap, Nil)
 object Environment {
-  def force(preEnvironment: PreEnvironment)(implicit
-                                            executionContext: ExecutionContext)
+  def force(preEnvironment: PreEnvironment)(
+      implicit executionContext: ExecutionContext)
     : Future[Either[Seq[EnvironmentUpdateError], Environment]] =
     Future.sequence(preEnvironment.proofObligations).map(_.flatten).map {
       case Nil =>

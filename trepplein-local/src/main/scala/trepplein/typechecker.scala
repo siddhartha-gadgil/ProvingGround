@@ -65,8 +65,7 @@ class TypeChecker(val env: PreEnvironment,
     }
 
   private def reduceOneStep(e1: Expr, e2: Expr)(
-      implicit
-      transparency: Transparency): Option[(Expr, Expr)] = {
+      implicit transparency: Transparency): Option[(Expr, Expr)] = {
     val Apps(fn1, as1) = e1
     val Apps(fn2, as2) = e2
 
@@ -139,8 +138,8 @@ class TypeChecker(val env: PreEnvironment,
     val all = Transparency(rho = true, zeta = true)
   }
 
-  def reduceOneStep(e: Expr)(implicit
-                             transparency: Transparency): Option[Expr] =
+  def reduceOneStep(e: Expr)(
+      implicit transparency: Transparency): Option[Expr] =
     e match { case Apps(fn, as) => reduceOneStep(fn, as) }
   private val reductionRuleCache = new ReductionRuleCache {
     private val instantiationCache =
@@ -151,8 +150,7 @@ class TypeChecker(val env: PreEnvironment,
       instantiationCache.getOrElseUpdate((rr, subst), v)
   }
   def reduceOneStep(fn: Expr, as0: List[Expr])(
-      implicit
-      transparency: Transparency): Option[Expr] =
+      implicit transparency: Transparency): Option[Expr] =
     fn match {
       case LocalConst(_, _, Some(value)) if transparency.zeta =>
         Some(Apps(value, as0))
@@ -174,8 +172,7 @@ class TypeChecker(val env: PreEnvironment,
   def whnf(e: Expr): Expr =
     whnfCache.getOrElseUpdate(e, whnfCore(e)(Transparency.all))
   def whnfCore(e: Expr)(
-      implicit
-      transparency: Transparency = Transparency.all): Expr = {
+      implicit transparency: Transparency = Transparency.all): Expr = {
     val Apps(fn, as) = e
     fn match {
       case Sort(l) => Sort(l.simplify)

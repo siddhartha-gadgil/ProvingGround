@@ -180,8 +180,8 @@ object FDHub {
   def setSteps(runner: ActorRef, steps: Int)(implicit hub: ActorRef) =
     hub ! SetSteps(runner: ActorRef, steps: Int)
 
-  def setStrictness(runner: ActorRef, strictness: Double)(implicit
-                                                          hub: ActorRef) =
+  def setStrictness(runner: ActorRef, strictness: Double)(
+      implicit hub: ActorRef) =
     hub ! SetStrictness(runner: ActorRef, strictness)
 
   def setEpsilon(runner: ActorRef, epsilon: Double)(implicit hub: ActorRef) =
