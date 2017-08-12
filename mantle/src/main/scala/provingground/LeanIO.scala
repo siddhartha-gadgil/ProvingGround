@@ -12,7 +12,7 @@ import HoTT.{Name => _, _}
 import translation.{TermLang => TL}
 import trepplein._
 
-import cats.Eval, Eval._
+import cats.Eval
 
 import LeanToTerm.Parser
 
@@ -24,6 +24,12 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
       (exp: Expr, typOpt: Option[Typ[Term]]) => parseTyped(parse)(exp, typOpt)
     )
 
+  def functionTyp(arg: Term, typOpt: Option[Typ[Term]]) : Option[Typ[Term]] =
+    typOpt map {(applnTyp) =>
+      val dep = Try(applnTyp.dependsOn(arg)).getOrElse(false)
+      if (dep) arg.typ ->: applnTyp else arg ~>: applnTyp
+  }
+
   def parseTyped(rec: Eval[Parser])(
       exp: Expr,
       typOpt: Option[Typ[Term]] = None): Option[Term] =
@@ -31,12 +37,21 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
       exp match {
         case App(x, y) =>
           // val domOpt = typOpt.flatMap(TL.domTyp)
-          for {
-            func <- parseTyped(rec: Eval[Parser])(x)
+          {
+            for {
+            func <- parseTyped(rec: Eval[Parser])(x) // function without type
             domOpt = TL.domTyp(func)
             arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
             res <- TL.appln(func, arg)
-          } yield res
+          } yield res}.orElse
+          {
+            for {
+              arg <- parseTyped(rec: Eval[Parser])(y)
+              funcTypOpt = functionTyp(arg, typOpt)
+              func <- parseTyped(rec)(x, funcTypOpt)
+              res <- TL.appln(func, arg)
+            } yield res
+          }
         case Sort(_) => Some(Type)
         case Lam(domain, body) =>
           val xo = parseVar(rec: Eval[Parser])(domain)
@@ -159,7 +174,7 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
         IndexedIndMod(ind.inductiveType.name, t, intros, ind.numParams)
       case _ =>
         throw new Exception(
-          "Could not get type  value for inductive type $inductiveTyp")
+          s"Could not get type  value for inductive type $inductiveTyp")
     }
   }
 
@@ -178,9 +193,9 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
     case QuotMod      => addQuotMod
   }
 }
-import induction._, shapeless.{Path => _, _}
-
-import translation.TermLang.{appln, domTyp}
+import induction._ //, shapeless.{Path => _, _}
+//
+// import translation.TermLang.{appln, domTyp}
 
 object LeanToTerm {
   val emptyParser: Parser = { case (x, y) => None }
