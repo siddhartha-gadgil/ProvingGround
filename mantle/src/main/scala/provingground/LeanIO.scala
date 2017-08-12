@@ -24,11 +24,11 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
       (exp: Expr, typOpt: Option[Typ[Term]]) => parseTyped(parse)(exp, typOpt)
     )
 
-  def functionTyp(arg: Term, typOpt: Option[Typ[Term]]) : Option[Typ[Term]] =
-    typOpt map {(applnTyp) =>
+  def functionTyp(arg: Term, typOpt: Option[Typ[Term]]): Option[Typ[Term]] =
+    typOpt map { (applnTyp) =>
       val dep = Try(applnTyp.dependsOn(arg)).getOrElse(false)
       if (dep) arg.typ ->: applnTyp else arg ~>: applnTyp
-  }
+    }
 
   def parseTyped(rec: Eval[Parser])(
       exp: Expr,
@@ -39,17 +39,17 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
           // val domOpt = typOpt.flatMap(TL.domTyp)
           {
             for {
-            func <- parseTyped(rec: Eval[Parser])(x) // function without type
-            domOpt = TL.domTyp(func)
-            arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
-            res <- TL.appln(func, arg)
-          } yield res}.orElse
-          {
+              func <- parseTyped(rec: Eval[Parser])(x) // function without type
+              domOpt = TL.domTyp(func)
+              arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
+              res <- TL.appln(func, arg)
+            } yield res
+          }.orElse {
             for {
               arg <- parseTyped(rec: Eval[Parser])(y)
               funcTypOpt = functionTyp(arg, typOpt)
               func <- parseTyped(rec)(x, funcTypOpt)
-              res <- TL.appln(func, arg)
+              res  <- TL.appln(func, arg)
             } yield res
           }
         case Sort(_) => Some(Type)

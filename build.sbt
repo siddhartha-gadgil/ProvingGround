@@ -358,7 +358,7 @@ lazy val realfunctions = (project in file("realfunctions"))
 //   .dependsOn(playServer)
 //   .dependsOn(functionfinder)
 
-EclipseKeys.skipParents in ThisBuild := false
+// EclipseKeys.skipParents in ThisBuild := false
 
 // unmanagedBase in Compile <<= baseDirectory(_ / "scalalib")
 
