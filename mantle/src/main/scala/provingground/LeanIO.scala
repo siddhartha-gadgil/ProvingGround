@@ -30,21 +30,15 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
     defns(exp, typOpt).orElse(
       exp match {
         case App(x, y) =>
-          val domOpt = typOpt.flatMap(TL.domTyp)
+          // val domOpt = typOpt.flatMap(TL.domTyp)
           for {
-            arg  <- parseTyped(rec: Eval[Parser])(y, domOpt)
-            func <- parseTyped(rec: Eval[Parser])(x) // cannot infer type
-            res  <- TL.appln(func, arg)
+            func <- parseTyped(rec: Eval[Parser])(x)
+            domOpt = TL.domTyp(func)
+            arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
+            res <- TL.appln(func, arg)
           } yield res
         case Sort(_) => Some(Type)
         case Lam(domain, body) =>
-          val xo = parseVar(rec: Eval[Parser])(domain)
-          for {
-            x   <- xo
-            pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body)
-            res <- TL.lambda(x, pb)
-          } yield res
-        case Pi(domain, body) =>
           val xo = parseVar(rec: Eval[Parser])(domain)
           def getCodom(t: Term): Option[Typ[Term]] =
             typOpt match {
@@ -55,6 +49,19 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
           for {
             x   <- xo
             pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body, getCodom(x))
+            res <- TL.lambda(x, pb)
+          } yield res
+        case Pi(domain, body) =>
+          val xo = parseVar(rec: Eval[Parser])(domain)
+          // def getCodom(t: Term): Option[Typ[Term]] =
+          //   typOpt match {
+          //     case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
+          //       Some(fn.depcodom(t.asInstanceOf[u]))
+          //     case _ => None
+          //   }
+          for {
+            x   <- xo
+            pb  <- addVar(x).parseTyp(rec: Eval[Parser])(body)
             res <- TL.pi(x, pb)
           } yield res
         case Let(domain, value, body) =>
@@ -80,9 +87,13 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
 
   def addVar(t: Term) = LeanToTerm(defns, recDefns, t +: vars)
 
-  def parseTyp(rec: Eval[Parser])(x: Expr) =
-    parseTyped(rec: Eval[Parser])(x, Some(Type)).collect {
-      case tp: Typ[_] => tp
+  def parseTyp(rec: Eval[Parser])(x: Expr): Option[Typ[Term]] =
+    parseTyped(rec: Eval[Parser])(x, Some(Type)).flatMap {
+      case tp: Typ[_] => Some(tp)
+      case t =>
+        println(
+          s"got term $t of type ${t.typ} but expected type when parsing $x")
+        None
     }
 
   def parseSym(rec: Eval[Parser])(name: Name, ty: Expr) =
@@ -115,15 +126,17 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
     case _                => None
   }
 
-  def mkDef(name: Name,
-            value: Expr): (Expr, Option[Typ[Term]]) => Option[Term] = {
-    case (Const(`name`, _), _) => parseTyped(parse)(value)
-    case _                     => None
+  def mkDef(name: Name, value: Expr, tyOpt: Option[Expr] = None)
+    : (Expr, Option[Typ[Term]]) => Option[Term] = {
+    case (Const(`name`, _), _) =>
+      parseTyped(parse)(value, tyOpt.flatMap(parseTyp(parse)(_)))
+    case _ => None
   }
 
   def addAxiomMod(ax: AxiomMod) = addDefns(mkDef(ax.name, ax.ax.ty))
 
-  def addDefMod(df: DefMod) = addDefns(mkDef(df.name, df.defn.value))
+  def addDefMod(df: DefMod) =
+    addDefns(mkDef(df.name, df.defn.value, Some(df.defn.ty)))
 
   def addQuotMod = {
     import quotient._
@@ -157,12 +170,27 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
     val withAxioms = axs.foldLeft(parser)(_.addDefn(_))
     withAxioms.addRecDefns(toTermIndMod(ind).recDefn)
   }
+
+  def add(mod: Modification) = mod match {
+    case ind: IndMod  => addIndMod(ind)
+    case ax: AxiomMod => addAxiomMod(ax)
+    case df: DefMod   => addDefMod(df)
+    case QuotMod      => addQuotMod
+  }
 }
 import induction._, shapeless.{Path => _, _}
 
 import translation.TermLang.{appln, domTyp}
 
 object LeanToTerm {
+  val emptyParser: Parser = { case (x, y) => None }
+
+  val empty =
+    LeanToTerm(emptyParser, (_: Eval[Parser]) => emptyParser, Vector())
+
+  def fromMods(mods: Vector[Modification], init: LeanToTerm = empty) =
+    mods.foldLeft(init) { case (l: LeanToTerm, m: Modification) => l.add(m) }
+
   type Parser = (Expr, Option[Typ[Term]]) => Option[Term]
 
   def iterAp(name: Name, length: Int): Expr => Option[Vector[Expr]] = {
