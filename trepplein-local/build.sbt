@@ -22,12 +22,12 @@ javaOptions in Universal ++= Seq("-J-Xss30m", "-J-Xmx300m")
 // ScalariformKeys.preferences := ScalariformKeys.preferences.value
 //   .setPreference(DoubleIndentConstructorArguments, true)
 
-libraryDependencies += "com.lihaoyi" % "ammonite" % "1.0.1" % "test" cross CrossVersion.full
-
-sourceGenerators in Test += Def.task {
-  val file = (sourceManaged in Test).value / "amm.scala"
-  IO.write(
-    file,
-    """object amm extends App { ammonite.Main("import trepplein._").run() }""")
-  Seq(file)
-}.taskValue
+// libraryDependencies += "com.lihaoyi" % "ammonite" % "1.0.1" % "test" cross CrossVersion.full
+//
+// sourceGenerators in Test += Def.task {
+//   val file = (sourceManaged in Test).value / "amm.scala"
+//   IO.write(
+//     file,
+//     """object amm extends App { ammonite.Main("import trepplein._").run() }""")
+//   Seq(file)
+// }.taskValue
