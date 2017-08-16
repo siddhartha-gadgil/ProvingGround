@@ -177,37 +177,37 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
   }
 
   def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
-    val inductiveTyp = parseTyp(parse)(ind.inductiveType.ty).get
-    println(s"Inductive type $inductiveTyp")
-    println(s"Parameters: ${ind.numParams}")
-    val name = ind.inductiveType.name
-    val typF = name.toString :: inductiveTyp
-    val typValue =
-      LeanToTerm.getValue(typF, ind.numParams)
-    val withTypeName = addDefn(mkConst(name, typF))
-    println(
-      s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
-    println(
-      s"Type value ${typValue.get.fansi} with type ${typValue.get.typ.fansi}")
-    val introsOpt = ind.intros.map {
-      case (name, tp) =>
-        println(s"intro type : $tp")
-        println(
-          s"parsed as ${withTypeName.parse.map(_(tp, Some(Type))).value}")
-        withTypeName.parseTyp(withTypeName.parse)(tp).map(name.toString :: _)
-    }
-    if (introsOpt.contains(None)) None
-    else {
-      val intros = introsOpt map (_.get)
-      typValue match {
-        case Some(typ: Typ[Term]) =>
-          Some(
-            SimpleIndMod(ind.inductiveType.name, typ, intros, ind.numParams))
-        case Some(t) =>
-          Some(IndexedIndMod(ind.inductiveType.name, t, intros, ind.numParams))
-        // case _ =>
-        //   throw new Exception(
-        //     s"Could not get type  value for inductive type $inductiveTyp")
+    val inductiveTypOpt = parseTyp(parse)(ind.inductiveType.ty)
+    inductiveTypOpt.flatMap { (inductiveTyp) =>
+      println(s"Inductive type $inductiveTyp")
+      println(s"Parameters: ${ind.numParams}")
+      val name = ind.inductiveType.name
+      val typF = name.toString :: inductiveTyp
+      val typValue =
+        LeanToTerm.getValue(typF, ind.numParams)
+      val withTypeName = addDefn(mkConst(name, typF))
+      println(
+        s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
+      println(
+        s"Type value ${typValue.map(_.fansi)} with type ${typValue.map(_.typ.fansi)}")
+      val introsOpt = ind.intros.map {
+        case (name, tp) =>
+          println(s"intro type : $tp")
+          println(
+            s"parsed as ${withTypeName.parse.map(_(tp, Some(Type))).value}")
+          withTypeName.parseTyp(withTypeName.parse)(tp).map(name.toString :: _)
+      }
+      if (introsOpt.contains(None)) None
+      else {
+        val intros = introsOpt map (_.get)
+        typValue match {
+          case Some(typ: Typ[Term]) =>
+            Some(
+              SimpleIndMod(ind.inductiveType.name, typ, intros, ind.numParams))
+          case Some(t) =>
+            Some(
+              IndexedIndMod(ind.inductiveType.name, t, intros, ind.numParams))
+        }
       }
     }
   }
