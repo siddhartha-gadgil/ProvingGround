@@ -43,74 +43,76 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
   def parseTyped(rec: Eval[Parser])(
       exp: Expr,
       typOpt: Option[Typ[Term]] = None): Option[Term] =
-    defns(exp, typOpt).orElse(
-      exp match {
-        case App(x, y) =>
-          // val domOpt = typOpt.flatMap(TL.domTyp)
-          {
-            for {
-              func <- parseTyped(rec: Eval[Parser])(x) // function without type
-              domOpt = TL.domTyp(func)
-              arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
-              res <- wAppln(func, arg)
-            } yield res
-          }.orElse {
-            for {
-              arg <- parseTyped(rec: Eval[Parser])(y)
-              funcTypOpt = functionTyp(arg, typOpt)
-              func <- parseTyped(rec)(x, funcTypOpt)
-              res  <- wAppln(func, arg)
-            } yield res
-          }
-        case Sort(_) => Some(Type)
-        case Lam(domain, body) =>
-          val xo = parseVar(rec: Eval[Parser])(domain)
-          def getCodom(t: Term): Option[Typ[Term]] =
-            typOpt match {
-              case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
-                Some(fn.depcodom(t.asInstanceOf[u]))
-              case _ => None
+    defns(exp, typOpt)
+      .orElse(recDefns(parse)(exp, typOpt))
+      .orElse(
+        exp match {
+          case App(x, y) =>
+            // val domOpt = typOpt.flatMap(TL.domTyp)
+            {
+              for {
+                func <- parseTyped(rec: Eval[Parser])(x) // function without type
+                domOpt = TL.domTyp(func)
+                arg <- parseTyped(rec: Eval[Parser])(y, domOpt)
+                res <- wAppln(func, arg)
+              } yield res
+            }.orElse {
+              for {
+                arg <- parseTyped(rec: Eval[Parser])(y)
+                funcTypOpt = functionTyp(arg, typOpt)
+                func <- parseTyped(rec)(x, funcTypOpt)
+                res  <- wAppln(func, arg)
+              } yield res
             }
-          for {
-            x   <- xo
-            pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body, getCodom(x))
-            res <- TL.lambda(x, pb)
-          } yield res
-        case Pi(domain, body) =>
-          val xo = parseVar(rec: Eval[Parser])(domain)
-          // def getCodom(t: Term): Option[Typ[Term]] =
-          //   typOpt match {
-          //     case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
-          //       Some(fn.depcodom(t.asInstanceOf[u]))
-          //     case _ => None
-          //   }
-          for {
-            x   <- xo
-            pb  <- addVar(x).parseTyp(rec: Eval[Parser])(body)
-            res <- TL.pi(x, pb)
-          } yield res
-        case Let(domain, value, body) =>
-          val xo = parseVar(rec: Eval[Parser])(domain)
-          for {
-            x  <- xo
-            pb <- addVar(x).parseTyped(rec: Eval[Parser])(body, typOpt)
-            valTerm <- parseTyped(rec: Eval[Parser])(
-              body,
-              parseTyp(rec: Eval[Parser])(domain.ty))
-          } yield pb.replace(x, valTerm)
-        case LocalConst(b, _, Some(tp)) =>
-          parseSym(rec: Eval[Parser])(b.prettyName, tp)
-        case Var(n)   => Some(vars(n))
-        case c: Const =>
-          // println(s"Constant $c undefined")
-          LeanToTerm.badConsts += c
-          scala.io.StdIn.readLine
-          None
-        case _ =>
-          println(s"failed to parse $exp")
-          None
-      }
-    )
+          case Sort(_) => Some(Type)
+          case Lam(domain, body) =>
+            val xo = parseVar(rec: Eval[Parser])(domain)
+            def getCodom(t: Term): Option[Typ[Term]] =
+              typOpt match {
+                case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
+                  Some(fn.depcodom(t.asInstanceOf[u]))
+                case _ => None
+              }
+            for {
+              x   <- xo
+              pb  <- addVar(x).parseTyped(rec: Eval[Parser])(body, getCodom(x))
+              res <- TL.lambda(x, pb)
+            } yield res
+          case Pi(domain, body) =>
+            val xo = parseVar(rec: Eval[Parser])(domain)
+            // def getCodom(t: Term): Option[Typ[Term]] =
+            //   typOpt match {
+            //     case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
+            //       Some(fn.depcodom(t.asInstanceOf[u]))
+            //     case _ => None
+            //   }
+            for {
+              x   <- xo
+              pb  <- addVar(x).parseTyp(rec: Eval[Parser])(body)
+              res <- TL.pi(x, pb)
+            } yield res
+          case Let(domain, value, body) =>
+            val xo = parseVar(rec: Eval[Parser])(domain)
+            for {
+              x  <- xo
+              pb <- addVar(x).parseTyped(rec: Eval[Parser])(body, typOpt)
+              valTerm <- parseTyped(rec: Eval[Parser])(
+                body,
+                parseTyp(rec: Eval[Parser])(domain.ty))
+            } yield pb.replace(x, valTerm)
+          case LocalConst(b, _, Some(tp)) =>
+            parseSym(rec: Eval[Parser])(b.prettyName, tp)
+          case Var(n)   => Some(vars(n))
+          case c: Const =>
+            // println(s"Constant $c undefined")
+            LeanToTerm.badConsts += c
+            scala.io.StdIn.readLine
+            None
+          case _ =>
+            println(s"failed to parse $exp")
+            None
+        }
+      )
 
   def addVar(t: Term) = LeanToTerm(defns, recDefns, t +: vars)
 
@@ -326,7 +328,7 @@ abstract class TermIndMod(name: Name,
       typOpt: Option[Typ[Term]],
       predef: => ((Expr, Option[Typ[Term]]) => Option[Term])): Option[Term] = {
     val argsPair: Option[Vector[(Expr, Option[Typ[Term]])]] =
-      LeanToTerm.iterApTyp(name, intros.length, typOpt)(exp)
+      LeanToTerm.iterApTyp(recName, intros.length, typOpt)(exp)
     argsPair.flatMap { (v: Vector[(Expr, Option[Typ[Term]])]) =>
       val optArgs: Vector[Option[Term]] = v.map {
         case (exp, tpO) => predef(exp, tpO)
