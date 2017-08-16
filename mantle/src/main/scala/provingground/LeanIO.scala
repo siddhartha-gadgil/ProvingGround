@@ -100,9 +100,11 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
           } yield pb.replace(x, valTerm)
         case LocalConst(b, _, Some(tp)) =>
           parseSym(rec: Eval[Parser])(b.prettyName, tp)
-        case Var(n) => Some(vars(n))
+        case Var(n)   => Some(vars(n))
         case c: Const =>
-          println(s"Constant $c undefined")
+          // println(s"Constant $c undefined")
+          LeanToTerm.badConsts += c
+          scala.io.StdIn.readLine
           None
         case _ =>
           println(s"failed to parse $exp")
@@ -179,22 +181,22 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
   def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
     val inductiveTypOpt = parseTyp(parse)(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
-      println(s"Inductive type $inductiveTyp")
-      println(s"Parameters: ${ind.numParams}")
+      // println(s"Inductive type $inductiveTyp")
+      // println(s"Parameters: ${ind.numParams}")
       val name = ind.inductiveType.name
       val typF = name.toString :: inductiveTyp
       val typValue =
         LeanToTerm.getValue(typF, ind.numParams)
       val withTypeName = addDefn(mkConst(name, typF))
-      println(
-        s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
-      println(
-        s"Type value ${typValue.map(_.fansi)} with type ${typValue.map(_.typ.fansi)}")
+      // println(
+      //   s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
+      // println(
+      //   s"Type value ${typValue.map(_.fansi)} with type ${typValue.map(_.typ.fansi)}")
       val introsOpt = ind.intros.map {
         case (name, tp) =>
           println(s"intro type : $tp")
-          println(
-            s"parsed as ${withTypeName.parse.map(_(tp, Some(Type))).value}")
+          // println(
+          //   s"parsed as ${withTypeName.parse.map(_(tp, Some(Type))).value}")
           withTypeName.parseTyp(withTypeName.parse)(tp).map(name.toString :: _)
       }
       if (introsOpt.contains(None)) None
@@ -207,17 +209,19 @@ case class LeanToTerm(defns: (Expr, Option[Typ[Term]]) => Option[Term],
           case Some(t) =>
             Some(
               IndexedIndMod(ind.inductiveType.name, t, intros, ind.numParams))
+          case None => None
         }
       }
     }
   }
 
   def addIndMod(ind: IndMod) = {
-    val axs = { (ind.name -> ind.inductiveType.ty) +: ind.intros }.map {
-      case (n, t) => mkAxiom(n, t)
+    val withTypDef = addDefn(mkAxiom(ind.name, ind.inductiveType.ty))
+    val axs = ind.intros.map {
+      case (n, t) => withTypDef.mkAxiom(n, t)
     }
-    val withAxioms = axs.foldLeft(parser)(_.addDefn(_))
-    val indOpt     = toTermIndModOpt(ind)
+    val withAxioms = axs.foldLeft(withTypDef)(_.addDefn(_))
+    val indOpt     = withAxioms.toTermIndModOpt(ind)
     indOpt
       .map { (ind) =>
         withAxioms.addRecDefns(ind.recDefn)
@@ -237,6 +241,9 @@ import induction._ //, shapeless.{Path => _, _}
 // import translation.TermLang.{appln, domTyp}
 
 object LeanToTerm {
+  import collection.mutable.ArrayBuffer
+  val badConsts: ArrayBuffer[Const] = ArrayBuffer()
+
   val emptyParser: Parser = { case (x, y) => None }
 
   val empty =
