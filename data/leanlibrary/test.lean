@@ -4,4 +4,4 @@ inductive boolean : Type
 | true : boolean
 | false : boolean
 
-definition not : boolean -> boolean := fun (x : boolean), (boolean.rec boolean.false boolean.true)
+definition not : boolean -> boolean := fun b, boolean.rec_on b boolean.false boolean.true

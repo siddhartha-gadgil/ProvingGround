@@ -37,9 +37,9 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   def wAppln(f: Term, a: Term) = {
     val res = TL.appln(f, a)
-    if (res.isEmpty)
-      println(
-        s"failed to apply ${f.fansi} with type ${f.typ.fansi} to ${a.fansi} with type ${a.typ}")
+    // if (res.isEmpty)
+    //   println(
+    //     s"failed to apply ${f.fansi} with type ${f.typ.fansi} to ${a.fansi} with type ${a.typ}")
     res
   }
 
@@ -92,7 +92,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
               }
             for {
               x   <- xo
-              pb  <- addVar(x).parseTyped(rec)(body, getCodom(x))
+              pb  <- addVar(x).parse(body, getCodom(x))
               res <- TL.lambda(x, pb)
             } yield res
           case Pi(domain, body) =>
@@ -105,7 +105,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
             //   }
             for {
               x   <- xo
-              pb  <- addVar(x).parseTyp(rec)(body)
+              pb  <- addVar(x).parse(body, None)
               res <- TL.pi(x, pb)
             } yield res
           case Let(domain, value, body) =>
@@ -371,35 +371,6 @@ abstract class TermIndMod(name: Name,
            typOpt: Option[Typ[Term]],
            predef: (Expr, Option[Typ[Term]]) => Option[Term]): Option[Term]
 
-  def defnWrong(
-      exp: Expr,
-      typOpt: Option[Typ[Term]],
-      predef: => ((Expr, Option[Typ[Term]]) => Option[Term])): Option[Term] = {
-    val argsPair: Option[Vector[(Expr, Option[Typ[Term]])]] =
-      LeanToTerm.iterApTyp(recName, intros.length, typOpt)(exp)
-    argsPair.foreach((pair) =>
-      // if (!typOpt.isEmpty)
-      println(
-        s"got argsPair $pair while parsing $exp\n for inductive type ${inductiveTyp.fansi}, length ${intros.length}, type: $typOpt"))
-    argsPair.flatMap { (v: Vector[(Expr, Option[Typ[Term]])]) =>
-      val optArgs: Vector[Option[Term]] = v.map {
-        case (exp, tpO) => predef(exp, tpO)
-      }
-      println(s"these parsed to $optArgs")
-      val argsOpt: Option[Vector[Term]] =
-        if (optArgs.contains(None)) None else Some(optArgs.flatten)
-      for {
-        defnTyp            <- typOpt
-        func: Term         <- recFromTyp(defnTyp)
-        args: Vector[Term] <- argsOpt
-        _ = if (TermLang.applnFold(func, args).isEmpty)
-          println(
-            s"failed to apply ${func.fansi} with type ${func.typ.fansi} to ${args
-              .map(_.fansi)}")
-        res <- TermLang.applnFold(func, args)
-      } yield res
-    }
-  }
 }
 
 case class SimpleIndMod(name: Name,
@@ -431,6 +402,8 @@ case class SimpleIndMod(name: Name,
         val indNew = (newParams.zipWithIndex).foldLeft(ind) {
           case (a, (y, n)) => a.subst(params(n), y)
         }
+        println(s"New simple inductive type: ${indNew.typ.fansi}")
+
         predef(argsFmly.last, None) match {
           case Some(l: LambdaLike[u, v]) =>
             l.value match {
@@ -509,6 +482,8 @@ case class IndexedIndMod(name: Name,
         val indNew = (newParams.zipWithIndex).foldLeft(ind) {
           case (a, (y, n)) => a.subs(params(n), y)
         }
+        println(
+          s"New indexed inductive type: ${indNew.W.fansi} with type ${indNew.W.fansi}")
         val fmlOpt = predef(argsFmly.last, None)
         val recOpt =
           for {
