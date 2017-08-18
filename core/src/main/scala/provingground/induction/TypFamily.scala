@@ -122,6 +122,8 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
 
   def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_]
 
+  def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): TypFamilyPtn.OptTyp
+
   def codFamily(typ: Typ[Term]) : Term
 
   def codFromRecType(typ: Typ[Term]): Option[Typ[Term]]
@@ -172,6 +174,19 @@ object TypFamilyPtn {
           }
       }
 
+    def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp =
+      depCod match {
+        case tf: Func[a, b] =>
+          val x = tf.dom.Var
+          tf(x) match {
+            case tp: Typ[u] if (tp.indepOf(x)) => Some(tp)
+            case t: Term =>
+              None
+            }
+        case _ => None
+}
+
+
     def codFamily(typ: Typ[Term]) : Term = typ match {
       case tf: GenFuncTyp[a, b] =>
         val x = tf.domain.Var
@@ -188,6 +203,8 @@ object TypFamilyPtn {
       case _ => None
     }
   }
+
+  type OptTyp = Option[Typ[u]] forSome {type u <: Term with Subs[u]}
 
   case class FuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
     head: Typ[U],
@@ -212,6 +229,13 @@ object TypFamilyPtn {
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       tail.finalCod(fold(depCod)(head.Var))
+
+
+
+    def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp = {
+      val x = head.Var
+      tail.constFinalCod(fold(depCod)(x)).filter(_.indepOf(x))
+    }
 
     def codFamily(typ: Typ[Term]) : Term = {
       val x = head.Var
@@ -268,6 +292,11 @@ object TypFamilyPtn {
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] = {
       val x = head.Var
       tailfibre(x).finalCod(fold(depCod)(x))
+    }
+
+    def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp = {
+      val x = head.Var
+      tailfibre(x).constFinalCod(fold(depCod)(x)).filter(_.indepOf(x))
     }
 
     def codFamily(typ: Typ[Term]) : Term = {

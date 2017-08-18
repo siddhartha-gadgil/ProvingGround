@@ -183,23 +183,6 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   def addAxioms(axs: Vector[(Name, Expr)]) =
     axs.foldLeft(self) { case (p, (n, v)) => p.addAxiom(n, v) }
 
-  // def mkAxiom(name: Name, ty: Expr): Expr => Option[Term] = {
-  //   case Const(`name`, _) => parseSym(parse)(name, ty)
-  //   case _                => None
-  // }
-  //
-  // def mkConst(name: Name, value: Term): Expr => Option[Term] = {
-  //   case Const(`name`, _) => Some(value)
-  //   case _                => None
-  // }
-  //
-  // def mkDef(name: Name, value: Expr, tyOpt: Option[Expr] = None)
-  //   : (Expr, Option[Typ[Term]]) => Option[Term] = {
-  //   case (Const(`name`, _), _) =>
-  //     parseTyped(parse)(value, tyOpt.flatMap(parseTyp(parse)(_)))
-  //   case _ => None
-  // }
-
   def addAxiomMod(ax: AxiomMod) = addAxiom(ax.name, ax.ax.ty)
 
   def addDefMod(df: DefMod) =
@@ -221,7 +204,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       val name = ind.inductiveType.name
       val typF = name.toString :: inductiveTyp
       val typValue =
-        LeanToTerm.getValue(typF, ind.numParams)
+        LeanToTerm.getValue(typF, ind.numParams, Vector())
       val withTypeName = addAxiom(name, ind.inductiveType.ty)
       // println(
       //   s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
@@ -240,12 +223,10 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       } else {
         val intros = introsOpt map (_.get)
         typValue match {
-          case Some(typ: Typ[Term]) =>
-            Some(
-              SimpleIndMod(ind.inductiveType.name, typ, intros, ind.numParams))
-          case Some(t) =>
-            Some(
-              IndexedIndMod(ind.inductiveType.name, t, intros, ind.numParams))
+          case Some((typ: Typ[Term], params)) =>
+            Some(SimpleIndMod(ind.inductiveType.name, typ, intros, params))
+          case Some((t, params)) =>
+            Some(IndexedIndMod(ind.inductiveType.name, t, intros, params))
           case None =>
             println("No type value")
             None
@@ -256,14 +237,14 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   def addIndMod(ind: IndMod) = {
     val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
-    println("type added")
+    // println("type added")
     // val axs = ind.intros.map {
     //   case (n, t) => withTypDef.mkAxiom(n, t)
     // }
     val withAxioms = withTypDef.addAxioms(ind.intros)
-    println("added axioms")
+    // println("added axioms")
     val indOpt = withAxioms.toTermIndModOpt(ind)
-    println(s"indOpt: $indOpt")
+    // println(s"indOpt: $indOpt")
     indOpt
       .map { (ind) =>
         withAxioms.addRecDefns(ind.recDefn)
@@ -342,12 +323,18 @@ object LeanToTerm {
         None
     }
 
-  def getValue(t: Term, n: Int): Option[Term] = (t, n) match {
-    case (x, 0)                            => Some(x)
-    case (l: LambdaLike[u, v], n) if n > 0 => getValue(l.value, n - 1)
-    case (fn: FuncLike[u, v], n) if n > 0  => getValue(fn(fn.dom.Var), n - 1)
-    case _                                 => None
-  }
+  def getValue(t: Term,
+               n: Int,
+               accum: Vector[Term]): Option[(Term, Vector[Term])] =
+    (t, n) match {
+      case (x, 0) => Some(x -> accum)
+      case (l: LambdaLike[u, v], n) if n > 0 =>
+        getValue(l.value, n - 1, l.variable +: accum)
+      case (fn: FuncLike[u, v], n) if n > 0 =>
+        val x = fn.dom.Var
+        getValue(fn(x), n - 1, x +: accum)
+      case _ => None
+    }
 
   import ConstructorShape._
 
@@ -356,7 +343,12 @@ object LeanToTerm {
 abstract class TermIndMod(name: Name,
                           inductiveTyp: Term,
                           intros: Vector[Term],
-                          numParams: Int) {
+                          params: Vector[Term]) {
+  val numParams = params.length
+
+  val introsFolded =
+    intros.map((rule) => translation.TermLang.applnFold(rule, params)).flatten
+
   val recName = Name.Str(name, "rec")
 
   object recAp {
@@ -375,7 +367,11 @@ abstract class TermIndMod(name: Name,
     }
   }
 
-  def defn(
+  def defn(exp: Expr,
+           typOpt: Option[Typ[Term]],
+           predef: (Expr, Option[Typ[Term]]) => Option[Term]): Option[Term]
+
+  def defnWrong(
       exp: Expr,
       typOpt: Option[Typ[Term]],
       predef: => ((Expr, Option[Typ[Term]]) => Option[Term])): Option[Term] = {
@@ -409,9 +405,9 @@ abstract class TermIndMod(name: Name,
 case class SimpleIndMod(name: Name,
                         typ: Typ[Term],
                         intros: Vector[Term],
-                        numParams: Int)
-    extends TermIndMod(name, typ, intros, numParams) {
-  lazy val ind = ConstructorSeqTL.getExst(typ, intros).value
+                        params: Vector[Term])
+    extends TermIndMod(name, typ, intros, params) {
+  lazy val ind = ConstructorSeqTL.getExst(typ, introsFolded).value
 
   import LeanToTerm.unifier
 
@@ -421,6 +417,48 @@ case class SimpleIndMod(name: Name,
     unifier(typ, dom, numParams).map { (vec) =>
       vec.foldLeft(ind) { case (a, (x, y)) => a.subst(x, y) }
     }
+
+  import scala.util.Try
+
+  def defn(exp: Expr,
+           typOpt: Option[Typ[Term]],
+           predef: (Expr, Option[Typ[Term]]) => Option[Term]): Option[Term] = {
+    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
+    argsFmlyOpt.flatMap { (argsFmly) =>
+      val newParams = argsFmly.init.map((t) => predef(t, None)).flatten
+      if (newParams.length < numParams) None
+      else {
+        val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+          case (a, (y, n)) => a.subst(params(n), y)
+        }
+        predef(argsFmly.last, None) match {
+          case Some(l: LambdaLike[u, v]) =>
+            l.value match {
+              case tp: Typ[u] =>
+                if (tp.dependsOn(l.variable))
+                  Some(indNew.inducE((l.variable: Term) :-> (tp: Typ[u])))
+                else Some(indNew.recE(tp))
+            }
+          case Some(fn: FuncLike[u, v]) =>
+            val x = fn.dom.Var
+            val y = fn(x)
+            y match {
+              case tp: Typ[u] =>
+                if (tp.dependsOn(x))
+                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
+                else Some(indNew.recE(tp))
+            }
+          case Some(t) =>
+            println(
+              s"family for induction type ${t.fansi} with type ${t.typ.fansi} unmatched")
+            None
+          case None =>
+            println(s"parsing failed for ${argsFmly.last}")
+            None
+        }
+      }
+    }
+  }
 
   def recFromTyp(typ: Typ[Term]): Option[Term] = typ match {
     case ft: FuncTyp[u, v] if ft.dom == typ =>
@@ -444,9 +482,10 @@ case class SimpleIndMod(name: Name,
 case class IndexedIndMod(name: Name,
                          typF: Term,
                          intros: Vector[Term],
-                         numParams: Int)
-    extends TermIndMod(name, typF, intros, numParams) {
-  lazy val ind = TypFamilyExst.getIndexedConstructorSeq(typF, intros).value
+                         params: Vector[Term])
+    extends TermIndMod(name, typF, intros, params) {
+  lazy val ind =
+    TypFamilyExst.getIndexedConstructorSeq(typF, introsFolded).value
 
   import ind.family
 
@@ -458,6 +497,53 @@ case class IndexedIndMod(name: Name,
     unifier(typF, domF, numParams).map { (vec) =>
       vec.foldLeft(ind) { case (a, (x, y)) => a.subs(x, y) }
     }
+
+  def defn(exp: Expr,
+           typOpt: Option[Typ[Term]],
+           predef: (Expr, Option[Typ[Term]]) => Option[Term]): Option[Term] = {
+    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
+    argsFmlyOpt.flatMap { (argsFmly) =>
+      val newParams = argsFmly.init.map((t) => predef(t, None)).flatten
+      if (newParams.length < numParams) None
+      else {
+        val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+          case (a, (y, n)) => a.subs(params(n), y)
+        }
+        val fmlOpt = predef(argsFmly.last, None)
+        val recOpt =
+          for {
+            fml <- fmlOpt
+            cod <- family.constFinalCod(fml)
+          } yield indNew.recE(cod)
+        val inducOpt = fmlOpt.map(indNew.inducE(_))
+        predef(argsFmly.last, None) match {
+          case Some(l: LambdaLike[u, v]) =>
+            l.value match {
+              case tp: Typ[u] =>
+                if (tp.dependsOn(l.variable))
+                  Some(indNew.inducE((l.variable: Term) :-> (tp: Typ[u])))
+                else Some(indNew.recE(tp))
+            }
+          case Some(fn: FuncLike[u, v]) =>
+            val x = fn.dom.Var
+            val y = fn(x)
+            y match {
+              case tp: Typ[u] =>
+                if (tp.dependsOn(x))
+                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
+                else Some(indNew.recE(tp))
+            }
+          case Some(t) =>
+            println(
+              s"family for induction type ${t.fansi} with type ${t.typ.fansi} unmatched")
+            None
+          case None =>
+            println(s"parsing failed for ${argsFmly.last}")
+            None
+        }
+      }
+    }
+  }
 
   def recFromTyp(typ: Typ[Term]): Option[Term] = {
     for {
