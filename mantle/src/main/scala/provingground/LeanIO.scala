@@ -329,10 +329,10 @@ object LeanToTerm {
     (t, n) match {
       case (x, 0) => Some(x -> accum)
       case (l: LambdaLike[u, v], n) if n > 0 =>
-        getValue(l.value, n - 1, l.variable +: accum)
+        getValue(l.value, n - 1, accum :+ l.variable) // FIXME should we prepend?
       case (fn: FuncLike[u, v], n) if n > 0 =>
         val x = fn.dom.Var
-        getValue(fn(x), n - 1, x +: accum)
+        getValue(fn(x), n - 1, accum :+ x)
       case _ => None
     }
 
@@ -347,7 +347,10 @@ abstract class TermIndMod(name: Name,
   val numParams = params.length
 
   val introsFolded =
-    intros.map((rule) => translation.TermLang.applnFold(rule, params)).flatten
+    intros
+      .map((rule) => translation.TermLang.applnFold(rule, params))
+      .flatten
+  // TODO  is reverse correct?
 
   val recName = Name.Str(name, "rec")
 
@@ -380,6 +383,10 @@ case class SimpleIndMod(name: Name,
     extends TermIndMod(name, typ, intros, params) {
   lazy val ind = ConstructorSeqTL.getExst(typ, introsFolded).value
 
+  // println(s"inductive type: ${typ.fansi}")
+  // println(s"params: ${params map (_.fansi)}")
+  // println(s"introsFolded: ${introsFolded.map(_.fansi)}\n")
+
   import LeanToTerm.unifier
 
   import implicits._
@@ -402,9 +409,14 @@ case class SimpleIndMod(name: Name,
         val indNew = (newParams.zipWithIndex).foldLeft(ind) {
           case (a, (y, n)) => a.subst(params(n), y)
         }
-        println(s"New simple inductive type: ${indNew.typ.fansi}")
+        // println(s"New simple inductive type: ${indNew.typ.fansi}")
 
-        predef(argsFmly.last, None) match {
+        val fmlyOpt = predef(argsFmly.last, None)
+
+        // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
+        //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
+
+        fmlyOpt match {
           case Some(l: LambdaLike[u, v]) =>
             l.value match {
               case tp: Typ[u] =>
@@ -417,9 +429,12 @@ case class SimpleIndMod(name: Name,
             val y = fn(x)
             y match {
               case tp: Typ[u] =>
-                if (tp.dependsOn(x))
-                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
-                else Some(indNew.recE(tp))
+                if (tp.dependsOn(x)) {
+                  val res = indNew.inducE((x: Term) :-> (tp: Typ[u]))
+                  // println(s"variable x is ${x.fansi} and value is ${tp.fansi}")
+                  // println(s"induction function has type ${res.typ.fansi}")
+                  Some(res)
+                } else Some(indNew.recE(tp))
             }
           case Some(t) =>
             println(
@@ -482,8 +497,8 @@ case class IndexedIndMod(name: Name,
         val indNew = (newParams.zipWithIndex).foldLeft(ind) {
           case (a, (y, n)) => a.subs(params(n), y)
         }
-        println(
-          s"New indexed inductive type: ${indNew.W.fansi} with type ${indNew.W.fansi}")
+        // println(
+        //   s"New indexed inductive type: ${indNew.W.fansi} with type ${indNew.W.fansi}")
         val fmlOpt = predef(argsFmly.last, None)
         val recOpt =
           for {

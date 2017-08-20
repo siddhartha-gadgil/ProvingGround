@@ -8,6 +8,8 @@ import shapeless._
 
 import HList._
 
+import translation.{FansiShow, TermLang => TL}
+
 /**
  * allows substitution of a `Term` by another.
  */
@@ -143,6 +145,8 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
   def mapped[C <: Term with Subs[C]] = mapper[C].mapper(this)
 }
 
+case class NotFunc(t: Term) extends Exception("Expected Function")
+
 object TypFamilyPtn {
   def apply[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList](w: F)(
     implicit
@@ -163,7 +167,7 @@ object TypFamilyPtn {
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       depCod match {
-        case tf: Func[a, b] =>
+        case tf: FuncLike[a, b] =>
           val x = tf.dom.Var
           tf(x) match {
             case tp: Typ[u] => tp
@@ -172,6 +176,7 @@ object TypFamilyPtn {
               throw new IllegalArgumentException(
                 s"expected type but got ${t.fansi}")
           }
+        case t => throw NotFunc(t)
       }
 
     def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp =
@@ -204,7 +209,7 @@ object TypFamilyPtn {
     }
   }
 
-  type OptTyp = Option[Typ[u]] forSome {type u <: Term with Subs[u]}
+  type OptTyp = Option[Typ[u] forSome {type u <: Term with Subs[u]}]
 
   case class FuncTypFamily[U <: Term with Subs[U], H <: Term with Subs[H], TF <: Term with Subs[TF], TI <: HList: TermList](
     head: Typ[U],
@@ -234,7 +239,8 @@ object TypFamilyPtn {
 
     def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp = {
       val x = head.Var
-      tail.constFinalCod(fold(depCod)(x)).filter(_.indepOf(x))
+      TL.appln(depCod, x).flatMap{(t) =>
+      tail.constFinalCod(t)}.filter(_.indepOf(x))
     }
 
     def codFamily(typ: Typ[Term]) : Term = {
@@ -296,7 +302,8 @@ object TypFamilyPtn {
 
     def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp = {
       val x = head.Var
-      tailfibre(x).constFinalCod(fold(depCod)(x)).filter(_.indepOf(x))
+      TL.appln(depCod, x).flatMap{(t) =>
+      tailfibre(x).constFinalCod(t)}.filter(_.indepOf(x))
     }
 
     def codFamily(typ: Typ[Term]) : Term = {

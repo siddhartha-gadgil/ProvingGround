@@ -288,7 +288,7 @@ object ConstructorSeqDom {
       pattern.symbcons(name, typ) :: tail.intros(typ)
 
     def subs(x: Term, y: Term) =
-      Cons(name, pattern.subs(x, y), tail.subs(x, y))
+      Cons(name.subs(x, y), pattern.subs(x, y), tail.subs(x, y))
   }
 }
 
@@ -428,7 +428,7 @@ object ConstructorSeqTL {
   def getExst(w: Typ[Term], intros: Vector[Term]): Exst = intros match {
     case Vector() => Exst(Empty(w))
     case x +: ys =>
-      val name = x.asInstanceOf[Symbolic].name.toString
+      val name = x.asInstanceOf[Symbolic].name // FIXME: this is where info is lost
       val head = name ::: ConstructorTypTL.getExst(w, x.typ)
       head |: getExst(w, ys)
   }

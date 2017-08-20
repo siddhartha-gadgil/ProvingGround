@@ -623,6 +623,9 @@ case class ConstructorTypTL[S <: HList, H <: Term with Subs[H], ConstructorType 
     ConstructorTypTL(thatVar ~>: shape, typ)
 }
 
+case class NoIntro(w: Typ[Term], cnstTyp: Typ[Term]) extends Exception(
+  s"unmatched ConstructorTyp, $w, $cnstTyp")
+
 object ConstructorTypTL {
 
   /**
@@ -688,6 +691,7 @@ object ConstructorTypTL {
       pd.variable ~>>: getExst(w, pd.value)
     case ft: FuncTyp[u, v] =>
       IterFuncShape.getExst(w, ft.dom) -->>: getExst(w, ft.codom)
+    case _ => throw NoIntro(w, cnstTyp)
   }
 }
 

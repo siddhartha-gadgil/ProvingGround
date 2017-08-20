@@ -625,9 +625,12 @@ object HoTT {
     override def equals(a: Any) = a match {
       case _: BaseUniv => true
       case `Type` => true
+      case Universe(n) if ignoreLevels => true
       case _ => false
     }
   }
+
+  var ignoreLevels = true
 
   /** The (usual) universes */
   case class Universe(level: Int) extends Univ {
@@ -639,6 +642,8 @@ object HoTT {
 
     def variable(name: AnySym) = SymbTyp(name, level)
 
+    override def hashCode = 37
+
     def newobj =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
@@ -648,8 +653,8 @@ object HoTT {
     override def toString = UnivSym + "_" + level
 
     override def equals(that: Any) = that match {
-      case Universe(k) if k == level => true
-      case _: BaseUniv if level == 0 => true
+      case Universe(k) if (ignoreLevels || k == level) => true
+      case _: BaseUniv if (ignoreLevels || level == 0) => true
       case _ => false
     }
   }
@@ -1038,6 +1043,18 @@ object HoTT {
 
   }
 
+  case class ApplnFail(
+    func: Term, arg: Term) extends
+    IllegalArgumentException(s"function $func  cannot act on term ${arg} with type ${arg.typ}"
+  ){
+     val domOpt = func match {
+       case fn: FuncLike[u, v] => Some(fn.dom)
+       case _ => None
+     }
+
+     val argType  = arg.typ
+  }
+
   /**
    * Terms that are functions or dependent functions,
    * is a scala function, but the apply is not directly defined -
@@ -1073,9 +1090,10 @@ object HoTT {
      * checks HoTT-type of argument is in the domain and throws exception if it fails.
      */
     def apply(arg: W): U = {
-      require(
-        arg.typ == dom,
-        s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
+      // require(
+      //   arg.typ == dom,
+      //   s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
+    if (arg.typ != dom) throw ApplnFail(this, arg)
       arg match {
         case t: Cnst => Try(apply(t.term.asInstanceOf[W])).getOrElse(act(arg))
         case _ => act(arg)
@@ -2665,8 +2683,7 @@ object HoTT {
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
-      throw new IllegalArgumentException(
-        s"attempting to apply $f, which has domain ${f.dom} to $x with type ${x.typ}")
+      throw ApplnFail(f, x)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
         s"attempting to apply $t, which is not a function")
