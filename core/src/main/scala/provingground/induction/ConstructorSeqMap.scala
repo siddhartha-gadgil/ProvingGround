@@ -428,7 +428,7 @@ object ConstructorSeqTL {
   def getExst(w: Typ[Term], intros: Vector[Term]): Exst = intros match {
     case Vector() => Exst(Empty(w))
     case x +: ys =>
-      val name = x.asInstanceOf[Symbolic].name // FIXME: this is where info is lost
+      val name = x.asInstanceOf[Symbolic].name 
       val head = name ::: ConstructorTypTL.getExst(w, x.typ)
       head |: getExst(w, ys)
   }

@@ -2,7 +2,7 @@ package provingground.interface
 import provingground._
 
 import ammonite.ops._
-import scala.util.Try
+import scala.util._
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -467,6 +467,15 @@ case class SimpleIndMod(name: Name,
   }
 }
 
+case class NoIndexedInducE(mod: IndexedIndMod,
+                           fmlOpt: Option[Term],
+                           exp: Expr,
+                           W: Term,
+                           family: Any,
+                           newParams: Vector[Term]
+                           // predef: (Expr, Option[Typ[Term]]) => Option[Term]
+) extends Exception("no final cod")
+
 case class IndexedIndMod(name: Name,
                          typF: Term,
                          intros: Vector[Term],
@@ -505,7 +514,17 @@ case class IndexedIndMod(name: Name,
             fml <- fmlOpt
             cod <- family.constFinalCod(fml)
           } yield indNew.recE(cod)
-        val inducOpt = fmlOpt.map(indNew.inducE(_))
+        val inducOpt =
+          // Try(
+          fmlOpt.map(indNew.inducE(_))
+        // )   .getOrElse {
+        //   throw NoIndexedInducE(this,
+        //                         fmlOpt,
+        //                         exp,
+        //                         indNew.W,
+        //                         indNew.family,
+        //                         newParams)
+        // }
         predef(argsFmly.last, None) match {
           case Some(l: LambdaLike[u, v]) =>
             l.value match {
