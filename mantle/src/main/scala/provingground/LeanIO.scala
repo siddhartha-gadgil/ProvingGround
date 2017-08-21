@@ -198,6 +198,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
     val inductiveTypOpt = parseTyp(parse)(ind.inductiveType.ty)
+    val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
       // println(s"Inductive type $inductiveTyp")
       // println(s"Parameters: ${ind.numParams}")
@@ -224,9 +225,19 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         val intros = introsOpt map (_.get)
         typValue match {
           case Some((typ: Typ[Term], params)) =>
-            Some(SimpleIndMod(ind.inductiveType.name, typ, intros, params))
+            Some(
+              SimpleIndMod(ind.inductiveType.name,
+                           typ,
+                           intros,
+                           params,
+                           isPropn))
           case Some((t, params)) =>
-            Some(IndexedIndMod(ind.inductiveType.name, t, intros, params))
+            Some(
+              IndexedIndMod(ind.inductiveType.name,
+                            t,
+                            intros,
+                            params,
+                            isPropn))
           case None =>
             println("No type value")
             None
@@ -336,6 +347,21 @@ object LeanToTerm {
       case _ => None
     }
 
+  val isPropn: Expr => Boolean = {
+    case Pi(_, t) => isPropn(t)
+    case Sort(l)  => l == Level.Zero
+    case _        => false
+  }
+
+  val proofLift: (Term, Term) => Option[Term] = {
+    case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }
+    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+      val x = w.dom.Var
+      Try(proofLift(w(x), tp(x.asInstanceOf[a]))).toOption.flatten
+        .map((g: Term) => x :~> (g: Term))
+    case _ => None
+  }
+
   import ConstructorShape._
 
 }
@@ -343,8 +369,12 @@ object LeanToTerm {
 abstract class TermIndMod(name: Name,
                           inductiveTyp: Term,
                           intros: Vector[Term],
-                          params: Vector[Term]) {
+                          params: Vector[Term],
+                          isPropn: Boolean) {
   val numParams = params.length
+
+  def proofRelevant(fib: Term): Option[Term] =
+    if (isPropn) LeanToTerm.proofLift(inductiveTyp, fib) else Some(fib)
 
   val introsFolded =
     intros
@@ -379,8 +409,9 @@ abstract class TermIndMod(name: Name,
 case class SimpleIndMod(name: Name,
                         typ: Typ[Term],
                         intros: Vector[Term],
-                        params: Vector[Term])
-    extends TermIndMod(name, typ, intros, params) {
+                        params: Vector[Term],
+                        isPropn: Boolean)
+    extends TermIndMod(name, typ, intros, params, isPropn: Boolean) {
   lazy val ind = ConstructorSeqTL.getExst(typ, introsFolded).value
 
   // println(s"inductive type: ${typ.fansi}")
@@ -430,12 +461,14 @@ case class SimpleIndMod(name: Name,
             y match {
               case tp: Typ[u] =>
                 if (tp.dependsOn(x)) {
-                  val res = indNew.inducE((x: Term) :-> (tp: Typ[u]))
-                  // println(s"variable x is ${x.fansi} and value is ${tp.fansi}")
-                  // println(s"induction function has type ${res.typ.fansi}")
-                  Some(res)
+                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
                 } else Some(indNew.recE(tp))
             }
+          case Some(tp: Typ[u]) if (isPropn) =>
+            val x = typ.Var
+            if (tp.dependsOn(x)) {
+              Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
+            } else Some(indNew.recE(tp))
           case Some(t) =>
             println(
               s"family for induction type ${t.fansi} with type ${t.typ.fansi} unmatched")
@@ -479,8 +512,9 @@ case class NoIndexedInducE(mod: IndexedIndMod,
 case class IndexedIndMod(name: Name,
                          typF: Term,
                          intros: Vector[Term],
-                         params: Vector[Term])
-    extends TermIndMod(name, typF, intros, params) {
+                         params: Vector[Term],
+                         isPropn: Boolean)
+    extends TermIndMod(name, typF, intros, params, isPropn) {
   lazy val ind =
     TypFamilyExst.getIndexedConstructorSeq(typF, introsFolded).value
 
@@ -508,7 +542,12 @@ case class IndexedIndMod(name: Name,
         }
         // println(
         //   s"New indexed inductive type: ${indNew.W.fansi} with type ${indNew.W.fansi}")
-        val fmlOpt = predef(argsFmly.last, None)
+        val fmlOpt0 = predef(argsFmly.last, None)
+        val fmlOpt =
+          if (isPropn)
+            fmlOpt0.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
+          else fmlOpt0
+        println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
         val recOpt =
           for {
             fml <- fmlOpt
@@ -516,7 +555,7 @@ case class IndexedIndMod(name: Name,
           } yield indNew.recE(cod)
         val inducOpt =
           // Try(
-          fmlOpt.map(indNew.inducE(_))
+          fmlOpt.map((fib) => indNew.inducE(fib))
         // )   .getOrElse {
         //   throw NoIndexedInducE(this,
         //                         fmlOpt,
@@ -525,31 +564,7 @@ case class IndexedIndMod(name: Name,
         //                         indNew.family,
         //                         newParams)
         // }
-        predef(argsFmly.last, None) match {
-          case Some(l: LambdaLike[u, v]) =>
-            l.value match {
-              case tp: Typ[u] =>
-                if (tp.dependsOn(l.variable))
-                  Some(indNew.inducE((l.variable: Term) :-> (tp: Typ[u])))
-                else Some(indNew.recE(tp))
-            }
-          case Some(fn: FuncLike[u, v]) =>
-            val x = fn.dom.Var
-            val y = fn(x)
-            y match {
-              case tp: Typ[u] =>
-                if (tp.dependsOn(x))
-                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
-                else Some(indNew.recE(tp))
-            }
-          case Some(t) =>
-            println(
-              s"family for induction type ${t.fansi} with type ${t.typ.fansi} unmatched")
-            None
-          case None =>
-            println(s"parsing failed for ${argsFmly.last}")
-            None
-        }
+        recOpt orElse inducOpt
       }
     }
   }

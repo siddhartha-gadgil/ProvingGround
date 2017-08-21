@@ -8,6 +8,8 @@ import shapeless._
 
 import HList._
 
+import scala.util.Try
+
 import translation.{FansiShow, TermLang => TL}
 
 /**
@@ -145,7 +147,12 @@ sealed abstract class TypFamilyPtn[H <: Term with Subs[H], F <: Term with Subs[F
   def mapped[C <: Term with Subs[C]] = mapper[C].mapper(this)
 }
 
-case class NotFunc(t: Term) extends Exception("Expected Function")
+import translation.FansiShow._
+
+
+case class NotFunc(t: Term) extends Exception("Expected Function"){
+  println(s"term ${t.fansi} with type ${t.typ.fansi} in NotFunc")
+}
 
 object TypFamilyPtn {
   def apply[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList](w: F)(
@@ -167,6 +174,7 @@ object TypFamilyPtn {
 
     def finalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): Typ[_] =
       depCod match {
+        case tp: Typ[u] => tp
         case tf: FuncLike[a, b] =>
           val x = tf.dom.Var
           tf(x) match {
@@ -176,7 +184,9 @@ object TypFamilyPtn {
               throw new IllegalArgumentException(
                 s"expected type but got ${t.fansi}")
           }
-        case t => throw NotFunc(t)
+        case t =>
+          println(s"term ${t.fansi} with type ${t.typ.fansi} in NotFunc")
+          throw NotFunc(t)
       }
 
     def constFinalCod[IDFT <: Term with Subs[IDFT]](depCod: IDFT): OptTyp =
@@ -521,8 +531,14 @@ object TypFamilyMap {
     def depRestrict(f: FuncLike[U, TIDF], ind: (U :: TIndex)) =
       tail.depRestrict(f(ind.head), ind.tail)
 
-    def typRestrict(xs: FuncLike[U, TIDFT], ind: (U :: TIndex)) =
-      tail.typRestrict(xs(ind.head), ind.tail)
+    def typRestrict(xs: FuncLike[U, TIDFT], ind: (U :: TIndex)) = {
+      println("FuncTypFamilyMap.typRestrict")
+      val head = xs(ind.head)
+      println("got head")
+      val res = tail.typRestrict(head, ind.tail)
+      println("got result")
+      res
+    }
 
     def subs(x: Term, y: Term) =
       FuncTypFamilyMap(head.replace(x, y), tail.subs(x, y))
@@ -540,7 +556,7 @@ object TypFamilyMap {
       case df: DepFuncTypFamilyMap[u, a, b, c, d, e, f, g] =>
         head == df.head && {
           val x = head.Var
-          tailfibre(x) == df.tailfibre(x.asInstanceOf[u])
+          Try(tailfibre(x) == df.tailfibre(x.asInstanceOf[u])).getOrElse(false)
         }
       case _ => false
     }
