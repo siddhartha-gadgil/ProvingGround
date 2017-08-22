@@ -1043,7 +1043,7 @@ object HoTT {
 
   }
 
-  case class ApplnFail(
+  case class ApplnFailException(
     func: Term, arg: Term) extends
     IllegalArgumentException(s"function $func  cannot act on term ${arg} with type ${arg.typ}"
   ){
@@ -1053,6 +1053,18 @@ object HoTT {
      }
 
      val argType  = arg.typ
+  }
+
+  case class NotTypeException(tp: Term) extends IllegalArgumentException("Expected type but got term")
+
+  def applyFunc(func: Term, arg: Term) : Term = func match {
+    case fn: FuncLike[u, v] if fn.dom == arg.typ => fn(arg.asInstanceOf[u])
+    case _ => throw ApplnFailException(func, arg)
+  }
+
+  def toTyp(t: Term) : Typ[U] forSome {type U <: Term with Subs[U]} = t match {
+    case tp: Typ[u] => tp
+    case _ => throw NotTypeException(t)
   }
 
   /**
@@ -1093,7 +1105,7 @@ object HoTT {
       // require(
       //   arg.typ == dom,
       //   s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
-    if (arg.typ != dom) throw ApplnFail(this, arg)
+    if (arg.typ != dom) throw ApplnFailException(this, arg)
       arg match {
         case t: Cnst => Try(apply(t.term.asInstanceOf[W])).getOrElse(act(arg))
         case _ => act(arg)
@@ -2683,7 +2695,7 @@ object HoTT {
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
-      throw ApplnFail(f, x)
+      throw ApplnFailException(f, x)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
         s"attempting to apply $t, which is not a function")

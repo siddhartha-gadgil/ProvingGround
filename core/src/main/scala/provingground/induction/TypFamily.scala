@@ -532,11 +532,11 @@ object TypFamilyMap {
       tail.depRestrict(f(ind.head), ind.tail)
 
     def typRestrict(xs: FuncLike[U, TIDFT], ind: (U :: TIndex)) = {
-      println("FuncTypFamilyMap.typRestrict")
+      // println("FuncTypFamilyMap.typRestrict")
       val head = xs(ind.head)
-      println("got head")
+      // println("got head")
       val res = tail.typRestrict(head, ind.tail)
-      println("got result")
+      // println("got result")
       res
     }
 
