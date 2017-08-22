@@ -326,7 +326,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     indOpt
       .map { (indMod) =>
         withAxioms
-          .addRecDefns(indMod.recDefn)
+        // .addRecDefns(indMod.recDefn)
           .copy(mods = self.mods + (ind.name -> indMod))
       }
       .getOrElse {
