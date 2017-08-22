@@ -101,19 +101,19 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   // val typedParse: TypedParser =
   //   (exp: Expr, typOpt: Option[Typ[Term]]) => parse(exp).toOption //parseTyped(typedParse)(exp, None)
 
-  def functionTyp(arg: Term, typOpt: Option[Typ[Term]]): Option[Typ[Term]] =
-    typOpt map { (applnTyp) =>
-      val dep = Try(applnTyp.dependsOn(arg)).getOrElse(false)
-      if (!dep) arg.typ ->: applnTyp else arg ~>: applnTyp
-    }
-
-  def wAppln(f: Term, a: Term) = {
-    val res = TL.appln(f, a)
-    // if (res.isEmpty)
-    //   println(
-    //     s"failed to apply ${f.fansi} with type ${f.typ.fansi} to ${a.fansi} with type ${a.typ}")
-    res
-  }
+  // def functionTyp(arg: Term, typOpt: Option[Typ[Term]]): Option[Typ[Term]] =
+  //   typOpt map { (applnTyp) =>
+  //     val dep = Try(applnTyp.dependsOn(arg)).getOrElse(false)
+  //     if (!dep) arg.typ ->: applnTyp else arg ~>: applnTyp
+  //   }
+  //
+  // def wAppln(f: Term, a: Term) = {
+  //   val res = TL.appln(f, a)
+  //   // if (res.isEmpty)
+  //   //   println(
+  //   //     s"failed to apply ${f.fansi} with type ${f.typ.fansi} to ${a.fansi} with type ${a.typ}")
+  //   res
+  // }
 
   // def parseTyped(rec: => TypedParser)(
   //     exp: Expr,
@@ -375,6 +375,16 @@ object LeanToTerm {
 
   type OptParser = Expr => Option[Term]
 
+  def parseVec(vec: Vector[Expr], predef: Parser): Try[Vector[Term]] =
+    vec match {
+      case Vector() => Success(Vector())
+      case x +: ys =>
+        for {
+          head <- predef(x)
+          tail <- parseVec(ys, predef)
+        } yield head +: tail
+    }
+
   object RecIterAp {
     def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
       case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
@@ -514,43 +524,45 @@ case class SimpleIndMod(name: Name,
   import scala.util.Try
 
   def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
-    val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
-    val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-      case (a, (y, n)) => a.subst(params(n), y)
+    val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
+    // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
+    newParamsTry.flatMap { (newParams) =>
+      val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+        case (a, (y, n)) => a.subst(params(n), y)
+      }
+      // println(s"New simple inductive type: ${indNew.typ.fansi}")
+
+      val fmlyOpt = predef(argsFmly.last)
+
+      // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
+      //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
+
+      fmlyOpt map {
+        case l: LambdaLike[u, v] =>
+          l.value match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(l.variable))(indNew.inducE(
+                (l.variable: Term) :-> (tp: Typ[u])))
+              else (indNew.recE(tp))
+          }
+        case fn: FuncLike[u, v] =>
+          val x = fn.dom.Var
+          val y = fn(x)
+          y match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(x)) {
+                (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+              } else (indNew.recE(tp))
+          }
+        case tp: Typ[u] if (isPropn) =>
+          val x = typ.Var
+          if (tp.dependsOn(x)) {
+            (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+          } else (indNew.recE(tp))
+      }
+
     }
-    // println(s"New simple inductive type: ${indNew.typ.fansi}")
-
-    val fmlyOpt = predef(argsFmly.last)
-
-    // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
-    //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
-
-    fmlyOpt map {
-      case l: LambdaLike[u, v] =>
-        l.value match {
-          case tp: Typ[u] =>
-            if (tp.dependsOn(l.variable))(indNew.inducE(
-              (l.variable: Term) :-> (tp: Typ[u])))
-            else (indNew.recE(tp))
-        }
-      case fn: FuncLike[u, v] =>
-        val x = fn.dom.Var
-        val y = fn(x)
-        y match {
-          case tp: Typ[u] =>
-            if (tp.dependsOn(x)) {
-              (indNew.inducE((x: Term) :-> (tp: Typ[u])))
-            } else (indNew.recE(tp))
-        }
-      case tp: Typ[u] if (isPropn) =>
-        val x = typ.Var
-        if (tp.dependsOn(x)) {
-          (indNew.inducE((x: Term) :-> (tp: Typ[u])))
-        } else (indNew.recE(tp))
-    }
-
   }
-
   def recFromTyp(typ: Typ[Term]): Option[Term] = typ match {
     case ft: FuncTyp[u, v] if ft.dom == typ =>
       Some(ind.recE(ft.codom))
@@ -600,25 +612,27 @@ case class IndexedIndMod(name: Name,
     }
 
   def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
-    val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
-    val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-      case (a, (y, n)) => a.subs(params(n), y)
+    val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
+    // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
+    newParamsTry.flatMap { (newParams) =>
+      val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+        case (a, (y, n)) => a.subs(params(n), y)
+      }
+      val fmlOptRaw = predef(argsFmly.last)
+      val fmlOpt =
+        if (isPropn)
+          fmlOptRaw.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
+        else fmlOptRaw
+      // println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
+      val recOpt =
+        for {
+          fml <- fmlOpt
+          cod <- Try(family.constFinalCod(fml).get)
+        } yield indNew.recE(cod)
+      val inducOpt =
+        fmlOpt.map((fib) => indNew.inducE(fib))
+      recOpt orElse inducOpt
     }
-    val fmlOptRaw = predef(argsFmly.last)
-    val fmlOpt =
-      if (isPropn)
-        fmlOptRaw.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
-      else fmlOptRaw
-    // println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
-    val recOpt =
-      for {
-        fml <- fmlOpt
-        cod <- Try(family.constFinalCod(fml).get)
-      } yield indNew.recE(cod)
-    val inducOpt =
-      fmlOpt.map((fib) => indNew.inducE(fib))
-    recOpt orElse inducOpt
-
   }
 
   def recFromTyp(typ: Typ[Term]): Option[Term] = {
