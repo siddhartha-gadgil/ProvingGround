@@ -14,11 +14,12 @@ import trepplein._
 
 // import cats.Eval
 
-import LeanToTerm.{TypedParser, Parser, OptParser}
+import LeanToTerm.{TypedParser, Parser, OptParser, RecIterAp}
 
 import translation.FansiShow._
 
 case class LeanToTerm(defnMap: Map[Name, Term],
+                      mods: Map[Name, TermIndMod],
                       recDefns: (=> Parser) => OptParser,
                       vars: Vector[Term]) { self =>
   def defns(exp: Expr, typOpt: Option[Typ[Term]]) = exp match {
@@ -42,7 +43,10 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   object Predef {
     def unapply(exp: Expr): Option[Term] =
-      (defnOpt(exp).orElse(recDefns(parse)(exp)))
+      (
+        defnOpt(exp)
+        // .orElse(recDefns(parse)(exp))
+      )
   }
 
   def recParser(rec: => Parser)(exp: Expr): Try[Term] =
@@ -50,6 +54,15 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case Predef(t) => Success(t)
       case Sort(_)   => Success(Type)
       case Var(n)    => Try(vars(n))
+      case RecIterAp(name, args) =>
+        val indMod         = mods(name)
+        val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+        val recFnTry       = indMod.getRec(argsFmly, parse)
+        for {
+          recFn <- recFnTry
+          vec   <- parseVec(xs)
+          res   <- Try(foldFunc(recFn, vec))
+        } yield res
       case App(a, b) =>
         for {
           func <- recParser(rec)(a)
@@ -188,7 +201,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   //       }
   //     )
 
-  def addVar(t: Term) = LeanToTerm(defnMap, recDefns, t +: vars)
+  def addVar(t: Term) = LeanToTerm(defnMap, mods, recDefns, t +: vars)
 
   def parseTyp(x: Expr): Try[Typ[Term]] =
     parse(x).flatMap {
@@ -238,7 +251,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case (exp: Expr) =>
         dfn(base)(exp).orElse(recDefns(base)(exp))
     }
-    LeanToTerm(defnMap, mixin, vars)
+    LeanToTerm(defnMap, mods, mixin, vars)
   }
 
   def addDefnMap(name: Name, term: Term) =
@@ -276,33 +289,19 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     val inductiveTypOpt = parseTyp(ind.inductiveType.ty)
     val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
-      // println(s"Inductive type $inductiveTyp")
-      // println(s"Parameters: ${ind.numParams}")
       val name = ind.inductiveType.name
       val typF = name.toString :: inductiveTyp
       val typValueOpt =
         LeanToTerm.getValue(typF, ind.numParams, Vector())
       val withTypeName = addAxiom(name, ind.inductiveType.ty)
-      // println(
-      //   s"type family with parameters: ${typF.fansi} with type ${typF.typ.fansi}")
-      // println(
-      //   s"Type value ${typValue.map(_.fansi)} with type ${typValue.map(_.typ.fansi)}")
       val introsOpt = ind.intros.map {
         case (name, tp) =>
-          // println(s"intro type : $tp")
-          // println(
-          //   s"parsed as ${withTypeName.parse.map(_(tp, Some(Type))).value}")
           withTypeName
             .parseTyp(tp)
             .map(name.toString :: _)
       }
       val introsTry =
         withTypeName.parseSymVec(ind.intros)
-      // if (introsOpt.contains(None)) {
-      //   println("failed to parse intro rules")
-      //   Failure(new Exception("FIXME"))
-      // } else {
-      //   val intros = introsOpt map (_.get)
       introsTry.flatMap { (intros) =>
         typValueOpt.map { (typValue) =>
           typValue match {
@@ -322,17 +321,13 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   def addIndMod(ind: IndMod) = {
     val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
-    // println("type added")
-    // val axs = ind.intros.map {
-    //   case (n, t) => withTypDef.mkAxiom(n, t)
-    // }
     val withAxioms = withTypDef.addAxioms(ind.intros)
-    // println("added axioms")
-    val indOpt = withAxioms.toTermIndModOpt(ind)
-    // println(s"indOpt: $indOpt")
+    val indOpt     = withAxioms.toTermIndModOpt(ind)
     indOpt
-      .map { (ind) =>
-        withAxioms.addRecDefns(ind.recDefn)
+      .map { (indMod) =>
+        withAxioms
+          .addRecDefns(indMod.recDefn)
+          .copy(mods = self.mods + (ind.name -> indMod))
       }
       .getOrElse {
         println("no rec definitions")
@@ -354,8 +349,6 @@ case class NewParseDiffersException(name: Name,
     extends Exception("Parses not matched")
 
 import induction._ //, shapeless.{Path => _, _}
-//
-// import translation.TermLang.{appln, domTyp}
 
 object LeanToTerm {
   import collection.mutable.ArrayBuffer
@@ -371,7 +364,7 @@ object LeanToTerm {
   }
 
   val empty =
-    LeanToTerm(Map(), emptyRecParser, Vector())
+    LeanToTerm(Map(), Map(), emptyRecParser, Vector())
 
   def fromMods(mods: Vector[Modification], init: LeanToTerm = empty) =
     mods.foldLeft(init) { case (l: LeanToTerm, m: Modification) => l.add(m) }
@@ -381,6 +374,15 @@ object LeanToTerm {
   type Parser = Expr => Try[Term]
 
   type OptParser = Expr => Option[Term]
+
+  object RecIterAp {
+    def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
+      case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
+      case App(func, arg) =>
+        unapply(func).map { case (name, vec) => (name, vec :+ arg) }
+      case _ => None
+    }
+  }
 
   def iterAp(name: Name, length: Int): Expr => Option[Vector[Expr]] = {
     case c @ Const(`name`, _) if length == 0 => Some(Vector(c))
@@ -467,18 +469,12 @@ abstract class TermIndMod(name: Name,
 
   val recName = Name.Str(name, "rec")
 
-  object recAp {
-    def unapply(exp: Expr) =
-      LeanToTerm.iterAp(name, intros.length)(exp)
-  }
-
   def recFromTyp(typ: Typ[Term]): Option[Term]
 
   import translation.TermLang
 
   def recDefn(base: => Parser): OptParser = {
     case (exp: Expr) => {
-      // println(s"trying rec definition for $inductiveTyp")
       defn(exp, base)
     }
   }

@@ -1062,6 +1062,9 @@ object HoTT {
     case _ => throw ApplnFailException(func, arg)
   }
 
+  def foldFunc(func: Term, args: Vector[Term]): Term =
+    args.foldLeft(func)(applyFunc)
+
   def toTyp(t: Term) : Typ[U] forSome {type U <: Term with Subs[U]} = t match {
     case tp: Typ[u] => tp
     case _ => throw NotTypeException(t)
