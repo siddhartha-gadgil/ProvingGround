@@ -436,13 +436,13 @@ object LeanToTerm {
     case _        => false
   }
 
-  val proofLift: (Term, Term) => Option[Term] = {
-    case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }
+  val proofLift: (Term, Term) => Try[Term] = {
+    case (w: Typ[u], tp: Typ[v]) => Success { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
-      Try(proofLift(w(x), tp(x.asInstanceOf[a]))).toOption.flatten
+      Try(proofLift(w(x), tp(x.asInstanceOf[a]))).flatten
         .map((g: Term) => x :~> (g: Term))
-    case _ => None
+    case _ => Failure(new Exception("could not lift proof"))
   }
 
   import ConstructorShape._
@@ -456,8 +456,8 @@ abstract class TermIndMod(name: Name,
                           isPropn: Boolean) {
   val numParams = params.length
 
-  def proofRelevant(fib: Term): Option[Term] =
-    if (isPropn) LeanToTerm.proofLift(inductiveTyp, fib) else Some(fib)
+  // def proofRelevant(fib: Term): Option[Term] =
+  //   if (isPropn) LeanToTerm.proofLift(inductiveTyp, fib) else Some(fib)
 
   val introsFolded =
     intros
@@ -483,7 +483,14 @@ abstract class TermIndMod(name: Name,
     }
   }
 
-  def defn(exp: Expr, predef: Expr => Try[Term]): Option[Term]
+  def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
+    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
+    argsFmlyOpt.flatMap { (argsFmly) =>
+      getRec(argsFmly, predef).toOption
+    }
+  }
+
+  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term]
 
 }
 
@@ -510,54 +517,42 @@ case class SimpleIndMod(name: Name,
 
   import scala.util.Try
 
-  def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
-    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
-    argsFmlyOpt.flatMap { (argsFmly) =>
-      val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
-      if (newParams.length < numParams) None
-      else {
-        val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-          case (a, (y, n)) => a.subst(params(n), y)
-        }
-        // println(s"New simple inductive type: ${indNew.typ.fansi}")
-
-        val fmlyOpt = predef(argsFmly.last).toOption
-
-        // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
-        //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
-
-        fmlyOpt match {
-          case Some(l: LambdaLike[u, v]) =>
-            l.value match {
-              case tp: Typ[u] =>
-                if (tp.dependsOn(l.variable))
-                  Some(indNew.inducE((l.variable: Term) :-> (tp: Typ[u])))
-                else Some(indNew.recE(tp))
-            }
-          case Some(fn: FuncLike[u, v]) =>
-            val x = fn.dom.Var
-            val y = fn(x)
-            y match {
-              case tp: Typ[u] =>
-                if (tp.dependsOn(x)) {
-                  Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
-                } else Some(indNew.recE(tp))
-            }
-          case Some(tp: Typ[u]) if (isPropn) =>
-            val x = typ.Var
-            if (tp.dependsOn(x)) {
-              Some(indNew.inducE((x: Term) :-> (tp: Typ[u])))
-            } else Some(indNew.recE(tp))
-          case Some(t) =>
-            println(
-              s"family for induction type ${t.fansi} with type ${t.typ.fansi} unmatched")
-            None
-          case None =>
-            println(s"parsing failed for ${argsFmly.last}")
-            None
-        }
-      }
+  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
+    val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
+    val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+      case (a, (y, n)) => a.subst(params(n), y)
     }
+    // println(s"New simple inductive type: ${indNew.typ.fansi}")
+
+    val fmlyOpt = predef(argsFmly.last)
+
+    // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
+    //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
+
+    fmlyOpt map {
+      case l: LambdaLike[u, v] =>
+        l.value match {
+          case tp: Typ[u] =>
+            if (tp.dependsOn(l.variable))(indNew.inducE(
+              (l.variable: Term) :-> (tp: Typ[u])))
+            else (indNew.recE(tp))
+        }
+      case fn: FuncLike[u, v] =>
+        val x = fn.dom.Var
+        val y = fn(x)
+        y match {
+          case tp: Typ[u] =>
+            if (tp.dependsOn(x)) {
+              (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+            } else (indNew.recE(tp))
+        }
+      case tp: Typ[u] if (isPropn) =>
+        val x = typ.Var
+        if (tp.dependsOn(x)) {
+          (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+        } else (indNew.recE(tp))
+    }
+
   }
 
   def recFromTyp(typ: Typ[Term]): Option[Term] = typ match {
@@ -608,42 +603,26 @@ case class IndexedIndMod(name: Name,
       vec.foldLeft(ind) { case (a, (x, y)) => a.subs(x, y) }
     }
 
-  def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
-    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
-    argsFmlyOpt.flatMap { (argsFmly) =>
-      val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
-      if (newParams.length < numParams) None
-      else {
-        val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-          case (a, (y, n)) => a.subs(params(n), y)
-        }
-        // println(
-        //   s"New indexed inductive type: ${indNew.W.fansi} with type ${indNew.W.fansi}")
-        val fmlOpt0 = predef(argsFmly.last).toOption
-        val fmlOpt =
-          if (isPropn)
-            fmlOpt0.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
-          else fmlOpt0
-        // println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
-        val recOpt =
-          for {
-            fml <- fmlOpt
-            cod <- family.constFinalCod(fml)
-          } yield indNew.recE(cod)
-        val inducOpt =
-          // Try(
-          fmlOpt.map((fib) => indNew.inducE(fib))
-        // )   .getOrElse {
-        //   throw NoIndexedInducE(this,
-        //                         fmlOpt,
-        //                         exp,
-        //                         indNew.W,
-        //                         indNew.family,
-        //                         newParams)
-        // }
-        recOpt orElse inducOpt
-      }
+  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
+    val newParams = argsFmly.init.map((t) => predef(t).toOption).flatten
+    val indNew = (newParams.zipWithIndex).foldLeft(ind) {
+      case (a, (y, n)) => a.subs(params(n), y)
     }
+    val fmlOptRaw = predef(argsFmly.last)
+    val fmlOpt =
+      if (isPropn)
+        fmlOptRaw.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
+      else fmlOptRaw
+    // println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
+    val recOpt =
+      for {
+        fml <- fmlOpt
+        cod <- Try(family.constFinalCod(fml).get)
+      } yield indNew.recE(cod)
+    val inducOpt =
+      fmlOpt.map((fib) => indNew.inducE(fib))
+    recOpt orElse inducOpt
+
   }
 
   def recFromTyp(typ: Typ[Term]): Option[Term] = {
