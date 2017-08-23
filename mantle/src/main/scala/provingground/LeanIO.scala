@@ -76,7 +76,9 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           x       = domTyp.Var
           withVar = addVar(x)
           value <- withVar.parse(body)
-        } yield x :~> value
+        } yield
+          if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+          else LambdaFixed(x, value)
       case Pi(domain, body) =>
         for {
           domTerm <- recParser(rec)(domain.ty)
@@ -85,7 +87,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           withVar = addVar(x)
           value <- withVar.parse(body)
           cod   <- Try(toTyp(value))
-        } yield if (cod.dependsOn(x)) x ~>: cod else x.typ ->: cod
+        } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
           domTerm <- recParser(rec)(domain.ty)
@@ -307,12 +309,16 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           typValue match {
             case (typ: Typ[Term], params) =>
               SimpleIndMod(ind.inductiveType.name,
-                           typ,
+                           typF,
                            intros,
-                           params,
+                           params.size,
                            isPropn)
             case (t, params) =>
-              IndexedIndMod(ind.inductiveType.name, t, intros, params, isPropn)
+              IndexedIndMod(ind.inductiveType.name,
+                            typF,
+                            intros,
+                            params.size,
+                            isPropn)
           }
         }
       }
@@ -330,7 +336,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           .copy(mods = self.mods + (ind.name -> indMod))
       }
       .getOrElse {
-        println("no rec definitions")
+        println(s"no rec definitions for ${ind.name}")
         withAxioms
       }
   }
@@ -462,26 +468,22 @@ object LeanToTerm {
 }
 
 abstract class TermIndMod(name: Name,
-                          inductiveTyp: Term,
+                          // inductiveTyp: Term,
                           intros: Vector[Term],
-                          params: Vector[Term],
+                          val numParams: Int,
                           isPropn: Boolean) {
-  val numParams = params.length
+  // val numParams = params.length
 
   // def proofRelevant(fib: Term): Option[Term] =
   //   if (isPropn) LeanToTerm.proofLift(inductiveTyp, fib) else Some(fib)
 
-  val introsFolded =
-    intros
-      .map((rule) => translation.TermLang.applnFold(rule, params))
-      .flatten
-  // TODO  is reverse correct?
+  def introsFold(p: Vector[Term]) = intros.map((rule) => foldFunc(rule, p))
+
+  // val introsFolded = introsFold(params)
 
   val recName = Name.Str(name, "rec")
 
-  def recFromTyp(typ: Typ[Term]): Option[Term]
-
-  import translation.TermLang
+  // import translation.TermLang
 
   def recDefn(base: => Parser): OptParser = {
     case (exp: Expr) => {
@@ -501,12 +503,19 @@ abstract class TermIndMod(name: Name,
 }
 
 case class SimpleIndMod(name: Name,
-                        typ: Typ[Term],
+                        typF: Term,
                         intros: Vector[Term],
-                        params: Vector[Term],
+                        params: Int,
                         isPropn: Boolean)
-    extends TermIndMod(name, typ, intros, params, isPropn: Boolean) {
-  lazy val ind = ConstructorSeqTL.getExst(typ, introsFolded).value
+    extends TermIndMod(name, intros, params, isPropn: Boolean) {
+  // val typ = toTyp(foldFunc(typF, params))
+  //
+  // lazy val ind =
+  //   // getInd(params)
+  //   ConstructorSeqTL.getExst(typ, introsFolded).value
+
+  def getInd(p: Vector[Term]) =
+    ConstructorSeqTL.getExst(toTyp(foldFunc(typF, p)), introsFold(p)).value
 
   // println(s"inductive type: ${typ.fansi}")
   // println(s"params: ${params map (_.fansi)}")
@@ -516,21 +525,17 @@ case class SimpleIndMod(name: Name,
 
   import implicits._
 
-  def getInd(dom: Typ[Term]) =
-    unifier(typ, dom, numParams).map { (vec) =>
-      vec.foldLeft(ind) { case (a, (x, y)) => a.subst(x, y) }
-    }
-
   import scala.util.Try
 
   def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
     val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
     // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
     newParamsTry.flatMap { (newParams) =>
-      val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-        case (a, (y, n)) => a.subst(params(n), y)
-      }
-      // println(s"New simple inductive type: ${indNew.typ.fansi}")
+      val indNew =
+        getInd(newParams)
+      //   (newParams.zipWithIndex).foldLeft(ind) {
+      //   case (a, (y, n)) => a.subst(params(n), y)
+      // }
 
       val fmlyOpt = predef(argsFmly.last)
 
@@ -555,30 +560,13 @@ case class SimpleIndMod(name: Name,
               } else (indNew.recE(tp))
           }
         case tp: Typ[u] if (isPropn) =>
-          val x = typ.Var
+          val x = tp.Var
           if (tp.dependsOn(x)) {
             (indNew.inducE((x: Term) :-> (tp: Typ[u])))
           } else (indNew.recE(tp))
       }
 
     }
-  }
-  def recFromTyp(typ: Typ[Term]): Option[Term] = typ match {
-    case ft: FuncTyp[u, v] if ft.dom == typ =>
-      Some(ind.recE(ft.codom))
-    case ft: FuncTyp[u, v] =>
-      getInd(ft.dom).map { (i) =>
-        i.recE(ft.codom)
-      }
-    case gt: PiDefn[u, v] if gt.domain == typ =>
-      Some(ind.inducE(gt.fibers.asInstanceOf[Func[Term, Typ[Term]]]))
-    case gt: PiDefn[u, v] =>
-      getInd(gt.domain).map { (i) =>
-        i.inducE(gt.fibers.asInstanceOf[Func[Term, Typ[Term]]])
-      }
-    case _ =>
-      println(s"unmatched type ${typ.fansi} in recFromTyp for $name")
-      None
   }
 }
 
@@ -592,32 +580,36 @@ case class NoIndexedInducE(mod: IndexedIndMod,
 ) extends Exception("no final cod")
 
 case class IndexedIndMod(name: Name,
-                         typF: Term,
+                         typFP: Term,
                          intros: Vector[Term],
-                         params: Vector[Term],
+                         params: Int,
                          isPropn: Boolean)
-    extends TermIndMod(name, typF, intros, params, isPropn) {
-  lazy val ind =
-    TypFamilyExst.getIndexedConstructorSeq(typF, introsFolded).value
+    extends TermIndMod(name, intros, params, isPropn) {
+  // val typF = foldFunc(typFP, params)
 
-  import ind.family
+  def getInd(p: Vector[Term]) =
+    TypFamilyExst
+      .getIndexedConstructorSeq(foldFunc(typFP, p), introsFold(p))
+      .value
+
+  // lazy val ind =
+  //   TypFamilyExst.getIndexedConstructorSeq(typF, introsFolded).value
+
+  // import ind.family
 
   import LeanToTerm.unifier
 
   import implicits._
 
-  def getInd(domF: Term) =
-    unifier(typF, domF, numParams).map { (vec) =>
-      vec.foldLeft(ind) { case (a, (x, y)) => a.subs(x, y) }
-    }
-
   def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
     val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
     // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
     newParamsTry.flatMap { (newParams) =>
-      val indNew = (newParams.zipWithIndex).foldLeft(ind) {
-        case (a, (y, n)) => a.subs(params(n), y)
-      }
+      val indNew =
+        getInd(newParams)
+      //   (newParams.zipWithIndex).foldLeft(ind) {
+      //   case (a, (y, n)) => a.subs(params(n), y)
+      // }
       val fmlOptRaw = predef(argsFmly.last)
       val fmlOpt =
         if (isPropn)
@@ -627,7 +619,7 @@ case class IndexedIndMod(name: Name,
       val recOpt =
         for {
           fml <- fmlOpt
-          cod <- Try(family.constFinalCod(fml).get)
+          cod <- Try(indNew.family.constFinalCod(fml).get)
         } yield indNew.recE(cod)
       val inducOpt =
         fmlOpt.map((fib) => indNew.inducE(fib))
@@ -635,19 +627,6 @@ case class IndexedIndMod(name: Name,
     }
   }
 
-  def recFromTyp(typ: Typ[Term]): Option[Term] = {
-    for {
-      dom  <- family.domFromRecType(typ)
-      cod  <- family.codFromRecType(typ)
-      ind0 <- getInd(dom)
-    } yield ind0.recE(cod)
-  }.orElse {
-    for {
-      dom <- family.domFromRecType(typ)
-      cod = family.codFamily(typ)
-      ind0 <- getInd(dom)
-    } yield ind0.inducE(cod)
-  }
 }
 
 object LeanInterface {

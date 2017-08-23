@@ -1045,7 +1045,7 @@ object HoTT {
 
   case class ApplnFailException(
     func: Term, arg: Term) extends
-    IllegalArgumentException(s"function $func  cannot act on term ${arg} with type ${arg.typ}"
+    IllegalArgumentException(s"function func  cannot act on given term"
   ){
      val domOpt = func match {
        case fn: FuncLike[u, v] => Some(fn.dom)
