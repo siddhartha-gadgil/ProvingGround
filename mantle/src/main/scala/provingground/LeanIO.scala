@@ -21,7 +21,8 @@ import translation.FansiShow._
 case class LeanToTerm(defnMap: Map[Name, Term],
                       mods: Map[Name, TermIndMod],
                       recDefns: (=> Parser) => OptParser,
-                      vars: Vector[Term]) { self =>
+                      vars: Vector[Term],
+                      unparsed: Vector[Name]) { self =>
   def defns(exp: Expr, typOpt: Option[Typ[Term]]) = exp match {
     case Const(name, _) => defnMap.get(name)
     case _              => None
@@ -77,8 +78,12 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           withVar = addVar(x)
           value <- withVar.parse(body)
         } yield
-          if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-          else LambdaFixed(x, value)
+          value match {
+            case FormalAppln(fn, arg) if arg == x => fn
+            case _ =>
+              if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+              else LambdaFixed(x, value)
+          }
       case Pi(domain, body) =>
         for {
           domTerm <- recParser(rec)(domain.ty)
@@ -100,110 +105,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case e => Failure(UnParsedException(e))
     }
 
-  // val typedParse: TypedParser =
-  //   (exp: Expr, typOpt: Option[Typ[Term]]) => parse(exp).toOption //parseTyped(typedParse)(exp, None)
-
-  // def functionTyp(arg: Term, typOpt: Option[Typ[Term]]): Option[Typ[Term]] =
-  //   typOpt map { (applnTyp) =>
-  //     val dep = Try(applnTyp.dependsOn(arg)).getOrElse(false)
-  //     if (!dep) arg.typ ->: applnTyp else arg ~>: applnTyp
-  //   }
-  //
-  // def wAppln(f: Term, a: Term) = {
-  //   val res = TL.appln(f, a)
-  //   // if (res.isEmpty)
-  //   //   println(
-  //   //     s"failed to apply ${f.fansi} with type ${f.typ.fansi} to ${a.fansi} with type ${a.typ}")
-  //   res
-  // }
-
-  // def parseTyped(rec: => TypedParser)(
-  //     exp: Expr,
-  //     typOpt: Option[Typ[Term]] = None): Option[Term] =
-  //   defns(exp, typOpt)
-  //     .orElse(recDefns(typedParse)(exp, typOpt))
-  //     .orElse(
-  //       exp match {
-  //         case App(x, y) =>
-  //           // val domOpt = typOpt.flatMap(TL.domTyp)
-  //           val resOpt = {
-  //             for {
-  //               func <- parseTyped(rec)(x) // function without type
-  //               domOpt = TL.domTyp(func)
-  //               // _ = if (domOpt.isEmpty)
-  //               //   println(
-  //               //     s"failed to get domain for ${func.fansi} with type ${func.typ.fansi}")
-  //               arg <- parseTyped(rec)(y, domOpt)
-  //               res <- wAppln(func, arg)
-  //             } yield res
-  //           }.orElse {
-  //             for {
-  //               arg <- parseTyped(rec)(y)
-  //               funcTypOpt = functionTyp(arg, typOpt)
-  //               _ = typOpt.foreach((_) =>
-  //                 if (funcTypOpt.isEmpty)
-  //                   println(
-  //                     s"failed to get function type from ${typOpt} with arg ${arg.fansi}"))
-  //               func <- parseTyped(rec)(x, funcTypOpt)
-  //               res  <- wAppln(func, arg)
-  //             } yield res
-  //           }
-  //           if (resOpt.isEmpty)
-  //             LeanToTerm.appFailure += ((exp, x, y, typOpt, self))
-  //           resOpt
-  //         case Sort(_) => Some(Type)
-  //         case Lam(domain, body) =>
-  //           val xo = parseVar(domain)
-  //           def getCodom(t: Term): Option[Typ[Term]] =
-  //             typOpt match {
-  //               case Some(ft: GenFuncTyp[u, v]) if ft.domain == t.typ =>
-  //                 Some(ft.fib(t.asInstanceOf[u]))
-  //               case _ =>
-  //                 typOpt.foreach((_) =>
-  //                   println(
-  //                     s"could not get codomain for ${typOpt.map(_.fansi)} for lambda with variable of type ${t.typ.fansi}"))
-  //                 None
-  //             }
-  //           for {
-  //             x   <- xo
-  //             pb  <- addVar(x).typedParse(body, getCodom(x))
-  //             res <- TL.lambda(x, pb)
-  //           } yield res
-  //         case Pi(domain, body) =>
-  //           val xo = parseVar(domain)
-  //           // def getCodom(t: Term): Option[Typ[Term]] =
-  //           //   typOpt match {
-  //           //     case Some(fn: FuncLike[u, v]) if fn.dom == t.typ =>
-  //           //       Some(fn.depcodom(t.asInstanceOf[u]))
-  //           //     case _ => None
-  //           //   }
-  //           for {
-  //             x   <- xo
-  //             pb  <- addVar(x).typedParse(body, None)
-  //             res <- TL.pi(x, pb)
-  //           } yield res
-  //         case Let(domain, value, body) =>
-  //           val xo = parseVar(domain)
-  //           for {
-  //             x       <- xo
-  //             pb      <- addVar(x).parseTyped(rec)(body, typOpt)
-  //             valTerm <- parseTyped(rec)(body, parseTyp(domain.ty))
-  //           } yield pb.replace(x, valTerm)
-  //         case LocalConst(b, _, Some(tp)) =>
-  //           parseSym(b.prettyName, tp)
-  //         case Var(n)   => Some(vars(n))
-  //         case c: Const =>
-  //           // println(s"Constant $c undefined")
-  //           LeanToTerm.badConsts += c
-  //           // scala.io.StdIn.readLine
-  //           None
-  //         case _ =>
-  //           println(s"failed to parse $exp")
-  //           None
-  //       }
-  //     )
-
-  def addVar(t: Term) = LeanToTerm(defnMap, mods, recDefns, t +: vars)
+  def addVar(t: Term) = self.copy(vars = t +: self.vars)
 
   def parseTyp(x: Expr): Try[Typ[Term]] =
     parse(x).flatMap {
@@ -253,7 +155,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case (exp: Expr) =>
         dfn(base)(exp).orElse(recDefns(base)(exp))
     }
-    LeanToTerm(defnMap, mods, mixin, vars)
+    self.copy(recDefns = mixin)
   }
 
   def addDefnMap(name: Name, term: Term) =
@@ -265,11 +167,13 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     //   println(s"while defining $name, failed to parse its type $tp")
     parse(value)
       .map((t) => addDefnMap(name, t))
-      .getOrElse(self)
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
   }
 
   def addAxiom(name: Name, ty: Expr) =
-    parseSym(name, ty).map(addDefnMap(name, _)).getOrElse(self)
+    parseSym(name, ty)
+      .map(addDefnMap(name, _))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
 
   def addAxioms(axs: Vector[(Name, Expr)]) =
     axs.foldLeft(self) { case (p, (n, v)) => p.addAxiom(n, v) }
@@ -336,8 +240,8 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           .copy(mods = self.mods + (ind.name -> indMod))
       }
       .getOrElse {
-        println(s"no rec definitions for ${ind.name}")
-        withAxioms
+        // println(s"no rec definitions for ${ind.name}")
+        withAxioms.copy(unparsed = self.unparsed :+ Name.Str(ind.name, "rec"))
       }
   }
 
@@ -370,7 +274,7 @@ object LeanToTerm {
   }
 
   val empty =
-    LeanToTerm(Map(), Map(), emptyRecParser, Vector())
+    LeanToTerm(Map(), Map(), emptyRecParser, Vector(), Vector())
 
   def fromMods(mods: Vector[Modification], init: LeanToTerm = empty) =
     mods.foldLeft(init) { case (l: LeanToTerm, m: Modification) => l.add(m) }
