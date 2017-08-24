@@ -30,12 +30,6 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   val parse: Parser = recParser(parse)
 
-  case class UnParsedException(exp: Expr)
-      extends IllegalArgumentException("could not parse expression")
-
-  case class NoConstantException(name: Name)
-      extends IllegalArgumentException(s"No constant with name $name found")
-
   def defnOpt(exp: Expr) =
     exp match {
       case Const(name, _) => defnMap.get(name)
@@ -50,6 +44,19 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       )
   }
 
+  val inPropFamily: Term => Boolean = {
+    case FormalAppln(f, _) => inPropFamily(f)
+    case s: Symbolic =>
+      val name = trepplein.Name(s.name.toString.split('.'): _*)
+      mods.get(name).map(_.isPropn).getOrElse(false)
+    case _ => false
+  }
+
+  def applyFuncProp(func: Term, arg: Term) =
+    Try(applyFunc(func, arg))
+      .fold((exc) => if (inPropFamily(arg.typ)) func else { throw exc },
+            (t) => t)
+
   def recParser(rec: => Parser)(exp: Expr): Try[Term] =
     exp match {
       case Predef(t) => Success(t)
@@ -58,17 +65,31 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case RecIterAp(name, args) =>
         val indMod         = mods(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-        val recFnTry       = indMod.getRec(argsFmly, parse)
+        val recFnTry: Try[Term] = indMod
+          .getRec(argsFmly, parse)
+          .fold((ex) =>
+                  throw RecFuncException(indMod,
+                                         argsFmly.map(parse),
+                                         xs.map(parse),
+                                         ex),
+                (x) => Try(x))
         for {
           recFn <- recFnTry
           vec   <- parseVec(xs)
-          res   <- Try(foldFunc(recFn, vec))
+          resTry = Try(vec.foldLeft(recFn)(applyFuncProp)).fold(
+            (ex) =>
+              throw RecFuncException(indMod,
+                                     argsFmly.map(parse),
+                                     xs.map(parse),
+                                     ex),
+            (x) => Try(x))
+          res <- resTry
         } yield res
       case App(a, b) =>
         for {
           func <- recParser(rec)(a)
           arg  <- recParser(rec)(b)
-          res  <- Try(applyFunc(func, arg))
+          res  <- Try(applyFuncProp(func, arg))
         } yield res
       case Lam(domain, body) =>
         for {
@@ -79,7 +100,8 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           value <- withVar.parse(body)
         } yield
           value match {
-            case FormalAppln(fn, arg) if arg == x => fn
+            case FormalAppln(fn, arg) if arg == x       => fn
+            case y if domain.prettyName.toString == "_" => y
             case _ =>
               if (value.typ.dependsOn(x)) LambdaTerm(x, value)
               else LambdaFixed(x, value)
@@ -252,6 +274,19 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     case QuotMod      => addQuotMod
   }
 }
+
+case class UnParsedException(exp: Expr)
+    extends IllegalArgumentException("could not parse expression")
+
+case class NoConstantException(name: Name)
+    extends IllegalArgumentException(s"No constant with name $name found")
+
+case class RecFuncException(indMod: TermIndMod,
+                            argsFmly: Vector[Try[Term]],
+                            xs: Vector[Try[Term]],
+                            exception: Throwable)
+    extends Exception("Could not parse recursive definition")
+
 case class NewParseDiffersException(name: Name,
                                     value: Expr,
                                     old: Term,
@@ -261,6 +296,7 @@ case class NewParseDiffersException(name: Name,
 import induction._ //, shapeless.{Path => _, _}
 
 object LeanToTerm {
+
   import collection.mutable.ArrayBuffer
   val badConsts: ArrayBuffer[Const] = ArrayBuffer()
 
@@ -371,11 +407,12 @@ object LeanToTerm {
 
 }
 
-abstract class TermIndMod(name: Name,
-                          // inductiveTyp: Term,
-                          intros: Vector[Term],
-                          val numParams: Int,
-                          isPropn: Boolean) {
+trait TermIndMod {
+  val name: Name
+  // inductiveTyp: Term,
+  val intros: Vector[Term]
+  val numParams: Int
+  val isPropn: Boolean
   // val numParams = params.length
 
   // def proofRelevant(fib: Term): Option[Term] =
@@ -409,9 +446,9 @@ abstract class TermIndMod(name: Name,
 case class SimpleIndMod(name: Name,
                         typF: Term,
                         intros: Vector[Term],
-                        params: Int,
+                        numParams: Int,
                         isPropn: Boolean)
-    extends TermIndMod(name, intros, params, isPropn: Boolean) {
+    extends TermIndMod {
   // val typ = toTyp(foldFunc(typF, params))
   //
   // lazy val ind =
@@ -448,6 +485,7 @@ case class SimpleIndMod(name: Name,
 
       fmlyOpt map {
         case l: LambdaLike[u, v] =>
+          // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
           l.value match {
             case tp: Typ[u] =>
               if (tp.dependsOn(l.variable))(indNew.inducE(
@@ -455,6 +493,7 @@ case class SimpleIndMod(name: Name,
               else (indNew.recE(tp))
           }
         case fn: FuncLike[u, v] =>
+          // println(s"family seen ${fn.fansi} : ${fn.typ.fansi}")
           val x = fn.dom.Var
           val y = fn(x)
           y match {
@@ -463,6 +502,8 @@ case class SimpleIndMod(name: Name,
                 (indNew.inducE((x: Term) :-> (tp: Typ[u])))
               } else (indNew.recE(tp))
           }
+        case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
+          indNew.inducE(LambdaFixed(pt.variable, pt.value))
         case tp: Typ[u] if (isPropn) =>
           val x = tp.Var
           if (tp.dependsOn(x)) {
@@ -486,9 +527,9 @@ case class NoIndexedInducE(mod: IndexedIndMod,
 case class IndexedIndMod(name: Name,
                          typFP: Term,
                          intros: Vector[Term],
-                         params: Int,
+                         numParams: Int,
                          isPropn: Boolean)
-    extends TermIndMod(name, intros, params, isPropn) {
+    extends TermIndMod {
   // val typF = foldFunc(typFP, params)
 
   def getInd(p: Vector[Term]) =
