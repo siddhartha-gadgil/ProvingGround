@@ -52,9 +52,13 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     case _ => false
   }
 
-  def applyFuncProp(func: Term, arg: Term) =
+  def applyFuncProp(func: Term, arg: Term, data: Vector[Expr] = Vector()) =
     Try(applyFunc(func, arg))
-      .fold((exc) => if (inPropFamily(arg.typ)) func else { throw exc },
+      .fold((exc) =>
+              if (inPropFamily(arg.typ)) func
+              else {
+                throw LeanContextException(exc, self, data)
+            },
             (t) => t)
 
   def recParser(rec: => Parser)(exp: Expr): Try[Term] =
@@ -76,20 +80,20 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         for {
           recFn <- recFnTry
           vec   <- parseVec(xs)
-          resTry = Try(vec.foldLeft(recFn)(applyFuncProp)).fold(
-            (ex) =>
-              throw RecFuncException(indMod,
-                                     argsFmly.map(parse),
-                                     xs.map(parse),
-                                     ex),
-            (x) => Try(x))
+          resTry = Try(vec.foldLeft(recFn)(applyFuncProp(_, _, Vector())))
+            .fold((ex) =>
+                    throw RecFuncException(indMod,
+                                           argsFmly.map(parse),
+                                           xs.map(parse),
+                                           ex),
+                  (x) => Try(x))
           res <- resTry
         } yield res
       case App(a, b) =>
         for {
           func <- recParser(rec)(a)
           arg  <- recParser(rec)(b)
-          res  <- Try(applyFuncProp(func, arg))
+          res  <- Try(applyFuncProp(func, arg, Vector(a, b)))
         } yield res
       case Lam(domain, body) =>
         for {
@@ -100,8 +104,8 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           value <- withVar.parse(body)
         } yield
           value match {
-            case FormalAppln(fn, arg) if arg == x       => fn
-            case y if domain.prettyName.toString == "_" => y
+            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
+            case y if domain.prettyName.toString == "_"            => y
             case _ =>
               if (value.typ.dependsOn(x)) LambdaTerm(x, value)
               else LambdaFixed(x, value)
@@ -274,6 +278,11 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     case QuotMod      => addQuotMod
   }
 }
+
+case class LeanContextException(exc: Throwable,
+                                parser: LeanToTerm,
+                                args: Vector[Expr] = Vector())
+    extends Exception("error while parsing lean")
 
 case class UnParsedException(exp: Expr)
     extends IllegalArgumentException("could not parse expression")
