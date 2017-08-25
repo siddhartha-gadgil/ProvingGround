@@ -119,7 +119,7 @@ object Truncate {
           val fds = mx.weightedDists.map {
             case (d, p) => task(d, epsilon / p).map(_ * p)
           }
-          Task.gather(fds).map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+          Task.gatherUnordered(fds).map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
         case Mapped(base, f) =>
           task(base, epsilon).map(_.map(f))
         case FlatMapped(base, f) =>
@@ -130,7 +130,7 @@ object Truncate {
                   case Weighted(a, p) =>
                     task(f(a), epsilon / p).map((fd) => fd * p)
                 }
-              val fibTask = Task.gather(fibs)
+              val fibTask = Task.gatherUnordered(fibs)
               fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
             }
           }
@@ -153,7 +153,7 @@ object Truncate {
             fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
               yield task(fibprod.fibers(q), epsilon / p)
               .map(_.map((y) => (x, y)) * p)
-            fds <- Task.gather(fdtasks)
+            fds <- Task.gatherUnordered(fdtasks)
           } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
         case Conditioned(base, p) =>
           for {

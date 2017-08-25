@@ -14,13 +14,13 @@ import trepplein._
 
 // import cats.Eval
 
-import LeanToTerm.{TypedParser, Parser, OptParser, RecIterAp}
+import LeanToTerm._
 
 import translation.FansiShow._
 
 case class LeanToTerm(defnMap: Map[Name, Term],
                       mods: Map[Name, TermIndMod],
-                      recDefns: (=> Parser) => OptParser,
+                      // recDefns: (=> Parser) => OptParser,
                       vars: Vector[Term],
                       unparsed: Vector[Name]) { self =>
   def defns(exp: Expr, typOpt: Option[Typ[Term]]) = exp match {
@@ -29,6 +29,8 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   }
 
   val parse: Parser = recParser(parse)
+
+  val parseOpt: OptParser = recOptParser(parseOpt)
 
   def defnOpt(exp: Expr) =
     exp match {
@@ -61,6 +63,71 @@ case class LeanToTerm(defnMap: Map[Name, Term],
             },
             (t) => t)
 
+  def applyFuncPropOpt(func: Term, arg: Term): Option[Term] =
+    applyFuncOpt(func, arg).orElse {
+      if (inPropFamily(arg.typ)) Some(func) else None
+    }
+
+  def recOptParser(rec: => OptParser)(exp: Expr): Option[Term] =
+    exp match {
+      case Predef(t) => Some(t)
+      case Sort(_)   => Some(Type)
+      case Var(n)    => Some(vars(n))
+      case RecIterAp(name, args) =>
+        val indMod         = mods(name)
+        val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+        val argsFmlyTerm   = parseVecOpt(argsFmly)
+        val recFnOpt: Option[Term] = indMod
+          .getRecOpt(argsFmlyTerm)
+        for {
+          recFn <- recFnOpt
+          vec   <- parseVecOpt(xs)
+          res <- vec.foldLeft(Option(recFn)) {
+            case (xo, y) => xo.flatMap(applyFuncPropOpt(_, y))
+          }
+        } yield res
+      case App(a, b) =>
+        for {
+          func <- recOptParser(rec)(a)
+          arg  <- recOptParser(rec)(b)
+          res  <- applyFuncPropOpt(func, arg)
+        } yield res
+      case Lam(domain, body) =>
+        for {
+          domTerm <- recOptParser(rec)(domain.ty)
+          domTyp  <- toTypOpt(domTerm)
+          x       = domTyp.Var
+          withVar = addVar(x)
+          value <- withVar.parseOpt(body)
+        } yield
+          value match {
+            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
+            case y if domain.prettyName.toString == "_"            => y
+            case _ =>
+              if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+              else LambdaFixed(x, value)
+          }
+      case Pi(domain, body) =>
+        for {
+          domTerm <- recOptParser(rec)(domain.ty)
+          domTyp  <- toTypOpt(domTerm)
+          x       = domTyp.Var
+          withVar = addVar(x)
+          value <- withVar.parseOpt(body)
+          cod   <- toTypOpt(value)
+        } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
+      case Let(domain, value, body) =>
+        for {
+          domTerm <- recOptParser(rec)(domain.ty)
+          domTyp  <- toTypOpt(domTerm)
+          x = domTyp.Var
+          valueTerm <- recOptParser(rec)(value)
+          withVar = addVar(x)
+          bodyTerm <- withVar.parseOpt(body)
+        } yield bodyTerm.replace(x, valueTerm)
+      case e => None
+    }
+
   def recParser(rec: => Parser)(exp: Expr): Try[Term] =
     exp match {
       case Predef(t) => Success(t)
@@ -69,8 +136,9 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       case RecIterAp(name, args) =>
         val indMod         = mods(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+        val argsFmlyTerm   = parseVec(argsFmly)
         val recFnTry: Try[Term] = indMod
-          .getRec(argsFmly, parse)
+          .getRecTry(argsFmlyTerm)
           .fold((ex) =>
                   throw RecFuncException(indMod,
                                          argsFmly.map(parse),
@@ -133,6 +201,8 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
   def addVar(t: Term) = self.copy(vars = t +: self.vars)
 
+  def parseTypOpt(x: Expr) = parseOpt(x).flatMap(toTypOpt)
+
   def parseTyp(x: Expr): Try[Typ[Term]] =
     parse(x).flatMap {
       case tp: Typ[_] => Success(tp)
@@ -150,6 +220,9 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         tail <- parseVec(ys)
       } yield head +: tail
   }
+
+  def parseVecOpt(vec: Vector[Expr]): Option[Vector[Term]] =
+    optSequence(vec.map(parseOpt))
 
   def parseTypVec(vec: Vector[Expr]): Try[Vector[Typ[Term]]] = vec match {
     case Vector() => Success(Vector())
@@ -170,34 +243,58 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       } yield head +: tail
   }
 
+  def parseSymVecOpt(vec: Vector[(Name, Expr)]): Option[Vector[Term]] =
+    vec match {
+      case Vector() => Some(Vector())
+      case (name, expr) +: ys =>
+        for {
+          tp <- parseTypOpt(expr)
+          head = name.toString :: tp
+          tail <- parseSymVecOpt(ys)
+        } yield head +: tail
+    }
+
+  def parseSymOpt(name: Name, ty: Expr) =
+    parseTypOpt(ty).map(name.toString :: _)
+
   def parseSym(name: Name, ty: Expr) =
     parseTyp(ty).map(name.toString :: _)
 
   def parseVar(b: Binding) =
     parseSym(b.prettyName, b.ty)
 
-  def addRecDefns(dfn: (=> Parser) => OptParser) = {
-    def mixin(base: => Parser): OptParser = {
-      case (exp: Expr) =>
-        dfn(base)(exp).orElse(recDefns(base)(exp))
-    }
-    self.copy(recDefns = mixin)
-  }
+  // def addRecDefns(dfn: (=> Parser) => OptParser) = {
+  //   def mixin(base: => Parser): OptParser = {
+  //     case (exp: Expr) =>
+  //       dfn(base)(exp).orElse(recDefns(base)(exp))
+  //   }
+  //   self.copy(recDefns = mixin)
+  // }
 
   def addDefnMap(name: Name, term: Term) =
     self.copy(defnMap = self.defnMap + (name -> term))
 
   def addDefnVal(name: Name, value: Expr, tp: Expr) = {
     val typ = parseTyp(tp)
-    // if (typ.isEmpty)
-    //   println(s"while defining $name, failed to parse its type $tp")
     parse(value)
+      .map((t) => addDefnMap(name, t))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+  }
+
+  def addDefnValOpt(name: Name, value: Expr, tp: Expr) = {
+    val typ = parseTypOpt(tp)
+    parseOpt(value)
       .map((t) => addDefnMap(name, t))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
   }
 
   def addAxiom(name: Name, ty: Expr) =
     parseSym(name, ty)
+      .map(addDefnMap(name, _))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+
+  def addAxiomOpt(name: Name, ty: Expr) =
+    parseSymOpt(name, ty)
       .map(addDefnMap(name, _))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
 
@@ -209,6 +306,11 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   def addDefMod(df: DefMod) =
     addDefnVal(df.name, df.defn.value, df.defn.ty)
 
+  def addAxiomModOpt(ax: AxiomMod) = addAxiomOpt(ax.name, ax.ax.ty)
+
+  def addDefModOpt(df: DefMod) =
+    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
+
   def addQuotMod = {
     import quotient._
     val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
@@ -217,7 +319,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     addAxioms(axs)
   }
 
-  def toTermIndModOpt(ind: IndMod): Try[TermIndMod] = {
+  def toTermIndModTry(ind: IndMod): Try[TermIndMod] = {
     val inductiveTypOpt = parseTyp(ind.inductiveType.ty)
     val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
@@ -255,10 +357,48 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     }
   }
 
+  def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
+    val inductiveTypOpt = parseTypOpt(ind.inductiveType.ty)
+    val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
+    inductiveTypOpt.flatMap { (inductiveTyp) =>
+      val name = ind.inductiveType.name
+      val typF = name.toString :: inductiveTyp
+      val typValueOpt =
+        LeanToTerm.getValueOpt(typF, ind.numParams, Vector())
+      val withTypeName = addAxiom(name, ind.inductiveType.ty)
+      val introsOpt = ind.intros.map {
+        case (name, tp) =>
+          withTypeName
+            .parseTypOpt(tp)
+            .map(name.toString :: _)
+      }
+      val introsTry: Option[Vector[Term]] =
+        withTypeName.parseSymVecOpt(ind.intros)
+      introsTry.flatMap { (intros) =>
+        typValueOpt.map { (typValue) =>
+          typValue match {
+            case (typ: Typ[Term], params) =>
+              SimpleIndMod(ind.inductiveType.name,
+                           typF,
+                           intros,
+                           params.size,
+                           isPropn)
+            case (t, params) =>
+              IndexedIndMod(ind.inductiveType.name,
+                            typF,
+                            intros,
+                            params.size,
+                            isPropn)
+          }
+        }
+      }
+    }
+  }
+
   def addIndMod(ind: IndMod) = {
     val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
     val withAxioms = withTypDef.addAxioms(ind.intros)
-    val indOpt     = withAxioms.toTermIndModOpt(ind)
+    val indOpt     = withAxioms.toTermIndModTry(ind)
     indOpt
       .map { (indMod) =>
         withAxioms
@@ -271,12 +411,34 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       }
   }
 
+  def addIndModOpt(ind: IndMod) = {
+    val withTypDef = addAxiomOpt(ind.name, ind.inductiveType.ty)
+    val withAxioms = withTypDef.addAxioms(ind.intros)
+    val indOpt     = withAxioms.toTermIndModOpt(ind)
+    indOpt
+      .map { (indMod) =>
+        withAxioms
+          .copy(mods = self.mods + (ind.name -> indMod))
+      }
+      .getOrElse {
+        withAxioms.copy(unparsed = self.unparsed :+ Name.Str(ind.name, "rec"))
+      }
+  }
+
   def add(mod: Modification) = mod match {
     case ind: IndMod  => addIndMod(ind)
     case ax: AxiomMod => addAxiomMod(ax)
     case df: DefMod   => addDefMod(df)
     case QuotMod      => addQuotMod
   }
+
+  def addOpt(mod: Modification) = mod match {
+    case ind: IndMod  => addIndModOpt(ind)
+    case ax: AxiomMod => addAxiomModOpt(ax)
+    case df: DefMod   => addDefModOpt(df)
+    case QuotMod      => addQuotMod
+  }
+
 }
 
 case class LeanContextException(exc: Throwable,
@@ -319,10 +481,20 @@ object LeanToTerm {
   }
 
   val empty =
-    LeanToTerm(Map(), Map(), emptyRecParser, Vector(), Vector())
+    LeanToTerm(Map(), Map(), Vector(), Vector())
 
   def fromMods(mods: Vector[Modification], init: LeanToTerm = empty) =
     mods.foldLeft(init) { case (l: LeanToTerm, m: Modification) => l.add(m) }
+
+  def fromModsOpt(mods: Vector[Modification], init: LeanToTerm = empty) =
+    mods.foldLeft(init) {
+      case (l: LeanToTerm, m: Modification) => l.addOpt(m)
+    }
+
+  def iterMods(mods: Vector[Modification], init: LeanToTerm = empty) =
+    mods.toIterator.scanLeft(init) {
+      case (l: LeanToTerm, m: Modification) => l.add(m)
+    }
 
   type TypedParser = (Expr, Option[Typ[Term]]) => Option[Term]
 
@@ -384,6 +556,19 @@ object LeanToTerm {
         None
     }
 
+  def getValueOpt(t: Term,
+                  n: Int,
+                  accum: Vector[Term]): Option[(Term, Vector[Term])] =
+    (t, n) match {
+      case (x, 0) => Some(x -> accum)
+      case (l: LambdaLike[u, v], n) if n > 0 =>
+        getValueOpt(l.value, n - 1, accum :+ l.variable)
+      case (fn: FuncLike[u, v], n) if n > 0 =>
+        val x = fn.dom.Var
+        getValueOpt(fn(x), n - 1, accum :+ x)
+      case _ => None
+    }
+
   def getValue(t: Term,
                n: Int,
                accum: Vector[Term]): Try[(Term, Vector[Term])] =
@@ -412,8 +597,17 @@ object LeanToTerm {
     case _ => Failure(new Exception("could not lift proof"))
   }
 
-  import ConstructorShape._
+  val proofLiftOpt: (Term, Term) => Option[Term] = {
+    case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }
+    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+      val x = w.dom.Var
+      proofLiftOpt(w(x), tp(x.asInstanceOf[a]))
+        .map((g: Term) => x :~> (g: Term))
+    case _ => None
+  }
 
+  def optSequence[A](vec: Vector[Option[A]]): Option[Vector[A]] =
+    if (vec.contains(None)) None else Some(vec.map(_.get))
 }
 
 trait TermIndMod {
@@ -435,21 +629,27 @@ trait TermIndMod {
 
   // import translation.TermLang
 
-  def recDefn(base: => Parser): OptParser = {
-    case (exp: Expr) => {
-      defn(exp, base)
-    }
-  }
+  // def recDefn(base: => Parser): OptParser = {
+  //   case (exp: Expr) => {
+  //     defn(exp, base)
+  //   }
+  // }
+  //
+  // def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
+  //   val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
+  //   argsFmlyOpt.flatMap { (argsFmly) =>
+  //     getRec(argsFmly, predef).toOption
+  //   }
+  // }
 
-  def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
-    val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
-    argsFmlyOpt.flatMap { (argsFmly) =>
-      getRec(argsFmly, predef).toOption
-    }
-  }
+  // def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
+  //   val argsFmlyTerm = LeanToTerm.parseVec(argsFmly, predef)
+  //   getRecTry(argsFmlyTerm)
+  // }
 
-  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term]
+  def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term]
 
+  def getRecOpt(argsFmlyTerm: Option[Vector[Term]]): Option[Term]
 }
 
 case class SimpleIndMod(name: Name,
@@ -477,21 +677,49 @@ case class SimpleIndMod(name: Name,
 
   import scala.util.Try
 
-  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
-    val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
-    // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
+  def getRecOpt(argsFmlyTerm: Option[Vector[Term]]): Option[Term] = {
+    val newParamsOpt = argsFmlyTerm map (_.init)
+    newParamsOpt.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+      val fmlyOpt = argsFmlyTerm map (_.last)
+      fmlyOpt map {
+        case l: LambdaLike[u, v] =>
+          // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
+          l.value match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(l.variable))(indNew.inducE(
+                (l.variable: Term) :-> (tp: Typ[u])))
+              else (indNew.recE(tp))
+          }
+        case fn: FuncLike[u, v] =>
+          // println(s"family seen ${fn.fansi} : ${fn.typ.fansi}")
+          val x = fn.dom.Var
+          val y = fn(x)
+          y match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(x)) {
+                (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+              } else (indNew.recE(tp))
+          }
+        case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
+          indNew.inducE(LambdaFixed(pt.variable, pt.value))
+        case tp: Typ[u] if (isPropn) =>
+          val x = tp.Var
+          if (tp.dependsOn(x)) {
+            (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+          } else (indNew.recE(tp))
+      }
+
+    }
+  }
+
+  def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term] = {
+    val newParamsTry = argsFmlyTerm map (_.init)
     newParamsTry.flatMap { (newParams) =>
       val indNew =
         getInd(newParams)
-      //   (newParams.zipWithIndex).foldLeft(ind) {
-      //   case (a, (y, n)) => a.subst(params(n), y)
-      // }
-
-      val fmlyOpt = predef(argsFmly.last)
-
-      // println(s"type argument ${argsFmly.last}\n parsed as ${fmlyOpt.map(
-      //   _.fansi)}\n with type ${fmlyOpt.map(_.typ.fansi)}")
-
+      val fmlyOpt = argsFmlyTerm map (_.last)
       fmlyOpt map {
         case l: LambdaLike[u, v] =>
           // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
@@ -546,30 +774,41 @@ case class IndexedIndMod(name: Name,
       .getIndexedConstructorSeq(foldFunc(typFP, p), introsFold(p))
       .value
 
-  // lazy val ind =
-  //   TypFamilyExst.getIndexedConstructorSeq(typF, introsFolded).value
-
-  // import ind.family
-
   import LeanToTerm.unifier
 
   import implicits._
 
-  def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
-    val newParamsTry = LeanToTerm.parseVec(argsFmly.init, predef)
-    // val newParams    = argsFmly.init.map((t) => predef(t).toOption).flatten
+  def getRecOpt(argsFmlyTerm: Option[Vector[Term]]): Option[Term] = {
+    val newParamsOpt = argsFmlyTerm map (_.init)
+    newParamsOpt.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+      val fmlOptRaw = argsFmlyTerm map (_.last)
+      val fmlOpt =
+        if (isPropn)
+          fmlOptRaw.flatMap((fib) => LeanToTerm.proofLiftOpt(indNew.W, fib))
+        else fmlOptRaw
+      val recOpt =
+        for {
+          fml <- fmlOpt
+          cod <- indNew.family.constFinalCod(fml)
+        } yield indNew.recE(cod)
+      val inducOpt =
+        fmlOpt.map((fib) => indNew.inducE(fib))
+      recOpt orElse inducOpt
+    }
+  }
+
+  def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term] = {
+    val newParamsTry = argsFmlyTerm map (_.init)
     newParamsTry.flatMap { (newParams) =>
       val indNew =
         getInd(newParams)
-      //   (newParams.zipWithIndex).foldLeft(ind) {
-      //   case (a, (y, n)) => a.subs(params(n), y)
-      // }
-      val fmlOptRaw = predef(argsFmly.last)
+      val fmlOptRaw = argsFmlyTerm map (_.last)
       val fmlOpt =
         if (isPropn)
           fmlOptRaw.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
         else fmlOptRaw
-      // println(s"${fmlOpt0.map(_.fansi)} ; ${fmlOpt.map(_.fansi)}; $isPropn")
       val recOpt =
         for {
           fml <- fmlOpt

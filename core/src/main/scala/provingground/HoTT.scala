@@ -1043,23 +1043,28 @@ object HoTT {
 
   }
 
-  case class ApplnFailException(
-    func: Term, arg: Term) extends
+  class ApplnFailException(
+    val func: Term, val arg: Term) extends
     IllegalArgumentException(s"function func  cannot act on given term"
   ){
-     val domOpt = func match {
+     def domOpt = func match {
        case fn: FuncLike[u, v] => Some(fn.dom)
        case _ => None
      }
 
-     val argType  = arg.typ
+     def argType  = arg.typ
   }
 
   case class NotTypeException(tp: Term) extends IllegalArgumentException("Expected type but got term")
 
   def applyFunc(func: Term, arg: Term) : Term = func match {
     case fn: FuncLike[u, v] if fn.dom == arg.typ => fn(arg.asInstanceOf[u])
-    case _ => throw ApplnFailException(func, arg)
+    case _ => throw new ApplnFailException(func, arg)
+  }
+
+  def applyFuncOpt(func: Term, arg: Term) : Option[Term] = func match {
+    case fn: FuncLike[u, v] if fn.dom == arg.typ => Some(fn(arg.asInstanceOf[u]))
+    case _ => None
   }
 
   def foldFunc(func: Term, args: Vector[Term]): Term =
@@ -1068,6 +1073,11 @@ object HoTT {
   def toTyp(t: Term) : Typ[U] forSome {type U <: Term with Subs[U]} = t match {
     case tp: Typ[u] => tp
     case _ => throw NotTypeException(t)
+  }
+
+  def toTypOpt(t: Term) : Option[ Typ[U] forSome {type U <: Term with Subs[U]}] = t match {
+    case tp: Typ[u] => Some(tp)
+    case _ => None
   }
 
   /**
@@ -1108,7 +1118,7 @@ object HoTT {
       // require(
       //   arg.typ == dom,
       //   s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
-    if (arg.typ != dom) throw ApplnFailException(this, arg)
+    if (arg.typ != dom) throw new ApplnFailException(this, arg)
       arg match {
         case t: Cnst => Try(apply(t.term.asInstanceOf[W])).getOrElse(act(arg))
         case _ => act(arg)
@@ -2698,7 +2708,7 @@ object HoTT {
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
-      throw ApplnFailException(f, x)
+      throw new ApplnFailException(f, x)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
         s"attempting to apply $t, which is not a function")
