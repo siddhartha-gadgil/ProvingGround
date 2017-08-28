@@ -164,13 +164,13 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         } yield res
       case App(a, b) =>
         for {
-          func <- recParser(rec)(a, vars)
-          arg  <- recParser(rec)(b, vars)
+          func <- rec(a, vars)
+          arg  <- rec(b, vars)
           res  <- Try(applyFuncProp(func, arg, vars, Vector(a, b)))
         } yield res
       case Lam(domain, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
           x = domTyp.Var
           // withVar = addVar(x)
@@ -185,7 +185,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           }
       case Pi(domain, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
           x = domTyp.Var
           // withVar = addVar(x)
@@ -194,10 +194,10 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
           x = domTyp.Var
-          valueTerm <- recParser(rec)(value, vars)
+          valueTerm <- rec(value, vars)
           // withVar = addVar(x)
           bodyTerm <- parse(body, x +: vars)
         } yield bodyTerm.replace(x, valueTerm)

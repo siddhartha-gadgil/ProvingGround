@@ -988,7 +988,7 @@ object HoTT {
      */
     val defnData: Vector[Term]
 
-    val fullData = (dom, depcodom, defnData)
+    lazy val fullData = (dom, depcodom, defnData)
 
     override def hashCode = fullData.hashCode
 
@@ -1025,7 +1025,7 @@ object HoTT {
      */
     val index: Vector[Term]
 
-    val fullIndData = (domW, index, codXs, defnData)
+    lazy val fullIndData = (domW, index, codXs, defnData)
 
     override def hashCode = fullIndData.hashCode
 
@@ -1183,7 +1183,7 @@ object HoTT {
      */
     val defnData: Vector[Term]
 
-    val fullData = (dom, codom, defnData)
+    lazy val fullData = (dom, codom, defnData)
 
     override def hashCode = fullData.hashCode
 
@@ -1216,7 +1216,7 @@ object HoTT {
      */
     val index: Vector[Term]
 
-    val fullIndData = (domW, index, codom, defnData)
+    lazy val fullIndData = (domW, index, codom, defnData)
 
     override def hashCode = fullIndData.hashCode
 
