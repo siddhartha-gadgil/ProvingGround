@@ -19,9 +19,8 @@ import LeanToTerm._
 import translation.FansiShow._
 
 case class LeanToTerm(defnMap: Map[Name, Term],
-                      mods: Map[Name, TermIndMod],
-                      // recDefns: (=> Parser) => OptParser,
-                      vars: Vector[Term],
+                      termIndModMap: Map[Name, TermIndMod],
+                      // vars: Vector[Term],
                       unparsed: Vector[Name]) { self =>
   def defns(exp: Expr, typOpt: Option[Typ[Term]]) = exp match {
     case Const(name, _) => defnMap.get(name)
@@ -50,17 +49,20 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     case FormalAppln(f, _) => inPropFamily(f)
     case s: Symbolic =>
       val name = trepplein.Name(s.name.toString.split('.'): _*)
-      mods.get(name).map(_.isPropn).getOrElse(false)
+      termIndModMap.get(name).map(_.isPropn).getOrElse(false)
     case _ => false
   }
 
-  def applyFuncProp(func: Term, arg: Term, data: Vector[Expr] = Vector()) =
+  def applyFuncProp(func: Term,
+                    arg: Term,
+                    vars: Vector[Term],
+                    data: Vector[Expr] = Vector()) =
     Try(applyFunc(func, arg))
       .fold(
         (exc) =>
           if (inPropFamily(arg.typ)) func
           else
-            throw LeanContextException(exc, self, data),
+            throw LeanContextException(exc, vars, data),
         (t) => t
       )
 
@@ -69,37 +71,38 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       if (inPropFamily(arg.typ)) Some(func) else None
     }
 
-  def recOptParser(rec: => OptParser)(exp: Expr): Option[Term] =
+  def recOptParser(rec: => OptParser)(exp: Expr,
+                                      vars: Vector[Term]): Option[Term] =
     exp match {
       case Predef(t) => Some(t)
       case Sort(_)   => Some(Type)
       case Var(n)    => Some(vars(n))
       case RecIterAp(name, args) =>
-        val indMod         = mods(name)
+        val indMod         = termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-        val argsFmlyTerm   = parseVecOpt(argsFmly)
+        val argsFmlyTerm   = parseVecOpt(argsFmly, vars)
         val recFnOpt: Option[Term] = indMod
           .getRecOpt(argsFmlyTerm)
         for {
           recFn <- recFnOpt
-          vec   <- parseVecOpt(xs)
+          vec   <- parseVecOpt(xs, vars)
           res <- vec.foldLeft(Option(recFn)) {
             case (xo, y) => xo.flatMap(applyFuncPropOpt(_, y))
           }
         } yield res
       case App(a, b) =>
         for {
-          func <- recOptParser(rec)(a)
-          arg  <- recOptParser(rec)(b)
+          func <- recOptParser(rec)(a, vars)
+          arg  <- recOptParser(rec)(b, vars)
           res  <- applyFuncPropOpt(func, arg)
         } yield res
       case Lam(domain, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty)
+          domTerm <- recOptParser(rec)(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
-          x       = domTyp.Var
-          withVar = addVar(x)
-          value <- withVar.parseOpt(body)
+          x = domTyp.Var
+          // withVar = addVar(x)
+          value <- parseOpt(body, x +: vars)
         } yield
           value match {
             case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
@@ -110,67 +113,68 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           }
       case Pi(domain, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty)
+          domTerm <- recOptParser(rec)(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
-          x       = domTyp.Var
-          withVar = addVar(x)
-          value <- withVar.parseOpt(body)
+          x = domTyp.Var
+          // withVar = addVar(x)
+          value <- parseOpt(body, x +: vars)
           cod   <- toTypOpt(value)
         } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty)
+          domTerm <- recOptParser(rec)(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
           x = domTyp.Var
-          valueTerm <- recOptParser(rec)(value)
-          withVar = addVar(x)
-          bodyTerm <- withVar.parseOpt(body)
+          valueTerm <- recOptParser(rec)(value, vars)
+          // withVar = addVar(x)
+          bodyTerm <- parseOpt(body, x +: vars)
         } yield bodyTerm.replace(x, valueTerm)
       case _ => None
     }
 
-  def recParser(rec: => Parser)(exp: Expr): Try[Term] =
+  def recParser(rec: => Parser)(exp: Expr, vars: Vector[Term]): Try[Term] =
     exp match {
       case Predef(t) => Success(t)
       case Sort(_)   => Success(Type)
       case Var(n)    => Try(vars(n))
       case RecIterAp(name, args) =>
-        val indMod         = mods(name)
+        val indMod         = termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-        val argsFmlyTerm   = parseVec(argsFmly)
+        val argsFmlyTerm   = parseVec(argsFmly, vars)
         val recFnTry: Try[Term] = indMod
           .getRecTry(argsFmlyTerm)
           .fold((ex) =>
                   throw RecFuncException(indMod,
-                                         argsFmly.map(parse),
-                                         xs.map(parse),
+                                         argsFmly.map(parse(_, vars)),
+                                         xs.map(parse(_, vars)),
                                          ex),
                 (x) => Try(x))
         for {
           recFn <- recFnTry
-          vec   <- parseVec(xs)
-          resTry = Try(vec.foldLeft(recFn)(applyFuncProp(_, _, Vector())))
+          vec   <- parseVec(xs, vars)
+          resTry = Try(
+            vec.foldLeft(recFn)(applyFuncProp(_, _, vars, Vector())))
             .fold((ex) =>
                     throw RecFuncException(indMod,
-                                           argsFmly.map(parse),
-                                           xs.map(parse),
+                                           argsFmly.map(parse(_, vars)),
+                                           xs.map(parse(_, vars)),
                                            ex),
                   (x) => Try(x))
           res <- resTry
         } yield res
       case App(a, b) =>
         for {
-          func <- recParser(rec)(a)
-          arg  <- recParser(rec)(b)
-          res  <- Try(applyFuncProp(func, arg, Vector(a, b)))
+          func <- recParser(rec)(a, vars)
+          arg  <- recParser(rec)(b, vars)
+          res  <- Try(applyFuncProp(func, arg, vars, Vector(a, b)))
         } yield res
       case Lam(domain, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty)
+          domTerm <- recParser(rec)(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
-          x       = domTyp.Var
-          withVar = addVar(x)
-          value <- withVar.parse(body)
+          x = domTyp.Var
+          // withVar = addVar(x)
+          value <- parse(body, x +: vars)
         } yield
           value match {
             case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
@@ -181,31 +185,32 @@ case class LeanToTerm(defnMap: Map[Name, Term],
           }
       case Pi(domain, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty)
+          domTerm <- recParser(rec)(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
-          x       = domTyp.Var
-          withVar = addVar(x)
-          value <- withVar.parse(body)
+          x = domTyp.Var
+          // withVar = addVar(x)
+          value <- parse(body, x +: vars)
           cod   <- Try(toTyp(value))
         } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
-          domTerm <- recParser(rec)(domain.ty)
+          domTerm <- recParser(rec)(domain.ty, vars)
           domTyp  <- Try(toTyp(domTerm))
           x = domTyp.Var
-          valueTerm <- recParser(rec)(value)
-          withVar = addVar(x)
-          bodyTerm <- withVar.parse(body)
+          valueTerm <- recParser(rec)(value, vars)
+          // withVar = addVar(x)
+          bodyTerm <- parse(body, x +: vars)
         } yield bodyTerm.replace(x, valueTerm)
       case e => Failure(UnParsedException(e))
     }
 
-  def addVar(t: Term) = self.copy(vars = t +: self.vars)
+  // def addVar(t: Term) = self.copy(vars = t +: self.vars)
 
-  def parseTypOpt(x: Expr) = parseOpt(x).flatMap(toTypOpt)
+  def parseTypOpt(x: Expr, vars: Vector[Term]) =
+    parseOpt(x, vars).flatMap(toTypOpt)
 
-  def parseTyp(x: Expr): Try[Typ[Term]] =
-    parse(x).flatMap {
+  def parseTyp(x: Expr, vars: Vector[Term]): Try[Typ[Term]] =
+    parse(x, vars).flatMap {
       case tp: Typ[_] => Success(tp)
       case t          =>
         // println(
@@ -213,92 +218,80 @@ case class LeanToTerm(defnMap: Map[Name, Term],
         throw NotTypeException(t)
     }
 
-  def parseVec(vec: Vector[Expr]): Try[Vector[Term]] = vec match {
+  def parseVec(vec: Vector[Expr], vars: Vector[Term]): Try[Vector[Term]] =
+    vec match {
+      case Vector() => Success(Vector())
+      case x +: ys =>
+        for {
+          head <- parse(x, vars)
+          tail <- parseVec(ys, vars)
+        } yield head +: tail
+    }
+
+  def parseVecOpt(vec: Vector[Expr],
+                  vars: Vector[Term]): Option[Vector[Term]] =
+    optSequence(vec.map(parseOpt(_, vars)))
+
+  def parseTypVec(vec: Vector[Expr],
+                  vars: Vector[Term]): Try[Vector[Typ[Term]]] = vec match {
     case Vector() => Success(Vector())
     case x +: ys =>
       for {
-        head <- parse(x)
-        tail <- parseVec(ys)
+        head <- parseTyp(x, vars)
+        tail <- parseTypVec(ys, vars)
       } yield head +: tail
   }
 
-  def parseVecOpt(vec: Vector[Expr]): Option[Vector[Term]] =
-    optSequence(vec.map(parseOpt))
-
-  def parseTypVec(vec: Vector[Expr]): Try[Vector[Typ[Term]]] = vec match {
-    case Vector() => Success(Vector())
-    case x +: ys =>
-      for {
-        head <- parseTyp(x)
-        tail <- parseTypVec(ys)
-      } yield head +: tail
-  }
-
-  def parseSymVec(vec: Vector[(Name, Expr)]): Try[Vector[Term]] = vec match {
+  def parseSymVec(vec: Vector[(Name, Expr)],
+                  vars: Vector[Term]): Try[Vector[Term]] = vec match {
     case Vector() => Success(Vector())
     case (name, expr) +: ys =>
       for {
-        tp <- parseTyp(expr)
+        tp <- parseTyp(expr, vars)
         head = name.toString :: tp
-        tail <- parseSymVec(ys)
+        tail <- parseSymVec(ys, vars)
       } yield head +: tail
   }
 
-  def parseSymVecOpt(vec: Vector[(Name, Expr)]): Option[Vector[Term]] =
+  def parseSymVecOpt(vec: Vector[(Name, Expr)],
+                     vars: Vector[Term]): Option[Vector[Term]] =
     optSequence(vec.map {
-      case (name, expr) => parseSymOpt(name, expr)
+      case (name, expr) => parseSymOpt(name, expr, vars)
     })
-  // vec match {
-  //   case Vector() => Some(Vector())
-  //   case (name, expr) +: ys =>
-  //     for {
-  //       tp <- parseTypOpt(expr)
-  //       head = name.toString :: tp
-  //       tail <- parseSymVecOpt(ys)
-  //     } yield head +: tail
-  // }
 
-  def parseSymOpt(name: Name, ty: Expr) =
-    parseTypOpt(ty).map(name.toString :: _)
+  def parseSymOpt(name: Name, ty: Expr, vars: Vector[Term]) =
+    parseTypOpt(ty, vars).map(name.toString :: _)
 
-  def parseSym(name: Name, ty: Expr) =
-    parseTyp(ty).map(name.toString :: _)
+  def parseSym(name: Name, ty: Expr, vars: Vector[Term]) =
+    parseTyp(ty, vars).map(name.toString :: _)
 
-  def parseVar(b: Binding) =
-    parseSym(b.prettyName, b.ty)
-
-  // def addRecDefns(dfn: (=> Parser) => OptParser) = {
-  //   def mixin(base: => Parser): OptParser = {
-  //     case (exp: Expr) =>
-  //       dfn(base)(exp).orElse(recDefns(base)(exp))
-  //   }
-  //   self.copy(recDefns = mixin)
-  // }
+  def parseVar(b: Binding, vars: Vector[Term]) =
+    parseSym(b.prettyName, b.ty, vars)
 
   def addDefnMap(name: Name, term: Term) =
     self.copy(defnMap = self.defnMap + (name -> term))
 
   def addDefnVal(name: Name, value: Expr, tp: Expr) = {
     // val typ = parseTyp(tp)
-    parse(value)
+    parse(value, Vector())
       .map((t) => addDefnMap(name, t))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
   }
 
   def addDefnValOpt(name: Name, value: Expr, tp: Expr) = {
     // val typ = parseTypOpt(tp)
-    parseOpt(value)
+    parseOpt(value, Vector())
       .map((t) => addDefnMap(name, t))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
   }
 
   def addAxiom(name: Name, ty: Expr) =
-    parseSym(name, ty)
+    parseSym(name, ty, Vector())
       .map(addDefnMap(name, _))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
 
   def addAxiomOpt(name: Name, ty: Expr) =
-    parseSymOpt(name, ty)
+    parseSymOpt(name, ty, Vector())
       .map(addDefnMap(name, _))
       .getOrElse(self.copy(unparsed = self.unparsed :+ name))
 
@@ -335,7 +328,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   }
 
   def toTermIndModTry(ind: IndMod): Try[TermIndMod] = {
-    val inductiveTypOpt = parseTyp(ind.inductiveType.ty)
+    val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
     val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
       val name = ind.inductiveType.name
@@ -346,11 +339,11 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       val introsOpt = ind.intros.map {
         case (name, tp) =>
           withTypeName
-            .parseTyp(tp)
+            .parseTyp(tp, Vector())
             .map(name.toString :: _)
       }
       val introsTry =
-        withTypeName.parseSymVec(ind.intros)
+        withTypeName.parseSymVec(ind.intros, Vector())
       introsTry.flatMap { (intros) =>
         typValueOpt.map { (typValue) =>
           typValue match {
@@ -373,7 +366,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   }
 
   def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
-    val inductiveTypOpt = parseTypOpt(ind.inductiveType.ty)
+    val inductiveTypOpt = parseTypOpt(ind.inductiveType.ty, Vector())
     val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
       val name = ind.inductiveType.name
@@ -384,11 +377,11 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       val introsOpt = ind.intros.map {
         case (name, tp) =>
           withTypeName
-            .parseTypOpt(tp)
+            .parseTypOpt(tp, Vector())
             .map(name.toString :: _)
       }
       val introsTry: Option[Vector[Term]] =
-        withTypeName.parseSymVecOpt(ind.intros)
+        withTypeName.parseSymVecOpt(ind.intros, Vector())
       introsTry.flatMap { (intros) =>
         typValueOpt.map { (typValue) =>
           typValue match {
@@ -418,7 +411,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       .map { (indMod) =>
         withAxioms
         // .addRecDefns(indMod.recDefn)
-          .copy(mods = self.mods + (ind.name -> indMod))
+          .copy(termIndModMap = self.termIndModMap + (ind.name -> indMod))
       }
       .getOrElse {
         // println(s"no rec definitions for ${ind.name}")
@@ -433,7 +426,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     indOpt
       .map { (indMod) =>
         withAxioms
-          .copy(mods = self.mods + (ind.name -> indMod))
+          .copy(termIndModMap = self.termIndModMap + (ind.name -> indMod))
       }
       .getOrElse {
         withAxioms.copy(unparsed = self.unparsed :+ Name.Str(ind.name, "rec"))
@@ -457,7 +450,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 }
 
 case class LeanContextException(exc: Throwable,
-                                parser: LeanToTerm,
+                                vars: Vector[Term],
                                 args: Vector[Expr] = Vector())
     extends Exception("error while parsing lean")
 
@@ -490,13 +483,13 @@ object LeanToTerm {
     : ArrayBuffer[(Expr, Expr, Expr, Option[Typ[Term]], LeanToTerm)] =
     ArrayBuffer()
 
-  def emptyRecParser(base: => Parser): OptParser = { (_) =>
+  def emptyRecParser(base: => Parser)(e: Expr, vars: Vector[Term]) = {
     // println("trying rec definition")
     None
   }
 
   val empty =
-    LeanToTerm(Map(), Map(), Vector(), Vector())
+    LeanToTerm(Map(), Map(), Vector())
 
   def fromMods(mods: Vector[Modification], init: LeanToTerm = empty) =
     mods.foldLeft(init) { case (l: LeanToTerm, m: Modification) => l.add(m) }
@@ -518,19 +511,19 @@ object LeanToTerm {
 
   type TypedParser = (Expr, Option[Typ[Term]]) => Option[Term]
 
-  type Parser = Expr => Try[Term]
+  type Parser = (Expr, Vector[Term]) => Try[Term]
 
-  type OptParser = Expr => Option[Term]
+  type OptParser = (Expr, Vector[Term]) => Option[Term]
 
-  def parseVec(vec: Vector[Expr], predef: Parser): Try[Vector[Term]] =
-    vec match {
-      case Vector() => Success(Vector())
-      case x +: ys =>
-        for {
-          head <- predef(x)
-          tail <- parseVec(ys, predef)
-        } yield head +: tail
-    }
+  // def parseVec(vec: Vector[Expr], predef: Parser): Try[Vector[Term]] =
+  //   vec match {
+  //     case Vector() => Success(Vector())
+  //     case x +: ys =>
+  //       for {
+  //         head <- predef(x)
+  //         tail <- parseVec(ys, predef)
+  //       } yield head +: tail
+  //   }
 
   object RecIterAp {
     def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
