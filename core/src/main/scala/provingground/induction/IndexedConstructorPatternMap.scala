@@ -102,7 +102,7 @@ object IndexedConstructorPatternMap {
     def inducDataTyp(w: Fb, xs: IDFT)(cons: H) =
       family.typRestrict(xs, index)(cons)
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term) = IndexedIdMap(family.subs(x, y), index.subst(x, y))
 
     def recDefCase(cons: H, data: C, f: => IF): H => Option[C] = {
       case (t: Term) if t == cons => Some(data)
