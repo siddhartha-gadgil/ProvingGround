@@ -23,7 +23,7 @@ object Monoid {
 
   val op = "_*_" :: M ->: M ->: M
 
-  val leftId = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
+  val leftId  = "leftIdAx" :: (a ~>: (op(l)(a) =:= a))
   val rightId = "rightIdAx" :: (a ~>: (op(a)(r) =:= a))
 
   val refl = lambda(a)(Refl(M, a))
@@ -45,9 +45,7 @@ object Monoid {
 
   val x = "x" :: X
 
-  val extensionality = lambda(X)(
-    lambda(Y)(
-      lambda(f)(IdentityTyp.extnslty(f))))
+  val extensionality = lambda(X)(lambda(Y)(lambda(f)(IdentityTyp.extnslty(f))))
 
   val transfer = (X ~>:
     (Y ~>: (f ~>: (g ~>: (x ~>: ((f =:= g) ->: (f(x) =:= g(x)))))))).Var
@@ -62,37 +60,35 @@ object Monoid {
 
   val vars = Vector(M, a, b, c)
 
-  val dist = FiniteDistribution.unif(
-    M,
-    a,
-    b,
-    c,
-    l,
-    r,
-    op,
-    leftId,
-    rightId,
-    refl,
-    sym,
-    trans,
-    assoc,
-    extensionality,
-    transfer)
+  val dist = FiniteDistribution.unif(M,
+                                     a,
+                                     b,
+                                     c,
+                                     l,
+                                     r,
+                                     op,
+                                     leftId,
+                                     rightId,
+                                     refl,
+                                     sym,
+                                     trans,
+                                     assoc,
+                                     extensionality,
+                                     transfer)
 
   val elemDist =
-    (FiniteDistribution.unif(
-      a,
-      b,
-      c,
-      l,
-      r,
-      op,
-      leftId,
-      rightId,
-      //  refl,
-      sym,
-      trans,
-      assoc) * 0.5) ++
+    (FiniteDistribution.unif(a,
+                             b,
+                             c,
+                             l,
+                             r,
+                             op,
+                             leftId,
+                             rightId,
+                             //  refl,
+                             sym,
+                             trans,
+                             assoc) * 0.5) ++
       (FiniteDistribution.unif[Term](elTyps) * 0.5)
 
   val smallDist = (elemDist filter (_ != assoc)).normalized()
@@ -145,7 +141,8 @@ object SimpleGroup {
     eqG(op(a)(i(a)))(a),
     eqG(op(i(a))(a))(a),
     eqG { op(a)(op(b)(c)) } { op(op(a)(b))(c) },
-    eqG(a)(b) ->: eqG(f(a))(f(b)))
+    eqG(a)(b) ->: eqG(f(a))(f(b))
+  )
 }
 
 object MonoidSimple {
@@ -175,18 +172,18 @@ object MonoidSimple {
 
   import FineDeducer.unif
 
-  val leftId = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
+  val leftId  = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
   val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
 
   val refl = "refl" :: a ~>: (eqM(a)(a))
 
   val dist = unif(a, b, c)(l, r, op, eqM)(
-    eqM(a)(a),
-    eqM(a)(b) ->: eqM(b)(a),
-    eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),
-    eqM(op(l)(a))(a),
-    eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
-  ) * 0.5 ++ (FiniteDistribution.unif(eqM: Term, op) * 0.5)
+      eqM(a)(a),
+      eqM(a)(b) ->: eqM(b)(a),
+      eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),
+      eqM(op(l)(a))(a),
+      eqM(op(a)(r))(a) //, eqM{op(a)(op(b)(c))}{op(op(a)(b))(c)}
+    ) * 0.5 ++ (FiniteDistribution.unif(eqM: Term, op) * 0.5)
 
   val dist1 = dist.filter((t) => !Set(a, b, c).contains(t)).normalized()
 
@@ -200,24 +197,23 @@ object MonoidSimple {
   val assoc =
     "assoc" :: (a ~>: (b ~>: (c ~>: (eqM(op(a)(op(b)(c)))(op(op(a)(b))(c))))))
 
-  val elemDist = FiniteDistribution.unif(
-    M,
-    a,
-    b,
-    c,
-    l,
-    r,
-    op,
-    leftId,
-    rightId,
-    refl,
-    sym,
-    trans,
-    assoc)
+  val elemDist = FiniteDistribution.unif(M,
+                                         a,
+                                         b,
+                                         c,
+                                         l,
+                                         r,
+                                         op,
+                                         leftId,
+                                         rightId,
+                                         refl,
+                                         sym,
+                                         trans,
+                                         assoc)
 }
 
 object Group {
-  import Monoid.{ M => G, _ }
+  import Monoid.{M => G, _}
 
   val i = "inv" :: G ->: G
 

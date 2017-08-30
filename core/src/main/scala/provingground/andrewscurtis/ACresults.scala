@@ -4,7 +4,7 @@ import provingground._, learning._
 
 import Collections._
 
-import upickle.default.{ write => uwrite, read => uread, _ }
+import upickle.default.{write => uwrite, read => uread, _}
 
 import LinearStructure._
 
@@ -13,7 +13,10 @@ import FiniteDistribution._
 import SimpleAcEvolution._
 
 class ACresults(
-  paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]) extends ACStates {
+    paths: Map[String,
+               Stream[(FiniteDistribution[AtomicMove],
+                       FiniteDistribution[Moves])]])
+    extends ACStates {
 
   override def names = (paths map (_._1)).toList
 
@@ -36,7 +39,8 @@ class ACresults(
 }
 
 trait ACStates {
-  val states: Map[String, (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]
+  val states: Map[String,
+                  (FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]
 
   def names = (states map (_._1)).toList
 
@@ -56,4 +60,7 @@ object ACresults {
 }
 
 case class ACPortableResults(
-  paths: Map[String, Stream[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves])]]) extends ACresults(paths)
+    paths: Map[String,
+               Stream[(FiniteDistribution[AtomicMove],
+                       FiniteDistribution[Moves])]])
+    extends ACresults(paths)

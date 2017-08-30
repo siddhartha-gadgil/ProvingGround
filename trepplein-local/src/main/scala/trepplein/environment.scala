@@ -69,9 +69,9 @@ final case class DefMod(defn: Definition) extends Modification {
 
   def compile(env: PreEnvironment) = new CompiledModification {
     val height: Int = defn.value.constants.view
-      .flatMap(env.get)
-      .collect { case d: Definition => d.height }
-      .fold(0)(math.max) + 1
+        .flatMap(env.get)
+        .collect { case d: Definition => d.height }
+        .fold(0)(math.max) + 1
 
     def check(): Unit           = defn.check(env)
     def decls: Seq[Declaration] = Seq(defn.copy(height = height))

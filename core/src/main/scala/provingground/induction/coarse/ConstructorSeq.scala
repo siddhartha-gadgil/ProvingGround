@@ -32,7 +32,7 @@ trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {
 
 object ConstructorSeq {
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
-    extends ConstructorSeq[C, H] {
+      extends ConstructorSeq[C, H] {
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
     type RecType = Func[H, C]
@@ -50,8 +50,9 @@ object ConstructorSeq {
   }
 
   case class Cons[C <: Term with Subs[C], H <: Term with Subs[H]](
-    cons: Constructor[C, H],
-    tail: ConstructorSeq[C, H]) extends ConstructorSeq[C, H] {
+      cons: Constructor[C, H],
+      tail: ConstructorSeq[C, H])
+      extends ConstructorSeq[C, H] {
 
     val W = tail.W
 
@@ -95,19 +96,19 @@ object ConstructorSeq {
   }
 
   def fold[C <: Term with Subs[C], H <: Term with Subs[H]](
-    W: Typ[H]): List[Constructor[C, H]] => ConstructorSeq[C, H] = {
-    case List() => ConstructorSeq.Empty(W)
+      W: Typ[H]): List[Constructor[C, H]] => ConstructorSeq[C, H] = {
+    case List()       => ConstructorSeq.Empty(W)
     case head :: tail => ConstructorSeq.Cons(head, fold(W)(tail))
   }
 
   def recFn[C <: Term with Subs[C], H <: Term with Subs[H]](
-    cs: List[Constructor[C, H]],
-    W: Typ[H],
-    X: Typ[C]) = fold(W)(cs).rec(X)
+      cs: List[Constructor[C, H]],
+      W: Typ[H],
+      X: Typ[C]) = fold(W)(cs).rec(X)
 
   def inducFn[C <: Term with Subs[C], H <: Term with Subs[H]](
-    cs: List[Constructor[C, H]],
-    W: Typ[H],
-    Xs: Func[H, Typ[C]]) =
+      cs: List[Constructor[C, H]],
+      W: Typ[H],
+      Xs: Func[H, Typ[C]]) =
     fold(W)(cs).induc(Xs)
 }

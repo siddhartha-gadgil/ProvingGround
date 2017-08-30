@@ -30,8 +30,7 @@ case class Binding(prettyName: Name, ty: Expr, info: BinderInfo) {
   def dump(implicit lcs: mutable.Map[LocalConst.Name, String]) =
     s"Binding(${prettyName.dump}, ${ty.dump}, ${info.dump})"
 
-  override val hashCode
-    : Int = prettyName.hashCode + 37 * (ty.hashCode + 37 * info.hashCode)
+  override val hashCode: Int = prettyName.hashCode + 37 * (ty.hashCode + 37 * info.hashCode)
 }
 
 sealed abstract class Expr(val varBound: Int, val hasLocals: Boolean)
@@ -206,8 +205,7 @@ case class LocalConst(of: Binding,
                       name: LocalConst.Name = new LocalConst.Name,
                       value: Option[Expr] = None)
     extends Expr(varBound = 0, hasLocals = true) {
-  override val hashCode
-    : Int = 4 + 37 * (of.hashCode + 37 * value.hashCode) + name.hashCode
+  override val hashCode: Int = 4 + 37 * (of.hashCode + 37 * value.hashCode) + name.hashCode
 }
 case class App(a: Expr, b: Expr)
     extends Expr(varBound = math.max(a.varBound, b.varBound),
@@ -229,8 +227,7 @@ case class Let(domain: Binding, value: Expr, body: Expr)
       varBound = math.max(math.max(domain.ty.varBound, value.varBound),
                           body.varBound - 1),
       hasLocals = domain.ty.hasLocals || value.hasLocals || body.hasLocals) {
-  override val hashCode
-    : Int = 3 + 37 * (domain.hashCode + 37 * value.hashCode) + body.hashCode
+  override val hashCode: Int = 3 + 37 * (domain.hashCode + 37 * value.hashCode) + body.hashCode
 }
 
 object Sort {

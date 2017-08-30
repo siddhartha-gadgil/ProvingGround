@@ -8,19 +8,19 @@ import cats.syntax._
 
 import scala.language.higherKinds
 
-import Translator.{ Pattern, Builder }
+import Translator.{Pattern, Builder}
 
 import Functors._
 
-import shapeless.{ Id => Ids, _ }
+import shapeless.{Id => Ids, _}
 
 import HList._
 
 import Coproduct._
 
 /**
- * inclusion of type `Y` in `F(X)`
- */
+  * inclusion of type `Y` in `F(X)`
+  */
 abstract class QuasiInclusion[X, Y, F[_]: Traverse] {
 
   def incl(y: Y): F[X]
@@ -29,10 +29,10 @@ abstract class QuasiInclusion[X, Y, F[_]: Traverse] {
 }
 
 /**
- * inclusion of type `Y` in `F(X)` with `F(_)` an `HList`
- */
+  * inclusion of type `Y` in `F(X)` with `F(_)` an `HList`
+  */
 abstract class QuasiInclHList[X, Y, F[_] <: HList: Traverse]
-  extends QuasiInclusion[X, Y, F] {
+    extends QuasiInclusion[X, Y, F] {
 
   def incl(y: Y): F[X]
 
@@ -41,8 +41,7 @@ abstract class QuasiInclHList[X, Y, F[_] <: HList: Traverse]
 
 object QuasiInclusion {
   implicit def componentIncl[X, Y](
-    implicit
-    qp: QuasiProjection[X, Y]): QuasiInclusion[X, Y, Id] =
+      implicit qp: QuasiProjection[X, Y]): QuasiInclusion[X, Y, Id] =
     new QuasiInclusion[X, Y, Id] {
       def incl(y: Y) = qp.incl(y): Id[X]
 
@@ -82,10 +81,14 @@ object QuasiInclusion {
       def proj(fa: HNil) = None
     }
 
-  implicit def hConsIncl[X, Y1, Y2 <: HList, F1[_]: Traverse, F2[_] <: HList: Traverse](
-    implicit
-    qi1: Lazy[QuasiInclusion[X, Y1, F1]],
-    qi2: QuasiInclHList[X, Y2, F2]): QuasiInclHList[X, Y1 :: Y2, ({ type F[A] = F1[A] :: F2[A] })#F] =
+  implicit def hConsIncl[X,
+                         Y1,
+                         Y2 <: HList,
+                         F1[_]: Traverse,
+                         F2[_] <: HList: Traverse](
+      implicit qi1: Lazy[QuasiInclusion[X, Y1, F1]],
+      qi2: QuasiInclHList[X, Y2, F2])
+    : QuasiInclHList[X, Y1 :: Y2, ({ type F[A] = F1[A] :: F2[A] })#F] =
     new QuasiInclHList[X, Y1 :: Y2, ({ type F[A] = F1[A] :: F2[A] })#F] {
 
       def incl(p: Y1 :: Y2) =
@@ -96,9 +99,8 @@ object QuasiInclusion {
     }
 
   implicit def genericIncl[X, Y, R, F1[_] <: HList: Traverse](
-    implicit
-    gen: Lazy[Generic.Aux[Y, R]],
-    qi: QuasiInclHList[X, R, F1]): QuasiInclHList[X, Y, F1] =
+      implicit gen: Lazy[Generic.Aux[Y, R]],
+      qi: QuasiInclHList[X, R, F1]): QuasiInclHList[X, Y, F1] =
     new QuasiInclHList[X, Y, F1] {
 
       def incl(y: Y) = qi.incl(gen.value.to(y))
@@ -107,8 +109,8 @@ object QuasiInclusion {
     }
 
   implicit def travQI[X, Y, F[_]: Traverse, G[_]: Traverse](
-    implicit
-    qi: QuasiInclusion[X, Y, F]): QuasiInclusion[X, G[Y], ({ type Z[A] = G[F[A]] })#Z] =
+      implicit qi: QuasiInclusion[X, Y, F])
+    : QuasiInclusion[X, G[Y], ({ type Z[A] = G[F[A]] })#Z] =
     new QuasiInclusion[X, G[Y], ({ type Z[A] = G[F[A]] })#Z] {
 
       def incl(gy: G[Y]) = gy map ((x) => qi.incl(x))
@@ -119,8 +121,8 @@ object QuasiInclusion {
 }
 
 /**
- * projection of `X` onto `Y`
- */
+  * projection of `X` onto `Y`
+  */
 trait QuasiProjection[X, Y] {
   def proj(x: X): Option[Y]
 
@@ -140,38 +142,33 @@ object QuasiProjection {
     QuasiProjection[X, X]((x) => Some(x), (x) => x)
 
   implicit def leftProjection[X1, X2 <: Coproduct, Y](
-    implicit
-    qp: QuasiProjection[X1, Y]): QuasiProjection[X1 :+: X2, Y] =
+      implicit qp: QuasiProjection[X1, Y]): QuasiProjection[X1 :+: X2, Y] =
     QuasiProjection[X1 :+: X2, Y]({
       case Inl(x1) => qp.proj(x1)
-      case _ => None
+      case _       => None
     }, (y: Y) => Inl(qp.incl(y)))
 
   implicit def rightProjection[X1, X2 <: Coproduct, Y](
-    implicit
-    qp: QuasiProjection[X2, Y]): QuasiProjection[X1 :+: X2, Y] =
+      implicit qp: QuasiProjection[X2, Y]): QuasiProjection[X1 :+: X2, Y] =
     QuasiProjection[X1 :+: X2, Y]({
       case Inr(x2) => qp.proj(x2)
-      case _ => None
+      case _       => None
     }, (y: Y) => Inr(qp.incl(y)))
 
   implicit def genericProjection[X, Y, R](
-    implicit
-    gen: Generic.Aux[X, R],
-    qp: QuasiProjection[R, Y]): QuasiProjection[X, Y] =
-    QuasiProjection(
-      (x: X) => qp.proj(gen.to(x)),
-      (y: Y) => gen.from(qp.incl(y)))
+      implicit gen: Generic.Aux[X, R],
+      qp: QuasiProjection[R, Y]): QuasiProjection[X, Y] =
+    QuasiProjection((x: X) => qp.proj(gen.to(x)),
+                    (y: Y) => gen.from(qp.incl(y)))
 }
 
 /**
- * Pattern and builder for matching whether, for a term `x: X`, `F(x)` is in the ``subtype`` `Y`.
- * Here `Y` is not just a scala subtype, but we have inclusions and projections making it a direct summand.
- */
+  * Pattern and builder for matching whether, for a term `x: X`, `F(x)` is in the ``subtype`` `Y`.
+  * Here `Y` is not just a scala subtype, but we have inclusions and projections making it a direct summand.
+  */
 class SubTypePattern[X, Y, F[_]: Traverse](
-  implicit
-  val qi: QuasiInclusion[X, Y, F],
-  val qp: QuasiProjection[X, Y]) {
+    implicit val qi: QuasiInclusion[X, Y, F],
+    val qp: QuasiProjection[X, Y]) {
   val split: X => Option[F[X]] = (x) => qp.proj(x) map (qi.incl)
 
   val build: F[X] => Option[X] = (x) => qi.proj(x) map (qp.incl)
@@ -197,9 +194,8 @@ object TestTrait {
 
 object SubTypePattern {
   def pattern[X, Y, F[_] <: HList: Traverse](
-    implicit
-    qi: QuasiInclHList[X, Y, F],
-    qp: QuasiProjection[X, Y]) =
+      implicit qi: QuasiInclHList[X, Y, F],
+      qp: QuasiProjection[X, Y]) =
     new SubTypePattern[X, Y, F]
 
   object Test {
@@ -218,11 +214,10 @@ object SubTypePattern {
 
     val qi41 = implicitly[QuasiInclHList[A, A :: HNil, IdHN]]
 
-    val qi42 = hConsIncl(
-      implicitly[Traverse[Id]],
-      implicitly[Traverse[IdHN]],
-      qi1,
-      qi41)
+    val qi42 = hConsIncl(implicitly[Traverse[Id]],
+                         implicitly[Traverse[IdHN]],
+                         qi1,
+                         qi41)
 
     val qi44 = hConsIncl[A, A, A :: HNil, Id, IdHN]
 

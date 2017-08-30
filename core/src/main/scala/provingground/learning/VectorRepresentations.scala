@@ -23,7 +23,8 @@ object VectorRepresentations {
     def add(first: Vector[Double], second: Vector[Double]) =
       (first, second).zipped.map(_ + _)
 
-    @tailrec def sum(vs: Seq[Vector[Double]], accum: Vector[Double] = Vector(0)): Vector[Double] =
+    @tailrec def sum(vs: Seq[Vector[Double]], accum: Vector[Double] = Vector(0))
+      : Vector[Double] =
       if (vs.isEmpty) Vector(0)
       else if (vs.tail.isEmpty) vs.head
       else sum(vs.tail, vs.head)
@@ -88,9 +89,9 @@ object VectorRepresentations {
 
     def feedback(baseweights: T => Double, damp: Double = 0.1) = {
       val rawdiff = for (Weighted(pres, prob) <- pmf)
-        yield (Weighted(
-        pres,
-        baseweights(pres) / (baseweights(pres) * damp + prob)))
+        yield
+          (Weighted(pres,
+                    baseweights(pres) / (baseweights(pres) * damp + prob)))
       val shift = rawdiff.map(_.weight).sum / (support.size)
       val normaldiff = for (Weighted(pres, prob) <- rawdiff)
         yield Weighted(pres, prob - shift)
@@ -110,8 +111,7 @@ object VectorRepresentations {
   }
 
   implicit def VecRepVec[T] =
-    LinearStructure[Representation[T]](
-      Representation.empty[T],
-      _ ++ _,
-      (w, d) => d * w)
+    LinearStructure[Representation[T]](Representation.empty[T],
+                                       _ ++ _,
+                                       (w, d) => d * w)
 }

@@ -24,8 +24,8 @@ object Vecs {
 
   val vnil :: vcons :: HNil = VecInd.intros
 
-  val vn = "v_n" :: Vec(n)
-  val vm = "v_m" :: Vec(m)
+  val vn    = "v_n" :: Vec(n)
+  val vm    = "v_m" :: Vec(m)
   val recVN = VecInd.rec(Nat)
 
   val size = recVN(zero)(n :~> (a :-> (vn :-> (m :-> (succ(m))))))

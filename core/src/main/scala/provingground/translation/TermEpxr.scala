@@ -4,11 +4,11 @@ import provingground._, HoTT._
 
 import upickle.default._
 
-import UnicodeSyms.{ Arrow => Arr, _ }
+import UnicodeSyms.{Arrow => Arr, _}
 
 /**
- * @author gadgil
- */
+  * @author gadgil
+  */
 @deprecated("Use Expression language", "April 2016")
 sealed trait TermExpr {
 
@@ -25,10 +25,10 @@ sealed trait TermExpr {
 object TermExpr {
 
   /**
-   * TermExpr a = b
-   */
+    * TermExpr a = b
+    */
   case class Equality(dom: TermExpr, lhs: TermExpr, rhs: TermExpr)
-    extends TermExpr {
+      extends TermExpr {
     def asTerm(implicit lp: LiteralParser) =
       IdentityTyp(dom.asTyp, lhs.asTerm, rhs.asTerm)
 
@@ -36,8 +36,8 @@ object TermExpr {
   }
 
   /**
-   * Symbolic variable with given type
-   */
+    * Symbolic variable with given type
+    */
   case class TypedVar(name: String, typ: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser): Term = typ.asTyp.symbObj(name)
 
@@ -57,8 +57,8 @@ object TermExpr {
   }
 
   /**
-   * LambdaTermExpr maps to a lambda
-   */
+    * LambdaTermExpr maps to a lambda
+    */
   case class LambdaExpr(x: TermExpr, y: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) =
       lambda(x.asTerm)(y.asTerm)
@@ -74,8 +74,8 @@ object TermExpr {
   }
 
   /**
-   * expression func(arg)
-   */
+    * expression func(arg)
+    */
   case class Apply(func: TermExpr, arg: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser): Term =
       fold(func.asTerm)(arg.asTerm)
@@ -84,8 +84,8 @@ object TermExpr {
   }
 
   /**
-   * the first universe
-   */
+    * the first universe
+    */
   case class UnivTerm(n: Int) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = Universe(n)
 
@@ -93,8 +93,8 @@ object TermExpr {
   }
 
   /**
-   * expression for A -> B
-   */
+    * expression for A -> B
+    */
   case class Arrow(lhs: TermExpr, rhs: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser): Typ[Term] = lhs.asTyp ->: rhs.asTyp
 
@@ -104,7 +104,7 @@ object TermExpr {
   case class SigmaExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
       case fib: Func[_, _] => {
-        val x = fib.dom.Var
+        val x     = fib.dom.Var
         val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
         SigmaTyp(fibre)
       }
@@ -119,7 +119,7 @@ object TermExpr {
   case class PiExpr(fiber: TermExpr) extends TermExpr {
     def asTerm(implicit lp: LiteralParser) = fiber.asTerm match {
       case fib: Func[_, _] => {
-        val x = fib.dom.Var
+        val x     = fib.dom.Var
         val fibre = lmbda(x)(fib(x).asInstanceOf[Typ[Term]])
         piDefn(x)(fib(x).asInstanceOf[Typ[Term]])
       }
@@ -142,10 +142,9 @@ object TermExpr {
 
   def unpickle(str: String) = read[TermExpr](str)
 
-  case class expr(
-    lp: LiteralParser,
-    specialTerms: PartialFunction[Term, TermExpr] = Map.empty)
-    extends TermRec[TermExpr] {
+  case class expr(lp: LiteralParser,
+                  specialTerms: PartialFunction[Term, TermExpr] = Map.empty)
+      extends TermRec[TermExpr] {
     def appln(func: TermExpr, arg: TermExpr): TermExpr = Apply(func, arg)
 
     def arrow(dom: TermExpr, codom: TermExpr): TermExpr = Arrow(dom, codom)

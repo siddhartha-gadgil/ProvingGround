@@ -3,8 +3,8 @@ import scala.xml._
 import scala.language.implicitConversions
 
 /**
- * @author gadgil
- */
+  * @author gadgil
+  */
 class SvgPlot(width: Int, height: Int, scale: Double = 1.0) {
   val xmax = width / 2.0
   val ymax = height / 2.0
@@ -13,17 +13,16 @@ class SvgPlot(width: Int, height: Int, scale: Double = 1.0) {
 
   def yval(y: Double) = (ymax - (y * scale)).toInt
 
-  def line(
-    x1: Double,
-    y1: Double,
-    x2: Double,
-    y2: Double,
-    colour: String = "blue") = {
+  def line(x1: Double,
+           y1: Double,
+           x2: Double,
+           y2: Double,
+           colour: String = "blue") = {
     <line x1={ xval(x1).toString } y1={ yval(y1).toString } x2={ xval(x2).toString } y2={ yval(y2).toString } stroke={ colour } stroke-width="2"/>
   }
 
   def polyline(pts: (Double, Double)*) = {
-    val stl = pts map { case (x, y) => s"${xval(x)},${yval(y)}" }
+    val stl    = pts map { case (x, y) => s"${xval(x)},${yval(y)}" }
     val ptsStr = stl mkString (" ")
     <polyline points={ ptsStr }/>
   }
@@ -53,7 +52,8 @@ class SvgPlot(width: Int, height: Int, scale: Double = 1.0) {
   def draw(c: Circle) = circle(c.centre.x, c.centre.y, c.radius, c.colour)
 
   def scatter(points: List[Point], radius: Double = 5): Seq[Node] = {
-    points map ((point) => <circle x1={ xval(point.x).toString } y1={ yval(point.y).toString } r={ radius.toString } stroke={ point.colour } stroke-width="2" fill={ point.colour }/>)
+    points map ((point) =>
+                  <circle x1={ xval(point.x).toString } y1={ yval(point.y).toString } r={ radius.toString } stroke={ point.colour } stroke-width="2" fill={ point.colour }/>)
   }
 }
 

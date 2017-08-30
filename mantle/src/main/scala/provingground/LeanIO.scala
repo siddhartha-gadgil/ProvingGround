@@ -479,8 +479,8 @@ object LeanToTerm {
   import collection.mutable.ArrayBuffer
   val badConsts: ArrayBuffer[Const] = ArrayBuffer()
 
-  val appFailure
-    : ArrayBuffer[(Expr, Expr, Expr, Option[Typ[Term]], LeanToTerm)] =
+  val appFailure: ArrayBuffer[
+    (Expr, Expr, Expr, Option[Typ[Term]], LeanToTerm)] =
     ArrayBuffer()
 
   def emptyRecParser(base: => Parser)(e: Expr, vars: Vector[Term]) = {

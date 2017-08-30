@@ -13,11 +13,9 @@ object SigmaPiEnum {
   private val a = "a" :: A
 
   /**
-   * (a: A) -> (B(a) -> Sigma(B))
-   */
-  val resSigma = lambda(A)(
-    lambda(B)(
-      lambda(a)(B(a) ->: SigmaTyp(B))))
+    * (a: A) -> (B(a) -> Sigma(B))
+    */
+  val resSigma = lambda(A)(lambda(B)(lambda(a)(B(a) ->: SigmaTyp(B))))
 
   private val allA = "allA" :: EnumTyp(A)
 
@@ -31,10 +29,7 @@ object SigmaPiEnum {
   private val foldArrow = rep(fn)
 
   /**
-   *  given enumeration, resolves Pi (for all)
-   */
-  val resPi = lambda(A)(
-    lambda(B)(
-      lambda(allA)(
-        foldArrow(allA))))
+    *  given enumeration, resolves Pi (for all)
+    */
+  val resPi = lambda(A)(lambda(B)(lambda(allA)(foldArrow(allA))))
 }

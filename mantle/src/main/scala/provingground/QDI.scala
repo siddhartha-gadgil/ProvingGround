@@ -36,9 +36,9 @@ object QDI {
     val pmf =
       ops.read.lines(file) map
         ((l) => {
-          val Array(s, p) = l.split("\t")
-          Weighted(s, p.toDouble)
-        })
+           val Array(s, p) = l.split("\t")
+           Weighted(s, p.toDouble)
+         })
     FiniteDistribution(pmf)
   }
 

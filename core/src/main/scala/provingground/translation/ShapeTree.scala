@@ -42,23 +42,21 @@ object ShapeTree {
   }
 
   case class LambdaNode(variable: ShapeTree, dom: ShapeTree, value: ShapeTree)
-    extends ShapeTree {
+      extends ShapeTree {
     def recSubTrees =
-      for (
-        domTree <- dom.subTrees;
-        varTree <- variable.subTrees;
-        valTree <- value.subTrees
-      ) yield LambdaNode(varTree, domTree, valTree)
+      for (domTree <- dom.subTrees;
+           varTree <- variable.subTrees;
+           valTree <- value.subTrees)
+        yield LambdaNode(varTree, domTree, valTree)
   }
 
   case class EqualityNode(dom: ShapeTree, lhs: ShapeTree, rhs: ShapeTree)
-    extends ShapeTree {
+      extends ShapeTree {
     def recSubTrees =
-      for (
-        domTree <- dom.subTrees;
-        lhsTree <- lhs.subTrees;
-        rhsTree <- rhs.subTrees
-      ) yield EqualityNode(domTree, lhsTree, rhsTree)
+      for (domTree <- dom.subTrees;
+           lhsTree <- lhs.subTrees;
+           rhsTree <- rhs.subTrees)
+        yield EqualityNode(domTree, lhsTree, rhsTree)
   }
 
   case class PairNode(first: ShapeTree, second: ShapeTree) extends ShapeTree {
@@ -89,10 +87,9 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
   def arrow(dom: ShapeTree, codom: ShapeTree): ShapeTree =
     ArrowNode(dom, codom)
 
-  def lambda(
-    variable: ShapeTree,
-    typ: ShapeTree,
-    value: ShapeTree): ShapeTree =
+  def lambda(variable: ShapeTree,
+             typ: ShapeTree,
+             value: ShapeTree): ShapeTree =
     LambdaNode(variable, typ, value)
 
   def pi(fibre: ShapeTree): ShapeTree = PiNode(fibre)

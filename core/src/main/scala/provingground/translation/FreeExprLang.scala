@@ -127,7 +127,7 @@ object FreeExpr {
   }
 
   case class Special(name: String, typ: FreeExpr, args: List[FreeExpr])
-    extends FreeExpr {
+      extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) = None
   }
 
@@ -149,13 +149,13 @@ object FreeExpr {
 
     def unapply(e: FreeExpr) = e match {
       case TypVariable("Type", n) => Some(n)
-      case _ => None
+      case _                      => None
     }
   }
 
   implicit object FreeLang
-    extends ExprLang[FreeExpr]
-    with ExprPatterns[FreeExpr] {
+      extends ExprLang[FreeExpr]
+      with ExprPatterns[FreeExpr] {
     def variable[S](name: S, typ: FreeExpr): Option[FreeExpr] =
       Some(Variable(name.toString(), typ))
 
@@ -163,14 +163,14 @@ object FreeExpr {
       Some(TypVariable(name.toString, level))
 
     /**
-     * anonymous variable
-     */
+      * anonymous variable
+      */
     def anonVar(typ: FreeExpr): Option[FreeExpr] = Some(AnonVar(typ))
 
     /**
-     * meta-variable of a given type, i.e., whose value must be inferred
-     * (elaborated in lean's terminology).
-     */
+      * meta-variable of a given type, i.e., whose value must be inferred
+      * (elaborated in lean's terminology).
+      */
     def metaVar(typ: FreeExpr): Option[FreeExpr] = Some(MetaVar(typ))
 
     def lambda(variable: FreeExpr, value: FreeExpr): Option[FreeExpr] =
@@ -203,18 +203,18 @@ object FreeExpr {
     def incl2(typ: FreeExpr): Option[FreeExpr] = Some(FreeIncl2(typ))
 
     /**
-     * true type
-     */
+      * true type
+      */
     def tt: Option[FreeExpr] = Some(TT)
 
     /**
-     * element of true type
-     */
+      * element of true type
+      */
     def qed: Option[FreeExpr] = Some(QED)
 
     /**
-     * false type
-     */
+      * false type
+      */
     def ff: Option[FreeExpr] = Some(FF)
 
     def orCases(first: FreeExpr, second: FreeExpr): Option[FreeExpr] =
@@ -224,24 +224,23 @@ object FreeExpr {
 
     def isPair: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreePair(first, second) => Some((first, second))
-      case _ => None
+      case _                       => None
     }
 
     def isSigma: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreeSigma(first, second) => Some((first, second))
-      case _ => None
+      case _                        => None
     }
 
     def isPi: FreeExpr => Option[(FreeExpr, FreeExpr)] = {
       case FreePi(first, second) => Some((first, second))
-      case _ => None
+      case _                     => None
     }
   }
 
   object FromTerm
-    extends TermToExpr[FreeExpr](
-      univ = (n) => Univ(n),
-      predef = (t) => None)(FreeLang)
+      extends TermToExpr[FreeExpr](univ = (n) => Univ(n),
+                                   predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
 
@@ -252,23 +251,22 @@ object FreeExpr {
   def readTerm(s: String): HoTT.Term =
     read[FreeExpr](s).as[HoTT.Term](TermLang).get
 
-  import TermToExpr.{ encode, decode }
+  import TermToExpr.{encode, decode}
 
   import HoTT.Term
 
-  def writeDist(
-    fd: FiniteDistribution[HoTT.Term],
-    names: Vector[(Term, String)] = Vector()) =
+  def writeDist(fd: FiniteDistribution[HoTT.Term],
+                names: Vector[(Term, String)] = Vector()) =
     write(fd.pmf map {
       case Weighted(t, w) =>
         PickledWeighted(writeTerm(encode(names)(t)), w)
     })
 
-  def readDist(s: String, names: Vector[(Term, String)] = Vector()): FiniteDistribution[HoTT.Term] =
-    FiniteDistribution(
-      read[Vector[PickledWeighted]](s) map {
-        case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)
-      }).flatten
+  def readDist(s: String, names: Vector[(Term, String)] = Vector())
+    : FiniteDistribution[HoTT.Term] =
+    FiniteDistribution(read[Vector[PickledWeighted]](s) map {
+      case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)
+    }).flatten
 
   def readTyp(s: String): HoTT.Typ[HoTT.Term] =
     read[FreeExpr](s)
@@ -365,23 +363,23 @@ object SpecialTerms {
   }
 
   object Decompose
-    extends Pattern.Partial[Term, Coded]({
-      case rfl @ Refl(dom: Typ[u], x: Term) =>
-        (Names.rfl, (rfl.typ: Typ[Term], List(dom, x)))
-      case rfn @ IdentityTyp.RecFn(domain: Typ[u],
-        target: Typ[v],
-        data: Func[x, y],
-        a: Term,
-        b: Term) =>
-        (Names.idRec, (rfn.typ: Typ[Term], List(domain, target, data, a, b)))
-      case incl1 @ IdentityTyp.InducFn(domain: Typ[u],
-        target: Term,
-        data: FuncLike[x, y],
-        a: Term,
-        b: Term) =>
-        (Names.idInduc,
-          (incl1.typ: Typ[Term], List(domain, target, data, a, b)))
-    })
+      extends Pattern.Partial[Term, Coded]({
+        case rfl @ Refl(dom: Typ[u], x: Term) =>
+          (Names.rfl, (rfl.typ: Typ[Term], List(dom, x)))
+        case rfn @ IdentityTyp.RecFn(domain: Typ[u],
+                                     target: Typ[v],
+                                     data: Func[x, y],
+                                     a: Term,
+                                     b: Term) =>
+          (Names.idRec, (rfn.typ: Typ[Term], List(domain, target, data, a, b)))
+        case incl1 @ IdentityTyp.InducFn(domain: Typ[u],
+                                         target: Term,
+                                         data: FuncLike[x, y],
+                                         a: Term,
+                                         b: Term) =>
+          (Names.idInduc,
+           (incl1.typ: Typ[Term], List(domain, target, data, a, b)))
+      })
 
   import Names._
 
@@ -389,12 +387,12 @@ object SpecialTerms {
     case (`rfl`, (_, List(dom: Typ[u], x: Term))) =>
       Refl(dom, x.asInstanceOf[u])
     case (`idInduc`,
-      (_,
-        List(domain: Typ[u],
-          target: Term,
-          data: FuncLike[x, v],
-          a: Term,
-          b: Term))) =>
+          (_,
+           List(domain: Typ[u],
+                target: Term,
+                data: FuncLike[x, v],
+                a: Term,
+                b: Term))) =>
       IdentityTyp.InducFn(
         domain,
         target

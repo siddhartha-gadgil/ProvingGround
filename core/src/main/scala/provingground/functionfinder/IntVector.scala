@@ -16,14 +16,14 @@ object IntVector {
   import ScalaPolyRep._
 
   implicit object IntVecRep
-    extends ScalaPolyRep[RepTerm[Vector[Int]], Vector[Int]] {
+      extends ScalaPolyRep[RepTerm[Vector[Int]], Vector[Int]] {
     def apply(typ: Typ[Term])(elem: Vector[Int]) = typ match {
       case tp @ IntVector(dim) if dim == elem.size => Some(tp.rep(elem))
     }
 
     def unapply(term: RepTerm[Vector[Int]]) = term.typ match {
       case IntVector(dim) => IntVector(dim).rep.unapply(term)
-      case _ => None
+      case _              => None
     }
 
     def subs(x: Term, y: Term) = this

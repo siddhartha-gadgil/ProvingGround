@@ -4,16 +4,16 @@ import provingground._, HoTT._
 
 import functionfinder._
 
-import RefineTerms.{ refine, refineTyp }
+import RefineTerms.{refine, refineTyp}
 
 //import scala.language.existentials
 
 import scala.util.Try
 
 case object TermLang
-  extends ExprLang[Term]
-  with Domain[Term]
-  with ExprPatterns[Term] {
+    extends ExprLang[Term]
+    with Domain[Term]
+    with ExprPatterns[Term] {
   def variable[S](name: S, typ: Term): Option[Term] = (name, typ) match {
     case (s: String, t: Typ[u]) =>
       Some(t.symbObj(s))
@@ -29,17 +29,17 @@ case object TermLang
   }
 
   /**
-   * anonymous variable
-   */
+    * anonymous variable
+    */
   def anonVar(typ: Term): Option[Term] = typ match {
     case t: Typ[_] => Some(t.Var)
-    case _ => None
+    case _         => None
   }
 
   /**
-   * meta-variable of a given type, i.e., whose value must be inferred
-   * (elaborated in lean's terminology).
-   */
+    * meta-variable of a given type, i.e., whose value must be inferred
+    * (elaborated in lean's terminology).
+    */
   def metaVar(typ: Term): Option[Term] = None
 
   def lambda(variable: Term, value: Term): Option[Term] =
@@ -47,7 +47,7 @@ case object TermLang
 
   def pi(variable: Term, typ: Term): Option[Term] = typ match {
     case t: Typ[u] => Try(refineTyp(HoTT.pi(variable)(t))).toOption
-    case _ => None
+    case _         => None
   }
 
   def appln(func: Term, arg: Term) = func match {
@@ -57,17 +57,17 @@ case object TermLang
   }
 
   def applnFold(func: Term, args: Vector[Term]) = {
-    def combine(xo: Option[Term], y : Term) =
+    def combine(xo: Option[Term], y: Term) =
       for {
-        f <- xo
+        f   <- xo
         res <- appln(f, y)
       } yield res
     args.foldLeft(Option(func))(combine)
   }
 
-  def domTyp(func: Term) : Option[Typ[Term]] = func match {
+  def domTyp(func: Term): Option[Typ[Term]] = func match {
     case fn: FuncLike[u, v] => Some(fn.dom)
-    case _ => None
+    case _                  => None
   }
   /*
   def appln(func: Term, arg: Term): Option[Term] ={
@@ -86,7 +86,7 @@ case object TermLang
 
   def sigma(variable: Term, typ: Term): Option[Term] = typ match {
     case t: Typ[u] => Try(refineTyp(HoTT.sigma(variable)(t))).toOption
-    case _ => None
+    case _         => None
   }
 
   def pair(x: Term, y: Term): Option[Term] =
@@ -94,17 +94,17 @@ case object TermLang
 
   def proj1(xy: Term): Option[Term] = xy match {
     case p: AbsPair[u, v] => Some(p.first)
-    case _ => None
+    case _                => None
   }
 
   def proj2(xy: Term): Option[Term] = xy match {
     case p: AbsPair[u, v] => Some(p.second)
-    case _ => None
+    case _                => None
   }
 
   def or(first: Term, second: Term): Option[Term] = (first, second) match {
     case (f: Typ[u], s: Typ[v]) => Some(PlusTyp(f, s))
-    case _ => None
+    case _                      => None
   }
 
   def incl1(typ: Term): Option[Term] = typ match {
@@ -116,34 +116,36 @@ case object TermLang
   }
 
   /**
-   * true type
-   */
+    * true type
+    */
   def tt: Option[Term] = Some(Unit)
 
   /**
-   * element of true type
-   */
+    * element of true type
+    */
   def qed: Option[Term] = Some(Star)
 
   /**
-   * false type
-   */
+    * false type
+    */
   def ff: Option[Term] = Some(Zero)
 
   def orCases(first: Term, second: Term): Option[Term] =
     (first, second) match {
-      case (fn1: Func[u, w], fn2raw: Func[v, ww]) if (fn1.codom == fn2raw.codom) =>
-        val tp = PlusTyp(fn1.dom, fn2raw.dom)
+      case (fn1: Func[u, w], fn2raw: Func[v, ww])
+          if (fn1.codom == fn2raw.codom) =>
+        val tp  = PlusTyp(fn1.dom, fn2raw.dom)
         val fn2 = fn2raw.asInstanceOf[Func[v, w]]
         Some(PlusTyp.RecFn(fn1.dom, fn2.dom, fn1.codom, fn1, fn2))
-      case (fn1: FuncLike[u, w], fn2raw: FuncLike[v, ww]) if (fn1.depcodom == fn2raw.depcodom) =>
-        val tp = PlusTyp(fn1.dom, fn2raw.dom)
-        val fn2 = fn2raw.asInstanceOf[FuncLike[v, w]]
-        val x1 = fn1.dom.Var
-        val x2 = fn2.dom.Var
+      case (fn1: FuncLike[u, w], fn2raw: FuncLike[v, ww])
+          if (fn1.depcodom == fn2raw.depcodom) =>
+        val tp     = PlusTyp(fn1.dom, fn2raw.dom)
+        val fn2    = fn2raw.asInstanceOf[FuncLike[v, w]]
+        val x1     = fn1.dom.Var
+        val x2     = fn2.dom.Var
         val fibre1 = lmbda(x1)(fn1(x1).typ.asInstanceOf[Typ[w]])
         val fibre2 = lmbda(x2)(fn2(x2).typ.asInstanceOf[Typ[w]])
-        val fibre = PlusTyp.RecFn(fn1.dom, fn2.dom, Type, fibre1, fibre2)
+        val fibre  = PlusTyp.RecFn(fn1.dom, fn2.dom, Type, fibre1, fibre2)
         Some(tp.InducFn(fibre, fn1, fn2))
       case _ => None
     }
@@ -153,7 +155,7 @@ case object TermLang
 
   def isPair: Term => Option[(Term, Term)] = {
     case xy: AbsPair[u, v] => Some((xy.first, xy.second))
-    case _ => None
+    case _                 => None
   }
 
   def isSigma: Term => Option[(Term, Term)] = {
@@ -176,7 +178,7 @@ case object TermLang
 
   def domain: Term => Option[Term] = {
     case fn: FuncLike[u, v] => Some(fn.dom)
-    case _ => None
+    case _                  => None
   }
 
   implicit def termLang: ExprLang[Term] = this

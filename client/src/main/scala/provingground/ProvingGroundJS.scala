@@ -174,8 +174,8 @@ object ProvingGroundJS {
 
     jsElems foreach
       ((elem) => {
-        elem.innerHTML = ""
-        elem.appendChild(script(elem.getAttribute("data-script")))
-      })
+         elem.innerHTML = ""
+         elem.appendChild(script(elem.getAttribute("data-script")))
+       })
   }
 }

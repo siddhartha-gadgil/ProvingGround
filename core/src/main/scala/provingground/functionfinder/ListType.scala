@@ -12,40 +12,39 @@ object ListType {
   case class ListTyp[U <: Term with Subs[U]](elemTyp: Typ[U]) extends SmallTyp
 
   case class ListTerm[U <: Term with Subs[U]](value: List[U], elemTyp: Typ[U])
-    extends ConstTerm[List[U]] {
+      extends ConstTerm[List[U]] {
     val typ = ListTyp(elemTyp)
   }
 
   case class ListRep[U <: Term with Subs[U]](elemTyp: Typ[U])
-    extends ScalaRep[Term, List[U]] {
+      extends ScalaRep[Term, List[U]] {
     val typ = ListTyp(elemTyp)
 
     def apply(l: List[U]) = ListTerm(l, elemTyp)
 
     def unapply(u: Term) = u match {
       case ListTerm(l, `elemTyp`) => Some(l.asInstanceOf[List[U]])
-      case _ => None
+      case _                      => None
     }
 
     def subs(x: Term, y: Term) = ListRep(elemTyp.subs(x, y))
   }
 
   def foldFunction[U <: Term with Subs[U], V <: Term with Subs[V]](
-    u: Typ[U],
-    v: Typ[V]) = {
+      u: Typ[U],
+      v: Typ[V]) = {
     val rep = ListRep(u) -->: v -->: (u -->: v -->: v) -->: v
     val fld = (l: List[U]) =>
       (init: V) =>
         (op: U => V => V) => {
           def cop(u: U, v: V) = op(u)(v)
           (l :\ init)(cop)
-        }
+    }
     rep(fld)
   }
 
-  def lmapFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
-    u: Typ[U],
-    v: Typ[V]) = {
+  def lmapFunc[U <: Term with Subs[U], V <: Term with Subs[V]](u: Typ[U],
+                                                               v: Typ[V]) = {
     val rep = (u -->: v) -->: ListRep(u) -->: ListRep(v)
     rep((f: U => V) => (l: List[U]) => l map (f))
   }

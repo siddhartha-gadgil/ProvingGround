@@ -1,7 +1,7 @@
 package provingground.learning
 import provingground._
 
-import provingground.{ FiniteDistribution => FD, ProbabilityDistribution => PD }
+import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import monix.eval._
 
@@ -44,18 +44,18 @@ object Truncate {
         case prod: Product[u, v] =>
           val pmf1 = Truncate(prod.first, epsilon).pmf
           val pmf2 = Truncate(prod.second, epsilon).pmf
-          val pmf = for (
-            Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2 if p * q > epsilon
-          ) yield Weighted((x, y), p * q)
+          val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
+                         if p * q > epsilon) yield Weighted((x, y), p * q)
           FD(pmf)
         case fibprod: FiberProduct[a, q, b] =>
           val pmf1map = Truncate(fibprod.base, epsilon).pmf.groupBy((we) =>
             fibprod.quotient(we.elem))
           val fds = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
-            yield Truncate(fibprod.fibers(q), epsilon / p).map((y) => (x, y)) * p
+            yield
+              Truncate(fibprod.fibers(q), epsilon / p).map((y) => (x, y)) * p
           fds.foldLeft(FD.empty[A])(_ ++ _).flatten
         case Conditioned(base, p) =>
-          val td = Truncate(base, epsilon).filter(p)
+          val td  = Truncate(base, epsilon).filter(p)
           val tot = td.total
           if (tot > 0) td * (1 / tot) else td
         case Flattened(base) =>
@@ -67,7 +67,7 @@ object Truncate {
           val pmf = Truncate(base, epsilon).map(f).pmf.collect {
             case Weighted(Some(a), p) => Weighted(a, p)
           }
-          val td = FD(pmf)
+          val td  = FD(pmf)
           val tot = td.total
           if (tot > 0) td * (1 / tot) else td
         case Scaled(base, sc) =>
@@ -95,9 +95,8 @@ object Truncate {
           }
         case mx: Mixin[u] =>
           Task
-            .zip2(
-              task(mx.first, epsilon / mx.p),
-              task(mx.second, epsilon / mx.q))
+            .zip2(task(mx.first, epsilon / mx.p),
+                  task(mx.second, epsilon / mx.q))
             .map {
               case (first, second) => {
                 (first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)
@@ -105,9 +104,8 @@ object Truncate {
             }
         case mx: MixinOpt[u] =>
           Task
-            .zip2(
-              task(mx.first, epsilon / mx.p),
-              task(mx.second, epsilon / mx.q))
+            .zip2(task(mx.first, epsilon / mx.p),
+                  task(mx.second, epsilon / mx.q))
             .map {
               case (first, second) =>
                 val scndPmf = second.pmf.collect {
@@ -119,7 +117,9 @@ object Truncate {
           val fds = mx.weightedDists.map {
             case (d, p) => task(d, epsilon / p).map(_ * p)
           }
-          Task.gatherUnordered(fds).map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+          Task
+            .gatherUnordered(fds)
+            .map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
         case Mapped(base, f) =>
           task(base, epsilon).map(_.map(f))
         case FlatMapped(base, f) =>
@@ -135,30 +135,28 @@ object Truncate {
             }
           }
         case prod: Product[u, v] =>
-          Task.zip2(
-            task(prod.first, epsilon),
-            task(prod.second, epsilon)) map {
-              case (first, second) =>
-                val pmf1 = first.pmf
-                val pmf2 = second.pmf
-                val pmf = for (
-                  Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2 if p * q > epsilon
-                ) yield Weighted((x, y), p * q)
-                FD(pmf)
-            }
+          Task.zip2(task(prod.first, epsilon), task(prod.second, epsilon)) map {
+            case (first, second) =>
+              val pmf1 = first.pmf
+              val pmf2 = second.pmf
+              val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
+                             if p * q > epsilon) yield Weighted((x, y), p * q)
+              FD(pmf)
+          }
         case fibprod: FiberProduct[a, q, b] =>
           for {
             baseFD <- task(fibprod.base, epsilon)
             pmf1map = baseFD.pmf.groupBy((we) => fibprod.quotient(we.elem))
             fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
-              yield task(fibprod.fibers(q), epsilon / p)
-              .map(_.map((y) => (x, y)) * p)
+              yield
+                task(fibprod.fibers(q), epsilon / p)
+                  .map(_.map((y) => (x, y)) * p)
             fds <- Task.gatherUnordered(fdtasks)
           } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
         case Conditioned(base, p) =>
           for {
             tdr <- task(base, epsilon)
-            td = tdr.filter(p)
+            td  = tdr.filter(p)
             tot = td.total
           } yield if (tot > 0) td * (1 / tot) else td
         case Flattened(base) =>
@@ -174,15 +172,15 @@ object Truncate {
             pmf = fd.map(f).pmf.collect {
               case Weighted(Some(a), p) => Weighted(a, p)
             }
-            td = FD(pmf)
+            td  = FD(pmf)
             tot = td.total
           } yield if (tot > 0) td * (1 / tot) else td
         case Scaled(base, sc) =>
           task(base, epsilon / sc)
         case Sum(first, second) =>
-          Task.zip2(
-            task(first, epsilon),
-            task(second, epsilon)) map { case (fst, scnd) => (fst ++ scnd).flatten }
+          Task.zip2(task(first, epsilon), task(second, epsilon)) map {
+            case (fst, scnd) => (fst ++ scnd).flatten
+          }
         case _ =>
           throw new IllegalArgumentException(
             s"probability distribution $pd cannot be truncated")

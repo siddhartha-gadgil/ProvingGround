@@ -26,7 +26,7 @@ object Norm {
     case (_, tp: IntTyp) =>
       term match {
         case tp.rep(value) => Some(value.toDouble.abs)
-        case _ => None
+        case _             => None
       }
     // case p: AbsPair[Term, Term] =>
     //   for (a <- supnorm(p.first); b <- supnorm(p.second)) yield max(a, b)
@@ -35,15 +35,15 @@ object Norm {
         Try(fn.dom.asInstanceOf[Typ[Term]]).toOption flatMap (recEnumList(_))
       domopt flatMap
         ((dom) => {
-          val normoptlist =
-            dom map
-              ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm))
-          //	      val normlist = Try(normoptlist map (_.get)).toOption
-          maxopt(normoptlist)
-        })
+           val normoptlist =
+             dom map
+               ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm))
+           //	      val normlist = Try(normoptlist map (_.get)).toOption
+           maxopt(normoptlist)
+         })
     }
     case (PiDefn(x: Term, y: Typ[v]), _) => supnorm(x :-> y)
-    case (PiTyp(section), _) => supnorm(section)
+    case (PiTyp(section), _)             => supnorm(section)
     case (SigmaTyp(fn), _) => {
       val domopt = recEnumList(fn.dom.asInstanceOf[Typ[Term]])
       domopt flatMap

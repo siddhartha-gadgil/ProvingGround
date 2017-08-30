@@ -7,16 +7,16 @@ import scala.util._
 import provingground.HoTT._
 
 /**
- * @author gadgil
- * Simple parser to reverse the toString operation.
- *
- */
+  * @author gadgil
+  * Simple parser to reverse the toString operation.
+  *
+  */
 class TermParser extends JavaTokenParsers {
-  def arrow: Parser[Any] = UnicodeSyms.Arrow | SimpleSyms.Arrow
-  def mapsto: Parser[Any] = UnicodeSyms.MapsTo | SimpleSyms.MapsTo
-  def univ: Parser[Any] = UnicodeSyms.UnivSym | SimpleSyms.UnivSym
-  def prod: Parser[Any] = UnicodeSyms.Pi | SimpleSyms.Pi
-  def sigma: Parser[Any] = UnicodeSyms.Sigma | SimpleSyms.Sigma
+  def arrow: Parser[Any]    = UnicodeSyms.Arrow | SimpleSyms.Arrow
+  def mapsto: Parser[Any]   = UnicodeSyms.MapsTo | SimpleSyms.MapsTo
+  def univ: Parser[Any]     = UnicodeSyms.UnivSym | SimpleSyms.UnivSym
+  def prod: Parser[Any]     = UnicodeSyms.Pi | SimpleSyms.Pi
+  def sigma: Parser[Any]    = UnicodeSyms.Sigma | SimpleSyms.Sigma
   def colon: Parser[String] = ":"
 
   def makeSymbol(s: String): AnySym =

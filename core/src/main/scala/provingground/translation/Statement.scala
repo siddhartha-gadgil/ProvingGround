@@ -3,8 +3,8 @@ package provingground.translation
 import scala.util.Try
 
 /**
- * A statement obtained from source which affects a document.
- */
+  * A statement obtained from source which affects a document.
+  */
 trait Statement[E] {
   def appendTo[D](doc: D)(implicit dw: MathWriter[D, E]) =
     dw.append(this, doc)
@@ -18,8 +18,8 @@ object Statement {
   case class Assert[E](claim: E) extends Assertion[E]
 
   /**
-   * Assertion which we do not expect to conclude immediately.
-   */
+    * Assertion which we do not expect to conclude immediately.
+    */
   class Propn[E](val claim: E) extends Assertion[E]
 
   case class Conclude[E](claim: E) extends Assertion[E]
@@ -31,20 +31,20 @@ object Statement {
   case class EndCase[E](beginning: Case[E]) extends Statement[E]
 
   abstract class Define[S, E: ExprLang](name: S, typ: E)
-    extends Statement[E]
-    with Assertion[E] {
+      extends Statement[E]
+      with Assertion[E] {
     lazy val lang = implicitly[ExprLang[E]]
 
     lazy val variable = lang.variable(name, typ).get
   }
 
   case class Definition[S, E: ExprLang](name: S, typ: E, value: E)
-    extends Define[S, E](name, typ) {
+      extends Define[S, E](name, typ) {
     lazy val claim = lang.equality(variable, value).get
   }
 
   case class DefnPropn[S, E: ExprLang](name: S, typ: E, claim: E)
-    extends Define[S, E](name, typ)
+      extends Define[S, E](name, typ)
 
   case class Fix[E](variable: E) extends Statement[E]
 
@@ -86,15 +86,15 @@ object Scoped {
 }
 
 /**
- * Type-class for  writing to a document of type D in terms of expressions of type E.
- * We can write statements and begin and end blocks.
- * We append to the document, but the document may come with a cursor that allows insertion instead.
- */
+  * Type-class for  writing to a document of type D in terms of expressions of type E.
+  * We can write statements and begin and end blocks.
+  * We append to the document, but the document may come with a cursor that allows insertion instead.
+  */
 trait MathWriter[D, E] {
 
   /**
-   * appends statement to document
-   */
+    * appends statement to document
+    */
   def append(s: Statement[E], doc: D): D
 
   def begin(b: Statement.Beginning, doc: D): D
@@ -102,9 +102,9 @@ trait MathWriter[D, E] {
   def end(e: Statement.Beginning, doc: D): D
 
   /**
-   * tries to append, does nothing if it fails;
-   * statement is passed by name, so should also wrap statement creation involving get.
-   */
+    * tries to append, does nothing if it fails;
+    * statement is passed by name, so should also wrap statement creation involving get.
+    */
   def appendTry(s: => Statement[E], doc: D): D =
     Try(append(s, doc)) getOrElse (doc)
 }

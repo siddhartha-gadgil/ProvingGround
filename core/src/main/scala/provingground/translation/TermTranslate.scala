@@ -52,8 +52,8 @@ object FansiTranslate {
         case (index, (dom, (codom, defnData))) =>
           defnData.foldLeft(
             s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
-              case (head, d) => s"$head($d)"
-            }
+            case (head, d) => s"$head($d)"
+          }
       } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
@@ -124,8 +124,8 @@ object TeXTranslate {
         case (index, (dom, (codom, defnData))) =>
           defnData.foldLeft(
             s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
-              case (head, d) => s"$head($d)"
-            }
+            case (head, d) => s"$head($d)"
+          }
       } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
@@ -167,7 +167,7 @@ object FansiShow {
   import pprint._
 
   val fansiHandler: PartialFunction[Any, Tree] = {
-    case t: Term => Tree.Literal(FansiTranslate(t))
+    case t: Term     => Tree.Literal(FansiTranslate(t))
     case sym: AnySym => Tree.Literal(sym.toString)
   }
 
@@ -175,7 +175,7 @@ object FansiShow {
     pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
 
   val simpleHandler: PartialFunction[Any, Tree] = {
-    case t: Term => Tree.Literal(t.toString)
+    case t: Term     => Tree.Literal(t.toString)
     case sym: AnySym => Tree.Literal(sym.toString)
   }
 
@@ -201,13 +201,17 @@ object FansiShow {
       def show(tup: (U1, U2)): String = (tup._1.fansi, tup._2.fansi).toString
     }
 
-  implicit def tuple3[U1: FansiShow, U2: FansiShow, U3: FansiShow]: FansiShow[(U1, U2, U3)] =
+  implicit def tuple3[U1: FansiShow, U2: FansiShow, U3: FansiShow]
+    : FansiShow[(U1, U2, U3)] =
     new FansiShow[(U1, U2, U3)] {
       def show(tup: (U1, U2, U3)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi).toString
     }
 
-  implicit def tuple4[U1: FansiShow, U2: FansiShow, U3: FansiShow, U4: FansiShow]: FansiShow[(U1, U2, U3, U4)] =
+  implicit def tuple4[U1: FansiShow,
+                      U2: FansiShow,
+                      U3: FansiShow,
+                      U4: FansiShow]: FansiShow[(U1, U2, U3, U4)] =
     new FansiShow[(U1, U2, U3, U4)] {
       def show(tup: (U1, U2, U3, U4)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi, tup._4.fansi).toString
@@ -255,42 +259,37 @@ object JsonTranslate {
         Js.Obj("intro" -> Js.Str("func-type"), "dom" -> dom, "codom" -> codom)
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        Js.Obj(
-          "intro" -> Js.Str("lambda"),
-          "var" -> variable,
-          "type" -> typ,
-          "value" -> value)
+        Js.Obj("intro" -> Js.Str("lambda"),
+               "var"   -> variable,
+               "type"  -> typ,
+               "value" -> value)
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        Js.Obj(
-          "intro" -> Js.Str("pi"),
-          "var" -> variable,
-          "type" -> typ,
-          "value" -> value)
+        Js.Obj("intro" -> Js.Str("pi"),
+               "var"   -> variable,
+               "type"  -> typ,
+               "value" -> value)
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
-        Js.Obj(
-          "intro" -> Js.Str("sigma"),
-          "var" -> variable,
-          "type" -> typ,
-          "value" -> value)
+        Js.Obj("intro" -> Js.Str("sigma"),
+               "var"   -> variable,
+               "type"  -> typ,
+               "value" -> value)
     } || universe >>> { (n) =>
       Js.Obj("intro" -> Js.Str("universe"), "level" -> Js.Num(n))
     } || symName >>>
       ((s) => Js.Str(s)) ||
       prodTyp >>> {
         case (first, second) =>
-          Js.Obj(
-            "intro" -> Js.Str("product-type"),
-            "first" -> first,
-            "second" -> second)
+          Js.Obj("intro"  -> Js.Str("product-type"),
+                 "first"  -> first,
+                 "second" -> second)
       } ||
       absPair >>> {
         case (first, second) =>
-          Js.Obj(
-            "intro" -> Js.Str("pair"),
-            "first" -> first,
-            "second" -> second)
+          Js.Obj("intro"  -> Js.Str("pair"),
+                 "first"  -> first,
+                 "second" -> second)
       } ||
       // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
       equation >>> {
@@ -299,44 +298,39 @@ object JsonTranslate {
       } ||
       plusTyp >>> {
         case (first, second) =>
-          Js.Obj(
-            "intro" -> Js.Str("plus-type"),
-            "first" -> first,
-            "second" -> second)
+          Js.Obj("intro"  -> Js.Str("plus-type"),
+                 "first"  -> first,
+                 "second" -> second)
       } ||
       indRecFunc >>> {
         case (index, (dom, (codom, defnData))) =>
-          Js.Obj(
-            "intro" -> Js.Str("indexed-rec-function"),
-            "dom" -> dom,
-            "codom" -> codom,
-            "data" -> Js.Arr(defnData: _*),
-            "index" -> Js.Arr(index: _*))
+          Js.Obj("intro" -> Js.Str("indexed-rec-function"),
+                 "dom"   -> dom,
+                 "codom" -> codom,
+                 "data"  -> Js.Arr(defnData: _*),
+                 "index" -> Js.Arr(index: _*))
       } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
-          Js.Obj(
-            "intro" -> Js.Str("rec-function"),
-            "dom" -> dom,
-            "codom" -> codom,
-            "data" -> Js.Arr(defnData: _*))
+          Js.Obj("intro" -> Js.Str("rec-function"),
+                 "dom"   -> dom,
+                 "codom" -> codom,
+                 "data"  -> Js.Arr(defnData: _*))
       } ||
       indInducFunc >>> {
         case (index, (dom, (depcodom, defnData))) =>
-          Js.Obj(
-            "intro" -> Js.Str("indexed-induc-function"),
-            "dom" -> dom,
-            "depcodom" -> depcodom,
-            "data" -> Js.Arr(defnData: _*),
-            "index" -> Js.Arr(index: _*))
+          Js.Obj("intro"    -> Js.Str("indexed-induc-function"),
+                 "dom"      -> dom,
+                 "depcodom" -> depcodom,
+                 "data"     -> Js.Arr(defnData: _*),
+                 "index"    -> Js.Arr(index: _*))
       } ||
       inducFunc >>> {
         case (dom, (depcodom, defnData)) =>
-          Js.Obj(
-            "intro" -> Js.Str("induc-function"),
-            "dom" -> dom,
-            "depcodom" -> depcodom,
-            "data" -> Js.Arr(defnData: _*))
+          Js.Obj("intro"    -> Js.Str("induc-function"),
+                 "dom"      -> dom,
+                 "depcodom" -> depcodom,
+                 "data"     -> Js.Arr(defnData: _*))
       }
 
   implicit val TermWriter = upickle.default.Writer[Term] {
@@ -345,14 +339,12 @@ object JsonTranslate {
         Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
   }
 
-  import provingground.translation.{ TermLang => T }
+  import provingground.translation.{TermLang => T}
 
   def jsonToTerm(js: Js.Value): Option[Term] = js("intro").str match {
     case "appln" =>
-      for (
-        func <- jsonToTerm(js("func")); arg <- jsonToTerm(js("arg"));
-        res <- T.appln(func, arg)
-      ) yield res
+      for (func <- jsonToTerm(js("func")); arg <- jsonToTerm(js("arg"));
+           res  <- T.appln(func, arg)) yield res
     case "func-type" =>
       for (dom <- jsonToTerm(js("dom")); codom <- jsonToTerm(js("codom")))
         yield dom.asInstanceOf[Typ[Term]] ->: codom.asInstanceOf[Typ[Term]]
@@ -369,12 +361,11 @@ object JsonTranslate {
       Some(Universe(js("level").num.toInt))
     case "product-type" =>
       for (dom <- jsonToTerm(js("first")); codom <- jsonToTerm(js("second")))
-        yield ProdTyp(dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])
+        yield
+          ProdTyp(dom.asInstanceOf[Typ[Term]], codom.asInstanceOf[Typ[Term]])
     case "pair" =>
-      for (
-        first <- jsonToTerm(js("first")); second <- jsonToTerm(js("second"));
-        res <- T.pair(first, second)
-      ) yield res
+      for (first <- jsonToTerm(js("first")); second <- jsonToTerm(js("second"));
+           res   <- T.pair(first, second)) yield res
     case "equality" =>
       for (lhs <- jsonToTerm(js("lhs")); rhs <- jsonToTerm(js("rhs")))
         yield lhs =:= rhs

@@ -22,11 +22,10 @@ object Context {
     def map(f: Term => Term) = Defn(name, f(value))
   }
 
-  case class AppendDefn[U <: Term with Subs[U]](
-    init: Context,
-    defn: Defn[U],
-    global: Boolean)
-    extends Context {
+  case class AppendDefn[U <: Term with Subs[U]](init: Context,
+                                                defn: Defn[U],
+                                                global: Boolean)
+      extends Context {
     val constants = init.constants
 
     val variables = init.variables
@@ -44,7 +43,7 @@ object Context {
   }
 
   case class AppendConstant[U <: Term with Subs[U]](init: Context, constant: U)
-    extends Context {
+      extends Context {
     val constants = init.constants :+ init.export(constant)
 
     val variables = init.variables
@@ -64,11 +63,10 @@ object Context {
 
   case object Consider extends Role
 
-  case class AppendTerm[U <: Term with Subs[U]](
-    init: Context,
-    term: U,
-    role: Role)
-    extends Context {
+  case class AppendTerm[U <: Term with Subs[U]](init: Context,
+                                                term: U,
+                                                role: Role)
+      extends Context {
     val constants = init.constants
 
     val variables = init.variables
@@ -83,7 +81,7 @@ object Context {
   }
 
   case class AppendVariable[U <: Term with Subs[U]](init: Context, variable: U)
-    extends Context {
+      extends Context {
     val constants = init.constants
 
     val variables = init.variables :+ init.export(variable)
@@ -93,12 +91,10 @@ object Context {
     val definitions = init.definitions
 
     def export(t: Term) =
-      init.export(
-        if (t.dependsOn(variable)) variable :~> t else t)
+      init.export(if (t.dependsOn(variable)) variable :~> t else t)
 
     def exportTyp(t: Typ[Term]) =
-      init.exportTyp(
-        if (t.dependsOn(variable)) variable ~>: t else t)
+      init.exportTyp(if (t.dependsOn(variable)) variable ~>: t else t)
   }
 }
 

@@ -9,8 +9,8 @@ import induction.TLImplicits._
 import shapeless._
 
 object Trees {
-  val T = "Tree" :: Type
-  val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
+  val T                    = "Tree" :: Type
+  val TInd                 = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
   val leaf :: node :: HNil = TInd.intros
 
   import Nats._
@@ -24,14 +24,14 @@ object Trees {
 
 object BinTrees {
   import library.Bools._
-  val BT = "BinTree" :: Type
-  val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT) =: BT
+  val BT                   = "BinTree" :: Type
+  val BTInd                = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT) =: BT
   val leaf :: node :: HNil = BTInd.intros
 
   import Nats._
 
   val recBTN = BTInd.rec(Nat)
-  val f = "f" :: Bool ->: BT
-  val g = "g" :: Bool ->: Nat
+  val f      = "f" :: Bool ->: BT
+  val g      = "g" :: Bool ->: Nat
   val leaves = recBTN(N(1))(f :-> (g :-> (add(g(ff))(g(tt)))))
 }
