@@ -18,10 +18,13 @@ import LeanToTerm._
 
 import translation.FansiShow._
 
-case class LeanToTerm(defnMap: Map[Name, Term],
-                      termIndModMap: Map[Name, TermIndMod],
-                      // vars: Vector[Term],
-                      unparsed: Vector[Name]) { self =>
+import scala.collection.mutable.{Map => mMap, ArrayBuffer}
+
+trait LeanParse { self =>
+  val defnMap: collection.Map[Name, Term]
+
+  val termIndModMap: collection.Map[Name, TermIndMod]
+
   def defns(exp: Expr, typOpt: Option[Typ[Term]]) = exp match {
     case Const(name, _) => defnMap.get(name)
     case _              => None
@@ -268,64 +271,13 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   def parseVar(b: Binding, vars: Vector[Term]) =
     parseSym(b.prettyName, b.ty, vars)
 
-  def addDefnMap(name: Name, term: Term) =
-    self.copy(defnMap = self.defnMap + (name -> term))
+  def addAxiom(name: Name, exp: Expr): LeanParse
 
-  def addDefnVal(name: Name, value: Expr, tp: Expr) = {
-    // val typ = parseTyp(tp)
-    parse(value, Vector())
-      .map((t) => addDefnMap(name, t))
-      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
-  }
+  def addAxiomOpt(name: Name, exp: Expr): LeanParse
 
-  def addDefnValOpt(name: Name, value: Expr, tp: Expr) = {
-    // val typ = parseTypOpt(tp)
-    parseOpt(value, Vector())
-      .map((t) => addDefnMap(name, t))
-      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
-  }
+  def addDefnVal(name: Name, ty: Expr, value: Expr): LeanParse
 
-  def addAxiom(name: Name, ty: Expr) =
-    parseSym(name, ty, Vector())
-      .map(addDefnMap(name, _))
-      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
-
-  def addAxiomOpt(name: Name, ty: Expr) =
-    parseSymOpt(name, ty, Vector())
-      .map(addDefnMap(name, _))
-      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
-
-  def addAxioms(axs: Vector[(Name, Expr)]) =
-    axs.foldLeft(self) { case (p, (n, v)) => p.addAxiom(n, v) }
-
-  def addAxiomsOpt(axs: Vector[(Name, Expr)]) =
-    axs.foldLeft(self) { case (p, (n, v)) => p.addAxiomOpt(n, v) }
-
-  def addAxiomMod(ax: AxiomMod) = addAxiom(ax.name, ax.ax.ty)
-
-  def addDefMod(df: DefMod) =
-    addDefnVal(df.name, df.defn.value, df.defn.ty)
-
-  def addAxiomModOpt(ax: AxiomMod) = addAxiomOpt(ax.name, ax.ax.ty)
-
-  def addDefModOpt(df: DefMod) =
-    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
-
-  def addQuotMod = {
-    import quotient._
-    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
-      (ax.name, ax.ty)
-    }
-    addAxioms(axs)
-  }
-
-  def addQuotModOpt = {
-    import quotient._
-    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
-      (ax.name, ax.ty)
-    }
-    addAxiomsOpt(axs)
-  }
+  def addDefnValOpt(name: Name, ty: Expr, value: Expr): LeanParse
 
   def toTermIndModTry(ind: IndMod): Try[TermIndMod] = {
     val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
@@ -403,15 +355,54 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     }
   }
 
-  def addIndMod(ind: IndMod) = {
+}
+
+case class LeanToTerm(defnMap: Map[Name, Term],
+                      termIndModMap: Map[Name, TermIndMod],
+                      unparsed: Vector[Name])
+    extends LeanParse { self =>
+
+  def addDefnMap(name: Name, term: Term): LeanToTerm =
+    self.copy(defnMap = self.defnMap + (name -> term))
+
+  def addDefnVal(name: Name, value: Expr, tp: Expr): LeanToTerm = {
+    // val typ = parseTyp(tp)
+    parse(value, Vector())
+      .map((t) => addDefnMap(name, t))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+  }
+
+  def addDefnValOpt(name: Name, value: Expr, tp: Expr): LeanToTerm = {
+    // val typ = parseTypOpt(tp)
+    parseOpt(value, Vector())
+      .map((t) => addDefnMap(name, t))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+  }
+
+  override def addAxiom(name: Name, ty: Expr): LeanToTerm =
+    parseSym(name, ty, Vector())
+      .map(addDefnMap(name, _))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+
+  override def addAxiomOpt(name: Name, ty: Expr): LeanToTerm =
+    parseSymOpt(name, ty, Vector())
+      .map(addDefnMap(name, _))
+      .getOrElse(self.copy(unparsed = self.unparsed :+ name))
+
+  def addAxioms(axs: Vector[(Name, Expr)]): LeanToTerm =
+    axs.foldLeft(self) { case (p, (n, v)) => p.addAxiom(n, v) }
+
+  def addAxiomsOpt(axs: Vector[(Name, Expr)]): LeanToTerm =
+    axs.foldLeft(self) { case (p, (n, v)) => p.addAxiomOpt(n, v) }
+
+  def addIndMod(ind: IndMod): LeanToTerm = {
     val withTypDef = addAxiomOpt(ind.name, ind.inductiveType.ty)
     val withAxioms = withTypDef.addAxioms(ind.intros)
     val indOpt     = withAxioms.toTermIndModTry(ind)
     indOpt
       .map { (indMod) =>
-        withAxioms
-        // .addRecDefns(indMod.recDefn)
-          .copy(termIndModMap = self.termIndModMap + (ind.name -> indMod))
+        withAxioms.copy(
+          termIndModMap = self.termIndModMap + (ind.name -> indMod))
       }
       .getOrElse {
         // println(s"no rec definitions for ${ind.name}")
@@ -419,7 +410,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       }
   }
 
-  def addIndModOpt(ind: IndMod) = {
+  def addIndModOpt(ind: IndMod): LeanToTerm = {
     val withTypDef = addAxiomOpt(ind.name, ind.inductiveType.ty)
     val withAxioms = withTypDef.addAxiomsOpt(ind.intros)
     val indOpt     = withAxioms.toTermIndModOpt(ind)
@@ -433,14 +424,168 @@ case class LeanToTerm(defnMap: Map[Name, Term],
       }
   }
 
-  def add(mod: Modification) = mod match {
+  def addAxiomMod(ax: AxiomMod): LeanToTerm =
+    addAxiom(ax.name, ax.ax.ty)
+
+  def addDefMod(df: DefMod): LeanToTerm =
+    addDefnVal(df.name, df.defn.value, df.defn.ty)
+
+  def addAxiomModOpt(ax: AxiomMod): LeanToTerm =
+    addAxiomOpt(ax.name, ax.ax.ty)
+
+  def addDefModOpt(df: DefMod): LeanToTerm =
+    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
+
+  def addQuotMod: LeanToTerm = {
+    import quotient._
+    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+      (ax.name, ax.ty)
+    }
+    addAxioms(axs)
+  }
+
+  def addQuotModOpt: LeanToTerm = {
+    import quotient._
+    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+      (ax.name, ax.ty)
+    }
+    addAxiomsOpt(axs)
+  }
+
+  def add(mod: Modification): LeanToTerm = mod match {
     case ind: IndMod  => addIndMod(ind)
     case ax: AxiomMod => addAxiomMod(ax)
     case df: DefMod   => addDefMod(df)
     case QuotMod      => addQuotMod
   }
 
-  def addOpt(mod: Modification) = mod match {
+  def addOpt(mod: Modification): LeanToTerm = mod match {
+    case ind: IndMod  => addIndModOpt(ind)
+    case ax: AxiomMod => addAxiomModOpt(ax)
+    case df: DefMod   => addDefModOpt(df)
+    case QuotMod      => addQuotModOpt
+  }
+
+}
+
+object LeanToTermMut {
+  def fromMods(mods: Seq[Modification]) = {
+    val init = LeanToTermMut(mMap(), mMap())
+    mods.foreach((m) => init.add(m))
+    init
+  }
+}
+
+case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
+                         termIndModMap: mMap[Name, TermIndMod],
+                         unparsed: ArrayBuffer[Name] = ArrayBuffer())
+    extends LeanParse { self =>
+
+  def addDefnMap(name: Name, term: Term): LeanParse = {
+    defnMap += (name -> term)
+    self
+  }
+
+  def addDefnVal(name: Name, value: Expr, tp: Expr): LeanParse = {
+    parse(value, Vector())
+      .foreach((term) => defnMap += (name -> term))
+    self
+  }
+
+  def addDefnValOpt(name: Name, value: Expr, tp: Expr): LeanParse = {
+    parseOpt(value, Vector())
+      .foreach((term) => defnMap += (name -> term))
+    self
+  }
+
+  def putAxiom(name: Name, ty: Expr): Unit =
+    parseSym(name, ty, Vector())
+      .foreach((term) => defnMap += (name -> term))
+
+  override def addAxiom(name: Name, ty: Expr): LeanParse = {
+    putAxiom(name, ty)
+    self
+  }
+
+  def putAxiomOpt(name: Name, ty: Expr): Unit =
+    parseSymOpt(name, ty, Vector())
+      .foreach((term) => defnMap += (name -> term))
+
+  override def addAxiomOpt(name: Name, ty: Expr): LeanParse = {
+    putAxiomOpt(name, ty)
+    self
+  }
+
+  def addAxioms(axs: Vector[(Name, Expr)]): LeanParse = {
+    axs
+      .foreach { case (name, ty) => putAxiom(name, ty) }
+    self
+  }
+
+  def addAxiomsOpt(axs: Vector[(Name, Expr)]) = {
+    axs
+      .foreach { case (name, ty) => putAxiomOpt(name, ty) }
+    self
+  }
+
+  def addIndMod(ind: IndMod): LeanParse = {
+    putAxiom(ind.name, ind.inductiveType.ty)
+    ind.intros.foreach { case (n, t) => putAxiom(n, t) }
+    val indOpt = toTermIndModTry(ind)
+    indOpt
+      .foreach { (indMod) =>
+        termIndModMap += (ind.name -> indMod)
+      }
+    self
+  }
+
+  def addIndModOpt(ind: IndMod): LeanParse = {
+    putAxiomOpt(ind.name, ind.inductiveType.ty)
+    ind.intros.foreach { case (n, t) => putAxiom(n, t) }
+    val indOpt = toTermIndModOpt(ind)
+    indOpt
+      .foreach { (indMod) =>
+        termIndModMap += (ind.name -> indMod)
+      }
+    self
+  }
+
+  def addAxiomMod(ax: AxiomMod): LeanParse =
+    addAxiom(ax.name, ax.ax.ty)
+
+  def addDefMod(df: DefMod): LeanParse =
+    addDefnVal(df.name, df.defn.value, df.defn.ty)
+
+  def addAxiomModOpt(ax: AxiomMod): LeanParse =
+    addAxiomOpt(ax.name, ax.ax.ty)
+
+  def addDefModOpt(df: DefMod): LeanParse =
+    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
+
+  def addQuotMod: LeanParse = {
+    import quotient._
+    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+      (ax.name, ax.ty)
+    }
+    addAxioms(axs)
+  }
+
+  def addQuotModOpt: LeanParse = {
+    import quotient._
+    val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+      (ax.name, ax.ty)
+    }
+    addAxiomsOpt(axs)
+  }
+
+  def add(mod: Modification): LeanParse = mod match {
+    case ind: IndMod  => addIndMod(ind)
+    case ax: AxiomMod => addAxiomMod(ax)
+    case df: DefMod   => addDefMod(df)
+    case QuotMod      => addQuotMod
+  }
+
+  def addOpt(mod: Modification): LeanParse = mod match {
     case ind: IndMod  => addIndModOpt(ind)
     case ax: AxiomMod => addAxiomModOpt(ax)
     case df: DefMod   => addDefModOpt(df)
@@ -479,8 +624,8 @@ object LeanToTerm {
   import collection.mutable.ArrayBuffer
   val badConsts: ArrayBuffer[Const] = ArrayBuffer()
 
-  val appFailure: ArrayBuffer[
-    (Expr, Expr, Expr, Option[Typ[Term]], LeanToTerm)] =
+  val appFailure
+    : ArrayBuffer[(Expr, Expr, Expr, Option[Typ[Term]], LeanToTerm)] =
     ArrayBuffer()
 
   def emptyRecParser(base: => Parser)(e: Expr, vars: Vector[Term]) = {

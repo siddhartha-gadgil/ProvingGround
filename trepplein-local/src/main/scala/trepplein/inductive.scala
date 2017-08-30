@@ -109,7 +109,7 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
   val compiledIntros: Vector[CompiledIntro] = intros.map(CompiledIntro.tupled)
 
   val elimIntoProp: Boolean = level.maybeZero &&
-      (intros.size > 1 || compiledIntros.exists { intro =>
+    (intros.size > 1 || compiledIntros.exists { intro =>
       intro.arguments.exists { arg =>
         !tc.isProof(arg) && !intro.introTyArgs.contains(arg)
       }
@@ -165,7 +165,8 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
     for (i <- compiledIntros)
       yield Axiom(i.name, univParams, i.ty, builtin = true)
 
-  val decls: Vector[Declaration] = Axiom(name, univParams, inductiveType.ty) +: introDecls :+ elimDecl
+  val decls
+    : Vector[Declaration] = Axiom(name, univParams, inductiveType.ty) +: introDecls :+ elimDecl
   val rules: Vector[ReductionRule] =
     if (kIntroRule.isDefined)
       kIntroRule.toVector

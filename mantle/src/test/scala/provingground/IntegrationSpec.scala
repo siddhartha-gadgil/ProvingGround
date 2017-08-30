@@ -243,7 +243,7 @@ class SigmaTypeSpec extends FlatSpec {
   "For arbitrary type user defined id with user defined Sigma type" should "be defined properly" in {
     val Sigma = "Σ" :: A ~>: ((A ->: Type) ->: Type)
     val SigmaInd = ("mkPair" ::: A ~>>: (B ~>>: (a ~>>: (B(a) ->>: (Sigma -> Sigma(
-        A)(B)))))) =:: Sigma
+      A)(B)))))) =:: Sigma
     val makePair :: HNil = SigmaInd.intros
     val pair             = makePair(A)(B)(a)(b)
     assert(pair.typ === Sigma(A)(B))
@@ -450,7 +450,7 @@ class IdentityTypeSpec extends FlatSpec {
     val indN_assoc = NatInd.induc(
       n :-> (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k))))))
     val pf = "(n+m)+k=n+(m+k)" :: m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(
-        add(m)(k))))
+      add(m)(k))))
     val assoc = indN_assoc(m :~> (k :~> add(m)(k).refl))(
       n :~> (pf :-> (m :~> (k :~>
         IdentityTyp
@@ -805,7 +805,7 @@ class EliminatorsSpec extends FlatSpec {
       indVD.typ === D(zero)(vnil) ->: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(
         succ(n))(vcons(n)(a)(vn))) ->: m ~>: vm ~>: D(m)(vm))
     val f2 = "f2" :: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(succ(n))(
-        vcons(n)(a)(vn)))
+      vcons(n)(a)(vn)))
     val d = "d" :: D(zero)(vnil)
     assert(indVD(d)(f2)(zero)(vnil) === d)
     assert(

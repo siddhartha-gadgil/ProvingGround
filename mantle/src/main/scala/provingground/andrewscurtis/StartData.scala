@@ -68,9 +68,9 @@ case class StartData(name: String,
     val futDoc =
       updatedStartsFut map
         ((us: List[StartData]) =>
-           BSONDocument("name"       -> name,
-                        "loops"      -> 0,
-                        "start-data" -> uwrite(us)))
+          BSONDocument("name"       -> name,
+                       "loops"      -> 0,
+                       "start-data" -> uwrite(us)))
     val res = futDoc.map(
       (doc) =>
         //println(doc)

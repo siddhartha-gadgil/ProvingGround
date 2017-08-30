@@ -160,8 +160,8 @@ class PrettyPrinter(typeChecker: Option[TypeChecker] = None,
           if (b0.info == InstImplicit) (List(b0), binders.tail)
           else splitListWhile(binders)(b => b.info == b0.info && b.ty == b0.ty)
         val bare = wordwrap(group.map(b =>
-            if (b.isAnon && !b.occursInBody) text("_") else pp(b.name))) <+>
-            ":" </> pp(b0.ty).parens(1).group
+          if (b.isAnon && !b.occursInBody) text("_") else pp(b.name))) <+>
+          ":" </> pp(b0.ty).parens(1).group
         nest(b0.info match {
           //          case Default if group.size == 1 => bare
           case Default        => "(" <> bare <> ")"

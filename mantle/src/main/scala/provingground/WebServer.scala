@@ -128,10 +128,10 @@ object WebServer {
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U],
                                        names: Vector[(Term, String)]) = {
     fdVec = fd.pmf map
-        ((wt) =>
-           (latex(encode(names)(wt.elem)),
-            latex(encode(names)(wt.elem.typ)),
-            wt.weight))
+      ((wt) =>
+        (latex(encode(names)(wt.elem)),
+         latex(encode(names)(wt.elem.typ)),
+         wt.weight))
   }
 
   def showTimeSeries[U <: Term with Subs[U]](term: U,
