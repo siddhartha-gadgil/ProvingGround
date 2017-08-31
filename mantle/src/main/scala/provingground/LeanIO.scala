@@ -474,6 +474,12 @@ object LeanToTermMut {
     mods.foreach((m) => init.add(m))
     init
   }
+
+  def fromModsOpt(mods: Seq[Modification]) = {
+    val init = LeanToTermMut(mMap(), mMap())
+    mods.foreach((m) => init.addOpt(m))
+    init
+  }
 }
 
 case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
