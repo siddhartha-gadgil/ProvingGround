@@ -95,16 +95,15 @@ trait LeanParse { self =>
         } yield res
       case App(a, b) =>
         for {
-          func <- recOptParser(rec)(a, vars)
-          arg  <- recOptParser(rec)(b, vars)
+          func <- rec(a, vars)
+          arg  <- rec(b, vars)
           res  <- applyFuncPropOpt(func, arg)
         } yield res
       case Lam(domain, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
           x = domTyp.Var
-          // withVar = addVar(x)
           value <- parseOpt(body, x +: vars)
         } yield
           value match {
@@ -116,7 +115,7 @@ trait LeanParse { self =>
           }
       case Pi(domain, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
           x = domTyp.Var
           // withVar = addVar(x)
@@ -125,7 +124,7 @@ trait LeanParse { self =>
         } yield if (cod.dependsOn(x)) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
-          domTerm <- recOptParser(rec)(domain.ty, vars)
+          domTerm <- rec(domain.ty, vars)
           domTyp  <- toTypOpt(domTerm)
           x = domTyp.Var
           valueTerm <- recOptParser(rec)(value, vars)
@@ -288,12 +287,6 @@ trait LeanParse { self =>
       val typValueOpt =
         LeanToTerm.getValue(typF, ind.numParams, Vector())
       val withTypeName = addAxiom(name, ind.inductiveType.ty)
-      val introsOpt = ind.intros.map {
-        case (name, tp) =>
-          withTypeName
-            .parseTyp(tp, Vector())
-            .map(name.toString :: _)
-      }
       val introsTry =
         withTypeName.parseSymVec(ind.intros, Vector())
       introsTry.flatMap { (intros) =>
