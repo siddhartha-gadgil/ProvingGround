@@ -7,6 +7,7 @@ import provingground._
 import scala.concurrent._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
+import monix.reactive._
 
 import HoTT.{Name => _, _}
 
@@ -30,6 +31,18 @@ object LeanToTermMonix {
   }
 
   type TaskParser = (Expr, Vector[Term]) => Task[Term]
+
+  val empty = LeanToTermMonix(Map(), Map(), Vector())
+
+  def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
+    mods.foldLeft(Task.now(init)) {
+      case (l, m) => l.flatMap(_.add(m))
+    }
+
+  def observable(mods: Vector[Modification], init: LeanToTermMonix = empty) =
+    Observable.fromIterable(mods).flatScan[LeanToTermMonix](init) {
+      case (l, m) => Observable.fromTask(l.add(m))
+    }
 }
 
 case class LeanToTermMonix(defnMap: Map[Name, Term],
@@ -198,6 +211,11 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     mvec.map((vec) => self.copy(defnMap = self.defnMap ++ vec))
   }
 
+  def addAxiomSeq(axs: Vector[(Name, Expr)]): Task[LeanToTermMonix] =
+    axs.foldLeft(Task.now(self)) {
+      case (p, (n, v)) => p.flatMap(_.addAxiom(n, v))
+    }
+
   def addAxiomMod(ax: AxiomMod): Task[LeanToTermMonix] =
     addAxiom(ax.name, ax.ax.ty)
 
@@ -209,7 +227,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
       (ax.name, ax.ty)
     }
-    addAxioms(axs)
+    addAxiomSeq(axs)
   }
 
   def addIndMod(ind: IndMod): Task[LeanToTermMonix] = {

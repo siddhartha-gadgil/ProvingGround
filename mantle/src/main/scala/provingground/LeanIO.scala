@@ -599,7 +599,7 @@ case class LeanContextException(exc: Throwable,
     extends Exception("error while parsing lean")
 
 case class UnParsedException(exp: Expr)
-    extends IllegalArgumentException("could not parse expression")
+    extends IllegalArgumentException(s"could not parse expression $exp")
 
 case class NoConstantException(name: Name)
     extends IllegalArgumentException(s"No constant with name $name found")
