@@ -45,29 +45,29 @@ lazy val baseSettings = Seq(
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
-    resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
-    libraryDependencies ++= Seq(
-      // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
+  resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  libraryDependencies ++= Seq(
+    // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.typelevel" %% "spire"      % "0.14.1",
-      "com.lihaoyi"   %% "fansi"      % "0.2.4",
-      "com.lihaoyi"   %% "upickle"    % "0.4.4",
-      "com.chuusai"   %% "shapeless"  % "2.3.2",
-      "org.typelevel" %% "cats"       % "0.9.0",
-      "io.monix"      %% "monix"      % "2.3.0",
-      "io.monix"      %% "monix-cats" % "2.3.0",
-      "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
-    ),
-    scalacOptions in Compile ++= Seq("-unchecked",
-                                     "-deprecation",
-                                     "-feature",
-                                     "-language:existentials"),
-    scalacOptions in (Compile, doc) ++= Seq("-diagrams",
-                                            "-implicits",
-                                            "-implicits-show-all"),
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
-  )
+    "org.typelevel" %% "spire"      % "0.14.1",
+    "com.lihaoyi"   %% "fansi"      % "0.2.4",
+    "com.lihaoyi"   %% "upickle"    % "0.4.4",
+    "com.chuusai"   %% "shapeless"  % "2.3.2",
+    "org.typelevel" %% "cats"       % "0.9.0",
+    "io.monix"      %% "monix"      % "2.3.0",
+    "io.monix"      %% "monix-cats" % "2.3.0",
+    "com.lihaoyi"   % "ammonite"    % ammV cross CrossVersion.full
+  ),
+  scalacOptions in Compile ++= Seq("-unchecked",
+                                   "-deprecation",
+                                   "-feature",
+                                   "-language:existentials"),
+  scalacOptions in (Compile, doc) ++= Seq("-diagrams",
+                                          "-implicits",
+                                          "-implicits-show-all"),
+  testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
+)
 
 val akkaV = "2.4.17"
 
