@@ -4,10 +4,26 @@ import learning._, ammonite.ops._
 
 import scala.concurrent._, duration._
 import monix.execution.Scheduler.Implicits.global
-
+import scala.io.StdIn
 import monix.reactive._
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
-object BatchTest extends App {
+object LeanAmmTest extends App {
+  import interface._, LeanInterface._
+  val mods = getMods("data/group.export")
+  println(mods.size)
+  lazy val obs = LeanToTermMonix.observable(mods)
+  var count    = 0
+  lazy val fut = obs.foreach { (t) =>
+    count += 1
+    println(s"$count : ${t.defnMap.size}")
+  }
+
+  Await.result(fut, Duration.Inf)
+}
+
+object BatchTest /*extends App*/ {
   import scratch.FDMonixAB._
 
   import translation.FansiShow._

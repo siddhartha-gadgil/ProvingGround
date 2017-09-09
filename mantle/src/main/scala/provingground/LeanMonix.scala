@@ -1,5 +1,6 @@
 package provingground.interface
 import provingground._
+import induction._
 
 // import ammonite.ops._
 // import scala.util._
@@ -20,15 +21,112 @@ import trepplein._
 // import translation.FansiShow._
 
 object LeanToTermMonix {
+  def isPropnFn(e: Expr): Boolean = e match {
+    case Pi(_, t) => isPropnFn(t)
+    case Sort(l)  => l == Level.Zero
+    case _        => false
+  }
 
-  val proofLift: (Term, Term) => Task[Term] = {
+  def proofLift: (Term, Term) => Task[Term] = {
     case (w: Typ[u], tp: Typ[v]) => Task { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
       proofLift(w(x), tp(x.asInstanceOf[a]))
         .map((g: Term) => x :~> (g: Term))
-    case _ => Task.raiseError(new Exception("could not lift proof"))
+    case _ => throw new Exception("could not lift proof")
   }
+
+  def introsFold(ind: TermIndMod, p: Vector[Term]) =
+    ind.intros.map((rule) => foldFunc(rule, p))
+
+  def getRec(ind: TermIndMod, argsFmlyTerm: Task[Vector[Term]]): Task[Term] =
+    ind match {
+      case smp: SimpleIndMod     => getRecSimple(smp, argsFmlyTerm)
+      case indInd: IndexedIndMod => getRecIndexed(indInd, argsFmlyTerm)
+    }
+
+  def getRecSimple(ind: SimpleIndMod,
+                   argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
+    val newParamsTask = argsFmlyTerm map (_.init)
+    def getInd(p: Vector[Term]) =
+      ConstructorSeqTL
+        .getExst(toTyp(foldFunc(ind.typF, p)), introsFold(ind, p))
+        .value
+    newParamsTask.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+      // val isPropn = isPropnFn(ind.inductiveType.ty)
+
+      val fmlyOpt = argsFmlyTerm map (_.last)
+      fmlyOpt map {
+        case l: LambdaLike[u, v] =>
+          // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
+          l.value match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(l.variable))(indNew.inducE(
+                (l.variable: Term) :-> (tp: Typ[u])))
+              else (indNew.recE(tp))
+          }
+        case fn: FuncLike[u, v] =>
+          // println(s"family seen ${fn.fansi} : ${fn.typ.fansi}")
+          val x = fn.dom.Var
+          val y = fn(x)
+          y match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(x)) {
+                (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+              } else (indNew.recE(tp))
+          }
+        case pt: PiDefn[u, v] if ind.isPropn && pt.domain == indNew.typ =>
+          indNew.inducE(LambdaFixed(pt.variable, pt.value))
+        case tp: Typ[u] if (ind.isPropn) =>
+          val x = tp.Var
+          if (tp.dependsOn(x)) {
+            (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+          } else (indNew.recE(tp))
+      }
+
+    }
+  }
+
+  def getRecIndexed(ind: IndexedIndMod,
+                    argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
+    def getInd(p: Vector[Term]) =
+      TypFamilyExst
+        .getIndexedConstructorSeq(foldFunc(ind.typFP, p), introsFold(ind, p))
+        .value
+    val newParamsTask = argsFmlyTerm map (_.init)
+    newParamsTask.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+      val fmlOptRaw = argsFmlyTerm map (_.last)
+      val fmlOpt =
+        if (ind.isPropn)
+          fmlOptRaw.flatMap((fib) => proofLift(indNew.W, fib))
+        else fmlOptRaw
+      val recOptTask =
+        for {
+          fml <- fmlOpt
+          codOpt = indNew.family.constFinalCod(fml)
+        } yield codOpt.map((cod) => indNew.recE(cod))
+      val inducTask =
+        fmlOpt.map((fib) => indNew.inducE(fib))
+      for {
+        recOpt <- recOptTask
+        induc  <- inducTask
+      } yield recOpt.getOrElse(induc)
+
+    }
+  }
+
+  // val proofLift: (Term, Term) => Task[Term] = {
+  //   case (w: Typ[u], tp: Typ[v]) => Task { (w.Var) :-> tp }
+  //   case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+  //     val x = w.dom.Var
+  //     proofLift(w(x), tp(x.asInstanceOf[a]))
+  //       .map((g: Term) => x :~> (g: Term))
+  //   case _ => Task.raiseError(new Exception("could not lift proof"))
+  // }
 
   type TaskParser = (Expr, Vector[Term]) => Task[Term]
 
@@ -87,22 +185,25 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       else throw new ApplnFailException(func, arg)
     }
 
-  val parse: TaskParser = recParser(parse)
+  // val parse: TaskParser = recParser(parse)
 
-  def recParser(rec: => TaskParser)(exp: Expr,
-                                    vars: Vector[Term]): Task[Term] =
+  def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
     exp match {
       case Predef(t) => Task.now(t)
       case Sort(_)   => Task.now(Type)
       case Var(n)    => Task.now(vars(n))
       case RecIterAp(name, args) =>
-        val indMod           = termIndModMap(name)
-        val (argsFmly, xs)   = args.splitAt(indMod.numParams + 1)
-        val argsFmlyTermTask = parseVec(argsFmly, vars)
+        val indMod               = termIndModMap(name)
+        val (argsFmly, xs)       = args.splitAt(indMod.numParams + 1)
+        val argsFmlyTermTask     = parseVec(argsFmly, vars)
         val recFnTry: Task[Term] =
-          argsFmlyTermTask.map { (vec) =>
-            indMod.getRecOpt(Option(vec)).get
+          // argsFmlyTermTask.map { (vec) =>
+          //   indMod.getRecOpt(Option(vec)).get
+          // }
+          argsFmlyTermTask.flatMap { (vec) =>
+            getRec(indMod, Task(vec))
           }
+
         for {
           recFn <- recFnTry
           vec   <- parseVec(xs, vars)
@@ -111,13 +212,13 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
         } yield res
 
       case App(f, a) =>
-        Task.zipMap2(rec(f, vars), rec(a, vars))(applyFuncProp)
+        Task.zipMap2(parse(f, vars), parse(a, vars))(applyFuncProp)
       case Lam(domain, body) =>
         for {
-          domTerm <- rec(domain.ty, vars)
+          domTerm <- parse(domain.ty, vars)
           domTyp  <- Task(toTyp(domTerm))
           x = domTyp.Var
-          value <- rec(body, x +: vars)
+          value <- parse(body, x +: vars)
         } yield
           value match {
             case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
@@ -128,20 +229,20 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
           }
       case Pi(domain, body) =>
         for {
-          domTerm <- rec(domain.ty, vars)
+          domTerm <- parse(domain.ty, vars)
           domTyp  <- Task(toTyp(domTerm))
           x = domTyp.Var
-          value <- rec(body, x +: vars)
+          value <- parse(body, x +: vars)
           cod   <- Task(toTyp(value))
           dep = cod.dependsOn(x)
         } yield if (dep) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
-          domTerm <- rec(domain.ty, vars)
+          domTerm <- parse(domain.ty, vars)
           domTyp  <- Task(toTyp(domTerm))
           x = domTyp.Var
-          valueTerm <- rec(value, vars)
-          bodyTerm  <- rec(body, x +: vars)
+          valueTerm <- parse(value, vars)
+          bodyTerm  <- parse(body, x +: vars)
         } yield bodyTerm.replace(x, valueTerm)
       case e => Task.raiseError(UnParsedException(e))
     }
@@ -235,12 +336,29 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     val withAxioms = withTypDef.flatMap(_.addAxioms(ind.intros))
     val indOpt: Task[TermIndMod] = {
       val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
-      val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
+
+      import scala.util._
+
+      def getValue(t: Term,
+                   n: Int,
+                   accum: Vector[Term]): Task[(Term, Vector[Term])] =
+        (t, n) match {
+          case (x, 0) => Task.now(x -> accum)
+          case (l: LambdaLike[u, v], n) if n > 0 =>
+            getValue(l.value, n - 1, accum :+ l.variable)
+          case (fn: FuncLike[u, v], n) if n > 0 =>
+            val x = fn.dom.Var
+            getValue(fn(x), n - 1, accum :+ x)
+          case _ => throw new Exception("getValue failed")
+        }
+
       inductiveTypOpt.flatMap { (inductiveTyp) =>
         val name = ind.inductiveType.name
         val typF = name.toString :: inductiveTyp
         val typValueOpt =
-          Task.fromTry(LeanToTerm.getValue(typF, ind.numParams, Vector()))
+          getValue(typF, ind.numParams, Vector())
+        val isPropn = isPropnFn(ind.inductiveType.ty)
+
         val introsTry =
           withTypDef.flatMap(_.parseSymVec(ind.intros, Vector()))
         introsTry.flatMap { (intros) =>
