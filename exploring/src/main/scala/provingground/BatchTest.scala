@@ -8,16 +8,28 @@ import scala.io.StdIn
 import monix.reactive._
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import ammonite.ops._
 
 object LeanAmmTest extends App {
   import interface._, LeanInterface._
+  import trepplein._
   val mods = getMods("data/group.export")
   println(mods.size)
-  lazy val obs = LeanToTermMonix.observable(mods)
+  val defFile = pwd / "data" / "group-defs.txt"
+  val indFile = pwd / "data" / "group-inds.txt"
+  val errFile = pwd / "data" / "group-errors.yaml"
+  def callback(mod: Modification, err: Throwable) = {
+    write.append(errFile, s"""mod: "$mod"""" + "\n")
+    write.append(errFile, s"""err: "$err"""" + "\n\n")
+  }
+  write.over(errFile, "")
   var count    = 0
+  lazy val obs = LeanToTermMonix.observable(mods, logErr = callback)
   lazy val fut = obs.foreach { (t) =>
     count += 1
     println(s"$count : ${t.defnMap.size}")
+    write.over(defFile, t.defnMap.keys.mkString("\n"))
+    write.over(indFile, t.termIndModMap.keys.mkString("\n"))
   }
 
   Await.result(fut, Duration.Inf)

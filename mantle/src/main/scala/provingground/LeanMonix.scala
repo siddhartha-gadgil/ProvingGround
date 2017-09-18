@@ -139,7 +139,8 @@ object LeanToTermMonix {
 
   def observable(mods: Vector[Modification],
                  init: LeanToTermMonix = empty,
-                 limit: FiniteDuration = 5.minutes) =
+                 limit: FiniteDuration = 5.minutes,
+                 logErr: (Modification, Throwable) => Unit = (_, _) => {}) =
     Observable.fromIterable(mods).flatScan[LeanToTermMonix](init) {
       case (l, m) =>
         Observable.fromTask(
