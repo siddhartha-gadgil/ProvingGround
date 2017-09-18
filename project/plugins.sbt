@@ -16,7 +16,7 @@ resolvers += Classpaths.sbtPluginReleases
 
 // addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
 
-addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.3")
+addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6")
 
 // addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
 
@@ -28,15 +28,15 @@ addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.10")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
 
-addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.2") // change to 0.6.0 for sbt 1.0
+addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.5") // change to 0.6.0 for sbt 1.0
 
-addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.13")
+addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.14")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC10")
 
 // addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.5.0-M1")
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
 
 addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
 
