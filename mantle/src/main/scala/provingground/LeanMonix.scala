@@ -5,7 +5,7 @@ import induction._
 // import ammonite.ops._
 // import scala.util._
 
-import scala.concurrent._
+import scala.concurrent._, duration._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import monix.reactive._
@@ -137,9 +137,16 @@ object LeanToTermMonix {
       case (l, m) => l.flatMap(_.add(m))
     }
 
-  def observable(mods: Vector[Modification], init: LeanToTermMonix = empty) =
+  def observable(mods: Vector[Modification],
+                 init: LeanToTermMonix = empty,
+                 limit: FiniteDuration = 5.minutes) =
     Observable.fromIterable(mods).flatScan[LeanToTermMonix](init) {
-      case (l, m) => Observable.fromTask(l.add(m))
+      case (l, m) =>
+        Observable.fromTask(
+          l.add(m).timeout(limit).onErrorRecoverWith {
+            case _ => Task.now(l)
+          }
+        )
     }
 }
 
@@ -212,7 +219,8 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
         } yield res
 
       case App(f, a) =>
-        Task.zipMap2(parse(f, vars), parse(a, vars))(applyFuncProp)
+        Task.zipMap2(Task.defer(parse(f, vars)), Task.defer(parse(a, vars)))(
+          applyFuncProp)
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
