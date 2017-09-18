@@ -145,7 +145,9 @@ object LeanToTermMonix {
       case (l, m) =>
         Observable.fromTask(
           l.add(m).timeout(limit).onErrorRecoverWith {
-            case _ => Task.now(l)
+            case err =>
+              logErr(m, err)
+              Task.now(l)
           }
         )
     }
