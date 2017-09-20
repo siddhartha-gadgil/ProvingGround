@@ -28,6 +28,8 @@ object LeanToTermMonix {
   }
 
   def proofLift: (Term, Term) => Task[Term] = {
+    case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
+      Task(LambdaFixed(pt.variable, pt.value))
     case (w: Typ[u], tp: Typ[v]) => Task { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
@@ -39,10 +41,10 @@ object LeanToTermMonix {
   def introsFold(ind: TermIndMod, p: Vector[Term]) =
     ind.intros.map((rule) => foldFunc(rule, p))
 
-  def getRec(ind: TermIndMod, argsFmlyTerm: Task[Vector[Term]]): Task[Term] =
+  def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
-      case smp: SimpleIndMod     => getRecSimple(smp, argsFmlyTerm)
-      case indInd: IndexedIndMod => getRecIndexed(indInd, argsFmlyTerm)
+      case smp: SimpleIndMod     => getRecSimple(smp, Task(argsFmlyTerm))
+      case indInd: IndexedIndMod => getRecIndexed(indInd, Task(argsFmlyTerm))
     }
 
   def getRecSimple(ind: SimpleIndMod,
@@ -153,6 +155,13 @@ object LeanToTermMonix {
     }
 }
 
+case class RecFoldException(indMod: TermIndMod,
+                            recFn: Term,
+                            argsFmlyTerm: Vector[Term],
+                            vec: Vector[Term],
+                            fail: ApplnFailException)
+    extends IllegalArgumentException("Failure to fold recursive Function")
+
 case class LeanToTermMonix(defnMap: Map[Name, Term],
                            termIndModMap: Map[Name, TermIndMod],
                            unparsed: Vector[Name]) { self =>
@@ -203,21 +212,23 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       case Sort(_)   => Task.now(Type)
       case Var(n)    => Task.now(vars(n))
       case RecIterAp(name, args) =>
-        val indMod               = termIndModMap(name)
-        val (argsFmly, xs)       = args.splitAt(indMod.numParams + 1)
-        val argsFmlyTermTask     = parseVec(argsFmly, vars)
-        val recFnTry: Task[Term] =
-          // argsFmlyTermTask.map { (vec) =>
-          //   indMod.getRecOpt(Option(vec)).get
-          // }
-          argsFmlyTermTask.flatMap { (vec) =>
-            getRec(indMod, Task(vec))
-          }
+        val indMod         = termIndModMap(name)
+        val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+        // val argsFmlyTermTask = parseVec(argsFmly, vars)
+        // val recFnTry: Task[Term] =
+        //   argsFmlyTermTask.flatMap { (vec) =>
+        //     getRec(indMod, vec)
+        //   }
 
         for {
-          recFn <- recFnTry
-          vec   <- parseVec(xs, vars)
+          argsFmlyTerm <- parseVec(argsFmly, vars)
+          recFn        <- getRec(indMod, argsFmlyTerm)
+          vec          <- parseVec(xs, vars)
           resTask = Task(vec.foldLeft(recFn)(applyFuncProp(_, _)))
+            .onErrorRecoverWith {
+              case err: ApplnFailException =>
+                throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+            }
           res <- resTask
         } yield res
 
