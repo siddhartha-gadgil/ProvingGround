@@ -178,7 +178,7 @@ sealed trait TypFamilyExst {
         case l =>
           val x    = l.head
           val ys   = l.tail
-          val name = x.asInstanceOf[Symbolic].name.toString
+          val name = x.asInstanceOf[Symbolic].name
           val head =
             name ::: IndexedConstructorShapeExst.getIndexedConstructorShape(
               x.typ)
