@@ -6,15 +6,22 @@ import provingground._, HoTT._
 
 import shapeless._
 
+
+import scala.language.implicitConversions
 /**
   * implicits for constructing inductive types
   */
-object TLImplicits extends InductionImplicits
+object TLImplicits extends InductionImplicits{
+
+}
 
 trait InductionImplicits {
   import IterFuncShape._
 
   import ConstructorShape._
+
+  implicit def stringSym(name: String) = Name(name)
+
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair              = ConstructorTypTL(IdShape[H], typ)

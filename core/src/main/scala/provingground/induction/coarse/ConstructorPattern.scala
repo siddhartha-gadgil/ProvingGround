@@ -767,7 +767,7 @@ object Constructor {
                H <: Term with Subs[H]](pattern: ConstructorPattern[C, U, H],
                                        name: String) =
     (w: Typ[H]) => {
-      val cons: U = pattern.cons(w, name)
+      val cons: U = pattern.cons(w, Name(name))
       ConstructorDefn[U, C, H](pattern, cons, w)
     }
 

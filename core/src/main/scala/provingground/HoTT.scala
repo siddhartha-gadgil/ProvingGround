@@ -1,6 +1,6 @@
 package provingground
 
-import scala.language.implicitConversions
+
 import scala.util.Try
 //import scala.language.existentials
 import Math._
@@ -50,7 +50,7 @@ object HoTT {
   /**
     * use strings as symbols.
     */
-  implicit def stringSym(name: String) = Name(name)
+  // implicit def stringSym(name: String) = Name(name)
 
   import scala.language.existentials
 
@@ -266,7 +266,7 @@ object HoTT {
     def typedVar(name: AnySym) = TypedTerm[U](variable(name), this)
 
     /** symbolic object with given name*/
-    def ::(name: String) = symbObj(name)
+    def ::(name: String) = symbObj(Name(name))
 
     /**
       * new variable from a factory.
@@ -2803,7 +2803,7 @@ object HoTT {
 
       name = newname
 
-      "$" + newname
+      Name("$" + newname)
     }
   }
 
