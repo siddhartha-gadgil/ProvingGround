@@ -16,7 +16,7 @@ case object TermLang
     with ExprPatterns[Term] {
   def variable[S](name: S, typ: Term): Option[Term] = (name, typ) match {
     case (s: String, t: Typ[u]) =>
-      Some(t.symbObj(s))
+      Some(t.symbObj(Name(s)))
     case _ => None
   }
 
@@ -24,7 +24,7 @@ case object TermLang
     //    case t : Typ[u] => Some(t)
     case "Type" => Some(HoTT.Universe(level))
     case s: String =>
-      Some(SymbTyp(s, level))
+      Some(SymbTyp(Name(s), level))
     case _ => None
   }
 

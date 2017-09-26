@@ -206,19 +206,17 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   // val parse: TaskParser = recParser(parse)
 
+  // val Prop = Type
+
   def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
     exp match {
-      case Predef(t) => Task.now(t)
-      case Sort(_)   => Task.now(Type)
-      case Var(n)    => Task.now(vars(n))
+      case Predef(t)        => Task.now(t)
+      case Sort(Level.Zero) => Task.now(Prop)
+      case Sort(_)          => Task.now(Type)
+      case Var(n)           => Task.now(vars(n))
       case RecIterAp(name, args) =>
         val indMod         = termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-        // val argsFmlyTermTask = parseVec(argsFmly, vars)
-        // val recFnTry: Task[Term] =
-        //   argsFmlyTermTask.flatMap { (vec) =>
-        //     getRec(indMod, vec)
-        //   }
 
         for {
           argsFmlyTerm <- parseVec(argsFmly, vars)

@@ -1,6 +1,6 @@
 package provingground
 
-import scala.language.implicitConversions
+
 import scala.util.Try
 //import scala.language.existentials
 import Math._
@@ -50,7 +50,7 @@ object HoTT {
   /**
     * use strings as symbols.
     */
-  implicit def stringSym(name: String) = Name(name)
+  // implicit def stringSym(name: String) = Name(name)
 
   import scala.language.existentials
 
@@ -266,7 +266,7 @@ object HoTT {
     def typedVar(name: AnySym) = TypedTerm[U](variable(name), this)
 
     /** symbolic object with given name*/
-    def ::(name: String) = symbObj(name)
+    def ::(name: String) = symbObj(Name(name))
 
     /**
       * new variable from a factory.
@@ -501,6 +501,36 @@ object HoTT {
   }
 
   /**
+    * Symbolic propositions. All symbolic objects of this type are witnesses, hence equal.
+    *
+    */
+  case class SymbProp(name: AnySym)
+      extends Typ[Term]
+      with Symbolic {
+    lazy val typ = Prop
+
+    def newobj = SymbProp(new InnerSym[Typ[Term]](this))
+
+    type Obj = Term
+
+    def variable(name: AnySym) =
+      SymbObj(Name("_"), this)
+
+    def elem = this
+
+    //     val applptntypu = ApplnPattern[Term, Typ[Term]]()
+
+    def subs(x: Term, y: Term) = (x, y) match {
+      case (u: Typ[_], v: Typ[_]) if (u == this) => v
+      case _ => {
+        def symbobj(name: AnySym) = SymbProp(name)
+        symSubs(symbobj)(x, y)(name)
+      }
+    }
+  }
+
+
+  /**
     * Types with symbolic objects not refined.
     */
   trait SmallTyp extends Typ[Term] {
@@ -654,6 +684,22 @@ object HoTT {
       case _: BaseUniv if (ignoreLevels || level == 0) => true
       case _                                           => false
     }
+  }
+
+  case object Prop extends BaseUniv with Univ{
+    type Obj = Typ[Term]
+
+    val typ = Type.typ
+
+    def variable(name: AnySym) = SymbProp(name)
+
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
+
+    def subs(x: Term, y: Term) = this
+
+
   }
 
   def univlevel: Typ[Typ[Term]] => Int = {
@@ -2803,7 +2849,7 @@ object HoTT {
 
       name = newname
 
-      "$" + newname
+      Name("$" + newname)
     }
   }
 

@@ -6,7 +6,12 @@ import scala.language.existentials
 
 import shapeless._
 
+import scala.language.implicitConversions
+
 object Implicits {
+  implicit def stringSym(name: String) = Name(name)
+
+
   import ConstructorPattern._
 
   val Types = FmlyPtn.IdFmlyPtn[Term, Term]()
