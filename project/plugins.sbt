@@ -26,11 +26,11 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.18")
 
 addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.10")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.2-RC2")
 
-addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.5.5") // change to 0.6.0 for sbt 1.0
+addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.6.0") // change to 0.6.0 for sbt 1.0
 
-addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.14")
+addSbtPlugin("org.ensime" % "sbt-ensime" % "2.0.1")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC10")
 
