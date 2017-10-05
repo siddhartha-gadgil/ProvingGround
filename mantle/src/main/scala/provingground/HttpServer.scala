@@ -1,4 +1,5 @@
-package provingground
+package provingground.interface
+import provingground._, learning._
 
 import andrewscurtis._
 

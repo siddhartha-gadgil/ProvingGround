@@ -1,4 +1,5 @@
-package provingground
+package provingground.learning
+import provingground._
 
 // import com.mongodb.casbah._
 import reactivemongo.api._

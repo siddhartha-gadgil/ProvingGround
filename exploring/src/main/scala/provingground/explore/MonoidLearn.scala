@@ -1,6 +1,6 @@
 package provingground.explore
 
-import provingground._
+import provingground._, interface._, learning._
 
 import scala.concurrent.duration._
 

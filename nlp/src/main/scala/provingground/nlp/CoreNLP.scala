@@ -1,4 +1,4 @@
-package provingground.nlp
+package provingground.translation
 import provingground._
 
 import translation._
@@ -82,7 +82,7 @@ object CoreNLP {
 
 // The part below is for testing.
 object CoreNLPTest {
-  import provingground.nlp.CoreNLP._
+  import provingground.translation.CoreNLP._
 
   val props = new java.util.Properties()
   props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")

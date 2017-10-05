@@ -1,4 +1,5 @@
-package provingground
+package provingground.learning
+import provingground._
 
 //import akka.stream._
 import akka.stream.scaladsl._
@@ -8,6 +9,8 @@ import scala.concurrent._
 import translation._
 
 import learning._
+
+import interface._
 
 import HoTT._
 

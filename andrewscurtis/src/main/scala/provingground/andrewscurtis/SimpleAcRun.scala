@@ -1,7 +1,7 @@
 package provingground.andrewscurtis
 
 import provingground.learning.Collections._
-import provingground._
+import provingground._, interface._, learning._
 
 import com.github.nscala_time.time.Imports._
 import provingground.andrewscurtis.SimpleAcEvolution._

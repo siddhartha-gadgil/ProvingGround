@@ -22,7 +22,7 @@ import FiniteDistributionLearner._
 
 import AdjDiffbleFunction._
 
-import QDI._
+import interface._, QDI._
 
 import upickle.default._
 

@@ -9,6 +9,7 @@ import provingground.{
 import HoTT._
 import translation._
 import learning._
+import interface._
 import Sampler._
 import FansiShow._
 

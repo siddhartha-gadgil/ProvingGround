@@ -1,0 +1,2218 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../lib/index.js"></script>
+      <script type="text/javascript" src="../../index.js"></script>
+      <script type="text/javascript" src="../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html">
+              <span class="name">root</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="index.html#provingground" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html">
+              <span class="name">provingground</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="andrewscurtis"></a><a id="andrewscurtis:andrewscurtis"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#andrewscurtis" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../andrewscurtis/index.html">
+              <span class="name">andrewscurtis</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.examples" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="examples"></a><a id="examples:examples"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#examples" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../examples/index.html">
+              <span class="name">examples</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.explore" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="explore"></a><a id="explore:explore"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#explore" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../explore/index.html">
+              <span class="name">explore</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#functionfinder" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../functionfinder/index.html">
+              <span class="name">functionfinder</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="induction"></a><a id="induction:induction"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#induction" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="../induction/index.html">
+              <span class="name">induction</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
+recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
+is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="../induction/ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
+and <a href="../induction/ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
+scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
+To make these types visible, some type level calculations using  implicits are done, giving traits <a href="../induction/ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
+and <a href="../induction/ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
+single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="../induction/ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.interface" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="interface"></a><a id="interface:interface"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#interface" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../interface/index.html">
+              <span class="name">interface</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="learning"></a><a id="learning:learning"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#learning" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../learning/index.html">
+              <span class="name">learning</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.library" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="library"></a><a id="library:library"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#library" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../library/index.html">
+              <span class="name">library</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.nlp" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="nlp"></a><a id="nlp:nlp"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#nlp" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../nlp/index.html">
+              <span class="name">nlp</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.normalform" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="normalform"></a><a id="normalform:normalform"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#normalform" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../normalform/index.html">
+              <span class="name">normalform</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.scratch" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="scratch"></a><a id="scratch:scratch"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#scratch" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../scratch/index.html">
+              <span class="name">scratch</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.translation" visbl="pub" class="indented2 current" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="translation"></a><a id="translation:translation"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#translation" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">translation</span>
+      </span>
+      
+      <p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="Translator.html" class="extype" name="provingground.translation.Translator">Translator</a> framework and helper typeclasses is <a href="Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>, several structures for
+concrete languages including our implementation of HoTT are in this package.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors
+"></a>
+                        <a href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors
+">
+                          CompositeFunctors
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ConeRestriction.html" title="restriction of cone on functors
+"></a>
+                        <a href="ConeRestriction.html" title="restriction of cone on functors
+">
+                          ConeRestriction
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ContextTranslator$.html" title=""></a>
+                        <a class="trait" href="ContextTranslator.html" title="context dependent version of Translator
+"></a>
+                        <a href="ContextTranslator.html" title="context dependent version of Translator
+">
+                          ContextTranslator
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Domain.html" title=""></a>
+                        <a href="Domain.html" title="">
+                          Domain
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Equiv$.html" title=""></a>
+                        <a class="trait" href="Equiv.html" title="Equivalence of Functors (without laws)
+"></a>
+                        <a href="Equiv.html" title="Equivalence of Functors (without laws)
+">
+                          Equiv
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ExprApplnOps.html" title=""></a>
+                        <a href="ExprApplnOps.html" title="">
+                          ExprApplnOps
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExprLang$.html" title=""></a>
+                        <a class="trait" href="ExprLang.html" title="Abstraction (as a type class) of a language for mathematical expressions, i.e., of"></a>
+                        <a href="ExprLang.html" title="Abstraction (as a type class) of a language for mathematical expressions, i.e., of">
+                          ExprLang
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ExprPatterns.html" title=""></a>
+                        <a href="ExprPatterns.html" title="">
+                          ExprPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FansiFormat$.html" title=""></a>
+                        <a href="FansiFormat$.html" title="">
+                          FansiFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FansiShow$.html" title=""></a>
+                        <a class="trait" href="FansiShow.html" title=""></a>
+                        <a href="FansiShow.html" title="">
+                          FansiShow
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FansiTranslate$.html" title=""></a>
+                        <a href="FansiTranslate$.html" title="">
+                          FansiTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FoldedTerm.html" title=""></a>
+                        <a href="FoldedTerm.html" title="">
+                          FoldedTerm
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FormulaParser.html" title=""></a>
+                        <a href="FormulaParser.html" title="">
+                          FormulaParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FreeExpr$.html" title=""></a>
+                        <a class="trait" href="FreeExpr.html" title=""></a>
+                        <a href="FreeExpr.html" title="">
+                          FreeExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FreeExprHLPatterns$.html" title=""></a>
+                        <a href="FreeExprHLPatterns$.html" title="">
+                          FreeExprHLPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FreeExprPatterns$.html" title=""></a>
+                        <a href="FreeExprPatterns$.html" title="">
+                          FreeExprPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Functors$.html" title="Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+and for Constant functors."></a>
+                        <a href="Functors$.html" title="Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+and for Constant functors.">
+                          Functors
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Inclusion$.html" title=""></a>
+                        <a class="trait" href="Inclusion.html" title="inclusion of functors
+"></a>
+                        <a href="Inclusion.html" title="inclusion of functors
+">
+                          Inclusion
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="JsonTranslate$.html" title=""></a>
+                        <a href="JsonTranslate$.html" title="">
+                          JsonTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LatexFormat$.html" title=""></a>
+                        <a href="LatexFormat$.html" title="">
+                          LatexFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LatexParser$.html" title=""></a>
+                        <a href="LatexParser$.html" title="">
+                          LatexParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LiteralParser$.html" title=""></a>
+                        <a class="trait" href="LiteralParser.html" title=""></a>
+                        <a href="LiteralParser.html" title="">
+                          LiteralParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MathReader$.html" title=""></a>
+                        <a class="trait" href="MathReader.html" title=""></a>
+                        <a href="MathReader.html" title="">
+                          MathReader
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MathWriter$.html" title=""></a>
+                        <a class="trait" href="MathWriter.html" title="Type-class for  writing to a document of type D in terms of expressions of type E."></a>
+                        <a href="MathWriter.html" title="Type-class for  writing to a document of type D in terms of expressions of type E.">
+                          MathWriter
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NestedDoc$.html" title=""></a>
+                        <a class="trait" href="NestedDoc.html" title=""></a>
+                        <a href="NestedDoc.html" title="">
+                          NestedDoc
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="NlpProse$.html" title="Stanford dependency trees and associated methods"></a>
+                        <a href="NlpProse$.html" title="Stanford dependency trees and associated methods">
+                          NlpProse
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="OptRestriction$.html" title=""></a>
+                        <a class="trait" href="OptRestriction.html" title="restriction on optional functor
+"></a>
+                        <a href="OptRestriction.html" title="restriction on optional functor
+">
+                          OptRestriction
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="PrintFormat$.html" title=""></a>
+                        <a href="PrintFormat$.html" title="">
+                          PrintFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="QuasiInclHList.html" title="inclusion of type Y in F(X) with F(_) an HList
+"></a>
+                        <a href="QuasiInclHList.html" title="inclusion of type Y in F(X) with F(_) an HList
+">
+                          QuasiInclHList
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QuasiInclusion$.html" title=""></a>
+                        <a class="class" href="QuasiInclusion.html" title="inclusion of type Y in F(X)
+"></a>
+                        <a href="QuasiInclusion.html" title="inclusion of type Y in F(X)
+">
+                          QuasiInclusion
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QuasiProjection$.html" title=""></a>
+                        <a class="trait" href="QuasiProjection.html" title="projection of X onto Y
+"></a>
+                        <a href="QuasiProjection.html" title="projection of X onto Y
+">
+                          QuasiProjection
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RefineTerms$.html" title=""></a>
+                        <a href="RefineTerms$.html" title="">
+                          RefineTerms
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Scoped$.html" title=""></a>
+                        <a class="trait" href="Scoped.html" title=""></a>
+                        <a href="Scoped.html" title="">
+                          Scoped
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ShapeTree$.html" title=""></a>
+                        <a class="trait" href="ShapeTree.html" title=""></a>
+                        <a href="ShapeTree.html" title="">
+                          ShapeTree
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ShapeTreeFormat.html" title=""></a>
+                        <a href="ShapeTreeFormat.html" title="">
+                          ShapeTreeFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="SpecialTerms$.html" title=""></a>
+                        <a href="SpecialTerms$.html" title="">
+                          SpecialTerms
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Statement$.html" title=""></a>
+                        <a class="trait" href="Statement.html" title="A statement obtained from source which affects a document."></a>
+                        <a href="Statement.html" title="A statement obtained from source which affects a document.">
+                          Statement
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="StringParse$.html" title=""></a>
+                        <a href="StringParse$.html" title="">
+                          StringParse
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SubType.html" title="subtype relation between functors, giving inclusion and optional restriction,
+explicit, not depending on scala type checking
+"></a>
+                        <a href="SubType.html" title="subtype relation between functors, giving inclusion and optional restriction,
+explicit, not depending on scala type checking
+">
+                          SubType
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SubTypePattern$.html" title=""></a>
+                        <a class="class" href="SubTypePattern.html" title="Pattern and builder for matching whether, for a term x: X, F(x) is in the subtype Y."></a>
+                        <a href="SubTypePattern.html" title="Pattern and builder for matching whether, for a term x: X, F(x) is in the subtype Y.">
+                          SubTypePattern
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TeXTranslate$.html" title=""></a>
+                        <a href="TeXTranslate$.html" title="">
+                          TeXTranslate
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermExpr$.html" title=""></a>
+                        <a class="trait" href="TermExpr.html" title=""></a>
+                        <a href="TermExpr.html" title="">
+                          TermExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermFormat$.html" title=""></a>
+                        <a href="TermFormat$.html" title="">
+                          TermFormat
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermLang$.html" title=""></a>
+                        <a href="TermLang$.html" title="">
+                          TermLang
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermParser.html" title=""></a>
+                        <a href="TermParser.html" title="">
+                          TermParser
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermPatterns$.html" title="Patterns, in the sense of Translator.Pattern, as well as some builders
+for various kinds of HoTT terms."></a>
+                        <a href="TermPatterns$.html" title="Patterns, in the sense of Translator.Pattern, as well as some builders
+for various kinds of HoTT terms.">
+                          TermPatterns
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="TermRec.html" title=""></a>
+                        <a href="TermRec.html" title="">
+                          TermRec
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermShapeTree$.html" title=""></a>
+                        <a href="TermShapeTree$.html" title="">
+                          TermShapeTree
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermToExpr$.html" title=""></a>
+                        <a class="class" href="TermToExpr.html" title=""></a>
+                        <a href="TermToExpr.html" title="">
+                          TermToExpr
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TestTrait$.html" title=""></a>
+                        <a href="TestTrait$.html" title="">
+                          TestTrait
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TextToInt$.html" title="Converts prose numbers to Integers without checking for bad cases"></a>
+                        <a href="TextToInt$.html" title="Converts prose numbers to Integers without checking for bad cases">
+                          TextToInt
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Translator$.html" title="General functorial framework for translation."></a>
+                        <a class="trait" href="Translator.html" title="Translator from an input I to an output O, designed to be built recursively."></a>
+                        <a href="Translator.html" title="Translator from an input I to an output O, designed to be built recursively.">
+                          Translator
+                        </a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Vocabulary.html" title=""></a>
+                        <a href="Vocabulary.html" title="">
+                          Vocabulary
+                        </a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="package value">
+      <div id="definition">
+        <div class="big-circle package">p</div>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a></p>
+        <h1>translation<span class="permalink">
+      <a href="../../provingground/translation/index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">translation</span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="Translator.html" class="extype" name="provingground.translation.Translator">Translator</a> framework and helper typeclasses is <a href="Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>, several structures for
+concrete languages including our implementation of HoTT are in this package.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
+            <ol>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
+            </ol>
+          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.translation"><span>translation</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.translation.CompositeFunctors" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CompositeFunctorsextendsAnyRef"></a><a id="CompositeFunctors:CompositeFunctors"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#CompositeFunctorsextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="lower priority Functor and Traverese type classes to be extended in Functors
+" href="CompositeFunctors.html">
+              <span class="name">CompositeFunctors</span>
+            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">lower priority Functor and Traverese type classes to be extended in <a href="Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>
+</p>
+    </li><li name="provingground.translation.ConeRestriction" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ConeRestriction[X[_],Y[_],G[_]]extendsAnyRef"></a><a id="ConeRestriction[X[_],Y[_],G[_]]:ConeRestriction[X,Y,G]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ConeRestriction[X[_],Y[_],G[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="restriction of cone on functors
+" href="ConeRestriction.html">
+              <span class="name">ConeRestriction</span>
+            </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Y">Y<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="G">G<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">restriction of cone on functors
+</p>
+    </li><li name="provingground.translation.ContextTranslator" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ContextTranslator[I,O,X[_],Ctx[_,_]]extendsCtx[I,O]=&gt;(X[I]=&gt;Option[X[O]])"></a><a id="ContextTranslator[I,O,X[_],Ctx[_,_]]:ContextTranslator[I,O,X,Ctx]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ContextTranslator[I,O,X[_],Ctx[_,_]]extendsCtx[I,O]=&gt;(X[I]=&gt;Option[X[O]])" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="context dependent version of Translator
+" href="ContextTranslator.html">
+              <span class="name">ContextTranslator</span>
+            </a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>, <span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Ctx">Ctx<span class="tparams">[<span name="_">_</span>, <span name="_">_</span>]</span></span>]</span><span class="result"> extends (<span class="extype" name="provingground.translation.ContextTranslator.Ctx">Ctx</span>[<span class="extype" name="provingground.translation.ContextTranslator.I">I</span>, <span class="extype" name="provingground.translation.ContextTranslator.O">O</span>]) ⇒ (<span class="extype" name="provingground.translation.ContextTranslator.X">X</span>[<span class="extype" name="provingground.translation.ContextTranslator.I">I</span>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.translation.ContextTranslator.X">X</span>[<span class="extype" name="provingground.translation.ContextTranslator.O">O</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">context dependent version of <a href="Translator.html" class="extype" name="provingground.translation.Translator">Translator</a>
+</p>
+    </li><li name="provingground.translation.Domain" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Domain[E]extendsAnyRef"></a><a id="Domain[E]:Domain[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Domain[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Domain.html">
+              <span class="name">Domain</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Equiv" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Equiv[X[_],Y[_]]extendsAnyRef"></a><a id="Equiv[X[_],Y[_]]:Equiv[X,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Equiv[X[_],Y[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="Equivalence of Functors (without laws)
+" href="Equiv.html">
+              <span class="name">Equiv</span>
+            </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Y">Y<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Equivalence of Functors (without laws)
+</p>
+    </li><li name="provingground.translation.ExprApplnOps" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExprApplnOps[E]extendsAnyRef"></a><a id="ExprApplnOps[E]:ExprApplnOps[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ExprApplnOps[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ExprApplnOps.html">
+              <span class="name">ExprApplnOps</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.ExprLang" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ExprLang[E]extendsAnyRef"></a><a id="ExprLang[E]:ExprLang[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ExprLang[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="Abstraction (as a type class) of a language for mathematical expressions, i.e., of" href="ExprLang.html">
+              <span class="name">ExprLang</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Abstraction (as a type class) of a language for mathematical expressions, i.e., of</p><div class="fullcomment"><div class="comment cmt"><p>Abstraction (as a type class) of a language for mathematical expressions, i.e., of</p><p>* methods for forming expressions,
+* some basic expressions such as true, false, numbers etc.</p><p>Expression include functions and  propositions.
+However, expressions here need not include sophisticated, and foundation specific, constructions such as inductive types;
+these should be abstracted separately.</p><p>While the design is based on homotopy type theory, implementations can be with a range of logics or functional languages,
+for instance HOL or the Wolfram language. All methods are optional, so anything outside a language is just not built.</p><p>This is integrated with and used by many components.</p><p>* As a target for natural language and latex translation.
+* Bidirectional integration with HoTT implementations:
+* * terms have such a structure,
+* * terms can be translated to a language with this structure.
+* Allows pickling of terms by implementing a formal expression language.
+* _Goal:_ Bidirectional integration with lean expressions.</p></div></div>
+    </li><li name="provingground.translation.ExprPatterns" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ExprPatterns[E]extendsAnyRef"></a><a id="ExprPatterns[E]:ExprPatterns[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ExprPatterns[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ExprPatterns.html">
+              <span class="name">ExprPatterns</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FansiShow" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FansiShow[-U]extendsAnyRef"></a><a id="FansiShow[-U]:FansiShow[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FansiShow[-U]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FansiShow.html">
+              <span class="name">FansiShow</span>
+            </a><span class="tparams">[<span name="U">-U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FoldedTerm" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FoldedTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Term"></a><a id="FoldedTerm[U&lt;:TermwithSubs[U]]:FoldedTerm[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FoldedTerm[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Term" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FoldedTerm.html">
+              <span class="name">FoldedTerm</span>
+            </a><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.FoldedTerm.U">U</span>]</span>]</span><span class="result"> extends <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FormulaParser" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FormulaParser[E]extendsAnyRef"></a><a id="FormulaParser[E]:FormulaParser[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FormulaParser[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FormulaParser.html">
+              <span class="name">FormulaParser</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FreeExpr" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FreeExprextendsAnyRef"></a><a id="FreeExpr:FreeExpr"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FreeExprextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FreeExpr.html">
+              <span class="name">FreeExpr</span>
+            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Inclusion" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Inclusion[X[_],Y[_]]extendsAnyRef"></a><a id="Inclusion[X[_],Y[_]]:Inclusion[X,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Inclusion[X[_],Y[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="inclusion of functors
+" href="Inclusion.html">
+              <span class="name">Inclusion</span>
+            </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Y">Y<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">inclusion of functors
+</p>
+    </li><li name="provingground.translation.LiteralParser" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LiteralParserextendsAnyRef"></a><a id="LiteralParser:LiteralParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#LiteralParserextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LiteralParser.html">
+              <span class="name">LiteralParser</span>
+            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.MathReader" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="MathReader[D,E]extendsAnyRef"></a><a id="MathReader[D,E]:MathReader[D,E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#MathReader[D,E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="MathReader.html">
+              <span class="name">MathReader</span>
+            </a><span class="tparams">[<span name="D">D</span>, <span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.MathWriter" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="MathWriter[D,E]extendsAnyRef"></a><a id="MathWriter[D,E]:MathWriter[D,E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#MathWriter[D,E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="Type-class for  writing to a document of type D in terms of expressions of type E." href="MathWriter.html">
+              <span class="name">MathWriter</span>
+            </a><span class="tparams">[<span name="D">D</span>, <span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Type-class for  writing to a document of type D in terms of expressions of type E.</p><div class="fullcomment"><div class="comment cmt"><p>Type-class for  writing to a document of type D in terms of expressions of type E.
+We can write statements and begin and end blocks.
+We append to the document, but the document may come with a cursor that allows insertion instead.
+</p></div></div>
+    </li><li name="provingground.translation.NestedDoc" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NestedDoc[T]extendsAnyRef"></a><a id="NestedDoc[T]:NestedDoc[T]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#NestedDoc[T]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NestedDoc.html">
+              <span class="name">NestedDoc</span>
+            </a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.OptRestriction" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="OptRestriction[X[_],Y[_]]extendsConeRestriction[X,Y,Option]"></a><a id="OptRestriction[X[_],Y[_]]:OptRestriction[X,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#OptRestriction[X[_],Y[_]]extendsConeRestriction[X,Y,Option]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="restriction on optional functor
+" href="OptRestriction.html">
+              <span class="name">OptRestriction</span>
+            </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Y">Y<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="ConeRestriction.html" class="extype" name="provingground.translation.ConeRestriction">ConeRestriction</a>[<span class="extype" name="provingground.translation.OptRestriction.X">X</span>, <span class="extype" name="provingground.translation.OptRestriction.Y">Y</span>, <span class="extype" name="scala.Option">Option</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">restriction on optional functor
+</p>
+    </li><li name="provingground.translation.QuasiInclHList" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="QuasiInclHList[X,Y,F[_]&lt;:shapeless.HList]extendsQuasiInclusion[X,Y,F]"></a><a id="QuasiInclHList[X,Y,F[_]&lt;:HList]:QuasiInclHList[X,Y,F]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#QuasiInclHList[X,Y,F[_]&lt;:shapeless.HList]extendsQuasiInclusion[X,Y,F]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="inclusion of type Y in F(X) with F(_) an HList
+" href="QuasiInclHList.html">
+              <span class="name">QuasiInclHList</span>
+            </a><span class="tparams">[<span name="X">X</span>, <span name="Y">Y</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span> &lt;: <span class="extype" name="shapeless.HList">HList</span></span>]</span><span class="result"> extends <a href="QuasiInclusion.html" class="extype" name="provingground.translation.QuasiInclusion">QuasiInclusion</a>[<span class="extype" name="provingground.translation.QuasiInclHList.X">X</span>, <span class="extype" name="provingground.translation.QuasiInclHList.Y">Y</span>, <span class="extype" name="provingground.translation.QuasiInclHList.F">F</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">inclusion of type <code>Y</code> in <code>F(X)</code> with <code>F(_)</code> an <code>HList</code>
+</p>
+    </li><li name="provingground.translation.QuasiInclusion" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="QuasiInclusion[X,Y,F[_]]extendsAnyRef"></a><a id="QuasiInclusion[X,Y,F[_]]:QuasiInclusion[X,Y,F]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#QuasiInclusion[X,Y,F[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="inclusion of type Y in F(X)
+" href="QuasiInclusion.html">
+              <span class="name">QuasiInclusion</span>
+            </a><span class="tparams">[<span name="X">X</span>, <span name="Y">Y</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">inclusion of type <code>Y</code> in <code>F(X)</code>
+</p>
+    </li><li name="provingground.translation.QuasiProjection" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="QuasiProjection[X,Y]extendsAnyRef"></a><a id="QuasiProjection[X,Y]:QuasiProjection[X,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#QuasiProjection[X,Y]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="projection of X onto Y
+" href="QuasiProjection.html">
+              <span class="name">QuasiProjection</span>
+            </a><span class="tparams">[<span name="X">X</span>, <span name="Y">Y</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">projection of <code>X</code> onto <code>Y</code>
+</p>
+    </li><li name="provingground.translation.Scoped" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Scoped[S]extendsAnyRef"></a><a id="Scoped[S]:Scoped[S]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Scoped[S]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Scoped.html">
+              <span class="name">Scoped</span>
+            </a><span class="tparams">[<span name="S">S</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.ShapeTree" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ShapeTreeextendsAnyRef"></a><a id="ShapeTree:ShapeTree"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ShapeTreeextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ShapeTree.html">
+              <span class="name">ShapeTree</span>
+            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.ShapeTreeFormat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShapeTreeFormatextendsTermRec[provingground.translation.ShapeTree]"></a><a id="ShapeTreeFormat:ShapeTreeFormat"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ShapeTreeFormatextendsTermRec[provingground.translation.ShapeTree]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ShapeTreeFormat.html">
+              <span class="name">ShapeTreeFormat</span>
+            </a><span class="result"> extends <a href="TermRec.html" class="extype" name="provingground.translation.TermRec">TermRec</a>[<a href="ShapeTree.html" class="extype" name="provingground.translation.ShapeTree">ShapeTree</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Statement" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Statement[E]extendsAnyRef"></a><a id="Statement[E]:Statement[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Statement[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="A statement obtained from source which affects a document." href="Statement.html">
+              <span class="name">Statement</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">A statement obtained from source which affects a document.</p>
+    </li><li name="provingground.translation.SubType" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SubType[X[_],Y[_]]extendsInclusion[X,Y]withOptRestriction[X,Y]"></a><a id="SubType[X[_],Y[_]]:SubType[X,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#SubType[X[_],Y[_]]extendsInclusion[X,Y]withOptRestriction[X,Y]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="subtype relation between functors, giving inclusion and optional restriction,
+explicit, not depending on scala type checking
+" href="SubType.html">
+              <span class="name">SubType</span>
+            </a><span class="tparams">[<span name="X">X<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Y">Y<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="Inclusion.html" class="extype" name="provingground.translation.Inclusion">Inclusion</a>[<span class="extype" name="provingground.translation.SubType.X">X</span>, <span class="extype" name="provingground.translation.SubType.Y">Y</span>] with <a href="OptRestriction.html" class="extype" name="provingground.translation.OptRestriction">OptRestriction</a>[<span class="extype" name="provingground.translation.SubType.X">X</span>, <span class="extype" name="provingground.translation.SubType.Y">Y</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">subtype relation between functors, giving inclusion and optional restriction,
+explicit, not depending on scala type checking
+</p>
+    </li><li name="provingground.translation.SubTypePattern" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SubTypePattern[X,Y,F[_]]extendsAnyRef"></a><a id="SubTypePattern[X,Y,F[_]]:SubTypePattern[X,Y,F]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#SubTypePattern[X,Y,F[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="Pattern and builder for matching whether, for a term x: X, F(x) is in the subtype Y." href="SubTypePattern.html">
+              <span class="name">SubTypePattern</span>
+            </a><span class="tparams">[<span name="X">X</span>, <span name="Y">Y</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Pattern and builder for matching whether, for a term <code>x: X</code>, <code>F(x)</code> is in the <code><code>subtype</code></code> <code>Y</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Pattern and builder for matching whether, for a term <code>x: X</code>, <code>F(x)</code> is in the <code><code>subtype</code></code> <code>Y</code>.
+Here <code>Y</code> is not just a scala subtype, but we have inclusions and projections making it a direct summand.
+</p></div></div>
+    </li><li name="provingground.translation.TermParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermParserextendsJavaTokenParsers"></a><a id="TermParser:TermParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermParserextendsJavaTokenParsers" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermParser.html">
+              <span class="name">TermParser</span>
+            </a><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.JavaTokenParsers">JavaTokenParsers</span></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.translation.TermRec" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TermRec[U]extendsAnyRef"></a><a id="TermRec[U]:TermRec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermRec[U]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRec.html">
+              <span class="name">TermRec</span>
+            </a><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermToExpr" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermToExpr[E]extendsAnyRef"></a><a id="TermToExpr[E]:TermToExpr[E]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermToExpr[E]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermToExpr.html">
+              <span class="name">TermToExpr</span>
+            </a><span class="tparams">[<span name="E">E</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Translator" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="Translator[I,O]extendsI=&gt;Option[O]"></a><a id="Translator[I,O]:Translator[I,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Translator[I,O]extendsI=&gt;Option[O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="Translator from an input I to an output O, designed to be built recursively." href="Translator.html">
+              <span class="name">Translator</span>
+            </a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="result"> extends (<span class="extype" name="provingground.translation.Translator.I">I</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.translation.Translator.O">O</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Translator from an input I to an output O, designed to be built recursively.</p><div class="fullcomment"><div class="comment cmt"><p>Translator from an input I to an output O, designed to be built recursively.</p><h4>Translation by Splitting and joining</h4><p>The most import class of translators are constructed from</p><p>* a split map I =&gt; Option[X], where X is obtained from I by taking Tuples, Lists and sub-types</p><p>* a join map Y =&gt; Option[O], where Y is obtained from O structurally, in the same way as X is obtained from I,
+e.g. X = (I, I) and Y = (O, O).</p><p>However X and Y may involve taking sub-types independently of each other.</p><p>Such a translator splits an input, recursively translates X to Y and combines the result with the join (all steps work optionally).</p><h4>Combinations, Basic Translators</h4><p>Translators are built by combining others by OrElse, starting with basic translators specified by a function I =&gt; Option[O].
+One can instead start with an empty translator.</p><p>Note that we can restrict the domain or extend the codomain of a translator by
+just using it as a function I =&gt; Option[O]. However this should be done after making all OrElse combinations, as the
+wrapped translator does not combine recursively.</p><p>A typical example of usage is as below</p><pre>scala&gt; <span class="kw">import</span> provingground._
+<span class="kw">import</span> provingground._
+
+scala&gt; <span class="kw">import</span> translation._, Translator._
+<span class="kw">import</span> translation._
+<span class="kw">import</span> Translator._
+
+scala&gt; <span class="kw">import</span> cats._, cats.implicits._
+<span class="kw">import</span> cats._
+<span class="kw">import</span> cats.implicits._
+
+scala&gt; <span class="kw">class</span> A
+defined <span class="kw">class</span> A
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> B(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> B
+
+scala&gt; <span class="kw">case</span> <span class="kw">class</span> C(x: A, y: A) <span class="kw">extends</span> A
+defined <span class="kw">class</span> C
+
+scala&gt; <span class="kw">case</span> <span class="kw">object</span> D <span class="kw">extends</span> A
+defined <span class="kw">object</span> D
+
+scala&gt; <span class="kw">import</span> Functors._
+<span class="kw">import</span> Functors._
+
+scala&gt; <span class="kw">val</span> Bpat = Pattern.partial[A, II]{<span class="kw">case</span> B(x, y) <span class="kw">=&gt;</span> (x, y)}
+Bpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.II] = provingground.translation.Translator$Pattern@<span class="num">5</span>ba695d
+
+scala&gt; <span class="kw">val</span> Dpat = Pattern.partial[A, Un]{<span class="kw">case</span> D <span class="kw">=&gt;</span> ()}
+Dpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.Un] = provingground.translation.Translator$Pattern@<span class="num">2</span>f5c9798
+
+scala&gt; <span class="kw">case</span> <span class="kw">object</span> E <span class="kw">extends</span> A
+defined <span class="kw">object</span> E
+
+scala&gt; <span class="kw">val</span> trans = Translator.Empty[A, A] || Bpat &gt;&gt;&gt; {<span class="kw">case</span> (x, y) <span class="kw">=&gt;</span> C(x,y)} || Dpat &gt;&gt;&gt; {<span class="kw">case</span> _ <span class="kw">=&gt;</span> E}
+trans: provingground.translation.Translator.OrElse[A,A] = &lt;function1&gt;
+
+scala&gt; trans(B(B(D, D), B(B(D, D), D)))
+res0: <span class="std">Option</span>[A] = <span class="std">Some</span>(C(C(E,E),C(C(E,E),E)))
+
+scala&gt; trans(C(D, D))
+res1: <span class="std">Option</span>[A] = <span class="std">None</span></pre></div></div>
+    </li><li name="provingground.translation.Vocabulary" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Vocabulary[E,C]extendsAnyRef"></a><a id="Vocabulary[E,C]:Vocabulary[E,C]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Vocabulary[E,C]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Vocabulary.html">
+              <span class="name">Vocabulary</span>
+            </a><span class="tparams">[<span name="E">E</span>, <span name="C">C</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermExpr" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TermExprextendsAnyRef"></a><a id="TermExpr:TermExpr"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermExprextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermExpr.html">
+              <span class="name deprecated" title="Deprecated: (Since version April 2016) Use Expression language">TermExpr</span>
+            </a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version April 2016)</i> Use Expression language</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members">
+              <h3>Value Members</h3>
+              <ol>
+                <li name="provingground.translation.ContextTranslator" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContextTranslator"></a><a id="ContextTranslator:ContextTranslator"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ContextTranslator" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ContextTranslator$.html">
+              <span class="name">ContextTranslator</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Equiv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Equiv"></a><a id="Equiv:Equiv"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Equiv" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Equiv$.html">
+              <span class="name">Equiv</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.ExprLang" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExprLang"></a><a id="ExprLang:ExprLang"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ExprLang" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ExprLang$.html">
+              <span class="name">ExprLang</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FansiFormat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FansiFormat"></a><a id="FansiFormat:FansiFormat"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FansiFormat" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FansiFormat$.html">
+              <span class="name">FansiFormat</span>
+            </a><span class="result"> extends <a href="TermRec.html" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="fansi.Str">Str</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FansiShow" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FansiShow"></a><a id="FansiShow:FansiShow"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FansiShow" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FansiShow$.html">
+              <span class="name">FansiShow</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FansiTranslate" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FansiTranslate"></a><a id="FansiTranslate:FansiTranslate"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FansiTranslate" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FansiTranslate$.html">
+              <span class="name">FansiTranslate</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FreeExpr" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FreeExpr"></a><a id="FreeExpr:FreeExpr"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FreeExpr" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FreeExpr$.html">
+              <span class="name">FreeExpr</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FreeExprHLPatterns" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FreeExprHLPatterns"></a><a id="FreeExprHLPatterns:FreeExprHLPatterns"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FreeExprHLPatterns" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FreeExprHLPatterns$.html">
+              <span class="name">FreeExprHLPatterns</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.FreeExprPatterns" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FreeExprPatterns"></a><a id="FreeExprPatterns:FreeExprPatterns"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#FreeExprPatterns" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FreeExprPatterns$.html">
+              <span class="name">FreeExprPatterns</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Functors" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Functors"></a><a id="Functors:Functors"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Functors" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+and for Constant functors." href="Functors$.html">
+              <span class="name">Functors</span>
+            </a><span class="result"> extends <a href="CompositeFunctors.html" class="extype" name="provingground.translation.CompositeFunctors">CompositeFunctors</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+and for Constant functors.</p><div class="fullcomment"><div class="comment cmt"><p>Functor and Traverse typeclasses for Tuples, HLists and Compositions of Functors,
+and for Constant functors.</p><p>To work around ambiguity in inference, for example
+so that the type of iterated triples is interpreted as
+<code>III(A) = (II(A), Id(A))</code>, not <code>III(A) = ((A, A), A)</code>
+several functors are explicitly named with the appropriate structure.
+</p></div></div>
+    </li><li name="provingground.translation.Inclusion" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Inclusion"></a><a id="Inclusion:Inclusion"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Inclusion" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Inclusion$.html">
+              <span class="name">Inclusion</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.JsonTranslate" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JsonTranslate"></a><a id="JsonTranslate:JsonTranslate"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#JsonTranslate" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="JsonTranslate$.html">
+              <span class="name">JsonTranslate</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.LatexFormat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LatexFormat"></a><a id="LatexFormat:LatexFormat"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#LatexFormat" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LatexFormat$.html">
+              <span class="name">LatexFormat</span>
+            </a><span class="result"> extends <a href="TermRec.html" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.LatexParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LatexParser"></a><a id="LatexParser:LatexParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#LatexParser" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LatexParser$.html">
+              <span class="name">LatexParser</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.LiteralParser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LiteralParser"></a><a id="LiteralParser:LiteralParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#LiteralParser" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LiteralParser$.html">
+              <span class="name">LiteralParser</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.MathReader" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MathReader"></a><a id="MathReader:MathReader"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#MathReader" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="MathReader$.html">
+              <span class="name">MathReader</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.MathWriter" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MathWriter"></a><a id="MathWriter:MathWriter"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#MathWriter" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="MathWriter$.html">
+              <span class="name">MathWriter</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.NestedDoc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NestedDoc"></a><a id="NestedDoc:NestedDoc"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#NestedDoc" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NestedDoc$.html">
+              <span class="name">NestedDoc</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.NlpProse" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NlpProse"></a><a id="NlpProse:NlpProse"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#NlpProse" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="Stanford dependency trees and associated methods" href="NlpProse$.html">
+              <span class="name">NlpProse</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Stanford dependency trees and associated methods</p>
+    </li><li name="provingground.translation.OptRestriction" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OptRestriction"></a><a id="OptRestriction:OptRestriction"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#OptRestriction" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="OptRestriction$.html">
+              <span class="name">OptRestriction</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.PrintFormat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrintFormat"></a><a id="PrintFormat:PrintFormat"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#PrintFormat" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="PrintFormat$.html">
+              <span class="name">PrintFormat</span>
+            </a><span class="result"> extends <a href="TermRec.html" class="extype" name="provingground.translation.TermRec">TermRec</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.QuasiInclusion" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="QuasiInclusion"></a><a id="QuasiInclusion:QuasiInclusion"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#QuasiInclusion" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="QuasiInclusion$.html">
+              <span class="name">QuasiInclusion</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.QuasiProjection" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="QuasiProjection"></a><a id="QuasiProjection:QuasiProjection"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#QuasiProjection" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="QuasiProjection$.html">
+              <span class="name">QuasiProjection</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.RefineTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RefineTerms"></a><a id="RefineTerms:RefineTerms"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#RefineTerms" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RefineTerms$.html">
+              <span class="name">RefineTerms</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Scoped" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Scoped"></a><a id="Scoped:Scoped"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Scoped" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Scoped$.html">
+              <span class="name">Scoped</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.ShapeTree" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShapeTree"></a><a id="ShapeTree:ShapeTree"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#ShapeTree" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ShapeTree$.html">
+              <span class="name">ShapeTree</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.SpecialTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SpecialTerms"></a><a id="SpecialTerms:SpecialTerms"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#SpecialTerms" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="SpecialTerms$.html">
+              <span class="name">SpecialTerms</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.Statement" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Statement"></a><a id="Statement:Statement"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Statement" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Statement$.html">
+              <span class="name">Statement</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.StringParse" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StringParse"></a><a id="StringParse:StringParse"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#StringParse" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="StringParse$.html">
+              <span class="name">StringParse</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt"></p>
+    </li><li name="provingground.translation.SubTypePattern" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SubTypePattern"></a><a id="SubTypePattern:SubTypePattern"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#SubTypePattern" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="SubTypePattern$.html">
+              <span class="name">SubTypePattern</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TeXTranslate" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TeXTranslate"></a><a id="TeXTranslate:TeXTranslate"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TeXTranslate" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TeXTranslate$.html">
+              <span class="name">TeXTranslate</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermFormat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermFormat"></a><a id="TermFormat:TermFormat"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermFormat" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermFormat$.html">
+              <span class="name">TermFormat</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermLang" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermLang"></a><a id="TermLang:TermLang"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermLang" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermLang$.html">
+              <span class="name">TermLang</span>
+            </a><span class="result"> extends <a href="ExprLang.html" class="extype" name="provingground.translation.ExprLang">ExprLang</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="Domain.html" class="extype" name="provingground.translation.Domain">Domain</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <a href="ExprPatterns.html" class="extype" name="provingground.translation.ExprPatterns">ExprPatterns</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TermPatterns"></a><a id="TermPatterns:TermPatterns"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermPatterns" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="Patterns, in the sense of Translator.Pattern, as well as some builders
+for various kinds of HoTT terms." href="TermPatterns$.html">
+              <span class="name">TermPatterns</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Patterns, in the sense of <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Translator.Pattern</a>, as well as some builders
+for various kinds of HoTT terms.</p><div class="fullcomment"><div class="comment cmt"><p>Patterns, in the sense of <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Translator.Pattern</a>, as well as some builders
+for various kinds of HoTT terms. Includes matching recursively and inductively defined functions.
+</p></div></div>
+    </li><li name="provingground.translation.TermShapeTree" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermShapeTree"></a><a id="TermShapeTree:TermShapeTree"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermShapeTree" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermShapeTree$.html">
+              <span class="name">TermShapeTree</span>
+            </a><span class="result"> extends <a href="ShapeTreeFormat.html" class="extype" name="provingground.translation.ShapeTreeFormat">ShapeTreeFormat</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermToExpr" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermToExpr"></a><a id="TermToExpr:TermToExpr"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermToExpr" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermToExpr$.html">
+              <span class="name">TermToExpr</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TestTrait" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TestTrait"></a><a id="TestTrait:TestTrait"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TestTrait" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TestTrait$.html">
+              <span class="name">TestTrait</span>
+            </a>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TextToInt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TextToInt"></a><a id="TextToInt:TextToInt"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TextToInt" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="Converts prose numbers to Integers without checking for bad cases" href="TextToInt$.html">
+              <span class="name">TextToInt</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">Converts prose numbers to Integers without checking for bad cases</p>
+    </li><li name="provingground.translation.Translator" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Translator"></a><a id="Translator:Translator"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#Translator" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="General functorial framework for translation." href="Translator$.html">
+              <span class="name">Translator</span>
+            </a>
+      </span>
+      
+      <p class="shortcomment cmt">General functorial framework for translation.</p><div class="fullcomment"><div class="comment cmt"><p>General functorial framework for translation.</p><p>Translators with <code>I</code> the input type and <code>O</code> the output type are primarily built from <a href="Translator$$Junction.html" class="extype" name="provingground.translation.Translator.Junction">Junction</a>s</p><ul><li>a <code><code>pattern</code></code> which map <code>I =&gt; Option[X[O]]</code>, with  <code>X[_]</code> a functor with traverse, e.g. a tuple or a vector.</li><li>a <code>builder</code> <code>O =&gt; Option[I]</code>
+to avoid having to specify types too many types, traits <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a> and <a href="Translator$$Builder.html" class="extype" name="provingground.translation.Translator.Builder">Builder</a> are defined.</li></ul><p>We also have simpler translators for literals and also wrapping translators for a component type.
+</p></div></div>
+    </li>
+              </ol>
+            </div>
+
+        
+
+        <div class="values members">
+              <h3>Deprecated Value Members</h3>
+              <ol><li name="provingground.translation.TermExpr" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TermExpr"></a><a id="TermExpr:TermExpr"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/index.html#TermExpr" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermExpr$.html">
+              <span class="name deprecated" title="Deprecated: (Since version April 2016) Use Expression language">TermExpr</span>
+            </a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version April 2016)</i> Use Expression language</p></dd></dl></div>
+    </li></ol>
+            </div>
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>

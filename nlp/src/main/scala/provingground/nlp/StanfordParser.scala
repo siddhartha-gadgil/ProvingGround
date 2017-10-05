@@ -1,4 +1,4 @@
-package provingground.nlp
+package provingground.translation
 import provingground._
 
 import edu.stanford.nlp.ling._

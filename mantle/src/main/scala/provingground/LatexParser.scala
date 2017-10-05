@@ -1,4 +1,5 @@
-package provingground
+package provingground.translation
+import provingground._
 
 import scala.util.parsing.combinator._
 

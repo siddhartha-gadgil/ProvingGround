@@ -1,8 +1,9 @@
-package provingground
+package provingground.learning
+import provingground._
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
-import learning._
+import learning._, interface._
 
 // import breeze.linalg.{Vector => _, _}
 // import breeze.stats.distributions._

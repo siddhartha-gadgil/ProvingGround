@@ -1,4 +1,4 @@
-package provingground.nlp
+package provingground.translation
 import provingground._
 import provingground.HoTT._
 import scala.util.parsing.combinator._

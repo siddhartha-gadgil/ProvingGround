@@ -1,11 +1,11 @@
-package provingground.nlp
+package provingground.translation
 import provingground._
 
 import translation._
 
 import NlpProse._
 //import provingground.HoTT._
-import provingground.nlp.TheoryTypes.{
+import provingground.translation.TheoryTypes.{
   Term => TheoryTerm,
   Apply => TheoryApply,
   _
