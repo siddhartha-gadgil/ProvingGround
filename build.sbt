@@ -41,7 +41,7 @@ lazy val jsProjects = Seq(client)
 
 lazy val baseSettings = Seq(
   version := "0.1-SNAPSHOT",
-  organization := "in.ac.iisc.math" //, scalaVersion := scalaV
+  organization := "in.ac.iisc" //, scalaVersion := scalaV
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
@@ -230,11 +230,11 @@ lazy val server = (project in file("server"))
 //   .settings(name := "ProvingGround-FunctionFinder")
 //   .dependsOn(coreJVM)
 
-lazy val mizar = project
-  .settings(commonSettings: _*)
-  .settings(jvmSettings: _*)
-  .settings(name := "Mizar-Parser",
-            libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
+// lazy val mizar = project
+//   .settings(commonSettings: _*)
+//   .settings(jvmSettings: _*)
+//   .settings(name := "Mizar-Parser",
+//             libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
@@ -377,3 +377,24 @@ lazy val normalform = (project in file("normalform"))
 lazy val trepplein = (project in file("trepplein-local"))
 
 fork in run := true
+
+val root = (project in file("."))
+  .settings(baseSettings: _*)
+  .enablePlugins(ScalaUnidocPlugin)
+  .settings(
+    name := "Proving-Ground",
+    unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(
+      coreJS,
+      client)
+  )
+  .aggregate(andrewscurtis,
+             //  client,
+             coreJVM,
+             //  coreJS,
+             exploring,
+             mantle,
+             nlp,
+             normalform,
+             realfunctions,
+             server,
+             trepplein)

@@ -5,7 +5,7 @@ import trees.Tree
 import simple._
 import scala.collection.JavaConverters._
 
-import provingground._
+import provingground._, nlp._
 import TreePatterns._
 
 object IfThen {

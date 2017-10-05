@@ -1,4 +1,5 @@
-package provingground
+package provingground.nlp
+import provingground._
 
 import edu.stanford.nlp.ling._
 import edu.stanford.nlp.process._

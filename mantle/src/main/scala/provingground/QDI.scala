@@ -188,7 +188,7 @@ object QDI {
     <div class="table">{ NodeSeq.fromSeq(rows) }</div>
   }
 
-  implicit def tableString(xy: List[List[Any]]) = {
+  implicit def tableString(xy: List[List[Any]]): String = {
     val rows = xy map ((r) => (r map ((x) => s"""$x""")).mkString(","))
     rows.mkString(";")
   }

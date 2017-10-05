@@ -415,7 +415,7 @@ object LeanExportElem {
 import HoTT._
 import LeanExportElem._
 
-class LeanToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
+class LeanExprToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
                    Some(Type),
                  predef: Expr => Option[Term] = (c) => None,
                  env: LeanExportElem.Name => Option[Expr] = (name) => None) {

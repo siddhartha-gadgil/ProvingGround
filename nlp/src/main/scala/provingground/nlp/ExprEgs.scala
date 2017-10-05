@@ -1,4 +1,5 @@
-package provingground
+package provingground.nlp
+import provingground._
 
 import StanfordParser._
 

@@ -10,7 +10,7 @@ import akka.stream.scaladsl.{Source => Src, _}
 
 import ACElem._
 
-object ACFlow {
+object AcFlow {
   implicit val system = Hub.system
 
   implicit val mat = ActorMaterializer()

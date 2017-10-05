@@ -1,6 +1,7 @@
-package provingground
+package provingground.interface
 // import example._
 
+import provingground._
 import translation._
 
 import akka.actor.ActorSystem

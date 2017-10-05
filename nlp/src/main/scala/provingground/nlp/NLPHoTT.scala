@@ -1,10 +1,15 @@
-package provingground
+package provingground.nlp
+import provingground._
 
 import translation._
 
 import NlpProse._
 //import provingground.HoTT._
-import provingground.TheoryTypes.{Term => TheoryTerm, Apply => TheoryApply, _}
+import provingground.nlp.TheoryTypes.{
+  Term => TheoryTerm,
+  Apply => TheoryApply,
+  _
+}
 
 //import scala.language.implicitConversions
 

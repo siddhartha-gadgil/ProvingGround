@@ -1,4 +1,5 @@
-package provingground
+package provingground.nlp
+import provingground._
 import provingground.HoTT._
 import scala.util.parsing.combinator._
 import scala.language.implicitConversions
