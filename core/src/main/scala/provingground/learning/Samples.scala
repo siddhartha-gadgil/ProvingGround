@@ -9,7 +9,7 @@ import cats._
 import cats.implicits._
 
 import monix.eval._
-import monix.cats._
+// import monix.cats._
 
 import monix.execution.Scheduler.Implicits.global
 import monix.reactive._

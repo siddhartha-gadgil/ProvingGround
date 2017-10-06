@@ -231,8 +231,9 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
         } yield res
 
       case App(f, a) =>
-        Task.zipMap2(Task.defer(parse(f, vars)), Task.defer(parse(a, vars)))(
-          applyFuncProp)
+        Task
+          .defer(parse(f, vars))
+          .zipMap(Task.defer(parse(a, vars)))(applyFuncProp)
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)

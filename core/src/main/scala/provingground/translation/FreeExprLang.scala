@@ -10,7 +10,7 @@ import cats.implicits._
 
 import cats._
 
-import cats.data.Prod
+import cats.data.Tuple2K
 
 import Functors._
 
