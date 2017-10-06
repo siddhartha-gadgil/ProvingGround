@@ -165,8 +165,8 @@ lazy val client = project
     name := "ProvingGround-JS",
     // scalaVersion := scalaV,
     coverageEnabled := false,
-    persistLauncher := true,
-    persistLauncher in Test := false,
+    scalaJSUseMainModuleInitializer := true,
+    // persistLauncher in Test := false,
     // sourceMapsDirectories += coreJS.base / "..",
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),

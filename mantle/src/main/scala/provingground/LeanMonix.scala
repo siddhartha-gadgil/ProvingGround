@@ -135,7 +135,7 @@ object LeanToTermMonix {
   val empty = LeanToTermMonix(Map(), Map(), Vector())
 
   def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
-    mods.foldLeft(Task.now(init)) {
+    mods.foldLeft(Task.pure(init)) {
       case (l, m) => l.flatMap(_.add(m))
     }
 
@@ -149,7 +149,7 @@ object LeanToTermMonix {
           l.add(m).timeout(limit).onErrorRecoverWith {
             case err =>
               logErr(m, err)
-              Task.now(l)
+              Task.pure(l)
           }
         )
     }
@@ -210,10 +210,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
     exp match {
-      case Predef(t)        => Task.now(t)
-      case Sort(Level.Zero) => Task.now(Prop)
-      case Sort(_)          => Task.now(Type)
-      case Var(n)           => Task.now(vars(n))
+      case Predef(t)        => Task.pure(t)
+      case Sort(Level.Zero) => Task.pure(Prop)
+      case Sort(_)          => Task.pure(Type)
+      case Var(n)           => Task.pure(vars(n))
       case RecIterAp(name, args) =>
         val indMod         = termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
@@ -270,7 +270,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseTyp(x: Expr, vars: Vector[Term]): Task[Typ[Term]] =
     parse(x, vars).flatMap {
-      case tp: Typ[_] => Task.now(tp)
+      case tp: Typ[_] => Task.pure(tp)
       case t          =>
         // println(
         //   s"got term $t of type ${t.typ} but expected type when parsing $x")
@@ -279,7 +279,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
     vec match {
-      case Vector() => Task.now(Vector())
+      case Vector() => Task.pure(Vector())
       case x +: ys =>
         for {
           head <- parse(x, vars)
@@ -289,7 +289,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseTypVec(vec: Vector[Expr],
                   vars: Vector[Term]): Task[Vector[Typ[Term]]] = vec match {
-    case Vector() => Task.now(Vector())
+    case Vector() => Task.pure(Vector())
     case x +: ys =>
       for {
         head <- parseTyp(x, vars)
@@ -299,7 +299,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseSymVec(vec: Vector[(Name, Expr)],
                   vars: Vector[Term]): Task[Vector[Term]] = vec match {
-    case Vector() => Task.now(Vector())
+    case Vector() => Task.pure(Vector())
     case (name, expr) +: ys =>
       for {
         tp <- parseTyp(expr, vars)
@@ -334,7 +334,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   }
 
   def addAxiomSeq(axs: Vector[(Name, Expr)]): Task[LeanToTermMonix] =
-    axs.foldLeft(Task.now(self)) {
+    axs.foldLeft(Task.pure(self)) {
       case (p, (n, v)) => p.flatMap(_.addAxiom(n, v))
     }
 
@@ -364,7 +364,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
                    n: Int,
                    accum: Vector[Term]): Task[(Term, Vector[Term])] =
         (t, n) match {
-          case (x, 0) => Task.now(x -> accum)
+          case (x, 0) => Task.pure(x -> accum)
           case (l: LambdaLike[u, v], n) if n > 0 =>
             getValue(l.value, n - 1, accum :+ l.variable)
           case (fn: FuncLike[u, v], n) if n > 0 =>
