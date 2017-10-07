@@ -702,7 +702,7 @@ object HoTT {
 
   }
 
-  def isProp(x: Typ[Term]) = x match {
+  def isProp(x: Typ[Term]) = (x.typ) match {
     case _ : Prop.type => true
     case _ => false
     }

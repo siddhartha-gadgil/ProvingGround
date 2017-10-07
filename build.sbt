@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.3"
 
-val ammV = "1.0.1"
+val ammV = "1.0.2"
 
 // scalaOrganization in ThisBuild := "org.typelevel"
 

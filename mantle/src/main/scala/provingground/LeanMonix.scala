@@ -52,6 +52,9 @@ object LeanToTermMonix {
       .orElse(
         feedWit(x).flatMap(applyFuncWitOpt(f, _))
       )
+      .orElse(
+        if (isProp(x.typ)) Some(f) else None
+      )
 
   def applyFuncWit(f: Term, x: Term): Term =
     applyFuncWitOpt(f, x).getOrElse {
@@ -219,7 +222,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   }
 
   def applyFuncProp(func: Term, arg: Term): Term =
-    applyFuncOpt(func, arg).getOrElse {
+    applyFuncWitOpt(func, arg).getOrElse {
       if (inPropFamily(arg.typ)) func
       else throw new ApplnFailException(func, arg)
     }
