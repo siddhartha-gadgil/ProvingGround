@@ -38,6 +38,26 @@ object LeanToTermMonix {
     case _ => throw new Exception("could not lift proof")
   }
 
+  def feedWit(t: Term): Option[Term] = t match {
+    case f: FuncLike[u, v] if (isProp(f.dom)) =>
+      Some(f("witness" :: f.dom))
+    case _ => None
+  }
+
+  def applyFuncWitOpt(f: Term, x: Term): Option[Term] =
+    applyFuncOpt(f, x)
+      .orElse(
+        feedWit(f).flatMap(applyFuncWitOpt(_, x))
+      )
+      .orElse(
+        feedWit(x).flatMap(applyFuncWitOpt(f, _))
+      )
+
+  def applyFuncWit(f: Term, x: Term): Term =
+    applyFuncWitOpt(f, x).getOrElse {
+      throw new ApplnFailException(f, x)
+    }
+
   def introsFold(ind: TermIndMod, p: Vector[Term]) =
     ind.intros.map((rule) => foldFunc(rule, p))
 

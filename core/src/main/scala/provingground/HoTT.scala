@@ -702,6 +702,12 @@ object HoTT {
 
   }
 
+  def isProp(x: Typ[Term]) = x match {
+    case _ : Prop.type => true
+    case _ => false
+    }
+
+
   def univlevel: Typ[Typ[Term]] => Int = {
     case Universe(l) => l
     case _           => 0
