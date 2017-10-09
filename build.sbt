@@ -376,7 +376,7 @@ lazy val normalform = (project in file("normalform"))
 
 lazy val trepplein = (project in file("trepplein-local"))
 
-fork in run := true
+// fork in run := true
 
 val root = (project in file("."))
   .settings(baseSettings: _*)

@@ -193,6 +193,19 @@ object LeanToTermMonix {
       case (l, m) => l.flatMap(_.add(m))
     }
 
+  def addChunk(mods: Vector[Modification],
+               init: Task[LeanToTermMonix] = Task.pure(empty),
+               limit: FiniteDuration = 3.minutes) =
+    mods
+      .foldLeft(init) {
+        case (l, m) =>
+          l.flatMap(_.add(m).timeout(limit).onErrorRecoverWith {
+            case err =>
+              l
+          })
+      }
+      .memoize
+
   def observable(mods: Vector[Modification],
                  init: LeanToTermMonix = empty,
                  limit: FiniteDuration = 5.minutes,
