@@ -9,6 +9,7 @@ import scala.concurrent._, duration._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import monix.reactive._
+import monix.tail._
 
 import HoTT.{Name => _, _}
 
@@ -206,6 +207,22 @@ object LeanToTermMonix {
           }
         )
     }
+
+  def iterant(mods: Vector[Modification],
+              init: LeanToTermMonix = empty,
+              limit: FiniteDuration = 5.minutes,
+              logErr: (Modification, Throwable) => Unit = (_, _) => {}) =
+    Iterant
+      .fromIterable[Task, Modification](mods)
+      .scanEval[LeanToTermMonix](Task.pure(init)) {
+        case (l, m) =>
+          l.add(m).timeout(limit).onErrorRecoverWith {
+            case err =>
+              logErr(m, err)
+              Task.pure(l)
+          }
+      }
+
 }
 
 case class RecFoldException(indMod: TermIndMod,
