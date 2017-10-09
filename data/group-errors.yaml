@@ -115,69 +115,6 @@ err: "provingground.interface.UnParsedException: could not parse expression @str
 mod: "DefMod(Definition(string.empty,Vector(),@string,@_private.608265362.string_imp.mk (@list.nil.{0} @char),0))"
 err: "provingground.interface.UnParsedException: could not parse expression @char"
 
-mod: "DefMod(Definition(nat.less_than_or_equal.dcases_on,Vector(),∀ {a : @nat} {C : (∀ (a_1 : @nat) (h : @nat.less_than_or_equal a a_1), Prop)}
-  {a_0 : @nat} (n : @nat.less_than_or_equal a a_0)
-  (e_1 : C a (@nat.less_than_or_equal.refl a))
-  (e_2 :
-    (∀ {b : @nat} (a_1 : @nat.less_than_or_equal a b),
-    C (@nat.succ b) (@nat.less_than_or_equal.step a b a_1))),
-C a_0 n,λ {a : @nat} {C : (∀ (a_1 : @nat) (h : @nat.less_than_or_equal a a_1), Prop)}
-  {a_0 : @nat} (n : @nat.less_than_or_equal a a_0)
-  (e_1 : C a (@nat.less_than_or_equal.refl a))
-  (e_2 :
-    (∀ {b : @nat} (a_1 : @nat.less_than_or_equal a b),
-    C (@nat.succ b) (@nat.less_than_or_equal.step a b a_1))),
-@nat.less_than_or_equal.rec a
-  (λ (a_1 : @nat), ∀ (h : @nat.less_than_or_equal a a_1), C a_1 h)
-  (λ (a_1 : @nat.less_than_or_equal a a), e_1)
-  (λ {b : @nat} (a_1 : @nat.less_than_or_equal a b)
-    (ih_1 : (∀ (h : @nat.less_than_or_equal a b), C b h))
-    (a_2 : @nat.less_than_or_equal a (@nat.succ b)),
-  e_2 b a_1) a_0 n n,0))"
-err: "provingground.interface.RecFoldException: Failure to fold recursive Function"
-
-mod: "DefMod(Definition(nat.not_succ_le_zero,Vector(),∀ (n : @nat)
-  (a :
-    @has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-      (@has_zero.zero.{0} @nat @nat.has_zero)),
-@false,λ (n : @nat)
-  (a :
-    @has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-      (@has_zero.zero.{0} @nat @nat.has_zero)),
-@nat.less_than_or_equal.dcases_on (@nat.succ n)
-  (λ (t_1 : @nat) (a_1 : @nat.less_than_or_equal (@nat.succ n) t_1),
-  ∀ (H_1 : @eq.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero) t_1)
-    (H_2 :
-      @heq.{0}
-        (@has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-          (@has_zero.zero.{0} @nat @nat.has_zero)) a
-        (@nat.less_than_or_equal (@nat.succ n) t_1) a_1),
-  @false) (@has_zero.zero.{0} @nat @nat.has_zero) a
-  (λ (a_0 : @eq.{1} @nat @nat.zero (@nat.succ n)),
-  @nat.no_confusion.{0}
-    (∀ (H_2 :
-        @heq.{0}
-          (@has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-            (@has_zero.zero.{0} @nat @nat.has_zero)) a
-          (@nat.less_than_or_equal (@nat.succ n) (@nat.succ n))
-          (@nat.less_than_or_equal.refl (@nat.succ n))),
-    @false) @nat.zero (@nat.succ n) a_0)
-  (λ {b : @nat} (a_1 : @nat.less_than_or_equal (@nat.succ n) b)
-    (a_0 : @eq.{1} @nat @nat.zero (@nat.succ b)),
-  @nat.no_confusion.{0}
-    (∀ (H_2 :
-        @heq.{0}
-          (@has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-            (@has_zero.zero.{0} @nat @nat.has_zero)) a
-          (@nat.less_than_or_equal (@nat.succ n) (@nat.succ b))
-          (@nat.less_than_or_equal.step (@nat.succ n) b a_1)),
-    @false) @nat.zero (@nat.succ b) a_0)
-  (@eq.refl.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero))
-  (@heq.refl.{0}
-    (@has_le.le.{0} @nat @nat.has_le (@nat.succ n)
-      (@has_zero.zero.{0} @nat @nat.has_zero)) a),0))"
-err: "provingground.interface.UnParsedException: could not parse expression @nat.less_than_or_equal.dcases_on"
-
 mod: "DefMod(Definition(nat.decidable_le._main,Vector(),∀ (a b : @nat), @decidable (@has_le.le.{0} @nat @nat.has_le a b),λ (a b : @nat),
 @nat.brec_on.{1}
   (λ (a_0 : @nat),
@@ -905,7 +842,7 @@ mod: "DefMod(Definition(nat.decidable_le._main,Vector(),∀ (a b : @nat), @decid
                               @punit.{1} ih_1 @punit.star.{1})) @nat.zero)
                         @punit.star.{1})) a_2))) @punit.{1} F_1) a_1_0))) F_0)
     a_0 b_0 F) b,0))"
-err: "provingground.interface.UnParsedException: could not parse expression @nat.not_succ_le_zero"
+err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of inactivity"
 
 mod: "DefMod(Definition(nat.decidable_le,Vector(),∀ (a b : @nat), @decidable (@has_le.le.{0} @nat @nat.has_le a b),@nat.decidable_le._main,0))"
 err: "provingground.interface.UnParsedException: could not parse expression @nat.decidable_le._main"
@@ -14226,4 +14163,3 @@ err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of i
 
 mod: "DefMod(Definition(occurrences_repr,Vector(),∀ (a : @occurrences), @string,@occurrences_repr._main,0))"
 err: "provingground.interface.UnParsedException: could not parse expression @occurrences_repr._main"
-

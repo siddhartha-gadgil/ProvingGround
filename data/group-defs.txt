@@ -23,6 +23,7 @@ has_div.mk
 nat.has_one
 option.no_confusion
 semigroup.mk
+nat.less_than_or_equal.dcases_on
 and.elim_left
 default.sizeof
 ordering.decidable_eq._proof_5
@@ -356,6 +357,7 @@ function.equiv.trans
 ordering.cases_on
 param_info.no_confusion
 nat.succ_le_succ
+nat.not_succ_le_zero
 function.comp
 has_seq.has_sizeof_inst
 add_right_cancel_semigroup

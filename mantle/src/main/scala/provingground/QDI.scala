@@ -20,6 +20,15 @@ import StringParse._
 
 import com.github.nscala_time.time.Imports._
 
+object amm {
+  def apply(): Unit = {
+    val initCommands =
+      """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
+    ammonite.Main(s"$initCommands").run()
+
+  }
+}
+
 /**
   * @author gadgil
   */
