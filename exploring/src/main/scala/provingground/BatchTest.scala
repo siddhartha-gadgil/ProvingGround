@@ -32,7 +32,15 @@ object LeanAmmTest extends App {
     write.over(indFile, t.termIndModMap.keys.mkString("\n"))
   }
 
-  Await.result(fut, Duration.Inf)
+  lazy val iter = LeanToTermMonix.iterant(mods, logErr = callback)
+  lazy val task = iter.foreach { (t) =>
+    count += 1
+    println(s"$count : ${t.defnMap.size}")
+    write.over(defFile, t.defnMap.keys.mkString("\n"))
+    write.over(indFile, t.termIndModMap.keys.mkString("\n"))
+  }
+
+  Await.result(task.runAsync, Duration.Inf)
 }
 
 object BatchTest /*extends App*/ {
