@@ -44,6 +44,35 @@ object LeanToTermMonix {
     case _ => None
   }
 
+  def witUnify(x: Term, typ: Typ[Term]): Option[Term] = (x, typ) match {
+    case (y, t) if y.typ == t                                          => Some(y)
+    case (l: LambdaLike[u, v], pd: PiDefn[a, b]) if l.dom == pd.domain =>
+      // pprint.log("matched lambda and Pi")
+      witUnify(l.value, pd.value.replace(pd.variable, l.variable))
+        .map(lambda(l.variable)(_))
+    case (l: LambdaLike[u, v], tp) if isProp(l.dom) => witUnify(l.value, tp)
+    case (y, pd: PiDefn[u, v]) if isProp(pd.domain) =>
+      witUnify(y, pd.value).map(lambda(pd.variable)(_))
+    case (l: LambdaLike[u, v], tp) =>
+      for {
+        v <- feedWit(l.variable)
+        ll = lambda(v)(l.value.replace(l.variable, v))
+        res <- witUnify(ll, tp)
+      } yield res
+    case (y, t) =>
+      // yy = y; tt = t; throw new Exception("halting at match")
+      None
+  }
+
+  def applyWitUnify(f: Term, x: Term): Option[Term] = f match {
+    case fn: FuncLike[u, v] =>
+      for {
+        arg <- witUnify(x, fn.dom)
+        res <- applyFuncWitOpt(fn, arg)
+      } yield res
+    case _ => None
+  }
+
   def applyFuncWitOpt(f: Term, x: Term): Option[Term] =
     applyFuncOpt(f, x)
       .orElse(
@@ -52,6 +81,7 @@ object LeanToTermMonix {
       .orElse(
         feedWit(x).flatMap(applyFuncWitOpt(f, _))
       )
+      .orElse(applyWitUnify(f, x))
       .orElse(
         if (isProp(x.typ)) Some(f) else None
       )
