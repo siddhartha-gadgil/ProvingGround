@@ -1,19 +1,25 @@
 iff_true_intro
 format.color.pink
+occurrences.cases_on
 option.decidable_eq._match_1
 _private.4035680071.extfun
 param_info.no_confusion_type
 not_false
 congr_arg
+binder_info.aux_decl.sizeof_spec
 well_founded
 tactic.transparency.semireducible
 list.join
 xor.decidable._match_2.equations._eqn_1
 vm_obj_kind
+binder_info.implicit
+binder_info.strict_implicit
 heq
 tactic.transparency.none
+has_lift.cases_on
 nat.succ
 vm_obj_kind_dec_eq._proof_55
+has_div.mk
 nat.has_one
 option.no_confusion
 semigroup.mk
@@ -21,10 +27,12 @@ nat.less_than_or_equal.dcases_on
 and.elim_left
 default.sizeof
 ordering.decidable_eq._proof_5
+list.reverse_core
 _private.1957195330.fun_setoid
 and.dcases_on
 exists_unique_congr
 prod.snd
+list.reverse
 nat.zero_le
 setoid
 nat.less_than_or_equal
@@ -65,6 +73,8 @@ option.none
 iff.decidable._proof_1
 bool.ff_ne_tt
 has_zero.mk
+binder_info.default
+sigma
 has_mul
 Exists.intro
 vm_obj_kind.simple
@@ -105,6 +115,7 @@ add_monoid.zero
 punit
 has_zero.zero
 occurrences.all
+binder_info
 ordering.gt
 nat.pred_le_pred
 has_sizeof.sizeof
@@ -125,6 +136,7 @@ has_pure
 true
 add_assoc
 rfl
+has_well_founded
 iff.rfl
 decidable.rec_on
 inv_image
@@ -139,6 +151,7 @@ option.get._main
 has_bind.has_sizeof_inst
 format.color.green
 has_sizeof
+has_lift
 false
 has_add
 comm_semigroup.sizeof
@@ -146,6 +159,7 @@ occurrences.neg
 default
 format.color.blue
 and
+has_well_founded.no_confusion
 decidable.false
 has_seq_left.sizeof
 bool.decidable_eq._main
@@ -183,6 +197,7 @@ eq.refl
 sum
 list.below
 acc
+binder_info.inst_implicit
 iff.refl
 has_neg
 unification_hint.mk
@@ -193,6 +208,7 @@ id_locked
 propext
 has_bind.mk
 list.join._main
+sigma.mk
 or
 psum.cases_on
 has_ordering.mk
@@ -219,6 +235,7 @@ has_lt.lt
 absurd
 vm_obj_kind_dec_eq._proof_38
 list.brec_on
+list.reverse_core._main
 monad.has_monad_lift.mk
 coe_sort
 bool.cases_on
@@ -228,6 +245,7 @@ list.foldr
 heq.refl
 nat.pred._main
 ne.decidable.equations._eqn_1
+comm_monoid
 nat.le_refl
 nat.below
 option
@@ -237,6 +255,7 @@ has_map
 vm_obj_kind.other
 prod.lex.rec_on
 cond._main
+binder_info.sizeof
 has_seq_right.has_sizeof_inst
 nat.pred
 vm_obj_kind.closure
@@ -244,11 +263,15 @@ not_or
 plift
 has_mem.mem
 has_append
+has_well_founded.mk
 iff
 id
 congr
+option_bind._main
 coe_sort_bool
 nat.less_than_or_equal.rec_on
+has_well_founded.cases_on
+has_lift.mk
 function.const
 subsingleton_info.no_confusion_type
 associative
@@ -263,9 +286,11 @@ has_append.mk
 ordering.lt
 commutative
 has_mul.mk
+comm_monoid.mk
 comm_semigroup.mk.sizeof_spec
 semigroup.mul_assoc
 bit1
+sigma.cases_on
 psum.inl
 has_bind.sizeof
 list.enum_from._main
@@ -277,6 +302,7 @@ vm_obj_kind.no_confusion
 nat.has_lt
 eq.symm
 has_coe_to_sort.S
+tactic.dsimp_config.beta._default
 format.color.cyan
 eq.mp
 psum.sizeof
@@ -286,6 +312,7 @@ decidable.is_false
 thunk
 quot.lift
 pprod.fst
+ite
 vm_obj_kind_dec_eq._proof_30
 inhabited.mk
 coe_b
@@ -300,6 +327,7 @@ unification_hint
 has_seq_left.has_sizeof_inst
 quot.induction_on
 function.equiv
+has_well_founded.no_confusion_type
 punit.star
 has_seq_right
 sum.inr
@@ -313,6 +341,7 @@ bool.decidable_eq._main.equations._eqn_3
 add_semigroup.to_has_add
 pprod.mk.inj_arrow
 monoid
+binder_info.aux_decl
 inout_param
 vm_obj_kind.cases_on
 well_founded.rec_on
@@ -326,6 +355,7 @@ has_zero
 tactic.simp_config.lift_eq._default
 function.equiv.trans
 ordering.cases_on
+param_info.no_confusion
 nat.succ_le_succ
 nat.not_succ_le_zero
 function.comp
@@ -340,6 +370,7 @@ coe_base_aux.equations._eqn_1
 implies.decidable
 and_congr
 vm_obj_kind.no_confusion_type
+has_div
 eq.dcases_on
 eq.mpr
 has_add.mk
@@ -353,6 +384,7 @@ ordering
 list.map
 list.nil
 iff.mpr
+commutative.equations._eqn_1
 has_seq.seq
 function.equiv.refl
 prod.mk
@@ -367,6 +399,7 @@ list.map._main
 implies.decidable._proof_1
 decidable_rel
 exists_unique
+comm_monoid.rec_on
 equivalence
 has_sizeof.mk
 add_semigroup.mk
@@ -377,6 +410,7 @@ has_le.le
 has_seq_left
 nat.add._main
 nat.has_add
+has_well_founded.mk.inj
 monad.has_monad_lift
 list.has_mem
 function.equiv.symm
@@ -402,6 +436,7 @@ occurrences.pos
 pprod
 has_ordering.cmp
 vm_obj_kind_dec_eq._proof_31
+has_div.cases_on
 bool
 has_bind.bind
 add_semigroup
@@ -432,3 +467,4 @@ nat.lt
 quot.mk
 subrelation
 has_map.map_const
+has_div.no_confusion_type

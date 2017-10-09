@@ -6,6 +6,7 @@ nat.less_than_or_equal
 list
 has_ssubset
 prod.lex
+sigma
 has_mul
 has_one
 inhabited
@@ -15,11 +16,14 @@ nat
 tactic.transparency
 has_seq
 punit
+binder_info
 add_monoid
 has_pure
 true
+has_well_founded
 semigroup
 has_sizeof
+has_lift
 false
 has_add
 and
@@ -37,6 +41,7 @@ has_coe
 comm_semigroup
 prod.rprod
 has_sep
+comm_monoid
 option
 has_map
 plift
@@ -52,6 +57,7 @@ prod
 has_zero
 add_right_cancel_semigroup
 eq
+has_div
 unification_constraint
 decidable
 ordering

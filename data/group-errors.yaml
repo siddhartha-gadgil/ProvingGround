@@ -4272,30 +4272,6 @@ mod: "DefMod(Definition(option_t.monad._proof_4,Vector(Param(u), Param(v)),∀ {
           (@function.const.{u+1 u+1} α_0 β_0) a_0) b_0)) α β a b),0))"
 err: "provingground.interface.UnParsedException: could not parse expression @monad.{u v}"
 
-mod: "DefMod(Definition(param_info.no_confusion,Vector(Param(l)),∀ {P : Sort l} {v1 v2 : @param_info} (H12 : @eq.{1} @param_info v1 v2),
-@param_info.no_confusion_type.{l} P v1 v2,λ {P : Sort l} {v1 v2 : @param_info} (H12 : @eq.{1} @param_info v1 v2),
-@eq.rec.{l 1} @param_info v1
-  (λ (a : @param_info),
-  ∀ (H1a : @eq.{1} @param_info v1 a),
-  @param_info.no_confusion_type.{l} P v1 a)
-  (λ (H11 : @eq.{1} @param_info v1 v1),
-  @param_info.cases_on.{l}
-    (λ {v1_0 : @param_info}, @param_info.no_confusion_type.{l} P v1_0 v1_0) v1
-    (λ (is_implicit is_inst_implicit is_prop has_fwd_deps : @bool)
-      (back_deps : @list.{0} @nat)
-      (a :
-        (∀ (is_implicit_eq : @eq.{1} @bool is_implicit is_implicit)
-          (is_inst_implicit_eq :
-            @eq.{1} @bool is_inst_implicit is_inst_implicit)
-          (is_prop_eq : @eq.{1} @bool is_prop is_prop)
-          (has_fwd_deps_eq : @eq.{1} @bool has_fwd_deps has_fwd_deps)
-          (back_deps_eq : @eq.{1} (@list.{0} @nat) back_deps back_deps),
-        P)),
-    a (@eq.refl.{1} @bool is_implicit) (@eq.refl.{1} @bool is_inst_implicit)
-      (@eq.refl.{1} @bool is_prop) (@eq.refl.{1} @bool has_fwd_deps)
-      (@eq.refl.{1} (@list.{0} @nat) back_deps))) v2 H12 H12,0))"
-err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of inactivity"
-
 mod: "IndMod(InductiveType(monad.monad_transformer,Vector(Param(u_1)),∀ (transformer :
     (∀ (m : (∀ (a_0 : Type 0), Type u_1)) [inst_1 : @monad.{0 u_1} m]
       (a : Type 0),
@@ -12375,3 +12351,1815 @@ mod: "DefMod(Definition(list.decidable_mem._main,Vector(Param(u)),∀ {α : Type
                   a_2)) @punit.{1} F_1)))) F_0) l_0 F),0))"
 err: "provingground.interface.UnParsedException: could not parse expression @list.decidable_mem._match_1.{u}"
 
+mod: "DefMod(Definition(list.decidable_mem._main.equations._eqn_1,Vector(Param(u)),∀ {α : Type u} [inst_1 : @decidable_eq.{u+1} α] (a : α),
+@eq.{1}
+  (@decidable
+    (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+      (@list.nil.{u} α)))
+  (@list.decidable_mem._main.{u} α inst_1 a (@list.nil.{u} α))
+  (@decidable.is_false
+    (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+      (@list.nil.{u} α)) @not_false),λ {α : Type u} [inst_1 : @decidable_eq.{u+1} α] (a : α),
+@eq.refl.{1}
+  ((λ (l : @list.{u} α),
+    @decidable (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a l))
+    (@list.nil.{u} α))
+  (@list.brec_on.{1 u} α
+    (λ (l : @list.{u} α),
+    @decidable (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a l))
+    (@list.nil.{u} α)
+    (λ (l : @list.{u} α)
+      (F :
+        @list.below.{1 u} α
+          (λ (l_0 : @list.{u} α),
+          @decidable
+            (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a l_0))
+          l),
+    (λ (l_0 : @list.{u} α)
+        (F_0 :
+          @list.below.{1 u} α
+            (λ (l_1 : @list.{u} α),
+            @decidable
+              (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a l_1))
+            l_0),
+      @list.cases_on.{1 u} α
+        (λ (l_1 : @list.{u} α),
+        ∀ (F_1 :
+            @list.below.{1 u} α
+              (λ (l_2 : @list.{u} α),
+              @decidable
+                (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+                  l_2)) l_1),
+        @decidable
+          (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a l_1)) l_0
+        (λ (F_1 :
+            @list.below.{1 u} α
+              (λ (l_1 : @list.{u} α),
+              @decidable
+                (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+                  l_1)) (@list.nil.{u} α)),
+        @decidable.is_false
+          (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+            (@list.nil.{u} α)) @not_false)
+        (λ (a_1 : α) (a_2 : @list.{u} α)
+          (F_1 :
+            @list.below.{1 u} α
+              (λ (l_1 : @list.{u} α),
+              @decidable
+                (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+                  l_1)) (@list.cons.{u} α a_1 a_2)),
+        @dite.{1} (@eq.{u+1} α a a_1) (inst_1 a a_1)
+          (@decidable
+            (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+              (@list.cons.{u} α a_1 a_2)))
+          (λ (h : @eq.{u+1} α a a_1),
+          @decidable.is_true
+            (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+              (@list.cons.{u} α a_1 a_2))
+            (@or.inl (@eq.{u+1} α a a_1)
+              (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                ((λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) a_2)
+                (@list.rec.{(max (u+1) 1)+1 u} α
+                  (λ (n : @list.{u} α), Sort (max (u+1) 1)) @punit.{max (u+1) 1}
+                  (λ (a_0 : α) (a_3 : @list.{u} α) (ih_1 : Sort (max (u+1) 1)),
+                  @pprod.{max (u+1) 1 max (u+1) 1}
+                    (@pprod.{max (u+1) 1 max (u+1) 1}
+                      ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3) ih_1)
+                    @punit.{max (u+1) 1}) a_2)
+                (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                  (@pprod.{max (u+1) 1 max (u+1) 1}
+                    ((λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) a_2)
+                    (@list.rec.{(max (u+1) 1)+1 u} α
+                      (λ (n : @list.{u} α), Sort (max (u+1) 1))
+                      @punit.{max (u+1) 1}
+                      (λ (a_0 : α) (a_3 : @list.{u} α)
+                        (ih_1 : Sort (max (u+1) 1)),
+                      @pprod.{max (u+1) 1 max (u+1) 1}
+                        (@pprod.{max (u+1) 1 max (u+1) 1}
+                          ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3) ih_1)
+                        @punit.{max (u+1) 1}) a_2)) @punit.{max (u+1) 1}
+                  (@pprod.mk.{max (u+1) 1 max (u+1) 1}
+                    (@pprod.{max (u+1) 1 max (u+1) 1}
+                      ((λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) a_2)
+                      (@list.below.{max (u+1) 1 u} α
+                        (λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) a_2))
+                    @punit.{max (u+1) 1}
+                    (@list.rec.{max (u+1) 1 u} α
+                      (λ (n : @list.{u} α),
+                      @pprod.{max (u+1) 1 max (u+1) 1}
+                        ((λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) n)
+                        (@list.below.{max (u+1) 1 u} α
+                          (λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop) n))
+                      (@pprod.mk.{max (u+1) 1 max (u+1) 1}
+                        ((λ (a_0 : @list.{u} α), ∀ (a_3 : α), Prop)
+                          (@list.nil.{u} α)) @punit.{max (u+1) 1}
+                        ((λ (a_0 : @list.{u} α)
+                            (F_2 :
+                              @list.below.{max (u+1) 1 u} α
+                                (λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_0)
+                            (a_3 : α),
+                          (λ (a_4 : α) (a_5 : @list.{u} α)
+                              (F_3 :
+                                @list.below.{max (u+1) 1 u} α
+                                  (λ (a_6 : @list.{u} α), ∀ (a_7 : α), Prop)
+                                  a_5),
+                            @list.cases_on.{max (u+1) 1 u} α
+                              (λ (a_6 : @list.{u} α),
+                              ∀ (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_7 : @list.{u} α), ∀ (a_8 : α), Prop)
+                                    a_6),
+                              Prop) a_5
+                              (λ (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_6 : @list.{u} α), ∀ (a_7 : α), Prop)
+                                    (@list.nil.{u} α)),
+                              @false)
+                              (λ (a_1_0 : α) (a_2_0 : @list.{u} α)
+                                (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_6 : @list.{u} α), ∀ (a_7 : α), Prop)
+                                    (@list.cons.{u} α a_1_0 a_2_0)),
+                              @or (@eq.{u+1} α a_4 a_1_0)
+                                (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                                  ((λ (a_6 : @list.{u} α), ∀ (a_7 : α), Prop)
+                                    a_2_0)
+                                  (@list.rec.{(max (u+1) 1)+1 u} α
+                                    (λ (n : @list.{u} α), Sort (max (u+1) 1))
+                                    @punit.{max (u+1) 1}
+                                    (λ (a_6 : α) (a_7 : @list.{u} α)
+                                      (ih_1 : Sort (max (u+1) 1)),
+                                    @pprod.{max (u+1) 1 max (u+1) 1}
+                                      (@pprod.{max (u+1) 1 max (u+1) 1}
+                                        ((λ (a_8 : @list.{u} α),
+                                          ∀ (a_9 : α),
+                                          Prop) a_7) ih_1) @punit.{max (u+1) 1})
+                                    a_2_0)
+                                  (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                                    (@pprod.{max (u+1) 1 max (u+1) 1}
+                                      ((λ (a_6 : @list.{u} α),
+                                        ∀ (a_7 : α),
+                                        Prop) a_2_0)
+                                      (@list.rec.{(max (u+1) 1)+1 u} α
+                                        (λ (n : @list.{u} α),
+                                        Sort (max (u+1)
+                                        1)) @punit.{max (u+1) 1}
+                                        (λ (a_6 : α) (a_7 : @list.{u} α)
+                                          (ih_1 : Sort (max (u+1) 1)),
+                                        @pprod.{max (u+1) 1 max (u+1) 1}
+                                          (@pprod.{max (u+1) 1 max (u+1) 1}
+                                            ((λ (a_8 : @list.{u} α),
+                                              ∀ (a_9 : α),
+                                              Prop) a_7) ih_1)
+                                          @punit.{max (u+1) 1}) a_2_0))
+                                    @punit.{max (u+1) 1} F_4) a_4)) F_3) a_3 a_0
+                            F_2) (@list.nil.{u} α) @punit.star.{max (u+1) 1})
+                        @punit.star.{max (u+1) 1})
+                      (λ (a_0 : α) (a_3 : @list.{u} α)
+                        (ih_1 :
+                          @pprod.{max (u+1) 1 max (u+1) 1}
+                            ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3)
+                            (@list.below.{max (u+1) 1 u} α
+                              (λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3)),
+                      @pprod.mk.{max (u+1) 1 max (u+1) 1}
+                        ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop)
+                          (@list.cons.{u} α a_0 a_3))
+                        (@pprod.{max (u+1) 1 max (u+1) 1}
+                          (@pprod.{max (u+1) 1 max (u+1) 1}
+                            ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3)
+                            (@list.below.{max (u+1) 1 u} α
+                              (λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3))
+                          @punit.{max (u+1) 1})
+                        ((λ (a_4 : @list.{u} α)
+                            (F_2 :
+                              @list.below.{max (u+1) 1 u} α
+                                (λ (a_6 : @list.{u} α), ∀ (a_7 : α), Prop) a_4)
+                            (a_5 : α),
+                          (λ (a_6 : α) (a_7 : @list.{u} α)
+                              (F_3 :
+                                @list.below.{max (u+1) 1 u} α
+                                  (λ (a_8 : @list.{u} α), ∀ (a_9 : α), Prop)
+                                  a_7),
+                            @list.cases_on.{max (u+1) 1 u} α
+                              (λ (a_8 : @list.{u} α),
+                              ∀ (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_9 : @list.{u} α), ∀ (a_10 : α), Prop)
+                                    a_8),
+                              Prop) a_7
+                              (λ (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_8 : @list.{u} α), ∀ (a_9 : α), Prop)
+                                    (@list.nil.{u} α)),
+                              @false)
+                              (λ (a_1_0 : α) (a_2_0 : @list.{u} α)
+                                (F_4 :
+                                  @list.below.{max (u+1) 1 u} α
+                                    (λ (a_8 : @list.{u} α), ∀ (a_9 : α), Prop)
+                                    (@list.cons.{u} α a_1_0 a_2_0)),
+                              @or (@eq.{u+1} α a_6 a_1_0)
+                                (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                                  ((λ (a_8 : @list.{u} α), ∀ (a_9 : α), Prop)
+                                    a_2_0)
+                                  (@list.rec.{(max (u+1) 1)+1 u} α
+                                    (λ (n : @list.{u} α), Sort (max (u+1) 1))
+                                    @punit.{max (u+1) 1}
+                                    (λ (a_8 : α) (a_9 : @list.{u} α)
+                                      (ih_1_0 : Sort (max (u+1) 1)),
+                                    @pprod.{max (u+1) 1 max (u+1) 1}
+                                      (@pprod.{max (u+1) 1 max (u+1) 1}
+                                        ((λ (a_10 : @list.{u} α),
+                                          ∀ (a_11 : α),
+                                          Prop) a_9) ih_1_0)
+                                      @punit.{max (u+1) 1}) a_2_0)
+                                  (@pprod.fst.{max (u+1) 1 max (u+1) 1}
+                                    (@pprod.{max (u+1) 1 max (u+1) 1}
+                                      ((λ (a_8 : @list.{u} α),
+                                        ∀ (a_9 : α),
+                                        Prop) a_2_0)
+                                      (@list.rec.{(max (u+1) 1)+1 u} α
+                                        (λ (n : @list.{u} α),
+                                        Sort (max (u+1)
+                                        1)) @punit.{max (u+1) 1}
+                                        (λ (a_8 : α) (a_9 : @list.{u} α)
+                                          (ih_1_0 : Sort (max (u+1) 1)),
+                                        @pprod.{max (u+1) 1 max (u+1) 1}
+                                          (@pprod.{max (u+1) 1 max (u+1) 1}
+                                            ((λ (a_10 : @list.{u} α),
+                                              ∀ (a_11 : α),
+                                              Prop) a_9) ih_1_0)
+                                          @punit.{max (u+1) 1}) a_2_0))
+                                    @punit.{max (u+1) 1} F_4) a_6)) F_3) a_5 a_4
+                            F_2) (@list.cons.{u} α a_0 a_3)
+                          (@pprod.mk.{max (u+1) 1 max (u+1) 1}
+                            (@pprod.{max (u+1) 1 max (u+1) 1}
+                              ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3)
+                              (@list.below.{max (u+1) 1 u} α
+                                (λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3))
+                            @punit.{max (u+1) 1} ih_1
+                            @punit.star.{max (u+1) 1}))
+                        (@pprod.mk.{max (u+1) 1 max (u+1) 1}
+                          (@pprod.{max (u+1) 1 max (u+1) 1}
+                            ((λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3)
+                            (@list.below.{max (u+1) 1 u} α
+                              (λ (a_4 : @list.{u} α), ∀ (a_5 : α), Prop) a_3))
+                          @punit.{max (u+1) 1} ih_1 @punit.star.{max (u+1) 1}))
+                      a_2) @punit.star.{max (u+1) 1})) a) h))
+          (λ (h : @not (@eq.{u+1} α a a_1)),
+          @list.decidable_mem._match_1.{u} α a a_1 a_2 h
+            (@pprod.fst.{1 1}
+              ((λ (l_1 : @list.{u} α),
+                @decidable
+                  (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α) a
+                    l_1)) a_2)
+              (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+                (λ (a_0 : α) (a_3 : @list.{u} α) (ih_1 : Type 0),
+                @pprod.{1 1}
+                  (@pprod.{1 1}
+                    ((λ (l_1 : @list.{u} α),
+                      @decidable
+                        (@has_mem.mem.{u u} α (@list.{u} α)
+                          (@list.has_mem.{u} α) a l_1)) a_3) ih_1) @punit.{1})
+                a_2)
+              (@pprod.fst.{1 1}
+                (@pprod.{1 1}
+                  ((λ (l_1 : @list.{u} α),
+                    @decidable
+                      (@has_mem.mem.{u u} α (@list.{u} α) (@list.has_mem.{u} α)
+                        a l_1)) a_2)
+                  (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+                    (λ (a_0 : α) (a_3 : @list.{u} α) (ih_1 : Type 0),
+                    @pprod.{1 1}
+                      (@pprod.{1 1}
+                        ((λ (l_1 : @list.{u} α),
+                          @decidable
+                            (@has_mem.mem.{u u} α (@list.{u} α)
+                              (@list.has_mem.{u} α) a l_1)) a_3) ih_1)
+                      @punit.{1}) a_2)) @punit.{1} F_1)))) F_0) l F)),0))"
+err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of inactivity"
+
+mod: "IndMod(InductiveType(has_repr,Vector(Param(u)),∀ (α : Type u), Type u),1,Vector((has_repr.mk,∀ {α : Type u} (repr : (∀ (a : α), @string)), @has_repr.{u} α)))"
+err: "provingground.interface.UnParsedException: could not parse expression @string"
+
+mod: "DefMod(Definition(string.append._main,Vector(),∀ (a a_0 : @string), @string,λ (a a_0 : @string),
+@_private.608265362.string_imp.cases_on.{1} (λ (a_1 : @string), @string) a
+  (λ (data : @list.{0} @char),
+  @_private.608265362.string_imp.cases_on.{1} (λ (a_1 : @string), @string) a_0
+    (λ (data_1 : @list.{0} @char),
+    @_private.608265362.string_imp.mk
+      (@has_append.append.{0} (@list.{0} @char) (@list.has_append.{0} @char)
+        data_1 data))),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @string"
+
+mod: "DefMod(Definition(string.append,Vector(),∀ (a a_0 : @string), @string,@string.append._main,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @string.append._main"
+
+mod: "DefMod(Definition(string.has_append,Vector(),@has_append.{0} @string,@has_append.mk.{0} @string @string.append,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @string.append"
+
+mod: "DefMod(Definition(has_repr.repr,Vector(Param(u)),∀ {α : Type u} [c : @has_repr.{u} α] (a : α), @string,λ (α : Type u) [c : @has_repr.{u} α],
+@has_repr.rec.{max (u+1) 1 u} α (λ [c_0 : @has_repr.{u} α], ∀ (a : α), @string)
+  (λ (repr : (∀ (a : α), @string)), repr) c,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(repr,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α] (a : α), @string,λ {α : Type u} [inst_1 : @has_repr.{u} α], @has_repr.repr.{u} α inst_1,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(sigma.has_repr._match_1,Vector(Param(u), Param(v)),∀ {α : Type u} {β : (∀ (a_0 : α), Type v)} [inst_1 : @has_repr.{u} α]
+  [s : (∀ (x : α), @has_repr.{v} (β x))] (a : @sigma.{u v} α β),
+@string,λ {α : Type u} {β : (∀ (a_0 : α), Type v)} [inst_1 : @has_repr.{u} α]
+  [s : (∀ (x : α), @has_repr.{v} (β x))] (a : @sigma.{u v} α β),
+@sigma.cases_on.{1 u v} α β (λ (a_0 : @sigma.{u v} α β), @string) a
+  (λ (fst : α) (snd : β fst),
+  @has_append.append.{0} @string @string.has_append
+    (@has_append.append.{0} @string @string.has_append
+      (@has_append.append.{0} @string @string.has_append
+        (@has_append.append.{0} @string @string.has_append
+          (@string.str
+            (@string.str
+              (@string.str @string.empty
+                (@char.of_nat
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                (@has_one.one.{0} @nat @nat.has_one))))))))))
+              (@char.of_nat
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@bit0.{0} @nat @nat.has_add
+                              (@has_one.one.{0} @nat @nat.has_one))))))))))
+            (@char.of_nat
+              (@bit0.{0} @nat @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@has_one.one.{0} @nat @nat.has_one))))))))))
+          (@repr.{u} α inst_1 fst))
+        (@string.str
+          (@string.str @string.empty
+            (@char.of_nat
+              (@bit0.{0} @nat @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@has_one.one.{0} @nat @nat.has_one))))))))
+          (@char.of_nat
+            (@bit0.{0} @nat @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one)))))))))
+      (@repr.{v} (β fst) (s fst) snd))
+    (@string.str
+      (@string.str
+        (@string.str @string.empty
+          (@char.of_nat
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@has_one.one.{0} @nat @nat.has_one))))))))))
+        (@char.of_nat
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@has_one.one.{0} @nat @nat.has_one))))))))))
+      (@char.of_nat
+        (@bit1.{0} @nat @nat.has_one @nat.has_add
+          (@bit0.{0} @nat @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one))))))))))),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(sigma.has_repr,Vector(Param(u), Param(v)),∀ {α : Type u} {β : (∀ (a : α), Type v)} [inst_1 : @has_repr.{u} α]
+  [s : (∀ (x : α), @has_repr.{v} (β x))],
+@has_repr.{max u v} (@sigma.{u v} α β),λ {α : Type u} {β : (∀ (a : α), Type v)} [inst_1 : @has_repr.{u} α]
+  [s : (∀ (x : α), @has_repr.{v} (β x))],
+@has_repr.mk.{max u v} (@sigma.{u v} α β)
+  (λ (x : @sigma.{u v} α β), @sigma.has_repr._match_1.{u v} α β inst_1 s x),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(group.sizeof,Vector(Param(u)),∀ (α : Type u) [α_inst : @has_sizeof.{u+1} α] (x : @group.{u} α), @nat,λ (α : Type u) [α_inst : @has_sizeof.{u+1} α],
+@group.rec.{1 u} α (λ (x : @group.{u} α), @nat)
+  (λ (mul : (∀ (a a_0 : α), α))
+    (mul_assoc :
+      (∀ (a b c : α),
+      @eq.{u+1} α
+        (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul)
+          (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a b) c)
+        (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a
+          (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) b c)))) (one : α)
+    (one_mul :
+      (∀ (a : α),
+      @eq.{u+1} α
+        (@has_mul.mul.{u} α
+          (@semigroup.to_has_mul.{u} α (@semigroup.mk.{u} α mul mul_assoc))
+          (@has_one.one.{u} α (@has_one.mk.{u} α one)) a) a))
+    (mul_one :
+      (∀ (a : α),
+      @eq.{u+1} α
+        (@has_mul.mul.{u} α
+          (@semigroup.to_has_mul.{u} α (@semigroup.mk.{u} α mul mul_assoc)) a
+          (@has_one.one.{u} α (@has_one.mk.{u} α one))) a))
+    (inv : (∀ (a : α), α))
+    (mul_left_inv :
+      (∀ (a : α),
+      @eq.{u+1} α
+        (@has_mul.mul.{u} α
+          (@semigroup.to_has_mul.{u} α
+            (@monoid.to_semigroup.{u} α
+              (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one)))
+          (@has_inv.inv.{u} α (@has_inv.mk.{u} α inv) a) a)
+        (@has_one.one.{u} α
+          (@monoid.to_has_one.{u} α
+            (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one))))),
+  @has_add.add.{0} @nat @nat.has_add
+    (@has_add.add.{0} @nat @nat.has_add
+      (@has_add.add.{0} @nat @nat.has_add
+        (@has_add.add.{0} @nat @nat.has_add
+          (@has_add.add.{0} @nat @nat.has_add
+            (@has_add.add.{0} @nat @nat.has_add
+              (@has_add.add.{0} @nat @nat.has_add
+                (@has_one.one.{0} @nat @nat.has_one)
+                (@sizeof.{u+1} (∀ (a a_0 : α), α)
+                  (@default_has_sizeof.{u+1} (∀ (a a_0 : α), α)) mul))
+              (@sizeof.{0}
+                (∀ (a b c : α),
+                @eq.{u+1} α
+                  (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul)
+                    (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a b) c)
+                  (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a
+                    (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) b c)))
+                (@default_has_sizeof.{0}
+                  (∀ (a b c : α),
+                  @eq.{u+1} α
+                    (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul)
+                      (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a b) c)
+                    (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) a
+                      (@has_mul.mul.{u} α (@has_mul.mk.{u} α mul) b c))))
+                mul_assoc)) (@sizeof.{u+1} α α_inst one))
+          (@sizeof.{0}
+            (∀ (a : α),
+            @eq.{u+1} α
+              (@has_mul.mul.{u} α
+                (@semigroup.to_has_mul.{u} α
+                  (@semigroup.mk.{u} α mul mul_assoc))
+                (@has_one.one.{u} α (@has_one.mk.{u} α one)) a) a)
+            (@default_has_sizeof.{0}
+              (∀ (a : α),
+              @eq.{u+1} α
+                (@has_mul.mul.{u} α
+                  (@semigroup.to_has_mul.{u} α
+                    (@semigroup.mk.{u} α mul mul_assoc))
+                  (@has_one.one.{u} α (@has_one.mk.{u} α one)) a) a)) one_mul))
+        (@sizeof.{0}
+          (∀ (a : α),
+          @eq.{u+1} α
+            (@has_mul.mul.{u} α
+              (@semigroup.to_has_mul.{u} α (@semigroup.mk.{u} α mul mul_assoc))
+              a (@has_one.one.{u} α (@has_one.mk.{u} α one))) a)
+          (@default_has_sizeof.{0}
+            (∀ (a : α),
+            @eq.{u+1} α
+              (@has_mul.mul.{u} α
+                (@semigroup.to_has_mul.{u} α
+                  (@semigroup.mk.{u} α mul mul_assoc)) a
+                (@has_one.one.{u} α (@has_one.mk.{u} α one))) a)) mul_one))
+      (@sizeof.{u+1} (∀ (a : α), α) (@default_has_sizeof.{u+1} (∀ (a : α), α))
+        inv))
+    (@sizeof.{0}
+      (∀ (a : α),
+      @eq.{u+1} α
+        (@has_mul.mul.{u} α
+          (@semigroup.to_has_mul.{u} α
+            (@monoid.to_semigroup.{u} α
+              (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one)))
+          (@has_inv.inv.{u} α (@has_inv.mk.{u} α inv) a) a)
+        (@has_one.one.{u} α
+          (@monoid.to_has_one.{u} α
+            (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one))))
+      (@default_has_sizeof.{0}
+        (∀ (a : α),
+        @eq.{u+1} α
+          (@has_mul.mul.{u} α
+            (@semigroup.to_has_mul.{u} α
+              (@monoid.to_semigroup.{u} α
+                (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one)))
+            (@has_inv.inv.{u} α (@has_inv.mk.{u} α inv) a) a)
+          (@has_one.one.{u} α
+            (@monoid.to_has_one.{u} α
+              (@monoid.mk.{u} α mul mul_assoc one one_mul mul_one)))))
+      mul_left_inv)),0))"
+err: "java.util.NoSuchElementException: key not found: group"
+
+mod: "DefMod(Definition(group.has_sizeof_inst,Vector(Param(u)),∀ (α : Type u) [α_inst : @has_sizeof.{u+1} α], @has_sizeof.{u+1} (@group.{u} α),λ (α : Type u) [α_inst : @has_sizeof.{u+1} α],
+@has_sizeof.mk.{u+1} (@group.{u} α) (@group.sizeof.{u} α α_inst),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @group.sizeof.{u}"
+
+mod: "DefMod(Definition(list.repr_aux._main,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @bool) (a_0 : @list.{u} α),
+@string,λ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @bool) (a_0 : @list.{u} α),
+@list.brec_on.{1 u} α (λ (a_1 : @list.{u} α), ∀ (a_2 : @bool), @string) a_0
+  (λ (a_1 : @list.{u} α)
+    (F :
+      @list.below.{1 u} α (λ (a_3 : @list.{u} α), ∀ (a_4 : @bool), @string) a_1)
+    (a_2 : @bool),
+  (λ (a_3 : @bool) (a_4 : @list.{u} α)
+      (F_0 :
+        @list.below.{1 u} α (λ (a_5 : @list.{u} α), ∀ (a_6 : @bool), @string)
+          a_4),
+    @bool.cases_on.{1} (λ (a_5 : @bool), @string) a_3
+      (@list.cases_on.{1 u} α
+        (λ (a_5 : @list.{u} α),
+        ∀ (F_1 :
+            @list.below.{1 u} α
+              (λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_5),
+        @string) a_4
+        (λ (F_1 :
+            @list.below.{1 u} α
+              (λ (a_5 : @list.{u} α), ∀ (a_6 : @bool), @string)
+              (@list.nil.{u} α)),
+        @string.empty)
+        (λ (a_5 : α) (a_1_0 : @list.{u} α)
+          (F_1 :
+            @list.below.{1 u} α
+              (λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string)
+              (@list.cons.{u} α a_5 a_1_0)),
+        @has_append.append.{0} @string @string.has_append
+          (@has_append.append.{0} @string @string.has_append
+            (@string.str
+              (@string.str @string.empty
+                (@char.of_nat
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@has_one.one.{0} @nat @nat.has_one))))))))
+              (@char.of_nat
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@has_one.one.{0} @nat @nat.has_one))))))))
+            (@repr.{u} α inst_1 a_5))
+          (@pprod.fst.{1 1}
+            ((λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_1_0)
+            (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+              (λ (a_6 : α) (a_7 : @list.{u} α) (ih_1 : Type 0),
+              @pprod.{1 1}
+                (@pprod.{1 1}
+                  ((λ (a_8 : @list.{u} α), ∀ (a_9 : @bool), @string) a_7) ih_1)
+                @punit.{1}) a_1_0)
+            (@pprod.fst.{1 1}
+              (@pprod.{1 1}
+                ((λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_1_0)
+                (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+                  (λ (a_6 : α) (a_7 : @list.{u} α) (ih_1 : Type 0),
+                  @pprod.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_8 : @list.{u} α), ∀ (a_9 : @bool), @string) a_7)
+                      ih_1) @punit.{1}) a_1_0)) @punit.{1} F_1) @bool.ff)) F_0)
+      (@list.cases_on.{1 u} α
+        (λ (a_5 : @list.{u} α),
+        ∀ (F_1 :
+            @list.below.{1 u} α
+              (λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_5),
+        @string) a_4
+        (λ (F_1 :
+            @list.below.{1 u} α
+              (λ (a_5 : @list.{u} α), ∀ (a_6 : @bool), @string)
+              (@list.nil.{u} α)),
+        @string.empty)
+        (λ (a_5 : α) (a_1_0 : @list.{u} α)
+          (F_1 :
+            @list.below.{1 u} α
+              (λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string)
+              (@list.cons.{u} α a_5 a_1_0)),
+        @has_append.append.{0} @string @string.has_append
+          (@repr.{u} α inst_1 a_5)
+          (@pprod.fst.{1 1}
+            ((λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_1_0)
+            (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+              (λ (a_6 : α) (a_7 : @list.{u} α) (ih_1 : Type 0),
+              @pprod.{1 1}
+                (@pprod.{1 1}
+                  ((λ (a_8 : @list.{u} α), ∀ (a_9 : @bool), @string) a_7) ih_1)
+                @punit.{1}) a_1_0)
+            (@pprod.fst.{1 1}
+              (@pprod.{1 1}
+                ((λ (a_6 : @list.{u} α), ∀ (a_7 : @bool), @string) a_1_0)
+                (@list.rec.{2 u} α (λ (n : @list.{u} α), Type 0) @punit.{1}
+                  (λ (a_6 : α) (a_7 : @list.{u} α) (ih_1 : Type 0),
+                  @pprod.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_8 : @list.{u} α), ∀ (a_9 : @bool), @string) a_7)
+                      ih_1) @punit.{1}) a_1_0)) @punit.{1} F_1) @bool.ff)) F_0))
+    a_2 a_1 F) a,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(list.repr_aux,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @bool) (a_0 : @list.{u} α),
+@string,λ {α : Type u} [inst_1 : @has_repr.{u} α], @list.repr_aux._main.{u} α inst_1,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(list.repr._main,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @list.{u} α), @string,λ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @list.{u} α),
+@list.cases_on.{1 u} α (λ (a_0 : @list.{u} α), @string) a
+  (@string.str
+    (@string.str @string.empty
+      (@char.of_nat
+        (@bit1.{0} @nat @nat.has_one @nat.has_add
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one)))))))))
+    (@char.of_nat
+      (@bit1.{0} @nat @nat.has_one @nat.has_add
+        (@bit0.{0} @nat @nat.has_add
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@has_one.one.{0} @nat @nat.has_one)))))))))
+  (λ (a_0 : α) (a_1 : @list.{u} α),
+  @has_append.append.{0} @string @string.has_append
+    (@has_append.append.{0} @string @string.has_append
+      (@string.str @string.empty
+        (@char.of_nat
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one)))))))))
+      (@list.repr_aux.{u} α inst_1 @bool.tt (@list.cons.{u} α a_0 a_1)))
+    (@string.str @string.empty
+      (@char.of_nat
+        (@bit1.{0} @nat @nat.has_one @nat.has_add
+          (@bit0.{0} @nat @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one)))))))))),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(list.repr,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α] (a : @list.{u} α), @string,λ {α : Type u} [inst_1 : @has_repr.{u} α], @list.repr._main.{u} α inst_1,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(list.has_repr,Vector(Param(u)),∀ {α : Type u} [inst_1 : @has_repr.{u} α], @has_repr.{u} (@list.{u} α),λ {α : Type u} [inst_1 : @has_repr.{u} α],
+@has_repr.mk.{u} (@list.{u} α) (@list.repr.{u} α inst_1),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @has_repr.{u}"
+
+mod: "DefMod(Definition(list.as_string,Vector(),∀ (s : @list.{0} @char), @string,λ (s : @list.{0} @char),
+@_private.608265362.string_imp.mk (@list.reverse.{0} @char s),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @char"
+
+mod: "DefMod(Definition(nat.decidable_eq._match_1,Vector(),∀ (x y : @nat) (a : @decidable (@eq.{1} @nat x y)),
+@decidable (@eq.{1} @nat (@nat.succ x) (@nat.succ y)),λ (x y : @nat) (a : @decidable (@eq.{1} @nat x y)),
+@decidable.cases_on.{1} (@eq.{1} @nat x y)
+  (λ (a_0 : @decidable (@eq.{1} @nat x y)),
+  @decidable (@eq.{1} @nat (@nat.succ x) (@nat.succ y))) a
+  (λ (a_0 : @not (@eq.{1} @nat x y)),
+  @decidable.is_false (@eq.{1} @nat (@nat.succ x) (@nat.succ y))
+    (λ (h : @eq.{1} @nat (@nat.succ x) (@nat.succ y)),
+    @nat.no_confusion.{0} @false (@nat.succ x) (@nat.succ y) h
+      (λ (xeqy : @eq.{1} @nat x y),
+      @absurd.{0} (@eq.{1} @nat x y) @false xeqy a_0)))
+  (λ (a_0 : @eq.{1} @nat x y),
+  @decidable.is_true (@eq.{1} @nat (@nat.succ x) (@nat.succ y))
+    (@eq.subst.{1} @nat
+      (λ (x_0 : @nat), @eq.{1} @nat (@nat.succ x) (@nat.succ x_0)) x y a_0
+      (@eq.refl.{1} @nat (@nat.succ x)))),0))"
+err: "provingground.HoTT$ApplnFailException: function func  cannot act on given term"
+
+mod: "DefMod(Definition(nat.decidable_eq._main,Vector(),@decidable_eq.{1} @nat,λ (a b : @nat),
+@nat.brec_on.{1}
+  (λ (a_0 : @nat), ∀ (b_0 : @nat), @decidable (@eq.{1} @nat a_0 b_0)) a
+  (λ (a_0 : @nat)
+    (F :
+      @nat.below.{1}
+        (λ (a_1 : @nat), ∀ (b_1 : @nat), @decidable (@eq.{1} @nat a_1 b_1)) a_0)
+    (b_0 : @nat),
+  (λ (a_1 b_1 : @nat)
+      (F_0 :
+        @nat.below.{1}
+          (λ (a_2 : @nat), ∀ (b_2 : @nat), @decidable (@eq.{1} @nat a_2 b_2))
+          a_1),
+    @nat.cases_on.{1}
+      (λ (a_2 : @nat),
+      ∀ (F_1 :
+          @nat.below.{1}
+            (λ (a_3 : @nat), ∀ (b_2 : @nat), @decidable (@eq.{1} @nat a_3 b_2))
+            a_2),
+      @decidable (@eq.{1} @nat a_2 b_1)) a_1
+      (λ (F_1 :
+          @nat.below.{1}
+            (λ (a_2 : @nat), ∀ (b_2 : @nat), @decidable (@eq.{1} @nat a_2 b_2))
+            @nat.zero),
+      @nat.cases_on.{1}
+        (λ (b_2 : @nat), @decidable (@eq.{1} @nat @nat.zero b_2)) b_1
+        (@decidable.is_true (@eq.{1} @nat @nat.zero @nat.zero)
+          (@rfl.{1} @nat @nat.zero))
+        (λ (a_2 : @nat),
+        @decidable.is_false (@eq.{1} @nat @nat.zero (@nat.succ a_2))
+          (λ (h : @eq.{1} @nat @nat.zero (@nat.succ a_2)),
+          @nat.no_confusion.{0} @false @nat.zero (@nat.succ a_2) h)))
+      (λ (a_2 : @nat)
+        (F_1 :
+          @nat.below.{1}
+            (λ (a_3 : @nat), ∀ (b_2 : @nat), @decidable (@eq.{1} @nat a_3 b_2))
+            (@nat.succ a_2)),
+      @nat.cases_on.{1}
+        (λ (b_2 : @nat), @decidable (@eq.{1} @nat (@nat.succ a_2) b_2)) b_1
+        (@decidable.is_false (@eq.{1} @nat (@nat.succ a_2) @nat.zero)
+          (λ (h : @eq.{1} @nat (@nat.succ a_2) @nat.zero),
+          @nat.no_confusion.{0} @false (@nat.succ a_2) @nat.zero h))
+        (λ (a_1_0 : @nat),
+        @nat.decidable_eq._match_1 a_2 a_1_0
+          (@pprod.fst.{1 1}
+            ((λ (a_3 : @nat), ∀ (b_2 : @nat), @decidable (@eq.{1} @nat a_3 b_2))
+              a_2)
+            (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+              (λ (a_3 : @nat) (ih_1 : Type 0),
+              @pprod.{1 1}
+                (@pprod.{1 1}
+                  ((λ (a_4 : @nat),
+                    ∀ (b_2 : @nat),
+                    @decidable (@eq.{1} @nat a_4 b_2)) a_3) ih_1) @punit.{1})
+              a_2)
+            (@pprod.fst.{1 1}
+              (@pprod.{1 1}
+                ((λ (a_3 : @nat),
+                  ∀ (b_2 : @nat),
+                  @decidable (@eq.{1} @nat a_3 b_2)) a_2)
+                (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                  (λ (a_3 : @nat) (ih_1 : Type 0),
+                  @pprod.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_4 : @nat),
+                        ∀ (b_2 : @nat),
+                        @decidable (@eq.{1} @nat a_4 b_2)) a_3) ih_1)
+                    @punit.{1}) a_2)) @punit.{1} F_1) a_1_0))) F_0) a_0 b_0 F) b,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.decidable_eq._match_1"
+
+mod: "DefMod(Definition(nat.decidable_eq,Vector(),@decidable_eq.{1} @nat,@nat.decidable_eq._main,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.decidable_eq._main"
+
+mod: "DefMod(Definition(nat.digit_char,Vector(),∀ (n : @nat), @char,λ (n : @nat),
+@ite.{1} (@eq.{1} @nat n (@has_zero.zero.{0} @nat @nat.has_zero))
+  (@nat.decidable_eq n (@has_zero.zero.{0} @nat @nat.has_zero)) @char
+  (@char.of_nat
+    (@bit0.{0} @nat @nat.has_add
+      (@bit0.{0} @nat @nat.has_add
+        (@bit0.{0} @nat @nat.has_add
+          (@bit0.{0} @nat @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@has_one.one.{0} @nat @nat.has_one)))))))
+  (@ite.{1} (@eq.{1} @nat n (@has_one.one.{0} @nat @nat.has_one))
+    (@nat.decidable_eq n (@has_one.one.{0} @nat @nat.has_one)) @char
+    (@char.of_nat
+      (@bit1.{0} @nat @nat.has_one @nat.has_add
+        (@bit0.{0} @nat @nat.has_add
+          (@bit0.{0} @nat @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@has_one.one.{0} @nat @nat.has_one)))))))
+    (@ite.{1}
+      (@eq.{1} @nat n
+        (@bit0.{0} @nat @nat.has_add (@has_one.one.{0} @nat @nat.has_one)))
+      (@nat.decidable_eq n
+        (@bit0.{0} @nat @nat.has_add (@has_one.one.{0} @nat @nat.has_one)))
+      @char
+      (@char.of_nat
+        (@bit0.{0} @nat @nat.has_add
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@has_one.one.{0} @nat @nat.has_one)))))))
+      (@ite.{1}
+        (@eq.{1} @nat n
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@has_one.one.{0} @nat @nat.has_one)))
+        (@nat.decidable_eq n
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@has_one.one.{0} @nat @nat.has_one))) @char
+        (@char.of_nat
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit1.{0} @nat @nat.has_one @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one)))))))
+        (@ite.{1}
+          (@eq.{1} @nat n
+            (@bit0.{0} @nat @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@has_one.one.{0} @nat @nat.has_one))))
+          (@nat.decidable_eq n
+            (@bit0.{0} @nat @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@has_one.one.{0} @nat @nat.has_one)))) @char
+          (@char.of_nat
+            (@bit0.{0} @nat @nat.has_add
+              (@bit0.{0} @nat @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one)))))))
+          (@ite.{1}
+            (@eq.{1} @nat n
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@has_one.one.{0} @nat @nat.has_one))))
+            (@nat.decidable_eq n
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@has_one.one.{0} @nat @nat.has_one)))) @char
+            (@char.of_nat
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@has_one.one.{0} @nat @nat.has_one)))))))
+            (@ite.{1}
+              (@eq.{1} @nat n
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one))))
+              (@nat.decidable_eq n
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one)))) @char
+              (@char.of_nat
+                (@bit0.{0} @nat @nat.has_add
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@has_one.one.{0} @nat @nat.has_one)))))))
+              (@ite.{1}
+                (@eq.{1} @nat n
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one))))
+                (@nat.decidable_eq n
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@has_one.one.{0} @nat @nat.has_one)))) @char
+                (@char.of_nat
+                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@has_one.one.{0} @nat @nat.has_one)))))))
+                (@ite.{1}
+                  (@eq.{1} @nat n
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@has_one.one.{0} @nat @nat.has_one)))))
+                  (@nat.decidable_eq n
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@has_one.one.{0} @nat @nat.has_one))))) @char
+                  (@char.of_nat
+                    (@bit0.{0} @nat @nat.has_add
+                      (@bit0.{0} @nat @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@has_one.one.{0} @nat @nat.has_one)))))))
+                  (@ite.{1}
+                    (@eq.{1} @nat n
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@has_one.one.{0} @nat @nat.has_one)))))
+                    (@nat.decidable_eq n
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@has_one.one.{0} @nat @nat.has_one))))) @char
+                    (@char.of_nat
+                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                (@has_one.one.{0} @nat @nat.has_one)))))))
+                    (@ite.{1}
+                      (@eq.{1} @nat n
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@bit0.{0} @nat @nat.has_add
+                              (@has_one.one.{0} @nat @nat.has_one)))))
+                      (@nat.decidable_eq n
+                        (@bit0.{0} @nat @nat.has_add
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@bit0.{0} @nat @nat.has_add
+                              (@has_one.one.{0} @nat @nat.has_one))))) @char
+                      (@char.of_nat
+                        (@bit1.{0} @nat @nat.has_one @nat.has_add
+                          (@bit0.{0} @nat @nat.has_add
+                            (@bit0.{0} @nat @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@has_one.one.{0} @nat @nat.has_one))))))))
+                      (@ite.{1}
+                        (@eq.{1} @nat n
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@has_one.one.{0} @nat @nat.has_one)))))
+                        (@nat.decidable_eq n
+                          (@bit1.{0} @nat @nat.has_one @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@has_one.one.{0} @nat @nat.has_one))))) @char
+                        (@char.of_nat
+                          (@bit0.{0} @nat @nat.has_add
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit0.{0} @nat @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@has_one.one.{0} @nat
+                                        @nat.has_one))))))))
+                        (@ite.{1}
+                          (@eq.{1} @nat n
+                            (@bit0.{0} @nat @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                  (@has_one.one.{0} @nat @nat.has_one)))))
+                          (@nat.decidable_eq n
+                            (@bit0.{0} @nat @nat.has_add
+                              (@bit0.{0} @nat @nat.has_add
+                                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                  (@has_one.one.{0} @nat @nat.has_one))))) @char
+                          (@char.of_nat
+                            (@bit1.{0} @nat @nat.has_one @nat.has_add
+                              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit0.{0} @nat @nat.has_add
+                                    (@bit0.{0} @nat @nat.has_add
+                                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                        (@has_one.one.{0} @nat
+                                          @nat.has_one))))))))
+                          (@ite.{1}
+                            (@eq.{1} @nat n
+                              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@has_one.one.{0} @nat @nat.has_one)))))
+                            (@nat.decidable_eq n
+                              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@has_one.one.{0} @nat @nat.has_one)))))
+                            @char
+                            (@char.of_nat
+                              (@bit0.{0} @nat @nat.has_add
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@bit0.{0} @nat @nat.has_add
+                                      (@bit0.{0} @nat @nat.has_add
+                                        (@bit1.{0} @nat @nat.has_one
+                                          @nat.has_add
+                                          (@has_one.one.{0} @nat
+                                            @nat.has_one))))))))
+                            (@ite.{1}
+                              (@eq.{1} @nat n
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@has_one.one.{0} @nat @nat.has_one)))))
+                              (@nat.decidable_eq n
+                                (@bit0.{0} @nat @nat.has_add
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@has_one.one.{0} @nat @nat.has_one)))))
+                              @char
+                              (@char.of_nat
+                                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                  (@bit0.{0} @nat @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@bit0.{0} @nat @nat.has_add
+                                        (@bit0.{0} @nat @nat.has_add
+                                          (@bit1.{0} @nat @nat.has_one
+                                            @nat.has_add
+                                            (@has_one.one.{0} @nat
+                                              @nat.has_one))))))))
+                              (@ite.{1}
+                                (@eq.{1} @nat n
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                        (@has_one.one.{0} @nat @nat.has_one)))))
+                                (@nat.decidable_eq n
+                                  (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                        (@has_one.one.{0} @nat @nat.has_one)))))
+                                @char
+                                (@char.of_nat
+                                  (@bit0.{0} @nat @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                        (@bit0.{0} @nat @nat.has_add
+                                          (@bit0.{0} @nat @nat.has_add
+                                            (@bit1.{0} @nat @nat.has_one
+                                              @nat.has_add
+                                              (@has_one.one.{0} @nat
+                                                @nat.has_one))))))))
+                                (@char.of_nat
+                                  (@bit0.{0} @nat @nat.has_add
+                                    (@bit1.{0} @nat @nat.has_one @nat.has_add
+                                      (@bit0.{0} @nat @nat.has_add
+                                        (@bit1.{0} @nat @nat.has_one
+                                          @nat.has_add
+                                          (@bit0.{0} @nat @nat.has_add
+                                            (@has_one.one.{0} @nat
+                                              @nat.has_one)))))))))))))))))))))),0))"
+err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of inactivity"
+
+mod: "DefMod(Definition(nat.digit_succ._main,Vector(),∀ (base : @nat) (a : @list.{0} @nat), @list.{0} @nat,λ (base : @nat) (a : @list.{0} @nat),
+@list.brec_on.{1 0} @nat (λ (a_0 : @list.{0} @nat), @list.{0} @nat) a
+  (λ (a_0 : @list.{0} @nat)
+    (F : @list.below.{1 0} @nat (λ (a_1 : @list.{0} @nat), @list.{0} @nat) a_0),
+  (λ (a_1 : @list.{0} @nat)
+      (F_0 :
+        @list.below.{1 0} @nat (λ (a_2 : @list.{0} @nat), @list.{0} @nat) a_1),
+    @list.cases_on.{1 0} @nat
+      (λ (a_2 : @list.{0} @nat),
+      ∀ (F_1 :
+          @list.below.{1 0} @nat (λ (a_3 : @list.{0} @nat), @list.{0} @nat)
+            a_2),
+      @list.{0} @nat) a_1
+      (λ (F_1 :
+          @list.below.{1 0} @nat (λ (a_2 : @list.{0} @nat), @list.{0} @nat)
+            (@list.nil.{0} @nat)),
+      @list.cons.{0} @nat (@has_one.one.{0} @nat @nat.has_one)
+        (@list.nil.{0} @nat))
+      (λ (a_2 : @nat) (a_1_0 : @list.{0} @nat)
+        (F_1 :
+          @list.below.{1 0} @nat (λ (a_3 : @list.{0} @nat), @list.{0} @nat)
+            (@list.cons.{0} @nat a_2 a_1_0)),
+      @ite.{1}
+        (@eq.{1} @nat
+          (@has_add.add.{0} @nat @nat.has_add a_2
+            (@has_one.one.{0} @nat @nat.has_one)) base)
+        (@nat.decidable_eq
+          (@has_add.add.{0} @nat @nat.has_add a_2
+            (@has_one.one.{0} @nat @nat.has_one)) base) (@list.{0} @nat)
+        (@list.cons.{0} @nat (@has_zero.zero.{0} @nat @nat.has_zero)
+          (@pprod.fst.{1 1} ((λ (a_3 : @list.{0} @nat), @list.{0} @nat) a_1_0)
+            (@list.rec.{2 0} @nat (λ (n : @list.{0} @nat), Type 0) @punit.{1}
+              (λ (a_3 : @nat) (a_4 : @list.{0} @nat) (ih_1 : Type 0),
+              @pprod.{1 1}
+                (@pprod.{1 1} ((λ (a_5 : @list.{0} @nat), @list.{0} @nat) a_4)
+                  ih_1) @punit.{1}) a_1_0)
+            (@pprod.fst.{1 1}
+              (@pprod.{1 1} ((λ (a_3 : @list.{0} @nat), @list.{0} @nat) a_1_0)
+                (@list.rec.{2 0} @nat (λ (n : @list.{0} @nat), Type 0)
+                  @punit.{1}
+                  (λ (a_3 : @nat) (a_4 : @list.{0} @nat) (ih_1 : Type 0),
+                  @pprod.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_5 : @list.{0} @nat), @list.{0} @nat) a_4) ih_1)
+                    @punit.{1}) a_1_0)) @punit.{1} F_1)))
+        (@list.cons.{0} @nat
+          (@has_add.add.{0} @nat @nat.has_add a_2
+            (@has_one.one.{0} @nat @nat.has_one)) a_1_0)) F_0) a_0 F),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.decidable_eq"
+
+mod: "DefMod(Definition(nat.digit_succ,Vector(),∀ (base : @nat) (a : @list.{0} @nat), @list.{0} @nat,λ (base : @nat), @nat.digit_succ._main base,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.digit_succ._main"
+
+mod: "DefMod(Definition(nat.to_digits._main,Vector(),∀ (base a : @nat), @list.{0} @nat,λ (base a : @nat),
+@nat.brec_on.{1} (λ (a_0 : @nat), @list.{0} @nat) a
+  (λ (a_0 : @nat) (F : @nat.below.{1} (λ (a_1 : @nat), @list.{0} @nat) a_0),
+  (λ (a_1 : @nat) (F_0 : @nat.below.{1} (λ (a_2 : @nat), @list.{0} @nat) a_1),
+    @nat.cases_on.{1}
+      (λ (a_2 : @nat),
+      ∀ (F_1 : @nat.below.{1} (λ (a_3 : @nat), @list.{0} @nat) a_2),
+      @list.{0} @nat) a_1
+      (λ (F_1 : @nat.below.{1} (λ (a_2 : @nat), @list.{0} @nat) @nat.zero),
+      @list.cons.{0} @nat (@has_zero.zero.{0} @nat @nat.has_zero)
+        (@list.nil.{0} @nat))
+      (λ (a_2 : @nat)
+        (F_1 : @nat.below.{1} (λ (a_3 : @nat), @list.{0} @nat) (@nat.succ a_2)),
+      @nat.digit_succ base
+        (@pprod.fst.{1 1}
+          ((λ (a_3 : @nat), @list.{0} @nat)
+            (@pprod.fst.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+              (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                (λ (a_3 : @nat) (ih_1 : Type 0),
+                @pprod.{1 1}
+                  (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                    ih_1) @punit.{1}) @nat.zero)
+              (@pprod.fst.{1 1}
+                (@pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                  (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                    (λ (a_3 : @nat) (ih_1 : Type 0),
+                    @pprod.{1 1}
+                      (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                        ih_1) @punit.{1}) @nat.zero)) @punit.{1}
+                (@pprod.mk.{1 1}
+                  (@pprod.{1 1}
+                    ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                    (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                      @nat.zero)) @punit.{1}
+                  (@nat.rec.{1}
+                    (λ (n : @nat),
+                    @pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n)
+                      (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n))
+                    (@pprod.mk.{1 1}
+                      ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                      @punit.{1}
+                      ((λ (a_3 : @nat)
+                          (F_2 :
+                            @nat.below.{1}
+                              (λ (a_5 : @nat), ∀ (a_6 : @nat), @nat) a_3)
+                          (a_4 : @nat),
+                        (λ (a_5 a_6 : @nat)
+                            (F_3 :
+                              @nat.below.{1}
+                                (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_6),
+                          @nat.cases_on.{1}
+                            (λ (a_7 : @nat),
+                            ∀ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                            @nat) a_6
+                            (λ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                  @nat.zero),
+                            a_5)
+                            (λ (a_1_0 : @nat)
+                              (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                  (@nat.succ a_1_0)),
+                            @nat.succ
+                              (@pprod.fst.{1 1}
+                                ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_1_0)
+                                (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                                  (λ (a_7 : @nat) (ih_1 : Type 0),
+                                  @pprod.{1 1}
+                                    (@pprod.{1 1}
+                                      ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                        a_7) ih_1) @punit.{1}) a_1_0)
+                                (@pprod.fst.{1 1}
+                                  (@pprod.{1 1}
+                                    ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_7 : @nat) (ih_1 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_8 : @nat),
+                                            ∀ (a_9 : @nat),
+                                            @nat) a_7) ih_1) @punit.{1}) a_1_0))
+                                  @punit.{1} F_4) a_5)) F_3) a_4 a_3 F_2)
+                        @nat.zero @punit.star.{1}) @punit.star.{1})
+                    (λ (a_3 : @nat)
+                      (ih_1 :
+                        @pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)),
+                    @pprod.mk.{1 1}
+                      ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) (@nat.succ a_3))
+                      (@pprod.{1 1}
+                        (@pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)) @punit.{1})
+                      ((λ (a_4 : @nat)
+                          (F_2 :
+                            @nat.below.{1}
+                              (λ (a_6 : @nat), ∀ (a_7 : @nat), @nat) a_4)
+                          (a_5 : @nat),
+                        (λ (a_6 a_7 : @nat)
+                            (F_3 :
+                              @nat.below.{1}
+                                (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                          @nat.cases_on.{1}
+                            (λ (a_8 : @nat),
+                            ∀ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_9 : @nat), ∀ (a_10 : @nat), @nat) a_8),
+                            @nat) a_7
+                            (λ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                  @nat.zero),
+                            a_6)
+                            (λ (a_1_0 : @nat)
+                              (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                  (@nat.succ a_1_0)),
+                            @nat.succ
+                              (@pprod.fst.{1 1}
+                                ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_1_0)
+                                (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                                  (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                  @pprod.{1 1}
+                                    (@pprod.{1 1}
+                                      ((λ (a_9 : @nat), ∀ (a_10 : @nat), @nat)
+                                        a_8) ih_1_0) @punit.{1}) a_1_0)
+                                (@pprod.fst.{1 1}
+                                  (@pprod.{1 1}
+                                    ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_9 : @nat),
+                                            ∀ (a_10 : @nat),
+                                            @nat) a_8) ih_1_0) @punit.{1})
+                                      a_1_0)) @punit.{1} F_4) a_6)) F_3) a_5 a_4
+                          F_2) (@nat.succ a_3)
+                        (@pprod.mk.{1 1}
+                          (@pprod.{1 1}
+                            ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                            (@nat.below.{1}
+                              (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                          @punit.{1} ih_1 @punit.star.{1}))
+                      (@pprod.mk.{1 1}
+                        (@pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)) @punit.{1} ih_1 @punit.star.{1})) @nat.zero)
+                  @punit.star.{1})) a_2))
+          (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+            (λ (a_3 : @nat) (ih_1 : Type 0),
+            @pprod.{1 1}
+              (@pprod.{1 1} ((λ (a_4 : @nat), @list.{0} @nat) a_3) ih_1)
+              @punit.{1})
+            (@pprod.fst.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+              (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                (λ (a_3 : @nat) (ih_1 : Type 0),
+                @pprod.{1 1}
+                  (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                    ih_1) @punit.{1}) @nat.zero)
+              (@pprod.fst.{1 1}
+                (@pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                  (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                    (λ (a_3 : @nat) (ih_1 : Type 0),
+                    @pprod.{1 1}
+                      (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                        ih_1) @punit.{1}) @nat.zero)) @punit.{1}
+                (@pprod.mk.{1 1}
+                  (@pprod.{1 1}
+                    ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                    (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                      @nat.zero)) @punit.{1}
+                  (@nat.rec.{1}
+                    (λ (n : @nat),
+                    @pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n)
+                      (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n))
+                    (@pprod.mk.{1 1}
+                      ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                      @punit.{1}
+                      ((λ (a_3 : @nat)
+                          (F_2 :
+                            @nat.below.{1}
+                              (λ (a_5 : @nat), ∀ (a_6 : @nat), @nat) a_3)
+                          (a_4 : @nat),
+                        (λ (a_5 a_6 : @nat)
+                            (F_3 :
+                              @nat.below.{1}
+                                (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_6),
+                          @nat.cases_on.{1}
+                            (λ (a_7 : @nat),
+                            ∀ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                            @nat) a_6
+                            (λ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                  @nat.zero),
+                            a_5)
+                            (λ (a_1_0 : @nat)
+                              (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                  (@nat.succ a_1_0)),
+                            @nat.succ
+                              (@pprod.fst.{1 1}
+                                ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_1_0)
+                                (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                                  (λ (a_7 : @nat) (ih_1 : Type 0),
+                                  @pprod.{1 1}
+                                    (@pprod.{1 1}
+                                      ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                        a_7) ih_1) @punit.{1}) a_1_0)
+                                (@pprod.fst.{1 1}
+                                  (@pprod.{1 1}
+                                    ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_7 : @nat) (ih_1 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_8 : @nat),
+                                            ∀ (a_9 : @nat),
+                                            @nat) a_7) ih_1) @punit.{1}) a_1_0))
+                                  @punit.{1} F_4) a_5)) F_3) a_4 a_3 F_2)
+                        @nat.zero @punit.star.{1}) @punit.star.{1})
+                    (λ (a_3 : @nat)
+                      (ih_1 :
+                        @pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)),
+                    @pprod.mk.{1 1}
+                      ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) (@nat.succ a_3))
+                      (@pprod.{1 1}
+                        (@pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)) @punit.{1})
+                      ((λ (a_4 : @nat)
+                          (F_2 :
+                            @nat.below.{1}
+                              (λ (a_6 : @nat), ∀ (a_7 : @nat), @nat) a_4)
+                          (a_5 : @nat),
+                        (λ (a_6 a_7 : @nat)
+                            (F_3 :
+                              @nat.below.{1}
+                                (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                          @nat.cases_on.{1}
+                            (λ (a_8 : @nat),
+                            ∀ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_9 : @nat), ∀ (a_10 : @nat), @nat) a_8),
+                            @nat) a_7
+                            (λ (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                  @nat.zero),
+                            a_6)
+                            (λ (a_1_0 : @nat)
+                              (F_4 :
+                                @nat.below.{1}
+                                  (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                  (@nat.succ a_1_0)),
+                            @nat.succ
+                              (@pprod.fst.{1 1}
+                                ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_1_0)
+                                (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                                  (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                  @pprod.{1 1}
+                                    (@pprod.{1 1}
+                                      ((λ (a_9 : @nat), ∀ (a_10 : @nat), @nat)
+                                        a_8) ih_1_0) @punit.{1}) a_1_0)
+                                (@pprod.fst.{1 1}
+                                  (@pprod.{1 1}
+                                    ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_9 : @nat),
+                                            ∀ (a_10 : @nat),
+                                            @nat) a_8) ih_1_0) @punit.{1})
+                                      a_1_0)) @punit.{1} F_4) a_6)) F_3) a_5 a_4
+                          F_2) (@nat.succ a_3)
+                        (@pprod.mk.{1 1}
+                          (@pprod.{1 1}
+                            ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                            (@nat.below.{1}
+                              (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                          @punit.{1} ih_1 @punit.star.{1}))
+                      (@pprod.mk.{1 1}
+                        (@pprod.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                          (@nat.below.{1} (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            a_3)) @punit.{1} ih_1 @punit.star.{1})) @nat.zero)
+                  @punit.star.{1})) a_2))
+          (@pprod.fst.{1 1}
+            (@pprod.{1 1}
+              ((λ (a_3 : @nat), @list.{0} @nat)
+                (@pprod.fst.{1 1}
+                  ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                  (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                    (λ (a_3 : @nat) (ih_1 : Type 0),
+                    @pprod.{1 1}
+                      (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                        ih_1) @punit.{1}) @nat.zero)
+                  (@pprod.fst.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                      (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                        (λ (a_3 : @nat) (ih_1 : Type 0),
+                        @pprod.{1 1}
+                          (@pprod.{1 1}
+                            ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3) ih_1)
+                          @punit.{1}) @nat.zero)) @punit.{1}
+                    (@pprod.mk.{1 1}
+                      (@pprod.{1 1}
+                        ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                        (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                          @nat.zero)) @punit.{1}
+                      (@nat.rec.{1}
+                        (λ (n : @nat),
+                        @pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n)
+                          (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                            n))
+                        (@pprod.mk.{1 1}
+                          ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                          @punit.{1}
+                          ((λ (a_3 : @nat)
+                              (F_2 :
+                                @nat.below.{1}
+                                  (λ (a_5 : @nat), ∀ (a_6 : @nat), @nat) a_3)
+                              (a_4 : @nat),
+                            (λ (a_5 a_6 : @nat)
+                                (F_3 :
+                                  @nat.below.{1}
+                                    (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_6),
+                              @nat.cases_on.{1}
+                                (λ (a_7 : @nat),
+                                ∀ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_7),
+                                @nat) a_6
+                                (λ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      @nat.zero),
+                                a_5)
+                                (λ (a_1_0 : @nat)
+                                  (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      (@nat.succ a_1_0)),
+                                @nat.succ
+                                  (@pprod.fst.{1 1}
+                                    ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_7 : @nat) (ih_1 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_8 : @nat),
+                                            ∀ (a_9 : @nat),
+                                            @nat) a_7) ih_1) @punit.{1}) a_1_0)
+                                    (@pprod.fst.{1 1}
+                                      (@pprod.{1 1}
+                                        ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                          a_1_0)
+                                        (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                          @punit.{1}
+                                          (λ (a_7 : @nat) (ih_1 : Type 0),
+                                          @pprod.{1 1}
+                                            (@pprod.{1 1}
+                                              ((λ (a_8 : @nat),
+                                                ∀ (a_9 : @nat),
+                                                @nat) a_7) ih_1) @punit.{1})
+                                          a_1_0)) @punit.{1} F_4) a_5)) F_3) a_4
+                              a_3 F_2) @nat.zero @punit.star.{1})
+                          @punit.star.{1})
+                        (λ (a_3 : @nat)
+                          (ih_1 :
+                            @pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)),
+                        @pprod.mk.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            (@nat.succ a_3))
+                          (@pprod.{1 1}
+                            (@pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                            @punit.{1})
+                          ((λ (a_4 : @nat)
+                              (F_2 :
+                                @nat.below.{1}
+                                  (λ (a_6 : @nat), ∀ (a_7 : @nat), @nat) a_4)
+                              (a_5 : @nat),
+                            (λ (a_6 a_7 : @nat)
+                                (F_3 :
+                                  @nat.below.{1}
+                                    (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                              @nat.cases_on.{1}
+                                (λ (a_8 : @nat),
+                                ∀ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_9 : @nat), ∀ (a_10 : @nat), @nat)
+                                      a_8),
+                                @nat) a_7
+                                (λ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      @nat.zero),
+                                a_6)
+                                (λ (a_1_0 : @nat)
+                                  (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      (@nat.succ a_1_0)),
+                                @nat.succ
+                                  (@pprod.fst.{1 1}
+                                    ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_9 : @nat),
+                                            ∀ (a_10 : @nat),
+                                            @nat) a_8) ih_1_0) @punit.{1})
+                                      a_1_0)
+                                    (@pprod.fst.{1 1}
+                                      (@pprod.{1 1}
+                                        ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                          a_1_0)
+                                        (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                          @punit.{1}
+                                          (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                          @pprod.{1 1}
+                                            (@pprod.{1 1}
+                                              ((λ (a_9 : @nat),
+                                                ∀ (a_10 : @nat),
+                                                @nat) a_8) ih_1_0) @punit.{1})
+                                          a_1_0)) @punit.{1} F_4) a_6)) F_3) a_5
+                              a_4 F_2) (@nat.succ a_3)
+                            (@pprod.mk.{1 1}
+                              (@pprod.{1 1}
+                                ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                                (@nat.below.{1}
+                                  (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                              @punit.{1} ih_1 @punit.star.{1}))
+                          (@pprod.mk.{1 1}
+                            (@pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                            @punit.{1} ih_1 @punit.star.{1})) @nat.zero)
+                      @punit.star.{1})) a_2))
+              (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                (λ (a_3 : @nat) (ih_1 : Type 0),
+                @pprod.{1 1}
+                  (@pprod.{1 1} ((λ (a_4 : @nat), @list.{0} @nat) a_3) ih_1)
+                  @punit.{1})
+                (@pprod.fst.{1 1}
+                  ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                  (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                    (λ (a_3 : @nat) (ih_1 : Type 0),
+                    @pprod.{1 1}
+                      (@pprod.{1 1} ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                        ih_1) @punit.{1}) @nat.zero)
+                  (@pprod.fst.{1 1}
+                    (@pprod.{1 1}
+                      ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                      (@nat.rec.{2} (λ (n : @nat), Type 0) @punit.{1}
+                        (λ (a_3 : @nat) (ih_1 : Type 0),
+                        @pprod.{1 1}
+                          (@pprod.{1 1}
+                            ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3) ih_1)
+                          @punit.{1}) @nat.zero)) @punit.{1}
+                    (@pprod.mk.{1 1}
+                      (@pprod.{1 1}
+                        ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                        (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                          @nat.zero)) @punit.{1}
+                      (@nat.rec.{1}
+                        (λ (n : @nat),
+                        @pprod.{1 1} ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) n)
+                          (@nat.below.{1} (λ (a_3 : @nat), ∀ (a_4 : @nat), @nat)
+                            n))
+                        (@pprod.mk.{1 1}
+                          ((λ (a_3 : @nat), ∀ (a_4 : @nat), @nat) @nat.zero)
+                          @punit.{1}
+                          ((λ (a_3 : @nat)
+                              (F_2 :
+                                @nat.below.{1}
+                                  (λ (a_5 : @nat), ∀ (a_6 : @nat), @nat) a_3)
+                              (a_4 : @nat),
+                            (λ (a_5 a_6 : @nat)
+                                (F_3 :
+                                  @nat.below.{1}
+                                    (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat) a_6),
+                              @nat.cases_on.{1}
+                                (λ (a_7 : @nat),
+                                ∀ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_7),
+                                @nat) a_6
+                                (λ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      @nat.zero),
+                                a_5)
+                                (λ (a_1_0 : @nat)
+                                  (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      (@nat.succ a_1_0)),
+                                @nat.succ
+                                  (@pprod.fst.{1 1}
+                                    ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_7 : @nat) (ih_1 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_8 : @nat),
+                                            ∀ (a_9 : @nat),
+                                            @nat) a_7) ih_1) @punit.{1}) a_1_0)
+                                    (@pprod.fst.{1 1}
+                                      (@pprod.{1 1}
+                                        ((λ (a_7 : @nat), ∀ (a_8 : @nat), @nat)
+                                          a_1_0)
+                                        (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                          @punit.{1}
+                                          (λ (a_7 : @nat) (ih_1 : Type 0),
+                                          @pprod.{1 1}
+                                            (@pprod.{1 1}
+                                              ((λ (a_8 : @nat),
+                                                ∀ (a_9 : @nat),
+                                                @nat) a_7) ih_1) @punit.{1})
+                                          a_1_0)) @punit.{1} F_4) a_5)) F_3) a_4
+                              a_3 F_2) @nat.zero @punit.star.{1})
+                          @punit.star.{1})
+                        (λ (a_3 : @nat)
+                          (ih_1 :
+                            @pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)),
+                        @pprod.mk.{1 1}
+                          ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat)
+                            (@nat.succ a_3))
+                          (@pprod.{1 1}
+                            (@pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                            @punit.{1})
+                          ((λ (a_4 : @nat)
+                              (F_2 :
+                                @nat.below.{1}
+                                  (λ (a_6 : @nat), ∀ (a_7 : @nat), @nat) a_4)
+                              (a_5 : @nat),
+                            (λ (a_6 a_7 : @nat)
+                                (F_3 :
+                                  @nat.below.{1}
+                                    (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat) a_7),
+                              @nat.cases_on.{1}
+                                (λ (a_8 : @nat),
+                                ∀ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_9 : @nat), ∀ (a_10 : @nat), @nat)
+                                      a_8),
+                                @nat) a_7
+                                (λ (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      @nat.zero),
+                                a_6)
+                                (λ (a_1_0 : @nat)
+                                  (F_4 :
+                                    @nat.below.{1}
+                                      (λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      (@nat.succ a_1_0)),
+                                @nat.succ
+                                  (@pprod.fst.{1 1}
+                                    ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                      a_1_0)
+                                    (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                      @punit.{1}
+                                      (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                      @pprod.{1 1}
+                                        (@pprod.{1 1}
+                                          ((λ (a_9 : @nat),
+                                            ∀ (a_10 : @nat),
+                                            @nat) a_8) ih_1_0) @punit.{1})
+                                      a_1_0)
+                                    (@pprod.fst.{1 1}
+                                      (@pprod.{1 1}
+                                        ((λ (a_8 : @nat), ∀ (a_9 : @nat), @nat)
+                                          a_1_0)
+                                        (@nat.rec.{2} (λ (n : @nat), Type 0)
+                                          @punit.{1}
+                                          (λ (a_8 : @nat) (ih_1_0 : Type 0),
+                                          @pprod.{1 1}
+                                            (@pprod.{1 1}
+                                              ((λ (a_9 : @nat),
+                                                ∀ (a_10 : @nat),
+                                                @nat) a_8) ih_1_0) @punit.{1})
+                                          a_1_0)) @punit.{1} F_4) a_6)) F_3) a_5
+                              a_4 F_2) (@nat.succ a_3)
+                            (@pprod.mk.{1 1}
+                              (@pprod.{1 1}
+                                ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                                (@nat.below.{1}
+                                  (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                              @punit.{1} ih_1 @punit.star.{1}))
+                          (@pprod.mk.{1 1}
+                            (@pprod.{1 1}
+                              ((λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3)
+                              (@nat.below.{1}
+                                (λ (a_4 : @nat), ∀ (a_5 : @nat), @nat) a_3))
+                            @punit.{1} ih_1 @punit.star.{1})) @nat.zero)
+                      @punit.star.{1})) a_2))) @punit.{1} F_1))) F_0) a_0 F),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.digit_succ"
+
+mod: "DefMod(Definition(nat.to_digits,Vector(),∀ (base a : @nat), @list.{0} @nat,λ (base : @nat), @nat.to_digits._main base,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.to_digits._main"
+
+mod: "DefMod(Definition(nat.repr,Vector(),∀ (n : @nat), @string,λ (n : @nat),
+@list.as_string
+  (@list.reverse.{0} @char
+    (@list.map.{0 0} @nat @char @nat.digit_char
+      (@nat.to_digits
+        (@bit0.{0} @nat @nat.has_add
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit0.{0} @nat @nat.has_add (@has_one.one.{0} @nat @nat.has_one))))
+        n))),0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.to_digits"
+
+mod: "DefMod(Definition(nat.has_repr,Vector(),@has_repr.{0} @nat,@has_repr.mk.{0} @nat @nat.repr,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @nat.repr"
+
+mod: "DefMod(Definition(occurrences_repr._main,Vector(),∀ (a : @occurrences), @string,λ (a : @occurrences),
+@occurrences.cases_on.{1} (λ (a_0 : @occurrences), @string) a
+  (@id_rhs.{1} @string
+    (@string.str @string.empty
+      (@char.of_nat
+        (@bit0.{0} @nat @nat.has_add
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit0.{0} @nat @nat.has_add
+                  (@has_one.one.{0} @nat @nat.has_one)))))))))
+  (λ (a_0 : @list.{0} @nat),
+  @id_rhs.{1} @string
+    (@repr.{0} (@list.{0} @nat) (@list.has_repr.{0} @nat @nat.has_repr) a_0))
+  (λ (a_0 : @list.{0} @nat),
+  @id_rhs.{1} @string
+    (@has_append.append.{0} @string @string.has_append
+      (@string.str @string.empty
+        (@char.of_nat
+          (@bit1.{0} @nat @nat.has_one @nat.has_add
+            (@bit0.{0} @nat @nat.has_add
+              (@bit1.{0} @nat @nat.has_one @nat.has_add
+                (@bit1.{0} @nat @nat.has_one @nat.has_add
+                  (@bit0.{0} @nat @nat.has_add
+                    (@has_one.one.{0} @nat @nat.has_one))))))))
+      (@repr.{0} (@list.{0} @nat) (@list.has_repr.{0} @nat @nat.has_repr) a_0))),0))"
+err: "java.util.concurrent.TimeoutException: Task timed-out after 5 minutes of inactivity"
+
+mod: "DefMod(Definition(occurrences_repr,Vector(),∀ (a : @occurrences), @string,@occurrences_repr._main,0))"
+err: "provingground.interface.UnParsedException: could not parse expression @occurrences_repr._main"
