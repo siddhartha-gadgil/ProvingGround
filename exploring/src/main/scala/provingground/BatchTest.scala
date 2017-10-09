@@ -13,7 +13,7 @@ import ammonite.ops._
 object LeanAmmTest extends App {
   import interface._, LeanInterface._
   import trepplein._
-  val mods = getMods("data/group.export")
+  lazy val mods = getMods("data/group.export")
   println(mods.size)
   val defFile = pwd / "data" / "group-defs.txt"
   val indFile = pwd / "data" / "group-inds.txt"
@@ -28,16 +28,24 @@ object LeanAmmTest extends App {
   lazy val fut = obs.foreach { (t) =>
     count += 1
     println(s"$count : ${t.defnMap.size}")
-    write.over(defFile, t.defnMap.keys.mkString("\n"))
-    write.over(indFile, t.termIndModMap.keys.mkString("\n"))
+    write.over(defFile, t.defnMap.keys.mkString("", "\n", "\n"))
+    write.over(indFile, t.termIndModMap.keys.mkString("", "\n", "\n"))
   }
 
   lazy val iter = LeanToTermMonix.iterant(mods, logErr = callback)
   lazy val task = iter.foreach { (t) =>
     count += 1
     println(s"$count : ${t.defnMap.size}")
-    write.over(defFile, t.defnMap.keys.mkString("\n"))
-    write.over(indFile, t.termIndModMap.keys.mkString("\n"))
+    write.over(defFile, t.defnMap.keys.mkString("", "\n", "\n"))
+    write.over(indFile, t.termIndModMap.keys.mkString("", "\n", "\n"))
+  }
+
+  lazy val iterStrict =
+    LeanToTermMonix.iterant(mods, logErr = callback, recoverAll = false)
+
+  lazy val taskStrict = iterStrict.foreach { (t) =>
+    count += 1
+    println(s"$count : ${t.defnMap.size}")
   }
 
   Await.result(task.runAsync, Duration.Inf)

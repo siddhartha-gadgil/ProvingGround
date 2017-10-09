@@ -211,15 +211,23 @@ object LeanToTermMonix {
   def iterant(mods: Vector[Modification],
               init: LeanToTermMonix = empty,
               limit: FiniteDuration = 5.minutes,
-              logErr: (Modification, Throwable) => Unit = (_, _) => {}) =
+              logErr: (Modification, Throwable) => Unit = (_, _) => {},
+              recoverAll: Boolean = true) =
     Iterant
       .fromIterable[Task, Modification](mods)
       .scanEval[LeanToTermMonix](Task.pure(init)) {
         case (l, m) =>
           l.add(m).timeout(limit).onErrorRecoverWith {
-            case err =>
+            case err if recoverAll =>
               logErr(m, err)
               Task.pure(l)
+            case err: TimeoutException =>
+              logErr(m, err)
+              Task.pure(l)
+            case err: UnParsedException =>
+              logErr(m, err)
+              Task.pure(l)
+
           }
       }
 
