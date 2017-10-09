@@ -41,7 +41,7 @@ object LeanAmmTest extends App {
   }
 
   lazy val iterStrict =
-    LeanToTermMonix.iterant(mods, logErr = callback, recoverAll = false)
+    LeanToTermMonix.iterant(mods, recoverAll = false)
 
   lazy val taskStrict = iterStrict.foreach { (t) =>
     count += 1
