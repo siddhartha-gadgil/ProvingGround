@@ -186,6 +186,7 @@ transitive
 and.elim_right
 well_founded.apply
 symmetric
+nat.decidable_le._main
 list.head._main
 vm_obj_kind.options
 param_info
@@ -362,6 +363,7 @@ function.comp
 has_seq.has_sizeof_inst
 add_right_cancel_semigroup
 left_commutative
+nat.decidable_le
 eq
 dite
 nat.has_le

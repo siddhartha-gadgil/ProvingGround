@@ -13,7 +13,8 @@ import ammonite.ops._
 object LeanAmmTest extends App {
   import interface._, LeanInterface._
   import trepplein._
-  lazy val mods = getMods("data/group.export")
+  lazy val mods = getMods("data/group.export").filter((m) =>
+    !m.name.toString.startsWith("char"))
   println(mods.size)
   val defFile = pwd / "data" / "group-defs.txt"
   val indFile = pwd / "data" / "group-inds.txt"
@@ -24,6 +25,7 @@ object LeanAmmTest extends App {
   }
   write.over(errFile, "")
   var count    = 0
+  var l2tm     = LeanToTermMonix.empty
   lazy val obs = LeanToTermMonix.observable(mods, logErr = callback)
   lazy val fut = obs.foreach { (t) =>
     count += 1
@@ -46,6 +48,11 @@ object LeanAmmTest extends App {
   lazy val taskStrict = iterStrict.foreach { (t) =>
     count += 1
     println(s"$count : ${t.defnMap.size}")
+    l2tm = t
+  }
+
+  def continue(n: Int = count) = {
+    val it = LeanToTermMonix.iterant(mods.drop(n), l2tm, recoverAll = false)
   }
 
   Await.result(task.runAsync, Duration.Inf)
