@@ -15,9 +15,13 @@ object LeanAmmTest extends App {
   import trepplein._
   lazy val NC  = Name("char")
   lazy val NCS = Name("char_sz")
+  lazy val B0  = Name("bit0")
+  lazy val SO  = Name("sizeof")
   lazy val isChar: Expr => Boolean = {
     case Const(NC, _)  => true
     case Const(NCS, _) => true
+    case Const(B0, _)  => true
+    case Const(SO, _)  => true
     case _             => false
   }
 
