@@ -1003,6 +1003,22 @@ object LeanInterface {
     case e            => Vector(e)
   }
 
+  def modSubExpr: Modification => Set[Expr] = {
+    case df: DefMod =>
+      subExpr(df.defn.ty).toSet union subExpr(df.defn.value).toSet
+    case ax: AxiomMod =>
+      subExpr(ax.ax.ty).toSet
+    case ind: IndMod =>
+      val tyExprs = (subExpr(ind.inductiveType.ty)).toSet
+      val introExprs =
+        for {
+          (_, ty) <- ind.intros
+          exp     <- subExpr(ty)
+        } yield ty
+      tyExprs union (introExprs.toSet)
+    case QuotMod => Set()
+  }
+
   def recApp: Expr => Boolean = {
     case exp @ App(Const(Name.Str(_, "rec"), _), _) => true
     case _                                          => false

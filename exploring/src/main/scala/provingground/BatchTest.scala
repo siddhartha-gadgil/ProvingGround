@@ -13,8 +13,22 @@ import ammonite.ops._
 object LeanAmmTest extends App {
   import interface._, LeanInterface._
   import trepplein._
-  lazy val mods = getMods("data/group.export").filter((m) =>
-    !m.name.toString.startsWith("char"))
+  lazy val NC  = Name("char")
+  lazy val NCS = Name("char_sz")
+  lazy val isChar: Expr => Boolean = {
+    case Const(NC, _)  => true
+    case Const(NCS, _) => true
+    case _             => false
+  }
+
+  lazy val notChar: Modification => Boolean = {
+    case df: DefMod if df.name.toString.startsWith("char") => false
+    case mod                                               => !modSubExpr(mod).exists(isChar)
+  }
+
+  lazy val mods =
+    getMods("data/group.export").filter(notChar)
+
   println(mods.size)
   val defFile = pwd / "data" / "group-defs.txt"
   val indFile = pwd / "data" / "group-inds.txt"
