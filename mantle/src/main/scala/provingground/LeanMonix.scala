@@ -221,6 +221,111 @@ object LeanToTermMonix {
           }
       }
 
+  object RecIterAp {
+    def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
+      case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
+      case App(func, arg) =>
+        unapply(func).map { case (name, vec) => (name, vec :+ arg) }
+      case _ => None
+    }
+  }
+
+// internal parser
+  def parse(exp: Expr,
+            vars: Vector[Term],
+            ltm: LeanToTermMonix,
+            mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] =
+    exp match {
+      case Const(name, _)   => Task(ltm.defnMap(name) -> ltm)
+      case Sort(Level.Zero) => Task.pure(Prop         -> ltm)
+      case Sort(_)          => Task.pure(Type         -> ltm)
+      case Var(n)           => Task.pure(vars(n)      -> ltm)
+      case RecIterAp(name, args) =>
+        val indMod         = ltm.termIndModMap(name)
+        val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+
+        for {
+          pair1 <- parseVec(argsFmly, vars, ltm, mods)
+          (argsFmlyTerm, ltm1) = pair1
+          recFn <- getRec(indMod, argsFmlyTerm)
+          pair2 <- parseVec(xs, vars, ltm, mods)
+          (vec, ltm2) = pair2
+          resTask = Task(vec.foldLeft(recFn)(applyFuncWit(_, _)))
+            .onErrorRecoverWith {
+              case err: ApplnFailException =>
+                throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+            }
+          res <- resTask
+        } yield (res, ltm2)
+
+      case App(f, a) =>
+        for {
+          p1 <- parse(f, vars, ltm, mods)
+          (func, ltm1) = p1
+          p2 <- parse(a, vars, ltm1, mods)
+          (arg, ltm2) = p2
+        } yield (applyFuncWit(func, arg), ltm2)
+      // Task
+      //   .defer(parse(f, vars, ltm, mods))
+      //   .zipMap(Task.defer(parse(a, vars, ltm, mods)))(applyFuncWit)
+      case Lam(domain, body) =>
+        for {
+          p1 <- parse(domain.ty, vars, ltm, mods)
+          (domTerm, ltm1) = p1
+          domTyp <- Task(toTyp(domTerm))
+          x = domTyp.Var
+          p2 <- parse(body, x +: vars, ltm1, mods)
+          (value, ltm2) = p2
+        } yield
+          value match {
+            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
+              fn -> ltm2
+            case y if domain.prettyName.toString == "_" => y -> ltm2
+            case _ =>
+              if (value.typ.dependsOn(x)) (LambdaTerm(x, value), ltm2)
+              else (LambdaFixed(x, value), ltm2)
+          }
+      case Pi(domain, body) =>
+        for {
+          p1 <- parse(domain.ty, vars, ltm, mods)
+          (domTerm, ltm1) = p1
+          domTyp <- Task(toTyp(domTerm))
+          x = domTyp.Var
+          p2 <- parse(body, x +: vars, ltm1, mods)
+          (value, ltm2) = p2
+          cod <- Task(toTyp(value))
+          dep = cod.dependsOn(x)
+        } yield if (dep) (PiDefn(x, cod), ltm2) else (x.typ ->: cod, ltm2)
+      case Let(domain, value, body) =>
+        for {
+          p1 <- parse(domain.ty, vars, ltm, mods)
+          (domTerm, ltm1) = p1
+          domTyp <- Task(toTyp(domTerm))
+          x = domTyp.Var
+          p2 <- parse(value, vars, ltm1, mods)
+          (valueTerm, ltm2) = p2
+          p3 <- parse(body, x +: vars, ltm2, mods)
+          (bodyTerm, ltm3) = p3
+        } yield (bodyTerm.replace(x, valueTerm), ltm3)
+      case e => Task.raiseError(UnParsedException(e))
+    }
+
+  def parseVec(
+      vec: Vector[Expr],
+      vars: Vector[Term],
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]): Task[(Vector[Term], LeanToTermMonix)] =
+    vec match {
+      case Vector() => Task.pure(Vector() -> ltm)
+      case x +: ys =>
+        for {
+          p1 <- parse(x, vars, ltm, mods)
+          (head, ltm1) = p1
+          p2 <- parseVec(ys, vars, ltm1, mods)
+          (tail, parse2) = p2
+        } yield (head +: tail, parse2)
+    }
+
 }
 
 case class RecFoldException(indMod: TermIndMod,
@@ -245,15 +350,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       (
         defnOpt(exp)
       )
-  }
-
-  object RecIterAp {
-    def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
-      case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
-      case App(func, arg) =>
-        unapply(func).map { case (name, vec) => (name, vec :+ arg) }
-      case _ => None
-    }
   }
 
   def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
