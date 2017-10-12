@@ -289,11 +289,12 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     case _ => false
   }
 
-  def applyFuncProp(func: Term, arg: Term): Term =
-    applyFuncWitOpt(func, arg).getOrElse {
-      if (inPropFamily(arg.typ)) func
-      else throw new ApplnFailException(func, arg)
-    }
+  // def applyFuncProp(func: Term, arg: Term): Term =
+  //   applyFuncWitOpt(func, arg).getOrElse {
+  //     if (inPropFamily(arg.typ)) {
+  //       pprint.log("had to use prop inner type"); func
+  //     } else throw new ApplnFailException(func, arg)
+  //   }
 
   // val parse: TaskParser = recParser(parse)
 
@@ -313,7 +314,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
           argsFmlyTerm <- parseVec(argsFmly, vars)
           recFn        <- getRec(indMod, argsFmlyTerm)
           vec          <- parseVec(xs, vars)
-          resTask = Task(vec.foldLeft(recFn)(applyFuncProp(_, _)))
+          resTask = Task(vec.foldLeft(recFn)(applyFuncWit(_, _)))
             .onErrorRecoverWith {
               case err: ApplnFailException =>
                 throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
@@ -324,7 +325,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       case App(f, a) =>
         Task
           .defer(parse(f, vars))
-          .zipMap(Task.defer(parse(a, vars)))(applyFuncProp)
+          .zipMap(Task.defer(parse(a, vars)))(applyFuncWit)
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
