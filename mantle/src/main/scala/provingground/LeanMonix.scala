@@ -2,9 +2,6 @@ package provingground.interface
 import provingground._
 import induction._
 
-// import ammonite.ops._
-// import scala.util._
-
 import scala.concurrent._, duration._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
@@ -14,12 +11,6 @@ import monix.tail._
 import HoTT.{Name => _, _}
 
 import trepplein._
-
-// import cats.Eval
-
-// import LeanToTerm.isPropn
-
-// import translation.FansiShow._
 
 object LeanToTermMonix {
   def isPropnFn(e: Expr): Boolean = e match {
@@ -46,9 +37,8 @@ object LeanToTermMonix {
   }
 
   def witUnify(x: Term, typ: Typ[Term]): Option[Term] = (x, typ) match {
-    case (y, t) if y.typ == t                                          => Some(y)
+    case (y, t) if y.typ == t => Some(y)
     case (l: LambdaLike[u, v], pd: PiDefn[a, b]) if l.dom == pd.domain =>
-      // pprint.log("matched lambda and Pi")
       witUnify(l.value, pd.value.replace(pd.variable, l.variable))
         .map(lambda(l.variable)(_))
     case (l: LambdaLike[u, v], tp) if isProp(l.dom) => witUnify(l.value, tp)
@@ -61,7 +51,6 @@ object LeanToTermMonix {
         res <- witUnify(ll, tp)
       } yield res
     case (y, t) =>
-      // yy = y; tt = t; throw new Exception("halting at match")
       None
   }
 
@@ -111,12 +100,10 @@ object LeanToTermMonix {
     newParamsTask.flatMap { (newParams) =>
       val indNew =
         getInd(newParams)
-      // val isPropn = isPropnFn(ind.inductiveType.ty)
 
       val fmlyOpt = argsFmlyTerm map (_.last)
       fmlyOpt map {
         case l: LambdaLike[u, v] =>
-          // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
           l.value match {
             case tp: Typ[u] =>
               if (tp.dependsOn(l.variable))(indNew.inducE(
@@ -124,7 +111,6 @@ object LeanToTermMonix {
               else (indNew.recE(tp))
           }
         case fn: FuncLike[u, v] =>
-          // println(s"family seen ${fn.fansi} : ${fn.typ.fansi}")
           val x = fn.dom.Var
           val y = fn(x)
           y match {
@@ -175,18 +161,9 @@ object LeanToTermMonix {
     }
   }
 
-  // val proofLift: (Term, Term) => Task[Term] = {
-  //   case (w: Typ[u], tp: Typ[v]) => Task { (w.Var) :-> tp }
-  //   case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
-  //     val x = w.dom.Var
-  //     proofLift(w(x), tp(x.asInstanceOf[a]))
-  //       .map((g: Term) => x :~> (g: Term))
-  //   case _ => Task.raiseError(new Exception("could not lift proof"))
-  // }
-
   type TaskParser = (Expr, Vector[Term]) => Task[Term]
 
-  val empty = LeanToTermMonix(Map(), Map(), Vector())
+  val empty = LeanToTermMonix(Map(), Map())
 
   def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
     mods.foldLeft(Task.pure(init)) {
@@ -254,8 +231,7 @@ case class RecFoldException(indMod: TermIndMod,
     extends IllegalArgumentException("Failure to fold recursive Function")
 
 case class LeanToTermMonix(defnMap: Map[Name, Term],
-                           termIndModMap: Map[Name, TermIndMod],
-                           unparsed: Vector[Name]) { self =>
+                           termIndModMap: Map[Name, TermIndMod]) { self =>
   import LeanToTermMonix._
 
   def defnOpt(exp: Expr) =
@@ -268,7 +244,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     def unapply(exp: Expr): Option[Term] =
       (
         defnOpt(exp)
-        // .orElse(recDefns(parse)(exp))
       )
   }
 
@@ -280,25 +255,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       case _ => None
     }
   }
-
-  val inPropFamily: Term => Boolean = {
-    case FormalAppln(f, _) => inPropFamily(f)
-    case s: Symbolic =>
-      val name = trepplein.Name(s.name.toString.split('.'): _*)
-      termIndModMap.get(name).map(_.isPropn).getOrElse(false)
-    case _ => false
-  }
-
-  // def applyFuncProp(func: Term, arg: Term): Term =
-  //   applyFuncWitOpt(func, arg).getOrElse {
-  //     if (inPropFamily(arg.typ)) {
-  //       pprint.log("had to use prop inner type"); func
-  //     } else throw new ApplnFailException(func, arg)
-  //   }
-
-  // val parse: TaskParser = recParser(parse)
-
-  // val Prop = Type
 
   def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
     exp match {
@@ -363,9 +319,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   def parseTyp(x: Expr, vars: Vector[Term]): Task[Typ[Term]] =
     parse(x, vars).flatMap {
       case tp: Typ[_] => Task.pure(tp)
-      case t          =>
-        // println(
-        //   s"got term $t of type ${t.typ} but expected type when parsing $x")
+      case t =>
         Task.raiseError(NotTypeException(t))
     }
 
