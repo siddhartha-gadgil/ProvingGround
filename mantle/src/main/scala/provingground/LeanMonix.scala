@@ -7,6 +7,7 @@ import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import monix.reactive._
 import monix.tail._
+import cats._
 
 import HoTT.{Name => _, _}
 
@@ -21,8 +22,8 @@ object LeanToTermMonix {
 
   def proofLift: (Term, Term) => Task[Term] = {
     case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
-      Task(LambdaFixed(pt.variable, pt.value))
-    case (w: Typ[u], tp: Typ[v]) => Task { (w.Var) :-> tp }
+      Monad[Task].pure(LambdaFixed(pt.variable, pt.value))
+    case (w: Typ[u], tp: Typ[v]) => Monad[Task].pure { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
       proofLift(w(x), tp(x.asInstanceOf[a]))
@@ -81,13 +82,25 @@ object LeanToTermMonix {
       throw new ApplnFailException(f, x)
     }
 
+  def applyFuncWitFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
+    v match {
+      case Vector() => ft
+      case x +: ys =>
+        applyFuncWitFold(ft.map(
+                           (f) => applyFuncWit(f, x)
+                         ),
+                         ys)
+    }
+
   def introsFold(ind: TermIndMod, p: Vector[Term]) =
     ind.intros.map((rule) => foldFunc(rule, p))
 
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
-      case smp: SimpleIndMod     => getRecSimple(smp, Task(argsFmlyTerm))
-      case indInd: IndexedIndMod => getRecIndexed(indInd, Task(argsFmlyTerm))
+      case smp: SimpleIndMod =>
+        getRecSimple(smp, Monad[Task].pure(argsFmlyTerm))
+      case indInd: IndexedIndMod =>
+        getRecIndexed(indInd, Monad[Task].pure(argsFmlyTerm))
     }
 
   def getRecSimple(ind: SimpleIndMod,
@@ -166,7 +179,7 @@ object LeanToTermMonix {
   val empty = LeanToTermMonix(Map(), Map())
 
   def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
-    mods.foldLeft(Task.pure(init)) {
+    mods.foldLeft(Monad[Task].pure(init)) {
       case (l, m) => l.flatMap(_.add(m))
     }
 
@@ -205,18 +218,18 @@ object LeanToTermMonix {
               recoverAll: Boolean = true) =
     Iterant
       .fromIterable[Task, Modification](mods)
-      .scanEval[LeanToTermMonix](Task.pure(init)) {
+      .scanEval[LeanToTermMonix](Monad[Task].pure(init)) {
         case (l, m) =>
           l.add(m).timeout(limit).onErrorRecoverWith {
             case err if recoverAll =>
               logErr(m, err)
-              Task.pure(l)
+              Monad[Task].pure(l)
             case err: TimeoutException =>
               logErr(m, err)
-              Task.pure(l)
+              Monad[Task].pure(l)
             case err: UnParsedException =>
               logErr(m, err)
-              Task.pure(l)
+              Monad[Task].pure(l)
 
           }
       }
@@ -236,10 +249,10 @@ object LeanToTermMonix {
             ltm: LeanToTermMonix,
             mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] =
     exp match {
-      case Const(name, _)   => Task(ltm.defnMap(name) -> ltm)
-      case Sort(Level.Zero) => Task.pure(Prop         -> ltm)
-      case Sort(_)          => Task.pure(Type         -> ltm)
-      case Var(n)           => Task.pure(vars(n)      -> ltm)
+      case Const(name, _)   => Monad[Task].pure(ltm.defnMap(name) -> ltm)
+      case Sort(Level.Zero) => Monad[Task].pure(Prop              -> ltm)
+      case Sort(_)          => Monad[Task].pure(Type              -> ltm)
+      case Var(n)           => Monad[Task].pure(vars(n)           -> ltm)
       case RecIterAp(name, args) =>
         val indMod         = ltm.termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
@@ -247,14 +260,10 @@ object LeanToTermMonix {
         for {
           pair1 <- parseVec(argsFmly, vars, ltm, mods)
           (argsFmlyTerm, ltm1) = pair1
-          recFn <- getRec(indMod, argsFmlyTerm)
+          recFnT               = getRec(indMod, argsFmlyTerm)
           pair2 <- parseVec(xs, vars, ltm, mods)
           (vec, ltm2) = pair2
-          resTask = Task(vec.foldLeft(recFn)(applyFuncWit(_, _)))
-            .onErrorRecoverWith {
-              case err: ApplnFailException =>
-                throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
-            }
+          resTask     = applyFuncWitFold(recFnT, vec)
           res <- resTask
         } yield (res, ltm2)
 
@@ -316,7 +325,7 @@ object LeanToTermMonix {
       ltm: LeanToTermMonix,
       mods: Vector[Modification]): Task[(Vector[Term], LeanToTermMonix)] =
     vec match {
-      case Vector() => Task.pure(Vector() -> ltm)
+      case Vector() => Monad[Task].pure(Vector() -> ltm)
       case x +: ys =>
         for {
           p1 <- parse(x, vars, ltm, mods)
@@ -364,9 +373,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
         for {
           argsFmlyTerm <- parseVec(argsFmly, vars)
-          recFn        <- getRec(indMod, argsFmlyTerm)
-          vec          <- parseVec(xs, vars)
-          resTask = Task(vec.foldLeft(recFn)(applyFuncWit(_, _)))
+          recFnT = getRec(indMod, argsFmlyTerm)
+          recFn <- recFnT
+          vec   <- parseVec(xs, vars)
+          resTask = applyFuncWitFold(recFnT, vec)
             .onErrorRecoverWith {
               case err: ApplnFailException =>
                 throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
