@@ -664,47 +664,69 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   }
 
   def addIndMod(ind: IndMod): Task[LeanToTermMonix] = {
-    val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
-    val withAxioms = withTypDef.flatMap(_.addAxioms(ind.intros))
-    val indOpt: Task[TermIndMod] = {
-      val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
-
-      import scala.util._
-
-      inductiveTypOpt.flatMap { (inductiveTyp) =>
-        val name = ind.inductiveType.name
-        val typF = name.toString :: inductiveTyp
-        val typValueOpt =
-          getValue(typF, ind.numParams, Vector())
-        val isPropn = isPropnFn(ind.inductiveType.ty)
-
-        val introsTry =
-          withTypDef.flatMap(_.parseSymVec(ind.intros, Vector()))
-        introsTry.flatMap { (intros) =>
-          typValueOpt.map { (typValue) =>
-            typValue match {
-              case (typ: Typ[Term], params) =>
-                SimpleIndMod(ind.inductiveType.name,
-                             typF,
-                             intros,
-                             params.size,
-                             isPropn)
-              case (t, params) =>
-                IndexedIndMod(ind.inductiveType.name,
-                              typF,
-                              intros,
-                              params.size,
-                              isPropn)
-            }
-          }
-        }
+    val name    = ind.inductiveType.name
+    val isPropn = isPropnFn(ind.inductiveType.ty)
+    for {
+      withTypDef   <- addAxiom(ind.name, ind.inductiveType.ty)
+      withAxioms   <- withTypDef.addAxioms(ind.intros)
+      inductiveTyp <- parseTyp(ind.inductiveType.ty, Vector())
+      intros       <- withTypDef.parseSymVec(ind.intros, Vector())
+      typF = name.toString :: inductiveTyp
+      typValue <- getValue(typF, ind.numParams, Vector())
+      indMod = typValue match {
+        case (typ: Typ[Term], params) =>
+          SimpleIndMod(ind.inductiveType.name,
+                       typF,
+                       intros,
+                       params.size,
+                       isPropn)
+        case (t, params) =>
+          IndexedIndMod(ind.inductiveType.name,
+                        typF,
+                        intros,
+                        params.size,
+                        isPropn)
       }
-    }
-    indOpt
-      .flatMap { (indMod) =>
-        withAxioms.map(
-          _.copy(termIndModMap = self.termIndModMap + (ind.name -> indMod)))
-      }
+    } yield
+      withAxioms.copy(
+        termIndModMap = self.termIndModMap + (ind.name -> indMod))
+
+    // val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
+    // val withAxioms = withTypDef.flatMap(_.addAxioms(ind.intros))
+    // val indOpt: Task[TermIndMod] = {
+    //   val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
+    //   inductiveTypOpt.flatMap { (inductiveTyp) =>
+    //     val typF = name.toString :: inductiveTyp
+    //     val typValueOpt =
+    //       getValue(typF, ind.numParams, Vector())
+    //
+    //     val introsTry =
+    //       withTypDef.flatMap(_.parseSymVec(ind.intros, Vector()))
+    //     introsTry.flatMap { (intros) =>
+    //       typValueOpt.map { (typValue) =>
+    //         typValue match {
+    //           case (typ: Typ[Term], params) =>
+    //             SimpleIndMod(ind.inductiveType.name,
+    //                          typF,
+    //                          intros,
+    //                          params.size,
+    //                          isPropn)
+    //           case (t, params) =>
+    //             IndexedIndMod(ind.inductiveType.name,
+    //                           typF,
+    //                           intros,
+    //                           params.size,
+    //                           isPropn)
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // indOpt
+    //   .flatMap { (indMod) =>
+    //     withAxioms.map(
+    //       _.copy(termIndModMap = self.termIndModMap + (ind.name -> indMod)))
+    // }
   }
 
   def add(mod: Modification): Task[LeanToTermMonix] = mod match {
