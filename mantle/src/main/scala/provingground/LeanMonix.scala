@@ -667,10 +667,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     val name    = ind.inductiveType.name
     val isPropn = isPropnFn(ind.inductiveType.ty)
     for {
-      withTypDef   <- addAxiom(ind.name, ind.inductiveType.ty)
-      withAxioms   <- withTypDef.addAxioms(ind.intros)
       inductiveTyp <- parseTyp(ind.inductiveType.ty, Vector())
-      intros       <- withTypDef.parseSymVec(ind.intros, Vector())
+      withTypDef = addDefnMap(ind.name, name.toString :: inductiveTyp)
+      intros     <- withTypDef.parseSymVec(ind.intros, Vector())
+      withAxioms <- withTypDef.addAxioms(ind.intros)
       typF = name.toString :: inductiveTyp
       typValue <- getValue(typF, ind.numParams, Vector())
       indMod = typValue match {
