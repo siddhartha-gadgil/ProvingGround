@@ -247,21 +247,34 @@ object LeanToTermMonix {
   def parse(exp: Expr,
             vars: Vector[Term],
             ltm: LeanToTermMonix,
-            mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] =
+            mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] = {
+    def getNamed(name: Name) =
+      ltm.defnMap.get(name).map((t) => Monad[Task].pure(t -> ltm))
+    def getTermIndMod(name: Name) =
+      ltm.termIndModMap.get(name).map((t) => Monad[Task].pure(t -> ltm))
     exp match {
-      case Const(name, _)   => Monad[Task].pure(ltm.defnMap(name) -> ltm)
-      case Sort(Level.Zero) => Monad[Task].pure(Prop              -> ltm)
-      case Sort(_)          => Monad[Task].pure(Type              -> ltm)
-      case Var(n)           => Monad[Task].pure(vars(n)           -> ltm)
+      case Const(name, _) =>
+        getNamed(name)
+          .orElse(defFromMod(name, ltm, mods))
+          .getOrElse(
+            Task.raiseError(UnParsedException(exp))
+          )
+      case Sort(Level.Zero) => Monad[Task].pure(Prop    -> ltm)
+      case Sort(_)          => Monad[Task].pure(Type    -> ltm)
+      case Var(n)           => Monad[Task].pure(vars(n) -> ltm)
       case RecIterAp(name, args) =>
-        val indMod         = ltm.termIndModMap(name)
-        val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-
         for {
-          pair1 <- parseVec(argsFmly, vars, ltm, mods)
+          pair0 <- getTermIndMod(name)
+            .orElse(indModFromMod(name, ltm, mods))
+            .getOrElse(
+              Task.raiseError(UnParsedException(exp))
+            )
+          (indMod, ltm0) = pair0
+          (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+          pair1 <- parseVec(argsFmly, vars, ltm0, mods)
           (argsFmlyTerm, ltm1) = pair1
           recFnT               = getRec(indMod, argsFmlyTerm)
-          pair2 <- parseVec(xs, vars, ltm, mods)
+          pair2 <- parseVec(xs, vars, ltm1, mods)
           (vec, ltm2) = pair2
           resTask     = applyFuncWitFold(recFnT, vec)
           res <- resTask
@@ -274,9 +287,6 @@ object LeanToTermMonix {
           p2 <- parse(a, vars, ltm1, mods)
           (arg, ltm2) = p2
         } yield (applyFuncWit(func, arg), ltm2)
-      // Task
-      //   .defer(parse(f, vars, ltm, mods))
-      //   .zipMap(Task.defer(parse(a, vars, ltm, mods)))(applyFuncWit)
       case Lam(domain, body) =>
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
@@ -318,6 +328,7 @@ object LeanToTermMonix {
         } yield (bodyTerm.replace(x, valueTerm), ltm3)
       case e => Task.raiseError(UnParsedException(e))
     }
+  }
 
   def parseVec(
       vec: Vector[Expr],
@@ -333,6 +344,154 @@ object LeanToTermMonix {
           p2 <- parseVec(ys, vars, ltm1, mods)
           (tail, parse2) = p2
         } yield (head +: tail, parse2)
+    }
+
+  def getValue(t: Term,
+               n: Int,
+               accum: Vector[Term]): Task[(Term, Vector[Term])] =
+    (t, n) match {
+      case (x, 0) => Task.pure(x -> accum)
+      case (l: LambdaLike[u, v], n) if n > 0 =>
+        getValue(l.value, n - 1, accum :+ l.variable)
+      case (fn: FuncLike[u, v], n) if n > 0 =>
+        val x = fn.dom.Var
+        getValue(fn(x), n - 1, accum :+ x)
+      case _ => throw new Exception("getValue failed")
+    }
+
+  def withDefn(name: Name,
+               exp: Expr,
+               ltm: LeanToTermMonix,
+               mods: Vector[Modification]) =
+    for {
+      pr <- parse(exp, Vector(), ltm, mods)
+      (term, ltm) = pr
+      modified    = ltm.addDefnMap(name, term)
+    } yield modified
+
+  def withAxiom(name: Name,
+                ty: Expr,
+                ltm: LeanToTermMonix,
+                mods: Vector[Modification]) =
+    for {
+      pr <- parse(ty, Vector(), ltm, mods)
+      (typ, ltm) = pr
+      term       = (name.toString) :: toTyp(typ)
+      modified   = ltm.addDefnMap(name, term)
+    } yield modified
+
+  def withAxiomSeq(
+      axs: Vector[(Name, Expr)],
+      ltmT: Task[LeanToTermMonix],
+      mods: Vector[Modification]
+  ): Task[LeanToTermMonix] = axs match {
+    case Vector() => ltmT
+    case (name, ty) +: ys =>
+      for {
+        ltm <- ltmT
+        ltmH = withAxiom(name, ty, ltm, mods)
+        res <- withAxiomSeq(ys, ltmH, mods)
+      } yield res
+  }
+
+  // Like withAxiomSeq but returns the axioms
+  def foldAxiomSeq(
+      accum: Vector[Term],
+      axs: Vector[(Name, Expr)],
+      ltmT: Task[LeanToTermMonix],
+      mods: Vector[Modification]
+  ): Task[(Vector[Term], LeanToTermMonix)] = axs match {
+    case Vector() =>
+      for { ltm <- ltmT } yield (accum, ltm)
+    case (name, ty) +: ys =>
+      for {
+        ltm <- ltmT
+        pr  <- parse(ty, Vector(), ltm, mods)
+        (typ, ltm1) = pr
+        term        = (name.toString) :: toTyp(typ)
+        modified    = ltm1.addDefnMap(name, term)
+        res <- foldAxiomSeq(term +: accum, ys, Monad[Task].pure(ltm1), mods)
+      } yield res
+  }
+
+  def withMod(mod: Modification,
+              ltm: LeanToTermMonix,
+              mods: Vector[Modification]): Task[LeanToTermMonix] = mod match {
+    case ind: IndMod =>
+      val isPropn = isPropnFn(ind.inductiveType.ty)
+      val name    = ind.inductiveType.name
+      for {
+        pr <- parse(ind.inductiveType.ty, Vector(), ltm, mods)
+        (indTypTerm, ltm1) = pr
+        indTyp             = toTyp(indTypTerm)
+        typF               = name.toString :: indTyp
+        withTyp            = ltm1.addDefnMap(name, typF)
+        introsPair <- foldAxiomSeq(Vector(),
+                                   ind.intros,
+                                   Monad[Task].pure(withTyp),
+                                   mods)
+        (intros, withIntros) = introsPair
+        typValuePar <- getValue(typF, ind.numParams, Vector())
+        indMod = typValuePar match {
+          case (typ: Typ[Term], params) =>
+            SimpleIndMod(ind.inductiveType.name,
+                         typF,
+                         intros,
+                         params.size,
+                         isPropn)
+          case (t, params) =>
+            IndexedIndMod(ind.inductiveType.name,
+                          typF,
+                          intros,
+                          params.size,
+                          isPropn)
+        }
+      } yield
+        LeanToTermMonix(withIntros.defnMap,
+                        withIntros.termIndModMap + (ind.name -> indMod))
+    case ax: AxiomMod =>
+      withAxiom(ax.name, ax.ax.ty, ltm, mods)
+    case df: DefMod =>
+      withDefn(df.name, df.defn.value, ltm, mods)
+    case QuotMod =>
+      import quotient._
+      val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+        (ax.name, ax.ty)
+      }
+      withAxiomSeq(axs, Monad[Task].pure(ltm), mods)
+  }
+
+  def modNames(mod: Modification): Vector[Name] = mod match {
+    case ind: IndMod =>
+      ind.name +: (ind.intros.map(_._1))
+    case QuotMod =>
+      import quotient._
+      Vector(quot, quotLift, quotMk, quotInd).map(_.name)
+    case mod =>
+      Vector(mod.name)
+  }
+
+  def findMod(name: Name, mods: Vector[Modification]) =
+    mods.find((mod) => modNames(mod).contains(name))
+
+  def defFromMod(
+      name: Name,
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]): Option[Task[(Term, LeanToTermMonix)]] =
+    findMod(name, mods).map { (mod) =>
+      for {
+        ltm1 <- withMod(mod, ltm, mods)
+      } yield (ltm1.defnMap(name), ltm1)
+    }
+
+  def indModFromMod(name: Name,
+                    ltm: LeanToTermMonix,
+                    mods: Vector[Modification])
+    : Option[Task[(TermIndMod, LeanToTermMonix)]] =
+    findMod(name, mods).map { (mod) =>
+      for {
+        ltm1 <- withMod(mod, ltm, mods)
+      } yield (ltm1.termIndModMap(name), ltm1)
     }
 
 }
@@ -511,19 +670,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
 
       import scala.util._
-
-      def getValue(t: Term,
-                   n: Int,
-                   accum: Vector[Term]): Task[(Term, Vector[Term])] =
-        (t, n) match {
-          case (x, 0) => Task.pure(x -> accum)
-          case (l: LambdaLike[u, v], n) if n > 0 =>
-            getValue(l.value, n - 1, accum :+ l.variable)
-          case (fn: FuncLike[u, v], n) if n > 0 =>
-            val x = fn.dom.Var
-            getValue(fn(x), n - 1, accum :+ x)
-          case _ => throw new Exception("getValue failed")
-        }
 
       inductiveTypOpt.flatMap { (inductiveTyp) =>
         val name = ind.inductiveType.name
