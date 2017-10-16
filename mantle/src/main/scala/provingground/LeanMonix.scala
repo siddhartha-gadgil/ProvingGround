@@ -590,31 +590,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
-<<<<<<< HEAD
-    vec match {
-      case Vector() => Task.eval(Vector())
-      case x +: ys =>
-        for {
-          head <- parse(x, vars)
-          tail <- parseVec(ys, vars)
-        } yield head +: tail
-    }
 
-  def parseTypVec(vec: Vector[Expr],
-                  vars: Vector[Term]): Task[Vector[Typ[Term]]] = vec match {
-    case Vector() => Task.eval(Vector())
-    case x +: ys =>
-      for {
-        head <- parseTyp(x, vars)
-        tail <- parseTypVec(ys, vars)
-      } yield head +: tail
-  }
-
-  def parseSymVec(vec: Vector[(Name, Expr)],
-                  vars: Vector[Term]): Task[Vector[Term]] = vec match {
-    case Vector() => Task.eval(Vector())
-    case (name, expr) +: ys =>
-=======
     Task.gather {
       vec.map(parse(_, vars))
     }
@@ -628,7 +604,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   def parseSymVec(vec: Vector[(Name, Expr)],
                   vars: Vector[Term]): Task[Vector[(Name, Term)]] =
     Task.gather {
->>>>>>> 7a6d6f0f1fd7a35719454386af24542bfcf6f26d
       for {
         (name, expr) <- vec
       } yield
