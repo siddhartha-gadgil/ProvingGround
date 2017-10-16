@@ -105,11 +105,11 @@ object LeanToTermMonix {
 
   def getRecSimple(ind: SimpleIndMod,
                    argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
-    val newParamsTask = argsFmlyTerm map (_.init)
     def getInd(p: Vector[Term]) =
       ConstructorSeqTL
         .getExst(toTyp(foldFunc(ind.typF, p)), introsFold(ind, p))
         .value
+    val newParamsTask = argsFmlyTerm map (_.init)
     newParamsTask.flatMap { (newParams) =>
       val indNew =
         getInd(newParams)
@@ -410,7 +410,7 @@ object LeanToTermMonix {
         (typ, ltm1) = pr
         term        = (name.toString) :: toTyp(typ)
         modified    = ltm1.addDefnMap(name, term)
-        res <- foldAxiomSeq(term +: accum, ys, Task.pure(ltm1), mods)
+        res <- foldAxiomSeq(term +: accum, ys, Task.pure(modified), mods)
       } yield res
   }
 
