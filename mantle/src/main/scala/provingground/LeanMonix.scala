@@ -479,6 +479,7 @@ object LeanToTermMonix {
       ltm: LeanToTermMonix,
       mods: Vector[Modification]): Option[Task[(Term, LeanToTermMonix)]] =
     findMod(name, mods).map { (mod) =>
+      pprint.log(s"Using ${mod.name}")
       for {
         ltm1 <- withMod(mod, ltm, mods)
       } yield (ltm1.defnMap(name), ltm1)
