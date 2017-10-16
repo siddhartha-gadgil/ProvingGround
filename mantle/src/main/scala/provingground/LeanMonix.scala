@@ -184,7 +184,7 @@ object LeanToTermMonix {
     }
 
   def addChunk(mods: Vector[Modification],
-               init: Task[LeanToTermMonix] = Task.pure(empty),
+               init: Task[LeanToTermMonix] = Task.eval(empty),
                limit: FiniteDuration = 3.minutes) =
     mods
       .foldLeft(init) {
@@ -206,7 +206,7 @@ object LeanToTermMonix {
           l.add(m).timeout(limit).onErrorRecoverWith {
             case err =>
               logErr(m, err)
-              Task.pure(l)
+              Task.eval(l)
           }
         )
     }
@@ -291,7 +291,7 @@ object LeanToTermMonix {
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
-          domTyp <- Task(toTyp(domTerm))
+          domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           p2 <- parse(body, x +: vars, ltm1, mods)
           (value, ltm2) = p2
@@ -308,18 +308,18 @@ object LeanToTermMonix {
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
-          domTyp <- Task(toTyp(domTerm))
+          domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           p2 <- parse(body, x +: vars, ltm1, mods)
           (value, ltm2) = p2
-          cod <- Task(toTyp(value))
+          cod <- Task.eval(toTyp(value))
           dep = cod.dependsOn(x)
         } yield if (dep) (PiDefn(x, cod), ltm2) else (x.typ ->: cod, ltm2)
       case Let(domain, value, body) =>
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
-          domTyp <- Task(toTyp(domTerm))
+          domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           p2 <- parse(value, vars, ltm1, mods)
           (valueTerm, ltm2) = p2
@@ -350,7 +350,7 @@ object LeanToTermMonix {
                n: Int,
                accum: Vector[Term]): Task[(Term, Vector[Term])] =
     (t, n) match {
-      case (x, 0) => Task.pure(x -> accum)
+      case (x, 0) => Task.eval(x -> accum)
       case (l: LambdaLike[u, v], n) if n > 0 =>
         getValue(l.value, n - 1, accum :+ l.variable)
       case (fn: FuncLike[u, v], n) if n > 0 =>
@@ -522,10 +522,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parse(exp: Expr, vars: Vector[Term]): Task[Term] =
     exp match {
-      case Predef(t)        => Task.pure(t)
-      case Sort(Level.Zero) => Task.pure(Prop)
-      case Sort(_)          => Task.pure(Type)
-      case Var(n)           => Task.pure(vars(n))
+      case Predef(t)        => Task.eval(t)
+      case Sort(Level.Zero) => Task.eval(Prop)
+      case Sort(_)          => Task.eval(Type)
+      case Var(n)           => Task.eval(vars(n))
       case RecIterAp(name, args) =>
         val indMod         = termIndModMap(name)
         val (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
@@ -550,7 +550,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
         } yield
@@ -564,16 +564,16 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       case Pi(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
-          cod   <- Task(toTyp(value))
+          cod   <- Task.eval(toTyp(value))
           dep = cod.dependsOn(x)
         } yield if (dep) PiDefn(x, cod) else x.typ ->: cod
       case Let(domain, value, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           valueTerm <- parse(value, vars)
           bodyTerm  <- parse(body, x +: vars)
@@ -583,14 +583,14 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseTyp(x: Expr, vars: Vector[Term]): Task[Typ[Term]] =
     parse(x, vars).flatMap {
-      case tp: Typ[_] => Task.pure(tp)
+      case tp: Typ[_] => Task.eval(tp)
       case t =>
         Task.raiseError(NotTypeException(t))
     }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
     vec match {
-      case Vector() => Task.pure(Vector())
+      case Vector() => Task.eval(Vector())
       case x +: ys =>
         for {
           head <- parse(x, vars)
@@ -600,7 +600,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseTypVec(vec: Vector[Expr],
                   vars: Vector[Term]): Task[Vector[Typ[Term]]] = vec match {
-    case Vector() => Task.pure(Vector())
+    case Vector() => Task.eval(Vector())
     case x +: ys =>
       for {
         head <- parseTyp(x, vars)
@@ -610,7 +610,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
 
   def parseSymVec(vec: Vector[(Name, Expr)],
                   vars: Vector[Term]): Task[Vector[Term]] = vec match {
-    case Vector() => Task.pure(Vector())
+    case Vector() => Task.eval(Vector())
     case (name, expr) +: ys =>
       for {
         tp <- parseTyp(expr, vars)
@@ -645,7 +645,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   }
 
   def addAxiomSeq(axs: Vector[(Name, Expr)]): Task[LeanToTermMonix] =
-    axs.foldLeft(Task.pure(self)) {
+    axs.foldLeft(Task.eval(self)) {
       case (p, (n, v)) => p.flatMap(_.addAxiom(n, v))
     }
 
