@@ -22,8 +22,8 @@ object LeanToTermMonix {
 
   def proofLift: (Term, Term) => Task[Term] = {
     case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
-      Monad[Task].pure(LambdaFixed(pt.variable, pt.value))
-    case (w: Typ[u], tp: Typ[v]) => Monad[Task].pure { (w.Var) :-> tp }
+      Task.pure(LambdaFixed(pt.variable, pt.value))
+    case (w: Typ[u], tp: Typ[v]) => Task.eval { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
       proofLift(w(x), tp(x.asInstanceOf[a]))
@@ -98,9 +98,9 @@ object LeanToTermMonix {
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
       case smp: SimpleIndMod =>
-        getRecSimple(smp, Monad[Task].pure(argsFmlyTerm))
+        getRecSimple(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
-        getRecIndexed(indInd, Monad[Task].pure(argsFmlyTerm))
+        getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
   def getRecSimple(ind: SimpleIndMod,
@@ -179,7 +179,7 @@ object LeanToTermMonix {
   val empty = LeanToTermMonix(Map(), Map())
 
   def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
-    mods.foldLeft(Monad[Task].pure(init)) {
+    mods.foldLeft(Task.pure(init)) {
       case (l, m) => l.flatMap(_.add(m))
     }
 
@@ -218,18 +218,18 @@ object LeanToTermMonix {
               recoverAll: Boolean = true) =
     Iterant
       .fromIterable[Task, Modification](mods)
-      .scanEval[LeanToTermMonix](Monad[Task].pure(init)) {
+      .scanEval[LeanToTermMonix](Task.pure(init)) {
         case (l, m) =>
           l.add(m).timeout(limit).onErrorRecoverWith {
             case err if recoverAll =>
               logErr(m, err)
-              Monad[Task].pure(l)
+              Task.pure(l)
             case err: TimeoutException =>
               logErr(m, err)
-              Monad[Task].pure(l)
+              Task.pure(l)
             case err: UnParsedException =>
               logErr(m, err)
-              Monad[Task].pure(l)
+              Task.pure(l)
 
           }
       }
@@ -249,9 +249,9 @@ object LeanToTermMonix {
             ltm: LeanToTermMonix,
             mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] = {
     def getNamed(name: Name) =
-      ltm.defnMap.get(name).map((t) => Monad[Task].pure(t -> ltm))
+      ltm.defnMap.get(name).map((t) => Task.pure(t -> ltm))
     def getTermIndMod(name: Name) =
-      ltm.termIndModMap.get(name).map((t) => Monad[Task].pure(t -> ltm))
+      ltm.termIndModMap.get(name).map((t) => Task.pure(t -> ltm))
     exp match {
       case Const(name, _) =>
         getNamed(name)
@@ -259,9 +259,9 @@ object LeanToTermMonix {
           .getOrElse(
             Task.raiseError(UnParsedException(exp))
           )
-      case Sort(Level.Zero) => Monad[Task].pure(Prop    -> ltm)
-      case Sort(_)          => Monad[Task].pure(Type    -> ltm)
-      case Var(n)           => Monad[Task].pure(vars(n) -> ltm)
+      case Sort(Level.Zero) => Task.pure(Prop    -> ltm)
+      case Sort(_)          => Task.pure(Type    -> ltm)
+      case Var(n)           => Task.pure(vars(n) -> ltm)
       case RecIterAp(name, args) =>
         for {
           pair0 <- getTermIndMod(name)
@@ -336,7 +336,7 @@ object LeanToTermMonix {
       ltm: LeanToTermMonix,
       mods: Vector[Modification]): Task[(Vector[Term], LeanToTermMonix)] =
     vec match {
-      case Vector() => Monad[Task].pure(Vector() -> ltm)
+      case Vector() => Task.pure(Vector() -> ltm)
       case x +: ys =>
         for {
           p1 <- parse(x, vars, ltm, mods)
@@ -410,7 +410,7 @@ object LeanToTermMonix {
         (typ, ltm1) = pr
         term        = (name.toString) :: toTyp(typ)
         modified    = ltm1.addDefnMap(name, term)
-        res <- foldAxiomSeq(term +: accum, ys, Monad[Task].pure(ltm1), mods)
+        res <- foldAxiomSeq(term +: accum, ys, Task.pure(ltm1), mods)
       } yield res
   }
 
@@ -428,7 +428,7 @@ object LeanToTermMonix {
         withTyp            = ltm1.addDefnMap(name, typF)
         introsPair <- foldAxiomSeq(Vector(),
                                    ind.intros,
-                                   Monad[Task].pure(withTyp),
+                                   Task.pure(withTyp),
                                    mods)
         (intros, withIntros) = introsPair
         typValuePar <- getValue(typF, ind.numParams, Vector())
@@ -458,7 +458,7 @@ object LeanToTermMonix {
       val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
         (ax.name, ax.ty)
       }
-      withAxiomSeq(axs, Monad[Task].pure(ltm), mods)
+      withAxiomSeq(axs, Task.pure(ltm), mods)
   }
 
   def modNames(mod: Modification): Vector[Name] = mod match {
@@ -589,35 +589,26 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
-    vec match {
-      case Vector() => Task.pure(Vector())
-      case x +: ys =>
-        for {
-          head <- parse(x, vars)
-          tail <- parseVec(ys, vars)
-        } yield head +: tail
+    Task.gather {
+      vec.map(parse(_, vars))
     }
 
   def parseTypVec(vec: Vector[Expr],
-                  vars: Vector[Term]): Task[Vector[Typ[Term]]] = vec match {
-    case Vector() => Task.pure(Vector())
-    case x +: ys =>
-      for {
-        head <- parseTyp(x, vars)
-        tail <- parseTypVec(ys, vars)
-      } yield head +: tail
-  }
+                  vars: Vector[Term]): Task[Vector[Typ[Term]]] =
+    Task.gather {
+      vec.map(parseTyp(_, vars))
+    }
 
   def parseSymVec(vec: Vector[(Name, Expr)],
-                  vars: Vector[Term]): Task[Vector[Term]] = vec match {
-    case Vector() => Task.pure(Vector())
-    case (name, expr) +: ys =>
+                  vars: Vector[Term]): Task[Vector[(Name, Term)]] =
+    Task.gather {
       for {
-        tp <- parseTyp(expr, vars)
-        head = name.toString :: tp
-        tail <- parseSymVec(ys, vars)
-      } yield head +: tail
-  }
+        (name, expr) <- vec
+      } yield
+        for {
+          tp <- parseTyp(expr, vars)
+        } yield (name, name.toString :: tp)
+    }
 
   def parseSym(name: Name, ty: Expr, vars: Vector[Term]) =
     parseTyp(ty, vars).map(name.toString :: _)
@@ -669,7 +660,8 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     for {
       inductiveTyp <- parseTyp(ind.inductiveType.ty, Vector())
       withTypDef = addDefnMap(ind.name, name.toString :: inductiveTyp)
-      intros     <- withTypDef.parseSymVec(ind.intros, Vector())
+      namedIntros <- withTypDef.parseSymVec(ind.intros, Vector())
+      intros = namedIntros.map(_._2)
       withAxioms <- withTypDef.addAxioms(ind.intros)
       typF = name.toString :: inductiveTyp
       typValue <- getValue(typF, ind.numParams, Vector())
@@ -688,45 +680,8 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
                         isPropn)
       }
     } yield
-      withAxioms.copy(
-        termIndModMap = self.termIndModMap + (ind.name -> indMod))
-
-    // val withTypDef = addAxiom(ind.name, ind.inductiveType.ty)
-    // val withAxioms = withTypDef.flatMap(_.addAxioms(ind.intros))
-    // val indOpt: Task[TermIndMod] = {
-    //   val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
-    //   inductiveTypOpt.flatMap { (inductiveTyp) =>
-    //     val typF = name.toString :: inductiveTyp
-    //     val typValueOpt =
-    //       getValue(typF, ind.numParams, Vector())
-    //
-    //     val introsTry =
-    //       withTypDef.flatMap(_.parseSymVec(ind.intros, Vector()))
-    //     introsTry.flatMap { (intros) =>
-    //       typValueOpt.map { (typValue) =>
-    //         typValue match {
-    //           case (typ: Typ[Term], params) =>
-    //             SimpleIndMod(ind.inductiveType.name,
-    //                          typF,
-    //                          intros,
-    //                          params.size,
-    //                          isPropn)
-    //           case (t, params) =>
-    //             IndexedIndMod(ind.inductiveType.name,
-    //                           typF,
-    //                           intros,
-    //                           params.size,
-    //                           isPropn)
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // indOpt
-    //   .flatMap { (indMod) =>
-    //     withAxioms.map(
-    //       _.copy(termIndModMap = self.termIndModMap + (ind.name -> indMod)))
-    // }
+      LeanToTermMonix(withTypDef.defnMap ++ namedIntros,
+                      termIndModMap + (ind.name -> indMod))
   }
 
   def add(mod: Modification): Task[LeanToTermMonix] = mod match {
