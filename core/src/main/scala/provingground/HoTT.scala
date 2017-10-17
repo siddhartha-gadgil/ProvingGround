@@ -1169,11 +1169,10 @@ object HoTT {
       * application of the function: use this but define the [[act]] method;
       * checks HoTT-type of argument is in the domain and throws exception if it fails.
       */
-    def apply(arg: W): U = {
-      // require(
-      //   arg.typ == dom,
-      //   s"function $this with domain ${dom} cannot act on term ${arg} with type ${arg.typ}")
-      if (arg.typ != dom) throw new ApplnFailException(this, arg)
+    def apply(arg: W): U =
+      if (arg.typ != dom) throw new ApplnFailException(this, arg) else applyUnchecked(arg)
+
+    def applyUnchecked(arg: W): U = {
       arg match {
         case t: Cnst => Try(apply(t.term.asInstanceOf[W])).getOrElse(act(arg))
         case _       => act(arg)
