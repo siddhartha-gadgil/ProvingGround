@@ -590,7 +590,6 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
-
     Task.gather {
       vec.map(parse(_, vars))
     }

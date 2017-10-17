@@ -1109,13 +1109,13 @@ object HoTT {
       extends IllegalArgumentException("Expected type but got term")
 
   def applyFunc(func: Term, arg: Term): Term = func match {
-    case fn: FuncLike[u, v] if fn.dom == arg.typ => fn(arg.asInstanceOf[u])
+    case fn: FuncLike[u, v] if fn.dom == arg.typ => fn.applyUnchecked(arg.asInstanceOf[u])
     case _                                       => throw new ApplnFailException(func, arg)
   }
 
   def applyFuncOpt(func: Term, arg: Term): Option[Term] = func match {
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
-      Some(fn(arg.asInstanceOf[u]))
+      Some(fn.applyUnchecked(arg.asInstanceOf[u]))
     case _ => None
   }
 
@@ -2745,7 +2745,7 @@ object HoTT {
     */
   def foldterms: (Term, List[Term]) => Term = {
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
-      foldterms(f(x.asInstanceOf[u]), ys)
+      foldterms(f.applyUnchecked(x.asInstanceOf[u]), ys)
     case (t, _) => t
   }
 
@@ -2756,7 +2756,7 @@ object HoTT {
   def fold(fn: Term)(args: Term*): Term = (fn, args.toList) match {
     case (t, List()) => t
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
-      fold(f(x.asInstanceOf[u]))(ys: _*)
+      fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
       throw new ApplnFailException(f, x)
     case (t, x :: ys) =>

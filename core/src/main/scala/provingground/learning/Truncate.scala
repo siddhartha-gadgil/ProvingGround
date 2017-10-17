@@ -81,11 +81,11 @@ object Truncate {
       }
 
   def task[A](pd: PD[A], epsilon: Double): Task[FD[A]] =
-    if (epsilon > 1) Task(FD.empty[A])
+    if (epsilon > 1) Task.pure(FD.empty[A])
     else
       pd match {
         case fd: FD[u] =>
-          Task {
+          Task.eval {
             val purged = fd.flatten.pmf.filter {
               case Weighted(x, p) => p > epsilon
             }

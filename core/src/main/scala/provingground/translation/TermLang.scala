@@ -52,7 +52,7 @@ case object TermLang
 
   def appln(func: Term, arg: Term) = func match {
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
-      Try(fn(arg.asInstanceOf[u])).toOption
+      Option(fn.applyUnchecked(arg.asInstanceOf[u]))
     case _ => None
   }
 
