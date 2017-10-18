@@ -38,6 +38,7 @@ Weighted(axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))] : (a : (M : 𝒰 _0) ~
 
 We use a `TermEvolver`, We first generate the types, which includes the theorems.
 The time has not been optimized here to avoid accidental biases.
+
 ```scala
 scala> val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 tv: provingground.learning.TermEvolver = provingground.learning.TermEvolver@2ba64f88
@@ -51,7 +52,7 @@ We shall generate terms. Some experiments show that it is enough to generate wit
 scala> val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5))
 fd: provingground.FiniteDistribution[provingground.HoTT.Term] = [_*_ : ((M : 𝒰 _0) → ((M : 𝒰 _0) → (M : 𝒰 _0))) : 0.26999999999999996, eqM : ((M : 𝒰 _0) → ((M : 𝒰 _0) → (𝒰 _0))) : 0.26999999999999996, e_r : (M : 𝒰 _0) : 0.03857142857142857, e_l : (M : 𝒰 _0) : 0.03857142857142857, axiom[eqM(_*_(a)(e_r))(a)] : (a : (M : 𝒰 _0) ~> ((eqM : ((M : 𝒰 _0) → ((M : 𝒰 _0) → (𝒰 _0)))) (((_*_ : ((M : 𝒰 _0) → ((M : 𝒰 _0) → (M : 𝒰 _0)))) (a : (M : 𝒰 _0)) : ((M : 𝒰 _0) → (M : 𝒰 _0))) (e_r : (M : 𝒰 _0)) : (M : 𝒰 _0)) : ((M : 𝒰 _0) → (𝒰 _0))) (a : (M : 𝒰 _0)) : 𝒰 _0) : 0.03857142857142857, axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))] : (a : (M : 𝒰 _0) ~> b : (M : 𝒰 _0) ~> c : (M : 𝒰 _0) ~> (((eqM : ((M : 𝒰 _0) → ((M : 𝒰 _0) → (𝒰 _...
 
-scala> fd.map(_.typ).filter(_.typ == eqM(l)(op(l)(r)))
+scala> fd.filter(_.typ == eqM(l)(op(l)(r)))
 res1: provingground.FiniteDistribution[provingground.HoTT.Typ[U] forSome { type U >: x$1.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U]; val x$1: provingground.HoTT.Term }] = []
 ```
 We see that wee get a proof of a key lemma. Criteria, based on probabilities of statements and proofs,

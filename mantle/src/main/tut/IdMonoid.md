@@ -32,7 +32,7 @@ val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8))
 We shall generate terms. Some experiments show that it is enough to generate with truncation `10^{-5}`.
 ```tut
 val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5))
-fd.map(_.typ).filter(_.typ == eqM(l)(op(l)(r)))
+fd.filter(_.typ == eqM(l)(op(l)(r)))
 ```
 We see that wee get a proof of a key lemma. Criteria, based on probabilities of statements and proofs,
 tell us that this is one of the best results proved, along with one related by symmetry and a pair that are not useful.
