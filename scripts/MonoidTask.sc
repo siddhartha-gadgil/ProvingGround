@@ -1,20 +1,20 @@
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD, _}
-import library._, MonoidSimple._
 import learning._
-val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD, _}
-import scala.concurrent.duration._
-val fdT = Truncate.task(tv.baseEvolveTyps(dist1), math.pow(0.1, 8), 2.minutes).memoize
-val fd = Truncate.task(tv.baseEvolve(dist1), math.pow(0.1, 5), 2.minutes).memoize
 import monix.execution.Scheduler.Implicits.global
-import math.log
-
-val thms = for{
-     terms <- fd;
-     typs <- fdT
-     termTypsRaw = terms.map(_.typ).filter(typs(_) > 0)
-     termTyps = termTypsRaw.normalized()
-     statements = termTyps.supp.filter((typ) => typs(typ) > 0)
-  } yield statements.map{(thm) => (thm, termTypsRaw(thm), termTyps(thm))}
-
-val thmsEntp = thms.map{(triples) => triples.map {case (t, p, q) => (t, q, h(p,q))}.sortBy(_._3)}.memoize
+import scala.concurrent.duration._
+import library._, MonoidSimple._
+val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
+import math._
+import scala.concurrent.duration._
+import ProverTasks._
+val tdTask = termdistTask(dist1, tv, math.pow(10, -5), 2.minutes)
+val tdFut = tdTask.runAsync
+tdFut.value
+val tydTask = typdistTask(dist1, tv, math.pow(10, -7), 2.minutes)
+val tydFut = tydTask.runAsync
+tydFut.value
+val pt = prsmEntTask(tdTask, tydTask)
+val pf = pt.runAsync
+pf.value
+val s = theoremSearchTask(dist1, tv, math.pow(10.0, -7), 3.minutes, eqM(l)(r))
+val f = s.runAsync
+f.foreach{case Some(t) => println(s"${t.fansi} : ${t.typ.fansi}")}
