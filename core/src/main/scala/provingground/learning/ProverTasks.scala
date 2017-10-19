@@ -8,6 +8,8 @@ import math.{log, exp}
 
 import scala.concurrent._, duration._
 
+import translation.FansiShow._
+
 object ProverTasks {
   def typdistTask(fd: FD[Term], tv: TermEvolver, cutoff: Double, maxtime: FiniteDuration) =
     Truncate.task(tv.baseEvolveTyps(fd), cutoff, maxtime).memoize
@@ -18,7 +20,10 @@ object ProverTasks {
   def termdistDerTask(fd: FD[Term], tfd: FD[Term], tv: TermEvolver, cutoff: Double, maxtime: FiniteDuration) =
     Truncate.task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime).memoize
 
-  def h(p: Double, q: Double) = -p / (q * log(q))
+  def h(p: Double, q: Double) = {
+    require(q > 0, s"Entropy with p=$p, q = $q")
+      -p / (q * log(q))
+  }
 
   def hExp(p: Double, q: Double, scale: Double = 1.0) = math.exp(-(h(p, q) - 1) * scale)
 
@@ -28,20 +33,24 @@ object ProverTasks {
       typs <- typsTask
       thmsByPf = terms.map(_.typ)
       thmsBySt = typs.filter(thmsByPf(_) > 0)
-      pfSet = terms.flatten.supp
+      pfSet = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
+      // _  = pprint.log(pfSet.map(_.fansi))
     } yield pfSet.map{
-      (pf) => (pf, hExp(thmsBySt(pf.typ), thmsByPf(pf.typ), scale) * terms(pf) / thmsByPf(pf.typ) )
-    }.filter (_._2 > 0)
+      (pf) => (pf, hExp(thmsBySt(pf.typ), thmsByPf(pf.typ), scale * terms(pf) / thmsByPf(pf.typ) ))
+      //FIXME scaling wrong
+    }.sortBy(_._2)
 
   def dervecTasks(base: FD[Term],
     tv: TermEvolver,
     termsTask: Task[FD[Term]],
     typsTask : Task[FD[Typ[Term]]],
-    maxtime: FiniteDuration) : Task[Vector[Task[FD[Term]]]]  =
+    maxtime: FiniteDuration,
+    cutoff: Double) : Task[Vector[Task[FD[Term]]]]  =
       prsmEntTask(termsTask, typsTask).map{
       (vec) => vec.collect{
-        case (v, p)  =>
-          termdistDerTask(base, FD.unif(v), tv, p, maxtime)
+        case (v, p) if p > cutoff =>
+          pprint.log(s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
+          termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime)
         }
       }
 
@@ -97,13 +106,15 @@ object ProverTasks {
         val typsTask = typdistTask(fd, tv, cutoff, maxtime)
         val termsTask = termdistTask(fd, tv, cutoff, maxtime)
         def spawn(vec: FD[Term]) = {
-          pprint.log(s"spawning tasks from $vec")
-          dervecTasks(
-            fd,
+          if (fd.total == 0) Task.pure(Vector())
+          // pprint.log(s"spawning tasks from $vec")
+          else dervecTasks(
+            fd.normalized(),
             tv,
             Task.eval(vec),
             typsTask,
-            maxtime
+            maxtime,
+            cutoff
           )
         }
         breadthFirstTask[FD[Term], Term](
