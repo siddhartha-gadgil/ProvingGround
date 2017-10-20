@@ -78,7 +78,8 @@ object ProverTasks {
     def breadthFirstTask[X, Y](
       tv: Task[Vector[Task[X]]],
       p: X => Option[Y],
-      spawn: X => Task[Vector[Task[X]]]): Task[Option[Y]] = {
+      spawn: Int => X => Task[Vector[Task[X]]],
+      depth: Int = 0): Task[Option[Y]] = {
         tv.flatMap{
           (vec) =>
              if (vec.isEmpty) Task.pure(None)
@@ -88,10 +89,10 @@ object ProverTasks {
                 case None =>
                   val tskVecs : Vector[Task[Vector[Task[X]]]] = vec.map(
                           (t) =>
-                            t.flatMap(spawn)
+                            t.flatMap(spawn(depth))
                         )
                   val w : Task[Vector[Task[X]]]= Task.gather(tskVecs).map(_.flatten)
-                  breadthFirstTask(w, p, spawn)
+                  breadthFirstTask(w, p, spawn, depth + 1)
               }
         }
       }
@@ -102,10 +103,11 @@ object ProverTasks {
       cutoff: Double,
       maxtime: FiniteDuration,
       goal: Typ[Term],
+      decay : Double = 1.0,
       scale: Double = 1.0) = {
         val typsTask = typdistTask(fd, tv, cutoff, maxtime)
         val termsTask = termdistTask(fd, tv, cutoff, maxtime)
-        def spawn(vec: FD[Term]) = {
+        def spawn(d: Int)(vec: FD[Term]) = {
           if (fd.total == 0) Task.pure(Vector())
           // pprint.log(s"spawning tasks from $vec")
           else dervecTasks(
@@ -114,7 +116,7 @@ object ProverTasks {
             Task.eval(vec),
             typsTask,
             maxtime,
-            cutoff
+            cutoff * math.pow(decay, d)
           )
         }
         breadthFirstTask[FD[Term], Term](
