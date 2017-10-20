@@ -54,6 +54,24 @@ object ProverTasks {
         }
       }
 
+    def dervecTraceTasks(base: FD[Term],
+      tv: TermEvolver,
+      termsTask: Task[FD[Term]],
+      typsTask : Task[FD[Typ[Term]]],
+      maxtime: FiniteDuration,
+      cutoff: Double,
+      trace: Vector[Term]) : Task[Vector[Task[(FD[Term], Vector[Term])]]]  =
+        prsmEntTask(termsTask, typsTask).map{
+        (vec) => vec.collect{
+          case (v, p) if p > cutoff && cutoff /p > 0 =>
+            pprint.log(s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
+            for {
+              fd <- termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime)
+          } yield (fd, trace :+ v)
+        }
+      }
+
+
   // Abstract methods
   def inTaskVec[X, Y](tv: Task[Vector[X]], p: X => Option[Y]): Task[Option[Y]] =
       tv.flatMap{
@@ -123,5 +141,39 @@ object ProverTasks {
           termsTask.map((fd) => Vector(Task.eval(fd))),
           (findist: FD[Term]) => findist.supp.find(_.typ == goal) , spawn)
       }
+
+      def theoremSearchTraceTask(
+        fd: FD[Term],
+        tv: TermEvolver,
+        cutoff: Double,
+        maxtime: FiniteDuration,
+        goal: Typ[Term],
+        decay : Double = 1.0,
+        scale: Double = 1.0) = {
+          val typsTask = typdistTask(fd, tv, cutoff, maxtime)
+          val termsTask = termdistTask(fd, tv, cutoff, maxtime)
+          def spawn(d: Int)(vecAc: (FD[Term], Vector[Term])) = {
+            val (vec, ac) = vecAc
+            if (fd.total == 0) Task.pure(Vector())
+            // pprint.log(s"spawning tasks from $vec")
+            else dervecTraceTasks(
+              fd.normalized(),
+              tv,
+              Task.eval(vec),
+              typsTask,
+              maxtime,
+              cutoff * math.pow(decay, d),
+              ac
+            )
+          }
+          breadthFirstTask[(FD[Term], Vector[Term]), (Term, Vector[Term])](
+            termsTask.map((fd) => Vector(Task.eval((fd, Vector.empty[Term])))),
+            (findistAc: (FD[Term], Vector[Term])) =>
+            findistAc._1.supp.find(_.typ == goal).map((t) => (t, findistAc._2)) ,
+            spawn
+          )
+        }
+
+
 
 }
