@@ -185,7 +185,7 @@ class FineEvolver(applnWeight: Double = 0.1,
       //       lambdaWeight)
     }
 
-  // import spire.math._
+  
   // import spire.algebra._
   // import spire.implicits._
 

@@ -7,7 +7,7 @@ import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import spire.algebra._
-// import spire.math._
+
 import spire.implicits._
 
 /**

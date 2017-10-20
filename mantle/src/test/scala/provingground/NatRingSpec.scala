@@ -8,7 +8,7 @@ import SymbolicCRing._
 
 import SymbolicCRing._
 
-import spire.math._
+// import spire.math._
 
 import spire.algebra._
 

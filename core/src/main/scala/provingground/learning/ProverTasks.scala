@@ -48,7 +48,7 @@ object ProverTasks {
     cutoff: Double) : Task[Vector[Task[FD[Term]]]]  =
       prsmEntTask(termsTask, typsTask).map{
       (vec) => vec.collect{
-        case (v, p) if p > cutoff =>
+        case (v, p) if p > cutoff && cutoff /p > 0 =>
           pprint.log(s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
           termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime)
         }
