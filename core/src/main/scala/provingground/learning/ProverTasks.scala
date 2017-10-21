@@ -209,7 +209,7 @@ object ProverTasks {
       typsTask.map { (p) =>
         {
           val q = fd.map(_.typ)
-          fd.supp.map((t) => (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ)))
+          fd.flatten.supp.collect{case t if p(t.typ) > 0 => (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ))}
         }
       }
 
