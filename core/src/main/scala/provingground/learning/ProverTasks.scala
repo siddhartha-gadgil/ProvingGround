@@ -183,6 +183,42 @@ object ProverTasks {
       spawn)
   }
 
+  def theoremsExploreTask(fd: FD[Term],
+                          tv: TermEvolver,
+                          cutoff: Double,
+                          maxtime: FiniteDuration,
+                          decay: Double = 1.0,
+                          scale: Double = 1.0): Task[Vector[(Term, Double)]] = {
+    val typsTask  = typdistTask(fd, tv, cutoff, maxtime)
+    val termsTask = termdistTask(fd, tv, cutoff, maxtime)
+    def spawn(d: Int)(vec: FD[Term]) = {
+      if (fd.total == 0) Task.pure(Vector())
+      // pprint.log(s"spawning tasks from $vec")
+      else
+        dervecTasks(
+          fd.normalized(),
+          tv,
+          Task.eval(vec),
+          typsTask,
+          maxtime,
+          cutoff * math.pow(decay, d)
+        )
+    }
+
+    def result(fd: FD[Term]): Task[Vector[(Term, Double)]] =
+      typsTask.map { (p) =>
+        {
+          val q = fd.map(_.typ)
+          fd.supp.map((t) => (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ)))
+        }
+      }
+
+    branchedGatherTask[FD[Term], Vector[(Term, Double)]](termsTask,
+                                                         result,
+                                                         _ ++ _,
+                                                         spawn)
+  }
+
   def theoremSearchTraceTask(fd: FD[Term],
                              tv: TermEvolver,
                              cutoff: Double,
