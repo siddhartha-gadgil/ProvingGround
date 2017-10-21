@@ -28,8 +28,7 @@ case class Param(rank: Int = 2, size: Int = 1000, wrdCntn: Double = 0.1)
 
 object ACElem {
   type Snap =
-    SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
-             Param]
+    SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
   def toPresentation(rank: Int, fdV: FiniteDistribution[Moves]) =
     fdV map ((v: Moves) => Moves.actOnTriv(rank)(v).get)
@@ -38,14 +37,14 @@ object ACElem {
     val d = snap.state._2
     d.supp map
       ((x) => {
-         val rank = snap.param.rank
-         ACElem(snap.name,
-                x,
-                rank,
-                Moves.actOnTriv(rank)(x).get,
-                d(x),
-                snap.loops)
-       })
+        val rank = snap.param.rank
+        ACElem(snap.name,
+               x,
+               rank,
+               Moves.actOnTriv(rank)(x).get,
+               d(x),
+               snap.loops)
+      })
   }
 }
 
@@ -65,8 +64,8 @@ object ACThm {
     val d    = toPresentation(rank, snap.state._2)
     d.supp map
       ((x) => {
-         ACThm(snap.name, x, d(x), snap.loops)
-       })
+        ACThm(snap.name, x, d(x), snap.loops)
+      })
   }
 
   def weight(thms: Vector[ACThm], pres: Presentation, step: Int) = {

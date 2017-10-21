@@ -335,8 +335,8 @@ class MoveLearner[V, M](movetypes: List[M], moves: (V, M) => Set[V]) {
                chains: Set[Chain]) =
     (DynDst.empty /:
       (chains map
-        ((chain) =>
-           backpropchain(initdstbn, error(chain.head), DynDst.empty, chain))))(
+      ((chain) =>
+        backpropchain(initdstbn, error(chain.head), DynDst.empty, chain))))(
       _ ++ _)
 
   /**

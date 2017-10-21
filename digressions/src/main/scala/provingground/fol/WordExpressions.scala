@@ -91,7 +91,7 @@ object WordExpressions {
   def relationSet(rels: Set[List[Term]]) = {
     rels flatMap
       ((r: List[Term]) =>
-         Set((r, List.empty: List[Term]), (List.empty: List[Term], r)))
+        Set((r, List.empty: List[Term]), (List.empty: List[Term], r)))
   }
 
   def equalitySet(eqns: Set[(List[Term], List[Term])]) =

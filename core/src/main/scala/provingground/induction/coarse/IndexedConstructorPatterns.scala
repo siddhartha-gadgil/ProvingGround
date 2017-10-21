@@ -15,9 +15,8 @@ import IterFuncPattern._
 /**
   * @author gadgil
   */
-class IndexedConstructorPatterns[C <: Term with Subs[C],
-H <: Term with Subs[H], F <: Term with Subs[F]](
-    val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
+class IndexedConstructorPatterns[C <: Term with Subs[C], H <: Term with Subs[H],
+F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
 
   def totalArg(typ: Term, fmly: F, accum: Term = Star): Term =
     typ match {
@@ -346,8 +345,7 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
       val xss      = x :-> xs(incl(x, tailIndex, tps))
       val fibre = lmbda(a)(
         tail.depTarget(xss)(a) ->: head.inducDataTyp(tps, xs)(headcons))
-      piDefn(a)(
-        tail.depTarget(xss)(a) ->: head.inducDataTyp(tps, xs)(headcons))
+      piDefn(a)(tail.depTarget(xss)(a) ->: head.inducDataTyp(tps, xs)(headcons))
     }
 
     def inClass[CC <: Term with Subs[CC]](w: Typ[H])(
@@ -695,8 +693,7 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
 
     type InducType <: Term with Subs[InducType]
 
-    def inducDefn(
-        fibre: Func[Total, Typ[Cod]]): InductiveDefinition[Total, Cod]
+    def inducDefn(fibre: Func[Total, Typ[Cod]]): InductiveDefinition[Total, Cod]
 
     def inducDataLambda(fibre: Func[Total, Typ[Cod]]): DI => InducType
 
@@ -799,10 +796,10 @@ H <: Term with Subs[H], F <: Term with Subs[F]](
 }
 
 object IndexedConstructorPatterns {
-  def emptySeq[
-      C <: Term with Subs[C],
-      H <: Term with Subs[H],
-      F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F], fmly: F) = {
+  def emptySeq[C <: Term with Subs[C],
+               H <: Term with Subs[H],
+               F <: Term with Subs[F]](typFmlyPtn: FmlyPtn[H, C, F],
+                                       fmly: F) = {
     val cls = new IndexedConstructorPatterns(typFmlyPtn)
     cls.iConstructorSeq.Empty(fmly): cls.iConstructorSeq
   }

@@ -214,10 +214,8 @@ object SubTypePattern {
 
     val qi41 = implicitly[QuasiInclHList[A, A :: HNil, IdHN]]
 
-    val qi42 = hConsIncl(implicitly[Traverse[Id]],
-                         implicitly[Traverse[IdHN]],
-                         qi1,
-                         qi41)
+    val qi42 =
+      hConsIncl(implicitly[Traverse[Id]], implicitly[Traverse[IdHN]], qi1, qi41)
 
     val qi44 = hConsIncl[A, A, A :: HNil, Id, IdHN]
 

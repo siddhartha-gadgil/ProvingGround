@@ -98,8 +98,8 @@ object FineDeducer {
           val newp = (p * (1 - varweight)) ++ (FD.unif[Term](x) * varweight)
           (valueEvolve(x)(newp)) map
             ((y: Term) =>
-               if (!isUniv(y)) TL.lambda(x, y)
-               else None)
+              if (!isUniv(y)) TL.lambda(x, y)
+              else None)
         case _ => FD.unif(None)
       })
 
@@ -185,7 +185,6 @@ class FineEvolver(applnWeight: Double = 0.1,
       //       lambdaWeight)
     }
 
-  
   // import spire.algebra._
   // import spire.implicits._
 
@@ -394,8 +393,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
           val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
           (varScaled.evolve(newp)) map
             ((y: Term) =>
-               if (!isUniv(y)) TL.lambda(x, y)
-               else None)
+              if (!isUniv(y)) TL.lambda(x, y)
+              else None)
         case _ => FD.unif(None)
       })
 
@@ -424,8 +423,8 @@ case class FineDeducer(applnWeight: Double = 0.1,
           val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
           (varScaled.Devolve(newp, tang * (1 - varWeight))) map
             ((y: Term) =>
-               if (!isUniv(y)) TL.lambda(x, y)
-               else None)
+              if (!isUniv(y)) TL.lambda(x, y)
+              else None)
         case _ => FD.unif(None)
       })
 
@@ -493,8 +492,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
     asFuncs {
       tang
         .<+?>(DunifApplnTypFamilies(fd, tang), applnWeight * unifyWeight)
-        .<+>(DsimpleApplnTypFamilies(fd, tang),
-             applnWeight * (1 - unifyWeight))
+        .<+>(DsimpleApplnTypFamilies(fd, tang), applnWeight * (1 - unifyWeight))
         .<+?>(DunifApplnTypArg(fd, tang), applnWeight * unifyWeight)
         .<+>(DsimpleApplnTypArg(fd, tang), applnWeight * (1 - unifyWeight))
         .conditioned(isTypFamily)

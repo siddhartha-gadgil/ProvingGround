@@ -116,8 +116,7 @@ object TermBucket {
     FiniteDistribution(fd.pmf map (mkLambda(vars, scale)(_)))
   }
 
-  def toPi(x: Term,
-           scale: Double): Weighted[Typ[Term]] => Weighted[Typ[Term]] = {
+  def toPi(x: Term, scale: Double): Weighted[Typ[Term]] => Weighted[Typ[Term]] = {
     case Weighted(y, p) =>
       if (y dependsOn (x)) Weighted(pi(x)(y), p * scale) else Weighted(y, p)
   }
@@ -180,8 +179,7 @@ object WeightedTermBucket {
     //  val tot = (m.values.flatten map (_.weight)).sum
     (m mapValues
       ((l) =>
-         FiniteDistribution(
-           (l map
-             ((wt) => Weighted(wt.elem, wt.weight / tot))).toVector))).toMap
+        FiniteDistribution((l map
+          ((wt) => Weighted(wt.elem, wt.weight / tot))).toVector))).toMap
   }
 }

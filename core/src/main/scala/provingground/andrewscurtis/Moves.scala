@@ -66,15 +66,16 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
 
   def apply(moves: Moves): Option[Moves] = this.actOnMoves(moves)
 
-  def apply(fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = {
+  def apply(
+      fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] = {
     (fdVertices mapOpt ((mv: Moves) => this(mv))).flatten
   }
 
   def actOnMoves(moves: Moves): Option[Moves] =
     Some(toMoves(this) compose moves)
 
-  def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
-                                  FiniteDistribution[Moves]] =
+  def movesDF
+    : AdjDiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     MoveFn(actOnMoves)
 
   def actOnPres(fdPres: FiniteDistribution[Presentation])
@@ -148,8 +149,8 @@ case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
   //  override def actOnMoves(moves: Moves) = Some(moves)
 
-  override def movesDF: AdjDiffbleFunction[FiniteDistribution[Moves],
-                                           FiniteDistribution[Moves]] =
+  override def movesDF
+    : AdjDiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     AdjDiffbleFunction.Id[FiniteDistribution[Moves]]
 }
 

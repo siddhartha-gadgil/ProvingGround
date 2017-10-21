@@ -68,10 +68,9 @@ object FactorActors {
     case _                          => false
   }
 
-  @tailrec private def findPrimeFactor(
-      n: BigInt,
-      m: BigInt = 2,
-      bound: Option[BigInt] = None): BigInt = {
+  @tailrec private def findPrimeFactor(n: BigInt,
+                                       m: BigInt = 2,
+                                       bound: Option[BigInt] = None): BigInt = {
     if (m * m > n || tooBig(m)(bound)) n
     else if (n % m == 0) m
     else findPrimeFactor(n, m + 1)

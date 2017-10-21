@@ -1,6 +1,5 @@
 package provingground
 
-
 import scala.util.Try
 //import scala.language.existentials
 import Math._
@@ -152,9 +151,8 @@ object HoTT {
     case ll: LambdaFixed[u, v] =>
       if (t.dependsOn(ll.variable)) {
         val newvar = ll.variable.newobj
-        LambdaFixed(
-          newvar,
-          avoidVars(t, ll.value.replace(ll.variable, newvar))).asInstanceOf[U]
+        LambdaFixed(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar)))
+          .asInstanceOf[U]
       } else LambdaFixed(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
     case ll: LambdaLike[u, v] =>
       if (t.dependsOn(ll.variable)) {
@@ -473,9 +471,7 @@ object HoTT {
     * Symbolic types, which the compiler knows are types.
     *
     */
-  case class SymbTyp(name: AnySym, level: Int)
-      extends Typ[Term]
-      with Symbolic {
+  case class SymbTyp(name: AnySym, level: Int) extends Typ[Term] with Symbolic {
     lazy val typ = Universe(level)
 
     def newobj = SymbTyp(new InnerSym[Typ[Term]](this), level)
@@ -504,9 +500,7 @@ object HoTT {
     * Symbolic propositions. All symbolic objects of this type are witnesses, hence equal.
     *
     */
-  case class SymbProp(name: AnySym)
-      extends Typ[Term]
-      with Symbolic {
+  case class SymbProp(name: AnySym) extends Typ[Term] with Symbolic {
     lazy val typ = Prop
 
     def newobj = SymbProp(new InnerSym[Typ[Term]](this))
@@ -528,7 +522,6 @@ object HoTT {
       }
     }
   }
-
 
   /**
     * Types with symbolic objects not refined.
@@ -686,7 +679,7 @@ object HoTT {
     }
   }
 
-  case object Prop extends BaseUniv with Univ{
+  case object Prop extends BaseUniv with Univ {
     type Obj = Typ[Term]
 
     val typ = Type.typ
@@ -699,14 +692,12 @@ object HoTT {
 
     def subs(x: Term, y: Term) = this
 
-
   }
 
   def isProp(x: Typ[Term]) = (x.typ) match {
-    case _ : Prop.type => true
-    case _ => false
-    }
-
+    case _: Prop.type => true
+    case _            => false
+  }
 
   def univlevel: Typ[Typ[Term]] => Int = {
     case Universe(l) => l
@@ -853,9 +844,8 @@ object HoTT {
   /**
     * Term (a, b) in  A times B
     */
-  case class PairTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
-      first: U,
-      second: V)
+  case class PairTerm[U <: Term with Subs[U], V <: Term with Subs[V]](first: U,
+                                                                      second: V)
       extends AbsPair[U, V]
       with Subs[PairTerm[U, V]] {
     lazy val typ: ProdTyp[U, V] =
@@ -1109,8 +1099,9 @@ object HoTT {
       extends IllegalArgumentException("Expected type but got term")
 
   def applyFunc(func: Term, arg: Term): Term = func match {
-    case fn: FuncLike[u, v] if fn.dom == arg.typ => fn.applyUnchecked(arg.asInstanceOf[u])
-    case _                                       => throw new ApplnFailException(func, arg)
+    case fn: FuncLike[u, v] if fn.dom == arg.typ =>
+      fn.applyUnchecked(arg.asInstanceOf[u])
+    case _ => throw new ApplnFailException(func, arg)
   }
 
   def applyFuncOpt(func: Term, arg: Term): Option[Term] = func match {
@@ -1170,7 +1161,8 @@ object HoTT {
       * checks HoTT-type of argument is in the domain and throws exception if it fails.
       */
     def apply(arg: W): U =
-      if (arg.typ != dom) throw new ApplnFailException(this, arg) else applyUnchecked(arg)
+      if (arg.typ != dom) throw new ApplnFailException(this, arg)
+      else applyUnchecked(arg)
 
     def applyUnchecked(arg: W): U = {
       arg match {
@@ -1607,9 +1599,8 @@ object HoTT {
         LambdaFixed(variable, avoidVars(x, value).replace(x, y))
       else {
         val newvar = variable.newobj
-        LambdaFixed(
-          newvar.replace(x, y),
-          avoidVars(x, value).replace(variable, newvar).replace(x, y))
+        LambdaFixed(newvar.replace(x, y),
+                    avoidVars(x, value).replace(variable, newvar).replace(x, y))
       }
   }
 
@@ -1677,9 +1668,9 @@ object HoTT {
     case LambdaTerm(variable: Term, value: Term) =>
       substitutions(variable) flatMap
         ((cnst) => {
-           val reduced = (value.replace(variable, cnst))
-           instantiate(substitutions, target)(reduced)
-         })
+          val reduced = (value.replace(variable, cnst))
+          instantiate(substitutions, target)(reduced)
+        })
     case _ => None
   }
 
@@ -2106,8 +2097,7 @@ object HoTT {
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) =
-      OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)),
-                     dom.replace(x, y))
+      OptDepFuncDefn((w: W) => func(w) map (_.replace(x, y)), dom.replace(x, y))
   }
 
   /**
@@ -2279,9 +2269,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[DepPair[W, U]]
       else
-        DepPair(first.replace(x, y),
-                second.replace(x, y),
-                fibers.replace(x, y))
+        DepPair(first.replace(x, y), second.replace(x, y), fibers.replace(x, y))
   }
 
   /**
@@ -2293,8 +2281,7 @@ object HoTT {
       with Subs[IdentityTyp[U]] {
     type Obj = Term
 
-    lazy val typ = Universe(
-      max(univlevel(lhs.typ.typ), univlevel(rhs.typ.typ)))
+    lazy val typ = Universe(max(univlevel(lhs.typ.typ), univlevel(rhs.typ.typ)))
 
     def newobj = {
       val newlhs = lhs.newobj

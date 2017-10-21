@@ -87,9 +87,7 @@ class ShapeTreeFormat(isAtom: Term => Boolean) extends TermRec[ShapeTree] {
   def arrow(dom: ShapeTree, codom: ShapeTree): ShapeTree =
     ArrowNode(dom, codom)
 
-  def lambda(variable: ShapeTree,
-             typ: ShapeTree,
-             value: ShapeTree): ShapeTree =
+  def lambda(variable: ShapeTree, typ: ShapeTree, value: ShapeTree): ShapeTree =
     LambdaNode(variable, typ, value)
 
   def pi(fibre: ShapeTree): ShapeTree = PiNode(fibre)

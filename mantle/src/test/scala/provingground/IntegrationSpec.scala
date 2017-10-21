@@ -744,8 +744,7 @@ class EliminatorsSpec extends FlatSpec {
 
     val D     = "D(_ : Nat)" :: Nat ->: Type
     val indND = NatInd.induc(D)
-    assert(
-      indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
+    assert(indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
     val d  = "d" :: D(zero)
     val f2 = "f2" :: n ~>: (D(n) ->: D(succ(n)))
     assert(indND(d)(f2)(zero) === d)
@@ -796,8 +795,7 @@ class EliminatorsSpec extends FlatSpec {
     val f = "f" :: n ~>: (A ->: Vec(n) ->: C ->: C)
     assert(recVC(c)(f)(zero)(vnil) === c)
     assert(
-      recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(
-        recVC(c)(f)(n)(vn)))
+      recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(recVC(c)(f)(n)(vn)))
 
     val D     = "D(_ : Vec(_))" :: n ~>: (Vec(n) ->: Type)
     val indVD = VecInd.induc(D)

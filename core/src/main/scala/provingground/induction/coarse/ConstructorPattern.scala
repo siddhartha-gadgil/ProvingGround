@@ -344,9 +344,8 @@ object ConstructorPattern {
   case class FuncPtn[C <: Term with Subs[C],
                      F <: Term with Subs[F],
                      HC <: Term with Subs[HC],
-                     H <: Term with Subs[H]](
-      tail: IterFuncPtn[H, C, F],
-      head: ConstructorPattern[C, HC, H])
+                     H <: Term with Subs[H]](tail: IterFuncPtn[H, C, F],
+                                             head: ConstructorPattern[C, HC, H])
       extends RecursiveConstructorPattern[C, F, HC, Func[F, HC], H] { self =>
     //    type ArgType = F
 

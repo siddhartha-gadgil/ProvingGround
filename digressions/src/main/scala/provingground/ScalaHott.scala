@@ -99,8 +99,7 @@ object ScalaHoTT {
     def apply(a: Obj[A]) = Apply(this, a)
   }
 
-  case class Apply[A, B](func: Func[A, B], a: Obj[A])
-      extends Obj[B](func.codom)
+  case class Apply[A, B](func: Func[A, B], a: Obj[A]) extends Obj[B](func.codom)
 
   /** A type family, taking a base (underlying type A) to a family of types (all subtypes of V) */
   case class TypFamily[A, +V](base: Typ[A], fibers: A => SubTypOf[V])

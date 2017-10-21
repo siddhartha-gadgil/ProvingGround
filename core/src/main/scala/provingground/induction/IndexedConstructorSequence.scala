@@ -553,14 +553,13 @@ object IndexedConstructorSeqDom {
       implicit tl: TermList[Index]
   ) =
     new Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] {
-      def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
-          x: Term,
-          y: Term) =
+      def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(x: Term,
+                                                                      y: Term) =
         a.subs(x, y)
     }
 
-  def get[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList](
-      w: F)(implicit g: TypFamilyPtnGetter[F, H, Index]) = {
+  def get[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList](w: F)(
+      implicit g: TypFamilyPtnGetter[F, H, Index]) = {
     val family = g.get(w)
 
     implicit val gs: TermList[Index] = g.subst
@@ -616,11 +615,7 @@ object IndexedConstructorSeqDom {
       name: AnySym,
       pattern: IndexedConstructorShape[HShape, H, F, HC, Index],
       tail: IndexedConstructorSeqDom[TSS, H, F, Index, TIntro])
-      extends IndexedConstructorSeqDom[HShape :: TSS,
-                                       H,
-                                       F,
-                                       Index,
-                                       HC :: TIntro] {
+      extends IndexedConstructorSeqDom[HShape :: TSS, H, F, Index, HC :: TIntro] {
     val W = tail.W
 
     val family = tail.family

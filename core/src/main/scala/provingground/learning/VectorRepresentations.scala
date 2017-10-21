@@ -23,8 +23,8 @@ object VectorRepresentations {
     def add(first: Vector[Double], second: Vector[Double]) =
       (first, second).zipped.map(_ + _)
 
-    @tailrec def sum(vs: Seq[Vector[Double]], accum: Vector[Double] = Vector(0))
-      : Vector[Double] =
+    @tailrec def sum(vs: Seq[Vector[Double]],
+                     accum: Vector[Double] = Vector(0)): Vector[Double] =
       if (vs.isEmpty) Vector(0)
       else if (vs.tail.isEmpty) vs.head
       else sum(vs.tail, vs.head)

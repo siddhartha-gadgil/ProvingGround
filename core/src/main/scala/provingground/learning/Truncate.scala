@@ -82,115 +82,121 @@ object Truncate {
             s"probability distribution $pd cannot be truncated")
       }
 
-  def task[A](pd: PD[A], epsilon: Double, maxtime: Duration, decay : Double = 0.8): Task[FD[A]] =
-    Task.eval(epsilon > 1).
-      flatMap[FD[A]]{
-    case true => Task.pure(FD.empty[A])
-    case false =>
-    {
-      val tsk : Task[FD[A]] = (pd match {
-        case fd: FD[u] =>
-          Task.eval {
-            val purged = fd.flatten.pmf.filter {
-              case Weighted(x, p) => p > epsilon
+  def task[A](pd: PD[A],
+              epsilon: Double,
+              maxtime: Duration,
+              decay: Double = 0.8): Task[FD[A]] =
+    Task.eval(epsilon > 1).flatMap[FD[A]] {
+      case true => Task.pure(FD.empty[A])
+      case false => {
+        val tsk: Task[FD[A]] = (pd match {
+          case fd: FD[u] =>
+            Task.eval {
+              val purged = fd.flatten.pmf.filter {
+                case Weighted(x, p) => p > epsilon
+              }
+              val fdp = FD(purged)
+              val tot = fdp.total
+              if (tot > 0) fdp * (1 / tot) else FD.empty[A]
             }
-            val fdp = FD(purged)
-            val tot = fdp.total
-            if (tot > 0) fdp * (1 / tot) else FD.empty[A]
-          }
-        case mx: Mixin[u] =>
-          Task
-            .zip2(task(mx.first, epsilon / mx.p, maxtime * decay * mx.p),
-                  task(mx.second, epsilon / mx.q, maxtime * decay * mx.q))
-            .map {
-              case (first, second) => {
-                (first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)
-              }.flatten
+          case mx: Mixin[u] =>
+            Task
+              .zip2(task(mx.first, epsilon / mx.p, maxtime * decay * mx.p),
+                    task(mx.second, epsilon / mx.q, maxtime * decay * mx.q))
+              .map {
+                case (first, second) => {
+                  (first.safeNormalized * mx.p) ++ (second.safeNormalized * mx.q)
+                }.flatten
+              }
+          case mx: MixinOpt[u] =>
+            Task
+              .zip2(task(mx.first, epsilon / mx.p, maxtime * decay * mx.p),
+                    task(mx.second, epsilon / mx.q, maxtime * decay * mx.q))
+              .map {
+                case (first, second) =>
+                  val scndPmf = second.pmf.collect {
+                    case Weighted(Some(a), p) => Weighted(a, p * mx.q)
+                  }
+                  ((first.safeNormalized * mx.p) ++ (FD(scndPmf).safeNormalized * mx.q)).flatten
+              }
+          case mx: Mixture[u] =>
+            val fds = mx.weightedDists.map {
+              case (d, p) =>
+                task(d, epsilon / p, maxtime * decay * p).map(_ * p)
             }
-        case mx: MixinOpt[u] =>
-          Task
-            .zip2(task(mx.first, epsilon / mx.p, maxtime * decay * mx.p),
-                  task(mx.second, epsilon / mx.q, maxtime * decay * mx.q))
-            .map {
+            Task
+              .gatherUnordered(fds)
+              .map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+          case Mapped(base, f) =>
+            task(base, epsilon, maxtime * decay).map(_.map(f))
+          case FlatMapped(base, f) =>
+            task(base, epsilon, maxtime * decay).flatMap { (baseFD) =>
+              {
+                val fibs =
+                  baseFD.pmf.map {
+                    case Weighted(a, p) =>
+                      task(f(a), epsilon / p, maxtime * decay * p).map((fd) =>
+                        fd * p)
+                  }
+                val fibTask = Task.gatherUnordered(fibs)
+                fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+              }
+            }
+          case prod: Product[u, v] =>
+            Task.zip2(task(prod.first, epsilon, maxtime * decay),
+                      task(prod.second, epsilon, maxtime * decay)) map {
               case (first, second) =>
-                val scndPmf = second.pmf.collect {
-                  case Weighted(Some(a), p) => Weighted(a, p * mx.q)
-                }
-                ((first.safeNormalized * mx.p) ++ (FD(scndPmf).safeNormalized * mx.q)).flatten
+                val pmf1 = first.pmf
+                val pmf2 = second.pmf
+                val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
+                               if p * q > epsilon) yield Weighted((x, y), p * q)
+                FD[A](pmf)
             }
-        case mx: Mixture[u] =>
-          val fds = mx.weightedDists.map {
-            case (d, p) => task(d, epsilon / p, maxtime * decay * p).map(_ * p)
-          }
-          Task
-            .gatherUnordered(fds)
-            .map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
-        case Mapped(base, f) =>
-          task(base, epsilon, maxtime * decay).map(_.map(f))
-        case FlatMapped(base, f) =>
-          task(base, epsilon, maxtime * decay).flatMap { (baseFD) =>
-            {
-              val fibs =
-                baseFD.pmf.map {
-                  case Weighted(a, p) =>
-                    task(f(a), epsilon / p, maxtime * decay * p).map((fd) => fd * p)
-                }
-              val fibTask = Task.gatherUnordered(fibs)
-              fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
+          case fibprod: FiberProduct[a, q, b] =>
+            for {
+              baseFD <- task(fibprod.base, epsilon, maxtime * decay)
+              pmf1map = baseFD.pmf.groupBy((we) => fibprod.quotient(we.elem))
+              fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
+                yield
+                  task(fibprod.fibers(q), epsilon / p, maxtime * decay * p)
+                    .map(_.map((y) => (x, y)) * p)
+              fds <- Task.gatherUnordered(fdtasks)
+            } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
+          case Conditioned(base, p) =>
+            for {
+              tdr <- task(base, epsilon, maxtime * decay)
+              td  = tdr.filter(p)
+              tot = td.total
+            } yield if (tot > 0) td * (1 / tot) else td
+          case Flattened(base) =>
+            for {
+              fd <- task(base, epsilon, maxtime * decay)
+              pmf = fd.pmf.collect {
+                case Weighted(Some(a), p) => Weighted(a, p)
+              }
+            } yield FD(pmf)
+          case CondMapped(base, f) =>
+            for {
+              fd <- task(base, epsilon, maxtime * decay)
+              pmf = fd.map(f).pmf.collect {
+                case Weighted(Some(a), p) => Weighted(a, p)
+              }
+              td  = FD(pmf)
+              tot = td.total
+            } yield if (tot > 0) td * (1 / tot) else td
+          case Scaled(base, sc) =>
+            task(base, epsilon / sc, maxtime * decay * sc)
+          case Sum(first, second) =>
+            Task.zip2(task(first, epsilon, maxtime * decay),
+                      task(second, epsilon, maxtime * decay)) map {
+              case (fst, scnd) => (fst ++ scnd).flatten
             }
-          }
-        case prod: Product[u, v] =>
-          Task.zip2(task(prod.first, epsilon, maxtime * decay), task(prod.second, epsilon, maxtime * decay)) map {
-            case (first, second) =>
-              val pmf1 = first.pmf
-              val pmf2 = second.pmf
-              val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
-                             if p * q > epsilon) yield Weighted((x, y), p * q)
-              FD[A](pmf)
-          }
-        case fibprod: FiberProduct[a, q, b] =>
-          for {
-            baseFD <- task(fibprod.base, epsilon, maxtime * decay)
-            pmf1map = baseFD.pmf.groupBy((we) => fibprod.quotient(we.elem))
-            fdtasks = for ((q, wxs) <- pmf1map; Weighted(x, p) <- wxs)
-              yield
-                task(fibprod.fibers(q), epsilon / p, maxtime * decay * p)
-                  .map(_.map((y) => (x, y)) * p)
-            fds <- Task.gatherUnordered(fdtasks)
-          } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
-        case Conditioned(base, p) =>
-          for {
-            tdr <- task(base, epsilon, maxtime * decay)
-            td  = tdr.filter(p)
-            tot = td.total
-          } yield if (tot > 0) td * (1 / tot) else td
-        case Flattened(base) =>
-          for {
-            fd <- task(base, epsilon, maxtime * decay)
-            pmf = fd.pmf.collect {
-              case Weighted(Some(a), p) => Weighted(a, p)
-            }
-          } yield FD(pmf)
-        case CondMapped(base, f) =>
-          for {
-            fd <- task(base, epsilon, maxtime * decay)
-            pmf = fd.map(f).pmf.collect {
-              case Weighted(Some(a), p) => Weighted(a, p)
-            }
-            td  = FD(pmf)
-            tot = td.total
-          } yield if (tot > 0) td * (1 / tot) else td
-        case Scaled(base, sc) =>
-          task(base, epsilon / sc, maxtime * decay * sc)
-        case Sum(first, second) =>
-          Task.zip2(task(first, epsilon, maxtime * decay), task(second, epsilon, maxtime * decay)) map {
-            case (fst, scnd) => (fst ++ scnd).flatten
-          }
-        case _ =>
-          throw new IllegalArgumentException(
-            s"probability distribution $pd cannot be truncated")
-      })
-      tsk.timeoutTo[FD[A]](maxtime.asInstanceOf[FiniteDuration], Task.pure(FD.empty[A]))
-    }
+          case _ =>
+            throw new IllegalArgumentException(
+              s"probability distribution $pd cannot be truncated")
+        })
+        tsk.timeoutTo[FD[A]](maxtime.asInstanceOf[FiniteDuration],
+                             Task.pure(FD.empty[A]))
+      }
     }
 }

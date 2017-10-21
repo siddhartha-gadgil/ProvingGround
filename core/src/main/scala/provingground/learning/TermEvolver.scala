@@ -189,9 +189,7 @@ class TermEvolver(unApp: Double = 0.1,
 
   val Tappln = bil(simpleAppln)
 
-  def lambdaMixVar(x: Term,
-                   wt: Double,
-                   base: => (T[FD[Term]] => T[PD[Term]])) =
+  def lambdaMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Term]])) =
     (tfd: T[FD[Term]]) => {
       val dist =
         lin((fd: FD[Term]) => fd * (1 - wt) + (x, wt))(tfd)

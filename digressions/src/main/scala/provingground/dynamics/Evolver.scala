@@ -229,25 +229,27 @@ object GeneticEvolver {
     }
 
     def pruneTotal[A](weight: A => Int, number: Int) = {
-      @tailrec def pruneListTotal(l: List[A], total: Int, headList: List[A] = List.empty)
-        : List[A] = {
+      @tailrec def pruneListTotal(l: List[A],
+                                  total: Int,
+                                  headList: List[A] = List.empty): List[A] = {
         if (total < 0 || l.isEmpty) headList
         else pruneListTotal(l.tail, total - weight(l.head), l.head :: headList)
       }
 
-      Markov((s: Set[A]) =>
-        pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
+      Markov(
+        (s: Set[A]) => pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
     }
 
     def pruneTotalSize[A](weight: A => Int, number: Int, size: A => Int) = {
-      @tailrec def pruneListTotal(l: List[A], total: Int, headList: List[A] = List.empty)
-        : List[A] = {
+      @tailrec def pruneListTotal(l: List[A],
+                                  total: Int,
+                                  headList: List[A] = List.empty): List[A] = {
         if (total < 0 || l.isEmpty) headList
         else pruneListTotal(l.tail, total - size(l.head), l.head :: headList)
       }
 
-      Markov((s: Set[A]) =>
-        pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
+      Markov(
+        (s: Set[A]) => pruneListTotal(s.toList.sortBy(weight(_)), number).toSet)
     }
   }
 

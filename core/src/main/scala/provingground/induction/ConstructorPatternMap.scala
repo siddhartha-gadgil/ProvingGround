@@ -39,11 +39,8 @@ sealed trait ConstructorPatternMap[
     RecDataType <: Term with Subs[RecDataType],
     InducDataType <: Term with Subs[InducDataType]] { self =>
 
-  def subs(x: Term, y: Term): ConstructorPatternMap[Cod,
-                                                    ConstructorType,
-                                                    H,
-                                                    RecDataType,
-                                                    InducDataType]
+  def subs(x: Term, y: Term)
+    : ConstructorPatternMap[Cod, ConstructorType, H, RecDataType, InducDataType]
 
   /**
     * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
@@ -247,18 +244,18 @@ object ConstructorPatternMap {
       val g      = tail.induced(f)
       val recres = g(arg)
       val result = data(arg)(recres)
-        // if (data.dom == arg.typ && data(arg).dom == recres.typ)
-        //   data(arg)(recres)
-        // else {
-        //   import translation.FansiShow._
-        //   println(
-        //     s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
-        //   println(
-        //     s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
-        //   println(s"domain of data(arg) is ${data(arg).dom.fansi}")
-        //   println(s"induced  function g = ${g}\n from f = ${f.fansi}")
-        //   ???
-        // }
+      // if (data.dom == arg.typ && data(arg).dom == recres.typ)
+      //   data(arg)(recres)
+      // else {
+      //   import translation.FansiShow._
+      //   println(
+      //     s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
+      //   println(
+      //     s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
+      //   println(s"domain of data(arg) is ${data(arg).dom.fansi}")
+      //   println(s"induced  function g = ${g}\n from f = ${f.fansi}")
+      //   ???
+      // }
       result
     }
 
@@ -563,9 +560,7 @@ object ConstructorShape {
                                HS <: Term with Subs[HS]](
       tail: Typ[T],
       head: ConstructorShape[HShape, H, HC])
-      extends ConstructorShape[CnstFuncConsShape.type :: HShape,
-                               H,
-                               Func[T, HC]] {
+      extends ConstructorShape[CnstFuncConsShape.type :: HShape, H, Func[T, HC]] {
     def apply(tp: Typ[H]) = tail ->: head(tp)
 
     def mapper[Cod <: Term with Subs[Cod]] =
@@ -695,21 +690,21 @@ sealed trait ConstructorPatternMapper[
   /**
     * the bridge function
     */
-  def mapper: ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
-    Cod,
-    ConstructorType,
-    H,
-    RecDataType,
-    InducDataType]
+  def mapper
+    : ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
+      Cod,
+      ConstructorType,
+      H,
+      RecDataType,
+      InducDataType]
 }
 
 /**
   * an introduction rule [[shape]] together with the iductive type [[typ]] being defined.
   */
-case class ConstructorTypTL[
-    S <: HList,
-    H <: Term with Subs[H],
-    ConstructorType <: Term with Subs[ConstructorType]](
+case class ConstructorTypTL[S <: HList,
+                            H <: Term with Subs[H],
+                            ConstructorType <: Term with Subs[ConstructorType]](
     shape: ConstructorShape[S, H, ConstructorType],
     typ: Typ[H]) {
 

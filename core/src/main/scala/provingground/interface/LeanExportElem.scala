@@ -415,13 +415,12 @@ object LeanExportElem {
 import HoTT._
 import LeanExportElem._
 
-class LeanExprToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
-                   Some(Type),
-                 predef: Expr => Option[Term] = (c) => None,
-                 env: LeanExportElem.Name => Option[Expr] = (name) => None) {
+class LeanExprToTerm(
+    univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) => Some(Type),
+    predef: Expr => Option[Term] = (c) => None,
+    env: LeanExportElem.Name => Option[Expr] = (name) => None) {
   import Expr._
-  def exprToTerm(expr: Expr,
-                 variables: Vector[Term] = Vector()): Option[Term] =
+  def exprToTerm(expr: Expr, variables: Vector[Term] = Vector()): Option[Term] =
     expr match {
       case expr if !predef(expr).isEmpty => predef(expr)
       case Var(n) =>
@@ -496,8 +495,8 @@ class LeanExprToTerm(univs: LeanExportElem.Univ => Option[HoTT.Univ] = (u) =>
     val valueOpt =
       formalConsOpt map
         ((formalCons) =>
-           induction.coarse.InductiveTyp
-             .fromFormal(formalCons.toList, formalTyp))
+          induction.coarse.InductiveTyp
+            .fromFormal(formalCons.toList, formalTyp))
 
     val checkTyp =
       fullTypOpt flatMap ((typ) => Try(foldterms(typ, paramsOpt.get)).toOption)

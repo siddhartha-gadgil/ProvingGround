@@ -51,10 +51,9 @@ object DiffStructure {
     dist.rawfeedback(baseweight) * scale
   }
 
-  def conjugateByFeedback(
-      presCntn: Double,
-      wrdCntn: Double,
-      scale: Double = 1)(rank: Int, iterations: Int = 5)(lst: List[M]) = {
+  def conjugateByFeedback(presCntn: Double, wrdCntn: Double, scale: Double = 1)(
+      rank: Int,
+      iterations: Int = 5)(lst: List[M]) = {
     val projectionMap = genProjectionMap(rank, iterations)(lst)
     projectionMap.^:(getFeedback(presCntn, wrdCntn, scale)(_: FD[P]))
   }
