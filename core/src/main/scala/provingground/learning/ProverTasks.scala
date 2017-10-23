@@ -1,6 +1,9 @@
 package provingground.learning
 import provingground._, HoTT._
 
+import spire.algebra._
+import spire.implicits._
+
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import monix.eval._
@@ -30,13 +33,13 @@ object ProverTasks {
                       maxtime: FiniteDuration) =
     Truncate.task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime).memoize
 
-  def h(p: Double, q: Double) = {
+  def h0(p: Double, q: Double) = {
     require(q > 0, s"Entropy with p=$p, q = $q")
     -p / (q * log(q))
   }
 
   def hExp(p: Double, q: Double, scale: Double = 1.0) =
-    math.exp(-(h(p, q) - 1) * scale)
+    math.exp(-(h0(p, q) - 1) * scale)
 
   def prsmEntTask(termsTask: Task[FD[Term]],
                   typsTask: Task[FD[Typ[Term]]],
@@ -169,7 +172,7 @@ object ProverTasks {
       // pprint.log(s"spawning tasks from $vec")
       else
         dervecTasks(
-          fd.normalized(),
+          fd.safeNormalized,
           tv,
           Task.eval(vec),
           typsTask,
@@ -196,7 +199,7 @@ object ProverTasks {
       // pprint.log(s"spawning tasks from $vec")
       else
         dervecTasks(
-          fd.normalized(),
+          fd.safeNormalized,
           tv,
           Task.eval(vec),
           typsTask,
@@ -211,7 +214,7 @@ object ProverTasks {
           val q = fd.map(_.typ)
           fd.flatten.supp.collect {
             case t if p(t.typ) > 0 && q(t.typ) > 0 && q(t.typ) < 1 =>
-              (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ))
+              (t, h0(p(t.typ), q(t.typ)) * fd(t) / q(t.typ))
           }
         }
       }
@@ -238,7 +241,7 @@ object ProverTasks {
       // pprint.log(s"spawning tasks from $vec")
       else
         dervecTraceTasks(
-          fd.normalized(),
+          fd.safeNormalized,
           tv,
           Task.eval(vec),
           typsTask,
@@ -254,5 +257,89 @@ object ProverTasks {
       spawn
     )
   }
+
+  def h[A](fd: FD[A]) = {
+    val fd0 = fd.flatten
+    fd0.supp.map((x) => - fd(x) * log(fd(x))).sum
+  }
+
+  def kl[A](p: FD[A], q: FD[A]) = {
+    val p0 = p.filter(q(_) > 0).flatten.safeNormalized
+    p0.supp.map{(x) => p(x) * log(p(x)/ q(x))}.sum
+   }
+
+  def minOn[A](fd: FD[A], minValue: Double, supp: Set[A]) = {
+    FD(
+      for {
+        Weighted(x, p) <- fd.pmf
+      } yield
+        Weighted(x, if (supp.contains(x)) math.min(p, minValue) else p)
+    )
+  }
+
+  def pfMatch(
+    ev: FD[Term] => Task[FD[Term]],
+    typs: Task[FD[Typ[Term]]],
+    wt: Double = 1.0)(gen: FD[Term]) =
+      for {
+        p <- typs
+        qt <- ev(gen)
+        q = qt.map(_.typ)
+      } yield kl(p, q) - (h(gen) * wt)
+
+  def pfMatchDiff(
+    ev: FD[Term] => Task[FD[Term]],
+    typs: Task[FD[Typ[Term]]],
+    cutoff : Double,
+    wt: Double = 1.0)(gen0: FD[Term], gen1: FD[Term]) : Task[Double] =
+      for
+        {
+          p <- typs
+          qt0 <- ev(gen0)
+          qt1 <- ev(gen1)
+          q0 = qt0.map(_.typ)
+          q1 = qt1.map(_.typ)
+          totSupp = q0.support union (q1.support)
+          q0m = minOn(q0, cutoff, totSupp)
+          q1m = minOn(q1, cutoff, totSupp)
+          h0 = kl(p, q0m) - (h(gen0) * wt)
+          h1 = kl(p, q1m) - (h(gen1) * wt)
+        } yield h1 - h0
+
+  def quasiGradShift[A](base: A, neighbours: Vector[A], derTask : (A, A) => Task[Double])(
+    implicit ls : VectorSpace[A, Double]
+  ) : Task[A] = {
+    val shiftsTask =
+      Task.gather{
+      for {x <- neighbours} yield {
+        derTask(base, x).map{(der) => -der *: (base + x)}
+      }
+    }
+    shiftsTask.map{
+      (shifts) =>
+    shifts.foldLeft(base)(_+_)
+  }
+  }
+
+  def quasiGradFlowTask[A](base: A, neighMap: A => Vector[A],
+    derTask : (A, A) => Task[Double], halt: (A, A) => Boolean
+  )(
+    implicit ls : VectorSpace[A, Double]
+  ) : Task[A] = Task.tailRecM(base)(
+    (x: A) =>
+      quasiGradShift(x, neighMap(x), derTask).map{
+        (y) => if (halt(x, y)) Right(y) else Left(x)
+      }
+  )
+
+  def selfNeighbours[A](fd: FD[A], epsilon: Double) =
+    fd.flatten.supp.map{
+      (x) => (fd + (x, fd(x) * epsilon)).safeNormalized
+    }
+
+  def newNeighbours[A](fd: FD[A], pert: Vector[A], epsilon: Double) =
+    pert.map{
+      (x) => (fd + (x, fd(x) * epsilon)).safeNormalized
+    }
 
 }
