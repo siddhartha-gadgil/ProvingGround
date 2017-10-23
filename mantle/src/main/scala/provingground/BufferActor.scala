@@ -52,7 +52,7 @@ class BufferFlow[A] {
 
   def sink() = Sink.foreach((a: A) => actor ! Save(a))
 
-  implicit val timeout = Timeout(5.seconds)
+  implicit val timeout: _root_.akka.util.Timeout = Timeout(5.seconds)
 
   def query() = {
     val fut = (actor ? Query).map(_.asInstanceOf[Vector[A]])

@@ -146,7 +146,7 @@ object FDHub {
     stopHub
   }
 
-  implicit val timeout = Timeout(5.seconds)
+  implicit val timeout: _root_.akka.util.Timeout = Timeout(5.seconds)
 
   import system.dispatcher
 

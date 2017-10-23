@@ -96,7 +96,7 @@ object StartData {
 
   import DefaultJsonProtocol._
 
-  implicit val quickhub = FDHub.startHub(s"FD-QuickStart-Hub")
+  implicit val quickhub: _root_.akka.actor.ActorRef = FDHub.startHub(s"FD-QuickStart-Hub")
 
   /**
     * reads with defaults start paratmeters from JSON.
