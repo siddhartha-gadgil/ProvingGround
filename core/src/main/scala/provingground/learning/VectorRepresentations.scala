@@ -110,7 +110,8 @@ object VectorRepresentations {
     def empty[T] = Representation[T](Vector())
   }
 
-  implicit def VecRepVec[T] =
+  implicit def VecRepVec[T]: _root_.provingground.LinearStructure[
+    _root_.provingground.learning.VectorRepresentations.Representation[T]] =
     LinearStructure[Representation[T]](Representation.empty[T],
                                        _ ++ _,
                                        (w, d) => d * w)

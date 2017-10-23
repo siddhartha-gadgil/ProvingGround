@@ -524,7 +524,17 @@ object IndexedIterFuncPtnMapper {
       C <: Term with Subs[C], //  F <: Term with Subs[F],
       IF <: Term with Subs[IF],
       IDF <: Term with Subs[IDF],
-      IDFT <: Term with Subs[IDFT]] =
+      IDFT <: Term with Subs[IDFT]]
+    : _root_.provingground.induction.IndexedIterFuncPtnMapper[H,
+                                                              Fb,
+                                                              Index,
+                                                              C,
+                                                              H,
+                                                              C,
+                                                              C,
+                                                              IF,
+                                                              IDF,
+                                                              IDFT] =
     new IndexedIterFuncPtnMapper[H, Fb, Index, C, H, C, C, IF, IDF, IDFT] {
       def mapper(
           implicit fmlyMapper: TypFamilyMapper[H,
@@ -560,7 +570,18 @@ object IndexedIterFuncPtnMapper {
                                             D,
                                             IF,
                                             IDF,
-                                            IDFT]) =
+                                            IDFT])
+    : _root_.provingground.induction.IndexedIterFuncPtnMapper[
+      H,
+      Fb,
+      Index,
+      C,
+      _root_.provingground.HoTT.Func[TT, V],
+      _root_.provingground.HoTT.Func[TT, T],
+      _root_.provingground.HoTT.FuncLike[TT, D],
+      IF,
+      IDF,
+      IDFT] =
     new IndexedIterFuncPtnMapper[H,
                                  Fb,
                                  Index,
@@ -605,7 +626,18 @@ object IndexedIterFuncPtnMapper {
                                             D,
                                             IF,
                                             IDF,
-                                            IDFT]) =
+                                            IDFT])
+    : _root_.provingground.induction.IndexedIterFuncPtnMapper[
+      H,
+      Fb,
+      Index,
+      C,
+      _root_.provingground.HoTT.FuncLike[TT, V],
+      _root_.provingground.HoTT.FuncLike[TT, T],
+      _root_.provingground.HoTT.FuncLike[TT, D],
+      IF,
+      IDF,
+      IDFT] =
     new IndexedIterFuncPtnMapper[H,
                                  Fb,
                                  Index,

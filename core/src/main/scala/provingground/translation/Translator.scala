@@ -350,7 +350,8 @@ object Inclusion {
 
   implicit def pairInclusion[X1[_], Y1[_], X2[_], Y2[_]](
       implicit incl1: Inclusion[X1, Y1],
-      incl2: Inclusion[X2, Y2]) =
+      incl2: Inclusion[X2, Y2]): Inclusion[({ type X[A] = (X1[A], X2[A]) })#X,
+                                           ({ type Y[A] = (Y1[A], Y2[A]) })#Y] =
     new Inclusion[({ type X[A] = (X1[A], X2[A]) })#X,
                   ({ type Y[A] = (Y1[A], Y2[A]) })#Y] {
       def incl[I] = { case (x1, x2) => (incl1.incl(x1), incl2.incl(x2)) }
@@ -379,7 +380,9 @@ object OptRestriction {
 
   implicit def pairRestriction[X1[_], Y1[_], X2[_], Y2[_], G[_]](
       implicit rest1: OptRestriction[X1, Y1],
-      rest2: OptRestriction[X2, Y2]) =
+      rest2: OptRestriction[X2, Y2])
+    : OptRestriction[({ type X[A] = (X1[A], X2[A]) })#X,
+                     ({ type Y[A] = (Y1[A], Y2[A]) })#Y] =
     new OptRestriction[({ type X[A] = (X1[A], X2[A]) })#X,
                        ({ type Y[A] = (Y1[A], Y2[A]) })#Y] {
       def restrict[I] = _.flatMap {

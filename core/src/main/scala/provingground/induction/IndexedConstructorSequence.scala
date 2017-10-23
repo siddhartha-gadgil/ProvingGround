@@ -286,7 +286,18 @@ object IndexedConstructorSeqMapper {
                      IDF <: Term with Subs[IDF],
                      IDFT <: Term with Subs[IDFT]](
       implicit subst: TermList[Index],
-      fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
+      fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT])
+    : IndexedConstructorSeqMapper[HNil,
+                                  C,
+                                  H,
+                                  IF,
+                                  IDF,
+                                  HNil,
+                                  F,
+                                  Index,
+                                  IF,
+                                  IDF,
+                                  IDFT] =
     new IndexedConstructorSeqMapper[HNil,
                                     C,
                                     H,
@@ -436,8 +447,18 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
     * existentitally typed recursion function definition
     */
   def recE[C <: Term with Subs[C]](x: Typ[C]) = {
-    implicit val mp = family.mapper[C]
-    val mpd         = mapped
+    implicit val mp: provingground.induction.TypFamilyMapper[H,
+                                                             F,
+                                                             C,
+                                                             Index,
+                                                             IF,
+                                                             IDF,
+                                                             IDFT] forSome {
+      type IF <: provingground.HoTT.Term with provingground.HoTT.Subs[IF];
+      type IDF <: provingground.HoTT.Term with provingground.HoTT.Subs[IDF];
+      type IDFT <: provingground.HoTT.Term with provingground.HoTT.Subs[IDFT]
+    }       = family.mapper[C]
+    val mpd = mapped
     mpd.rec(x)
   }
 
@@ -529,8 +550,19 @@ abstract class IndexedConstructorSeqDom[SS <: HList,
   def inducE[IDFT <: Term with Subs[IDFT]](Xs: IDFT) =
     family.finalCod(Xs) match {
       case tp: Typ[u] =>
-        implicit val mp = family.mapper[u]
-        val mpd         = mapped
+        implicit val mp: provingground.induction.TypFamilyMapper[H,
+                                                                 F,
+                                                                 u,
+                                                                 Index,
+                                                                 IF,
+                                                                 IDF,
+                                                                 IDFT] forSome {
+          type IF <: provingground.HoTT.Term with provingground.HoTT.Subs[IF];
+          type IDF <: provingground.HoTT.Term with provingground.HoTT.Subs[IDF];
+          type IDFT <: provingground.HoTT.Term with provingground.HoTT.Subs[
+            IDFT]
+        }       = family.mapper[u]
+        val mpd = mapped
         mpd.inducF(Xs)
     }
 
@@ -549,9 +581,8 @@ object IndexedConstructorSeqDom {
                                   H <: Term with Subs[H],
                                   F <: Term with Subs[F],
                                   Index <: HList,
-                                  Intros <: HList](
-      implicit tl: TermList[Index]
-  ) =
+                                  Intros <: HList](implicit tl: TermList[Index])
+    : Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] =
     new Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] {
       def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(x: Term,
                                                                       y: Term) =

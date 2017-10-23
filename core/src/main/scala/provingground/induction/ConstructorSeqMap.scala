@@ -296,7 +296,9 @@ object ConstructorSeqDom {
 
   implicit def consSeqDomSubst[SS <: HList,
                                H <: Term with Subs[H],
-                               Intros <: HList] =
+                               Intros <: HList]
+    : _root_.scala.AnyRef with _root_.provingground.induction.Subst[
+      _root_.provingground.induction.ConstructorSeqDom[SS, H, Intros]] {} =
     new Subst[ConstructorSeqDom[SS, H, Intros]] {
       def subst(a: ConstructorSeqDom[SS, H, Intros])(x: Term, y: Term) =
         a.subs(x, y)
@@ -447,7 +449,9 @@ case class ConstructorSeqTL[SS <: HList,
 object ConstructorSeqTL {
   implicit def consSeqTLSubs[SS <: HList,
                              H <: Term with Subs[H],
-                             Intros <: HList] =
+                             Intros <: HList]
+    : _root_.scala.AnyRef with _root_.provingground.induction.Subst[
+      _root_.provingground.induction.ConstructorSeqTL[SS, H, Intros]] {} =
     new Subst[ConstructorSeqTL[SS, H, Intros]] {
       def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) =
         ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))

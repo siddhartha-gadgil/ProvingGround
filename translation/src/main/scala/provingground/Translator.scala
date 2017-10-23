@@ -291,30 +291,34 @@ object OptMapLift {
   /**
     * Trivial lifting by the identity
     */
-  implicit def idLift[I, O] = new OptMapLift[I, O, I, O] {
-    def lift(optMap: I => Option[O]) = optMap
-  }
+  implicit def idLift[I, O]: OptMapLift[I, O, I, O] =
+    new OptMapLift[I, O, I, O] {
+      def lift(optMap: I => Option[O]) = optMap
+    }
 
   /**
     * lift by restricting the domain.
     */
-  implicit def restrictLift[I, O, J <: I] = new OptMapLift[I, O, J, O] {
-    def lift(optMap: I => Option[O]) = (inp: J) => optMap(inp)
-  }
+  implicit def restrictLift[I, O, J <: I]: OptMapLift[I, O, J, O] =
+    new OptMapLift[I, O, J, O] {
+      def lift(optMap: I => Option[O]) = (inp: J) => optMap(inp)
+    }
 
   /**
     * Lift to a restricted codomain, by attempting to cast and returning None on failing.
     */
-  implicit def filterLift[I, O, L <: O] = new OptMapLift[I, O, I, L] {
-    def lift(optMap: I => Option[O]) =
-      (inp: I) =>
-        optMap(inp) flatMap ((x: O) => Try(x.asInstanceOf[L]).toOption)
-  }
+  implicit def filterLift[I, O, L <: O]: OptMapLift[I, O, I, L] =
+    new OptMapLift[I, O, I, L] {
+      def lift(optMap: I => Option[O]) =
+        (inp: I) =>
+          optMap(inp) flatMap ((x: O) => Try(x.asInstanceOf[L]).toOption)
+    }
 
   /**
     * Given a lift to XI and XO, lift to maps between corresponding lists.
     */
-  implicit def listLift[I, O, XI, XO](implicit lft: OptMapLift[I, O, XI, XO]) =
+  implicit def listLift[I, O, XI, XO](implicit lft: OptMapLift[I, O, XI, XO])
+    : OptMapLift[I, O, List[XI], List[XO]] =
     new OptMapLift[I, O, List[XI], List[XO]] {
       def lift(optMap: I => Option[O]) = {
         def lstMap(inp: List[XI]): Option[List[XO]] = inp match {
@@ -332,7 +336,7 @@ object OptMapLift {
   implicit def tuple2Lift[I, O, XI1, XO1, XI2, XO2](
       implicit lft1: OptMapLift[I, O, XI1, XO1],
       lft2: OptMapLift[I, O, XI2, XO2]
-  ) =
+  ): OptMapLift[I, O, (XI1, XI2), (XO1, XO2)] =
     new OptMapLift[I, O, (XI1, XI2), (XO1, XO2)] {
       def lift(optMap: I => Option[O]) = {
         case (x, y) =>
@@ -348,7 +352,7 @@ object OptMapLift {
       implicit lft1: OptMapLift[I, O, XI1, XO1],
       lft2: OptMapLift[I, O, XI2, XO2],
       lft3: OptMapLift[I, O, XI3, XO3]
-  ) =
+  ): OptMapLift[I, O, (XI1, XI2, XI3), (XO1, XO2, XO3)] =
     new OptMapLift[I, O, (XI1, XI2, XI3), (XO1, XO2, XO3)] {
       def lift(optMap: I => Option[O]) = {
         case (x, y, z) =>
@@ -365,7 +369,7 @@ object OptMapLift {
       lft2: OptMapLift[I, O, XI2, XO2],
       lft3: OptMapLift[I, O, XI3, XO3],
       lft4: OptMapLift[I, O, XI4, XO4]
-  ) =
+  ): OptMapLift[I, O, (XI1, XI2, XI3, XI4), (XO1, XO2, XO3, XO4)] =
     new OptMapLift[I, O, (XI1, XI2, XI3, XI4), (XO1, XO2, XO3, XO4)] {
       def lift(optMap: I => Option[O]) = {
         case (x, y, z, w) =>

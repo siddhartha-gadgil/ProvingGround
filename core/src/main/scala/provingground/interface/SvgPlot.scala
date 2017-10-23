@@ -66,5 +66,7 @@ object SvgPlot {
 
   case class Line(start: Point, end: Point, colour: String = "blue")
 
-  implicit def pairPoint(ab: (Double, Double)) = Point(ab._1, ab._2)
+  implicit def pairPoint(
+      ab: (Double, Double)): _root_.provingground.interface.SvgPlot.Point =
+    Point(ab._1, ab._2)
 }

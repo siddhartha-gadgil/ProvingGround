@@ -183,13 +183,12 @@ object ProverTasks {
       spawn)
   }
 
-  def theoremsExploreTask(
-      fd: FD[Term],
-      tv: TermEvolver,
-      cutoff: Double,
-      maxtime: FiniteDuration,
-      decay: Double = 1.0,
-      scale: Double = 1.0): Task[Map[Term, Vector[Double]]] = {
+  def theoremsExploreTask(fd: FD[Term],
+                          tv: TermEvolver,
+                          cutoff: Double,
+                          maxtime: FiniteDuration,
+                          decay: Double = 1.0,
+                          scale: Double = 1.0): Task[Map[Term, Double]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -221,7 +220,7 @@ object ProverTasks {
                                                          result,
                                                          _ ++ _,
                                                          spawn).map((v) =>
-      v.groupBy(_._1).mapValues((v) => v.toVector.map(_._2)))
+      v.groupBy(_._1).mapValues((v) => v.toVector.map(_._2).max))
   }
 
   def theoremSearchTraceTask(fd: FD[Term],

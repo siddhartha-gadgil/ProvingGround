@@ -52,7 +52,8 @@ trait Samples[X[_]] extends TangSamples[X] {
 }
 
 trait MonixSamples extends Samples[Task] {
-  implicit val monad = MonixSamples.monad
+  implicit val monad: _root_.cats.Monad[_root_.monix.eval.Task] =
+    MonixSamples.monad
 
   override def sequence[A](v: Vector[Task[A]]) =
     Task.gatherUnordered(v) map (_.toVector)

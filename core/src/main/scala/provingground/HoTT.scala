@@ -386,12 +386,16 @@ object HoTT {
       def typ(t: Typ[Term]) = t.typ
     }
 
-    implicit def funcVar[U <: Term with Subs[U], V <: Term with Subs[V]] =
+    implicit def funcVar[U <: Term with Subs[U], V <: Term with Subs[V]]
+      : _root_.scala.AnyRef with _root_.provingground.HoTT.Variable[
+        _root_.provingground.HoTT.Func[U, V]] {} =
       new Variable[Func[U, V]] {
         def typ(t: Func[U, V]) = t.typ
       }
 
-    implicit def funcLikeVar[U <: Term with Subs[U], V <: Term with Subs[V]] =
+    implicit def funcLikeVar[U <: Term with Subs[U], V <: Term with Subs[V]]
+      : _root_.scala.AnyRef with _root_.provingground.HoTT.Variable[
+        _root_.provingground.HoTT.FuncLike[U, V]] {} =
       new Variable[FuncLike[U, V]] {
         def typ(t: FuncLike[U, V]) = t.typ
       }

@@ -605,7 +605,8 @@ import ConstructorShape._
 object ConstructorPatternMapper {
   import ConstructorPatternMap._
 
-  implicit def idTargMapper[C <: Term with Subs[C], H <: Term with Subs[H]] =
+  implicit def idTargMapper[C <: Term with Subs[C], H <: Term with Subs[H]]
+    : ConstructorPatternMapper[HNil, C, H, H, C, C] =
     new ConstructorPatternMapper[HNil, C, H, H, C, C] {
       def mapper = (_) => IdTargMap[C, H]
     }
@@ -620,7 +621,13 @@ object ConstructorPatternMapper {
                              TT <: Term with Subs[TT],
                              DT <: Term with Subs[DT]](
       implicit tail: IterFuncMapper[H, C, F, TT, DT],
-      head: ConstructorPatternMapper[HShape, C, HC, H, HR, HI]) =
+      head: ConstructorPatternMapper[HShape, C, HC, H, HR, HI])
+    : ConstructorPatternMapper[FuncConsShape.type :: HShape,
+                               C,
+                               Func[F, HC],
+                               H,
+                               Func[F, Func[TT, HR]],
+                               FuncLike[F, Func[DT, HI]]] =
     new ConstructorPatternMapper[FuncConsShape.type :: HShape,
                                  C,
                                  Func[F, HC],
@@ -640,7 +647,13 @@ object ConstructorPatternMapper {
                                 H <: Term with Subs[H],
                                 HR <: Term with Subs[HR],
                                 HI <: Term with Subs[HI]](
-      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI]) =
+      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI])
+    : ConstructorPatternMapper[CnstFuncConsShape.type :: HShape,
+                               Cod,
+                               Func[T, HC],
+                               H,
+                               Func[T, HR],
+                               FuncLike[T, HI]] =
     new ConstructorPatternMapper[CnstFuncConsShape.type :: HShape,
                                  Cod,
                                  Func[T, HC],
@@ -660,7 +673,13 @@ object ConstructorPatternMapper {
                                    H <: Term with Subs[H],
                                    HR <: Term with Subs[HR],
                                    HI <: Term with Subs[HI]](
-      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI]) =
+      implicit head: ConstructorPatternMapper[HShape, Cod, HC, H, HR, HI])
+    : ConstructorPatternMapper[CnstDepFuncConsShape.type :: HShape,
+                               Cod,
+                               FuncLike[T, HC],
+                               H,
+                               FuncLike[T, HR],
+                               FuncLike[T, HI]] =
     new ConstructorPatternMapper[CnstDepFuncConsShape.type :: HShape,
                                  Cod,
                                  FuncLike[T, HC],

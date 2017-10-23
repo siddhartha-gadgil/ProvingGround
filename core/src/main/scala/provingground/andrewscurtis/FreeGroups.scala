@@ -422,11 +422,23 @@ object FreeGroups {
    */
   val nullpres = Presentation(List(), 0)
 
-  implicit def writeWord = WriteString.simple[Word]
+  implicit def writeWord
+    : _root_.provingground.translation.StringParse.WriteString[
+      _root_.provingground.andrewscurtis.FreeGroups.Word] =
+    WriteString.simple[Word]
 
-  implicit def writePres = WriteString.simple[Presentation]
+  implicit def writePres
+    : _root_.provingground.translation.StringParse.WriteString[
+      _root_.provingground.andrewscurtis.FreeGroups.Presentation] =
+    WriteString.simple[Presentation]
 
-  implicit def readWord = ReadString(Word.fromString)
+  implicit def readWord
+    : _root_.provingground.translation.StringParse.ReadString[
+      _root_.provingground.andrewscurtis.FreeGroups.Word] =
+    ReadString(Word.fromString)
 
-  implicit def readPres = ReadString(Presentation.fromString)
+  implicit def readPres
+    : _root_.provingground.translation.StringParse.ReadString[
+      _root_.provingground.andrewscurtis.FreeGroups.Presentation] =
+    ReadString(Presentation.fromString)
 }

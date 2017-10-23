@@ -18,7 +18,10 @@ import FmlyPtn._
 object BaseConstructorTypes {
   import ConstructorPattern._
 
-  implicit def WAsPtn[H <: Term with Subs[H]](w: IdW[H]) = IdFmlyPtn[H, Term]
+  implicit def WAsPtn[H <: Term with Subs[H]](
+      w: IdW[H]): _root_.provingground.induction.coarse.FmlyPtn.IdFmlyPtn[
+    H,
+    _root_.provingground.HoTT.Term] = IdFmlyPtn[H, Term]
 
   case object SmallBool extends SmallTyp
 

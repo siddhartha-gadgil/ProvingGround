@@ -66,9 +66,11 @@ object QuasiInclusion {
       def proj(fa: Cnst) = None
     }
 
-  implicit def stringQI[X] = constQI[X, String]
+  implicit def stringQI[X]
+    : QuasiInclusion[X, String, ({ type F[A] = String })#F] = constQI[X, String]
 
-  implicit def numQI[X, NT: Numeric] = constQI[X, NT]
+  implicit def numQI[X, NT: Numeric]
+    : QuasiInclusion[X, NT, ({ type F[A] = NT })#F] = constQI[X, NT]
 
   implicit def hnilIncl[X]: QuasiInclHList[X, HNil, HN] =
     new QuasiInclHList[X, HNil, HN] {

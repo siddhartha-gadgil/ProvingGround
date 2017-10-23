@@ -175,10 +175,13 @@ object QDI {
     <div class="finite-distribution"> { NodeSeq.fromSeq(nodeList) } </div>
   }
 
-  implicit def fdString[A](fd: FiniteDistribution[A]): _root_.scala.Predef.String =
+  implicit def fdString[A](
+      fd: FiniteDistribution[A]): _root_.scala.Predef.String =
     tableString(fdListList(fd))
 
-  implicit def fdListList[A](fd: FiniteDistribution[A]): _root_.scala.collection.immutable.List[_root_.scala.collection.immutable.List[_root_.scala.Any]] = {
+  implicit def fdListList[A](
+      fd: FiniteDistribution[A]): _root_.scala.collection.immutable.List[
+    _root_.scala.collection.immutable.List[_root_.scala.Any]] = {
     for (Weighted(x, p) <- fd.pmf.toList) yield List(x, p)
   }
 

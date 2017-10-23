@@ -300,7 +300,8 @@ import IterFuncPtnMap._
 import IterFuncShape._
 
 object IterFuncMapper {
-  implicit def idIterMapper[O <: Term with Subs[O], C <: Term with Subs[C]] =
+  implicit def idIterMapper[O <: Term with Subs[O], C <: Term with Subs[C]]
+    : IterFuncMapper[O, C, O, C, C] =
     new IterFuncMapper[O, C, O, C, C] {
       def mapper =
         (shape: IterFuncShape[O, O]) => IdIterPtnMap[O, C]
@@ -314,7 +315,12 @@ object IterFuncMapper {
                               HF <: Term with Subs[HF],
                               HTT <: Term with Subs[HTT],
                               HDT <: Term with Subs[HDT]](
-      implicit hm: IterFuncMapper[O, C, HF, HTT, HDT]) =
+      implicit hm: IterFuncMapper[O, C, HF, HTT, HDT])
+    : IterFuncMapper[O,
+                     C,
+                     Func[Tail, HF],
+                     Func[Tail, HTT],
+                     FuncLike[Tail, HDT]] =
     new IterFuncMapper[O,
                        C,
                        Func[Tail, HF],
@@ -332,7 +338,12 @@ object IterFuncMapper {
                                  HF <: Term with Subs[HF],
                                  HTT <: Term with Subs[HTT],
                                  HDT <: Term with Subs[HDT]](
-      implicit hm: IterFuncMapper[O, C, HF, HTT, HDT]) =
+      implicit hm: IterFuncMapper[O, C, HF, HTT, HDT])
+    : IterFuncMapper[O,
+                     C,
+                     FuncLike[Tail, HF],
+                     FuncLike[Tail, HTT],
+                     FuncLike[Tail, HDT]] =
     new IterFuncMapper[O,
                        C,
                        FuncLike[Tail, HF],

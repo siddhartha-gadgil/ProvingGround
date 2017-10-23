@@ -18,7 +18,8 @@ trait InductionImplicits {
 
   import ConstructorShape._
 
-  implicit def stringSym(name: String) = Name(name)
+  implicit def stringSym(name: String): _root_.provingground.HoTT.Name =
+    Name(name)
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
     def pair              = ConstructorTypTL(IdShape[H], typ)
@@ -62,9 +63,9 @@ trait InductionImplicits {
     }
 
     def :>(typ: Typ[H]) = {
-      val fmly        = g.get(W)
-      val ind         = fmly.getIndex(W, typ).get
-      implicit val gs = g.subst
+      val fmly                                                        = g.get(W)
+      val ind                                                         = fmly.getIndex(W, typ).get
+      implicit val gs: _root_.provingground.induction.TermList[Index] = g.subst
 
       IndexedConstructorShape.IndexedIdShape(fmly, ind)
     }
@@ -76,7 +77,7 @@ trait InductionImplicits {
       implicit val g: TypFamilyPtnGetter[F, H, Index]) {
     def W = wt._1
 
-    implicit val gs = g.subst
+    implicit val gs: _root_.provingground.induction.TermList[Index] = g.subst
 
     def typ = wt._2
 

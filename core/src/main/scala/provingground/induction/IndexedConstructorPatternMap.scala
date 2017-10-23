@@ -901,7 +901,19 @@ object IndexedConstructorPatternMapper {
                                IF <: Term with Subs[IF],
                                IDF <: Term with Subs[IDF],
                                IDFT <: Term with Subs[IDFT]](
-      implicit family: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
+      implicit family: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT])
+    : _root_.provingground.induction.IndexedConstructorPatternMapper[
+      _root_.shapeless.HNil,
+      C,
+      H,
+      H,
+      C,
+      C,
+      F,
+      Index,
+      IF,
+      IDF,
+      IDFT] =
     new IndexedConstructorPatternMapper[HNil,
                                         C,
                                         H,
@@ -941,17 +953,32 @@ object IndexedConstructorPatternMapper {
                                  IDF <: Term with Subs[IDF],
                                  IDFT <: Term with Subs[IDFT]](
       implicit tail: IterFuncMapper[H, C, FI, TT, DT],
-      head: IndexedConstructorPatternMapper[HShape,
-                                            C,
-                                            HC,
-                                            H,
-                                            HR,
-                                            HI,
-                                            Fb,
-                                            Index,
-                                            IF,
-                                            IDF,
-                                            IDFT]) =
+      head: IndexedConstructorPatternMapper[
+        HShape,
+        C,
+        HC,
+        H,
+        HR,
+        HI,
+        Fb,
+        Index,
+        IF,
+        IDF,
+        IDFT]): _root_.provingground.induction.IndexedConstructorPatternMapper[
+    _root_.shapeless.::[
+      _root_.provingground.induction.IndexedConstructorShape.IndexedFuncConsShape.type,
+      HShape],
+    C,
+    _root_.provingground.HoTT.Func[FI, HC],
+    H,
+    _root_.provingground.HoTT.Func[FI, _root_.provingground.HoTT.Func[TT, HR]],
+    _root_.provingground.HoTT.FuncLike[FI,
+                                       _root_.provingground.HoTT.Func[DT, HI]],
+    Fb,
+    Index,
+    IF,
+    IDF,
+    IDFT] =
     new IndexedConstructorPatternMapper[IndexedFuncConsShape.type :: HShape,
                                         C,
                                         Func[FI, HC],
@@ -1000,17 +1027,32 @@ object IndexedConstructorPatternMapper {
                                               IF,
                                               IDF,
                                               IDFT],
-      head: IndexedConstructorPatternMapper[HShape,
-                                            C,
-                                            HC,
-                                            H,
-                                            HR,
-                                            HI,
-                                            Fb,
-                                            Index,
-                                            IF,
-                                            IDF,
-                                            IDFT]) =
+      head: IndexedConstructorPatternMapper[
+        HShape,
+        C,
+        HC,
+        H,
+        HR,
+        HI,
+        Fb,
+        Index,
+        IF,
+        IDF,
+        IDFT]): _root_.provingground.induction.IndexedConstructorPatternMapper[
+    _root_.shapeless.::[
+      _root_.provingground.induction.IndexedConstructorShape.IndexedIndexedFuncConsShape.type,
+      HShape],
+    C,
+    _root_.provingground.HoTT.Func[F, HC],
+    H,
+    _root_.provingground.HoTT.Func[F, _root_.provingground.HoTT.Func[TT, HR]],
+    _root_.provingground.HoTT.FuncLike[F,
+                                       _root_.provingground.HoTT.Func[DT, HI]],
+    Fb,
+    Index,
+    IF,
+    IDF,
+    IDFT] =
     new IndexedConstructorPatternMapper[
       IndexedIndexedFuncConsShape.type :: HShape,
       C,
@@ -1060,7 +1102,21 @@ object IndexedConstructorPatternMapper {
                                                      Index,
                                                      IF,
                                                      IDF,
-                                                     IDFT]) =
+                                                     IDFT])
+    : _root_.provingground.induction.IndexedConstructorPatternMapper[
+      _root_.shapeless.::[
+        _root_.provingground.induction.IndexedConstructorShape.IndexedCnstFuncConsShape.type,
+        HShape],
+      Cod,
+      _root_.provingground.HoTT.Func[T, HC],
+      H,
+      _root_.provingground.HoTT.Func[T, HR],
+      _root_.provingground.HoTT.FuncLike[T, HI],
+      Fb,
+      Index,
+      IF,
+      IDF,
+      IDFT] =
     new IndexedConstructorPatternMapper[IndexedCnstFuncConsShape.type :: HShape,
                                         Cod,
                                         Func[T, HC],
@@ -1107,7 +1163,21 @@ object IndexedConstructorPatternMapper {
                                                      Index,
                                                      IF,
                                                      IDF,
-                                                     IDFT]) =
+                                                     IDFT])
+    : _root_.provingground.induction.IndexedConstructorPatternMapper[
+      _root_.shapeless.::[
+        _root_.provingground.induction.IndexedConstructorShape.IndexedCnstDepFuncConsShape.type,
+        HShape],
+      Cod,
+      _root_.provingground.HoTT.FuncLike[T, HC],
+      H,
+      _root_.provingground.HoTT.FuncLike[T, HR],
+      _root_.provingground.HoTT.FuncLike[T, HI],
+      Fb,
+      Index,
+      IF,
+      IDF,
+      IDFT] =
     new IndexedConstructorPatternMapper[
       IndexedCnstDepFuncConsShape.type :: HShape,
       Cod,

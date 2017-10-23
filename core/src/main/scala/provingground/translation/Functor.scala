@@ -121,7 +121,8 @@ object Functors extends CompositeFunctors {
   /**
     * composition of functors is a functor
     */
-  implicit def composeFunctors[X[_]: Functor, Y[_]: Functor] =
+  implicit def composeFunctors[X[_]: Functor, Y[_]: Functor]
+    : Functor[({ type Z[A] = X[Y[A]] })#Z] =
     new Functor[({ type Z[A] = X[Y[A]] })#Z] {
       def map[A, B](fa: X[Y[A]])(f: A => B) = {
         val inner = (y: Y[A]) => implicitly[Functor[Y]].map(y)(f)
@@ -132,7 +133,7 @@ object Functors extends CompositeFunctors {
   /**
     * constant functor
     */
-  implicit def constantFunctor[Cn] =
+  implicit def constantFunctor[Cn]: Functor[({ type Z[A] = Cn })#Z] =
     new Functor[({ type Z[A] = Cn })#Z] {
       def map[A, B](fa: Cn)(f: A => B) = fa
     }
@@ -140,7 +141,8 @@ object Functors extends CompositeFunctors {
   /**
     * functor by product with a constant functor
     */
-  implicit def augmentedFunctor[Cn, X[_]: Functor] =
+  implicit def augmentedFunctor[Cn, X[_]: Functor]
+    : Functor[({ type Z[A] = (Cn, X[A]) })#Z] =
     new Functor[({ type Z[A] = (Cn, X[A]) })#Z] {
       def map[A, B](fa: (Cn, X[A]))(f: A => B) =
         (fa._1, implicitly[Functor[X]].map(fa._2)(f))
@@ -159,7 +161,8 @@ object Functors extends CompositeFunctors {
   /**
     * functor for pairs
     */
-  implicit def t2[X[_]: Functor, Y[_]: Functor] =
+  implicit def t2[X[_]: Functor, Y[_]: Functor]
+    : Functor[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new Functor[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def map[A, B](fa: (X[A], Y[A]))(f: A => B) =
         (implicitly[Functor[X]].map(fa._1)(f),

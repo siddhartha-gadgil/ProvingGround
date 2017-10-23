@@ -719,7 +719,13 @@ trait WeakImplicit {
   implicit def idSubTypFamilyMapper[H <: Term with Subs[H],
                                     TC <: Typ[Term] with Subs[TC],
                                     C <: Term with Subs[C]](
-      implicit subEv: TypObj[TC, C]) =
+      implicit subEv: TypObj[TC, C]): TypFamilyMapper[H,
+                                                      Typ[H],
+                                                      C,
+                                                      HNil,
+                                                      Func[H, C],
+                                                      FuncLike[H, C],
+                                                      Func[H, TC]] =
     new TypFamilyMapper[H,
                         Typ[H],
                         C,
@@ -737,8 +743,14 @@ object TypFamilyMapper extends WeakImplicit {
 
   import TypFamilyPtn._
 
-  implicit def idTypFamilyMapper[H <: Term with Subs[H],
-                                 C <: Term with Subs[C]] =
+  implicit def idTypFamilyMapper[H <: Term with Subs[H], C <: Term with Subs[C]]
+    : TypFamilyMapper[H,
+                      Typ[H],
+                      C,
+                      HNil,
+                      Func[H, C],
+                      FuncLike[H, C],
+                      Func[H, Typ[C]]] =
     new TypFamilyMapper[H,
                         Typ[H],
                         C,
@@ -758,7 +770,13 @@ object TypFamilyMapper extends WeakImplicit {
                                    TIDF <: Term with Subs[TIDF],
                                    TIDFT <: Term with Subs[TIDFT]](
       implicit tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
-      subst: TermList[TIndex]) =
+      subst: TermList[TIndex]): TypFamilyMapper[H,
+                                                Func[U, TF],
+                                                C,
+                                                (U :: TIndex),
+                                                FuncLike[U, TIF],
+                                                FuncLike[U, TIDF],
+                                                FuncLike[U, TIDFT]] =
     new TypFamilyMapper[H,
                         Func[U, TF],
                         C,
@@ -789,7 +807,13 @@ object TypFamilyMapper extends WeakImplicit {
                                       TIDF <: Term with Subs[TIDF],
                                       TIDFT <: Term with Subs[TIDFT]](
       implicit tail: TypFamilyMapper[H, TF, C, TIndex, TIF, TIDF, TIDFT],
-      subst: TermList[TIndex]) =
+      subst: TermList[TIndex]): TypFamilyMapper[H,
+                                                FuncLike[U, TF],
+                                                C,
+                                                (U :: TIndex),
+                                                FuncLike[U, TIF],
+                                                FuncLike[U, TIDF],
+                                                FuncLike[U, TIDFT]] =
     new TypFamilyMapper[H,
                         FuncLike[U, TF],
                         C,

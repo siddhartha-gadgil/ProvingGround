@@ -64,7 +64,11 @@ object VecTyp {
 
   import NatTypLong._
 
-  implicit val NatVecRep = vecRep[RepTerm[Long], Long](poly(NatTypLong.rep))
+  implicit val NatVecRep: _root_.provingground.functionfinder.ScalaPolyRep[
+    _root_.provingground.functionfinder.RepTerm[
+      _root_.scala.`package`.Vector[_root_.scala.Long]],
+    _root_.scala.`package`.Vector[_root_.scala.Long]] =
+    vecRep[RepTerm[Long], Long](poly(NatTypLong.rep))
 
   val Vec =
     (((n: Long) => (VecTyp[Long, RepTerm[Long]](NatTypLong, n): Typ[Term]))

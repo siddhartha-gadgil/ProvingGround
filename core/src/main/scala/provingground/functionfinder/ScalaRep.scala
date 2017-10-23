@@ -264,9 +264,15 @@ object ScalaRep {
                  fibers.subs(x, y))
   }
 
-  implicit val UnivRep = idRep(Type)
+  implicit val UnivRep: _root_.provingground.functionfinder.ScalaRep[
+    _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term],
+    _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term]] = idRep(Type)
 
-  implicit def scalaUnivRep[A] = idRep(ScalaTypUniv[A])
+  implicit def scalaUnivRep[A]: _root_.provingground.functionfinder.ScalaRep[
+    _root_.provingground.HoTT.Typ[
+      _root_.provingground.functionfinder.RepTerm[A]],
+    _root_.provingground.HoTT.Typ[
+      _root_.provingground.functionfinder.RepTerm[A]]] = idRep(ScalaTypUniv[A])
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] =
     IdRep(typ)

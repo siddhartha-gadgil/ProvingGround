@@ -59,9 +59,12 @@ object Hub {
   //   lazy val db          = mongoClient("provingground")
   // }
 
-  implicit val system: _root_.akka.actor.ActorSystem = ActorSystem("provingground")
+  implicit val system: _root_.akka.actor.ActorSystem = ActorSystem(
+    "provingground")
 
-  implicit val materializer: _root_.akka.stream.ActorMaterializer = ActorMaterializer()
+  implicit val materializer: _root_.akka.stream.ActorMaterializer =
+    ActorMaterializer()
 
-  implicit val executionContext: _root_.scala.concurrent.ExecutionContextExecutor = system.dispatcher
+  implicit val executionContext
+    : _root_.scala.concurrent.ExecutionContextExecutor = system.dispatcher
 }

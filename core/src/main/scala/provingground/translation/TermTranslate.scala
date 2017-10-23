@@ -333,11 +333,13 @@ object JsonTranslate {
                  "data"     -> Js.Arr(defnData: _*))
       }
 
-  implicit val TermWriter = upickle.default.Writer[Term] {
-    case t =>
-      termToJson(t).getOrElse(
-        Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
-  }
+  implicit val TermWriter
+    : _root_.upickle.Types#Writer[_root_.provingground.HoTT.Term] =
+    upickle.default.Writer[Term] {
+      case t =>
+        termToJson(t).getOrElse(
+          Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString)))
+    }
 
   import provingground.translation.{TermLang => T}
 
