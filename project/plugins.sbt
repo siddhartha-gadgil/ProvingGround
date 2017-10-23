@@ -24,7 +24,9 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.18")
 
 // addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "5.1.0")
 
-addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.12")
+// addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.12")
+
+addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.3.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.2-RC2")
 

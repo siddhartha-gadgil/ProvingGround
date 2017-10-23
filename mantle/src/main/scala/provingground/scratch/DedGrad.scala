@@ -63,11 +63,7 @@ object DedGrad {
     val hour = 1000.toLong * 3600
 
     val hbuf =
-      new dedh.BufferedRun(distAB,
-                           100000,
-                           5000,
-                           _.getElapsedTime > hour,
-                           hsave)
+      new dedh.BufferedRun(distAB, 100000, 5000, _.getElapsedTime > hour, hsave)
 
     val buf = new ded.BufferedRun(distAB,
                                   10000000,

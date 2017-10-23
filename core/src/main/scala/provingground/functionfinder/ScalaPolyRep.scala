@@ -59,11 +59,10 @@ object ScalaPolyRep {
                            typ.asInstanceOf[FuncTyp[U, X]])).toOption
       case typ @ PiDefn(x: Term, y: Typ[v]) =>
         Try(
-          ExtendedDepFunction(
-            elem,
-            domrep,
-            codrep,
-            (x :-> y).asInstanceOf[Func[U, Typ[X]]])).toOption
+          ExtendedDepFunction(elem,
+                              domrep,
+                              codrep,
+                              (x :-> y).asInstanceOf[Func[U, Typ[X]]])).toOption
 
       case typ @ PiTyp(fibers) =>
         Try(

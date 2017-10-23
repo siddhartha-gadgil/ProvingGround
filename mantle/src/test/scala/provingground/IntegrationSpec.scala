@@ -243,7 +243,7 @@ class SigmaTypeSpec extends FlatSpec {
   "For arbitrary type user defined id with user defined Sigma type" should "be defined properly" in {
     val Sigma = "Σ" :: A ~>: ((A ->: Type) ->: Type)
     val SigmaInd = ("mkPair" ::: A ~>>: (B ~>>: (a ~>>: (B(a) ->>: (Sigma -> Sigma(
-        A)(B)))))) =:: Sigma
+      A)(B)))))) =:: Sigma
     val makePair :: HNil = SigmaInd.intros
     val pair             = makePair(A)(B)(a)(b)
     assert(pair.typ === Sigma(A)(B))
@@ -450,7 +450,7 @@ class IdentityTypeSpec extends FlatSpec {
     val indN_assoc = NatInd.induc(
       n :-> (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(add(m)(k))))))
     val pf = "(n+m)+k=n+(m+k)" :: m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(
-        add(m)(k))))
+      add(m)(k))))
     val assoc = indN_assoc(m :~> (k :~> add(m)(k).refl))(
       n :~> (pf :-> (m :~> (k :~>
         IdentityTyp
@@ -744,8 +744,7 @@ class EliminatorsSpec extends FlatSpec {
 
     val D     = "D(_ : Nat)" :: Nat ->: Type
     val indND = NatInd.induc(D)
-    assert(
-      indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
+    assert(indND.typ === D(zero) ->: n ~>: (D(n) ->: D(succ(n))) ->: m ~>: D(m))
     val d  = "d" :: D(zero)
     val f2 = "f2" :: n ~>: (D(n) ->: D(succ(n)))
     assert(indND(d)(f2)(zero) === d)
@@ -796,8 +795,7 @@ class EliminatorsSpec extends FlatSpec {
     val f = "f" :: n ~>: (A ->: Vec(n) ->: C ->: C)
     assert(recVC(c)(f)(zero)(vnil) === c)
     assert(
-      recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(
-        recVC(c)(f)(n)(vn)))
+      recVC(c)(f)(succ(n))(vcons(n)(a)(vn)) === f(n)(a)(vn)(recVC(c)(f)(n)(vn)))
 
     val D     = "D(_ : Vec(_))" :: n ~>: (Vec(n) ->: Type)
     val indVD = VecInd.induc(D)
@@ -805,7 +803,7 @@ class EliminatorsSpec extends FlatSpec {
       indVD.typ === D(zero)(vnil) ->: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(
         succ(n))(vcons(n)(a)(vn))) ->: m ~>: vm ~>: D(m)(vm))
     val f2 = "f2" :: n ~>: a ~>: vn ~>: (D(n)(vn) ->: D(succ(n))(
-        vcons(n)(a)(vn)))
+      vcons(n)(a)(vn)))
     val d = "d" :: D(zero)(vnil)
     assert(indVD(d)(f2)(zero)(vnil) === d)
     assert(

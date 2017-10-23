@@ -94,8 +94,7 @@ object ProverTasks {
     }
 
   // Abstract methods
-  def inTaskVec[X, Y](tv: Task[Vector[X]],
-                      p: X => Option[Y]): Task[Option[Y]] =
+  def inTaskVec[X, Y](tv: Task[Vector[X]], p: X => Option[Y]): Task[Option[Y]] =
     tv.flatMap {
       case Vector() => Task.pure(None)
       case x +: ys =>

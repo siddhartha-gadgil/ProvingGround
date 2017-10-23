@@ -258,9 +258,7 @@ object AdjDiffbleFunction {
       accum: AdjDiffbleFunction[X, X] = id[X]): AdjDiffbleFunction[X, X] = {
     if (n < 1) accum
     else
-      recIterateDiffble(fn,
-                        n - 1,
-                        accum andthen (fn: AdjDiffbleFunction[X, X]))
+      recIterateDiffble(fn, n - 1, accum andthen (fn: AdjDiffbleFunction[X, X]))
   }
 
   case class IteratedDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int)
@@ -283,8 +281,7 @@ object AdjDiffbleFunction {
   def iterateDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int) =
     consIterateDiffble(fn, n)
 
-  def iterate[A](
-      f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] =
+  def iterate[A](f: AdjDiffbleFunction[A, A]): Int => AdjDiffbleFunction[A, A] =
     (n) => iterateDiffble(f, n)
 
   def mixinIsle[A: LinearStructure](
@@ -394,8 +391,7 @@ object AdjDiffbleFunction {
 
       // Members declared in algebra.ring.AdditiveGroup
       def negate(x: AdjDiffbleFunction[A, B]): AdjDiffbleFunction[A, B] =
-        AdjDiffbleFunction((a: A) => -x(a))((a: A) =>
-          (b: B) => -x.adjDer(a)(b))
+        AdjDiffbleFunction((a: A) => -x(a))((a: A) => (b: B) => -x.adjDer(a)(b))
 
       // Members declared in algebra.ring.AdditiveMonoid
       def zero: AdjDiffbleFunction[A, B] =

@@ -67,8 +67,7 @@ object TreePatterns {
       xl._2.headOption map (_ + xl._1))
   }
 
-  object VP
-      extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
+  object VP extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
 
   object VPIf
       extends Pattern.Partial[Tree, II]({
@@ -76,8 +75,7 @@ object TreePatterns {
           (PennTrees.mkTree(xs, "VP", vp), t)
       })
 
-  object NP
-      extends Pattern.Partial[Tree, Vector]({ case Node("NP", xs) => xs })
+  object NP extends Pattern.Partial[Tree, Vector]({ case Node("NP", xs) => xs })
 
   object NPVP
       extends Pattern.Partial[Tree, II]({

@@ -83,7 +83,7 @@ object JsTest {
     dom.document
       .getElementById("scalajs")
       .textContent = "Hello from Scala-js: " +
-        Type
+      Type
 
     val bouncers = div.render
 

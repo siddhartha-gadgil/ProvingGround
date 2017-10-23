@@ -204,8 +204,8 @@ object Div {
   def apply(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
     Times(x, Reciprocal(y))
 
-  def unapply(q: FormalElemFunction)
-    : Option[(FormalElemFunction, FormalElemFunction)] =
+  def unapply(
+      q: FormalElemFunction): Option[(FormalElemFunction, FormalElemFunction)] =
     q match {
       case Times(x, Reciprocal(y)) => Some(x, y)
       case Times(Reciprocal(y), x) => Some(x, y)
@@ -292,8 +292,7 @@ object FormalElemFunction {
 
     def one: FormalElemFunction = One
 
-    def plus(x: FormalElemFunction,
-             y: FormalElemFunction): FormalElemFunction =
+    def plus(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
       Plus(x, y)
 
     def times(x: FormalElemFunction,
@@ -305,8 +304,7 @@ object FormalElemFunction {
   }
 
   implicit val formalCompose = new Circ[FormalElemFunction] {
-    def circ(x: FormalElemFunction,
-             y: FormalElemFunction): FormalElemFunction =
+    def circ(x: FormalElemFunction, y: FormalElemFunction): FormalElemFunction =
       Compose(x, y)
   }
 

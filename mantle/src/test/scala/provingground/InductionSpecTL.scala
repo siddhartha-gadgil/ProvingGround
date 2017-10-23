@@ -138,7 +138,7 @@ class InductionSpecTL extends FlatSpec {
   val B    = "B" :: Type
   val List = "List" :: Type ->: Type
   val ListIndA = ("nil" ::: List(A)) |: ("cons" ::: A ->>: List(A) -->>: List(
-      A)) =: List(A)
+    A)) =: List(A)
   val ListInd = A ~->: ListIndA
 
   "List as a parametrized type" should "have introduction rules substituting correctly" in {

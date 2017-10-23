@@ -51,9 +51,7 @@ object Aware {
   case class Results(result: List[Result[Any]])
       extends Result[List[Result[Any]]]
 
-  case class Solution[+A](result: A, goal: Task)
-      extends Response
-      with Result[A]
+  case class Solution[+A](result: A, goal: Task) extends Response with Result[A]
 
   case class PartialSolution[+A, +B](result: A, goal: Task, persist: B = Nil)
       extends Response
@@ -137,7 +135,8 @@ object Aware {
 
     def fromSeeker[A, S](s: Seeker[A, S], init: S): SeekerResource =
       new SeekerResource {
-        val resource: PartialFunction[Task, Either[SeekerResponse, Response]] = {
+        val resource
+          : PartialFunction[Task, Either[SeekerResponse, Response]] = {
           case Seek(seeker, p, n: Long) if seeker == s =>
             val task = Seek(s, p, n: Long)
             s.seek(p, n, init) match {
@@ -160,8 +159,7 @@ object Aware {
 
   case class Seek[A, S](s: Seeker[A, S], p: A => Boolean, n: Long) extends Task
 
-  case class FindInStream[A](s: Stream[A], p: A => Boolean, n: Int)
-      extends Task
+  case class FindInStream[A](s: Stream[A], p: A => Boolean, n: Int) extends Task
 
   trait StreamResource {
     def resource: PartialFunction[Task, Long => Response]
@@ -228,8 +226,7 @@ object Aware {
 
   case class GeneratorOut[A, B](out: Set[A], newGen: Generator[A, B])
 
-  case class Generate[A, B](gen: Generator[A, B], n: Long, init: B)
-      extends Task
+  case class Generate[A, B](gen: Generator[A, B], n: Long, init: B) extends Task
 
   class GeneratorActor[A, B](gen: Generator[A, B]) extends Actor {
     def receive = gen.receiver(sender, context)

@@ -84,7 +84,8 @@ object NormalForm {
     intermediate(list.reverse, Nil)
   }
 
-  def commReduce(op: (Term, Term) => Term, rep: CommRep[Term]): CommRep[Term] = {
+  def commReduce(op: (Term, Term) => Term,
+                 rep: CommRep[Term]): CommRep[Term] = {
     val onlyNumbers = rep filter numTermMatch
     val theRest     = rep filter (numTermMatch(_) == false)
     if (onlyNumbers.isEmpty) {

@@ -154,8 +154,7 @@ trait LeanParse { self =>
         for {
           recFn <- recFnTry
           vec   <- parseVec(xs, vars)
-          resTry = Try(
-            vec.foldLeft(recFn)(applyFuncProp(_, _, vars, Vector())))
+          resTry = Try(vec.foldLeft(recFn)(applyFuncProp(_, _, vars, Vector())))
             .fold((ex) =>
                     throw RecFuncException(indMod,
                                            argsFmly.map(parse(_, vars)),
@@ -230,8 +229,7 @@ trait LeanParse { self =>
         } yield head +: tail
     }
 
-  def parseVecOpt(vec: Vector[Expr],
-                  vars: Vector[Term]): Option[Vector[Term]] =
+  def parseVecOpt(vec: Vector[Expr], vars: Vector[Term]): Option[Vector[Term]] =
     optSequence(vec.map(parseOpt(_, vars)))
 
   def parseTypVec(vec: Vector[Expr],

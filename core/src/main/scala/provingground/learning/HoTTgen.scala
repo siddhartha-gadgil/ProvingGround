@@ -150,9 +150,9 @@ object HoTTgen {
 
   def lambdaFn[M](
       l: M,
-      f: AdjDiffbleFunction[
-        (FiniteDistribution[M], FiniteDistribution[Term]),
-        (FiniteDistribution[M], FiniteDistribution[Term])])(typ: Typ[Term]) = {
+      f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[Term]),
+                            (FiniteDistribution[M], FiniteDistribution[Term])])(
+      typ: Typ[Term]) = {
     import AdjDiffbleFunction._
     val x    = typ.Var
     val incl = (Evaluate(l) oplus id[FiniteDistribution[Term]])

@@ -38,21 +38,21 @@ object Deducer {
   def appln(rec: => (PD[Term] => PD[Term]))(p: PD[Term]) =
     rec(p) flatMap
       ((f) =>
-         if (isFunc(f)) rec(p) map (Unify.appln(f, _))
-         else FD.unif(None: Option[Term]))
+        if (isFunc(f)) rec(p) map (Unify.appln(f, _))
+        else FD.unif(None: Option[Term]))
 
   def memAppln(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(
       save: (Term, Term, Term) => Unit) = {
     rec(p) flatMap
       ((f) =>
-         if (isFunc(f))
-           rec(p) map
-             ((x) =>
-                Unify.appln(f, x) map
-                  ((y) => {
-                     save(f, x, y); y
-                   }))
-         else FD.unif(None: Option[Term]))
+        if (isFunc(f))
+          rec(p) map
+            ((x) =>
+              Unify.appln(f, x) map
+                ((y) => {
+                  save(f, x, y); y
+                }))
+        else FD.unif(None: Option[Term]))
   }
 
   def eqSubs(rec: => (PD[Term] => PD[Term]))(p: PD[Term])(
@@ -61,12 +61,12 @@ object Deducer {
       case eq @ IdentityTyp(dom, lhs: Term, rhs: Term) =>
         rec(p) map
           ((x) =>
-             if (x.typ == dom)
-               Some(x.subs(lhs, rhs)) map
-                 ((y) => {
-                    save(x, eq.asInstanceOf[IdentityTyp[Term]], y); y
-                  })
-             else None)
+            if (x.typ == dom)
+              Some(x.subs(lhs, rhs)) map
+                ((y) => {
+                  save(x, eq.asInstanceOf[IdentityTyp[Term]], y); y
+                })
+            else None)
       case _ =>
         FD.unif(None: Option[Term])
     }
@@ -301,15 +301,15 @@ case class BasicDeducer(applnWeight: Double = 0.2,
     (base: FD[Term]) =>
       (base: PD[Term]) flatMap
         ((f) =>
-           if (isFunc(f)) rec(base)(p) map (Unify.appln(f, _))
-           else FD.unif(None: Option[Term]))
+          if (isFunc(f)) rec(base)(p) map (Unify.appln(f, _))
+          else FD.unif(None: Option[Term]))
 
   def derApplnFunc(rec: => (FD[Term] => PD[Term] => PD[Term]))(p: PD[Term]) =
     (base: FD[Term]) =>
       rec(base)(p) flatMap
         ((f) =>
-           if (isFunc(f)) base map (Unify.appln(f, _))
-           else FD.unif(None: Option[Term]))
+          if (isFunc(f)) base map (Unify.appln(f, _))
+          else FD.unif(None: Option[Term]))
 
   /**
     * generating optionally as lambdas, with function and argument generated recursively;
@@ -919,9 +919,9 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
     val termsByType =
       ((this.termsByType.keySet union that.termsByType.keySet) map
         ((typ: Typ[Term]) =>
-           (typ,
-            this.termsByType.getOrElse(typ, FD.empty[Term]) ++ that.termsByType
-              .getOrElse(typ, FD.empty[Term])))).toMap
+          (typ,
+           this.termsByType.getOrElse(typ, FD.empty[Term]) ++ that.termsByType
+             .getOrElse(typ, FD.empty[Term])))).toMap
     TermPopulation(termsByType,
                    this.types ++ that.types,
                    this.thmsByProofs ++ that.thmsByProofs,

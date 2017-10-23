@@ -237,8 +237,7 @@ object MathExpr {
 
   case class JJ(word: String) extends AdjectivalPhrase
 
-  case class JJPP(adj: MathExpr, pps: Vector[MathExpr])
-      extends AdjectivalPhrase
+  case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
 
   /**
     * Prepositional phrase, usually translates to an argument, sometimes to a property.

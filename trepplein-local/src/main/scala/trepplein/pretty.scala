@@ -220,9 +220,8 @@ class PrettyPrinter(typeChecker: Option[TypeChecker] = None,
       case Let(domain, value, body) =>
         withFreshLC(LocalConst(domain)) { lc =>
           Parenable(0,
-                    (nest(
-                      "let" <+> ppBareBinder(lc.of).group <+> ":=" </> pp(
-                        value).parens(0).group <+> "in") </>
+                    (nest("let" <+> ppBareBinder(lc.of).group <+> ":=" </> pp(
+                      value).parens(0).group <+> "in") </>
                       pp(body.instantiate(lc)).parens(0)).group)
         }
       case App(_, _) =>
@@ -242,13 +241,11 @@ class PrettyPrinter(typeChecker: Option[TypeChecker] = None,
           case (fn @ Const(n, _), as) if showNotation =>
             notations.get(n) match {
               case Some(Prefix(_, prio, op)) if as.size == 1 =>
-                Parenable(
-                  prio - 1,
-                  (op <> zeroWidthLine).group <> pp(as(0)).parens(prio))
+                Parenable(prio - 1,
+                          (op <> zeroWidthLine).group <> pp(as(0)).parens(prio))
               case Some(Postfix(_, prio, op)) if as.size == 1 =>
-                Parenable(
-                  prio - 1,
-                  (pp(as(0)).parens(prio) <> zeroWidthLine <> op).group)
+                Parenable(prio - 1,
+                          (pp(as(0)).parens(prio) <> zeroWidthLine <> op).group)
               case Some(Infix(_, prio, op)) if as.size == 2 =>
                 Parenable(
                   prio - 1,

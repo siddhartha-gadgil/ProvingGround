@@ -123,11 +123,8 @@ object MainOpts {
       .action((_, c) => c.copy(printReductions = true))
       .text("print reduction rules for specified declarations as well")
     opt[Unit]("valid-lean")
-      .action(
-        (_, c) =>
-          c.copy(validLean = true,
-                 printDependencies = true,
-                 useNotation = false))
+      .action((_, c) =>
+        c.copy(validLean = true, printDependencies = true, useNotation = false))
       .text("try to produce output that can be parsed again")
 
     opt[Boolean]("show-implicits")

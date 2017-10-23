@@ -12,11 +12,10 @@ object quotient {
                    Pis(A, R)(Sort(univParams(0))),
                    builtin = true)
 
-  val quotMk = Axiom(
-    Name.Str(quot.name, "mk"),
-    univParams,
-    Pis(A, R)(A -->: Apps(Const(quot.name, univParams), A, R)),
-    builtin = true)
+  val quotMk = Axiom(Name.Str(quot.name, "mk"),
+                     univParams,
+                     Pis(A, R)(A -->: Apps(Const(quot.name, univParams), A, R)),
+                     builtin = true)
 
   val liftUnivParams = univParams :+ Level.Param(Name("v"))
   val B = LocalConst(

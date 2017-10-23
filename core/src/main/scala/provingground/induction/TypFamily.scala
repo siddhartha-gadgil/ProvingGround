@@ -229,9 +229,8 @@ object TypFamilyPtn {
   case class FuncTypFamily[U <: Term with Subs[U],
                            H <: Term with Subs[H],
                            TF <: Term with Subs[TF],
-                           TI <: HList: TermList](
-      head: Typ[U],
-      tail: TypFamilyPtn[H, TF, TI])
+                           TI <: HList: TermList](head: Typ[U],
+                                                  tail: TypFamilyPtn[H, TF, TI])
       extends TypFamilyPtn[H, Func[U, TF], U :: TI] {
 
     def getIndex(w: Func[U, TF], typ: Typ[H]) = {
@@ -649,8 +648,7 @@ object TypFamilyMap {
       tailfibre(ind.head).typRestrict(xs(ind.head), ind.tail)
 
     def subs(x: Term, y: Term) =
-      DepFuncTypFamilyMap(head.replace(x, y),
-                          (u: U) => tailfibre(u).subs(x, y))
+      DepFuncTypFamilyMap(head.replace(x, y), (u: U) => tailfibre(u).subs(x, y))
   }
 }
 
@@ -800,14 +798,15 @@ object TypFamilyMapper extends WeakImplicit {
                         FuncLike[U, TIDF],
                         FuncLike[U, TIDFT]] {
 
-      val mapper: TypFamilyPtn[H, FuncLike[U, TF], (U :: TIndex)] => TypFamilyMap[
-        H,
-        FuncLike[U, TF],
-        C,
-        (U :: TIndex),
-        FuncLike[U, TIF],
-        FuncLike[U, TIDF],
-        FuncLike[U, TIDFT]] = {
+      val mapper
+        : TypFamilyPtn[H, FuncLike[U, TF], (U :: TIndex)] => TypFamilyMap[
+          H,
+          FuncLike[U, TF],
+          C,
+          (U :: TIndex),
+          FuncLike[U, TIF],
+          FuncLike[U, TIDF],
+          FuncLike[U, TIDFT]] = {
         case DepFuncTypFamily(h, tf) =>
           DepFuncTypFamilyMap(h, (u: U) => tail.mapper(tf(u)))
       }

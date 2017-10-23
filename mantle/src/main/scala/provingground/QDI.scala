@@ -77,10 +77,7 @@ object QDI {
     state
   }
 
-  def runForFut[A](f: A => A,
-                   init: A,
-                   duration: Long,
-                   save: (A, Int) => Unit) =
+  def runForFut[A](f: A => A, init: A, duration: Long, save: (A, Int) => Unit) =
     Future(runFor(f, init, duration, save))
 
   def runForFut[A](f: A => A, init: A, duration: Long) =

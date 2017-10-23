@@ -106,9 +106,8 @@ class TypeChecker(val env: PreEnvironment,
       case (Pi(dom1, b1), Pi(dom2, b2)) =>
         val lc = LocalConst(dom1)
         require(as1.isEmpty && as2.isEmpty)
-        return checkDefEq(dom1.ty, dom2.ty) & checkDefEqCore(
-          b1.instantiate(lc),
-          b2.instantiate(lc))
+        return checkDefEq(dom1.ty, dom2.ty) & checkDefEqCore(b1.instantiate(lc),
+                                                             b2.instantiate(lc))
       case (_, _) =>
         NotDefEq(e1, e2)
     }) match {

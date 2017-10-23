@@ -485,10 +485,10 @@ object LeanToTermMonix {
       } yield (ltm1.defnMap(name), ltm1)
     }
 
-  def indModFromMod(name: Name,
-                    ltm: LeanToTermMonix,
-                    mods: Vector[Modification])
-    : Option[Task[(TermIndMod, LeanToTermMonix)]] =
+  def indModFromMod(
+      name: Name,
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]): Option[Task[(TermIndMod, LeanToTermMonix)]] =
     findMod(name, mods).map { (mod) =>
       for {
         ltm1 <- withMod(mod, ltm, mods)

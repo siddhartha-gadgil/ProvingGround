@@ -60,7 +60,7 @@ case class Graph[V](vertices: Set[V], edges: List[Edge[V]]) {
   val jEdges =
     edges map
       ((e) =>
-         IndexEdge(index(e.initial), index(e.terminal), e.weight, e.oriented))
+        IndexEdge(index(e.initial), index(e.terminal), e.weight, e.oriented))
 
   val jGraph: graph.graph.Graph[V, java.lang.Double] = {
     val base = new graph.graph.Graph[V, java.lang.Double](jVertices)

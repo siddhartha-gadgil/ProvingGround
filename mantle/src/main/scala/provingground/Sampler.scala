@@ -246,8 +246,8 @@ class TermSampler(d: BasicDeducer) {
                      sc: Double,
                      inertia: Double) =
     Iterator.iterate(
-      NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia))(
-      (ns) => ns.succ)
+      NextSample(init, sampleSize, derSampleSize, sc, epsilon, inertia))((ns) =>
+      ns.succ)
 
   var live: Boolean = true
   def stop()        = { live = false }

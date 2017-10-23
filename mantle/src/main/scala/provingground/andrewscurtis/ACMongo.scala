@@ -318,8 +318,8 @@ object ACMongo extends ACWriter {
   def getFutOptFDV(name: String) =
     (getFutOptElems(name)) mapp
       ((vec: Vector[ACElem]) =>
-        FiniteDistribution(vec map ((elem) =>
-          Weighted(elem.moves, elem.weight))))
+        FiniteDistribution(
+          vec map ((elem) => Weighted(elem.moves, elem.weight))))
 
   /**
     * returns finite distribution on theorems, given actor name, as future option.

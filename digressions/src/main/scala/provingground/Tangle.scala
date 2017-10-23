@@ -175,8 +175,7 @@ object Tangle {
     (wordStream(Set(Vert, Under, Over, Cup, Cap))) map (PureTangle(_))
 
   /** Tangle Evolver */
-  lazy val TangleEvolver = new GroupoidEvolver(
-    pureTangleStream: Stream[Tangle])
+  lazy val TangleEvolver = new GroupoidEvolver(pureTangleStream: Stream[Tangle])
 
   /** Stream of all tangles */
   lazy val TangleStream = TangleEvolver.flow

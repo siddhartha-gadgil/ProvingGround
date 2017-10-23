@@ -139,11 +139,11 @@ object CustomData {
       with Func {
     split(domain) map
       ((j) => // j is a half interval
-       {
-         val thispfs =
-           pfs filter (_.typ == FuncPositive(func, j)) // proofs that func is positive on j.
-         assert(!(thispfs.isEmpty))                    // checks that there is such a proof
-       })
+      {
+        val thispfs =
+          pfs filter (_.typ == FuncPositive(func, j)) // proofs that func is positive on j.
+        assert(!(thispfs.isEmpty))                    // checks that there is such a proof
+      })
 
     val typ = FuncPositive(func, domain)
   }
@@ -180,10 +180,7 @@ object CustomData {
     * @param domain interval on which there is a bound
     * @param sign -1 for lower bound, 1 for upper bound.
     */
-  case class DerBound(func: RealFunc,
-                      domain: Interval,
-                      bound: Real,
-                      sign: Sign)
+  case class DerBound(func: RealFunc, domain: Interval, bound: Real, sign: Sign)
       extends ConstantTyp
       with Func
       with Bound
@@ -340,11 +337,11 @@ object CustomData {
       with MultiFunc {
     splitCube(domain) map
       ((j) => // the cubelet
-       {
-         val thispfs =
-           pfs filter (_.typ == FuncPositiveCube(func, j)) // proofs that the function is positive on the cubelet
-         assert(!(thispfs.isEmpty))                        // check there is at least one proof.
-       })
+      {
+        val thispfs =
+          pfs filter (_.typ == FuncPositiveCube(func, j)) // proofs that the function is positive on the cubelet
+        assert(!(thispfs.isEmpty))                        // check there is at least one proof.
+      })
 
     val typ = FuncPositiveCube(func, domain)
   }

@@ -125,8 +125,7 @@ sealed trait FmlyPtn[
 
   import FmlyPtn._
 
-  def ->:[TT <: Term with Subs[TT]](
-      tail: Typ[TT]): FmlyPtn[O, C, Func[TT, F]] =
+  def ->:[TT <: Term with Subs[TT]](tail: Typ[TT]): FmlyPtn[O, C, Func[TT, F]] =
     FuncFmlyPtn(tail, me)
 
   def ~>:[TT <: Term with Subs[TT]](
@@ -338,16 +337,15 @@ object FmlyPtn {
                          S <: Term with Subs[S],
                          O <: Term with Subs[O],
                          C <: Term with Subs[C],
-                         HTot <: Term with Subs[HTot]](
-      tail: Typ[TT],
-      head: FmlyPtn[O, C, FV] {
-        //     type FamilyType = FV;
-        type IterFunc    = I;
-        type IterTypFunc = IT;
-        type IterDepFunc = DI;
-        type ArgType     = S;
-        type Total       = HTot;
-      })
+                         HTot <: Term with Subs[HTot]](tail: Typ[TT],
+                                                       head: FmlyPtn[O, C, FV] {
+                                                         //     type FamilyType = FV;
+                                                         type IterFunc    = I;
+                                                         type IterTypFunc = IT;
+                                                         type IterDepFunc = DI;
+                                                         type ArgType     = S;
+                                                         type Total       = HTot;
+                                                       })
       extends FmlyPtn[O, C, Func[TT, FV]] {
 
     //  override type Family =  Func[Term, V]
@@ -555,10 +553,7 @@ object FmlyPtn {
       case x :: ys =>
         val xt = x.asInstanceOf[TT]
         headfibre(xt).argOpt(ys) map ((t) =>
-                                        DepPair(xt,
-                                                t,
-                                                lmbda(xt)(
-                                                  t.typ.asInstanceOf[Typ[S]])))
+          DepPair(xt, t, lmbda(xt)(t.typ.asInstanceOf[Typ[S]])))
       case _ => None
     }
 

@@ -95,10 +95,8 @@ object DeducerJS {
           line(onclick := { () =>
             {
               info.innerHTML = ""
-              info.appendChild(div("Element: ",
-                                   katex(label),
-                                   "Entropy: ",
-                                   points.last).render)
+              info.appendChild(
+                div("Element: ", katex(label), "Entropy: ", points.last).render)
             }
           })(onfocus := { () =>
             {

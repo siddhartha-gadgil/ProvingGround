@@ -265,11 +265,11 @@ trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
   /**
     * given a codomain, returns a `mapped` version, i.e. one with all the types needed for recursion and induction.
     */
-  def mapped[C <: Term with Subs[C]](W: Typ[H])
-    : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
-      type RecType <: Term with Subs[RecType];
-      type InducType <: Term with Subs[InducType]; type TIntros <: HList
-    }
+  def mapped[C <: Term with Subs[C]](
+      W: Typ[H]): ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
+    type RecType <: Term with Subs[RecType];
+    type InducType <: Term with Subs[InducType]; type TIntros <: HList
+  }
 
   /**
     * existential typed `rec_W, X`, used by the method `recE` of [[ConstructorSeqTL]]
@@ -386,8 +386,7 @@ case class ConstructorSeqTL[SS <: HList,
     */
   def |:[S <: HList, ConstructorType <: Term with Subs[ConstructorType]](
       head: ConstructorTL[S, H, ConstructorType]) =
-    ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom),
-                     typ)
+    ConstructorSeqTL(ConstructorSeqDom.Cons(head.name, head.shape, seqDom), typ)
 
   /**
     * Existential typed version of [[rec]] for use at runtime if neccesary.

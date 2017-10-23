@@ -373,8 +373,7 @@ sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {
 
 object IterFuncShape {
 
-  case class IdIterShape[O <: Term with Subs[O]]()
-      extends IterFuncShape[O, O] {
+  case class IdIterShape[O <: Term with Subs[O]]() extends IterFuncShape[O, O] {
     def apply(tp: Typ[O]) = tp
 
     def subs(x: Term, y: Term) = IdIterShape[O]

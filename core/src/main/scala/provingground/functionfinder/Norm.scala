@@ -35,12 +35,12 @@ object Norm {
         Try(fn.dom.asInstanceOf[Typ[Term]]).toOption flatMap (recEnumList(_))
       domopt flatMap
         ((dom) => {
-           val normoptlist =
-             dom map
-               ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm))
-           //	      val normlist = Try(normoptlist map (_.get)).toOption
-           maxopt(normoptlist)
-         })
+          val normoptlist =
+            dom map
+              ((t) => Try(fn(t.asInstanceOf[u])).toOption flatMap (supnorm))
+          //	      val normlist = Try(normoptlist map (_.get)).toOption
+          maxopt(normoptlist)
+        })
     }
     case (PiDefn(x: Term, y: Typ[v]), _) => supnorm(x :-> y)
     case (PiTyp(section), _)             => supnorm(section)

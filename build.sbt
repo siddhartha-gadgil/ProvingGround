@@ -12,7 +12,7 @@ val ammV = "1.0.2"
 // ))
 
 scalaVersion in ThisBuild := scalaV
-scalafmtOnCompile in ThisBuild := true
+// scalafmtOnCompile in ThisBuild := true
 // scalafmtVersion in ThisBuild := "1.0.0-RC3"
 
 classpathTypes += "maven-plugin"

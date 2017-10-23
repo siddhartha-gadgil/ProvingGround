@@ -112,8 +112,7 @@ class ACFileSaver(dir: String = "acDev", rank: Int = 2)
     extends FDSrc[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]),
                   Param] {
   def save =
-    (snap: Snap) =>
-      fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
+    (snap: Snap) => fileSave(snap.name, dir, rank)(snap.state._1, snap.state._2)
 }
 
 object ACFileSaver {

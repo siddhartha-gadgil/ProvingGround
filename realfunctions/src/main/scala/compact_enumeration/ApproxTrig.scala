@@ -88,9 +88,9 @@ class ApproxTrig(N: SafeLong) {
     * @param inv : inversion, i.e., f(-x) = inv(f(x))
     *
     */
-  def span(stream: Int => Interval[Rational],
-           inv: Interval[Rational] => Interval[Rational])(
-      xs: Interval[Rational]) = {
+  def span(
+      stream: Int => Interval[Rational],
+      inv: Interval[Rational] => Interval[Rational])(xs: Interval[Rational]) = {
     val split = xs.splitAtZero
     for (a <- spanPositive(stream)(split._2);
          b <- spanPositive(stream)(-split._1)) yield a union inv(b)

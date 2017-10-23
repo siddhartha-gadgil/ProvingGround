@@ -49,8 +49,7 @@ object IterFuncPattern {
       */
     def depTarget(xs: Func[O, Typ[Cod]]): Family => Typ[DepTargetType]
 
-    def withCod[CC <: Term with Subs[CC]](
-        w: Typ[O]): IterFuncPtn[O, CC, Family]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]): IterFuncPtn[O, CC, Family]
 
     def subs(x: Term, y: Term): IterFuncPtn[O, C, Family]
 

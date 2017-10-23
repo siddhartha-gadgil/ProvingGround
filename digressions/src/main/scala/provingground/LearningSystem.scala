@@ -137,9 +137,6 @@ object LearningSystem {
                      feedback: (O, O) => O,
                      epsilon: Double)(implicit s: Shift[P]): (I, P, O) => P = {
     (inp, param, target) =>
-      learner.update(feedback(target, learner(inp, param)),
-                     inp,
-                     param,
-                     epsilon)
+      learner.update(feedback(target, learner(inp, param)), inp, param, epsilon)
   }
 }

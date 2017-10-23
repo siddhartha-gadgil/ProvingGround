@@ -242,8 +242,7 @@ object WebServer {
 
   def mixin(route: Route) = (otherRoutes map (route ~ _)) getOrElse (route)
 
-  val route = mixin(
-    htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
+  val route = mixin(htmlRoute ~ textRoute ~ dataRoute ~ resourceRoute ~ fdRoute)
 
   val helloRoute = path("hello") {
     get {

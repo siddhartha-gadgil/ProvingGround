@@ -24,8 +24,7 @@ class StochasticLang[E: ExprLang: Domain: ExprPatterns](
     val withOps = for (b <- oc.base(func, arg);
                        f <- oc.flip(func, arg);
                        s <- oc.shiftArg(func, arg))
-      yield
-        (b <*> baseWeight <+> (f <*> flipWeight) <+> (s <*> argShiftWeight))
+      yield (b <*> baseWeight <+> (f <*> flipWeight) <+> (s <*> argShiftWeight))
     val tdConversions =
       conversions map ((cnv) => (td: TD[E]) => TD.optF(td map (cnv)))
     val convertedTDTD = oc.convert(tdConversions)(func, arg)

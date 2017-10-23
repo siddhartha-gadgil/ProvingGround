@@ -133,7 +133,8 @@ object RandomWords {
       yield (w * math.log(1 / d(x)))).sum
   }
 
-  def entropyFeedback[E](bg: FiniteDistribution[E], d: FiniteDistribution[E]) = {
+  def entropyFeedback[E](bg: FiniteDistribution[E],
+                         d: FiniteDistribution[E]) = {
     FiniteDistribution(
       for (Weighted(x, w) <- bg.pmf if d(x) > 0) yield (Weighted(x, w / d(x))))
   }

@@ -176,8 +176,7 @@ object CodeEditorJS extends js.JSApp {
           viewDiv.innerHTML = ""
           val codeDiv = code(`class` := "scala", view).render
           viewDiv.appendChild(pre(codeDiv).render)
-          g.renderMathInElement(viewDiv,
-                                js.Dynamic.literal(ignoreTags = Seq()))
+          g.renderMathInElement(viewDiv, js.Dynamic.literal(ignoreTags = Seq()))
           if (answer.startsWith("--ERROR--\n")) {
             val err = answer
               .drop("--ERROR--\n".length)
