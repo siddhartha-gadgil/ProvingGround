@@ -34,12 +34,12 @@ object WikiRead {
   def nextgen(pgsfut: Future[Seq[MathPage]]) =
     pgsfut map (_ filter (_.isList)) flatMap
       ((pgs) =>
-        Future.sequence(pgs map
-          ((pg) => getXML(pg.url) map ((xml) => mathPages(xml))))) map
+         Future.sequence(
+           pgs map
+             ((pg) => getXML(pg.url) map ((xml) => mathPages(xml))))) map
       (_.flatten)
 
-  def saveAll(pgsfut: Future[Seq[MathPage]])(
-      implicit save: MathPage => Unit) = {
+  def saveAll(pgsfut: Future[Seq[MathPage]])(implicit save: MathPage => Unit) = {
     pgsfut.onSuccess {
       case pgs => (pgs filter (!_.isList)).foreach(save)
     }

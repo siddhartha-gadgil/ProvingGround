@@ -149,7 +149,8 @@ object Truncate {
                 val pmf1 = first.pmf
                 val pmf2 = second.pmf
                 val pmf = for (Weighted(x, p) <- pmf1; Weighted(y, q) <- pmf2
-                               if p * q > epsilon) yield Weighted((x, y), p * q)
+                               if p * q > epsilon)
+                  yield Weighted((x, y), p * q)
                 FD[A](pmf)
             }
           case fibprod: FiberProduct[a, q, b] =>

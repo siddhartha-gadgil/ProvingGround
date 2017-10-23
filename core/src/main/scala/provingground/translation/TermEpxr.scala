@@ -39,7 +39,8 @@ object TermExpr {
     * Symbolic variable with given type
     */
   case class TypedVar(name: String, typ: TermExpr) extends TermExpr {
-    def asTerm(implicit lp: LiteralParser): Term = typ.asTyp.symbObj(Name(name))
+    def asTerm(implicit lp: LiteralParser): Term =
+      typ.asTyp.symbObj(Name(name))
 
     override def toString = s"($name : $typ)"
   }

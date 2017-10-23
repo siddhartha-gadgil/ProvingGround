@@ -54,9 +54,8 @@ abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
     */
   def depTarget(xs: IDFT): F => Typ[DT]
 
-  def subs(
-      x: Term,
-      y: Term): IndexedIterFuncPtnMap[H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT]
+  def subs(x: Term, y: Term)
+    : IndexedIterFuncPtnMap[H, Fb, Index, C, F, TT, DT, IF, IDF, IDFT]
 
   /**
     * function induced by f: W -> X of type (A -> W) -> (A -> X) etc
@@ -526,14 +525,13 @@ object IndexedIterFuncPtnMapper {
       IDF <: Term with Subs[IDF],
       IDFT <: Term with Subs[IDFT]] =
     new IndexedIterFuncPtnMapper[H, Fb, Index, C, H, C, C, IF, IDF, IDFT] {
-      def mapper(
-          implicit fmlyMapper: TypFamilyMapper[H,
-                                               Fb,
-                                               C,
-                                               Index,
-                                               IF,
-                                               IDF,
-                                               IDFT]) = {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      Fb,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case IdIterShape(fmly, index) =>
           IdIterPtnMap(fmlyMapper.mapper(fmly), index)
       }
@@ -571,14 +569,13 @@ object IndexedIterFuncPtnMapper {
                                  IF,
                                  IDF,
                                  IDFT] {
-      def mapper(
-          implicit fmlyMapper: TypFamilyMapper[H,
-                                               Fb,
-                                               C,
-                                               Index,
-                                               IF,
-                                               IDF,
-                                               IDFT]) = {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      Fb,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case FuncShape(tail, head) =>
           IndexedFuncIterPtnMap(tail, hm.mapper(fmlyMapper)(head))
       }
@@ -616,14 +613,13 @@ object IndexedIterFuncPtnMapper {
                                  IF,
                                  IDF,
                                  IDFT] {
-      def mapper(
-          implicit fmlyMapper: TypFamilyMapper[H,
-                                               Fb,
-                                               C,
-                                               Index,
-                                               IF,
-                                               IDF,
-                                               IDFT]) = {
+      def mapper(implicit fmlyMapper: TypFamilyMapper[H,
+                                                      Fb,
+                                                      C,
+                                                      Index,
+                                                      IF,
+                                                      IDF,
+                                                      IDFT]) = {
         case DepFuncShape(tail, headfibre) =>
           IndexedDepFuncIterPtnMap(
             tail,

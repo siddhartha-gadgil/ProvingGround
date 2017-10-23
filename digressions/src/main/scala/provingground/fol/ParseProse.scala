@@ -300,11 +300,10 @@ object ParseProse {
         s match {
           case "" => ((x: Var, p: Formula) => toPropt(t, scope)(x) & p)
           case "a" =>
-            ((x: Var,
-              p: Formula) => ExQuantFormula(x, toPropt(t, scope)(x) & p))
+            ((x: Var, p: Formula) =>
+               ExQuantFormula(x, toPropt(t, scope)(x) & p))
           case "every" =>
-            ((x: Var,
-              p: Formula) =>
+            ((x: Var, p: Formula) =>
                UnivQuantFormula(x, toPropt(t, scope)(x) implies p))
         }
       case t: ProseTree => new ProseCondPropt(t)

@@ -336,7 +336,8 @@ object TermPatterns {
       applyAll(Some(pt.induc(fmly)), data)
     case (dom: Typ[u], (depcodom, data)) =>
       inds(dom) flatMap ((cs) =>
-        applyAll(Some(cs.inducE(fm(cs.typ, depcodom))), data))
+                           applyAll(Some(cs.inducE(fm(cs.typ, depcodom))),
+                                    data))
     case _ => None
   }
 
@@ -357,7 +358,7 @@ object TermPatterns {
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>
       inds(dom) flatMap ((cs) =>
-        applyAll(Some(cs.inducE(depcodom)), data ++ index))
+                           applyAll(Some(cs.inducE(depcodom)), data ++ index))
   }
   // val blah: Term => Boolean = {case x : PlusTyp[u, v]#RecFn[w] => true}
 }

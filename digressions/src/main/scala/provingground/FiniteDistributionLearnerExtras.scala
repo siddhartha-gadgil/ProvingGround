@@ -93,8 +93,9 @@ object FiniteDistributionLearnerExtras {
       scnd: (FiniteDistribution[M], FiniteDistribution[V])) =
     (fst._1 ++ scnd._1, fst._2 ++ scnd._2)
 
-  private def dstmult[M, V](fst: (FiniteDistribution[M], FiniteDistribution[V]),
-                            scnd: Double) =
+  private def dstmult[M, V](
+      fst: (FiniteDistribution[M], FiniteDistribution[V]),
+      scnd: Double) =
     (fst._1 * scnd, fst._2 * scnd)
 
   private def dstdot[M, V](
@@ -351,9 +352,10 @@ object FiniteDistributionLearnerExtras {
       f: AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),
                             (FiniteDistribution[M], FiniteDistribution[V])],
       epsilon: Double,
-      feedback: (FiniteDistribution[M],
-                 FiniteDistribution[V]) => (FiniteDistribution[M],
-                                            FiniteDistribution[V])) = {
+      feedback: (FiniteDistribution[M], FiniteDistribution[V]) => (FiniteDistribution[
+                                                                     M],
+                                                                   FiniteDistribution[
+                                                                     V])) = {
     (init: (FiniteDistribution[M], FiniteDistribution[V])) =>
       val fb = feedback(f.func(init)._1, f.func(init)._2)
       (init._1 ++ (fb._1 * epsilon), init._2 ++ (fb._2 * epsilon))

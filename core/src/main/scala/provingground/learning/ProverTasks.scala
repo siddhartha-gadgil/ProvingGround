@@ -68,8 +68,8 @@ object ProverTasks {
     prsmEntTask(termsTask, typsTask).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
-          pprint.log(
-            s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
+          // pprint.log(
+          //   s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
           termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime)
       }
     }
@@ -85,8 +85,8 @@ object ProverTasks {
     prsmEntTask(termsTask, typsTask).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
-          pprint.log(
-            s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
+          // pprint.log(
+          //   s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
           for {
             fd <- termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime)
           } yield (fd, trace :+ v)
@@ -94,7 +94,8 @@ object ProverTasks {
     }
 
   // Abstract methods
-  def inTaskVec[X, Y](tv: Task[Vector[X]], p: X => Option[Y]): Task[Option[Y]] =
+  def inTaskVec[X, Y](tv: Task[Vector[X]],
+                      p: X => Option[Y]): Task[Option[Y]] =
     tv.flatMap {
       case Vector() => Task.pure(None)
       case x +: ys =>
@@ -183,12 +184,13 @@ object ProverTasks {
       spawn)
   }
 
-  def theoremsExploreTask(fd: FD[Term],
-                          tv: TermEvolver,
-                          cutoff: Double,
-                          maxtime: FiniteDuration,
-                          decay: Double = 1.0,
-                          scale: Double = 1.0): Task[Vector[(Term, Double)]] = {
+  def theoremsExploreTask(
+      fd: FD[Term],
+      tv: TermEvolver,
+      cutoff: Double,
+      maxtime: FiniteDuration,
+      decay: Double = 1.0,
+      scale: Double = 1.0): Task[Map[Term, Vector[Double]]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -209,14 +211,18 @@ object ProverTasks {
       typsTask.map { (p) =>
         {
           val q = fd.map(_.typ)
-          fd.flatten.supp.collect{case t if p(t.typ) > 0 => (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ))}
+          fd.flatten.supp.collect {
+            case t if p(t.typ) > 0 && q(t.typ) > 0 && q(t.typ) < 1 =>
+              (t, h(p(t.typ), q(t.typ)) * fd(t) / q(t.typ))
+          }
         }
       }
 
     branchedGatherTask[FD[Term], Vector[(Term, Double)]](termsTask,
                                                          result,
                                                          _ ++ _,
-                                                         spawn)
+                                                         spawn).map((v) =>
+      v.groupBy(_._1).mapValues((v) => v.toVector.map(_._2)))
   }
 
   def theoremSearchTraceTask(fd: FD[Term],

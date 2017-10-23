@@ -39,8 +39,11 @@ sealed trait ConstructorPatternMap[
     RecDataType <: Term with Subs[RecDataType],
     InducDataType <: Term with Subs[InducDataType]] { self =>
 
-  def subs(x: Term, y: Term)
-    : ConstructorPatternMap[Cod, ConstructorType, H, RecDataType, InducDataType]
+  def subs(x: Term, y: Term): ConstructorPatternMap[Cod,
+                                                    ConstructorType,
+                                                    H,
+                                                    RecDataType,
+                                                    InducDataType]
 
   /**
     * domain containing the recursion data for the constructor, i.e., the HoTT type of recursion data.
@@ -560,7 +563,9 @@ object ConstructorShape {
                                HS <: Term with Subs[HS]](
       tail: Typ[T],
       head: ConstructorShape[HShape, H, HC])
-      extends ConstructorShape[CnstFuncConsShape.type :: HShape, H, Func[T, HC]] {
+      extends ConstructorShape[CnstFuncConsShape.type :: HShape,
+                               H,
+                               Func[T, HC]] {
     def apply(tp: Typ[H]) = tail ->: head(tp)
 
     def mapper[Cod <: Term with Subs[Cod]] =
@@ -690,21 +695,21 @@ sealed trait ConstructorPatternMapper[
   /**
     * the bridge function
     */
-  def mapper
-    : ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
-      Cod,
-      ConstructorType,
-      H,
-      RecDataType,
-      InducDataType]
+  def mapper: ConstructorShape[Shape, H, ConstructorType] => ConstructorPatternMap[
+    Cod,
+    ConstructorType,
+    H,
+    RecDataType,
+    InducDataType]
 }
 
 /**
   * an introduction rule [[shape]] together with the iductive type [[typ]] being defined.
   */
-case class ConstructorTypTL[S <: HList,
-                            H <: Term with Subs[H],
-                            ConstructorType <: Term with Subs[ConstructorType]](
+case class ConstructorTypTL[
+    S <: HList,
+    H <: Term with Subs[H],
+    ConstructorType <: Term with Subs[ConstructorType]](
     shape: ConstructorShape[S, H, ConstructorType],
     typ: Typ[H]) {
 

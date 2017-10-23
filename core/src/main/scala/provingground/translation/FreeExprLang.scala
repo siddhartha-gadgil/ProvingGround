@@ -239,8 +239,8 @@ object FreeExpr {
   }
 
   object FromTerm
-      extends TermToExpr[FreeExpr](univ = (n) => Univ(n), predef = (t) => None)(
-        FreeLang)
+      extends TermToExpr[FreeExpr](univ = (n) => Univ(n),
+                                   predef = (t) => None)(FreeLang)
 
   def fromTerm(t: HoTT.Term) = FromTerm(t)
 
@@ -262,9 +262,8 @@ object FreeExpr {
         PickledWeighted(writeTerm(encode(names)(t)), w)
     })
 
-  def readDist(
-      s: String,
-      names: Vector[(Term, String)] = Vector()): FiniteDistribution[HoTT.Term] =
+  def readDist(s: String, names: Vector[(Term, String)] = Vector())
+    : FiniteDistribution[HoTT.Term] =
     FiniteDistribution(read[Vector[PickledWeighted]](s) map {
       case PickledWeighted(t, w) => Weighted(decode(names)(readTerm(t)), w)
     }).flatten

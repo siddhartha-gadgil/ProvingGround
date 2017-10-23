@@ -239,7 +239,9 @@ object Collections {
     def mult(sc: Double, arr: ArrayMap[L, T]) =
       arr map ((t: T) => ls.mult(sc, t))
 
-    LinearStructure[ArrayMap[L, T]](ArrayMap(Map(), Some(List())), _ ++ _, mult)
+    LinearStructure[ArrayMap[L, T]](ArrayMap(Map(), Some(List())),
+                                    _ ++ _,
+                                    mult)
   }
 
   implicit class Shift[B](shift: (B, B, Double) => B) {

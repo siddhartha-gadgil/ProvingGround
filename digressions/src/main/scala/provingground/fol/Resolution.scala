@@ -153,7 +153,7 @@ object Resolution {
   def unify(a: SplitClause, b: SplitClause) = {
     mguFmla(a.one.p, b.one.p) map
       ((f: PartialFunction[Var, Term]) =>
-        (a.rest map (_.subs(f))) union (b.rest map (_.subs(f))))
+         (a.rest map (_.subs(f))) union (b.rest map (_.subs(f))))
   }
 
   def newResolutionClauses(c: CNF) = {

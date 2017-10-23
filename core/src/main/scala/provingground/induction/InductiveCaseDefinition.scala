@@ -61,9 +61,8 @@ object InductiveDefinition {
       data: D,
       defn: D => FuncLike[H, C] => H => Option[C],
       tail: InductiveDefinition[H, C],
-      replacement: Term => Term => Func[H, Typ[C]] => Option[
-        DataCons[H, C, D]] = (_: Term) =>
-        (_: Term) => (_: Func[H, Typ[C]]) => None)
+      replacement: Term => Term => Func[H, Typ[C]] => Option[DataCons[H, C, D]] =
+        (_: Term) => (_: Term) => (_: Func[H, Typ[C]]) => None)
       extends InductiveDefinition[H, C] {
     val typ = tail.typ
 

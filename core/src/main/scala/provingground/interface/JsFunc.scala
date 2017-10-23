@@ -66,7 +66,8 @@ object JsFunc {
 
   import Translator._
 
-  def toJs[I, F[_]](pat: Pattern[I, F])(name: String, header: String = "intro")(
+  def toJs[I, F[_]](pat: Pattern[I, F])(name: String,
+                                        header: String = "intro")(
       implicit jsF: JsFunc[F]): Translator[I, Js.Value] =
     pat >>> { (js) =>
       Js.Obj(header -> Js.Str(name), "tree" -> jsF.encode(js))

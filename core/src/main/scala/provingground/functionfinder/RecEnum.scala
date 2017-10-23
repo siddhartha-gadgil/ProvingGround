@@ -33,23 +33,23 @@ object RecEnum {
       val domlistopt     = recEnumList(dom)
       domlistopt flatMap
         ((domlist) => {
-          val codoms = (x: Term) =>
-            recEnumList(pt.fib(x.asInstanceOf[u]).asInstanceOf[Typ[Term]])
-          val maps = allSecMapsOpt(domlist, codoms)
-          for (l <- maps)
-            yield (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
-        })
+           val codoms = (x: Term) =>
+             recEnumList(pt.fib(x.asInstanceOf[u]).asInstanceOf[Typ[Term]])
+           val maps = allSecMapsOpt(domlist, codoms)
+           for (l <- maps)
+             yield (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
+         })
     case SigmaTyp(fiber) =>
       val dom        = fiber.dom.asInstanceOf[Typ[Term]]
       val domlistopt = recEnumList(dom)
       domlistopt flatMap
         ((domlist) => {
-          val codoms =
-            (x: Term) => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
-          val maps = allSecMapsOpt(domlist, codoms)
-          for (l <- maps)
-            yield (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
-        })
+           val codoms =
+             (x: Term) => recEnumList(fiber(x).asInstanceOf[Typ[Term]])
+           val maps = allSecMapsOpt(domlist, codoms)
+           for (l <- maps)
+             yield (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
+         })
     case _ => None
   }
 }

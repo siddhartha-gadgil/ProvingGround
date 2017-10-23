@@ -299,7 +299,8 @@ object Logic {
     val params: List[Term]
   }
 
-  case class AtomFormula(pred: Pred, params: List[Term]) extends AtomicFormula {
+  case class AtomFormula(pred: Pred, params: List[Term])
+      extends AtomicFormula {
     def this(p: Pred, t: Term) = this(p, List(t))
     def subs(xt: Var => Term): Formula =
       AtomFormula(pred, params map (_.subs(xt)))
@@ -400,8 +401,7 @@ object Logic {
     * 3 TermListituting terms for free variables in terms.
     * 4 Combining formulas by conjunction and negation.
     */
-  val exprProdSet
-    : PartialFunction[(Expression, Expression), Set[Expression]] = {
+  val exprProdSet: PartialFunction[(Expression, Expression), Set[Expression]] = {
     case (p: Formula, y: Var) if (p.freeVars contains y) =>
       (for (x <- p.freeVars) yield p.subs(x, y)).toSet union Set(
         ExQuantFormula(y, p),

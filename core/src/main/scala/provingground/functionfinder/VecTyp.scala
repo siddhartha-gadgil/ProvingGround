@@ -9,8 +9,9 @@ import ScalaRep._
 /**
   * @author gadgil
   */
-case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](basetyp: Typ[U], dim: Long)(
-    implicit _baserep: ScalaRep[U, X])
+case class VecTyp[X, +U <: RepTerm[X] with Subs[U]](
+    basetyp: Typ[U],
+    dim: Long)(implicit _baserep: ScalaRep[U, X])
     extends Typ[RepTerm[Vector[X]]] {
   val baserep = _baserep
 

@@ -44,17 +44,17 @@ object Unify {
       case head +: tail =>
         unify(head._1, head._2, freeVars) flatMap
           ((subMap) => {
-            val newVars =
-              (x: Term) => freeVars(x) && !(subMap.keySet contains x)
-            val newTail =
-              tail map {
-                case (a, b) =>
-                  (multisub(a, subMap), multisub(b, subMap))
-              }
-            val tailMapOpt = unifyVector(newTail, newVars)
-            val mapOpt     = tailMapOpt map ((tm) => subMap ++ tm)
-            mapOpt
-          })
+             val newVars =
+               (x: Term) => freeVars(x) && !(subMap.keySet contains x)
+             val newTail =
+               tail map {
+                 case (a, b) =>
+                   (multisub(a, subMap), multisub(b, subMap))
+               }
+             val tailMapOpt = unifyVector(newTail, newVars)
+             val mapOpt     = tailMapOpt map ((tm) => subMap ++ tm)
+             mapOpt
+           })
     }
 
   def unifyAll(freeVars: Term => Boolean)(xys: (Term, Term)*) =
@@ -90,12 +90,12 @@ object Unify {
         case (f: LambdaLike[u, v], g: LambdaLike[w, x]) =>
           unify(f.variable, g.variable, freevars) flatMap
             ((m) => {
-              val xx = multisub(f.variable, m)
-              val yy = multisub(f.value, m)
-              val newvars =
-                (x: Term) => freevars(x) && (!(m.keySet contains x))
-              unify(yy.subs(xx, g.variable), g.value, newvars) map (m ++ _)
-            })
+               val xx = multisub(f.variable, m)
+               val yy = multisub(f.value, m)
+               val newvars =
+                 (x: Term) => freevars(x) && (!(m.keySet contains x))
+               unify(yy.subs(xx, g.variable), g.value, newvars) map (m ++ _)
+             })
         case _ => None
       }
   }
@@ -137,10 +137,10 @@ object Unify {
     val imageOpt =
       unify(r1, r2, freeVars) map
         ((uniMap) =>
-          inv2 map {
-            case (f, x) =>
-              (multisub(f, uniMap), multisub(x, uniMap))
-          })
+           inv2 map {
+             case (f, x) =>
+               (multisub(f, uniMap), multisub(x, uniMap))
+           })
     inv2 -- imageOpt.getOrElse(Set())
   }
 
@@ -162,7 +162,8 @@ object Unify {
       case List() => accum
       case head :: tail =>
         val needHead = (tail find
-          ((fx) => !unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isEmpty)).isEmpty
+          ((fx) =>
+             !unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isEmpty)).isEmpty
         if (needHead) purgedPairsList(tail, head :: accum)
         else purgedPairsList(tail, accum)
     }

@@ -78,8 +78,9 @@ class SymbolicCRing[A: Ring] { self =>
   case class SigmaTerm(elems: Set[LocalTerm])
       extends LocalTerm
       with FoldedTerm[LocalTerm] {
-    require(elems.size > 1,
-            s"Cannot create Sigma term of set $elems with less than 2 elements")
+    require(
+      elems.size > 1,
+      s"Cannot create Sigma term of set $elems with less than 2 elements")
 
     //    println(s"created sigma-term [$elems]")
 
@@ -402,7 +403,8 @@ class SymbolicCRing[A: Ring] { self =>
   final def posPower(x: LocalTerm,
                      n: Int,
                      accum: LocalTerm = Literal(one)): LocalTerm = {
-    require(n >= 0, s"attempted to compute negative power $n of $x recursively")
+    require(n >= 0,
+            s"attempted to compute negative power $n of $x recursively")
     if (n == 0) accum
     else posPower(x, n - 1, prod(x)(accum))
   }

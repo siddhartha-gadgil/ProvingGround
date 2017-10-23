@@ -73,7 +73,8 @@ object EnumFuncs {
   }
 
   val enumFn =
-    lambda("u" :: Type)(lambda("v" :: Type)(EnumFunc("u" :: Type, "v" :: Type)))
+    lambda("u" :: Type)(
+      lambda("v" :: Type)(EnumFunc("u" :: Type, "v" :: Type)))
   //depFunc(Type, (u: Typ[Term]) => depFunc(Type, (v: Typ[Term]) => EnumFunc(u, v)))
 
   def allSec[U <: Term with Subs[U], V <: Term with Subs[V]](

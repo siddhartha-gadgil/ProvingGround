@@ -27,7 +27,7 @@ object InductiveTyp {
     val constructorDefs =
       formalCons map
         ((cons) =>
-          (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
+           (typ: Typ[Term]) => Constructor.fromFormal(cons, formalTyp)(typ))
     InductiveTypDefinition(constructorDefs)
   }
 }

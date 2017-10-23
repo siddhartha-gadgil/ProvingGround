@@ -57,9 +57,9 @@ class CubeEnumerator(func: RealMultiFunc, givenBounds: Cube => Set[Typ]) {
     val cases =
       (facebounds(domain) ++ (deducedFaceBounds(domain) map (_.typ))) map
         ((faceBound) => {
-          val pdbs = partialDerBound(domain, faceBound.face, -1)
-          optMVTfaceBoundFuncPositive(func, domain, faceBound, pdbs)
-        })
+           val pdbs = partialDerBound(domain, faceBound.face, -1)
+           optMVTfaceBoundFuncPositive(func, domain, faceBound, pdbs)
+         })
     cases.flatten
   }
 

@@ -161,7 +161,7 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
     def getFD(cutoff: Double) =
       opt flatMap
         ((value) =>
-          pruneFD(FiniteDistribution(Vector(Weighted(value, 1.0))), cutoff))
+           pruneFD(FiniteDistribution(Vector(Weighted(value, 1.0))), cutoff))
   }
 
   def atom[A](a: A) = OptAtom(Some(a))
@@ -172,7 +172,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
 
   implicit def td[A](fd: FiniteDistribution[A]) = FD(fd)
 
-  case class FD[A](fd: FiniteDistribution[A]) extends TruncatedDistribution[A] {
+  case class FD[A](fd: FiniteDistribution[A])
+      extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)
   }
 
@@ -221,14 +222,14 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
     def getFD(cutoff: Double) =
       base.getFD(cutoff) flatMap
         ((fd) => {
-          val dists = fd.supp map (f)
+           val dists = fd.supp map (f)
 
-          val empty: TruncatedDistribution[B] =
-            TruncatedDistribution.Empty[B]
+           val empty: TruncatedDistribution[B] =
+             TruncatedDistribution.Empty[B]
 
-          val trunc = (dists :\ empty)(sum[B](_, _))
-          trunc.getFD(cutoff)
-        })
+           val trunc = (dists :\ empty)(sum[B](_, _))
+           trunc.getFD(cutoff)
+         })
   }
 
   class MapFD[A, B](base: => TruncatedDistribution[A],

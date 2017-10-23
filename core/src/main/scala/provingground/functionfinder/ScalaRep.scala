@@ -125,7 +125,8 @@ object ScalaRep {
   /**
     * A term representing itself.
     */
-  case class IdRep[U <: Term with Subs[U]](typ: Typ[U]) extends ScalaRep[U, U] {
+  case class IdRep[U <: Term with Subs[U]](typ: Typ[U])
+      extends ScalaRep[U, U] {
     def apply(v: U) = v
 
     def unapply(u: Term): Option[U] = u match {

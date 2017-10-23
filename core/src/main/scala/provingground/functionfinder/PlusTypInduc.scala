@@ -112,6 +112,7 @@ object PlusTypInduc {
 
   val gdep = "g" :: (b !: B) ~>: Cs(j(b))
 
-  val induc = lambda(A)(lambda(B)(lambda(Cs)(
-    lambda(fdep)(lambda(gdep)(PlusExtendedDepFunction(A, B, Cs, fdep, gdep))))))
+  val induc = lambda(A)(
+    lambda(B)(lambda(Cs)(lambda(fdep)(
+      lambda(gdep)(PlusExtendedDepFunction(A, B, Cs, fdep, gdep))))))
 }

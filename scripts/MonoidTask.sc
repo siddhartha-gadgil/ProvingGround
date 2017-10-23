@@ -29,3 +29,19 @@ def seekTraced(n: Double = 6) = {
   }
   f
 }
+
+
+def explore(n: Double = 6) =
+  {
+    val s = theoremsExploreTask(dist1, tv, math.pow(10.0, -n), 3.minutes, decay = 10)
+  val f = s.runAsync
+  f.foreach{
+    (v) => v.foreach{
+      case (t, p) =>
+        println(s"term: ${t.fansi}" )
+        println(s"type: ${t.typ.fansi}")
+        println(s"weights: $p")
+    }
+  }
+  f
+}
