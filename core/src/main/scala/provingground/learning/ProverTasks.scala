@@ -342,4 +342,7 @@ object ProverTasks {
       (x) => (fd + (x, fd(x) * epsilon)).safeNormalized
     }
 
+  def stabHalt(x: FD[Term], y: FD[Term], level: Double) : Boolean =
+    (x -- y).norm < level
+
 }
