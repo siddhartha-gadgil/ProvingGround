@@ -37,10 +37,11 @@ def explore(n: Double = 6) =
   val f = s.runAsync
   f.foreach{
     (v) => v.foreach{
-      case (t, p) =>
-        println(s"term: ${t.fansi}" )
-        println(s"type: ${t.typ.fansi}")
-        println(s"weights: $p")
+        case (thm, v) =>
+          println(s"theorem: ${thm.fansi}")
+          println(s"proof: ${v.head._1.fansi}" )
+          println(s"weight: ${v.head._2}")
+          println()
     }
   }
   f
