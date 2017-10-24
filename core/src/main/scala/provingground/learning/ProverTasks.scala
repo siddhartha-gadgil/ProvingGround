@@ -184,7 +184,7 @@ object ProverTasks {
           Task.eval(vec),
           typsTask,
           maxtime,
-          cutoff * math.pow(decay, d.toDouble),
+          cutoff * math.pow(decay, 1.0 + d.toDouble),
           vars
         )
     }
@@ -213,7 +213,7 @@ object ProverTasks {
           Task.eval(vec),
           typsTask,
           maxtime,
-          cutoff * math.pow(decay, d.toDouble),
+          cutoff * math.pow(decay, 1.0 + d.toDouble),
           vars
         )
     }
@@ -260,7 +260,7 @@ object ProverTasks {
           Task.eval(vec),
           typsTask,
           maxtime,
-          cutoff * math.pow(decay, d.toDouble),
+          cutoff * math.pow(decay, 1.0 + d.toDouble),
           ac,
           vars
         )

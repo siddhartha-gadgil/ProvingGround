@@ -1,15 +1,24 @@
 import learning._
 import monix.execution.Scheduler.Implicits.global
 import scala.concurrent.duration._
-import library._, MonoidSimple._
+
 import math._
 import scala.concurrent.duration._
 import ProverTasks._
+import HoTT._
 
-val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 
-def seek(n: Double = 6) = {
-  val s = theoremSearchTask(dist1, tv, math.pow(10.0, -n), 3.minutes, eqM(l)(r), decay = 3)
+val tv = new TermEvolver()
+
+val A = "A" :: Type
+val B = "B" :: Type
+
+val mp = A ->: (A ->: B) ->: B
+
+val dist = FiniteDistribution.unif[Term](A, B)
+
+def seek(n: Double = 6, decay: Double = 10) = {
+  val s = theoremSearchTask(dist, tv, math.pow(10.0, -n), 3.minutes,A ->: (A ->: B) ->: B, decay = decay)
   val f = s.runAsync
   f.foreach{
     case Some(t) => println(s"Found Proof ${t.fansi}\nfor Theorem ${t.typ.fansi}")
@@ -18,8 +27,8 @@ def seek(n: Double = 6) = {
   f
 }
 
-def seekTraced(n: Double = 6) = {
-  val s = theoremSearchTraceTask(dist1, tv, math.pow(10.0, -n), 3.minutes, eqM(l)(r), decay = 3)
+def seekTraced(n: Double = 6, decay: Double = 10) = {
+  val s = theoremSearchTraceTask(dist, tv, math.pow(10.0, -n), 3.minutes, A ->: (A ->: B) ->: B, decay = decay)
   val f = s.runAsync
   f.foreach{
     case Some((t, path)) =>
@@ -31,9 +40,9 @@ def seekTraced(n: Double = 6) = {
 }
 
 
-def explore(n: Double = 6) =
+def explore(n: Double = 6, decay: Double = 10) =
   {
-    val s = theoremsExploreTask(dist1, tv, math.pow(10.0, -n), 3.minutes, decay = 3)
+    val s = theoremsExploreTask(dist, tv, math.pow(10.0, -n), 10.minutes, decay = decay)
   val f = s.runAsync
   f.foreach{
     (v) => v.foreach{
@@ -47,11 +56,11 @@ def explore(n: Double = 6) =
   f
 }
 
-def exploreVars(n: Double = 6) =
+def exploreVars(n: Double = 6, decay: Double = 10) =
   {
     val s = theoremsExploreTask(
-      (dist1.map(_.replace(r, l)) + (a, 0.15) + (b, 0.08)).normalized(),
-      tv, math.pow(10.0, -n), 3.minutes, decay = 3, vars = Vector(a, b))
+      dist,
+      tv, math.pow(10.0, -n), 3.minutes, decay = decay, vars = Vector(A, B))
   val f = s.runAsync
   f.foreach{
     (v) => v.foreach{
