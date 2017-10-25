@@ -89,3 +89,10 @@ At an abstract level, instead of searching for goals, we should consider:
 * We can replace `Vector[X]` by any Monad `F[X]`, with simple flows corresponding to the `Id` Monad.
 * The _goal_ function can really be a _not-enough-progress_ function which returns _only_ the accumuated successes (though this should not be used with branches).
 * Simpler than modifying goals, we can modify the _state_ - successfully used to trace the above proof.
+
+
+### Updates
+
+* There was a deficiency in the above version: `decay` was applied with power `depth`, which meant no decay at the first step.
+* This has been corrected, so `decay` has power `depth + 1`; the default decay in the Monoid task was changed to `3`
+* Results still hold as above; but the correction allows modus ponens to be found.

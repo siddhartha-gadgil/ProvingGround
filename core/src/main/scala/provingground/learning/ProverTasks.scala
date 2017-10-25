@@ -19,23 +19,30 @@ object ProverTasks {
                   cutoff: Double,
                   maxtime: FiniteDuration,
                   vars: Vector[Term] = Vector()) =
-    Truncate.task(tv.baseEvolveTyps(fd).map(piClosure(vars)), cutoff, maxtime).memoize
+    Truncate
+      .task(tv.baseEvolveTyps(fd).map(piClosure(vars)), cutoff, maxtime)
+      .memoize
 
   def termdistTask(fd: FD[Term],
                    tv: TermEvolver,
                    cutoff: Double,
                    maxtime: FiniteDuration,
-                  vars: Vector[Term] = Vector()) =
-    Truncate.task(tv.baseEvolve(fd).map(lambdaClosure(vars)), cutoff, maxtime).memoize
+                   vars: Vector[Term] = Vector()) =
+    Truncate
+      .task(tv.baseEvolve(fd).map(lambdaClosure(vars)), cutoff, maxtime)
+      .memoize
 
   def termdistDerTask(fd: FD[Term],
                       tfd: FD[Term],
                       tv: TermEvolver,
                       cutoff: Double,
                       maxtime: FiniteDuration,
-                      vars: Vector[Term] = Vector()
-                    ) =
-    Truncate.task(tv.evolve(TangVec(fd, tfd)).vec.map(lambdaClosure(vars)), cutoff, maxtime).memoize
+                      vars: Vector[Term] = Vector()) =
+    Truncate
+      .task(tv.evolve(TangVec(fd, tfd)).vec.map(lambdaClosure(vars)),
+            cutoff,
+            maxtime)
+      .memoize
 
   def h0(p: Double, q: Double) = {
     require(q > 0, s"Entropy with p=$p, q = $q")
@@ -72,7 +79,7 @@ object ProverTasks {
                   typsTask: Task[FD[Typ[Term]]],
                   maxtime: FiniteDuration,
                   cutoff: Double,
-                vars: Vector[Term] = Vector()): Task[Vector[Task[FD[Term]]]] =
+                  vars: Vector[Term] = Vector()): Task[Vector[Task[FD[Term]]]] =
     prsmEntTask(termsTask, typsTask).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
@@ -82,23 +89,51 @@ object ProverTasks {
       }
     }
 
-  def dervecTraceTasks(
-      base: FD[Term],
-      tv: TermEvolver,
-      termsTask: Task[FD[Term]],
-      typsTask: Task[FD[Typ[Term]]],
-      maxtime: FiniteDuration,
-      cutoff: Double,
-      trace: Vector[Term],
-    vars: Vector[Term] = Vector()): Task[Vector[Task[(FD[Term], Vector[Term])]]] =
+  def dervecTraceTasks(base: FD[Term],
+                       tv: TermEvolver,
+                       termsTask: Task[FD[Term]],
+                       typsTask: Task[FD[Typ[Term]]],
+                       maxtime: FiniteDuration,
+                       cutoff: Double,
+                       trace: Vector[Term],
+                       vars: Vector[Term] = Vector())
+    : Task[Vector[Task[(FD[Term], Vector[Term])]]] =
     prsmEntTask(termsTask, typsTask).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
           // pprint.log(
           //   s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
           for {
-            fd <- termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime, vars)
+            fd <- termdistDerTask(base,
+                                  FD.unif(v),
+                                  tv,
+                                  cutoff / p,
+                                  maxtime,
+                                  vars)
           } yield (fd, trace :+ v)
+      }
+    }
+
+  def dervecWeightedTraceTasks(base: FD[Term],
+                               tv: TermEvolver,
+                               termsTask: Task[FD[Term]],
+                               typsTask: Task[FD[Typ[Term]]],
+                               maxtime: FiniteDuration,
+                               cutoff: Double,
+                               trace: Vector[(Term, Double)],
+                               vars: Vector[Term] = Vector())
+    : Task[Vector[Task[(FD[Term], Vector[(Term, Double)])]]] =
+    prsmEntTask(termsTask, typsTask).map { (vec) =>
+      vec.collect {
+        case (v, p) if p > cutoff && cutoff / p > 0 =>
+          for {
+            fd <- termdistDerTask(base,
+                                  FD.unif(v),
+                                  tv,
+                                  cutoff / p,
+                                  maxtime,
+                                  vars)
+          } yield (fd, trace :+ (v -> p))
       }
     }
 
@@ -171,7 +206,7 @@ object ProverTasks {
                         goal: Typ[Term],
                         decay: Double = 1.0,
                         scale: Double = 1.0,
-                      vars: Vector[Term] = Vector()) = {
+                        vars: Vector[Term] = Vector()) = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -200,7 +235,7 @@ object ProverTasks {
                           maxtime: FiniteDuration,
                           decay: Double = 1.0,
                           scale: Double = 1.0,
-                          vars: Vector[Term] = Vector())  = {
+                          vars: Vector[Term] = Vector()) = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -230,13 +265,15 @@ object ProverTasks {
       }
 
     branchedGatherTask[FD[Term], Vector[(Term, (Int, Double))]](termsTask,
-                                                         result,
-                                                         _ ++ _,
-                                                         spawn).map((v) =>
-      v.groupBy(_._1).mapValues((v) => v.toVector.map(_._2).maxBy((dp) => (-dp._1, dp._2))).toVector.
-      groupBy(_._1.typ: Typ[Term]).mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2)))
-
-    )
+                                                                result,
+                                                                _ ++ _,
+                                                                spawn).map(
+      (v) =>
+        v.groupBy(_._1)
+          .mapValues((v) => v.toVector.map(_._2).maxBy((dp) => (-dp._1, dp._2)))
+          .toVector
+          .groupBy(_._1.typ: Typ[Term])
+          .mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2))))
   }
 
   def theoremSearchTraceTask(fd: FD[Term],
@@ -246,7 +283,7 @@ object ProverTasks {
                              goal: Typ[Term],
                              decay: Double = 1.0,
                              scale: Double = 1.0,
-                            vars: Vector[Term] = Vector()) = {
+                             vars: Vector[Term] = Vector()) = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vecAc: (FD[Term], Vector[Term])) = {
@@ -273,91 +310,146 @@ object ProverTasks {
     )
   }
 
+  def theoremsExploreTraceTask(fd: FD[Term],
+                               tv: TermEvolver,
+                               cutoff: Double,
+                               maxtime: FiniteDuration,
+                               decay: Double = 1.0,
+                               scale: Double = 1.0,
+                               vars: Vector[Term] = Vector()) = {
+    val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
+    val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
+    def spawn(d: Int)(vecAc: (FD[Term], Vector[(Term, Double)])) = {
+      val (vec, ac) = vecAc
+      if (fd.total == 0) Task.pure(Vector())
+      else
+        dervecWeightedTraceTasks(
+          fd.safeNormalized,
+          tv,
+          Task.eval(vec),
+          typsTask,
+          maxtime,
+          cutoff * math.pow(decay, 1.0 + d.toDouble),
+          ac,
+          vars
+        )
+    }
+
+    def result(d: Int)(fdAc: (FD[Term], Vector[(Term, Double)]))
+      : Task[Vector[(Term, Vector[(Term, Double)], (Int, Double))]] =
+      typsTask.map { (p) =>
+        {
+          val (fd, ac) = fdAc
+          val q        = fd.map(_.typ)
+          fd.flatten.supp.collect {
+            case t if p(t.typ) > 0 && q(t.typ) > 0 && q(t.typ) < 1 =>
+              (t, ac, (d, fd(t)))
+          }
+        }
+      }
+
+    for {
+      res <- branchedGatherTask[(FD[Term], Vector[(Term, Double)]),
+                                Vector[(Term,
+                                        Vector[(Term, Double)],
+                                        (Int, Double))]](
+        termsTask.map((fd) => (fd, Vector())),
+        result,
+        _ ++ _,
+        spawn);
+      typs <- typsTask
+
+    } yield (res, typs)
+  }
+
   def h[A](fd: FD[A]) = {
     val fd0 = fd.flatten
-    fd0.supp.map((x) => - fd(x) * log(fd(x))).sum
+    fd0.supp.map((x) => -fd(x) * log(fd(x))).sum
   }
 
   def kl[A](p: FD[A], q: FD[A]) = {
     val p0 = p.filter(q(_) > 0).flatten.safeNormalized
-    p0.supp.map{(x) => p(x) * log(p(x)/ q(x))}.sum
-   }
+    p0.supp.map { (x) =>
+      p(x) * log(p(x) / q(x))
+    }.sum
+  }
 
   def minOn[A](fd: FD[A], minValue: Double, supp: Set[A]) = {
     FD(
       for {
         Weighted(x, p) <- fd.pmf
-      } yield
-        Weighted(x, if (supp.contains(x)) math.min(p, minValue) else p)
+      } yield Weighted(x, if (supp.contains(x)) math.min(p, minValue) else p)
     )
   }
 
-  def pfMatch(
-    ev: FD[Term] => Task[FD[Term]],
-    typs: Task[FD[Typ[Term]]],
-    wt: Double = 1.0)(gen: FD[Term]) =
-      for {
-        p <- typs
-        qt <- ev(gen)
-        q = qt.map(_.typ)
-      } yield kl(p, q) - (h(gen) * wt)
+  def pfMatch(ev: FD[Term] => Task[FD[Term]],
+              typs: Task[FD[Typ[Term]]],
+              wt: Double = 1.0)(gen: FD[Term]) =
+    for {
+      p  <- typs
+      qt <- ev(gen)
+      q = qt.map(_.typ)
+    } yield kl(p, q) - (h(gen) * wt)
 
   def pfMatchDiff(
-    ev: FD[Term] => Task[FD[Term]],
-    typs: Task[FD[Typ[Term]]],
-    cutoff : Double,
-    wt: Double = 1.0)(gen0: FD[Term], gen1: FD[Term]) : Task[Double] =
-      for
-        {
-          p <- typs
-          qt0 <- ev(gen0)
-          qt1 <- ev(gen1)
-          q0 = qt0.map(_.typ)
-          q1 = qt1.map(_.typ)
-          totSupp = q0.support union (q1.support)
-          q0m = minOn(q0, cutoff, totSupp)
-          q1m = minOn(q1, cutoff, totSupp)
-          h0 = kl(p, q0m) - (h(gen0) * wt)
-          h1 = kl(p, q1m) - (h(gen1) * wt)
-        } yield h1 - h0
+      ev: FD[Term] => Task[FD[Term]],
+      typs: Task[FD[Typ[Term]]],
+      cutoff: Double,
+      wt: Double = 1.0)(gen0: FD[Term], gen1: FD[Term]): Task[Double] =
+    for {
+      p   <- typs
+      qt0 <- ev(gen0)
+      qt1 <- ev(gen1)
+      q0      = qt0.map(_.typ)
+      q1      = qt1.map(_.typ)
+      totSupp = q0.support union (q1.support)
+      q0m     = minOn(q0, cutoff, totSupp)
+      q1m     = minOn(q1, cutoff, totSupp)
+      h0      = kl(p, q0m) - (h(gen0) * wt)
+      h1      = kl(p, q1m) - (h(gen1) * wt)
+    } yield h1 - h0
 
-  def quasiGradShift[A](base: A, neighbours: Vector[A], derTask : (A, A) => Task[Double])(
-    implicit ls : VectorSpace[A, Double]
-  ) : Task[A] = {
+  def quasiGradShift[A](base: A,
+                        neighbours: Vector[A],
+                        derTask: (A, A) => Task[Double])(
+      implicit ls: VectorSpace[A, Double]
+  ): Task[A] = {
     val shiftsTask =
-      Task.gather{
-      for {x <- neighbours} yield {
-        derTask(base, x).map{(der) => -der *: (base + x)}
+      Task.gather {
+        for { x <- neighbours } yield {
+          derTask(base, x).map { (der) =>
+            -der *: (base + x)
+          }
+        }
       }
+    shiftsTask.map { (shifts) =>
+      shifts.foldLeft(base)(_ + _)
     }
-    shiftsTask.map{
-      (shifts) =>
-    shifts.foldLeft(base)(_+_)
-  }
   }
 
-  def quasiGradFlowTask[A](base: A, neighMap: A => Vector[A],
-    derTask : (A, A) => Task[Double], halt: (A, A) => Boolean
-  )(
-    implicit ls : VectorSpace[A, Double]
-  ) : Task[A] = Task.tailRecM(base)(
+  def quasiGradFlowTask[A](base: A,
+                           neighMap: A => Vector[A],
+                           derTask: (A, A) => Task[Double],
+                           halt: (A, A) => Boolean)(
+      implicit ls: VectorSpace[A, Double]
+  ): Task[A] = Task.tailRecM(base)(
     (x: A) =>
-      quasiGradShift(x, neighMap(x), derTask).map{
-        (y) => if (halt(x, y)) Right(y) else Left(x)
-      }
+      quasiGradShift(x, neighMap(x), derTask).map { (y) =>
+        if (halt(x, y)) Right(y) else Left(x)
+    }
   )
 
   def selfNeighbours[A](fd: FD[A], epsilon: Double) =
-    fd.flatten.supp.map{
-      (x) => (fd + (x, fd(x) * epsilon)).safeNormalized
+    fd.flatten.supp.map { (x) =>
+      (fd + (x, fd(x) * epsilon)).safeNormalized
     }
 
   def newNeighbours[A](fd: FD[A], pert: Vector[A], epsilon: Double) =
-    pert.map{
-      (x) => (fd + (x, fd(x) * epsilon)).safeNormalized
+    pert.map { (x) =>
+      (fd + (x, fd(x) * epsilon)).safeNormalized
     }
 
-  def stabHalt(x: FD[Term], y: FD[Term], level: Double) : Boolean =
+  def stabHalt(x: FD[Term], y: FD[Term], level: Double): Boolean =
     (x -- y).norm < level
 
 }
