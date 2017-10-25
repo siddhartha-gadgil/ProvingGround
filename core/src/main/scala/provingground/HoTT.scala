@@ -1800,6 +1800,19 @@ object HoTT {
     vars.foldRight(t) { case (v, t) => if (t.dependsOn(v)) v :~> t else t }
 
   /**
+   * returns all partial lambda closures
+   */
+   def partialLambdaClosures(vars: Vector[Term])(t: Term): Vector[Term] =
+     vars match {
+       case Vector() => Vector(t)
+       case x +: ys =>
+        val tail = partialLambdaClosures(ys)(t)
+          tail ++ (tail.collect{
+            case z if z.dependsOn(x) => x :~> z
+          })
+     }
+
+  /**
     * returns type as a Pi-Type of the variables in `vars` on which
     * it depends.
     */

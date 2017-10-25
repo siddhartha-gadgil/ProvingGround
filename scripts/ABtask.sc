@@ -40,9 +40,9 @@ def seekTraced(n: Double = 6, decay: Double = 10) = {
 }
 
 
-def explore(n: Double = 6, decay: Double = 10) =
+def explore(n: Double = 6, decay: Double = 10, scale: Double = 1.0) =
   {
-    val s = theoremsExploreTask(dist, tv, math.pow(10.0, -n), 10.minutes, decay = decay)
+    val s = theoremsExploreTask(dist, tv, math.pow(10.0, -n), 10.minutes, scale = scale, decay = decay)
   val f = s.runAsync
   f.foreach{
     (v) => v.foreach{

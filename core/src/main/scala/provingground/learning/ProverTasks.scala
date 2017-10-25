@@ -49,27 +49,27 @@ object ProverTasks {
     -p / (q * log(q))
   }
 
-  def hExp(p: Double, q: Double, scale: Double = 1.0) =
+  def hExp(p: Double, q: Double, scale: Double) =
     math.exp(-(h0(p, q) - 1) * scale)
 
   def prsmEntTask(termsTask: Task[FD[Term]],
                   typsTask: Task[FD[Typ[Term]]],
-                  scale: Double = 1.0) =
+                  scale: Double,
+                  vars: Vector[Term] = Vector()) =
     for {
       terms <- termsTask
       typs  <- typsTask
       thmsByPf = terms.map(_.typ)
       thmsBySt = typs.filter(thmsByPf(_) > 0)
       pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
-      // _  = pprint.log(pfSet.map(_.fansi))
+      fullPfSet = pfSet.flatMap(partialLambdaClosures(vars))
     } yield
-      pfSet
+      fullPfSet
         .map { (pf) =>
           (pf,
            hExp(thmsBySt(pf.typ),
                 thmsByPf(pf.typ),
                 scale * terms(pf) / thmsByPf(pf.typ)))
-        //FIXME scaling wrong
         }
         .sortBy(_._2)
 
@@ -79,8 +79,9 @@ object ProverTasks {
                   typsTask: Task[FD[Typ[Term]]],
                   maxtime: FiniteDuration,
                   cutoff: Double,
+                  scale: Double,
                   vars: Vector[Term] = Vector()): Task[Vector[Task[FD[Term]]]] =
-    prsmEntTask(termsTask, typsTask).map { (vec) =>
+    prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
           // pprint.log(
@@ -95,10 +96,11 @@ object ProverTasks {
                        typsTask: Task[FD[Typ[Term]]],
                        maxtime: FiniteDuration,
                        cutoff: Double,
+                       scale: Double,
                        trace: Vector[Term],
                        vars: Vector[Term] = Vector())
     : Task[Vector[Task[(FD[Term], Vector[Term])]]] =
-    prsmEntTask(termsTask, typsTask).map { (vec) =>
+    prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
           // pprint.log(
@@ -120,10 +122,11 @@ object ProverTasks {
                                typsTask: Task[FD[Typ[Term]]],
                                maxtime: FiniteDuration,
                                cutoff: Double,
+                               scale: Double,
                                trace: Vector[(Term, Double)],
                                vars: Vector[Term] = Vector())
     : Task[Vector[Task[(FD[Term], Vector[(Term, Double)])]]] =
-    prsmEntTask(termsTask, typsTask).map { (vec) =>
+    prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       vec.collect {
         case (v, p) if p > cutoff && cutoff / p > 0 =>
           for {
@@ -220,6 +223,7 @@ object ProverTasks {
           typsTask,
           maxtime,
           cutoff * math.pow(decay, 1.0 + d.toDouble),
+          scale,
           vars
         )
     }
@@ -249,6 +253,7 @@ object ProverTasks {
           typsTask,
           maxtime,
           cutoff * math.pow(decay, 1.0 + d.toDouble),
+          scale,
           vars
         )
     }
@@ -298,6 +303,7 @@ object ProverTasks {
           typsTask,
           maxtime,
           cutoff * math.pow(decay, 1.0 + d.toDouble),
+          scale,
           ac,
           vars
         )
@@ -330,6 +336,7 @@ object ProverTasks {
           typsTask,
           maxtime,
           cutoff * math.pow(decay, 1.0 + d.toDouble),
+          scale,
           ac,
           vars
         )
