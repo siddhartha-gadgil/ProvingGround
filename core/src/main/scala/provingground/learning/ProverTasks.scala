@@ -136,7 +136,7 @@ object ProverTasks {
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       {
         val scales = vec.collect {
-          case (v, p) if p > cutoff && cutoff / p > 0 =>
+          case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
             (v, cutoff / p)
         }
         val tot = scales.map{case (_, x) => 1/x}.sum
@@ -164,7 +164,7 @@ object ProverTasks {
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       {
         val scales = vec.collect {
-          case (v, p) if p > cutoff && cutoff / p > 0 =>
+          case (v, p) if p > cutoff && cutoff / p > 0  && !(trace.contains(v)) =>
             (v, p, cutoff / p)
         }
         val tot = scales.map{case (_, _, x) => 1/x}.sum
