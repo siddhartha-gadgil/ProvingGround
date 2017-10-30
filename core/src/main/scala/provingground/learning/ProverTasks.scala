@@ -7,7 +7,7 @@ import spire.implicits._
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import monix.eval._
-import math.{log, exp}
+import math._
 
 import scala.concurrent._, duration._
 
@@ -113,11 +113,12 @@ object ProverTasks {
           case (v, p) if p > cutoff && cutoff / p > 0 =>
             (v, cutoff / p)
         }
-        val tot = scales.map{case (_, x) => -log(x)}.sum
-        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        val tot = scales.map{case (_, x) => 1/x}.sum
+        val ratio = max(tot * cutoff, 1.0)
+        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
-            termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+            termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
         }
       }
     }
@@ -138,12 +139,13 @@ object ProverTasks {
           case (v, p) if p > cutoff && cutoff / p > 0 =>
             (v, cutoff / p)
         }
-        val tot = scales.map{case (_, x) => -log(x)}.sum
-        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        val tot = scales.map{case (_, x) => 1/x}.sum
+        val ratio = max(tot * cutoff, 1.0)
+        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             for {
-              fd <- termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+              fd <- termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
             } yield (fd, trace :+ v)
         }
       }
@@ -165,12 +167,13 @@ object ProverTasks {
           case (v, p) if p > cutoff && cutoff / p > 0 =>
             (v, p, cutoff / p)
         }
-        val tot = scales.map{case (_, _, x) => -log(x)}.sum
-        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        val tot = scales.map{case (_, _, x) => 1/x}.sum
+        val ratio = max(tot * cutoff, 1.0)
+        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, p, sc) =>
             for {
-              fd <- termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+              fd <- termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
             } yield (fd, trace :+ (v -> p))
         }
       }
