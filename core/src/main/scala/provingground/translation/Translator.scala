@@ -62,10 +62,10 @@ import cats._
   * import Functors._
   *
   * scala> val Bpat = Pattern.partial[A, II]{case B(x, y) => (x, y)}
-  * Bpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.II] = provingground.translation.Translator$Pattern@5ba695d
+  *
   *
   * scala> val Dpat = Pattern.partial[A, Un]{case D => ()}
-  * Dpat: provingground.translation.Translator.Pattern[A,provingground.translation.Functors.Un] = provingground.translation.Translator$Pattern@2f5c9798
+  *
   *
   * scala> case object E extends A
   * defined object E

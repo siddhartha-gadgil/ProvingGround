@@ -13,7 +13,18 @@ import scala.concurrent._, duration._
 
 import translation.FansiShow._
 
+/**
+  * A collection of functions to build provers;
+  * some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.
+  * Some methods combine the two to give a ready to use function.
+  * These are based on [[TermEvolver]] and `Monix`.
+  */
 object ProverTasks {
+
+  /**
+    * evolution of types, as a  (task with value) finite distribution;
+    * obtained by lazy recursive definition in [[TermEvolver]] and trunctation.
+    */
   def typdistTask(fd: FD[Term],
                   tv: TermEvolver,
                   cutoff: Double,
@@ -23,6 +34,10 @@ object ProverTasks {
       .task(tv.baseEvolveTyps(fd).map(piClosure(vars)), cutoff, maxtime)
       .memoize
 
+  /**
+    * evolution of terms, as a  (task with value) finite distribution;
+    * obtained by lazy recursive definition in [[TermEvolver]] and trunctation.
+    */
   def termdistTask(fd: FD[Term],
                    tv: TermEvolver,
                    cutoff: Double,
@@ -32,6 +47,10 @@ object ProverTasks {
       .task(tv.baseEvolve(fd).map(lambdaClosure(vars)), cutoff, maxtime)
       .memoize
 
+  /**
+    * evolution of terms by the ''derivative'', as a  (task with value) finite distribution;
+    * obtained by lazy recursive definition in [[TermEvolver]] and trunctation.
+    */
   def termdistDerTask(fd: FD[Term],
                       tfd: FD[Term],
                       tv: TermEvolver,
@@ -44,11 +63,18 @@ object ProverTasks {
             maxtime)
       .memoize
 
+  /**
+    * An entropy measure for parsimonious generation of terms inhabiting types.
+    */
   def h0(p: Double, q: Double) = {
     require(q > 0, s"Entropy with p=$p, q = $q")
     -p / (q * log(q))
   }
 
+  /**
+    * Exponent of an entropy measure for parsimonious generation of terms inhabiting types;
+    * low values correspond to important terms, with the `scale` increasing sensitivity.
+    */
   def hExp(p: Double, q: Double, scale: Double) =
     math.exp(-(h0(p, q) - 1) * scale)
 
@@ -59,9 +85,9 @@ object ProverTasks {
     for {
       terms <- termsTask
       typs  <- typsTask
-      thmsByPf = terms.map(_.typ)
-      thmsBySt = typs.filter(thmsByPf(_) > 0)
-      pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
+      thmsByPf  = terms.map(_.typ)
+      thmsBySt  = typs.filter(thmsByPf(_) > 0)
+      pfSet     = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
       fullPfSet = pfSet.flatMap(partialLambdaClosures(vars))
     } yield
       fullPfSet
@@ -82,11 +108,17 @@ object ProverTasks {
                   scale: Double,
                   vars: Vector[Term] = Vector()): Task[Vector[Task[FD[Term]]]] =
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
-      vec.collect {
-        case (v, p) if p > cutoff && cutoff / p > 0 =>
-          // pprint.log(
-          //   s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
-          termdistDerTask(base, FD.unif(v), tv, cutoff / p, maxtime, vars)
+      {
+        val scales = vec.collect {
+          case (v, p) if p > cutoff && cutoff / p > 0 =>
+            (v, cutoff / p)
+        }
+        val tot = scales.map{case (_, x) => -log(x)}.sum
+        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        scales.map {
+          case (v, sc) =>
+            termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+        }
       }
     }
 
@@ -101,18 +133,19 @@ object ProverTasks {
                        vars: Vector[Term] = Vector())
     : Task[Vector[Task[(FD[Term], Vector[Term])]]] =
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
-      vec.collect {
-        case (v, p) if p > cutoff && cutoff / p > 0 =>
-          // pprint.log(
-          //   s" cutoff: ${cutoff / p} for type: ${v.typ.fansi}, term: ${v.fansi}")
-          for {
-            fd <- termdistDerTask(base,
-                                  FD.unif(v),
-                                  tv,
-                                  cutoff / p,
-                                  maxtime,
-                                  vars)
-          } yield (fd, trace :+ v)
+      {
+        val scales = vec.collect {
+          case (v, p) if p > cutoff && cutoff / p > 0 =>
+            (v, cutoff / p)
+        }
+        val tot = scales.map{case (_, x) => -log(x)}.sum
+        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        scales.map {
+          case (v, sc) =>
+            for {
+              fd <- termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+            } yield (fd, trace :+ v)
+        }
       }
     }
 
@@ -127,20 +160,22 @@ object ProverTasks {
                                vars: Vector[Term] = Vector())
     : Task[Vector[Task[(FD[Term], Vector[(Term, Double)])]]] =
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
-      vec.collect {
-        case (v, p) if p > cutoff && cutoff / p > 0 =>
-          for {
-            fd <- termdistDerTask(base,
-                                  FD.unif(v),
-                                  tv,
-                                  cutoff / p,
-                                  maxtime,
-                                  vars)
-          } yield (fd, trace :+ (v -> p))
+      {
+        val scales = vec.collect {
+          case (v, p) if p > cutoff && cutoff / p > 0 =>
+            (v, p, cutoff / p)
+        }
+        val tot = scales.map{case (_, _, x) => -log(x)}.sum
+        pprint.log(s"want: ${-log(cutoff)}, actual total: $tot from ${scales.size}")
+        scales.map {
+          case (v, p, sc) =>
+            for {
+              fd <- termdistDerTask(base, FD.unif(v), tv, sc, maxtime, vars)
+            } yield (fd, trace :+ (v -> p))
+        }
       }
     }
 
-  // Abstract methods
   def inTaskVec[X, Y](tv: Task[Vector[X]], p: X => Option[Y]): Task[Option[Y]] =
     tv.flatMap {
       case Vector() => Task.pure(None)
@@ -214,7 +249,6 @@ object ProverTasks {
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
       if (fd.total == 0) Task.pure(Vector())
-      // pprint.log(s"spawning tasks from $vec")
       else
         dervecTasks(
           fd.safeNormalized,
@@ -244,7 +278,6 @@ object ProverTasks {
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
       if (fd.total == 0) Task.pure(Vector())
-      // pprint.log(s"spawning tasks from $vec")
       else
         dervecTasks(
           fd.safeNormalized,
