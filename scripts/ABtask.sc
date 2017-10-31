@@ -58,18 +58,12 @@ def explore(n: Double = 6, decay: Double = 10, scale: Double = 1.0) =
 
 def exploreVars(n: Double = 6, decay: Double = 10) =
   {
-    val s = theoremsExploreTask(
+    val s = theoremsExploreTraceTask(
       dist,
       tv, math.pow(10.0, -n), 3.minutes, decay = decay, vars = Vector(A, B))
   val f = s.runAsync
-  f.foreach{
-    (v) => v.foreach{
-        case (thm, v) =>
-          println(s"theorem: ${thm.fansi}")
-          println(s"proof: ${v.head._1.fansi}" )
-          println(s"weight: ${v.head._2}")
-          println()
-    }
+  f.foreach{(_) =>
+    pprint.log("Traced exploration done")
   }
   f
 }

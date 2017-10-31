@@ -88,11 +88,11 @@ object ProverTasks {
       thmsByPf  = terms.map(_.typ)
       thmsBySt  = typs.filter(thmsByPf(_) > 0)
       pfSet     = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
-      fullPfSet = pfSet.flatMap(partialLambdaClosures(vars))
-    } yield
+      fullPfSet = pfSet.flatMap((pf) =>  partialLambdaClosures(vars)(pf).map((pf, _)))
+    } yield 
       fullPfSet
-        .map { (pf) =>
-          (pf,
+        .map { case (pf, fullPf) =>
+          (fullPf,
            hExp(thmsBySt(pf.typ),
                 thmsByPf(pf.typ),
                 scale * terms(pf) / thmsByPf(pf.typ)))

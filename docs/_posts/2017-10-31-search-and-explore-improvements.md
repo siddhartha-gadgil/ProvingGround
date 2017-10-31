@@ -26,3 +26,4 @@ If variables are specified, when an interesting lemma is discovered that depends
 
 * Both $e_l = e_r$ and _modus ponens_ are still discovered, and in both seek and explore.
 * However, $e_l = e_r$ is discovered using _two_ lemmas.
+* __Addendum:__ when exploring with traces, the dependence between the pi-closures of $A \to A$ and $(A \to B) \to (A \to B)$ was seen.
