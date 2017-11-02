@@ -31,7 +31,7 @@ object ProverTasks {
                   maxtime: FiniteDuration,
                   vars: Vector[Term] = Vector()) =
     Truncate
-      .task(tv.baseEvolveTyps(fd).map(piClosure(vars)), cutoff, maxtime)
+      .task(tv.baseEvolveTyps(fd), cutoff, maxtime)
       .memoize
 
   /**
@@ -44,7 +44,7 @@ object ProverTasks {
                    maxtime: FiniteDuration,
                    vars: Vector[Term] = Vector()) =
     Truncate
-      .task(tv.baseEvolve(fd).map(lambdaClosure(vars)), cutoff, maxtime)
+      .task(tv.baseEvolve(fd), cutoff, maxtime)
       .memoize
 
   /**
@@ -58,7 +58,7 @@ object ProverTasks {
                       maxtime: FiniteDuration,
                       vars: Vector[Term] = Vector()) =
     Truncate
-      .task(tv.evolve(TangVec(fd, tfd)).vec.map(lambdaClosure(vars)),
+      .task(tv.evolve(TangVec(fd, tfd)).vec,
             cutoff,
             maxtime)
       .memoize
@@ -89,7 +89,7 @@ object ProverTasks {
       thmsBySt  = typs.filter(thmsByPf(_) > 0)
       pfSet     = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
       fullPfSet = pfSet.flatMap((pf) =>  partialLambdaClosures(vars)(pf).map((pf, _)))
-    } yield 
+    } yield
       fullPfSet
         .map { case (pf, fullPf) =>
           (fullPf,
@@ -174,7 +174,7 @@ object ProverTasks {
           case (v, p, sc) =>
             for {
               fd <- termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
-            } yield (fd, trace :+ (v -> p))
+            } yield (fd, trace :+ (v -> sc * ratio))
         }
       }
     }
@@ -401,8 +401,9 @@ object ProverTasks {
         _ ++ _,
         spawn);
       typs <- typsTask
+      terms <- termsTask
 
-    } yield (res, typs)
+    } yield (res, terms, typs)
   }
 
   def h[A](fd: FD[A]) = {
