@@ -56,11 +56,11 @@ def explore(n: Double = 6, decay: Double = 10, scale: Double = 1.0) =
   f
 }
 
-def exploreVars(n: Double = 6, decay: Double = 10) =
+def exploreVars(n: Double = 6, decay: Double = 10, scale: Double = 1.0) =
   {
     val s = theoremsExploreTraceTask(
       dist,
-      tv, math.pow(10.0, -n), 3.minutes, decay = decay, vars = Vector(A, B))
+      tv, math.pow(10.0, -n), 3.minutes, decay = decay, vars = Vector(A, B), scale = scale)
   val f = s.runAsync
   f.foreach{(_) =>
     pprint.log("Traced exploration done")
