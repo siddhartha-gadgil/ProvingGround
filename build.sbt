@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.3"
 
-val ammV = "1.0.2"
+val ammV = "1.0.3"
 
 // scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -15,7 +15,7 @@ scalaVersion in ThisBuild := scalaV
 // scalafmtOnCompile in ThisBuild := true
 // scalafmtVersion in ThisBuild := "1.0.0-RC3"
 
-classpathTypes += "maven-plugin"
+// classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
