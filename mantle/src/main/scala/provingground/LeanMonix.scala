@@ -8,6 +8,7 @@ import monix.eval._
 import monix.reactive._
 import monix.tail._
 import cats._
+import translation.FansiShow._
 
 import HoTT.{Name => _, _}
 
@@ -64,8 +65,21 @@ object LeanToTermMonix {
     case _ => None
   }
 
+  var func: Term = _
+
+  var arg: Term = _
+
+  val applWork: collection.mutable.Set[(Term, Term)] = collection.mutable.Set()
+
   def applyFuncWitOpt(f: Term, x: Term): Option[Term] =
-    applyFuncOpt(f, x)
+    {
+      pprint.log(s"Application: ${f.fansi}, ${x.fansi}")
+      func = f
+      arg = x
+      applWork += (f -> x)
+      pprint.log(applWork.size)
+
+    val res = applyFuncOpt(f, x)
       .orElse(
         feedWit(f).flatMap(applyFuncWitOpt(_, x))
       )
@@ -76,6 +90,9 @@ object LeanToTermMonix {
       .orElse(
         if (isProp(x.typ)) Some(f) else None
       )
+      applWork -= (f -> x)
+      res
+    }
 
   def applyFuncWit(f: Term, x: Term): Term =
     applyFuncWitOpt(f, x).getOrElse {
@@ -98,8 +115,10 @@ object LeanToTermMonix {
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
       case smp: SimpleIndMod =>
+        pprint.log(s"Getting simple IndMod ${ind.name}")
         getRecSimple(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
+        pprint.log(s"Getting indexed IndMod ${ind.name}")
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
@@ -254,8 +273,13 @@ object LeanToTermMonix {
       ltm.termIndModMap.get(name).map((t) => Task.pure(t -> ltm))
     exp match {
       case Const(name, _) =>
+        pprint.log(s"Seeking constant: $name")
+        pprint.log(s"${ltm.defnMap.get(name).map(_.fansi)}")
         getNamed(name)
-          .orElse(defFromMod(name, ltm, mods))
+          .orElse{
+            pprint.log(s"deffromMod $name")
+            defFromMod(name, ltm, mods)
+          }
           .getOrElse(
             Task.raiseError(UnParsedException(exp))
           )
@@ -263,6 +287,7 @@ object LeanToTermMonix {
       case Sort(_)          => Task.pure(Type    -> ltm)
       case Var(n)           => Task.pure(vars(n) -> ltm)
       case RecIterAp(name, args) =>
+        pprint.log(s"Seeking RecIterAp $name, $args")
         for {
           pair0 <- getTermIndMod(name)
             .orElse(indModFromMod(name, ltm, mods))
@@ -281,13 +306,17 @@ object LeanToTermMonix {
         } yield (res, ltm2)
 
       case App(f, a) =>
+        pprint.log(s"Applying $f to $a")
         for {
           p1 <- parse(f, vars, ltm, mods)
           (func, ltm1) = p1
           p2 <- parse(a, vars, ltm1, mods)
           (arg, ltm2) = p2
-        } yield (applyFuncWit(func, arg), ltm2)
+          res = applyFuncWit(func, arg)
+          _ = pprint.log(s"got result for $f($a)")
+        } yield (res, ltm2)
       case Lam(domain, body) =>
+        pprint.log(s"lambda $domain, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
@@ -305,6 +334,7 @@ object LeanToTermMonix {
               else (LambdaFixed(x, value), ltm2)
           }
       case Pi(domain, body) =>
+        pprint.log(s"pi $domain, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
@@ -316,6 +346,7 @@ object LeanToTermMonix {
           dep = cod.dependsOn(x)
         } yield if (dep) (PiDefn(x, cod), ltm2) else (x.typ ->: cod, ltm2)
       case Let(domain, value, body) =>
+        pprint.log(s"let $domain, $value, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
