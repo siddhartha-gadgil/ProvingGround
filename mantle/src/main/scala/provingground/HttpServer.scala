@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.io.StdIn
 
-object HttpServer extends App {
+object HttpServer /*extends App*/ {
   val server = new ServerStart
 
   val bindingFuture = server.bindingFuture

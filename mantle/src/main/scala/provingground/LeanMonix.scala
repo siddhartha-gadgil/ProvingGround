@@ -9,6 +9,7 @@ import monix.reactive._
 import monix.tail._
 import cats._
 import translation.FansiShow._
+import scala.collection.mutable.{Set => mSet, Map => mMap}
 
 import HoTT.{Name => _, _}
 
@@ -69,17 +70,19 @@ object LeanToTermMonix {
 
   var arg: Term = _
 
-  val applWork: collection.mutable.Set[(Term, Term)] = collection.mutable.Set()
+  val applWork: mSet[(Term, Term)] = mSet()
+
+  val parseWork : mSet[Expr] = mSet()
 
   def applyFuncWitOpt(f: Term, x: Term): Option[Term] =
     {
-      pprint.log(s"Application: ${f.fansi}, ${x.fansi}")
+      // pprint.log(s"Application: ${f.fansi}, ${x.fansi}")
       func = f
       arg = x
       applWork += (f -> x)
-      pprint.log(applWork.size)
+      pprint.log(applWork)
 
-    val res = applyFuncOpt(f, x)
+    val resTask = applyFuncOpt(f, x)
       .orElse(
         feedWit(f).flatMap(applyFuncWitOpt(_, x))
       )
@@ -90,8 +93,13 @@ object LeanToTermMonix {
       .orElse(
         if (isProp(x.typ)) Some(f) else None
       )
-      applWork -= (f -> x)
-      res
+      for {
+        res <- resTask
+        _ = {
+          applWork -= (f -> x)
+          pprint.log(s"completed application:$f($x)")
+        }
+      } yield res
     }
 
   def applyFuncWit(f: Term, x: Term): Term =
@@ -115,10 +123,10 @@ object LeanToTermMonix {
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
       case smp: SimpleIndMod =>
-        pprint.log(s"Getting simple IndMod ${ind.name}")
+        pprint.log(s"Getting rec using simple IndMod ${ind.name}")
         getRecSimple(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
-        pprint.log(s"Getting indexed IndMod ${ind.name}")
+        pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
@@ -267,17 +275,20 @@ object LeanToTermMonix {
             vars: Vector[Term],
             ltm: LeanToTermMonix,
             mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] = {
+    parseWork += exp
     def getNamed(name: Name) =
       ltm.defnMap.get(name).map((t) => Task.pure(t -> ltm))
     def getTermIndMod(name: Name) =
       ltm.termIndModMap.get(name).map((t) => Task.pure(t -> ltm))
-    exp match {
+    // pprint.log(s"Parsing $exp")
+    pprint.log(s"$parseWork")
+    val resTask : Task[(Term, LeanToTermMonix)] = exp match {
       case Const(name, _) =>
         pprint.log(s"Seeking constant: $name")
         pprint.log(s"${ltm.defnMap.get(name).map(_.fansi)}")
         getNamed(name)
           .orElse{
-            pprint.log(s"deffromMod $name")
+            // pprint.log(s"deffromMod $name")
             defFromMod(name, ltm, mods)
           }
           .getOrElse(
@@ -306,14 +317,14 @@ object LeanToTermMonix {
         } yield (res, ltm2)
 
       case App(f, a) =>
-        pprint.log(s"Applying $f to $a")
+        // pprint.log(s"Applying $f to $a")
         for {
           p1 <- parse(f, vars, ltm, mods)
           (func, ltm1) = p1
           p2 <- parse(a, vars, ltm1, mods)
           (arg, ltm2) = p2
           res = applyFuncWit(func, arg)
-          _ = pprint.log(s"got result for $f($a)")
+          // _ = pprint.log(s"got result for $f($a)")
         } yield (res, ltm2)
       case Lam(domain, body) =>
         pprint.log(s"lambda $domain, $body")
@@ -359,6 +370,13 @@ object LeanToTermMonix {
         } yield (bodyTerm.replace(x, valueTerm), ltm3)
       case e => Task.raiseError(UnParsedException(e))
     }
+
+    for {
+      res <- resTask
+      _ = {
+        parseWork -= exp
+        pprint.log(s"parsed $exp")}
+    } yield res
   }
 
   def parseVec(

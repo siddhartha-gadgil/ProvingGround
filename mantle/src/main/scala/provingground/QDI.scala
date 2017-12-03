@@ -20,6 +20,10 @@ import StringParse._
 
 import com.github.nscala_time.time.Imports._
 
+object AmmRepl extends App {
+  amm()
+}
+
 object amm {
   def apply(): Unit = {
     val initCommands =
