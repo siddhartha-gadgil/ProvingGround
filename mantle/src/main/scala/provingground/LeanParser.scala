@@ -274,8 +274,8 @@ def defFromMod(
 def indModFromMod(
     name: Name): Option[Task[TermIndMod]] =
   findMod(name, mods).map { (mod) =>
+    pprint.log(s"Using ${mod.name}")
     for {
-      pprint.log(s"Using ${mod.name}")
       _ <- withMod(mod)
     } yield (termIndModMap(name))
   }
