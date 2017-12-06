@@ -703,6 +703,12 @@ object HoTT {
     case _            => false
   }
 
+  def isPropFmly(t: Typ[Term]) : Boolean = t match {
+      case PiDefn(_, value : Typ[u]) => isPropFmly(value)
+      case FuncTyp(_, codom: Typ[u]) => isPropFmly(codom)
+      case x => isProp(x)
+    }
+
   def univlevel: Typ[Typ[Term]] => Int = {
     case Universe(l) => l
     case _           => 0
