@@ -131,8 +131,12 @@ class LeanParser(mods: Vector[Modification]){
     res <- resTask
     _ = {
       parseWork -= exp
-      pprint.log(s"parsed $exp")}
-  } yield res
+      pprint.log(s"parsed $exp")
+      if (isPropFmly(res.typ))
+        pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+      }
+  } yield
+    if (isPropFmly(res.typ)) "_" :: (res.typ) else res
 }
 
 def parseVec(
