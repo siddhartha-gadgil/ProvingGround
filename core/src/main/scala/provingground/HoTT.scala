@@ -376,7 +376,7 @@ object HoTT {
     val name: AnySym
     override def toString = name.toString
 
-    override def hashCode = (name, typ).hashCode
+    override def hashCode = name.toString.hashCode + 41 * (typ.hashCode)
 
     override def equals(that: Any) = that match {
       case sym: Symbolic =>  sym.typ == typ && sym.name == name
