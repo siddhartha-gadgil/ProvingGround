@@ -97,11 +97,17 @@ object HoTT {
     def usesVar(t: Term) = false // override in Lambda's
   }
 
+  object Subs{
+    var hook: (Term, Term, Term) => Unit = {case (_, _, _) => ()}
+
+    var doneHook : (Term, Term, Term, Term) => Unit = {case (_, _, _, _) => ()}
+  }
+
   /**
     * specify result of substitution
     * a typical class is closed under substitution.
     */
-  trait Subs[+U <: Term] {
+  trait Subs[+U <: Term]{self =>
 
     /**
       *  substitute x by y recursively in `this`.
@@ -115,7 +121,9 @@ object HoTT {
       *
       */
     def replace(x: Term, y: Term): U with Subs[U] = {
-      (x, y) match {
+      Subs.hook(self.asInstanceOf[U], x, y)
+
+      val res = (x, y) match {
         case (ab: AbsPair[u, v], cd: AbsPair[w, x])
             if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
           replace(ab.first, cd.first) replace (ab.second, cd.second)
@@ -133,6 +141,9 @@ object HoTT {
           replace(fib1, fib2)
         case _ => subs(x, y)
       }
+
+      Subs.doneHook(self.asInstanceOf[U], x, y, res)
+      res
     }
 
     /**
@@ -368,7 +379,7 @@ object HoTT {
     override def hashCode = (name, typ).hashCode
 
     override def equals(that: Any) = that match {
-      case sym: Symbolic => sym.name == name && sym.typ == typ
+      case sym: Symbolic =>  sym.typ == typ && sym.name == name
       case _             => false
     }
   }

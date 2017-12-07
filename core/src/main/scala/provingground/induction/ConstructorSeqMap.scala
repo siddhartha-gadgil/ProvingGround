@@ -454,7 +454,10 @@ object ConstructorSeqTL {
       _root_.provingground.induction.ConstructorSeqTL[SS, H, Intros]] {} =
     new Subst[ConstructorSeqTL[SS, H, Intros]] {
       def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) =
-        ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
+        {
+          pprint.log(s"substitution for inductive type definition ${a.typ}")
+          ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
+        }
     }
 
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =

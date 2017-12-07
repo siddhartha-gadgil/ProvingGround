@@ -30,7 +30,7 @@ class LeanParser(mods: Vector[Modification]){
   val termIndModMap : mMap[Name, TermIndMod] = mMap()
 
   def parse(exp: Expr,
-          vars: Vector[Term]): Task[Term] = {
+          vars: Vector[Term] = Vector()): Task[Term] = {
   parseWork += exp
   def getNamed(name: Name) =
     defnMap.get(name).map((t) => Task.pure(t))
