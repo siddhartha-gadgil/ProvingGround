@@ -376,7 +376,7 @@ object HoTT {
     val name: AnySym
     override def toString = name.toString
 
-    override def hashCode = name.toString.hashCode + 41 * (typ.hashCode)
+    override lazy val hashCode = name.hashCode + 41 * (typ.hashCode)
 
     override def equals(that: Any) = that match {
       case sym: Symbolic =>  sym.typ == typ && sym.name == name
@@ -677,7 +677,7 @@ object HoTT {
 
     def variable(name: AnySym) = SymbTyp(name, level)
 
-    override def hashCode = 37
+    override lazy val hashCode = 37
 
     def newobj =
       throw new IllegalArgumentException(
@@ -1049,7 +1049,7 @@ object HoTT {
 
     lazy val fullData = (dom, depcodom, defnData)
 
-    override def hashCode = fullData.hashCode
+    override lazy val hashCode = fullData.hashCode
 
     override def equals(that: Any) = that match {
       case r: InducFuncLike[_, _] => fullData == r.fullData
@@ -1089,7 +1089,7 @@ object HoTT {
 
     lazy val fullIndData = (domW, index, codXs, defnData)
 
-    override def hashCode = fullIndData.hashCode
+    override lazy val hashCode = fullIndData.hashCode
 
     override def equals(that: Any) = that match {
       case r: IndInducFuncLike[_, _, _, _] =>
@@ -1251,7 +1251,7 @@ object HoTT {
 
     lazy val fullData = (dom, codom, defnData)
 
-    override def hashCode = fullData.hashCode
+    override lazy val hashCode = fullData.hashCode
 
     override def equals(that: Any) = that match {
       case r: RecFunc[_, _] =>
@@ -1285,7 +1285,7 @@ object HoTT {
 
     lazy val fullIndData = (domW, index, codom, defnData)
 
-    override def hashCode = fullIndData.hashCode
+    override lazy val hashCode = fullIndData.hashCode
 
     override def equals(that: Any) = that match {
       case r: IndRecFunc[_, _, _] =>
