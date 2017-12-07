@@ -220,6 +220,15 @@ object TermPatterns {
   }
 
   /**
+    * matches  `Prop`, the false  type, returns `() : Unit` if matched
+    */
+  val prop = Pattern.check[Term]{
+      case _: Prop.type => true
+      case _            => false
+  }
+
+
+  /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`
     */
   val symbolic = Pattern.partial[Term, Named] {

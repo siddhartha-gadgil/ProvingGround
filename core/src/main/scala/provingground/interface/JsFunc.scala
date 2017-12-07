@@ -115,6 +115,7 @@ object TermJson {
       toJs(star)("star") ||
       toJs(unit)("unit-type") ||
       toJs(zero)("zero-type") ||
+      toJs(prop)("prop-universe") ||
       toJs(indInducFunc)("indexed-inductive-function") ||
       toJs(indRecFunc)("indexed-recursive-function") ||
       toJs(recFunc)("recursive-function") ||
@@ -188,6 +189,9 @@ object TermJson {
       } ||
       jsToBuild[Term, Un]("zero-type") { (_) =>
         Zero
+      } ||
+      jsToBuild[Term, Un]("prop-universe") { (_) =>
+        Prop
       } ||
       jsToBuild[Term, II]("first-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
