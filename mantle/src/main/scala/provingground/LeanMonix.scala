@@ -80,7 +80,7 @@ object LeanToTermMonix {
       func = f
       arg = x
       applWork += (f -> x)
-      pprint.log(applWork)
+      pprint.log(applWork.map {case (f, x) => (f.fansi, x.fansi)})
 
     val resTask = applyFuncOpt(f, x)
       .orElse(
