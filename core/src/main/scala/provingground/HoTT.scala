@@ -539,7 +539,7 @@ object HoTT {
   }
 
   def isWitness(t: Term) = t match {
-    case sym: Symbolic => sym.name == Name("_")
+    case sym: Symbolic =>  Name("_") == sym.name 
     case _ => false
   }
 

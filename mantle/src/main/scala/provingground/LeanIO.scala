@@ -997,7 +997,7 @@ object LeanInterface {
     case Sort(_)             => false
     case Lam(b, x)           => usesVar(b.ty, index) || usesVar(x, index + 1)
     case Pi(b, x)            => usesVar(b.ty, index) || usesVar(x, index + 1)
-    case Let(_, x, y)        => usesVar(x, index) || usesVar(y, index)
+    case Let(_, x, y)        => usesVar(y, index + 1)
     case LocalConst(_, _, _) => false
   }
 
