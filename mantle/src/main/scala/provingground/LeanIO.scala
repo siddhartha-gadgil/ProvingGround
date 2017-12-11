@@ -765,7 +765,7 @@ object LeanToTerm {
     if (vec.contains(None)) None else Some(vec.map(_.get))
 }
 
-trait TermIndMod {
+sealed trait TermIndMod {
   val name: Name
   // inductiveTyp: Term,
   val intros: Vector[Term]
@@ -990,13 +990,13 @@ object LeanInterface {
     case LocalConst(_, _, _) => Vector()
   }
 
-  def usesVar(expr: Expr, index: Int) : Boolean = expr match {
+  def usesVar(expr: Expr, index: Int, ignoreTypes: Boolean = false) : Boolean = expr match {
     case Const(name, _)      => false
     case App(x, y)           => usesVar(x, index) || usesVar(y, index)
     case Var(n)              => n == index
     case Sort(_)             => false
-    case Lam(b, x)           => usesVar(b.ty, index) || usesVar(x, index + 1)
-    case Pi(b, x)            => usesVar(b.ty, index) || usesVar(x, index + 1)
+    case Lam(b, x)           => usesVar(x, index + 1) || ((!ignoreTypes) && usesVar(b.ty, index))
+    case Pi(b, x)            => usesVar(x, index + 1) || ((!ignoreTypes) && usesVar(b.ty, index))
     case Let(_, x, y)        => usesVar(y, index + 1)
     case LocalConst(_, _, _) => false
   }
