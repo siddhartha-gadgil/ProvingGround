@@ -18,9 +18,9 @@ val fG = parser.parse(Const("group", Vector()), Vector()).runAsync
 
 val fgmul = parser.parse(Const(Name("group", "mul"), Vector()), Vector()).runAsync
 
-val fgone = parser.parse(Const(Name("group", "one"), Vector()), Vector()).runAsync
+// val fgone = parser.parse(Const(Name("group", "one"), Vector()), Vector()).runAsync // not necessary
 
-val fgmass = parser.parse(Const(Name("group", "mul_assoc"), Vector()), Vector()).runAsync
+// val fgmass = parser.parse(Const(Name("group", "mul_assoc"), Vector()), Vector()).runAsync // may not be needed
 
 // val fgmone = parser.parse(Const(Name("group", "mul_one"), Vector()), Vector()).runAsync // this is the one that causes a crash
 

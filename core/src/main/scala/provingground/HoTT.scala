@@ -433,7 +433,7 @@ object HoTT {
       with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
 
-    def newobj = SymbObj(new InnerSym[Term](this), typ)
+    def newobj = SymbObj(InnerSym[Term](this), typ)
 
     def subs(x: Term, y: Term) =
       if (x == this) y
@@ -489,7 +489,7 @@ object HoTT {
   case class SymbTyp(name: AnySym, level: Int) extends Typ[Term] with Symbolic {
     lazy val typ = Universe(level)
 
-    def newobj = SymbTyp(new InnerSym[Typ[Term]](this), level)
+    def newobj = SymbTyp(InnerSym[Typ[Term]](this), level)
 
     type Obj = Term
 
@@ -518,7 +518,7 @@ object HoTT {
   case class SymbProp(name: AnySym) extends Typ[Term] with Symbolic {
     lazy val typ = Prop
 
-    def newobj = SymbProp(new InnerSym[Typ[Term]](this))
+    def newobj = SymbProp(InnerSym[Typ[Term]](this))
 
     type Obj = Term
 
@@ -526,8 +526,6 @@ object HoTT {
       SymbObj(Name("_"), this)
 
     def elem = this
-
-    //     val applptntypu = ApplnPattern[Term, Typ[Term]]()
 
     def subs(x: Term, y: Term) = (x, y) match {
       case (u: Typ[_], v: Typ[_]) if (u == this) => v
@@ -537,6 +535,14 @@ object HoTT {
       }
     }
   }
+
+  def isWitness(t: Term) = t match {
+    case sym: Symbolic => sym.name == Name("_")
+    case _ => false
+  }
+
+  def witVar[U<: Term with Subs[U]](t: U): U =
+    "_" :: t.typ.asInstanceOf[Typ[U]]
 
   /**
     * Types with symbolic objects not refined.
@@ -575,7 +581,7 @@ object HoTT {
         extends RecFunc[Term, U] { self =>
       val dom = Unit
 
-      val defnData = Vector()
+      val defnData = Vector(data)
 
       val typ = dom ->: codom
 
@@ -677,7 +683,7 @@ object HoTT {
 
     def variable(name: AnySym) = SymbTyp(name, level)
 
-    override lazy val hashCode = 37
+    override def hashCode = 37
 
     def newobj =
       throw new IllegalArgumentException(
@@ -1049,7 +1055,7 @@ object HoTT {
 
     lazy val fullData = (dom, depcodom, defnData)
 
-    override lazy val hashCode = fullData.hashCode
+    override def hashCode = fullData.hashCode
 
     override def equals(that: Any) = that match {
       case r: InducFuncLike[_, _] => fullData == r.fullData
@@ -1089,7 +1095,7 @@ object HoTT {
 
     lazy val fullIndData = (domW, index, codXs, defnData)
 
-    override lazy val hashCode = fullIndData.hashCode
+    override def hashCode = fullIndData.hashCode
 
     override def equals(that: Any) = that match {
       case r: IndInducFuncLike[_, _, _, _] =>
@@ -1251,7 +1257,7 @@ object HoTT {
 
     lazy val fullData = (dom, codom, defnData)
 
-    override lazy val hashCode = fullData.hashCode
+    override def hashCode = fullData.hashCode
 
     override def equals(that: Any) = that match {
       case r: RecFunc[_, _] =>
@@ -1285,7 +1291,7 @@ object HoTT {
 
     lazy val fullIndData = (domW, index, codom, defnData)
 
-    override lazy val hashCode = fullIndData.hashCode
+    override def hashCode = fullIndData.hashCode
 
     override def equals(that: Any) = that match {
       case r: IndRecFunc[_, _, _] =>
@@ -1387,7 +1393,7 @@ object HoTT {
 
     def act(arg: W): U = codom.symbObj(ApplnSym(this, arg))
 
-    def newobj = SymbolicFunc(new InnerSym[Func[W, U]](this), dom, codom)
+    def newobj = SymbolicFunc(InnerSym[Func[W, U]](this), dom, codom)
 
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
@@ -1718,6 +1724,11 @@ object HoTT {
     }
   }
 
+  object InnerSym{
+    def apply[U<: Term with Subs[U]](variable: U with Symbolic) : AnySym =
+      if (isWitness(variable)) variable.name else new InnerSym[U](variable)
+  }
+
   /**
     * Unwraps symbols if they are wrapped - wrapping typical happens in lambdas.
     */
@@ -1731,7 +1742,7 @@ object HoTT {
     */
   /*  private def innervar[U <: Term with Subs[U]](variable: U): U = {
     val typ = variable.typ.asInstanceOf[Typ[U]]
-    val newvar = new InnerSym(variable)
+    val newvar = InnerSym(variable)
     variable match {
       case PairTerm(a: Term, b: Term) => PairTerm(
         a.typ.symbObj(newvar),
@@ -1764,11 +1775,10 @@ object HoTT {
     // if (isVar(variable)) LambdaTerm(variable, value)
     // else {
     val newvar = variable.newobj
-    // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
-    // assert(newvar.typ == variable.typ, s"variable $variable changed type")
-    if (value.typ dependsOn variable)
-      LambdaTerm(newvar, value.replace(variable, newvar))
-    else LambdaFixed(newvar, value.replace(variable, newvar))
+    val newValue = value.replace(variable, newvar)
+    if (value.typ != newValue.typ)
+      LambdaTerm(newvar, newValue)
+    else LambdaFixed(newvar, newValue)
     // }
   }
 
@@ -1855,10 +1865,11 @@ object HoTT {
     // if (isVar(variable)) LambdaFixed(variable, value)
     // else {
     val newvar = variable.newobj
-    assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
-    assert(newvar.typ == variable.typ, s"variable $variable changed type")
+    val newValue = value.replace(variable, newvar)
+    // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
+    // assert(newvar.typ == variable.typ, s"variable $variable changed type")
     //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
-    LambdaFixed(newvar, value.replace(variable, newvar))
+    LambdaFixed(newvar, newValue)
     // }
   }
 
@@ -2033,11 +2044,11 @@ object HoTT {
 
     def newobj = {
       val newvar = variable.newobj
-      PiSymbolicFunc(new InnerSym[FuncLike[W, U]](this),
+      PiSymbolicFunc(InnerSym[FuncLike[W, U]](this),
                      newvar,
                      value.replace(variable, newvar))
       // val fibers = LambdaFixed(variable, value)
-      // DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers.newobj)
+      // DepSymbolicFunc(InnerSym[FuncLike[W, U]](this), fibers.newobj)
     }
 
     def subs(x: Term, y: Term) = (x, y) match {
@@ -2070,7 +2081,7 @@ object HoTT {
     def act(arg: W) = fibers(arg).symbObj(ApplnSym(this, arg))
 
     def newobj =
-      DepSymbolicFunc(new InnerSym[FuncLike[W, U]](this), fibers)
+      DepSymbolicFunc(InnerSym[FuncLike[W, U]](this), fibers)
 
     def subs(x: Term, y: Term) = (x, y) match {
       //        case (u: Typ[_], v: Typ[_]) => SymbolicFunc(name, dom.replace(u, v), codom.replace(u, v))
