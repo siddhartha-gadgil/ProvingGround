@@ -37,7 +37,7 @@ class LeanParser(mods: Vector[Modification]){
   def getTermIndMod(name: Name) =
     termIndModMap.get(name).map((t) => Task.pure(t))
   // pprint.log(s"Parsing $exp")
-  pprint.log(s"$parseWork")
+  // pprint.log(s"$parseWork")
   val resTask : Task[Term] = exp match {
     case Const(name, _) =>
       pprint.log(s"Seeking constant: $name")
@@ -97,7 +97,8 @@ class LeanParser(mods: Vector[Modification]){
             fn
           case y if domain.prettyName.toString == "_" => y
           case _ =>
-            if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+            if (!LeanInterface.usesVar(body, 0)) LambdaFixed("_" :: domTyp, value)
+            else if (value.typ.dependsOn(x)) LambdaTerm(x, value)
             else LambdaFixed(x, value)
         }
     case Pi(domain, body) =>
@@ -110,8 +111,8 @@ class LeanParser(mods: Vector[Modification]){
         value <- parse(body, x +: vars)
         // (value, ltm2) = p2
         cod <- Task.eval(toTyp(value))
-        dep = cod.dependsOn(x)
-      } yield if (dep) (PiDefn(x, cod)) else (x.typ ->: cod)
+        // dep =  cod.dependsOn(x)
+      } yield if (LeanInterface.usesVar(body, 0)) (PiDefn(x, cod)) else (x.typ ->: cod)
     case Let(domain, value, body) =>
       pprint.log(s"let $domain, $value, $body")
       for {

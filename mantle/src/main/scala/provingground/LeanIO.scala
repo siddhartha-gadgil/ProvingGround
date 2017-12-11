@@ -990,6 +990,17 @@ object LeanInterface {
     case LocalConst(_, _, _) => Vector()
   }
 
+  def usesVar(expr: Expr, index: Int) : Boolean = expr match {
+    case Const(name, _)      => false
+    case App(x, y)           => usesVar(x, index) || usesVar(y, index)
+    case Var(n)              => n == index
+    case Sort(_)             => false
+    case Lam(b, x)           => usesVar(b.ty, index) || usesVar(x, index + 1)
+    case Pi(b, x)            => usesVar(b.ty, index) || usesVar(x, index + 1)
+    case Let(_, x, y)        => usesVar(y, index + 1)
+    case LocalConst(_, _, _) => false
+  }
+
   // crude implementation for exploring
   def subExpr(expr: Expr): Vector[Expr] = expr match {
     case App(x, y)    => App(x, y) +: subExpr(x) ++: subExpr(y)

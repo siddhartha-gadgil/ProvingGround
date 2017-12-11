@@ -123,7 +123,9 @@ object HoTT {
     def replace(x: Term, y: Term): U with Subs[U] = {
       Subs.hook(self.asInstanceOf[U], x, y)
 
-      val res = (x, y) match {
+      val res =
+        if (isWitness(x)) self.asInstanceOf[U with Subs[U]]
+        else (x, y) match {
         case (ab: AbsPair[u, v], cd: AbsPair[w, x])
             if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
           replace(ab.first, cd.first) replace (ab.second, cd.second)
@@ -537,7 +539,7 @@ object HoTT {
   }
 
   def isWitness(t: Term) = t match {
-    case sym: Symbolic => sym.name == Name("_")
+    case sym: Symbolic =>  Name("_") == sym.name
     case _ => false
   }
 
@@ -1776,7 +1778,8 @@ object HoTT {
     // else {
     val newvar = variable.newobj
     val newValue = value.replace(variable, newvar)
-    if (value.typ != newValue.typ)
+    if (newValue == value) LambdaFixed(witVar(variable), value)
+    else if (value.typ != newValue.typ)
       LambdaTerm(newvar, newValue)
     else LambdaFixed(newvar, newValue)
     // }
@@ -1869,7 +1872,8 @@ object HoTT {
     // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
     // assert(newvar.typ == variable.typ, s"variable $variable changed type")
     //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
-    LambdaFixed(newvar, newValue)
+    if (newValue == value) LambdaFixed(witVar(variable), value)
+    else LambdaFixed(newvar, newValue)
     // }
   }
 
