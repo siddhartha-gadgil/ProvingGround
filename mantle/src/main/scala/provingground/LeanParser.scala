@@ -37,7 +37,7 @@ class LeanParser(mods: Vector[Modification]){
   def getTermIndMod(name: Name) =
     termIndModMap.get(name).map((t) => Task.pure(t))
   // pprint.log(s"Parsing $exp")
-  pprint.log(s"$parseWork")
+  // pprint.log(s"$parseWork")
   val resTask : Task[Term] = exp match {
     case Const(name, _) =>
       pprint.log(s"Seeking constant: $name")
