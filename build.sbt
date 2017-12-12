@@ -77,7 +77,7 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
+    // "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
     // "com.lihaoyi"            %% "ammonite-ops"  % ammV,
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
