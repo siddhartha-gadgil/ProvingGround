@@ -584,12 +584,12 @@ object IndexedConstructorSeqDom {
                                   Intros <: HList](implicit tl: TermList[Index])
     : Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] =
     new Subst[IndexedConstructorSeqDom[SS, H, F, Index, Intros]] {
-      def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(x: Term,
-                                                                      y: Term) =
-        {
-          // pprint.log(s"substitution for indexed inductive type definition ${a.W}")
-          a.subs(x, y)
-        }
+      def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
+          x: Term,
+          y: Term) = {
+        // pprint.log(s"substitution for indexed inductive type definition ${a.W}")
+        a.subs(x, y)
+      }
     }
 
   def get[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList](w: F)(

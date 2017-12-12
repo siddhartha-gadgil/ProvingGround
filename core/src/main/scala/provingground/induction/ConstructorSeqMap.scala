@@ -453,11 +453,10 @@ object ConstructorSeqTL {
     : _root_.scala.AnyRef with _root_.provingground.induction.Subst[
       _root_.provingground.induction.ConstructorSeqTL[SS, H, Intros]] {} =
     new Subst[ConstructorSeqTL[SS, H, Intros]] {
-      def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) =
-        {
-          // pprint.log(s"substitution for inductive type definition ${a.typ}")
-          ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
-        }
+      def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) = {
+        // pprint.log(s"substitution for inductive type definition ${a.typ}")
+        ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
+      }
     }
 
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =

@@ -97,17 +97,17 @@ object HoTT {
     def usesVar(t: Term) = false // override in Lambda's
   }
 
-  object Subs{
-    var hook: (Term, Term, Term) => Unit = {case (_, _, _) => ()}
+  object Subs {
+    var hook: (Term, Term, Term) => Unit = { case (_, _, _) => () }
 
-    var doneHook : (Term, Term, Term, Term) => Unit = {case (_, _, _, _) => ()}
+    var doneHook: (Term, Term, Term, Term) => Unit = { case (_, _, _, _) => () }
   }
 
   /**
     * specify result of substitution
     * a typical class is closed under substitution.
     */
-  trait Subs[+U <: Term]{self =>
+  trait Subs[+U <: Term] { self =>
 
     /**
       *  substitute x by y recursively in `this`.
@@ -125,24 +125,25 @@ object HoTT {
 
       val res =
         if (isWitness(x)) self.asInstanceOf[U with Subs[U]]
-        else (x, y) match {
-        case (ab: AbsPair[u, v], cd: AbsPair[w, x])
-            if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
-          replace(ab.first, cd.first) replace (ab.second, cd.second)
-        case (FormalAppln(f, x), FormalAppln(g, y)) =>
-          replace(f, g) replace (x, y)
-        case (xs: Symbolic, _)
-            if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-          val typchange = replace(x.typ, y.typ)
-          typchange replace ((y.typ).symbObj(xs.name), y)
-        case (FuncTyp(a, b), FuncTyp(c, d)) =>
-          replace(a, c) replace (b, d)
-        case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>
-          replace(a, c) replace (b, d)
-        case (PiTyp(fib1), PiTyp(fib2)) =>
-          replace(fib1, fib2)
-        case _ => subs(x, y)
-      }
+        else
+          (x, y) match {
+            case (ab: AbsPair[u, v], cd: AbsPair[w, x])
+                if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
+              replace(ab.first, cd.first) replace (ab.second, cd.second)
+            case (FormalAppln(f, x), FormalAppln(g, y)) =>
+              replace(f, g) replace (x, y)
+            case (xs: Symbolic, _)
+                if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
+              val typchange = replace(x.typ, y.typ)
+              typchange replace ((y.typ).symbObj(xs.name), y)
+            case (FuncTyp(a, b), FuncTyp(c, d)) =>
+              replace(a, c) replace (b, d)
+            case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>
+              replace(a, c) replace (b, d)
+            case (PiTyp(fib1), PiTyp(fib2)) =>
+              replace(fib1, fib2)
+            case _ => subs(x, y)
+          }
 
       Subs.doneHook(self.asInstanceOf[U], x, y, res)
       res
@@ -381,7 +382,7 @@ object HoTT {
     override lazy val hashCode = name.hashCode + 41 * (typ.hashCode)
 
     override def equals(that: Any) = that match {
-      case sym: Symbolic =>  sym.typ == typ && sym.name == name
+      case sym: Symbolic => sym.typ == typ && sym.name == name
       case _             => false
     }
   }
@@ -539,11 +540,11 @@ object HoTT {
   }
 
   def isWitness(t: Term) = t match {
-    case sym: Symbolic =>  Name("_") == sym.name
-    case _ => false
+    case sym: Symbolic => Name("_") == sym.name
+    case _             => false
   }
 
-  def witVar[U<: Term with Subs[U]](t: U): U =
+  def witVar[U <: Term with Subs[U]](t: U): U =
     "_" :: t.typ.asInstanceOf[Typ[U]]
 
   /**
@@ -722,11 +723,11 @@ object HoTT {
     case _            => false
   }
 
-  def isPropFmly(t: Typ[Term]) : Boolean = t match {
-      case PiDefn(_, value : Typ[u]) => isPropFmly(value)
-      case FuncTyp(_, codom: Typ[u]) => isPropFmly(codom)
-      case x => isProp(x)
-    }
+  def isPropFmly(t: Typ[Term]): Boolean = t match {
+    case PiDefn(_, value: Typ[u])  => isPropFmly(value)
+    case FuncTyp(_, codom: Typ[u]) => isPropFmly(codom)
+    case x                         => isProp(x)
+  }
 
   def univlevel: Typ[Typ[Term]] => Int = {
     case Universe(l) => l
@@ -1726,8 +1727,8 @@ object HoTT {
     }
   }
 
-  object InnerSym{
-    def apply[U<: Term with Subs[U]](variable: U with Symbolic) : AnySym =
+  object InnerSym {
+    def apply[U <: Term with Subs[U]](variable: U with Symbolic): AnySym =
       if (isWitness(variable)) variable.name else new InnerSym[U](variable)
   }
 
@@ -1776,7 +1777,7 @@ object HoTT {
       value: V): FuncLike[U, V] = {
     // if (isVar(variable)) LambdaTerm(variable, value)
     // else {
-    val newvar = variable.newobj
+    val newvar   = variable.newobj
     val newValue = value.replace(variable, newvar)
     if (newValue == value) LambdaFixed(witVar(variable), value)
     else if (value.typ != newValue.typ)
@@ -1867,7 +1868,7 @@ object HoTT {
     )
     // if (isVar(variable)) LambdaFixed(variable, value)
     // else {
-    val newvar = variable.newobj
+    val newvar   = variable.newobj
     val newValue = value.replace(variable, newvar)
     // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
     // assert(newvar.typ == variable.typ, s"variable $variable changed type")

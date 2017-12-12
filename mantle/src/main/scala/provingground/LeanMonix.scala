@@ -72,15 +72,14 @@ object LeanToTermMonix {
 
   val applWork: mSet[(Term, Term)] = mSet()
 
-  val parseWork : mSet[Expr] = mSet()
+  val parseWork: mSet[Expr] = mSet()
 
-  def applyFuncWitOpt(f: Term, x: Term): Option[Term] =
-    {
-      // pprint.log(s"Application: ${f.fansi}, ${x.fansi}")
-      func = f
-      arg = x
-      applWork += (f -> x)
-      // pprint.log(applWork.map {case (f, x) => (f.fansi, x.fansi)})
+  def applyFuncWitOpt(f: Term, x: Term): Option[Term] = {
+    // pprint.log(s"Application: ${f.fansi}, ${x.fansi}")
+    func = f
+    arg = x
+    applWork += (f -> x)
+    // pprint.log(applWork.map {case (f, x) => (f.fansi, x.fansi)})
 
     val resTask = applyFuncOpt(f, x)
       .orElse(
@@ -93,14 +92,14 @@ object LeanToTermMonix {
       .orElse(
         if (isProp(x.typ)) Some(f) else None
       )
-      for {
-        res <- resTask
-        _ = {
-          applWork -= (f -> x)
-          // pprint.log(s"completed application:$f($x)")
-        }
-      } yield res
-    }
+    for {
+      res <- resTask
+      _ = {
+        applWork -= (f -> x)
+        // pprint.log(s"completed application:$f($x)")
+      }
+    } yield res
+  }
 
   def applyFuncWit(f: Term, x: Term): Term =
     applyFuncWitOpt(f, x).getOrElse {
@@ -282,12 +281,12 @@ object LeanToTermMonix {
       ltm.termIndModMap.get(name).map((t) => Task.pure(t -> ltm))
     // pprint.log(s"Parsing $exp")
     pprint.log(s"$parseWork")
-    val resTask : Task[(Term, LeanToTermMonix)] = exp match {
+    val resTask: Task[(Term, LeanToTermMonix)] = exp match {
       case Const(name, _) =>
         pprint.log(s"Seeking constant: $name")
         pprint.log(s"${ltm.defnMap.get(name).map(_.fansi)}")
         getNamed(name)
-          .orElse{
+          .orElse {
             // pprint.log(s"deffromMod $name")
             defFromMod(name, ltm, mods)
           }
@@ -323,7 +322,7 @@ object LeanToTermMonix {
           (func, ltm1) = p1
           p2 <- parse(a, vars, ltm1, mods)
           (arg, ltm2) = p2
-          res = applyFuncWit(func, arg)
+          res         = applyFuncWit(func, arg)
           // _ = pprint.log(s"got result for $f($a)")
         } yield (res, ltm2)
       case Lam(domain, body) =>
@@ -375,7 +374,8 @@ object LeanToTermMonix {
       res <- resTask
       _ = {
         parseWork -= exp
-        pprint.log(s"parsed $exp")}
+        pprint.log(s"parsed $exp")
+      }
     } yield res
   }
 

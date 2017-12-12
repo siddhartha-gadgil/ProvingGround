@@ -58,9 +58,7 @@ object ProverTasks {
                       maxtime: FiniteDuration,
                       vars: Vector[Term] = Vector()) =
     Truncate
-      .task(tv.evolve(TangVec(fd, tfd)).vec,
-            cutoff,
-            maxtime)
+      .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
       .memoize
 
   /**
@@ -85,17 +83,19 @@ object ProverTasks {
     for {
       terms <- termsTask
       typs  <- typsTask
-      thmsByPf  = terms.map(_.typ)
-      thmsBySt  = typs.filter(thmsByPf(_) > 0)
-      pfSet     = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
-      fullPfSet = pfSet.flatMap((pf) =>  partialLambdaClosures(vars)(pf).map((pf, _)))
+      thmsByPf = terms.map(_.typ)
+      thmsBySt = typs.filter(thmsByPf(_) > 0)
+      pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
+      fullPfSet = pfSet.flatMap((pf) =>
+        partialLambdaClosures(vars)(pf).map((pf, _)))
     } yield
       fullPfSet
-        .map { case (pf, fullPf) =>
-          (fullPf,
-           hExp(thmsBySt(pf.typ),
-                thmsByPf(pf.typ),
-                scale * terms(pf) / thmsByPf(pf.typ)))
+        .map {
+          case (pf, fullPf) =>
+            (fullPf,
+             hExp(thmsBySt(pf.typ),
+                  thmsByPf(pf.typ),
+                  scale * terms(pf) / thmsByPf(pf.typ)))
         }
         .sortBy(_._2)
 
@@ -113,7 +113,7 @@ object ProverTasks {
           case (v, p) if p > cutoff && cutoff / p > 0 =>
             (v, cutoff / p)
         }
-        val tot = scales.map{case (_, x) => 1/x}.sum
+        val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
         // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
@@ -139,13 +139,18 @@ object ProverTasks {
           case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
             (v, cutoff / p)
         }
-        val tot = scales.map{case (_, x) => 1/x}.sum
+        val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
         // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             for {
-              fd <- termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
+              fd <- termdistDerTask(base,
+                                    FD.unif(v),
+                                    tv,
+                                    sc * ratio,
+                                    maxtime,
+                                    vars)
             } yield (fd, trace :+ v)
         }
       }
@@ -164,16 +169,21 @@ object ProverTasks {
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       {
         val scales = vec.collect {
-          case (v, p) if p > cutoff && cutoff / p > 0  && !(trace.contains(v)) =>
+          case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
             (v, p, cutoff / p)
         }
-        val tot = scales.map{case (_, _, x) => 1/x}.sum
+        val tot   = scales.map { case (_, _, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
         // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, p, sc) =>
             for {
-              fd <- termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
+              fd <- termdistDerTask(base,
+                                    FD.unif(v),
+                                    tv,
+                                    sc * ratio,
+                                    maxtime,
+                                    vars)
             } yield (fd, trace :+ (v -> sc * ratio))
         }
       }
@@ -400,7 +410,7 @@ object ProverTasks {
         result,
         _ ++ _,
         spawn);
-      typs <- typsTask
+      typs  <- typsTask
       terms <- termsTask
 
     } yield (res, terms, typs)
