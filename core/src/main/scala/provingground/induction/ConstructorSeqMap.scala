@@ -16,7 +16,7 @@ import shapeless.HList
   * @tparam RecType scala type of a function `rec_W, X`
   * @tparam InducType scala type of a function `ind_W, X`
   */
-trait ConstructorSeqMap[C <: Term with Subs[C],
+sealed trait ConstructorSeqMap[C <: Term with Subs[C],
                         H <: Term with Subs[H],
                         RecType <: Term with Subs[RecType],
                         InducType <: Term with Subs[InducType],
@@ -31,6 +31,8 @@ trait ConstructorSeqMap[C <: Term with Subs[C],
     * the inductive type being defined
     */
   val W: Typ[H]
+
+  val introArgsVec: Vector[Int]
 
   /**
     * converts a recursive definition built by [[RecursiveDefinition]] to a lambda
@@ -71,6 +73,8 @@ object ConstructorSeqMap {
     */
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C], HNil] {
+    val introArgsVec: Vector[Int] = Vector()
+
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
     def recDataLambda(X: Typ[C]) = (f) => f
@@ -121,6 +125,7 @@ object ConstructorSeqMap {
                                 Func[RD, TR],
                                 Func[ID, TI],
                                 C :: TIntros] {
+    val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
 
     def subs(x: Term, y: Term) =
       Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))

@@ -1004,6 +1004,20 @@ object LeanInterface {
       case LocalConst(_, _, _) => false
     }
 
+  def varsUsed(expr: Expr): Set[Int] =
+    expr match {
+      case Const(name, _) => Set()
+      case App(x, y)      => varsUsed(x) union varsUsed(y)
+      case Var(n)         => Set(n)
+      case Sort(_)        => Set()
+      case Lam(b, x) =>
+        varsUsed(x).map(_ + 1) union varsUsed(b.ty)
+      case Pi(b, x) =>
+        varsUsed(x).map(_ + 1) union varsUsed(b.ty)
+      case Let(_, x, y)        => varsUsed(y).map(_ + 1)
+      case LocalConst(_, _, _) => Set()
+    }
+
   // crude implementation for exploring
   def subExpr(expr: Expr): Vector[Expr] = expr match {
     case App(x, y)    => App(x, y) +: subExpr(x) ++: subExpr(y)

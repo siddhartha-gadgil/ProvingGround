@@ -15,7 +15,14 @@ import HoTT.{Name => _, _}
 
 import trepplein._
 
-object LeanParser {}
+object LeanParser {
+  def splitVec[A](sizes: Vector[Int], vec: Vector[A]): Vector[Vector[A]] = sizes match {
+    case Vector() => Vector()
+    case n +: ms =>
+      val (head, tail) = vec.splitAt(n)
+      head +: splitVec(ms, tail)
+  }
+}
 
 class LeanParser(mods: Vector[Modification]) {
   import LeanParser._

@@ -82,6 +82,8 @@ sealed trait ConstructorPatternMap[
                    data: InducDataType,
                    f: => FuncLike[H, Cod]): H => Option[Cod]
   val univLevel: Int
+
+  val introArgs: Int
 }
 
 object ConstructorPatternMap {
@@ -93,6 +95,8 @@ object ConstructorPatternMap {
       extends ConstructorPatternMap[C, H, H, C, C] {
 
     val univLevel = 0
+
+    val introArgs = 0
 
     //    type ConstructorType = Term
 
@@ -269,6 +273,8 @@ object ConstructorPatternMap {
     //   FuncTyp[F, HC](tail(W), head(W))
 
     val univLevel = math.max(head.univLevel, tail.univLevel)
+
+    val introArgs = 2 + head.introArgs
   }
 
   /**
@@ -322,6 +328,8 @@ object ConstructorPatternMap {
     // def apply(W: Typ[H]) = FuncTyp[T, HC](tail, head(W))
 
     val univLevel = head.univLevel
+
+    val introArgs = 1 + head.introArgs
   }
 
   /**
@@ -396,6 +404,8 @@ object ConstructorPatternMap {
                       f: => FuncLike[H, C]): HeadInducDataType = data(arg)
 
     val univLevel = headlevel
+
+    val introArgs = 1 + headfibre(tail.Var).introArgs
   }
 
 }
